@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +24,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
@@ -100,6 +102,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -207,7 +210,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IImportantLeadersDAO importantLeadersDAO;
 	private IActivityService activityService;
 	private IImportantLeadersTypeDAO importantLeadersTypeDAO;
-	
+	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	
 	public IImportantLeadersTypeDAO getImportantLeadersTypeDAO() {
 		return importantLeadersTypeDAO;
@@ -258,6 +261,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
+
 
 	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
 		return activityLocationInfoDAO;
@@ -9245,119 +9249,488 @@ public List<IdNameVO> getAllPublicRepresentatives(){
 		return finalList;
 	}
 
-	public List<IdNameVO> getAllImportantLeadersTypes(){
-		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
-		try {
-			List<Object[]> list = importantLeadersTypeDAO.getAllImportantLeadersTypes();
-			if(list != null && list.size() > 0){
-				for (Object[] obj : list) {
-					IdNameVO vo = new IdNameVO();
-					
-					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					vo.setOrderId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
-					
-					returnList.add(vo);
-				}
+
+public List<IdNameVO> getAllImportantLeadersTypes(){
+	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+	try {
+		List<Object[]> list = importantLeadersTypeDAO.getAllImportantLeadersTypes();
+		if(list != null && list.size() > 0){
+			for (Object[] obj : list) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				vo.setOrderId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				
+				returnList.add(vo);
 			}
-		} catch (Exception e) {
-			LOG.error("Exception Occured in () getAllImportantLeadersTypes method, Exception - ",e);
 		}
-		return returnList;
+	} catch (Exception e) {
+		LOG.error("Exception Occured in () getAllImportantLeadersTypes method, Exception - ",e);
 	}
-	
-	public List<IdNameVO> getTehsilListByConstituency(Long constituencyId){
-		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
-		try {
-			List<Object[]> list = boothDAO.getTehsilListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
-			if(commonMethodsUtilService.isListOrSetValid(list)){
-				for (Object[] obj : list) {
-					IdNameVO vo = new IdNameVO();
-					
-					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					vo.setName(vo.getName()+" Mandal");
-					
-					returnList.add(vo);
-				}
+	return returnList;
+}
+
+public List<IdNameVO> getTehsilListByConstituency(Long constituencyId){
+	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+	try {
+		List<Object[]> list = boothDAO.getTehsilListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			for (Object[] obj : list) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				vo.setName(vo.getName()+" Mandal");
+				
+				returnList.add(vo);
 			}
-			/*List<Object[]> lebList = boothDAO.getLEBListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
-			if(commonMethodsUtilService.isListOrSetValid(lebList)){
-				for (Object[] obj : lebList) {
-					IdNameVO vo = new IdNameVO();
-					
-					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					vo.setName(vo.getName()+" Muncipality");
-					
-					returnList.add(vo);
-				}
-			}*/
-		} catch (Exception e) {
-			LOG.error("Exception Occured in () getTehsilListByConstituency method, Exception - ",e);
 		}
-		return returnList;
-	}
-	
-	public List<IdNameVO> getVillagesInMandal(Long mandalId){
-		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
-		try {
-			List<Object[]> list = constituencyDAO.getPanchayatsByTehsilId(mandalId);
-			if(list != null && list.size() > 0){
-				for (Object[] obj : list) {
-					IdNameVO vo = new IdNameVO();
-					
-					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					
-					returnList.add(vo);
-				}
+		/*List<Object[]> lebList = boothDAO.getLEBListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
+		if(commonMethodsUtilService.isListOrSetValid(lebList)){
+			for (Object[] obj : lebList) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				vo.setName(vo.getName()+" Muncipality");
+				
+				returnList.add(vo);
 			}
-		} catch (Exception e) {
-			LOG.error("Exception Occured in () getVillagesInMandal method, Exception - ",e);
-		}
-		return returnList;
+		}*/
+	} catch (Exception e) {
+		LOG.error("Exception Occured in () getTehsilListByConstituency method, Exception - ",e);
 	}
+	return returnList;
+}
+
+public List<IdNameVO> getVillagesInMandal(Long mandalId){
+	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+	try {
+		List<Object[]> list = constituencyDAO.getPanchayatsByTehsilId(mandalId);
+		if(list != null && list.size() > 0){
+			for (Object[] obj : list) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				
+				returnList.add(vo);
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception Occured in () getVillagesInMandal method, Exception - ",e);
+	}
+	return returnList;
+}
+
+public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId){
+	IdNameVO returnvo = new IdNameVO();
+	try {
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		
+		Long locationScopeId = importantLeadersTypeDAO.getLocationScopeIdForTypeId(importantLeadersTypeId);
+		if(locationScopeId != null && locationScopeId.longValue() == 4l)
+			returnList = getConstituenciesByDistrictId(districtId);
+		else if(locationScopeId != null && locationScopeId.longValue() == 5l)
+			returnList = getTehsilListByConstituency(constituencyId);
+		else if(locationScopeId != null && locationScopeId.longValue() == 6l)
+			returnList = getVillagesInMandal(mandalId);
+		
+		returnvo.setId(locationScopeId);
+		returnvo.setIdnameList(returnList);
+		
+	} catch (Exception e) {
+		LOG.error("Exception Occured in getLocations() method, Exception - ",e);
+	}
+	return returnvo;
+}
+
+public List<IdNameVO> getConstituenciesByDistrictId(Long districtId){
+	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+	try {
+		List<Object[]> list = constituencyDAO.getConstituenciesByDistrictId(districtId);
+		if(list != null && list.size() > 0){
+			for (Object[] obj : list) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				
+				returnList.add(vo);
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception Occured in () getConstituenciesByDistrictId method, Exception - ",e);
+	}
+	return returnList;
+}
 	
-	public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId){
-		IdNameVO returnvo = new IdNameVO();
-		try {
-			List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+	/**
+	 * @Author  Hyma
+	 * @Version CadreDetailsService.java  June 29, 2016 05:00:00 PM 
+	 * @return List<MahanaduEventVO>
+	 * description  { Getting Cadre Location Wise Attendee Count For Mahanadu Event}
+	 */
+	public List<MahanaduEventVO> getCadreLocationWiseEventAttendeeCounts(Long eventId,String startDate,String endDate,Long locationId,String locationType,String searchType){
+		List<MahanaduEventVO> returnList = new ArrayList<MahanaduEventVO>();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		try{
+			Date eventStrDate = null;
+			Date eventEndDate = null;
+			if(startDate.toString().isEmpty() && endDate.toString().isEmpty()){
+				Object[] eventDateArr=eventDAO.getEventStartAndEndDate(eventId);
+	   			if(eventDateArr !=null && eventDateArr.length >0){
+	   				eventStrDate =  (Date)eventDateArr[0] ;
+	   				eventEndDate = (Date)eventDateArr[1];
+	   			}	
+			}
 			
-			Long locationScopeId = importantLeadersTypeDAO.getLocationScopeIdForTypeId(importantLeadersTypeId);
-			if(locationScopeId != null && locationScopeId.longValue() == 4l)
-				returnList = getConstituenciesByDistrictId(districtId);
-			else if(locationScopeId != null && locationScopeId.longValue() == 5l)
-				returnList = getTehsilListByConstituency(constituencyId);
-			else if(locationScopeId != null && locationScopeId.longValue() == 6l)
-				returnList = getVillagesInMandal(mandalId);
-			
-			returnvo.setId(locationScopeId);
-			returnvo.setIdnameList(returnList);
-			
-		} catch (Exception e) {
-			LOG.error("Exception Occured in getLocations() method, Exception - ",e);
-		}
-		return returnvo;
+			String mandalCorpData = "DISTRICT";
+			if(startDate != null && !startDate.isEmpty()){
+			 eventStrDate = format.parse(startDate);
+			}
+			if(endDate != null && !endDate.isEmpty()){
+			 eventEndDate = format.parse(endDate); 
+			}
+			List<Object[]> mandalAttendeeList = null;
+			List<Object[]> muncipalityAttendeeList = null;
+			List<Object[]> attendeeList = null;
+			List<Object[]> wardAttendeeList = null;
+			List<Object[]> panchayatAttendeeList = null;
+		 List<Date>  betweenDates = commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
+		 if(searchType.equalsIgnoreCase(IConstants.MANDAL) && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			  mandalAttendeeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"attendee", searchType,eventStrDate,eventEndDate,"MANDAL");
+			 muncipalityAttendeeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"attendee", searchType,eventStrDate,eventEndDate,"MUNCIPALITY/CORPORATION");
+		 }else if(searchType.equalsIgnoreCase(IConstants.WARD)){
+			 wardAttendeeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"attendee", searchType,eventStrDate,eventEndDate,"WARD");
+		 }else if(searchType.equalsIgnoreCase(IConstants.PANCHAYAT)){
+			 panchayatAttendeeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"attendee", searchType,eventStrDate,eventEndDate,"MANDAL");
+		 }else{
+		   attendeeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"attendee", searchType,eventStrDate,eventEndDate,null);
+		 }
+		 if((attendeeList!=null && attendeeList.size() > 0) || (mandalAttendeeList!=null && mandalAttendeeList.size() > 0) 
+				 || (muncipalityAttendeeList!=null && muncipalityAttendeeList.size() > 0) || (wardAttendeeList!=null && wardAttendeeList.size() > 0)
+				 || (panchayatAttendeeList!=null && panchayatAttendeeList.size() > 0)){
+			 
+			 List<Object[]> mandalInviteeList = null;
+			 List<Object[]> muncipalityInviteeList = null;
+			 List<Object[]> inviteeList = null;
+			 List<Object[]> wardInviteeList = null;
+			 List<Object[]> panchayatInviteeList = null;
+			 if(searchType.equalsIgnoreCase(IConstants.MANDAL) && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				  mandalInviteeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"invitee", searchType,eventStrDate,eventEndDate,"MANDAL");
+				  muncipalityInviteeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"invitee", searchType,eventStrDate,eventEndDate,"MUNCIPALITY/CORPORATION");
+			 }else if(searchType.equalsIgnoreCase(IConstants.WARD)){
+				 wardInviteeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"invitee", searchType,eventStrDate,eventEndDate,"WARD");
+			 }else if(searchType.equalsIgnoreCase(IConstants.PANCHAYAT)){
+				 panchayatInviteeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"invitee", searchType,eventStrDate,eventEndDate,"MANDAL");
+			 }else{
+				 inviteeList = eventAttendeeDAO.getLocationWiseAttendeesCount(locationType,locationId,eventId,"invitee", searchType,eventStrDate,eventEndDate,null);
+			 }
+			 setCadreLocationWiseCount(mandalInviteeList,"invitee",returnList,betweenDates);
+			 setCadreLocationWiseCount(muncipalityInviteeList,"invitee",returnList,betweenDates);
+			 setCadreLocationWiseCount(mandalAttendeeList,"attendee",returnList,betweenDates);
+			 setCadreLocationWiseCount(muncipalityAttendeeList,"attendee",returnList,betweenDates);
+			 setCadreLocationWiseCount(wardAttendeeList,"attendee",returnList,betweenDates);
+			 setCadreLocationWiseCount(wardInviteeList,"invitee",returnList,betweenDates);
+			 setCadreLocationWiseCount(muncipalityInviteeList,"invitee",returnList,betweenDates);
+			 setCadreLocationWiseCount(panchayatAttendeeList,"attendee",returnList,betweenDates);
+			 setCadreLocationWiseCount(attendeeList,"attendee",returnList,betweenDates);
+			 setCadreLocationWiseCount(inviteeList,"invitee",returnList,betweenDates);
+			 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCountForCadre(eventId,eventStrDate,eventEndDate);
+			 calCulatinginviteeNonInviteePercantage(returnList,totalAttended);
+		 }
+		 List<Object[]> mandalInviteesList = null;
+			List<Object[]> muncipalityInviteesList = null;
+			List<Object[]> inviteesList = null;
+			List<Object[]> wardInviteeList = null;
+			List<Object[]> panchayatInviteeList = null;
+		 if(searchType.equalsIgnoreCase(IConstants.MANDAL) && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			  mandalInviteesList = eventInviteeDAO.getEventInviteesCountByCadreLocation(locationType,locationId,eventId,searchType,"MANDAL");
+			  muncipalityInviteesList = eventInviteeDAO.getEventInviteesCountByCadreLocation(locationType,locationId,eventId,searchType,"MUNCIPALITY/CORPORATION");
+		 }else if(searchType.equalsIgnoreCase(IConstants.MUNCIPLE_WARD)){
+			 wardInviteeList = eventInviteeDAO.getEventInviteesCountByCadreLocation(locationType,locationId,eventId,searchType,"WARD");
+		 }else if(searchType.equalsIgnoreCase(IConstants.MANDAL)){
+			 panchayatInviteeList = eventInviteeDAO.getEventInviteesCountByCadreLocation(locationType,locationId,eventId,searchType,"MANDAL");
+		 }else{
+		inviteesList = eventInviteeDAO.getEventInviteesCountByCadreLocation(locationType,locationId,eventId,searchType,null);
+		 }
+		 	setInviteesListToReturnList(panchayatInviteeList,returnList);
+		 	setInviteesListToReturnList(wardInviteeList,returnList);
+		 	setInviteesListToReturnList(inviteesList,returnList);
+			setInviteesListToReturnList(mandalInviteesList,returnList);
+			setInviteesListToReturnList(muncipalityInviteesList,returnList);
+			getAttendeeAndinviteeCountsDateWise(eventId,eventStrDate,eventEndDate,locationId,locationType,searchType,returnList);
+		 
+	} catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception raised in getLocationWiseEventAttendeeCounts  method in CadreDetailsService.",e);
+	}
+		return returnList;
 	}
 	
-	public List<IdNameVO> getConstituenciesByDistrictId(Long districtId){
-		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
-		try {
-			List<Object[]> list = constituencyDAO.getConstituenciesByDistrictId(districtId);
-			if(list != null && list.size() > 0){
-				for (Object[] obj : list) {
-					IdNameVO vo = new IdNameVO();
+	/**
+	 * @Author  Hyma
+	 * @Version CadreDetailsService.java  June 29, 2016 04:00:00 PM 
+	 * @return List<MahanaduEventVO>
+	 * description  { Setting Cadre Location Wise Attendee & Invitee Counts}
+	 */
+	public void setCadreLocationWiseCount(List<Object[]> list,String invitteeType,List<MahanaduEventVO> returnList,List<Date>  betweenDates){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		try{
+			
+			if( list != null && list.size() >0 ){
+				   
+				   for(Object[] obj : list){
+					   
+					 MahanaduEventVO distVO = getMatchedVOForAttendee(returnList,(Long)obj[0]);
+					   
+					   if( distVO == null){
+						   distVO =  new MahanaduEventVO();
+						   returnList.add(distVO);
+					   }
+						   
+						distVO.setId(obj[0]!=null ? (Long)obj[0]:0l);
+						   distVO.setName( obj[1]!=null ? obj[1].toString() :"");
+						   if(invitteeType.equalsIgnoreCase("attendee")){
+							   distVO.setAttendees(obj[2]!=null ?(Long)obj[2]:0l );
+							   distVO.setNonInvitees(obj[2]!=null ?(Long)obj[2]:0l);	
+						   }
+						   	if(invitteeType.equalsIgnoreCase("invitee")){
+						   		distVO.setInvitees(obj[2]!=null ?(Long)obj[2]:0l);
+						   	    distVO.setNonInvitees(distVO.getAttendees() - (obj[2]!=null ?(Long)obj[2]:0l));	
+						   }		
 					
-					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					
-					returnList.add(vo);
+						   List<MahanaduEventVO> sublist = new ArrayList<MahanaduEventVO>();
+						   if(betweenDates != null && betweenDates.size() > 0){
+							   for(int i=0;i<betweenDates.size();i++){
+								   MahanaduEventVO dateVO = new MahanaduEventVO();
+								   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+								   //dateVO.setDataExist(false);
+								   int dayCount = i+1;
+								   dateVO.setName("Day"+dayCount);
+								   if(distVO.getSubList() == null){
+									   distVO.setSubList(new ArrayList<MahanaduEventVO>());
+								   }
+								   sublist.add(dateVO);
+								   
+							   }
+						   }
+						   distVO.setSubList(sublist);
+					}
 				}
-			}
-		} catch (Exception e) {
-			LOG.error("Exception Occured in () getConstituenciesByDistrictId method, Exception - ",e);
+			}catch(Exception e) {
+			 e.printStackTrace();
+			 Log.error("Exception rised in setLocationWiseCount()",e); 
 		}
-		return returnList;
+	 }
+	public MahanaduEventVO getMatchedVOForAttendee(List<MahanaduEventVO> returnList,Long id){
+		
+		
+		try{
+			if(returnList != null && returnList.size() >0 && id != null && id.longValue() >0l){
+			for(MahanaduEventVO VO: returnList)
+			{
+				if(VO.getId().longValue() == id.longValue())
+					return VO;
+			}
+			
+		}
+	}catch (Exception e) {
+			LOG.error("Exception Occured in getMatchedVOForAttendee() method, Exception -",e);
+			return null;
+		}
+		return null;
+	}
+public MahanaduEventVO getMatchedVOForDate(List<MahanaduEventVO> returnList,String dateStr){
+		
+		
+		try{
+			if(returnList != null && returnList.size() >0){
+			for(MahanaduEventVO VO: returnList)
+			{
+				if(VO.getDateStr().equalsIgnoreCase(dateStr))
+					return VO;
+			}
+			
+		}
+	}catch (Exception e) {
+			LOG.error("Exception Occured in getMatchedVOForDate() method, Exception -",e);
+			return null;
+		}
+		return null;
+	}
+public void calCulatinginviteeNonInviteePercantage(List<MahanaduEventVO> returnList,Long totalAttended){
+	    
+	    if( returnList!= null && returnList.size() > 0){
+	    	for(MahanaduEventVO VO : returnList){
+	    		VO.setAttendeePercantage(calcPercantage(totalAttended, VO.getAttendees()));
+	    		VO.setInviteePercantage(calcPercantage(VO.getAttendees(),VO.getInvitees()));
+	    		VO.setNonInviteePercantage(calcPercantage(VO.getAttendees(), VO.getNonInvitees()));
+	       
+	     }
+	    } 
+	  }
+public String calcPercantage(Long totalValue,Long subValue){
+    
+    String percentage=null;
+    if( (totalValue!=null && totalValue>0l) && (subValue!=null && subValue>0l)){
+      
+        Double percent=(Double)(subValue*100.00)/totalValue;
+        percentage=decimalFormat .format(percent);
+    }
+    return percentage;
+ }
+
+public void setDateDataToSublist(List<Object[]> list,List<MahanaduEventVO> returnList,String invitteeType){
+	
+	 try{
+		
+		   if( list != null && list.size() >0 )
+		   {   
+			   for(Object[] obj : list)
+			   {
+				   String dateStr = obj[2]!=null?obj[2].toString():"";
+				   
+				   MahanaduEventVO VO = getMatchedVOForAttendee(returnList,(Long) obj[0]);
+				   
+				   if(VO != null){
+				  MahanaduEventVO dateVO = getMatchedVOForDate(VO.getSubList(),dateStr);
+				   
+				   if( dateVO != null)
+				   {   
+						  
+							   dateVO.setDataExist(true);
+							   
+							   if(invitteeType.equalsIgnoreCase("attendee"))
+							   {
+								   dateVO.setAttendees(obj[3]!=null ?(Long)obj[3]:0l );
+								   dateVO.setNonInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+								   
+								   //set day data exist.
+								   if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
+									   dateVO.setTotalDaydataExist(true);
+								   }
+								  
+							   }
+							   if(invitteeType.equalsIgnoreCase("invitee"))
+							   {
+							   		dateVO.setInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+							   		dateVO.setNonInvitees(dateVO.getAttendees() - (obj[3]!=null ?(Long)obj[3]:0l));	
+							   }	
+						   
+				    }
+				   }
+			    }
+		   }
+		 
+	 }catch(Exception e) {
+		 Log.error("Exception rised in setDateDataToSublist()",e); 
 	}
 }
+public void getAttendeeAndinviteeCountsDateWise(Long eventId,Date eventStrDate,Date eventEndDate,Long locationId,String locationType,String searchType,List<MahanaduEventVO> returnList){
+	try{ 
+	 List<Object[]> mandalDateWiseAttendeeList = null;
+	 List<Object[]> muncipalityDateWiseAttendeeList = null;
+	 List<Object[]> dateWiseAttendeeList = null;
+	 List<Object[]> wardDateWiseAttendeeList = null;
+	 List<Object[]> panchayatWiseAttendeeList = null;
+	 if(searchType.equalsIgnoreCase(IConstants.MANDAL) && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+		  mandalDateWiseAttendeeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,eventId,locationId,searchType,"MANDAL");
+		  muncipalityDateWiseAttendeeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,eventId,locationId,searchType,"MUNCIPALITY/CORPORATION");
+	 }else if(searchType.equalsIgnoreCase(IConstants.MUNCIPLE_WARD)){
+		 wardDateWiseAttendeeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,eventId,locationId,searchType,"WARD");
+	 }else if(searchType.equalsIgnoreCase(IConstants.MANDAL)){
+		 panchayatWiseAttendeeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,eventId,locationId,searchType,"MANDAL");
+	 }else{
+		 dateWiseAttendeeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,eventId,locationId,searchType,null);
+	 }
+	 if((dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0) || (mandalDateWiseAttendeeList!=null && mandalDateWiseAttendeeList.size()>0) 
+			 || (muncipalityDateWiseAttendeeList!=null && muncipalityDateWiseAttendeeList.size()>0)
+			 || (wardDateWiseAttendeeList!=null && wardDateWiseAttendeeList.size()>0) || (panchayatWiseAttendeeList!=null && panchayatWiseAttendeeList.size()>0)){
+		 
+		 List<Object[]> mandalDateWiseInviteeList = null;
+		 List<Object[]> muncipalityDateWiseInviteeList = null;
+		 List<Object[]> dateWiseInviteeList = null;
+		 List<Object[]> wardDateWiseInviteeList = null;
+		 List<Object[]> panchayatDateWiseInviteeList = null;
+		 if(searchType.equalsIgnoreCase(IConstants.MANDAL) && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			  mandalDateWiseInviteeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,eventId,locationId,searchType,"MANDAL");
+			 muncipalityDateWiseInviteeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,eventId,locationId,searchType,"MUNCIPALITY/CORPORATION");
+		 }else if(searchType.equalsIgnoreCase(IConstants.MUNCIPLE_WARD)){
+			 wardDateWiseInviteeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,eventId,locationId,searchType,"WARD");
+		 }else if(searchType.equalsIgnoreCase(IConstants.MANDAL)){
+			 panchayatDateWiseInviteeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,eventId,locationId,searchType,"MANDAL");
+		 }else{
+			 dateWiseInviteeList = eventAttendeeDAO.cadreLocationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,eventId,locationId,searchType,null); 
+		 }
+		 setDateDataToSublist(wardDateWiseAttendeeList,returnList,"attendee");
+		 setDateDataToSublist(panchayatWiseAttendeeList,returnList,"attendee");
+		 setDateDataToSublist(mandalDateWiseAttendeeList,returnList,"attendee");
+		 setDateDataToSublist(muncipalityDateWiseAttendeeList,returnList,"attendee");
+		 setDateDataToSublist(mandalDateWiseInviteeList,returnList,"invitee");
+		 setDateDataToSublist(muncipalityDateWiseInviteeList,returnList,"invitee");
+		 setDateDataToSublist(dateWiseAttendeeList,returnList,"attendee");
+		 setDateDataToSublist(dateWiseInviteeList,returnList,"invitee");
+		 setDateDataToSublist(wardDateWiseInviteeList,returnList,"invitee");
+		 setDateDataToSublist(panchayatDateWiseInviteeList,returnList,"invitee");
+	 }
+}catch(Exception e) {
+	e.printStackTrace();
+	 Log.error("Exception rised in getAttendeeAndinviteeCountsDateWise()",e); 
+}
+}
+public void setInviteesListToReturnList(List<Object[]> inviteesList,List<MahanaduEventVO> returnList){
+	
+	try{
+	if( inviteesList!= null && inviteesList.size() > 0){
+		 for( Object[] obj : inviteesList){
+			 MahanaduEventVO distVO = getMatchedVOForAttendee(returnList,(Long)obj[0]);
+			 if(distVO != null){
+				 distVO.setInviteesCalled(obj[1]!=null?(Long)obj[1]:0l);
+			 }
+		 }
+	 }
+}catch(Exception e) {
+	e.printStackTrace();
+	 Log.error("Exception rised in setInviteesListToReturnList()",e); 
+}
+}
+public List<IdNameVO> getMainEvents(){
+	List<IdNameVO> parentEvents = null;
+	try{
+	List<Object[]> mainEvents = eventDAO.getMainEvents();
+	if(mainEvents != null && mainEvents.size() >0){
+		parentEvents = new ArrayList<IdNameVO>();
+		for(Object[] obj : mainEvents){
+			IdNameVO vo = new IdNameVO();
+			vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+			vo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+			parentEvents.add(vo);
+		}
+	}
+}catch(Exception e) {
+	e.printStackTrace();
+	 Log.error("Exception rised in getMainEvents()",e); 
+}
+	return parentEvents;
+}
+public BasicVO getStartDateAndEndDate(Long eventId){
+	BasicVO basicVo = null;
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	try{
+	Object[] eventDateArr=eventDAO.getEventDatesByEventId(eventId);
+		if(eventDateArr !=null && eventDateArr.length >0){
+			basicVo = new BasicVO();
+			basicVo.setDescription(eventDateArr[0] != null ? sdf.format((Date)eventDateArr[0]) : "");//start Date
+			basicVo.setDistrict(eventDateArr[1] != null ? sdf.format((Date)eventDateArr[1]) : "");//enddate
+		}
+}catch(Exception e) {
+	e.printStackTrace();
+	 Log.error("Exception rised in getStartDateAndEndDate()",e); 
+}
+	return basicVo;
+}
+}
+

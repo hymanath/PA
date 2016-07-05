@@ -42,4 +42,5 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> getTotalCadresCountByCasteIds(Set<Long> casteIds);
 	public List<Object[]> getEventInviteesCountByCasteCategoryIdsExcludingMinorities(Set<Long> casteCategoryIds,Long eventId);
 	public Long getEventInviteesCountForMinorities(Long eventId);
+	public List<Object[]> getEventInviteesCountByCadreLocation(String locationType,Long locationId,Long eventId,String searchType,String mandalType);
 }
