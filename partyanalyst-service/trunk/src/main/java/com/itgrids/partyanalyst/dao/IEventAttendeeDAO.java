@@ -87,5 +87,7 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	
 	public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
 	public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
-	
+	public List<Object[]> getLocationWiseAttendeesCount(String locationType, Long locationId, Long eventId , String inviteeType,String searchType,Date startDate, Date endDate,String mandalData);
+	public List<Object[]> cadreLocationWiseEventAttendeeCountsByDateQuery(String locationType,String inviteeType,Date startDate,Date endDate,Long eventId,Long locationId,String searchType,String mandalType);
+	 public Long getUniqueVisitorsAttendedCountForCadre(Long eventId,Date startDate,Date endDate);
 }

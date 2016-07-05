@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
@@ -108,4 +109,7 @@ public interface ICadreDetailsService {
 	public List<IdNameVO> getTehsilListByConstituency(Long constituencyId);
 	public List<IdNameVO> getConstituenciesByDistrictId(Long districtId);
 	public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId);
+	public List<MahanaduEventVO> getCadreLocationWiseEventAttendeeCounts(Long eventId,String startDate,String endDate,Long locationId,String locationType,String searchType);
+	public BasicVO getStartDateAndEndDate(Long eventId);
+	public List<IdNameVO> getMainEvents();
 }
