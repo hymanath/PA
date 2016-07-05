@@ -16,11 +16,14 @@ public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
 	
 	public Date getActivityStartDateByActivityScopeId(Long activityScopeId);
 	public Object[] getDatesForActivityScopeId(Long activityScopeId);
-	public List<Object[]> getActivityLevelsDetails(Long requiredAtrrIds);
+	public List<Object[]> getActivityLevelsDetails(Long requiredAtrrId,AddressVO addressVO);
 	public List<Object[]> getActivitiesListByLevelId(Long levelId,Long requiredAtrrIds);
 	public List<Object[]> getActivityScopeIdByActivityAndLevelId(Long activityId);
 	public List<Object[]> getActivityLevelAndScopeIdByActivity(Long activityId);
 	public Object[] getRequiredDatesOfScope(Long scopeId);
 	public Long getNoOfTimesCountForActivityScope(Long scopeId);
 	public List<Object[]> getActivitiesScopeDetailsByAddress(AddressVO addressVO);
+	
+
+	
 }
