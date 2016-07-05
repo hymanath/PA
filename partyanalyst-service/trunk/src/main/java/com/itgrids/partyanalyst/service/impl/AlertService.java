@@ -488,10 +488,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
-	public String updateAlertStatus(Long userId,Long alertId,Long alertStatusId,String comments)
+	public String updateAlertStatus(final Long userId,final Long alertId,final Long alertStatusId,final String comments)
 	{
-		String rs = null;
-		try{
+		String resultStatus = (String) transactionTemplate
+				.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						String rs = new String();
+						try {
 			Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
 			Alert alert =	alertDAO.get(alertId);
 			alert.setAlertStatusId(alertStatusId);
@@ -516,13 +519,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 			 saveAlertTrackingDetails(alertTrackingVO)	;	
 		
-		}catch(Exception e){
-			e.printStackTrace();
-			 rs = "fail";
+						}
+						catch (Exception ex) {
+							 rs = "fail";
+							
+							return rs;
+						}
+							return rs;
+					}
+
+				});
+		return resultStatus;
 		}
-		return rs;
-		
-	}
 
 	// Alert Status Flow Tracking Details
 	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId)
