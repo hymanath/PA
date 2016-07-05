@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -486,7 +487,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
-	public String UpdateAlertStatus(Long userId,Long alertId,Long alertStatusId,String comments)
+	public String updateAlertStatus(Long userId,Long alertId,Long alertStatusId,String comments)
 	{
 		String rs = null;
 		try{
@@ -521,6 +522,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return rs;
 		
 	}
+
+	
 	
 }
 
