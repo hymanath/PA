@@ -8403,7 +8403,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		 str.append(" where model.boothId = :locationId ");
 		
 		else if(locationType.equalsIgnoreCase("muncipality"))
-		  str.append(" where model.localBody.localElectionBodyId =:locationId and model.booth.localBody is not null ");
+		  str.append(" where model.localBody.localElectionBodyId =:locationId and model.localBody is not null ");
 		
 		else if(locationType.equalsIgnoreCase("District"))
 		 str.append(" where model.constituency.district.districtId =:locationId ");
