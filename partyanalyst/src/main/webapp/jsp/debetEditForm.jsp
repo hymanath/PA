@@ -433,14 +433,9 @@ function prepopulateDebateForm(result)
 		
 		prepopulateCandSummaryArr.push("candSummary"+candCunt);
 		
-		if(p == 0)
-		{
-			str +='<td></td>';
-		}
-		else
-		{
-			str +='<td><a class="icon-trash" style="cursor: pointer;" onclick="removeCandidate(this.name);" title="Click here to add another Subject" name="row'+candCunt+'"></a></td>';
-		}
+		
+			str +='<td><a class="icon-trash" style="cursor: pointer;" onclick="removeCandidate(this.name);" title="Click here to Remove Participant" name="row'+candCunt+'"></a></td>';
+		
 		str +='</tr>';
 		
 		candCunt++;
@@ -451,7 +446,7 @@ function prepopulateDebateForm(result)
 	str +='</table>';
 	str += '</div>';
 	str += '<div  class="span12">';
-	str += '<a title="Click here to add another Subject" onClick="addMoreCandidatesForEdit();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>';
+	str += '<a title="Click here to add another Participant" onClick="addMoreCandidatesForEdit();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>';
 	str += '</div>';
 	str += '</div>';
 	str += '<div id="debateQuestnsDiv">	';
@@ -551,7 +546,7 @@ function prepopulateDebateForm(result)
 
 	str += '</div>';
 	str += '<div  class="span1 offset10">';
-	str += '<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMorePole();"><i class="icon-plus"></i></a>';
+	str += '<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Option" onClick="addMorePole();"><i class="icon-plus"></i></a>';
 	str += '</div>';
 
 				
@@ -697,7 +692,7 @@ function addMoreCandidatesForEdit()
 	str +='<input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
 	str +='<div id="expReoleDiv'+candCunt+'"></div><span id="'+candCunt+'expparticipantRolesErr" class="errDiv"></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCunt+'" ></textarea></td>';
-	str +='<td><a  name="row'+candCunt+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
+	str +='<td><a  name="row'+candCunt+'" class="icon-trash" title="Click here to Remove Participant" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
     
 	$("#participantTable").append(str);
@@ -860,9 +855,9 @@ function validateFieldsForEdit(){
 			}		
 		}
 			
-		
+		var partyId=0;
 		$( ".partysClass" ).each(function( index ) {
-		 var partyId = $(this ).val();	 
+		 partyId = $(this ).val();	 
 			if(partyId <= 0){
 				var divId = $(this ).attr("id");		
 				$("#"+divId+"Err").html('Please select Party .');
@@ -908,18 +903,17 @@ function validateFieldsForEdit(){
 			}
 		});		
 		
-	
-		$(".expPartiesRoleClass ").each(function(index){
-			var exppartiRole = $(this).val();
-			var myclass=  $(this).closest('td').attr("class"); 
-		 if($('#'+myclass+'').val() == 872 ){
-				if(exppartiRole == null || exppartiRole == 0 || exppartiRole.trim().length <= 0){
-					var divId = $(this).attr("id");
-					$("#"+divId+"Err").html('Please select expected participation role(s).');
-					flag = false;
+			$(".expPartiesRoleClass ").each(function(index){
+				var exppartiRole = $(this).val();
+				var myclass=  $(this).closest('td').attr("class"); 
+			 if($('#'+myclass+'').val() == 872 ){
+					if(exppartiRole == null || exppartiRole == 0 || exppartiRole.trim().length <= 0){
+						var divId = $(this).attr("id");
+						$("#"+divId+"Err").html('Please select expected participation role(s).');
+						flag = false;
+					}
 				}
-			}
-		});
+			});
 		
 		$(".debateAnswr ").each(function(index){
 			var answr = $( this ).val();

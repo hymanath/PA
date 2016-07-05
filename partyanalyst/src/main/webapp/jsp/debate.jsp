@@ -383,7 +383,7 @@ window.location.href = uri + base64(format(template, ctx))
 
 				<div class="row-fluid" >
 						<div class="span12">
-							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><span id="subject1Err" class="errDiv" style="margin-left: 100px;"> </span><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>
+							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><span id="subject1Err" class="errDiv clearErrCls" style="margin-left: 100px;"> </span><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>
 							<input type="text" Class="subjectClass span12" name="subject1" id="subject1" />
 							<div id="addedSubjectDiv"></div>				
 							
@@ -395,12 +395,12 @@ window.location.href = uri + base64(format(template, ctx))
 						<div class="span3" >
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" onclick="addAttribute('Channel');" title="Click here to add another Channel" href="javascript:{}"><i class="icon-plus"></i></a></label>
 							<s:select name="channel"  id="channel" list="channelList" theme="simple" listKey="id" listValue="name"/>
-							<span id="channelErr" class="errDiv"></span>
+							<span id="channelErr" class="errDiv clearErrCls"></span>
 						</div>
 						<div class="span3">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute('Observer');"><i class="icon-plus"></i></a></label>
 								<s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/>
-								<span id="observerErr" class="errDiv" ></span>
+								<span id="observerErr" class="errDiv clearErrCls" ></span>
 
 						</div>	
 						<!--<div class="span2">
@@ -410,19 +410,19 @@ window.location.href = uri + base64(format(template, ctx))
 						<div class="span3">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Start Date : <font class="requiredFont">*</font></label>
 							<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime"/>
-							<span id="startTimeErr" class="errDiv"></span>
+							<span id="startTimeErr" class="errDiv clearErrCls"></span>
 						</div>				
 						<div class="span3">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">End Date : <font class="requiredFont">*</font></label>
 							<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime"/> 
-							<span id="endTimeErr" class="errDiv"></span>
+							<span id="endTimeErr" class="errDiv clearErrCls"></span>
 						</div>	
 				</div>	
 			</div>
 				
 				<div id="participantDiv" class="row-fluid m_top10" >
 				
-				<span style="color:red" class="pull-right errDiv" id="participantErrSpanId"> </span>
+				<span style="color:red" class="pull-right errDiv clearErrCls" id="participantErrSpanId"> </span>
 				
 				<legend class="boxHeading">Participant Details And Performance:</legend>
 				<div><b>Scale (5 points scale : 0 Poor - 5 Excellent)</b></div>
@@ -431,7 +431,7 @@ window.location.href = uri + base64(format(template, ctx))
 				</div>
 				<div  class="span12">
 				<!--<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>-->
-				<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>
+				<a title="Click here to add another Participant" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>
 				</div>
 				</div>
 
@@ -447,7 +447,7 @@ window.location.href = uri + base64(format(template, ctx))
 							</div>
 							<div class="span7" >
 								Answer : <font class="requiredFont">*</font>
-								<span id="answer${i.index+1}Err" class="errDiv"></span>
+								<span id="answer${i.index+1}Err" class="errDiv clearErrCls"></span>
 							<input type="text" Class="selectWidth debateAnswr input-block-level" name="answer${i.index+1}" id="answer${i.index+1}"/>	
 							<input type="hidden" class="hiddenAnswerCls" attr_hidden_id="answer${i.index+1}"/>
 						</div>
@@ -470,12 +470,12 @@ window.location.href = uri + base64(format(template, ctx))
 									<strong>Option : </strong><font class="requiredFont">*</font>
 									</label>
 									<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1"/>
-									<span id="smsoption1Err" class="errDiv"></span>
+									<span id="smsoption1Err" class="errDiv clearErrCls"></span>
 								</div>
 								<div class="span3">
 									<label><strong>Percentage : </strong><font class="requiredFont">*</font></label>							
 									<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup='isNumber("percentage","smsper1"),updatePercntage("smsper1");';/>
-									<span id="smsper1Err" class="errDiv"></span>
+									<span id="smsper1Err" class="errDiv clearErrCls"></span>
 								</div>
 								<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percCount">100</span>%</div>
 							</div>
@@ -485,12 +485,12 @@ window.location.href = uri + base64(format(template, ctx))
 					  <div id="errorForTotal" class="errDiv"></div>
 				</div>
 				<div  class="span1 offset10">
-				<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMorePole();"><i class="icon-plus"></i></a>
+				<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Option" onClick="addMorePole();"><i class="icon-plus"></i></a>
 				</div>
 
 				
 				<div id="debateSummery" class="row-fluid m_top10">
-					<legend class="boxHeading">Summary :<font class="requiredFont">*</font><span id="debetSumErr" class="errDiv"></span></legend>
+					<legend class="boxHeading">Summary :<font class="requiredFont">*</font><span id="debetSumErr" class="errDiv clearErrCls"></span></legend>
 					<div class="control-group form-horizontal">
 						<!--<label>
 						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>-->
