@@ -123,30 +123,30 @@
       <div class="modal-body">
         <div class="row">
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="typeId">Name</span>
+			<label>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="typeId"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Severity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="severityId">Name</span>
+			<label>Severity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="severityId"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="createdDate">Name</span>
+			<label>Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="createdDate"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="levelId">Name</span>
+			<label>Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="levelId"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="LocationId">Name</span>
+			<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="LocationId"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="statusId">Name</span>
+			<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="statusId"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="descriptionId">Name</span>
+			<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="descriptionId"></span>
 		  </div>
 		</div>
 		<div class="row">
 		  <div class="col-md-6 col-xs-12 col-sm-12">
-			<label>Comments</label><span id="commentsId">Name</span>
+			<label>Comments</label><span id="commentsId"></span>
 			<textarea class="form-control"></textarea>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">

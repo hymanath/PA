@@ -116,12 +116,12 @@ function buildAlertData(result)
 	}
 	$("#locationLevelDataId").html(str);
 }
-
+var GlobalalertId;
 $(document).on("click",".alertModel",function(){
 	
 	$("#ModalShow").modal('show');
-	var alertId = $(this).attr("attr-id");
-	showPopUpAlertData(alertId);
+	GlobalalertId = $(this).attr("attr-id");
+	showPopUpAlertData(GlobalalertId);
 	
 	
 });
@@ -149,6 +149,7 @@ function showPopUpAlertData(alertId)
 			
 			$("#LocationId").html(''+location+'');
 			$("#statusId").val(''+GlobalAlertData[i].status+'');
+			$("#descriptionId").html(''+GlobalAlertData[i].desc+'');
 			
 		}
 	}
@@ -166,7 +167,7 @@ function updateAlertStatus()
 	}
 		var jsObj =
 		     {
-		alertId : 1,
+		alertId : GlobalalertId,
 		alertStatusId :1,
 		comments:comments,
 			task : ""

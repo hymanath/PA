@@ -213,7 +213,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			jObj = new JSONObject(getTask());
 		
-			status = alertService.updateAlertStatus(jObj.getLong("alertId"),jObj.getLong("alertStatusId"),jObj.getString("comments"));
+			status = alertService.updateAlertStatus(regVo.getRegistrationID(),jObj.getLong("alertId"),jObj.getLong("alertStatusId"),jObj.getString("comments"));
 		}
 		catch (Exception e) {
 			LOG.error("Exception rised in UpdateAlertStatus",e);
