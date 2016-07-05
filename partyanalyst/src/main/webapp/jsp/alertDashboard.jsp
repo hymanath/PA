@@ -120,6 +120,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="">Modal title</h4>
       </div>
+	   <div id="errorId"></div>
       <div class="modal-body">
         <div class="row">
 		  <div class="col-md-12 col-xs-12 col-sm-12">
@@ -138,7 +139,12 @@
 			<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="LocationId"></span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="statusId"></span>
+			<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+			<select class="select" id="statusId">
+								<option value='0'>Test Status</option>
+								<option value='1'>Test1 Status</option>
+								<option value='2'>Test2 Status</option>
+							</select>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="descriptionId"></span>
@@ -146,20 +152,20 @@
 		</div>
 		<div class="row">
 		  <div class="col-md-6 col-xs-12 col-sm-12">
-			<label>Comments</label><span id="commentsId"></span>
+			<label>Comments</label><span id="commentsId">Name</span>
 			<textarea class="form-control"></textarea>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
 		  </div>
 		</div>
-		<div class="row">
+       <div class="row">
 		  <div class="col-md-4 col-xs-12 col-sm-6">
 			<h4 class="panel-title">TRACKING DETAILS</h4>
 			<div id="alertCommentsDiv"></div>
 		  </div>  
 		</div>
-      </div>
+	 </div>
       <!--<div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
@@ -174,7 +180,7 @@
 $("#dateRangePickerId").daterangepicker({opens:'left'});
 
 //getLocationLevelAlertCount();
-//getLocationLevelAlertData();
+
 </script>
 </body>
 </html>
