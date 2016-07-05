@@ -380,6 +380,7 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 }
 function getCadreLocationWiseEventAttendeeCounts(locationId,locationValue,searchType,divId,index,id){
 	$("#errMsgID").hide();
+	$('#'+divId+'').css("overflow","scroll");
 	$('#'+divId+'tr').show();
 	$('#'+divId+'').show();
 	$('#'+divId+'').html('<center><img id="" src="images/icons/loading.gif" style=""/></center>');
@@ -572,8 +573,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 		str+='<td class="text-center">'+result[i].nonInviteePercantage+'</td>';
 	} 
 	for(var l in result[i].subList){
-				if(result[0].subList[l].totalDaydataExist == true){
-					
+				
 					if(parseInt(result[i].subList[l].attendees) == 0 || result[i].subList[l].attendees == null){
 						
 						str+='<td class="text-center"> - </td>';
@@ -590,19 +590,18 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 					}else{
 						str+='<td class="text-center">'+result[i].subList[l].nonInvitees+'</td>';
 					}
-			    }
 			}
 			if(locationValue == "CONSTITUENCY" || searchType == "MANDAL"){
 				str+='<tr style="display:none" class="mandaltrCls'+index+'" id="mandalTableDivtr'+index+''+i+'">';
 				str+='<td colspan="18">';
-				str+='<div class="mandalCls'+index+'" id="mandalTableDiv'+index+''+i+'"></div>';
+				str+='<div class="mandalCls'+index+'" id="mandalTableDiv'+index+''+i+'" ></div>';
 				str+='</td>';
 				str+='</tr>';
 			}
 			if(locationValue == "MUNCIPALITY/CORPORATION" || locationValue == "MANDAL" || searchType == "WARD" || searchType == "PANCHAYAT" ){
 				str+='<tr style="display:none" class="villagetrCls'+index+'" id="villageTableDivtr'+index+''+i+'">';
 				str+='<td colspan="18">';
-				str+='<div class="villageCls'+index+'" id="villageTableDiv'+index+''+i+'"></div>';
+				str+='<div class="villageCls'+index+'" id="villageTableDiv'+index+''+i+'" ></div>';
 				str+='</td>';
 				str+='</tr>';
 			}
@@ -610,7 +609,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 			
 			str+='<tr style="display:none" class="constituencyCls'+index+'" id="constTableDivtr'+index+''+i+'">';
 	str+='<td colspan="18">';
-		str+='<div id="constTableDiv'+index+''+i+'" class="constituencyCls'+index+'"  ></div>';
+		str+='<div id="constTableDiv'+index+''+i+'" class="constituencyCls'+index+'" ></div>';
 	str+='</td>';
 	str+='</tr>';
 	
@@ -626,6 +625,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 		str+='</table>';
 	
 			if( index != "onload" && locationValue == "CONSTITUENCY"){
+				$("#constTableDiv"+index+"").css("overflow","scroll");
 				$("#constTableDivtr"+index+"").show();
 				$("#constTableDiv"+index+"").html(str);
 			}
@@ -633,6 +633,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 					$("#"+divId+"").html(str);
 			} 
 			else if( index != "onload" && locationValue == "MANDAL" || locationValue == "MUNCIPALITY/CORPORATION"){
+				$("#mandalTableDiv"+index+"").css("overflow","scroll");
 				$("#mandalTableDivtr"+index+"").show();
 				$("#constTableDivtr"+index+"").show();
 				$("#mandalTableDiv"+index+"").html(str);
@@ -640,6 +641,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 				$("#"+divId+"").html(str);
 			}
 			if(searchType == "WARD" || searchType == "PANCHAYAT" && locationValue != "MANDAL" || locationValue == "PANCHAYAT"){
+				$("#villageTableDiv"+index+"").css("overflow","scroll");
 				$("#villageTableDivtr"+index+"").show();
 				$("#villageTableDiv"+index+"").html(str);	
 				}

@@ -883,7 +883,7 @@ var globalCadreId = '${cadreId}';
 			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading locWiseEvnAtnCls">
-						<h4 class="panel-title">
+						<h4 class="panel-title"> <i class="glyphicons glyphicons-group"> </i>&nbsp;&nbsp;&nbsp;
 							MAHANADU 2016 - ATTENDEES
 							<i class="glyphicon glyphicon-chevron-down pull-right"></i>
 						</h4>
@@ -911,7 +911,7 @@ var globalCadreId = '${cadreId}';
 								<button class="btn btn-success m_top20" type="button" onclick="getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),'DISTRICT','DISTRICT','cadreEvntdistrictAttnds','onload','');">Submit</button>
 							</div>
 						</div>
-						<div id="cadreEvntdistrictAttnds" class="m_top20"></div>
+						<div id="cadreEvntdistrictAttnds" class="m_top20" ></div>
 						<div id="errMsgID" class="m_top20" style="display:none;"></div>
 						<div id="cadreEvntConstiAttnds" class="m_top20"></div>
 						<div id="cadreEvntMandalAttnds" class="m_top20"></div>
