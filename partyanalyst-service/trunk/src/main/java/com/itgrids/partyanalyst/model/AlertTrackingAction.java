@@ -25,8 +25,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class AlertTrackingAction extends BaseModel implements Serializable {
 	private Long alert_tracking_action_id;
 	private String action;
-	private AlertTracking alertTracking;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_tracking_action_id", unique = true, nullable = false)
@@ -47,16 +46,5 @@ public class AlertTrackingAction extends BaseModel implements Serializable {
 		this.action = action;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "alert_tracking_action_id", insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public AlertTracking getAlertTracking() {
-		return alertTracking;
-	}
-
-	public void setAlertTracking(AlertTracking alertTracking) {
-		this.alertTracking = alertTracking;
-	}
-
+	
 }

@@ -9,6 +9,7 @@ public class AlertTrackingVO {
 	private Long alertCommentId;
 	private Long alertUserTypeId;
 	private Long userId;
+	private Long alertTrackingActionId;
 	public Long getAlertId() {
 		return alertId;
 	}
@@ -39,10 +40,11 @@ public class AlertTrackingVO {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-
-	
-	
-	
-	
+	public Long getAlertTrackingActionId() {
+		return alertTrackingActionId;
+	}
+	public void setAlertTrackingActionId(Long alertTrackingActionId) {
+		this.alertTrackingActionId = alertTrackingActionId;
+	}
 
 }

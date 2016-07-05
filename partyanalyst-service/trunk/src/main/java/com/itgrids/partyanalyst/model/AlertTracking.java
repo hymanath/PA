@@ -5,15 +5,22 @@ import java.util.Date;
 
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "alert_tracking")
@@ -26,6 +33,8 @@ public class AlertTracking extends BaseModel implements Serializable {
 	private Long alertUserTypeId;
 	private Long insertedBy;
 	private Date insertedTime;
+	private AlertTracking alertTracking;
+	private Long alertTrackingActionId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -91,5 +100,25 @@ public class AlertTracking extends BaseModel implements Serializable {
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_tracking_action_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertTracking getAlertTracking() {
+		return alertTracking;
+	}
+
+	public void setAlertTracking(AlertTracking alertTracking) {
+		this.alertTracking = alertTracking;
+	}
+	@Column(name = "alert_tracking_action_id")
+	public Long getAlertTrackingActionId() {
+		return alertTrackingActionId;
+	}
+
+	public void setAlertTrackingActionId(Long alertTrackingActionId) {
+		this.alertTrackingActionId = alertTrackingActionId;
+	}
+
 
 }
