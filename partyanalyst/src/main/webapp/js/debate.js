@@ -142,9 +142,9 @@ function validateFields(){
 			}		
 		}
 			
-		
+		var partyId = 0;
 		$( ".partysClass" ).each(function( index ) {
-		 var partyId = $(this ).val();	 
+		partyId = $(this ).val();	 
 			if(partyId <= 0){
 				var divId = $(this ).attr("id");		
 				$("#"+divId+"Err").html('Please select Party .');
@@ -191,7 +191,8 @@ function validateFields(){
 			}
 		});		
 		
-		$(".expPartiesRoleClass ").each(function(index){
+		if(partyId !=null && partyId==872){
+			$(".expPartiesRoleClass ").each(function(index){
 				var exppartiRole = $(this).val();
 									
 				if(exppartiRole == null || exppartiRole.trim().length <= 0){
@@ -200,7 +201,9 @@ function validateFields(){
 					$("#"+divId+"Err").html('Please select expected participation role(s).');
 					flag = false;
 				}
-		});
+		  });
+		}
+		
 		$(".debateAnswr ").each(function(index){
 			var answr = $( this ).val();
 			if(answr == null || answr.trim().length <= 0){
@@ -258,7 +261,7 @@ function addMoreSubject(){
 //console.log(subjCount);
 var str = "";
 
-	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"Err' class='errDiv' style='margin-left: 100px;'></span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
+	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"Err' class='errDiv clearErrCls' style='margin-left: 100px;'></span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
 	str += "</br></span>";	
 		
@@ -405,12 +408,16 @@ function updateAttributeField(id){
 function submitForm(type)
 {
 	if(type == 'edit'){
+		clearFields(type);
 		if(validateFieldsForEdit()){
 				saveDetails(type)
 		}
 	}
-	else if(validateFields()){
+	else if(type == 'save'){
+		clearFields(type);
+		if(validateFields()){
 			saveDetails(type)
+		}			
 	}
 	else{
 		console.log("error");
@@ -560,19 +567,19 @@ function getValues(){
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select><span id="party1Err" class="errDiv"></span></td>';
+	str+='</select><span id="party1Err" class="errDiv clearErrCls"></span></td>';
 
 	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate1" >';
 	str+='<option value="0"> Select </option>';
 	str +='</select>';
-	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate1"></span></a> <span id="candidate1Err" class="errDiv"></span></td>';
+	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate1"></span></a> <span id="candidate1Err" class="errDiv clearErrCls"></span></td>';
 		for(var i in charsArray){
 		var myClass1 = charsArray[i].name+"1";
 		str +='<td>';
 		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');"/>';
 		var rolesids1 = myClass1.replace(/\s/g, '');
 			rolesids1 = rolesids1.replace('(Scale)', '');
-		str +='<div id="'+rolesids1+'Err" class="errDiv"></div></td>';
+		str +='<div id="'+rolesids1+'Err" class="errDiv clearErrCls"></div></td>';
 		}
      	str +='<td class="participantRolesblock1"><input type="hidden" id="'+1+'participantRoles" class="partiRoleClass"></input>';
 		str += '<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles1" id="participantRoles1" key="'+1+'participantRoles">';
@@ -580,14 +587,14 @@ function getValues(){
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
-		str +='</select><span id="1participantRolesErr" class="errDiv"></span></td>';
+		str +='</select><span id="1participantRolesErr" class="errDiv clearErrCls"></span></td>';
 		str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
 		str += '<div id="expReoleDiv1"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
-		str += '</select></div><span id="1expparticipantRolesErr" class="errDiv"></span></td>';
+		str += '</select></div><span id="1expparticipantRolesErr" class="errDiv clearErrCls"></span></td>';
 	
 	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea></td>';
@@ -633,12 +640,12 @@ function addMoreCandidates()
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select><span id="party'+candCount+'Err" class="errDiv"></span></td><td>';
+	str+='</select><span id="party'+candCount+'Err" class="errDiv clearErrCls"></span></td><td>';
 
 	
 	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" >';
 	str +='<option value="0"> Select </option>';
-	str +='</select> <span id="candidate'+candCount+'Err" class="errDiv"></span>';
+	str +='</select> <span id="candidate'+candCount+'Err" class="errDiv clearErrCls"></span>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCount+'\',\'party'+candCount+'\','+candCount+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="img/user.png" class="createNewCandidate" id="candidate'+candCount+'"></span></a></td>';
 	for(var i in charsArray){
 		var myclass =charsArray[i].name+''+candCount;
@@ -647,7 +654,7 @@ function addMoreCandidates()
 
 		var rolesids = myclass.replace(/\s/g, '');
 			rolesids = rolesids.replace('(Scale)', '');
-		str +='<div id="'+rolesids+'Err" class="errDiv"></div></td>';
+		str +='<div id="'+rolesids+'Err" class="errDiv clearErrCls"></div></td>';
 	}
 	
 	str +='<td class="participantRolesblock'+candCount+'">';
@@ -658,14 +665,14 @@ function addMoreCandidates()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	
-	str +='</select><span id="'+candCount+'participantRolesErr" class="errDiv"></span></td><td class="expparticipantRolesblock'+candCount+'">';
+	str +='</select><span id="'+candCount+'participantRolesErr" class="errDiv clearErrCls"></span></td><td class="expparticipantRolesblock'+candCount+'">';
 	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
 	str +='<div id="expReoleDiv'+candCount+'"><select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
-	str += '</select></div><span id="'+candCount+'expparticipantRolesErr" class="errDiv"></span></td>';
+	str += '</select></div><span id="'+candCount+'expparticipantRolesErr" class="errDiv clearErrCls"></span></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCount+'" ></textarea></td>';
 	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to Remove Participant" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
@@ -725,6 +732,7 @@ function getCandidatesOfSelectedParty(partyId,divId,id)
 	else
 	{
 		$('#expReoleDiv'+id+'').html('');
+		$('#'+id+'expparticipantRolesErr').html('');
 		//$('#expparticipantRoles'+id+'').remove();
 	}
 	var numb = divId.match(/\d/g);
@@ -829,6 +837,7 @@ function callAjax(jsObj,url)
 						if(myResults == "Success")
 						{
 							alert("Deleted Successfully");
+							$("#debate"+jsObj.debateId).remove();
 						}
 						else
 						{
@@ -1166,7 +1175,7 @@ function buildgetDebatesDetailsBetwinDates(result,fromDate,toDate,channelId,part
 		
 		for(var i in result.smsPoleList)
 		{
-			str +='<tr>';
+			str +='<tr id="debate'+result.smsPoleList[i].id+'">';
 			str+='<td>'+result.smsPoleList[i].name+'  </td>';
 			str+='<td>'+result.smsPoleList[i].type+'  </td>';
 			
@@ -3003,4 +3012,9 @@ function validateDivs(){
 	$('#debateReportDiv').hide();
 	$('#newDebateAnalysisDiv').hide();
 	$("#creationDiv").show();
+}
+function clearFields(type){
+	if(type !=null && type == 'save'){		
+		$(".clearErrCls").html("");
+	}
 }
