@@ -4624,7 +4624,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}
 			
-			List<Object[]> hasAttendanceActivitiesInfo = activityScopeDAO.getActivityLevelsDetails(IConstants.ACTIVITY_REQUIRED_ATTRIBUTE_IDS);
+			List<Object[]> hasAttendanceActivitiesInfo = activityScopeDAO.getActivityLevelsDetails(IConstants.ACTIVITY_REQUIRED_ATTRIBUTE_IDS,userAddress1);
 			if(commonMethodsUtilService.isListOrSetValid(hasAttendanceActivitiesInfo)){
 				for (Object[] param : hasAttendanceActivitiesInfo) {
 					Long lvelId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -4633,6 +4633,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						if(vo.getHasAttendenceCount() == null)
 							vo.setHasAttendenceCount(0L);
 						vo.setHasAttendenceCount(vo.getHasAttendenceCount()+1L);
+						vo.getActivityMap().put( commonMethodsUtilService.getStringValueForObject(param[1]), null);
 					}
 				}
 			}
@@ -4655,9 +4656,17 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					Long lvelId = commonMethodsUtilService.getLongValueForObject(param[2]);
 					ActivityVO vo = activityMap.get(lvelId);
 					if(vo != null){
-						if(vo.getHasConductedCount() == null)
-							vo.setHasConductedCount(0L);
-						vo.setHasConductedCount(vo.getHasConductedCount()+1L);
+						if(commonMethodsUtilService.isMapValid(vo.getActivityMap())){
+							if(!vo.getActivityMap().keySet().contains(commonMethodsUtilService.getStringValueForObject(param[0]))){
+								if(vo.getHasConductedCount() == null)
+									vo.setHasConductedCount(0L);
+								vo.setHasConductedCount(vo.getHasConductedCount()+1L);
+							}
+						}else{
+							if(vo.getHasConductedCount() == null)
+								vo.setHasConductedCount(0L);
+							vo.setHasConductedCount(vo.getHasConductedCount()+1L);
+						}
 					}
 				}
 			}

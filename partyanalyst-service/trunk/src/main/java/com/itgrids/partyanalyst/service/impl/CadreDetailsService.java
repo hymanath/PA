@@ -9003,12 +9003,57 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	List<ActivityVO> finalList = new ArrayList<ActivityVO>();
 	try{
-	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds(activityLevelId);
+		
+		List<Object[]> cadreAddressDetls  = tdpCadreDAO.getCadrAddressDetailsByCadred(cadreId);
+	//	Long ownVoterId = 0L;
+	//	Long familyVoterId = 0L;
+		AddressVO userAddress1 = new AddressVO();
+		if(commonMethodsUtilService.isListOrSetValid(cadreAddressDetls)){
+			for (Object[] address : cadreAddressDetls) {
+				
+				userAddress1.setConstituencyId(commonMethodsUtilService.getLongValueForObject(address[5]));
+				userAddress1.setConstituencyName(commonMethodsUtilService.getStringValueForObject(address[6]));
+				
+				userAddress1.setDistrictId(commonMethodsUtilService.getLongValueForObject(address[3]));
+				userAddress1.setDistrictName(commonMethodsUtilService.getStringValueForObject(address[4]));
+				
+				userAddress1.setTehsilId(commonMethodsUtilService.getLongValueForObject(address[7]));
+				userAddress1.setTehsilName(commonMethodsUtilService.getStringValueForObject(address[8]));
+				
+				userAddress1.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(address[13]));
+				userAddress1.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(address[14]));
+				
+				userAddress1.setPanchaytId(commonMethodsUtilService.getLongValueForObject(address[11]));
+				userAddress1.setPanchayatName(commonMethodsUtilService.getStringValueForObject(address[12]));
+				
+				userAddress1.setWardId(commonMethodsUtilService.getLongValueForObject(address[9]));
+				userAddress1.setWardName(commonMethodsUtilService.getStringValueForObject(address[10]));
+				
+				//userAddress1.setParliamentId(commonMethodsUtilService.getLongValueForObject(address[]));
+				//userAddress1.setParliamentName(commonMethodsUtilService.getStringValueForObject(address[]));
+				
+				userAddress1.setStateId(commonMethodsUtilService.getLongValueForObject(address[1]));
+				userAddress1.setStateName(commonMethodsUtilService.getStringValueForObject(address[2]));
+				
+				userAddress1.setBoothId(commonMethodsUtilService.getLongValueForObject(address[16]));
+				userAddress1.setPartNo(commonMethodsUtilService.getStringValueForObject(address[17]));
+				
+				userAddress1.setAreaTypeStr(commonMethodsUtilService.getStringValueForObject(address[15]));
+				userAddress1.setId(commonMethodsUtilService.getLongValueForObject(address[20]));
+			}
+		}
+		
+	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getActivityScopeIds(userAddress1,activityLevelId);
+	Map<Long,ActivityVO> activitiesMap = new HashMap<Long, ActivityVO>(0);
 	if(activityScopeIds != null && activityScopeIds.size() >0){
 		String[] setterPropertiesList = {"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId","attributeId"};//activityScopeId,activityName,activityLevelId,activityLevelName,activityId
 		returnList = (List<ActivityVO>) setterAndGetterUtilService.setValuesToVO(activityScopeIds, setterPropertiesList, "com.itgrids.partyanalyst.dto.ActivityVO");
 		//setTemplateData(returnList,activityScopeIds);
 	}
+	
+	for (ActivityVO vo : returnList) 
+		if(!activitiesMap.keySet().contains(vo.getActivityScopeId()))
+			activitiesMap.put(vo.getActivityScopeId(), vo);
 	
 	List<Object[]> invittes = activityInviteeDAO.getActivityScopeAndLevels(cadreId,activityLevelId);
 	if(invittes != null && invittes.size() >0){
@@ -9030,7 +9075,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 			//Long activityLevlId =commonMethodsUtilService.getLongValueForObject(obj[5]) ;//5
 			//Long activityLevelValue = commonMethodsUtilService.getLongValueForObject(obj[6]);//6
 			attendencHavingLocationInfoIdsList.add(locationInfoId);
-			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
+			ActivityVO vo = activitiesMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));//(ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
 			if(vo != null){
 				
 				vo.setConductedDate("Conducted");
@@ -9051,11 +9096,12 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 		}
 	}
 	
-	List<Object[]> conductedLocationInfosLsit = activityLocationInfoDAO.getConductedActivityDetailsbyScopeAndLocationID(activityLevelId,panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId);
+	//List<Object[]> conductedLocationInfosLsit = activityLocationInfoDAO.getConductedActivityDetailsbyScopeAndLocationID(activityLevelId,panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId);
+	List<Object[]> conductedLocationInfosLsit = activityLocationInfoDAO.getConductedActivityDetailsbyScopeAndLocationID(userAddress1,activityLevelId);
 	if(commonMethodsUtilService.isListOrSetValid(conductedLocationInfosLsit)){
 		for (Object[] obj : conductedLocationInfosLsit) {
-			Long lcoationINfoId = commonMethodsUtilService.getLongValueForObject(obj[5]);
-			if(!attendencHavingLocationInfoIdsList.contains(lcoationINfoId)){
+			//Long lcoationINfoId = commonMethodsUtilService.getLongValueForObject(obj[5]);
+			//if(!attendencHavingLocationInfoIdsList.contains(lcoationINfoId)){
 				Long scopeId = commonMethodsUtilService.getLongValueForObject(obj[0]);
 				String activityName = commonMethodsUtilService.getStringValueForObject(obj[1]);
 				Long activitylevelId = commonMethodsUtilService.getLongValueForObject(obj[2]);
@@ -9063,7 +9109,11 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				Long activityId = commonMethodsUtilService.getLongValueForObject(obj[4]);
 				//String conducteDateStr =commonMethodsUtilService.getStringValueForObject(obj[6]) ;
 				
-				ActivityVO vo = new ActivityVO();
+				ActivityVO vo = activitiesMap.get(scopeId);
+				if(vo == null){
+					vo = new ActivityVO();
+					activitiesMap.put(scopeId,vo);
+				}
 				vo.setActivityScopeId(scopeId);
 				vo.setAttendendLocation(activityName);
 				vo.setLocationLevel(activitylevelId);
@@ -9073,19 +9123,15 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				//	vo.setConductedDate(conducteDateStr);
 				//else
 					vo.setConductedDate("Conducted");
-				returnList.add(vo);
-			}
+					
+				//returnList.add(vo);
+			//}
 			
 			//"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId"
 			//select distinct model.activityScope.activityScopeId,model.activityScope.activity.activityName, model.activityScope.activityLevel.activityLevelId,
 			//model.activityScope.activityLevel.level,model.activityScope.activity.activityId
 		}
 	}
-	if(commonMethodsUtilService.isListOrSetValid(returnList)){
-		
-		Map<Long,ActivityVO> activitiesMap = new HashMap<Long, ActivityVO>(0);
-		for (ActivityVO vo : returnList) 
-			activitiesMap.put(vo.getActivityScopeId(), vo);
 		 
 		if(commonMethodsUtilService.isMapValid(activitiesMap))
 			for (Long activityScopeId : activitiesMap.keySet()) {
@@ -9100,7 +9146,9 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 					}
 					else if(activeCode.equalsIgnoreCase("ha")) // has attended
 					{
-						if(vo.getAttributeId() != null && vo.getAttributeId() == 2L && vo.getConductedDate() != null &&  vo.getConductedDate().trim().equalsIgnoreCase("Conducted"))
+						if(vo.getAttributeId() != null && vo.getAttributeId() == 2L && 
+								 vo.getConductedDate() != null &&  vo.getConductedDate().trim().equalsIgnoreCase("Conducted") && 
+								  vo.getAttendedCount() != null && vo.getAttendedCount().longValue()>0L)
 							finalList.add(vo);
 					}
 					else if(activeCode.equalsIgnoreCase("hna")) // has not attended
@@ -9137,7 +9185,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				
 				
 			}
-	}
+	
 	}catch (Exception e) {
 		LOG.error("Exception raised in getCandateActivityAttendance  method in CadreDetailsService.",e);
 	}
