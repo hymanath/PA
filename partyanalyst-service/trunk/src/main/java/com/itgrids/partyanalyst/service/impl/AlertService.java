@@ -246,7 +246,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				    alertComment = alertCommentDAO.save(alertComment);
 				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 				 alertTrackingVO.setUserId(userId);
-				// alertTrackingVO.setAlertCommentId(alertCommentId);
+				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
 				 alertTrackingVO.setAlertUserTypeId(inputVO.getUserTypeId());
 				 alertTrackingVO.setAlertStatusId(1l);
 				 alertTrackingVO.setAlertId(alert.getAlertId());
