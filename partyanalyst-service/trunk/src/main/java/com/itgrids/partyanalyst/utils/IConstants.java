@@ -1097,4 +1097,6 @@ public interface IConstants {
 	public static final Long[] COMMITTEE_ROLE_IDS= {1L}; 
 	
 	public static final String NEW_MINORITY_CASTE_IDS = "301,302,303,120,430";
+	
+	public static final Long  ALERT_ACTION_STATUS_CHANGE = 1L;
 }
