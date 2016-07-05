@@ -237,6 +237,13 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alertCandidate.setAlertImpactId(inputVO.getAlertImpactId());
 				 alertCandidateDAO.save(alertCandidate);
 				 rs = "success";
+				    AlertComment alertComment = new AlertComment();
+				    alertComment.setComments(inputVO.getDesc());
+				    alertComment.setAlertId(alert.getAlertId());
+				    alertComment.setInsertedTime(date.getCurrentDateAndTime());
+				    alertComment.setIsDeleted("N");
+				    alertComment.setInsertedBy(userId);
+				    alertComment = alertCommentDAO.save(alertComment);
 				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 				 alertTrackingVO.setUserId(userId);
 				// alertTrackingVO.setAlertCommentId(alertCommentId);
@@ -244,6 +251,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alertTrackingVO.setAlertStatusId(1l);
 				 alertTrackingVO.setAlertId(alert.getAlertId());
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+				 
 				 saveAlertTrackingDetails(alertTrackingVO)	;	
 					}
 					catch (Exception ex) {
