@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,6 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
-import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -530,11 +528,17 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO == null)
 				return Action.INPUT;
-			
-			if(memberShipId != null && memberShipId.trim().length() == 8 && (constituencyId == null || constituencyId.longValue() == 0))
+			// kamal & sriahailam commented
+			//if(memberShipId != null && memberShipId.trim().length() == 8 && (constituencyId == null || constituencyId.longValue() == 0))
+			if(memberShipId != null && memberShipId.trim().length() >= 8)
 			{
 				cadreId = cadreDetailsService.getTdpCadreIdBymembershipId(memberShipId.trim());
 			}
+			
+			if(cadreId != null && cadreId.longValue()>0L){
+				basicVo = cadreDetailsService.getParticipatedConstituency(cadreId);
+			}
+			
 			List<String> entitlements = null;
 			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 				entitlements = regVO.getEntitlements();
