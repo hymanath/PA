@@ -155,8 +155,9 @@ function showPopUpAlertData(alertId)
 }
 function updateAlertStatus()
 {
+	alert('b')
 	var comments = $("#commentsId").val();
-	var status=$("#statusId").val();
+	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
 	//var str = '';
 	if(comments.length==0||comments=='')
@@ -164,7 +165,7 @@ function updateAlertStatus()
 		  $('#errorId').html('please give comments');
 		  return; 
 	}
-	if(status==0)
+	if(statusId==0)
 	{
 		//alert(2);
 	   $('#errorId').html('please select Status'); 
@@ -174,13 +175,13 @@ function updateAlertStatus()
 	var jsObj =
 		     {
 		alertId : GlobalalertId,
-		alertStatusId :1,
+		alertStatusId :statusId,
 		comments:comments,
 			task : ""
 		      }
 			$.ajax({
 					  type:'GET',
-					  url: 'UpdateAlertStatusAction.action',
+					  url: 'updateAlertStatusAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 					//buildAlertData(result);
@@ -188,7 +189,7 @@ function updateAlertStatus()
 			
 }
 $(document).on("click",".updateAlertStatusCls",function(){
-	//$("#ModalShow").modal('show');
+	alert('a')
 	updateAlertStatus();
 });
 
