@@ -140,7 +140,7 @@
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-			<select class="select" id="statusId">
+			<select class="" id="statusId">
 								<option value='0'>Test Status</option>
 								<option value='1'>Test1 Status</option>
 								<option value='2'>Test2 Status</option>
@@ -152,8 +152,8 @@
 		</div>
 		<div class="row">
 		  <div class="col-md-6 col-xs-12 col-sm-12">
-			<label>Comments</label><span id="commentsId">Name</span>
-			<textarea class="form-control"></textarea>
+			<label>Comments</label><span ></span>
+			<textarea class="form-control" id="commentsId"></textarea>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
