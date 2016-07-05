@@ -107,7 +107,7 @@ function buildAlertData(result)
 		j++;
 	str+='<tr>';	
 	str+='<td>'+j+'</td>';
-	str+='<td><a href="#" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'">'+result[i].desc+'</a></td>';
+	str+='<td><a  class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].count+'</td>';
@@ -118,6 +118,7 @@ function buildAlertData(result)
 }
 
 $(document).on("click",".alertModel",function(){
+	
 	$("#ModalShow").modal('show');
 	var alertId = $(this).attr("attr-id");
 	showPopUpAlertData(alertId);
@@ -131,13 +132,23 @@ function showPopUpAlertData(alertId)
 	{
 		if(alertId == GlobalAlertData[i].id)
 		{
-			alert(GlobalAlertData[i].id)
+			alert(GlobalAlertData[i].regionScope)
 			$("#typeId").html(''+GlobalAlertData[i].alertType+'');
 			$("#severityId").html(''+GlobalAlertData[i].severity+'');
 			$("#createdDate").html(''+GlobalAlertData[i].date+'');
-			$("#locationLevelId").html(''+GlobalAlertData[i].regionScope+'');
-			//$("#LocationId").html(''+GlobalAlertData[i].regionScope+'');
-			$("#statusId").html(''+GlobalAlertData[i].status+'');
+			
+			$("#levelId").html(''+GlobalAlertData[i].regionScope+'');
+			var location ='';
+			if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
+			{
+			location +='State:'+GlobalAlertData[i].locationVO.state+' Dist : '+GlobalAlertData[i].locationVO.districtName+' Constituency :'+GlobalAlertData[i].locationVO.constituencyName+' Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' Ward : '+GlobalAlertData[i].locationVO.wardName+'';	
+			}
+			else{
+				location +='State:'+GlobalAlertData[i].locationVO.state+' Dist : '+GlobalAlertData[i].locationVO.districtName+' Constituency :'+GlobalAlertData[i].locationVO.constituencyName+' Mandal : '+GlobalAlertData[i].locationVO.tehsilName+' Panchayat : '+GlobalAlertData[i].locationVO.villageName+'';
+			}
+			
+			$("#LocationId").html(''+location+'');
+			$("#statusId").val(''+GlobalAlertData[i].status+'');
 			
 		}
 	}

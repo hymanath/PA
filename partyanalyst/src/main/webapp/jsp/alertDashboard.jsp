@@ -132,7 +132,7 @@
 			<label>Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="createdDate">Name</span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<label>Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="locationLevelId">Name</span>
+			<label>Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="levelId">Name</span>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="LocationId">Name</span>
@@ -172,7 +172,7 @@
 <script type="text/javascript">
 $("#dateRangePickerId").daterangepicker({opens:'left'});
 
-getLocationLevelAlertCount();
+//getLocationLevelAlertCount();
 //getLocationLevelAlertData();
 </script>
 </body>
