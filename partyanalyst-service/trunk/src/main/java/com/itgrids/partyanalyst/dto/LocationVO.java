@@ -21,9 +21,38 @@ public class LocationVO implements Serializable {
 	private Long parliamentConstituencyId;
 	private Long localBodyId;
 	private String localEleBodyName;
+	private Long stateId;
+	private String state;
+	private Long wardId;
+	private String wardName;
 	
 	
 	
+	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public Long getLocalBodyId() {
 		return localBodyId;
 	}
