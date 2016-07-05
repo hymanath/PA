@@ -2684,6 +2684,7 @@
 		 <property name="importantLeadersDAO" ref="importantLeadersDAO" />
 		 <property name="activityService" ref="activityService" />
 		 <property name="importantLeadersTypeDAO" ref="importantLeadersTypeDAO" />
+		 <property name="voterInfoDAO" ref="voterInfoDAO"/>
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
