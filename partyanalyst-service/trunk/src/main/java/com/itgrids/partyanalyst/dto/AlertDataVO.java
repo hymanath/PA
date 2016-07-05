@@ -10,7 +10,17 @@ public class AlertDataVO {
 	private String status;
 	private Long id;
 	private LocationVO locationVO;
+	private Long regionScopeId;
+	private String regionScope;
+	private Long statusId;
 	
+	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 	public String getSeverity() {
 		return severity;
 	}
@@ -64,6 +74,18 @@ public class AlertDataVO {
 	}
 	public void setLocationVO(LocationVO locationVO) {
 		this.locationVO = locationVO;
+	}
+	public Long getRegionScopeId() {
+		return regionScopeId;
+	}
+	public void setRegionScopeId(Long regionScopeId) {
+		this.regionScopeId = regionScopeId;
+	}
+	public String getRegionScope() {
+		return regionScope;
+	}
+	public void setRegionScope(String regionScope) {
+		this.regionScope = regionScope;
 	}
 	
 	
