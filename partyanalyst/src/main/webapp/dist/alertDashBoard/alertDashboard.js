@@ -90,7 +90,6 @@ function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 
 function buildAlertData(result)
 {
-
 	var str='';
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
@@ -118,12 +117,10 @@ function buildAlertData(result)
 }
 var GlobalalertId;
 $(document).on("click",".alertModel",function(){
-	
 	$("#ModalShow").modal('show');
 	GlobalalertId = $(this).attr("attr-id");
 	showPopUpAlertData(GlobalalertId);
 	getAlertStatusCommentsTrackingDetails();
-	
 	
 });
 function showPopUpAlertData(alertId)
@@ -158,15 +155,23 @@ function showPopUpAlertData(alertId)
 }
 function updateAlertStatus()
 {
-	//alertId=$("#commentsId").val();
-	//alertStatusId=$("#commentsId").val();
 	var comments = $("#commentsId").val();
+	var status=$("#statusId").val();
+	 $('#errorId').html('');
+	//var str = '';
 	if(comments.length==0||comments=='')
 	{
-		  $('#commentsId').html('please give comments');
-            return;
+		  $('#errorId').html('please give comments');
+		  return; 
 	}
-		var jsObj =
+	if(status==0)
+	{
+		//alert(2);
+	   $('#errorId').html('please select Status'); 
+        return;	   
+	}
+	
+	var jsObj =
 		     {
 		alertId : GlobalalertId,
 		alertStatusId :1,
@@ -180,7 +185,7 @@ function updateAlertStatus()
 			   }).done(function(result){
 					//buildAlertData(result);
 				});
-				
+			
 }
 $(document).on("click",".updateAlertStatusCls",function(){
 	//$("#ModalShow").modal('show');
