@@ -69,7 +69,7 @@ $(document).on("click",".locationLevelCls",function(){
 var GlobalAlertData;
 function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 {
-	GlobalAlertData = [];
+    GlobalAlertData = [];
 		var jsObj =
 		     {
 			levelId  : levelId,
@@ -83,14 +83,14 @@ function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 					  url: 'getLocationLevelAlertDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-				   GlobalAlertData = result;
+			       GlobalAlertData = result;
 					buildAlertData(result);
 				});
 }
 
 function buildAlertData(result)
 {
-	
+
 	var str='';
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
@@ -154,4 +154,35 @@ function showPopUpAlertData(alertId)
 	}
 	
 }
+function updateAlertStatus()
+{
+	//alertId=$("#commentsId").val();
+	//alertStatusId=$("#commentsId").val();
+	var comments = $("#commentsId").val();
+	if(comments.length==0||comments=='')
+	{
+		  $('#commentsId').html('please give comments');
+            return;
+	}
+		var jsObj =
+		     {
+		alertId : 1,
+		alertStatusId :1,
+		comments:comments,
+			task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'UpdateAlertStatusAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					//buildAlertData(result);
+				});
+				
+}
+$(document).on("click",".updateAlertStatusCls",function(){
+	//$("#ModalShow").modal('show');
+	updateAlertStatus();
+});
+
 
