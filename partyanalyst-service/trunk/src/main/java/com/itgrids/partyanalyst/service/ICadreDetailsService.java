@@ -112,4 +112,5 @@ public interface ICadreDetailsService {
 	public List<MahanaduEventVO> getCadreLocationWiseEventAttendeeCounts(Long eventId,String startDate,String endDate,Long locationId,String locationType,String searchType);
 	public BasicVO getStartDateAndEndDate(Long eventId);
 	public List<IdNameVO> getMainEvents();
+	public Long getTotalVotersInALocation(Long locationId,String locationType,Long publicationId,Long constituencyId);
 }
