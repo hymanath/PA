@@ -456,6 +456,16 @@
 	var accessType = "${sessionScope.USER.accessType}";
 	var accessValue = "${sessionScope.USER.accessValue}";
 	var accessState = "${sessionScope.USER.stateName}";
+	
+	$( document ).ready(function() {
+		$("#statesDivId").val(0);
+		$("#districtId").val(0);
+		$("#constituencyId").val(0);
+		$( "#membershipId" ).prop( "checked", true );
+		$( "#onlyCandidatesId" ).prop( "checked", false );
+		$("#searchBy").val('');
+	});
+	
          $(document).keypress(function(e) {
 				if(e.keyCode==13){
 					 getCadreDetailsBySearchCriteria(0);
@@ -1448,7 +1458,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	}
     $.ajax({
           type:'GET',
-          url: 'getDistrictsForStateAction.action',
+          url: 'getDistrictsListForStateAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -1477,6 +1487,11 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	$("#mandalList").append('<option value="0">Select Mandal/Municipality</option>');
 	$("#panchaytList  option").remove();
 	$("#panchaytList").append('<option value="0">Select Panchayat</option>');
+	
+	if(district == 0){
+		getConstituenciesForState(0);
+		return;
+	}
 	
 	document.getElementById('membershipId').checked = true;
 	
@@ -1730,6 +1745,7 @@ $(document).on("click",".addButtonCls",function(){
 	$("#modalLocationValueId  option").remove();
 	$("#modalLocationValueId").append('<option value="0">Select Location</option>');
 	$("#modalMobileNoId").html("");
+	$("#datePickerId").val("");
 	
 var cadreId = $(this).attr("attr_tdp_cadre_id"); 
 var cadreName = $(this).attr("attr_cadre_name"); 

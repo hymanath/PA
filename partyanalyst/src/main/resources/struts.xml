@@ -8888,6 +8888,11 @@
            		<param name="root">districtsListForACountry</param>
         	</result>       		
         </action>
+         <action name="getDistrictsListForStateAction" class="cadreSearchAjaxAction" method="getDistrictsForState"> 
+              <result type="json" name="success">
+           		<param name="root">districtsListForACountry</param>
+        	</result>       		
+        </action>
 		
 		<action name="updateSmsJobStatusAction" class="cadreRegistrationAction" method="updateSmsJobStatus" >
 			<result type="json" name="success">
@@ -11460,12 +11465,12 @@
     	    <param name="root">task</param>
          </result>
 	</action>
-	
-	<action name="getDistrictsForStateAction" class="rtcUnionAction" method="getDistrictsForState">
+	<!-- Duplicate Names are Available. SRAVANTH,SRISAILAM -->
+	<!-- <action name="getDistrictsForStateAction" class="rtcUnionAction" method="getDistrictsForState">
 		<result type="json" name="success">
     	    <param name="root">idNameVOList</param>
          </result>
-	</action>
+	</action> -->
 	<action name="getConstituenciesForDistrictAction" class="rtcUnionAction" method="getConstituenciesForDistrict">
 		<result type="json" name="success">
     	    <param name="root">idNameVOList</param>
