@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
@@ -12,5 +15,15 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	public AlertTrackingDAO() {
 		super(AlertTracking.class);
 	}
-
+	public List<Object[]> getAlertTrackingDetails(Long alertId)
+	{
+		Query query = getSession().createQuery("select model.alertStatus.alertStatusId,"
+				+ "model.alertStatus.alertStatus,model.user.userId,model.user.firstName,model.user.lastName,model.insertedTime,"
+				+ "alertComment.alertCommentId,alertComment.comments"
+				+ " from AlertTracking model left join model.alertComment alertComment " +
+				 " where model.alert.alertId = :alertId"
+				+ " order by model.insertedTime desc");
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
 }

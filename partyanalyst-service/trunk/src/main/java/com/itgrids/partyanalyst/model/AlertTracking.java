@@ -33,8 +33,11 @@ public class AlertTracking extends BaseModel implements Serializable {
 	private Long alertUserTypeId;
 	private Long insertedBy;
 	private Date insertedTime;
-	private AlertTracking alertTracking;
+	private AlertTrackingAction alertTrackingAction;
 	private Long alertTrackingActionId;
+	private AlertComment alertComment;
+	private AlertStatus alertStatus;
+	private User user;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -104,21 +107,52 @@ public class AlertTracking extends BaseModel implements Serializable {
 	@JoinColumn(name = "alert_tracking_action_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public AlertTracking getAlertTracking() {
-		return alertTracking;
+	public AlertTrackingAction getAlertTrackingAction() {
+		return alertTrackingAction;
 	}
 
-	public void setAlertTracking(AlertTracking alertTracking) {
-		this.alertTracking = alertTracking;
+	public void setAlertTrackingAction(AlertTrackingAction alertTrackingAction) {
+		this.alertTrackingAction = alertTrackingAction;
 	}
 	@Column(name = "alert_tracking_action_id")
 	public Long getAlertTrackingActionId() {
 		return alertTrackingActionId;
 	}
-
 	public void setAlertTrackingActionId(Long alertTrackingActionId) {
 		this.alertTrackingActionId = alertTrackingActionId;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_comment_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertComment getAlertComment() {
+		return alertComment;
+	}
 
+	public void setAlertComment(AlertComment alertComment) {
+		this.alertComment = alertComment;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_status_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertStatus getAlertStatus() {
+		return alertStatus;
+	}
 
+	public void setAlertStatus(AlertStatus alertStatus) {
+		this.alertStatus = alertStatus;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="inserted_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 }
