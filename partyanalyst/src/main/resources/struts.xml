@@ -12780,11 +12780,26 @@
 				<param name="root">status</param>
 		 </result>
 		 </action>
-		 
-		 	<action name="getAlertStatusCommentsTrackingDetails" class="createAlertAction" method="getAlertStatusCommentsTrackingDetails">
+		 		 
+		<action name="getAlertStatusCommentsTrackingDetails" class="createAlertAction" method="getAlertStatusCommentsTrackingDetails">
 		<result type="json" name="success">
 			<param name="root">statusTrackingVOList</param>
 		</result>
+		</action>
+	<action name="getCadreLocationWiseEventAttendeeCountsAction" class="cadreDetailsAction" method="getCadreLocationWiseEventAttendeeCounts">
+					<result type="json" name="success">
+		    			<param name="root">mahanaduEventVOList</param>
+		    		</result>
+	</action>
+	<action name="getMainEventsAction" class="cadreDetailsAction" method="getMainEvents">
+					<result type="json" name="success">
+		    			<param name="root">idNameVoList</param>
+		    		</result>
+	</action>
+	<action name="getStartDateAndEndDateAction" class="cadreDetailsAction" method="getStartDateAndEndDate">
+					<result type="json" name="success">
+		    			<param name="root">basicVo</param>
+		    		</result>
 	</action>
 </package>
 </struts>      

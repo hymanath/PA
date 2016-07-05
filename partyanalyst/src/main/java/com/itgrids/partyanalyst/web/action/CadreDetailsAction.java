@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
@@ -105,7 +106,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<ActivityVO> activityVOList;
 	private ResultStatus resultStatus;
 	private IdNameVO idNameVO;
-	
+	List<MahanaduEventVO> mahanaduEventVOList ;
 	
 	
 	public IdNameVO getIdNameVO() {
@@ -114,6 +115,13 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setIdNameVO(IdNameVO idNameVO) {
 		this.idNameVO = idNameVO;
 	}
+	public List<MahanaduEventVO> getMahanaduEventVOList() {
+		return mahanaduEventVOList;
+	}
+	public void setMahanaduEventVOList(List<MahanaduEventVO> mahanaduEventVOList) {
+		this.mahanaduEventVOList = mahanaduEventVOList;
+	}
+	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -1359,7 +1367,7 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
-	
+
 	public String getAllPublicRepresentatives(){
 		try{
 			jObj=new JSONObject(getTask());
@@ -1411,54 +1419,94 @@ public String savePublicRepresentativeType(){
 		return Action.SUCCESS;
 	}
 
-	public String getAllImportantLeadersTypes(){
+
+public String getAllImportantLeadersTypes(){
+	try{
+		jObj=new JSONObject(getTask());
+		idNameVoList = cadreDetailsService.getAllImportantLeadersTypes();
+		
+	}catch(Exception e){
+		LOG.error("Exception Occured in getAllImportantLeadersTypes() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getTehsilsInConstituency(){
+	try{
+		jObj=new JSONObject(getTask());
+		Long constituencyId = jObj.getLong("constituencyId");
+		idNameVoList = cadreDetailsService.getTehsilListByConstituency(constituencyId);
+		
+	}catch(Exception e){
+		LOG.error("Exception Occured in getTehsilListByConstituency() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getpanchayatsInTehsil(){
+	try{
+		jObj=new JSONObject(getTask());
+		Long mandalId = jObj.getLong("mandalId");
+		idNameVoList = cadreDetailsService.getVillagesInMandal(mandalId);
+		
+	}catch(Exception e){
+		LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getLocations(){
+	try{
+		jObj=new JSONObject(getTask());
+		Long impLedTypeId = jObj.getLong("publicRepreTypeId");
+		Long districtId = jObj.getLong("districtId");
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long villageId = jObj.getLong("panchayatId");
+		Long mandalId = jObj.getLong("mandalId");
+		
+		idNameVO = cadreDetailsService.getLocations(impLedTypeId,districtId,constituencyId,mandalId,villageId);
+		
+	}catch(Exception e){
+		LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+	
+	public String getCadreLocationWiseEventAttendeeCounts(){
 		try{
 			jObj=new JSONObject(getTask());
-			idNameVoList = cadreDetailsService.getAllImportantLeadersTypes();
+			//activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"),jObj.getLong("cadreId"));
 			
+			Long eventId = jObj.getLong("eventId");
+			String startDate = jObj.getString("startdate");
+			String endDate = jObj.getString("endDate");
+			Long locationId = jObj.getLong("locationId");
+			String locationValue = jObj.getString("locationValue");
+			String searchType = jObj.getString("searchType");
+			
+			mahanaduEventVOList=cadreDetailsService.getCadreLocationWiseEventAttendeeCounts(eventId,startDate,endDate,locationId,locationValue,searchType);
 		}catch(Exception e){
-			LOG.error("Exception Occured in getAllImportantLeadersTypes() in CadreDetailsAction ",e);
+			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
 	}
-	
-	public String getTehsilsInConstituency(){
+	public String getMainEvents(){
 		try{
 			jObj=new JSONObject(getTask());
-			Long constituencyId = jObj.getLong("constituencyId");
-			idNameVoList = cadreDetailsService.getTehsilListByConstituency(constituencyId);
 			
+			idNameVoList=cadreDetailsService.getMainEvents();
 		}catch(Exception e){
-			LOG.error("Exception Occured in getTehsilListByConstituency() in CadreDetailsAction ",e);
+			LOG.error("Exception raised in getMainEvents  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
 	}
-	
-	public String getpanchayatsInTehsil(){
+	public String getStartDateAndEndDate(){
 		try{
 			jObj=new JSONObject(getTask());
-			Long mandalId = jObj.getLong("mandalId");
-			idNameVoList = cadreDetailsService.getVillagesInMandal(mandalId);
 			
+			basicVo=cadreDetailsService.getStartDateAndEndDate(jObj.getLong("eventId"));
 		}catch(Exception e){
-			LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
-		}
-		return Action.SUCCESS;
-	}
-	
-	public String getLocations(){
-		try{
-			jObj=new JSONObject(getTask());
-			Long impLedTypeId = jObj.getLong("publicRepreTypeId");
-			Long districtId = jObj.getLong("districtId");
-			Long constituencyId = jObj.getLong("constituencyId");
-			Long villageId = jObj.getLong("panchayatId");
-			Long mandalId = jObj.getLong("mandalId");
-			
-			idNameVO = cadreDetailsService.getLocations(impLedTypeId,districtId,constituencyId,mandalId,villageId);
-			
-		}catch(Exception e){
-			LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
+			LOG.error("Exception raised in getStartDateAndEndDate  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
 	}
