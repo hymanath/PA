@@ -66,9 +66,10 @@ $(document).on("click",".locationLevelCls",function(){
 	getLocationLevelAlertData(levelId,statusId,fromDate,toDate);
 });
 
-
+var GlobalAlertData;
 function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 {
+	GlobalAlertData = [];
 		var jsObj =
 		     {
 			levelId  : levelId,
@@ -82,11 +83,14 @@ function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 					  url: 'getLocationLevelAlertDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
+				   GlobalAlertData = result;
 					buildAlertData(result);
 				});
 }
+
 function buildAlertData(result)
 {
+	
 	var str='';
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
@@ -103,7 +107,7 @@ function buildAlertData(result)
 		j++;
 	str+='<tr>';	
 	str+='<td>'+j+'</td>';
-	str+='<td><a href="#" class="alertModel" style="cursor:pointer;">'+result[i].desc+'</a></td>';
+	str+='<td><a href="#" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].count+'</td>';
@@ -115,5 +119,28 @@ function buildAlertData(result)
 
 $(document).on("click",".alertModel",function(){
 	$("#ModalShow").modal('show');
+	var alertId = $(this).attr("attr-id");
+	showPopUpAlertData(alertId);
+	
+	
 });
+function showPopUpAlertData(alertId)
+{
+	
+	for(var i in GlobalAlertData)
+	{
+		if(alertId == GlobalAlertData[i].id)
+		{
+			alert(GlobalAlertData[i].id)
+			$("#typeId").html(''+GlobalAlertData[i].alertType+'');
+			$("#severityId").html(''+GlobalAlertData[i].severity+'');
+			$("#createdDate").html(''+GlobalAlertData[i].date+'');
+			$("#locationLevelId").html(''+GlobalAlertData[i].regionScope+'');
+			//$("#LocationId").html(''+GlobalAlertData[i].regionScope+'');
+			$("#statusId").html(''+GlobalAlertData[i].status+'');
+			
+		}
+	}
+	
+}
 
