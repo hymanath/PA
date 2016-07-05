@@ -37,8 +37,50 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private String cadreLocation;
 	private String reasonStr;
 	private String mandalNameStr;
+	private String constituencyName;
+	private String parliamentName;
+	private String districtName;
+	private String mandalName;
+	private String townName;
+	private String panchayatName;
 	
 	
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public String getTownName() {
+		return townName;
+	}
+	public void setTownName(String townName) {
+		this.townName = townName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
 	public String getMandalNameStr() {
 		return mandalNameStr;
 	}
