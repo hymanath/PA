@@ -155,7 +155,8 @@
 		</div>
 		<div class="row">
 		  <div class="col-md-4 col-xs-12 col-sm-6">
-			<h4 class="panel-title">TRACING DETAILS</h4>
+			<h4 class="panel-title">TRACKING DETAILS</h4>
+			<div id="alertCommentsDiv"></div>
 		  </div>  
 		</div>
       </div>

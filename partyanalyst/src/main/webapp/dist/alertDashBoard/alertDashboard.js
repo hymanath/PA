@@ -122,6 +122,7 @@ $(document).on("click",".alertModel",function(){
 	$("#ModalShow").modal('show');
 	GlobalalertId = $(this).attr("attr-id");
 	showPopUpAlertData(GlobalalertId);
+	getAlertStatusCommentsTrackingDetails();
 	
 	
 });
@@ -132,7 +133,7 @@ function showPopUpAlertData(alertId)
 	{
 		if(alertId == GlobalAlertData[i].id)
 		{
-			alert(GlobalAlertData[i].regionScope)
+		
 			$("#typeId").html(''+GlobalAlertData[i].alertType+'');
 			$("#severityId").html(''+GlobalAlertData[i].severity+'');
 			$("#createdDate").html(''+GlobalAlertData[i].date+'');
@@ -185,5 +186,53 @@ $(document).on("click",".updateAlertStatusCls",function(){
 	//$("#ModalShow").modal('show');
 	updateAlertStatus();
 });
+
+
+function getAlertStatusCommentsTrackingDetails()
+	{
+		$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+		var jsObj={
+	    			alertId:GlobalalertId,
+					task:""
+	    		}
+		$.ajax({
+		  type : 'GET',
+		  url : 'getAlertStatusCommentsTrackingDetails.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+		  buildAlertCommentsForTracking(result,"");
+		});
+		
+	}
+	function buildAlertCommentsForTracking(result,aptName){
+		
+		var str='';
+		str+='<h4>'+aptName+' Alert Status Tracking </h4>';
+		if(result == null || result.length == 0)
+			$("#alertCommentsDiv").html('No Data Available');
+			str+='<ul class="alertStatusTracking">';
+				for(var i in result){
+					str+='<li>';
+						str+='<div class="arrow_box">';
+						if(result[i].id == 1)
+							str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						else
+							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
+								str+='<u style="font-size:15px;">Comments</u>';
+							for(var j in result[i].commentsList){
+					
+								str+='<p>'+result[i].commentsList[j]+'</p>';	
+							}
+						}	
+				
+						str+='</div>';
+					str+='</li>';	
+				}
+		str+='</ul>';
+		$("#alertCommentsDiv").html(str);
+		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
+	}
 
 
