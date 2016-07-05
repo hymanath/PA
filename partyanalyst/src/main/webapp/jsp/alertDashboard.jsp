@@ -114,7 +114,7 @@
 	</div>        
 </div>
 <div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xs">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -122,61 +122,42 @@
       </div>
       <div class="modal-body">
         <div class="row">
-  <div class="col-md-4">
-    <label>Type</label>
-    <input type="text" class="form-control"/>
-  </div>
-  <div class="col-md-4">
-    <label>Survey</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-4">
-    <label>Created</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-4">
-    <label>Level</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-4">
-    <label>Location</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-4">
-    <label>Status</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-6">
-    <label>Description</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-6">
-    <label>Comments</label>
-    <select class="form-control">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <button class="btn btn-success">UPDATE</button>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <h4 class="panel-title">TRACING DETAILS</h4>
-  </div>  
-</div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="typeId">Name</span>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Severity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="severityId">Name</span>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="createdDate">Name</span>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="locationLevelId">Name</span>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="LocationId">Name</span>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="statusId">Name</span>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="descriptionId">Name</span>
+		  </div>
+		</div>
+		<div class="row">
+		  <div class="col-md-6 col-xs-12 col-sm-12">
+			<label>Comments</label>
+			<textarea class="form-control"></textarea>
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12">
+			<button class="btn btn-success">UPDATE</button>
+		  </div>
+		</div>
+		<div class="row">
+		  <div class="col-md-4 col-xs-12 col-sm-6">
+			<h4 class="panel-title">TRACING DETAILS</h4>
+		  </div>  
+		</div>
       </div>
       <!--<div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
