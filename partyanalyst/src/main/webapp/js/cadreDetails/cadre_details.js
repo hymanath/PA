@@ -484,7 +484,7 @@ var globalVoterCardNo = "";
 						 ownBoothDetailsVo=result.ccmVO;
 						 buildingOwnBoothDetails(ownBoothDetailsVo);
 					 }
-					 
+					
 					 //assigning values to global variables
 					 if(result.localElectionBody ==0 || result.localElectionBody ==null){
 						globalPanchayatId=result.panchayatId;
@@ -522,6 +522,7 @@ var globalVoterCardNo = "";
 						$("#trainingCampdetailsDiv").hide();
 					getTotalIVRDetailsByTdpCadreId(0);
 					getIVRSummaryByTdpCadreId();
+					getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),"DISTRICT","DISTRICT","cadreEvntdistrictAttnds","onload","");
 
 				}
 			});

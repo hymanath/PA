@@ -672,6 +672,18 @@ canvas {
     margin-right: auto;
     display: block;
 }
+.tableDrilDown thead th
+{
+	background:#ccc
+}
+.tableDrilDown thead th , .tableDrilDown tr td
+{
+	font-size:12px !important
+}
+.tableDrilDown tr td.subTable 
+{
+	background:#ddd;
+}
 .circle-text-half{font-size: 11px !important; margin-top: 26px;}
 .pad_0
 {

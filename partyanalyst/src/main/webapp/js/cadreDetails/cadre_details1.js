@@ -378,3 +378,314 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 	
 	$("#activityAttented").html(str);
 }
+function getCadreLocationWiseEventAttendeeCounts(locationId,locationValue,searchType,divId,index,id){
+	$("#errMsgID").hide();
+	$('#'+divId+'tr').show();
+	$('#'+divId+'').show();
+	$('#'+divId+'').html('<center><img id="" src="images/icons/loading.gif" style=""/></center>');
+
+if(index != "onload"){
+	var isVisible1 = "";
+	 isVisible1 = $('#'+id).find(".glyphicon-plus").is( ":visible" );
+	if(isVisible1==true ){
+		$('#'+id).find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+		$('#'+divId+index).html('<center><img id="" src="images/icons/loading.gif" style=""/></center>');
+		$('#'+id).parent().next().show();
+		$('#'+divId+index).show();
+		
+	}else if(isVisible1==false ){
+		$('#'+id).find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+		$('#'+id).parent().next().hide();
+		$('#'+divId+index).hide();
+		return;
+	}
+}
+	var jsObj={
+		eventId:$("#eventsId").val(),
+		startdate : "",
+		endDate : "",
+		locationId:locationId,
+		locationValue : locationValue,
+		searchType : searchType
+	}
+	$.ajax({
+			type:'POST',
+			 url: 'getCadreLocationWiseEventAttendeeCountsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$('#'+divId+'').html('');
+				if(result != null && result.length >0){
+				if(searchType == "DISTRICT")
+				buildCadreLocationWiseEventAttendeeCount(result,"DISTRICT","CONSTITUENCY",divId,index)
+				if(searchType == "CONSTITUENCY")
+				buildCadreLocationWiseEventAttendeeCount(result,"CONSTITUENCY","MANDAL",divId,index)
+				if(searchType == "MANDAL"){
+					if($("#cadreRuralORUrbanId").val() != 0 && $("#cadreRuralORUrbanId").val() != "")
+						buildCadreLocationWiseEventAttendeeCount(result,"MUNCIPALITY/CORPORATION","WARD",divId,index)
+					else if($("#cadremandalId").val() != 0 && $("#cadremandalId").val() != "")
+						buildCadreLocationWiseEventAttendeeCount(result,"MANDAL","PANCHAYAT",divId,index)
+				}
+				if(searchType == "PANCHAYAT"){
+				buildCadreLocationWiseEventAttendeeCount(result,"PANCHAYAT","",divId,index)	
+				}
+				if(searchType == "WARD"){
+					buildCadreLocationWiseEventAttendeeCount(result,"WARD","",divId,index)	
+				}
+				}else{
+					$("#errMsgID").show();
+					$("#errMsgID").html("NO DATA AVAILABLE");
+				}
+					
+			});
+}
+function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchType,divId,index){
+	var result = [];
+	if(index == "onload" && (locationValue == "CONSTITUENCY" || locationValue == "MANDAL" )){
+		var locatinId = 0;
+		if(locationValue == "CONSTITUENCY"){
+			if($("#cadreParticipatedConstituencyId").val() != 0 && $("#cadreParticipatedConstituencyId").val() != ""){
+			locatinId = $('#cadreParticipatedConstituencyId').val();
+			}else if($("#cadreConstituencyId").val() != 0 && $("#cadreConstituencyId").val() != ""){
+				locatinId = $('#cadreConstituencyId').val();
+			}
+		}else if(locationValue == "MANDAL"){
+			if($("#cadreRuralORUrbanId").val() != 0 && $("#cadreRuralORUrbanId").val() != ""){
+			locatinId = $('#cadreRuralORUrbanId').val();
+			}else if($("#cadremandalId").val() != 0 && $("#cadremandalId").val() != ""){
+				locatinId = $('#cadremandalId').val();
+			}
+		}
+		
+		for(var i in myResult){
+			if(myResult[i].id != null && myResult[i].id == locatinId)
+				result.push(myResult[i]);
+		}
+	}
+	else{
+		result = myResult;
+	}
+
+	for(var i in result){
+		
+		if(i==0){
+			var str ='';
+			str+='<table class="table table-bordered">';
+			if(locationValue == "DISTRICT")
+			str+='<thead style="background-color:#CCCCCC;">';
+			if(locationValue == "CONSTITUENCY")
+			str+='<thead style="background-color:#ddd;">';
+			if(locationValue == "MANDAL" || locationValue == "MUNCIPALITY/CORPORATION")
+			str+='<thead style="background-color: #CCCCCC;">';
+			if(locationValue == "PANCHAYAT" || locationValue == "WARD")
+			str+='<thead style="background-color:#f2f2f2;">';
+			str+='<tr>';
+			str+='<th rowspan="2">ID</th>';
+			if(locationValue == "DISTRICT")
+				str+='<th rowspan="2">DISTRICT NAME</th>';
+			else if(locationValue == "CONSTITUENCY")
+				str+='<th rowspan="2">CONSTITUENCY NAME</th>';
+			else if(locationValue == "MUNCIPALITY/CORPORATION" && searchType == "WARD")
+				str+='<th rowspan="2">MANDAL NAME</th>';
+			else if(locationValue == "MANDAL" && searchType == "PANCHAYAT")
+				str+='<th rowspan="2">MANDAL NAME</th>';
+			else if(locationValue == "PANCHAYAT" && searchType == "")
+				str+='<th rowspan="2">VILLAGE NAME</th>';
+			else if(locationValue == "WARD" && searchType == "")
+				str+='<th rowspan="2">WARD NAME</th>';
+			str+='<th rowspan="2">TOTAL INVITEES</th>';
+			str+='<th colspan="2">TOTAL ATTENDED</th>';
+			str+='<th colspan="2">INVITEES ATTENDED</th>';
+			str+='<th colspan="2">NON INVITEES ATTENDED</th>';
+			for(var j in result[0].subList){
+							str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[j].name+' ATTENDED</th>';
+					}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<th>Count</th>';
+				str+='<th>%</th>';
+				str+='<th>Count</th>';
+				str+='<th>%</th>';
+				str+='<th>Count</th>';
+				str+='<th>%</th>';
+			for(var k in result[0].subList){
+							str+='<th>Total</th>';
+							str+='<th>Invitees</th>';
+							str+='<th>Non Invitees</th>';
+					}
+			str+='</tr>';
+			str+='</thead>';
+		}
+	
+	
+	str+='<tr>';
+	str+='<td>'+result[i].id+'</td>';
+	if(result[i].name == null ){
+		str+='<td> - </td>';
+	}else if(result[i].name != null && locationValue == "DISTRICT"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'constTableDiv\',\''+index+''+i+'\',this.id);" id="showHideDist'+i+'"><span class="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>   '+result[i].name+'</td>';
+		
+	}else if(result[i].name != null && locationValue == "CONSTITUENCY"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'mandalTableDiv\',\''+index+''+i+'\',this.id);" id="showHideConst'+i+'"><span id="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>  '+result[i].name+'</td>';
+		
+	}else if(result[i].name != null && locationValue == "MANDAL"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);" id="showHideMandal'+i+'"><span id="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>'+result[i].name+'</td>';
+	}else if(result[i].name != null && locationValue == "MUNCIPALITY/CORPORATION"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);" id="showHideMuncipal'+i+'"><span id="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>'+result[i].name+'</td>';
+	}else if(result[i].name != null && locationValue == "PANCHAYAT"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);">'+result[i].name+'</td>';
+	}else if(result[i].name != null && locationValue == "WARD"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);">'+result[i].name+'</td>';
+	}
+	if(result[i].inviteesCalled ==0 || result[i].inviteesCalled == null){
+		str+='<td class="text-center"> - </td>';
+	}else{
+		str+='<td class="text-center">'+result[i].inviteesCalled+'</td>';
+	}
+	if(result[i].attendees ==0 || result[i].attendees == null){
+	    str+='<td class="text-center">-</td>';
+	}else{
+		str+='<td class="text-center">'+result[i].attendees+'</td>';
+	}
+	if(result[i].attendeePercantage ==0 || result[i].attendeePercantage == null){
+		str+='<td class="text-center">-</td>';
+	}else{
+		str+='<td class="text-center">'+result[i].attendeePercantage+'</td>';
+	}
+	if(result[i].invitees ==0 || result[i].invitees == null){
+		str+='<td class="text-center"> - </td>';
+	}else{
+		str+='<td class="text-center">'+result[i].invitees+'</td>';
+	}
+	if(result[i].inviteePercantage ==0 || result[i].inviteePercantage == null){
+		str+='<td class="text-center"> - </td>';
+	}else{
+		str+='<td class="text-center">'+result[i].inviteePercantage+'</td>';
+	}
+	if(result[i].nonInvitees ==0 || result[i].nonInvitees == null){
+		str+='<td class="text-center"> - </td>';
+	}else{
+		str+='<td class="text-center">'+result[i].nonInvitees+'</td>';
+	}
+	 if(result[i].nonInviteePercantage ==0 || result[i].nonInviteePercantage == null){
+		str+='<td class="text-center"> - </td>';
+	}else{
+		str+='<td class="text-center">'+result[i].nonInviteePercantage+'</td>';
+	} 
+	for(var l in result[i].subList){
+				if(result[0].subList[l].totalDaydataExist == true){
+					
+					if(parseInt(result[i].subList[l].attendees) == 0 || result[i].subList[l].attendees == null){
+						
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[i].subList[l].attendees+'</td>';
+					}
+					if(parseInt(result[i].subList[l].invitees) == 0 || result[i].subList[l].invitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						 str+='<td class="text-center">'+result[i].subList[l].invitees+'</td>';
+					}
+		 	       if(parseInt(result[i].subList[l].nonInvitees) == 0 || result[i].subList[l].nonInvitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[i].subList[l].nonInvitees+'</td>';
+					}
+			    }
+			}
+			if(locationValue == "CONSTITUENCY" || searchType == "MANDAL"){
+				str+='<tr style="display:none" class="mandaltrCls'+index+'" id="mandalTableDivtr'+index+''+i+'">';
+				str+='<td colspan="18">';
+				str+='<div class="mandalCls'+index+'" id="mandalTableDiv'+index+''+i+'"></div>';
+				str+='</td>';
+				str+='</tr>';
+			}
+			if(locationValue == "MUNCIPALITY/CORPORATION" || locationValue == "MANDAL" || searchType == "WARD" || searchType == "PANCHAYAT" ){
+				str+='<tr style="display:none" class="villagetrCls'+index+'" id="villageTableDivtr'+index+''+i+'">';
+				str+='<td colspan="18">';
+				str+='<div class="villageCls'+index+'" id="villageTableDiv'+index+''+i+'"></div>';
+				str+='</td>';
+				str+='</tr>';
+			}
+			str+='</tr>';
+			
+			str+='<tr style="display:none" class="constituencyCls'+index+'" id="constTableDivtr'+index+''+i+'">';
+	str+='<td colspan="18">';
+		str+='<div id="constTableDiv'+index+''+i+'" class="constituencyCls'+index+'"  ></div>';
+	str+='</td>';
+	str+='</tr>';
+	
+	
+		if(i==0){
+			if(locationValue == "DISTRICT"){
+				
+				$("#"+divId+"").html(str);
+			}
+		}
+		if(i == result.length-1){
+			
+		str+='</table>';
+	
+			if( index != "onload" && locationValue == "CONSTITUENCY"){
+				$("#constTableDivtr"+index+"").show();
+				$("#constTableDiv"+index+"").html(str);
+			}
+			else if(locationValue == "CONSTITUENCY"){
+					$("#"+divId+"").html(str);
+			} 
+			else if( index != "onload" && locationValue == "MANDAL" || locationValue == "MUNCIPALITY/CORPORATION"){
+				$("#mandalTableDivtr"+index+"").show();
+				$("#constTableDivtr"+index+"").show();
+				$("#mandalTableDiv"+index+"").html(str);
+			} else if( locationValue == "MANDAL"){
+				$("#"+divId+"").html(str);
+			}
+			if(searchType == "WARD" || searchType == "PANCHAYAT" && locationValue != "MANDAL" || locationValue == "PANCHAYAT"){
+				$("#villageTableDivtr"+index+"").show();
+				$("#villageTableDiv"+index+"").html(str);	
+				}
+		}
+	}
+}
+$(document).on("click",".locWiseEvnAtnCls",function(){
+	$(".locWiseEvnAtnBody").collapse('toggle');
+})
+$(".locWiseEvnAtnBody").collapse('hide');
+/* function getMainEvents()
+{
+	var jsObj={}
+	$.ajax({
+		type:'GET',
+		url :'getMainEventsAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null && result.length >0){
+		for(var i in result){
+			$("#eventsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	}
+	}
+	});
+} */
+/* var eventStartDate = '';
+var eventEndDate = '';
+function getStartDateAndEndDate()
+{
+	 eventStartDate = '';
+    eventEndDate = '';
+	var jsObj={eventId : $("#eventsId").val()}
+	$.ajax({
+		type:'GET',
+		url :'getStartDateAndEndDateAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null){
+		eventStartDate = result.description;
+		eventEndDate	= result.district;	
+		}
+	});
+	$("#dateEvntBody").daterangepicker({
+		minDate: eventStartDate,
+		maxDate: eventEndDate,
+		format: 'DD/MM/YYYY'
+	});
+} */
+//getMainEvents();

@@ -44,6 +44,20 @@
 	vertical-align:middle !important;
 	text-align:center;
 }
+.closeIcon
+{
+	float:right;
+	color:#666;
+	background:#ccc;
+	padding:4px;
+	border-radius:50%;
+	cursor:pointer;
+	margin-bottom:4px;
+}
+.locWiseEvnAtnCls
+{
+	cursor:pointer;
+}
 </style>
 <script>
 var globalCadreId = '${cadreId}';
@@ -865,7 +879,46 @@ var globalCadreId = '${cadreId}';
             </div>
         </div>
 		</c:if>
-		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading locWiseEvnAtnCls">
+						<h4 class="panel-title">
+							MAHANADU 2016 - ATTENDEES
+							<i class="glyphicon glyphicon-chevron-down pull-right"></i>
+						</h4>
+					</div>
+					<div class="panel-body locWiseEvnAtnBody in">
+						<div class="row" id="evntDateDiv">
+							<div class="col-md-4">
+								<label>Events</label>
+								<select class="form-control" id="eventsId">
+								<option value="30">Mahanadu 2016</option>
+								<option value="7">Mahanadu 2015</option>
+								</select>
+							</div>
+							<!--<div class="col-md-4">
+								<label>Date</label>
+								<div class="input-group">
+									<input class="form-control" type="text" id="dateEvntBody"/>
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</div>
+								
+							</div>-->
+							<div class="col-md-4">
+								<button class="btn btn-success m_top20" type="button" onclick="getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),'DISTRICT','DISTRICT','cadreEvntdistrictAttnds','onload','');">Submit</button>
+							</div>
+						</div>
+						<div id="cadreEvntdistrictAttnds" class="m_top20"></div>
+						<div id="errMsgID" class="m_top20" style="display:none;"></div>
+						<div id="cadreEvntConstiAttnds" class="m_top20"></div>
+						<div id="cadreEvntMandalAttnds" class="m_top20"></div>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
     <!-- model -->
 <div class="modal fade myModalForDeath">
@@ -1243,6 +1296,7 @@ var globalCadreId = '${cadreId}';
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
 	<script>
+	 
 	var globalCadreId = '${cadreId}';
 	
 	var participatedConstituencyId=0;
