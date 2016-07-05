@@ -428,6 +428,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
 					 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
 					 alertVO.setSeverity(params[5] != null ? params[5].toString() : "");
+					 alertVO.setRegionScopeId(params[6] != null ? (Long)params[6] : null);
+					 alertVO.setRegionScope(params[7] != null ?params[7].toString() : "");
+					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
+					 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
 					 LocationVO locationVO = new LocationVO();
 					 locationVO.setDistrictId(params[16] != null ? (Long)params[16] : null);
 					 locationVO.setDistrictName(params[17] != null ?params[17].toString() : "");
