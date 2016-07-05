@@ -118,9 +118,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="">Modal title</h4>
+        <h4 class="modal-title" id="descriptionTitleId">Modal title</h4>
       </div>
-	   <div id="errorId"></div>
       <div class="modal-body">
         <div class="row">
 		  <div class="col-md-12 col-xs-12 col-sm-12">
@@ -150,6 +149,7 @@
 			<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><span id="descriptionId"></span>
 		  </div>
 		</div>
+		<div id="errorId"></div>
 		<div class="row">
 		  <div class="col-md-6 col-xs-12 col-sm-12">
 			<label>Comments</label><span ></span>
@@ -178,9 +178,6 @@
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
 $("#dateRangePickerId").daterangepicker({opens:'left'});
-
-//getLocationLevelAlertCount();
-
 </script>
 </body>
 </html>
