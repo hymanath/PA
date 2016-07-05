@@ -1,4 +1,15 @@
 $(document).ready(function() {
+	
+	if(cadreParticipatedConstiId != null && cadreParticipatedConstiId.trim().length >0){		
+		if(cadreParticipatedConstiId != null && cadreParticipatedConstiId.length>0)
+			$('#cadreParticipatedConstituencyId').val(parseInt(cadreParticipatedConstiId));
+		if(cadreParticipatedDistiId != null && cadreParticipatedDistiId.length>0)
+			$('#cadreParticipatedDistrictId').val(parseInt(cadreParticipatedDistiId));
+	}else{
+		
+	}
+	
+	
   var cb = function(start, end, label) {
 	console.log(start.toISOString(), end.toISOString(), label);
   }
@@ -74,7 +85,7 @@ setcolorsForStatus();
   }
   
   /*Meeting DatePicker*/
-setcolorsForStatus();
+//setcolorsForStatus();
   var MeetingSet = {
 	startDate: moment().subtract(1, 'year'),
 	endDate: moment(),
@@ -144,6 +155,7 @@ function getParticipatedConstituencyId(cadreId){
 							$("#cadreParticipatedConstituencyId").val(''+result.id+'');
 						if(result.parlimentId != null && result.parlimentId > 0)
 						$("#cadreParticipatedPConstituencyId").val(''+result.parlimentId+'');
+					
 						participatedConstituencyId =result.id;
 						participatedConstituencyType = result.electionType;
 						participatedParliamentId = result.parlimentId;
@@ -501,6 +513,7 @@ var globalVoterCardNo = "";
 					 globalParlName = result.pConstituencyName;
 					 globalDistName = result.districtName;
 					    
+						
 					getCandidateAndConstituencySurveyResult();
 					complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					getCandidateElectDetatails(localCadreId);
@@ -6786,7 +6799,9 @@ $(document).on("click","#debateCountId",function(){
 		{
 				for(var i in result)
 				{
-					str += '<div class="col-md-12 col-xs-12 col-sm-12">';
+					if(result[i] != null)
+					{
+						str += '<div class="col-md-12 col-xs-12 col-sm-12">';
 					str += '<div class="panel panel-default">';
 					str += '<div class="panel-heading">';
 						str += '<h4 class="panel-title">TOPIC WISE STRONG AND WEAK PERFORMANCES</h4>';
@@ -6865,6 +6880,8 @@ $(document).on("click","#debateCountId",function(){
 					str += '</div>';
 					str += '</div>';
 					$('#searchDataImg').hide();
+					}
+					
 				}
 				
 				$('#debateStrongWeekId').html(str);				
