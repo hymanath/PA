@@ -12780,5 +12780,11 @@
 				<param name="root">status</param>
 		 </result>
 		 </action>
+		 
+		 	<action name="getAlertStatusCommentsTrackingDetails" class="createAlertAction" method="getAlertStatusCommentsTrackingDetails">
+		<result type="json" name="success">
+			<param name="root">statusTrackingVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

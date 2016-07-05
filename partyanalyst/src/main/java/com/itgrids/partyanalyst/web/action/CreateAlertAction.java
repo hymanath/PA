@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,11 +38,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	
 	private List<BasicVO> basicVO;
 	private List<AlertDataVO> alertDataList;
+	private  List<StatusTrackingVO> statusTrackingVOList;
 	
 	private static final Logger LOG = Logger.getLogger(CreateAlertAction.class);
 	
 	
 	
+	public List<StatusTrackingVO> getStatusTrackingVOList() {
+		return statusTrackingVOList;
+	}
+
+	public void setStatusTrackingVOList(List<StatusTrackingVO> statusTrackingVOList) {
+		this.statusTrackingVOList = statusTrackingVOList;
+	}
+
 	public List<BasicVO> getBasicVO() {
 		return basicVO;
 	}
@@ -220,5 +230,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	public String getAlertStatusCommentsTrackingDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
+			
+			statusTrackingVOList = alertService.getAlertStatusCommentsTrackingDetails(alertId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertStatusCommentsTrackingDetails() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 
 }

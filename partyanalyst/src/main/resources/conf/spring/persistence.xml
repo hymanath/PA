@@ -900,6 +900,8 @@
 					<value>com.itgrids.partyanalyst.model.AlertTracking</value>
 					<value>com.itgrids.partyanalyst.model.AlertComment</value>
 					<value>com.itgrids.partyanalyst.model.AlertImpact</value>
+					<value>com.itgrids.partyanalyst.model.AlertTrackingAction</value>
+					
 				   <!-- debate End-->
 				    
 				    <value>com.itgrids.partyanalyst.model.CadreCallingFeedback</value>
