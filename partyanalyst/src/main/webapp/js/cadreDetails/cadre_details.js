@@ -1292,15 +1292,15 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 	if(pcType !=null && pcType !="" && pcType !=undefined){
 		if(pcType == "Assembly"){
 			str += '<li>';
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+participatedConstName.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+result.constituencyName.toUpperCase()+')"></div>';
 			str += '</li>';
 		}
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+participatedParlName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+result.parliamentName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+participatedDistName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+result.districtName.toUpperCase()+')"></div>';
 		str += '</li>';
 	}
 	else{
@@ -1317,7 +1317,7 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		if(result.cadreLocation =="Mandal")
 		{
 			str += '<li>';
-			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+result.panchayatName.toUpperCase()+')"></div>';
 			str += '</li>';
 		 } 
 		 
@@ -1335,15 +1335,15 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+result.constituencyName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+result.parliamentName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+result.districtName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 	}
@@ -1538,7 +1538,7 @@ function getTotalComplaintsForCandidate(){
 	
 		$.ajax({
 				type : "POST",
-				url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 				//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 				  data: JSON.stringify(arr),
 				 contentType: "application/json; charset=utf-8",
@@ -5226,7 +5226,7 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show(); 
 	$.ajax({
 		type:'GET',
-		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		url: "http://mytdp.com/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -5255,7 +5255,7 @@ function getRefferelDetailsStatusWise(){
 				}
 				$.ajax({
 					type:'POST',
-					url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 					//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 						 dataType: "json",
 						 data: JSON.stringify(obj),
@@ -5311,7 +5311,7 @@ $(document).on('click','.referalGrievenceCls',function(){
 	
 	$.ajax({
 		type:'POST',
-		url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
@@ -5504,7 +5504,7 @@ function getAppointmentsUserDetails()
 				$("#candidateAppointmentImg").hide();
 				var totalCount = 0;
 				var str='';
-				if($("#totalAptId").val()== 0){
+				if(result == null || result.length == 0){
 					$("#buildCandidateAppointmentUser").hide();
 				}
 				else if(result != null){
