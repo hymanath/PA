@@ -106,7 +106,7 @@ function buildAlertData(result)
 		j++;
 	str+='<tr>';	
 	str+='<td>'+j+'</td>';
-	str+='<td><a  class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'">'+result[i].desc+'</a></td>';
+	str+='<td><a  class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].count+'</td>';
@@ -116,10 +116,13 @@ function buildAlertData(result)
 	$("#locationLevelDataId").html(str);
 }
 var GlobalalertId;
+var globalAlertName;
 $(document).on("click",".alertModel",function(){
 	$("#ModalShow").modal('show');
 	GlobalalertId = $(this).attr("attr-id");
 	showPopUpAlertData(GlobalalertId);
+	 globalAlertName=$(this).attr("attr-des");
+	 	$("#descriptionTitleId").html(globalAlertName);
 	getAlertStatusCommentsTrackingDetails();
 	
 });
@@ -146,7 +149,7 @@ function showPopUpAlertData(alertId)
 			}
 			
 			$("#LocationId").html(''+location+'');
-			$("#statusId").val(''+GlobalAlertData[i].status+'');
+			$("#statusId").val(''+GlobalAlertData[i].statusId+'');
 			$("#descriptionId").html(''+GlobalAlertData[i].desc+'');
 			
 		}
@@ -155,20 +158,19 @@ function showPopUpAlertData(alertId)
 }
 function updateAlertStatus()
 {
-	alert('b')
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
 	//var str = '';
 	if(comments.length==0||comments=='')
 	{
-		  $('#errorId').html('please give comments');
+		  $('#errorId').html(' comments required').css("color","red");
 		  return; 
 	}
 	if(statusId==0)
 	{
 		//alert(2);
-	   $('#errorId').html('please select Status'); 
+	   $('#errorId').html(' Status required').css("color","red"); 
         return;	   
 	}
 	
@@ -184,12 +186,16 @@ function updateAlertStatus()
 					  url: 'updateAlertStatusAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-					//buildAlertData(result);
+				  
+					if(result="success")
+					{
+						$("#errorId").html(" Alert Updated Successfully ").css("color","green");
+					}
 				});
 			
 }
 $(document).on("click",".updateAlertStatusCls",function(){
-	alert('a')
+	
 	updateAlertStatus();
 });
 
@@ -240,5 +246,7 @@ function getAlertStatusCommentsTrackingDetails()
 		$("#alertCommentsDiv").html(str);
 		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
 	}
+	
+
 
 
