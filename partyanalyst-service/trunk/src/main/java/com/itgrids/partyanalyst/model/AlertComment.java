@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +17,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "alert_comment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AlertComment extends BaseModel implements Serializable {
-	private Long alert_comment_id;
-	private Long alert_id;
+	private Long alertCommentId;
+	private Long alertId;
 	private String comments;
 	private Long insertedBy;
 	private Date insertedTime;
@@ -27,27 +27,30 @@ public class AlertComment extends BaseModel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_comment_id", unique = true, nullable = false)
-	public Long getAlert_comment_id() {
-		return alert_comment_id;
+
+	public Long getAlertCommentId() {
+		return alertCommentId;
 	}
 
-	public void setAlert_comment_id(Long alert_comment_id) {
-		this.alert_comment_id = alert_comment_id;
+	public void setAlertCommentId(Long alertCommentId) {
+		this.alertCommentId = alertCommentId;
 	}
-
+	
 	@Column(name = "alert_id")
-	public Long getAlert_id() {
-		return alert_id;
+	public Long getAlertId() {
+		return alertId;
 	}
 
-	public void setAlert_id(Long alert_id) {
-		this.alert_id = alert_id;
+
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
 	}
 
 	@Column(name = "comments")
 	public String getComments() {
 		return comments;
 	}
+
 
 	public void setComments(String comments) {
 		this.comments = comments;

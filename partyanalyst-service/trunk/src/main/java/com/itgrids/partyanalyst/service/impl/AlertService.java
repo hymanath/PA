@@ -12,6 +12,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
+import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertCandidate;
+import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AppointmentComment;
@@ -39,6 +41,7 @@ import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class AlertService implements IAlertService{
@@ -58,12 +61,21 @@ private static final Logger LOG = Logger.getLogger(AlertService.class);
 private ICandidateDAO candidateDAO;
 private IAlertStatusDAO alertStatusDAO;
 private IAlertTrackingDAO alertTrackingDAO;
+private IAlertCommentDAO alertCommentDAO;
   
 private DateUtilService dateUtilService = new DateUtilService();
 
 
 
 
+
+public IAlertCommentDAO getAlertCommentDAO() {
+	return alertCommentDAO;
+}
+
+public void setAlertCommentDAO(IAlertCommentDAO alertCommentDAO) {
+	this.alertCommentDAO = alertCommentDAO;
+}
 
 public IAlertTrackingDAO getAlertTrackingDAO() {
 	return alertTrackingDAO;
@@ -223,13 +235,14 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alertCandidate.setAlertImpactId(inputVO.getAlertImpactId());
 				 alertCandidateDAO.save(alertCandidate);
 				 rs = "success";
-				/* AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 				 alertTrackingVO.setUserId(userId);
 				// alertTrackingVO.setAlertCommentId(alertCommentId);
 				 alertTrackingVO.setAlertUserTypeId(inputVO.getUserTypeId());
-				// alertTrackingVO.setAlertStatusId(alertStatusId);
+				 alertTrackingVO.setAlertStatusId(1l);
 				 alertTrackingVO.setAlertId(alert.getAlertId());
-				 saveAlertTrackingDetails(alertTrackingVO)	;	*/
+				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+				 saveAlertTrackingDetails(alertTrackingVO)	;	
 					}
 					catch (Exception ex) {
 						 rs = "fail";
@@ -242,7 +255,6 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 			});
 	return resultStatus;
 	}
-
 
 public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTrackingVO)
 {
@@ -258,6 +270,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				alertTracking.setAlertUserTypeId(alertTracking.getAlertUserTypeId());
 				alertTracking.setInsertedBy(alertTrackingVO.getUserId());
 				alertTracking.setInsertedTime(currentDateAndTime);
+				alertTracking.setAlertTrackingActionId(alertTrackingVO.getAlertTrackingActionId());
 				alertTrackingDAO.save(alertTracking);
 			 }
 		});
@@ -473,16 +486,33 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
-	public String updateAlertStatus(Long alertId,Long alertStatusId,String comments)
+	public String UpdateAlertStatus(Long userId,Long alertId,Long alertStatusId,String comments)
 	{
 		String rs = null;
 		try{
+			Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
 			Alert alert =	alertDAO.get(alertId);
-			
 			alert.setAlertStatusId(alertStatusId);
-				
-		    alert = alertDAO.save(alert);
+			alert = alertDAO.save(alert);
 		    rs = "success";
+		    
+		    AlertComment alertComment = new AlertComment();
+		    alertComment.setComments(comments);
+		    alertComment.setAlertId(alertId);
+		    alertComment.setInsertedTime(currentDateAndTime);
+		    alertComment.setIsDeleted("N");
+		    alertComment.setInsertedBy(userId);
+		    alertComment = alertCommentDAO.save(alertComment);
+		    
+		    
+		     AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+			 alertTrackingVO.setUserId(userId);
+			 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+			// alertTrackingVO.setAlertUserTypeId();
+			 alertTrackingVO.setAlertStatusId(alertStatusId);
+			 alertTrackingVO.setAlertId(alert.getAlertId());
+			 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+			 saveAlertTrackingDetails(alertTrackingVO)	;	
 		
 		}catch(Exception e){
 			e.printStackTrace();
