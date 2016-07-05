@@ -473,13 +473,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
-	public String UpdateAlertStatus(final AlertVO inputVO,Long alertId,Long alertStatusId,String comments)
+	public String updateAlertStatus(Long alertId,Long alertStatusId,String comments)
 	{
 		String rs = null;
 		try{
-			Alert alert =	alertDAO.get(inputVO.getTehsilId());
+			Alert alert =	alertDAO.get(alertId);
 			
-			alert.setAlertStatusId(inputVO.getPanchayatId());
+			alert.setAlertStatusId(alertStatusId);
 				
 		    alert = alertDAO.save(alert);
 		    rs = "success";
