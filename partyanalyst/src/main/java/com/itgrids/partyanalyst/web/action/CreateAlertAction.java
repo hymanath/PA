@@ -204,7 +204,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
-	public String UpdateAlertStatus()
+	public String updateAlertStatus()
 	{
 		try{
 			session = request.getSession();
@@ -213,7 +213,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			jObj = new JSONObject(getTask());
 		
-			status = alertService.UpdateAlertStatus(alertVO,jObj.getLong("alertId"),jObj.getLong("alertStatusId"),jObj.getString("comments"));
+			status = alertService.updateAlertStatus(jObj.getLong("alertId"),jObj.getLong("alertStatusId"),jObj.getString("comments"));
 		}
 		catch (Exception e) {
 			LOG.error("Exception rised in UpdateAlertStatus",e);

@@ -146,11 +146,11 @@
 		</div>
 		<div class="row">
 		  <div class="col-md-6 col-xs-12 col-sm-12">
-			<label>Comments</label>
+			<label>Comments</label><span id="commentsId">Name</span>
 			<textarea class="form-control"></textarea>
 		  </div>
 		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<button class="btn btn-success">UPDATE</button>
+			<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
 		  </div>
 		</div>
 		<div class="row">
