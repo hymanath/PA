@@ -61,6 +61,10 @@
 </style>
 <script>
 var globalCadreId = '${cadreId}';
+var cadreParticipatedConstiId = '${basicVo.id}';
+var cadreParticipatedDistiId = '${basicVo.districtId}';
+var cadreParticipatedParliId = '${basicVo.parliament}';
+
 </script>
 </head>
 <body>
@@ -1297,7 +1301,7 @@ var globalCadreId = '${cadreId}';
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
 	<script>
 	 
-	var globalCadreId = '${cadreId}';
+	//var globalCadreId = '${cadreId}';
 	
 	var participatedConstituencyId=0;
 	var participatedConstituencyType="";
@@ -1330,25 +1334,25 @@ var globalCadreId = '${cadreId}';
 	var constituencyId = '${constituencyId}';
 	function callFunForMembership()
 	{
-	if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
-		getCadreIdByMemberShipId();
-	}
-	else 
-	{
-		getParticipatedConstituencyId(globalCadreId);
-		/* getCategoryWiseStatusCount();
-		getTotalMemberShipRegistrationsInCadreLocation();		
-		
-		getElectionPerformanceInCadreLocation();
-		getApprovedFinancialSupprotForCadre();
-		cadreFormalDetailedInformation(globalCadreId);
-		getEventDetailsOfCadre(globalCadreId);
-		//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
-		getLocationwiseCommitteesCount();
-		getPartyMeetingsOverViewForCadre();
-		getEventsOverviewFortdpCadre(); */
+		if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
+			getCadreIdByMemberShipId();
+		}
+		else 
+		{
+			getParticipatedConstituencyId(globalCadreId);
+			/* getCategoryWiseStatusCount();
+			getTotalMemberShipRegistrationsInCadreLocation();		
 			
-	}
+			getElectionPerformanceInCadreLocation();
+			getApprovedFinancialSupprotForCadre();
+			cadreFormalDetailedInformation(globalCadreId);
+			getEventDetailsOfCadre(globalCadreId);
+			//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+			getLocationwiseCommitteesCount();
+			getPartyMeetingsOverViewForCadre();
+			getEventsOverviewFortdpCadre(); */
+				
+		}
 	}
 	callFunForMembership();
 	$(document).on('click', '.innerDiv', function(){
