@@ -23,25 +23,24 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "alert_tracking_action")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AlertTrackingAction extends BaseModel implements Serializable {
-	private Long alert_tracking_action_id;
+	private Long alertTrackingActionId;
 	private String action;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_tracking_action_id", unique = true, nullable = false)
-	public Long getAlert_tracking_action_id() {
-		return alert_tracking_action_id;
+	public Long getAlertTrackingActionId() {
+		return alertTrackingActionId;
 	}
 
-	public void setAlert_tracking_action_id(Long alert_tracking_action_id) {
-		this.alert_tracking_action_id = alert_tracking_action_id;
+	public void setAlertTrackingActionId(Long alertTrackingActionId) {
+		this.alertTrackingActionId = alertTrackingActionId;
 	}
 
 	@Column(name = "action")
 	public String getAction() {
 		return action;
 	}
-
 	public void setAction(String action) {
 		this.action = action;
 	}

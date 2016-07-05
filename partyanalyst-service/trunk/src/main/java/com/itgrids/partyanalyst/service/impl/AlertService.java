@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertComment;
@@ -523,7 +524,71 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		
 	}
 
+	// Alert Status Flow Tracking Details
+	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId)
+			{
+				LOG.info("Entered in getAlertStatusCommentsTrackingDetails() method");
+				List<StatusTrackingVO> resultList = null;
+				try{
+					List<Object[]> list = alertTrackingDAO.getAlertTrackingDetails(alertId);
+					resultList = getAlertStatusCommentsList(list);
+							
+						}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					LOG.error("Entered in getAppointmentStatusFlowTrackingDetails() method");
+				}
+				return resultList;
+			}
 	
+	public List<StatusTrackingVO> getAlertStatusCommentsList(List<Object[]> list)
+	{
+		List<StatusTrackingVO>  resultList = new ArrayList<StatusTrackingVO>();
+		try{
+			for(int i=0;i<list.size();i++)
+			{
+				Object[] params = list.get(i);
+				StatusTrackingVO vo = new StatusTrackingVO();
+				vo.setId((Long)params[0]);
+				vo.setStatus(params[1] != null ? params[1].toString() : "");
+				vo.setUserId((Long)params[2]);
+				String fname = params[3] != null ? params[3].toString() : "";
+				String lname = params[4] != null ? params[4].toString() : "";
+				vo.setUname(fname+" "+lname);
+				if(vo.getCommentsList() == null || vo.getCommentsList().size() > 0)
+				{
+					vo.setCommentsList(new ArrayList<String>());
+					vo.getCommentsList().add(params[7] != null ? params[7].toString() : "");
+				}
+				vo.setDate(params[5] != null ? params[5].toString().substring(0, 19) : "");
+				
+				
+				  for(int j=i+1;j<list.size();j++)
+				  {
+					  Object[] params1 = list.get(j);
+					
+					  if(params[1].toString().equalsIgnoreCase(params1[1].toString()))
+					  {
+						  vo.getCommentsList().add(params1[7] != null ? params1[7].toString() : "");
+						  i++;
+					  }
+					  else
+					  {
+						  break;
+					  }
+					  
+				  }
+				resultList.add(vo);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getStatusFlowList() method");
+		}
+		return resultList;
+	}
 	
 }
 

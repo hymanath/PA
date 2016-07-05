@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 
 public interface IAlertService {
 	public List<BasicVO> getCandidatesByName(String candidateName);
@@ -14,5 +15,5 @@ public interface IAlertService {
 	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String FromDate,String toDate);
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO);
 	public String updateAlertStatus(Long userId,Long alertId,Long alertStatusId,String comments);
-	
+	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 }
