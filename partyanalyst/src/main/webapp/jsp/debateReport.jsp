@@ -175,7 +175,7 @@ function generateDebateReport(result)
 		}
 		var summaryLength = result.candidateSummery.length+1 ;
 		str += '<tr>';
-		str += '<th style="width: 234px;">Summary of performence</th>';
+		str += '<th style="width: 234px;">Summary of performance</th>';
 		str += '<td colspan='+noOfParticepents+'>'+result.debateSummery+'</td>';
 		str += '</tr>';
 		str += '<tr>';
