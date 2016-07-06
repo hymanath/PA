@@ -16,4 +16,5 @@ public interface IAlertService {
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO);
 	public String updateAlertStatus(final Long userId,final Long alertId,final Long alertStatusId,final String comments);
 	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId);
+	public List<BasicVO> getAlertType();
 }
