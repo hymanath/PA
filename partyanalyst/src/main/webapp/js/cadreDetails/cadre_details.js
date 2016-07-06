@@ -213,6 +213,7 @@ var globalVoterCardNo = "";
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(result){
 				getElectionPerformanceInCadreLocation();
+				getCadreNotesInformationDetails(0);
 				//loading images hiding
 				 $("#dataLoadingsImgForownBoothDetailsId").hide();
 				// $("#dataLoadingsImgForImagePath").hide();
@@ -1418,7 +1419,8 @@ function getCadreFamilyDetailsByCadreId(){
 			imgPath = result[i].imagePath;
 		 }
 		 /*else{
-			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
+			imgPath="http://www.mytdp.com
+			/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
 		 }*/
 		  str += '<div class="media-left ">';
 		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 45px;width:45px;border:1px solid #ddd;" >';
@@ -6929,3 +6931,161 @@ $(document).on("click","#debateCountId",function(){
 			$('#debateStrongWeekId').html('<div align="center"> <b>No Data Available </b>.</div>');				
 		}
 	}
+function saveCadreNotesInformationDetails(itemsCount,startIndex){
+	 var notes = $(".jqte_editor").html();
+	if(notes ==0){
+		  $("#errorUpCallId").html("Notes Required.");
+		  return;
+	  }	 
+	var jObj={
+		tdpCadreId:globalCadreId,
+		notes:notes,
+		globalPrimaryId : globalPrimaryId
+	};
+	$.ajax({
+	  type:'POST',
+	  url: 'saveCadreNotesInformationDetailsAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jObj)},
+	  }).done(function(result){
+			if(result != null){
+				 if(result.message == "Success"){
+					$("#errorUpCallId").html("Notes Data Successfully Updated...");
+					$(".jqte_editor").html('');
+					$("#errorUpCallId").html("");
+					getCadreNotesInformationDetails(startIndex);
+					$("#updateButnId").hide();
+				}else{
+					$("#errorUpCallId").html("Error Occured Try agian..");
+				} 
+				globalPrimaryId = 0;
+			}
+	  });
+}
+function getCadreNotesInformationDetails(startIndex){ 
+$('#notesExisting').html("");
+$("#updateNotesButtonId").show();
+	var jObj={
+		tdpCadreId:globalCadreId,
+		startIndex:startIndex,
+		maxIndex : 10
+	};
+	$.ajax({
+	  type:'POST',
+	  url: 'getCadreNotesInformationDetailsAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jObj)},
+	  }).done(function(result){
+			if(result != null){
+				buildCadreNotesDetails(result,jObj);
+			}
+	  });
+}
+function buildCadreNotesDetails(result,jObj){
+	var str = '';
+if(result != null){
+	str += '<ul class="apptStatusTracking">';
+for(var i in result)
+{
+	str += '<li id="li'+result[i].id+'">';
+	str += '<span><i class="glyphicon glyphicon-edit editIconCls" attr_id="'+result[i].id+'" attr_div="tejaid'+i+'" title="Click Here To Get Edit Notes"></i><i class="glyphicon glyphicon-remove removeIconCls" attr_notes_id='+result[i].id+' title="Click Here To Get Delete This Notes"></i></span>';
+	str += '<div class="arrow_box_left">';
+	if(result[i].aliancedWith != null && result[i].aliancedWith.trim() != ""){
+		str +='<span class="m_0">Created Time:'+result[i].persent+' Latest Time:'+result[i].aliancedWith+'</span>';	
+		}
+	else{
+	str +='<span class="m_0">Created Time:'+result[i].persent+'</span>';
+	}
+	
+	str +='<div class="m_0" id="tejaid'+i+'">'+result[i].name+'</div>';
+	str += '</div>';
+	str += '</li>';
+}
+str += '</ul>';
+	$('#notesExisting').html(str);	
+	   /* if(result != null && result.length>0 && result[0].totalVoters != null && result[0].totalVoters > 0){
+	$("#notesId").css('background-color', '#006400');//grren color
+	}
+	else{
+	$("#notesId").css('background-color', '#808080');//gray color	
+	} */
+	if(jObj.startIndex==0){
+		$("#paginationForNotesId").pagination({
+			items: result[0].totalVoters,
+			itemsOnPage: 10,
+			cssStyle: 'light-theme',
+			hrefTextPrefix: '#pages-',
+			onPageClick: function(pageNumber) {
+				var num=(pageNumber-1)*10;
+					getCadreNotesInformationDetails(num);
+				
+			}
+		});
+	}		
+  }
+}
+$(document).on("click",".removeIconCls",function(){
+	var cadreNotes = $(this).attr("attr_notes_id"); 
+	$("#hiddencadreNotesId").val(cadreNotes);
+	deleteCadreNotesData(cadreNotes);	
+});
+function deleteCadreNotesData(cadreNotes){ 
+	var r=confirm("Are you sure want to delete it?")
+	if (r)	
+	{
+var jsobj = {
+	cadreNotes:cadreNotes
+}
+	$.ajax({
+     type: "POST",
+     url: "deleteCadreNotesDataAction.action",
+	 dataType: 'json',
+     data: {task:JSON.stringify(jsobj)}
+    })
+    .done(function( result ) {
+	if(result == "success")
+		{
+			alert("Updated Successfully");
+			var t = "li"+cadreNotes;
+			$("#"+t).remove();
+		}else
+		{
+			alert("Error Occured.Please try again later...");
+		}
+     });
+	}
+}
+/* function updateCadreNotesAllInfrmation(){ 
+var notesId = $("#hiddencadreNotesId").val(); 
+var notes = $(".jqte_editor").html();
+var jObj={
+		notesId:notesId,
+		notes:notes
+	};
+	$.ajax({
+	  type:'POST',
+	  url: 'updateCadreNotesInfrmationAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jObj)},
+	  }).done(function(result){
+			if(result != null){
+				if(result.message == "Success"){
+					$("#errorUpCallId").html("Notes Data Updation Successfully Executed..");
+					$(".jqte_editor").html('');
+					$("#errorUpCallId").html("");
+				}else{
+					$("#errorUpCallId").html("Error Occured Try agian..");
+				} 
+			}
+	  });
+} */
+var globalPrimaryId = 0;
+$(document).on("click",".editIconCls",function(){
+	var newNotes = $(this).attr("attr_div"); 
+	var id = $(this).attr("attr_id");
+	var name = $("#"+newNotes).html();
+	$(".jqte_editor").jqteVal(name);
+	globalPrimaryId = id;
+	$("#updateButnId").show();
+	$("#updateNotesButtonId").hide();
+});

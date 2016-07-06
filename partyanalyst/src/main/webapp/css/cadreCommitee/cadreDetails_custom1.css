@@ -1398,3 +1398,77 @@ table.gridtable td {
     padding:8px;
   }
 }
+.apptStatusTracking {
+    border-left: 2px solid #ccc;
+    padding: 0;
+    position: relative;
+}
+.apptStatusTracking li {
+    list-style: outside none none;
+	position: relative;
+    margin-left: 22px;
+    margin-top: 3px;
+}
+.apptStatusTracking li::before {
+    background: #ccc none repeat scroll 0 0;
+    border-radius: 50%;
+    content: " ";
+    display: block;
+    height: 15px;
+    left: -31px;
+    margin-top: 9px;
+    position: absolute;
+    width: 15px;
+}
+.arrow_box_left {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    padding: 8px;
+    position: relative;
+}
+.arrow_box_left::after, .arrow_box_left::before {
+    border: medium solid transparent;
+    content: " ";
+    height: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 100%;
+    top: 15px;
+    width: 0;
+}
+.arrow_box_left::after {
+    border-color: rgba(221, 221, 221, 0) #fff rgba(221, 221, 221, 0) rgba(221, 221, 221, 0);
+    border-width: 10px;
+    margin-top: -10px;
+}
+.arrow_box_left::before {
+    border-color: rgba(221, 221, 221, 0) #ccc rgba(221, 221, 221, 0) rgba(221, 221, 221, 0);
+    border-width: 11px;
+    margin-top: -11px;
+}
+.removeIconCls
+{
+	position:absolute;
+	right:-3px;
+	top:-3px;
+	cursor:pointer;
+	padding:3px;
+	background:#ccc;
+	color:#666;
+	z-index:99;
+	border-radius:50%;
+	font-size:12px;
+}
+.editIconCls
+{
+	position:absolute;
+	right:16px;
+	top:-3px;
+	cursor:pointer;
+	padding:3px;
+	background:#ccc;
+	color:#666;
+	z-index:99;
+	border-radius:50%;
+	font-size:12px;
+}

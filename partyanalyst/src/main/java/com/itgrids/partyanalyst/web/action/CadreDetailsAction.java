@@ -103,6 +103,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private MobileDetailsVO mobileDetailsVO;
 	private List<ActivityVO> activityVOList;
 	private ResultStatus resultStatus;
+	private String status;
 	private IdNameVO idNameVO;
 	List<MahanaduEventVO> mahanaduEventVOList ;
 	
@@ -120,6 +121,12 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		this.mahanaduEventVOList = mahanaduEventVOList;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -1424,6 +1431,7 @@ public String savePublicRepresentativeType(){
 	}
 
 
+
 public String getAllImportantLeadersTypes(){
 	try{
 		jObj=new JSONObject(getTask());
@@ -1514,4 +1522,74 @@ public String getLocations(){
 		}
 		return Action.SUCCESS;
 	}
+public String saveCadreInformationDetails(){
+	
+	try{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		jObj = new JSONObject(getTask());
+		Long tdpCadreId = jObj.getLong("tdpCadreId");
+		String notes = jObj.getString("notes");
+		Long userId = regVO.getRegistrationID();
+		Long primaryTdpCadrenotesId = jObj.getLong("globalPrimaryId");
+		resultStatus = cadreDetailsService.saveCadreNotesInformationDetails(tdpCadreId,notes,userId,primaryTdpCadrenotesId);
+	}catch(Exception e){
+		LOG.error("Exception Occured in savecadreInformationDetails() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+public String getCadreInformationDetails(){
+	
+	try{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		jObj = new JSONObject(getTask());
+		Long tdpCadreId = jObj.getLong("tdpCadreId");
+		Integer startIndex = jObj.getInt("startIndex");
+		Integer maxIndex = jObj.getInt("maxIndex");
+		Long userId = regVO.getRegistrationID(); 
+		basicVoList = cadreDetailsService.getcadreNotesInformationDetails(tdpCadreId,startIndex,maxIndex,userId);
+	}catch(Exception e){
+		LOG.error("Exception Occured in getcadreInformationDetails() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+public String deleteCadreNotesData()
+{
+	try
+	{
+		jObj = new JSONObject(getTask());
+		Long cadreNotes = jObj.getLong("cadreNotes");
+		status = cadreDetailsService.deleteCadreNotesData(cadreNotes);
+		
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in deleteCadreNotesData() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
+public String updateCadreNotesInfrmationAction()
+{
+	try
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		jObj = new JSONObject(getTask());
+		Long notesId = jObj.getLong("notesId");
+		String notes = jObj.getString("notes");
+		Long  UserId = regVO.getRegistrationID();
+		resultStatus = cadreDetailsService.updateCadreNotesInfrmationAllDetails(notesId,notes,UserId);
+		
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in deleteCadreNotesData() in CadreDetailsAction ",e);
+	}
+	return Action.SUCCESS;
+}
 }

@@ -908,6 +908,7 @@
 				    <value>com.itgrids.partyanalyst.model.CallSupportType</value>
 				    <value>com.itgrids.partyanalyst.model.CallPurpose</value>
 				    <value>com.itgrids.partyanalyst.model.CallStatus</value>
+				     <value>com.itgrids.partyanalyst.model.TdpCadreNotes</value>
 				 </list>
 			
 		</property>
