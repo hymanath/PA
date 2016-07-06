@@ -1015,12 +1015,10 @@ public class SchedulerService implements ISchedulerService{
 			String dt = sdf1.format(new Date());
 			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
 			String folderCreation = commonMethodsUtilService.createFolder(staticPath);
-			System.out.println("folder created"+folderCreation);
 			staticPath = staticPath + "reports";
 			String folderCreation1 = commonMethodsUtilService.createFolder(staticPath);
 			staticPath = staticPath + "\\" + emailVo.getDate();
 			String folderCreation2 = commonMethodsUtilService.createFolder(staticPath);
-			System.out.println("folder created"+folderCreation1);
 			
 			Date currentDate = dateUtilService.getCurrentDateAndTime();
 			String currentDateString = sdf.format(currentDate);
@@ -1542,8 +1540,6 @@ public class SchedulerService implements ISchedulerService{
 			
 			message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress("kamalakar@itgrids.com"));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhinlenka@gmail.com"));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("1985swadhin@gmail.com"));   
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));  
 			message.setHeader("Return-Path", IConstants.EMAIL_USERNAME);
 			message.setSentDate(dateUtilService.getCurrentDateAndTime());
