@@ -37,4 +37,5 @@ public interface IMailService {
 	
 	public ResultStatus sendEmailToMobileAppUserForAuthorisationAccessKey(String userName,String email);
 	public ResultStatus sendEmailStatusForJob(String content);
+	public Session getNewSessionObject(String host);
 }
