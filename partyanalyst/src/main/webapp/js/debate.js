@@ -300,6 +300,9 @@ function addAttribute(type){
             color: "white",
             width: 500
         });
+	if($("#dialogueBoxDiv").find(".ui-dialog-titlebar-close")){
+		$(".ui-dialog-titlebar-close").html("<sup style='top:0px;'>X</sup>");
+	}
 }
 
 function insertAttribtDetails(id){
@@ -616,6 +619,9 @@ $("#participantInnerDiv1").append(str);
 	}).multiselectfilter({    
 	});
 
+	$('.participntRoles').keypress(function (event) {
+            return isNumberAndDecimal(event, this)
+        });
 	
 	
 }
@@ -1694,6 +1700,9 @@ function createNewCandidate(listId,party,id){
 	
    //getPartiesList("partySelectNewList",null);
    //getDesignationList("designationsList");   
+   if($("#createCandidateDiv").find(".ui-dialog-titlebar-close")){
+	   $(".ui-dialog-titlebar-close").html("<sup style='top:0px;'>X</sup>");
+   }
 
 }
 	
@@ -3036,3 +3045,21 @@ function onlyAlphabets(e, t) {
                 alert(err.Description);
             }
         }
+		
+		
+	// THE SCRIPT THAT CHECKS IF THE KEY PRESSED IS A NUMERIC OR DECIMAL VALUE.
+    function isNumberAndDecimal(evt, element) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (
+            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
+            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+            (charCode != 8 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+            (charCode < 48 || charCode > 57)){
+				 return false;
+			}
+           
+
+        return true;
+    } 
