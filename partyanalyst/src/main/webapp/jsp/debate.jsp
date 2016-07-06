@@ -51,9 +51,10 @@
 		
 	
 <!-- JQuery files (Start) -->
-	<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
-	<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
+	<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>	
 	<script src="debate/js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
+	<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
+	
 	<script src="debate/js/jquery-ui-themes-1.10.3.js"></script>
 	<script src="debate/js/jquery-ui-timepicker-addon.js"></script>
 	<script src="debate/js/jquery-ui-sliderAccess.js"></script>
@@ -192,7 +193,7 @@ $( document ).ready(function() {
 		}).multiselectfilter({    
 		});
 	$("#createCandidateId").live("click",function(){
-				
+		
 		$("#errorMsgDiv").html('');
 		//var partyId = $("#partySelectNewList").val();
 		var candidateName = $.trim($("#newCandidateName").val());
