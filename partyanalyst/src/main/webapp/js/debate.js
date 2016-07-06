@@ -898,10 +898,21 @@ function buildSmsPoleDetails(myResults)
 				str += '<td>'+myResults[i].url+'</td>';
 				str += '<td>'+myResults[i].partno+'</td>';
 				str += '<td>'+myResults[i].name+'</td>';
-				for(var j in myResults[i].selectOptionsList)
-				{
-					str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+				if(myResults[i].selectOptionsList.length>1 && myResults[i].selectOptionsList.length<=2){
+						for(var j in myResults[i].selectOptionsList)
+						{
+							str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+						}
+				}else if(myResults[i].selectOptionsList.length==1){
+					str += '<td>'+myResults[i].selectOptionsList[0].perc+'</td>';
+					str += '<td>0</td>';
+				}else{
+					for(var j in myResults[i].selectOptionsList)
+						{
+							str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+						}
 				}
+			
 				str += '</tr>';
 			}
 			
