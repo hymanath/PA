@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -21,10 +23,10 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
+import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
@@ -9102,8 +9104,10 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 	}
 	
 	for (ActivityVO vo : returnList) 
-		if(!activitiesMap.keySet().contains(vo.getActivityScopeId()))
+		if(!activitiesMap.keySet().contains(vo.getActivityScopeId())){
+			vo.setConductedDate("Not Conducted");
 			activitiesMap.put(vo.getActivityScopeId(), vo);
+		}
 	
 	List<Object[]> invittes = activityInviteeDAO.getActivityScopeAndLevels(cadreId,activityLevelId);
 	if(invittes != null && invittes.size() >0){
@@ -9218,7 +9222,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 					}
 					else if(activeCode.equalsIgnoreCase("hnc")) // has not conducted
 					{
-						if(vo.getAttributeId() != null && vo.getAttributeId() != 2L && vo.getAttendedCount() == null )
+						if(vo.getAttributeId() != null && vo.getAttributeId() != 2L && (vo.getConductedDate() == null || vo.getConductedDate().trim().equalsIgnoreCase("Not Conducted")))
 							finalList.add(vo);
 					}
 					
@@ -9235,6 +9239,15 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				
 				
 			}
+	if(commonMethodsUtilService.isListOrSetValid(finalList))
+		Collections.sort(finalList, new Comparator<ActivityVO>() {
+			public int compare(ActivityVO o1, ActivityVO o2) {
+				if(o2.getActivityTypeId() != null && o1.getActivityTypeId() != null)
+					return o2.getActivityTypeId().compareTo(o1.getActivityTypeId());
+				else
+					return 0;
+			}
+		});
 	
 	}catch (Exception e) {
 		LOG.error("Exception raised in getCandateActivityAttendance  method in CadreDetailsService.",e);
