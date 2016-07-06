@@ -903,7 +903,13 @@
 					<value>com.itgrids.partyanalyst.model.AlertTrackingAction</value>
 					
 				   <!-- debate End-->
-				    
+				   <!-- employee attendance report start-->
+				   <value>com.itgrids.partyanalyst.model.PartyOffice</value>
+				   <value>com.itgrids.partyanalyst.model.Employee</value>
+				   <value>com.itgrids.partyanalyst.model.Department</value>
+				   <value>com.itgrids.partyanalyst.model.EmployeeDepartment</value>
+				   <value>com.itgrids.partyanalyst.model.EmployeeWorkLocation</value>
+				   <!-- employee attendance report end-->
 				    <value>com.itgrids.partyanalyst.model.CadreCallingFeedback</value>
 				    <value>com.itgrids.partyanalyst.model.CallSupportType</value>
 				    <value>com.itgrids.partyanalyst.model.CallPurpose</value>

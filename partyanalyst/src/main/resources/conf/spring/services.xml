@@ -1359,24 +1359,16 @@
     	<property name="cronExpression" value="0 0 14 * * ?" />
 	</bean>
 	<!-- swadhin -->
-	<bean name="everyMinuteBatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean name="everyDayBatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
-	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendance" />
+	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendance" /> 
 	</bean> 
 	
-	<bean name="cronTriggerForEveryMinuteJobEmployeeAttendance" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    	<property name="jobDetail" ref="everyMinuteBatchJobForEmployeeAttendance" />
-    	<property name="cronExpression" value="0 0/2 *  * * ?" /> 
+	<bean name="cronTriggerForEveryDayJobEmployeeAttendance" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayBatchJobForEmployeeAttendance" />
+    	<property name="cronExpression" value="0 30 20  * * ?" />     
 	</bean>
-	<bean name="everyMinuteBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  		<property name="targetObject" ref="scheduler" />
-	  	<property name="targetMethod" value="runTheJobForEveryMinute" />
-	</bean>   
-	  
-	<bean name="cronTriggerForEveryMinuteJob" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    	<property name="jobDetail" ref="everyMinuteBatchJob" />
-    	<property name="cronExpression" value="0 0/2 *  * * ?" />
-	</bean>
+	
 	<!-- swadhin -->
 	
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -1587,8 +1579,7 @@
 			<!-- <ref bean="mahanaduEventInfo" /> -->
 			<ref bean="mahanaduVisitInfoTrig" />
 			<ref bean="updateTrainingCampSpeakers" />
-			<ref bean="cronTriggerForEveryMinuteJob" />
-			<ref bean="cronTriggerForEveryMinuteJobEmployeeAttendance" />
+			<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />
 			<!-- <ref bean="mahanaduEventPdfReport" /> swadhin-->
 			
 			<!--  <ref bean="insertTriggerForEveryDayChangeApptStatus" /> -->
@@ -2708,8 +2699,8 @@
 		 <property name="activityService" ref="activityService" />
 		 <property name="importantLeadersTypeDAO" ref="importantLeadersTypeDAO" />
 		 <property name="voterInfoDAO" ref="voterInfoDAO"/>
-		    <property name="tdpCadreNotesDAO" ref="tdpCadreNotesDAO" />
-		     <property name="employeeDepartmentDAO" ref="employeeDepartmentDAO" />
+		 <property name="tdpCadreNotesDAO" ref="tdpCadreNotesDAO" />
+		 <property name="employeeDepartmentDAO" ref="employeeDepartmentDAO" />
 		    
 	</bean>
 	
