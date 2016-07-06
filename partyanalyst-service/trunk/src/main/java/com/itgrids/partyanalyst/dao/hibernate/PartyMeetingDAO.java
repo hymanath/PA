@@ -643,7 +643,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 						queryStr.append(", LEB.localElectionBodyId, concat(LEB.name,' ', LEB.electionType.electionType ) ,C.name,model.startDate from PartyMeeting model ," +
 								"   Constituency C left join C.localElectionBody  LEB   where  model.locationValue = C.constituencyId ");
 						
-						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.partyMeetingTypeId = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+" ");
+						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.partyMeetingTypeId = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+" ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
 					{
@@ -727,7 +727,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					}
 					else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+" ");
+						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+" ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
 					{
@@ -790,7 +790,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					}
 					else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+" ");
+						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+" ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
 					{
