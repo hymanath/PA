@@ -961,8 +961,8 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
             </div>
         </div>
 		</c:if>
-		<div class="row">
-			<div class="col-md-12">
+		<div class="row" style="display:none;">
+			<div class="col-md-12 "  style="display:none;">
 				<div class="panel panel-default">
 					<div class="panel-heading locWiseEvnAtnCls">
 						<h4 class="panel-title"> <i class="glyphicons glyphicons-group"> </i>&nbsp;&nbsp;&nbsp;
