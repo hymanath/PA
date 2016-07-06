@@ -43,7 +43,6 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IEmployeeDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
@@ -90,7 +89,6 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
-import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -1442,8 +1440,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreDetailsVO.setVoterIdCardNo(cadreFormalDetails[37] !=null ? cadreFormalDetails[37].toString() : "");
 						cadreDetailsVO.setVoterId(cadreFormalDetails[36] !=null ? cadreFormalDetails[36].toString() :"" );
 					}
-					if(cadreDetailsVO.getPanchayatId() == null || cadreDetailsVO.getPanchayatId().longValue() == 0L)
+					if(cadreDetailsVO.getPanchayatId() == null || cadreDetailsVO.getPanchayatId().longValue() == 0L){
 						cadreDetailsVO.setPanchayatId(cadreFormalDetails[33] !=null ? Long.parseLong(cadreFormalDetails[33].toString()) :0l);
+						cadreDetailsVO.setWardName(cadreFormalDetails[34] !=null ? cadreFormalDetails[34].toString() :"");
+						cadreDetailsVO.setWardId(cadreFormalDetails[33] !=null ? Long.parseLong(cadreFormalDetails[33].toString()) :0l);
+					}
 					
 					List<Object[]> pList = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(cadreDetailsVO.getConstituencyId(),2009L);
 					if(pList != null && pList.size()>0){
