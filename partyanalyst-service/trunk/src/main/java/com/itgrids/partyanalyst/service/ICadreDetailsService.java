@@ -113,4 +113,8 @@ public interface ICadreDetailsService {
 	public BasicVO getStartDateAndEndDate(Long eventId);
 	public List<IdNameVO> getMainEvents();
 	public Long getTotalVotersInALocation(Long locationId,String locationType,Long publicationId,Long constituencyId);
+	public List<BasicVO> getcadreNotesInformationDetails(Long tdpCadreId,Integer startIndex,Integer maxIndex,Long userId);
+	public ResultStatus saveCadreNotesInformationDetails(Long tdpCadreId,String notes,Long userId,Long primaryTdpCadrenotesId);
+	public String deleteCadreNotesData(Long cadreNotes);
+	public ResultStatus updateCadreNotesInfrmationAllDetails(Long notesId,String notes,Long UserId);
 }
