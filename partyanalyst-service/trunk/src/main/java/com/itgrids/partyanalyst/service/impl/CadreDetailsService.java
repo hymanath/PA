@@ -76,6 +76,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreNotesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -88,6 +89,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
+import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -122,6 +124,7 @@ import com.itgrids.partyanalyst.model.ImportantLeaders;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.StudentAddress;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCadreNotes;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -210,12 +213,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private TransactionTemplate transactionTemplate = null;
 	private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private ITdpCadreNotesDAO tdpCadreNotesDAO;
+	
 	private IImportantLeadersDAO importantLeadersDAO;
 	private IActivityService activityService;
 	private IImportantLeadersTypeDAO importantLeadersTypeDAO;
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	private IVoterInfoDAO voterInfoDAO;
 	
+	public ITdpCadreNotesDAO getTdpCadreNotesDAO() {
+		return tdpCadreNotesDAO;
+	}
+
+	public void setTdpCadreNotesDAO(ITdpCadreNotesDAO tdpCadreNotesDAO) {
+		this.tdpCadreNotesDAO = tdpCadreNotesDAO;
+	}
 	public IImportantLeadersTypeDAO getImportantLeadersTypeDAO() {
 		return importantLeadersTypeDAO;
 	}
@@ -9177,15 +9189,14 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				//	vo.setConductedDate(conducteDateStr);
 				//else
 					vo.setConductedDate("Conducted");
-					
-				//returnList.add(vo);
-			//}
+				returnList.add(vo);
+			}
 			
 			//"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId"
 			//select distinct model.activityScope.activityScopeId,model.activityScope.activity.activityName, model.activityScope.activityLevel.activityLevelId,
 			//model.activityScope.activityLevel.level,model.activityScope.activity.activityId
 		}
-	}
+	
 		 
 		if(commonMethodsUtilService.isMapValid(activitiesMap))
 			for (Long activityScopeId : activitiesMap.keySet()) {
@@ -9359,6 +9370,7 @@ public List<IdNameVO> getAllPublicRepresentatives(){
 		}
 		return finalList;
 	}
+
 
 
 public List<IdNameVO> getAllImportantLeadersTypes(){
@@ -9843,5 +9855,112 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 }
 	return basicVo;
 }
+
+public ResultStatus saveCadreNotesInformationDetails(final Long tdpCadreId,final String notes,final Long userId,final Long primaryTdpCadrenotesId){
+		LOG.info("Entered into the saveCadreNotesInformationDetails service method");
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+				ResultStatus resultStatus = new ResultStatus();
+			if(primaryTdpCadrenotesId==0L){
+				TdpCadreNotes tdpCadreNotes = new TdpCadreNotes();
+				tdpCadreNotes.setTdpCadreId(tdpCadreId);
+				tdpCadreNotes.setNotes(notes);
+				tdpCadreNotes.setInsertedBy(userId);
+				tdpCadreNotes.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				tdpCadreNotes.setIsDeleted("false");
+				tdpCadreNotesDAO.save(tdpCadreNotes);
+			}
+			else {
+				//tdpCadreNotesDAO.updateCadreNotesAllData(primaryTdpCadrenotesId);
+				TdpCadreNotes existingTdpCadreNotes = tdpCadreNotesDAO.get(primaryTdpCadrenotesId);
+				existingTdpCadreNotes.setIsDeleted("true");
+				
+				tdpCadreNotesDAO.save(existingTdpCadreNotes);
+				
+				TdpCadreNotes tdpCadNotes = new TdpCadreNotes();
+				tdpCadNotes.setTdpCadreId(tdpCadreId);
+				tdpCadNotes.setNotes(notes);
+				tdpCadNotes.setInsertedBy(userId);
+				tdpCadNotes.setInsertedTime(existingTdpCadreNotes.getInsertedTime());
+				tdpCadNotes.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				tdpCadNotes.setParentTdpCadreNotesId(primaryTdpCadrenotesId);
+				tdpCadNotes.setIsDeleted("false");
+				tdpCadreNotesDAO.save(tdpCadNotes);
+			}
+		}
+				
+		});
+			resultStatus.setMessage("Success");	
+			
+		} catch (Exception e) {
+			LOG.info("Entered into the saveCadreNotesInformationDetails service method");
+			resultStatus.setMessage("Error");
+		}
+		return resultStatus;
+		
+	}
+public List<BasicVO> getcadreNotesInformationDetails(Long tdpCadreId,Integer startIndex,Integer maxIndex,Long userId){
+	List<BasicVO> finalList = new ArrayList<BasicVO>();
+	try{
+		Long totalNotes = tdpCadreNotesDAO.getTotalCadreNotesInformation(tdpCadreId);
+		List<Object[]> notesInfoList = tdpCadreNotesDAO.getCadreNotesInformation(tdpCadreId, startIndex, maxIndex,userId);
+		if(commonMethodsUtilService.isListOrSetValid(notesInfoList)){
+			for (Object[] obj : notesInfoList) {
+				BasicVO VO = new BasicVO();
+				VO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				VO.setCasteName(commonMethodsUtilService.getStringValueForObject(obj[2]));//userName
+				VO.setPersent(commonMethodsUtilService.getStringValueForObject(obj[3]));//insertedTime
+				VO.setAliancedWith(commonMethodsUtilService.getStringValueForObject(obj[4]));//upatedTime
+				finalList.add(VO);
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				BasicVO vo = finalList.get(0);
+				if(vo != null)
+					vo.setTotalVoters(totalNotes);
+			}
+		}			
+	}catch (Exception e) {
+		Log.error("Exception Occured in getcadreNotesInformationDetails method in ActivityService ",e);
+	}
+	return finalList;
+}
+public String deleteCadreNotesData(Long cadreNotes)
+{
+	   try
+	   {
+		   tdpCadreNotesDAO.updateCadreNotesInformationData(cadreNotes);
+	   }catch(Exception e)
+	   {
+		   e.printStackTrace();
+		   return "error";
+	   }
+	   return "success";
 }
 
+public ResultStatus updateCadreNotesInfrmationAllDetails(Long notesId,String notes,Long UserId){
+	LOG.info("Entered into the updateCallerFeedBackDetailsForCadre service method");
+	ResultStatus resultStatus = new ResultStatus();
+	try {
+		tdpCadreNotesDAO.updateCadreNotesInformationData(notesId);
+		
+		TdpCadreNotes TCN = new TdpCadreNotes();
+		TCN.setTdpCadreId(notesId);
+		TCN.setNotes(notes);
+		TCN.setInsertedBy(UserId);
+		TCN.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		TCN.setIsDeleted("false");
+		tdpCadreNotesDAO.save(TCN);
+		resultStatus.setMessage("Success");
+	} catch (Exception e) {
+		LOG.info("Entered into the updateCallerFeedBackDetailsForCadre service method");
+		resultStatus.setMessage("Error");
+	}
+	return resultStatus;
+	
+}
+
+}
