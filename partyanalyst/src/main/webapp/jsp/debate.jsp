@@ -693,7 +693,7 @@ window.location.href = uri + base64(format(template, ctx))
 		<div id="createCandidateDiv" style="display:none;">
 				
 				<div id="errorMsgDiv"></div>
-				<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& And Alphanumeric charactors.
+				<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& And Alphanumeric characters.
 				</div>
 				<table style="margin-top: 24px;"><tr>
 				<td> Party Name </td>
