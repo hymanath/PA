@@ -709,7 +709,8 @@ footer
 					</li>
 				</c:if>	
 				
-				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) }">
 					<li>
                         <a href="debateAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Debate</span></a>
                     </li>

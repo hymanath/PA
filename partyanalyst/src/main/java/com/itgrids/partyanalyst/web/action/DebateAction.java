@@ -1048,7 +1048,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			debateParticipantRoleList = debateService.getDebateParticipantRoleDetails();
 			characteristicsList = debateService.getCharacteristicsDetails();
 			rolesList = debateService.getRolesList();
-			channelList.add(new SelectOptionVO(0l,"Select Channel"));
+			//channelList.add(new SelectOptionVO(0l,"Select Channel"));
 			telecastTimeList.add(new SelectOptionVO(0l,"Select Telecast Time"));
 			observerList.add(new SelectOptionVO(0l,"Select Observer"));
 			//partiesList.add(new SelectOptionVO(0l,"Select Party"));
