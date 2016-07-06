@@ -84,7 +84,7 @@
 <div id="createCandidateDiv" style="display:none;">
 				
 	<div id="errorMsgDiv"></div>
-	<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& Special charactors.
+	<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& And Alphanumeric charactors.
 	</div>
 	<table style="margin-top: 24px;"><tr>
 	<td> Party Name </td>
@@ -92,7 +92,7 @@
 	</select></td></tr>
 
 	<tr><td>Candidate Name</td>
-	<td><input type="text" id="newCandidateName"/></td></tr>
+	<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td></tr>
 	</table>
 	<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
 
@@ -135,10 +135,10 @@ $( document ).ready(function() {
 		$("#errorMsgDiv").html('');
 		var candidateName = $.trim($("#newCandidateName").val());
 		candidteName = $.trim($("#newCandidateName").val());
-		if(isValid(candidateName)){
+		/* if(isValid(candidateName)){
 			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special charactors</b>');
 			return false;
-		}
+		} */
 	  
 		if(candidateName.length == 0)
 		{
