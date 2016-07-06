@@ -2945,7 +2945,12 @@
 	<bean id="alertImpactDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertImpactDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="employeeWorkLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.EmployeeWorkLocationDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="employeeDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.EmployeeDepartmentDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="casteCategoryEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteCategoryEventInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
