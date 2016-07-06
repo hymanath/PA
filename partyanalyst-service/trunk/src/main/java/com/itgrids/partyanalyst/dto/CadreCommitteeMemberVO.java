@@ -131,8 +131,22 @@ public class CadreCommitteeMemberVO {
 	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap2 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
 	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap3 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
 	private String wName;
+	private Long wardId;
+	private String wardName;
 	
 	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
 	public String getwName() {
 		return wName;
 	}
