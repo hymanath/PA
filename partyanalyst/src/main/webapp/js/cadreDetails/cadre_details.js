@@ -1360,6 +1360,11 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		 var pixelWidth = (100 / graphCount) ;
 		 $(".performanceGraph li").css("width",pixelWidth+'%');
 	 }
+	 if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		$("#cadreEnrolementParticepateStatusId").attr("title","PARTICIPATED CONSTITUENCY");   
+	}else{
+		$("#cadreEnrolementParticepateStatusId").attr("title","OWN CONSTITUENCY");
+	}
 	 
 }
 
@@ -2897,6 +2902,11 @@ function getDeathsAndHospitalizationDetails(){
 			
 			$("#deathHospitalDivId").html(str);
 		});
+		if(participatedConstituencyId != null && participatedConstituencyId > 0){
+			$("#deathAndHospitalParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+		}else{
+			$("#deathAndHospitalParticepationId").attr("title","OWN CONSTITUENCY");
+		}
 }
 
 $(document).on("click",".tdpCandidatePageCls",function(){
@@ -5894,6 +5904,11 @@ var str='';
           str+='</div>';
        $("#dataLoadingsImgForStatusCount").hide();
       $("#statusCountsMainDivId").html(str);
+	  if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		$("#grievanceRequestParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+	}else{
+		$("#grievanceRequestParticepationId").attr("title","OWN CONSTITUENCY");
+	}
 }
 
 $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
@@ -6364,6 +6379,11 @@ function buildGrievanceAmountDetails(result){
 	
 	$("#dataLoadingsImgForGrievanceRequests").hide();
 	$("#grievanceRequestsId").html(str);
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		$("#grievanceBenefitParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+	}else{
+		$("#grievanceBenefitParticepationId").attr("title","OWN CONSTITUENCY");
+	}
 }
 
 $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
@@ -6587,10 +6607,15 @@ function buildGrievanceRequests(result)
 				str+='</tr>';
 			str+='</tbody>';
 			str+='</table>';
-		str+='</div>';
+		str+='</div>';  
 		str+='</div>';
 	  str+='</div>';
 	$("#grievanceRequestsId").html(str)
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		$("#grievanceBenefitParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+	}else{
+		$("#grievanceBenefitParticepationId").attr("title","OWN CONSTITUENCY");
+	}
 }
 $(document).on("click",".CloseIcon",function(){
 	$("#mobileDetailsDivId,.changeIcon").hide();
