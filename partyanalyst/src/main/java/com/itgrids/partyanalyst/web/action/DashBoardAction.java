@@ -542,7 +542,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
 		List<String> entitlements = null;
-		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			if(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim())){
 				return "bloodBankRegistration";
