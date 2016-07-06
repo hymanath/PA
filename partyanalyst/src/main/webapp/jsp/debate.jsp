@@ -192,16 +192,16 @@ $( document ).ready(function() {
 		}).multiselectfilter({    
 		});
 	$("#createCandidateId").live("click",function(){
-		
+				
 		$("#errorMsgDiv").html('');
 		//var partyId = $("#partySelectNewList").val();
 		var candidateName = $.trim($("#newCandidateName").val());
 		//var designationId = $("#designationsList").val();
 		candidteName = $.trim($("#newCandidateName").val());
-		if(isValid(candidateName)){
+		/* if(isValid(candidateName)){
 			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special characters</b>');
 			return false;
-		}
+		} */
 	   /* if(partyId == 0)
 		{
 		  $("#errorMsgDiv").html("Please Select Party");
@@ -692,7 +692,7 @@ window.location.href = uri + base64(format(template, ctx))
 		<div id="createCandidateDiv" style="display:none;">
 				
 				<div id="errorMsgDiv"></div>
-				<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& Special charactors.
+				<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& And Alphanumeric charactors.
 				</div>
 				<table style="margin-top: 24px;"><tr>
 				<td> Party Name </td>
@@ -700,7 +700,7 @@ window.location.href = uri + base64(format(template, ctx))
 				</select></td></tr>
 
 				<tr><td>Candidate Name</td>
-				<td><input type="text" id="newCandidateName"/></td></tr>
+				<td><input type="text" id="newCandidateName" onkeypress="return onlyAlphabets(event,this);"/></td></tr>
 				
 				</table>
 				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
