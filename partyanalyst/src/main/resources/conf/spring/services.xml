@@ -3243,6 +3243,7 @@
 	<property name="alertStatusDAO" ref="alertStatusDAO"></property>
 	<property name="alertTrackingDAO" ref="alertTrackingDAO"></property>
 	<property name="alertCommentDAO" ref="alertCommentDAO"></property>
+	<property name="alertTypeDAO" ref="alertTypeDAO"></property>
 	</bean>
 	<!-- Debate End -->
 </beans>		
