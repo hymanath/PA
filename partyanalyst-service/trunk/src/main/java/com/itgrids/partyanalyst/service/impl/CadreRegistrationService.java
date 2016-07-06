@@ -10438,6 +10438,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  Long boothId = booth != null ? booth.getBoothId():null;
 					  Long voterId = 0L;
 					  String houseNo = null;
+					  boolean isFamilyVoterId = false;
 					  if(tdpCadre.getVoter() != null)
 					  {
 						  houseNo  = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getHouseNo():"";
@@ -10447,6 +10448,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  {
 						  houseNo  = tdpCadre.getFamilyVoter() != null ? tdpCadre.getFamilyVoter().getHouseNo():"";
 						  voterId = tdpCadre.getFamilyVoterId();
+						  isFamilyVoterId  =true;
 					  }
 						if((houseNo != null && houseNo.toString().trim().length()>0) && (boothId != null && boothId.longValue() >0L))
 						{
@@ -10459,7 +10461,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								{
 									Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
 									
-									if( familyVoterID.longValue() != voterId.longValue())
+									if((familyVoterID.longValue() != voterId.longValue()) || (isFamilyVoterId))
 									{
 										TdpCadreFamilyDetailsVO fmilyVO = new TdpCadreFamilyDetailsVO();
 										fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
