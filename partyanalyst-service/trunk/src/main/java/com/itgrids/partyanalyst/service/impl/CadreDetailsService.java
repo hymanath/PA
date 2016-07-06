@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IEmployeeDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
@@ -214,6 +215,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ITdpCadreNotesDAO tdpCadreNotesDAO;
+	private IEmployeeDepartmentDAO employeeDepartmentDAO;
 	
 	private IImportantLeadersDAO importantLeadersDAO;
 	private IActivityService activityService;
@@ -850,6 +852,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
+	}
+	public IEmployeeDepartmentDAO getEmployeeDepartmentDAO() {
+		return employeeDepartmentDAO;
+	}
+
+	public void setEmployeeDepartmentDAO(
+			IEmployeeDepartmentDAO employeeDepartmentDAO) {
+		this.employeeDepartmentDAO = employeeDepartmentDAO;
 	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
@@ -1495,6 +1505,27 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 }
 				 }
 				
+				 
+				 //swadhin
+				List<Object[]> getEmployeeDetails = employeeDepartmentDAO.getEmployeeDetails(cadreId);
+				// System.out.println(getEmployeeDetails);
+				 if(commonMethodsUtilService.isListOrSetValid(getEmployeeDetails)){
+					 String partyPostion ="";
+					 for (int i = 0; i < getEmployeeDetails.size(); i++) {
+						 Object[] param = getEmployeeDetails.get(i);
+						if(i==0)
+							 partyPostion = " Employee ("+commonMethodsUtilService.getStringValueForObject(param[1])+")";
+						else
+							 partyPostion = partyPostion+" ,Employee ("+commonMethodsUtilService.getStringValueForObject(param[1])+")";
+					}
+					 
+					 if(cadreDetailsVO.getPartyPosition() == null || cadreDetailsVO.getPartyPosition().isEmpty() || cadreDetailsVO.getPartyPosition().equalsIgnoreCase("N/A")){
+						 cadreDetailsVO.setPartyPosition(partyPostion);
+					 }
+					 else{  
+						 cadreDetailsVO.setPartyPosition(cadreDetailsVO.getPartyPosition()+", "+partyPostion);
+					 }
+				 }
 				/*Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
 				List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
 				tdpCadreIDsList.add(cadreId);
