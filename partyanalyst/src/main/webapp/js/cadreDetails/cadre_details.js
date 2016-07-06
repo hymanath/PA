@@ -4738,7 +4738,7 @@ function getActivityDetails()
 		if(result != null){
 			var str = '';
 			
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered"  style="font-size: 12px;">';
 				str+='<thead>';
 					
 					str+='<tr >';
@@ -4768,36 +4768,52 @@ function getActivityDetails()
 								var hasNotConductdtotalCount=0;
 									str+='<tr class="text-center">';
 										str+='<td style="text-align:left;">'+result.activityVoList[i].name+'</td>';
-										if(result.activityVoList[i].totalCount != null){
-											str+='<td class="activityLvlCls" attr_id="t" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+										if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount>0){
+											str+='<td class="activityLvlCls" attr_id="t" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;;text-align:center;" attr_levelId='+result.activityVoList[i].id+'><u>'+result.activityVoList[i].totalCount+'</u></td>';
 											totalCoutn = result.activityVoList[i].totalCount;
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
 										}
 										
-										if(result.activityVoList[i].hasAttendenceCount != null){
+										if(result.activityVoList[i].hasAttendenceCount != null && result.activityVoList[i].hasAttendenceCount>0){
 											hasAttendenceCount = result.activityVoList[i].hasAttendenceCount;
-											str+='<td attr_id="hat"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'> '+hasAttendenceCount+' </td>';
+											str+='<td attr_id="hat"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;;text-align:center;" attr_levelId='+result.activityVoList[i].id+'> <u>'+hasAttendenceCount+'</u> </td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
 										}	
-										if(result.activityVoList[i].attendedCount != null){
-											str+='<td attr_id="ha"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+' >'+result.activityVoList[i].attendedCount+'</td>';
+										if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount>0){
+											str+='<td attr_id="ha"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;text-align:center;" attr_levelId='+result.activityVoList[i].id+' ><u>'+result.activityVoList[i].attendedCount+'</u></td>';
 											attenddCoutn = result.activityVoList[i].attendedCount;
 											
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
 										}
 										
 										var notAttndedCount = hasAttendenceCount-attenddCoutn;
-											str+='<td attr_id="hna" class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+' >'+notAttndedCount+'</td>';
-											
-										if(result.activityVoList[i].totalCount != null){
+										if(notAttndedCount != null && notAttndedCount>0){
+											str+='<td attr_id="hna" class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;text-align:center;" attr_levelId='+result.activityVoList[i].id+' ><u>'+notAttndedCount+'</u></td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
+										}
+										if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount>0){
 											hasNotConductdtotalCount = totalCoutn - hasAttendenceCount;
-											str+='<td attr_id="hct"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'> '+hasNotConductdtotalCount+' </td>';
+											str+='<td attr_id="hct"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;;text-align:center;" attr_levelId='+result.activityVoList[i].id+'> <u>'+hasNotConductdtotalCount+' </u></td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
 										}	
 										
-										if(result.activityVoList[i].hasConductedCount != null){
+										if(result.activityVoList[i].hasConductedCount != null && result.activityVoList[i].hasConductedCount>0){
 											hasConductdCount = result.activityVoList[i].hasConductedCount;
-											str+='<td  attr_id="hc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+'>  '+hasConductdCount+'</td>';
+											str+='<td  attr_id="hc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;text-align:center;" attr_levelId='+result.activityVoList[i].id+'> <u> '+hasConductdCount+'</u></td>';
+										}else{
+											str+='<td style="text-align:center;"> - </td>';
 										}
-										
-										str+='<td  attr_id="hnc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+'> '+(hasNotConductdtotalCount-hasConductdCount)+'</td>';	
-										
+										var notcnductedCoint = (hasNotConductdtotalCount-hasConductdCount);
+										if(notcnductedCoint != null && notcnductedCoint>0){
+										str+='<td  attr_id="hnc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;text-align:center;" attr_levelId='+result.activityVoList[i].id+'> <u>'+notcnductedCoint+'</u></td>';	
+										}else{
+											str+='<td style=";text-align:center;"> - </td>';
+										}
 										/*
 										
 										
@@ -4819,7 +4835,10 @@ function getActivityDetails()
 
 $(document).on('click', '.activitLvlCls', function(){
 	var activityLevelId = $(this).attr("attr_levelId");
-	getCanditeActivtyAttendanceLocationsDtls(activityLevelId);
+	var activityScopeId = $(this).attr("attr_scope_id");
+	var statusCode = $(this).attr("attr_id");
+	$('#myModal111e').modal('show');
+	getCanditeActivtyAttendanceLocationsDtls(activityLevelId,activityScopeId,statusCode);
 	
 });
 
@@ -4856,7 +4875,7 @@ function getCandateActivityAttendance(activityLevelId,activeCode){
 			}).done(function(result){
 				$("#activityAttented").html('');
 				if(result!= null && result.length >0)
-					buildCandateActivityAttendance(result);
+					buildCandateActivityAttendance(result,activeCode,activityLevelId);
 				else
 					$("#activityAttented").html(' Candidate Not Available with any Activity.');
 				
@@ -4864,23 +4883,31 @@ function getCandateActivityAttendance(activityLevelId,activeCode){
 			});
 }
 //getCandateActivityAttendance();
-function buildCandateActivityAttendance(result){
+function buildCandateActivityAttendance(result,activeCode,activityLevelId){
+
 	var str = '';
 	str+='<div class="table-responsive">';
-	str+='<table class="table table-bordered">';
+	str+='<table class="table table-bordered" style="font-size: 12px;">';
 	str+='<thead style="background:#ccc">';
 	str+='<th>Activity level</th>';
 	str+='<th>Activity Name</th>';
-	//str+='<th>Status</th>';
-	str+='<th>Invited</th>';
-	str+='<th>Attended</th>';
-	str+='<th>Not Attended </th>';
+	str+='<th>Status</th>';
+	
+	if(activeCode== "t" || activeCode== "hat" || activeCode== "ha" || activeCode== "hna" ){
+		str+='<th>Invited</th>';
+		str+='<th>Attended</th>';
+		str+='<th>Not Attended </th>';
+	}
 	str+='</thead>';
 	str+='<tbody>';
 	for(var i in result){
 	str+='<tr>';
 	str+='<td>'+result[i].isLocation+'</td>';
-	str+='<td>'+result[i].attendendLocation+'</td>';
+	if(result[i].attributeId == 2)
+		str+='<td style="text-align:left;"> <span class="glyphicon glyphicon-thumbs-up" style="margin-right:15px;" title="Event has attendance system." ></span>'+result[i].attendendLocation+'</td>';
+	else
+		str+='<td>'+result[i].attendendLocation+'</td>';
+	str+='<td style="text-align:center;"> '+result[i].conductedDate+' </td>';
 	//if(result[i].invitteeCnt != null && result[i].invitteeCnt >0 && result[i].attendedCount != null && result[i].attendedCount>0)
 	//	str+='<td> Conducted </td>';
 	//else if(result[i].conductedDate != null && result[i].conductedDate =='Conducted')
@@ -4889,22 +4916,34 @@ function buildCandateActivityAttendance(result){
 	//	str+='<td> Conducted </td>';	
 	//else
 	//	str+='<td> - </td>';
-	if(result[i].invitteeCnt == 0){
+var invitationCount = 1;
+	if(activeCode== "t" || activeCode== "hat" || activeCode== "ha" || activeCode== "hna" ){
+		if(result[i].invitteeCnt == 0){
+			str+='<td style="text-align:center;">-</td>';
+		}else{
+			str+='<td style="text-align:center;font-weight:bold;color:green;cursor:pointer;" class="activitLvlCls" attr_scope_id="'+result[i].activityScopeId+'" attr_id="inv" attr_levelId="'+activityLevelId+'"><u>'+result[i].invitteeCnt+'</u></td>';
+		}
+		if(result[i].attendedCount == 0){
 		str+='<td style="text-align:center;">-</td>';
-	}else{
-		str+='<td style="text-align:center;">'+result[i].invitteeCnt+'</td>';
+		}else{
+			str+='<td style="text-align:center;"  class="" attr_scope_id="'+result[i].activityScopeId+'"  attr_id="att" attr_levelId="'+activityLevelId+'" >'+result[i].attendedCount+'</td>';
+		}
+		if(result[i].invitteeCnt == 0){
+			if(result[i].attributeId != null && result[i].attributeId == 2 && result[i].attendedCount <=0)
+				str+='<td style="text-align:center;"> 1 </td>';
+			else
+				str+='<td style="text-align:center;"> - </td>';
+		}
+		else if(result[i].abscentCnt == 0){
+			var count = (result[i].invitteeCnt - result[i].attendedCount);
+			if(count>0)
+				str+='<td style="text-align:center;"> '+count+'</td>';
+			else
+				str+='<td style="text-align:center;"> - </td>';
+		}else{
+			str+='<td style="text-align:center;"  class="" attr_scope_id="'+result[i].activityScopeId+'"   attr_id="abs" attr_levelId="'+activityLevelId+'">'+result[i].abscentCnt+'</td>';
+		}
 	}
-	if(result[i].attendedCount == 0){
-	str+='<td style="text-align:center;">-</td>';
-	}else{
-		str+='<td style="text-align:center;">'+result[i].attendedCount+'</td>';
-	}
-	if(result[i].abscentCnt == 0){
-	str+='<td style="text-align:center;">-</td>';
-	}else{
-		str+='<td style="text-align:center;">'+result[i].abscentCnt+'</td>';
-	}
-	
 	str+='</tr>';
 	}
 	str+='</tbody>';
