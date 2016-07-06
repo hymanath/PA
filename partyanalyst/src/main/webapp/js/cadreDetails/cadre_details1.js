@@ -322,13 +322,15 @@ Long panchayatId = jObj.getLong("panchayatId");
 		
 		*/
 //,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId
-function getCanditeActivtyAttendanceLocationsDtls(activityLevelId){
+function getCanditeActivtyAttendanceLocationsDtls(activityLevelId,activityScopeId,statusCode){
 	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
-		//alert(999);
-		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		
+		$("#activityOverViewAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 		tdpCadreId:globalCadreId,
 		activityLevelId:activityLevelId,
+		activityScopeId:activityScopeId,
+		statusCode:statusCode,
 		panchayatId: $('#cadrePanchaytId').val(),
 		mandalId:$('#cadremandalId').val(),
 		lebId:$('#cadreRuralORUrbanId').val(),
@@ -343,11 +345,11 @@ function getCanditeActivtyAttendanceLocationsDtls(activityLevelId){
 			 url: 'getCanditeActivtyAttendanceLocationsDtlsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				$("#activityAttented").html('');
+				$("#activityOverViewAttented").html('');
 				if(result!= null)
 					buildLocationsDtlsofCandateActivityAttendance(result);
 				else
-					$("#activityAttented").html(' Candidate Not Available with any Activity.');
+					$("#activityOverViewAttented").html(' Candidate Not Available with any Activity.');
 				
 				//console.log(result);
 			});
@@ -363,6 +365,7 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 	str+='<th> Activity level </th>';
 	str+='<th> Activity Name </th>';
 	str+='<th> Attended Location </th>';
+	str+='<th> Stataus  </th>';
 	str+='</thead>';
 	str+='<tbody>';
 	for(var i in result){
@@ -370,13 +373,14 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 	str+='<td>'+result[i].optionType+'</td>';
 	str+='<td>'+result[i].name+'</td>';
 	str+='<td>'+result[i].attendendLocation+' ('+result[i].conductedDate+')</td>';
+	str+='<td> Attended </td>';
 	str+='</tr>';
 	}
 	str+='</tbody>';
 	str+='</table>';
 	str+='</div>';
 	
-	$("#activityAttented").html(str);
+	$("#activityOverViewAttented").html(str);
 }
 function getCadreLocationWiseEventAttendeeCounts(locationId,locationValue,searchType,divId,index,id){
 	$("#errMsgID").hide();
