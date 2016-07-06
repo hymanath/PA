@@ -713,8 +713,10 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			jObj = new JSONObject(getTask());
 			Long cadreId = jObj.getLong("tdpCadreId");
 			Long activityLevelId = jObj.getLong("activityLevelId");
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			String statusCode = jObj.getString("statusCode");
 			
-			activityVO = activityService.getCanditeActivtyAttendanceLocationsDtls(cadreId,activityLevelId);
+			activityVO = activityService.getCanditeActivtyAttendanceLocationsDtls(cadreId,activityLevelId,activityScopeId,statusCode);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
 		}
