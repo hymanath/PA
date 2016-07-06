@@ -1225,45 +1225,47 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 			queryStr.append(" and ( ");
 		
 		if((addressVO.getPanchaytId() != null && addressVO.getPanchaytId()>0L) || (addressVO.getWardId() != null && addressVO.getWardId()>0L)){
-			queryStr.append(" 	( model.activityScope.scopeId in (6,8) and model.activityScope.scopeValue =:villageORWardId)  ");
+			queryStr.append(" 	( model.locationLevel in (6,8) and model.locationValue =:villageORWardId)  ");
 		if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L))
-			queryStr.append(" OR ( model.activityScope.scopeId in (5,7) and model.activityScope.scopeValue =:mandalORMuncId)  " );
+			queryStr.append(" OR ( model.locationLevel in (5,7) and model.locationValue =:mandalORMuncId)  " );
 		if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 3 and model.activityScope.scopeValue =:districtId )  " );
+			queryStr.append(" OR ( model.locationLevel = 11 and model.locationValue =:districtId )  " );
 		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 2 and model.activityScope.scopeValue =:stateId)  ");
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
 		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 4 and model.activityScope.scopeValue =:constituencyId)  " );
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
 		}		
 		else if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L)){
-			queryStr.append("  ( model.activityScope.scopeId = in (5,7) and model.activityScope.scopeValue =:mandalORMuncId)  " );
+			queryStr.append(" OR ( model.locationLevel in (5,7) and model.locationValue =:mandalORMuncId)  " );
 		if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 3 and model.activityScope.scopeValue =:districtId )  " );
+			queryStr.append(" OR ( model.locationLevel = 11 and model.locationValue =:districtId )  " );
 		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 2 and model.activityScope.scopeValue =:stateId)  ");
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
 		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 4 and model.activityScope.scopeValue =:constituencyId)  " );
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
 		}
 		else if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L){
-			queryStr.append("  ( model.activityScope.scopeId = 3 and model.activityScope.scopeValue =:districtId )  " );
+			queryStr.append(" OR ( model.locationLevel = 11 and model.locationValue =:districtId )  " );
 		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 2 and model.activityScope.scopeValue =:stateId)  ");
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
 		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 4 and model.activityScope.scopeValue =:constituencyId)  " );
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
 		}
 		else if(addressVO.getStateId() != null && addressVO.getStateId()>0L){
-			queryStr.append("  ( model.activityScope.scopeId = 2 and model.activityScope.scopeValue =:stateId)  ");
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
 		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
-			queryStr.append(" OR ( model.activityScope.scopeId = 4 and model.activityScope.scopeValue =:constituencyId)  " );
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
 		}
 		else if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
-			queryStr.append("  ( model.activityScope.scopeId = 4 and model.activityScope.scopeValue =:constituencyId)  " );
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
+		
 		
 		if(isLocationAvailable)
 			queryStr.append(" )   ");
 		
-		queryStr.append(" group by model.activityScope.activityScopeId");
+		//queryStr.append(" group by model.activityScope.activityScopeId");
 		Query query = getSession().createQuery(queryStr.toString());
+		
 		if((addressVO.getPanchaytId() != null && addressVO.getPanchaytId()>0L) || (addressVO.getWardId() != null && addressVO.getWardId()>0L))
 			query.setParameter("villageORWardId", (addressVO.getPanchaytId() != null && addressVO.getPanchaytId()>0L) ? addressVO.getPanchaytId() :(addressVO.getWardId() != null && addressVO.getWardId()>0L)?addressVO.getWardId():null );
 		if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L))
@@ -1333,7 +1335,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		if(isLocationAvailable)
 			queryStr.append(" ( ");
 		
-		if((addressVO.getPanchaytId() != null && addressVO.getPanchaytId()>0L) || (addressVO.getWardId() != null && addressVO.getWardId()>0L)){
+		/*if((addressVO.getPanchaytId() != null && addressVO.getPanchaytId()>0L) || (addressVO.getWardId() != null && addressVO.getWardId()>0L)){
 			queryStr.append(" 	( model.activityScope.scopeId in (6,8) and model.activityScope.scopeValue =:villageORWardId)  ");
 		if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L))
 			queryStr.append(" OR ( model.activityScope.scopeId in (5,7) and model.activityScope.scopeValue =:mandalORMuncId)  " );
@@ -1370,6 +1372,46 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		
 		if(isLocationAvailable)
 			queryStr.append(" ) and  ");
+		*/
+		
+		if((addressVO.getPanchaytId() != null && addressVO.getPanchaytId()>0L) || (addressVO.getWardId() != null && addressVO.getWardId()>0L)){
+			queryStr.append(" 	( model.locationLevel in (6,8) and model.locationValue =:villageORWardId)  ");
+		if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L))
+			queryStr.append(" OR ( model.locationLevel in (5,7) and model.locationValue =:mandalORMuncId)  " );
+		if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 11 and model.locationValue =:districtId )  " );
+		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
+		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
+		}		
+		else if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L)){
+			queryStr.append(" OR ( model.locationLevel in (5,7) and model.locationValue =:mandalORMuncId)  " );
+		if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 11 and model.locationValue =:districtId )  " );
+		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
+		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
+		}
+		else if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L){
+			queryStr.append(" OR ( model.locationLevel = 11 and model.locationValue =:districtId )  " );
+		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
+		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
+		}
+		else if(addressVO.getStateId() != null && addressVO.getStateId()>0L){
+			queryStr.append(" OR ( model.locationLevel = 10 and model.locationValue =:stateId)  ");
+		if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
+		}
+		else if(addressVO.getConstituencyId() != null && addressVO.getConstituencyId()>0L)
+			queryStr.append(" OR ( model.locationLevel = 13 and model.locationValue =:constituencyId)  " );
+		
+		if(isLocationAvailable)
+			queryStr.append(" ) and  ");
+		
 		
 		queryStr.append("  model.activityScope.isDeleted = 'N' and model.activityScope.activity.isActive='Y' ");
 		Query query = getSession().createQuery(queryStr.toString());

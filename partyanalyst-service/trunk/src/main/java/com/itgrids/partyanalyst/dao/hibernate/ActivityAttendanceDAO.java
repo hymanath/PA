@@ -38,14 +38,15 @@ public class ActivityAttendanceDAO extends
          return query.list();
 	}
 
-	public List<Object[]> getCanditeActivtyAttendanceLocationsDtls(Long tdpCadreId,Long activityLevelId) {
+	public List<Object[]> getCanditeActivtyAttendanceLocationsDtls(Long tdpCadreId,Long activityLevelId,Long activityScopeId) {
 		
 		Query query = getSession().createQuery(" select model.activityScope.activity.activityName, model.activityScope.activityLevel.level , " +
-				" model.activityLocationInfo.locationLevel, model.activityLocationInfo.locationValue,model.activityLocationInfoId , date(model.activityDate)  " +
+				" model.activityLocationInfo.locationLevel, model.activityLocationInfo.locationValue,model.activityLocationInfoId , date(model.activityDate),model.activityScope.activityLevelId  " +
 				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId  and model.activityScope.isDeleted = 'N' and  model.activityScope.activity.isActive='Y' " +
-				" and model.isAttended = 'YES' and  model.activityScope.activityLevelId = :activityLevelId  order by model.activityScope.activityLevelId asc");
+				" and model.isAttended = 'YES' and  model.activityScope.activityLevelId = :activityLevelId  and model.activityScope.activityScopeId =:activityScopeId order by model.activityScope.activityLevelId asc");
              query.setParameter("tdpCadreId", tdpCadreId);
              query.setParameter("activityLevelId", activityLevelId);
+             query.setParameter("activityScopeId", activityScopeId);
          return query.list();
 	}
 	
