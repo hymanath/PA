@@ -1798,12 +1798,31 @@ function buildFamilyMemberComplaint(result,jobj){
 			comp += '<div class="media-body">';
 			comp += '<ul class="list-inline">'; 
 			comp += '<li style="width:100%">';
-			comp += '<p class="m_0">Name- '+result[0].subList[j].name+'</p>';
+			if(result[0].subList[j].familyVoter != null)
+				comp += '<p class="m_0">Refer Name- '+result[0].subList[j].name+'</p>';
+			else
+			comp += '<p class="m_0"> Name- '+result[0].subList[j].name+'</p>';
+			
 			comp += '<p class="m_0">Relation- '+result[0].subList[j].relation+' - '+result[0].subList[j].status+' </p>';
 			if(result[0].subList[j].membershipId == null)
 			comp += '<p class="m_0">MemberShipID- N/A</p>';
 			else
-			comp += '<p class="m_0">MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].name+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].membershipId+'">'+result[0].subList[j].membershipId+'</p></a>';
+			comp += '<p class="m_0">MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].name+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].membershipId+'"><b>'+result[0].subList[j].membershipId+'</b></p></a>';
+			if(result[0].subList[j].familyVoter != null)
+			{
+				if(result[0].subList[j].familyRefererMembership == null)
+				{
+					comp += '<p class="m_0">Refer Name- '+result[0].subList[j].name+'</p>';
+				}
+				else
+				{
+					
+					comp += '<p class="m_0">Cadre- '+result[0].subList[j].familyRefererName+'  MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].familyRefererName+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].familyRefererMembership+'"><b>'+result[0].subList[j].familyRefererMembership+'</b></p></a>';
+					//'+result[0].subList[j].name+'
+				}
+				
+			}
+			
 			
 			comp += '</li>'; 
 			/* comp += '<li>';  
