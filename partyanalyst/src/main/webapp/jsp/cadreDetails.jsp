@@ -496,10 +496,10 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="cadrMmbrBthHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE 
 							<span>
-								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="Own Constituency." class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
 							</span>
-							<span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i>
-							</span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;">
+							<span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i>  
+							</span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;">  
 							<i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
@@ -507,13 +507,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                     	<div class="panel-group electionPerformanceDiv" id="accordion" role="tablist" aria-multiselectable="true">
                           
                         </div>
-                    </div>
+                    </div>  
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreEnrolmentStatsHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS 
 							<span>
-								<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls"></i>
 							</span>
 							<span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i>
 							</span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;">
@@ -538,7 +538,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="cadreActivitiesHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES
 							<span>
-								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="Own Constituency." class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
 							</span> 
 							<span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i>
 							</span><span class="pull-right" id="cadreActivitiesShowId">
@@ -673,7 +673,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								<h4 class="panel-title text-bold"><img src="dist/img/photo.png" > COMMITTEE MEETINGS</h4>
 							</div>
 							<span style="display:none;"> 
-								<i style="cursor:pointer;top:8px;" data-placement="top" data-toggle="tooltip" title="Own Constituency" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i style="cursor:pointer;top:8px;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
 							</span>
 							<div class="col-md-offset-3 col-md-5">
 								<div class="input-group pull-right">
@@ -724,7 +724,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 					<center><img id="dataLoadingsImgForStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="statusCountsMainDivId" class="table-responsive">
 					</div>
-				</div>
+				</div>  
 				<div class="panel panel-default">  
 					<div class="panel-heading" id="grievencyBenefitHeaderId">
 						<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE BENIFIT REQUESTS 
