@@ -12,5 +12,5 @@ public interface IActivityAttendanceDAO extends
 	
 	public List<Object[]> getActivityScopeAndLevels(Long tdpCadreId,Long activityLevelId);
 	public List<Object[]> getCadreAttendanceDetls(Long tdpCadreId) ;
-	public List<Object[]> getCanditeActivtyAttendanceLocationsDtls(Long tdpCadreId,Long activityLevelId);
+	public List<Object[]> getCanditeActivtyAttendanceLocationsDtls(Long tdpCadreId,Long activityLevelId,Long activityScopeId);
 }
