@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
+import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -64,6 +66,7 @@ private ICandidateDAO candidateDAO;
 private IAlertStatusDAO alertStatusDAO;
 private IAlertTrackingDAO alertTrackingDAO;
 private IAlertCommentDAO alertCommentDAO;
+private IAlertTypeDAO alertTypeDAO;
   
 private DateUtilService dateUtilService = new DateUtilService();
 
@@ -179,6 +182,15 @@ public TransactionTemplate getTransactionTemplate() {
 public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 	this.transactionTemplate = transactionTemplate;
 }
+
+public IAlertTypeDAO getAlertTypeDAO() {
+	return alertTypeDAO;
+}
+
+public void setAlertTypeDAO(IAlertTypeDAO alertTypeDAO) {
+	this.alertTypeDAO = alertTypeDAO;
+}
+
 public List<BasicVO> getCandidatesByName(String candidateName){
 	List<BasicVO> list = new ArrayList<BasicVO>();
 	 List<Object[]> candidate=null;
@@ -605,6 +617,28 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return resultList;
 	}
-	
-}
+	public List<BasicVO> getAlertType()
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		try{
+			 List<Object[]> list = alertTypeDAO.getAlertType();	
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 BasicVO vo = new BasicVO();
+					 vo.setId((Long)params[0]);
+					 vo.setName(params[1].toString());
+					 returnList.add(vo);
+				 }
+				 
+			 }
+		}
+		catch (Exception e) {
+			LOG.error("Exception in getAlertType()",e);	
+		}
+		return returnList;
+	}
+
+	}
 
