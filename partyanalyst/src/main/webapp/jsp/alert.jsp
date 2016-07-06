@@ -85,7 +85,7 @@
 					<div class="row">
 						<div class="col-md-3">
 							<label>Alert Type</label>
-							<select class="dropkickClass" name="alertVO.alertTypeId">
+							<select class="dropkickClass" name="alertVO.alertTypeId" id="alertTypeId">
 								<option value="1">Select Alert</option>
 							</select>
 						</div>
@@ -401,7 +401,32 @@ var uploadHandler = {
 		YAHOO.util.Connect.setForm('saveAlertForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','saveAlertAction.action',uploadHandler);
 }
-
+function getAlertType(){
+		$("#alertTypeId").html('');
+		var jsObj =
+		        {
+			task:""
+		          }
+				$.ajax({
+					  type:'GET',
+					  url: 'getAlertTypeAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					$('#alertTypeId').append('<option value="0"> Select Alert Type </option>');
+					if(result != null)
+					{
+						for(var i in result)
+						{			
+							$('#alertTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						}
+						$("#alertTypeId").dropkick();
+							var select1 = new Dropkick("#alertTypeId");
+							select1.refresh();
+					}
+				  
+				});
+		}
+getAlertType();
 
 </script>
 </body>

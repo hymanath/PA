@@ -243,6 +243,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getAlertType(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			basicVO = alertService.getAlertType();
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertType()",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 
 }

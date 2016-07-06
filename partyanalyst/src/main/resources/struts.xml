@@ -12801,5 +12801,10 @@
 		    			<param name="root">basicVo</param>
 		    		</result>
 	</action>
+	<action name="getAlertTypeAction" class="createAlertAction" method="getAlertType">
+		    	<result type="json" name="success">
+					<param name="root">basicVO</param>
+				</result>
+	</action>
 </package>
 </struts>      
