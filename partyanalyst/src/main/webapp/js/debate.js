@@ -1931,7 +1931,7 @@ function getRespectiveSelectionForAnalysis()
 		}
 		str +='</select>';
 		str += '</div>';
-		str += '<div class="span4" style="margin-left:-70px" > ';
+		str += '<div class="span4" style="margin-left:-61px" > ';
 		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Candidate  </label>'; 
 		str +='<select id="candidatesList"><option value="0">Select Candidate</option></select>';
 		str += '</div>';
@@ -2107,6 +2107,11 @@ function buildEachTopicWisePartyAndCandidateDetails(result)
 		$('#searchDataImg').hide();
 		$('#performanceExoperExcelId').show();
 		//$('#secondReport').dataTable();
+		if(result.length>5){
+			$('#partyCandidatePerformanceDiv').attr("style","width: 960px;height:500px; overflow-x: scroll;");
+		}else{
+			$('#partyCandidatePerformanceDiv').removeAttr("style");
+		}
 		
 	}
 	else{
@@ -2302,6 +2307,12 @@ function buildCandidateCharacteristics(myResults){
 			 $('#candidatePartyExoperExcelId').show();
 			//$('#fourthReport').dataTable();
 			$('#searchDataImg').hide();
+			if(result.length>5){
+				$('#candidatePartyPerformanceId').attr("style","width: 960px;height:500px; overflow-x: scroll;")
+			}else{
+				$('#candidatePartyPerformanceId').removeAttr("style");
+			}
+			
 		}
 		
 	}
@@ -2459,6 +2470,11 @@ function buildpartyWiseCandidatePerformance(result)
 		$('#searchDataImg').hide();
 		$('#candidateIdExoperExcelId').show();
 		//$('#thirdReport').dataTable();
+		if(result.length>5){
+			$('#eachAttributePartyCandidateId').attr("style","width: 960px;height:500px; overflow-x: scroll;");
+		}else{
+				$('#eachAttributePartyCandidateId').removeAttr("style");
+			}
 		
 	}
 	else{	

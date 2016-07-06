@@ -79,6 +79,10 @@
 	
 			
 	<style type="text/css">
+	#startDateId,#endDateId,#fromDateId,#toDateId
+	{
+		width:240px !important;
+	}
 	.requiredFont{
 		color:red;
 	}
@@ -642,7 +646,7 @@ window.location.href = uri + base64(format(template, ctx))
 					<legend class="boxHeading">Party Wise Each Candidate Performance With Attributes<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('secondReport')" id="candidateIdExoperExcelId">Export Excel</a></legend>
 							
 						<div class="row">
-						 <div class="span12" id="eachAttributePartyCandidateId" style="width: 960px;height:500px; overflow-x: scroll;">
+						 <div class="span12" id="eachAttributePartyCandidateId" >
 							
 							
 						</div>
@@ -660,7 +664,7 @@ window.location.href = uri + base64(format(template, ctx))
 						
 							<legend class="boxHeading">Topic Wise Each Candidate Performance<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('thirdReport')" id="performanceExoperExcelId">Export Excel</a></legend>
 						<div class="row">
-						 <div class="span12" id="partyCandidatePerformanceDiv" style="width: 960px;height:500px; overflow-x: scroll;">							
+						 <div class="span12" id="partyCandidatePerformanceDiv" >							
 						  </div>
 						</div>
 					</div>
@@ -677,7 +681,7 @@ window.location.href = uri + base64(format(template, ctx))
 					<div class="span12  widgetservey_Red m_top20">
 							<legend class="boxHeading">Topic Wise Each Candidate Performance With Attributes<a class="btn btn-info btn-mini" style="float:right;display:none;" onClick="generateExcelReport('fourthReport')"  id="candidatePartyExoperExcelId">Export Excel</a></legend>
 						<div class="row">
-						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:500px; overflow-x: scroll;">
+						 <div class="span12" id="candidatePartyPerformanceId">
 						</div>
 						</div>
 					</div>
