@@ -43,7 +43,7 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private String mandalName;
 	private String townName;
 	private String panchayatName;
-	
+	private Long publicationDateId;
 	
 	public String getPanchayatName() {
 		return panchayatName;
@@ -246,8 +246,12 @@ public class RegisteredMembershipCountVO implements Serializable{
 	public void setCadreLocation(String cadreLocation) {
 		this.cadreLocation = cadreLocation;
 	}
-	
-	
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
 	
 
 }

@@ -12,6 +12,9 @@ public class EmailAttributesVO implements Serializable{
 	private String       subject;
 	private String       bodyText;
 	private String       day;
+	private String 		 date;
+	private String 		fileName;
+	private String 		filePath;
 	
 	public List<String> getPdfNames() {
 		return pdfNames;
@@ -55,5 +58,25 @@ public class EmailAttributesVO implements Serializable{
 	public void setDay(String day) {
 		this.day = day;
 	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	
+	
 	
 }
