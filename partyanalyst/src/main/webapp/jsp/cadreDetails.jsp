@@ -118,6 +118,10 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			<input type="hidden" value="" id="cadreBoothId" />
 			<input type="hidden" value="" id="cadrePartNo" />
 			<input type="hidden" value="" id="cadrePanchaytId" />
+			
+			<input type="hidden" value="" id="cadreWardId" />
+			<input type="hidden" value="" id="wardName" />
+			
 			<input type="hidden" value="" id="cadremandalId" />
 			<input type="hidden" value="" id="cadreRuralORUrbanId" />
 			<input type="hidden" value="" id="cadreConstituencyId" />
@@ -2248,6 +2252,12 @@ $('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:5
 	{
 		committeeLevelId = 6;
 		committeeLevelValue = $('#cadrePanchaytId').val();
+		var wardId = $('#cadreWardId').val();
+		if(wardId >0){
+			committeeLevelId = 8;
+			committeeLevelValue = wardId;
+		}
+		
 		if(isMandal)
 		{
 			committeeLevelId = 8;
