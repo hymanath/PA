@@ -31,7 +31,7 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 					}
 					else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+" ");
+						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+" ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
 					{
@@ -96,7 +96,7 @@ public class PartyMeetingIvrStatusDAO extends GenericDaoHibernate<PartyMeetingIv
 					}
 					else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+" ");
+						queryStr.append(" and model.party_meeting_level_id = "+IConstants.WARD_PARTY_MEETING_LEVEL_ID+"   and model.party_meeting_type_id = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+" ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
 					{
