@@ -7028,4 +7028,9 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		
 		return  query.list();
 	}
+	public Long getPublicationDateId(Long tdpCadreId){
+		Query query = getSession().createQuery("select TC.userAddress.booth.publicationDate.publicationDateId from TdpCadre TC where TC.tdpCadreId = :tdpCadreId");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return (Long) query.uniqueResult();
+	}
 }
