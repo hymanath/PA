@@ -540,9 +540,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreActivitiesHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES
-							<span>
+							<!-- <span>
 								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
-							</span> 
+							</span> --> 
 							<span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i>
 							</span><span class="pull-right" id="cadreActivitiesShowId">
 							<i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -652,9 +652,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading" id="cadreElectionProfileHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CANDIDATE ELECTION PROFILE 
-							<span>
+							<!--<span>
 								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="Own Constituency" class="glyphicon glyphicon-info-sign reasonCls"></i>
-							</span>
+							</span>-->
 							<span class="pull-right" id="cadreElectionProfileShowId"><i class="glyphicon glyphicon-chevron-up"></i>
 							</span><span class="pull-right" id="cadreElectionProfileHideId" style="display:none;">
 							<i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -746,8 +746,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 				
 				<div class="panel panel-default" id="trainingCampdetailsDiv">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    	<span>
+							<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
+						</span>
+                    	</h4>
                     </div>
+                    
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="trainingCampDetailsBodyId">
