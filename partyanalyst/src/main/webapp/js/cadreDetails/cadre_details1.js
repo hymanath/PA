@@ -222,12 +222,13 @@ var result = resultList.verifierVOList;
 			$('.ivrSurveyCandtDetailsCls').html(str);
 			
 			$("#ivrStatusDataTable").DataTable( {
-				   responsive: true,
-			"paging":   false,
-				   "info":     false,
-			"searching": false,
-			"sDom": '<"top"fl>rt<"bottom"i><"clear"p>',
-			"columnDefs": [
+				responsive: true,
+				"paging":   false,
+				"info":     false,
+				"searching": false,
+				"aaSorting": [[ 0, 'desc' ]],
+				"sDom": '<"top"fl>rt<"bottom"i><"clear"p>',
+				"columnDefs": [
 			   { "width": "25%", "targets": 0 }]
 			   } );
 			$("#ivrStatusDataTable").removeClass("dataTable")
