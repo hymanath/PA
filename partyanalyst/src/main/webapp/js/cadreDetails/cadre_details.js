@@ -6987,7 +6987,7 @@ function saveCadreNotesInformationDetails(itemsCount,startIndex){
 					$("#errorUpCallId").html("Notes Data Successfully Updated...");
 					$(".jqte_editor").html('');
 					$("#errorUpCallId").html("");
-					getCadreNotesInformationDetails(startIndex);
+					getCadreNotesInformationDetails(globalStartIndex);
 					$("#updateButnId").hide();
 				}else{
 					$("#errorUpCallId").html("Error Occured Try agian..");
@@ -6996,12 +6996,14 @@ function saveCadreNotesInformationDetails(itemsCount,startIndex){
 			}
 	  });
 }
+var globalStartIndex = 0;
 function getCadreNotesInformationDetails(startIndex){ 
+ globalStartIndex = startIndex;
 $('#notesExisting').html("");
 $("#updateNotesButtonId").show();
 	var jObj={
 		tdpCadreId:globalCadreId,
-		startIndex:startIndex,
+		startIndex:globalStartIndex,
 		maxIndex : 10
 	};
 	$.ajax({
@@ -7037,12 +7039,12 @@ for(var i in result)
 }
 str += '</ul>';
 	$('#notesExisting').html(str);	
-	   /* if(result != null && result.length>0 && result[0].totalVoters != null && result[0].totalVoters > 0){
-	$("#notesId").css('background-color', '#006400');//grren color
+	    if(result != null && result.length>0 && result[0].totalVoters != null && result[0].totalVoters > 0){
+	$("#notesId").addClass('text-success');//green color
 	}
 	else{
-	$("#notesId").css('background-color', '#808080');//gray color	
-	} */
+	$("#notesId").removeClass('text-success');//gray color	
+	} 
 	if(jObj.startIndex==0){
 		$("#paginationForNotesId").pagination({
 			items: result[0].totalVoters,
@@ -7052,7 +7054,6 @@ str += '</ul>';
 			onPageClick: function(pageNumber) {
 				var num=(pageNumber-1)*10;
 					getCadreNotesInformationDetails(num);
-				
 			}
 		});
 	}		
@@ -7122,4 +7123,8 @@ $(document).on("click",".editIconCls",function(){
 	globalPrimaryId = id;
 	$("#updateButnId").show();
 	$("#updateNotesButtonId").hide();
+	//$(".jqte_editor").scrollTop();
+	$('#notesModalDivId').animate({
+		scrollTop:  $(".jqte_editor").offset().top 
+	});
 });
