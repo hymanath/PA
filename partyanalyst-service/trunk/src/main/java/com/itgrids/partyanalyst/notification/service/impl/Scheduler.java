@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
@@ -31,7 +32,6 @@ public class Scheduler {
 	private IMailService mailService;
 	private ResultStatus rs;
     private IMahaNaduService mahaNaduService;
-    
     
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
@@ -104,8 +104,6 @@ public class Scheduler {
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-	
-
 	public void runTheBatchJobForEveryDay()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -118,8 +116,20 @@ public class Scheduler {
 	{
 		schedulerService.saveDailyWmCorrectedMobileNUmbers(dateUtilService.getCurrentDateAndTime());
 	}
-	
-	
+	/*public void runTheJobForEveryMinute(){
+		try{
+			System.out.println("Hi this is executing for every minute");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}*/
+	public void runTheJobForEveryDayToSendEmployeeAttendance(){
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	/*public void runTheBatchJobForEveryDayCardDataInsert()
 	{
 		schedulerService.prepareDatForCardPrinting(dateUtilService.getYesterdayDateString());
@@ -339,5 +349,15 @@ public class Scheduler {
 	public void runTheBatchJobForEveryDayChangeApptStatus()
 	{
 		schedulerService.changeApptStatusToAttended(dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_ATTENDED,IConstants.APPOINTMENT_STATUS_FIXED);
+	}
+	public void sendPdfReportOnEmployeeAttendance()
+	{
+		try{
+			   schedulerService.runTheJobForEveryDayToSendEmployeeAttendance();
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n Total sendPdfReport "); 
+		}
 	}
 }
