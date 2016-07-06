@@ -1353,7 +1353,7 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 	 $("#memberShipCountDiv").html(str);
 	
 	 $('.fulCircleCls').circliful();
-	 var windowWidth = $(window).width();
+	 var windowWidth = $(window).width();  
 	 if( windowWidth > 768)
 	 {
 		 var graphCount = $(".performanceGraph li").length;
@@ -1361,10 +1361,13 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		 $(".performanceGraph li").css("width",pixelWidth+'%');
 	 }
 	 if(participatedConstituencyId != null && participatedConstituencyId > 0){
-		$("#cadreEnrolementParticepateStatusId").attr("title","PARTICIPATED CONSTITUENCY");   
+		$("#cadreEnrolementParticepateStatusId").attr("data-original-title","PARTICIPATED CONSTITUENCY");   
+		$('#cadreEnrolementParticepateStatusId').tooltip();
 	}else{
-		$("#cadreEnrolementParticepateStatusId").attr("title","OWN CONSTITUENCY");
+		$("#cadreEnrolementParticepateStatusId").attr("data-original-title","OWN CONSTITUENCY");
+		$('#cadreEnrolementParticepateStatusId').tooltip();
 	}
+	
 	 
 }
 
@@ -2903,9 +2906,11 @@ function getDeathsAndHospitalizationDetails(){
 			$("#deathHospitalDivId").html(str);
 		});
 		if(participatedConstituencyId != null && participatedConstituencyId > 0){
-			$("#deathAndHospitalParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+			$("#deathAndHospitalParticepationId").attr("data-original-title","PARTICIPATED CONSTITUENCY"); 
+			$('#deathAndHospitalParticepationId').tooltip();			
 		}else{
-			$("#deathAndHospitalParticepationId").attr("title","OWN CONSTITUENCY");
+			$("#deathAndHospitalParticepationId").attr("data-original-title","OWN CONSTITUENCY");
+			$('#deathAndHospitalParticepationId').tooltip();
 		}
 }
 
@@ -5905,9 +5910,11 @@ var str='';
        $("#dataLoadingsImgForStatusCount").hide();
       $("#statusCountsMainDivId").html(str);
 	  if(participatedConstituencyId != null && participatedConstituencyId > 0){
-		$("#grievanceRequestParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+		$("#grievanceRequestParticepationId").attr("data-original-title","PARTICIPATED CONSTITUENCY");   
+		$('#grievanceRequestParticepationId').tooltip();
 	}else{
-		$("#grievanceRequestParticepationId").attr("title","OWN CONSTITUENCY");
+		$("#grievanceRequestParticepationId").attr("data-original-title","OWN CONSTITUENCY");
+		$('#grievanceRequestParticepationId').tooltip();
 	}
 }
 
@@ -6373,16 +6380,18 @@ function buildGrievanceAmountDetails(result){
 				}
 			}
 			str+='</tr>'; 
-		str+='</tbody>';
+		str+='</tbody>';  
 	str+='</table>';
 	str+='</div>';
 	
 	$("#dataLoadingsImgForGrievanceRequests").hide();
 	$("#grievanceRequestsId").html(str);
 	if(participatedConstituencyId != null && participatedConstituencyId > 0){
-		$("#grievanceBenefitParticepationId").attr("title","PARTICIPATED CONSTITUENCY");   
+		$("#grievanceBenefitParticepationId").attr("data-original-title","PARTICIPATED CONSTITUENCY"); 
+		$('#cadreEnrolementParticepateStatusId').tooltip();		
 	}else{
-		$("#grievanceBenefitParticepationId").attr("title","OWN CONSTITUENCY");
+		$("#grievanceBenefitParticepationId").attr("data-original-title","OWN CONSTITUENCY");
+		$('#cadreEnrolementParticepateStatusId').tooltip();
 	}
 }
 
