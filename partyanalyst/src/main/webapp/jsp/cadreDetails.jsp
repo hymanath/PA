@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 		<!-- custom CSS-->
 	<link href="css/cadreCommitee/cadreDetails_custom1.css" rel="stylesheet" type="text/css">
+	<link href="dist/JqueryTe/jquery-te-1.4.0.css" rel="stylesheet" type="text/css">
 	<!--<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">-->
 <style type="text/css">
 .mobileDetailsUl
@@ -57,6 +58,9 @@
 .locWiseEvnAtnCls
 {
 	cursor:pointer;
+}
+.unselectable{
+		height:24px !important;
 }
 </style>
 <script>
@@ -185,6 +189,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>CASTE</strong> : <span id="casteFormalId"></span></p>
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
+									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
                                 </div>
                             </div>
                         </td>
@@ -1289,6 +1294,60 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		</div><!-- /.modal -->
 		
 		<!-- Model for Debate End-->
+<div class="modal fade" id="notesModalDivId" style="display:none;">
+			  <div class="modal-dialog" style="width:80%">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-danger" id="notesModalTitleId"><img id="notesImgId" src="img/consent_clipart_pen_and_paper_le.jpg" style="height:25px;width:25px;"/><span id="addModalId"></span></h4>
+				  </div>
+				  
+				  <div class="modal-body" id="upadateCallerModalBodyId">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="errorUpCallId" style="color:red;"></div>
+							<input type="hidden" id="hiddencadreNotesId"/>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="row">
+							<div id="errorUpCallId"></div>
+							<!--<div class="col-md-12 col-xs-12 col-sm-12">
+								  <ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active"><a href="#notesExisting" aria-controls="notesExisting" role="tab" data-toggle="tab" onclick="getCadreNotesInformationDetails(cadreId)">Existing</a></li>
+									<li role="presentation"><a href="#notesNew" aria-controls="notesNew" role="tab" data-toggle="tab">Create New Notes</a></li>    
+								  </ul>
+								  <div class="tab-content">
+									<div role="tabpanel" class="tab-pane active"></div>
+									<div role="tabpanel" class="tab-pane" id="notesNew">
+										<label>Notes:</label>
+										
+									</div>
+								  </div>
+								</div>-->
+								<div class="col-md-12">
+									<textarea id="notesDescriptionId" class="form-control"></textarea>
+									<button type="button" class="btn btn-primary btn-sm pull-right" style="display:none;"id="updateButnId" onclick="saveCadreNotesInformationDetails(0,0)">UPDATE</button>
+									<button type="button" class="btn btn-primary btn-sm pull-right" id="updateNotesButtonId" onclick="saveCadreNotesInformationDetails(0,0)" style="margin-right: 10px;">ADD</button>
+								</div>
+								<div class="col-md-12">
+									<div  id="notesExisting" class="m_top20"></div>
+									<div id="paginationForNotesId"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				  </div>
+				<div class="modal-footer">
+					<span class="pull-left" id="upadateNotesId"></span>
+					<span id="updatefooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" id="closeButtonId" data-dismiss="modal">Close</button>
+					
+				  </div>
+				  
+				</div>
+			  </div>
+</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -1310,12 +1369,15 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
 	<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 	<script type="text/javascript" src="dist/scroll/jquery.mousewheel.js"></script>
+	<script src="dist/JqueryTe/jquery-te-1.4.0.min.js" type="text/javascript"></script>
 	   <!--  SERVER SIDE PAGINATION JS -->
     <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
+	
 	<script>
+	$("#notesDescriptionId").jqte();
 	 
 	//var globalCadreId = '${cadreId}';
 	
@@ -2266,9 +2328,16 @@ function generateExcel()
 function generateExcel1(){
 	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
-
+$(document).on("click","#notesId",function(){
+	$("#notesModalDivId").modal('show');
+	getCadreNotesInformationDetails(0);
+	var name = $("#nameId").html();
+	var notesName = name.toUpperCase(); 
+	$("#addModalId").html(" NOTES ON "+notesName);
+	$(".jqte_editor").html('');
+	$("#updateButnId").hide();
+});
 
 </script>
-
 </body>
 </html>

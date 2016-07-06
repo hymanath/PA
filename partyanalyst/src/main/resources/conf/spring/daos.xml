@@ -3009,5 +3009,9 @@
 	<bean id="cadreCallingFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCallingFeedbackDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tdpCadreNotesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreNotesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
