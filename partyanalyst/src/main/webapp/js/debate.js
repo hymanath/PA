@@ -2604,7 +2604,7 @@ function buildPartyWiseOverAllSummery(result)
 		{
 			str += '<tr>';
 			str += '<td>'+result[i].partyName+'</td>';
-			str += '<td>'+result[i].totalDebates+' / '+result[i].debateScale+'</td>';
+			str += '<td>'+result[i].totalDebates+' / '+result[i].debateScale.toFixed(2)+'</td>';
 			str += '<td>'+result[i].rankingVO.firstRank+'</td>';
 			str += '<td>'+result[i].rankingVO.secondRank+'</td>';
 			str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
