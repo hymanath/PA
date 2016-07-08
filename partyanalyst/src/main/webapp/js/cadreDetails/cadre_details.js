@@ -1353,13 +1353,13 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
-	}
+		}
 		str += '</ul>';
 
 	 $("#memberShipCountDiv").html(str);
 	
 	 $('.fulCircleCls').circliful();
-	 var windowWidth = $(window).width();  
+	 var windowWidth = $(window).width(); 
 	 if( windowWidth > 768)
 	 {
 		 var graphCount = $(".performanceGraph li").length;
@@ -1374,7 +1374,7 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		$('#cadreEnrolementParticepateStatusId').tooltip();
 	}
 	
-	 
+	 	 
 }
 
 function getCadreFamilyDetailsByCadreId(){
@@ -1433,8 +1433,7 @@ function getCadreFamilyDetailsByCadreId(){
 			imgPath = result[i].imagePath;
 		 }
 		 /*else{
-			imgPath="http://www.mytdp.com
-			/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
+			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
 		 }*/
 		  str += '<div class="media-left ">';
 		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 45px;width:45px;border:1px solid #ddd;" >';
@@ -1554,13 +1553,13 @@ function getTotalComplaintsForCandidate(){
 	
 		$.ajax({
 				type : "POST",
-				url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-				//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				//url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 				  data: JSON.stringify(arr),
 				 contentType: "application/json; charset=utf-8",
 				 dataType: "json",
-				 username: "grievance",
-				 password: "grievance@!tG"	
+				 //username: "grievance",
+				 //password: "grievance@!tG"	
 				 }).done(function(myresult){
 					$("#candidateapprovedDiv").hide();
 					$("#candidatedeathDiv").hide();
@@ -1625,7 +1624,7 @@ function getTotalComplaintsForCandidate(){
 	
 		if(result[0].voList[j].complaintId == complaintId){
 		comp += '<li style="cursor:pointer;background:'+color+';border-left:4px solid '+color+'"';
-		comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
+		comp += '<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[0].voList[j].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID - '+result[0].voList[j].complaintId+'</a></p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
 			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[0].voList[j].status+'</span></p>';
 			if(result[0].voList[j].raisedDate != null)
@@ -1638,7 +1637,7 @@ function getTotalComplaintsForCandidate(){
 		if(result[0].voList[j].complaintId != complaintId){
 		var color = getColorCodeByStatus(result[0].voList[j].status);
 			comp += '<li style="background:'+color+';border-left:4px solid '+color+'" ';
-			comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
+		    comp += '<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[0].voList[j].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID - '+result[0].voList[j].complaintId+'</a></p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
 			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[0].voList[j].status+'</span></p>';
 			if(result[0].voList[j].raisedDate != null)
@@ -1671,7 +1670,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 		 for(var j in result[1].voList){
 			 if(result[1].voList[j].issueType == 'Death'){
 					str+='<li>';
-					str+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
+					str+='<p class="m_0" ><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].voList[j].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].voList[j].complaintId+'</a></p>';
 					str+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 					str+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
 					str+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
@@ -1692,7 +1691,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 		 for(var j in result[1].voList){
 			 if(result[1].voList[j].issueType == 'Hospitalization'){
 				str1+='<li>';
-				str1+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
+				str1+='<p class="m_0" ><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].voList[j].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].voList[j].complaintId+'</a></p>';
 				str1+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 				str1+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
 				str1+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
@@ -1719,13 +1718,13 @@ function getMemberComplaints()
   $("#familyMemberDiv").html('');
 	$.ajax({
 			type : "POST",
-			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			//url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			 url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
-			 username: "grievance",
-             password: "grievance@!tG"
+			 //username: "grievance",
+             //password: "grievance@!tG"
 			 }).done(function(myresult){
 				$("#familyMemberImg").hide();
 				 $("#familydeathDiv").hide();
@@ -1827,7 +1826,7 @@ function buildFamilyMemberComplaint(result,jobj){
 				
 			}
 			
-			
+				
 			comp += '</li>'; 
 			/* comp += '<li>';  
 			comp += '<span class="countStyleSpan">'+result[0].subList[j].subList.length+'</span>';
@@ -1849,7 +1848,7 @@ function buildFamilyMemberComplaint(result,jobj){
 		     	var color = getColorCodeByStatus(result[0].subList[j].subList[k].status);
 				comp += '<li style="background:'+color+'"';
 				
-				comp+=' <p class="m_0">C ID - '+result[0].subList[j].subList[k].complaintId+'</p><p class="m_0">'+result[0].subList[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[0].subList[j].subList[k].status+'</span></p><p class="m_0">'+result[0].subList[j].subList[k].raisedDate+'</p></li>';
+				comp+=' <p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[0].subList[j].subList[k].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID -'+result[0].subList[j].subList[k].complaintId+'</a></p><p class="m_0">'+result[0].subList[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[0].subList[j].subList[k].status+'</span></p><p class="m_0">'+result[0].subList[j].subList[k].raisedDate+'</p></li>';
 				}
 				comp+='</ul>';
 			 } 
@@ -1908,7 +1907,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 				if(result[1].subList[j].subList[k].issueType == 'Death')
 				{
 					str+='<li>';
-					str+='<p class="m_0">C ID -'+result[1].subList[j].subList[k].complaintId+'</p>';
+					str+='<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].subList[j].subList[k].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].subList[j].subList[k].complaintId+'</a></p>';
 					
 					str+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
@@ -1940,7 +1939,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 				if(result[1].subList[j].subList[k].issueType == 'Hospitalization')
 				{
 					str1+='<li>';
-					str1+='<p class="m_0">C ID -'+result[1].subList[j].subList[k].complaintId+'</p>';
+					str1+='<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].subList[j].subList[k].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].subList[j].subList[k].complaintId+'</a></p>';
 					str1+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str1+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
 					str1+='<p class="m_0"> '+result[1].subList[j].subList[k].raisedDate+'</p>';
@@ -3155,7 +3154,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 					str+='<tbody style="background:#f3f3f3;font-size:13px;">'
 					for(var i in result){
 						str+='<tr>';
-							str+='<td>'+result[i].complaintId+'</td>';
+							str+='<td><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Insurance" target="_blank">'+result[i].complaintId+'</a></td>';
 							str+='<td>';
 							str+='<p class="m_0">N:'+result[i].firstName+'</p>';
 							str+='<p class="m_0">D:'+result[i].locationName+'</p>';
@@ -5306,12 +5305,12 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show(); 
 	$.ajax({
 		type:'GET',
-		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
-		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		//url: "http://mytdp.com/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
-			username: "grievance",
-            password: "grievance@!tG"
+			//username: "grievance",
+          //  password: "grievance@!tG"
 	}).done(function(result){
 		$("#referralGrievanceLoadingImg").hide();
 		var value='';
@@ -5335,13 +5334,13 @@ function getRefferelDetailsStatusWise(){
 				}
 				$.ajax({
 					type:'POST',
-					url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
-					//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					//url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 						 dataType: "json",
 						 data: JSON.stringify(obj),
 						 contentType: "application/json; charset=utf-8",
-						 username: "grievance",
-						 password: "grievance@!tG"
+						 //username: "grievance",
+						 //password: "grievance@!tG"
 				}).done(function(result){
 					
 					value += '<div class="panel-body pad_0">';
@@ -5353,7 +5352,7 @@ function getRefferelDetailsStatusWise(){
 					value += '<li style="background:'+color+'">';
 					value += '<div class="row">';
 						value += '<div class="col-sm-6">';
-							value += '<p class="m_0">C ID - '+result[i].complaintId+'</p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
+							value += '<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID -'+result[i].complaintId+'</a></p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
 						value += '</div>';
 						value += '<div class="col-sm-6">';
 							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+result[i].status+'" attr_complaintId='+result[i].complaintId+'>View More</button>';
@@ -5391,13 +5390,13 @@ $(document).on('click','.referalGrievenceCls',function(){
 	
 	$.ajax({
 		type:'POST',
-		url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
-		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		//url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
 			 contentType: "application/json; charset=utf-8",
-			 username: "grievance",
-             password: "grievance@!tG"
+			 //username: "grievance",
+             //password: "grievance@!tG"
 	}).done(function(result){
 		buildPopupComplaintInfo1(result);
 		
@@ -5933,7 +5932,7 @@ var str='';
           str+='</div>';
        $("#dataLoadingsImgForStatusCount").hide();
       $("#statusCountsMainDivId").html(str);
-	  if(participatedConstituencyId != null && participatedConstituencyId > 0){
+       if(participatedConstituencyId != null && participatedConstituencyId > 0){
 		$("#grievanceRequestParticepationId").attr("data-original-title","PARTICIPATED CONSTITUENCY");   
 		$('#grievanceRequestParticepationId').tooltip();
 	}else{
@@ -6001,7 +6000,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
 				for(var i in result){
 					str+='<tr>';
-						str+='<td>'+result[i].complaintId+'</td>';
+						str+='<td><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">'+result[i].complaintId+'</a></td>';
 						str+='<td>';
 						str+='<p class="m_0">N:'+result[i].firstName+'</p>';
 						str+='<p class="m_0">D:'+result[i].locationName+'</p>';
@@ -6481,7 +6480,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
 				for(var i in result){
 					str+='<tr>';
-						str+='<td>'+result[i].complaintId+'</td>';
+						str+='<td><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">'+result[i].complaintId+'</a></td>';
 						str+='<td>';
 						str+='<p class="m_0">N:'+result[i].firstName+'</p>';
 						str+='<p class="m_0">D:'+result[i].locationName+'</p>';
