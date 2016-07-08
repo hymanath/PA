@@ -16,21 +16,22 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
 
-<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
+<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>	
 <script src="debate/js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
+<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="debate/js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
-<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
 	
 <script src="debate/js/jquery-ui-themes-1.10.3.js"></script>
 <script src="debate/js/jquery-ui-timepicker-addon.js"></script>
 <script src="debate/js/jquery-ui-sliderAccess.js"></script>
 <script src="debate/js/jquery.google.api/trentrichardson.com.examples.timepicker.jquery-ui-sliderAccess.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>		
+<script src="js/debate.js"></script>
 
 <script type="text/javascript" src="debate/js/multiSelectBox/jquery.multiselect1.js"></script>
 <script type="text/javascript" src="debate/js/multiSelectBox/jquery.multiselect.filter.js"></script>
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>		
-<script src="js/debate.js"></script>
 <style type="text/css">
 	.requiredFont{
 		color:red;
@@ -966,6 +967,9 @@ function validateFieldsForEdit(){
 	return flag;
 
 }
+$(document).on("keypress",".participntRoles",function(event){
+         return isNumberAndDecimal(event, this);
+});
 
 </script>
 </body>
