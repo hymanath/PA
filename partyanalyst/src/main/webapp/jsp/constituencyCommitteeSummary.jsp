@@ -293,6 +293,24 @@
 				</div>
 			  </div>
 </div>
+<div class="modal fade" id="myModalForImpCand">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="impCandTitleId"></h4>
+      </div>
+      <div class="modal-body">
+		<span class="btn btn-info pull-right" id="impCandExportId" onclick="impCandExportToExcel()" style="display:none;margin-bottom: 10px;"> Export To Excel </span>
+        <div class="" id="impCandBodyId"></div>
+			<center><img id="dataLoadingsImgForImpCand" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+	  </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default btn-success btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
 			<script>
 		var casteArray=new Array();
@@ -445,6 +463,67 @@ function getConstituencySummary(){
 	});
 	
 }
+$(document).on("click",".impCandCls",function(){
+	$("#myModalForImpCand").modal("show");
+	var location = $(this).attr("attr_location");
+	var locationId = $(this).attr("attr_locationId");
+	var searchType = $(this).attr("attr_search");
+	$("#impCandTitleId").html(location.toUpperCase());
+	getImportantCandidateDetails(locationId,searchType);
+	//alert(111);
+});
+
+function getImportantCandidateDetails(locationId,searchType){
+	$("#impCandBodyId").html('');
+	$("#dataLoadingsImgForImpCand").show();
+	$("#impCandExportId").hide();
+	var jsObj ={
+		 locationId:locationId,      
+		 searchType:searchType      
+	}	
+	$.ajax({
+		type : "POST",
+		url : "getImpCandAndPublRepresentativeDetailsByLocationAction.action",
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null)
+			buildImportantCandidateDetails(result);
+		else{
+			$("#dataLoadingsImgForImpCand").hide();
+			$("#impCandBodyId").html(str);
+		}
+	});
+}
+
+function buildImportantCandidateDetails(result){
+	var str='';
+	
+	str+='<table class="table m_0 table-bordered" id="impCandTable">';
+		str+='<thead>';
+			str+='<th class="text-center"> LEADER </th>';
+			str+='<th class="text-center"> TYPE </th>';
+			str+='<th class="text-center"> LEVEL </th>';
+			str+='<th class="text-center"> MOBILE </th>';
+		str+='</thead>';
+		str+='<tbody>';
+		if(result.idnameList != null && result.idnameList.length > 0){
+			for(var i in result.idnameList){
+				str+='<tr>';
+					str+='<td>'+result.idnameList[i].name+'</td>';
+					str+='<td class="text-center">'+result.idnameList[i].percentage+'</td>';
+					str+='<td class="text-center">'+result.idnameList[i].dateStr+'</td>';
+					str+='<td class="text-center">'+result.idnameList[i].mobileNo+'</td>';
+				str+='</tr>';
+			}
+		}
+		str+='</tbody>';
+	str+='</table>';
+	
+	$("#impCandExportId").show();
+	$("#dataLoadingsImgForImpCand").hide();
+	$("#impCandBodyId").html(str);
+	$("#impCandTable").dataTable();
+}
 
 function buildConstituencySummary(results,jsObj){
 
@@ -469,7 +548,7 @@ function buildConstituencySummary(results,jsObj){
 					
 				
 				  str += '<div class="panel panel-default">';
-					str += '<div class="panel-heading" role="tab" id="headingOne2'+i+'">';
+					str += '<div class="panel-heading" role="tab" id="headingOne2'+i+'"><i class="glyphicon glyphicon-user impCandCls pull-right" title="Click here for Important Candidates" style="cursor:pointer;" attr_search="mandal" attr_locationId="'+rest.locationId+'" attr_location="'+rest.locationName+'"></i>';
 						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne2'+i+'" aria-expanded="true" aria-controls="collapseOne2'+i+'">';
 						  str += '<h4 class="locationName panel-title">'+rest.locationName+'</h4>';
 						str += '</a>';
@@ -598,7 +677,7 @@ function buildConstituencySummary(results,jsObj){
 				var rest = results.localBodiesList[i];
 				var reqPositionsArray = new Array();
 				str += '<div class="panel panel-default">';
-					str += '<div class="panel-heading" role="tab" id="headingOne1'+i+'">';
+					str += '<div class="panel-heading" role="tab" id="headingOne1'+i+'"><i class="glyphicon glyphicon-user impCandCls pull-right" title="Click here for Important Candidates" style="cursor:pointer;" attr_search="leb" attr_locationId="'+rest.locationId+'" attr_location="'+rest.locationName+'"></i>';
 						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne1'+i+'" aria-expanded="true" aria-controls="collapseOne1'+i+'">';
 							str += '<h4 class="locationName panel-title">'+rest.locationName+'</h4></a>'
 					str += '</div>';
@@ -1088,6 +1167,10 @@ function exportToExcel()
 function exportToExcelForMembers()
 {
 	  tableToExcel('constiTableId1', 'Constituency Committee Summary');
+}
+function impCandExportToExcel()
+{
+	  tableToExcel('impCandTable', 'Important Candidates');
 }
 
 function getUserAccessInfo()

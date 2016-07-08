@@ -1475,8 +1475,10 @@ public String getLocations(){
 		Long constituencyId = jObj.getLong("constituencyId");
 		Long villageId = jObj.getLong("panchayatId");
 		Long mandalId = jObj.getLong("mandalId");
+		Long lebId = jObj.getLong("lebId");
+		Long wardId = jObj.getLong("wardId");
 		
-		idNameVO = cadreDetailsService.getLocations(impLedTypeId,districtId,constituencyId,mandalId,villageId);
+		idNameVO = cadreDetailsService.getLocations(impLedTypeId, districtId, constituencyId, mandalId, lebId, villageId, wardId);
 		
 	}catch(Exception e){
 		LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
@@ -1519,6 +1521,17 @@ public String getLocations(){
 			basicVo=cadreDetailsService.getStartDateAndEndDate(jObj.getLong("eventId"));
 		}catch(Exception e){
 			LOG.error("Exception raised in getStartDateAndEndDate  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getImpCandAndPublRepresentativeDetailsByLocation(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			idNameVO=cadreDetailsService.getImpCandAndPublRepresentativeDetailsByLocation(jObj.getLong("locationId"),jObj.getString("searchType"));
+		}catch(Exception e){
+			LOG.error("Exception raised in getImpCandAndPublRepresentativeDetailsByLocation  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -1592,4 +1605,41 @@ public String updateCadreNotesInfrmationAction()
 	}
 	return Action.SUCCESS;
 }
+
+	public String getRegionScopes()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			idNameVoList = cadreDetailsService.getRegionScopes();
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in getRegionScopes() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveImportantLeadersType()
+	{
+		try
+		{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			jObj = new JSONObject(getTask());
+			String position = jObj.getString("position");
+			Long levelId = jObj.getLong("levelId");
+			Long userId = regVO.getRegistrationID();
+			
+			status = cadreDetailsService.saveImportantLeadersType(position,levelId,userId);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveImportantLeadersType() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

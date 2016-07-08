@@ -12802,6 +12802,11 @@
 		    			<param name="root">basicVo</param>
 		    		</result>
 	</action>
+	<action name="getImpCandAndPublRepresentativeDetailsByLocationAction" class="cadreDetailsAction" method="getImpCandAndPublRepresentativeDetailsByLocation">
+		<result type="json" name="success">
+   			<param name="root">idNameVO</param>
+   		</result>
+	</action>
 	<action name="getAlertTypeAction" class="createAlertAction" method="getAlertType">
 		    	<result type="json" name="success">
 					<param name="root">basicVO</param>
@@ -12826,6 +12831,16 @@
 	<action name="updateCadreNotesInfrmationAction" class="cadreDetailsAction" method="updateCadreNotesInfrmation">
 	  <result type="json" name="success">
 			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="getRegionScopesAction" class="cadreDetailsAction" method="getRegionScopes">
+	  <result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
+	<action name="saveImportantLeadersTypeAction" class="cadreDetailsAction" method="saveImportantLeadersType">
+	  <result type="json" name="success">
+			<param name="root">status</param>
 		</result>
 	</action>
 </package>
