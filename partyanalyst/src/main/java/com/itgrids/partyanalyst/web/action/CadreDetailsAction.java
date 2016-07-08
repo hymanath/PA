@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -94,6 +95,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private GrievanceDetailsVO grievanceDetailsvo;
 	private List<CadreDetailsVO> cadreDetailsVO;
 	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
+	private List<CadreReportVO> cadreReportVOList = new ArrayList<CadreReportVO>(0);
 	
 	
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
@@ -526,7 +528,14 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	public void setCadreRegistrationForOtherStatesService(
 			ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService) {
-		this.cadreRegistrationForOtherStatesService = cadreRegistrationForOtherStatesService;
+		this.cadreRegistrationForOtherStatesService = cadreRegistrationForOtherStatesService;  
+	}
+	
+	public List<CadreReportVO> getCadreReportVOList() {
+		return cadreReportVOList;
+	}
+	public void setCadreReportVOList(List<CadreReportVO> cadreReportVOList) {
+		this.cadreReportVOList = cadreReportVOList;
 	}
 	public String execute(){
 		
@@ -550,6 +559,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 				entitlements = regVO.getEntitlements();
 				if(entitlements.contains("TDP_CADRE_DETAILS".trim())){
+					cadreReportVOList = cadreDetailsService.getCadreReportDetails(cadreId);
 					return "tdpCadreDetails";
 				}
 			

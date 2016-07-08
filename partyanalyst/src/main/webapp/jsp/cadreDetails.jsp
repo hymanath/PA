@@ -196,9 +196,17 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <!--
 									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 									-->
-                         		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOTES_USER_ENTITLEMENT' )}">
+                         			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOTES_USER_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
-							  	</c:if>
+							  		</c:if>
+							  		<p class="m_0">
+								  		<c:if test="${fn:length(cadreReportVOList) gt 0}">  
+											<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
+										</c:if>
+										<c:if test="${fn:length(cadreReportVOList) eq 0}">  
+											<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>
+										</c:if>
+									</p>
 								</div>
                             </div>
                         </td>
@@ -1353,6 +1361,23 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		</div><!-- /.modal -->
 		
 		<!-- Model for Debate End-->
+		<!-- Model for Report start swadhin-->
+		<div class="modal fade" tabindex="-1" id="reportModelId" role="dialog">
+			<div class="modal-dialog" style="width:50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+					</div>
+					<div class="modal-body" id="reportDetailsId">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!— /.modal-content —>
+			</div><!— /.modal-dialog —>
+		</div><!— /.modal —>
+		<!-- Model for Report End-->
 <div class="modal fade" id="notesModalDivId" style="display:none;">
 			  <div class="modal-dialog" style="width:80%">
 				<div class="modal-content">
@@ -2407,7 +2432,37 @@ $(document).on("click",".notesClass",function(){
 	$(".jqte_editor").html('');
 	$("#updateButnId").hide();
 });
-
+</script>
+<script>
+//swadhin
+buildReport();   
+function buildReport()
+{
+	var str = '';
+	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
+		str +='<table id="reportTableId" class="table table-bordered">';
+			str +='<thead>';
+				str +='<th>REPORT TYPE</th>';
+				str +='<th>REPORT NAME</th>';
+				str +='<th>INSERTED TIME</th>';
+			str +='</thead>';
+			str +='<tbody>';
+				str +='<c:forEach items="${cadreReportVOList}" var="cadreReportVO">';  
+					str +='<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO">';
+						str +='<tr>';     
+							str +='<td>${ReportVO.reportType}</td>';               
+							str +='<td><a href="file:///D:\\static_content\\reports\\2016-07-08\\2016-07-08_15-04-28_34561.pdf">${ReportVO.reportName}</a></td>';         
+							str +='<td>${ReportVO.insertedTime}</td>';    
+						str +='</tr>';
+					str +='</c:forEach>';           
+				str +='</c:forEach>';
+			str +='</tbody>';
+		str +='</table>';    
+	</c:if>
+	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
+		$("#reportDetailsId").html(str);
+	</c:if>
+}
 </script>
 </body>
 </html>
