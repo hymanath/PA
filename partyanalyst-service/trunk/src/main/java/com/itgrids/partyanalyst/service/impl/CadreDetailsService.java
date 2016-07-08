@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStudentAddressDAO;
 import com.itgrids.partyanalyst.dao.IStudentCadreRelationDAO;
@@ -121,6 +122,7 @@ import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.ImportantLeaders;
+import com.itgrids.partyanalyst.model.ImportantLeadersType;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.StudentAddress;
 import com.itgrids.partyanalyst.model.TdpCadre;
@@ -221,7 +223,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IImportantLeadersTypeDAO importantLeadersTypeDAO;
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	private IVoterInfoDAO voterInfoDAO;
+	private IRegionScopesDAO regionScopesDAO;
 	
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+
 	public ITdpCadreNotesDAO getTdpCadreNotesDAO() {
 		return tdpCadreNotesDAO;
 	}
@@ -9480,18 +9492,71 @@ public List<IdNameVO> getVillagesInMandal(Long mandalId){
 	return returnList;
 }
 
-public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId){
+public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long lebId,Long villageId,Long wardId){
 	IdNameVO returnvo = new IdNameVO();
 	try {
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		
 		Long locationScopeId = importantLeadersTypeDAO.getLocationScopeIdForTypeId(importantLeadersTypeId);
-		if(locationScopeId != null && locationScopeId.longValue() == 4l)
+		if(locationScopeId != null && locationScopeId.longValue() == 3l){
+			List<Object[]> list = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, 0l);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 4l)
 			returnList = getConstituenciesByDistrictId(districtId);
 		else if(locationScopeId != null && locationScopeId.longValue() == 5l)
 			returnList = getTehsilListByConstituency(constituencyId);
 		else if(locationScopeId != null && locationScopeId.longValue() == 6l)
 			returnList = getVillagesInMandal(mandalId);
+		else if(locationScopeId != null && locationScopeId.longValue() == 7l){
+			List<Object[]> list = localElectionBodyDAO.findByDistrictId(districtId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					String electionType = obj[2] != null ? obj[2].toString():"";
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(vo.getName() + " "+electionType);
+					
+					returnList.add(vo);
+				}
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 8l){
+			List<Object[]> wardsList = constituencyDAO.getWardsInALocalBody(lebId);
+			if(commonMethodsUtilService.isListOrSetValid(wardsList)){
+				for (Object[] obj : wardsList) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 10l){
+			List<Object[]> parliamentts = delimitationConstituencyAssemblyDetailsDAO.getLatestParliamentByStateIdForregion("Parliament", 1L, "All");
+			if(commonMethodsUtilService.isListOrSetValid(parliamentts)){
+				for (Object[] obj : parliamentts) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		}
 		
 		returnvo.setId(locationScopeId);
 		returnvo.setIdnameList(returnList);
@@ -9889,6 +9954,46 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 	return basicVo;
 }
 
+	public IdNameVO getImpCandAndPublRepresentativeDetailsByLocation(Long locationId,String searchType){
+		IdNameVO returnvo = new IdNameVO();
+		try {
+			List<Object[]> pubReprList = publicRepresentativeDAO.getPulicRepresentativeInfoByLocation(locationId,searchType);
+			if(commonMethodsUtilService.isListOrSetValid(pubReprList)){
+				for (Object[] obj : pubReprList) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setPercentage(obj[2] != null ? obj[2].toString():"");   //type
+					vo.setDateStr(obj[3] != null ? obj[3].toString():"");   //level
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					
+					returnvo.getIdnameList().add(vo);
+				}
+			}
+			List<Object[]> impCandList = importantLeadersDAO.getImportantLeadersInfoByLocation(locationId,searchType);
+			if(commonMethodsUtilService.isListOrSetValid(impCandList)){
+				for (Object[] obj : impCandList) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setPercentage(obj[2] != null ? obj[2].toString():"");  //type
+					vo.setDateStr(obj[3] != null ? obj[3].toString():"");   //level
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					
+					returnvo.getIdnameList().add(vo);
+				}
+			}
+			
+			returnvo.setId(locationId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception rised in getAttendeeAndinviteeCountsDateWise()",e);
+		}
+		return returnvo;
+	}
+
 public ResultStatus saveCadreNotesInformationDetails(final Long tdpCadreId,final String notes,final Long userId,final Long primaryTdpCadrenotesId){
 		LOG.info("Entered into the saveCadreNotesInformationDetails service method");
 		ResultStatus resultStatus = new ResultStatus();
@@ -9996,4 +10101,48 @@ public ResultStatus updateCadreNotesInfrmationAllDetails(Long notesId,String not
 	
 }
 
+	public List<IdNameVO> getRegionScopes(){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> list = regionScopesDAO.getAllRegionScopesWithOutOrderBy();
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getRegionScopes method in CadreDetailsService ",e);
+		}
+		return returnList;
+	}
+
+	public String saveImportantLeadersType(final String position,final Long levelId,final Long userId){
+		String status = null;
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					int maxOrderNo = importantLeadersTypeDAO.getMaxOrderNo();
+					ImportantLeadersType importantLeadersType = new ImportantLeadersType();
+					
+					importantLeadersType.setPosition(position);
+					importantLeadersType.setLocationScopeId(levelId);
+					importantLeadersType.setOrderNo(maxOrderNo+1);
+					importantLeadersType.setUserId(userId);
+					importantLeadersType.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					
+					importantLeadersType = importantLeadersTypeDAO.save(importantLeadersType);
+				}
+			});
+			status = "success";
+		} catch (Exception e) {
+			status = "failure";
+			Log.error("Exception Occured in saveImportantLeadersType method in CadreDetailsService ",e);
+		}
+		return status;
+	}
 }

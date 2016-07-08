@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +28,9 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 	private Long importantLeadersTypeId;
 	private String position;
 	private Long locationScopeId;
-	private Long orderNo;
+	private int orderNo;
+	private Long userId;
+	private Date insertedTime;
 	
 	private RegionScopes locationScope;
 	
@@ -58,10 +61,10 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 	}
 	
 	@Column(name="order_no")
-	public Long getOrderNo() {
+	public int getOrderNo() {
 		return orderNo;
 	}
-	public void setOrderNo(Long orderNo) {
+	public void setOrderNo(int orderNo) {
 		this.orderNo = orderNo;
 	}
 	
@@ -74,5 +77,21 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 	}
 	public void setLocationScope(RegionScopes locationScope) {
 		this.locationScope = locationScope;
+	}
+	
+	@Column(name="user_id")
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 }

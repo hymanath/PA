@@ -108,13 +108,16 @@ public interface ICadreDetailsService {
 	public List<IdNameVO> getVillagesInMandal(Long mandalId);
 	public List<IdNameVO> getTehsilListByConstituency(Long constituencyId);
 	public List<IdNameVO> getConstituenciesByDistrictId(Long districtId);
-	public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId);
+	public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long lebId,Long villageId,Long wardId);
 	public List<MahanaduEventVO> getCadreLocationWiseEventAttendeeCounts(Long eventId,String startDate,String endDate,Long locationId,String locationType,String searchType);
 	public BasicVO getStartDateAndEndDate(Long eventId);
 	public List<IdNameVO> getMainEvents();
 	public Long getTotalVotersInALocation(Long locationId,String locationType,Long publicationId,Long constituencyId);
+	public IdNameVO getImpCandAndPublRepresentativeDetailsByLocation(Long tehsilId,String searchType);
 	public List<BasicVO> getcadreNotesInformationDetails(Long tdpCadreId,Integer startIndex,Integer maxIndex,Long userId);
 	public ResultStatus saveCadreNotesInformationDetails(Long tdpCadreId,String notes,Long userId,Long primaryTdpCadrenotesId);
 	public String deleteCadreNotesData(Long cadreNotes);
 	public ResultStatus updateCadreNotesInfrmationAllDetails(Long notesId,String notes,Long UserId);
+	public List<IdNameVO> getRegionScopes();
+	public String saveImportantLeadersType(final String position,final Long levelId,final Long userId);
 }
