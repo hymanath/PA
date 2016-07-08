@@ -8166,7 +8166,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 								notVerifiedVO.setStatus("current");
 								simpleVO.setStatus("current");
 								//firstMap.get("Applied").setCurrent(obj[2].toString().toLowerCase());
-								firstMap.get("Waiting For Documents").setCurrent(obj[2].toString().toLowerCase());
+								firstMap.get("Waiting For Documents").setCurrent(commonMethodsUtilService.getStringValueForObject(obj[2]).toLowerCase());
 								
 							}
 							finalVO.getSimpleVOList2().add(simpleVO);
