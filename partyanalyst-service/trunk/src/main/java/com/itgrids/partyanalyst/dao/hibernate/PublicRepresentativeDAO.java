@@ -185,4 +185,23 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		query.setParameter("tdpCadreId",tdpCadreId);*/
 		return query.list();		
 	}
+	
+	public List<Object[]> getPulicRepresentativeInfoByLocation(Long locationId,String searchType){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.candidate.candidateId," +
+					" model.candidate.lastname," +
+					" model.publicRepresentativeType.type," +
+					" model.representativeLevel.representativeLevel," +
+					" model.candidate.mobile" +
+					" from PublicRepresentative model,TdpCadreCandidate model1" +
+					" where model.candidate.candidateId = model1.candidate.candidateId");
+		if(searchType.equalsIgnoreCase("mandal"))
+			sb.append(" and model1.tdpCadre.userAddress.tehsil.tehsilId = :locationId");
+		else if(searchType.equalsIgnoreCase("leb"))
+			sb.append(" and model1.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :locationId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationId", locationId);
+		return query.list();
+	}
  }
