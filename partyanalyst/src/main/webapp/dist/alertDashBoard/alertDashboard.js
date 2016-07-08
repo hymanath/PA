@@ -2,7 +2,7 @@
 $(document).ready(function(){
 	getLocationLevelAlertCount();
 });
-$(document).change('#dateRangePickerId',function(){
+$(document).on("click",'.applyBtn',function(){
 	getLocationLevelAlertCount();
 })
 function getLocationLevelAlertCount()
@@ -63,6 +63,7 @@ $(document).on("click",".locationLevelCls",function(){
 	var statusId=$(this).attr("attr-statusId");
 	var fromDate = $(this).attr("attr-fromDate");
 	var toDate=$(this).attr("attr-toDate");
+	$("#errorId").html("");
 	getLocationLevelAlertData(levelId,statusId,fromDate,toDate);
 });
 
@@ -142,14 +143,15 @@ function showPopUpAlertData(alertId)
 			var location ='';
 			if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
 			{
-			location +='State:'+GlobalAlertData[i].locationVO.state+' Dist : '+GlobalAlertData[i].locationVO.districtName+' Constituency :'+GlobalAlertData[i].locationVO.constituencyName+' Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' Ward : '+GlobalAlertData[i].locationVO.wardName+'';	
+			location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' </p><p>Ward : '+GlobalAlertData[i].locationVO.wardName+'</p>';	
 			}
 			else{
-				location +='State:'+GlobalAlertData[i].locationVO.state+' Dist : '+GlobalAlertData[i].locationVO.districtName+' Constituency :'+GlobalAlertData[i].locationVO.constituencyName+' Mandal : '+GlobalAlertData[i].locationVO.tehsilName+' Panchayat : '+GlobalAlertData[i].locationVO.villageName+'';
+				location +='<p>State:'+GlobalAlertData[i].locationVO.state+' </p><p>Dist : '+GlobalAlertData[i].locationVO.districtName+' </p><p>Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Mandal : '+GlobalAlertData[i].locationVO.tehsilName+'</p><p> Panchayat : '+GlobalAlertData[i].locationVO.villageName+'</p>';
 			}
 			
 			$("#LocationId").html(''+location+'');
 			$("#statusId").val(''+GlobalAlertData[i].statusId+'');
+			  $("#statusId").dropkick('refresh')
 			$("#descriptionId").html(''+GlobalAlertData[i].desc+'');
 			
 		}
@@ -161,6 +163,7 @@ function updateAlertStatus()
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
+	 
 	//var str = '';
 	if(comments.length==0||comments=='')
 	{
@@ -186,11 +189,13 @@ function updateAlertStatus()
 					  url: 'updateAlertStatusAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-				  
+				  $("#commentsId").val('');
 					if(result="success")
 					{
 						$("#errorId").html(" Alert Updated Successfully ").css("color","green");
+						getAlertStatusCommentsTrackingDetails();
 					}
+					
 				});
 			
 }
@@ -220,9 +225,17 @@ function getAlertStatusCommentsTrackingDetails()
 	function buildAlertCommentsForTracking(result,aptName){
 		
 		var str='';
-		str+='<h4>'+aptName+' Alert Status Tracking </h4>';
+		
 		if(result == null || result.length == 0)
+		{
 			$("#alertCommentsDiv").html('No Data Available');
+			return;
+		}
+			str+='<div class="panel panel-default m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title">'+aptName+' Alert Status Tracking</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
 			str+='<ul class="alertStatusTracking">';
 				for(var i in result){
 					str+='<li>';
@@ -243,6 +256,8 @@ function getAlertStatusCommentsTrackingDetails()
 					str+='</li>';	
 				}
 		str+='</ul>';
+		str+='</div>';
+		str+='</div>';
 		$("#alertCommentsDiv").html(str);
 		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
 	}

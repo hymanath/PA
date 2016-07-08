@@ -1,8 +1,9 @@
 disableByLevel();
+
 function disableByLevel()
   {
 	  setDefault();	
-	  var levelId = $("#levelId").val();
+	  var levelId = $("#alertlevelId").val();
 	  var districtId = $("#referdistrictId").val();
 	  var constituencyId = $("#referconstituencyId").val();
 	  var panchayatId = $("#referpanchayatId").val();
