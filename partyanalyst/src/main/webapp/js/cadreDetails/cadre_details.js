@@ -192,7 +192,8 @@ function getParticipatedConstituencyId(cadreId){
 				});
 			}
 		
-var globalVoterCardNo = "";		
+var globalVoterCardNo = "";	
+var globalidentityMembershipNo = ""	;
 	function cadreFormalDetailedInformation(globalCadreId){
 			var localCadreId=globalCadreId;
 			//loading images showing
@@ -376,7 +377,7 @@ var globalVoterCardNo = "";
 					 $("#casteFormalId").html(result.casteName);
 					 $("#registeredOnId").html(result.registeredTime);
 					 $("#registeredAtId").html(result.registeredOn);
-					 
+					 globalidentityMembershipNo = result.membershipNo;
 					 
 					 //previous enrollmetYears building
 					/* var preEnrollemets=[];
@@ -1717,7 +1718,7 @@ function getMemberComplaints()
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			 //url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -1745,13 +1746,16 @@ function buildFamilyMemberComplaint(result,jobj){
 	 var cnt = 0;
 	if(result!=null && result.length>0){
 		for(var j in result[0].subList){
-		  if(result[0].subList[j].subList != null && result[0].subList[j].subList.length > 0)
-		  {
-		  for(var k in result[0].subList[j].subList)
-					{
-					cnt  = cnt + 1;
+			if(globalidentityMembershipNo != result[0].subList[j].familyRefererMembership)
+			{
+			  if(result[0].subList[j].subList != null && result[0].subList[j].subList.length > 0)
+			  {
+				  for(var k in result[0].subList[j].subList)
+							{
+							cnt  = cnt + 1;
+					  }
 			  }
-		 }
+	       }
 	}		  
 	var comp = '';
 	var totalFamCount = 0;
@@ -1760,15 +1764,7 @@ function buildFamilyMemberComplaint(result,jobj){
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-	//comp+='<div class="panel panel-default">';
-	//comp+='<div class="panel-heading">'; 
-	//comp+='<h4 class="panel-title">TOTAL COMPLAINTS-'+cnt+'</h4>';
-	//comp+='</div>';
-	//comp+='<div class="panel-body">';
-	//comp+='<h5 class="m_0">TOTAL FINANCIAL REQUESTED :'+result[0].amountVO.requested+'/-</h5>';
-	//comp+='<h5 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h5>';
-	//comp+='<p class="m_0">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
-  //comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';
+	
    if(result[0].amountVO.requested > 0 ){
 	$("#familyrequestedDiv").show();
 	$("#familyRequestAmount").html(''+result[0].amountVO.requested+'/-');
@@ -1794,6 +1790,8 @@ function buildFamilyMemberComplaint(result,jobj){
 			//comp += '<div class="panel panel-default">';
 			//comp += '<div class="panel-heading" style="background-color:#FFF" role="tab" id="headingOne155'+j+'">';
 			//comp += '<div role="button" style="color:#666" data-toggle="collapse" data-parent="#accordion155" href="#collapseOne155'+j+'" aria-expanded="true" aria-controls="collapseOne155'+j+'">';
+			if(globalidentityMembershipNo != result[0].subList[j].familyRefererMembership)
+			{
 			comp += '<div class="media" style="padding:10px">';
 			comp += '<div class="media-left">';
 			comp += '<img src="'+result[0].subList[j].image+'" style="height:35px;width:35px;"  class="media-object img-border img-circle">';
@@ -1801,6 +1799,7 @@ function buildFamilyMemberComplaint(result,jobj){
 			comp += '<div class="media-body">';
 			comp += '<ul class="list-inline">'; 
 			comp += '<li style="width:100%">';
+			
 			if(result[0].subList[j].familyVoter != null)
 				comp += '<p class="m_0">Refer Name- '+result[0].subList[j].name+'</p>';
 			else
@@ -1865,11 +1864,14 @@ function buildFamilyMemberComplaint(result,jobj){
 		$("#familyMemberDiv").css("height","auto"); 
 	  }
 	}
+	}
+	
 	if(!flag)
 	{
-	 
+	 $("#totalFamilyComplaints").html('0');
       $("#familyMemberDiv").html("<div style='text-align:center;padding:10px'>NO DATA AVAILABLE </div>");
 	  $("#familyApprovedAmount").html('0/-');
+	  
 	}
 	
  }catch(e){}
@@ -4497,7 +4499,7 @@ $("#feedbackDivId").html("");
 }
 getStatusCountOfCadreForInvitationAndAttendance();
 function getStatusCountOfCadreForInvitationAndAttendance(){
-	//alert(2222);
+	
 	$("#trainingDetailsBodyId").html('');
 	$("#modelForTrainingDetails").hide();
 	var jsObj ={
@@ -4773,7 +4775,7 @@ function getActivityDetails()
 		url :'getActivityDetailsByTdpCadreIdAction.action',
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
-		//alert(111);
+		
 		if(result != null){
 			var str = '';
 			
@@ -4891,8 +4893,6 @@ $(document).on('click', '.activityLvlCls', function(){
 
 function getCandateActivityAttendance(activityLevelId,activeCode){
 
-	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
-		//alert(999);
 		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 		cadreId:globalCadreId,
