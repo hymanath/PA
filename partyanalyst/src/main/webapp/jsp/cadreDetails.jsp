@@ -682,7 +682,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								<h4 class="panel-title text-bold"><img src="dist/img/photo.png" > COMMITTEE MEETINGS</h4>
 							</div>
 							<span style="display:none;"> 
-								<i style="cursor:pointer;top:8px;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i style="cursor:pointer;top:8px;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
 							</span>
 							<div class="col-md-offset-3 col-md-5">
 								<div class="input-group pull-right">
@@ -754,7 +754,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
                     	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
                     	<span>
-							<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
+							<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
 						</span>
                     	</h4>
                     </div>
@@ -944,8 +944,8 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								<ul role="tablist" class="nav nav-tabs tab-list display-style" >
 							
 								<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiParticipatedId">0</span></li>
-								<li class="active li_arr" style="padding:10px 15px;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiAreaId">0</span></li>
 								<li style="padding:10px 15px;">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrSurveyOnCandiId">0</span></li>
+								<li class="active li_arr" style="padding:10px 15px;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;<span id="IvrcandiAreaId">0</span></li>
 								</ul>
 								</div>
 								<div id="ivrTypeDetailsDivId"></div>
