@@ -1031,7 +1031,7 @@ public class SchedulerService implements ISchedulerService{
 			FileOutputStream file = new FileOutputStream(new File(pdfFilePath));
 			
 			Rectangle pageSize = new Rectangle(PageSize.A4);
-		    pageSize.setBackgroundColor(new BaseColor(255,255,51));
+		    pageSize.setBackgroundColor(new BaseColor(5,64,165));  
 			Document  document=new Document(pageSize);  
 		     
 		    PdfWriter writer=PdfWriter.getInstance(document,file);
@@ -1358,7 +1358,7 @@ public class SchedulerService implements ISchedulerService{
 	        headings3[1] = "DEPT NAME";
 	        headings3[2] = "EMPLOYEE NAME";
 	        headings3[3] = "MOBILE NO";
-	        
+	        //cell.setBackgroundColor(new BaseColor(255, 0, 0));
 	        for(int i=0; i < 4; i++){
 	        	PdfPCell cell = new PdfPCell(new Paragraph(headings3[i]));
 	        	cell.setBorderColor(BaseColor.DARK_GRAY);
@@ -1413,7 +1413,7 @@ public class SchedulerService implements ISchedulerService{
 	        }
 	        document.open();
 	        
-	        Font f = new Font(FontFamily.TIMES_ROMAN, 16.0f, Font.BOLD, BaseColor.RED);
+	        Font f = new Font(FontFamily.TIMES_ROMAN, 16.0f, Font.BOLD, BaseColor.WHITE);
 		    Chunk c = new Chunk("EMPLOYEES ATTENDANCE", f);
 	        Paragraph paragraph5=new Paragraph(c);
 	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
@@ -1422,36 +1422,45 @@ public class SchedulerService implements ISchedulerService{
 	        
 	        document.add(paragraph5);  
 	        
-	        f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.YELLOW);
+	        f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
 		    c = new Chunk("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION", f);
-		    c.setBackground(BaseColor.RED);
+		    //c.setBackground(BaseColor.RED);
 	        Paragraph paragraph=new Paragraph(c);
-	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
 	        paragraph.setAlignment(Element.ALIGN_CENTER);
+	        paragraph.add(Chunk.NEWLINE);
+	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
 	        
+	        f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.BOLD, BaseColor.ORANGE);
+		    c = new Chunk("      DATE:"+dt, f);
+		    Paragraph paragraph4=new Paragraph(c);
+		    paragraph4.setAlignment(Element.ALIGN_CENTER);
+		    paragraph4.add(Chunk.NEWLINE);
+		    
+	        
+	        /*paragraph.setAlignment(Element.ALIGN_CENTER);
 	        Paragraph paragraph4=new Paragraph();
 	        paragraph4.add("      DATE:"+dt);
 	        paragraph4.setAlignment(Element.ALIGN_CENTER);
-	        paragraph4.add(Chunk.NEWLINE);
+	        paragraph4.add(Chunk.NEWLINE);*/
 	        
 	        document.add(paragraph);
 	    	document.add(paragraph4);
 	    	document.add(table);
 	    	
-	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.YELLOW);
+	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
 	    	c = new Chunk("DEPARTMENT'S EMPLOYEE ATTENDANCE INFORMATION", f);
-	    	c.setBackground(BaseColor.RED);
+	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph1=new Paragraph(c);
 	        //paragraph1.add("DEPARTMENT'S EMPLOYEE ATTENDANCE INFORMATION");
 	        paragraph1.setAlignment(Element.ALIGN_CENTER);
 	        paragraph1.add(Chunk.NEWLINE);
 	        
-	        document.add(paragraph1);
+	        document.add(paragraph1);  
 	    	document.add(tbl);
 	    	
-	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.YELLOW);
+	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
 	    	c = new Chunk("OFFICE WISE ATTENDED EMPLOYEE'S DETAILS", f);
-	    	c.setBackground(BaseColor.RED);
+	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph2=new Paragraph(c);
 	        //paragraph2.add("OFFICE WISE ATTENDED EMPLOYEE'S DETAILS");
 	        paragraph2.setAlignment(Element.ALIGN_CENTER);
@@ -1460,9 +1469,9 @@ public class SchedulerService implements ISchedulerService{
 	        document.add(paragraph2);
 	    	document.add(table2);
 	    	
-	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.YELLOW);
+	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
 	    	c = new Chunk("OFFICE WISE ABSENT EMPLOYEE'S DETAILS", f);
-	    	c.setBackground(BaseColor.RED);
+	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph3=new Paragraph(c);
 	        //paragraph3.add("OFFICE WISE ABSENT EMPLOYEE'S DETAILS");
 	        paragraph3.setAlignment(Element.ALIGN_CENTER);
@@ -1539,7 +1548,7 @@ public class SchedulerService implements ISchedulerService{
 			MimeMessage message = new MimeMessage(session);    
 			
 			message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("kamalakar@itgrids.com"));
+			//message.addRecipient(Message.RecipientType.TO, new InternetAddress("kamalakar@itgrids.com"));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));  
 			message.setHeader("Return-Path", IConstants.EMAIL_USERNAME);
 			message.setSentDate(dateUtilService.getCurrentDateAndTime());

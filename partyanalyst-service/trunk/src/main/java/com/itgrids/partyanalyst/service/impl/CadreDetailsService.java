@@ -81,6 +81,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreNotesDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -100,6 +101,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
+import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
@@ -117,6 +119,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.ReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -229,6 +232,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IRegionScopesDAO regionScopesDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private ITdpCadreReportDAO tdpCadreReportDAO;
 	
 	public IRegionScopesDAO getRegionScopesDAO() {
 		return regionScopesDAO;
@@ -895,6 +899,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.employeeDepartmentDAO = employeeDepartmentDAO;
 	}
 
+	public ITdpCadreReportDAO getTdpCadreReportDAO() {
+		return tdpCadreReportDAO;
+	}
+
+	public void setTdpCadreReportDAO(ITdpCadreReportDAO tdpCadreReportDAO) {
+		this.tdpCadreReportDAO = tdpCadreReportDAO;
+	}
+
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
 	{
@@ -1542,10 +1554,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 				 }
 				
 				 
-				 //swadhin
+				//swadhin
 				List<Object[]> getEmployeeDetails = employeeDepartmentDAO.getEmployeeDetails(cadreId);
 				// System.out.println(getEmployeeDetails);
-				 if(commonMethodsUtilService.isListOrSetValid(getEmployeeDetails)){
+				if(commonMethodsUtilService.isListOrSetValid(getEmployeeDetails)){
 					 String partyPostion ="";
 					 for (int i = 0; i < getEmployeeDetails.size(); i++) {
 						 Object[] param = getEmployeeDetails.get(i);
@@ -1558,10 +1570,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 if(cadreDetailsVO.getPartyPosition() == null || cadreDetailsVO.getPartyPosition().isEmpty() || cadreDetailsVO.getPartyPosition().equalsIgnoreCase("N/A")){
 						 cadreDetailsVO.setPartyPosition(partyPostion);
 					 }
+					 
 					 else{  
 						 cadreDetailsVO.setPartyPosition(cadreDetailsVO.getPartyPosition()+", "+partyPostion);
 					 }
 				 }
+				
 				/*Map<Long,String> cadrePartyPositionMap = new LinkedHashMap<Long, String>(0);
 				List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
 				tdpCadreIDsList.add(cadreId);
@@ -10237,4 +10251,52 @@ public void setSubLocationAttendees(List<Object[]> list , List<MahanaduEventVO> 
 		}
 		return status;
 	}
+}
+public List<CadreReportVO> getCadreReportDetails(Long cadreId){
+	LOG.info("Entered into the getCadreReportDetails method of CadreDetailsService service method");
+	try{
+		List<CadreReportVO> cadreReportList = new ArrayList<CadreReportVO>();
+		Map<String,List<ReportVO>> reportTypeReportMap = new HashMap<String, List<ReportVO>>();
+		CadreReportVO cadreReportVO = null;
+		ReportVO reportVO = null;
+		List<ReportVO> reportVOList = null;
+		List<Object[]> cadreReportDetails = tdpCadreReportDAO.getCadreReportDetails(cadreId);
+		if(cadreReportDetails != null && cadreReportDetails.size() > 0){
+			for(Object[] cadreReport : cadreReportDetails){
+				List<ReportVO> reportVOList1 = reportTypeReportMap.get(cadreReport[0].toString());
+				if(reportVOList1  == null){
+					reportVO = new ReportVO();
+					reportVO.setReportType(cadreReport[0].toString());
+					reportVO.setReportName(cadreReport[1].toString());
+					reportVO.setReportPath(cadreReport[2].toString());
+					reportVO.setInsertedTime(cadreReport[3].toString());
+					reportVOList = new ArrayList<ReportVO>(0);
+					reportVOList.add(reportVO);
+					reportTypeReportMap.put(cadreReport[0].toString(), reportVOList);
+				}
+				else{
+					reportVO = new ReportVO();
+					reportVO.setReportType(cadreReport[0].toString());
+					reportVO.setReportName(cadreReport[1].toString());
+					reportVO.setReportPath(cadreReport[2].toString());
+					reportVO.setInsertedTime(cadreReport[3].toString());
+					reportTypeReportMap.get(cadreReport[0].toString()).add(reportVO);
+				}
+			}
+			Set<String> reportTypeList = reportTypeReportMap.keySet();
+			for(String reportType : reportTypeList){
+				cadreReportVO = new CadreReportVO();
+				cadreReportVO.setReportType(reportType);
+				cadreReportVO.getReportVOList().addAll(reportTypeReportMap.get(reportType));
+				cadreReportList.add(cadreReportVO);
+			}
+			
+		}
+		return cadreReportList;
+		
+	}catch(Exception e){
+		LOG.info("Entered into the getCadreReportDetails method of CadreDetailsService service");
+	}
+	return null;
+	
 }
