@@ -2,6 +2,7 @@
 		pageEncoding="utf-8"%>
 	<%@ taglib prefix="s" uri="/struts-tags" %>  
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 	<html>
@@ -345,21 +346,36 @@ window.location.href = uri + base64(format(template, ctx))
 				<!---Tab Header --Menu--->
 				<ul class="nav nav-tabs" id="myTab"  style="margin-top: 23px;">
 				
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'DEBATE_CREATE_ENTITLEMENT' ) }">
 					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="showNewDebateDiv();" style="cursor:pointer;color: #005580;" > Create Debate </a>	
 					</li>
+				</c:if>
 					<!--<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateReportDiv()" style="cursor:pointer;color: #005580;">View Debate Details</a>
 					</li>-->
-				
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'DEBATE_CREATE_ENTITLEMENT' ) || 
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_REPORT_ENTITLEMENT' ) }">
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="detailsNewsId" onClick="showDebateReportDiv()" style="cursor:pointer;color: #005580;">View Debate Details</a>
 					</li>
+				</c:if>
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) ||
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_REPORT_ENTITLEMENT' ) }">
+						
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="AnalysisNewsId" onClick="showDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Analysis</a>
 					</li>
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="newDebateAnalysis" onClick="showNewDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Reports</a>
 					</li>
+					
+				</c:if>
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
+				fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) }">
+						
 					<li class="dropdown" role="presentation">
 						<a aria-controls="myTabDrop1-contents" data-toggle="dropdown" class="dropdown-toggle" id="myTabDrop1" href="#" aria-expanded="false">Debate Actions <span class="caret"></span></a> 
 						<ul id="myTabDrop1-contents" aria-labelledby="myTabDrop1" class="dropdown-menu">
@@ -373,6 +389,7 @@ window.location.href = uri + base64(format(template, ctx))
 							<li><a aria-controls="dropdown5" data-toggle="tab" id="dropdown5-tab" role="tab" href="#dropdown5"onclick="createChannel();">Create Channel</a></li>
 						</ul> 
 					</li>
+				</c:if>
 				</ul>
 	</div>
 	

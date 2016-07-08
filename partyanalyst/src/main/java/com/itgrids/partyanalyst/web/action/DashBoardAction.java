@@ -544,15 +544,22 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		List<String> entitlements = null;
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
-			if(entitlements.contains("DEBATE_ENTITLEMENT".trim())){
+			
+			if(entitlements.contains("DEBATE_CREATE_ENTITLEMENT".trim())){
 				return "debate";
 			}
-			if(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim())){
-				return "bloodBankRegistration";
+			else if(entitlements.contains("DEBATE_REPORT_ENTITLEMENT".trim())){
+				return "debate";
+			}
+			else if(entitlements.contains("DEBATE_ENTITLEMENT".trim())){
+				return "debate";
 			}
 			else if(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim())){
 				return "bloodBankRegistration";
 			}
+			/*else if(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim())){
+				return "bloodBankRegistration";
+			}*/
 			else if(entitlements.contains("BLOOD_BANK_DASHBOARD_ENTITLEMENT".trim())){
 				return "bloodBankDashboard";
 			}
