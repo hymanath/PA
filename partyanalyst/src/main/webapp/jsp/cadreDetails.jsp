@@ -60,7 +60,7 @@
 	cursor:pointer;
 }
 .unselectable{
-		height:24px !important;
+	min-height:24px !important;
 }
 </style>
 <script>
@@ -194,7 +194,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
                                     <!--
-									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
+									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 									-->
                          		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOTES_USER_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
@@ -505,7 +505,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="cadrMmbrBthHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE 
 							<span>
-								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="OWN CONSTITUENCY" class="glyphicon glyphicon-info-sign reasonClsn participatedClass"></i>
 							</span>
 							<span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i>  
 							</span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;">  
@@ -522,7 +522,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="cadreEnrolmentStatsHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS 
 							<span>
-								<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i id="cadreEnrolementParticepateStatusId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
 							</span>
 							<span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i>
 							</span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;">
@@ -708,7 +708,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="deathHospitalDivHeaderId">
                     	<h4 class="panel-title text-bold pointer"><i class="fa fa fa-hospital-o"></i> DEATHS AND HOSPITALIZATION INSURANCE DETAILS 
 						<span>
-							<i id="deathAndHospitalParticepationId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls"></i>
+							<i id="deathAndHospitalParticepationId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
 						</span>
 						<span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -724,7 +724,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 	<div class="panel-heading" id="StatusCountsDivId">
                     	<h4 class="panel-title text-bold pointer"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE REQUESTS STATUS DETAILS 
 							<span>
-								<i id="grievanceRequestParticepationId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i id="grievanceRequestParticepationId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
 							</span>
 							<span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 							<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -738,7 +738,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 					<div class="panel-heading" id="grievencyBenefitHeaderId">
 						<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE BENIFIT REQUESTS 
 							<span>  
-								<i id="grievanceBenefitParticepationId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls"></i>
+								<i id="grievanceBenefitParticepationId" style="cursor:pointer;" data-placement="top" data-toggle="tooltip" title="" class="glyphicon glyphicon-info-sign reasonCls participatedClass"></i>
 							</span>
 							<span class="pull-right" id="grievencyBenefitHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"  ></i></span>
 							<span class="pull-right" id="grievencyBenefitShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -1367,6 +1367,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="errorUpCallId" style="color:red;"></div>
 							<input type="hidden" id="hiddencadreNotesId"/>
+							<button class="btn btn-success pull-right btn-sm notesClass"><i style="color:#fff;" class="glyphicon glyphicon-refresh" title="Refresh"></i></button>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="row">
@@ -1388,10 +1389,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<textarea id="notesDescriptionId" class="form-control"></textarea>
 									<button type="button" class="btn btn-primary btn-sm pull-right" style="display:none;"id="updateButnId" onclick="saveCadreNotesInformationDetails(0,0)">UPDATE</button>
 									<button type="button" class="btn btn-primary btn-sm pull-right" id="updateNotesButtonId" onclick="saveCadreNotesInformationDetails(0,0)" style="margin-right: 10px;">ADD</button>
+									<div id="NoNotesId" style="color:red;margin-left:385px;"></div>
+									<div class="paginationCls"></div>
 								</div>
+								<div style="margin-left:15px;font-size:15px;font-weight:bold;"> <span>Previous Notes:</span></div>
 								<div class="col-md-12">
 									<div  id="notesExisting" class="m_top20"></div>
-									<div id="paginationForNotesId"></div>
+									<div class="paginationCls"></div>
 								</div>
 							</div>
 						</div>
@@ -2393,7 +2397,8 @@ function generateExcel()
 function generateExcel1(){
 	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
-$(document).on("click","#notesId",function(){
+$(document).on("click",".notesClass",function(){
+	 $("#errorUpCallId").html("");
 	$("#notesModalDivId").modal('show');
 	getCadreNotesInformationDetails(0);
 	var name = $("#nameId").html();
