@@ -2880,6 +2880,8 @@ $("#creationDiv").html('');
  validateDivs();
 	var str='';
 	str +='<div id="innerCreationDiv"> ';
+	str +='<span>NOTE : Press Alt+t to toggle between Telugu & English</span>';
+	
 	str +='<div id="RerrDiv"></div>';
 	str +='<h5 class="text-success"> Create New Debate Role </h5>';
 	str +='Role Name :  <input type="text" name="roleName" id="newRoleId"/><div><input type="button" class="btn btn-success" value="Create" onClick="createNewRole();"/></div>';
