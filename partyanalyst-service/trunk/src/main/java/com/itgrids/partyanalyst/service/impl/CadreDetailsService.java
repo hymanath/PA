@@ -10251,7 +10251,7 @@ public void setSubLocationAttendees(List<Object[]> list , List<MahanaduEventVO> 
 		}
 		return status;
 	}
-}
+
 public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	LOG.info("Entered into the getCadreReportDetails method of CadreDetailsService service method");
 	try{
@@ -10266,20 +10266,20 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 				List<ReportVO> reportVOList1 = reportTypeReportMap.get(cadreReport[0].toString());
 				if(reportVOList1  == null){
 					reportVO = new ReportVO();
-					reportVO.setReportType(cadreReport[0].toString());
-					reportVO.setReportName(cadreReport[1].toString());
-					reportVO.setReportPath(cadreReport[2].toString());
-					reportVO.setInsertedTime(cadreReport[3].toString());
+					reportVO.setReportType(cadreReport[0] != null ? cadreReport[0].toString()  : "");
+					reportVO.setReportName(cadreReport[1] != null ? cadreReport[1].toString() : "");
+					reportVO.setReportPath(cadreReport[2] != null ? cadreReport[2].toString() : "");
+					reportVO.setInsertedTime(cadreReport[3] != null ? cadreReport[3].toString() : "");
 					reportVOList = new ArrayList<ReportVO>(0);
 					reportVOList.add(reportVO);
 					reportTypeReportMap.put(cadreReport[0].toString(), reportVOList);
 				}
 				else{
 					reportVO = new ReportVO();
-					reportVO.setReportType(cadreReport[0].toString());
-					reportVO.setReportName(cadreReport[1].toString());
-					reportVO.setReportPath(cadreReport[2].toString());
-					reportVO.setInsertedTime(cadreReport[3].toString());
+					reportVO.setReportType(cadreReport[0] != null ? cadreReport[0].toString()  : "");
+					reportVO.setReportName(cadreReport[1] != null ? cadreReport[1].toString() : "");
+					reportVO.setReportPath(cadreReport[2] != null ? cadreReport[2].toString() : "");
+					reportVO.setInsertedTime(cadreReport[3] != null ? cadreReport[3].toString() : "");
 					reportTypeReportMap.get(cadreReport[0].toString()).add(reportVO);
 				}
 			}
@@ -10299,4 +10299,5 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	}
 	return null;
 	
+}
 }
