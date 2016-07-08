@@ -2702,6 +2702,8 @@
 		 <property name="tdpCadreNotesDAO" ref="tdpCadreNotesDAO" />
 		 <property name="employeeDepartmentDAO" ref="employeeDepartmentDAO" />
 		 <property name="regionScopesDAO" ref="regionScopesDAO" />
+		 <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">

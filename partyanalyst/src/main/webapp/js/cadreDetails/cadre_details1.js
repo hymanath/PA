@@ -385,7 +385,8 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 }
 function getCadreLocationWiseEventAttendeeCounts(locationId,locationValue,searchType,divId,index,id){
 	$("#errMsgID").hide();
-	$('#'+divId+'').css("overflow","scroll");
+	//$('#'+divId+'').css("overflow","scroll");
+	$('#'+divId+'').addClass("table-responsive");
 	$('#'+divId+'tr').show();
 	$('#'+divId+'').show();
 	$('#'+divId+'').html('<center><img id="" src="images/icons/loading.gif" style=""/></center>');
@@ -401,7 +402,9 @@ if(index != "onload"){
 		
 	}else if(isVisible1==false ){
 		$('#'+id).find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-		$('#'+id).parent().next().hide();
+		$('#'+id).parent().next().next().hide();
+		$('#'+id).parent().parent().next().hide();
+		$('#'+divId+'tr'+index).hide();
 		$('#'+divId+index).hide();
 		return;
 	}
@@ -426,16 +429,10 @@ if(index != "onload"){
 				if(searchType == "CONSTITUENCY")
 				buildCadreLocationWiseEventAttendeeCount(result,"CONSTITUENCY","MANDAL",divId,index)
 				if(searchType == "MANDAL"){
-					if($("#cadreRuralORUrbanId").val() != 0 && $("#cadreRuralORUrbanId").val() != "")
-						buildCadreLocationWiseEventAttendeeCount(result,"MUNCIPALITY/CORPORATION","WARD",divId,index)
-					else if($("#cadremandalId").val() != 0 && $("#cadremandalId").val() != "")
 						buildCadreLocationWiseEventAttendeeCount(result,"MANDAL","PANCHAYAT",divId,index)
 				}
 				if(searchType == "PANCHAYAT"){
 				buildCadreLocationWiseEventAttendeeCount(result,"PANCHAYAT","",divId,index)	
-				}
-				if(searchType == "WARD"){
-					buildCadreLocationWiseEventAttendeeCount(result,"WARD","",divId,index)	
 				}
 				}else{
 					$("#errMsgID").show();
@@ -475,29 +472,31 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 		
 		if(i==0){
 			var str ='';
-			str+='<table class="table table-bordered">';
+			
+			str+='<div class="col-md-12 m_top10"><button class="btn btn-xs btn-success pull-right" style="margin-bottom:10px" onclick="generatesExcel(\''+divId+'\',\''+locationValue+' Wise Report\');">EXPORT TO EXCEL</button></h4></div>';
+			str+='<table class="table table-bordered table-condensed" id="'+divId+'">';
 			if(locationValue == "DISTRICT")
-			str+='<thead style="background-color:#CCCCCC;">';
+			str+='<thead style="background-color:#CCC;font-size:12px !important">';
 			if(locationValue == "CONSTITUENCY")
-			str+='<thead style="background-color:#ddd;">';
-			if(locationValue == "MANDAL" || locationValue == "MUNCIPALITY/CORPORATION")
-			str+='<thead style="background-color: #CCCCCC;">';
-			if(locationValue == "PANCHAYAT" || locationValue == "WARD")
-			str+='<thead style="background-color:#f2f2f2;">';
+			str+='<thead style="background-color:#EEE;font-size:12px !important">';
+			if(locationValue == "MANDAL")
+			str+='<thead style="background-color: #f1f1f1;font-size:12px !important">';
+			if(locationValue == "PANCHAYAT")
+			str+='<thead style="background-color:#f2f2f2;font-size:12px !important">';
 			str+='<tr>';
-			str+='<th rowspan="2">ID</th>';
+			if(result[i].locationName == "constituency"){
+				str+='<th rowspan="2">CONSTITUENCY NO</th>';
+		    }else{
+				str+='<th rowspan="2">ID</th>';
+			}
 			if(locationValue == "DISTRICT")
-				str+='<th rowspan="2">DISTRICT NAME</th>';
+				str+='<th rowspan="2">DISTRICT</th>';
 			else if(locationValue == "CONSTITUENCY")
-				str+='<th rowspan="2">CONSTITUENCY NAME</th>';
-			else if(locationValue == "MUNCIPALITY/CORPORATION" && searchType == "WARD")
-				str+='<th rowspan="2">MANDAL NAME</th>';
+				str+='<th rowspan="2">CONSTITUENCY</th>';
 			else if(locationValue == "MANDAL" && searchType == "PANCHAYAT")
-				str+='<th rowspan="2">MANDAL NAME</th>';
+				str+='<th rowspan="2">MANDAL/MUNCIPALITY</th>';
 			else if(locationValue == "PANCHAYAT" && searchType == "")
-				str+='<th rowspan="2">VILLAGE NAME</th>';
-			else if(locationValue == "WARD" && searchType == "")
-				str+='<th rowspan="2">WARD NAME</th>';
+				str+='<th rowspan="2">VILLAGE</th>';
 			str+='<th rowspan="2">TOTAL INVITEES</th>';
 			str+='<th colspan="2">TOTAL ATTENDED</th>';
 			str+='<th colspan="2">INVITEES ATTENDED</th>';
@@ -522,24 +521,26 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 			str+='</thead>';
 		}
 	
-	
-	str+='<tr>';
+	if(result[i].inviteesCalled >0  || result[i].attendees >0 ){
+	//str+='<tr style="font-size:12px !important">';
+	if(result[i].locationName == "constituency"){
+		str+='<td>'+result[i].locationId+'</td>';
+	}else{
 	str+='<td>'+result[i].id+'</td>';
+	}
 	if(result[i].name == null ){
 		str+='<td> - </td>';
 	}else if(result[i].name != null && locationValue == "DISTRICT"){
-		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'constTableDiv\',\''+index+''+i+'\',this.id);" id="showHideDist'+i+'"><span class="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>   '+result[i].name+'</td>';
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'constTableDiv\',\''+index+''+i+'\',this.id);" id="showHideDist'+i+'"><span class="showIcon" style="cursor:pointer;font-size:12px;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>   '+result[i].name+'</td>';
 		
 	}else if(result[i].name != null && locationValue == "CONSTITUENCY"){
-		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'mandalTableDiv\',\''+index+''+i+'\',this.id);" id="showHideConst'+i+'"><span id="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>  '+result[i].name+'</td>';
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'mandalTableDiv\',\''+index+''+i+'\',this.id);" id="showHideConst'+i+'"><span id="showIcon" style="cursor:pointer;font-size:12px;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>  '+result[i].name+'</td>';
 		
-	}else if(result[i].name != null && locationValue == "MANDAL"){
-		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);" id="showHideMandal'+i+'"><span id="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>'+result[i].name+'</td>';
-	}else if(result[i].name != null && locationValue == "MUNCIPALITY/CORPORATION"){
-		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);" id="showHideMuncipal'+i+'"><span id="showIcon" style="cursor:pointer;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>'+result[i].name+'</td>';
+	}else if(result[i].name != null && locationValue == "MANDAL" && result[i].locationName == "muncipality"){
+		str+='<td >'+result[i].name+' MUNCIPALITY</td>';
+	}else if(result[i].name != null && locationValue == "MANDAL" && result[i].locationName == "mandal"){
+		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);" id="showHideMandal'+i+'"><span id="showIcon" style="cursor:pointer;font-size:12px;"><i class="glyphicon glyphicon-plus" style="cursor:pointer;"></i></span>'+result[i].name+'</td>';
 	}else if(result[i].name != null && locationValue == "PANCHAYAT"){
-		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);">'+result[i].name+'</td>';
-	}else if(result[i].name != null && locationValue == "WARD"){
 		str+='<td style="cursor:pointer;" onclick="getCadreLocationWiseEventAttendeeCounts(\''+result[i].id+'\',\''+locationValue+'\',\''+searchType+'\',\'villageTableDiv\',\''+index+''+i+'\',this.id);">'+result[i].name+'</td>';
 	}
 	if(result[i].inviteesCalled ==0 || result[i].inviteesCalled == null){
@@ -597,14 +598,14 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 					}
 			}
 			if(locationValue == "CONSTITUENCY" || searchType == "MANDAL"){
-				str+='<tr style="display:none" class="mandaltrCls'+index+'" id="mandalTableDivtr'+index+''+i+'">';
+				str+='<tr style="display:none;font-size:12px !important" class="mandaltrCls'+index+'" id="mandalTableDivtr'+index+''+i+'">';
 				str+='<td colspan="18">';
 				str+='<div class="mandalCls'+index+'" id="mandalTableDiv'+index+''+i+'" ></div>';
 				str+='</td>';
 				str+='</tr>';
 			}
-			if(locationValue == "MUNCIPALITY/CORPORATION" || locationValue == "MANDAL" || searchType == "WARD" || searchType == "PANCHAYAT" ){
-				str+='<tr style="display:none" class="villagetrCls'+index+'" id="villageTableDivtr'+index+''+i+'">';
+			if(locationValue == "MANDAL" || searchType == "PANCHAYAT" ){
+				str+='<tr style="display:none;font-size:12px !important" class="villagetrCls'+index+'" id="villageTableDivtr'+index+''+i+'">';
 				str+='<td colspan="18">';
 				str+='<div class="villageCls'+index+'" id="villageTableDiv'+index+''+i+'" ></div>';
 				str+='</td>';
@@ -612,16 +613,15 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 			}
 			str+='</tr>';
 			
-			str+='<tr style="display:none" class="constituencyCls'+index+'" id="constTableDivtr'+index+''+i+'">';
-	str+='<td colspan="18">';
-		str+='<div id="constTableDiv'+index+''+i+'" class="constituencyCls'+index+'" ></div>';
-	str+='</td>';
-	str+='</tr>';
-	
+			str+='<tr style="display:none;font-size:12px !important" class="constituencyCls'+index+'" id="constTableDivtr'+index+''+i+'">';
+				str+='<td colspan="18">';
+					str+='<div id="constTableDiv'+index+''+i+'" class="constituencyCls'+index+'" ></div>';
+				str+='</td>';
+			str+='</tr>';
+	}
 	
 		if(i==0){
 			if(locationValue == "DISTRICT"){
-				
 				$("#"+divId+"").html(str);
 			}
 		}
@@ -630,22 +630,24 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 		str+='</table>';
 	
 			if( index != "onload" && locationValue == "CONSTITUENCY"){
-				$("#constTableDiv"+index+"").css("overflow","scroll");
+				//$("#constTableDiv"+index+"").css("overflow","scroll");
+				$("#constTableDiv"+index+"").addClass("table-responsive");
 				$("#constTableDivtr"+index+"").show();
 				$("#constTableDiv"+index+"").html(str);
 			}
 			else if(locationValue == "CONSTITUENCY"){
 					$("#"+divId+"").html(str);
 			} 
-			else if( index != "onload" && locationValue == "MANDAL" || locationValue == "MUNCIPALITY/CORPORATION"){
-				$("#mandalTableDiv"+index+"").css("overflow","scroll");
+			else if( index != "onload" && locationValue == "MANDAL"){
+				//$("#mandalTableDiv"+index+"").css("overflow","scroll");
+				$("#mandalTableDiv"+index+"").addClass("table-responsive");
 				$("#mandalTableDivtr"+index+"").show();
 				$("#constTableDivtr"+index+"").show();
 				$("#mandalTableDiv"+index+"").html(str);
 			} else if( locationValue == "MANDAL"){
 				$("#"+divId+"").html(str);
 			}
-			if(searchType == "WARD" || searchType == "PANCHAYAT" && locationValue != "MANDAL" || locationValue == "PANCHAYAT"){
+			if( searchType == "PANCHAYAT" && locationValue != "MANDAL" || locationValue == "PANCHAYAT"){
 				$("#villageTableDiv"+index+"").css("overflow","scroll");
 				$("#villageTableDivtr"+index+"").show();
 				$("#villageTableDiv"+index+"").html(str);	
@@ -696,3 +698,8 @@ function getStartDateAndEndDate()
 	});
 } */
 //getMainEvents();
+function generatesExcel(id,excelName){
+	console.log(id);
+	tableToExcel(id, excelName);
+}
+
