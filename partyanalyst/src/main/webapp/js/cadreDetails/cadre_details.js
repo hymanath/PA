@@ -542,7 +542,7 @@ var globalidentityMembershipNo = ""	;
 						$("#trainingCampdetailsDiv").hide();
 					getTotalIVRDetailsByTdpCadreId(0);
 					getIVRSummaryByTdpCadreId();
-					//getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),"DISTRICT","DISTRICT","cadreEvntdistrictAttnds","onload","");
+					getCadreLocationWiseEventAttendeeCounts($('#cadreDistrictId').val(),"DISTRICT","DISTRICT","cadreEvntdistrictAttnds","onload","");
 
 				}
 			});

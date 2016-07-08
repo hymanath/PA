@@ -963,12 +963,12 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
             </div>
         </div>
 		</c:if>
-		<div class="row" style="display:none;">
-			<div class="col-md-12 "  style="display:none;">
+		<div class="row">
+			<div class="col-md-12 ">
 				<div class="panel panel-default">
 					<div class="panel-heading locWiseEvnAtnCls">
-						<h4 class="panel-title"> <i class="glyphicons glyphicons-group"> </i>&nbsp;&nbsp;&nbsp;
-							MAHANADU 2016 - ATTENDEES
+						<h4 class="panel-title"> <img src="img/attendence.png" style="width: 18px;">&nbsp;&nbsp;&nbsp;
+							MAHANADU ATTENDEES
 							<i class="glyphicon glyphicon-chevron-down pull-right"></i>
 						</h4>
 					</div>
@@ -1438,7 +1438,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
-	
+
 	<script>
 	$("#notesDescriptionId").jqte();
 	 
