@@ -313,4 +313,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	 public List<Object[]> getConstituenciesByDistrictIds(List<Long> districtIds);
 	 public List<Object[]> getDefaultConstituencyAndDistrictForAState(Long stateId);
 	 public List<Object[]> getConstituencyIdAndNameByStateForRegion(Long stateId,String type);
+	 public List<Object[]> getDistrictByDistrictId(Long districtId);
 }

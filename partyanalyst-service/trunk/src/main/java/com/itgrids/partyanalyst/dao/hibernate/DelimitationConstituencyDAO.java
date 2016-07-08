@@ -436,4 +436,10 @@ IDelimitationConstituencyDAO {
 		query.setParameterList("constIds", constIds);
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesByDistrictId(Long districtID) {
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name,model.year,model.constituencyNO from DelimitationConstituency model " +
+				"where model.constituency.district.districtId = "+districtID+
+				" group by model.constituency having max(model.year)=model.year order by model.constituency.name");
+	}
 }
