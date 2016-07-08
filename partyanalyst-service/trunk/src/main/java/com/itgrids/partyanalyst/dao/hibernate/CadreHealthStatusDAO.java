@@ -49,8 +49,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" GIS.grievance_insurance_status_id," +
     					" GIS.status," +
     					" COUNT(CM.Complaint_id)" +
-    					" FROM grievance_insurance_status GIS,complaint_master CM" +
-    					" LEFT JOIN tdp_cadre TC ON CM.User_Id = TC.tdp_cadre_id,user_address UA" +
+    					" FROM grievance_insurance_status GIS,complaint_master CM left join tdp_cadre TC on CM.membership_id = TC.membership_id,user_address UA " +
     					" WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id" +
     					" AND CM.delete_status IS NULL" +
     					" AND CM.type_of_issue = 'Insurance'" +
@@ -61,14 +60,15 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     	/*if(issueType.equalsIgnoreCase("Death"))
     		sb.append(" AND CM.issue_type = 'Death'");
     	else if(issueType.equalsIgnoreCase("Hospitalization"))
+    	
     		sb.append(" AND CM.issue_type = 'Hospitalization'");*/
     	
     	if(searchType.equalsIgnoreCase("panchayat"))
     		sb.append(" AND UA.panchayat_id = :locationValue");
     	else if(searchType.equalsIgnoreCase("mandal"))
-    		sb.append(" AND UA.tehsil_id = :locationValue");
+    		sb.append(" AND CM.tehsil_id = :locationValue");
     	else if(searchType.equalsIgnoreCase("leb"))
-    		sb.append(" AND UA.local_election_body = :locationValue");
+    		sb.append(" AND CM.local_election_body_id = :locationValue");
     	else if(searchType.equalsIgnoreCase("constituency"))
     		sb.append(" AND CM.assembly_id = :locationValue");
     	else if(searchType.equalsIgnoreCase("parliament"))
@@ -144,15 +144,15 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     	if(locationType.equalsIgnoreCase("panchayat"))
     		sb.append(" AND UA.panchayat_id = :locationId");
     	else if(locationType.equalsIgnoreCase("mandal"))
-    		sb.append(" AND UA.tehsil_id = :locationId");
+    		sb.append(" AND CM.tehsil_id = :locationId");
     	else if(locationType.equalsIgnoreCase("leb") || locationType.equalsIgnoreCase("muncipality"))
-    		sb.append(" AND UA.local_election_body = :locationId");
+    		sb.append(" AND CM.local_election_body_id = :locationId");
     	else if(locationType.equalsIgnoreCase("assembly"))
-    		sb.append(" AND UA.constituency_id = :locationId");
+    		sb.append(" AND CM.assembly_id = :locationId");
     	else if(locationType.equalsIgnoreCase("parliament"))
-    		sb.append(" AND UA.parliament_constituency_id = :locationId");
+    		sb.append(" AND CM.parliament_id = :locationId");
     	else if(locationType.equalsIgnoreCase("district"))
-    		sb.append(" AND UA.district_id = :locationId");
+    		sb.append(" AND CM.district_id = :locationId");
     	
     	Query query = getSession().createSQLQuery(sb.toString()).addScalar("first_name",Hibernate.STRING).addScalar("membership_id",Hibernate.STRING)
     			.addScalar("mobile_no",Hibernate.STRING).addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE)
