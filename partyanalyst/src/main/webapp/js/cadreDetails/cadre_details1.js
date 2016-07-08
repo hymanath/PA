@@ -473,7 +473,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 		if(i==0){
 			var str ='';
 			
-			str+='<div class="col-md-12 m_top10"><button class="btn btn-xs btn-success pull-right" style="margin-bottom:10px" onclick="generatesExcel(\''+divId+'\',\''+locationValue+' Wise Report\');">EXPORT TO EXCEL</button></h4></div>';
+			//str+='<div class="col-md-12 m_top10"><button class="btn btn-xs btn-success pull-right" style="margin-bottom:10px" onclick="generatesExcel(\''+divId+'\',\''+locationValue+' Wise Report\');">EXPORT TO EXCEL</button></h4></div>';
 			str+='<table class="table table-bordered table-condensed" id="'+divId+'">';
 			if(locationValue == "DISTRICT")
 			str+='<thead style="background-color:#CCC;font-size:12px !important">';
@@ -498,7 +498,7 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 			else if(locationValue == "PANCHAYAT" && searchType == "")
 				str+='<th rowspan="2">VILLAGE</th>';
 			str+='<th rowspan="2">TOTAL INVITEES</th>';
-			str+='<th colspan="2">TOTAL ATTENDED</th>';
+			str+='<th rowspan="2">TOTAL ATTENDED</th>';
 			str+='<th colspan="2">INVITEES ATTENDED</th>';
 			str+='<th colspan="2">NON INVITEES ATTENDED</th>';
 			for(var j in result[0].subList){
@@ -506,8 +506,8 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 					}
 			str+='</tr>';
 			str+='<tr>';
-				str+='<th>Count</th>';
-				str+='<th>%</th>';
+				//str+='<th>Count</th>';
+				//str+='<th>%</th>';
 				str+='<th>Count</th>';
 				str+='<th>%</th>';
 				str+='<th>Count</th>';
@@ -553,11 +553,11 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 	}else{
 		str+='<td class="text-center">'+result[i].attendees+'</td>';
 	}
-	if(result[i].attendeePercantage ==0 || result[i].attendeePercantage == null){
+	/* if(result[i].attendeePercantage ==0 || result[i].attendeePercantage == null){
 		str+='<td class="text-center">-</td>';
 	}else{
 		str+='<td class="text-center">'+result[i].attendeePercantage+'</td>';
-	}
+	} */
 	if(result[i].invitees ==0 || result[i].invitees == null){
 		str+='<td class="text-center"> - </td>';
 	}else{
@@ -699,7 +699,6 @@ function getStartDateAndEndDate()
 } */
 //getMainEvents();
 function generatesExcel(id,excelName){
-	console.log(id);
 	tableToExcel(id, excelName);
 }
 
