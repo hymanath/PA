@@ -409,6 +409,7 @@
 						<input type="hidden" id="hiddenTdpCadreWard"/>
 						
 						<div id="errorPubRepId" style="color:red"></div>
+						<div id="successPubRepId" style="color:green"></div>
 						<div>
 							<div class="col-md-6 col-xs-12 col-sm-12">
 								<label>Name:</label>
@@ -428,7 +429,7 @@
 								<label>Mobile No:</label>
 								<input type="text" class="form-control" id="modalMobileNoId"/>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12">
+							<div class="col-md-6 col-xs-11 col-sm-11">
 								<label>Date Range</label>
 								<div class="input-group">
 									<span class="input-group-addon">
@@ -437,6 +438,22 @@
 									<input type="text" class="form-control" id="datePickerId"/>
 								</div>
 							</div>
+							<div class="col-md-1 col-xs-1 col-sm-1 m_top30">
+								<i class="glyphicon glyphicon-plus-sign" style="font-size:18px;cursor:pointer;" title="Click here to Add New Position" id="modalNewPositnAddBtnId"></i>
+							</div>
+						</div>
+					</div>
+					<div class="row" id="newPositionDivId" style="display:none;margin-top: 10px;">
+						<div class="col-md-5 col-xs-12 col-sm-12">
+							<label>Position:</label>
+							<input type="text" class="form-control" id="modalNewPostnId"/>
+						</div>
+						<div class="col-md-5 col-xs-12 col-sm-12">
+							<label>Level:</label>
+							<select class="form-control" id="modalNewLevelId"></select>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-12">
+							<button type="button" class="btn btn-primary btn-sm" id="saveNewPosnButtonId" onclick="saveNewPostnToImpLeaders()" style="margin-top: 25px;">Save</button>
 						</div>
 					</div>
 				  </div>
@@ -907,7 +924,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						
 					</c:if> 
 				}
-				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
+				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1368,7 +1385,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						str+='<div id="uc'+result[i].tdpCadreId+'" class="pull-right updateCadreClass" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
 					</c:if> 
 				}
-				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
+				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1741,6 +1758,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
   }
 $(document).on("click",".addButtonCls",function(){
 	$("#errorPubRepId").html("");
+	$("#successPubRepId").html("");
 	$("#modalTdpCadreNameId").html("");
 	$("#modalLocationValueId  option").remove();
 	$("#modalLocationValueId").append('<option value="0">Select Location</option>');
@@ -1796,6 +1814,7 @@ function getAllImportantLeadersTypesAction(){
   }  
   function savePublicRepresentativeType(){
 	  $("#errorPubRepId").html("");
+	  $("#successPubRepId").html("");
 	  
 	  var publicRepTypeId = $("#publisRepTypeId").val();
 	  var cadreId = $("#hiddenTdpCadreId").val();
@@ -1846,7 +1865,7 @@ function getAllImportantLeadersTypesAction(){
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   if(result.resultCode==0){
-			   $("#errorPubRepId").html("Saved SuccessFully.");
+			   $("#successPubRepId").html("Saved SuccessFully.");
 			   $("#addModalDivId").modal('hide');
 		   }else{
 			   $("#errorPubRepId").html("Error Occured Try Again...");
@@ -1870,7 +1889,9 @@ function getLocationsForImpCndidates(publicRepreTypeId){
 		districtId:$("#hiddenTdpCadreDistrict").val(),
 		constituencyId:$("#hiddenTdpCadreConstituency").val(),
 		mandalId:$("#hiddenTdpCadreMandal").val(),
-		panchayatId:$("#hiddenTdpCadrePanchayat").val()
+		lebId:$("#hiddenTdpCadreLeb").val(),
+		panchayatId:$("#hiddenTdpCadrePanchayat").val(),
+		wardId:$("#hiddenTdpCadreWard").val()
 	 };
 	  $.ajax({
 	  type:'GET',
@@ -1883,37 +1904,42 @@ function getLocationsForImpCndidates(publicRepreTypeId){
 		   for(var i in result.idnameList){
 			   $("#modalLocationValueId").append('<option value="'+result.idnameList[i].id+'">'+result.idnameList[i].name+'</option>');
 		   }
-		   if(result.id == 4)
+		   if(result.id == 3)
+			$("#modalLocationValueId").val($("#hiddenTdpCadreDistrict").val());
+		   else if(result.id == 4)
 			$("#modalLocationValueId").val($("#hiddenTdpCadreConstituency").val());
 		   else if(result.id == 5)
 			   $("#modalLocationValueId").val($("#hiddenTdpCadreMandal").val());
 		   else if(result.id == 6)
 			   $("#modalLocationValueId").val($("#hiddenTdpCadrePanchayat").val());
+		   else if(result.id == 7)
+			     $("#modalLocationValueId").val($("#hiddenTdpCadreLeb").val());
+		   else if(result.id == 8)
+			     $("#modalLocationValueId").val($("#hiddenTdpCadreWard").val());
 		   $("#hiddenTdpCadreLocationScope").val(result.id);
 	   }
    });
 }
 
-/*function getAllMandalsInConstituency(constituencyId){
+function getRegionScopes(){
+	$("#modalNewLevelId  option").remove();
 	var jsObj = {
-		constituencyId:constituencyId
 	 };
 	  $.ajax({
 	  type:'GET',
-	  url: 'getTehsilsInConstituencyAction.action',
+	  url: 'getRegionScopesAction.action',
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result !=null && result.length>0){
-		   $("#modalLocationValueId").append('<option value="0">Select Location</option>');
+		   $("#modalNewLevelId").append('<option value="0">Select Level</option>');
 		   for(var i in result){
-			   $("#modalLocationValueId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   $("#modalNewLevelId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		   }
-		   $("#modalLocationValueId").val($("#hiddenTdpCadreMandal").val());
 	   }
    });
 }
-
+/*
 function getAllVillagesInMandal(mandalId){
 	var jsObj = {
 		mandalId:mandalId
@@ -1933,6 +1959,52 @@ function getAllVillagesInMandal(mandalId){
 	   }
    });
 }*/
+
+$(document).on("click","#modalNewPositnAddBtnId",function(){
+	$("#newPositionDivId").show();
+	$("#modalNewPostnId").val('');
+	getRegionScopes();
+});
+
+function saveNewPostnToImpLeaders(){
+	$("#errorPubRepId").html("");
+	$("#successPubRepId").html("");
+	
+	var position = $("#modalNewPostnId").val();
+	var levelId = $("#modalNewLevelId").val();
+	
+	if(position == "" && position.trim.length == 0){
+	  $("#errorPubRepId").html("Please enter Position");
+	  return;
+	}
+	if(levelId == 0){
+	  $("#errorPubRepId").html("Select Level");
+	  return;
+	}
+	
+	var jsObj = {
+		position:position,
+		levelId:levelId
+	 };
+	  $.ajax({
+	  type:'GET',
+	  url: 'saveImportantLeadersTypeAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result == "success"){
+		    $("#successPubRepId").html("Saved SuccessFully...");
+			getAllImportantLeadersTypesAction();
+			$("#newPositionDivId").hide();
+			setTimeout(function(){
+				$("#successPubRepId").html("");
+		   }, 3000);
+	   }
+	   else{
+		   $("#errorPubRepId").html("Sorry,Error Occured,Try Again...");
+	   }
+   });
+}
 </script>
 			
 </body>
