@@ -17,6 +17,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String dateStr;
 	private List<String> subList;
 	private List<IdNameVO> idnameList = new ArrayList<IdNameVO>();
+	private String mobileNo;
 	
 	@Override
 	public int compare(IdNameVO o2, IdNameVO o1) {
@@ -115,5 +116,13 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setIdnameList(List<IdNameVO> idnameList) {
 		this.idnameList = idnameList;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 }
