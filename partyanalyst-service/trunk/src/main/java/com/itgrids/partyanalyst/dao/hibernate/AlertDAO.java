@@ -39,7 +39,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	}
 	
 	
-	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> userTypeIds,Date fromDate,Date toDate,Long levelId)
+	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> userTypeIds,Date fromDate,Date toDate,Long levelId,Long statusId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
@@ -62,7 +62,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			str.append(" and model.alertUserType.alertUserTypeId in(:userTypeIds)");
 		if(fromDate != null)
 			str.append(" and date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate");
-		
+		if(statusId != null && statusId > 0)
+			str.append(" and model.alertStatus.alertStatusId = :statusId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("userTypeIds", userTypeIds);
 		if(fromDate != null)
@@ -72,6 +73,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(userTypeIds != null && userTypeIds.size() > 0)
 			query.setParameterList("userTypeIds", userTypeIds);
+		if(statusId != null && statusId > 0)
+			query.setParameter("statusId", statusId);
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}

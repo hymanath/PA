@@ -239,6 +239,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setUserTypeId(inputVO.getUserTypeId());
 				 alert.setCreatedTime(date.getCurrentDateAndTime());
 				 alert.setUpdatedTime(date.getCurrentDateAndTime());
+				 alert.setIsDeleted("N");
 				 UserAddress userAddress = saveUserAddress(inputVO);
 				 alert.setAddressId(userAddress.getUserAddressId());
 				 alert = alertDAO.save(alert);
@@ -394,11 +395,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							 levelVo = new BasicVO();
 							 levelVo.setId((Long)params[1]);
 							 levelVo.setName(params[2].toString());
-							 levelVo.setCount(levelVo.getCount() + (Long)params[0]);
+							
 							 levelVo.setLocationsList(setAlertStatusList(statusList));
 							 returnList.add(levelVo);
 						 }
-						 
+						 levelVo.setCount(levelVo.getCount() + (Long)params[0]);
 						 BasicVO statusVO =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(levelVo.getLocationsList(), "id", params[3].toString()) ;
 						 if(statusVO != null)
 						 {
@@ -444,7 +445,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 fromDate = format.parse(inputVO.getFromDate());
 			 toDate = format.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate,inputVO.getLevelId());
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate,inputVO.getLevelId(),inputVO.getStatusId());
 			 if(list != null && list.size() > 0)
 			 {
 				 for(Object[] params : list)
