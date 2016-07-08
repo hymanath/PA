@@ -710,9 +710,9 @@ footer
 				</c:if>	
 				
 				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'DEBATE_ENTITLEMENT' )  ||
-						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) }">
-					<li>
-                        <a href="debateAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Debate</span></a>
+						fn:contains(sessionScope.USER.entitlements, 'DEBATE_ADMIN_ENTITLEMENT' ) }">					
+					<li style="text-align: right">
+                        <a href="debateAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Debate</span></a>
                     </li>
 				</c:if>	
 				
