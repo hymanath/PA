@@ -1889,14 +1889,14 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		}
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			if(searchType.equalsIgnoreCase(IConstants.MANDAL) && mandalData != null && mandalData.equalsIgnoreCase(IConstants.MANDAL)){
-			sbS.append("  model.tdpCadre.userAddress.booth.tehsil.tehsilId,model.tdpCadre.userAddress.booth.tehsil.tehsilName ");
+			sbS.append("  model.tdpCadre.userAddress.tehsil.tehsilId,model.tdpCadre.userAddress.tehsil.tehsilName ");
 			
-			sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId group by model.tdpCadre.userAddress.booth.tehsil.tehsilId " +
+			sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId and model.tdpCadre.userAddress.localElectionBody is null group by model.tdpCadre.userAddress.tehsil.tehsilId " +
 						   "  order by count(distinct model.tdpCadre.tdpCadreId) desc ");
 			}else if(searchType.equalsIgnoreCase(IConstants.MANDAL) && mandalData != null && mandalData.equalsIgnoreCase(IConstants.MUNCPAL_CORP)){
-				sbS.append(" model.tdpCadre.userAddress.booth.localBody.localElectionBodyId,model.tdpCadre.userAddress.booth.localBody.name ");
+				sbS.append(" model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,model.tdpCadre.userAddress.localElectionBody.name ");
 				
-				sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId group by model.tdpCadre.userAddress.booth.localBody.localElectionBodyId " +
+				sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId " +
 							   "  order by count(distinct model.tdpCadre.tdpCadreId) desc ");
 			}
 		}else if(locationType.equalsIgnoreCase(IConstants.MUNCPAL_CORP) && searchType.equalsIgnoreCase(IConstants.WARD)){
@@ -1907,7 +1907,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		}else if(locationType.equalsIgnoreCase(IConstants.MANDAL) && searchType.equalsIgnoreCase(IConstants.PANCHAYAT)){
 			sbS.append("  model.tdpCadre.userAddress.panchayat.panchayatId,model.tdpCadre.userAddress.panchayat.panchayatName ");
 			
-			sbE.append(" and model.tdpCadre.userAddress.booth.tehsil.tehsilId =:locationId group by model.tdpCadre.userAddress.panchayat.panchayatId " +
+			sbE.append(" and model.tdpCadre.userAddress.tehsil.tehsilId =:locationId and model.tdpCadre.userAddress.localElectionBody is null group by model.tdpCadre.userAddress.panchayat.panchayatId " +
 						   "  order by count(distinct model.tdpCadre.tdpCadreId) desc ");		
 		}
 		sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId) ");
@@ -1954,46 +1954,46 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		sbS.append("select ");
 		
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
-			if(searchType.equalsIgnoreCase(IConstants.DISTRICT)){
-			sbS.append("  model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName ");
-			sbE.append(" and model.tdpCadre.userAddress.constituency.district.districtId =:locationId group by model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime) " +
-					   "  order by model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime)");
-			}else if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-				sbS.append("  model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name ");
-				
-				sbE.append(" and model.tdpCadre.userAddress.constituency.district.districtId =:locationId group by model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime) " +
-						   "  order by model.tdpCadre.userAddress.constituency.name,date(model.attendedTime) ");
-			}
+				if(searchType.equalsIgnoreCase(IConstants.DISTRICT)){
+					sbS.append("  model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName ");
+					
+					sbE.append(" and model.tdpCadre.userAddress.constituency.district.districtId =:locationId group by model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime) " +
+							   "  order by model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime)");
+				}else if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					sbS.append("  model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name ");
+					
+					sbE.append(" and model.tdpCadre.userAddress.constituency.district.districtId =:locationId group by model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime) " +
+							   "  order by model.tdpCadre.userAddress.constituency.name,date(model.attendedTime) ");
+				}
 		}
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-			if(searchType.equalsIgnoreCase(IConstants.MANDAL) && mandalType != null && mandalType.equalsIgnoreCase(IConstants.MANDAL)){
-			sbS.append("   model.tdpCadre.userAddress.booth.tehsil.tehsilId,model.tdpCadre.userAddress.booth.tehsil.tehsilName ");
-			
-			sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId group by  model.tdpCadre.userAddress.booth.tehsil.tehsilId,date(model.attendedTime) " +
-						   "  order by model.tdpCadre.userAddress.booth.tehsil.tehsilName,date(model.attendedTime) ");
-			}else if(searchType.equalsIgnoreCase(IConstants.MANDAL) && mandalType != null && mandalType.equalsIgnoreCase(IConstants.MUNCPAL_CORP)){
-				sbS.append("  model.tdpCadre.userAddress.booth.localBody.localElectionBodyId,model.tdpCadre.userAddress.booth.localBody.name ");
+				if(searchType.equalsIgnoreCase(IConstants.MANDAL) && mandalType != null && mandalType.equalsIgnoreCase(IConstants.MANDAL)){
+					sbS.append("   model.tdpCadre.userAddress.tehsil.tehsilId,model.tdpCadre.userAddress.tehsil.tehsilName ");
+					
+					sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId and model.tdpCadre.userAddress.localElectionBody is null group by  model.tdpCadre.userAddress.tehsil.tehsilId,date(model.attendedTime) " +
+								   "  order by model.tdpCadre.userAddress.tehsil.tehsilName,date(model.attendedTime) ");
+				}else if(searchType.equalsIgnoreCase(IConstants.MANDAL) && mandalType != null && mandalType.equalsIgnoreCase(IConstants.MUNCPAL_CORP)){
+					sbS.append("  model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,model.tdpCadre.userAddress.localElectionBody.name ");
+					
+					sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,date(model.attendedTime) " +
+								   "  order by model.tdpCadre.userAddress.localElectionBody.name,date(model.attendedTime) ");
+				}
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.MANDAL) && searchType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+				sbS.append("  model.tdpCadre.userAddress.panchayat.panchayatId,model.tdpCadre.userAddress.panchayat.panchayatName ");
 				
-				sbE.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:locationId group by model.tdpCadre.userAddress.booth.localBody.localElectionBodyId,date(model.attendedTime) " +
-							   "  order by model.tdpCadre.userAddress.booth.localBody.name,date(model.attendedTime) ");
-			}
-		}else if(locationType.equalsIgnoreCase(IConstants.MUNCPAL_CORP) && searchType.equalsIgnoreCase(IConstants.WARD)){
-			sbS.append("  model.tdpCadre.userAddress.ward.constituencyId,model.tdpCadre.userAddress.ward.name ");
-			
-			sbE.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId =:locationId group by model.tdpCadre.userAddress.ward.constituencyId,date(model.attendedTime) " +
-						   "  order by model.tdpCadre.userAddress.ward.name,date(model.attendedTime) ");
-		}else if(locationType.equalsIgnoreCase(IConstants.MANDAL) && searchType.equalsIgnoreCase(IConstants.PANCHAYAT)){
-			sbS.append("  model.tdpCadre.userAddress.panchayat.panchayatId,model.tdpCadre.userAddress.panchayat.panchayatName ");
-			
-			sbE.append(" and model.tdpCadre.userAddress.tehsil.tehsilId =:locationId group by model.tdpCadre.userAddress.panchayat.panchayatId,date(model.attendedTime) " +
-						   "  order by model.tdpCadre.userAddress.panchayat.panchayatName,date(model.attendedTime) ");
+				sbE.append(" and model.tdpCadre.userAddress.tehsil.tehsilId =:locationId and model.tdpCadre.userAddress.localElectionBody is null group by model.tdpCadre.userAddress.panchayat.panchayatId,date(model.attendedTime) " +
+							   "  order by model.tdpCadre.userAddress.panchayat.panchayatName,date(model.attendedTime) ");
 		}
 		sbS.append(" ,date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");
 		
-		if(inviteeType.equalsIgnoreCase("attendee")){
+		if(inviteeType.equalsIgnoreCase("attendee"))
+		{
 			sbM.append(" from EventAttendee model where ");
 		}
-		if(inviteeType.equalsIgnoreCase("invitee")){
+		if(inviteeType.equalsIgnoreCase("invitee"))
+		{
 			sbM.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		
