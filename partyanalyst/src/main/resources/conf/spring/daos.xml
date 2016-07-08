@@ -3018,5 +3018,8 @@
 	<bean id="tdpCadreNotesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreNotesDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCadreReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreReportDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
