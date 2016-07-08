@@ -1,85 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-		pageEncoding="utf-8"%>
-	<%@ taglib prefix="s" uri="/struts-tags" %>  
-	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-	<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title> Alerts </title>
-	<!-- Bootstrap -->
-	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
-		
-
-	
-	
-	
-	<link  rel="stylesheet" type="text/css" href="debate/js/jquery.google.api/jquery-ui1.10.3.css"/>
-	
-	
-	<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
-	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
-	<link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
-	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 	
-	<link rel="stylesheet" type="text/css" href="debate/pagination/simplePagination.css">
-	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
-		 		
-	
-	<!-- YUI Dependency files (Start) -->
-		<script type="text/javascript" src="debate/js/yahoo/yahoo-min.js"></script>
-		<script type="text/javascript" src="debate/js/yahoo/yahoo-dom-event.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/element-min.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/container-min.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/dom-min.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/yui-min.js"></script>
-		<script type="text/javascript" src="debate/js/json/json-min.js"></script>
-		<script type="text/javascript" src="debate/js/yahoo/connection-min.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/datasource-min.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/datatable-min.js"></script> 
-		<script type="text/javascript" src="debate/js/yahoo/paginator-min.js"></script>
-		
-		
-		
-		<!-- Skin CSS files resize.css must load before layout.css --> 
-		<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-
-		<!-- YUI Dependency files (End) -->
-		
-		
-	
-	<!-- JQuery files (Start) -->
-	<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
-	<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
-	<script src="debate/js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
-	<script src="debate/js/jquery-ui-themes-1.10.3.js"></script>
-	<script src="debate/js/jquery-ui-timepicker-addon.js"></script>
-	<script src="debate/js/jquery-ui-sliderAccess.js"></script>
-	
-	<script src="debate/js/jquery.google.api/trentrichardson.com.examples.timepicker.jquery-ui-sliderAccess.js"></script>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script src="js/debate.js"></script>
-	
-	<script type="text/javascript" src="debate/js/multiSelectBox/jquery.multiselect.js"></script>
-	<script type="text/javascript" src="debate/js/multiSelectBox/jquery.multiselect.filter.js"></script>
-	<script type="text/javascript" src="debate/js/jquery.dataTables.js"></script>	
-	<script type="text/javascript" src="debate/js/jQuery/debate/js/jquery-ui-1.8.24.custom.min.js"/>
-	<script type="text/javascript" src="debate/pagination/pagination1.js"></script>
-	<script type="text/javascript" src="debate/pagination/jquery.simplePagination.js"></script>
-	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
-	
- </head>                                         							
-<body>
-<div class="container">
 	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">Create Alert</h4>
-				</div>
-				<div id="errorDiv1" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
+		<div class="col-md-12">
+			
+				<div id="errorDiv1" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;"></div>
 				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
 				<div class="panel-body">
 					<div class="row">
@@ -100,7 +23,7 @@
 						</div>
 						<div class="col-md-3 levelShowCls" >
 							<label>Level</label>
-							<select class="dropkickClass" id="levelId" onchange="disableByLevel();" >
+							<select class="dropkickClass" id="alertlevelId" onchange="disableByLevel();" >
 							<option value="2">State</option>
 							 <option value="3">District</option>
 							 <option value="4">Constituency</option>
@@ -172,7 +95,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label>Description</label>
-							<textarea class="form-control" id="descriptionId" name="alertVO.desc"></textarea>
+							<textarea class="form-control" id="alertdescriptionId" name="alertVO.desc"></textarea>
 						</div>
 					</div>
 					<div class="row">
@@ -185,20 +108,15 @@
 				
 				<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
 				<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
+				<input type="hidden" class="form-control" value="1" name="alertVO.userTypeId" />
 				
 				</form>
-			</div>
-		</div>
+			
 	</div>
                  
 </div>
-<!--<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
-	<div><h4> Select Candidate : <input style="margin-left:31px;" type="candidateName" id="candidateNameId" />
-	<button type="button" onclick="getCandidateNameDetails()">view</button></h4>
-	<h4>Enter CandidateName: <select style="margin-left: 53px; width: 220px;" id="candidatesNameListId" onchange="diplayValues()"></select></h4>
-	<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
-	</div>-->
-<script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
+
+
 <script type="text/javascript">
 $(".dropkickClass").dropkick()
 function getCandidatesByName(){
@@ -242,7 +160,7 @@ function getCandidatesByName(){
 function createAlert()
 {
   var  alertType=$("#alertTypeId").val();
-  var  level=$("#levelId").val();
+  var  level=$("#alertlevelId").val();
   var  state=$("#stateId").val();
   var  district=$("#referdistrictId").val();
   var  assembly=$("#referconstituencyId").val();
@@ -250,7 +168,7 @@ function createAlert()
   var  panchayat=$("#referpanchayatId").val();
   var  candidate=$("#candidatesNameListId").val();
   var  candidateName=$("#candidateNameId").val();
-  var  description=$("#descriptionId").val();
+  var  description=$("#alertdescriptionId").val().trim();
    $("#errorDiv1").html('');
   $("#errorDiv1").css("color","red");
   if(alertType==0)
@@ -381,7 +299,8 @@ function createAlert()
     $("#errorDiv1").html(" Please select Candidate ");
         return;
   }
-   if(description.length==0||description=='')
+ 
+   if(description.length==0 ||description=='')
   {
     $("#errorDiv1").html(" Please select description ");
         return;
@@ -429,5 +348,3 @@ function getAlertType(){
 getAlertType();
 
 </script>
-</body>
-</html>
