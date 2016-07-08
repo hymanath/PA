@@ -164,7 +164,9 @@ function getParticipatedConstituencyId(cadreId){
 						participatedConstName = result.name;
 						participatedParlName = result.parliament;
 						participatedDistName = result.district;
-						
+						if(participatedConstName == null){
+							$(".participatedClass").hide();
+						}
 					
 						if(participatedConstituencyId != null && participatedConstituencyId > 0){
 						
@@ -6989,10 +6991,22 @@ $(document).on("click","#debateCountId",function(){
 	}
 function saveCadreNotesInformationDetails(itemsCount,startIndex){
 	 var notes = $(".jqte_editor").html();
-	if(notes ==0){
+if(notes.trim() ==""){
 		  $("#errorUpCallId").html("Notes Required.");
 		  return;
-	  }	 
+	  }	
+var validTextCount=0;
+var invalidTextCount=0;
+var NotesValueArr = notes.split(";");
+for(var i=0;i<NotesValueArr.length;i++){
+	if(NotesValueArr[i]=="&nbsp" || NotesValueArr[i].trim()=="<br>")
+		invalidTextCount++;	
+	else{
+		validTextCount++;
+		break;
+	}
+}	 
+if(validTextCount >0){
 	var jObj={
 		tdpCadreId:globalCadreId,
 		notes:notes,
@@ -7018,6 +7032,11 @@ function saveCadreNotesInformationDetails(itemsCount,startIndex){
 			}
 	  });
 }
+else {
+	$("#errorUpCallId").html("Notes Required.");
+}
+	
+}
 var globalStartIndex = 0;
 function getCadreNotesInformationDetails(startIndex){ 
  globalStartIndex = startIndex;
@@ -7034,8 +7053,14 @@ $("#updateNotesButtonId").show();
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jObj)},
 	  }).done(function(result){
-			if(result != null){
+			if(result != null && result.length>0){
 				buildCadreNotesDetails(result,jObj);
+				$("#NoNotesId").html("");
+			}
+			else if (result == null || result.length ==0){
+				$('#notesExisting').html(" <b> No notes are available...</b>");	
+				$(".paginationCls").hide();
+				$(".paginationCls").html("");
 			}
 	  });
 }
@@ -7068,7 +7093,7 @@ str += '</ul>';
 	$("#notesId").removeClass('text-success');//gray color	
 	} 
 	if(jObj.startIndex==0){
-		$("#paginationForNotesId").pagination({
+		$(".paginationCls").pagination({
 			items: result[0].totalVoters,
 			itemsOnPage: 10,
 			cssStyle: 'light-theme',
@@ -7087,12 +7112,13 @@ $(document).on("click",".removeIconCls",function(){
 	deleteCadreNotesData(cadreNotes);	
 });
 function deleteCadreNotesData(cadreNotes){ 
+var notes = $(".apptStatusTracking").html();	 
 	var r=confirm("Are you sure want to delete it?")
 	if (r)	
 	{
-var jsobj = {
-	cadreNotes:cadreNotes
-}
+	var jsobj = {
+		cadreNotes:cadreNotes
+	}
 	$.ajax({
      type: "POST",
      url: "deleteCadreNotesDataAction.action",
@@ -7102,6 +7128,7 @@ var jsobj = {
     .done(function( result ) {
 	if(result == "success")
 		{
+			 getCadreNotesInformationDetails(globalStartIndex);
 			alert("Updated Successfully");
 			var t = "li"+cadreNotes;
 			$("#"+t).remove();
@@ -7145,7 +7172,6 @@ $(document).on("click",".editIconCls",function(){
 	globalPrimaryId = id;
 	$("#updateButnId").show();
 	$("#updateNotesButtonId").hide();
-	//$(".jqte_editor").scrollTop();
 	$('#notesModalDivId').animate({
 		scrollTop:  $(".jqte_editor").offset().top 
 	});
