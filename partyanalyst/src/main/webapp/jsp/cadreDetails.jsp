@@ -193,10 +193,12 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>CASTE</strong> : <span id="casteFormalId"></span></p>
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
+                                    <!--
 									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
-                        <!-- <c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOTES_USER_ENTITLEMENT' )}">
+									-->
+                         		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOTES_USER_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
-							  </c:if>-->
+							  	</c:if>
 								</div>
                             </div>
                         </td>
