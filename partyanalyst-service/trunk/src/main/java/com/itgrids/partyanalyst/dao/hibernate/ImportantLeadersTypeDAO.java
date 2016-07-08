@@ -31,4 +31,9 @@ public class ImportantLeadersTypeDAO extends GenericDaoHibernate<ImportantLeader
 		query.setParameter("impLeadTypeId", impLeadTypeId);
 		return (Long) query.uniqueResult();
 	}
+	
+	public Integer getMaxOrderNo(){
+		Query query = getSession().createSQLQuery("select max(order_no) from important_leaders_type");
+		return  (Integer) query.uniqueResult();
+	}
 }
