@@ -1012,7 +1012,9 @@ public class SchedulerService implements ISchedulerService{
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 			String dt = sdf1.format(new Date());
+			String dt1 = sdf2.format(new Date());
 			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
 			String folderCreation = commonMethodsUtilService.createFolder(staticPath);
 			staticPath = staticPath + "reports";
@@ -1431,7 +1433,7 @@ public class SchedulerService implements ISchedulerService{
 	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
 	        
 	        f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.BOLD, BaseColor.ORANGE);
-		    c = new Chunk("      DATE:"+dt, f);
+		    c = new Chunk("      DATE:"+dt1, f);
 		    Paragraph paragraph4=new Paragraph(c);
 		    paragraph4.setAlignment(Element.ALIGN_CENTER);
 		    paragraph4.add(Chunk.NEWLINE);
