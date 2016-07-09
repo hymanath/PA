@@ -2653,6 +2653,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   		   	 					{
 			   		   	 						vo.setName(question.getString("question"));
 			   		   	 					}
+				   		   	 				if(question.has("isSampleVerified"))
+		       		   	 					{
+		       		   	 						vo.setIsSampleVerified(question.getString("isSampleVerified"));
+		       		   	 					}
 			   			   	 				if(question.has("option"))
 			   		   	 					{
 			   		   	 						vo.setOption(question.getString("option"));
@@ -2672,6 +2676,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				        		   	 					{
 						    			   	 				optionsVO.setName(optionObj.getString("name"));
 				        		   	 					}
+							    			   	 		if(optionObj.has("isSampleVerified"))
+					       		   	 					{
+							    			   	 			optionsVO.setIsSampleVerified(optionObj.getString("isSampleVerified"));
+					       		   	 					}
 					    			   	 				  if(optionObj != null)
 					    			   	 				  {
 					    			   	 					    JSONArray  optionsPerformanceList = optionObj.getJSONArray("verifierVOList");
@@ -2733,7 +2741,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		       		   	 					{
 		       		   	 						vo.setId(question.getLong("id"));
 		       		   	 					}
-		       			   	 				
+			       			   	 			if(question.has("isSampleVerified"))
+		       		   	 					{
+		       		   	 						vo.setIsSampleVerified(question.getString("isSampleVerified"));
+		       		   	 					}
 		       			   	 				if(question.has("verifierVOList") && !question.isNull("verifierVOList"))
 		   				   	 					{
 		   		    			   	 				
@@ -2751,7 +2762,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   		        		   	 					}
 		   					    			   	 		if(optionObj.has("option"))
 		   		        		   	 					{
-		   				    			   	 				optionsVO.setOption(optionObj.getString("option"));
+		   				    			   	 					optionsVO.setOption(optionObj.getString("option"));
+			   				    			   	 			if(optionObj.has("isSampleVerified"))
+			   			       		   	 					{
+			   				    			   	 				optionsVO.setIsSampleVerified(optionObj.getString("isSampleVerified"));
+			   			       		   	 					}
 		   		        		   	 					}
 		   			    			   	 				  if(optionObj != null)
 		   			    			   	 				  {
@@ -2839,6 +2854,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   		   	 					{
 		   		   	 						vo.setOption(question.getString("option"));
 		   		   	 					}
+			   			   	 			if(question.has("isSampleVerified"))
+	       		   	 					{
+			   			   	 				vo.setIsSampleVerified(question.getString("isSampleVerified"));
+	       		   	 					}
 			    			   	 			if(question.has("verifierVOList"))
 					   	 					{
 			    			   	 				
@@ -2858,6 +2877,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			        		   	 					{
 						    			   	 			optionsVO.setOption(optionObj.getString("option"));
 			        		   	 					}
+							    			   	 	if(optionObj.has("isSampleVerified"))
+				       		   	 					{
+						    			   	 			optionsVO.setIsSampleVerified(optionObj.getString("isSampleVerified"));
+				       		   	 					}
 				    			   	 				 		    			   	 				  
 				    			   	 				questionWiseList.add(optionsVO);
 			    			   	 				}
@@ -2892,7 +2915,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     		   	 					{
     		   	 						vo.setId(question.getLong("id"));
     		   	 					}
-    			   	 				
+	    			   	 			if(question.has("isSampleVerified"))
+	   		   	 					{
+	    			   	 				vo.setIsSampleVerified(question.getString("isSampleVerified"));
+	   		   	 					}
     			   	 				if(question.has("verifierVOList") && !question.isNull("verifierVOList"))
 				   	 					{
 		    			   	 				
@@ -2912,6 +2938,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		        		   	 					{
 				    			   	 				optionsVO.setOption(optionObj.getString("option"));
 		        		   	 					}
+						    			   	 	if(optionObj.has("isSampleVerified"))
+			       		   	 					{
+					    			   	 			optionsVO.setIsSampleVerified(optionObj.getString("isSampleVerified"));
+			       		   	 					}
 			    			   	 				  if(optionObj != null)
 			    			   	 				  {
 			    			   	 					    JSONArray  optionsPerformanceList = optionObj.getJSONArray("verifierVOList");
