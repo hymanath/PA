@@ -33,11 +33,18 @@ public class VerifierVO implements Serializable{
 	private String percentage;
 	private String round;
 	private String answerType;
+	private String isSampleVerified;
 	
 	
 	
-	
-	
+	public String getIsSampleVerified() {
+		return isSampleVerified;
+	}
+
+	public void setIsSampleVerified(String isSampleVerified) {
+		this.isSampleVerified = isSampleVerified;
+	}
+
 	public String getRound() {
 		return round;
 	}
