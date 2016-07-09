@@ -861,6 +861,12 @@ var globalidentityMembershipNo = ""	;
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\',\''+votercardNo+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
+								if(result.verifierVOList[i].isSampleVerified != null && result.verifierVOList[i].isSampleVerified =='false')
+									str+='   - <b>Verification Status :</b> <span style="color:red;"> Not Verified </span> ';
+								else{
+									str+='   - <b>Verification Status :</b> <span style="color:green;"> '+result.verifierVOList[i].isSampleVerified+'.</span> ';
+								}
+								
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
 								str+='</h4> </a><div style="offset4"><center><img id="familyAjax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;"/></center></div>';
 								str+='</div>';
@@ -929,15 +935,23 @@ var globalidentityMembershipNo = ""	;
 						str+='<tbody>';
 						
 						for(var i in result.verifierVOList[0].verifierVOList){
+							if(result.verifierVOList[0].verifierVOList[i].option != null && result.verifierVOList[0].verifierVOList[i].option.length>0){
 						str+='<tr>';
 							str+='<td>'+result.verifierVOList[0].verifierVOList[i].name+'</td>';
-							str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'</td>'; 
+							
+							if(result.verifierVOList[0].verifierVOList[i].isSampleVerified != null && result.verifierVOList[0].verifierVOList[i].isSampleVerified =='false'){
+								str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'';
+							}else{
+								str+='<td style="background-color:lightgreen;">'+result.verifierVOList[0].verifierVOList[i].option+'';
+							}
+							str+='</td>';
+							
 						str+='</tr>';
 						}
 						str+='</tbody>';
 						str+='</table>';
 						str+='</div>';
-					
+						}
 					}				
 					$("#"+divId+"").show();		
 					$("#"+divId+"").html(str);	
@@ -1135,7 +1149,7 @@ var globalidentityMembershipNo = ""	;
 									str+='<div class="panel-body">';										
 									str+='</div>';
 									str+='</div>';
-									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
+									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
 									str+='</div>';
 						str+='</div>';
 
@@ -1149,7 +1163,7 @@ var globalidentityMembershipNo = ""	;
 					$('.surveyDetailsCls').html(str);
 					//console.log(participatedSurveysArr);
 				}
-				else if(surveyId !=0 && surveyId !=0 ){
+				else if(surveyId !=0 ){
 					buildingSurveyQuestionsDetails(result,surveyId,indexId,divId,isPriority);
 				}
 			 }		
@@ -4863,6 +4877,10 @@ function getActivityDetails()
 										
 										if(result.activityVoList[i].hasConductedCount != null && result.activityVoList[i].hasConductedCount>0){
 											hasConductdCount = result.activityVoList[i].hasConductedCount;
+											
+											if(hasConductdCount>hasNotConductdtotalCount)
+												hasConductdCount = hasNotConductdtotalCount;
+											
 											str+='<td  attr_id="hc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;text-align:center;" attr_levelId='+result.activityVoList[i].id+'> <u> '+hasConductdCount+'</u></td>';
 										}else{
 											str+='<td style="text-align:center;"> - </td>';
@@ -7109,8 +7127,11 @@ str += '</ul>';
 	$("#notesId").removeClass('text-success');//gray color	
 	} 
 	if(jObj.startIndex==0){
+	var ttalCount =10;
+		if(result != null && result.length>0 && result[0].totalVoters != null && result[0].totalVoters > 0)
+				ttalCount = result[0].totalVoters;
 		$(".paginationCls").pagination({
-			items: result[0].totalVoters,
+			items: ttalCount,
 			itemsOnPage: 10,
 			cssStyle: 'light-theme',
 			hrefTextPrefix: '#pages-',
