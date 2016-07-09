@@ -193,20 +193,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>CASTE</strong> : <span id="casteFormalId"></span></p>
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
-                                    <!--
-									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
+
+									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
+								<!--
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'USER_NOTES_ENTITLEMENT' )}">
+									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
+								</c:if>
 									-->
-                         			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOTES_USER_ENTITLEMENT' )}">
-									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
-							  		</c:if>
-							  		<p class="m_0">
-								  		<c:if test="${fn:length(cadreReportVOList) gt 0}">  
-											<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
-										</c:if>
-										<c:if test="${fn:length(cadreReportVOList) eq 0}">  
-											<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>
-										</c:if>
-									</p>
 								</div>
                             </div>
                         </td>
@@ -1463,7 +1456,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
-
+	
 	<script>
 	$("#notesDescriptionId").jqte();
 	 
