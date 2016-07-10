@@ -7955,5 +7955,217 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  			return finalList;
  		}
  		
+ 		
+ 		//Advanced Search
+ 		public  List<AppointmentCandidateVO> advancedSearchRequestedMembers(String searchType,String searchValue,LocationInputVO inputVo){
+ 				 List<AppointmentCandidateVO>  finalList = new ArrayList<AppointmentCandidateVO>(); 
+ 				 try {
+ 					     LocationInputVO locationVo = locationService.getCandidateLocationDetails(inputVo);
+ 					     locationVo.setStateId(inputVo.getStateId());
+ 					 	 if(searchType.equalsIgnoreCase("CadreCommittee"))
+ 						    {
+ 						    if(inputVo.getLevelId() == 5l)//Mandal,Town,Div Levels 
+ 								    {
+ 								    	  List<Object[]> mandalMemList = null;
+ 								    	  List<Object[]> townMemList = null;
+ 								    	  List<Object[]> divisonMemList =null;
+ 								    	if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
+ 											{
+ 									    	
+ 								    		mandalMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"mandal",inputVo);
+ 								    		if(mandalMemList != null && mandalMemList.size()>0)
+ 								    			setMembersDataForCadreRole(mandalMemList,finalList,inputVo.getAptUserId());
+ 								    		
+ 								    	}
+ 								    	if(locationVo.getTownIdsList() != null && locationVo.getTownIdsList().size() > 0)
+ 								    	{
+ 								    	
+ 								    		 townMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"town",inputVo);
+ 								    		 if(townMemList != null && townMemList.size()>0)
+ 								    			setMembersDataForCadreRole(townMemList,finalList,inputVo.getAptUserId());
+ 								    		
+ 								    	}
+ 								    	if(locationVo.getDivisionIdsList() != null && locationVo.getDivisionIdsList().size() > 0){
+ 								    	 
+ 								    	 	
+ 								    	 	divisonMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"division",inputVo);
+ 								    	 	if(divisonMemList != null && divisonMemList.size()>0)
+ 								    	 		setMembersDataForCadreRole(divisonMemList,finalList,inputVo.getAptUserId());
+ 								    	}
+ 								    	
+ 								   }
+ 								    
+ 								    else if(inputVo.getLevelId() == 6l)//Village,Ward Levels 
+ 								    {
+ 								    	List<Object[]> panchayatMemList = null;
+ 								    	List<Object[]> wardMemList = null;
+ 								    	if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0){
+ 								    		
+ 								    		  panchayatMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"panchayat",inputVo);
+ 								    		  if(panchayatMemList != null && panchayatMemList.size()>0)
+ 								    			 setMembersDataForCadreRole(panchayatMemList,finalList,inputVo.getAptUserId());
+ 								    		
+ 								    	}
+ 								    	if(locationVo.getWardIdsList() != null && locationVo.getWardIdsList().size() > 0){
+ 								    		
+ 								    		
+ 								    		  wardMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"ward",inputVo);
+ 								    		  if(wardMemList != null && wardMemList.size()>0)
+ 								    			 setMembersDataForCadreRole(wardMemList,finalList,inputVo.getAptUserId());
+ 								    		
+ 								    	}
+ 								   }
+ 								    
+ 								    else if(inputVo.getLevelId() == 10l || inputVo.getLevelId() == 11l)//State ,District Levels 
+ 								    {
+ 								    	if(locationVo.getStateIdsList() == null) 
+ 								    	{
+ 								    		locationVo.setStateIdsList(new ArrayList<Long>());
+ 								    	}
+ 								    	
+ 								    	if(locationVo.getLevelId() == 10l)
+ 								    	{
+ 								    		locationVo.setStateIdsList(new ArrayList<Long>());
+ 								    		if(inputVo.getStateId() == 0l)
+ 								    		{
+ 								    			locationVo.getStateIdsList().add(1l);locationVo.getStateIdsList().add(36l);	
+ 								    		}
+ 								    		else
+ 								    		{
+ 								    			locationVo.getStateIdsList().add(inputVo.getStateId());		
+ 								    		}
+ 								    		
+ 								    	}
+ 								    	
+ 								    	
+ 								    	   List<Object[]> memList  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"",inputVo);
+ 								    	   if(memList != null && memList.size()>0){
+ 								    		  setMembersDataForCadreRole(memList,finalList,inputVo.getAptUserId());
+ 								    	   }
+ 								    	
+ 								    }
+ 								    else // All
+ 								   {
+ 								    	List<Object[]> memList1 = null;
+ 								    
+ 								    	 memList1  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,null,"",inputVo);
+ 								    	 if(memList1 != null && memList1.size()>0){
+ 								    		setMembersDataForCadreRole(memList1,finalList,inputVo.getAptUserId());
+ 								    	 }
+ 								    	
+ 								    }
+ 						    }
+ 						    
+ 					      
+ 					 	 else if(searchType.equalsIgnoreCase("name"))
+ 					      {
+ 					    	  List<Object[]> nameList = null;
+ 					    	
+ 					    	  if(inputVo.getLevelId() == 0l) //All
+ 					    		{
+ 					    	  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);  
+ 					    		}
+ 					    	  else if(inputVo.getLevelId() == 10l || inputVo.getLevelId() == 11l)//State ,District Levels 
+ 							    {
+ 							    	if(locationVo.getStateIdsList() == null) 
+ 							    	{
+ 							    		locationVo.setStateIdsList(new ArrayList<Long>());
+ 							    	}
+ 							    	if(locationVo.getLevelId() == 10l)
+ 							    	{
+ 							    		locationVo.setStateIdsList(new ArrayList<Long>());
+ 							    		if(inputVo.getStateId() == 0l)
+ 							    		{
+ 							    			locationVo.getStateIdsList().add(1l);locationVo.getStateIdsList().add(36l);	
+ 							    		}
+ 							    		else
+ 							    		{
+ 							    			locationVo.getStateIdsList().add(inputVo.getStateId());		
+ 							    		}
+ 							    		
+ 							    	}
+ 							    	 nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);   
+ 							    	 if(nameList != null && nameList.size()>0){
+ 							    		setMembersDataForCadreRole(nameList,finalList,inputVo.getAptUserId());
+ 								    	  }
+ 							    	}
+ 						    	  else
+ 						    	  {
+ 						    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);  
+ 						    		  if(nameList != null && nameList.size()>0){
+ 						    			 setMembersDataForCadreRole(nameList,finalList,inputVo.getAptUserId());
+ 								    	  }
+ 						    	  }
+ 					     }
+ 					      else if(searchType.equalsIgnoreCase("publicRepresentative"))
+ 					      {
+ 					    	  List<Object[]> prList = null;
+ 					    	  
+ 					    	  if(inputVo.getLevelId() == 0l) //All
+ 					    		{
+ 					    		 
+ 					    		 
+ 					    		  prList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,null,inputVo);
+ 					    		  if(prList != null && prList.size()>0)
+ 					    		  {
+ 					    			 setMembersDataForCadreRole(prList,finalList,inputVo.getAptUserId());
+ 					    		  }
+ 					    		}
+ 					    		else
+ 					    		{
+ 					    			
+ 					    			  prList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,locationVo,inputVo);
+ 					    			  if(prList != null && prList.size()>0){
+ 					    				 setMembersDataForCadreRole(prList,finalList,inputVo.getAptUserId());
+ 					    			}
+ 					    		}
+ 					      }
+ 					 	
+ 				 		}
+ 				 catch (Exception e) {
+ 				LOG.error("Exception raised at advancedSearchApptRequestedMembers() method of AppointmentService", e);
+ 				 }
+ 				 
+ 				 
+ 			 return finalList;
+ 		 }
+ 		
+ 		public void setMembersDataForCadreRole(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList,Long aptUserId)
+ 		{
+ 			List<Long> tdpCadreIds = new ArrayList<Long>();
+ 			if(membersList!=null && membersList.size()>0){
+ 				 for(Object[] obj: membersList){
+ 					  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+ 		  		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+ 		  		  vo.setCandidateType("cadre");
+ 		  		  vo.setName(obj[1]!=null?obj[1].toString():"");
+ 		  		  vo.setCadre(true);
+ 		  		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+ 		  		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+ 		  		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
+ 		  		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+ 		  		  vo.setImageURL(obj[7]!=null?"images/cadre_images/"+obj[7].toString():null);
+ 		  		  vo.setDesignation(obj[6]!=null?obj[6].toString():"");
+ 		  		  finalList.add(vo);
+ 		  		  if(!tdpCadreIds.contains(vo.getId()))
+ 		  		  tdpCadreIds.add(vo.getId());
+ 				  }
+ 				/* List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
+ 				 if(list != null && list.size() > 0)
+ 				 {
+ 					 for(Object[] params : list)
+ 					 {
+ 						 AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
+ 						 if(vo != null)
+ 						 {
+ 							 vo.setAppointmentCandidateId((Long)params[1]);
+ 						 }
+ 					 }
+ 				 }*/
+ 				 setConstituencyForPR(tdpCadreIds,finalList);
+ 				// checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
+ 				
+ 			 }
+ 		}
  }
 
