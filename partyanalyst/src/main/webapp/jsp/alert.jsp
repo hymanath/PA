@@ -6,21 +6,31 @@
 				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-3">
-							<label>Alert Type</label>
-							<select class="dropkickClass" name="alertVO.alertTypeId" id="alertTypeId">
-								<option value="1">Select Alert</option>
-							</select>
-						</div>
+					
+					
+					<div class="col-md-3 advanceSearchCls">
+												<label>Search Type</label>
+                                                <select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
+													<option value="0">Select Search Type</option>
+													<option value="1">Name</option>
+													<option value="2">Public Representative</option>
+													<option value="3">Party Committee</option>
+												</select>
+											</div>
+											
+											
+											 <div class="col-md-4 pad_0 advanceSearchCls advanceprclsDiv">
+                                            	<label class="advanceNameCls">Search By Name<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
+												<label class="advancePRCls">Search Designation</label>
+												 <select class="advancePRCls dropkickClass"  id="advanceDesignationId" onchange="getLevelByDesignation();">
+													<option value="0">Select Designation</option>
+												</select>
+												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
+						                    </div>
+											
+											
 						
-						<div class="col-md-3">
-							<label>Alert Severity</label>
-							<select class="dropkickClass" name="alertVO.severity">
-								<option value="1">High</option>
-								<option value="2">Medium</option>
-								<option value="3">Low</option>
-							</select>
-						</div>
 						<div class="col-md-3 levelShowCls" >
 							<label>Level</label>
 							<select class="dropkickClass" id="alertlevelId" onchange="disableByLevel();" >
@@ -64,8 +74,54 @@
 							</select>
 						</div>
 						
-					</div>
-					<div class="row">
+						
+						
+						<div>
+														<div class="advanceCadreCommittee" style="margin-top:5px;" id="referCommitteeDiv">
+														 <div class="col-md-3">
+															<label>Select Committee</label>
+															<select id="referCommitteeId" class="dropkickClass" >
+																<option value="0">All</option>
+																<option value="1">Main</option><option value="2">Telugu Yuvatha</option>
+																<option value="3">Telugu Mahila</option><option value="4">Telugu Rythu</option>
+																<option value="17">Trade</option><option value="6">BC Cell</option><option value="7">SC Cell</option>
+																<option value="8">ST Cell</option><option value="9">Minority Cell</option><option value="18">Christian</option>
+																<option value="11">TNSF (Student Union)</option><option value="5">TNTUC</option><option value="15">TSNV (Technical Expert Cell)</option>
+																<option value="10">Legal Cell</option><option value="16">Doctor Cell</option><option value="20">Kallu Geetha Karmikulu</option>
+																<option value="21">Chenetha</option><option value="19">Telugu Rakshana Vedika</option><option value="14">TNUS ( Teachers Union) </option>
+																<option value="12">Commercial Cell</option><option value="13">Cultural Cell</option>
+															</select>
+														  </div>
+														</div> 
+														<div >
+															<div class="col-md-6">
+																<select id="cadreCommitteeDiv" multiple class="advanceCadreCommittee" style="width:250px !important;"></select>
+																<div id="representativesDiv"></div>
+																<div id="referRoleErrorDiv"></div>
+															</div>
+														</div>
+													</div></br>
+													
+													
+									
+					
+					
+																<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();"  style="margin-top: 25px;">Search Member</button>
+											</div>
+											<div class="col-md-1">
+												<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
+											</div>
+												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
+											
+											<div class="row m_top25">
+											<div class="col-md-12" id="clearSerchDivId">
+												<div id="apptmemberDetailsDiv"></div>
+											</div>
+                                        </div>
+											</div>
+					<!--<div class="row">
 						<div class="col-md-6">
 							<label>Search Candidates</label>
 							<div class="input-group">
@@ -82,8 +138,23 @@
 							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
 							<option value="0">Select Candidate</option>	
 							</select>
+						</div>-->
+						<div class="row">
+							<div class="col-md-3">
+							<label>Alert Type</label>
+							<select class="dropkickClass" name="alertVO.alertTypeId" id="alertTypeId">
+								<option value="1">Select Alert</option>
+							</select>
 						</div>
 						
+						<div class="col-md-3">
+							<label>Alert Severity</label>
+							<select class="dropkickClass" name="alertVO.severity">
+								<option value="1">High</option>
+								<option value="2">Medium</option>
+								<option value="3">Low</option>
+							</select>
+						</div>
 						<div class="col-md-3">
 							<label>Alert Impact</label>
 							<select class="dropkickClass"  id="alertImpactId" name="alertVO.alertImpactId">
@@ -345,6 +416,13 @@ function getAlertType(){
 				  
 				});
 		}
+		
+		
+		
+//buildLevels();
+
 getAlertType();
+//showHideSearch("advanceSearch");
+//showHideBySearchType();
 
 </script>
