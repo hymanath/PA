@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 		pageEncoding="utf-8"%>
-	<%@ taglib prefix="s" uri="/struts-tags" %>  
-	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 	<html>
@@ -12,12 +13,15 @@
 	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
-	
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 	<!-- JQuery files (Start) -->
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
-	
+	<link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
+	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<style type="text/css">
 		.createAlertModalCls
 		{
@@ -251,9 +255,134 @@
 <script type="text/javascript">
 $("#dateRangePickerId").daterangepicker({opens:'left'});
 $(document).on("click","#createAlertBtn",function(){
-	$("#createAlertModal").modal('show')
+	$("#createAlertModal").modal('show');
+	buildLevels();
+	showHideSearch("advanceSearch");
+	showHideBySearchType();
 });
-$(".dropkickClass").dropkick()
+$(".dropkickClass").dropkick();
+
+function buildapptmemberDetails(result){
+		var str='';
+		if(result !=null && result.length>0){
+			str+='<table id="searchedMembersId">';
+			str+='<thead><th></th></thead>';
+			str+='<tbody>';
+			for(var i in result){
+				
+				
+					str+='<tr><td style="padding:0px !important;">';
+					str+='<div class="col-md-12">';
+					str+='<ul class="createAppointmentSearch">';
+						str+='<li>';
+							str+='<div class="row">';
+								
+								str+='<div class="col-md-6 col-md-offset-1">';
+									str+='<div class="media">';
+										str+='<div class="media-left">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
+										str+='</div>';
+										str+='<div class="media-body">';
+										
+							
+										if(result[i].constituency !=null && result[i].constituency.length>0 ){
+											<c:choose>
+											<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
+											if(result[i].id != null && result[i].id > 0){
+												if(result[i].candidateType=="voter"){
+												 str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div>';
+												}else{
+													str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
+												}
+											}
+											else
+											str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
+											</c:when>
+											<c:otherwise>
+											str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
+											</c:otherwise>
+											</c:choose>
+											
+										}else{
+											str+='<div style="color:#34A7C1;">'+result[i].name+'</div>';
+										}
+										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
+												str+='<p ><span><i class="fa fa-mobile" style="font-size:15px"></i> &nbsp '+result[i].mobileNo+'</span>';
+										}else{
+											str+='<p><span><i class="fa fa-mobile" style="font-size:15px"></i>   - </span>';
+										}
+										
+										if(result[i].designation !=null && result[i].designation.length>0){
+											
+												str+='<span style="margin-left:10px;"> '+result[i].designation+'</span></p>';
+										}else{
+											
+											//str+='<span style="margin-left:10px;">Designation: - </span></p>';
+											
+											 if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
+												 if(result[i].candidateType == 'cadre'){
+													str+='<span style="margin-left:10px;"> - Cadre</span></p>'; 
+												 }else{
+													 str+='<span style="margin-left:10px;"> - </span></p>';
+												 }
+											}else{
+												str+='<span style="margin-left:10px;"> - </span></p>';
+											} 
+										}
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
+							  
+								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
+									
+									str+='<div class="col-md-1 m_top10"><a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a></div>&nbsp;&nbsp;';
+									
+								}
+								
+								
+							if(result[i].designation==null){
+								result[i].designation = "";
+							}
+							if(result[i].aptExists == false && result[i].appointmentCandidateId != null){
+								str+='<div class="col-md-1   m_top10" attr_id="'+result[i].id+'" >';
+							}
+							else{
+								str+='<div class="col-md-1 col-xs-offset-1 m_top10" attr_id="'+result[i].id+'" >';
+							}
+							if(result[i].aptExists == false)
+							{
+								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
+							}								
+							else{
+								str+='<label data-toggle="tooltip"  data-placement="top" title="This Candidate Already in '+result[i].aptName+' Appointment with '+result[i].aptStatus+' Status: you can not addtion to another Appointment"> ';
+								str+=''+result[i].aptName+' - '+result[i].aptStatus+'';
+								str+='</label>';
+							}
+							
+								str+='</div>';
+								
+							str+='</div>';*/
+						str+='</li>';
+					 
+					str+='</ul>';
+				str+='</div>';
+				str+='</td>';
+				str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+		}
+		
+		$("#apptmemberDetailsDiv").html(str);
+		$('[data-toggle="tooltip"]').tooltip()
+		$('.check').tooltip()
+		
+		applyPagination();
+	}
+	function setDefaultImage(img){
+	  img.src = "dist/Appointment/img/thumb.jpg";
+   }
 </script>
 </body>
 </html>

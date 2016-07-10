@@ -2,6 +2,7 @@ disableByLevel();
 
 function disableByLevel()
   {
+	 
 	  setDefault();	
 	  var levelId = $("#alertlevelId").val();
 	  var districtId = $("#referdistrictId").val();
@@ -218,3 +219,502 @@ function disableByLevel()
 			}
 		   });
 		}
+		
+		function showHideBySearchType(){
+		
+		//setToDefaultAdvancedSearch();
+			$('#errorDivId').html('');
+			var selectVal = $("#advanceSearchTypeId").val();
+			
+			if(selectVal == 2)
+			{
+				$(".advancePRCls").show();
+				$(".advanceprclsDiv").show();
+				$(".advanceNameCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$(".advanceprcls").show();
+				$("#cadreCommitteeDiv_chosen").hide();
+				$(".stateShowCls").show();
+				$(".levelShowCls").show();
+				setToDefaultAdvancedSearch();
+				$("#advanceDesignationId").css("display","none");
+				getPublicRepresentsDetails();
+				//disableByLevel();
+				
+			}
+			else if(selectVal == 3)
+			{
+				$(".advancePRCls").hide();
+				$(".advanceNameCls").hide();
+				$(".advanceCadreCommittee").show();
+				$(".locationsFilterCls").show();
+				$(".advanceprcls").hide();
+				$(".stateShowCls").show();
+				$(".levelShowCls").show();
+				$(".advanceprclsDiv").hide();
+				$("#cadreCommitteeDiv_chosen").show();
+				$("#cadreCommitteeDiv").css("display","none");
+				$(".chosen-choices").css("display","block");
+				getCommitteeRoles();
+				$(".referRolesCheck").removeAttr("checked");
+				setToDefaultAdvancedSearch();
+				//disableByLevel();
+			}
+			else if(selectVal == 1)
+			{
+				$(".stateShowCls").show();
+				$(".advanceprclsDiv").show();
+				$(".advanceNameCls").show();
+				$(".levelShowCls").show();
+				$(".advancePRCls").hide();
+				$("#cadreCommitteeDiv_chosen").hide();
+				$("#referCommitteeDiv").hide();
+				clearNameSearchTypeFields();
+				
+			}
+			else
+			{
+				$(".levelShowCls").hide();
+				$(".stateShowCls").hide();
+				$(".advanceprcls").show();
+				$(".advanceNameCls").show();
+				$(".advancePRCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$("#advanceSearchValueId").val("");
+				$(".advanceprclsDiv").hide();
+			}
+				disableByLevel();
+				$(".stateCls").show();
+				$(".distCls").hide();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+	}
+	
+	function buildLevels()
+	{
+	
+		var searchType = $("#advanceSearchTypeId").val();
+		var str='';
+		 $("#alertlevelId").find('option').remove();
+		  str+='<option value="2">State</option>';
+		  str+='<option value="3">District</option>';
+		  if(searchType != 3)
+		  str+='<option value="4">Constituency</option>';
+		  str+='<option value="5">Mandal/Muncipality</option>';
+		  str+='<option value="6">Village/Ward</option>';
+		  $("#alertlevelId").append(str);
+		    $("#alertlevelId").dropkick();
+			 var select = new Dropkick("#alertlevelId");
+			 select.refresh();
+	}
+	function setToDefaultAdvancedSearch()
+	{	
+			$("#advanceDesignationId").val(0);
+			$("#advanceDesignationId").dropkick('reset');
+			
+			$("#alertlevelId").val(0);	
+			$("#alertlevelId").dropkick('reset');
+			
+			$("#stateId").val(0);	
+			$("#stateId").dropkick('reset');
+			
+			$("#referCommitteeId").val(0);	
+			$("#referCommitteeId").dropkick('reset');
+			
+			$("#referdistrictId").val(0);
+			$("#referdistrictId").dropkick('reset');
+			
+		   $("#referconstituencyId").val(0);
+			$("#referconstituencyId").dropkick('reset');
+			
+		   $("#refermandalNameId").val(0);
+			$("#refermandalNameId").dropkick('reset');
+			
+		   $("#referpanchayatId").val(0);
+		   $("#referpanchayatId").dropkick('reset');
+		
+	}
+	function  clearNameSearchTypeFields(){
+		  clearLevelField();
+		  clearStateField();
+	  }
+	   function clearLevelField(){
+		  $("#alertlevelId").val(0);	
+		  $("#alertlevelId").dropkick('reset'); 
+	   }
+	   function clearStateField(){
+		 $("#stateId").val(0);	
+		 $("#stateId").dropkick('reset');
+	   }
+	   
+	   function getPublicRepresentsDetails(){
+    	 $("#advanceDesignationId").html('');
+    	var jsObj={
+    			task:"publicRepresentatives"
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getPublicRepresentativeTypes.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+		   var str ='';
+    		if(result != null && result.length > 0){
+				str +='<option value="0">All</option>';
+				for(var i in result){
+					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+				}
+				 $("#advanceDesignationId").html(''+str+'');
+				 $("#advanceDesignationId").dropkick();
+				 var select = new Dropkick("#advanceDesignationId");
+				 select.refresh();
+			}
+		   });	
+	}
+	
+	function getLevelByDesignation()
+ {
+	 
+	  $("#alertlevelId").find('option').remove();
+	   var stateGrpIds = ["6","23","7","12","16","22"];
+	 var distGrpIds = ["1","9","11"];
+	 var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
+	 var constiGrpIds =["2","8","10",];
+	 var designationId =$("#advanceDesignationId").val();
+	
+	 var str ='';
+	  if(jQuery.inArray(designationId, stateGrpIds ) > -1)
+	 {
+		 str+='<option value="2">State</option>';
+		
+		 $("#alertlevelId").append(str);
+	 }
+	else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+	 {
+		 str+='<option value="2">State</option>';
+		 str+='<option value="3">District</option>';
+		 $("#alertlevelId").append(str);
+	 }
+	 else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+	 {
+		 str+='<option value="2">State</option>';
+		 str+='<option value="3">District</option>';
+		  str+='<option value="4">Constituency</option>';
+		 $("#alertlevelId").append(str);
+	 }
+	 else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
+	 {
+		 str+='<option value="2">State</option>';
+		 str+='<option value="3">District</option>';
+		 str+='<option value="5">Mandal/Muncipality</option>';
+		 $("#alertlevelId").append(str);
+	 }
+	 
+	else
+	 {
+		  str+='<option value="2">State</option>';
+		  str+='<option value="3">District</option>';
+		   str+='<option value="4">Constituency</option>';
+		  str+='<option value="5">Mandal/Muncipality</option>';
+		  str+='<option value="6">Village/Ward</option>';
+		  $("#alertlevelId").append(str);
+	 }
+	   $("#alertlevelId").dropkick();
+			 var select = new Dropkick("#alertlevelId");
+			 select.refresh();
+			 		disableByLevel();
+	 	
+ }
+ 
+  function showHideSearch(type)
+  {
+	  if(type == "search")
+	  {
+		  $(".searchCls").show();
+		  $(".advanceSearchCls").hide();
+		  $("#cadreCommitteeDiv_chosen").hide();
+		  $(".levelShowCls").hide();
+		  $(".stateShowCls").hide();
+		  
+	  }
+	  else
+	  {
+		 $(".advanceSearchCls").show();  
+		  $(".searchCls").hide();
+		  $("#advanceSearchTypeId").val(0);
+		   $("#advanceSearchTypeId").dropkick('reset');
+		  $(".chosen-choices").css("display","none");
+		    $("#cadreCommitteeDiv_chosen").show();
+		    
+	  }
+		 
+	  
+  }
+  
+  function getCommitteeRoles(){
+    	var jsObj={
+    			task:"roles"
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getAllCommitteesAction.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+				
+				var str ='';
+				str +='<option id="0" attr_value="All"  >All</option>';
+					for(var i in result){
+						str +='<option value="'+result[i].id+'" attr_value="'+result[i].name+'"  >'+result[i].name+'</option>';
+					}
+				
+				$("#cadreCommitteeDiv").html(str);
+				$("#cadreCommitteeDiv").chosen();
+				$("#cadreCommitteeDiv").trigger("chosen:updated");
+				$("#cadreCommitteeDiv_chosen").addClass("m_top20");
+				$("#cadreCommitteeDiv_chosen").addClass("addwidth");
+				});			  
+    }
+	
+	function handleBySearchType()
+	{
+		getAdvancedSearchDetails();
+				
+	}
+	
+	
+	function getAdvancedSearchDetails(){
+		$("#apptmemberDetailsDiv").html("");
+		var statusArr=[];
+		var tdpCadreIds=[];
+		var level;
+		var levelValue;
+		var tehsilId = 0;
+		var committeeId = 0;
+		var referCommitteeId;
+		var errorStr='';
+		var levelStr;
+		$("#errorDivId").html('');
+		var searchType;
+		var searchValue = "";
+		var districtId=0;
+		var constituencyId=0;
+		var mandalId = 0;
+		var panchayatId=0;
+		var levelId=0;
+		var stateId=0;
+		var advanceSearchType = $("#advanceSearchTypeId").val();
+		stateId = $("#stateId").val();
+		 if(advanceSearchType==0){
+			 errorStr='Please Select Search Type';
+			 $("#errorDivId").html(errorStr);
+		 }
+		  var aptUserId = 0;
+		 // aptUserId = $("#appointmentUserSelectBoxId").val();
+		if(advanceSearchType == 1)
+		{
+			levelStr ="";
+			 searchType = "name";
+			 searchValue = $("#advanceSearchValueId").val().trim();
+			 if(searchValue == null || searchValue.length ==0){
+				 errorStr='Please Enter Name';
+				 $("#errorDivId").html(errorStr);
+				 return;
+			 }else if(searchValue.length<3){
+				 errorStr='Name should be minimum three characters.';
+				 $("#errorDivId").html(errorStr);
+				 return; 
+			 }
+		}
+		else if(advanceSearchType == 2)
+		{
+			 searchType = "publicRepresentative";
+			 searchValue = $("#advanceDesignationId").val();
+			
+		}
+		else if(advanceSearchType == 3)
+		{
+			 searchType = "CadreCommittee";
+				$("#cadreCommitteeDiv option:selected").each(function ()
+			{		
+				var desgnaValue = $(this).attr("value");
+				if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
+					return false;
+				}
+				else{
+					statusArr.push($(this).attr("value"));
+				}		
+			});
+			 referCommitteeId = $("#referCommitteeId").val();
+			 
+		}
+		
+		 districtId = $("#referdistrictId").val();
+		 constituencyId = $("#referconstituencyId").val();
+		var tehsilName =  $("#refermandalNameId selected:option").text();
+		if($("#refermandalNameId").val() > 0){
+			if(tehsilName.indexOf('Mandal') == -1)
+		tehsilId = "2"+$("#refermandalNameId").val();
+		else
+		tehsilId = "1"+$("#refermandalNameId").val();
+		}
+		
+		
+		
+		if($("#refermandalNameId").val() == 0)
+		tehsilId = $("#refermandalNameId").val();
+	     panchayatId = $("#referpanchayatId").val();
+		 
+		 var panchayatName =  $("#referpanchayatId selected:option").text();
+		 if($("#referpanchayatId").val() > 0){
+			if(panchayatName.indexOf('WARD') == -1)
+		panchayatId = "1"+$("#referpanchayatId").val();
+		
+		}
+		
+		 levelId  = $("#alertlevelId").val();
+		if(levelId == 2)
+			level = "state";
+		if(levelId == 3)
+			level = "district";
+		if(levelId == 4)
+			level = "constituency";
+		if(levelId == 5)
+			level = "mandal";
+		if(levelId == 6)
+			level = "village";
+		if(districtId == 0)
+		{
+			levelStr = "state";
+			levelValue = 0;
+			
+		}
+		else if(districtId > 0 && constituencyId == 0)
+		{
+			levelStr = "district";
+			levelValue = districtId;
+			
+		}
+		else if(districtId > 0 && constituencyId > 0 && tehsilId == 0)
+		{
+			levelStr = "constituency";
+			levelValue = constituencyId;
+			
+		}
+		
+		else if(districtId > 0 && constituencyId > 0 && tehsilId > 0 && panchayatId == 0)
+		{
+			
+			levelStr = "mandal";
+			levelValue = tehsilId;
+			
+		}
+		
+		else if(districtId > 0 && constituencyId > 0 && tehsilId > 0 && panchayatId > 0)
+		{
+			levelStr = "village";
+			levelValue = panchayatId;
+			
+		}
+		$('#errorDivId').html(errorStr);
+          if(levelId == 3){
+		
+			 districtId = $("#referdistrictId").val();
+			
+			if(districtId==0 || districtId=='select'){
+			
+				errorStr +="Please Select District";
+			}
+		}
+		
+		 else if(levelId == 3){
+			 districtId = $("#referdistrictId").val();
+			if(districtId==0 || districtId=='select'){
+				
+				errorStr +="Please Select District";
+				$("#errorDivId").html(errorStr);
+				return ;
+				
+			}
+			  if(constituencyId == 0 || constituencyId=='select'){
+				 constituencyId = $("#referconstituencyId").val();
+				errorStr +="Please Select Assembly";
+				$("#errorDivId").html(errorStr);
+				return;
+			}
+		}
+		if(errorStr.length >0)
+       {
+	  $('#errorDivId').html(errorStr);
+	  return ;
+       } 
+	   
+	//Party Commitee Members	
+	if(advanceSearchType !=null && advanceSearchType == 3){
+		$("#cadreCommitteeDiv option:selected").each(function ()
+		{		
+			var desgnaValue = $(this).attr("value");
+			if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
+				return false;
+			}
+			else{
+				statusArr.push($(this).attr("value"));
+			}		
+		});
+		committeeId = referCommitteeId;	
+	}
+	
+	//Public Representatives
+	if(advanceSearchType !=null && advanceSearchType == 2){
+		var desgnaValue = $("#advanceDesignationId").val();
+		if(desgnaValue > 0)
+		statusArr.push(desgnaValue);
+		committeeId = "0";	
+	}
+		if(errorStr.length>0){
+			$("#errorDivId").html(errorStr);
+			return;
+		}
+		$("#searchMemberAjax").css("display","block");
+	
+		$("#apptmemberDetailsDiv").html("<center><img src='images/search.gif'/> </center>");
+		
+		var jsObj={
+			searchType:searchType,
+			searchValue:searchValue,
+			designations:statusArr,
+			committeeId:committeeId, // "PR" -- if public representatives
+			levelId:levelId,
+			districtId:districtId,
+			constituencyId:constituencyId,
+			mandalId:tehsilId,
+			panchayatId:panchayatId,
+			stateId:stateId,
+			levelStr:levelStr,
+			aptUserId:aptUserId
+		}
+		$("#apptmemberDetailsDiv").html('');
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAdvancedSearchDetailsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				$("#searchMemberAjax").css("display","none");
+				$("#apptmemberDetailsDiv").html("");
+				if(result !=null && result.length>0){
+				buildapptmemberDetails(result);
+				
+				}else{
+					$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
+				}
+		  }); 
+	}
+	
+	
+	
+	function applyPagination(){
+		$('#searchedMembersId').DataTable();
+	}
+	
