@@ -485,6 +485,7 @@ function disableByLevel()
 	
 	
 	function getAdvancedSearchDetails(){
+		
 		$("#apptmemberDetailsDiv").html("");
 		var statusArr=[];
 		var tdpCadreIds=[];
@@ -547,7 +548,6 @@ function disableByLevel()
 				}		
 			});
 			 referCommitteeId = $("#referCommitteeId").val();
-			 
 		}
 		
 		 districtId = $("#referdistrictId").val();
@@ -559,9 +559,6 @@ function disableByLevel()
 		else
 		tehsilId = "1"+$("#refermandalNameId").val();
 		}
-		
-		
-		
 		if($("#refermandalNameId").val() == 0)
 		tehsilId = $("#refermandalNameId").val();
 	     panchayatId = $("#referpanchayatId").val();
@@ -574,16 +571,40 @@ function disableByLevel()
 		}
 		
 		 levelId  = $("#alertlevelId").val();
+		 var alertLevelId =levelId;
 		if(levelId == 2)
+		{
+			
 			level = "state";
+			
+			alertLevelId = 10; 
+		
+		}
+			
 		if(levelId == 3)
+		{
 			level = "district";
+			alertLevelId = 11; 
+		}
+			
 		if(levelId == 4)
+		{
 			level = "constituency";
+			alertLevelId = 1; 
+		}
+			
 		if(levelId == 5)
+		{
 			level = "mandal";
+			alertLevelId = 6;
+		}
+			
 		if(levelId == 6)
+		{
 			level = "village";
+			alertLevelId = 6;
+		}
+			
 		if(districtId == 0)
 		{
 			levelStr = "state";
@@ -685,7 +706,7 @@ function disableByLevel()
 			searchValue:searchValue,
 			designations:statusArr,
 			committeeId:committeeId, // "PR" -- if public representatives
-			levelId:levelId,
+			levelId:alertLevelId,
 			districtId:districtId,
 			constituencyId:constituencyId,
 			mandalId:tehsilId,
