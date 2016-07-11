@@ -1033,7 +1033,7 @@ public class SchedulerService implements ISchedulerService{
 			FileOutputStream file = new FileOutputStream(new File(pdfFilePath));
 			
 			Rectangle pageSize = new Rectangle(PageSize.A4);
-		    pageSize.setBackgroundColor(new BaseColor(5,64,165));  
+		    pageSize.setBackgroundColor(new BaseColor(255,225,0));  
 			Document  document=new Document(pageSize);  
 		     
 		    PdfWriter writer=PdfWriter.getInstance(document,file);
@@ -1415,7 +1415,7 @@ public class SchedulerService implements ISchedulerService{
 	        }
 	        document.open();
 	        
-	        Font f = new Font(FontFamily.TIMES_ROMAN, 16.0f, Font.BOLD, BaseColor.WHITE);
+	        Font f = new Font(FontFamily.TIMES_ROMAN, 16.0f, Font.BOLD, new BaseColor(0,0,128));
 		    Chunk c = new Chunk("EMPLOYEES ATTENDANCE", f);
 	        Paragraph paragraph5=new Paragraph(c);
 	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
@@ -1424,7 +1424,7 @@ public class SchedulerService implements ISchedulerService{
 	        
 	        document.add(paragraph5);  
 	        
-	        f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
+	        f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
 		    c = new Chunk("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION", f);
 		    //c.setBackground(BaseColor.RED);
 	        Paragraph paragraph=new Paragraph(c);
@@ -1432,7 +1432,7 @@ public class SchedulerService implements ISchedulerService{
 	        paragraph.add(Chunk.NEWLINE);
 	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
 	        
-	        f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.BOLD, BaseColor.ORANGE);
+	        f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.BOLD, new BaseColor(0,0,0));
 		    c = new Chunk("      DATE:"+dt1, f);
 		    Paragraph paragraph4=new Paragraph(c);
 		    paragraph4.setAlignment(Element.ALIGN_CENTER);
@@ -1449,7 +1449,7 @@ public class SchedulerService implements ISchedulerService{
 	    	document.add(paragraph4);
 	    	document.add(table);
 	    	
-	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
+	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
 	    	c = new Chunk("DEPARTMENT'S EMPLOYEE ATTENDANCE INFORMATION", f);
 	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph1=new Paragraph(c);
@@ -1460,7 +1460,7 @@ public class SchedulerService implements ISchedulerService{
 	        document.add(paragraph1);  
 	    	document.add(tbl);
 	    	
-	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
+	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
 	    	c = new Chunk("OFFICE WISE ATTENDED EMPLOYEE'S DETAILS", f);
 	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph2=new Paragraph(c);
@@ -1471,7 +1471,7 @@ public class SchedulerService implements ISchedulerService{
 	        document.add(paragraph2);
 	    	document.add(table2);
 	    	
-	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, BaseColor.WHITE);
+	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
 	    	c = new Chunk("OFFICE WISE ABSENT EMPLOYEE'S DETAILS", f);
 	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph3=new Paragraph(c);
