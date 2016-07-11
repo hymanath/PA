@@ -2440,20 +2440,21 @@ function buildReport()
 				str +='<th>INSERTED TIME</th>';
 			str +='</thead>';
 			str +='<tbody>';
-				str +='<c:forEach items="${cadreReportVOList}" var="cadreReportVO">';  
-					str +='<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO">';
+				<c:forEach items="${cadreReportVOList}" var="cadreReportVO">
+					<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO">
 						str +='<tr>';     
 							str +='<td>${ReportVO.reportType}</td>';               
-							str +='<td><a href="file:///D:\\static_content\\reports\\2016-07-08\\2016-07-08_15-04-28_34561.pdf">${ReportVO.reportName}</a></td>';         
+							str +='<td><a class="pdf"  href="${ReportVO.reportPath}">${ReportVO.reportName}</a></td>';         
 							str +='<td>${ReportVO.insertedTime}</td>';    
 						str +='</tr>';
-					str +='</c:forEach>';           
-				str +='</c:forEach>';
+					</c:forEach>         
+				</c:forEach>
 			str +='</tbody>';
 		str +='</table>';    
 	</c:if>
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 		$("#reportDetailsId").html(str);
+		$("#reportTableId").dataTable();  
 	</c:if>
 }
 </script>
