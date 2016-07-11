@@ -199,7 +199,15 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'USER_NOTES_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 								</c:if>
-									-->
+								-->
+								<p class="m_0">
+								  		<c:if test="${fn:length(cadreReportVOList) gt 0}">  
+											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
+										</c:if>
+										<c:if test="${fn:length(cadreReportVOList) eq 0}">  
+											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>
+										</c:if>
+								</p>
 								</div>
                             </div>
                         </td>
@@ -2438,7 +2446,7 @@ function buildReport()
 				str +='<th>REPORT TYPE</th>';
 				str +='<th>REPORT NAME</th>';
 				str +='<th>INSERTED TIME</th>';
-			str +='</thead>';
+			str +='</thead>';  
 			str +='<tbody>';
 				<c:forEach items="${cadreReportVOList}" var="cadreReportVO">
 					<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO">
