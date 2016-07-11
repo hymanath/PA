@@ -194,13 +194,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
 
-									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
+									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i>
 								<!--
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'USER_NOTES_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 								</c:if>
 								-->
-								<p class="m_0">
+								
 								  		<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
 										</c:if>
@@ -2452,7 +2452,7 @@ function buildReport()
 					<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO">
 						str +='<tr>';     
 							str +='<td>${ReportVO.reportType}</td>';               
-							str +='<td><a class="pdf"  href="${ReportVO.reportPath}">${ReportVO.reportName}</a></td>';         
+							str +='<td><a target="_blank" class="pdf"  href="${ReportVO.reportPath}">${ReportVO.reportName}</a></td>';         
 							str +='<td>${ReportVO.insertedTime}</td>';    
 						str +='</tr>';
 					</c:forEach>         
