@@ -137,7 +137,7 @@
 							<div id="locationLevelId"></div>
 						</div>
 					</div>
-					
+					<br/>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="locationLevelDataId"></div>
@@ -259,6 +259,8 @@ $(document).on("click","#createAlertBtn",function(){
 	buildLevels();
 	showHideSearch("advanceSearch");
 	showHideBySearchType();
+	disableByLevel(1);
+	getAlertsource();
 });
 $(".dropkickClass").dropkick();
 
@@ -332,7 +334,7 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
+								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
 							  
 								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
 									
@@ -383,6 +385,69 @@ function buildapptmemberDetails(result){
 	function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
+	var cloneCount=0;
+   $(document).on("click",".apptDetailsDiv",function(){
+		
+		 if($(this).is(':checked')){
+			 $(".membersBlock").show();
+			  var name  = $(this).attr("attr_name");
+			  var image = $(this).attr("attr_img_url");
+			  var attrId = $(this).attr("attr_id");
+			  var attrConsti =  $(this).attr("attr-consti");
+			  
+			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
+			var str ='';
+			str+='<div class="col-md-10 col-md-offset-1 block">';
+			str+='<div class="media"><div class="media-left">';
+			str+='<img src="http://mytdp.com/images/cadre_images/282/AP1431166113.jpg" alt="image" style="height:60px;width:60px;">';
+			str+='</div>';
+			str+='<div class="media-body">';
+			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
+			str+='<label>Name</label>';
+			str+='<p>'+name+'</p>';
+			str+='<label>Constituency</label>';
+			str+='<p>'+attrConsti+'</p><label>Alert Impact</label><select class="form-control" style="width:150px" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" ></i></span></div>';
+			 $(".membersBlock").append(str);
+							 
+			  cloneCount = cloneCount+1;
+		 }
+   })
+   $(document).on("click",".closeIcon",function(){
+	$(this).parent().remove();
+	var id=$(this).attr("id");
+	
+	$(".candidatecls"+id).prop('checked', false); 
+	//var blockCount = $(this).attr("clone_block_count");
+	$(".close"+id).prop('checked', false); 
+	//$("#uncheck"+id).parent().find(".apptDetailsDiv").prop('checked', false); 
+});
+ var loginUserId = "${sessionScope.USER.registrationID}";
+function getAlertsource(){
+		$("#alertSourceId").html('');
+		var jsObj =
+		        {
+					userId : loginUserId,
+				task:""
+		          }
+				$.ajax({
+					  type:'GET',
+					  url: 'getAlertSourceForUserAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					$('#alertSourceId').append('<option value="0"> Select Alert Source </option>');
+					if(result != null)
+					{
+						for(var i in result)
+						{			
+							$('#alertSourceId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						}
+						$("#alertSourceId").dropkick();
+							var select1 = new Dropkick("#alertSourceId");
+							select1.refresh();
+					}
+				  
+				});
+		}
 </script>
 </body>
 </html>

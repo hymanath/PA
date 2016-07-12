@@ -7,7 +7,7 @@ $(document).on("click",'.applyBtn',function(){
 })
 function getLocationLevelAlertCount()
 {
-	
+	$("#locationLevelId").html('');
 	    var fromDate='';
 		var toDate='';
 		var dateStr = $("#dateRangePickerId").val(); 
@@ -17,8 +17,8 @@ function getLocationLevelAlertCount()
 			toDate = dateStr.split("-")[1];
 		}
 		var jsObj = {
-			fromDate:'',
-			toDate :''
+			fromDate:fromDate,
+			toDate :toDate
 			
 		          }
 		
@@ -27,14 +27,21 @@ function getLocationLevelAlertCount()
 					  url: 'getLocationLevelWiseAlertsAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-					if(result != null && result.length>0){
+					
 						buildLocationLevelAlert(result,jsObj);
-					}
+					
 				});
 }
 function buildLocationLevelAlert(result,jsObj){
 	
+	
 	var str='';
+	if(result == null || result.length == 0)
+	{
+		
+		$("#locationLevelId").html('No data Available..');
+		return;
+	}
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
 	str+='<th>Level</th>';
@@ -46,10 +53,25 @@ function buildLocationLevelAlert(result,jsObj){
 	str+='<tr>';
 	for(var i in result){
 		str+='<td>'+result[i].name+'</td>';
-		str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></td>';
+		if(result[i].count > 0)
+		{
+		str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></td>';	
+		}
+		else
+		{
+				str+='<td>'+result[i].count+'</td>';
+		}
+		
 		var returnList=result[i].locationsList;
 		for(var j in returnList){
-			str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></td>';
+			if(returnList[j].count > 0)
+			{
+			str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></td>';	
+			}
+			else{
+				str+='<td>'+returnList[j].count+'</td>';
+			}
+			
 			
 		}
 		str+='</tr>';
@@ -70,6 +92,7 @@ $(document).on("click",".locationLevelCls",function(){
 var GlobalAlertData;
 function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 {
+	$("#locationLevelDataId").html('');
     GlobalAlertData = [];
 		var jsObj =
 		     {
@@ -85,19 +108,53 @@ function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 			       GlobalAlertData = result;
-					buildAlertData(result);
+					buildAlertData(result,jsObj);
 				});
 }
 
-function buildAlertData(result)
+function buildAlertData(result,jsObj)
 {
+	if(result == null || result.length == 0)
+	{
+		$("#locationLevelDataId").html('No Data Available..');
+		return;
+	}
+		
+	var Level = "";
+	if(jsObj.levelId == 2)
+	{
+		Level = "STATE";
+	}
+	if(jsObj.levelId == 3)
+	{
+		Level = "DISTRICT";
+	}
+	if(jsObj.levelId == 4)
+	{
+		Level = "CONSTITUENCY";
+	}
+	if(jsObj.levelId == 5)
+	{
+		Level = "MANDAL";
+	}
+	if(jsObj.levelId == 6)
+	{
+		Level = "VILLAGE";
+	}
 	var str='';
+	if(jsObj.statusId > 0)
+	str+='<h4 style="text-transform: uppercase;">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
+	else
+	str+='<h4 style="text-transform: uppercase;">'+Level+' Wise  Alert Details</h4>';	
 	str+='<table class="table table-bordered">';
+
+		
 	str+='<thead>';
 	str+='<th>S.NO</th>';
 	str+='<th>Desc</th>';
 	str+='<th>Alert Type</th>';
 	str+='<th>Severity</th>';
+	str+='<th>Status</th>';
 	str+='<th>No. Of Candidate</th>';
 	str+='<th>User Type</th>';
 	str+='</thead>';
@@ -110,6 +167,7 @@ function buildAlertData(result)
 	str+='<td><a  class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
+	str+='<td>'+result[i].status+'</td>';
 	str+='<td>'+result[i].count+'</td>';
 	str+='<td>'+result[i].userType+'</td>';
 	str+='</tr>';	
@@ -141,13 +199,47 @@ function showPopUpAlertData(alertId)
 			
 			$("#levelId").html(''+GlobalAlertData[i].regionScope+'');
 			var location ='';
-			if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
+			
+			if(GlobalAlertData[i].regionScope == "STATE")
 			{
-			location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' </p><p>Ward : '+GlobalAlertData[i].locationVO.wardName+'</p>';	
+				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p>';
 			}
-			else{
-				location +='<p>State:'+GlobalAlertData[i].locationVO.state+' </p><p>Dist : '+GlobalAlertData[i].locationVO.districtName+' </p><p>Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Mandal : '+GlobalAlertData[i].locationVO.tehsilName+'</p><p> Panchayat : '+GlobalAlertData[i].locationVO.villageName+'</p>';
+			
+			else if(GlobalAlertData[i].regionScope == "DISTRICT")
+			{
+				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p>';
 			}
+			
+			else if(GlobalAlertData[i].regionScope == "CONSTITUENCY")
+			{
+				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p>';
+			}
+			
+			
+			else if(GlobalAlertData[i].regionScope == "MANDAL" || GlobalAlertData[i].regionScope == "MUNICIPAL-CORP-GMC" )
+			{
+				
+					if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
+				{
+				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' </p>';	
+				}
+				else{
+					location +='<p>State:'+GlobalAlertData[i].locationVO.state+' </p><p>Dist : '+GlobalAlertData[i].locationVO.districtName+' </p><p>Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Mandal : '+GlobalAlertData[i].locationVO.tehsilName+'</p>';
+				}
+			}
+			
+			else if(GlobalAlertData[i].regionScope == "VILLAGE" || GlobalAlertData[i].regionScope == "WARD" )
+			{
+			
+				if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
+				{
+				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' </p><p>Ward : '+GlobalAlertData[i].locationVO.wardName+'</p>';	
+				}
+				else{
+					location +='<p>State:'+GlobalAlertData[i].locationVO.state+' </p><p>Dist : '+GlobalAlertData[i].locationVO.districtName+' </p><p>Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Mandal : '+GlobalAlertData[i].locationVO.tehsilName+'</p><p> Panchayat : '+GlobalAlertData[i].locationVO.villageName+'</p>';
+				}
+				
+			}	
 			
 			$("#LocationId").html(''+location+'');
 			$("#statusId").val(''+GlobalAlertData[i].statusId+'');

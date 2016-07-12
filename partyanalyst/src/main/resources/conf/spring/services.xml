@@ -3262,6 +3262,8 @@
 	<property name="alertTrackingDAO" ref="alertTrackingDAO"></property>
 	<property name="alertCommentDAO" ref="alertCommentDAO"></property>
 	<property name="alertTypeDAO" ref="alertTypeDAO"></property>
+	<property name="alertSourceUserDAO" ref="alertSourceUserDAO"></property>
+	
 	</bean>
 	<!-- Debate End -->
 </beans>		
