@@ -27,12 +27,12 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 
 	private Long importantLeadersTypeId;
 	private String position;
-	private Long locationScopeId;
+	private Long importantLeadersLevelId;
 	private int orderNo;
 	private Long userId;
 	private Date insertedTime;
 	
-	private RegionScopes locationScope;
+	private ImportantLeadersLevel importantLeadersLevel;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,12 +52,12 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 		this.position = position;
 	}
 	
-	@Column(name="location_scope_id")
-	public Long getLocationScopeId() {
-		return locationScopeId;
+	@Column(name="important_leaders_level_id")
+	public Long getImportantLeadersLevelId() {
+		return importantLeadersLevelId;
 	}
-	public void setLocationScopeId(Long locationScopeId) {
-		this.locationScopeId = locationScopeId;
+	public void setImportantLeadersLevelId(Long importantLeadersLevelId) {
+		this.importantLeadersLevelId = importantLeadersLevelId;
 	}
 	
 	@Column(name="order_no")
@@ -69,14 +69,14 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="location_scope_id", insertable=false, updatable = false)
+	@JoinColumn(name="important_leaders_level_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public RegionScopes getLocationScope() {
-		return locationScope;
+	public ImportantLeadersLevel getImportantLeadersLevel() {
+		return importantLeadersLevel;
 	}
-	public void setLocationScope(RegionScopes locationScope) {
-		this.locationScope = locationScope;
+	public void setImportantLeadersLevel(ImportantLeadersLevel importantLeadersLevel) {
+		this.importantLeadersLevel = importantLeadersLevel;
 	}
 	
 	@Column(name="user_id")

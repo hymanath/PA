@@ -38,6 +38,10 @@ public class TdpCadreVO implements java.io.Serializable
 	private String dataSourceType;
 	private String deletedStatus;
 	private String deleteReason;
+	private String importantLeaderType;
+	private String importantLeaderLevel;
+	private String importantLeaderLocation;
+	private Long importantLeaderCadreId;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
@@ -304,6 +308,28 @@ public class TdpCadreVO implements java.io.Serializable
 	public void setOnlineCount(Long onlineCount) {
 		this.onlineCount = onlineCount;
 	}
-	
-	
+	public String getImportantLeaderType() {
+		return importantLeaderType;
+	}
+	public void setImportantLeaderType(String importantLeaderType) {
+		this.importantLeaderType = importantLeaderType;
+	}
+	public String getImportantLeaderLevel() {
+		return importantLeaderLevel;
+	}
+	public void setImportantLeaderLevel(String importantLeaderLevel) {
+		this.importantLeaderLevel = importantLeaderLevel;
+	}
+	public String getImportantLeaderLocation() {
+		return importantLeaderLocation;
+	}
+	public void setImportantLeaderLocation(String importantLeaderLocation) {
+		this.importantLeaderLocation = importantLeaderLocation;
+	}
+	public Long getImportantLeaderCadreId() {
+		return importantLeaderCadreId;
+	}
+	public void setImportantLeaderCadreId(Long importantLeaderCadreId) {
+		this.importantLeaderCadreId = importantLeaderCadreId;
+	}
 }

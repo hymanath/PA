@@ -74,10 +74,36 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String alreadyRegistered;
 	private String paymentStatus;
 	private AddressVO addressVO;
+	private String importantLeaderType;
+	private String importantLeaderLevel;
+	private String importantLeaderLocation;
+	private Long importantLeaderCadreId;
 	
 	
-	
-	 
+	public Long getImportantLeaderCadreId() {
+		return importantLeaderCadreId;
+	}
+	public void setImportantLeaderCadreId(Long importantLeaderCadreId) {
+		this.importantLeaderCadreId = importantLeaderCadreId;
+	}
+	public String getImportantLeaderType() {
+		return importantLeaderType;
+	}
+	public void setImportantLeaderType(String importantLeaderType) {
+		this.importantLeaderType = importantLeaderType;
+	}
+	public String getImportantLeaderLevel() {
+		return importantLeaderLevel;
+	}
+	public void setImportantLeaderLevel(String importantLeaderLevel) {
+		this.importantLeaderLevel = importantLeaderLevel;
+	}
+	public String getImportantLeaderLocation() {
+		return importantLeaderLocation;
+	}
+	public void setImportantLeaderLocation(String importantLeaderLocation) {
+		this.importantLeaderLocation = importantLeaderLocation;
+	}
 	public AddressVO getAddressVO() {
 		return addressVO;
 	}

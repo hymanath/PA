@@ -31,7 +31,7 @@ public class ImportantLeaders extends BaseModel implements Serializable{
 	private Long candidateId;
 	private String mobileNo;
 	private Long importantLeadersTypeId;
-	private Long locationScopeId;
+	private Long importantLeadersLevelId;
 	private Long locationValue;
 	private Long addressId;
 	private Date fromDate;
@@ -40,11 +40,12 @@ public class ImportantLeaders extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long constituencyId;
 	
 	private TdpCadre tdpCadre;
 	private Candidate candidate;
 	private ImportantLeadersType importantLeadersType;
-	private RegionScopes locationScope;
+	private ImportantLeadersLevel importantLeadersLevel;
 	private UserAddress userAddress;
 	
 	@Id
@@ -97,12 +98,12 @@ public class ImportantLeaders extends BaseModel implements Serializable{
 		this.importantLeadersTypeId = importantLeadersTypeId;
 	}
 	
-	@Column(name="location_scope_id")
-	public Long getLocationScopeId() {
-		return locationScopeId;
+	@Column(name="important_leaders_level_id")
+	public Long getImportantLeadersLevelId() {
+		return importantLeadersLevelId;
 	}
-	public void setLocationScopeId(Long locationScopeId) {
-		this.locationScopeId = locationScopeId;
+	public void setImportantLeadersLevelId(Long importantLeadersLevelId) {
+		this.importantLeadersLevelId = importantLeadersLevelId;
 	}
 	
 	@Column(name="location_value")
@@ -187,14 +188,14 @@ public class ImportantLeaders extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="location_scope_id", insertable=false, updatable = false)
+	@JoinColumn(name="important_leaders_level_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public RegionScopes getLocationScope() {
-		return locationScope;
+	public ImportantLeadersLevel getImportantLeadersLevel() {
+		return importantLeadersLevel;
 	}
-	public void setLocationScope(RegionScopes locationScope) {
-		this.locationScope = locationScope;
+	public void setImportantLeadersLevel(ImportantLeadersLevel importantLeadersLevel) {
+		this.importantLeadersLevel = importantLeadersLevel;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -222,5 +223,13 @@ public class ImportantLeaders extends BaseModel implements Serializable{
 	}
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
+	}
+	
+	@Column(name="constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 }
