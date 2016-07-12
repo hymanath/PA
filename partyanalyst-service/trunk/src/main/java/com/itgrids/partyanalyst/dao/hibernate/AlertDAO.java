@@ -16,19 +16,19 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	}
 	
 	
-	public List<Object[]> getLocationLevelWiseAlerts(List<Long> userTypeIds,Date startDate,Date endDate)
+	public List<Object[]> getLocationLevelWiseAlerts(List<Long> sourceIds,Date startDate,Date endDate)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.alertId),model.regionScopes.regionScopesId,model.regionScopes.scope," +
 				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus" +
-				" from Alert model where model.isDeleted ='N'and model.alertUserType.alertUserTypeId in(:userTypeIds)");
+				" from Alert model where model.isDeleted ='N'and model.alertSource.alertSourceId in(:sourceIds)");
 		if(startDate != null)
 		{
-			str.append(" and model.createdTime >=:startDate and model.createdTime <=:endDate " );
+			str.append(" and date(model.createdTime) >=:startDate and date(model.createdTime) <=:endDate " );
 		}
 		str.append(" group by model.regionScopes.regionScopesId,model.alertStatus.alertStatusId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameterList("userTypeIds", userTypeIds);
+		query.setParameterList("sourceIds", sourceIds);
 		if(startDate!=null){
 			query.setDate("startDate", startDate);	
 		}
@@ -39,11 +39,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	}
 	
 	
-	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> userTypeIds,Date fromDate,Date toDate,Long levelId,Long statusId)
+	public List<Object[]> getLocationLevelWiseAlertsData(List<Long> sourceIds,Date fromDate,Date toDate,Long levelId,Long statusId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
-				" model.alertType.alertType,model.alertUserType.userType,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
+				" model.alertType.alertType,model.alertSource.source,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
 				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
 		str.append(" ,constituency.constituencyId,constituency.name");
@@ -58,21 +58,21 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
 		str.append(" where model.isDeleted ='N' and model.impactLevelId=:levelId");
-		if(userTypeIds != null && userTypeIds.size() > 0)
-			str.append(" and model.alertUserType.alertUserTypeId in(:userTypeIds)");
+		if(sourceIds != null && sourceIds.size() > 0)
+			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
 		if(fromDate != null)
 			str.append(" and date(model.createdTime) >=:fromDate and date(model.createdTime) <=:toDate");
 		if(statusId != null && statusId > 0)
 			str.append(" and model.alertStatus.alertStatusId = :statusId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameterList("userTypeIds", userTypeIds);
+		query.setParameterList("sourceIds", sourceIds);
 		if(fromDate != null)
 		{
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(userTypeIds != null && userTypeIds.size() > 0)
-			query.setParameterList("userTypeIds", userTypeIds);
+		if(sourceIds != null && sourceIds.size() > 0)
+			query.setParameterList("sourceIds", sourceIds);
 		if(statusId != null && statusId > 0)
 			query.setParameter("statusId", statusId);
 		query.setParameter("levelId", levelId);

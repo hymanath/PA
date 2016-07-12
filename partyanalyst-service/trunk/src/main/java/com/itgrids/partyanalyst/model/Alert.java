@@ -46,6 +46,8 @@ public class Alert extends BaseModel implements Serializable {
 	private Date updatedTime;
 	private RegionScopes regionScopes;
 	private AlertUserType alertUserType;
+	private AlertSource alertSource;
+	private Long alertSourceId;
 
 	
 
@@ -246,5 +248,26 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertUserType(AlertUserType alertUserType) {
 		this.alertUserType = alertUserType;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_source_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertSource getAlertSource() {
+		return alertSource;
+	}
+
+	public void setAlertSource(AlertSource alertSource) {
+		this.alertSource = alertSource;
+	}
+	@Column(name = "alert_source_id")
+	public Long getAlertSourceId() {
+		return alertSourceId;
+	}
+
+	public void setAlertSourceId(Long alertSourceId) {
+		this.alertSourceId = alertSourceId;
+	}
+	
+	
 
 }

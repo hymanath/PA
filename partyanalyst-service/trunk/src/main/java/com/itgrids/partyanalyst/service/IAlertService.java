@@ -17,4 +17,5 @@ public interface IAlertService {
 	public String updateAlertStatus(final Long userId,final Long alertId,final Long alertStatusId,final String comments);
 	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 	public List<BasicVO> getAlertType();
+	public List<BasicVO> getAlertSourceForUser(Long userId);
 }

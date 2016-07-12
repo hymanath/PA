@@ -1,14 +1,16 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class AlertVO {
 	private Long alertTypeId;
 	private Long severity;
 	private Long locationLevelId;
 	private Long locationValue;
 	private String desc;
-	private Long candidateId;
+	private String candidateId;
 	private Long alertImpactId;
-	private Long userTypeId;
+	private Long alertSourceId;
 	
 	private Long stateId;
 	private Long districtId;
@@ -18,10 +20,18 @@ public class AlertVO {
 	private Long panchayatId;
 	private Long wardId;
 	
+	private List<IdNameVO> idNamesList;
 	
 	
 	
 	
+	
+	public List<IdNameVO> getIdNamesList() {
+		return idNamesList;
+	}
+	public void setIdNamesList(List<IdNameVO> idNamesList) {
+		this.idNamesList = idNamesList;
+	}
 	public Long getStateId() {
 		return stateId;
 	}
@@ -64,12 +74,7 @@ public class AlertVO {
 	public void setWardId(Long wardId) {
 		this.wardId = wardId;
 	}
-	public Long getUserTypeId() {
-		return userTypeId;
-	}
-	public void setUserTypeId(Long userTypeId) {
-		this.userTypeId = userTypeId;
-	}
+	
 	public Long getAlertImpactId() {
 		return alertImpactId;
 	}
@@ -106,12 +111,18 @@ public class AlertVO {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-	public Long getCandidateId() {
+	public String getCandidateId() {
 		return candidateId;
 	}
-	public void setCandidateId(Long candidateId) {
+	public void setCandidateId(String candidateId) {
 		this.candidateId = candidateId;
 	}
-
+	public Long getAlertSourceId() {
+		return alertSourceId;
+	}
+	public void setAlertSourceId(Long alertSourceId) {
+		this.alertSourceId = alertSourceId;
+	}
+	
 
 }
