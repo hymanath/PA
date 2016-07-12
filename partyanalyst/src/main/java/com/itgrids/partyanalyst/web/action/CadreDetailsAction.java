@@ -1426,10 +1426,7 @@ public String savePublicRepresentativeType(){
 			vo.setMobileNo(mobileNo);
 			vo.setImportantLeadersTypeId(publicRepTypeId);
 			vo.setLocationScopeId(locationScope);
-			if(locationScope.longValue() >= 5l)
-				vo.setLocationValue(Long.valueOf("1"+locationVal.toString()));
-			else
-				vo.setLocationValue(locationVal);
+			vo.setLocationValue(locationVal);
 			vo.setFromDate(fromDate);
 			vo.setToDate(toDate);
 			

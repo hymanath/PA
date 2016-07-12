@@ -29,9 +29,9 @@
 	<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<script type="text/javascript" src="daterangepicker/moment.js" ></script>
-	<script type="text/javascript" src="daterangepicker/daterangepicker.js" ></script>
+	<script type="text/javascript" src="training/dist/Timepicker/bootstrap-datetimepicker.min.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
-	<link rel="stylesheet" type="text/css" href="daterangepicker/daterangepicker-bs3.css"/>
+	<link rel="stylesheet" type="text/css" href="training/dist/Timepicker/bootstrap-datetimepicker.min.css"/>
 	
 
 	<style>
@@ -429,13 +429,22 @@
 								<label>Mobile No:</label>
 								<input type="text" class="form-control" id="modalMobileNoId"/>
 							</div>
-							<div class="col-md-6 col-xs-11 col-sm-11">
-								<label>Date Range</label>
+							<div class="col-md-3 col-xs-6 col-sm-5">
+								<label>From Year</label>
 								<div class="input-group">
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
-									<input type="text" class="form-control" id="datePickerId"/>
+									<input type="text" class="form-control" id="fromDateId"/>
+								</div>
+							</div>
+							<div class="col-md-3 col-xs-6 col-sm-5">
+								<label>To Year</label>
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+									<input type="text" class="form-control" id="toDateId"/>
 								</div>
 							</div>
 							<div class="col-md-1 col-xs-1 col-sm-1 m_top30">
@@ -448,12 +457,13 @@
 							<label>Position:</label>
 							<input type="text" class="form-control" id="modalNewPostnId"/>
 						</div>
-						<div class="col-md-5 col-xs-12 col-sm-12">
+						<div class="col-md-4 col-xs-12 col-sm-12">
 							<label>Level:</label>
 							<select class="form-control" id="modalNewLevelId"></select>
 						</div>
-						<div class="col-md-2 col-xs-12 col-sm-12">
+						<div class="col-md-3 col-xs-12 col-sm-12">
 							<button type="button" class="btn btn-primary btn-sm" id="saveNewPosnButtonId" onclick="saveNewPostnToImpLeaders()" style="margin-top: 25px;">Save</button>
+							<button type="button" class="btn btn-default btn-sm" id="postnSvngCloseId" style="margin-top: 25px;">Close</button>
 						</div>
 					</div>
 				  </div>
@@ -469,7 +479,14 @@
 			  </div>
 			</div>
 			<script>
-	$("#datePickerId").daterangepicker()
+	$("#fromDateId").datetimepicker({
+		 viewMode: 'years',
+		 format: 'YYYY'
+	});
+	$("#toDateId").datetimepicker({
+		 viewMode: 'years',
+		 format: 'YYYY'
+	});
 	var accessType = "${sessionScope.USER.accessType}";
 	var accessValue = "${sessionScope.USER.accessValue}";
 	var accessState = "${sessionScope.USER.stateName}";
@@ -912,7 +929,10 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
-				
+				if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
+					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
+				else
+					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
 					
@@ -924,7 +944,11 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						
 					</c:if> 
 				}
-				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+				if(result[i].importantLeaderCadreId == null){
+					str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
+				}
+				</c:if> 
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1376,7 +1400,10 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
-				
+				if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
+					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
+				else
+					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
@@ -1385,7 +1412,11 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						str+='<div id="uc'+result[i].tdpCadreId+'" class="pull-right updateCadreClass" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
 					</c:if> 
 				}
-				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+				if(result[i].importantLeaderCadreId == null){
+					str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
+				}
+				</c:if> 
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1763,7 +1794,8 @@ $(document).on("click",".addButtonCls",function(){
 	$("#modalLocationValueId  option").remove();
 	$("#modalLocationValueId").append('<option value="0">Select Location</option>');
 	$("#modalMobileNoId").html("");
-	$("#datePickerId").val("");
+	$("#fromDateId").val("");
+	$("#toDateId").val("");
 	
 var cadreId = $(this).attr("attr_tdp_cadre_id"); 
 var cadreName = $(this).attr("attr_cadre_name"); 
@@ -1822,14 +1854,8 @@ function getAllImportantLeadersTypesAction(){
 	  var mobileNo = $("#modalMobileNoId").val();
 	  var locationScope = $("#hiddenTdpCadreLocationScope").val();
 	  var locationValue = $("#modalLocationValueId").val();
-	  var dates = $("#datePickerId").val();
-	  var fromDate;
-	  var toDate;
-	  if(dates != null && dates.trim().length > 0){
-		  var arrr = dates.split("-");
-		  fromDate = arrr[0];
-		  toDate = arrr[1];
-	  }
+	  var fromDate = $("#fromDateId").val();
+	  var toDate = $("#toDateId").val();
 	  
 	  if(cadreName == "" && cadreName.trim.length == 0){
 		  $("#errorPubRepId").html("Please enter Cadre Name");
@@ -1847,6 +1873,23 @@ function getAllImportantLeadersTypesAction(){
 		  $("#errorPubRepId").html("Select Publicrepresentative Type");
 		  return;
 	  }
+	  if(fromDate == "" && fromDate.trim.length == 0){
+		  $("#errorPubRepId").html("From Date Required.");
+		  return;
+	  }
+	  if(toDate == "" && toDate.trim.length == 0){
+		  $("#errorPubRepId").html("To Date Required.");
+		  return;
+	  }
+	 /* if(dates != null && dates.trim().length > 0){
+		  var arrr = dates.split("-");
+		  fromDate = arrr[0];
+		  toDate = arrr[1];
+	  }
+	  else{
+		  $("#errorPubRepId").html("Please enter Date");
+		  return; 
+	  }*/
 	  
 	 var jsObj = {
 		cadreId:cadreId,
@@ -1866,7 +1909,9 @@ function getAllImportantLeadersTypesAction(){
 	   }).done(function(result){
 		   if(result.resultCode==0){
 			   $("#successPubRepId").html("Saved SuccessFully.");
-			   $("#addModalDivId").modal('hide');
+			   setTimeout(function(){
+					$("#addModalDivId").modal('hide');
+			   }, 3000);
 		   }else{
 			   $("#errorPubRepId").html("Error Occured Try Again...");
 		   }
@@ -1964,6 +2009,10 @@ $(document).on("click","#modalNewPositnAddBtnId",function(){
 	$("#newPositionDivId").show();
 	$("#modalNewPostnId").val('');
 	getRegionScopes();
+});
+
+$(document).on("click","#postnSvngCloseId",function(){
+	$("#newPositionDivId").hide();
 });
 
 function saveNewPostnToImpLeaders(){
