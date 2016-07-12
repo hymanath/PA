@@ -127,12 +127,16 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ImportantLeaders;
 import com.itgrids.partyanalyst.model.ImportantLeadersType;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.StudentAddress;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreNotes;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -912,6 +916,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
 		List<Long> ids = new ArrayList<Long>();
+		List<Long> cadreIds = new ArrayList<Long>();
     	try {
     		
     		StringBuilder queryStr = new StringBuilder();
@@ -1105,6 +1110,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					{
 						TdpCadreVO cadreVO = new TdpCadreVO();
 
+						cadreIds.add(Long.valueOf(cadre[0] != null ? cadre[0].toString().trim():"0"));
 						cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
@@ -1207,6 +1213,47 @@ public class CadreDetailsService implements ICadreDetailsService{
 					}
 				}
 				returnVO.setResponseCode("");
+				
+				//0.cadreId,1.typeId,2.position,3.levelId,4.level,5.locationVal
+				List<Object[]> importantLeaders = importantLeadersDAO.getImportantLeadersDesignationByCadreList(cadreIds);
+				if(commonMethodsUtilService.isListOrSetValid(importantLeaders)){
+					for (Object[] obj : importantLeaders) {
+						Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long levelId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						Long levelVal = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+						TdpCadreVO vo = getMatchedVOById(returnVO.getTdpCadreDetailsList(), cadreId);
+						if(vo != null){
+							vo.setImportantLeaderType(obj[2] != null ? obj[2].toString():"");
+							vo.setImportantLeaderLevel(obj[4] != null ? obj[4].toString():"");
+							vo.setImportantLeaderCadreId(cadreId);
+							
+							if(levelId.longValue() == 2l){//state
+								String name = stateDAO.get(levelVal).getStateName();
+								vo.setImportantLeaderLocation(name);
+							}
+							else if(levelId.longValue() == 3l){//district
+								String name = districtDAO.get(levelVal).getDistrictName();
+								vo.setImportantLeaderLocation(name);
+							}
+							else if(levelId.longValue() == 5l){//mandal
+								String name = tehsilDAO.get(levelVal).getTehsilName();
+								vo.setImportantLeaderLocation(name);
+							}
+							else if(levelId.longValue() == 6l){//Village
+								String name = panchayatDAO.get(levelVal).getPanchayatName();
+								vo.setImportantLeaderLocation(name);
+							}
+							else if(levelId.longValue() == 7l){//Muncipality
+								String name = localElectionBodyDAO.get(levelVal).getName();
+								vo.setImportantLeaderLocation(name);
+							}
+							else if(levelId.longValue() == 4l || levelId.longValue() == 8l || levelId.longValue() == 10l || levelId.longValue() == 11l || levelId.longValue() == 12l){//Assembly||Ward||Parliament||MPTC||ZPTC
+								String name = constituencyDAO.get(levelVal).getName();
+								vo.setImportantLeaderLocation(name);
+							}
+						}
+					}
+				}
 			}
 			else
 			{
@@ -1220,6 +1267,24 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
     	
     	return returnVO;
+	}
+	
+	public TdpCadreVO getMatchedVOById(List<TdpCadreVO> returnList,Long id)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0)
+				return null;
+			for(TdpCadreVO vo : returnList)
+			{
+				if(vo.getId().longValue()== id.longValue())
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public TdpCadreVO tdpCadreCastewiseCountDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
@@ -9372,6 +9437,134 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 		return returnvo;
 	}
 	
+	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue)
+	{
+		try{
+			UserAddress userAddress = null;
+			if(levelId == 2l){
+				userAddress = new UserAddress();
+				userAddress.setState(stateDAO.get(levelValue));
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 3l){
+				userAddress = new UserAddress();
+				District distinct = districtDAO.get(levelValue);
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 4l){
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 5l){//mandal
+				userAddress = new UserAddress();
+				Tehsil tehsil = tehsilDAO.get(levelValue);
+				District distinct = districtDAO.get(tehsil.getDistrict().getDistrictId());
+				List<Long> constituencyIds = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(levelValue);
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				  userAddress.setConstituency(constituencyDAO.get(constituencyIds.get(0)));
+				userAddress.setTehsil(tehsil);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 6l){//panchayat
+				userAddress = new UserAddress();
+				Panchayat panchayat = panchayatDAO.get(levelValue);
+				
+				Tehsil tehsil = tehsilDAO.get(panchayat.getTehsil().getTehsilId());
+				District distinct = districtDAO.get(tehsil.getDistrict().getDistrictId());
+				List<Long> constituencyIds = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(tehsil.getTehsilId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				  userAddress.setConstituency(constituencyDAO.get(constituencyIds.get(0)));
+				userAddress.setTehsil(tehsil);
+				userAddress.setPanchayatId(panchayat.getPanchayatId());
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 7l){//muncipality
+				userAddress = new UserAddress();
+				List<Long> constituencyIdsList = assemblyLocalElectionBodyDAO.getConstituencyIdByAssemblyLocalEleBodyId(levelValue);
+				Long constituencyId = Long.parseLong(constituencyIdsList.get(0).toString());
+				
+				Constituency constituency = constituencyDAO.get(constituencyId);
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+					
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(levelValue));
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 8l ){//ward
+				userAddress = new UserAddress();
+				Long localEleBodyId = constituencyDAO.get(levelValue).getLocalElectionBody().getLocalElectionBodyId();
+				
+				List<Long> constituencyIdsList = assemblyLocalElectionBodyDAO.getConstituencyIdByAssemblyLocalEleBodyId(localEleBodyId);
+				Long constituencyId = Long.parseLong(constituencyIdsList.get(0).toString());
+				Constituency constituency = constituencyDAO.get(constituencyId);
+				
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress.setWard(constituencyDAO.get(levelValue));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(localEleBodyId));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 10l){//Parliament
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				
+				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
+				userAddress.setParliamentConstituency(constituencyDAO.get(levelValue));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 11l){	//MPTC
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				
+				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
+				userAddress.setDistrict(districtDAO.get(constituency.getDistrict().getDistrictId()));
+				userAddress.setTehsil(tehsilDAO.get(constituency.getTehsil().getTehsilId()));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 12l){  //ZPTC
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				
+				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
+				userAddress.setDistrict(districtDAO.get(constituency.getDistrict().getDistrictId()));
+				userAddress.setTehsil(tehsilDAO.get(constituency.getTehsil().getTehsilId()));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			return userAddress;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in saveUserAddress() method, Exception - ",e);
+		}
+		return null;
+	}
+	
 	public ResultStatus saveNewPublicRepresentativeDetails(final ImportantLeadersVO importantLeadersVO){
 		ResultStatus resultStatus = new ResultStatus();
 		try {
@@ -9380,7 +9573,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 					Date fromDate = null;
 					Date toDate = null;
 					
-					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 					try {
 						fromDate = sdf.parse(importantLeadersVO.getFromDate());
 						toDate = sdf.parse(importantLeadersVO.getToDate());
@@ -9389,7 +9582,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 					}
 					
 					
-					UserAddress userAddress = activityService.saveUserAddressByLevelIdAndLevelValue(importantLeadersVO.getLocationScopeId(), importantLeadersVO.getLocationValue());
+					UserAddress userAddress = saveUserAddressByLevelIdAndLevelValue(importantLeadersVO.getLocationScopeId(), importantLeadersVO.getLocationValue());
 					if(userAddress != null)
 						importantLeadersVO.setAddressId(userAddress.getUserAddressId());
 					Long candidateId = 0l;
@@ -9405,11 +9598,15 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 						importantLeaders.setCandidateId(importantLeadersVO.getCandidateId());
 					importantLeaders.setMobileNo(importantLeadersVO.getMobileNo());
 					importantLeaders.setImportantLeadersTypeId(importantLeadersVO.getImportantLeadersTypeId());
-					importantLeaders.setLocationScopeId(importantLeadersVO.getLocationScopeId());
-					if(importantLeadersVO.getLocationScopeId().longValue() >= 5l)
-						importantLeaders.setLocationValue(importantLeadersVO.getLocationValue());
+					importantLeaders.setImportantLeadersLevelId(importantLeadersVO.getLocationScopeId());
+					if(importantLeadersVO.getLocationScopeId() != null && importantLeadersVO.getLocationScopeId().longValue() == 12l){
+						Constituency constituency = constituencyDAO.get(importantLeadersVO.getLocationValue());
+						importantLeaders.setLocationValue(constituency.getTehsil().getTehsilId());
+					}
 					else
-						importantLeaders.setLocationValue(Long.parseLong(importantLeadersVO.getLocationValue().toString().substring(1)));
+						importantLeaders.setLocationValue(importantLeadersVO.getLocationValue());
+					
+					importantLeaders.setConstituencyId(importantLeadersVO.getLocationValue());	
 					importantLeaders.setAddressId(importantLeadersVO.getAddressId());
 					importantLeaders.setFromDate(fromDate);
 					importantLeaders.setToDate(toDate);
@@ -9591,6 +9788,28 @@ public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long co
 					
 					returnList.add(vo);
 				}
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 11l){					//MPTC
+			List<Object[]> list = constituencyDAO.getMPTCConstituenciesForMandal(mandalId);
+			for (Object[] obj : list) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				
+				returnList.add(vo);
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 12l){					//ZPTC
+			List<Object[]> list = constituencyDAO.getZPTCConstituenciesForMandal(mandalId);
+			for (Object[] obj : list) {
+				IdNameVO vo = new IdNameVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setName(obj[1] != null ? obj[1].toString():"");
+				
+				returnList.add(vo);
 			}
 		}
 		
@@ -10003,12 +10222,35 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 			if(commonMethodsUtilService.isListOrSetValid(pubReprList)){
 				for (Object[] obj : pubReprList) {
 					IdNameVO vo = new IdNameVO();
+					Long levelId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long levelVal = Long.valueOf(obj[6] != null ? obj[6].toString():"0");
 					
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setPercentage(obj[2] != null ? obj[2].toString():"");   //type
-					vo.setDateStr(obj[3] != null ? obj[3].toString():"");   //level
-					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setDateStr(obj[4] != null ? obj[4].toString():"");   //level
+					vo.setMobileNo(obj[5] != null ? obj[5].toString():"");
+					
+					if(levelId.longValue() == 1l || levelId.longValue() == 2l || levelId.longValue() == 3l || levelId.longValue() == 4l){//Parliament||Assembly||MPTC||ZPTC
+						String name = constituencyDAO.get(levelVal).getName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 5l){//district
+						String name = districtDAO.get(levelVal).getDistrictName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 6l){//state
+						String name = stateDAO.get(levelVal).getStateName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 7l){//mandal
+						String name = tehsilDAO.get(levelVal).getTehsilName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 8l){//Muncipality
+						String name = localElectionBodyDAO.get(levelVal).getName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
 					
 					returnvo.getIdnameList().add(vo);
 				}
@@ -10017,12 +10259,39 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 			if(commonMethodsUtilService.isListOrSetValid(impCandList)){
 				for (Object[] obj : impCandList) {
 					IdNameVO vo = new IdNameVO();
+					Long levelId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long levelVal = Long.valueOf(obj[6] != null ? obj[6].toString():"0");
 					
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setPercentage(obj[2] != null ? obj[2].toString():"");  //type
-					vo.setDateStr(obj[3] != null ? obj[3].toString():"");   //level
-					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setDateStr(obj[4] != null ? obj[4].toString():"");   //level
+					vo.setMobileNo(obj[5] != null ? obj[5].toString():"");
+					
+					if(levelId.longValue() == 2l){//state
+						String name = stateDAO.get(levelVal).getStateName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 3l){//district
+						String name = districtDAO.get(levelVal).getDistrictName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 5l){//mandal
+						String name = tehsilDAO.get(levelVal).getTehsilName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 6l){//Village
+						String name = panchayatDAO.get(levelVal).getPanchayatName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 7l){//Muncipality
+						String name = localElectionBodyDAO.get(levelVal).getName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
+					else if(levelId.longValue() == 4l || levelId.longValue() == 8l || levelId.longValue() == 10l || levelId.longValue() == 11l || levelId.longValue() == 12l){//Assembly||Ward||Parliament||MPTC||ZPTC
+						String name = constituencyDAO.get(levelVal).getName();
+						vo.setDateStr(name+" "+vo.getDateStr());
+					}
 					
 					returnvo.getIdnameList().add(vo);
 				}
@@ -10236,7 +10505,7 @@ public void setSubLocationAttendees(List<Object[]> list , List<MahanaduEventVO> 
 					ImportantLeadersType importantLeadersType = new ImportantLeadersType();
 					
 					importantLeadersType.setPosition(position);
-					importantLeadersType.setLocationScopeId(levelId);
+					importantLeadersType.setImportantLeadersLevelId(levelId);
 					importantLeadersType.setOrderNo(maxOrderNo+1);
 					importantLeadersType.setUserId(userId);
 					importantLeadersType.setInsertedTime(dateUtilService.getCurrentDateAndTime());

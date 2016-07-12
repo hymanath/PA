@@ -2064,6 +2064,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setDataSourceType(tdpCadre.getDataSourceType());
 						committeeVO.setDeletedStatus(tdpCadre.getDeletedStatus());
 						committeeVO.setDeletedReason(tdpCadre.getDeleteReason());
+						committeeVO.setImportantLeaderType(tdpCadre.getImportantLeaderType());
+						committeeVO.setImportantLeaderLevel(tdpCadre.getImportantLeaderLevel());
+						committeeVO.setImportantLeaderLocation(tdpCadre.getImportantLeaderLocation());
+						committeeVO.setImportantLeaderCadreId(tdpCadre.getImportantLeaderCadreId());
+						
 						cadreCommitteeList.add(committeeVO);
 					}
 					if(maxIndex != 0)

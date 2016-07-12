@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface ICadreDetailsService {
 	/*public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
@@ -121,4 +122,5 @@ public interface ICadreDetailsService {
 	public List<IdNameVO> getRegionScopes();
 	public String saveImportantLeadersType(final String position,final Long levelId,final Long userId);
 	public List<CadreReportVO> getCadreReportDetails(Long cadreId);
+	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue);
 }
