@@ -29,6 +29,12 @@
 	<link href="css/cadreCommitee/cadreDetails_custom1.css" rel="stylesheet" type="text/css">
 	<link href="dist/JqueryTe/jquery-te-1.4.0.css" rel="stylesheet" type="text/css">
 	<!--<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">-->
+	<!-- Add fancyBox main JS and CSS files -->  
+	
+	<link rel="stylesheet" type="text/css" href="pdfexpand/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
+	
+						<!-- End -->
 <style type="text/css">
 .mobileDetailsUl
 {
@@ -72,6 +78,8 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 </script>
 </head>
 <body>
+
+<script src="js/statusColor.js" type="text/javascript"></script>
 <div class="modal fade" id="myModalForTableGrieId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog " role="document" style="width: 90%;">
     <div class="modal-content">
@@ -1378,7 +1386,24 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 				</div><!— /.modal-content —>
 			</div><!— /.modal-dialog —>
 		</div><!— /.modal —>
-		<!-- Model for Report End-->
+		<!-- Model for Report End-->  
+		<!-- Model for pdf Report start swadhin-->
+		<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
+			<div class="modal-dialog" style="width:60%;">      
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+					</div>
+					<div class="modal-body" id="pdfReportDetailsId">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!— /.modal-content —>
+			</div><!— /.modal-dialog —>
+		</div><!— /.modal —>
+		<!-- Model for pdf Report End-->
 <div class="modal fade" id="notesModalDivId" style="display:none;">
 			  <div class="modal-dialog" style="width:80%">
 				<div class="modal-content">
@@ -1464,6 +1489,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
+	<script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
 	
 	<script>
 	$("#notesDescriptionId").jqte();
@@ -2448,11 +2474,11 @@ function buildReport()
 				str +='<th>INSERTED TIME</th>';
 			str +='</thead>';  
 			str +='<tbody>';
-				<c:forEach items="${cadreReportVOList}" var="cadreReportVO">
-					<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO">
+				<c:forEach items="${cadreReportVOList}" var="cadreReportVO" varStatus="loop1">
+					<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO" varStatus="loop2">
 						str +='<tr>';     
-							str +='<td>${ReportVO.reportType}</td>';               
-							str +='<td><a target="_blank" class="pdf"  href="${ReportVO.reportPath}">${ReportVO.reportName}</a></td>';         
+							str +='<td>${ReportVO.reportType}</td>';                  
+							str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" id="showPdfId" >${ReportVO.reportName}</span></td>'; 
 							str +='<td>${ReportVO.insertedTime}</td>';    
 						str +='</tr>';
 					</c:forEach>         
@@ -2462,9 +2488,17 @@ function buildReport()
 	</c:if>
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 		$("#reportDetailsId").html(str);
-		$("#reportTableId").dataTable();  
+		$("#reportTableId").dataTable(); 
 	</c:if>
 }
+$(document).on('click','#showPdfId',function(){   
+	var str = '';
+	var filePath = $("#showPdfId").attr("filePath");
+	str += '<iframe src="http://localhost:8080/PartyAnalyst/'+filePath+'" width="900" height="800">';    
+	str += '</iframe>';
+	$("#pdfReportDetailsId").html(str);
+});
+
 </script>
 </body>
 </html>
