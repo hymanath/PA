@@ -18,14 +18,14 @@ public class ImportantLeadersTypeDAO extends GenericDaoHibernate<ImportantLeader
 	public List<Object[]> getAllImportantLeadersTypes(){
 		Query query = getSession().createQuery("select model.importantLeadersTypeId," +
 												" model.position," +
-												" model.locationScopeId" +
+												" model.importantLeadersLevelId" +
 												" from ImportantLeadersType model" +
 												" order by model.orderNo");
 		return query.list();
 	}
 	
 	public Long getLocationScopeIdForTypeId(Long impLeadTypeId){
-		Query query = getSession().createQuery("select model.locationScopeId" +
+		Query query = getSession().createQuery("select model.importantLeadersLevelId" +
 													" from ImportantLeadersType model" +
 													" where model.importantLeadersTypeId = :impLeadTypeId");
 		query.setParameter("impLeadTypeId", impLeadTypeId);

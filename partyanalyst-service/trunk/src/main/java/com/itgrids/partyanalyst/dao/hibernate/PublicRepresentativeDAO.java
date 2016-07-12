@@ -188,11 +188,13 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 	
 	public List<Object[]> getPulicRepresentativeInfoByLocation(Long locationId,String searchType){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.candidate.candidateId," +
-					" model.candidate.lastname," +
+		sb.append("select model1.tdpCadre.tdpCadreId," +
+					" model1.tdpCadre.firstname," +
 					" model.publicRepresentativeType.type," +
+					" model.representativeLevel.representativeLevelId," +
 					" model.representativeLevel.representativeLevel," +
-					" model.candidate.mobile" +
+					" model1.tdpCadre.mobileNo," +
+					" model.levelValue" +
 					" from PublicRepresentative model,TdpCadreCandidate model1" +
 					" where model.candidate.candidateId = model1.candidate.candidateId");
 		if(searchType.equalsIgnoreCase("mandal"))
