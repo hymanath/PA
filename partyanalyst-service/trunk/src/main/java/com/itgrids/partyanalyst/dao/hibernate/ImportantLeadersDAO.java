@@ -17,11 +17,13 @@ public class ImportantLeadersDAO extends GenericDaoHibernate<ImportantLeaders, L
 
 	public List<Object[]> getImportantLeadersInfoByLocation(Long locationId,String searchType){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.importantLeadersId," +
-					" model.leaderName," +
+		sb.append("select model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.firstname," +
 					" model.importantLeadersType.position," +
-					" model.locationScope.scope," +
-					" model.mobileNo" +
+					" model.importantLeadersLevel.importantLeadersLevelId," +
+					" model.importantLeadersLevel.scope," +
+					" model.tdpCadre.mobileNo," +
+					" model.constituencyId" +
 					" from ImportantLeaders model");
 		if(searchType.equalsIgnoreCase("mandal"))
 			sb.append(" where model.tdpCadre.userAddress.tehsil.tehsilId = :locationId");
@@ -30,6 +32,20 @@ public class ImportantLeadersDAO extends GenericDaoHibernate<ImportantLeaders, L
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("locationId", locationId);
+		return query.list();
+	}
+	
+	public List<Object[]> getImportantLeadersDesignationByCadreList(List<Long> tdpCadreIds){
+		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId," +
+												" model.importantLeadersType.importantLeadersTypeId," +
+												" model.importantLeadersType.position," +
+												" model.importantLeadersLevel.importantLeadersLevelId," +
+												" model.importantLeadersLevel.scope," +
+												" model.constituencyId" +
+												" from ImportantLeaders model" +
+												" where model.tdpCadre.tdpCadreId in (:tdpCadreIds)");
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		
 		return query.list();
 	}
 }

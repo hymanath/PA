@@ -1850,6 +1850,28 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("districtId",districtId);
 		return query.list();	
 	}
+	
+	public List<Object[]> getMPTCConstituenciesForMandal(Long tehsilId){
+		Query query = getSession().createQuery("select model.constituencyId," +
+												" model.name" +
+												" from Constituency model" +
+												" where model.electionScope.electionScopeId = 3" +
+												" and model.tehsil.tehsilId = :tehsilId" +
+												" order by model.name");
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
+	
+	public List<Object[]> getZPTCConstituenciesForMandal(Long tehsilId){
+		Query query = getSession().createQuery("select model.constituencyId," +
+												" model.name" +
+												" from Constituency model" +
+												" where model.electionScope.electionScopeId = 4" +
+												" and model.tehsil.tehsilId = :tehsilId" +
+												" order by model.name");
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
 }
 
 
