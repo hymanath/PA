@@ -53,6 +53,10 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	private Long updatedById;
 	private String isActive;
 	
+	private String isConducted;
+	private Date conductedDate;
+	private String remarks;
+	
 	public PartyMeeting(){}
 
 	@Id
@@ -290,6 +294,33 @@ public class PartyMeeting extends BaseModel implements Serializable{
 
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+
+	@Column(name="is_conducted")
+	public String getIsConducted() {
+		return isConducted;
+	}
+
+	public void setIsConducted(String isConducted) {
+		this.isConducted = isConducted;
+	}
+
+	@Column(name="conducted_date")
+	public Date getConductedDate() {
+		return conductedDate;
+	}
+
+	public void setConductedDate(Date conductedDate) {
+		this.conductedDate = conductedDate;
+	}
+
+	@Column(name="remarks")
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
 	

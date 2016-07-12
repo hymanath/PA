@@ -30,4 +30,6 @@ public interface IPartyMeetingService {
 			 Long committeeLevelId,Long committeeLevelValue,String formDateStr,String toDateStr,String isFirst,int firstRecord,int maxResult);
 	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
 	public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType,List<String> designationsList);
+	public List<PartyMeetingVO> getLevelWiseMeetingDetails();
+	public String updateConductedDetails(Long meetingId,String isConducted,String remarks);
 }

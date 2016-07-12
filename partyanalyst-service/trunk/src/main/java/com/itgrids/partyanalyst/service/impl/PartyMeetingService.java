@@ -3255,4 +3255,85 @@ public class PartyMeetingService implements IPartyMeetingService{
 		
 		return status;
 	}
+	
+	public List<PartyMeetingVO> getLevelWiseMeetingDetails(){
+		
+		List<PartyMeetingVO> finalList =null;
+		
+		try{
+			
+			List<Object[]> levelsObj =  partyMeetingLevelDAO.getPartyMeetingLevels();
+			
+			Map<Long,PartyMeetingVO> levelMap = new HashMap<Long, PartyMeetingVO>();
+			
+			if(levelsObj !=null && levelsObj.size()>0){
+				for (Object[] objects : levelsObj) {
+					
+					PartyMeetingVO VO = new PartyMeetingVO();
+					
+					VO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					VO.setName(objects[1] !=null ? objects[1].toString():"");
+					
+					VO.setInvitedCount(0l);//conductedCount
+					VO.setNonInviteeCount(0l);//notConductedCount
+					VO.setAttendedCount(0l);//OverAll Planned Count
+					
+					levelMap.put(VO.getId(), VO);
+					
+				}
+			}
+			
+			List<Object[]> conductedObj = partyMeetingDAO.getLevelWiseMeetingDetails();
+			
+			if(conductedObj !=null && conductedObj.size()>0){
+				for(Object[] obj : conductedObj){
+					PartyMeetingVO inVo = levelMap.get((Long)obj[0]);
+					
+					if(inVo == null){
+						inVo = new PartyMeetingVO();
+						levelMap.put((Long)obj[0], inVo);
+					}
+					
+					if(obj[2] !=null){
+						if(!obj[2].toString().isEmpty() && obj[2].toString().equalsIgnoreCase("Y")){
+							inVo.setInvitedCount(inVo.getInvitedCount() + (obj[3] !=null ? (Long)obj[3]:0l));
+						}else if(!obj[2].toString().isEmpty() && obj[2].toString().equalsIgnoreCase("N")){
+							inVo.setNonInviteeCount(inVo.getNonInviteeCount() + (obj[3] !=null ? (Long)obj[3]:0l));
+						}
+					}else{
+						inVo.setAttendedCount(inVo.getAttendedCount() +  (obj[3] !=null ? (Long)obj[3]:0l));
+					}
+					
+				}
+			}
+			
+			if(levelMap !=null && levelMap.size()>0){
+					finalList = new ArrayList<PartyMeetingVO>(levelMap.values());
+			}
+		
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getLevelWiseMeetingDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public String updateConductedDetails(Long meetingId,String isConducted,String remarks){
+		String returnStr = null;
+		try{
+			
+		int value =	partyMeetingDAO.updateConductedDetails(meetingId,isConducted,remarks);
+		if(value>0){
+			returnStr = "success";
+		}else{
+			returnStr = "failure";
+		}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in updateConductedDetails() method, Exception - ",e);
+		}
+		return returnStr;
+	}
+	
 }
