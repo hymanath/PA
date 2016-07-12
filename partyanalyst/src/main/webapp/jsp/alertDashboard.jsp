@@ -185,7 +185,19 @@
 							<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<p id="LocationId"></p>
 						</td>
-						<td>
+						
+					</tr>
+					<tr>
+						<td colspan="2">
+							<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<p id="descriptionId"></p>
+						</td>
+						<td></td>
+					</tr>
+					
+				
+					<tr>
+					<td>
 							<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<select class="dropkickClass" id="statusId">
 								<option value='0'>Select Status</option>
@@ -195,13 +207,6 @@
 								<option value='3'>Completed</option>
 							</select>
 						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<p id="descriptionId"></p>
-						</td>
-						<td></td>
 					</tr>
 					<tr>
 						<td colspan="2">
