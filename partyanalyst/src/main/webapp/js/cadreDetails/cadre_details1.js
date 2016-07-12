@@ -385,11 +385,6 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 }
 function getCadreLocationWiseEventAttendeeCounts(locationId,locationValue,searchType,divId,index,id){
 	$("#errMsgID").hide();
-	//$('#'+divId+'').css("overflow","scroll");
-	$('#'+divId+'').addClass("table-responsive");
-	$('#'+divId+'tr').show();
-	$('#'+divId+'').show();
-	$('#'+divId+'').html('<center><img id="" src="images/icons/loading.gif" style=""/></center>');
 
 if(index != "onload"){
 	var isVisible1 = "";
@@ -408,6 +403,12 @@ if(index != "onload"){
 		$('#'+divId+index).hide();
 		return;
 	}
+}else{
+	$('#'+divId+'').addClass("table-responsive");
+	$('#'+divId+'tr').show();
+	$('#'+divId+'').show();
+	$('#'+divId+'').html('<center><img id="" src="images/icons/loading.gif" style=""/></center>');
+
 }
 	var jsObj={
 		eventId:$("#eventsId").val(),
@@ -474,7 +475,10 @@ function buildCadreLocationWiseEventAttendeeCount(myResult,locationValue,searchT
 			var str ='';
 			
 			//str+='<div class="col-md-12 m_top10"><button class="btn btn-xs btn-success pull-right" style="margin-bottom:10px" onclick="generatesExcel(\''+divId+'\',\''+locationValue+' Wise Report\');">EXPORT TO EXCEL</button></h4></div>';
-			str+='<table class="table table-bordered table-condensed" id="'+divId+'">';
+			if(index == "onload")
+				str+='<table class="table table-bordered table-condensed" id="'+divId+'">';
+			else
+				str+='<table class="table table-bordered table-condensed" id="'+divId+''+index+'">';
 			if(locationValue == "DISTRICT")
 			str+='<thead style="background-color:#CCC;font-size:12px !important">';
 			if(locationValue == "CONSTITUENCY")
