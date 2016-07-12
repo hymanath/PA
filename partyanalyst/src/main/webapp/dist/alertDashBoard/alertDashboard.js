@@ -184,6 +184,7 @@ $(document).on("click",".alertModel",function(){
 	 	$("#descriptionTitleId").html(globalAlertName);
 	getAlertStatusCommentsTrackingDetails();
 	
+	
 });
 function showPopUpAlertData(alertId)
 {
