@@ -3839,6 +3839,10 @@ class TrainingCampService implements ITrainingCampService{
 					vo.setEndTime(objects[6].toString());
 					vo.setMeetingName(objects[8].toString());
 					vo.setPartyMeetingId((Long)objects[9]);
+					vo.setIsConducted(objects[12] !=null ? objects[12].toString():"");
+					vo.setConductedDate(objects[13] !=null ? objects[13].toString():"" );
+					vo.setRemarks(objects[14] !=null ? objects[14].toString():"");
+					
 					allMeetings.add(vo);
 					
 				}

@@ -19,4 +19,6 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public BigInteger getLocationWiseTotalMeetingsCount(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate);
 	public List<Object[]> getMontlyWiseMeetingsDetails(Long committeeLevelId,List<Long> committeeLevelValueList,Date fromDate,Date toDate,List<String> searchDatesList,int firstRecord,int maxResult);
 	public Object[] getMeetingNameByMeetingId(Long meetingId);
+	public List<Object[]> getLevelWiseMeetingDetails();
+	public Integer updateConductedDetails(Long meetingId,String isConducted,String remarks);
 }

@@ -17,6 +17,10 @@ private Long partyMeetingId;
 private PartyMeetingSummaryVO docTxtInfo;
 private Long constLocationNum=0l;
 
+private String isConducted;
+private String conductedDate;
+private String remarks;
+
 
 
 public Long getConstLocationNum() {
@@ -108,6 +112,24 @@ public Long getLocationId() {
 }
 public void setLocationId(Long locationId) {
 	this.locationId = locationId;
+}
+public String getIsConducted() {
+	return isConducted;
+}
+public void setIsConducted(String isConducted) {
+	this.isConducted = isConducted;
+}
+public String getConductedDate() {
+	return conductedDate;
+}
+public void setConductedDate(String conductedDate) {
+	this.conductedDate = conductedDate;
+}
+public String getRemarks() {
+	return remarks;
+}
+public void setRemarks(String remarks) {
+	this.remarks = remarks;
 }
 
 
