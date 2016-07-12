@@ -501,8 +501,8 @@ function buildImportantCandidateDetails(result){
 	str+='<table class="table m_0 table-bordered" id="impCandTable">';
 		str+='<thead>';
 			str+='<th class="text-center"> LEADER </th>';
-			str+='<th class="text-center"> TYPE </th>';
-			str+='<th class="text-center"> LEVEL </th>';
+			str+='<th class="text-center"> POSITION </th>';
+			str+='<th class="text-center"> LOCATION </th>';
 			str+='<th class="text-center"> MOBILE </th>';
 		str+='</thead>';
 		str+='<tbody>';

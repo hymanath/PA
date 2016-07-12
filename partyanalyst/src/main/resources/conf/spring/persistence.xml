@@ -915,7 +915,8 @@
 				    <value>com.itgrids.partyanalyst.model.CallPurpose</value>
 				    <value>com.itgrids.partyanalyst.model.CallStatus</value>
 				    <value>com.itgrids.partyanalyst.model.TdpCadreNotes</value>
-				    <value>com.itgrids.partyanalyst.model.TdpCadreReport</value>  
+				    <value>com.itgrids.partyanalyst.model.TdpCadreReport</value>
+				    <value>com.itgrids.partyanalyst.model.ImportantLeadersLevel</value>  
 				 </list>
 			
 		</property>
