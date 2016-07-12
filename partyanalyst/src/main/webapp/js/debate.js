@@ -1937,7 +1937,7 @@ function getRespectiveSelectionForAnalysis()
 		str +='<select id="partysList" onChange="getCandidatesForSelectedParty(this.value,2)">';
 		for(var i in partiesArray)
 		{
-			if(i >0)
+			//if(i >0)
 				str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
 		}
 		str +='</select>';
