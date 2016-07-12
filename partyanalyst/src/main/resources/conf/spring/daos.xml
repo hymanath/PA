@@ -3024,5 +3024,11 @@
 	<bean id="importantLeadersLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ImportantLeadersLevelDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+		<bean id="alertSourceUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSourceUserDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSourceDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
