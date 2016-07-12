@@ -261,6 +261,7 @@ $(document).on("click","#createAlertBtn",function(){
 	showHideBySearchType();
 	disableByLevel(1);
 	getAlertsource();
+	$("#apptmemberDetailsDiv").html("");
 });
 $(".dropkickClass").dropkick();
 
