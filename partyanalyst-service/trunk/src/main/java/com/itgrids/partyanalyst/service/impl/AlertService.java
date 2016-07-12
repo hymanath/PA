@@ -27,11 +27,14 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
+import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
@@ -67,12 +70,22 @@ private IAlertStatusDAO alertStatusDAO;
 private IAlertTrackingDAO alertTrackingDAO;
 private IAlertCommentDAO alertCommentDAO;
 private IAlertTypeDAO alertTypeDAO;
+private IAlertSourceUserDAO alertSourceUserDAO;
+
   
 private DateUtilService dateUtilService = new DateUtilService();
 
 
 
 
+
+public IAlertSourceUserDAO getAlertSourceUserDAO() {
+	return alertSourceUserDAO;
+}
+
+public void setAlertSourceUserDAO(IAlertSourceUserDAO alertSourceUserDAO) {
+	this.alertSourceUserDAO = alertSourceUserDAO;
+}
 
 public IAlertCommentDAO getAlertCommentDAO() {
 	return alertCommentDAO;
@@ -236,7 +249,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setCreatedBy(userId);
 				 alert.setUpdatedBy(userId);
 				 alert.setAlertStatusId(1l);
-				 alert.setUserTypeId(inputVO.getUserTypeId());
+				 alert.setAlertSourceId(inputVO.getAlertSourceId());
 				 alert.setCreatedTime(date.getCurrentDateAndTime());
 				 alert.setUpdatedTime(date.getCurrentDateAndTime());
 				 alert.setIsDeleted("N");
@@ -244,11 +257,22 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alert.setAddressId(userAddress.getUserAddressId());
 				 alert = alertDAO.save(alert);
 				 
-				 AlertCandidate alertCandidate = new AlertCandidate();
-				 alertCandidate.setAlertId(alert.getAlertId());
-				 alertCandidate.setCandidateId(inputVO.getCandidateId());
-				 alertCandidate.setAlertImpactId(inputVO.getAlertImpactId());
-				 alertCandidateDAO.save(alertCandidate);
+				 
+				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
+				 {
+					for(IdNameVO vo : inputVO.getIdNamesList())
+					 {
+						 if(vo != null && vo.getId()!= null && vo.getId() > 0)
+						 {
+							 AlertCandidate alertCandidate = new AlertCandidate();
+							 alertCandidate.setAlertId(alert.getAlertId());
+							 alertCandidate.setCandidateId(vo.getId());
+							 alertCandidate.setAlertImpactId(vo.getOrderId());
+							 alertCandidateDAO.save(alertCandidate);
+						 }
+						 
+					 }
+				 }
 				 rs = "success";
 				    AlertComment alertComment = new AlertComment();
 				    alertComment.setComments(inputVO.getDesc());
@@ -260,7 +284,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 				 alertTrackingVO.setUserId(userId);
 				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
-				 alertTrackingVO.setAlertUserTypeId(inputVO.getUserTypeId());
+				 alertTrackingVO.setAlertUserTypeId(inputVO.getAlertSourceId());
 				 alertTrackingVO.setAlertStatusId(1l);
 				 alertTrackingVO.setAlertId(alert.getAlertId());
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
@@ -290,7 +314,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				alertTracking.setAlertId(alertTrackingVO.getAlertId());
 				alertTracking.setAlertStatusId(alertTrackingVO.getAlertStatusId());
 				alertTracking.setAlertCommentId(alertTrackingVO.getAlertCommentId());
-				alertTracking.setAlertUserTypeId(alertTracking.getAlertUserTypeId());
+				alertTracking.setAlertSourceId(alertTracking.getAlertUserTypeId());
 				alertTracking.setInsertedBy(alertTrackingVO.getUserId());
 				alertTracking.setInsertedTime(currentDateAndTime);
 				alertTracking.setAlertTrackingActionId(alertTrackingVO.getAlertTrackingActionId());
@@ -379,7 +403,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				endDate=sdf.parse(toDate);
 			}
 			
-			 List<Long> userTypeIds = alertUserDAO.getUserTypeIds(userId);
+			 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
 			 List<AlertStatus> statusList =  alertStatusDAO.getAll();
 			 if(userTypeIds != null && userTypeIds.size() > 0)
 			 {
@@ -435,15 +459,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO)
 	{
 		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
-		 List<Long> userTypeIds = alertUserDAO.getUserTypeIds(userId);
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
+		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
 		List<Long> alertIds = new ArrayList<Long>();
 		try{
 			Date fromDate = null;Date toDate=null;
 			if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
 			{
-			 fromDate = format.parse(inputVO.getFromDate());
-			 toDate = format.parse(inputVO.getToDate());
+			 fromDate = sdf.parse(inputVO.getFromDate());
+			 toDate = sdf.parse(inputVO.getToDate());
 			}
 			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate,inputVO.getLevelId(),inputVO.getStatusId());
 			 if(list != null && list.size() > 0)
@@ -640,6 +664,30 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return returnList;
 	}
+	
+	public List<BasicVO> getAlertSourceForUser(Long userId)
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		try{
+			 List<Object[]> list = alertSourceUserDAO.getAlertSourceUsersByUser(userId);	
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 BasicVO vo = new BasicVO();
+					 vo.setId((Long)params[0]);
+					 vo.setName(params[1].toString());
+					 returnList.add(vo);
+				 }
+				 
+			 }
+		}
+		catch (Exception e) {
+			LOG.error("Exception in getAlertSourceForUser()",e);	
+		}
+		return returnList;
+	}
+
 
 	}
 

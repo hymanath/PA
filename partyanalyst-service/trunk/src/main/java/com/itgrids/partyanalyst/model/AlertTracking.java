@@ -38,6 +38,7 @@ public class AlertTracking extends BaseModel implements Serializable {
 	private AlertComment alertComment;
 	private AlertStatus alertStatus;
 	private User user;
+	private Long alertSourceId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -153,6 +154,14 @@ public class AlertTracking extends BaseModel implements Serializable {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	@Column(name = "alert_source_id")
+	public Long getAlertSourceId() {
+		return alertSourceId;
+	}
+
+	public void setAlertSourceId(Long alertSourceId) {
+		this.alertSourceId = alertSourceId;
 	}
 	
 }
