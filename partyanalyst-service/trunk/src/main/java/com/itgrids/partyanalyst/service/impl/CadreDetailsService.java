@@ -1247,7 +1247,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 								String name = localElectionBodyDAO.get(levelVal).getName();
 								vo.setImportantLeaderLocation(name);
 							}
-							else if(levelId.longValue() == 4l || levelId.longValue() == 8l || levelId.longValue() == 10l || levelId.longValue() == 11l || levelId.longValue() == 12l){//Assembly||Ward||Parliament||MPTC||ZPTC
+							else if(levelId.longValue() == 4l || levelId.longValue() == 8l || levelId.longValue() == 10l || levelId.longValue() == 11l ||
+									levelId.longValue() == 12l){			//Assembly||Ward||Parliament||MPTC||ZPTC
 								String name = constituencyDAO.get(levelVal).getName();
 								vo.setImportantLeaderLocation(name);
 							}
@@ -10288,7 +10289,8 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 						String name = localElectionBodyDAO.get(levelVal).getName();
 						vo.setDateStr(name+" "+vo.getDateStr());
 					}
-					else if(levelId.longValue() == 4l || levelId.longValue() == 8l || levelId.longValue() == 10l || levelId.longValue() == 11l || levelId.longValue() == 12l){//Assembly||Ward||Parliament||MPTC||ZPTC
+					else if(levelId.longValue() == 4l || levelId.longValue() == 8l || levelId.longValue() == 10l || levelId.longValue() == 11l ||
+							levelId.longValue() == 12l){						//Assembly||Ward||Parliament||MPTC||ZPTC
 						String name = constituencyDAO.get(levelVal).getName();
 						vo.setDateStr(name+" "+vo.getDateStr());
 					}
