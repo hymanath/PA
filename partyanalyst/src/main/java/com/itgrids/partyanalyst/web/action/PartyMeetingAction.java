@@ -35,8 +35,17 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private MeetingTrackingVO meetingTrackingVO;
 	private PartyMeetingWSVO partyMeetingWSVO;
 	
+	private List<PartyMeetingVO> partyMeetingVOList;
 	
 	
+	public List<PartyMeetingVO> getPartyMeetingVOList() {
+		return partyMeetingVOList;
+	}
+
+	public void setPartyMeetingVOList(List<PartyMeetingVO> partyMeetingVOList) {
+		this.partyMeetingVOList = partyMeetingVOList;
+	}
+
 	public PartyMeetingWSVO getPartyMeetingWSVO() {
 		return partyMeetingWSVO;
 	}
@@ -423,4 +432,29 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getLevelWiseMeetingDetails(){
+		try{
+			
+			partyMeetingVOList = partyMeetingService.getLevelWiseMeetingDetails();
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getLevelWiseMeetingDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateConductedDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			status = partyMeetingService.updateConductedDetails(jObj.getLong("meetingId"),jObj.getString("isConducted"),jObj.getString("remarks"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }

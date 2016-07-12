@@ -13,9 +13,11 @@
 <!--<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">-->
 <!--<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">-->
 <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
 
 <style>
 footer{background-color:#5c2d25;color:#ccc;padding:30px}
@@ -26,6 +28,105 @@ header.eventsheader {
  height: 71px; 
 }
 table thead th , table tbody tr td{text-align:center !important}
+h1,h2,h3,h4,h5,h6,p,ul,table
+{
+	margin:0px !important;
+}
+.panelMeetings
+{
+	border-radius:0px;
+}
+.panelMeetings .panel-heading
+{
+	background:#fff;
+	border-radius:0px;
+	padding:5px;
+	border:1px solid #ddd;
+}
+.panelMeetings .panel-heading .panel-title
+{
+	margin-top:15px;
+}
+.panelMeetings .panel-body
+{
+	padding:0px;
+}
+.text-capital
+{
+	text-transform:uppercase
+}
+.tableMeetings
+{
+	margin:0px;
+}
+.tableMeetings thead th
+{
+	font-size:11px;
+	background:#FFF7CC;
+}
+.tableMeetings tr:first-child td:first-child
+{
+	color:#FFC501;
+	font-size:18px;
+	vertical-align:middle;
+}
+.tableMeetings tr:first-child td:nth-child(2)
+{
+	font-size:16px;
+	color:#4A8CED
+}
+.tableMeetings tr:first-child td:nth-child(3)
+{
+	color:#F34F1A;
+	font-size:16px
+}
+.block
+{
+	border:1px solid #ddd;
+	padding:15px;
+}
+.graphList
+{
+	padding-left:10px;
+}
+.graphList li
+{
+	list-style:none;
+	padding:2px;
+	font-size:14px;
+}
+.iconPlanned
+{
+	background:#FEC601;
+	height:10px;
+	width:10px;
+	display:inline-block;
+	margin-right:3px;
+	border-radius:50%;
+}
+.iconConducted
+{
+	background:#458AE9;
+	height:10px;
+	width:10px;
+	display:inline-block;
+	margin-right:3px;
+	border-radius:50%;
+}
+.iconNotC
+{
+	background:#F64911;
+	height:10px;
+	width:10px;
+	display:inline-block;
+	margin-right:3px;
+	border-radius:50%;
+}
+.m_top10
+{
+	margin-top:10px;
+}
+
 </style>
 
 </head>
@@ -70,20 +171,208 @@ table thead th , table tbody tr td{text-align:center !important}
     	<div class="row">
         	<section>
             	<div class="col-md-12">
+				<!-- Summary Block-->
+				<div class="panel panel-default">
+            	<div class="panel-heading">
+                	<h4 class="panel-title">PARTY MEETINGS</h4>
+                </div>
+                <div class="panel-body">
+                	<div class="row">
+                    	<div class="col-md-8 col-xs-12 col-sm-8">
+                        	<div class="block">
+                            	<div class="row">
+                                	<div class="col-md-6 col-xs-12 col-sm-6">
+                                    	<h3 class="text-capital">total meetings - <span id="totalMeetingsId">0</span></h3>
+                                        <h5>( Meetings Conducted Ratio - <span class="text-success"><span class="dataClearCls" id="tConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-up"></i></span> <span class="text-danger"><span id="tNotConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-down"></i></span>)</h5>
+                                    </div>
+                                    <div class="col-md-2 col-xs-12 col-sm-2">
+                                    	<div class="totalMeetings" style="height:80px"></div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 col-sm-4">
+                                    	<ul class="graphList">
+                                        	<li><span class="iconPlanned"></span>Planned <span class="pull-right dataClearCls" id="tPlannedId">0</span></li>
+                                            <li><span class="iconConducted"></span>Conducted <span class="pull-right dataClearCls" id="tConductedId">0</span></li>
+                                            <li><span class="iconNotC"></span>Not Conducted <span class="pull-right dataClearCls" id="tNotConductedId">0</span></li>
+                                        </ul>
+                                    </div>
+                                </div>	
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+							<div class="block">
+								<label >Select Date</label>
+								<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;">
+								  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
+								  <span style="margin-left: 25px;"></span> 
+								</div>
+								<p class="text-muted"><small>*Select Date Range to view date between meetings overview</small></p>
+							</div>
+                                 <!--  <div class="input-group">
+                                    	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <input type="text" class="form-control" id="reportrange">
+										<span class="caret"></span>
+										<span></span>
+                                    </div> -->
+                        </div>
+                    </div>
+                    <div class="row m_top10">
+						<div id="levelBuildingId"></div>
+					</div>
+                    	<!--<div class="col-md-3 col-xs-12 col-sm-6">
+                       	  <div class="panel panel-default panelMeetings">
+                        	  <div class="panel-heading">
+                        	    <div class="row">
+                                	<div class="col-md-8 col-xs-12 col-sm-7">
+                                    	<h4 class="panel-title text-capital">district level meetings</h4>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 col-sm-5">
+                                    	<div class="districtMeetings" style="height:60px;"></div>
+                                    </div>
+                                </div>
+                      	      </div>
+                        	  <div class="panel-body">
+                              	<table class="table table-bordered tableMeetings">
+                                	<thead>
+                                    	<th>Planned</th>
+                                        <th>Conducted</th>
+                                        <th>Not Conducted</th>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                        	<td rowspan="2">100</td>
+                                            <td>49</td>
+                                            <td>51</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>49%</td>
+                                            <td>51%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                      	  </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12 col-sm-6">
+                       	  <div class="panel panel-default panelMeetings">
+                        	  <div class="panel-heading">
+                        	    <div class="row">
+                                	<div class="col-md-8 col-xs-12 col-sm-7">
+                                    	<h4 class="panel-title text-capital">constituency level meetings</h4>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 col-sm-5">
+                                    	<div class="consMeetings" style="height:60px;"></div>
+                                    </div>
+                                </div>
+                      	      </div>
+                        	  <div class="panel-body">
+                              	<table class="table table-bordered tableMeetings">
+                                	<thead>
+                                    	<th>Planned</th>
+                                        <th>Conducted</th>
+                                        <th>Not Conducted</th>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                        	<td rowspan="2">100</td>
+                                            <td>49</td>
+                                            <td>51</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>49%</td>
+                                            <td>51%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                      	  </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12 col-sm-6">
+                       	  <div class="panel panel-default panelMeetings">
+                        	  <div class="panel-heading">
+                        	    <div class="row">
+                                	<div class="col-md-8 col-xs-12 col-sm-7">
+                                    	<h4 class="panel-title text-capital">mandal level meetings</h4>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 col-sm-5">
+                                    	<div class="mandalMeetings" style="height:60px;"></div>
+                                    </div>
+                                </div>
+                      	      </div>
+                        	  <div class="panel-body">
+                              	<table class="table table-bordered tableMeetings">
+                                	<thead>
+                                    	<th>Planned</th>
+                                        <th>Conducted</th>
+                                        <th>Not Conducted</th>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                        	<td rowspan="2">100</td>
+                                            <td>49</td>
+                                            <td>51</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>49%</td>
+                                            <td>51%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                      	  </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12 col-sm-6">
+                       	  <div class="panel panel-default panelMeetings">
+                        	  <div class="panel-heading">
+                        	    <div class="row">
+                                	<div class="col-md-8 col-xs-12 col-sm-7">
+                                    	<h4 class="panel-title text-capital">village level meetings</h4>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 col-sm-5">
+                                    	<div class="villageMeetings" style="height:60px;"></div>
+                                    </div>
+                                </div>
+                      	      </div>
+                        	  <div class="panel-body">
+                              	<table class="table table-bordered tableMeetings">
+                                	<thead>
+                                    	<th>Planned</th>
+                                        <th>Conducted</th>
+                                        <th>Not Conducted</th>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                        	<td rowspan="2">100</td>
+                                            <td>49</td>
+                                            <td>51</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>49%</td>
+                                            <td>51%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                      	  </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+			<!-- Sumamry Block-->
+				
                 	<div class="panel panel-default">
                     	<div class="panel-heading">
                         	<h4 class="panel-title">Meetings List</h4>
                         </div>
                         <div class="panel-body">
                         	<div class="row">
-								<div class="col-md-3">
+								<div class="col-md-4">
 									<label>Meeting Level</label>
 									<span id="meetingLocationErrorMessage" style="color: red;"></span>
 										<select class="form-control" id="meetingLocationLevel"></select>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
 								</div>	
-                            	<div class="col-md-3">
-									<label>Type Of Meeting</label>
+                            	<div class="col-md-6">
+									<label>Select Meeting Name/Type Of Meeting</label>
 									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
                                     <select class="form-control" id="typeOfMeeting">
 										<option> Select Meeting Type </option>
@@ -100,19 +389,19 @@ table thead th , table tbody tr td{text-align:center !important}
                                     	<option>District level</option>
                                     </select>
                                 </div>-->
-                            	<div class="col-md-3">
+                            	<!--<div class="col-md-3">
                                 	<label >Select Date</label>
 									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;width:350px !important;">
 									  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
 									  <span style="margin-left: 25px;"></span> 
-									</div>
+									</div>-->
                                  <!--  <div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="reportrange">
 										<span class="caret"></span>
 										<span></span>
                                     </div> -->
-								</div>
+								<!--</div>-->
 								<!--<div class="col-md-3">
                                 	<label>Meeting End Date</label> 
 									<div class="input-group">
@@ -254,7 +543,9 @@ table thead th , table tbody tr td{text-align:center !important}
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="js/highcharts.js"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
@@ -708,7 +999,7 @@ getUserAccessLocationDetails();
 			var str='';
 			if(result!=null && result.length>0){
 				str+='<h4>'+result[0].meetingType+'</h4>';
-				str+='<table class="m_top20 table table-bordered">';
+				str+='<table class="m_top20 table table-bordered m_top10" id="meetingTableId">';
 				/* str+='<thead class="bg_d">';
 				//str+='<th>Meeting Type</th>';
 				str+='<th>Meeting Location</th>';
@@ -723,8 +1014,10 @@ getUserAccessLocationDetails();
 				}
 				str+='<th rowspan="2">Meeting Location</th>';
 				str+='<th rowspan="2">Meeting Name</th>';
+				str+='<th rowspan="2">CONDUCTED</th>';
+				str+='<th rowspan="2">CONDUCTED DATE</th>';
 				str+='<th colspan="2">MOM</th>';
-				str+='<th colspan="2">ATR</th>';
+				str+='<th colspan="2">ATR</th>'; 
 				str+='<th rowspan="2">Schedule Date</th>';
 				str+='<th rowspan="2"></th>';
 				str+='</tr>';
@@ -744,6 +1037,21 @@ getUserAccessLocationDetails();
 					}
 					str+='<td>'+result[i].location+'</td>';
 					str+='<td>'+result[i].meetingName+'</td>';
+					
+					if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
+						str+='<td><i class="glyphicon glyphicon-ok" style="color:green"></i></td>';
+					}else if(result[i].isConducted !=null && result[i].isConducted == 'N'){
+						str+='<td><i class="glyphicon glyphicon-remove" style="color:red"></i></td>';
+					}else{
+						str+='<td> - </td>';
+					}
+					
+					if(result[i].conductedDate !=null && result[i].conductedDate !=""){
+						str+='<td> '+result[i].conductedDate.split(' ')[0]+' </td>';
+					}else{
+						str+='<td> - </td>';
+					}
+					
 					
 					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momFilesCount!=null){
 						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="MINUTE">'+result[i].docTxtInfo.momFilesCount+'</td>';
@@ -779,6 +1087,12 @@ getUserAccessLocationDetails();
 			}
 			$("#searchDataImgForResults").hide();
 			$('#meetingDetailsTableId').html(str);
+			
+			$('#meetingTableId').dataTable({
+			"iDisplayLength": 50,
+				"aLengthMenu": [[50,100, 200, 500, -1], [50,100, 200, 500, "All"]]			
+			});
+			
 		});
 	});
 	
@@ -1101,6 +1415,289 @@ getUserAccessLocationDetails();
 		});
 	 
   });
+
 </script>
+<script type="text/javascript">
+$(function () {
+	
+	$('.totalMeetings').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: false,
+                alpha: 15
+            },
+			margin:'0',
+			backgroundColor: 'transparent'
+        },
+		legend: {
+                enabled: false,
+                align: 'center',
+                x: 10,
+                verticalAlign: 'left',
+                y: 20,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 35,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+            data: [
+                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
+                ['Lunch Section Party Office', 3000],
+                ['Lokesh Meeting', 1000]
+            ]
+        }]
+    });
+    $('.districtMeetings').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: false,
+                alpha: 15
+            },
+			backgroundColor: 'transparent'
+        },
+		legend: {
+                enabled: false,
+                align: 'center',
+                x: 10,
+                verticalAlign: 'left',
+                y: 20,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 35,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+            data: [
+                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
+                ['Lunch Section Party Office', 3000],
+                ['Lokesh Meeting', 1000]
+            ]
+        }]
+    });
+	$('.mandalMeetings').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: false,
+                alpha: 15
+            },
+			backgroundColor: 'transparent'
+        },
+		legend: {
+                enabled: false,
+                align: 'center',
+                x: 10,
+                verticalAlign: 'left',
+                y: 20,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 35,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+            data: [
+                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
+                ['Lunch Section Party Office', 3000],
+                ['Lokesh Meeting', 1000]
+            ]
+        }]
+    });
+	$('.consMeetings').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: false,
+                alpha: 15
+            },
+			backgroundColor: 'transparent'
+        },
+		legend: {
+                enabled: false,
+                align: 'center',
+                x: 10,
+                verticalAlign: 'left',
+                y: 20,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 35,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+            data: [
+                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
+                ['Lunch Section Party Office', 3000],
+                ['Lokesh Meeting', 1000]
+            ]
+        }]
+    });
+	$('.villageMeetings').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: false,
+                alpha: 15
+            },
+			backgroundColor: 'transparent'
+        },
+		legend: {
+                enabled: false,
+                align: 'center',
+                x: 10,
+                verticalAlign: 'left',
+                y: 20,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+        plotOptions: {
+            pie: {
+                innerSize: 40,
+                depth: 35,
+				dataLabels: {
+                    enabled: false,
+				}
+            }, 
+        },
+		
+		series: [{
+            data: [
+                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
+                ['Lunch Section Party Office', 3000],
+                ['Lokesh Meeting', 1000]
+            ]
+        }]
+    });
+});
+getLevelWiseMeetingDetails();
+function getLevelWiseMeetingDetails(){
+		
+		$.ajax({
+			type: "POST",
+			url:"getLevelWiseMeetingDetailsAction.action",
+			data:{}
+		}).done(function(result){
+			var str='';
+			if(result !=null && result.length>0){
+				var totalPlanned=0;
+				var totalConducted=0;
+				var totalNotConducted=0;
+				for(var i in result){
+					totalPlanned=totalPlanned+result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
+					totalConducted= totalConducted + result[i].invitedCount;
+					totalNotConducted= totalNotConducted + result[i].nonInviteeCount;
+					
+					str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+					
+                       	  str+='<div class="panel panel-default panelMeetings">';
+                        	  str+='<div class="panel-heading">';
+                        	    str+='<div class="row">';
+                                	str+='<div class="col-md-8 col-xs-12 col-sm-7">';
+                                    	str+='<h4 class="panel-title text-capital">'+result[i].name+' level meetings</h4>';
+                                    str+='</div>';
+                                    str+='<div class="col-md-4 col-xs-12 col-sm-5">';
+                                    	str+='<div class="districtMeetings" style="height:60px;"></div>';
+                                    str+='</div>';
+                                str+='</div>';
+                      	      str+='</div>';
+                        	  str+='<div class="panel-body">';
+                              	str+='<table class="table table-bordered tableMeetings">';
+                                	str+='<thead>';
+                                    	str+='<th>Planned</th>';
+                                        str+='<th>Conducted</th>';
+                                        str+='<th>Not Conducted</th>';
+                                    str+='</thead>';
+                                    str+='<tbody>';
+                                    	str+='<tr>';
+										var plannedCount=result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
+                                        	str+='<td rowspan="2">'+plannedCount+'</td>';
+                                            str+='<td>'+result[i].invitedCount+'</td>';
+                                            str+='<td>'+result[i].nonInviteeCount+'</td>';
+                                        str+='</tr>';
+										
+										//calculation
+										
+										var conductedPerc = ((result[i].invitedCount/plannedCount)*100).toFixed(2);
+										var notConductedPerc = ((result[i].nonInviteeCount/plannedCount)*100).toFixed(2);
+										
+                                        str+='<tr>';
+                                        	str+='<td>'+conductedPerc+'%</td>';
+                                           str+=' <td>'+notConductedPerc+'%</td>';
+                                        str+='</tr>';
+                                    str+='</tbody>';
+                                str+='</table>';
+                             str+=' </div>';
+                      	 str+=' </div>';
+                       str+=' </div>';
+				}				
+				
+				$("#tPlannedId").html(totalPlanned);
+				$("#tConductedId").html(totalConducted);
+				$("#tNotConductedId").html(totalNotConducted);
+				$("#totalMeetingsId").html(totalPlanned);
+				
+				if(totalConducted !=null && totalConducted>0){
+					var conductPerc = ((totalConducted/totalPlanned)*100).toFixed(2);
+					var notConductPerc = ((totalNotConducted/totalPlanned)*100).toFixed(2);
+					
+					$("#tConductedPercId").html(conductPerc);
+					$("#tNotConductedPercId").html(notConductPerc);
+				}
+				
+				$("#levelBuildingId").html(str);
+			}
+		});
+}
+
+</script>
+
 </body>
 </html>
