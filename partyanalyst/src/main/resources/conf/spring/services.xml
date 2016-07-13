@@ -2703,6 +2703,7 @@
 		 <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		 <property name="tdpCadreReportDAO" ref="tdpCadreReportDAO" />
+		 <property name="importantLeadersLevelDAO" ref="importantLeadersLevelDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
