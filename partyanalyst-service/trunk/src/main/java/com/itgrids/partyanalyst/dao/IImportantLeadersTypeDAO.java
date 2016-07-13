@@ -11,4 +11,5 @@ public interface IImportantLeadersTypeDAO extends GenericDao<ImportantLeadersTyp
 	public List<Object[]> getAllImportantLeadersTypes();
 	public Long getLocationScopeIdForTypeId(Long impLeadTypeId);
 	public Integer getMaxOrderNo();
+	public Long checkTypeExists(String type);
 }

@@ -38,4 +38,13 @@ public class ImportantLeadersTypeDAO extends GenericDaoHibernate<ImportantLeader
 		Query query = getSession().createSQLQuery("select max(order_no) from important_leaders_type");
 		return  (Integer) query.uniqueResult();
 	}
+	
+	public Long checkTypeExists(String type){
+		Query query = getSession().createQuery("select model.importantLeadersTypeId" +
+												" from ImportantLeadersType model" +
+												" where model.position = :type" +
+												" and model.isActive = 'true'");
+		query.setParameter("type", type);
+		return (Long) query.uniqueResult();
+	}
 }

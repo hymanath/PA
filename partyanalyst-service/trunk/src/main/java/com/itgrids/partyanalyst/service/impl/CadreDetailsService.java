@@ -9803,7 +9803,7 @@ public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long co
 			}
 		}
 		else if(locationScopeId != null && locationScopeId.longValue() == 10l){
-			List<Object[]> parliamentts = delimitationConstituencyAssemblyDetailsDAO.getLatestParliamentByStateIdForregion("Parliament", 1L, "All");
+			List<Object[]> parliamentts = delimitationConstituencyAssemblyDetailsDAO.getLatestParliamentListByStateIdForregion("Parliament", 1L, "All");
 			if(commonMethodsUtilService.isListOrSetValid(parliamentts)){
 				for (Object[] obj : parliamentts) {
 					IdNameVO vo = new IdNameVO();
@@ -10291,6 +10291,7 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 					vo.setPercentage(obj[2] != null ? obj[2].toString():"");   //type
 					vo.setDateStr(obj[4] != null ? obj[4].toString():"");   //level
 					vo.setMobileNo(obj[5] != null ? obj[5].toString():"");
+					vo.setStatus("PR");
 					
 					if(levelId.longValue() == 1l || levelId.longValue() == 2l || levelId.longValue() == 3l || levelId.longValue() == 4l){//Parliament||Assembly||MPTC||ZPTC
 						String name = constituencyDAO.get(levelVal).getName();
@@ -10328,6 +10329,7 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 					vo.setPercentage(obj[2] != null ? obj[2].toString():"");  //type
 					vo.setDateStr(obj[4] != null ? obj[4].toString():"");   //level
 					vo.setMobileNo(obj[5] != null ? obj[5].toString():"");
+					vo.setStatus("IMC");
 					
 					if(levelId.longValue() == 2l){//state
 						String name = stateDAO.get(levelVal).getStateName();
@@ -10561,6 +10563,12 @@ public void setSubLocationAttendees(List<Object[]> list , List<MahanaduEventVO> 
 	public String saveImportantLeadersType(final String position,final Long levelId,final Long userId){
 		String status = null;
 		try {
+			Long id = importantLeadersTypeDAO.checkTypeExists(position);
+			if(id != null && id.longValue() > 0l){
+				status = "exists";
+				return status;
+			}
+				
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					int maxOrderNo = importantLeadersTypeDAO.getMaxOrderNo();
@@ -10632,4 +10640,19 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	return null;
 	
 }
+
+	/*public String checkPositionExists(String position){
+		String status = null;
+		try {
+			Long id = importantLeadersTypeDAO.checkTypeExists(position);
+			if(id != null && id.longValue() > 0l)
+				status = "exists";
+			else
+				status = "not exists";
+		} catch (Exception e) {
+			status = "failure";
+			LOG.info("Entered into the checkPositionExists method of CadreDetailsService service");
+		}
+		return status;
+	}*/
 }
