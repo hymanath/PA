@@ -471,8 +471,8 @@
 				  <div class="modal-footer">
 					<span class="pull-left" id="addModalSuccessId"></span>
 					<span id="addModalfooterNameId"></span>
-					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary btn-sm" id="saveButtonId" onclick="savePublicRepresentativeType()">Save</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
 				  </div>
 				  
 				</div>
@@ -2031,6 +2031,23 @@ $(document).on("click","#postnSvngCloseId",function(){
 	$("#newPositionDivId").hide();
 });
 
+/*function checkPositionExists(position){
+	var jsObj = {
+		position:position
+	 };
+	  $.ajax({
+	  type:'GET',
+	  url: 'checkPositionExistsAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result == "exists"){
+		   $("#errorPubRepId").html("Position Already Exists");
+	   }
+		   
+   });
+}*/
+
 function saveNewPostnToImpLeaders(){
 	$("#errorPubRepId").html("");
 	$("#successPubRepId").html("");
@@ -2047,10 +2064,10 @@ function saveNewPostnToImpLeaders(){
 	  return;
 	}
 	
-	if(jQuery.inArray(position.trim(), impLeadersTypes)){
+	/*if(jQuery.inArray(position.trim(), impLeadersTypes)){
 		$("#errorPubRepId").html("Position Already Exists");
 		return;
-	}
+	}*/
 	
 	var jsObj = {
 		position:position,
@@ -2062,7 +2079,10 @@ function saveNewPostnToImpLeaders(){
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   if(result != null && result == "success"){
+	   if(result != null && result == "exists"){
+		   $("#errorPubRepId").html("Position Already Exists");
+	   }
+	   else if(result != null && result == "success"){
 		    $("#successPubRepId").html("Saved SuccessFully...");
 			getAllImportantLeadersTypesAction();
 			$("#newPositionDivId").hide();

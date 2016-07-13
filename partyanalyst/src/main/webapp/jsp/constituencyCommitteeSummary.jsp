@@ -504,6 +504,7 @@ function buildImportantCandidateDetails(result){
 			str+='<th class="text-center"> POSITION </th>';
 			str+='<th class="text-center"> LOCATION </th>';
 			str+='<th class="text-center"> MOBILE </th>';
+			str+='<th class="text-center"> TYPE </th>';
 		str+='</thead>';
 		str+='<tbody>';
 		if(result.idnameList != null && result.idnameList.length > 0){
@@ -513,6 +514,7 @@ function buildImportantCandidateDetails(result){
 					str+='<td class="text-center">'+result.idnameList[i].percentage+'</td>';
 					str+='<td class="text-center">'+result.idnameList[i].dateStr+'</td>';
 					str+='<td class="text-center">'+result.idnameList[i].mobileNo+'</td>';
+					str+='<td class="text-center">'+result.idnameList[i].status+'</td>';
 				str+='</tr>';
 			}
 		}
