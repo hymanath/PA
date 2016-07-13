@@ -32,4 +32,8 @@ import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 
 public interface INominatedPostProfileService {
 	
+	public List<IdNameVO> getBoardLevels();
+	public List<IdNameVO> getDepartments();
+	public List<IdNameVO> getDepartmentBoard(Long depmtId);
+	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId);
 }
