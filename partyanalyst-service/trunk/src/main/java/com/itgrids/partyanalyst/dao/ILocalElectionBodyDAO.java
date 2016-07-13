@@ -58,4 +58,7 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	 public List findByElectionTypeAndState1(Long electionTypeId, Long stateId);
 	 public LocalElectionBody getLocalElectionBodyDetailsByLevel(Long localElectionBodyId);
 	 public List<Object[]> getAllLocalBodysByState(Long stateId);
+	 public List getLocalEleForDistrict(Long districtId);
+	 public List getCorporationsForDistrict(Long districtId);
+	 public List getGMCsForDistrict(Long districtId);
 }

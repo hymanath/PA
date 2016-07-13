@@ -241,5 +241,18 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 	  return (LocalElectionBody) query.uniqueResult();
   }
  
+  public List getLocalEleForDistrict(Long districtId){
+		return getHibernateTemplate().find("select model.localElectionBodyId, model.name,model.electionType.electionType from " +
+				"LocalElectionBody model where model.electionType.electionTypeId = 5 and model.district.districtId = ?", districtId);
+	}
   
+  public List getCorporationsForDistrict(Long districtId){
+		return getHibernateTemplate().find("select model.localElectionBodyId, model.name,model.electionType.electionType from " +
+				"LocalElectionBody model where model.electionType.electionTypeId = 6 and model.district.districtId = ?", districtId);
+	}
+  
+  public List getGMCsForDistrict(Long districtId){
+		return getHibernateTemplate().find("select model.localElectionBodyId, model.name,model.electionType.electionType from " +
+				"LocalElectionBody model where model.electionType.electionTypeId = 7 and model.district.districtId = ?", districtId);
+	}
 }
