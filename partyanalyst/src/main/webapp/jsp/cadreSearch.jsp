@@ -481,7 +481,8 @@
 			<script>
 	$("#fromDateId").datetimepicker({
 		 viewMode: 'years',
-		 format: 'YYYY'
+		 format: 'YYYY',
+		 maxDate: moment()
 	});
 	$("#toDateId").datetimepicker({
 		 viewMode: 'years',
@@ -1802,6 +1803,8 @@ $(document).on("click",".addButtonCls",function(){
 	$("#modalMobileNoId").html("");
 	$("#fromDateId").val("");
 	$("#toDateId").val("");
+	$("#newPositionDivId").hide();
+	impLeadersTypes = [];
 	
 var cadreId = $(this).attr("attr_tdp_cadre_id"); 
 var cadreName = $(this).attr("attr_cadre_name"); 
@@ -1830,6 +1833,8 @@ $("#modalMobileNoId").val(mobileNo);
 
 getAllImportantLeadersTypesAction();
 });
+
+var impLeadersTypes = [];
 function getAllImportantLeadersTypesAction(){
 	$("#publisRepTypeId  option").remove();
 	//$("#publisRepTypeId").append('<option value="0">Select Public Representative Type</option>');
@@ -1846,6 +1851,7 @@ function getAllImportantLeadersTypesAction(){
 			   $("#publisRepTypeId").append('<option value="0">Select Public Representative Type</option>');
 			   for(var i in result){
 				   $("#publisRepTypeId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				   impLeadersTypes.push(result[i].name.trim());
 			   }
 		   } 
 	});
@@ -2017,6 +2023,10 @@ $(document).on("click","#modalNewPositnAddBtnId",function(){
 	getRegionScopes();
 });
 
+/*$("#modalNewPostnId").autocomplete({
+   source: impLeadersTypes
+});*/
+
 $(document).on("click","#postnSvngCloseId",function(){
 	$("#newPositionDivId").hide();
 });
@@ -2035,6 +2045,11 @@ function saveNewPostnToImpLeaders(){
 	if(levelId == 0){
 	  $("#errorPubRepId").html("Select Level");
 	  return;
+	}
+	
+	if(jQuery.inArray(position.trim(), impLeadersTypes)){
+		$("#errorPubRepId").html("Position Already Exists");
+		return;
 	}
 	
 	var jsObj = {
