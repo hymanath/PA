@@ -12885,5 +12885,23 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="updateConductedStatusAction" class="partyMeetingAction" method="updateConductedStatus">
+	  <result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	
+	<action name="updateConductedDateAction" class="partyMeetingAction" method="updateConductedDate">
+	  <result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	
+	<action name="updateConductedReasonAction" class="partyMeetingAction" method="updateConductedReason">
+	  <result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
