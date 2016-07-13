@@ -3021,14 +3021,24 @@
 	<bean id="tdpCadreReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreReportDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="importantLeadersLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ImportantLeadersLevelDAO">
-	  <property name="sessionFactory" ref="sessionFactory" />
+		<bean id="importantLeadersLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ImportantLeadersLevelDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 		<bean id="alertSourceUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSourceUserDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="alertSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSourceDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEmailDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="emailReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.EmailReportDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="reportEmailDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReportEmailDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />  
 	</bean>
 	<!--  end -->
 	<!-- Nominated Post Realted DAO's -->

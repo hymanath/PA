@@ -1336,6 +1336,7 @@
 		<property name="eventDAO" ref="eventDAO"/>
 		<property name="employeeWorkLocationDAO" ref="employeeWorkLocationDAO"/>
 		<property name="employeeDepartmentDAO" ref="employeeDepartmentDAO"/>
+		<property name="reportEmailDAO" ref="reportEmailDAO"/>
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
