@@ -1243,7 +1243,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 								String name = panchayatDAO.get(levelVal).getPanchayatName();
 								vo.setImportantLeaderLocation(name);
 							}
-							else if(levelId.longValue() == 7l){//Muncipality
+							else if(levelId.longValue() == 7l || levelId.longValue() == 13l || levelId.longValue() == 14l){//Muncipality||Corporation||GMC
 								String name = localElectionBodyDAO.get(levelVal).getName();
 								vo.setImportantLeaderLocation(name);
 							}
@@ -9543,6 +9543,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				
 				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
 				userAddress.setDistrict(districtDAO.get(constituency.getDistrict().getDistrictId()));
+				userAddress.setConstituency(constituency);
 				userAddress.setTehsil(tehsilDAO.get(constituency.getTehsil().getTehsilId()));
 				
 				userAddress = userAddressDAO.save(userAddress);
@@ -9553,7 +9554,19 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				
 				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
 				userAddress.setDistrict(districtDAO.get(constituency.getDistrict().getDistrictId()));
+				userAddress.setConstituency(constituency);
 				userAddress.setTehsil(tehsilDAO.get(constituency.getTehsil().getTehsilId()));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 13l || levelId == 14l){  //Corporation||GMC
+				userAddress = new UserAddress();
+				LocalElectionBody localElectionBody = localElectionBodyDAO.get(levelValue);
+				District district = districtDAO.get(localElectionBody.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(district.getState().getStateId()));
+				userAddress.setDistrict(district);
+				userAddress.setLocalElectionBody(localElectionBody);
 				
 				userAddress = userAddressDAO.save(userAddress);
 			}
@@ -9752,7 +9765,7 @@ public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long co
 		else if(locationScopeId != null && locationScopeId.longValue() == 6l)
 			returnList = getVillagesInMandal(mandalId);
 		else if(locationScopeId != null && locationScopeId.longValue() == 7l){
-			List<Object[]> list = localElectionBodyDAO.findByDistrictId(districtId);
+			List<Object[]> list = localElectionBodyDAO.getLocalEleForDistrict(districtId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					IdNameVO vo = new IdNameVO();
@@ -9811,6 +9824,34 @@ public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long co
 				vo.setName(obj[1] != null ? obj[1].toString():"");
 				
 				returnList.add(vo);
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 13l){   //Corporation
+			List<Object[]> list = localElectionBodyDAO.getCorporationsForDistrict(districtId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					String electionType = obj[2] != null ? obj[2].toString():"";
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(vo.getName() + " "+electionType);
+					
+					returnList.add(vo);
+				}
+			}
+		}
+		else if(locationScopeId != null && locationScopeId.longValue() == 14l){   //GMC
+			List<Object[]> list = localElectionBodyDAO.getGMCsForDistrict(districtId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					String electionType = obj[2] != null ? obj[2].toString():"";
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(vo.getName() + " "+electionType);
+					
+					returnList.add(vo);
+				}
 			}
 		}
 		
@@ -10285,7 +10326,7 @@ public BasicVO getStartDateAndEndDate(Long eventId){
 						String name = panchayatDAO.get(levelVal).getPanchayatName();
 						vo.setDateStr(name+" "+vo.getDateStr());
 					}
-					else if(levelId.longValue() == 7l){//Muncipality
+					else if(levelId.longValue() == 7l || levelId.longValue() == 13l || levelId.longValue() == 14l){//Muncipality||Corporation||GMC
 						String name = localElectionBodyDAO.get(levelVal).getName();
 						vo.setDateStr(name+" "+vo.getDateStr());
 					}
