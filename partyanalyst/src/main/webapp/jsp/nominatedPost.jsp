@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NOMINATED POST PROFILE CREATION</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -22,59 +22,63 @@
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<p class="text-success">SEARCH APPLICANT</p>
                     </div>
-                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
+                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
                     	<label>State</label>
-                        <select class="chosenSelect">
-                        	<option>Any Position</option>
+                        <select id="statesDivId"  onchange="getDistrictsForStates(this.value);" class="chosenSelect">
+                        	<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="36">Telangana</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
+                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="districtDiv">
                     	<label>District</label>
-                        <select class="chosenSelect">
-                        	<option>Any Position</option>
+                        <select id="districtId" onchange="getConstituenciesForDistricts(this.value);" class="chosenSelect" >
+						
                         </select>
                     </div>
-                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
+                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="constitunecyDiv">
                     	<label>Constituency</label>
-                        <select class="chosenSelect">
-                        	<option>Any Position</option>
+                        <select id="constituencyId" onchange="getMandalCorporationsByConstituency();" class="chosenSelect" >
                         </select>
                     </div>
-                    <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10">
+                    <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10" id="mandalDiv">
                     	<label>Mandal/Muncipality/Corporation</label>
-                        <select class="chosenSelect">
-                        	<option>Any Position</option>
+                        <select id="mandalList" onchange="getPanchayatWardByMandal();"  class="chosenSelect">
+							<option value="0"> Select Mandal/Municipality </option>
                         </select>
                     </div>
-                    <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10">
+                    <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10" id="panchayatDiv">
                     	<label>Panchayat/Ward/Division</label>
-                        <select class="chosenSelect">
-                        	<option>Any Position</option>
+                        <select id="panchaytList"  onchange="getAllCadreInPanchayat();" class="chosenSelect">
+							<option value="0"> Select Panchayat </option>
                         </select>
                     </div>
-                    <div class="col-md-8 col-xs-12 col-sm-12 col-lg-12 m_top20">
+                </div>
+                <div class="row">
+                	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
                     	<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
                         <div class="searchDiv">
                             <div class="row">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
                                 	<div class="pad_5 bg_ff">
-                                        <label class="radio-inline">
-                                        <input type="radio"/>Voter ID
+									<label class="radio-inline">
+                                            <input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"/>Membership No
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio"/>Membership No
+                                        <input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" />Voter ID
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio"/>Mobile Number
+                                            <input type="radio"  name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"/>Mobile Number
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio"/>Name
+                                            <input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"/>Name
                                         </label>
+										<input type="hidden" id="cadreSearchType" value="membershipId" />
                                     </div>
-                                    <input type="text" class="form-control"/>
+                                    <input type="text" class="form-control" id="searchBy"/>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3 pad_left0">
-                                    <button class="btn btn-success btn-block btnSearch">SEARCH</button>
+                                    <button class="btn btn-success btn-block btnSearch" id="searchbtn" onclick="getNominatedPostApplication(0)">SEARCH</button>
                                 </div>
                             </div>
                         </div>
@@ -82,153 +86,10 @@
                  </div>
                  <div class="row">
                     <div class="col-md-12 col-xs-12 col-sm-12">
-                    		<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>
-                        	<p>Search Results: <b><u>10</u></b> Members</p>
+                    		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
+                        	<div id="searchData"></div>
                         	<div class="scroll-div">
-                                <ul class="list-inline best-matched-profile ">
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
-                                    <li>
-                                        <div class="img-center">
-                                            <img src="dist/img/Profile.png" class="img-responsive img-circle" alt="Profile"/>
-                                        </div>
-                                        <input type="checkbox" style="margin:auto;display:block;"/>
-                                        <p class="m_0 m_top5 text-center"><b>RAMESH</b></p>
-                                        <p class="m_0 m_top5 text-center">V.ID:ITD1234567</p>
-                                        <p class="m_0 text-center">M.NO:001281729127219</p>
-                                        <p class="m_0 text-center">+91 9033084679</p>
-                                        <p class="text-center m_0">Constituency Name</p>
-                                    </li>
+                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls">
                                 </ul>
                              </div>
                              <p class="text-muted"><small>Note: Please select matches profile</small></p>
@@ -437,11 +298,12 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="js/nominatedPosts/nominatedPost.js"></script>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="dist/Plugins/Chosen/chosen.jquery.js" ttype="text/javascript"></script>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
-//$('.chosenSelect').chosen();
+$('.chosenSelect').chosen();
 $(document).on("click",".btnClassChange",function(){
 	$(".btnClassChange").removeClass("btnActive");
 	$(this).addClass("btnActive");
