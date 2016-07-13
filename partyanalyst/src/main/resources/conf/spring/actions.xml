@@ -1677,6 +1677,9 @@
 	</bean>
 	
 	<!-- Deabete End -->
+	<bean id="nominatedPostProfileAction" class="com.itgrids.partyanalyst.web.action.NominatedPostProfileAction" singleton="false"> 
+			<property name="nominatedPostProfileService" ref="nominatedPostProfileService" />
+	</bean>
 	
 </beans>	
 	

@@ -3031,4 +3031,36 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!--  end -->
+	<!-- Nominated Post Realted DAO's -->
+	<bean id="applicationDocumentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ApplicationDocumentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="applicationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ApplicationStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nominatedPostApplicationDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostApplicationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="departmentBoardPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentBoardPositionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="departmentBoardDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentBoardDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="boardLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoardLevelDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="positionDAO" class="com.itgrids.partyanalyst.dao.hibernate.PositionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="boardDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoardDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="departmentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="postTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PostTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- Nominated Post Related DAO'S End -->
 </beans>		

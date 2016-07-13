@@ -3266,5 +3266,8 @@
 	
 	</bean>
 	<!-- Debate End -->
+	
+	<bean name="nominatedPostProfileService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostProfileService">
+	</bean>
 </beans>		
 	
