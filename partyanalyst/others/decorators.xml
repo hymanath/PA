@@ -258,5 +258,6 @@
 		<pattern>/sitemapAction*</pattern>
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
+		<pattern>/nominatedPostProfileAction*</pattern>
        </decorator>
 </decorators>

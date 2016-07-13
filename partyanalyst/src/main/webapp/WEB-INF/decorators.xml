@@ -674,6 +674,6 @@
 	 <!-- debate end-->
 	  <pattern>/createAlertAction*</pattern>
 	  <pattern>/alertDashboardAction*</pattern>
-	  
+	  <pattern>/nominatedPostProfileAction*</pattern>
 	</decorator> 
 </decorators>

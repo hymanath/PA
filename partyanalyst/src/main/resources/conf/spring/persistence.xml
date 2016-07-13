@@ -919,7 +919,19 @@
 				    <value>com.itgrids.partyanalyst.model.CallStatus</value>
 				    <value>com.itgrids.partyanalyst.model.TdpCadreNotes</value>
 				    <value>com.itgrids.partyanalyst.model.TdpCadreReport</value>
-				    <value>com.itgrids.partyanalyst.model.ImportantLeadersLevel</value>  
+				    <value>com.itgrids.partyanalyst.model.ImportantLeadersLevel</value> 
+				    <!-- Nominated Post Start -->
+				     <value>com.itgrids.partyanalyst.model.PostType</value> 
+				     <value>com.itgrids.partyanalyst.model.Departments</value> 
+				     <value>com.itgrids.partyanalyst.model.Board</value> 
+				     <value>com.itgrids.partyanalyst.model.Position</value> 
+				     <value>com.itgrids.partyanalyst.model.BoardLevel</value> 
+				     <value>com.itgrids.partyanalyst.model.DepartmentBoard</value> 
+				     <value>com.itgrids.partyanalyst.model.DepartmentBoardPosition</value> 
+				     <value>com.itgrids.partyanalyst.model.NominatedPostApplication</value> 
+				     <value>com.itgrids.partyanalyst.model.ApplicationStatus</value> 
+				     <value>com.itgrids.partyanalyst.model.ApplicationDocument</value> 
+				     <!-- Nominated Post End -->
 				 </list>
 			
 		</property>
