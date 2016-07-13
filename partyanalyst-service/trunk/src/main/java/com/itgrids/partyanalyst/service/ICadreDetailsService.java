@@ -123,4 +123,5 @@ public interface ICadreDetailsService {
 	public String saveImportantLeadersType(final String position,final Long levelId,final Long userId);
 	public List<CadreReportVO> getCadreReportDetails(Long cadreId);
 	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue);
+	//public String checkPositionExists(String position);
 }
