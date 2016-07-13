@@ -16,6 +16,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 
@@ -178,7 +179,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                 </div>
                 <div class="panel-body">
                 	<div class="row">
-                    	<div class="col-md-8 col-xs-12 col-sm-8">
+                    	<div class="col-md-12 col-xs-12 col-sm-8">
                         	<div class="block">
                             	<div class="row">
                                 	<div class="col-md-6 col-xs-12 col-sm-6">
@@ -198,7 +199,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                 </div>	
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
+                       <!-- <div class="col-md-4 col-sm-4 col-xs-12">
 							<div class="block">
 								<label >Select Date</label>
 								<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;">
@@ -206,14 +207,14 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 								  <span style="margin-left: 25px;"></span> 
 								</div>
 								<p class="text-muted"><small>*Select Date Range to view date between meetings overview</small></p>
-							</div>
+							</div>-->
                                  <!--  <div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="reportrange">
 										<span class="caret"></span>
 										<span></span>
                                     </div> -->
-                        </div>
+                        <!-- </div>-->
                     </div>
                     <div class="row m_top10">
 						<div id="levelBuildingId"></div>
@@ -365,13 +366,13 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                         </div>
                         <div class="panel-body">
                         	<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<label>Meeting Level</label>
 									<span id="meetingLocationErrorMessage" style="color: red;"></span>
 										<select class="form-control" id="meetingLocationLevel"></select>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
 								</div>	
-                            	<div class="col-md-6">
+                            	<div class="col-md-4">
 									<label>Select Meeting Name/Type Of Meeting</label>
 									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
                                     <select class="form-control" id="typeOfMeeting">
@@ -389,19 +390,19 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                     	<option>District level</option>
                                     </select>
                                 </div>-->
-                            	<!--<div class="col-md-3">
+                            	<div class="col-md-3">
                                 	<label >Select Date</label>
 									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;width:350px !important;">
 									  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
 									  <span style="margin-left: 25px;"></span> 
-									</div>-->
+									</div>
                                  <!--  <div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="reportrange">
 										<span class="caret"></span>
 										<span></span>
                                     </div> -->
-								<!--</div>-->
+								</div>
 								<!--<div class="col-md-3">
                                 	<label>Meeting End Date</label> 
 									<div class="input-group">
@@ -523,6 +524,33 @@ h1,h2,h3,h4,h5,h6,p,ul,table
         </div>
     </div>
 </main>
+<div class="modal fade" id="editConductedBtnModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="editConductedModalBody">
+		<!--<label>Change Status</label>-->
+		<!--<select class="form-control" id="isConductedUpdateId">
+			<option value="0">Select Status</option>
+			<option value="Y">Yes</option>
+			<option value="N">No</option>
+		</select>-->
+		<span id="errorId"></span>
+		<div class="input-group" style="display:none" id="dateUpdateId">
+			<input type="text" class="form-control" id="dateValueId" />
+			<span class="input-group-addon">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</span>			
+		</div>
+		<textarea type="text" class="form-control" style="display:none" id="remarksUpdateId" ></textarea>
+		<input type="hidden" value="" id="hiddenConductedId" />
+      </div>
+      <div class="modal-footer">
+	  <button type="button" class="btn btn-success btn-xs" id="updateDetailsBtnId">SAVE</button>
+        <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">CLOSE</button>        
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -543,13 +571,15 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="js/highcharts.js"></script>
+
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/HighCharts/highcharts.js"></script>
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+$("#dateValueId").daterangepicker({singleDatePicker: true})
 getUserAccessLocationDetails();
 	
 	var stateArr = [];
@@ -975,8 +1005,8 @@ getUserAccessLocationDetails();
 			$("#VillErrorMSgShow").html();
 		});
 		
-		var startDate = $(".dp_startDate").val();
-		var endDate = $(".dp_endDate").val();
+		var startDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_startDate").val();
+		var endDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_endDate").val();
 		var jsObj =	{
 						meetingType:meetingType,
 						locationLevel:locationLevel,
@@ -1018,7 +1048,8 @@ getUserAccessLocationDetails();
 				str+='<th rowspan="2">CONDUCTED DATE</th>';
 				str+='<th colspan="2">MOM</th>';
 				str+='<th colspan="2">ATR</th>'; 
-				str+='<th rowspan="2">Schedule Date</th>';
+				str+='<th rowspan="2">PLANNED DATE</th>';
+				str+='<th rowspan="2">REMARKS</th>';
 				str+='<th rowspan="2"></th>';
 				str+='</tr>';
 				str+='<tr>';
@@ -1038,18 +1069,56 @@ getUserAccessLocationDetails();
 					str+='<td>'+result[i].location+'</td>';
 					str+='<td>'+result[i].meetingName+'</td>';
 					
-					if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
-						str+='<td><i class="glyphicon glyphicon-ok" style="color:green"></i></td>';
+					/* if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
+						str+='<td><i class="glyphicon glyphicon-edit editConductedBtn" style="cursor:pointer" attr_isConducted='+result[i].isConducted+'></i> <i class="glyphicon glyphicon-ok" style="color:green"></i></td>';
 					}else if(result[i].isConducted !=null && result[i].isConducted == 'N'){
-						str+='<td><i class="glyphicon glyphicon-remove" style="color:red"></i></td>';
+						str+='<td><i class="glyphicon glyphicon-edit editConductedBtn" style="cursor:pointer" attr_isConducted='+result[i].isConducted+'></i><i class="glyphicon glyphicon-remove" style="color:red"></i></td>';
 					}else{
-						str+='<td> - </td>';
+						str+='<td> <i class="glyphicon glyphicon-edit editConductedBtn" style="cursor:pointer" attr_isConducted="0"></i> </td>';
+					} */
+					
+					/* if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
+						str+='<td><input type="radio" id="yesId'+i+'" name="first_item'+i+'" value="Y" class="updateConductedCls" attr_meetingId="'+result[i].partyMeetingId+'" checked />YES';
+						str+='<input type="radio" id="noId'+i+'" name="first_item'+i+'" value="N" class="updateConductedCls" attr_meetingId="'+result[i].partyMeetingId+'" />NO</td>';
+					}else if(result[i].isConducted !=null && result[i].isConducted == 'N'){
+						str+='<td><input type="radio" id="yesId'+i+'" name="first_item'+i+'" value="Y" class="updateConductedCls" attr_meetingId="'+result[i].partyMeetingId+'"  />YES';
+						str+='<input type="radio" id="noId'+i+'" name="first_item'+i+'" value="N" class="updateConductedCls" attr_meetingId="'+result[i].partyMeetingId+'" checked />NO</td>';
+					}else{
+						str+='<td><input type="radio" id="yesId'+i+'" name="first_item'+i+'" value="Y" class="updateConductedCls" attr_meetingId="'+result[i].partyMeetingId+'" />YES';
+						str+='<input type="radio" id="noId'+i+'" name="first_item'+i+'" value="N" class="updateConductedCls" attr_meetingId="'+result[i].partyMeetingId+'" />NO</td>';
+					}  */
+					
+					str+='<td>';
+					if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
+						str+='<select class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
+							str+='<option value="0">Select Status</option>';
+							str+='<option value="Y" selected>Yes</option>';
+							str+='<option value="N">No</option>';
+						str+='</select>';
+					}else if(result[i].isConducted !=null && result[i].isConducted == 'N'){
+						str+='<select class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
+							str+='<option value="0">Select Status</option>';
+							str+='<option value="Y">Yes</option>';
+							str+='<option value="N" selected>No</option>';
+						str+='</select>';
+					}else{
+						str+='<select class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
+							str+='<option value="0">Select Status</option>';
+							str+='<option value="Y">Yes</option>';
+							str+='<option value="N">No</option>';
+						str+='</select>';
 					}
+					str+='</td>';
+					
+					
+					
 					
 					if(result[i].conductedDate !=null && result[i].conductedDate !=""){
-						str+='<td> '+result[i].conductedDate.split(' ')[0]+' </td>';
+						//str+='<td> '+result[i].conductedDate.split(' ')[0]+' <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
+						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'>'+result[i].conductedDate.split(' ')[0]+'</a></td>';
 					}else{
-						str+='<td> - </td>';
+						//str+='<td> <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
+						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'>Enter Date</i></a></td>';
 					}
 					
 					
@@ -1078,6 +1147,14 @@ getUserAccessLocationDetails();
 					}
 					
 					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
+					if(result[i].remarks !=null && result[i].remarks !=""){
+						//str+='<td>'+result[i].remarks+' <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
+						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'">'+result[i].remarks+'</a></td>';
+					}else{
+						//str+='<td> <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
+						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'">Enter Remarks</i></a></td>';
+					}
+					
 					str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
 				}
 				str+='</tbody>';
@@ -1089,9 +1166,10 @@ getUserAccessLocationDetails();
 			$('#meetingDetailsTableId').html(str);
 			
 			$('#meetingTableId').dataTable({
-			"iDisplayLength": 50,
-				"aLengthMenu": [[50,100, 200, 500, -1], [50,100, 200, 500, "All"]]			
+			"iDisplayLength": 10,
+				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "All"]]			
 			});
+			$('#meetingTableId').removeClass("dataTable");
 			
 		});
 	});
@@ -1419,48 +1497,7 @@ getUserAccessLocationDetails();
 </script>
 <script type="text/javascript">
 $(function () {
-	
-	$('.totalMeetings').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: false,
-                alpha: 15
-            },
-			margin:'0',
-			backgroundColor: 'transparent'
-        },
-		legend: {
-                enabled: false,
-                align: 'center',
-                x: 10,
-                verticalAlign: 'left',
-                y: 20,
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 40,
-                depth: 35,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
-                ['Lunch Section Party Office', 3000],
-                ['Lokesh Meeting', 1000]
-            ]
-        }]
-    });
-    $('.districtMeetings').highcharts({
+    /* $('.districtMeetings').highcharts({
         chart: {
             type: 'pie',
             options3d: {
@@ -1498,124 +1535,7 @@ $(function () {
                 ['Lokesh Meeting', 1000]
             ]
         }]
-    });
-	$('.mandalMeetings').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: false,
-                alpha: 15
-            },
-			backgroundColor: 'transparent'
-        },
-		legend: {
-                enabled: false,
-                align: 'center',
-                x: 10,
-                verticalAlign: 'left',
-                y: 20,
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 40,
-                depth: 35,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
-                ['Lunch Section Party Office', 3000],
-                ['Lokesh Meeting', 1000]
-            ]
-        }]
-    });
-	$('.consMeetings').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: false,
-                alpha: 15
-            },
-			backgroundColor: 'transparent'
-        },
-		legend: {
-                enabled: false,
-                align: 'center',
-                x: 10,
-                verticalAlign: 'left',
-                y: 20,
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 40,
-                depth: 35,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
-                ['Lunch Section Party Office', 3000],
-                ['Lokesh Meeting', 1000]
-            ]
-        }]
-    });
-	$('.villageMeetings').highcharts({
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: false,
-                alpha: 15
-            },
-			backgroundColor: 'transparent'
-        },
-		legend: {
-                enabled: false,
-                align: 'center',
-                x: 10,
-                verticalAlign: 'left',
-                y: 20,
-                floating: false,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
-        plotOptions: {
-            pie: {
-                innerSize: 40,
-                depth: 35,
-				dataLabels: {
-                    enabled: false,
-				}
-            }, 
-        },
-		
-		series: [{
-            data: [
-                ['Nara Lokesh Meeting with Mandal Presidents', 1000],
-                ['Lunch Section Party Office', 3000],
-                ['Lokesh Meeting', 1000]
-            ]
-        }]
-    });
+    }); */
 });
 getLevelWiseMeetingDetails();
 function getLevelWiseMeetingDetails(){
@@ -1644,7 +1564,7 @@ function getLevelWiseMeetingDetails(){
                                     	str+='<h4 class="panel-title text-capital">'+result[i].name+' level meetings</h4>';
                                     str+='</div>';
                                     str+='<div class="col-md-4 col-xs-12 col-sm-5">';
-                                    	str+='<div class="districtMeetings" style="height:60px;"></div>';
+										str+='<div class="meetings'+i+'" style="height:60px;">ssss'+i+'</div>';
                                     str+='</div>';
                                 str+='</div>';
                       	      str+='</div>';
@@ -1679,6 +1599,8 @@ function getLevelWiseMeetingDetails(){
                        str+=' </div>';
 				}				
 				
+				
+				
 				$("#tPlannedId").html(totalPlanned);
 				$("#tConductedId").html(totalConducted);
 				$("#tNotConductedId").html(totalNotConducted);
@@ -1693,9 +1615,267 @@ function getLevelWiseMeetingDetails(){
 				}
 				
 				$("#levelBuildingId").html(str);
+				
+				//High Charts Building Start
+				for(var i in result){
+					
+					var plannedCount=result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
+					
+					$('.meetings'+i+'').highcharts({
+						chart: {
+							type: 'pie',
+							options3d: {
+								enabled: false,
+								alpha: 15
+							},
+							backgroundColor: 'transparent'
+						},
+						legend: {
+								enabled: false,
+								align: 'center',
+								x: 10,
+								verticalAlign: 'left',
+								y: 20,
+								floating: false,
+								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+								borderColor: '#CCC',
+								borderWidth: 1,
+								shadow: false
+							},
+						plotOptions: {
+							pie: {
+								innerSize: 40,
+								depth: 35,
+								dataLabels: {
+									enabled: false,
+								}
+							}, 
+						},
+						
+						series: [{
+							data: [
+								['Planned', plannedCount],
+								['Conducted', result[i].invitedCount],
+								['Not Conducted', result[i].nonInviteeCount]
+							]
+						}]
+					});					
+				}
+				
+				
+					
+					$('.totalMeetings').highcharts({
+						chart: {
+							type: 'pie',
+							options3d: {
+								enabled: false,
+								alpha: 15
+							},
+							margin:'0',
+							backgroundColor: 'transparent'
+						},
+						legend: {
+								enabled: false,
+								align: 'center',
+								x: 10,
+								verticalAlign: 'left',
+								y: 20,
+								floating: false,
+								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+								borderColor: '#CCC',
+								borderWidth: 1,
+								shadow: false
+							},
+						plotOptions: {
+							pie: {
+								innerSize: 40,
+								depth: 35,
+								dataLabels: {
+									enabled: false,
+								}
+							}, 
+						},
+						
+						series: [{
+							data: [
+								['Planned', totalPlanned],
+								['Conducted', totalConducted],
+								['Not Conducted', totalNotConducted]
+							]
+						}]
+					});
+					
+					//High Chart Building End
+				
 			}
 		});
 }
+/* updateConductedDetails();
+function updateConductedDetails(){
+	var jsObj={
+		meetingId : 117140,
+		isConducted :'N',
+		remarks:"NoReason",	
+		conductedDate:""
+	}
+	$.ajax({
+		type: "POST",
+		url:"updateConductedDetailsAction.action",
+		data:{task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});	
+}
+ */
+function updateConductedStatus(meetingId,status){
+	
+	var jsObj={
+		meetingId : meetingId,
+		isConducted :status
+	}
+	$.ajax({
+		type: "POST",
+		url:"updateConductedStatusAction.action",
+		data:{task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});	
+}
+function updateConductedDate(dateValue){
+	
+	$("#errorId").html("");	
+	var meetingId = $("#hiddenConductedId").val();
+	
+	if(dateValue ==null || dateValue =="undefined" || dateValue.length<=0){
+		$("#errorId").css("color", "red");
+		$("#errorId").html(" please select Date");
+		return;
+	}
+	
+	var jsObj={
+		meetingId : meetingId,
+		conductedDate :dateValue
+	}
+	$.ajax({
+		type: "POST",
+		url:"updateConductedDateAction.action",
+		data:{task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result == "success"){
+			$("#errorId").css("color", "green");
+			$("#errorId").html("Updated Successfully");
+			 setTimeout(function(){ 
+					$("#editConductedBtnModal").modal('hide');
+			 }, 1000);
+		}else{
+			$("#errorId").css("color", "red");
+			$("#errorId").html("some problem occured while updating.");
+		}
+	});	
+}
+function updateConductedReason(remarks){
+	var meetingId = $("#hiddenConductedId").val();
+	
+	if(remarks ==null || remarks =="undefined" || remarks.length<=0){
+		$("#errorId").css("color", "red");
+		$("#errorId").html(" please Enter Remarks");
+		return;
+	}
+	var jsObj={
+		meetingId : meetingId,
+		remarks :remarks
+	}
+	$.ajax({
+		type: "POST",
+		url:"updateConductedReasonAction.action",
+		data:{task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result == "success"){
+			$("#errorId").css("color", "green");
+			$("#errorId").html("Updated Successfully");
+			 setTimeout(function(){ 
+					$("#editConductedBtnModal").modal('hide');
+			 }, 1000);
+		}else{
+			$("#errorId").css("color", "red");
+			$("#errorId").html("some problem occured while updating.");
+		}
+	});	
+}
+/* $(document).on("click",".editConductedBtn",function(){
+	
+	$("#isConductedUpdateId").show();
+	$("#dateUpdateId").hide();
+	$("#remarksUpdateId").hide();
+	
+	var isConducted = $(this).attr("attr_isConducted");
+	
+	$("#isConductedUpdateId").val(isConducted);
+		
+	$("#editConductedBtnModal").modal('show');
+}); */
+$(document).on("click",".editConductedDateBtn",function(){
+	
+	$("#isConductedUpdateId").hide();
+	$("#dateUpdateId").show();
+	$("#remarksUpdateId").hide();
+	
+	var conductedDate = $(this).attr("attr_conductedDate");
+	var meetingId = $(this).attr("attr_meetingId");
+	
+	$("#hiddenConductedId").val(meetingId);
+	
+	var cndDate='';
+	if(conductedDate !=null && conductedDate.length>0){		
+		cndDate = conductedDate.split("-")[1]+"/"+conductedDate.split("-")[2]+"/"+conductedDate.split("-")[0];	
+		$("#dateValueId").val(cndDate);					
+	}else{
+		$("#dateValueId").val("");	
+	}
+	
+	$("#errorId").html('');
+	$('errorId').removeAttr('style');
+	$("#editConductedBtnModal").modal('show');
+});
+$(document).on("click",".editRemarksBtn",function(){
+	$("#isConductedUpdateId").hide();
+	$("#dateUpdateId").hide();
+	$("#remarksUpdateId").show();
+	
+	var remarks = $(this).attr("attr_remarks");
+	var meetingId = $(this).attr("attr_meetingId");
+	$("#hiddenConductedId").val(meetingId);
+	
+	if(remarks !=null && remarks !=""){
+		$("#remarksUpdateId").html(remarks);			
+	}else{
+		$("#remarksUpdateId").html("");
+	}
+	
+	$("#errorId").html('');
+	$('errorId').removeAttr('style');
+	$("#editConductedBtnModal").modal('show');
+});
+
+$(document).on("change",".updateConductedCls",function(){
+	
+	var idValue = $(this).attr("id");
+	var status = $("#"+idValue).val();
+	var meetingId = $(this).attr("attr_meetingId");
+	
+	updateConductedStatus(meetingId,status);
+});
+
+$(document).on("click","#updateDetailsBtnId",function(){
+	if($('#dateUpdateId').is(':visible')){
+		var  dateValue = $("#dateValueId").val();		
+		updateConductedDate(dateValue);
+	}else if($('#remarksUpdateId').is(':visible')){
+		var remarksVal = $("#remarksUpdateId").val();
+		updateConductedReason(remarksVal);
+	}	
+});
+
 
 </script>
 

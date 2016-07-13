@@ -449,7 +449,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			
 			jObj = new JSONObject(getTask());
 			
-			status = partyMeetingService.updateConductedDetails(jObj.getLong("meetingId"),jObj.getString("isConducted"),jObj.getString("remarks"));
+			status = partyMeetingService.updateConductedDetails(jObj.getLong("meetingId"),jObj.getString("isConducted"),jObj.getString("remarks"),jObj.getString("conductedDate"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into updateConductedDetails Action",e);
@@ -457,4 +457,48 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		
 		return Action.SUCCESS;
 	}
+	
+	public String updateConductedStatus(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			status = partyMeetingService.updateConductedStatus(jObj.getLong("meetingId"),jObj.getString("isConducted"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateConductedDate(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			status = partyMeetingService.updateConductedDate(jObj.getLong("meetingId"),jObj.getString("conductedDate"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String updateConductedReason(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			status = partyMeetingService.updateConductedReason(jObj.getLong("meetingId"),jObj.getString("remarks"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
 }
