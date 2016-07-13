@@ -1862,14 +1862,14 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return query.list();
 	}
 	
-	public List<Object[]> getZPTCConstituenciesForMandal(Long tehsilId){
+	public List<Object[]> getZPTCConstituenciesForMandal(List<Long> tehsilIds){
 		Query query = getSession().createQuery("select model.constituencyId," +
 												" model.name" +
 												" from Constituency model" +
 												" where model.electionScope.electionScopeId = 4" +
-												" and model.tehsil.tehsilId = :tehsilId" +
+												" and model.tehsil.tehsilId in (:tehsilIds)" +
 												" order by model.name");
-		query.setParameter("tehsilId", tehsilId);
+		query.setParameterList("tehsilIds", tehsilIds);
 		return query.list();
 	}
 }

@@ -20,6 +20,7 @@ public class ImportantLeadersTypeDAO extends GenericDaoHibernate<ImportantLeader
 												" model.position," +
 												" model.importantLeadersLevelId" +
 												" from ImportantLeadersType model" +
+												" where model.isActive = 'true'" +
 												" order by model.orderNo");
 		return query.list();
 	}
@@ -27,7 +28,8 @@ public class ImportantLeadersTypeDAO extends GenericDaoHibernate<ImportantLeader
 	public Long getLocationScopeIdForTypeId(Long impLeadTypeId){
 		Query query = getSession().createQuery("select model.importantLeadersLevelId" +
 													" from ImportantLeadersType model" +
-													" where model.importantLeadersTypeId = :impLeadTypeId");
+													" where model.importantLeadersTypeId = :impLeadTypeId" +
+													" and model.isActive = 'true'");
 		query.setParameter("impLeadTypeId", impLeadTypeId);
 		return (Long) query.uniqueResult();
 	}

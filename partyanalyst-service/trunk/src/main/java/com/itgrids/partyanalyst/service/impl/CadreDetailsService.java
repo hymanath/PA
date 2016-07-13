@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IEventTypeDAO;
 import com.itgrids.partyanalyst.dao.IImportantLeadersDAO;
+import com.itgrids.partyanalyst.dao.IImportantLeadersLevelDAO;
 import com.itgrids.partyanalyst.dao.IImportantLeadersTypeDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IIvrRespondentCadreDAO;
@@ -92,7 +93,6 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -237,7 +237,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ITdpCadreReportDAO tdpCadreReportDAO;
+	private IImportantLeadersLevelDAO importantLeadersLevelDAO;
 	
+	
+	public IImportantLeadersLevelDAO getImportantLeadersLevelDAO() {
+		return importantLeadersLevelDAO;
+	}
+
+	public void setImportantLeadersLevelDAO(
+			IImportantLeadersLevelDAO importantLeadersLevelDAO) {
+		this.importantLeadersLevelDAO = importantLeadersLevelDAO;
+	}
+
 	public IRegionScopesDAO getRegionScopesDAO() {
 		return regionScopesDAO;
 	}
@@ -9816,7 +9827,15 @@ public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long co
 			}
 		}
 		else if(locationScopeId != null && locationScopeId.longValue() == 12l){					//ZPTC
-			List<Object[]> list = constituencyDAO.getZPTCConstituenciesForMandal(mandalId);
+			List<Long> mandalIds = new ArrayList<Long>();
+			List<Object[]> mlist = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
+			if(commonMethodsUtilService.isListOrSetValid(mlist)){
+				for (Object[] obj : mlist) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					mandalIds.add(id);
+				}
+			}
+			List<Object[]> list = constituencyDAO.getZPTCConstituenciesForMandal(mandalIds);
 			for (Object[] obj : list) {
 				IdNameVO vo = new IdNameVO();
 				
@@ -10522,7 +10541,7 @@ public void setSubLocationAttendees(List<Object[]> list , List<MahanaduEventVO> 
 	public List<IdNameVO> getRegionScopes(){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try {
-			List<Object[]> list = regionScopesDAO.getAllRegionScopesWithOutOrderBy();
+			List<Object[]> list = importantLeadersLevelDAO.getAllRegionScopesWithOutOrderBy();
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					IdNameVO vo = new IdNameVO();
@@ -10550,6 +10569,7 @@ public void setSubLocationAttendees(List<Object[]> list , List<MahanaduEventVO> 
 					importantLeadersType.setPosition(position);
 					importantLeadersType.setImportantLeadersLevelId(levelId);
 					importantLeadersType.setOrderNo(maxOrderNo+1);
+					importantLeadersType.setIsActive("true");
 					importantLeadersType.setUserId(userId);
 					importantLeadersType.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					
