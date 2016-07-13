@@ -31,5 +31,9 @@ public interface IPartyMeetingService {
 	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
 	public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType,List<String> designationsList);
 	public List<PartyMeetingVO> getLevelWiseMeetingDetails();
-	public String updateConductedDetails(Long meetingId,String isConducted,String remarks);
+	public String updateConductedDetails(Long meetingId,String isConducted,String remarks,String conductedDate);
+	public String updateConductedStatus(Long meetingId,String isConducted);
+	public String updateConductedDate(Long meetingId,String conductedDate);
+	public String updateConductedReason(Long meetingId,String remarks);
+	
 }
