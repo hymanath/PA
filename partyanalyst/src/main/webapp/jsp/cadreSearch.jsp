@@ -929,10 +929,13 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
-				if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
-				else
-					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
+				if(result[i].importantLeaderCadreId != null){
+					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
+						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
+					else
+						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
+				}
+				
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
 					
@@ -948,7 +951,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				if(result[i].importantLeaderCadreId == null){
 					str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
 				}
-				</c:if> 
+				</c:if>
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1400,10 +1403,13 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
-				if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
-				else
-					str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
+				if(result[i].importantLeaderCadreId != null){
+					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
+						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
+					else
+						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
+				}
+				
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
@@ -1416,7 +1422,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				if(result[i].importantLeaderCadreId == null){
 					str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" title="Click here to Add as Important Candidate" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
 				}
-				</c:if> 
+				</c:if>
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
