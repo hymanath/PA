@@ -31,6 +31,7 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 	private int orderNo;
 	private Long userId;
 	private Date insertedTime;
+	private String isActive;
 	
 	private ImportantLeadersLevel importantLeadersLevel;
 	
@@ -93,5 +94,13 @@ public class ImportantLeadersType extends BaseModel implements Serializable{
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 }
