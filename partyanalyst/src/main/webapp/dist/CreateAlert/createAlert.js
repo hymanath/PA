@@ -227,10 +227,10 @@ function disableByLevel(index)
 			
 			if(selectVal == 2)
 			{
-				$(".advancePRCls").show();
+				$(".advancePRCls,#searchBtnId").show();
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
-				$(".advanceCadreCommittee").hide();
+				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
 				$("#cadreCommitteeDiv_chosen").hide();
@@ -244,7 +244,9 @@ function disableByLevel(index)
 			}
 			else if(selectVal == 3)
 			{
+				$("#searchBtnId").show();
 				$(".advancePRCls").hide();
+				$(".advancePRCls").parent().hide();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee").show();
 				$(".locationsFilterCls").show();
@@ -262,11 +264,13 @@ function disableByLevel(index)
 			}
 			else if(selectVal == 1)
 			{
+				$("#searchBtnId").show();
 				$(".stateShowCls").show();
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").show();
 				$(".levelShowCls").show();
 				$(".advancePRCls").hide();
+				$(".advancePRCls").parent().hide();
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
@@ -766,4 +770,54 @@ function disableByLevel(index)
 	function applyPagination(){
 		$('#searchedMembersId').DataTable();
 	}
+	
+	
+	function setDefaultImage(img){
+	  img.src = "dist/Appointment/img/thumb.jpg";
+   }
+	var cloneCount=0;
+   $(document).on("click",".apptDetailsDiv",function(){
+		
+		 if($(this).is(':checked')){
+			 $(".membersBlock").show();
+			  var name  = $(this).attr("attr_name");
+			  var image = $(this).attr("attr_img_url");
+			  var attrId = $(this).attr("attr_id");
+			  var attrConsti =  $(this).attr("attr-consti");
+			  
+			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
+			var str ='';
+			str+='<div class="col-md-12 block">';
+			str+='<div class="media"><div class="media-left">';
+			str+='<img src="http://mytdp.com/images/cadre_images/282/AP1431166113.jpg" alt="image" style="height:30px;width:30px;" class="img-circle">';
+			str+='</div>';
+			str+='<div class="media-body">';
+			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
+			str+='<div class="col-md-4 m_top5"><label>Name : '+name+'</label></div>';
+			str+='<div class="col-md-4 m_top5"><label>Constituency : '+attrConsti+'</label></div>';
+			str+='<div class="col-md-4"><div class="form-inline"><label style="position:relative;top:-5px">Alert Impact : </label>';
+			//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
+			str+='<div class="onoffswitch" style="display:inline-block">';
+			str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].orderId" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
+			str+='<label class="onoffswitch-label" for="myonoffswitch'+cloneCount+'">';
+            str+='<span class="onoffswitch-inner"></span>';
+            str+='<span class="onoffswitch-switch"></span>';
+			str+='</label>';
+			str+='</div>';
+			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" ></i></span></div>';
+			 $(".membersBlock").append(str);
+							 
+			  cloneCount = cloneCount+1;
+		 }
+   })
+   $(document).on("click",".closeIcon",function(){
+	$(this).parent().remove();
+	var id=$(this).attr("id");
+	
+	$(".candidatecls"+id).prop('checked', false); 
+	//var blockCount = $(this).attr("clone_block_count");
+	$(".close"+id).prop('checked', false); 
+	//$("#uncheck"+id).parent().find(".apptDetailsDiv").prop('checked', false); 
+});
+ 
 	
