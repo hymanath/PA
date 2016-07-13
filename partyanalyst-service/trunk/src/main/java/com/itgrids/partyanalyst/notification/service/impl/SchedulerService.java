@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IReportEmailDAO;
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreAgerangeInfoDAO;
@@ -107,6 +108,7 @@ public class SchedulerService implements ISchedulerService{
 	private IMahanaduDashBoardService1 mahanaduDashBoardService1; 
 	private IEmployeeWorkLocationDAO employeeWorkLocationDAO;
 	private IEmployeeDepartmentDAO employeeDepartmentDAO;
+	private IReportEmailDAO reportEmailDAO;
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
 		return trainingCampBatchDAO;
@@ -244,7 +246,13 @@ public class SchedulerService implements ISchedulerService{
 			IEmployeeDepartmentDAO employeeDepartmentDAO) {
 		this.employeeDepartmentDAO = employeeDepartmentDAO;
 	}
-	
+	public IReportEmailDAO getReportEmailDAO() {
+		return reportEmailDAO;
+	}
+
+	public void setReportEmailDAO(IReportEmailDAO reportEmailDAO) {
+		this.reportEmailDAO = reportEmailDAO;
+	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
 	{
@@ -1011,10 +1019,10 @@ public class SchedulerService implements ISchedulerService{
 			DateUtilService dateUtilService = new DateUtilService();
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");   
+			//SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 			String dt = sdf1.format(new Date());
-			String dt1 = sdf2.format(new Date());
+			//String dt1 = sdf2.format(new Date());
 			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
 			String folderCreation = commonMethodsUtilService.createFolder(staticPath);
 			staticPath = staticPath + "reports";
@@ -1433,7 +1441,7 @@ public class SchedulerService implements ISchedulerService{
 	        //paragraph.add("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION::DATE:"+dt);
 	        
 	        f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.BOLD, new BaseColor(0,0,0));
-		    c = new Chunk("      DATE:"+dt1, f);
+		    c = new Chunk("      DATE:"+dt, f);
 		    Paragraph paragraph4=new Paragraph(c);
 		    paragraph4.setAlignment(Element.ALIGN_CENTER);
 		    paragraph4.add(Chunk.NEWLINE);
@@ -1550,8 +1558,12 @@ public class SchedulerService implements ISchedulerService{
 			MimeMessage message = new MimeMessage(session);    
 			
 			message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));
-			//message.addRecipient(Message.RecipientType.TO, new InternetAddress("kamalakar@itgrids.com"));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));  
+			List<Object[]> emailList = reportEmailDAO.getEmailList(1l);
+			for(Object[] emailArr : emailList){
+				if(emailArr[1]==null)
+					continue;
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailArr[1].toString()));  
+			}
 			message.setHeader("Return-Path", IConstants.EMAIL_USERNAME);
 			message.setSentDate(dateUtilService.getCurrentDateAndTime());
 			message.setSubject(emailAttributesVO.getSubject());

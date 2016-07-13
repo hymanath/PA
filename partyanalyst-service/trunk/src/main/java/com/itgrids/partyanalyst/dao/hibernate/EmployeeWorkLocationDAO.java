@@ -76,7 +76,7 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 	//Swadhin Lenka[ItGrids]
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getOfficeWiseTotalNonAttendedEmployeeDetails(Date fromDate, Date toDate, List<Long> cadreIdList){
-		Query query = getSession().createQuery(" select EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, ED.department.departmentName  " +
+		Query query = getSession().createQuery(" select distinct EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, ED.department.departmentName  " +
 											   " from EmployeeWorkLocation EWL, EmployeeDepartment ED " +
 											   " where " +
 											   " EWL.employee.tdpCadre.tdpCadreId not in (:cadreIdList) and " +
