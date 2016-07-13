@@ -3062,5 +3062,8 @@
 	<bean id="postTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PostTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="departmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!-- Nominated Post Related DAO'S End -->
 </beans>		

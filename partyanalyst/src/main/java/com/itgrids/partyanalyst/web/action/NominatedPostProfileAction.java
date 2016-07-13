@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -58,6 +59,15 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private String 								task;
 	private JSONObject							jObj;
 	private INominatedPostProfileService        nominatedPostProfileService;
+	private List<IdNameVO> 						idNameVOList;
+	
+	
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -96,6 +106,60 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public String nominatedPosts()
 	{
+		return Action.SUCCESS;
+	}
+	
+	public String getBoardLevels(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getBoardLevels();
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getBoardLevels Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getDepartments(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getDepartments();
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getDepartments Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getDepartmentBoard(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getDepartmentBoard(jObj.getLong("depmtId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getDepartmentBoard Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getDepartmentBoardPositions(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getDepartmentBoardPositions(jObj.getLong("depmtId"),jObj.getLong("boardId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getDepartmentBoard Action",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 	
