@@ -1649,4 +1649,19 @@ public String updateCadreNotesInfrmationAction()
 		}
 		return Action.SUCCESS;
 	}
+	
+	/*public String checkPositionExists()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			status = cadreDetailsService.checkPositionExists(jObj.getString("position"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in checkPositionExists() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}*/
 }
