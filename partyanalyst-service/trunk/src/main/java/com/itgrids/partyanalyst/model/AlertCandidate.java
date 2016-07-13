@@ -24,10 +24,11 @@ import org.hibernate.annotations.NotFoundAction;
 public class AlertCandidate extends BaseModel implements Serializable {
 	private Long alertCandidateId;
 	private Long alertId;
-	private Long candidateId;
+	private Long tdpCadreId;
 	private Long alertImpactId;
 	private Alert alert;
-	private Candidate candidate;
+	private TdpCadre tdpCadre;
+	private AlertImpact alertImpact;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,15 +50,13 @@ public class AlertCandidate extends BaseModel implements Serializable {
 		this.alertId = alertId;
 	}
 
-	@Column(name = "candidate_id")
-	public Long getCandidateId() {
-		return candidateId;
+	@Column(name = "tdp_cadre_id" )
+	public Long getTdpCadreId() {
+		return tdpCadreId;
 	}
-
-	public void setCandidateId(Long candidateId) {
-		this.candidateId = candidateId;
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
 	}
-
 	@Column(name = "alert_impact_id")
 	public Long getAlertImpactId() {
 		return alertImpactId;
@@ -78,17 +77,28 @@ public class AlertCandidate extends BaseModel implements Serializable {
 		this.alert = alert;
 	}
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "candidate_id" , insertable = false, updatable = false)
+	@JoinColumn(name = "tdp_cadre_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Candidate getCandidate() {
-		return candidate;
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
 	}
 
-	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
-	}
 	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "alert_impact_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertImpact getAlertImpact() {
+		return alertImpact;
+	}
+
+	public void setAlertImpact(AlertImpact alertImpact) {
+		this.alertImpact = alertImpact;
+	}
 	
 
 }

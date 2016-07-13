@@ -266,8 +266,11 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 						 {
 							 AlertCandidate alertCandidate = new AlertCandidate();
 							 alertCandidate.setAlertId(alert.getAlertId());
-							 alertCandidate.setCandidateId(vo.getId());
-							 alertCandidate.setAlertImpactId(vo.getOrderId());
+							 alertCandidate.setTdpCadreId(vo.getId());
+							 if(vo.getName() == null)
+								 alertCandidate.setAlertImpactId(2l); 
+							else
+							 alertCandidate.setAlertImpactId(1l);
 							 alertCandidateDAO.save(alertCandidate);
 						 }
 						 
@@ -533,6 +536,34 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
+	
+	
+/*	
+	public List<AlertDataVO> getLocationLevelWiseCandidatesAlertsData(Long userId,AlertInputVO inputVO)
+	{
+		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+		 List<Long> userTypeIds = alertSourceUserDAO.getAlertSourceUserIds(userId);
+		 SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+		List<Long> alertIds = new ArrayList<Long>();
+		try{
+			Date fromDate = null;Date toDate=null;
+			if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
+			{
+			 fromDate = sdf.parse(inputVO.getFromDate());
+			 toDate = sdf.parse(inputVO.getToDate());
+			}
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate,inputVO.getLevelId(),inputVO.getStatusId());
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+		
+	}
+	*/
+	
 	public String updateAlertStatus(final Long userId,final Long alertId,final Long alertStatusId,final String comments)
 	{
 		String resultStatus = (String) transactionTemplate
@@ -688,6 +719,48 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 	}
 
-
+	public List<AlertDataVO> getAlertCandidatesData(Long alertId)
+	{
+		List<AlertDataVO> dataList = new ArrayList<AlertDataVO>();
+		try{
+			
+			List<Object[]> list = alertCandidateDAO.getAlertCandidatesData(alertId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					AlertDataVO candidateVo = new AlertDataVO();
+					candidateVo.setId((Long)params[0]);
+					candidateVo.setName(params[1] != null ? params[1].toString() : "");
+					 LocationVO locationVO = new LocationVO();
+					 locationVO.setWardId(params[15] != null ? (Long)params[15] : null);
+					 locationVO.setWardName(params[16] != null ? params[16].toString() : "");
+					 locationVO.setStateId(params[13] != null ? (Long)params[13] : null);
+					 locationVO.setState(params[14] != null ? params[14].toString() : "");
+					 locationVO.setDistrictId(params[8] != null ? (Long)params[8] : null);
+					 locationVO.setDistrictName(params[9] != null ?params[9].toString() : "");
+					 locationVO.setConstituencyId(params[11] != null ? (Long)params[11] : null);
+					 locationVO.setConstituencyName(params[12] != null ? params[12].toString() : "");
+					 locationVO.setTehsilId(params[2] != null ? (Long)params[2] : null);
+					 locationVO.setTehsilName(params[3] != null ? params[3].toString() : "");
+					 locationVO.setVillageId(params[4] != null ? (Long)params[4] : null);
+					 locationVO.setVillageName(params[5] != null ? params[5].toString() : "");
+					 locationVO.setLocalBodyId(params[6] != null ? (Long)params[6] : null);
+					 String eleType = params[10] != null ? params[10].toString() : "";
+					 locationVO.setLocalEleBodyName(params[7] != null ? params[7].toString() +" "+eleType : "");
+					 candidateVo.setLocationVO(locationVO);
+					 
+					 candidateVo.setImpactId(params[16] != null ? (Long)params[16] : null);
+					 candidateVo.setImpact(params[17] != null ? params[17].toString() : "");
+					 dataList.add(candidateVo);
+				}
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception in getLocationLevelWiseCandidateAlertsData()",e);	
+		}
+		return dataList;
 	}
+	
+}
 

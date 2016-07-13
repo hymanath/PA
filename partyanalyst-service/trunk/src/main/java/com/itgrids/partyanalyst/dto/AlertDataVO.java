@@ -13,8 +13,31 @@ public class AlertDataVO {
 	private Long regionScopeId;
 	private String regionScope;
 	private Long statusId;
+	private String name;
+	private String impact;
+	
+	private Long impactId;
 	
 	
+	
+	public Long getImpactId() {
+		return impactId;
+	}
+	public void setImpactId(Long impactId) {
+		this.impactId = impactId;
+	}
+	public String getImpact() {
+		return impact;
+	}
+	public void setImpact(String impact) {
+		this.impact = impact;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getStatusId() {
 		return statusId;
 	}

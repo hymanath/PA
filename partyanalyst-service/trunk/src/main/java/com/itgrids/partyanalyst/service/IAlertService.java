@@ -18,4 +18,5 @@ public interface IAlertService {
 	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 	public List<BasicVO> getAlertType();
 	public List<BasicVO> getAlertSourceForUser(Long userId);
+	public List<AlertDataVO> getAlertCandidatesData(Long alertId);
 }
