@@ -3319,11 +3319,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return finalList;
 	}
 	
-	public String updateConductedDetails(Long meetingId,String isConducted,String remarks){
+	public String updateConductedDetails(Long meetingId,String isConducted,String remarks,String conductedDate){
 		String returnStr = null;
 		try{
 			
-		int value =	partyMeetingDAO.updateConductedDetails(meetingId,isConducted,remarks);
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+			
+			Date cdDate = null;
+			if(conductedDate !=null && !conductedDate.isEmpty()){
+				cdDate = sdf.parse(conductedDate);
+			}
+			
+		int value =	partyMeetingDAO.updateConductedDetails(meetingId,isConducted,remarks,cdDate);
 		if(value>0){
 			returnStr = "success";
 		}else{
@@ -3332,6 +3339,63 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in updateConductedDetails() method, Exception - ",e);
+		}
+		return returnStr;
+	}
+	public String updateConductedStatus(Long meetingId,String isConducted){
+		String returnStr = null;
+		try{
+			
+		
+		int value =	partyMeetingDAO.updateConductedStatus(meetingId,isConducted);
+		if(value>0){
+			returnStr = "success";
+		}else{
+			returnStr = "failure";
+		}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in updateConductedStatus() method, Exception - ",e);
+		}
+		return returnStr;
+	}
+	
+	public String updateConductedDate(Long meetingId,String conductedDate){
+		String returnStr = null;
+		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			
+			Date cdDate = null;
+			if(conductedDate !=null && !conductedDate.isEmpty()){
+				cdDate = sdf.parse(conductedDate);
+			}
+			
+		int value =	partyMeetingDAO.updateConductedDate(meetingId,cdDate);
+		if(value>0){
+			returnStr = "success";
+		}else{
+			returnStr = "failure";
+		}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in updateConductedDate() method, Exception - ",e);
+		}
+		return returnStr;
+	}
+	public String updateConductedReason(Long meetingId,String remarks){
+		String returnStr = null;
+		try{			
+		
+		int value =	partyMeetingDAO.updateConductedReason(meetingId,remarks);
+		if(value>0){
+			returnStr = "success";
+		}else{
+			returnStr = "failure";
+		}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in updateConductedReason() method, Exception - ",e);
 		}
 		return returnStr;
 	}
