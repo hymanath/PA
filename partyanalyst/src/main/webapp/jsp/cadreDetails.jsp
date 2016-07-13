@@ -2494,7 +2494,7 @@ function buildReport()
 $(document).on('click','#showPdfId',function(){   
 	var str = '';
 	var filePath = $("#showPdfId").attr("filePath");
-	str += '<iframe src="http://mytdp.com/'+filePath+'" width="900" height="800">';    
+	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
 });
