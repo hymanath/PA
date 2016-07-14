@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AlertDataVO {
 	private String severity;
 	private String desc;
@@ -17,9 +20,16 @@ public class AlertDataVO {
 	private String impact;
 	
 	private Long impactId;
+	private List<AlertDataVO> subList = new ArrayList<AlertDataVO>();
 	
 	
 	
+	public List<AlertDataVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<AlertDataVO> subList) {
+		this.subList = subList;
+	}
 	public Long getImpactId() {
 		return impactId;
 	}
