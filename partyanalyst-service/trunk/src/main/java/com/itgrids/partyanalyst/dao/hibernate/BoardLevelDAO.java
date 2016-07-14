@@ -16,7 +16,7 @@ public class BoardLevelDAO extends GenericDaoHibernate<BoardLevel, Long> impleme
 	}
 	
 	public List<Object[]> getBoardLevels(){
-		Query query = getSession().createQuery(" select model.boardLevelId, model.level from BoardLevel ");
+		Query query = getSession().createQuery(" select model.boardLevelId, model.level from BoardLevel model ");
 		return query.list();
 	}
 

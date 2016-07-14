@@ -15,7 +15,7 @@ public class DepartmentBoardPositionDAO extends GenericDaoHibernate<DepartmentBo
 		
 	}
 	public List<Object[]> getDepartmentBoardPositionsByDeptIdABrdId(Long deapartmentId,Long boardId){
-		Query query = getSession().createQuery(" select  model.position.positionId,model.position.positionName,model.departmentBoardPositionId from DepartmentBoardPosition where " +
+		Query query = getSession().createQuery(" select  model.position.positionId,model.position.positionName,model.departmentBoardPositionId from DepartmentBoardPosition model where " +
 				" model.departments.departmentId =:deapartmentId and model.board.boardId =:boardId and model.isDeleted = 'N' ");
 		
 		query.setParameter("deapartmentId", deapartmentId);

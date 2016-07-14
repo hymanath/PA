@@ -14,7 +14,7 @@ public class DepartmentDAO extends GenericDaoHibernate<Department, Long> impleme
 	}
 	
 	public List<Object[]> getDepartments(){
-		Query query = getSession().createQuery(" select model.departmentId, model.departmentName from Department ");
+		Query query = getSession().createQuery(" select model.departmentId, model.departmentName from Department model ");
 		return query.list();
 	}
 }
