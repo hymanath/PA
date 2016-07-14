@@ -3348,6 +3348,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 		Date date = new DateUtilService().getCurrentDateAndTime();
 		
+		if(isConducted !=null && isConducted.equalsIgnoreCase("0")){
+			isConducted = null;
+		}
+		
 		int value =	partyMeetingDAO.updateConductedStatus(meetingId,isConducted,userId,date);
 		if(value>0){
 			returnStr = "success";
@@ -3391,6 +3395,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 		try{			
 		
 		Date date = new DateUtilService().getCurrentDateAndTime();
+		
+		if(remarks !=null || remarks.isEmpty()){
+			remarks=null;
+		}
 		
 		int value =	partyMeetingDAO.updateConductedReason(meetingId,remarks,userId,date);
 		if(value>0){

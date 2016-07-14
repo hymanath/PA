@@ -922,17 +922,15 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	StringBuilder str = new StringBuilder();	    	
 	    	
 	    	str.append(" update PartyMeeting model set ");
-	    	if(isConducted !=null && !isConducted.toString().isEmpty()){
-	    		str.append(" model.isConducted =:isConducted, ");
-	    	}
+
+	    	str.append(" model.isConducted =:isConducted, ");	    	
 	    	
-	    	str.append(" model.updatedById =:userId,model.updatedTime=:presentDate ");
+	    	str.append(" model.updatedBy.userId =:userId,model.updatedTime=:presentDate ");
 	    	
 	    	str.append(" where model.partyMeetingId = :meetingId");
 	    	Query query = getSession().createQuery(str.toString());
-	    	if(isConducted !=null && !isConducted.toString().isEmpty()){
-	    		query.setParameter("isConducted",isConducted);
-	    	}
+	    	
+	    	query.setParameter("isConducted",isConducted);
 	    	query.setParameter("meetingId",meetingId);
 	    	
 	    	query.setParameter("userId",userId);
@@ -947,17 +945,16 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	StringBuilder str = new StringBuilder();	    	
 	    	
 	    	str.append(" update PartyMeeting model set ");
-	    	if(conductedDate !=null){
-    			str.append(" model.conductedDate = :conductedDate, ");
-    		}
-	    	str.append(" model.updatedById =:userId,model.updatedTime=:presentDate ");
+
+	    	str.append(" model.conductedDate = :conductedDate, ");
+    		
+	    	str.append("  model.updatedBy.userId =:userId,model.updatedTime=:presentDate ");
 	    	str.append(" where model.partyMeetingId = :meetingId ");
 	    	
 	    	Query query = getSession().createQuery(str.toString());
 	    	
-	    	if(conductedDate !=null){
-    			query.setParameter("conductedDate",conductedDate);
-    		}
+    		query.setParameter("conductedDate",conductedDate);
+    		
 	    	query.setParameter("meetingId",meetingId);
 	    	query.setParameter("userId",userId);
 	    	query.setParameter("presentDate",presentDate);
@@ -970,16 +967,15 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	StringBuilder str = new StringBuilder();	    	
 	    	
 	    	str.append(" update PartyMeeting model set ");
-	    	if(remarks !=null && !remarks.toString().isEmpty()){
-	    		str.append(" model.remarks =:remarks,  ");
-	    	}
-	    	str.append(" model.updatedById =:userId,model.updatedTime=:presentDate ");
+	    	
+	    	str.append(" model.remarks =:remarks,  ");
+	    		
+	    	str.append("  model.updatedBy.userId =:userId,model.updatedTime=:presentDate ");
 	    	str.append(" where model.partyMeetingId = :meetingId ");
 	    	
 	    	Query query = getSession().createQuery(str.toString());
-	    	if(remarks !=null && !remarks.toString().isEmpty()){
-	    		query.setParameter("remarks",remarks);
-	    	}
+	    	query.setParameter("remarks",remarks);
+	    	
 	    	query.setParameter("meetingId",meetingId);
 	    	query.setParameter("userId",userId);
 	    	query.setParameter("presentDate",presentDate);
