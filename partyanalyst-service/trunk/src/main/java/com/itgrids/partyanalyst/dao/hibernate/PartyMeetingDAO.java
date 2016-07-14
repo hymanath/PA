@@ -918,56 +918,71 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	return c; 
 	    }
 	    
-	    public Integer updateConductedStatus(Long meetingId,String isConducted){
+	    public Integer updateConductedStatus(Long meetingId,String isConducted,Long userId,Date presentDate){
 	    	StringBuilder str = new StringBuilder();	    	
 	    	
 	    	str.append(" update PartyMeeting model set ");
 	    	if(isConducted !=null && !isConducted.toString().isEmpty()){
-	    		str.append(" model.isConducted =:isConducted  ");
+	    		str.append(" model.isConducted =:isConducted, ");
 	    	}
-	    	str.append(" where model.partyMeetingId = :meetingId ");
+	    	
+	    	str.append(" model.updatedById =:userId,model.updatedTime=:presentDate ");
+	    	
+	    	str.append(" where model.partyMeetingId = :meetingId");
 	    	Query query = getSession().createQuery(str.toString());
 	    	if(isConducted !=null && !isConducted.toString().isEmpty()){
 	    		query.setParameter("isConducted",isConducted);
 	    	}
 	    	query.setParameter("meetingId",meetingId);
+	    	
+	    	query.setParameter("userId",userId);
+	    	query.setParameter("presentDate",presentDate);
+	    	
 	    	Integer c = query.executeUpdate();
 	    	
 	    	return c; 	    
 	    }
 	  
-	    public Integer updateConductedDate(Long meetingId,Date conductedDate){
+	    public Integer updateConductedDate(Long meetingId,Date conductedDate,Long userId,Date presentDate){
 	    	StringBuilder str = new StringBuilder();	    	
 	    	
 	    	str.append(" update PartyMeeting model set ");
 	    	if(conductedDate !=null){
-    			str.append(" model.conductedDate = :conductedDate ");
+    			str.append(" model.conductedDate = :conductedDate, ");
     		}
+	    	str.append(" model.updatedById =:userId,model.updatedTime=:presentDate ");
 	    	str.append(" where model.partyMeetingId = :meetingId ");
+	    	
 	    	Query query = getSession().createQuery(str.toString());
 	    	
 	    	if(conductedDate !=null){
     			query.setParameter("conductedDate",conductedDate);
     		}
 	    	query.setParameter("meetingId",meetingId);
+	    	query.setParameter("userId",userId);
+	    	query.setParameter("presentDate",presentDate);
 	    	Integer c = query.executeUpdate();
 	    	
 	    	return c; 	    
 	    }
 	    
-	    public Integer updateConductedReason(Long meetingId,String remarks){
+	    public Integer updateConductedReason(Long meetingId,String remarks,Long userId,Date presentDate){
 	    	StringBuilder str = new StringBuilder();	    	
 	    	
 	    	str.append(" update PartyMeeting model set ");
 	    	if(remarks !=null && !remarks.toString().isEmpty()){
-	    		str.append(" model.remarks =:remarks  ");
+	    		str.append(" model.remarks =:remarks,  ");
 	    	}
+	    	str.append(" model.updatedById =:userId,model.updatedTime=:presentDate ");
 	    	str.append(" where model.partyMeetingId = :meetingId ");
+	    	
 	    	Query query = getSession().createQuery(str.toString());
 	    	if(remarks !=null && !remarks.toString().isEmpty()){
 	    		query.setParameter("remarks",remarks);
 	    	}
 	    	query.setParameter("meetingId",meetingId);
+	    	query.setParameter("userId",userId);
+	    	query.setParameter("presentDate",presentDate);
 	    	Integer c = query.executeUpdate();
 	    	
 	    	return c; 	    

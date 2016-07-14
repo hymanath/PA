@@ -3342,12 +3342,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		return returnStr;
 	}
-	public String updateConductedStatus(Long meetingId,String isConducted){
+	public String updateConductedStatus(Long meetingId,String isConducted,Long userId){
 		String returnStr = null;
 		try{
 			
+		Date date = new DateUtilService().getCurrentDateAndTime();
 		
-		int value =	partyMeetingDAO.updateConductedStatus(meetingId,isConducted);
+		int value =	partyMeetingDAO.updateConductedStatus(meetingId,isConducted,userId,date);
 		if(value>0){
 			returnStr = "success";
 		}else{
@@ -3360,7 +3361,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return returnStr;
 	}
 	
-	public String updateConductedDate(Long meetingId,String conductedDate){
+	public String updateConductedDate(Long meetingId,String conductedDate,Long userId){
 		String returnStr = null;
 		try{
 			
@@ -3371,7 +3372,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 				cdDate = sdf.parse(conductedDate);
 			}
 			
-		int value =	partyMeetingDAO.updateConductedDate(meetingId,cdDate);
+			Date date = new DateUtilService().getCurrentDateAndTime();
+			
+		int value =	partyMeetingDAO.updateConductedDate(meetingId,cdDate,userId,date);
 		if(value>0){
 			returnStr = "success";
 		}else{
@@ -3383,11 +3386,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		return returnStr;
 	}
-	public String updateConductedReason(Long meetingId,String remarks){
+	public String updateConductedReason(Long meetingId,String remarks,Long userId){
 		String returnStr = null;
 		try{			
 		
-		int value =	partyMeetingDAO.updateConductedReason(meetingId,remarks);
+		Date date = new DateUtilService().getCurrentDateAndTime();
+		
+		int value =	partyMeetingDAO.updateConductedReason(meetingId,remarks,userId,date);
 		if(value>0){
 			returnStr = "success";
 		}else{
