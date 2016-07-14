@@ -21,33 +21,27 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "nominated_post_refer_details")
+@Table(name = "nomination_post_candidate")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class NominatedPostReferDetails extends BaseModel implements Serializable{
+public class NominationPostCandidate extends BaseModel implements Serializable{
 
-	private Long nominatedPostReferDetailsId;
 	private Long nominationPostCandidateId;
-	private Long referCadreId;
+	private Long tdpCadreId;
+	private Long voterId;
+	private String candidateName;
+	private String mobileNo;
 	private Long insertedBy;
 	private Date insertedTime;
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
 	
-	private NominationPostCandidate nominationPostCandidate;
-	private TdpCadre referCadre;
+	private TdpCadre tdpCadre;
+	private Voter voter;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "nominated_post_refer_details_id", unique = true, nullable = false)
-	public Long getNominatedPostReferDetailsId() {
-		return nominatedPostReferDetailsId;
-	}
-	public void setNominatedPostReferDetailsId(Long nominatedPostReferDetailsId) {
-		this.nominatedPostReferDetailsId = nominatedPostReferDetailsId;
-	}
-	
-	@Column(name = "nomination_post_candidate_id")
+	@Column(name = "nomination_post_candidate_id", unique = true, nullable = false)
 	public Long getNominationPostCandidateId() {
 		return nominationPostCandidateId;
 	}
@@ -55,12 +49,58 @@ public class NominatedPostReferDetails extends BaseModel implements Serializable
 		this.nominationPostCandidateId = nominationPostCandidateId;
 	}
 	
-	@Column(name="refer_cadre_id")
-	public Long getReferCadreId() {
-		return referCadreId;
+	@Column(name = "tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
 	}
-	public void setReferCadreId(Long referCadreId) {
-		this.referCadreId = referCadreId;
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	
+	@Column(name = "voter_id")
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	
+	@Column(name = "candidate_name")
+	public String getCandidateName() {
+		return candidateName;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+	
+	@Column(name = "mobile_no")
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="voter_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getVoter() {
+		return voter;
+	}
+	public void setVoter(Voter voter) {
+		this.voter = voter;
 	}
 	
 	@Column(name="inserted_by")
@@ -101,28 +141,5 @@ public class NominatedPostReferDetails extends BaseModel implements Serializable
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="nomination_post_candidate_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public NominationPostCandidate getNominationPostCandidate() {
-		return nominationPostCandidate;
-	}
-	public void setNominationPostCandidate(
-			NominationPostCandidate nominationPostCandidate) {
-		this.nominationPostCandidate = nominationPostCandidate;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="refer_cadre_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCadre getReferCadre() {
-		return referCadre;
-	}
-	public void setReferCadre(TdpCadre referCadre) {
-		this.referCadre = referCadre;
 	}
 }
