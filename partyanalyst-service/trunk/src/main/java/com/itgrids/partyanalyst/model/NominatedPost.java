@@ -27,7 +27,7 @@ public class NominatedPost extends BaseModel implements Serializable{
 
 	private Long nominatedPostId;
 	private Long nominatedPostPositionId;
-	private Long tdpCadreId;
+	private Long nominationPostCandidateId;
 	private Long boardLevelId;
 	private Long locationValue;
 	private Long nominatedPostStatusId;
@@ -38,7 +38,7 @@ public class NominatedPost extends BaseModel implements Serializable{
 	private String isDeleted;
 	
 	private NominatedPostPosition nominatedPostPosition;
-	private TdpCadre tdpCadre;
+	private NominationPostCandidate nominationPostCandidate;
 	private BoardLevel boardLevel;
 	private NominatedPostStatus nominatedPostStatus;
 	
@@ -60,12 +60,12 @@ public class NominatedPost extends BaseModel implements Serializable{
 		this.nominatedPostPositionId = nominatedPostPositionId;
 	}
 	
-	@Column(name="tdp_cadre_id")
-	public Long getTdpCadreId() {
-		return tdpCadreId;
+	@Column(name = "nomination_post_candidate_id")
+	public Long getNominationPostCandidateId() {
+		return nominationPostCandidateId;
 	}
-	public void setTdpCadreId(Long tdpCadreId) {
-		this.tdpCadreId = tdpCadreId;
+	public void setNominationPostCandidateId(Long nominationPostCandidateId) {
+		this.nominationPostCandidateId = nominationPostCandidateId;
 	}
 	
 	@Column(name="board_level_id")
@@ -144,14 +144,15 @@ public class NominatedPost extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
+	@JoinColumn(name="nomination_post_candidate_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCadre getTdpCadre() {
-		return tdpCadre;
+	public NominationPostCandidate getNominationPostCandidate() {
+		return nominationPostCandidate;
 	}
-	public void setTdpCadre(TdpCadre tdpCadre) {
-		this.tdpCadre = tdpCadre;
+	public void setNominationPostCandidate(
+			NominationPostCandidate nominationPostCandidate) {
+		this.nominationPostCandidate = nominationPostCandidate;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)

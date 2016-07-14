@@ -26,10 +26,10 @@ import org.hibernate.annotations.NotFoundAction;
 public class ApplicationDocument extends BaseModel implements Serializable{
 	
 	private Long applicationDocumentId;
-	private String tdpCadreId;
+	private Long nominationPostCandidateId;
 	private String filePath;
 	
-	private TdpCadre tdpCadre;
+	private NominationPostCandidate nominationPostCandidate;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "application_document_id", unique = true, nullable = false)
@@ -40,13 +40,12 @@ public class ApplicationDocument extends BaseModel implements Serializable{
 	public void setApplicationDocumentId(Long applicationDocumentId) {
 		this.applicationDocumentId = applicationDocumentId;
 	}
-	@Column(name = "tdp_cadre_id")
-	public String getTdpCadreId() {
-		return tdpCadreId;
+	@Column(name = "nomination_post_candidate_id")
+	public Long getNominationPostCandidateId() {
+		return nominationPostCandidateId;
 	}
-
-	public void setTdpCadreId(String tdpCadreId) {
-		this.tdpCadreId = tdpCadreId;
+	public void setNominationPostCandidateId(Long nominationPostCandidateId) {
+		this.nominationPostCandidateId = nominationPostCandidateId;
 	}
 	@Column(name = "file_path")
 	public String getFilePath() {
@@ -57,15 +56,15 @@ public class ApplicationDocument extends BaseModel implements Serializable{
 		this.filePath = filePath;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
+	@JoinColumn(name="nomination_post_candidate_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCadre getTdpCadre() {
-		return tdpCadre;
+	public NominationPostCandidate getNominationPostCandidate() {
+		return nominationPostCandidate;
 	}
-
-	public void setTdpCadre(TdpCadre tdpCadre) {
-		this.tdpCadre = tdpCadre;
+	public void setNominationPostCandidate(
+			NominationPostCandidate nominationPostCandidate) {
+		this.nominationPostCandidate = nominationPostCandidate;
 	}
 	
 	

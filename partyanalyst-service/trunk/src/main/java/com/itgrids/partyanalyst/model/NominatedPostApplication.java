@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,14 +25,14 @@ import org.hibernate.annotations.NotFoundAction;
 public class NominatedPostApplication extends BaseModel implements Serializable{
 	
 	private Long nominatedPostApplicationId;
-	private Long tdpCadreId;
+	private Long nominationPostCandidateId;
 	private Long departmentId;
 	private Long boardId;
 	private Long positionId;
 	private Long boardLevelId;
 	private Long locationValue;
 	
-	private TdpCadre tdpCadre;
+	private NominationPostCandidate nominationPostCandidate;
 	private Departments departments;
 	private Board board;
 	private Position position;
@@ -48,13 +47,15 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	public void setNominatedPostApplicationId(Long nominatedPostApplicationId) {
 		this.nominatedPostApplicationId = nominatedPostApplicationId;
 	}
-	@Column(name = "tdp_cadre_id")
-	public Long getTdpCadreId() {
-		return tdpCadreId;
+	
+	@Column(name = "nomination_post_candidate_id")
+	public Long getNominationPostCandidateId() {
+		return nominationPostCandidateId;
 	}
-	public void setTdpCadreId(Long tdpCadreId) {
-		this.tdpCadreId = tdpCadreId;
+	public void setNominationPostCandidateId(Long nominationPostCandidateId) {
+		this.nominationPostCandidateId = nominationPostCandidateId;
 	}
+	
 	@Column(name = "department_id")
 	public Long getDepartmentId() {
 		return departmentId;
@@ -90,16 +91,19 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
+	@JoinColumn(name="nomination_post_candidate_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCadre getTdpCadre() {
-		return tdpCadre;
+	public NominationPostCandidate getNominationPostCandidate() {
+		return nominationPostCandidate;
 	}
-	public void setTdpCadre(TdpCadre tdpCadre) {
-		this.tdpCadre = tdpCadre;
+	public void setNominationPostCandidate(
+			NominationPostCandidate nominationPostCandidate) {
+		this.nominationPostCandidate = nominationPostCandidate;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="department_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -110,6 +114,7 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	public void setDepartments(Departments departments) {
 		this.departments = departments;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="board_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
