@@ -475,7 +475,8 @@ function getNominatedPostApplication(startIndex)
 			{
 		str +='<li>';
         str +='<div class="img-center">';
-        str +='<img src="images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+        //str +='<img src="images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+		str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
         str +='</div>';
         str +='<input type="checkbox" style="margin:auto;display:block;"/>';
         str +='<p class="m_0 m_top5 text-center"><b>'+result[i].cadreName+'</b></p>';
