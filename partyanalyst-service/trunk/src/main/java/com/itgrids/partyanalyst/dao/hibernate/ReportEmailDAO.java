@@ -14,7 +14,7 @@ public class ReportEmailDAO extends GenericDaoHibernate<ReportEmail, Long> imple
 	}
 	public List<Object[]> getEmailList(Long emailReportId){
 		Query query = getSession().createQuery("select reportEmail.userEmail.userEmailId, reportEmail.userEmail.email from ReportEmail reportEmail " +
-											   " where reportEmail.emailReport.emailReportId = :emailReportId");
+											   " where reportEmail.emailReport.emailReportId = :emailReportId and reportEmail.isEnabled = 'Y'");
 		query.setParameter("emailReportId", emailReportId);
 		return query.list();
 	}
