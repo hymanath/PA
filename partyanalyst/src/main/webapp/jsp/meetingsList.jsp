@@ -21,6 +21,10 @@
 
 
 <style>
+#meetingTableId thead th , #meetingTableId tr td
+{
+	font-size:12px !important
+}
 footer{background-color:#5c2d25;color:#ccc;padding:30px}
 header.eventsheader { 
  background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto #fed501;
@@ -495,7 +499,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 		<input type="hidden" value="" id="hiddenMeetingId" />
 		<input type="hidden" value="" id="hiddenAttrId" />
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="padding:5px;">
 	  <button type="button" class="btn btn-success btn-xs" id="updateDetailsBtnId">SAVE</button>
         <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">CLOSE</button>        
       </div>
@@ -980,7 +984,7 @@ getUserAccessLocationDetails();
 			var str='';
 			if(result!=null && result.length>0){
 				str+='<h4><b>'+result[0].meetingType+'</b></h4>';
-				str+='<table class="m_top20 table table-bordered m_top10" id="meetingTableId">';
+				str+='<table class="m_top20 table table-bordered m_top10 table-condensed" id="meetingTableId">';
 				/* str+='<thead class="bg_d">';
 				//str+='<th>Meeting Type</th>';
 				str+='<th>Meeting Location</th>';
@@ -1001,7 +1005,7 @@ getUserAccessLocationDetails();
 				str+='<th colspan="2">ATR</th>'; 
 				str+='<th rowspan="2">PLANNED DATE</th>';
 				str+='<th rowspan="2">REMARKS</th>';
-				str+='<th rowspan="2"></th>';
+				str+='<th rowspan="2">UPDATE FOR MOM/ATR </th>';
 				str+='</tr>';
 				str+='<tr>';
 				str+='<th>Files</th>';
@@ -1041,20 +1045,20 @@ getUserAccessLocationDetails();
 					
 					str+='<td>';
 					if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
-						str+='<select class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
-							str+='<option value="0">Select Status</option>';
+						str+='<select  style="width:70px !important;margin:auto" class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
+							str+='<option value="0"></option>';
 							str+='<option value="Y" selected>Yes</option>';
 							str+='<option value="N">No</option>';
 						str+='</select>';
 					}else if(result[i].isConducted !=null && result[i].isConducted == 'N'){
-						str+='<select class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
-							str+='<option value="0">Select Status</option>';
+						str+='<select style="width:70px !important;margin:auto" class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
+							str+='<option value="0"></option>';
 							str+='<option value="Y">Yes</option>';
 							str+='<option value="N" selected>No</option>';
 						str+='</select>';
 					}else{
-						str+='<select class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
-							str+='<option value="0">Select Status</option>';
+						str+='<select style="width:70px !important;margin:auto" class="form-control updateConductedCls" id="updateConducted'+i+'Id" attr_meetingId="'+result[i].partyMeetingId+'">';
+							str+='<option value="0"></option>';
 							str+='<option value="Y">Yes</option>';
 							str+='<option value="N">No</option>';
 						str+='</select>';
@@ -1066,7 +1070,7 @@ getUserAccessLocationDetails();
 					
 					if(result[i].conductedDate !=null && result[i].conductedDate !=""){
 						//str+='<td> '+result[i].conductedDate.split(' ')[0]+' <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
-						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">'+result[i].conductedDate.split(' ')[0]+'</a></td>';
+						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'"  data-toggle="tooltip" data-placement="top" title="Click here to update Date">'+result[i].conductedDate.split(' ')[0]+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
 						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">Enter Date</i></a></td>';
@@ -1100,13 +1104,14 @@ getUserAccessLocationDetails();
 					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
 					if(result[i].remarks !=null && result[i].remarks !=""){
 						//str+='<td>'+result[i].remarks+' <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
-						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">'+result[i].remarks+'</a></td>';
+						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'" data-toggle="tooltip" data-placement="top" title="Click here to update Remarks">'+result[i].remarks+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
 						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">Enter Remarks</i></a></td>';
 					}
 					
-					str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
+					//str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
+					str+='<td><i class="glyphicon glyphicon-edit" style="cursor:pointer" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');" data-toggle="tooltip" data-placement="top" title="Click here to update MOM/ATR"></i></td>';
 				}
 				str+='</tbody>';
 				str+='</table>';
@@ -1122,6 +1127,8 @@ getUserAccessLocationDetails();
 			});
 			$('#meetingTableId').removeClass("dataTable");
 			$('#meetingTableId_wrapper').css("margin-top","20px");
+			
+			 $('[data-toggle="tooltip"]').tooltip();
 			
 		});
 	});
@@ -1701,11 +1708,11 @@ function updateConductedDate(dateValue){
 	var meetingId = $("#hiddenMeetingId").val();
 	var attrId = $("#hiddenAttrId").val();
 	
-	if(dateValue ==null || dateValue =="undefined" || dateValue.length<=0){
+	/* if(dateValue ==null || dateValue =="undefined" || dateValue.length<=0){
 		$("#errorId").css("color", "red");
 		$("#errorId").html(" please select Date");
 		return;
-	}
+	} */
 	
 	var jsObj={
 		meetingId : meetingId,
@@ -1720,9 +1727,13 @@ function updateConductedDate(dateValue){
 			$("#errorId").css("color", "green");
 			$("#errorId").html("Updated Successfully");
 			
-			$("#"+attrId).html(dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
-			
-			$("#"+attrId).attr("attr_conductedDate",dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
+			if(dateValue !=null && dateValue.length>0){
+				$("#"+attrId).html(dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
+				$("#"+attrId).attr("attr_conductedDate",dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
+			}else{
+				$("#"+attrId).html("Enter Date");
+				$("#"+attrId).attr("attr_conductedDate","");
+			}
 			
 			 setTimeout(function(){ 
 					$("#editConductedBtnModal").modal('hide');
@@ -1737,11 +1748,12 @@ function updateConductedReason(remarks){
 	var meetingId = $("#hiddenMeetingId").val();
 	var attrId = $("#hiddenAttrId").val();
 	
-	if(remarks ==null || remarks =="undefined" || remarks.length<=0){
+	/* if(remarks ==null || remarks =="undefined" || remarks.length<=0){
 		$("#errorId").css("color", "red");
 		$("#errorId").html(" please Enter Remarks");
 		return;
-	}
+	} */
+	
 	var jsObj={
 		meetingId : meetingId,
 		remarks :remarks
@@ -1755,8 +1767,14 @@ function updateConductedReason(remarks){
 			$("#errorId").css("color", "green");
 			$("#errorId").html("Updated Successfully");
 			
-			$("#"+attrId).html(remarks);
-			$("#"+attrId).attr("attr_remarks",remarks);
+			
+			if(remarks !=null && remarks.length>0){
+				$("#"+attrId).html(remarks);
+				$("#"+attrId).attr("attr_remarks",remarks);
+			}else{
+				$("#"+attrId).html("Enter Remarks");
+				$("#"+attrId).attr("attr_remarks","");
+			}
 			
 			 setTimeout(function(){ 
 					$("#editConductedBtnModal").modal('hide');
