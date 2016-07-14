@@ -943,6 +943,7 @@
 				    <value>com.itgrids.partyanalyst.model.NominatedPostGovtOrder</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPostStatus</value>
 				    <value>com.itgrids.partyanalyst.model.TdpCadreReportStatus</value>
+				    <value>com.itgrids.partyanalyst.model.NominationPostCandidate</value>
 				 </list>
 			
 		</property>
