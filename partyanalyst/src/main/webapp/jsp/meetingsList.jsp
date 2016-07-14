@@ -1810,7 +1810,6 @@ $(document).on("click",".editRemarksBtn",function(){
 	$("#remarksUpdateId").show();
 	
 	var remarks = $(this).attr("attr_remarks");
-	alert(remarks);
 	var meetingId = $(this).attr("attr_meetingId");
 	var id = $(this).attr("id");
 		
