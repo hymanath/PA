@@ -11,5 +11,5 @@ import com.itgrids.partyanalyst.model.AlertCandidate;
 public interface IAlertCandidateDAO extends GenericDao<AlertCandidate, Long> {
 	
 	public List<Object[]> getAlertCandidateCount(List<Long> alertIds);
-	public List<Object[]> getAlertCandidatesData(Long alertId);
+	public List<Object[]> getAlertCandidatesData(List<Long> alertIds);
 }

@@ -73,10 +73,10 @@ public class AlertCandidateDAO extends
 	}
 	
 	
-	public List<Object[]> getAlertCandidatesData(Long alertId)
+	public List<Object[]> getAlertCandidatesData(List<Long> alertIds)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.tdpCadre.tdpCadreId,model.tdpCadre.firstname");
+		str.append("select model.alertId,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname");
 		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
 		str.append(" ,constituency.constituencyId,constituency.name");
 		str.append(" ,state.stateId,state.stateName");
@@ -91,9 +91,11 @@ public class AlertCandidateDAO extends
 		str.append(" left join model.tdpCadre.userAddress.state state ");
 		str.append(" left join model.tdpCadre.userAddress.ward ward ");
 		
-		str.append(" where model.alert.isDeleted ='N' and model.alert.alertId=:alertId and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
+		str.append(" where model.alert.isDeleted ='N' and model.alert.alertId in(:alertIds) and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
+		str.append(" group by model.alertId,model.tdpCadre.tdpCadreId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("alertId", alertId);
+		if(alertIds != null && alertIds.size() > 0)
+		query.setParameterList("alertIds", alertIds);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		return query.list();
 	}
