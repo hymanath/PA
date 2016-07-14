@@ -930,12 +930,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
-				if(result[i].importantLeaderCadreId != null){
-					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
-					else
-						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
-				}
+				
 				
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
@@ -957,7 +952,12 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
 				str+='</div>';
-				
+				if(result[i].importantLeaderCadreId != null){
+					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
+					else
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
+				}
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
@@ -1404,12 +1404,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				}
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
-				if(result[i].importantLeaderCadreId != null){
-					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>'
-					else
-						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>'
-				}
+				
 				
 				str+='<div>';
 				if(result[i].deletedStatus != "MD"){
@@ -1428,7 +1423,12 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
 				str+='</div>';
-				
+				if(result[i].importantLeaderCadreId != null){
+					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>'
+					else
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>'
+				}
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
