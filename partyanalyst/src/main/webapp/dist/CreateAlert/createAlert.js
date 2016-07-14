@@ -95,6 +95,84 @@ function disableByLevel(index)
 		}
 		
   }
+  
+  function showHideBySearchType(){
+		
+		//setToDefaultAdvancedSearch();
+			$('#errorDivId').html('');
+			var selectVal = $("#advanceSearchTypeId").val();
+			
+			
+			if(selectVal == 2)
+			{
+				$(".advancePRCls,#searchBtnId").show();
+				$(".advanceprclsDiv").show();
+				$(".advanceNameCls").hide();
+				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
+				$(".locationsFilterCls").show();
+				$(".advanceprcls").show();
+				$("#cadreCommitteeDiv_chosen").hide();
+				$(".stateShowCls").show();
+				$(".levelShowCls").show();
+				setToDefaultAdvancedSearch();
+				$("#advanceDesignationId").css("display","none");
+				getPublicRepresentsDetails();
+				//disableByLevel();
+				
+			}
+			else if(selectVal == 3)
+			{
+				$("#searchBtnId").show();
+				$(".advancePRCls").hide();
+				$(".advancePRCls").parent().hide();
+				$(".advanceNameCls").hide();
+				$(".advanceCadreCommittee").show();
+				$(".locationsFilterCls").show();
+				$(".advanceprcls").hide();
+				$(".stateShowCls").show();
+				$(".levelShowCls").show();
+				$(".advanceprclsDiv").hide();
+				$("#cadreCommitteeDiv_chosen").show();
+				$("#cadreCommitteeDiv").css("display","none");
+				$(".chosen-choices").css("display","block");
+				getCommitteeRoles();
+				$(".referRolesCheck").removeAttr("checked");
+				setToDefaultAdvancedSearch();
+				//disableByLevel();
+			}
+			else if(selectVal == 1)
+			{
+				$("#searchBtnId").show();
+				$(".stateShowCls").show();
+				$(".advanceprclsDiv").show();
+				$(".advanceNameCls").show();
+				$(".levelShowCls").show();
+				$(".advancePRCls").hide();
+				$(".advancePRCls").parent().hide();
+				$("#cadreCommitteeDiv_chosen").hide();
+				$("#referCommitteeDiv").hide();
+				clearNameSearchTypeFields();
+				
+			}
+			else
+			{
+				$(".levelShowCls").hide();
+				$(".stateShowCls").hide();
+				$(".advanceprcls").show();
+				$(".advanceNameCls").show();
+				$(".advancePRCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$("#advanceSearchValueId").val("");
+				$(".advanceprclsDiv").hide();
+			}
+				disableByLevel('');
+				$(".stateCls").show();
+				$(".distCls").hide();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+	}
  function setDefault(index)
   {
 	  $("#referconstituencyId"+index).find('option').not(':first').remove();
@@ -219,82 +297,7 @@ function disableByLevel(index)
 		   });
 		}
 		
-		function showHideBySearchType(){
 		
-		//setToDefaultAdvancedSearch();
-			$('#errorDivId').html('');
-			var selectVal = $("#advanceSearchTypeId").val();
-			
-			if(selectVal == 2)
-			{
-				$(".advancePRCls,#searchBtnId").show();
-				$(".advanceprclsDiv").show();
-				$(".advanceNameCls").hide();
-				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
-				$(".locationsFilterCls").show();
-				$(".advanceprcls").show();
-				$("#cadreCommitteeDiv_chosen").hide();
-				$(".stateShowCls").show();
-				$(".levelShowCls").show();
-				setToDefaultAdvancedSearch();
-				$("#advanceDesignationId").css("display","none");
-				getPublicRepresentsDetails();
-				//disableByLevel();
-				
-			}
-			else if(selectVal == 3)
-			{
-				$("#searchBtnId").show();
-				$(".advancePRCls").hide();
-				$(".advancePRCls").parent().hide();
-				$(".advanceNameCls").hide();
-				$(".advanceCadreCommittee").show();
-				$(".locationsFilterCls").show();
-				$(".advanceprcls").hide();
-				$(".stateShowCls").show();
-				$(".levelShowCls").show();
-				$(".advanceprclsDiv").hide();
-				$("#cadreCommitteeDiv_chosen").show();
-				$("#cadreCommitteeDiv").css("display","none");
-				$(".chosen-choices").css("display","block");
-				getCommitteeRoles();
-				$(".referRolesCheck").removeAttr("checked");
-				setToDefaultAdvancedSearch();
-				//disableByLevel();
-			}
-			else if(selectVal == 1)
-			{
-				$("#searchBtnId").show();
-				$(".stateShowCls").show();
-				$(".advanceprclsDiv").show();
-				$(".advanceNameCls").show();
-				$(".levelShowCls").show();
-				$(".advancePRCls").hide();
-				$(".advancePRCls").parent().hide();
-				$("#cadreCommitteeDiv_chosen").hide();
-				$("#referCommitteeDiv").hide();
-				clearNameSearchTypeFields();
-				
-			}
-			else
-			{
-				$(".levelShowCls").hide();
-				$(".stateShowCls").hide();
-				$(".advanceprcls").show();
-				$(".advanceNameCls").show();
-				$(".advancePRCls").hide();
-				$(".advanceCadreCommittee").hide();
-				$(".locationsFilterCls").show();
-				$("#advanceSearchValueId").val("");
-				$(".advanceprclsDiv").hide();
-			}
-				disableByLevel('');
-				$(".stateCls").show();
-				$(".distCls").hide();
-				$(".constiCls").hide();
-				$(".mandalCls").hide();
-				$(".panchayatCls").hide();
-	}
 	
 	function buildLevels()
 	{
