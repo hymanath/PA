@@ -12782,6 +12782,12 @@
 				<param name="root">alertDataList</param>
 			</result>
 		</action>
+			<action name="getAlertCandidatesDataAction" class="createAlertAction" method="getAlertCandidatesData">
+			<result type="json" name="success">
+				<param name="root">alertDataList</param>
+			</result>
+		</action>
+		
 		<action name="updateAlertStatusAction" class="createAlertAction" method="updateAlertStatus">
 			<result type="json" name="success">
 				<param name="root">status</param>
