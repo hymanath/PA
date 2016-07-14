@@ -16,6 +16,20 @@ public class ActivityScopeRequiredAttributesDAO extends GenericDaoHibernate<Acti
 		
 	}
 	
+public List<Object[]> getRequiredAttributesOfScope(Long scopeId){
+		
+		Query query = getSession().createQuery(" SELECT model.requiredAttribute.requiredAttributeId, model.requiredAttribute.requiredAttribute " +
+				" FROM ActivityScopeRequiredAttributes model " +
+				" WHERE " +
+				" model.isActive = 'Y' " +
+				" and model.requiredAttribute.isActive='Y' and model.isActive = 'Y' and model.activityScope.isDeleted='N' " +
+							" AND model.activityScope.activity.isActive = 'Y' and  model.activityScope.isDeleted='N' and model.activityScopeId = :scopeId ");
+		
+		query.setParameter("scopeId", scopeId);
+		return query.list();
+	}
+
+
 	public List<Object[]> getActivityRequiredAttributes(List<Long> scopeIds){
 		
 		Query query = getSession().createQuery(" select model.requiredAttribute.requiredAttributeId," +
