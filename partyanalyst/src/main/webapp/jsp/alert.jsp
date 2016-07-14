@@ -323,8 +323,14 @@
 											</select>
 										</div>
 										<div class="col-md-6">
+										
+										
+										<div><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
 											<label>Description</label>
 											<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
+											
+											
+											
 										</div>
 									</div>
 								</div>
@@ -356,7 +362,63 @@
 			</div>
 		</div>
 	</div>
+		<!-- language convertion-->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
+
+// Load the Google Transliterate API
+   google.load("elements", "1", {
+         packages: "transliteration"
+       });
+
+</script> 
+<script type="text/javascript">
+
+
+ var control;
+	var lang;
+   function onLoad() {
+	
+       lang = $("input[name=language]:checked").val();
+     var options = {
+         sourceLanguage:
+             google.elements.transliteration.LanguageCode.ENGLISH,
+         destinationLanguage:
+             [''+lang+''],
+         shortcutKey: 'alt+t',
+         transliterationEnabled: true
+     };
+
+     // Create an instance on TransliterationControl with the required
+     // options.
+     control =
+         new google.elements.transliteration.TransliterationControl(options);
+
+     // Enable transliteration in the textbox with id
+     // 'descrptionId'.
+
+	 	if ($('#alertdescriptionId').length){
+control.makeTransliteratable(['alertdescriptionId']);
+ 
+
+}
+   }
+   function languageChangeHandler() {
+  
+        var lang1 = $("input[name=language]:checked").val();
+		if(lang1 =="en")
+	   {
+		control.disableTransliteration();
+		}
+		else
+	   {
+		   control.enableTransliteration();
+           control.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            lang1);
+			}
+      }
+ google.setOnLoadCallback(onLoad);
 $(".dropkickClass").dropkick()
 function getCandidatesByName(){
 		var  CandidateName=$("#candidateNameId").val();
