@@ -98,9 +98,9 @@
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
 							<option value="0">Select Search Type</option>
 							<option value="1">Name</option>
-							<option value="">Mobile No</option>
+							<!--<option value="">Mobile No</option>
 							<option value="">Membership No</option>
-							<option value="">Voter Id Card No</option>
+							<option value="">Voter Id Card No</option>-->
 							<option value="2">Public Representative</option>
 							<option value="3">Party Committee</option>
 						</select>
@@ -805,6 +805,7 @@ showHideSearch("advanceSearch");
 showHideBySearchType();
 disableByLevel(1);
 getAlertsource();
+
 $("#apptmemberDetailsDiv").html("");
 
 //showHideSearch("advanceSearch");
