@@ -2765,11 +2765,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="activityRequiredAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityRequiredAttributeDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	
 	  <bean id="acceptanceStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AcceptanceStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>

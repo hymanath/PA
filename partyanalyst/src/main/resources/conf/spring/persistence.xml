@@ -840,7 +840,6 @@
 				   
 				   
 				   <value>com.itgrids.partyanalyst.model.EventAttendeeInfo</value>
-				   <value>com.itgrids.partyanalyst.model.ActivityRequiredAttribute</value>
 				   
 				   <value>com.itgrids.partyanalyst.model.AcceptanceStatus</value>
 				   <value>com.itgrids.partyanalyst.model.BloodBagType</value>
