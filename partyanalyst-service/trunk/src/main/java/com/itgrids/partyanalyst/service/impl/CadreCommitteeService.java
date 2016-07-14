@@ -2068,6 +2068,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setImportantLeaderLevel(tdpCadre.getImportantLeaderLevel());
 						committeeVO.setImportantLeaderLocation(tdpCadre.getImportantLeaderLocation());
 						committeeVO.setImportantLeaderCadreId(tdpCadre.getImportantLeaderCadreId());
+						committeeVO.setFromYear(tdpCadre.getFromYear());
+						committeeVO.setToYear(tdpCadre.getToYear());
 						
 						cadreCommitteeList.add(committeeVO);
 					}

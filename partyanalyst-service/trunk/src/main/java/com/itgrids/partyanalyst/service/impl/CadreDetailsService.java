@@ -1232,11 +1232,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 						Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 						Long levelId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 						Long levelVal = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+						String fromDate = obj[6] != null ? obj[6].toString():"";
+						String toDate = obj[7] != null ? obj[7].toString():"";
 						TdpCadreVO vo = getMatchedVOById(returnVO.getTdpCadreDetailsList(), cadreId);
 						if(vo != null){
 							vo.setImportantLeaderType(obj[2] != null ? obj[2].toString():"");
 							vo.setImportantLeaderLevel(obj[4] != null ? obj[4].toString():"");
 							vo.setImportantLeaderCadreId(cadreId);
+							vo.setFromYear(fromDate.substring(0, 4));
+							vo.setToYear(toDate.substring(0, 4));
 							
 							if(levelId.longValue() == 2l){//state
 								String name = stateDAO.get(levelVal).getStateName();
@@ -9700,7 +9704,7 @@ public List<IdNameVO> getAllImportantLeadersTypes(){
 public List<IdNameVO> getTehsilListByConstituency(Long constituencyId){
 	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 	try {
-		List<Object[]> list = boothDAO.getTehsilListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
+		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsListByConstituencyId(constituencyId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			for (Object[] obj : list) {
 				IdNameVO vo = new IdNameVO();

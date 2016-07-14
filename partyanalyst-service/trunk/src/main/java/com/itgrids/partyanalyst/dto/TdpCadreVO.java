@@ -42,6 +42,8 @@ public class TdpCadreVO implements java.io.Serializable
 	private String importantLeaderLevel;
 	private String importantLeaderLocation;
 	private Long importantLeaderCadreId;
+	private String fromYear;
+	private String toYear;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
@@ -331,5 +333,17 @@ public class TdpCadreVO implements java.io.Serializable
 	}
 	public void setImportantLeaderCadreId(Long importantLeaderCadreId) {
 		this.importantLeaderCadreId = importantLeaderCadreId;
+	}
+	public String getFromYear() {
+		return fromYear;
+	}
+	public void setFromYear(String fromYear) {
+		this.fromYear = fromYear;
+	}
+	public String getToYear() {
+		return toYear;
+	}
+	public void setToYear(String toYear) {
+		this.toYear = toYear;
 	}
 }

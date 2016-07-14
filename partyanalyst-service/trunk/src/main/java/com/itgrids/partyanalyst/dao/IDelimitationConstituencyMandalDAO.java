@@ -60,4 +60,5 @@ public interface IDelimitationConstituencyMandalDAO extends GenericDao<Delimitat
 	public List<Object[]> getTehsilsByDelimitationConstituencyIDs(List<Long> delimitationConstituencyIDs) ;
 	
 	public List<Long> getStateWideDelimitationConstituencyIdsList(Long stateId);
+	public List<Object[]> getTehsilsListByConstituencyId(Long constituencyId);
 }
