@@ -715,7 +715,9 @@ footer
                         <a href="debateAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Debate</span></a>
                     </li>
 				</c:if>	
-				
+				<li style="text-align: right">
+                        <a href="alertDashboardAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Alert</span></a>
+                 </li>
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
