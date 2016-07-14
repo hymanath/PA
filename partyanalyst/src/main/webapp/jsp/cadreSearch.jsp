@@ -932,9 +932,9 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='</ul>';
 				if(result[i].importantLeaderCadreId != null){
 					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
 					else
-						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
 				}
 				
 				str+='<div>';
@@ -1406,9 +1406,9 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='</ul>';
 				if(result[i].importantLeaderCadreId != null){
 					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>'
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>'
 					else
-						str+='<p class="m_0" style="font-weight:bold;">Important Leader : '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>'
+						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>'
 				}
 				
 				str+='<div>';
@@ -1973,6 +1973,8 @@ function getLocationsForImpCndidates(publicRepreTypeId){
 			     $("#modalLocationValueId").val($("#hiddenTdpCadreLeb").val());
 		   else if(result.id == 8)
 			     $("#modalLocationValueId").val($("#hiddenTdpCadreWard").val());
+		   /*else if(result.id == 12)
+			     $("#modalLocationValueId").val($("#hiddenTdpCadreMandal").val());*/
 		   $("#hiddenTdpCadreLocationScope").val(result.id);
 	   }
    });
