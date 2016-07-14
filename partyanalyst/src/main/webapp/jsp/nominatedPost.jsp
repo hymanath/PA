@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
                     	<label>State</label>
-                        <select id="statesDivId"  onchange="getDistrictsForStates(this.value);" class="chosenSelect">
+                        <select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect">
                         	<option value="0">All</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="36">Telangana</option>
@@ -32,18 +32,18 @@
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="districtDiv">
                     	<label>District</label>
-                        <select id="districtId" onchange="getConstituenciesForDistricts(this.value);" class="chosenSelect" >
+                        <select id="districtId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="chosenSelect" >
                         
                         </select>
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="constitunecyDiv">
                     	<label>Constituency</label>
-                        <select id="constituencyId" onchange="getMandalCorporationsByConstituency();" class="chosenSelect" >
+                        <select id="constituencyId" onchange="getMandalCorporationsByConstituency('',this.id);" class="chosenSelect" >
                         </select>
                     </div>
                     <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10" id="mandalDiv">
                     	<label>Mandal/Muncipality/Corporation</label>
-                        <select id="mandalList" onchange="getPanchayatWardByMandal();"  class="chosenSelect">
+                        <select id="mandalList" onchange="getPanchayatWardByMandal('',this.id);"  class="chosenSelect">
 							<option value="0"> Select Mandal/Municipality </option>
                         </select>
                     </div>
@@ -219,71 +219,140 @@
                         </div>
                     </div>
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
-                    	<h4 class="m_0 text-success">NOMINATED LEVEL AND LOCATION</h4>
+                    	<h4 class="m_0 text-success">NOMINATED LEVEL AND LOCATION 
+							<span class="pull-right f_14" style="cursor:pointer"  id="addOneMore">
+								Add One More 
+								<i class="glyphicon glyphicon-plus-sign"></i>
+							</span>
+						</h4>
                     </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top10">
-                    	<label>Nominated Post Level</label>
-                        <select class="chosenSelect" multiple>
-                        	<option>State</option>
-                            <option>State</option>
-                            <option>State</option>
-                            <option>State</option>
-                            <option>State</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top10">
-                    	<label>State Name</label>
-                        <select class="chosenSelect" multiple>
-                        	<option>Andhra Pradesh</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top10">
-                    	<label>District</label>
-                        <select class="chosenSelect">
-                        	<option>Hyderabad</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top10">
-                    	<label>Constituency</label>
-                        <select class="chosenSelect">
-                        	<option>Constituencies</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top10">
-                    	<label>Mandal/ Muncipality / Corporation</label>
-                        <select class="chosenSelect">
-                        	<option>Mandal</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 m_top10">
-                    	<label>Panchayat/ Ward / Division</label>
-                        <select class="chosenSelect">
-                        	<option>Panchayat</option>
-                        </select>
-                    </div>
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+						<div class="addBlockNew cloneBlockDiv">
+							<div class="row">
+								<span class="iconClose" style="display:none;cursor:pointer;">
+									<i class="glyphicon glyphicon-remove"></i>
+								</span>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Nominated Post Level</label>
+									<select class="chosenSelect boardLvlCls" id="boardLvlId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>State Name</label>
+									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
+										<option value="0">Select State</option>
+										<option value="1">Andhra Pradesh</option>
+										<option value="36">Telangana</option>
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>District</label>
+									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
+									"nominatedDistId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Constituency</label>
+									<select class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Mandal/ Muncipality / Corporation</label>
+									<select class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
+										
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Panchayat/ Ward / Division</label>
+									<select class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId">
+										
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Department Name</label>
+									<select class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Corporation/Board Name</label>
+									<select class="chosenSelect deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');">
+										
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Position Name</label>
+									<select class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId">
+										
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="addBlockNew cloneBlockDiv" id="cloneDivBlock" style="display:none;">
+							<div class="row">
+								<span class="iconClose" style="display:none;cursor:pointer;">
+									<i class="glyphicon glyphicon-remove"></i>
+								</span>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Nominated Post Level</label>
+									<select class="boardLvlCls" id="boardLvlId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>State Name</label>
+									<select class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
+										<option value="0">Select State</option>
+										<option value="1">Andhra Pradesh</option>
+										<option value="36">Telangana</option>
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>District</label>
+									<select class="nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
+									"nominatedDistId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Constituency</label>
+									<select class="nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Mandal/ Muncipality / Corporation</label>
+									<select class="nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
+										
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Panchayat/ Ward / Division</label>
+									<select class="nominatedPanchayatCls" id="nominatedPanchayatId">
+										
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Department Name</label>
+									<select class="depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');">
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Corporation/Board Name</label>
+									<select class="deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');">
+										
+									</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+									<label>Position Name</label>
+									<select class="deptBoardPostnCls" id="deptBoardPostnId">
+										
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+						<div id="addOneMoreBlock"></div>
+					</div>
                 </div>
-                <div class="row m_top10">
-                	<div class="col-md-4 col-lg-4 col-xs-12 col-sm-6">
-                    	<label>Department Name</label>
-                        <select class="chosenSelect"  multiple>
-                        	<option></option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-6">
-                    	<label>Corporation/Board Name</label>
-                        <select class="chosenSelect" multiple>
-                        	<option></option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-6">
-                    	<label>Position Name</label>
-                        <select class="chosenSelect" multiple>
-                        	<option></option>
-                        </select>
-                    </div>
-                </div>
-                
-                    <div class="row">
+                <div class="row">
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p>UPLOAD SCAN COPY</p>
                             <input type="file" class="form-control"/>
@@ -308,6 +377,76 @@ $('.chosenSelect').chosen();
 $(document).on("click",".btnClassChange",function(){
 	$(".btnClassChange").removeClass("btnActive");
 	$(this).addClass("btnActive");
+});
+$(document).on("click",".iconClose",function(){
+	$(this).closest(".addBlockNew").remove()
+});
+var cloneCount=0;
+
+$(document).on("click","#addOneMore",function(){
+  var e = $("#cloneDivBlock").clone();
+  e.removeClass("cloneBlockDiv")
+  e.attr("id",'block'+cloneCount);
+  e.attr("attr_count",cloneCount);
+  e.show();
+  e.find(".iconClose").show();
+
+  e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
+  getBoardLevels("boardLvlId"+cloneCount);
+  
+  e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
+  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates("",nominatedStaeId'+cloneCount+','+cloneCount+');');
+  
+  e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
+  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts("",nominatedDistId'+cloneCount+','+cloneCount+');');
+  
+  e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
+  e.find(".nominatdConstCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatdConstId'+cloneCount+');');
+  
+  e.find(".nominatedMandlCls").attr("id","nominatedMandlId"+cloneCount);
+  e.find(".nominatedMandlCls").attr("onChange",'getPanchayatWardByMandal('+cloneCount+',nominatedMandlId'+cloneCount+');');
+   
+  e.find(".nominatedPanchayatCls").attr("id","nominatedPanchayatId"+cloneCount);
+  //e.find(".nominatedPanchayatCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatedPanchayatId'+cloneCount+');');
+   
+  e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
+  getDepartments("depmtsId"+cloneCount);
+  e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+');');
+  
+  e.find(".deptBoardCls").attr("id","deptBoardId"+cloneCount);
+  e.find(".deptBoardCls").attr("onChange",'getDepartmentBoardPositions('+cloneCount+');');
+  
+  e.find(".deptBoardPostnCls").attr("id","deptBoardPostnId"+cloneCount);
+  $("#addOneMoreBlock").append(e);
+  
+  var boardlvl= "boardLvlId"+cloneCount;
+  $("#"+boardlvl).chosen();
+  
+  var nominatedState= "nominatedStaeId"+cloneCount;
+  $("#"+nominatedState).chosen();
+  
+  var nomintdDist= "nominatedDistId"+cloneCount;
+  $("#"+nomintdDist).chosen();
+  
+  var nomintedConst= "nominatdConstId"+cloneCount;
+  $("#"+nomintedConst).chosen();
+   
+  var nomintdMandl= "nominatedMandlId"+cloneCount;
+  $("#"+nomintdMandl).chosen();
+  
+  var nomintdPanchyt= "nominatedPanchayatId"+cloneCount;
+  $("#"+nomintdPanchyt).chosen();
+  
+  var depts= "depmtsId"+cloneCount;
+  $("#"+depts).chosen();
+  
+  var deptBrd= "deptBoardId"+cloneCount;
+  $("#"+deptBrd).chosen();
+  
+  var deptBrdPostn= "deptBoardPostnId"+cloneCount;
+  $("#"+deptBrdPostn).chosen();
+  
+  cloneCount=cloneCount+1;
 });
 </script>
 </body>

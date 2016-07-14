@@ -324,6 +324,24 @@ label
 	border-width: 9px;
 	margin-left: -9px;
 }
+.iconClose
+{
+	background:#ddd;
+	color:#333;
+	position:absolute;
+	right:0px;
+	top:0px;
+	cursor:pointer;
+	padding:3px;
+}
+.f_14
+{
+	font-size:14px;
+}
+.addBlockNew
+{
+	border:1px solid #ddd;padding:10px;background:#fff;position:relative;margin-top:10px;
+}
 @media (max-width: 767px)
 {
 	.pad_right0
