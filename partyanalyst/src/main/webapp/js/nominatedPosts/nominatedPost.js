@@ -439,7 +439,7 @@ function getNominatedPostApplication(startIndex)
 		}
 		$.ajax({
 				type : "POST",
-				url : "getNominatedPostApplicationAction.action",
+				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 			$(".paginationDivId").show();

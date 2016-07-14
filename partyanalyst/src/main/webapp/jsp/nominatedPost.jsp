@@ -33,7 +33,7 @@
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="districtDiv">
                     	<label>District</label>
                         <select id="districtId" onchange="getConstituenciesForDistricts(this.value);" class="chosenSelect" >
-						
+                        
                         </select>
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="constitunecyDiv">
@@ -85,6 +85,7 @@
                      </div>
                  </div>
                  <div class="row">
+				 <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px; display: none;" id="searchDataImg" class="offset7" src="images/icons/cadreSearch.gif">
                     <div class="col-md-12 col-xs-12 col-sm-12">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
                         	<div id="searchData"></div>
