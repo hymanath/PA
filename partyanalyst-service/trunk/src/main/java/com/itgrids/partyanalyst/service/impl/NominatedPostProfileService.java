@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
-import com.itgrids.partyanalyst.dao.IDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -22,21 +22,28 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IBoardLevelDAO boardLevelDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService ;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
-	private IDepartmentDAO departmentDAO;
+	private IDepartmentsDAO departmentsDAO;
 	private IDepartmentBoardDAO departmentBoardDAO;
 	private IDepartmentBoardPositionDAO departmentBoardPositionDAO;
 	
 	
+	
+	public IDepartmentsDAO getDepartmentsDAO() {
+		return departmentsDAO;
+	}
+
+	public void setDepartmentsDAO(IDepartmentsDAO departmentsDAO) {
+		this.departmentsDAO = departmentsDAO;
+	}
+
 	public IDepartmentBoardPositionDAO getDepartmentBoardPositionDAO() {
 		return departmentBoardPositionDAO;
 	}
-
 
 	public void setDepartmentBoardPositionDAO(
 			IDepartmentBoardPositionDAO departmentBoardPositionDAO) {
 		this.departmentBoardPositionDAO = departmentBoardPositionDAO;
 	}
-
 
 	public IDepartmentBoardDAO getDepartmentBoardDAO() {
 		return departmentBoardDAO;
@@ -57,17 +64,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-
-
-	public IDepartmentDAO getDepartmentDAO() {
-		return departmentDAO;
-	}
-
-
-	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-		this.departmentDAO = departmentDAO;
-	}
-
 
 	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
 		return setterAndGetterUtilService;
@@ -119,7 +115,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public List<IdNameVO> getDepartments(){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = departmentDAO.getDepartments();
+		List<Object[]> list = departmentsDAO.getDepartments();
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
