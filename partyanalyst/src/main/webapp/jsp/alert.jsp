@@ -322,7 +322,7 @@
 											<option value="0">Select Panchayat/Ward</option>
 											</select>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-6" style="clear: both;">
 										
 										
 										<div><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
