@@ -233,7 +233,7 @@
 						</div>-->
 						
 						
-						<div class="row m_top10">
+						<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
@@ -593,12 +593,18 @@ function clearFields()
 	 $("#alertSeverityId").val(0);
 	   var select = new Dropkick("#alertSeverityId");
 				select.refresh();
-		$("#alertlevelId1").val(0);
+		$("#alertlevelId1").val(2);
 	   var select = new Dropkick("#alertlevelId1");
 				select.refresh();
 		$("#alertSourceId").val(0);
 	   var select = new Dropkick("#alertSourceId");
 				select.refresh();
+	 var select = new Dropkick("#stateId1");
+				select.refresh();
+				$("#apptmemberDetailsDiv").html("");
+				$(".membersBlock").html("");
+				$("#involvedCandidatesDiv").hide();
+				
 				
 }
 function getAlertType(){

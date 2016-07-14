@@ -214,6 +214,24 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	
+	public String getAlertCandidatesData()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			
+			alertDataList = alertService.getAlertCandidatesData(jObj.getLong("alertId"));
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+
 	public String updateAlertStatus()
 	{
 		try{

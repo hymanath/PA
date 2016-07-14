@@ -779,6 +779,7 @@ function disableByLevel(index)
    $(document).on("click",".apptDetailsDiv",function(){
 		
 		 if($(this).is(':checked')){
+			 $("#involvedCandidatesDiv").show();
 			 $(".membersBlock").show();
 			  var name  = $(this).attr("attr_name");
 			  var image = $(this).attr("attr_img_url");
@@ -789,7 +790,7 @@ function disableByLevel(index)
 			var str ='';
 			str+='<div class="col-md-12 block">';
 			str+='<div class="media"><div class="media-left">';
-			str+='<img src="http://mytdp.com/images/cadre_images/282/AP1431166113.jpg" alt="image" style="height:30px;width:30px;" class="img-circle">';
+			str+='<img src="'+image+'" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
@@ -798,7 +799,7 @@ function disableByLevel(index)
 			str+='<div class="col-md-4"><div class="form-inline"><label style="position:relative;top:-5px">Alert Impact : </label>';
 			//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
 			str+='<div class="onoffswitch" style="display:inline-block">';
-			str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].orderId" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
+			str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
 			str+='<label class="onoffswitch-label" for="myonoffswitch'+cloneCount+'">';
             str+='<span class="onoffswitch-inner"></span>';
             str+='<span class="onoffswitch-switch"></span>';
@@ -808,6 +809,9 @@ function disableByLevel(index)
 			 $(".membersBlock").append(str);
 							 
 			  cloneCount = cloneCount+1;
+			   $('html, body').animate({
+                    scrollTop: $('.membersBlock').offset().top
+                }, 2000);
 		 }
    })
    $(document).on("click",".closeIcon",function(){
