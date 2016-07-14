@@ -21,7 +21,7 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	public Object[] getMeetingNameByMeetingId(Long meetingId);
 	public List<Object[]> getLevelWiseMeetingDetails();
 	public Integer updateConductedDetails(Long meetingId,String isConducted,String remarks,Date cdDate);
-	 public Integer updateConductedStatus(Long meetingId,String isConducted);
-	 public Integer updateConductedDate(Long meetingId,Date conductedDate);
-	 public Integer updateConductedReason(Long meetingId,String remarks);
+	 public Integer updateConductedStatus(Long meetingId,String isConducted,Long userId,Date presentDate);
+	 public Integer updateConductedDate(Long meetingId,Date conductedDate,Long userId,Date presentDate);
+	 public Integer updateConductedReason(Long meetingId,String remarks,Long userId,Date presentDate);
 }
