@@ -1,6 +1,6 @@
-package com.itgrids.partyanalyst.service.impl;
+ package com.itgrids.partyanalyst.service.impl;
 
-import java.io.File;
+import java.io.File; 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,8 +51,8 @@ import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
-import com.itgrids.partyanalyst.dao.IActivityRequiredAttributeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
+import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -274,14 +274,23 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
-	private IActivityRequiredAttributeDAO activityRequiredAttributeDAO;
+
 	private SetterAndGetterUtilService setterAndGetterUtilService;
 	private IActivityLocationInfoDatesDAO activityLocationInfoDatesDAO;
+	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
 	
 	
 	
 	
-	
+	public IActivityScopeRequiredAttributesDAO getActivityScopeRequiredAttributesDAO() {
+		return activityScopeRequiredAttributesDAO;
+	}
+
+	public void setActivityScopeRequiredAttributesDAO(
+			IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO) {
+		this.activityScopeRequiredAttributesDAO = activityScopeRequiredAttributesDAO;
+	}
+
 	public IActivityLocationInfoDatesDAO getActivityLocationInfoDatesDAO() {
 		return activityLocationInfoDatesDAO;
 	}
@@ -294,11 +303,6 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public void setSetterAndGetterUtilService(
 			SetterAndGetterUtilService setterAndGetterUtilService) {
 		this.setterAndGetterUtilService = setterAndGetterUtilService;
-	}
-
-	public void setActivityRequiredAttributeDAO(
-			IActivityRequiredAttributeDAO activityRequiredAttributeDAO) {
-		this.activityRequiredAttributeDAO = activityRequiredAttributeDAO;
 	}
 
 	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
@@ -17493,7 +17497,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				
 				List<IdNameVO> idnameList = new ArrayList<IdNameVO>(0);
 				List<Long> idsList = new ArrayList<Long>();
-				List<Object[]> requiredObjList = activityRequiredAttributeDAO.getRequiredAttributesOfScope(activityScopeId);			
+				List<Object[]> requiredObjList = activityScopeRequiredAttributesDAO.getRequiredAttributesOfScope(activityScopeId);			
 				if(commonMethodsUtilService.isListOrSetValid(requiredObjList)){				
 					String[] setterPropertiesList = {"id","name"};
 					idnameList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(requiredObjList, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -18947,7 +18951,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 			
 			List<IdNameVO> idnameList = new ArrayList<IdNameVO>(0);
 			List<Long> idsList = new ArrayList<Long>();
-			List<Object[]> requiredObjList = activityRequiredAttributeDAO.getRequiredAttributesOfScope(activityScopeId);			
+			List<Object[]> requiredObjList = activityScopeRequiredAttributesDAO.getRequiredAttributesOfScope(activityScopeId);			
 			if(commonMethodsUtilService.isListOrSetValid(requiredObjList)){				
 				String[] setterPropertiesList = {"id","name"};
 				idnameList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(requiredObjList, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
