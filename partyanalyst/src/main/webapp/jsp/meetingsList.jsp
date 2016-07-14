@@ -1070,7 +1070,7 @@ getUserAccessLocationDetails();
 					
 					if(result[i].conductedDate !=null && result[i].conductedDate !=""){
 						//str+='<td> '+result[i].conductedDate.split(' ')[0]+' <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
-						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'"  data-toggle="tooltip" data-placement="top" title="Click here to update Date">'+result[i].conductedDate.split(' ')[0]+'</a></td>';
+						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'" >'+result[i].conductedDate.split(' ')[0]+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
 						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">Enter Date</i></a></td>';
@@ -1104,7 +1104,7 @@ getUserAccessLocationDetails();
 					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
 					if(result[i].remarks !=null && result[i].remarks !=""){
 						//str+='<td>'+result[i].remarks+' <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
-						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'" data-toggle="tooltip" data-placement="top" title="Click here to update Remarks">'+result[i].remarks+'</a></td>';
+						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'" >'+result[i].remarks+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
 						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">Enter Remarks</i></a></td>';
