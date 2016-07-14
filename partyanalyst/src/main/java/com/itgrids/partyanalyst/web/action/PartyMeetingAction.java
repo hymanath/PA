@@ -461,9 +461,15 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	public String updateConductedStatus(){
 		try{
 			
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
 			jObj = new JSONObject(getTask());
 			
-			status = partyMeetingService.updateConductedStatus(jObj.getLong("meetingId"),jObj.getString("isConducted"));
+			status = partyMeetingService.updateConductedStatus(jObj.getLong("meetingId"),jObj.getString("isConducted"),loggedUser);
 			
 		}catch (Exception e) {
 			LOG.error("Entered into updateConductedDetails Action",e);
@@ -475,9 +481,15 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	public String updateConductedDate(){
 		try{
 			
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
 			jObj = new JSONObject(getTask());
 			
-			status = partyMeetingService.updateConductedDate(jObj.getLong("meetingId"),jObj.getString("conductedDate"));
+			status = partyMeetingService.updateConductedDate(jObj.getLong("meetingId"),jObj.getString("conductedDate"),loggedUser);
 			
 		}catch (Exception e) {
 			LOG.error("Entered into updateConductedDetails Action",e);
@@ -489,9 +501,15 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	public String updateConductedReason(){
 		try{
 			
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
+			
 			jObj = new JSONObject(getTask());
 			
-			status = partyMeetingService.updateConductedReason(jObj.getLong("meetingId"),jObj.getString("remarks"));
+			status = partyMeetingService.updateConductedReason(jObj.getLong("meetingId"),jObj.getString("remarks"),loggedUser);
 			
 		}catch (Exception e) {
 			LOG.error("Entered into updateConductedDetails Action",e);
