@@ -3071,4 +3071,29 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- Nominated Post Related DAO'S End -->
+	
+	<bean id="nominatedPostPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostPositionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nominatedPostDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nominatedPostFinalDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostFinalDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nominatedPostReferDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostReferDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="govtOrderDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtOrderDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nominatedPostGovtOrderDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostGovtOrderDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="nominatedPostStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreReportStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreReportStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

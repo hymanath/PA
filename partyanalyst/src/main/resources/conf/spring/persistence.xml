@@ -934,6 +934,15 @@
 				    <value>com.itgrids.partyanalyst.model.UserEmail</value>
 				    <value>com.itgrids.partyanalyst.model.EmailReport</value>
 				    <value>com.itgrids.partyanalyst.model.ReportEmail</value>
+				    
+				    <value>com.itgrids.partyanalyst.model.NominatedPostPosition</value>
+				    <value>com.itgrids.partyanalyst.model.NominatedPost</value>
+				    <value>com.itgrids.partyanalyst.model.NominatedPostFinal</value>
+				    <value>com.itgrids.partyanalyst.model.NominatedPostReferDetails</value>
+				    <value>com.itgrids.partyanalyst.model.GovtOrder</value>
+				    <value>com.itgrids.partyanalyst.model.NominatedPostGovtOrder</value>
+				    <value>com.itgrids.partyanalyst.model.NominatedPostStatus</value>
+				    <value>com.itgrids.partyanalyst.model.TdpCadreReportStatus</value>
 				 </list>
 			
 		</property>
