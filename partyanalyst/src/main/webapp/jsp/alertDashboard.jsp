@@ -147,11 +147,11 @@
 							<div id="locationLevelDataId"></div>
 						</div>
 					</div><br/>
-					<div class="row">
+					<!--<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="alertCandidateDataId"></div>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</div>        
@@ -231,6 +231,12 @@
 			<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
 		  </div>
 		</div>
+		
+		<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div id="alertCandidateDataId"></div>
+						</div>
+					</div>
        <div class="row">
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			

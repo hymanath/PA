@@ -121,6 +121,7 @@ function buildAlertData(result,jsObj)
 	}
 		
 	var Level = "";
+	
 	if(jsObj.levelId == 2)
 	{
 		Level = "STATE";
@@ -147,8 +148,6 @@ function buildAlertData(result,jsObj)
 	else
 	str+='<h4 style="text-transform: uppercase;">'+Level+' Wise  Alert Details</h4>';	
 	str+='<table class="table table-bordered">';
-
-		
 	str+='<thead>';
 	str+='<th>S.NO</th>';
 	str+='<th>Desc</th>';
@@ -157,7 +156,15 @@ function buildAlertData(result,jsObj)
 	str+='<th>Status</th>';
 	str+='<th>No. Of Candidate</th>';
 	str+='<th>User Type</th>';
-	str+='<th>Location</th>';
+	if(jsObj.levelId == 2)
+	{
+	str+='<th>STATE</th>';	
+	}
+	else
+	{
+		str+='<th>DISTRICT</th>';
+	}
+	
 	str+='</thead>';
 	var j=0;
 	for(var i in result)
@@ -169,53 +176,19 @@ function buildAlertData(result,jsObj)
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].status+'</td>';
-	str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
+	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
+	str+='<td>'+result[i].count+'</td>';
 	str+='<td>'+result[i].userType+'</td>';
 	
-	
-	var location ='';
-			
-			if(result[i].regionScope == "STATE")
+		if(jsObj.levelId == 2)
 			{
-				location +='<p>S:'+result[i].locationVO.state+'</p>';
+				str+='<td>'+result[i].locationVO.state+'</td>';
 			}
-			
-			else if(result[i].regionScope == "DISTRICT")
+			else
 			{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p>';
-			}
-			
-			else if(result[i].regionScope == "CONSTITUENCY")
-			{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p>';
-			}
-			
-			
-			else if(result[i].regionScope == "MANDAL" || result[i].regionScope == "MUNICIPAL-CORP-GMC" )
-			{
-				
-					if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
-				{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T: '+result[i].locationVO.localEleBodyName+' </p>';	
-				}
-				else{
-					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>Constituency :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p>';
-				}
-			}
-			
-			else if(result[i].regionScope == "VILLAGE" || result[i].regionScope == "WARD" )
-			{
-			
-				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
-				{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T: '+result[i].locationVO.localEleBodyName+' </p><p>W: '+result[i].locationVO.wardName+'</p>';	
-				}
-				else{
-					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M: '+result[i].locationVO.tehsilName+'</p><p> V : '+result[i].locationVO.villageName+'</p>';
-				}
+			str+='<td>'+result[i].locationVO.districtName+'</td>';	
 			}
 	
-	str+='<td>'+location+'</td>';
 	str+='</tr>';	
 	}
 	str+='</table>';
@@ -224,8 +197,10 @@ function buildAlertData(result,jsObj)
 var GlobalalertId;
 var globalAlertName;
 $(document).on("click",".alertModel",function(){
+
 	$("#ModalShow").modal('show');
 	GlobalalertId = $(this).attr("attr-id");
+	
 	showPopUpAlertData(GlobalalertId);
 	 globalAlertName=$(this).attr("attr-des");
 	 	$("#descriptionTitleId").html(globalAlertName);
@@ -235,10 +210,10 @@ $(document).on("click",".alertModel",function(){
 });
 $(document).on("click",".alertCandidate",function(){
 
-getAlertCandidatesDataAction($(this).attr("attr-id"));
+getAlertCandidatesData($(this).attr("attr-id"));
 });
 
-function getAlertCandidatesDataAction(alertId)
+function getAlertCandidatesData(alertId)
 {
 	$("#alertCandidateDataId").html('<img src="images/search.gif" />');
     GlobalAlertData = [];
@@ -252,10 +227,10 @@ function getAlertCandidatesDataAction(alertId)
 					  url: 'getAlertCandidatesDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-			      buildAlertCandidateData(result,jsObj);
+			      buildAlertCandidateData(result);
 				});
 }
-function buildAlertCandidateData(result,jsObj)
+function buildAlertCandidateData(result)
 {
 	
 	if(result == null || result.length == 0)
@@ -353,7 +328,7 @@ function showPopUpAlertData(alertId)
 			$("#statusId").val(''+GlobalAlertData[i].statusId+'');
 			  $("#statusId").dropkick('refresh')
 			$("#descriptionId").html(''+GlobalAlertData[i].desc+'');
-			
+			buildAlertCandidateData(GlobalAlertData[i].subList);
 		}
 	}
 	
