@@ -41,7 +41,9 @@ public class ImportantLeadersDAO extends GenericDaoHibernate<ImportantLeaders, L
 												" model.importantLeadersType.position," +
 												" model.importantLeadersLevel.importantLeadersLevelId," +
 												" model.importantLeadersLevel.scope," +
-												" model.constituencyId" +
+												" model.constituencyId," +
+												" model.fromDate," +
+												" model.toDate" +
 												" from ImportantLeaders model" +
 												" where model.tdpCadre.tdpCadreId in (:tdpCadreIds)");
 		query.setParameterList("tdpCadreIds", tdpCadreIds);

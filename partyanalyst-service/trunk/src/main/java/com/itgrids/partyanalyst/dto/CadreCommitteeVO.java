@@ -78,7 +78,8 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String importantLeaderLevel;
 	private String importantLeaderLocation;
 	private Long importantLeaderCadreId;
-	
+	private String fromYear;
+	private String toYear;
 	
 	public Long getImportantLeaderCadreId() {
 		return importantLeaderCadreId;
@@ -478,5 +479,16 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	public void setDistrictNo(String districtNo) {
 		this.districtNo = districtNo;
 	}
-	
+	public String getFromYear() {
+		return fromYear;
+	}
+	public void setFromYear(String fromYear) {
+		this.fromYear = fromYear;
+	}
+	public String getToYear() {
+		return toYear;
+	}
+	public void setToYear(String toYear) {
+		this.toYear = toYear;
+	}
 }

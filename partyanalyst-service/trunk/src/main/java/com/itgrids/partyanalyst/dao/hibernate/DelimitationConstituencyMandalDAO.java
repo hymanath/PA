@@ -258,4 +258,14 @@ IDelimitationConstituencyMandalDAO {
 		 return query.list();
 	}
 	
+	public List<Object[]> getTehsilsListByConstituencyId(Long constituencyId){
+		Query query = getSession().createQuery("select distinct model.tehsil.tehsilId," +
+												" model.tehsil.tehsilName" +
+												" from DelimitationConstituencyMandal model" +
+												" where model.delimitationConstituency.constituency.constituencyId = :constituencyId" +
+												" order by model.tehsil.tehsilName");
+		
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }
