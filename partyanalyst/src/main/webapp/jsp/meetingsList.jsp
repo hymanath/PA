@@ -360,7 +360,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
             </div> -->
 			<!-- Sumamry Block-->
 				
-                	<div class="panel panel-default">
+                	<div class="panel panel-default" style="border:1px solid #ddd !important">
                     	<div class="panel-heading">
                         	<h4 class="panel-title">Meetings List</h4>
                         </div>
@@ -462,63 +462,13 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 							<div class="row col-xs-1 pull-right" >
 							<button class="btn btn-success btn-sm btn-block" id="viewMeetings">View</button>
 							</div>
-							<div class="row m_top20" style="padding:10px;margin-top:35px;">
-								<div id="meetingDetailsTableId"><img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForResults" style="margin-left:0px;margin-top: 30px;width:20px;height:20px;display:none;"/></div>
-                            	<!--<table class="m_top20 table table-bordered">
-                                	<thead class="bg_d">
-                                    	<th>Meeting Type</th>
-                                        <th>Meeting Location</th>
-										<th>Meeting Name</th>
-                                        <th>Schedule Date</th>
-                                        <th></th>
-                                    </thead>
-									<tbody id="">
-									</tbody>-->
-                                    <!--<tr>
-                                    	<td>General Body Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>Party Presentative Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>Party Presentative Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>Party Presentative Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr><tr>
-                                    	<td>Party Presentative Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>Party Presentative Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr>
-                                    <tr>
-                                    	<td>Party Presentative Meeting</td>
-                                        <td>Kandukur</td>
-                                        <td>Aug-25-2015</td>
-                                        <td><button class="btn btn-success btn-sm">UPDATE</button></td>
-                                    </tr>-->
-                               <!-- </table>-->
-                            </div>
                         </div>
-                    </div>
+					 </div>
+					<div class="row m_top20" style="padding:10px;margin-top:35px;">
+						<div class="col-md-12">
+							<div id="meetingDetailsTableId"><img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForResults" style="margin-left:0px;margin-top: 30px;width:20px;height:20px;display:none;"/></div>
+						</div>
+					</div>
                 </div>
             </section>
         </div>
@@ -542,7 +492,8 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 			</span>			
 		</div>
 		<textarea type="text" class="form-control" style="display:none" id="remarksUpdateId" ></textarea>
-		<input type="hidden" value="" id="hiddenConductedId" />
+		<input type="hidden" value="" id="hiddenMeetingId" />
+		<input type="hidden" value="" id="hiddenAttrId" />
       </div>
       <div class="modal-footer">
 	  <button type="button" class="btn btn-success btn-xs" id="updateDetailsBtnId">SAVE</button>
@@ -579,7 +530,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 <script src="dist/HighCharts/highcharts.js"></script>
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
-$("#dateValueId").daterangepicker({singleDatePicker: true})
+$("#dateValueId").daterangepicker({singleDatePicker: true,maxDate: moment()})
 getUserAccessLocationDetails();
 	
 	var stateArr = [];
@@ -700,7 +651,7 @@ getUserAccessLocationDetails();
 		 startDate: moment().subtract(29, 'days'),
 		 endDate: moment(),
 		 minDate: '01/01/2012',
-		 maxDate: '12/31/2015',
+		 maxDate: '12/31/2018',
 		 //dateLimit: { days: 60 },
 		 showDropdowns: true,
 		 showWeekNumbers: true,
@@ -708,12 +659,12 @@ getUserAccessLocationDetails();
 		 timePickerIncrement: 1,
 		 timePicker12Hour: true,
 		 ranges: {
-		 'Today': [moment(), moment()],
-		 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		 'This Month': [moment().startOf('month'), moment().endOf('month')],
-		 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		 //'Today': [moment(), moment()],
+		 //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		 //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		 //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		 //'This Month': [moment().startOf('month'), moment().endOf('month')],
+		 //'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 		 },
 		 opens: 'left',
 		 buttonClasses: ['btn btn-default'],
@@ -1028,7 +979,7 @@ getUserAccessLocationDetails();
 		).done(function(result){
 			var str='';
 			if(result!=null && result.length>0){
-				str+='<h4>'+result[0].meetingType+'</h4>';
+				str+='<h4><b>'+result[0].meetingType+'</b></h4>';
 				str+='<table class="m_top20 table table-bordered m_top10" id="meetingTableId">';
 				/* str+='<thead class="bg_d">';
 				//str+='<th>Meeting Type</th>';
@@ -1115,10 +1066,10 @@ getUserAccessLocationDetails();
 					
 					if(result[i].conductedDate !=null && result[i].conductedDate !=""){
 						//str+='<td> '+result[i].conductedDate.split(' ')[0]+' <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
-						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'>'+result[i].conductedDate.split(' ')[0]+'</a></td>';
+						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">'+result[i].conductedDate.split(' ')[0]+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
-						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'>Enter Date</i></a></td>';
+						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">Enter Date</i></a></td>';
 					}
 					
 					
@@ -1149,10 +1100,10 @@ getUserAccessLocationDetails();
 					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
 					if(result[i].remarks !=null && result[i].remarks !=""){
 						//str+='<td>'+result[i].remarks+' <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
-						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'">'+result[i].remarks+'</a></td>';
+						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">'+result[i].remarks+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
-						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'">Enter Remarks</i></a></td>';
+						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">Enter Remarks</i></a></td>';
 					}
 					
 					str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
@@ -1170,6 +1121,7 @@ getUserAccessLocationDetails();
 				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "All"]]			
 			});
 			$('#meetingTableId').removeClass("dataTable");
+			$('#meetingTableId_wrapper').css("margin-top","20px");
 			
 		});
 	});
@@ -1560,10 +1512,10 @@ function getLevelWiseMeetingDetails(){
                        	  str+='<div class="panel panel-default panelMeetings">';
                         	  str+='<div class="panel-heading">';
                         	    str+='<div class="row">';
-                                	str+='<div class="col-md-8 col-xs-12 col-sm-7">';
+                                	str+='<div class="col-md-6 col-xs-12 col-sm-7">';
                                     	str+='<h4 class="panel-title text-capital">'+result[i].name+' level meetings</h4>';
                                     str+='</div>';
-                                    str+='<div class="col-md-4 col-xs-12 col-sm-5">';
+                                    str+='<div class="col-md-6 col-xs-12 col-sm-5">';
 										str+='<div class="meetings'+i+'" style="height:60px;">ssss'+i+'</div>';
                                     str+='</div>';
                                 str+='</div>';
@@ -1622,6 +1574,7 @@ function getLevelWiseMeetingDetails(){
 					var plannedCount=result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
 					
 					$('.meetings'+i+'').highcharts({
+						colors: ['#fec601', '#458ae9', '#f64911'],
 						chart: {
 							type: 'pie',
 							options3d: {
@@ -1665,6 +1618,7 @@ function getLevelWiseMeetingDetails(){
 				
 					
 					$('.totalMeetings').highcharts({
+						colors: ['#fec601', '#458ae9', '#f64911'],
 						chart: {
 							type: 'pie',
 							options3d: {
@@ -1744,7 +1698,8 @@ function updateConductedStatus(meetingId,status){
 function updateConductedDate(dateValue){
 	
 	$("#errorId").html("");	
-	var meetingId = $("#hiddenConductedId").val();
+	var meetingId = $("#hiddenMeetingId").val();
+	var attrId = $("#hiddenAttrId").val();
 	
 	if(dateValue ==null || dateValue =="undefined" || dateValue.length<=0){
 		$("#errorId").css("color", "red");
@@ -1764,6 +1719,11 @@ function updateConductedDate(dateValue){
 		if(result !=null && result == "success"){
 			$("#errorId").css("color", "green");
 			$("#errorId").html("Updated Successfully");
+			
+			$("#"+attrId).html(dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
+			
+			$("#"+attrId).attr("attr_conductedDate",dateValue.split("/")[2]+"-"+dateValue.split("/")[0]+"-"+ dateValue.split("/")[1]);
+			
 			 setTimeout(function(){ 
 					$("#editConductedBtnModal").modal('hide');
 			 }, 1000);
@@ -1774,7 +1734,8 @@ function updateConductedDate(dateValue){
 	});	
 }
 function updateConductedReason(remarks){
-	var meetingId = $("#hiddenConductedId").val();
+	var meetingId = $("#hiddenMeetingId").val();
+	var attrId = $("#hiddenAttrId").val();
 	
 	if(remarks ==null || remarks =="undefined" || remarks.length<=0){
 		$("#errorId").css("color", "red");
@@ -1793,6 +1754,10 @@ function updateConductedReason(remarks){
 		if(result !=null && result == "success"){
 			$("#errorId").css("color", "green");
 			$("#errorId").html("Updated Successfully");
+			
+			$("#"+attrId).html(remarks);
+			$("#"+attrId).attr("attr_remarks",remarks);
+			
 			 setTimeout(function(){ 
 					$("#editConductedBtnModal").modal('hide');
 			 }, 1000);
@@ -1822,8 +1787,10 @@ $(document).on("click",".editConductedDateBtn",function(){
 	
 	var conductedDate = $(this).attr("attr_conductedDate");
 	var meetingId = $(this).attr("attr_meetingId");
+	var id = $(this).attr("id");
 	
-	$("#hiddenConductedId").val(meetingId);
+	$("#hiddenMeetingId").val(meetingId);
+	$("#hiddenAttrId").val(id);
 	
 	var cndDate='';
 	if(conductedDate !=null && conductedDate.length>0){		
@@ -1843,13 +1810,17 @@ $(document).on("click",".editRemarksBtn",function(){
 	$("#remarksUpdateId").show();
 	
 	var remarks = $(this).attr("attr_remarks");
+	alert(remarks);
 	var meetingId = $(this).attr("attr_meetingId");
-	$("#hiddenConductedId").val(meetingId);
+	var id = $(this).attr("id");
+		
+	$("#hiddenMeetingId").val(meetingId);
+	$("#hiddenAttrId").val(id);
 	
-	if(remarks !=null && remarks !=""){
-		$("#remarksUpdateId").html(remarks);			
+	if(remarks !=null && remarks.length>0){
+		$("#remarksUpdateId").val(remarks);			
 	}else{
-		$("#remarksUpdateId").html("");
+		$("#remarksUpdateId").val("");
 	}
 	
 	$("#errorId").html('');
