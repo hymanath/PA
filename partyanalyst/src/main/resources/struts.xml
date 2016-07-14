@@ -12903,6 +12903,15 @@
 			<param name="root">status</param>
 		</result>
 	</action>
-	
+	<action name="getDepartmentBoardsAction" class="nominatedPostProfileAction" method="getDepartmentBoard">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
+	<action name="getDepartmentBoardPositionsAction" class="nominatedPostProfileAction" method="getDepartmentBoardPositions">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
 </package>
 </struts>      
