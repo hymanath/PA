@@ -2780,7 +2780,7 @@
 		   <property name="locationInfoDAO" ref="locationInfoDAO" />
 		   <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 		   <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
-		   <property name="activityRequiredAttributeDAO" ref="activityRequiredAttributeDAO" />
+		 
 		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
 		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />		
 		      
