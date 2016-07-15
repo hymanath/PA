@@ -154,8 +154,8 @@ function buildAlertData(result,jsObj)
 	str+='<th>Alert Type</th>';
 	str+='<th>Severity</th>';
 	str+='<th>Status</th>';
-	str+='<th>No. Of Candidate</th>';
-	str+='<th>User Type</th>';
+	str+='<th>involved Candidates</th>';
+	str+='<th>Source</th>';
 	if(jsObj.levelId == 2)
 	{
 	str+='<th>STATE</th>';	
@@ -240,34 +240,66 @@ function buildAlertCandidateData(result)
 	}
 		
 	var str='';
-	
-	str+='<h4 style="text-transform: uppercase;">Candidate Details</h4>';	
-	str+='<table class="table table-bordered">';
-	str+='<thead>';
-	str+='<th>Name</th>';
-	str+='<th>Location</th>';
-	
-	str+='</thead>';
-	var j=0;
 	for(var i in result)
-	{
-		j++;
-	str+='<tr>';	
-	str+='<td>'+result[i].name+'</td>';
-	var location ='';
-	if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
 				{
-				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T: '+result[i].locationVO.localEleBodyName+' </p><p>W: '+result[i].locationVO.wardName+'</p>';	
+	str+='<div  style="border-radius:50% solid #ddd;padding:8px;margin-top:5px;" class="media">';
+	str+='<div class="media-left">';
+	str+='<img src="'+result[i].image+' "  onerror="setDefaultImage(this);" class="media-object img-center img-responsive  thumbnailSearch thumbnail" alt="Image" style="width: 60px !important; height: 60px  !important;"/>';
+	str+='</div>';
+	str+='<div class="media-body">';
+	str+='<p><b>Name </b>:'+result[i].name+' </p>';
+		if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
+							{
+	str+='<p><b>State </b>:'+result[i].locationVO.state+' <b>District </b>: '+result[i].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].locationVO.constituencyName+' <b>Town </b>:'+result[i].locationVO.localEleBodyName+' <b>Ward </b>:'+result[i].locationVO.wardName+'</p>';
+	
 				}
-				else{
-					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M: '+result[i].locationVO.tehsilName+'</p><p> V : '+result[i].locationVO.villageName+'</p>';
+				else
+				{
+			str+='<p><b>State </b>:'+result[i].locationVO.state+' <b>District </b>: '+result[i].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].locationVO.constituencyName+' <b>Mandal </b>:'+result[i].locationVO.tehsilName+' <b>Village </b>:'+result[i].locationVO.villageName+'</p>';
+			
 				}
-	str+='<td>'+location+'</td>';
-	str+='</tr>';	
-	}
-	str+='</table>';
+				str+='</div>';
+				str+='</div>';
+				}
+	/*str+='<div class="panel panel-default panelAlert">';
+		str+='<div class="panel-heading">';
+			str+='<h4 style="text-transform: uppercase;" class="text-success panel-title">Candidate Details</h4>';	
+		str+='</div>';
+		str+='<div class="panel-body">';
+			str+='<table class="table table-bordered">';
+				str+='<thead>';
+				str+='<th>Name</th>';
+				str+='<th>Location</th>';
+				
+				str+='</thead>';
+				var j=0;
+				for(var i in result)
+				{
+					j++;
+				str+='<tr>';	
+				str+='<td>'+result[i].name+'</td>';
+				var location ='';
+				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
+							{
+							location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T: '+result[i].locationVO.localEleBodyName+' </p><p>W: '+result[i].locationVO.wardName+'</p>';	
+							}
+							else{
+								location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M: '+result[i].locationVO.tehsilName+'</p><p> V : '+result[i].locationVO.villageName+'</p>';
+							}
+				str+='<td>'+location+'</td>';
+				str+='</tr>';	
+				}
+				str+='</table>';
+		str+='</div>';
+	str+='</div>';*/
+	
+	
 	$("#alertCandidateDataId").html(str);
 }
+
+	function setDefaultImage(img){
+	  img.src = "dist/Appointment/img/thumb.jpg";
+   }
 function showPopUpAlertData(alertId)
 {
 	
@@ -406,9 +438,9 @@ function getAlertStatusCommentsTrackingDetails()
 			$("#alertCommentsDiv").html('No Data Available');
 			return;
 		}
-			str+='<div class="panel panel-default m_top10">';
+			str+='<div class="panel panel-default panelAlert m_top10">';
 			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title">'+aptName+' Alert Status Tracking</h4>';
+				str+='<h4 class="panel-title text-success">'+aptName+' Alert Status Tracking</h4>';
 			str+='</div>';
 			str+='<div class="panel-body">';
 			str+='<ul class="alertStatusTracking">';

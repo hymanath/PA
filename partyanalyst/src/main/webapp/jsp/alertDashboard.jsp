@@ -28,6 +28,16 @@
 	
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<style type="text/css">
+		.panelAlert
+		{
+			border:0px;
+			box-shadow:none
+		}
+		.panelAlert .panel-heading , .panelAlert .panel-body
+		{
+			background:#fff;
+			padding:5px;
+		}
 		.createAlertModalCls
 		{
 			border-radius:0px;
@@ -167,81 +177,82 @@
       <div class="modal-body">
         <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
-				<table class="table table-condensed tableModal">
-					<tr>
-						<td style="width:50%;">
-							<label>Type</label>
-							<p id="typeId"></p>
-						</td>
-						<td style="width:50%;">
-							<label>Severity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<p id="severityId"></p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label>Created&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<p id="createdDate"></p>
-						</td>
-						<td>
-							<label>Level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<p id="levelId"></p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label>Location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<p id="LocationId"></p>
-						</td>
-						
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label>Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<p id="descriptionId"></p>
-						</td>
-						<td></td>
-					</tr>
-					
 				
-					<tr>
-					<td>
-							<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-							<select class="dropkickClass" id="statusId">
-								<option value='0'>Select Status</option>
-								
-								<option value='1'>Created</option>
-								<option value='2'>Action In Progess</option>
-								<option value='3'>Completed</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label>Comments</label><span ></span>
-							<textarea class="form-control" id="commentsId"></textarea>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div id="errorId"></div>
-		<div class="row">
-		  <div class="col-md-12 col-xs-12 col-sm-12">
-			<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
-		  </div>
-		</div>
-		
-		<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div id="alertCandidateDataId"></div>
+				<div class="panel panel-default panelAlert">
+					<div class="panel-heading">
+						<h4 class="panel-title text-success">ALERT TYPE</h4>
+					</div>
+					<div class="panel-body">
+						<table class="table table-condensed tableModal">
+							<tr>
+								<td colspan="2"><b>Type Of Alert :</b><span id="typeId"></span> <b>created on</b> <span  id="createdDate"></span></td>
+							</tr>
+							<tr>
+								<td style="width:50%;">
+									<b>Alert Level </b>: <span id="levelId"></span>
+								</td>
+								<td style="width:50%;">
+									<b>Severity </b>: <span id="severityId"></span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="panel panel-default panelAlert">
+					<div class="panel-heading">
+						<h4 class="panel-title text-success">ALERT LOCATION</h4>
+					</div>
+					<div class="panel-body">
+						<p id="LocationId"></p>
+					</div>
+				</div>
+				<div class="panel panel-default panelAlert">
+					<div class="panel-heading">
+						<h4 class="panel-title text-success">ALERT DESCRIPTION</h4>
+					</div>
+					<div class="panel-body">
+						<p id="descriptionId"></p>
+						<div class="media" style="border:1px solid #ddd;padding:8px;margin-top:5px;" id="alertCandidateDataId">
+							
 						</div>
 					</div>
+				</div>
+				
+			</div>
+		</div>
+		<!--<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div id="alertCandidateDataId"></div>
+			</div>
+		</div>-->
        <div class="row">
 		  <div class="col-md-12 col-xs-12 col-sm-12">
 			
 			<div id="alertCommentsDiv"></div>
 		  </div>  
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default panelAlert">
+					<div class="panel-heading">
+						<h4 class="panel-title text-success">UPDATE ALERT STATUS</h4>
+					</div>
+					<div class="panel-body">
+						<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+						<select class="dropkickClass" id="statusId">
+							<option value='0'>Select Status</option>
+							
+							<option value='1'>Created</option>
+							<option value='2'>Action In Progess</option>
+							<option value='3'>Completed</option>
+						</select>
+						<label>Comments</label><span ></span>
+						<textarea class="form-control" id="commentsId"></textarea>
+						<div id="errorId"></div>
+						<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	 </div>
       <!--<div class="modal-footer">
