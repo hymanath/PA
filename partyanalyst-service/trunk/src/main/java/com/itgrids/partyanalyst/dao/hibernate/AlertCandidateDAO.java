@@ -82,6 +82,7 @@ public class AlertCandidateDAO extends
 		str.append(" ,state.stateId,state.stateName");
 		str.append(" ,ward.constituencyId,ward.name");
 		str.append(",model.alertImpact.alertImpactId,model.alertImpact.impact");
+		str.append(" ,model.tdpCadre.image");
 		str.append(" from AlertCandidate model left join model.tdpCadre.userAddress.panchayat panc ");
 		str.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
 		str.append(" left join model.tdpCadre.userAddress.constituency constituency ");
@@ -90,7 +91,7 @@ public class AlertCandidateDAO extends
 		str.append(" left join model.tdpCadre.userAddress.district district ");
 		str.append(" left join model.tdpCadre.userAddress.state state ");
 		str.append(" left join model.tdpCadre.userAddress.ward ward ");
-		
+	
 		str.append(" where model.alert.isDeleted ='N' and model.alert.alertId in(:alertIds) and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
 		str.append(" group by model.alertId,model.tdpCadre.tdpCadreId");
 		Query query = getSession().createQuery(str.toString());
