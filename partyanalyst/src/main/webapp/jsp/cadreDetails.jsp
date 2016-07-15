@@ -2467,37 +2467,37 @@ function buildReport()
 {
 	var str = '';
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
-		str +='<table id="reportTableId" class="table table-bordered">';
-			str +='<thead>';
-				str +='<th>REPORT TYPE</th>';
-				str +='<th>REPORT NAME</th>';
-				str +='<th>INSERTED TIME</th>';
-			str +='</thead>';  
-			str +='<tbody>';
-				<c:forEach items="${cadreReportVOList}" var="cadreReportVO" varStatus="loop1">
-					<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO" varStatus="loop2">
-						str +='<tr>';     
-							str +='<td>${ReportVO.reportType}</td>';                  
-							str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" id="showPdfId" >${ReportVO.reportName}</span></td>'; 
-							str +='<td>${ReportVO.insertedTime}</td>';    
-						str +='</tr>';
-					</c:forEach>         
-				</c:forEach>
-			str +='</tbody>';
-		str +='</table>';    
+	str +='<table id="reportTableId" class="table table-bordered">';
+		str +='<thead>';
+			str +='<th>REPORT TYPE</th>';
+			str +='<th>PREFERABLE STATUS</th>';  
+			str +='<th>REPORT DATE</th>';
+		str +='</thead>';  
+		str +='<tbody>';
+			<c:forEach items="${cadreReportVOList}" var="cadreReportVO" varStatus="loop1">
+				<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO" varStatus="loop2">
+					str +='<tr>';     
+					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls" >${ReportVO.reportType}</span></td>'; 
+					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls" id="showPdfId" >${ReportVO.status}</span></td>'; 
+					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls" >${ReportVO.insertedTime}</span></td>';  
+					str +='</tr>';    
+				</c:forEach>         
+			</c:forEach>
+		str +='</tbody>';
+	str +='</table>';    
 	</c:if>
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 		$("#reportDetailsId").html(str);
 		$("#reportTableId").dataTable(); 
 	</c:if>
 }
-$(document).on('click','#showPdfId',function(){   
+$(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $("#showPdfId").attr("filePath");
 	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
-});
+});   
 
 </script>
 </body>
