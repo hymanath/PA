@@ -954,9 +954,15 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='</div>';
 				if(result[i].importantLeaderCadreId != null){
 					if(result[i].importantLeaderType != null && result[i].importantLeaderLevel != null && result[i].importantLeaderType.trim() == result[i].importantLeaderLevel.trim())
-						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
+						if(result[i].fromYear != null && result[i].toYear != null)
+							str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
+						else
+							str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+'</p>';
 					else
-						str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
+						if(result[i].fromYear != null && result[i].toYear != null)
+							str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+' from '+result[i].fromYear+' to '+result[i].toYear+'</p>';
+						else
+							str+='<p class="m_0" style="font-weight:bold;">IMPORTANT LEADER: '+result[i].importantLeaderType+' in '+result[i].importantLeaderLocation+' '+result[i].importantLeaderLevel+'</p>';
 				}
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
@@ -1885,14 +1891,14 @@ function getAllImportantLeadersTypesAction(){
 		  $("#errorPubRepId").html("Select Publicrepresentative Type");
 		  return;
 	  }
-	  if(fromDate == "" && fromDate.trim.length == 0){
+	  /*if(fromDate == "" && fromDate.trim.length == 0){
 		  $("#errorPubRepId").html("From Date Required.");
 		  return;
 	  }
 	  if(toDate == "" && toDate.trim.length == 0){
 		  $("#errorPubRepId").html("To Date Required.");
 		  return;
-	  }
+	  }*/
 	 /* if(dates != null && dates.trim().length > 0){
 		  var arrr = dates.split("-");
 		  fromDate = arrr[0];
