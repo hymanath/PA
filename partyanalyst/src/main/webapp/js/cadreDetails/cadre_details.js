@@ -2244,7 +2244,7 @@ function getCandidateAndLocationSummaryNews(){
 	$("#issuesCount").html("");
 	
 	//data loading Image.
-	$("#dataLoadingsImgForNewsId").show();
+	$("#dataLoadingsImgForNewsId1").show();
 	$("#hideShowNewsDiv").hide();
 	
 		var locatioinType;
@@ -2301,7 +2301,7 @@ function getCandidateAndLocationSummaryNews(){
 		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 		url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"/"+globalCadreId+""
 	}).then(function(result) {
-		$("#dataLoadingsImgForNewsId").hide();
+		$("#dataLoadingsImgForNewsId1").hide();
 		$("#hideShowNewsDiv").show();
 		if(result !=null && result !=""){
 			var str="";
