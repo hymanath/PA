@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 import javax.activation.DataHandler;
@@ -42,7 +43,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -1021,7 +1021,9 @@ public class SchedulerService implements ISchedulerService{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");   
 			//SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-			String dt = sdf1.format(new Date());
+			TimeZone timeZone=TimeZone.getTimeZone("IST");
+			sdf1.setTimeZone(timeZone);
+			String dt = sdf1.format(new Date());  
 			//String dt1 = sdf2.format(new Date());
 			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
 			String folderCreation = commonMethodsUtilService.createFolder(staticPath);
