@@ -22,10 +22,18 @@ public class AlertVO {
 	
 	private List<IdNameVO> idNamesList;
 	
+	private Long tdpCadreId;
 	
 	
 	
 	
+	
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
 	public List<IdNameVO> getIdNamesList() {
 		return idNamesList;
 	}
