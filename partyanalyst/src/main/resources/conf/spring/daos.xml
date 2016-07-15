@@ -3099,4 +3099,7 @@
 	<bean id="nominationPostCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominationPostCandidateDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="alertAssignedDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAssignedDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
