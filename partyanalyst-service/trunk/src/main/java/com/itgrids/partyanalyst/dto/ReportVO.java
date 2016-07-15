@@ -9,6 +9,7 @@ public class ReportVO implements Serializable {
 	private String reportName;
 	private String reportPath;
 	private String insertedTime;
+	private String status; 
 	public String getReportType() {
 		return reportType;
 	}
@@ -33,4 +34,12 @@ public class ReportVO implements Serializable {
 	public void setInsertedTime(String insertedTime) {
 		this.insertedTime = insertedTime;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 }
