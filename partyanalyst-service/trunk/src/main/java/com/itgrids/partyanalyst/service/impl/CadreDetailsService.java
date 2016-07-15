@@ -1239,8 +1239,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 							vo.setImportantLeaderType(obj[2] != null ? obj[2].toString():"");
 							vo.setImportantLeaderLevel(obj[4] != null ? obj[4].toString():"");
 							vo.setImportantLeaderCadreId(cadreId);
-							vo.setFromYear(fromDate.substring(0, 4));
-							vo.setToYear(toDate.substring(0, 4));
+							if(fromDate != null && fromDate.trim().length() > 0 && toDate != null && toDate.trim().length() > 0){
+								vo.setFromYear(fromDate.substring(0, 4));
+								vo.setToYear(toDate.substring(0, 4));
+							}
 							
 							if(levelId.longValue() == 2l){//state
 								String name = stateDAO.get(levelVal).getStateName();
@@ -9604,8 +9606,11 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 					
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 					try {
-						fromDate = sdf.parse(importantLeadersVO.getFromDate());
-						toDate = sdf.parse(importantLeadersVO.getToDate());
+						if(importantLeadersVO.getFromDate() != null && importantLeadersVO.getFromDate().trim().length() > 0 &&
+								importantLeadersVO.getToDate() != null && importantLeadersVO.getToDate().trim().length() > 0){
+							fromDate = sdf.parse(importantLeadersVO.getFromDate());
+							toDate = sdf.parse(importantLeadersVO.getToDate());
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
