@@ -163,7 +163,7 @@
 		      <class>com.itgrids.partyanalyst.model.EventAgeRangeDayInfo</class>
 		      <class>com.itgrids.partyanalyst.model.EventGenderInfo</class>
 		      <class>com.itgrids.partyanalyst.model.EventGenderDayInfo</class>
-		     
+		      <class>com.itgrids.partyanalyst.model.AlertAssigned</class>
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
