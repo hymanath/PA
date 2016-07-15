@@ -10618,18 +10618,20 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 					reportVO.setReportType(cadreReport[0] != null ? cadreReport[0].toString()  : "");
 					reportVO.setReportName(cadreReport[1] != null ? cadreReport[1].toString() : "");
 					reportVO.setReportPath(cadreReport[2] != null ? cadreReport[2].toString() : "");
-					reportVO.setInsertedTime(cadreReport[3] != null ? cadreReport[3].toString() : "");
+					reportVO.setInsertedTime(cadreReport[3] != null ? cadreReport[3].toString().substring(0, 10) : "");  
+					reportVO.setStatus(cadreReport[4] != null ? cadreReport[4].toString().toUpperCase() : "-");       
 					reportVOList = new ArrayList<ReportVO>(0);
 					reportVOList.add(reportVO);
 					reportTypeReportMap.put(cadreReport[0].toString(), reportVOList);
-				}
+				}  
 				else{
 					reportVO = new ReportVO();
 					reportVO.setReportType(cadreReport[0] != null ? cadreReport[0].toString()  : "");
-					reportVO.setReportName(cadreReport[1] != null ? cadreReport[1].toString() : "");
+					reportVO.setReportName(cadreReport[1] != null ? cadreReport[1].toString() : "");  
 					reportVO.setReportPath(cadreReport[2] != null ? cadreReport[2].toString() : "");
-					reportVO.setInsertedTime(cadreReport[3] != null ? cadreReport[3].toString() : "");
-					reportTypeReportMap.get(cadreReport[0].toString()).add(reportVO);
+					reportVO.setInsertedTime(cadreReport[3] != null ? cadreReport[3].toString().substring(0, 10) : "");  
+					reportVO.setStatus(cadreReport[4] != null ? cadreReport[4].toString().toUpperCase() : "-");     
+					reportTypeReportMap.get(cadreReport[0].toString()).add(reportVO);  
 				}
 			}
 			Set<String> reportTypeList = reportTypeReportMap.keySet();
@@ -10646,9 +10648,29 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	}catch(Exception e){
 		LOG.info("Entered into the getCadreReportDetails method of CadreDetailsService service");
 	}
-	return null;
+	return null;  
 	
 }
+/*public List<CadreDetailsVO> getTdpCadreDetails(Long cadreId){
+	LOG.info("Entered into the getCadreReportDetails method of CadreDetailsService service method");
+	try{
+		List<CadreDetailsVO> cadreList = new ArrayList<CadreDetailsVO>();
+		CadreDetailsVO cadreDetailsVO = null;
+		List<Object[]> tdpCadreList = tdpCadreReportDAO.getCadreReportList(cadreId);
+		for(Object[] tdpCadre : tdpCadreList){
+			cadreDetailsVO = new CadreDetailsVO();
+			cadreDetailsVO.setId((Long)tdpCadre[0]);
+			cadreDetailsVO.setName(tdpCadre[1].toString());  
+			cadreDetailsVO.setRemarks(tdpCadre[2].toString());
+			cadreList.add(cadreDetailsVO);
+		}
+		return cadreList;
+		
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return null;
+}*/
 
 	/*public String checkPositionExists(String position){
 		String status = null;
