@@ -758,6 +758,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 
 				 candidateVO.setImpactId(params[17] != null ? (Long)params[17] : null);
 				 candidateVO.setImpact(params[18] != null ? params[18].toString() : "");
+				 candidateVO.setImage(params[19] != null ? params[19].toString() : "");
 				
 			}
 		}

@@ -18,7 +18,7 @@ public class AlertDataVO {
 	private Long statusId;
 	private String name;
 	private String impact;
-	
+	private String image;
 	private Long impactId;
 	private List<AlertDataVO> subList = new ArrayList<AlertDataVO>();
 	
@@ -119,6 +119,12 @@ public class AlertDataVO {
 	}
 	public void setRegionScope(String regionScope) {
 		this.regionScope = regionScope;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	
