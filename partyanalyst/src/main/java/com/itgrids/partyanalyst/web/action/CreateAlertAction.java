@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.opensymphony.xwork2.Action;
@@ -39,7 +40,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<BasicVO> basicVO;
 	private List<AlertDataVO> alertDataList;
 	private  List<StatusTrackingVO> statusTrackingVOList;
-	
+	private ResultStatus resultStatus;
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	private static final Logger LOG = Logger.getLogger(CreateAlertAction.class);
 	
 	
@@ -284,6 +293,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception occured in getAlertSourceForUser()",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String saveAlertAssignedUser()
+	{
+		try{
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		AlertVO alertVO = new AlertVO();
+		resultStatus = alertService.saveAlertAssignedUser(alertVO,regVo.getRegistrationID());
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in saveAlertAssignedUser",e);
+		}
+		return Action.SUCCESS;	
 	}
 	
 
