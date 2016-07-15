@@ -8167,5 +8167,83 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  				
  			 }
  		}
+ 		
+ 		
+ 		//search For Cadre
+ 		public  List<AppointmentCandidateVO> searchRequestedMembers(String searchType,String searchValue){
+ 			 List<AppointmentCandidateVO>  finalList = null;
+ 			 
+ 			 try {
+ 				      List<Object[]> membersList = null;
+ 				      List<Long> tdpCadreIds = new ArrayList<Long>();
+ 				   
+ 				    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);
+ 				    	  if(membersList!=null && membersList.size()>0){
+ 				    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
+ 				    		  for(Object[] obj: membersList){
+ 				    			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+ 					    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+ 					    		  vo.setCandidateType("cadre");
+ 					    		  vo.setName(obj[1]!=null?obj[1].toString():"");
+ 					    		  vo.setCadre(true);
+ 					    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+ 					    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+ 					    		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
+ 					    		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+ 					    		  vo.setImageURL(obj[6]!=null?"images/cadre_images/"+obj[6].toString():null);
+ 					    		  if(!tdpCadreIds.contains(vo.getId()))
+ 					    			  tdpCadreIds.add(vo.getId());
+ 					    		  finalList.add(vo);
+ 				    		  }
+ 				    	 // }
+ 				    	  
+ 				      }
+ 				      
+ 				      if(membersList==null ||  membersList.size()==0 && searchType.equalsIgnoreCase("votercardno")){
+ 				    	  membersList = boothPublicationVoterDAO.getVoterDetailsVoterId(searchValue);
+ 				    	  if(membersList!=null && membersList.size()>0){
+ 				    		  finalList = new ArrayList<AppointmentCandidateVO>();
+ 				    		  for(Object[] obj: membersList){
+ 				    			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+ 					    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+ 					    		  vo.setCandidateType("voter");
+ 					    		  vo.setName(obj[1]!=null?obj[1].toString():"");
+ 					    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+ 					    		  vo.setConstituency(obj[4] != null?obj[4].toString():"");
+ 					    		  vo.setVoterCardNo(searchValue);
+ 					    		  finalList.add(vo);
+ 					    		
+ 				    		  }
+ 				    		  
+ 				    	  }
+ 				    	  
+ 				      }
+ 				      if(tdpCadreIds!=null && tdpCadreIds.size()>0){
+ 				    	  
+ 				    	 /* List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
+ 							 if(list != null && list.size() > 0)
+ 							 {
+ 								 for(Object[] params : list)
+ 								 {
+ 									 AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
+ 									 if(vo != null)
+ 									 {
+ 										 vo.setAppointmentCandidateId((Long)params[1]);
+ 									 }
+ 								 }
+ 							 }*/
+ 							 setConstituencyForPR(tdpCadreIds,finalList);
+ 							// checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
+ 							 getDesignationsForCadre(tdpCadreIds,finalList);
+ 							
+ 				      }
+ 				     
+ 				  	
+ 				 	
+ 			} catch (Exception e) {
+ 				LOG.error("Exception raised at searchRequestedMembers() method of AppointmentService", e);
+ 			}
+ 			 return finalList;
+ 		 }
  }
 
