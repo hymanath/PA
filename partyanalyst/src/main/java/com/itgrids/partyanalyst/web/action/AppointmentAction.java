@@ -726,6 +726,20 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	
 	return Action.SUCCESS;
 	}
+	
+	public String getsearchRequestedMembers(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			candidatesList =appointmentService.searchRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getsearchRequestedMembers() method of AppointmentAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
+	
+	
 	public String getAppntmntAdvancedSearchDetails(){
 		
 		try {
