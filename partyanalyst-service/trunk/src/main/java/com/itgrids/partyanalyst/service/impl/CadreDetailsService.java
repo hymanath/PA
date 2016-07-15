@@ -10648,7 +10648,7 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	}catch(Exception e){
 		LOG.info("Entered into the getCadreReportDetails method of CadreDetailsService service");
 	}
-	return null;  
+	return null;
 	
 }
 /*public List<CadreDetailsVO> getTdpCadreDetails(Long cadreId){
