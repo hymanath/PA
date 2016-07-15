@@ -473,7 +473,7 @@ function getNominatedPostApplication(startIndex)
         //str +='<img src="images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 		str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
         str +='</div>';
-        str +='<input type="checkbox" style="margin:auto;display:block;"/>';
+        str +='<input type="checkbox" style="margin:auto;display:block;" class="checkboxCls" name="checkbox"/>';
         str +='<p class="m_0 m_top5 text-center"><b>'+result[i].cadreName+'</b></p>';
         str +='<p class="m_0 m_top5 text-center">V.ID:'+result[i].voterCardNo+'</p>';
         str +='<p class="m_0 text-center">M.NO:'+result[i].memberShipCardId+'</p>';
@@ -657,3 +657,8 @@ $('.searchTypeCls').click(function(){
   }
 getBoardLevels("boardLvlId"); 
 getDepartments("depmtsId"); 
+$(document).on("click",".checkboxCls",function(){
+    $(".checkboxCls").prop( "checked" ,false);
+	$( this ).prop( 'checked', true );
+})
+
