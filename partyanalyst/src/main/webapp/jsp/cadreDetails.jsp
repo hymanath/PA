@@ -807,7 +807,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 					<div class="panel-body" id="newsMainDivId" style="display:none;">
                     	
 						
-					<center><img style="width: 100px; height: 100px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>
+					<center><img style="width: 100px; height: 100px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId1"/></center>
 					<div id="hideShowNewsDiv" style="display:none;">
                         <div class="panel panel-default">
                         	<div class="panel-heading bg_f9">
