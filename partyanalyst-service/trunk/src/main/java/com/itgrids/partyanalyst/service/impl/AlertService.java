@@ -13,6 +13,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
@@ -39,6 +41,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertStatus;
@@ -64,20 +67,26 @@ private IConstituencyDAO constituencyDAO;
 private IAlertUserDAO alertUserDAO;
 private SetterAndGetterUtilService setterAndGetterUtilService;
 private static final Logger LOG = Logger.getLogger(AlertService.class);
-
 private ICandidateDAO candidateDAO;
 private IAlertStatusDAO alertStatusDAO;
 private IAlertTrackingDAO alertTrackingDAO;
 private IAlertCommentDAO alertCommentDAO;
 private IAlertTypeDAO alertTypeDAO;
 private IAlertSourceUserDAO alertSourceUserDAO;
-
-  
+private IAlertAssignedDAO alertAssignedDAO;
 private DateUtilService dateUtilService = new DateUtilService();
 
 
 
 
+
+public IAlertAssignedDAO getAlertAssignedDAO() {
+	return alertAssignedDAO;
+}
+
+public void setAlertAssignedDAO(IAlertAssignedDAO alertAssignedDAO) {
+	this.alertAssignedDAO = alertAssignedDAO;
+}
 
 public IAlertSourceUserDAO getAlertSourceUserDAO() {
 	return alertSourceUserDAO;
@@ -763,6 +772,28 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		}
 		
+	}
+	
+	public ResultStatus saveAlertAssignedUser(AlertVO inputVO,Long userId)
+	{
+		ResultStatus rs = new ResultStatus();
+		try{
+			 DateUtilService date = new DateUtilService();
+			AlertAssigned alertAssigned = new AlertAssigned();
+			alertAssigned.setAlertId(inputVO.getAlertTypeId());
+			alertAssigned.setTdpCadreId(inputVO.getTdpCadreId());
+			alertAssigned.setCreatedBy(userId);
+			alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+			alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+			alertAssignedDAO.save(alertAssigned);
+			rs.setResultCode(0);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception in saveAlertAssignedUser()",e);	
+			rs.setResultCode(121);
+		}
+		return rs;
 	}
 	
 }

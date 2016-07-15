@@ -19,4 +19,5 @@ public interface IAlertService {
 	public List<BasicVO> getAlertType();
 	public List<BasicVO> getAlertSourceForUser(Long userId);
 	public List<AlertDataVO> getAlertCandidatesData(Long alertId);
+	public ResultStatus saveAlertAssignedUser(AlertVO inputVO,Long userId);
 }
