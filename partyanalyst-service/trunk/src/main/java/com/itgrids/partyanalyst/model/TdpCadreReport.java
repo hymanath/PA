@@ -31,9 +31,11 @@ public class TdpCadreReport extends BaseModel {
 	private String reportPath;
 	private Long insertedBy;
 	private Date insertedTime;
+	private Long tdpCadreReportStatusId;
 	
 	private TdpCadre tdpCadre;
 	private User insertedUser;
+	private TdpCadreReportStatus tdpCadreReportStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,9 +86,15 @@ public class TdpCadreReport extends BaseModel {
 		return insertedTime;
 	}
 	public void setInsertedTime(Date insertedTime) {
-		this.insertedTime = insertedTime;
+		this.insertedTime = insertedTime;  
 	}
-	
+	@Column(name = "tdp_cadre_report_status_id")
+	public Long getTdpCadreReportStatusId() {
+		return tdpCadreReportStatusId;
+	}
+	public void setTdpCadreReportStatusId(Long tdpCadreReportStatusId) {
+		this.tdpCadreReportStatusId = tdpCadreReportStatusId;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="tdp_cadre_id",insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -107,6 +115,17 @@ public class TdpCadreReport extends BaseModel {
 	public void setInsertedUser(User insertedUser) {
 		this.insertedUser = insertedUser;
 	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_report_status_id",insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadreReportStatus getTdpCadreReportStatus() {
+		return tdpCadreReportStatus;
+	}
+	public void setTdpCadreReportStatus(TdpCadreReportStatus tdpCadreReportStatus) {
+		this.tdpCadreReportStatus = tdpCadreReportStatus;
+	}
+	
 	
 	
 }
