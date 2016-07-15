@@ -11718,6 +11718,12 @@
 			<param name="root">candidatesList</param>
 		</result>
 	</action>
+	<action name="getsearchRequestedMembersAction" class="appointmentAction" method="getsearchRequestedMembers">
+		<result type="json" name="success">
+			<param name="root">candidatesList</param>
+		</result>
+	</action>
+	
 	<action name="getCandidateWiseDetailsAction" class="appointmentAction" method="getCandidateWiseDetails">
 		<result type="json" name="success">
 			<param name="root">voterAddressVO</param>

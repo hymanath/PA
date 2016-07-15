@@ -154,8 +154,25 @@ function disableByLevel(index)
 				clearNameSearchTypeFields();
 				
 			}
+			else if(selectVal == "mobileno" || selectVal == "mebershipno" || selectVal == "votercardno")
+			{
+				
+				
+				
+				$(".levelShowCls").hide();
+				$(".stateShowCls").hide();
+				$(".advanceprcls").show();
+				$(".advanceNameCls").show();
+				$(".advancePRCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$("#advanceSearchValueId").val("");
+				$(".advanceprclsDiv").show();
+				$("#searchBtnId").show();
+			}
 			else
 			{
+				
 				$(".levelShowCls").hide();
 				$(".stateShowCls").hide();
 				$(".advanceprcls").show();
@@ -557,6 +574,12 @@ function disableByLevel(index)
 				 return; 
 			 }
 		}
+		else if(advanceSearchType == "mobileno" || advanceSearchType == "mebershipno" || advanceSearchType == "votercardno")
+		{
+			getDetailsBySrch();
+			return;
+		}
+		
 		else if(advanceSearchType == 2)
 		{
 			 searchType = "publicRepresentative";
@@ -768,7 +791,84 @@ function disableByLevel(index)
 		  }); 
 	}
 	
+	function getDetailsBySrch()
+	{
+		//clearing the Data Div
+		$("#apptmemberDetailsDiv").html("");
+		//clearing err Div
+		$("#errDigitsId").html(" ");
+		
+		var searchValue=$("#searchValueId").val();
+		var errStr=false;
+		//Validations
+		if($("#searchTypeId").val()==0){
+			 $("#errDigitsId").html("Please Select Search Type");
+			 errStr=true;
+		}
+		else if($("#searchTypeId").val()=="mobileno"){			
+			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
+					  $("#errDigitsId").html("Please enter Mobile No");
+					  errStr=true;
+				 }	
+				else if(searchValue.length != 10 || isNaN(searchValue)){		
+					$("#errDigitsId").html("Please Enter Valid Mobile Number");
+					 errStr=true;
+				}
+		}else if($("#searchTypeId").val() == "mebershipno"){
+			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
+					  $("#errDigitsId").html("Please Enter MembershipNo ");
+					  errStr=true;
+			}else if(searchValue.length !=8 || isNaN(searchValue)){
+				  $("#errDigitsId").html("Please Enter valid Membership ");
+					  errStr=true;
+			}
+		}else if($("#searchTypeId").val() == "votercardno"){
+			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
+					  $("#errDigitsId").html("Please Enter Votercardno ");
+					  errStr=true;
+			}
+		}
+		
+		if(errStr){
+			return;
+		}else{
+				getSearchDetails();
+				//$(".addattrid").hide();
+			}
+		
+	}
 	
+
+	function getSearchDetails(){
+	  
+	  $("#searchMemberAjax").css("display","block");
+	  var searchType = $("#advanceSearchTypeId").val();
+	  var searchValue = $("#advanceSearchValueId").val();
+	  var aptUserId = 0;
+		
+		var jsObj={
+			searchType:searchType,
+			searchValue:searchValue,
+			aptUserId:aptUserId
+		  }
+		$("#apptmemberDetailsDiv").html('');
+		  	$.ajax({
+				type : 'POST',
+				url : 'getsearchRequestedMembersAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				 $("#searchMemberAjax").css("display","none");
+				
+				if(result !=null && result.length>0){
+					buildapptmemberDetails(result);
+				
+				}else{
+					$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
+				}
+		  }); 
+	 }
+	 
 	
 	function applyPagination(){
 		$('#searchedMembersId').DataTable();
