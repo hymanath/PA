@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
+import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -39,4 +40,5 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId);
 	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
 	public String updateApplicationStatusDetails(final Long userId,final Long nominatedPostId,final Long nominatedPostCandidateId,final Long statusId);
+	public ResultStatus savingNominatedPostProfileApplication(NominatedPostVO nominatedPostVO,final Long loggedUserId);
 }
