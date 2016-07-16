@@ -2453,12 +2453,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var createdBy =$("#appointmentcreatedBy").val();
 		
 		var statusArray=[];
-		
 		if(isCheckParticlurUser == true){
-			
 			if( globalLoginUSerAppointmentUserTypeId == 1){
 				var statusId = 1; 
 				statusArray.push(statusId);
+			}else{
+				statusArray.push(2);
+				statusArray.push(10);
+				statusArray.push(5);
+				statusArray.push(8);
 			}
 		}else{
 			var statusId =$("#selectStatusId").val();
