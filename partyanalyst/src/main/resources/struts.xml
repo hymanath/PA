@@ -12919,6 +12919,7 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	 <action name="saveAlertAssignedUserAction" class="createAlertAction" method="saveAlertAssignedUser">
 	<action name="getNominatedPostMemberDetailsAction" class="nominatedPostProfileAction" method="getNominatedPostMemberDetails">
 		<result type="json" name="success">
    			<param name="root">nomintedPostMemberVO</param>
@@ -12942,5 +12943,26 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="savechangeAddressForNominatedPostAction" class="nominatedPostProfileAction" method="savechangeAddressForNominatedPost">
+	  <result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	<action name="getPopulateApplicantDetailsForMemberAction" class="nominatedPostProfileAction" method="getPopulateApplicantDetailsForMember">
+	  <result type="json" name="success">
+			<param name="root">nominatePostList</param>
+		</result>
+	</action>
+	<action name="getDistrictsForStateForNominatedAction" class="nominatedPostProfileAction" method="getDistrictsForStateForNominated">
+	  <result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	<action name="getVillagesForMandalIdNominatedAction" class="nominatedPostProfileAction" method="getVillagesForMandalId">
+	  <result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
