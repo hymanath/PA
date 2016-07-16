@@ -23,7 +23,7 @@
 <style>
 .panelWidthCols
 {
-	width:20% !important;
+	width:20%;
 }
 .panelWidthCols .panel-body .table thead th , .panelWidthCols .panel-body .table tr td
 {
@@ -183,7 +183,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 	<div class="container">
     	<div class="row">
         	<section>
-            	<div class="col-md-12">
+            	<div class="col-md-12 col-xs-12 col-sm-12">
 				<!-- Summary Block-->
 				<div class="panel panel-default">
             	<div class="panel-heading">
@@ -427,7 +427,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 								
                             </div>
 							<div class="row m_top10" >
-							<div class="col-md-3" id="stateShowId" style="display:none;">
+							<div class="col-md-3 col-xs-12 col-sm-6" id="stateShowId" style="display:none;">
                                 	<label>State</label>
 									<span id="stateErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="statesDivId">
@@ -437,7 +437,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 							<div class="col-md-1" style="height: 44px; width: 10px;">
 								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
 							</div>
-							<div class="col-md-3" id="DistrictShowId" style="display:none;">
+							<div class="col-md-3 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
                                 	<label>District</label>
 									<span id="districtErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="districtId">
@@ -447,7 +447,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 							<div class="col-md-1" style="height: 44px; width: 10px;">
 								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
 							</div>
-							<div class="col-md-3" id="ConstShowId" style="display:none;">
+							<div class="col-md-3 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
                                 	<label>Constituency</label>
 									<span id="ConsErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="constituencyId" name="constBox">
@@ -457,7 +457,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 							<div class="col-md-1" style="height: 44px; width: 10px;">
 								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
 							</div>
-							<div class="col-md-3" id="ManTwnDivShowId" style="display:none;">
+							<div class="col-md-3 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
                                 	<label>Mandal/Town/Division</label>
 									<span id="ManErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="manTowDivId">
@@ -465,16 +465,15 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 									</select>
                             </div>
 							
-							<div class="col-md-3" id="VillWardShowId" style="display:none;margin-left:30px;">
+							<div class="col-md-3 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;margin-left:30px;">
                                 	<label>Village/Ward</label>
 										<span id="VillErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="villWardId">
 									<option>Select Village/Ward</option>
 									</select>
                             </div>
-							</div>
-							<div class="row col-xs-1 pull-right" >
-							<button class="btn btn-success btn-sm btn-block" id="viewMeetings">View</button>
+							<div class="col-xs-12 col-md-3 col-sm-6" >
+								<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View</button>
 							</div>
                         </div>
 					 </div>
@@ -1022,6 +1021,7 @@ getUserAccessLocationDetails();
 			var str='';
 			if(result!=null && result.length>0){
 				str+='<h4><b>'+result[0].meetingType+'</b></h4>';
+				str+='<div class="table-responsive">';
 				str+='<table class="m_top20 table table-bordered m_top10 table-condensed" id="meetingTableId">';
 				/* str+='<thead class="bg_d">';
 				//str+='<th>Meeting Type</th>';
@@ -1160,6 +1160,7 @@ getUserAccessLocationDetails();
 				}
 				str+='</tbody>';
 				str+='</table>';
+				str+='</div>';
 			}else{
 				str+='No Meetings Found';
 			}
@@ -1687,6 +1688,13 @@ function getLevelWiseMeetingDetails(){
 							},
 							backgroundColor: 'transparent'
 						},
+						tooltip: {
+							useHTML: true,
+							borderWidth: 0,
+							style: {
+								padding: 0
+							}
+						},
 						legend: {
 								enabled: false,
 								align: 'center',
@@ -1710,6 +1718,7 @@ function getLevelWiseMeetingDetails(){
 						},
 						
 						series: [{
+							name: " ",
 							data: [
 								['Planned', plannedCount],
 								['Conducted', result[i].invitedCount],
@@ -1730,6 +1739,7 @@ function getLevelWiseMeetingDetails(){
 								alpha: 15
 							},
 							margin:'0',
+							padding:'0',
 							backgroundColor: 'transparent'
 						},
 						legend: {
@@ -1753,8 +1763,15 @@ function getLevelWiseMeetingDetails(){
 								}
 							}, 
 						},
-						
+						tooltip: {
+							useHTML: true,
+							borderWidth: 0,
+							style: {
+								padding: 0
+							}
+						},
 						series: [{
+							name: " ",
 							data: [
 								['Planned', totalPlanned],
 								['Conducted', totalConducted],
