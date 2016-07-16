@@ -435,7 +435,14 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	public String getLevelWiseMeetingDetails(){
 		try{
 			
-			partyMeetingVOList = partyMeetingService.getLevelWiseMeetingDetails();
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId=0l;
+			if(regVO!=null){
+				userId = regVO.getRegistrationID();
+			}
+			jObj = new JSONObject(getTask());
+			
+			partyMeetingVOList = partyMeetingService.getLevelWiseMeetingDetails(jObj.getString("fromDate"),jObj.getString("toDate"),userId);
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getLevelWiseMeetingDetails Action",e);

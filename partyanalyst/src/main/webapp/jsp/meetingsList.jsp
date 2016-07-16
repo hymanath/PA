@@ -21,6 +21,14 @@
 
 
 <style>
+.panelWidthCols
+{
+	width:20% !important;
+}
+.panelWidthCols .panel-body .table thead th , .panelWidthCols .panel-body .table tr td
+{
+	padding:3px !important;
+}
 #meetingTableId thead th , #meetingTableId tr td
 {
 	font-size:12px !important
@@ -183,11 +191,11 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                 </div>
                 <div class="panel-body">
                 	<div class="row">
-                    	<div class="col-md-12 col-xs-12 col-sm-8">
+                    	<div class="col-md-8 col-xs-12 col-sm-8">
                         	<div class="block">
                             	<div class="row">
                                 	<div class="col-md-6 col-xs-12 col-sm-6">
-                                    	<h3 class="text-capital">total meetings - <span id="totalMeetingsId">0</span></h3>
+                                    	<h3 class="text-capital">total meetings - <img src='images/Loading-data.gif'  id="loadingImgForTotalId" style="width:20px;height:20px;display:none;"/><span id="totalMeetingsId">0</span></h3>
                                         <h5>( Meetings Conducted Ratio - <span class="text-success"><span class="dataClearCls" id="tConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-up"></i></span> <span class="text-danger"><span id="tNotConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-down"></i></span>)</h5>
                                     </div>
                                     <div class="col-md-2 col-xs-12 col-sm-2">
@@ -195,32 +203,34 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                     </div>
                                     <div class="col-md-4 col-xs-12 col-sm-4">
                                     	<ul class="graphList">
-                                        	<li><span class="iconPlanned"></span>Planned <span class="pull-right dataClearCls" id="tPlannedId">0</span></li>
-                                            <li><span class="iconConducted"></span>Conducted <span class="pull-right dataClearCls" id="tConductedId">0</span></li>
-                                            <li><span class="iconNotC"></span>Not Conducted <span class="pull-right dataClearCls" id="tNotConductedId">0</span></li>
+                                        	<li><span class="iconPlanned"></span>Planned <span class="pull-right dataClearCls" id="tPlannedId"><img src='images/Loading-data.gif'  id="loadingImgForTotalPlnId" style="width:10px;height:10px;display:none;"/>0</span></li>
+                                            <li><span class="iconConducted"></span>Conducted <span class="pull-right dataClearCls" id="tConductedId"><img src='images/Loading-data.gif'  id="loadingImgForTotalCndId" style="width:10px;height:10px;display:none;"/>0</span></li>
+                                            <li><span class="iconNotC"></span>Not Conducted <span class="pull-right dataClearCls" id="tNotConductedId"><img src='images/Loading-data.gif'  id="loadingImgForTotalNtCndId" style="width:10px;height:10px;display:none;"/>0</span></li>
                                         </ul>
                                     </div>
                                 </div>	
                             </div>
                         </div>
-                       <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="col-md-4 col-sm-4 col-xs-12">
 							<div class="block">
 								<label >Select Date</label>
-								<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i><span class="caret"></span></span>
+									<input type="text" class="form-control" id="datePickerBlockId">
+									
+									<span></span>
+								</div>
+							<!--	<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;">
 								  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
 								  <span style="margin-left: 25px;"></span> 
-								</div>
-								<p class="text-muted"><small>*Select Date Range to view date between meetings overview</small></p>
-							</div>-->
-                                 <!--  <div class="input-group">
-                                    	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                        <input type="text" class="form-control" id="reportrange">
-										<span class="caret"></span>
-										<span></span>
-                                    </div> -->
-                        <!-- </div>-->
+								</div>-->
+								<p style="font-size:11px;margin-top:5px !important" class="text-muted">*Select Date Range to view date between meetings overview</p>
+							</div>
+                             
+                        </div>
                     </div>
                     <div class="row m_top10">
+					<center><img src='images/Loading-data.gif'  id="loadingImgForLevelId" style="width:100px;height:100px;display:none;"/></center>
 						<div id="levelBuildingId"></div>
 					</div>
                     	<!--<div class="col-md-3 col-xs-12 col-sm-6">
@@ -421,7 +431,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                 	<label>State</label>
 									<span id="stateErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="statesDivId">
-									<option>Select State</option>
+									<!--<option>Select State</option>-->
 									</select>
                             </div>
 							<div class="col-md-1" style="height: 44px; width: 10px;">
@@ -431,7 +441,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                 	<label>District</label>
 									<span id="districtErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="districtId">
-									<option>Select District</option>
+									<!--<option>Select District</option>-->
 									</select>
                             </div>
 							<div class="col-md-1" style="height: 44px; width: 10px;">
@@ -470,7 +480,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 					 </div>
 					<div class="row m_top20" style="padding:10px;margin-top:35px;">
 						<div class="col-md-12">
-							<div id="meetingDetailsTableId"><img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForResults" style="margin-left:0px;margin-top: 30px;width:20px;height:20px;display:none;"/></div>
+							<center><img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForResults" style="margin-left:0px;margin-top: 30px;width:20px;height:20px;display:none;"/></center><div id="meetingDetailsTableId"></div>
 						</div>
 					</div>
                 </div>
@@ -534,6 +544,28 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 <script src="dist/HighCharts/highcharts.js"></script>
 <!--<script src="dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+
+$("#datePickerBlockId").daterangepicker({
+	opens:'left',
+	applyClass: 'btn-small btn-primary datePickerBlockCls',
+	ranges: {
+		 'Today': [moment(), moment()],
+		 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		 'This Month': [moment().startOf('month'), moment().endOf('month')],
+		 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		 'Last 3 Months': [moment().subtract(3, 'month'),moment()],
+		 'Last 6 Months': [moment().subtract(6, 'month'),moment()],
+		 'Last 1 Year': [moment().subtract(1, 'year'),moment()]
+		 }
+});
+
+$("#datePickerBlockId").val(moment().startOf('month').format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
+
+//Adding Class To "ranges" Class
+$(document).find(".datePickerBlockCls").closest(".ranges").addClass("datePickerRangesCls");
+
 $("#dateValueId").daterangepicker({singleDatePicker: true,maxDate: moment()})
 getUserAccessLocationDetails();
 	
@@ -773,6 +805,8 @@ getUserAccessLocationDetails();
 	});
 	
 	$("#viewMeetings").click(function() {
+		
+		$("#meetingDetailsTableId").html("");
 				
 		if($("#meetingLocationLevel").val()==0){
 			$("#meetingLocationErrorMessage").html("Please Select Meeting Location");
@@ -818,7 +852,7 @@ getUserAccessLocationDetails();
 				$("#stateErrorMSgShow").html('');
 				stateId = getStateDistrictAssemblySelection("state");
 			}
-			$("#searchDataImgForResults").show();
+			//$("#searchDataImgForResults").show();
 		}
 		
 		
@@ -841,7 +875,7 @@ getUserAccessLocationDetails();
 				stateId = getStateDistrictAssemblySelection("state");
 				districtId = getStateDistrictAssemblySelection("district");
 			}
-			$("#searchDataImgForResults").show();
+			//$("#searchDataImgForResults").show();
 		}
 		
 		
@@ -872,7 +906,7 @@ getUserAccessLocationDetails();
 				districtId = getStateDistrictAssemblySelection("district");
 				constituencyId = getStateDistrictAssemblySelection("constituency");
 			}
-			$("#searchDataImgForResults").show();
+			//$("#searchDataImgForResults").show();
 		}	
 		
 		
@@ -908,7 +942,7 @@ getUserAccessLocationDetails();
 				constituencyId = getStateDistrictAssemblySelection("constituency");
 				mandalTownDivisonId.push($("#manTowDivId").val());
 			}
-			$("#searchDataImgForResults").show();
+			//$("#searchDataImgForResults").show();
 		}
 		
 		
@@ -953,7 +987,7 @@ getUserAccessLocationDetails();
 				mandalTownDivisonId.push($("#manTowDivId").val());
 				villageWardId.push($("#villWardId").val());
 			}
-			$("#searchDataImgForResults").show();
+			//$("#searchDataImgForResults").show();
 		}
 		
 		$("#villWardId").change(function(){
@@ -962,6 +996,7 @@ getUserAccessLocationDetails();
 		
 		var startDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_startDate").val();
 		var endDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_endDate").val();
+		$("#searchDataImgForResults").show();
 		var jsObj =	{
 						meetingType:meetingType,
 						locationLevel:locationLevel,
@@ -981,6 +1016,9 @@ getUserAccessLocationDetails();
 			data:{task :JSON.stringify(jsObj)}
 		}
 		).done(function(result){
+			
+			$("#searchDataImgForResults").hide();
+			
 			var str='';
 			if(result!=null && result.length>0){
 				str+='<h4><b>'+result[0].meetingType+'</b></h4>';
@@ -1001,10 +1039,10 @@ getUserAccessLocationDetails();
 				str+='<th rowspan="2">Meeting Name</th>';
 				str+='<th rowspan="2">CONDUCTED</th>';
 				str+='<th rowspan="2">CONDUCTED DATE</th>';
+				str+='<th rowspan="2">REMARKS</th>';
 				str+='<th colspan="2">MOM</th>';
 				str+='<th colspan="2">ATR</th>'; 
-				str+='<th rowspan="2">PLANNED DATE</th>';
-				str+='<th rowspan="2">REMARKS</th>';
+				str+='<th rowspan="2">PLANNED DATE</th>';				
 				str+='<th rowspan="2">UPDATE FOR MOM/ATR </th>';
 				str+='</tr>';
 				str+='<tr>';
@@ -1076,6 +1114,14 @@ getUserAccessLocationDetails();
 						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">Enter Date</i></a></td>';
 					}
 					
+					if(result[i].remarks !=null && result[i].remarks !=""){
+						//str+='<td>'+result[i].remarks+' <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
+						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'" >'+result[i].remarks+'</a></td>';
+					}else{
+						//str+='<td> <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
+						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">Enter Remarks</i></a></td>';
+					}
+					
 					
 					if(result[i].docTxtInfo!=null && result[i].docTxtInfo.momFilesCount!=null){
 						str+='<td style="cursor:pointer" class="getSummary" attr_meetingId="'+result[i].partyMeetingId+'" attr_type="MINUTE">'+result[i].docTxtInfo.momFilesCount+'</td>';
@@ -1101,14 +1147,13 @@ getUserAccessLocationDetails();
 						str+='<td>0</td>';
 					}
 					
-					str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
-					if(result[i].remarks !=null && result[i].remarks !=""){
-						//str+='<td>'+result[i].remarks+' <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
-						str+='<td><a class="editRemarksBtn" style="cursor:pointer" attr_remarks="'+result[i].remarks+'" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'" >'+result[i].remarks+'</a></td>';
+					if(result[i].startTime == result[i].endTime){
+						str+='<td>'+result[i].startTime+'</td>';
 					}else{
-						//str+='<td> <i class="glyphicon glyphicon-edit editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'"></i></td>';
-						str+='<td> <a><i class="editRemarksBtn" style="cursor:pointer" attr_remarks="" attr_meetingId="'+result[i].partyMeetingId+'" id="remarksId'+i+'">Enter Remarks</i></a></td>';
+						str+='<td>'+result[i].startTime+' to '+result[i].endTime+'</td>';
 					}
+					
+					
 					
 					//str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
 					str+='<td><i class="glyphicon glyphicon-edit" style="cursor:pointer" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');" data-toggle="tooltip" data-placement="top" title="Click here to update MOM/ATR"></i></td>';
@@ -1118,7 +1163,7 @@ getUserAccessLocationDetails();
 			}else{
 				str+='No Meetings Found';
 			}
-			$("#searchDataImgForResults").hide();
+			//$("#searchDataImgForResults").hide();
 			$('#meetingDetailsTableId').html(str);
 			
 			$('#meetingTableId').dataTable({
@@ -1184,7 +1229,7 @@ getUserAccessLocationDetails();
 		$("#searchDataImgForDist").show();
 		
 		$("#districtId  option").remove();
-		$("#districtId").append('<option value="">Select District</option>');
+		//$("#districtId").append('<option value="">Select District</option>');
 		$("#constituencyId  option").remove();
 		$("#constituencyId").append('<option value="">Select Constituency</option>');
 		$("#manTowDivId  option").remove();
@@ -1274,7 +1319,7 @@ getUserAccessLocationDetails();
 
 				$("#statesDivId").html("");
 				
-				$("#statesDivId").append('<option value=""> Select State </option>');
+				//$("#statesDivId").append('<option value=""> Select State </option>');
 				$("#statesDivId").append('<option value=0> All </option>');
 				
 				if($.inArray(1, stateArr) > -1){
@@ -1496,25 +1541,63 @@ $(function () {
         }]
     }); */
 });
+
+$(document).on("click",".datePickerBlockCls",function(){
+	getLevelWiseMeetingDetails();
+});
+$(document).on("click", ".datePickerRangesCls li",function(){
+	var selc_text = $(this).text();
+		if(selc_text!="Custom Range"){				
+				getLevelWiseMeetingDetails();
+		}	
+});
 getLevelWiseMeetingDetails();
 function getLevelWiseMeetingDetails(){
+	
+		$("#levelBuildingId").html('');
+	
+		var value = $("#datePickerBlockId").val();
+		var fromDate = "";
+		var toDate ="";
+		if(value !=null && value.length>0){
+			fromDate = value.split("-")[0];
+			toDate =value.split("-")[1];
+		}
+		
+		$("#loadingImgForLevelId").show();
+		
+		var jsObj={
+			fromDate:fromDate,
+			toDate:toDate
+		}
 		
 		$.ajax({
 			type: "POST",
 			url:"getLevelWiseMeetingDetailsAction.action",
-			data:{}
+			data:{task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#loadingImgForLevelId").hide();
 			var str='';
 			if(result !=null && result.length>0){
 				var totalPlanned=0;
 				var totalConducted=0;
 				var totalNotConducted=0;
+				var noOfBlocks = result.length;
 				for(var i in result){
 					totalPlanned=totalPlanned+result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
 					totalConducted= totalConducted + result[i].invitedCount;
 					totalNotConducted= totalNotConducted + result[i].nonInviteeCount;
+					if(noOfBlocks == 4)
+					{
+						str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+					}else if(noOfBlocks == 5)
+					{
+						str+='<div class="col-md-3 col-xs-12 col-sm-6 panelWidthCols">';
+					}else if(noOfBlocks == 6)
+					{
+						str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+					}
 					
-					str+='<div class="col-md-3 col-xs-12 col-sm-6">';
 					
                        	  str+='<div class="panel panel-default panelMeetings">';
                         	  str+='<div class="panel-heading">';
@@ -1544,8 +1627,17 @@ function getLevelWiseMeetingDetails(){
 										
 										//calculation
 										
-										var conductedPerc = ((result[i].invitedCount/plannedCount)*100).toFixed(2);
-										var notConductedPerc = ((result[i].nonInviteeCount/plannedCount)*100).toFixed(2);
+										var conductedPerc =0;
+										var notConductedPerc=0;
+										if(plannedCount !=null && plannedCount>0){
+											if(result[i].invitedCount >0){
+												conductedPerc = ((result[i].invitedCount/plannedCount)*100).toFixed(2);
+											}
+											if(result[i].nonInviteeCount >0){
+												notConductedPerc = ((result[i].nonInviteeCount/plannedCount)*100).toFixed(2);
+											}
+										}
+										
 										
                                         str+='<tr>';
                                         	str+='<td>'+conductedPerc+'%</td>';
@@ -1565,13 +1657,18 @@ function getLevelWiseMeetingDetails(){
 				$("#tNotConductedId").html(totalNotConducted);
 				$("#totalMeetingsId").html(totalPlanned);
 				
-				if(totalConducted !=null && totalConducted>0){
-					var conductPerc = ((totalConducted/totalPlanned)*100).toFixed(2);
-					var notConductPerc = ((totalNotConducted/totalPlanned)*100).toFixed(2);
-					
-					$("#tConductedPercId").html(conductPerc);
-					$("#tNotConductedPercId").html(notConductPerc);
+				var conductPerc =0 ;
+				var notConductPerc = 0;
+				if(totalPlanned !=null && totalPlanned>0){
+					if(totalConducted >0){
+						conductPerc = ((totalConducted/totalPlanned)*100).toFixed(2);
+					}
+					if(totalNotConducted>0){
+						 notConductPerc= ((totalNotConducted/totalPlanned)*100).toFixed(2);
+					}
 				}
+				$("#tConductedPercId").html(conductPerc);
+				$("#tNotConductedPercId").html(notConductPerc);
 				
 				$("#levelBuildingId").html(str);
 				
