@@ -289,8 +289,10 @@
 		for(var i in result){
 			$("#appointmentUserSelectBoxId").append('<option attr_unique_code="'+result[i].date+'" value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
 		}
+		setTimeout(function(){
+			getSearchDetails(true);
+		},1000);
 		
-		getSearchDetails(true);
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
 		$(".commonDivCls").hide();
