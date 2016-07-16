@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Teja
+ *
+ */
 public class NominatedPostVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +29,11 @@ public class NominatedPostVO implements Serializable{
 	private Long mandalId;
 	private String voterCardNo;
 	private List<NominatedPostVO> nominatdList = new ArrayList<NominatedPostVO>();
-	
+	private List<IdNameVO> distList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> consList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> panList = new ArrayList<IdNameVO>(0);
+	private List<IdNameVO> mandalsList = new ArrayList<IdNameVO>(0);
+	private Long mandalId;
 	
 	public String getVoterCardNo() {
 		return voterCardNo;
@@ -69,6 +77,7 @@ public class NominatedPostVO implements Serializable{
 	public void setDeptBoardPostnId(Long deptBoardPostnId) {
 		this.deptBoardPostnId = deptBoardPostnId;
 	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -135,4 +144,36 @@ public class NominatedPostVO implements Serializable{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
+	public List<IdNameVO> getDistList() {
+		return distList;
+	}
+	public void setDistList(List<IdNameVO> distList) {
+		this.distList = distList;
+	}
+	public List<IdNameVO> getConsList() {
+		return consList;
+	}
+	public void setConsList(List<IdNameVO> consList) {
+		this.consList = consList;
+	}
+	public List<IdNameVO> getPanList() {
+		return panList;
+	}
+	public void setPanList(List<IdNameVO> panList) {
+		this.panList = panList;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public List<IdNameVO> getMandalsList() {
+		return mandalsList;
+	}
+	public void setMandalsList(List<IdNameVO> mandalsList) {
+		this.mandalsList = mandalsList;
+	}
+	
+	
 }
