@@ -234,10 +234,10 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="chosenSelect boardLvlCls" id="boardLvlId">
+									<select class="chosenSelect boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
 										<option value="0">Select State</option>
@@ -245,24 +245,24 @@
 										<option value="36">Telangana</option>
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
 									<label>District</label>
 									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"nominatedDistId">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
 									<label>Constituency</label>
 									<select class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
-										
+									
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
 									<select class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId">
 										
@@ -294,10 +294,10 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="boardLvlCls" id="boardLvlId">
+									<select class="boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
 										<option value="0">Select State</option>
@@ -305,24 +305,24 @@
 										<option value="36">Telangana</option>
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
 									<label>District</label>
 									<select class="nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"nominatedDistId">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
 									<label>Constituency</label>
 									<select class="nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select class="nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
 										
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
 									<select class="nominatedPanchayatCls" id="nominatedPanchayatId">
 										
@@ -393,21 +393,26 @@ $(document).on("click","#addOneMore",function(){
 
   e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
   getBoardLevels("boardLvlId"+cloneCount);
-  
+  e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');');
+ 
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
+  e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
   e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates("",nominatedStaeId'+cloneCount+','+cloneCount+');');
   
   e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
+  e.find(".districtShowCls").attr("id","districtShowDivId"+cloneCount);
   e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts("",nominatedDistId'+cloneCount+','+cloneCount+');');
   
   e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
+  e.find(".constituencyShowCls").attr("id","constituencyshowDivId"+cloneCount);
   e.find(".nominatdConstCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatdConstId'+cloneCount+');');
   
   e.find(".nominatedMandlCls").attr("id","nominatedMandlId"+cloneCount);
+  e.find(".mandalShowCls").attr("id","mondalShowDivId"+cloneCount);
   e.find(".nominatedMandlCls").attr("onChange",'getPanchayatWardByMandal('+cloneCount+',nominatedMandlId'+cloneCount+');');
    
   e.find(".nominatedPanchayatCls").attr("id","nominatedPanchayatId"+cloneCount);
-  //e.find(".nominatedPanchayatCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatedPanchayatId'+cloneCount+');');
+  e.find(".panchayatShowCls").attr("id","panchayatShowDivId"+cloneCount); 
    
   e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
   getDepartments("depmtsId"+cloneCount);
@@ -448,6 +453,7 @@ $(document).on("click","#addOneMore",function(){
   
   cloneCount=cloneCount+1;
 });
+//showHideByNominatedPost();
 </script>
 </body>
 </html>
