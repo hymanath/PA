@@ -446,4 +446,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getTotalCadreCountByForMinorities();
 	  public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId);
 	  public Long getPublicationDateId(Long tdpCadreId);
+	  public Long getVoterIdByTdpCadreId(Long tdpCadreId);
 } 

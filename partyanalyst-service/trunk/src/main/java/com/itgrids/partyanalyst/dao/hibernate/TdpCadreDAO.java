@@ -7033,4 +7033,10 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return (Long) query.uniqueResult();
 	}
+	public Long getVoterIdByTdpCadreId(Long tdpCadreId){
+		Query query = getSession().createQuery("select TC.voter.voterId from TdpCadre TC where TC.tdpCadreId = :tdpCadreId and TC.isDeleted='N' and TC.enrollmentYear=:enrollmentYear ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		return (Long) query.uniqueResult();
+	}
 }

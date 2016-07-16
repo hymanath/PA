@@ -2,11 +2,13 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
@@ -16,9 +18,18 @@ import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
+import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
+import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
+import com.itgrids.partyanalyst.dto.NominatedPostVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.NominatedPostApplication;
+import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -36,18 +47,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IDepartmentBoardPositionDAO departmentBoardPositionDAO;
 	private INominatedPostFinalDAO nominatedPostFinalDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
-	private TransactionTemplate transactionTemplate;
 	private IApplicationStatusDAO applicationStatusDAO;
+	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
+	private TransactionTemplate transactionTemplate;
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	
-	public DateUtilService getDateUtilService() {
-		return dateUtilService;
-	}
-
-	public void setDateUtilService(DateUtilService dateUtilService) {
-		this.dateUtilService = dateUtilService;
-	}
 
 	public IApplicationStatusDAO getApplicationStatusDAO() {
 		return applicationStatusDAO;
@@ -81,6 +88,40 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public void setNominatedPostFinalDAO(
 			INominatedPostFinalDAO nominatedPostFinalDAO) {
 		this.nominatedPostFinalDAO = nominatedPostFinalDAO;
+	}
+
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
+	public INominatedPostApplicationDAO getNominatedPostApplicationDAO() {
+		return nominatedPostApplicationDAO;
+	}
+
+	public void setNominatedPostApplicationDAO(
+			INominatedPostApplicationDAO nominatedPostApplicationDAO) {
+		this.nominatedPostApplicationDAO = nominatedPostApplicationDAO;
+	}
+
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
+		return nominationPostCandidateDAO;
+	}
+
+	public void setNominationPostCandidateDAO(
+			INominationPostCandidateDAO nominationPostCandidateDAO) {
+		this.nominationPostCandidateDAO = nominationPostCandidateDAO;
 	}
 
 	public IDepartmentsDAO getDepartmentsDAO() {
@@ -223,6 +264,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return returnList;
 	}
 	
+
 	/**
 	 * @Author  SRAVANTH
 	 * @Version NominatedPostProfileService.java  July 15, 2016 02:50:00 PM 
@@ -325,4 +367,88 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 		return status;
 	}
+	
+	public ResultStatus savingNominatedPostProfileApplication(final NominatedPostVO nominatedPostVO,final Long loggerUserId){
+		ResultStatus status = new ResultStatus ();
+		
+		try{
+			
+			status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					ResultStatus rs = new ResultStatus ();
+						NominationPostCandidate nominationPostCandidate = new NominationPostCandidate();
+						NominatedPostApplication nominatedPostApplication = null;
+						
+						
+					if(nominatedPostVO.getName() != null){
+							nominationPostCandidate.setCandidateName(nominatedPostVO.getName());
+					}
+						
+					if(nominatedPostVO.getId() != null && nominatedPostVO.getId().longValue() > 0l){
+						Long voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
+						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
+						nominationPostCandidate.setTdpCadreId(nominatedPostVO.getId());
+					}
+						
+						
+					if(nominatedPostVO.getMobileNo() != null){
+							nominationPostCandidate.setMobileNo(nominatedPostVO.getMobileNo());
+					}
+						
+							nominationPostCandidate.setInsertedBy(loggerUserId);
+							nominationPostCandidate.setUpdatedBy(loggerUserId);
+							nominationPostCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							nominationPostCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominationPostCandidate.setIsDeleted("N");
+							nominationPostCandidate = nominationPostCandidateDAO.save(nominationPostCandidate);
+					
+					if(nominatedPostVO.getNominatdList() != null && !nominatedPostVO.getNominatdList().isEmpty() ){
+						nominatedPostApplication = new NominatedPostApplication();
+						for(NominatedPostVO Vo : nominatedPostVO.getNominatdList()){
+							
+							nominatedPostApplication.setNominationPostCandidateId(nominationPostCandidate.getNominationPostCandidateId() != null ? nominationPostCandidate.getNominationPostCandidateId() : null);
+							
+							if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 1){
+								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 2){
+								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+								nominatedPostApplication.setLocationValue(Vo.getStateId() != null ? Vo.getStateId() : null) ;
+							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 3){
+								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+								nominatedPostApplication.setLocationValue(Vo.getDistrictId() != null ? Vo.getDistrictId() : null) ;
+							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 4){
+								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+								nominatedPostApplication.setLocationValue(Vo.getConstituencyId() != null ? Vo.getConstituencyId() : null) ;
+							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 5 || Vo.getBoardLevelId().longValue() == 6){
+								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+								nominatedPostApplication.setLocationValue(Vo.getMandalId() != null ? Vo.getMandalId() : null) ;
+							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 7){
+								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+								nominatedPostApplication.setLocationValue(Vo.getPanchayatId() != null ? Vo.getPanchayatId() : null) ;
+							}
+							
+							nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
+							nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
+							nominatedPostApplication.setPositionId(Vo.getDeptBoardPostnId() != null ? Vo.getDeptBoardPostnId() : null) ;
+							
+							nominatedPostApplicationDAO.save(nominatedPostApplication);
+						
+						}
+				}
+		
+				rs.setMessage("SUCCESS");
+				rs.setResultCode(0);
+				return rs;
+		}
+	});
+}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Exception Occured in savingNominatedPostProfileApplication()", e);
+		status.setMessage("FAIL");
+		status.setResultCode(1);
+	}
+		return status;
+	}
+	
 }
