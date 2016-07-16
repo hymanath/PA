@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +13,9 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
+import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,8 +31,29 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<IdNameVO> 						idNameVOList;
 	private NomintedPostMemberVO 				nomintedPostMemberVO;
 	private String 								status;
+	private NominatedPostVO                     nominatedPostVO;
+	private ResultStatus 						resultStatus;
+	private InputStream 						inputStream;
 	
 	
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public NominatedPostVO getNominatedPostVO() {
+		return nominatedPostVO;
+	}
+	public void setNominatedPostVO(NominatedPostVO nominatedPostVO) {
+		this.nominatedPostVO = nominatedPostVO;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -81,7 +106,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public static Logger getLog() {
 		return LOG;
 	}
-	public void setServletRequest(HttpServletRequest arg0) {
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+		
 	}
 	public String nominatedPosts()
 	{
@@ -178,4 +205,29 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		
 		return Action.SUCCESS;
 	}
+	public String savingNominatedPostProfileApplication(){
+		try {
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			resultStatus = nominatedPostProfileService.savingNominatedPostProfileApplication(nominatedPostVO,user.getRegistrationID());
+			
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					inputStream = new StringBufferInputStream("SUCCESS");
+				}else if(resultStatus.getResultCode() == 1){
+					inputStream = new StringBufferInputStream("FAIL");
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at savingNominatedPostProfileApplication", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }

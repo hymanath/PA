@@ -46,7 +46,7 @@ function getDistrictsForStates(state,id,num){
 	   if(id == "statesDivId"){
 	   $("#districtId").empty();
 	   }else {
-	   $("#nominatedDistId").empty();
+	   $("#nominatedDistId"+num).empty();
 	   }
 	   
 	   $("#searchDataImgForDist").hide();
@@ -116,7 +116,7 @@ function getDistrictsForStates(state,id,num){
 	   if(id == "districtId"){
 	   $("#constituencyId").empty();
 	   }else {
-	   $("#nominatdConstId").empty();
+	   $("#nominatdConstId"+num).empty();
 	   }
 	   $("#searchDataImgForConst").hide();
      for(var i in result){
@@ -166,6 +166,11 @@ function getDistrictsForStates(state,id,num){
 				}).done(function(result){
 				if(result !=null)
 				{
+					if(id == "constituencyId"){
+						$("#mandalList").empty();
+					}else {
+						$("#nominatedMandlId"+num).empty();
+					}
 					for(var i in result)
 					{
 						if(id == "constituencyId"){
@@ -205,7 +210,11 @@ function getPanchayatWardByMandal(num,id){
 				url : "getPanchayatWardByMandalAction.action",
 				data : {task:JSON.stringify(jsObj)} 
 			}).done(function(result){
-				
+				if(id == "mandalList"){
+						$("#panchaytList").empty();
+					}else {
+						$("#nominatedPanchayatId"+num).empty();
+					}
 			for(var i in result){
 				if(id == "mandalList"){
 					$("#panchaytList").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
@@ -474,16 +483,17 @@ function getNominatedPostApplication(startIndex)
 		str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
         str +='</div>';
         str +='<input type="checkbox" style="margin:auto;display:block;" class="checkboxCls" name="checkbox"/>';
-        str +='<p class="m_0 m_top5 text-center"><b>'+result[i].cadreName+'</b></p>';
-        str +='<p class="m_0 m_top5 text-center">V.ID:'+result[i].voterCardNo+'</p>';
-        str +='<p class="m_0 text-center">M.NO:'+result[i].memberShipCardId+'</p>';
-        str +='<p class="m_0 text-center">'+result[i].mobileNo+'</p>';
+        str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
+        str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'">V.ID:'+result[i].voterCardNo+'</p>';
+        str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'">M.NO:'+result[i].memberShipCardId+'</p>';
+        str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'">'+result[i].mobileNo+'</p>';
+		str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'"/>';
 		if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 				{
         str +='<p class="text-center m_0">'+result[i].addressVO.constituencyName+'</p>';
-        str +='</li>';
+		str +='</li>';
 				}
-			}
+			 }
 		}else{
 		str+='No Data Available';	
 		}
@@ -519,7 +529,7 @@ function getDistricts(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    $("#searchDataImgForDist").hide();
-    $('#sub_menu').trigger("chosen:updated");
+    
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -576,9 +586,9 @@ $('.searchTypeCls').click(function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    $("#"+id).empty();
-    $("#"+id).append('<option value="0">Select Board</option>');
+    
    if(result != null && result.length >0){
-		 
+		 $("#"+id).append('<option value="0">Select Board</option>');
      for(var i in result){
 	   $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
@@ -592,7 +602,7 @@ $('.searchTypeCls').click(function(){
     
 	var jsObj = {
 		depmtId : $("#depmtsId"+num).val(),
-		boardId : $("#boardLvlId"+num).val()
+		boardId : $("#deptBoardId"+num).val()
 	}
     $.ajax({
           type:'GET',
@@ -600,9 +610,9 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-    $("#deptBoardId"+num).append('<option value="0">Select Board Position</option>');
+    $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
-	  
+	  $("#deptBoardPostnId"+num).append('<option value="0">Select Board Position</option>');
 		for(var i in result){
 			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	  }
@@ -624,9 +634,9 @@ $('.searchTypeCls').click(function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    //$("#searchDataImgForDist").hide();
-   $("#deptBoardId"+num).append('<option value="0">Select Department Board</option>');
+  $("#deptBoardId"+num).empty();
    if(result != null && result.length >0){
-	    
+	     $("#deptBoardId"+num).append('<option value="0">Select Department Board</option>');
 		for(var i in result){
 			$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	  }
@@ -645,9 +655,9 @@ $('.searchTypeCls').click(function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    $("#"+id).empty();
-   $("#"+id).append('<option value="0">Select Department</option>');  
+    
    if(result != null && result.length >0){
-		
+		$("#"+id).append('<option value="0">Select Department</option>'); 
      for(var i in result){
 	   $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
@@ -742,3 +752,239 @@ else if(selectVal==2)
 	
 	
 }
+$(document).on("click",".iconClose",function(){
+	$(this).closest(".addBlockNew").remove()
+});
+var cloneCount=1;
+
+$(document).on("click","#addOneMore",function(){
+  var e = $("#cloneDivBlock").clone();
+  e.removeClass("cloneBlockDiv")
+  e.attr("id",'block'+cloneCount);
+  e.attr("attr_count",cloneCount);
+  e.show();
+  e.find(".iconClose").show();
+
+  e.find(".boardLvlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].boardLevelId');
+  e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
+  getBoardLevels("boardLvlId"+cloneCount);
+  e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');');
+  
+  e.find(".nominatedStaeCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].stateId');
+  e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
+  e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
+  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates("",nominatedStaeId'+cloneCount+','+cloneCount+');');
+  
+  e.find(".nominatedDistCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].districtId');
+  e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
+  e.find(".districtShowCls").attr("id","districtShowDivId"+cloneCount);
+  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts("",nominatedDistId'+cloneCount+','+cloneCount+');');
+  
+  e.find(".nominatdConstCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].ConstituencyId');
+  e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
+  e.find(".constituencyShowCls").attr("id","constituencyshowDivId"+cloneCount);
+  e.find(".nominatdConstCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatdConstId'+cloneCount+');');
+  
+  e.find(".nominatedMandlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].mandalId');
+  e.find(".nominatedMandlCls").attr("id","nominatedMandlId"+cloneCount);
+  e.find(".mandalShowCls").attr("id","mondalShowDivId"+cloneCount);
+  e.find(".nominatedMandlCls").attr("onChange",'getPanchayatWardByMandal('+cloneCount+',nominatedMandlId'+cloneCount+');');
+   
+  e.find(".nominatedPanchayatCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].panchayatId');
+  e.find(".nominatedPanchayatCls").attr("id","nominatedPanchayatId"+cloneCount);
+  e.find(".panchayatShowCls").attr("id","panchayatShowDivId"+cloneCount);
+  
+  e.find(".depmtsCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptId');  
+  e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
+  getDepartments("depmtsId"+cloneCount);
+  e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+');');
+  
+  e.find(".deptBoardCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptBoardId');
+  e.find(".deptBoardCls").attr("id","deptBoardId"+cloneCount);
+  e.find(".deptBoardCls").attr("onChange",'getDepartmentBoardPositions('+cloneCount+');');
+  
+  e.find(".deptBoardPostnCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptBoardPostnId');
+  e.find(".deptBoardPostnCls").attr("id","deptBoardPostnId"+cloneCount);
+  $("#addOneMoreBlock").append(e);
+  
+  var boardlvl= "boardLvlId"+cloneCount;
+  $("#"+boardlvl).chosen();
+  
+  var nominatedState= "nominatedStaeId"+cloneCount;
+  $("#"+nominatedState).chosen();
+  
+  var nomintdDist= "nominatedDistId"+cloneCount;
+  $("#"+nomintdDist).chosen();
+  
+  var nomintedConst= "nominatdConstId"+cloneCount;
+  $("#"+nomintedConst).chosen();
+   
+  var nomintdMandl= "nominatedMandlId"+cloneCount;
+  $("#"+nomintdMandl).chosen();
+  
+  var nomintdPanchyt= "nominatedPanchayatId"+cloneCount;
+  $("#"+nomintdPanchyt).chosen();
+  
+  var depts= "depmtsId"+cloneCount;
+  $("#"+depts).chosen();
+  
+  var deptBrd= "deptBoardId"+cloneCount;
+  $("#"+deptBrd).chosen();
+  
+  var deptBrdPostn= "deptBoardPostnId"+cloneCount;
+  $("#"+deptBrdPostn).chosen();
+  
+  cloneCount=cloneCount+1;
+});
+function savingApplication(){
+	
+	if(!validateFields()){
+		return;
+	}
+			var cadreName = '';
+			var cadreId = '';
+			var cadreVoterId = '';
+			var cadreMobilNo= '';
+			$("#savingAjaxImg").css("display","block");			
+			$(".checkboxCls").each(function(){
+			if($(this).prop('checked')==true){
+				cadreName = $(this).parent().find(".cadreName").text();
+				cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
+				cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
+				cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
+			}
+		});
+			$(".tdpCadreId").val(cadreId);
+			$(".tdpCadreName").val(cadreName);
+			$(".cadreVoterId").val(cadreVoterId);
+			$(".cadreMobileNo").val(cadreMobilNo);
+			
+			var uploadHandler = {
+				upload: function(o) {
+					$("#savingAjaxImg").css("display","none");
+					uploadResult = o.responseText;
+					showSbmitStatus(uploadResult);
+				}
+			};
+	
+			YAHOO.util.Connect.setForm('submitApplication',true);
+			YAHOO.util.Connect.asyncRequest('POST','savingNominatedPostApplicationAction.action',uploadHandler);
+		
+	}
+	
+	function showSbmitStatus(result){
+		//console.log(result)
+		if(result.message == "SUCCESS"){
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Submitted Successfully.</span>");
+			setTimeout(function(){
+			$("#savingStatusDivId").html("");
+			}, 5000);
+			saveFieldsEmpty();
+		}else if (result.message == "FAIL"){
+			setTimeout(function(){
+			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
+			}, 1000);
+		}
+	}
+	function validateFields(){
+		$(".errorMsgCls").html("");
+		var flag = true;
+		var errorMsg='';
+		$(".boardLvlCls").each(function(){
+			if($(this).val() == 0){
+				$(this).parent().find(".chosen-single").css("border","1px solid red");
+				errorMsg = "Please Select Board Level";
+			}else{
+					$(this).parent().find(".chosen-single").css("border","1px solid gray");
+			}
+				if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6 || $(this).val() == 7){
+						$(".nominatedStaeCls").each(function(){
+							alert($(this).val())
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select State";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+							} 
+						});
+				}
+				if($(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6 || $(this).val() == 7){
+						$(".nominatedDistCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select District";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+						});
+				}
+				if($(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6 || $(this).val() == 7){
+						$(".nominatdConstCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select Constituency";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+						});
+				}
+				if($(this).val() == 5 || $(this).val() == 6 || $(this).val() == 7){
+						$(".nominatedMandlCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select Mandal/Corporation";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+						});
+				}
+				if($(this).val() == 7){
+						$(".nominatedPanchayatCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select Mandal/Corporation";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+						});
+				}
+				
+	});
+					$(".depmtsCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select All Highlights";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+					});
+					$(".deptBoardCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select All Highlights";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+					});
+					$(".deptBoardPostnCls").each(function(){
+							if($(this).val() == 0){
+								$(this).parent().find(".chosen-single").css("border","1px solid red");
+								errorMsg = "Please Select All Highlights";
+								return;
+							}else{
+								$(this).parent().find(".chosen-single").css("border","1px solid gray");
+								} 
+					});
+		if(errorMsg != ''){
+		$(".errorMsgCls").html(errorMsg);
+		return  false;
+		}
+		return true;
+	}
