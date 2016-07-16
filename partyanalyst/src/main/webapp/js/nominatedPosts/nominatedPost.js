@@ -1,5 +1,5 @@
 function getDistrictsForStates(state,id,num){
-   
+
 	//$(".allcls").hide();
 	if(id == "statesDivId"){
 			getConstituenciesForState(state);
@@ -661,4 +661,84 @@ $(document).on("click",".checkboxCls",function(){
     $(".checkboxCls").prop( "checked" ,false);
 	$( this ).prop( 'checked', true );
 })
-
+function showHideByNominatedPost(num)
+{
+	var selectVal = $("#boardLvlId"+num).val();
+	if(selectVal==0||selectVal==1)
+	{
+	$("#statesShowDivId"+num).hide();
+	$("#nominatedStaeId"+num).hide();
+	$("#districtShowDivId"+num).hide();
+	$("#nominatedDistId"+num).hide();
+	$("#constituencyshowDivId"+num).hide();
+	$("#nominatdConstId"+num).hide();
+	$("#mondalShowDivId"+num).hide();
+	$("#nominatedMandlId"+num).hide();
+	$("#panchayatShowDivId"+num).hide();
+	$("#nominatedPanchayatId"+num).hide();
+	
+	}
+else if(selectVal==2)
+{
+	$("#statesShowDivId"+num).show();
+	$("#nominatedStaeId"+num).hide();
+	$("#districtShowDivId"+num).hide();
+	$("#nominatedDistId"+num).hide();
+	$("#constituencyshowDivId"+num).hide();
+	$("#nominatdConstId"+num).hide();
+	$("#mondalShowDivId"+num).hide();
+	$("#nominatedMandlId"+num).hide();
+	$("#panchayatShowDivId"+num).hide();
+	$("#nominatedPanchayatId"+num).hide();
+}else if(selectVal==3)
+{
+	$("#statesShowDivId"+num).show();
+	$("#nominatedStaeId"+num).hide();
+	$("#districtShowDivId"+num).show();
+	$("#nominatedDistId"+num).hide();
+	$("#constituencyshowDivId"+num).hide();
+	$("#nominatdConstId"+num).hide();
+	$("#mondalShowDivId"+num).hide();
+	$("#nominatedMandlId"+num).hide();
+	$("#panchayatShowDivId"+num).hide();
+	$("#nominatedPanchayatId"+num).hide();
+}else if(selectVal==4)
+{
+    $("#statesShowDivId"+num).show();
+	$("#nominatedStaeId"+num).hide();
+	$("#districtShowDivId"+num).show();
+	$("#nominatedDistId"+num).hide();
+	$("#constituencyshowDivId"+num).show();
+	$("#nominatdConstId"+num).hide();
+	$("#mondalShowDivId"+num).hide();
+	$("#nominatedMandlId"+num).hide();
+	$("#panchayatShowDivId"+num).hide();
+	$("#nominatedPanchayatId"+num).hide();	
+}else if(selectVal==5||selectVal==6)
+{
+	$("#statesShowDivId"+num).show();
+	$("#nominatedStaeId"+num).hide();
+	$("#districtShowDivId"+num).show();
+	$("#nominatedDistId"+num).hide();
+	$("#constituencyshowDivId"+num).show();
+	$("#nominatdConstId"+num).hide();
+	$("#mondalShowDivId"+num).show();
+	$("#nominatedMandlId"+num).hide();
+	$("#panchayatShowDivId"+num).hide();
+	$("#nominatedPanchayatId"+num).hide();
+}else if(selectVal=7)
+{
+	$("#statesShowDivId"+num).show();
+	$("#nominatedStaeId"+num).hide();
+	$("#districtShowDivId"+num).show();
+	$("#nominatedDistId"+num).hide();
+	$("#constituencyshowDivId"+num).show();
+	$("#nominatdConstId"+num).hide();
+	$("#mondalShowDivId"+num).show();
+	$("#nominatedMandlId"+num).hide();
+	$("#panchayatShowDivId"+num).show();
+	$("#nominatedPanchayatId"+num).hide();
+}
+	
+	
+}
