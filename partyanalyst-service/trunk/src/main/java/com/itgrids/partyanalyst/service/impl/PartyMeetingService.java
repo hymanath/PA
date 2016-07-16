@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabDetailsDAO;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
@@ -101,9 +103,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IActivityAttendanceAcceptanceDAO activityAttendanceAcceptanceDAO;
 	private ITabDetailsDAO tabDetailsDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
+	private IPartyMeetingUserAccessLevelDAO partyMeetingUserAccessLevelDAO;
+	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 	
 	
 	
+	public void setPartyMeetingUserAccessLevelDAO(
+			IPartyMeetingUserAccessLevelDAO partyMeetingUserAccessLevelDAO) {
+		this.partyMeetingUserAccessLevelDAO = partyMeetingUserAccessLevelDAO;
+	}
+	public void setUserAccessLevelValueDAO(
+			IUserAccessLevelValueDAO userAccessLevelValueDAO) {
+		this.userAccessLevelValueDAO = userAccessLevelValueDAO;
+	}
 	public ITabDetailsDAO getTabDetailsDAO() {
 		return tabDetailsDAO;
 	}
@@ -3256,15 +3268,26 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return status;
 	}
 	
-	public List<PartyMeetingVO> getLevelWiseMeetingDetails(){
+	public List<PartyMeetingVO> getLevelWiseMeetingDetails(String fromDateStr,String toDateStr,Long userId){
 		
 		List<PartyMeetingVO> finalList =null;
 		
 		try{
 			
-			List<Object[]> levelsObj =  partyMeetingLevelDAO.getPartyMeetingLevels();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			
-			Map<Long,PartyMeetingVO> levelMap = new HashMap<Long, PartyMeetingVO>();
+			Date startDate =null;
+			Date endDate =null;
+			
+			if(fromDateStr !=null && toDateStr !=null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			
+			
+			/*List<Object[]> levelsObj =  partyMeetingLevelDAO.getPartyMeetingLevels();
+			
+			//Map<Long,PartyMeetingVO> levelMap = new HashMap<Long, PartyMeetingVO>();
 			
 			if(levelsObj !=null && levelsObj.size()>0){
 				for (Object[] objects : levelsObj) {
@@ -3281,28 +3304,86 @@ public class PartyMeetingService implements IPartyMeetingService{
 					levelMap.put(VO.getId(), VO);
 					
 				}
+			}*/
+			
+			Map<Long,PartyMeetingVO> levelMap = new HashMap<Long, PartyMeetingVO>();
+			Map<Long,List<Long>> userLevelValuesMap = new HashMap<Long, List<Long>>();
+			
+			//GETTING USER ACCESS LEVELS
+			List<Object[]> allLevels = partyMeetingUserAccessLevelDAO.getrAccessLevelsOfUserId(userId);
+			if(allLevels!=null && allLevels.size()>0){
+				for(Object[] obj:allLevels){
+					PartyMeetingVO mv = new PartyMeetingVO();
+					mv.setId(Long.valueOf(obj[0].toString()));
+					mv.setName(obj[1].toString());
+					
+					
+					mv.setInvitedCount(0l);//conductedCount
+					mv.setNonInviteeCount(0l);//notConductedCount
+					mv.setAttendedCount(0l);//OverAll Planned Count
+					
+					levelMap.put(mv.getId(), mv);
+				}
 			}
 			
-			List<Object[]> conductedObj = partyMeetingDAO.getLevelWiseMeetingDetails();
+			//GETTING USER ACCESS LOCATIONS
+			List<Long> levelValues = new ArrayList<Long>(0);
+			List<String> levelStr=new ArrayList<String>(0);
+			String level="";
+			List<Object[]> allLevelValues = userAccessLevelValueDAO.getAccessValuesOfUserId(userId);
+			if(allLevelValues!=null && allLevelValues.size()>0){
+				/*
+				for(Object[] obj:allLevelValues){
+					List<Long> locationIds = userLevelValuesMap.get(Long.valueOf(obj[0].toString()));
+					if(locationIds==null){
+						locationIds = new ArrayList<Long>();
+					}
+					locationIds.add(Long.valueOf(obj[1].toString()));
+					userLevelValuesMap.put(Long.valueOf(obj[0].toString()), locationIds);
+				}*/
+				
+				for(Object[] obj:allLevelValues){
+					
+					levelValues.add(obj[1] !=null ? Long.valueOf(obj[1].toString()):0l);
+					levelStr.add(obj[2] !=null ? obj[2].toString():"");
+					
+				}
+			}
+			if(levelStr !=null && levelStr.size()>0){
+				level=levelStr.get(0);
+			}
+			
+			List<Object[]> conductedObj = partyMeetingDAO.getLevelWiseMeetingDetails(startDate,endDate,level,levelValues);
 			
 			if(conductedObj !=null && conductedObj.size()>0){
 				for(Object[] obj : conductedObj){
-					PartyMeetingVO inVo = levelMap.get((Long)obj[0]);
 					
-					if(inVo == null){
+					PartyMeetingVO inVo = new PartyMeetingVO();
+					if(obj[0] !=null && ((Long)obj[0] == 4l || (Long)obj[0] == 5l || (Long)obj[0] == 6l) ){
+						inVo = levelMap.get(4l);
+					}else if(obj[0] !=null && ((Long)obj[0] ==7l || (Long)obj[0] == 8l)){
+						inVo = levelMap.get(7l);
+					}else{
+						inVo = levelMap.get((Long)obj[0]);
+					}
+					
+					/*if(inVo == null){
 						inVo = new PartyMeetingVO();
 						levelMap.put((Long)obj[0], inVo);
+					}*/
+					
+					if(inVo !=null){
+						if(obj[2] !=null){
+							if(!obj[2].toString().isEmpty() && obj[2].toString().equalsIgnoreCase("Y")){
+								inVo.setInvitedCount(inVo.getInvitedCount() + (obj[3] !=null ? (Long)obj[3]:0l));
+							}else if(!obj[2].toString().isEmpty() && obj[2].toString().equalsIgnoreCase("N")){
+								inVo.setNonInviteeCount(inVo.getNonInviteeCount() + (obj[3] !=null ? (Long)obj[3]:0l));
+							}
+						}else{
+							inVo.setAttendedCount(inVo.getAttendedCount() +  (obj[3] !=null ? (Long)obj[3]:0l));
+						}
 					}
 					
-					if(obj[2] !=null){
-						if(!obj[2].toString().isEmpty() && obj[2].toString().equalsIgnoreCase("Y")){
-							inVo.setInvitedCount(inVo.getInvitedCount() + (obj[3] !=null ? (Long)obj[3]:0l));
-						}else if(!obj[2].toString().isEmpty() && obj[2].toString().equalsIgnoreCase("N")){
-							inVo.setNonInviteeCount(inVo.getNonInviteeCount() + (obj[3] !=null ? (Long)obj[3]:0l));
-						}
-					}else{
-						inVo.setAttendedCount(inVo.getAttendedCount() +  (obj[3] !=null ? (Long)obj[3]:0l));
-					}
 					
 				}
 			}
