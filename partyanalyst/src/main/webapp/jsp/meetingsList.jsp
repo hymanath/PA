@@ -179,7 +179,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 	
 	
 </header>-->
-<main style="margin-top:40px">
+<main>
 	<div class="container">
     	<div class="row">
         	<section>
