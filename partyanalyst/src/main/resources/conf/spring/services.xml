@@ -3281,8 +3281,11 @@
 		<property name="departmentBoardPositionDAO" ref="departmentBoardPositionDAO"></property>
 		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
-		<property name="transactionTemplate" ref="transactionTemplate"></property>
 		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
+	<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO"></property>
+	<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
+	<property name="transactionTemplate" ref="transactionTemplate"></property>
+	<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
 	</bean>
 </beans>		
 	
