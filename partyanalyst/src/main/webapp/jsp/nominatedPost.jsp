@@ -139,14 +139,15 @@
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
-                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox"/></h4>
+                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId"/></h4>
                             </div>
-                            <div class="panel-body bg_ff pad_10">
+                            <div class="panel-body bg_ff pad_10" style="display:none;" id="changePhoneNumberDiv">
                             	<div class="row">
+									<div id="errorMsg" style="color: red;margin-left:25px;"></div>
                                    	<div class="col-md-4 col-lg-4 col-sm-5 col-xs-11">
                                     	<label>CHANGE PHONE NUMBER</label>
                                     	<div class="input-group">
-                                        	<input type="text" class="form-control"/>
+                                        	<input type="text" class="form-control" id="phoneNumId"/>
                                             <span class="input-group-addon bg_ff">
                                             	<i class="glyphicon glyphicon-plus-sign"></i>
                                                 <i class="glyphicon glyphicon-minus-sign"></i>
@@ -160,47 +161,58 @@
                                     </div>
                                 	<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>H No</label>
-                                        <input type="text" class="form-control"/>
+                                        <input type="text" class="form-control" id="houseNumberId"/>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Address Lane 1</label>
-                                        <input type="text" class="form-control"/>
+                                        <input type="text" class="form-control" id="addressLane1Id"/>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Address Lane 2</label>
-                                        <input type="text" class="form-control"/>
+                                        <input type="text" class="form-control" id="addressLane2Id"/>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>State</label>
-                                        <select class="chosenSelect">
-                                        	<option>State</option>
+                                        <select class="chosenSelect" id="addStateId">
+										<option value="0">Select State</option>
+                                        	<option value="1">AndhraPradesh</option>
+											<option value="36">Telangana</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row">
                                 	<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>District</label>
-                                        <select class="chosenSelect">
+                                        <select class="chosenSelect" id="addDistrictId">
                                         	<option>District</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Constituency</label>
-                                        <select class="chosenSelect">
+                                        <select class="chosenSelect" id="addConstituencyId">
                                         	<option>Constituency </option>
+                                        </select>
+                                    </div>
+									  <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
+                                    	<label>Mandals/Municipality</label>
+                                        <select class="chosenSelect" id="addMandalsId">
+                                        	<option>Mandals/Municipality </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Village</label>
-                                        <select class="chosenSelect">
+                                        <select class="chosenSelect" id="addVillageId">
                                         	<option>Village Name</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Pincode</label>
-                                        <input type="text" class="form-control"/>
+                                        <input type="text" class="form-control" id="addPincodeId"/>
                                     </div>
-                                </div>
+									 <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10 col-md-offset-6">
+                                    	<button type="button" class="btn btn-primary btn-sm pull-right" id="updateButnId" onclick="savechangeAddressForNominatedPost()" style="margin-top:25px;">UPDATE</button>
+                                    </div>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -382,6 +394,9 @@
         </div>
     </div>
 </div>
+<script>
+var globalCadreId=0;
+</script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPost.js"></script>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -393,6 +408,18 @@ $(document).on("click",".btnClassChange",function(){
 	$(this).addClass("btnActive");
 });
 
+$(document).on("change","#addStateId",function(){
+  getDistrictsForReferPopup();
+});
+$(document).on("change","#addDistrictId",function(){
+  getConstituenciesForDistrict();
+});
+$(document).on("change","#addConstituencyId",function(){
+  getMandalsByConstituencyForReferPopup();
+});
+$(document).on("change","#addMandalsId",function(){
+  getPanchayatsForMandal();
+});
 </script>
 </body>
 </html>

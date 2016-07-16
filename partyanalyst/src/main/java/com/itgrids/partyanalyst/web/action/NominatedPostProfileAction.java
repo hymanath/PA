@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.NominatedPostVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -28,14 +31,20 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private String 								task;
 	private JSONObject							jObj;
 	private INominatedPostProfileService        nominatedPostProfileService;
+	private String status;
 	private List<IdNameVO> 						idNameVOList;
+	private List<NominatedPostVO> 				nominatePostList;
 	private NomintedPostMemberVO 				nomintedPostMemberVO;
-	private String 								status;
 	private NominatedPostVO                     nominatedPostVO;
 	private ResultStatus 						resultStatus;
 	private InputStream 						inputStream;
 	
 	
+	public List<NominatedPostVO> getNominatePostList() {
+		return nominatePostList;	}
+	public void setNominatePostList(List<NominatedPostVO> nominatePostList) {
+		this.nominatePostList = nominatePostList;
+	}
 	public InputStream getInputStream() {
 		return inputStream;
 	}
@@ -54,12 +63,6 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setNominatedPostVO(NominatedPostVO nominatedPostVO) {
 		this.nominatedPostVO = nominatedPostVO;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	public NomintedPostMemberVO getNomintedPostMemberVO() {
 		return nomintedPostMemberVO;
 	}
@@ -71,6 +74,13 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
 		this.idNameVOList = idNameVOList;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
@@ -229,5 +239,74 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		
 		return Action.SUCCESS;
 	}
+	public String savechangeAddressForNominatedPost()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+		    NominatedPostVO Vo = new NominatedPostVO();
+		    Vo.setId(jObj.getLong("tdpCadreId"));
+		    Vo.setHno(jObj.getString("houseNo"));
+		    Vo.setMobileNo(jObj.getString("mobileNo"));
+		    Vo.setAddress1(jObj.getString("addressVal"));
+		    Vo.setAddress2(jObj.getString("addressValue"));
+		    Vo.setPincode(jObj.getString("pincode"));
+		    Vo.setStateId(jObj.getLong("stateId"));
+		    Vo.setDistrictId(jObj.getLong("districtId"));
+		    Vo.setConstituencyId(jObj.getLong("constituencyId"));
+		    Vo.setPanchayatId(jObj.getLong("panchayatId"));
+		    Vo.setMandalId(jObj.getLong("mandalId"));
+		    
+			status = nominatedPostProfileService.savechangeAddressForNominatedPost(Vo);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPopulateApplicantDetailsForMember()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("globalCadreId");
+			nominatePostList = nominatedPostProfileService.getApplicantDetailsForMember(tdpCadreId);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDistrictsForStateForNominated()
+	{
+		try
+		{
+		jObj = new JSONObject(getTask());
+		Long stateId = jObj.getLong("stateId");
+		idNameVOList = nominatedPostProfileService.getDistrictsForState(stateId);
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
+	public String getVillagesForMandalId()
+	{
+		try
+		{
+		jObj = new JSONObject(getTask());
+		Long mandalId = jObj.getLong("mandalId");
+		idNameVOList = nominatedPostProfileService.getVillagesForMandalId(mandalId);
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
+	
 	
 }

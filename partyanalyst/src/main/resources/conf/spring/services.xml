@@ -3282,10 +3282,17 @@
 		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
 		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
-	<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO"></property>
-	<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
-	<property name="transactionTemplate" ref="transactionTemplate"></property>
-	<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO"></property>
+		<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
+		<property name="transactionTemplate" ref="transactionTemplate"></property>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+		<property name="transactionTemplate" ref="transactionTemplate"></property>
+		<property name="userAddressDAO" ref="userAddressDAO"></property>
+		<property name="stateDAO" ref="stateDAO"></property>
+		<property name="districtDAO" ref="districtDAO"></property>
+		<property name="constituencyDAO" ref="constituencyDAO"></property>
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
+		<property name="tehsilDAO" ref="tehsilDAO"></property>
 	</bean>
 </beans>		
 	
