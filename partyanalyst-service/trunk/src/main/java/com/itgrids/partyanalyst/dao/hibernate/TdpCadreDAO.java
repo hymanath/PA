@@ -7039,4 +7039,14 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		return (Long) query.uniqueResult();
 	}
+	public List<Object[]> getApplicationMemberDetails(Long tdpCadreId){
+		
+		Query query = getSession().createQuery(" select model.mobileNo,model.houseNo,model.presentAddress.addressLane1,model.presentAddress.addressLane2," +
+				" model.presentAddress.state.stateId,model.presentAddress.district.districtId," +
+				" model.presentAddress.constituency.constituencyId,model.presentAddress.tehsil.tehsilId,model.presentAddress.panchayat.panchayatId,model.presentAddress.pinCode " +
+				" from TdpCadre model " +
+				" where model.tdpCadreId=:tdpCadreId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return  query.list();
+	}
 }

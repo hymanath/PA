@@ -87,4 +87,5 @@ public List<Object[]> getAllTehsilInfoDetails();
 	public List<Object[]> getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(List<Long> constituencyIdList, Long publicationDateId);
 	public List<Object[]> getTehsilDetailsByStateId(Long stateId,Long publicationDateId);
 	public List<Long> getAllTehsilDetails(List<Long> districtIds);
+	public List<Object[]> getMandalsForConstituencyId( Long constituencyId);
 }

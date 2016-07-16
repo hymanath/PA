@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionCallback;
@@ -13,9 +17,16 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
@@ -24,6 +35,10 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.NominatedPostVO;
+import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -39,22 +54,35 @@ import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 public class NominatedPostProfileService implements INominatedPostProfileService{
 
 	private final static Logger LOG =  Logger.getLogger(NominatedPostProfileService.class);
+	private ITdpCadreDAO tdpCadreDAO;
+	private IUserAddressDAO userAddressDAO;
+	private TransactionTemplate transactionTemplate = null;
+	public IConstituencyDAO constituencyDAO;
+	private IPanchayatDAO panchayatDAO;
+	private IDistrictDAO districtDAO;
+	private IStateDAO stateDAO;
 	private IBoardLevelDAO boardLevelDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService ;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IDepartmentsDAO departmentsDAO;
 	private IDepartmentBoardDAO departmentBoardDAO;
 	private IDepartmentBoardPositionDAO departmentBoardPositionDAO;
+	private TehsilDAO tehsilDAO;
 	private INominatedPostFinalDAO nominatedPostFinalDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private IApplicationStatusDAO applicationStatusDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
-	private TransactionTemplate transactionTemplate;
-	private ITdpCadreDAO tdpCadreDAO;
 	
-	
+	public TehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(TehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
 
 	public IApplicationStatusDAO getApplicationStatusDAO() {
 		return applicationStatusDAO;
@@ -135,27 +163,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public IDepartmentBoardPositionDAO getDepartmentBoardPositionDAO() {
 		return departmentBoardPositionDAO;
 	}
-
 	public void setDepartmentBoardPositionDAO(
 			IDepartmentBoardPositionDAO departmentBoardPositionDAO) {
 		this.departmentBoardPositionDAO = departmentBoardPositionDAO;
 	}
-
 	public IDepartmentBoardDAO getDepartmentBoardDAO() {
 		return departmentBoardDAO;
 	}
-
-
 	public void setDepartmentBoardDAO(IDepartmentBoardDAO departmentBoardDAO) {
 		this.departmentBoardDAO = departmentBoardDAO;
 	}
 
-
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
-
-
 	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
@@ -170,18 +191,42 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			SetterAndGetterUtilService setterAndGetterUtilService) {
 		this.setterAndGetterUtilService = setterAndGetterUtilService;
 	}
-
-
 	public IBoardLevelDAO getBoardLevelDAO() {
 		return boardLevelDAO;
 	}
-
-
 	public void setBoardLevelDAO(IBoardLevelDAO boardLevelDAO) {
 		this.boardLevelDAO = boardLevelDAO;
 	}
-
-
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
 	/**
 	 * @Author  Hyma
 	 * @Version NominatedPostProfileService.java  July 13, 2016 05:30:00 PM 
@@ -263,6 +308,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 		return returnList;
 	}
+	
 	
 
 	/**
@@ -450,5 +496,159 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	}
 		return status;
 	}
+	
+	/**
+	 * @Author  Teja
+	 * @Version NominatedPostProfileService.java  July 15, 2016 02:50:00 PM 
+	 * @return NomintedPostVO
+	 */
+	
+
+	public String savechangeAddressForNominatedPost(final NominatedPostVO nominatedPostVO){
+		LOG.info("Entered into the savechangeAddressForNominatedPost service method");
+		String status = null;
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					UserAddress UA = new UserAddress();
+					UA.setHouseNo(nominatedPostVO.getHno() != null?nominatedPostVO.getHno():null);
+					UA.setAddressLane1(nominatedPostVO.getAddress1() != null?nominatedPostVO.getAddress1():null);
+					UA.setAddressLane2(nominatedPostVO.getAddress2() != null?nominatedPostVO.getAddress2():null);
+					UA.setPinCode(nominatedPostVO.getPincode() != null?nominatedPostVO.getPincode():null);
+					UA.setState(nominatedPostVO.getStateId() != null?stateDAO.get(nominatedPostVO.getStateId()):null);
+					UA.setDistrict(nominatedPostVO.getDistrictId() != null?districtDAO.get(nominatedPostVO.getDistrictId()):null);
+					UA.setConstituency(nominatedPostVO.getConstituencyId() != null?constituencyDAO.get(nominatedPostVO.getConstituencyId()):null);
+					UA.setPanchayatId(nominatedPostVO.getPanchayatId() != null?nominatedPostVO.getPanchayatId():null);
+					UA.setTehsil(nominatedPostVO.getMandalId() != null?tehsilDAO.get(nominatedPostVO.getMandalId()):null);
+					UserAddress presentAddress =  userAddressDAO.save(UA);
+					
+					TdpCadre tc = tdpCadreDAO.get(nominatedPostVO.getId());//tdpCadreId
+					if(tc != null){
+						tc.setPresentAddress(presentAddress);
+						tc.setMobileNo(nominatedPostVO.getMobileNo());
+						tdpCadreDAO.save(tc);
+					}
+				}
+			});
+			status = "success";
+		} catch (Exception e) {
+			status = "failure";
+			Log.error("Exception Occured in savechangeAddressForNominatedPost method in NominatedPostProfileService ",e);
+		}
+		return status;
+	}
+	public List<NominatedPostVO> getApplicantDetailsForMember(Long tdpCadreId){
+		List<NominatedPostVO> appMembersList = new ArrayList<NominatedPostVO>();
+		NominatedPostVO vo = null;
+		 try {			
+				 
+				List<Object[]> memberDetails =  tdpCadreDAO.getApplicationMemberDetails(tdpCadreId);
+				if(memberDetails != null && memberDetails.size() >0){
+				for(Object[] obj : memberDetails){
+					vo = new NominatedPostVO();
+					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[0]));
+					vo.setHno(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					vo.setAddress1(commonMethodsUtilService.getStringValueForObject(obj[2]));
+					vo.setAddress2(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					vo.setStateId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					//District
+					vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[5]));
+					if(vo.getDistrictId()!= null && vo.getDistrictId() > 0){
+						List<Object[]> distList = districtDAO.getDistrictIdAndNameByState(vo.getStateId());
+						if(distList != null && distList.size() > 0){
+							for (Object[] objects : distList) {
+								IdNameVO voIn = new IdNameVO();
+								voIn.setId((Long)objects[0]);
+								voIn.setName(objects[1].toString());
+								vo.getDistList().add(voIn);
+							}
+						}
+					}
+					vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+					//const
+					if(vo.getConstituencyId()!= null && vo.getConstituencyId() > 0){
+						List<Object[]> constList = constituencyDAO.getConstituenciesByDistrictId(vo.getDistrictId());
+						if(constList != null && constList.size() > 0){
+							for (Object[] objects : constList) {
+								IdNameVO voCon = new IdNameVO();
+								voCon.setId((Long)objects[0]);
+								voCon.setName(objects[1].toString());
+								vo.getConsList().add(voCon);
+							}
+						}
+					}
+					vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7]));
+					if(vo.getMandalId()!= null && vo.getMandalId() > 0){
+						List<Object[]> manList = tehsilDAO.getMandalsForConstituencyId(vo.getConstituencyId());
+						if(manList != null && manList.size() > 0){
+							for (Object[] objects : manList) {
+								IdNameVO voMan = new IdNameVO();
+								voMan.setId((Long)objects[0]);
+								voMan.setName(objects[1].toString());
+								vo.getMandalsList().add(voMan);
+							}
+						}
+					}
+					
+					vo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+					//Panchayats
+					if(vo.getPanchayatId()!= null && vo.getPanchayatId() > 0){
+						List<Object[]> panList = panchayatDAO.getPanchayatsByTehsilId(vo.getMandalId());
+						if(panList != null && panList.size() > 0){
+							for (Object[] objects : panList) {
+								IdNameVO voPan = new IdNameVO();
+								voPan.setId((Long)objects[0]);
+								voPan.setName(objects[1].toString());
+								vo.getPanList().add(voPan);
+							}
+						}
+					}
+					vo.setPincode(commonMethodsUtilService.getStringValueForObject(obj[9]));
+					
+					appMembersList.add(vo);
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getApplicantDetailsForMember in NominatedPostProfileService",e);
+		}
+		 return appMembersList;
+	 } 
+	public List<IdNameVO> getDistrictsForState(Long stateId){
+		List<IdNameVO> finaleVoList = new ArrayList<IdNameVO>(0);
+		try {
+			List<Object[]> distList = districtDAO.getAllDistrictDetails(stateId);
+			
+			if(distList != null && distList.size() > 0){
+				for (Object[] objects : distList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setName(objects[1]!=null?objects[1].toString():"");
+					finaleVoList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exceptionr riased at getDistrictsForState", e);
+		}
+		return finaleVoList;
+	}
+	public List<IdNameVO> getVillagesForMandalId(Long mandalId){
+		List<IdNameVO> finaleVoList = new ArrayList<IdNameVO>(0);
+		try {
+			List<Object[]> manList = panchayatDAO.getPanchayatsByTehsilId(mandalId);
+			
+			if(manList != null && manList.size() > 0){
+				for (Object[] objects : manList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(objects[0]!=null?(Long)objects[0]:0l);
+					vo.setName(objects[1]!=null?objects[1].toString():"");
+					finaleVoList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exceptionr riased at getDistrictsForState", e);
+		}
+		return finaleVoList;
+	}	
 	
 }
