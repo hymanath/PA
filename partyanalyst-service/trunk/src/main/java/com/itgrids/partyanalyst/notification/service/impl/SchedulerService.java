@@ -1021,7 +1021,7 @@ public class SchedulerService implements ISchedulerService{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");   
 			//SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-			TimeZone timeZone=TimeZone.getTimeZone("IST");
+			TimeZone timeZone=TimeZone.getTimeZone("Asia/Calcutta");
 			sdf1.setTimeZone(timeZone);
 			String dt = sdf1.format(new Date());  
 			//String dt1 = sdf2.format(new Date());
