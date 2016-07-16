@@ -33,6 +33,8 @@ public class PartyMeetingType extends BaseModel implements Serializable{
 	
 	private Long partyMeetingLevelId;
 	
+	private String isActive;
+	
 	public PartyMeetingType(){}
 
 	@Id
@@ -93,6 +95,16 @@ public class PartyMeetingType extends BaseModel implements Serializable{
 	public void setPartyMeetingLevelId(Long partyMeetingLevelId) {
 		this.partyMeetingLevelId = partyMeetingLevelId;
 	}
+
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	
 	
 	
 }

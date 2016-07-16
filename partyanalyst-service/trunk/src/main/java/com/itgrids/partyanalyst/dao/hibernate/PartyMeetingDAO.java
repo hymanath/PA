@@ -871,18 +871,47 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	return (Object[]) query.uniqueResult();
 	    }
 	    
-	    public List<Object[]> getLevelWiseMeetingDetails(){
+	    public List<Object[]> getLevelWiseMeetingDetails(Date startDate,Date endDate,String level,List<Long> levelValues){
 	    	
 	    	StringBuilder str = new StringBuilder();
 	    	str.append(" select model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level,model.isConducted " +
 	    			" ,count(model.partyMeetingId) " +
 	    			" from  PartyMeeting model" +
 	    			" where " +
-	    			" model.isActive = 'Y'" +
-	    			" group by  model.partyMeetingLevel.partyMeetingLevelId,model.isConducted " +
+	    			" model.isActive = 'Y'" );
+	    	
+	    	if(startDate !=null && endDate !=null){
+	    		str.append(" and date(model.startDate) >=:startDate and  date(model.endDate) <= :endDate ");
+	    	}
+	    	
+	    	if(levelValues !=null && levelValues.size()>0){
+	    		if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("STATE")){
+		    		
+		    		str.append(" and model.meetingAddress.state.stateId in (:levelValues) ");
+		    		
+		    	}else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("DISTRICT")){
+		    		
+		    		str.append(" and model.meetingAddress.district.districtId in (:levelValues) ");
+		    		
+		    	}else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("CONSTITUENCY")){
+		    		str.append(" and model.meetingAddress.constituency.constituencyId in (:levelValues) ");
+		    	}
+	    	}
+	    
+	    	str.append(" group by  model.partyMeetingLevel.partyMeetingLevelId,model.isConducted " +
 	    			" order by model.partyMeetingLevel.orderNo" );
 	    	
 	    	Query query = getSession().createQuery(str.toString());
+	    	
+	    	if(startDate !=null && endDate !=null){
+	    		query.setParameter("startDate", startDate);
+	    		query.setParameter("endDate", endDate);
+	    	}
+	    	
+	    	if(levelValues !=null && levelValues.size()>0 && level !=null && !level.isEmpty() ){
+	    		query.setParameterList("levelValues", levelValues);
+	    	}
+	    	
 	    	return query.list();
 	    }
 	    public Integer updateConductedDetails(Long meetingId,String isConducted,String remarks,Date conductedDate){
