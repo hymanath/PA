@@ -12919,10 +12919,23 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="getNominatedPostMemberDetailsAction" class="nominatedPostProfileAction" method="getNominatedPostMemberDetails">
+		<result type="json" name="success">
+   			<param name="root">nomintedPostMemberVO</param>
+   		</result>
+	</action>
+	<action name="boardWiseNominatedPostAction" class="nominatedPostProfileAction" method="boardWiseNominatedPosts">
+		<result name="success">/jsp/boardWiseNominatedPost.jsp</result>
+	</action>
 		 <action name="saveAlertAssignedUserAction" class="createAlertAction" method="saveAlertAssignedUser">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
+	<action name="updateApplicationStatusDetailsAction" class="nominatedPostProfileAction" method="updateApplicationStatusDetails">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
 </package>
 </struts>      
