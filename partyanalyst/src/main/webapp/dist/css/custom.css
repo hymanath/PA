@@ -398,3 +398,15 @@ caption
 {
 	padding:0px;
 }
+@media (max-width: 500px) {
+	.panelWidthCols
+	{
+		width:100% !important;
+	}
+}
+@media (min-width: 501px) and (max-width: 768px) {
+	.panelWidthCols
+	{
+		width:50% !important;
+	}
+}
