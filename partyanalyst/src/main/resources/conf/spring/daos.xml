@@ -3102,4 +3102,7 @@
 	<bean id="alertAssignedDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAssignedDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="nominatedPostMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostMemberDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
