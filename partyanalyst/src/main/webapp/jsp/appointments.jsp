@@ -2459,9 +2459,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				statusArray.push(statusId);
 			}else{
 				statusArray.push(2);
-				statusArray.push(10);
-				statusArray.push(5);
-				statusArray.push(8);
 			}
 		}else{
 			var statusId =$("#selectStatusId").val();
