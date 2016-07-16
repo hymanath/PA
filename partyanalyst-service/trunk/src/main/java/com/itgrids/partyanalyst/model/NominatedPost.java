@@ -26,10 +26,8 @@ import org.hibernate.annotations.NotFoundAction;
 public class NominatedPost extends BaseModel implements Serializable{
 
 	private Long nominatedPostId;
-	private Long nominatedPostPositionId;
+	private Long nominatedPostMemberId;
 	private Long nominationPostCandidateId;
-	private Long boardLevelId;
-	private Long locationValue;
 	private Long nominatedPostStatusId;
 	private Long insertedBy;
 	private Date insertedTime;
@@ -37,9 +35,8 @@ public class NominatedPost extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private String isDeleted;
 	
-	private NominatedPostPosition nominatedPostPosition;
+	private NominatedPostMember nominatedPostMember;
 	private NominationPostCandidate nominationPostCandidate;
-	private BoardLevel boardLevel;
 	private NominatedPostStatus nominatedPostStatus;
 	
 	@Id
@@ -52,12 +49,12 @@ public class NominatedPost extends BaseModel implements Serializable{
 		this.nominatedPostId = nominatedPostId;
 	}
 	
-	@Column(name="nominated_post_position_id")
-	public Long getNominatedPostPositionId() {
-		return nominatedPostPositionId;
+	@Column(name="nominated_post_member_id")
+	public Long getNominatedPostMemberId() {
+		return nominatedPostMemberId;
 	}
-	public void setNominatedPostPositionId(Long nominatedPostPositionId) {
-		this.nominatedPostPositionId = nominatedPostPositionId;
+	public void setNominatedPostMemberId(Long nominatedPostMemberId) {
+		this.nominatedPostMemberId = nominatedPostMemberId;
 	}
 	
 	@Column(name = "nomination_post_candidate_id")
@@ -66,22 +63,6 @@ public class NominatedPost extends BaseModel implements Serializable{
 	}
 	public void setNominationPostCandidateId(Long nominationPostCandidateId) {
 		this.nominationPostCandidateId = nominationPostCandidateId;
-	}
-	
-	@Column(name="board_level_id")
-	public Long getBoardLevelId() {
-		return boardLevelId;
-	}
-	public void setBoardLevelId(Long boardLevelId) {
-		this.boardLevelId = boardLevelId;
-	}
-	
-	@Column(name="location_value")
-	public Long getLocationValue() {
-		return locationValue;
-	}
-	public void setLocationValue(Long locationValue) {
-		this.locationValue = locationValue;
 	}
 	
 	@Column(name="nominated_post_status_id")
@@ -133,14 +114,14 @@ public class NominatedPost extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="nominated_post_position_id", insertable=false, updatable = false)
+	@JoinColumn(name="nominated_post_member_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public NominatedPostPosition getNominatedPostPosition() {
-		return nominatedPostPosition;
+	public NominatedPostMember getNominatedPostMember() {
+		return nominatedPostMember;
 	}
-	public void setNominatedPostPosition(NominatedPostPosition nominatedPostPosition) {
-		this.nominatedPostPosition = nominatedPostPosition;
+	public void setNominatedPostMember(NominatedPostMember nominatedPostMember) {
+		this.nominatedPostMember = nominatedPostMember;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -153,17 +134,6 @@ public class NominatedPost extends BaseModel implements Serializable{
 	public void setNominationPostCandidate(
 			NominationPostCandidate nominationPostCandidate) {
 		this.nominationPostCandidate = nominationPostCandidate;
-	}
-	
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="board_level_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public BoardLevel getBoardLevel() {
-		return boardLevel;
-	}
-	public void setBoardLevel(BoardLevel boardLevel) {
-		this.boardLevel = boardLevel;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
