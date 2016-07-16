@@ -675,5 +675,6 @@
 	  <pattern>/createAlertAction*</pattern>
 	  <pattern>/alertDashboardAction*</pattern>
 	  <pattern>/nominatedPostProfileAction*</pattern>
+	  <pattern>/boardWiseNominatedPostAction*</pattern>
 	</decorator> 
 </decorators>

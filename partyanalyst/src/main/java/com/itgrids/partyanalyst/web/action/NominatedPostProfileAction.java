@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,46 +7,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.ActivityVO;
-import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
-import com.itgrids.partyanalyst.dto.CadreDetailsVO;
-import com.itgrids.partyanalyst.dto.CadreReportVO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
-import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
-import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
-import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
-import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
-import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
-import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
-import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
-import com.itgrids.partyanalyst.dto.IvrOptionsVO;
-import com.itgrids.partyanalyst.dto.LocationVO;
-import com.itgrids.partyanalyst.dto.MahanaduEventVO;
-import com.itgrids.partyanalyst.dto.MobileDetailsVO;
-import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
-import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
-import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
-import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SimpleVO;
-import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
-import com.itgrids.partyanalyst.dto.TdpCadreVO;
-import com.itgrids.partyanalyst.dto.VerifierVO;
-import com.itgrids.partyanalyst.dto.WebServiceResultVO;
-import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.service.ICadreDetailsService;
-import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
-import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
-import com.itgrids.partyanalyst.service.ITrainingCampService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -60,8 +25,22 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private JSONObject							jObj;
 	private INominatedPostProfileService        nominatedPostProfileService;
 	private List<IdNameVO> 						idNameVOList;
+	private NomintedPostMemberVO 				nomintedPostMemberVO;
+	private String 								status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public NomintedPostMemberVO getNomintedPostMemberVO() {
+		return nomintedPostMemberVO;
+	}
+	public void setNomintedPostMemberVO(NomintedPostMemberVO nomintedPostMemberVO) {
+		this.nomintedPostMemberVO = nomintedPostMemberVO;
+	}
 	public List<IdNameVO> getIdNameVOList() {
 		return idNameVOList;
 	}
@@ -163,4 +142,40 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		return Action.SUCCESS;
 	}
 	
+	public String getNominatedPostMemberDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			nomintedPostMemberVO = nominatedPostProfileService.getNominatedPostMemberDetails(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("departmentId"),
+															jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getString("type"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String boardWiseNominatedPosts(){
+		return Action.SUCCESS;
+	}
+	
+	public String updateApplicationStatusDetails(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			status = nominatedPostProfileService.updateApplicationStatusDetails(userId,jObj.getLong("nominatedPostId"),jObj.getLong("nominatedPostCandidateId"),jObj.getLong("statusId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }

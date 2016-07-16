@@ -3273,12 +3273,16 @@
 	<!-- Debate End -->
 	
 	<bean name="nominatedPostProfileService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostProfileService">
-	<property name="boardLevelDAO" ref="boardLevelDAO"></property>
-	<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
-	<property name="departmentsDAO" ref="departmentsDAO"></property>
-	<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-	<property name="departmentBoardDAO" ref="departmentBoardDAO"></property>
-	<property name="departmentBoardPositionDAO" ref="departmentBoardPositionDAO"></property>
+		<property name="boardLevelDAO" ref="boardLevelDAO"></property>
+		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+		<property name="departmentsDAO" ref="departmentsDAO"></property>
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+		<property name="departmentBoardDAO" ref="departmentBoardDAO"></property>
+		<property name="departmentBoardPositionDAO" ref="departmentBoardPositionDAO"></property>
+		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
+		<property name="transactionTemplate" ref="transactionTemplate"></property>
+		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
 	</bean>
 </beans>		
 	
