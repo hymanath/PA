@@ -16,6 +16,8 @@ public class NominatedPostVO implements Serializable{
 	private String address2;
 	private String pincode;
 	private String 	mobileNo;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -82,5 +84,4 @@ public class NominatedPostVO implements Serializable{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	
 }
