@@ -1915,8 +1915,8 @@ $(document).on("click",".editConductedDateBtn",function(){
 		$("#dateValueId").val("");	
 	}
 	
-	$("#errorId").html('');
-	$('errorId').removeAttr('style');
+	$("#errorId").html("<b>Select Date</b>");
+	//$('errorId').removeAttr('style');
 	$("#editConductedBtnModal").modal('show');
 });
 $(document).on("click",".editRemarksBtn",function(){
@@ -1937,8 +1937,8 @@ $(document).on("click",".editRemarksBtn",function(){
 		$("#remarksUpdateId").val("");
 	}
 	
-	$("#errorId").html('');
-	$('errorId').removeAttr('style');
+	$("#errorId").html('<b>Enter Remarks</b>');
+	//$('errorId').removeAttr('style');
 	$("#editConductedBtnModal").modal('show');
 });
 
