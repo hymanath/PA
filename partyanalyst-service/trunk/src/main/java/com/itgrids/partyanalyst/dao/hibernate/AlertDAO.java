@@ -79,4 +79,28 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		return query.list();
 	}
 	
+	public List<Object[]> getAlertsData(Long alertId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.alertId,model.description,date(model.createdTime)," +
+				" model.alertType.alertType,model.alertSource.source,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
+				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");
+		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
+		str.append(" ,constituency.constituencyId,constituency.name");
+		str.append(" ,state.stateId,state.stateName");
+		str.append(" ,ward.constituencyId,ward.name");
+		str.append(" from Alert model left join model.userAddress.panchayat panc ");
+		str.append(" left join model.userAddress.tehsil tehsil ");
+		str.append(" left join model.userAddress.constituency constituency ");
+		str.append(" left join model.userAddress.localElectionBody localElectionBody ");
+		str.append(" left join model.userAddress.localElectionBody.electionType electionType ");
+		str.append(" left join model.userAddress.district district ");
+		str.append(" left join model.userAddress.state state ");
+		str.append(" left join model.userAddress.ward ward ");
+		str.append(" where model.isDeleted ='N' and model.alertId=:alertId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
+	
 }
