@@ -32,5 +32,6 @@ public interface INominatedPostProfileService {
 	public List<NominatedPostVO> getApplicantDetailsForMember(Long tdpCadreId);
 	public List<IdNameVO> getDistrictsForState(Long stateId);
 	public List<IdNameVO> getVillagesForMandalId(Long mandalId);
+	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId);
 	
 }

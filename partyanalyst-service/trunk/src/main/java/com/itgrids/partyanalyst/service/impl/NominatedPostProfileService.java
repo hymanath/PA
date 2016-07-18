@@ -918,4 +918,52 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		
 		return returnList;
 	}
+	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId){
+		NomintedPostMemberVO returnVo = new NomintedPostMemberVO();
+		List<NomintedPostMemberVO> subList = new ArrayList<NomintedPostMemberVO>();
+		List<NomintedPostMemberVO> subList1 = new ArrayList<NomintedPostMemberVO>();
+		try {
+			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName
+			List<Object[]> appCandList = nominatedPostApplicationDAO.getCandidateAppliedPostsByCadre(tdpCadreId);
+			if(appCandList!= null && appCandList.size() >0){
+				for (Object[] obj : appCandList) {
+					NomintedPostMemberVO Vo = new NomintedPostMemberVO();
+					Vo.setNominatedPostId(commonMethodsUtilService.getLongValueForObject(obj[10]));//postTypeId
+					if(Vo.getNominatedPostId() == 1l){
+						Vo.setApplStatusId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						Vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
+						Vo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));//boardLevelId
+						Vo.setLevel(commonMethodsUtilService.getStringValueForObject(obj[3]));
+						Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+						Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+						Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+						Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						subList.add(Vo);
+					}
+					else if(Vo.getNominatedPostId() == 2l){
+						Vo.setApplStatusId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						Vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
+						Vo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));//boardLevelId
+						Vo.setLevel(commonMethodsUtilService.getStringValueForObject(obj[3]));
+						Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+						Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+						Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+						Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						subList1.add(Vo);
+					}
+					
+				}
+			}
+			returnVo.getSubList().addAll(subList);
+			returnVo.getSubList1().addAll(subList1);
+		} catch (Exception e) {
+			LOG.error("Exceptionr riased at getAppliedCandidatePostsByCadre", e);
+		}
+		return returnVo;
+	}
+	
 }
