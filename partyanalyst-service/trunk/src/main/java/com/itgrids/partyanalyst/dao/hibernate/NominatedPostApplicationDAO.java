@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -14,7 +15,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		super(NominatedPostApplication.class);
 		
 	}
-
+	
 	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type){
 		StringBuilder sb = new StringBuilder();
 		
@@ -54,4 +55,88 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Date startDate,Date endDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select district model.boardLevelId, count(model.nominationPostCandidateId), from NominatedPostApplication model where " +
+				"  model.nominationPostCandidate.isDeleted ='N'  ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
+		queryStr.append(" and model.applicationStatusId = 1 ");//applied
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select district model.boardLevelId, count(model2.nominatedPostApplicationId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPost model,NominatedPostApplication model2 " +
+				"   where  model.nominationPostCandidateId = model2.nominationPostCandidateId and " +
+				"   model.nominationPostCandidate.isDeleted ='N'  and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and " +
+				"   model2.isDeleted='N' and model.boardLevelId = model2.boardLevelId and model2.applicationStatusId = 1 ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
+		queryStr.append(" and model.applicationStatusId = 1 and model2.");//applied
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+
+	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select district model.boardLevelId, count(model2.nominatedPostApplicationId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPost model,NominatedPostApplication model2 " +
+				"   where  model.nominationPostCandidateId = model2.nominationPostCandidateId and " +
+				"   model.nominationPostCandidate.isDeleted ='N'  and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and " +
+				"   model2.isDeleted='N' and model.boardLevelId = model2.boardLevelId and model2.applicationStatusId in (2,3) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
+		queryStr.append(" and model.applicationStatusId = 1 and model2.");//applied
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+
+	public List<Object[]> getPendingApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate){
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select district model.boardLevelId, count(model.nominationPostCandidateId) from NominatedPostApplication model where " +
+				"  model.nominationPostCandidate.isDeleted ='N'  and model.nominationPostCandidateId not in ( " +
+				" select distinct model1.nominationPostCandidateId from NominatedPostFinal model1 ) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
+		
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		return query.list();
+	}
+	
 }
