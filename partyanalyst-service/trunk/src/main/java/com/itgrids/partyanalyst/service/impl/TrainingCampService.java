@@ -3628,25 +3628,50 @@ class TrainingCampService implements ITrainingCampService{
 			List<Long> villageList=new ArrayList<Long>();
 			List<Long> wardList=new ArrayList<Long>();
 			
+			List<Object[]> meetings = new ArrayList<Object[]>(0);
+			
 			if(locationLevel==4l){
-				for(int i=0;i<mandalTownDivisonIds.size();i++){
-					String manTowDiv = mandalTownDivisonIds.get(i).toString();
-					char temp = manTowDiv.charAt(0);
-					locationLevel=Long.parseLong(temp+"");
-					if(locationLevel==4l){
-						mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+				
+				if( !(mandalTownDivisonIds.get(0) !=null &&  mandalTownDivisonIds.get(0).longValue() ==0l )){
+					for(int i=0;i<mandalTownDivisonIds.size();i++){
+						String manTowDiv = mandalTownDivisonIds.get(i).toString();
+						char temp = manTowDiv.charAt(0);
+						locationLevel=Long.parseLong(temp+"");
+						if(locationLevel==4l){
+							mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						if(locationLevel==5l){
+							townList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						if(locationLevel==6l){
+							divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+						}
+						
 					}
-					if(locationLevel==5l){
-						townList.add(Long.parseLong(manTowDiv.substring(1)));
-					}
-					if(locationLevel==6l){
-						divisonList.add(Long.parseLong(manTowDiv.substring(1)));
-					}
+				
+					meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+							townList,divisonList,villageList,wardList,startDate,endDate,0l);
 					
+					
+				}else{
+					
+					List<Object[]> meetingsMandal = partyMeetingDAO.getAllMeetings(meetingType,4l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					List<Object[]> meetingsTowns = partyMeetingDAO.getAllMeetings(meetingType,5l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					List<Object[]> meetingsDivs = partyMeetingDAO.getAllMeetings(meetingType,6l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					
+					
+					meetings.addAll(meetingsMandal);
+					meetings.addAll(meetingsTowns);
+					meetings.addAll(meetingsDivs);
 				}
 			}
 			
-			if(locationLevel==5l){
+			else if(locationLevel==5l){
+				
+				if( !(villageWardIds.get(0) !=null &&  villageWardIds.get(0).longValue() ==0l )){
 				for(int i=0;i<villageWardIds.size();i++){
 					String vilwrdId = villageWardIds.get(i).toString();
 					char temp = vilwrdId.charAt(0);
@@ -3659,10 +3684,48 @@ class TrainingCampService implements ITrainingCampService{
 						wardList.add(Long.parseLong(vilwrdId.substring(1)));
 					}
 				}
+				
+				meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l);
+				
+			 }else{
+				 
+				 
+				 if(mandalTownDivisonIds !=null && mandalTownDivisonIds.size()>0 && mandalTownDivisonIds.get(0).longValue() !=0l){
+					 
+					 for(int i=0;i<mandalTownDivisonIds.size();i++){
+						 String manTowDiv = mandalTownDivisonIds.get(i).toString();
+							char temp = manTowDiv.charAt(0);
+							Long firstChar=Long.parseLong(temp+"");
+							if(firstChar==4l){
+								mandalList.add(Long.parseLong(manTowDiv.substring(1)));
+							}
+							else if(firstChar==5l){
+								townList.add(Long.parseLong(manTowDiv.substring(1)));
+							}
+							else if(firstChar==6l){
+								divisonList.add(Long.parseLong(manTowDiv.substring(1)));
+							}
+					 }
+					 
+				 }
+				 
+				 
+				 List<Object[]> meetingsVillage = partyMeetingDAO.getAllMeetings(meetingType,7l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					List<Object[]> meetingsWards = partyMeetingDAO.getAllMeetings(meetingType,8l,stateIds,districtIds,constituencyIds,mandalList,townList,
+							divisonList,villageList,wardList,startDate,endDate,0l);
+					
+					meetings.addAll(meetingsVillage);
+					meetings.addAll(meetingsWards);
+			 }
+			}else{
+				meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,
+						townList,divisonList,villageList,wardList,startDate,endDate,0l);
 			}
 			
 			
-			List<Object[]> meetings = partyMeetingDAO.getAllMeetings(meetingType,locationLevel,stateIds,districtIds,constituencyIds,mandalList,townList,divisonList,villageList,wardList,startDate,endDate,0l);
+			
 			
 			List<Long> level1List = new ArrayList<Long>();
 			List<Long> level2List = new ArrayList<Long>();
