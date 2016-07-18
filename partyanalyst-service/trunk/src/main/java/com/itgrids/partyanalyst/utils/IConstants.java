@@ -1102,5 +1102,7 @@ public interface IConstants {
 	public static final String[] ATTENDANCE_REPORT_EMAIL_GROUP = {"a.dakavaram@itgrids.com,a.dakavaram@gmail.com,kamalakar@itgrids.com"};
 	public static final String EMAIL_USERNAME = "info@itgrids.com";
 	public static final String EMAIL_PASSWORD = "itgrids$678";
+	public static final String[] NOMINATED_POST_APPLICATION_STATUSES = {"TOTAL CORPORATIONS","APPLICATIONS NOT RECIEVED",
+		 "YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED"};
 	
 }
