@@ -33,7 +33,6 @@ public class NominatedPostVO implements Serializable{
 	private List<IdNameVO> consList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> panList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> mandalsList = new ArrayList<IdNameVO>(0);
-	private Long mandalId;
 	
 	public String getVoterCardNo() {
 		return voterCardNo;
@@ -41,12 +40,7 @@ public class NominatedPostVO implements Serializable{
 	public void setVoterCardNo(String voterCardNo) {
 		this.voterCardNo = voterCardNo;
 	}
-	public Long getMandalId() {
-		return mandalId;
-	}
-	public void setMandalId(Long mandalId) {
-		this.mandalId = mandalId;
-	}
+
 	public List<NominatedPostVO> getNominatdList() {
 		return nominatdList;
 	}
