@@ -398,3 +398,150 @@ label
 		margin-top:10px;
 	}
 }
+
+@media (min-width: 500px) and (max-width: 767px){
+	.panelBlockCustom li
+	{
+		display:inline-block;
+		width:47% !important;
+	}
+	.panelCustom .panel-heading
+	{
+		height:auto !important;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px){
+	.panelBlockCustom li
+	{
+		display:inline-block;
+		width:47% !important;
+	}
+	.panelCustom .panel-heading
+	{
+		height:auto !important;
+	}
+}
+.text-capital
+{
+	text-transform:uppercase;
+}
+.bg_cc
+{
+	background:#ccc;
+}
+.positionSelect
+{
+	padding:0px;
+}
+.positionSelect li
+{
+	list-style:none;
+	padding:3px;
+	border-left:1px solid #ddd;
+	border-top:1px solid #ddd;
+	border-right:1px solid #ddd;
+}
+.positionSelect li:last-child
+{
+	border-bottom:1px solid #ddd;
+}
+.headingColor
+{
+	color:#76514C
+}
+.panelBlockCustom
+{
+	padding:0px;
+	width:100%;
+}
+.panelBlockCustom li
+{
+	list-style:none;
+	display:inline-block;
+	width:13.2%;
+	margin-left:5px;
+	margin-right:5px;
+}
+.panelBlockCustom li:first-child
+{
+	margin-left:0px;
+}
+.panelBlockCustom li:last-child
+{
+	margin-right:0px;
+}
+.panelCustom
+{
+	background:#666666;
+	padding-left:8px;
+	border-radius:0px;
+}
+.panelCustom .panel-heading
+{
+	background:#fff;
+	border-radius:0px;
+	height:80px;
+	padding:5px;
+}
+.panelCustom .panel-heading .pull-right
+{
+	font-size:12px;
+}
+.panelCustom .panel-body
+{
+	background:#4DCFEF;
+	padding:5px;
+}
+.panelCustom .panel-footer
+{
+	background:#666666;
+	color:#fff;
+	border-radius:0px;
+	padding:5px;
+}
+.panelCustom .panel-footer p
+{
+	color:#fff;
+}
+.breadcrumb
+{
+	background:none;
+}
+.tabsCustom
+{
+	background:#F9F9F9;
+	padding-left:5px;
+}
+.tabsCustom li
+{
+	width:100%;
+}
+.tabsCustom > li.active > a, .tabsCustom > li.active > a:hover, .tabsCustom > li.active > a:focus
+{
+	background:#fff;
+	border-radius:0px;
+	border-right:0px;
+	border-bottom:1px solid #ddd
+}
+.tableCollapse thead th
+{
+	font-size:12px;
+	font-weight:400;
+	vertical-align:middle !important;
+}
+.tabCollapseIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\e113";
+    float: right;
+	font-size:14px;
+	margin-top:1px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#006442;
+	margin-left:5px;
+}
+.tabCollapseIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\e114";
+}

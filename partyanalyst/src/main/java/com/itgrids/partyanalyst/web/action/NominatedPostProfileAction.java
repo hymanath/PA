@@ -307,6 +307,20 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		}
 	 return Action.SUCCESS;
 	}
-	
-	
+	public String getCandidateAppliedPostsByCadre()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			nomintedPostMemberVO = nominatedPostProfileService.getCandidateAppliedPostsByCadre(jObj.getLong("globalCadreId"));
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+		}
+	 return Action.SUCCESS;
+	}
+	public String getNominatedPostApplicationReviewDetails()
+	{
+	 return Action.SUCCESS;
+	}
 }

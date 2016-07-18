@@ -676,5 +676,6 @@
 	  <pattern>/alertDashboardAction*</pattern>
 	  <pattern>/nominatedPostProfileAction*</pattern>
 	  <pattern>/boardWiseNominatedPostAction*</pattern>
+	    <pattern>/nominatedPostApplicationReviewAction*</pattern>
 	</decorator> 
 </decorators>
