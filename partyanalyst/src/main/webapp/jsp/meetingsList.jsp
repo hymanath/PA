@@ -451,7 +451,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                 	<label>Constituency</label>
 									<span id="ConsErrorMSgShow" style="color: red;"></span>
                                     <select class="form-control" id="constituencyId" name="constBox">
-									<option>Select Constituency</option>
+									<!--<option>Select Constituency</option>-->
 									</select>
                             </div>
 							<div class="col-md-1" style="height: 44px; width: 10px;">
@@ -1169,7 +1169,7 @@ getUserAccessLocationDetails();
 			
 			$('#meetingTableId').dataTable({
 			"iDisplayLength": 10,
-				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "All"]]			
+				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "ALL"]]			
 			});
 			$('#meetingTableId').removeClass("dataTable");
 			$('#meetingTableId_wrapper').css("margin-top","20px");
@@ -1232,7 +1232,7 @@ getUserAccessLocationDetails();
 		$("#districtId  option").remove();
 		//$("#districtId").append('<option value="">Select District</option>');
 		$("#constituencyId  option").remove();
-		$("#constituencyId").append('<option value="">Select Constituency</option>');
+		<!--$("#constituencyId").append('<option value="">Select Constituency</option>');-->
 		$("#manTowDivId  option").remove();
 		$("#manTowDivId").append('<option value="">Select Mandal/Town/Divison</option>');
 		$("#villWardId  option").remove();
@@ -1261,12 +1261,18 @@ getUserAccessLocationDetails();
 					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
 			}
+			getConstituenciesForDistricts('');
 	   });
 	}
 	function getConstituenciesForDistricts(district){
-	    $("#searchDataImgForcons").show();
+	   
+	   $("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="">Select Mandal/Town/Divison</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="">Select Village/Ward</option>');
+	   
 		$("#constituencyId  option").remove();
-		$("#constituencyId").append('<option value="">Select Constituency</option>');
+		//$("#constituencyId").append('<option value="">Select Constituency</option>');
 		var stateId = $("#statesDivId").val();
 		
 		var distArrTemp = [];
@@ -1275,7 +1281,7 @@ getUserAccessLocationDetails();
 		}else{
 			distArrTemp.push(district);
 		}
-		
+		 $("#searchDataImgForcons").show();
 		var jsObj={				
 			districtId:distArrTemp,
 			stateId:stateId,
@@ -1311,6 +1317,7 @@ getUserAccessLocationDetails();
 		$("#districtErrorMSgShow").html("");
 		getConstituenciesForDistricts(this.value);
 	});
+	//Location Showing and Hiding
 		$("#meetingLocationLevel").change(function(){
 				
 			$("#districtId").val($("#districtId option:first").val());
@@ -1321,7 +1328,7 @@ getUserAccessLocationDetails();
 				$("#statesDivId").html("");
 				
 				//$("#statesDivId").append('<option value=""> Select State </option>');
-				$("#statesDivId").append('<option value=0> All </option>');
+				$("#statesDivId").append('<option value=0> ALL </option>');
 				
 				if($.inArray(1, stateArr) > -1){
 					$("#statesDivId").append('<option value=1> AndhraPradesh </option>');
@@ -1339,6 +1346,9 @@ getUserAccessLocationDetails();
 				$("#VillWardShowId").hide();
 				
 			}else if($("#meetingLocationLevel").val()== 3){
+				
+				getConstituenciesForDistricts("");
+				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
 				$("#ConstShowId").show();
@@ -1346,6 +1356,10 @@ getUserAccessLocationDetails();
 				$("#VillWardShowId").hide();
 				
 			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+				
+				getConstituenciesForDistricts("");				
+				setTimeout(function(){getMandalVillageDetails(4);}, 2000);
+				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
 				$("#ConstShowId").show();
@@ -1353,6 +1367,11 @@ getUserAccessLocationDetails();
 				$("#VillWardShowId").hide();
 				
 			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
+				
+				getConstituenciesForDistricts("");
+				setTimeout(function(){getMandalVillageDetails(5);}, 2000);
+				
+				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
 				$("#ConstShowId").show();
@@ -1376,11 +1395,13 @@ getUserAccessLocationDetails();
 		});
 		$("#manTowDivId").change(function(){
 			$("#ManErrorMSgShow").html("");
-			getMandalVillageDetails(5);
+				if($("#manTowDivId").val() !=null && $("#manTowDivId").val().length>0 && $("#manTowDivId").val()>0){
+					getMandalVillageDetails(5);
+				}
+			
 		});
 		
 	function getMandalVillageDetails(locationLevel){
-		$("#searchDataImgForman").show();
 		//$("#manTowDivId  option").remove();
 		//$("#villWardId option").remove();
 		var stateId = $("#statesDivId").val();
@@ -1394,30 +1415,45 @@ getUserAccessLocationDetails();
 			distArrTemp.push(districtId);
 		}
 		
+		var mandalId = "0";
+		if(locationLevel==4){
+			$("#manTowDivId").html("");
+		}
+		if(locationLevel==5){
+			mandalId = $("#manTowDivId").val();
+			//$("#manTowDivId").html("")
+			$("#villWardId").html("");
+		}
+		
 		var assmblyArrTemp = [];
+		console.log(constituencyId +"Balu");
 		if(constituencyId==0){
-			assmblyArrTemp = assmblyArr;
+			//assmblyArrTemp = assmblyArr;	
+			var divId = "#manTowDivId";
+			$(divId).html("");
+				 $(divId).append("<option value=''>Select Mandal/Town/Divison</option>");
+			  if(locationLevel ==5){
+				  divId = "#villWardId";
+				$(divId).append("<option value=''>Select Village/Ward</option>");
+			  }
+			
+			return;
+		}else if($("#manTowDivId").val()==null || $("#manTowDivId").val() == 0){
+			$("#villWardId  option").remove();
+			$("#villWardId").append('<option value="">Select Village/Ward</option>');
+			assmblyArrTemp.push(constituencyId);
 		}else{
 			assmblyArrTemp.push(constituencyId);
 		}
 		
-		
-		var mandalId = "0";
-		if(locationLevel==4){
-			$("#manTowDivId").html("")
-		}
-		if(locationLevel==5){
-			mandalId = $("#manTowDivId").val();
-			$("#villWardId").html("");
-		}
-		
+		$("#searchDataImgForman").show();
 	   var jsObj={				
 			stateId : stateId,
 			districtId : distArrTemp,
 			constituencyId : assmblyArrTemp,//228
 			mandalId : mandalId,
 			locationLevel : locationLevel,
-			task:"getConstituenciesForDistricts"
+			task:""
 		}
 		$.ajax({
 			  type:'GET',
@@ -1427,10 +1463,10 @@ getUserAccessLocationDetails();
 	   }).done(function(result){
 		   $("#searchDataImgForman").hide();
 			  var divId = "#manTowDivId";
-			  $(divId).append("<option value=''>Select Mandal/Town/Divison</option>");
+				 //$(divId).append("<option value=''>Select Mandal/Town/Divison</option>");
 			  if(locationLevel ==5){
 				  divId = "#villWardId";
-				  $(divId).append("<option value=''>Select Village/Ward</option>");
+				//$(divId).append("<option value=''>Select Village/Ward</option>");
 			  }
 			  
 			  $(divId).append("<option value='0'>ALL</option>");
