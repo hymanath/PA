@@ -41,6 +41,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<AlertDataVO> alertDataList;
 	private  List<StatusTrackingVO> statusTrackingVOList;
 	private ResultStatus resultStatus;
+	private Long alertId;
+	
+	
+	
+	public Long getAlertId() {
+		return alertId;
+	}
+
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -216,6 +228,22 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setFromDate(jObj.getString("fromDate"));
 			inputVO.setToDate(jObj.getString("toDate"));
 			alertDataList = alertService.getLocationLevelWiseAlertsData(regVo.getRegistrationID(),inputVO);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+	
+	public String getAlertsData()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			alertDataList = alertService.getAlertsData(jObj.getLong("alertId"));
 			
 		}
 		catch (Exception e) {
