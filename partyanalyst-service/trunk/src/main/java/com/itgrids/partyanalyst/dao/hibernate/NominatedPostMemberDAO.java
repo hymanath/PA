@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
@@ -9,7 +11,10 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 
 	public NominatedPostMemberDAO() {
 		super(NominatedPostMember.class);
-		// TODO Auto-generated constructor stub
 	}
 
+	public List<Object[]> getNominatedPostsLevelWiseDeptAndBoard(){
+		
+		return null;
+	}
 }

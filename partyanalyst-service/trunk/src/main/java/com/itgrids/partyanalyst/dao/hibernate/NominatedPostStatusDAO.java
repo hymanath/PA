@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
 import com.itgrids.partyanalyst.model.NominatedPostStatus;
@@ -9,7 +12,10 @@ public class NominatedPostStatusDAO extends GenericDaoHibernate<NominatedPostSta
 
 	public NominatedPostStatusDAO() {
 		super(NominatedPostStatus.class);
-		// TODO Auto-generated constructor stub
 	}
 
+	public List<Long> getStatusIdsList(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostStatusId from NominatedPostStatus model ");
+		return query.list();
+	}
 }
