@@ -3105,4 +3105,11 @@
 	<bean id="nominatedPostMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostMemberDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	
+	<bean id="memberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		

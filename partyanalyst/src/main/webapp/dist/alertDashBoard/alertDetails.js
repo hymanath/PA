@@ -1,85 +1,80 @@
 
-$(document).ready(function(){
-	getLocationLevelAlertCount();
-});
-$(document).on("click",'.applyBtn',function(){
-	getLocationLevelAlertCount();
-})
-function getLocationLevelAlertCount()
+getAlertData();
+getAlertStatusCommentsTrackingDetails();
+function getAlertData()
 {
-	$("#locationLevelId").html('<img src="images/search.gif" />');
-	    var fromDate='';
-		var toDate='';
-		var dateStr = $("#dateRangePickerId").val(); 
-		
-		if(dateStr !=null && dateStr.length>0){
-			fromDate = dateStr.split("-")[0];
-			toDate = dateStr.split("-")[1];
-		}
-		var jsObj = {
-			fromDate:fromDate,
-			toDate :toDate
-			
-		          }
-		
-				$.ajax({
+	
+	$("#alertCandidateDataId").html('<img src="images/search.gif" />');
+    var jsObj =
+		     {
+			alertId  :alertId,
+			task : ""
+		      }
+			$.ajax({
 					  type:'GET',
-					  url: 'getLocationLevelWiseAlertsAction.action',
+					  url: 'getAlertsDataAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-					
-						buildLocationLevelAlert(result,jsObj);
-					
+			      buildAlertData(result);
 				});
 }
-function buildLocationLevelAlert(result,jsObj){
-	
-	
-	var str='';
-	if(result == null || result.length == 0)
+function getAlertStatusCommentsTrackingDetails()
 	{
 		
-		$("#locationLevelId").html('No data Available..');
-		return;
-	}
-	str+='<table class="table table-bordered">';
-	str+='<thead>';
-	str+='<th>Level</th>';
-	str+='<th>Total</th>';
-	for(var i in result[0].locationsList)
-	str+='<td>'+result[0].locationsList[i].name+'</td>';
-	str+='</thead>';
-	str+='<tbody>';
-	str+='<tr>';
-	for(var i in result){
-		str+='<td>'+result[i].name+'</td>';
-		if(result[i].count > 0)
-		{
-		str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></td>';	
-		}
-		else
-		{
-				str+='<td>'+result[i].count+'</td>';
-		}
+		$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+		var jsObj={
+	    			alertId:alertId,
+					task:""
+	    		}
+		$.ajax({
+		  type : 'GET',
+		  url : 'getAlertStatusCommentsTrackingDetails.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+		  buildAlertCommentsForTracking(result,"");
+		});
 		
-		var returnList=result[i].locationsList;
-		for(var j in returnList){
-			if(returnList[j].count > 0)
-			{
-			str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></td>';	
-			}
-			else{
-				str+='<td>'+returnList[j].count+'</td>';
-			}
-			
-			
-		}
-		str+='</tr>';
 	}
-	str+='</tbody>';
-	str+='</table>'
-	$("#locationLevelId").html(str);
-}
+	function buildAlertCommentsForTracking(result,aptName){
+		
+		var str='';
+		
+		if(result == null || result.length == 0)
+		{
+			$("#alertCommentsDiv").html('No Data Available');
+			return;
+		}
+			str+='<div class="panel panel-default panelAlert m_top10">';
+			str+='<div class="panel-heading">';
+				str+='<h4 class="panel-title text-success">'+aptName+' Alert Status Tracking</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+			str+='<ul class="alertStatusTracking">';
+				for(var i in result){
+					str+='<li>';
+						str+='<div class="arrow_box">';
+						if(result[i].id == 1)
+							str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						else
+							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
+								str+='<u style="font-size:15px;">Comments</u>';
+							for(var j in result[i].commentsList){
+					
+								str+='<p>'+result[i].commentsList[j]+'</p>';	
+							}
+						}	
+				
+						str+='</div>';
+					str+='</li>';	
+				}
+		str+='</ul>';
+		str+='</div>';
+		str+='</div>';
+		$("#alertCommentsDiv").html(str);
+		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
+	}
 $(document).on("click",".locationLevelCls",function(){
 	var levelId = $(this).attr("attr-levelId");
 	var statusId=$(this).attr("attr-statusId");
@@ -89,28 +84,7 @@ $(document).on("click",".locationLevelCls",function(){
 	getLocationLevelAlertData(levelId,statusId,fromDate,toDate);
 });
 
-var GlobalAlertData;
-function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
-{
-	$("#locationLevelDataId").html('<img src="images/search.gif" />');
-    GlobalAlertData = [];
-		var jsObj =
-		     {
-			levelId  : levelId,
-			statusId :statusId,
-			fromDate :"",
-			toDate   :"",
-			task : ""
-		      }
-			$.ajax({
-					  type:'GET',
-					  url: 'getLocationLevelAlertDataAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-			       GlobalAlertData = result;
-					buildAlertData(result,jsObj);
-				});
-}
+
 
 function buildAlertData(result,jsObj)
 {
@@ -194,20 +168,7 @@ function buildAlertData(result,jsObj)
 	str+='</table>';
 	$("#locationLevelDataId").html(str);
 }
-var GlobalalertId;
-var globalAlertName;
-$(document).on("click",".alertModel",function(){
-GlobalalertId = $(this).attr("attr-id");
-	$("#ModalShow").modal('show');
-	GlobalalertId = $(this).attr("attr-id");
-	
-	showPopUpAlertData(GlobalalertId);
-	 globalAlertName=$(this).attr("attr-des");
-	 	$("#descriptionTitleId").html(globalAlertName);
-	getAlertStatusCommentsTrackingDetails();
-	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
-	
-});
+
 $(document).on("click",".alertCandidate",function(){
 
 getAlertCandidatesData($(this).attr("attr-id"));
@@ -261,37 +222,7 @@ function buildAlertCandidateData(result)
 				str+='</div>';
 				str+='</div>';
 				}
-	/*str+='<div class="panel panel-default panelAlert">';
-		str+='<div class="panel-heading">';
-			str+='<h4 style="text-transform: uppercase;" class="text-success panel-title">Candidate Details</h4>';	
-		str+='</div>';
-		str+='<div class="panel-body">';
-			str+='<table class="table table-bordered">';
-				str+='<thead>';
-				str+='<th>Name</th>';
-				str+='<th>Location</th>';
-				
-				str+='</thead>';
-				var j=0;
-				for(var i in result)
-				{
-					j++;
-				str+='<tr>';	
-				str+='<td>'+result[i].name+'</td>';
-				var location ='';
-				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
-							{
-							location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T: '+result[i].locationVO.localEleBodyName+' </p><p>W: '+result[i].locationVO.wardName+'</p>';	
-							}
-							else{
-								location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M: '+result[i].locationVO.tehsilName+'</p><p> V : '+result[i].locationVO.villageName+'</p>';
-							}
-				str+='<td>'+location+'</td>';
-				str+='</tr>';	
-				}
-				str+='</table>';
-		str+='</div>';
-	str+='</div>';*/
+	
 	
 	
 	$("#alertCandidateDataId").html(str);
@@ -412,62 +343,62 @@ $(document).on("click",".updateAlertStatusCls",function(){
 });
 
 
-function getAlertStatusCommentsTrackingDetails()
+function buildAlertData(result)
+{
+	
+	for(var i in result)
 	{
-		$("#alertCommentsDiv").html('<img src="images/search.gif" />');
-		var jsObj={
-	    			alertId:GlobalalertId,
-					task:""
-	    		}
-		$.ajax({
-		  type : 'GET',
-		  url : 'getAlertStatusCommentsTrackingDetails.action',
-		  dataType : 'json',
-		  data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){ 
-		  buildAlertCommentsForTracking(result,"");
-		});
-		
-	}
-	function buildAlertCommentsForTracking(result,aptName){
-		
-		var str='';
-		
-		if(result == null || result.length == 0)
-		{
-			$("#alertCommentsDiv").html('No Data Available');
-			return;
-		}
-			str+='<div class="panel panel-default panelAlert m_top10">';
-			str+='<div class="panel-heading">';
-				str+='<h4 class="panel-title text-success">'+aptName+' Alert Status Tracking</h4>';
-			str+='</div>';
-			str+='<div class="panel-body">';
-			str+='<ul class="alertStatusTracking">';
-				for(var i in result){
-					str+='<li>';
-						str+='<div class="arrow_box">';
-						if(result[i].id == 1)
-							str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
-						else
-							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
-								str+='<u style="font-size:15px;">Comments</u>';
-							for(var j in result[i].commentsList){
-					
-								str+='<p>'+result[i].commentsList[j]+'</p>';	
-							}
-						}	
+			$("#typeId").html(''+result[i].alertType+'');
+			$("#severityId").html(''+result[i].severity+'');
+			$("#createdDate").html(''+result[i].date+'');
+			$("#levelId").html(''+result[i].regionScope+'');
+			var location ='';
+			if(result[i].regionScope == "STATE")
+			{
+				location +='<p>State:'+result[i].locationVO.state+'</p>';
+			}
+			else if(result[i].regionScope == "DISTRICT")
+			{
+				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p>';
+			}
+			
+			else if(result[i].regionScope == "CONSTITUENCY")
+			{
+				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p><p> Constituency :'+result[i].locationVO.constituencyName+'</p>';
+			}
+			else if(result[i].regionScope == "MANDAL" || result[i].regionScope == "MUNICIPAL-CORP-GMC" )
+			{
 				
-						str+='</div>';
-					str+='</li>';	
+					if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
+				{
+				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p><p> Constituency :'+result[i].locationVO.constituencyName+'</p><p> Town : '+result[i].locationVO.localEleBodyName+' </p>';	
 				}
-		str+='</ul>';
-		str+='</div>';
-		str+='</div>';
-		$("#alertCommentsDiv").html(str);
-		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
+				else{
+					location +='<p>State:'+result[i].locationVO.state+' </p><p>Dist : '+result[i].locationVO.districtName+' </p><p>Constituency :'+result[i].locationVO.constituencyName+'</p><p> Mandal : '+result[i].locationVO.tehsilName+'</p>';
+				}
+			}
+			
+			else if(result[i].regionScope == "VILLAGE" || result[i].regionScope == "WARD" )
+			{
+			
+				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
+				{
+				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p><p> Constituency :'+result[i].locationVO.constituencyName+'</p><p> Town : '+result[i].locationVO.localEleBodyName+' </p><p>Ward : '+result[i].locationVO.wardName+'</p>';	
+				}
+				else{
+					location +='<p>State:'+result[i].locationVO.state+' </p><p>Dist : '+result[i].locationVO.districtName+' </p><p>Constituency :'+result[i].locationVO.constituencyName+'</p><p> Mandal : '+result[i].locationVO.tehsilName+'</p><p> Panchayat : '+result[i].locationVO.villageName+'</p>';
+				}
+				
+			}	
+			
+			$("#LocationId").html(''+location+'');
+			$("#statusId").val(''+result[i].statusId+'');
+			  $("#statusId").dropkick('refresh')
+			$("#descriptionId").html(''+result[i].desc+'');
+			buildAlertCandidateData(result[i].subList);
+		
 	}
-
+	
+}
 
 
