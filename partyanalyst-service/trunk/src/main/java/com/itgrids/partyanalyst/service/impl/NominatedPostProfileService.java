@@ -1,18 +1,18 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
@@ -22,32 +22,31 @@ import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
+import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
-import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
-import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
-import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
-import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
-import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
-import com.itgrids.partyanalyst.model.TdpCadre;
-import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
-import com.itgrids.partyanalyst.model.NominatedPostFinal;
-import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
+import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
+import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 
@@ -73,8 +72,38 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IApplicationStatusDAO applicationStatusDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private INominatedPostStatusDAO nominatedPostStatusDAO;
+	private INominatedPostDAO nominatedPostDAO;
+	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
 	
+	
+	
+	public INominatedPostMemberDAO getNominatedPostMemberDAO() {
+		return nominatedPostMemberDAO;
+	}
+
+	public void setNominatedPostMemberDAO(
+			INominatedPostMemberDAO nominatedPostMemberDAO) {
+		this.nominatedPostMemberDAO = nominatedPostMemberDAO;
+	}
+
+	public INominatedPostStatusDAO getNominatedPostStatusDAO() {
+		return nominatedPostStatusDAO;
+	}
+
+	public void setNominatedPostStatusDAO(
+			INominatedPostStatusDAO nominatedPostStatusDAO) {
+		this.nominatedPostStatusDAO = nominatedPostStatusDAO;
+	}
+
+	public INominatedPostDAO getNominatedPostDAO() {
+		return nominatedPostDAO;
+	}
+
+	public void setNominatedPostDAO(INominatedPostDAO nominatedPostDAO) {
+		this.nominatedPostDAO = nominatedPostDAO;
+	}
 	public TehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -651,4 +680,242 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return finaleVoList;
 	}	
 	
+	/**
+	 * @author Srishailam Pittala
+	 * @version 15th July, 2016
+	 * @return List<NominatedPostVO>
+	 * description { getting overall nominated posts status details in all levels}
+	 * 
+	 * */
+	
+	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr){
+		List<NominatedPostVO> returnList = null;
+		try {
+			Date startDate = null;
+			Date endDate = null;
+			if(startDateStr != null && !startDateStr.isEmpty()){
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+				startDate = format.parse(startDateStr);
+				endDate = format.parse(endDateStr);
+			}
+			
+			/*List<IdNameVO> boardLevels  = getBoardLevels();
+			Map<Long,NominatedPostVO> levelwiseNominatedPostsMap = new LinkedHashMap<Long,NominatedPostVO>(0);
+			
+			if(commonMethodsUtilService.isListOrSetValid(boardLevels)){
+				for (IdNameVO level : boardLevels) {
+					if(levelId != null && levelId.longValue()>0L){
+						if(level.getId().longValue() == levelId.longValue())
+							levelwiseNominatedPostsMap.put(level.getId(), new NominatedPostVO(level.getId(),level.getName()));
+					}
+					else if(levelwiseNominatedPostsMap.get(level.getId()) == null)
+						levelwiseNominatedPostsMap.put(level.getId(), new NominatedPostVO(level.getId(),level.getName()));
+				}
+			}*/
+			
+			//{"TOTAL CORPORATIONS","APPLICATIONS NOT RECIEVED","YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED"}
+			Map<String,NominatedPostVO> applicationsStatusDtlsMap = new LinkedHashMap<String,NominatedPostVO>(0);
+			String[] applicationStatusArr = IConstants.NOMINATED_POST_APPLICATION_STATUSES;
+			if(applicationStatusArr != null && applicationStatusArr.length>0)
+				for (int i = 0; i < applicationStatusArr.length; i++) 
+					applicationsStatusDtlsMap.put(applicationStatusArr[i].trim(),  new NominatedPostVO(Long.valueOf(String.valueOf(i)),applicationStatusArr[i]) );
+			
+			//if(commonMethodsUtilService.isMapValid(levelwiseNominatedPostsMap)){
+				List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
+				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,startDate,endDate,statusList);
+				if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
+					for (Object[] param : levelWiseAvailablePostsList) {
+						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[2]);
+						String statusStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
+						//if(vo1 != null){
+							if(statusStr.trim().equalsIgnoreCase("1")){
+								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
+								if(vo != null){
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+								}
+							}
+							else if(statusStr.trim().equalsIgnoreCase("2")){
+								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[4].trim());
+								if(vo != null){
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+								}
+							}
+							else if(statusStr.trim().equalsIgnoreCase("3")){
+								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[5].trim());
+								if(vo != null){
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+								}
+							}
+							else if(statusStr.trim().equalsIgnoreCase("4")){
+								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[6].trim());
+								if(vo != null){
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+								}
+							}
+						//}
+					}
+				}
+				
+				List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,startDate,endDate);
+				if(commonMethodsUtilService.isListOrSetValid(levelWiseApplicatinStatusDetailsList)){
+					for (Object[] param : levelWiseApplicatinStatusDetailsList) {
+						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
+						//if(vo1 != null){
+							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
+							if(vo != null){
+								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
+								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
+								vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[3]));
+							}
+						//}
+					}
+				}
+				
+				List<Object[]> levelWiseRunningApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsRunningAppliedApplicationsDtals(levelId,startDate,endDate);
+				if(commonMethodsUtilService.isListOrSetValid(levelWiseRunningApplicatinStatusDetailsList)){
+					for (Object[] param : levelWiseRunningApplicatinStatusDetailsList) {
+						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
+						//if(vo1 != null){
+							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
+							if(vo != null){
+								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
+								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
+								vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[3]));
+							}
+						//}
+					}
+				}
+				
+				NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
+				if(vo != null){
+					if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
+						if(levelId != null && levelId.longValue()>0L){
+								NominatedPostVO totalVO = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
+								NominatedPostVO appliedVO = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
+								NominatedPostVO runningVO = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
+								if(appliedVO != null && runningVO != null){
+									NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
+									if(vo2 != null){
+										vo2.setTotalPositions((totalVO.getTotalPositions()-(appliedVO.getTotalPositions() + runningVO.getTotalPositions())));
+										vo2.setTotalDept((totalVO.getTotalDept()-(appliedVO.getTotalDept() + runningVO.getTotalDept())));
+										vo2.setTotalCorp((totalVO.getTotalCorp()-(appliedVO.getTotalCorp() + runningVO.getTotalCorp())));
+									}
+								}
+						}else{
+							;
+						}
+					}
+				}
+			//}
+
+				if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
+					returnList = new ArrayList<NominatedPostVO>();
+					returnList.addAll(applicationsStatusDtlsMap.values());
+							
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getNominatedPostsStatusDetailsInAllLevels()", e);
+		}
+		return returnList;
+	}
+	
+	public List<NominatedPostVO> getLevelAndStatuswiseNominatedPostsDtals(String searchTypeStr,String statusTypeStr,Long locationValue,String startDateStr, String endDateStr){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
+	
+	public List<NominatedPostVO> getDepartmentsDetailsByLevel(Long levelId,Long levelValue){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
+	
+	public List<NominatedPostVO> getCentralLevelNominatedPostsDetails(){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
+	public List<NominatedPostVO> getStrateLevelNominatedPostsDetails(){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
+	
+	public List<NominatedPostVO> getAssemblyLevelNominatedPostsDetails(){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
+	public List<NominatedPostVO> getMandalORMuncipalityLevelNominatedPostsDetails(){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
+	public List<NominatedPostVO> getVillageORWardLevelNominatedPostsDetails(){
+		List<NominatedPostVO> returnList = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLevelAndStatuswiseNominatedPostsDtals()", e);
+		}
+		
+		return returnList;
+	}
 }
