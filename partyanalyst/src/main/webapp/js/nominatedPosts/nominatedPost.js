@@ -1062,6 +1062,7 @@ var jObj={
 }
 $( document ).on("click",".cadreCls",function(){
 	globalCadreId = $(this).attr("attr_cadreId"); 
+	  getCandidateAppliedPostsByCadre(globalCadreId);
 });
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
 var jObj={
@@ -1176,7 +1177,7 @@ function populateFields(result){
 		dataType : 'json',
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
-		 if(result!=null && result.length>0){
+		 if(result !=null && result.length>0){
 				$("#addDistrictId").html("");
 				$("#addDistrictId").append('<option value="0">Select District</option>');
 			   for(var i in result){   
@@ -1198,7 +1199,7 @@ function populateFields(result){
 	   }).done(function(result){
 		   $("#addConstituencyId").html("");
 		   $("#addConstituencyId").append('<option value="0">Select Constituency</option>');
-		   if(result!=null && result.length>0){
+		   if(result !=null && result.length>0){
 			   for(var i in result){
 				   $("#addConstituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			   }
@@ -1221,7 +1222,7 @@ function getMandalsByConstituencyForReferPopup()
 			if(result != null && result.length > 0){
 			 $("#addMandalsId").html("");
 			 $("#addMandalsId").append('<option value="0">Select Mandal</option>');
-		   if(result!=null && result.length>0){
+		   if(result !=null && result.length>0){
 			   for(var i in result){
 				   $("#addMandalsId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			   }
@@ -1244,7 +1245,7 @@ function getMandalsByConstituencyForReferPopup()
 		}).done(function(result){
 			 $("#addVillageId").html("");
 			 $("#addVillageId").append('<option value="0">Select Panchayats</option>');
-		   if(result!=null && result.length>0){
+		   if(result !=null && result.length>0){
 			   for(var i in result){
 				   $("#addVillageId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			   }
@@ -1252,4 +1253,67 @@ function getMandalsByConstituencyForReferPopup()
 		    $("#addVillageId").trigger("chosen:updated");
    });	
   }
+ function getCandidateAppliedPostsByCadre(globalCadreId){
 
+		var jsObj={
+				globalCadreId :globalCadreId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getCandidateAppliedPostsByCadreAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   if(result !=null){
+			   buildCandidateAppliedPostByCadreDetails(result);
+		   }
+   });	
+  }
+  function buildCandidateAppliedPostByCadreDetails(result){
+	 var str = '';
+	 if(result.subList != null && result.subList.length > 0){
+		 str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">';
+                    str+='<div class="bg_ff pad_10">';
+                        	str+='<h4 class="panel-title">APPLIED POSTS FOR THE SELECTED PROFILE</h4>';
+                           str+='<div class="row">';
+                            str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
+                                	str+='<div class="panel panel-default panelPost">';
+                                       str+='<div class="panel-heading">';
+                                        str+='<h4 class="panel-title">Nominated Post</h4>';
+                                       str+='</div>';
+                                       str+='<div class="panel-body">';
+                                        	str+='<ul class="ulPost">';
+											for(var i in result.subList){
+                                            	str+='<li>';
+                                                	str+='<span class="labelStatus shortlisted">Shortlisted</span>';
+                                                	str+=result.subList[i].level+" → "+result.subList[i].subCaste+" → "+result.subList[i].cadreName+" "+result.subList[i].voterName+":"+result.subList[i].status+"</li>";
+											}
+                                           str+='</ul>';
+                                        str+='</div>';
+                                    str+='</div>';
+                                str+='</div>';
+							//nominated Party 
+							if(result.subList1 != null && result.subList1.length > 0){
+								str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
+                                	str+='<div class="panel panel-default panelPost">';
+                                    	str+='<div class="panel-heading">';
+                                        	str+='<h4 class="panel-title">Party Post</h4>';
+                                        str+='</div>';
+                                        str+='<div class="panel-body">';
+                                        	str+='<ul class="ulPost">';
+											for(var i in result.subList1){
+                                            	str+='<li>';
+                                                	str+='<span class="labelStatus shortlisted">Shortlisted</span>';
+                                                	str+=result.subList[i].level+" → "+result.subList[i].subCaste+" → "+result.subList[i].cadreName+" "+result.subList[i].voterName+":"+result.subList[i].status+"</li>";
+											}
+                                          str+='</ul>';
+                                       str+=' </div>';
+                                    str+='</div>';
+                               str+=' </div>';
+							}
+                           str+='</div>';
+                       str+='</div>';
+                   str+='</div>';
+	 }
+	 $("#appliedPostForSelectedId").html(str);
+ }

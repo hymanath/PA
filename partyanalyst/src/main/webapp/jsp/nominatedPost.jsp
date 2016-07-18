@@ -97,45 +97,7 @@
                              </div>
                              <p class="text-muted"><small>Note: Please select matches profile</small></p>
 	                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
-                    	<div class="bg_ff pad_10">
-                        	<h4 class="panel-title">APPLIED POSTS FOR THE SELECTED PROFILE</h4>
-                            <div class="row">
-                            	<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">
-                                	<div class="panel panel-default panelPost">
-                                    	<div class="panel-heading">
-                                        	<h4 class="panel-title">Nominated Post</h4>
-                                        </div>
-                                        <div class="panel-body">
-                                        	<ul class="ulPost">
-                                            	<li>
-                                                	<p class="labelStatus shortlisted">Shortlisted</p>
-                                                	State Level → Backward Class Welfare → BC Commision Chairman:POSITION</li>
-                                                <li>
-                                                	<p class="labelStatus finalised">Finalised</p>
-                                                	State Level → Backward Class Welfare → BC Commision Chairman:POSITION</li>
-                                                <li>
-                                                	<p class="labelStatus completed">GO Passed</p>
-                                                	State Level → Backward Class Welfare → BC Commision Chairman:POSITION</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">
-                                	<div class="panel panel-default panelPost">
-                                    	<div class="panel-heading">
-                                        	<h4 class="panel-title">Nominated Post</h4>
-                                        </div>
-                                        <div class="panel-body">
-                                        	<ul class="ulPost">
-                                            	<li>State Level Backward Class Welfare</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<div id="appliedPostForSelectedId"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
