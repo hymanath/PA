@@ -115,9 +115,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            }else{
 	                sb.append(" and model.meetingAddress.constituency.constituencyId in (:constituencyList) ");
 	            }
-	            if(mandalList.get(0)==0l){
+	            if(mandalList !=null && mandalList.size()<=0){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
-	            }else{
+	            }else if(mandalList !=null ){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
 	            }
 	        }else if(locationLevel!=null && locationLevel==5l){//town level
@@ -136,9 +136,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            }else{
 	                sb.append(" and model.meetingAddress.constituency.constituencyId in (:constituencyList) ");
 	            }
-	            if(townList.get(0)==0l){
+	            if(townList !=null && townList.size()<=0){
 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId is not null ");
-	            }else{
+	            }else if(townList !=null){
 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:townList) ");
 	            }
 	        }else if((locationLevel!=null) && (locationLevel==6l || locationLevel==8l)){//divison or ward level
@@ -158,20 +158,20 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	                sb.append(" and model.meetingAddress.constituency.constituencyId in (:constituencyList) ");
 	            }
 	            if(locationLevel==6l){
-	                if(divisonList.get(0)==0l){
+	                if(divisonList !=null && divisonList.size()<=0){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId is not null ");
-	                }else{
+	                }else if(divisonList !=null){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId in (:divisonList) ");
 	                }
 	            }else{
-	                if(mandalList.get(0)==0l){
+	            	 if(mandalList !=null && mandalList.size()<=0){
 	                    sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
-	                }else{
+	                }else if(mandalList !=null){
 	                    sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
 	                }
-	                if(wardList.get(0)==0l){
+	                if(wardList !=null && wardList.size()<=0){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId is not null ");
-	                }else{
+	                }else if(wardList !=null ){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId in (:wardList) ");
 	                }
 	            }
@@ -192,14 +192,14 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            }else{
 	                sb.append(" and model.meetingAddress.constituency.constituencyId in (:constituencyList) ");
 	            }
-	            if(mandalList.get(0)==0l){
+	            if(mandalList !=null &&mandalList.size()<=0){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
-	            }else{
+	            }else if(mandalList !=null ){
 	                sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
 	            }
-	            if(villageList.get(0)==0l){
+	            if(villageList !=null &&villageList.size()<=0){
 	                sb.append(" and model.meetingAddress.panchayat.panchayatId is not null ");
-	            }else{
+	            }else if(villageList !=null){
 	                sb.append(" and model.meetingAddress.panchayat.panchayatId in (:villageList) ");
 	            }
 	        }
@@ -260,7 +260,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            if(constituencyList.get(0)>0l){
 	                query.setParameterList("constituencyList", constituencyList);
 	            }
-	            if(mandalList.get(0)>0l){
+	            if(mandalList !=null && mandalList.size()>0){
 	                query.setParameterList("mandalList", mandalList);
 	            }
 	        }
@@ -275,7 +275,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            if(constituencyList.get(0)>0l){
 	                query.setParameterList("constituencyList", constituencyList);
 	            }
-	            if(townList.get(0)>0){
+	            if(townList !=null && townList.size()>0){
 	                query.setParameterList("townList", townList);
 	            }
 	        }
@@ -291,7 +291,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	                if(constituencyList.get(0)>0l){
 	                    query.setParameterList("constituencyList", constituencyList);
 	                }
-	                if(divisonList.get(0)>0l){
+	                if(divisonList !=null && divisonList.size()>0){
 	                    query.setParameterList("divisonList", divisonList);
 	                }
 	            }else{
@@ -304,10 +304,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	                if(constituencyList.get(0)>0l){
 	                    query.setParameterList("constituencyList", constituencyList);
 	                }
-	                if(mandalList.get(0)>0l){
+	                if(mandalList !=null && mandalList.size()>0){
 	                    query.setParameterList("mandalList", mandalList);
 	                }
-	                if(wardList.get(0)==0l){
+	                if(wardList !=null && wardList.size()>0){
 	                    query.setParameterList("wardList", wardList);
 	                }
 	            }
@@ -323,10 +323,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	            if(constituencyList.get(0)>0l){
 	                query.setParameterList("constituencyList", constituencyList);
 	            }
-	            if(mandalList.get(0)>0l){
+	            if(mandalList !=null && mandalList.size()>0){
 	                query.setParameterList("mandalList", mandalList);
 	            }
-	            if(villageList.get(0)>0l){
+	            if(villageList !=null && villageList.size()>0){
 	                query.setParameterList("villageList", villageList);
 	            }
 	        }
