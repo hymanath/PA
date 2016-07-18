@@ -3835,8 +3835,8 @@ class TrainingCampService implements ITrainingCampService{
 					}
 					
 					vo.setLocationLevelId(locationLevel);
-					vo.setStartTime(objects[5].toString());
-					vo.setEndTime(objects[6].toString());
+					vo.setStartTime(objects[5] !=null ? objects[5].toString():"");
+					vo.setEndTime(objects[6] !=null ? objects[6].toString():"");
 					vo.setMeetingName(objects[8].toString());
 					vo.setPartyMeetingId((Long)objects[9]);
 					vo.setIsConducted(objects[12] !=null ? objects[12].toString():"");
