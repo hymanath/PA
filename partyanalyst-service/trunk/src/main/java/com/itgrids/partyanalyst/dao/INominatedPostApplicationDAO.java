@@ -12,4 +12,5 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getPendingApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate);
 	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate);
+	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId);
 }

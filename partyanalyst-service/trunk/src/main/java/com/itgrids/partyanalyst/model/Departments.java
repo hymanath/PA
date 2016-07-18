@@ -27,6 +27,7 @@ public class Departments extends BaseModel implements Serializable{
 	
 	private Long departmentId;
 	private String deptName;
+	private Long postTypeId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "department_id", unique = true, nullable = false)
@@ -43,6 +44,14 @@ public class Departments extends BaseModel implements Serializable{
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
 	}
+	@Column(name = "post_type_id")
+	public Long getPostTypeId() {
+		return postTypeId;
+	}
+	public void setPostTypeId(Long postTypeId) {
+		this.postTypeId = postTypeId;
+	}
+	
 		
 	
 }
