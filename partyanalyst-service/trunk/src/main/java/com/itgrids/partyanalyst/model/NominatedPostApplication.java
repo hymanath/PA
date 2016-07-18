@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,12 +32,20 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	private Long positionId;
 	private Long boardLevelId;
 	private Long locationValue;
+	private Long applicationStatusId;
+	private String  isDeleted;
+	private Long insertedBy;
+	private Date insertedTime;
+	private Long updatedBy;
+	private Date updatedTime;
 	
 	private NominationPostCandidate nominationPostCandidate;
 	private Departments departments;
 	private Board board;
 	private Position position;
 	private BoardLevel boardLevel;
+	private ApplicationStatus applicationStatus;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -144,6 +153,66 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	}
 	public void setBoardLevel(BoardLevel boardLevel) {
 		this.boardLevel = boardLevel;
+	}
+	
+	@Column(name = "application_status_id")
+	public Long getApplicationStatusId() {
+		return applicationStatusId;
+	}
+	public void setApplicationStatusId(Long applicationStatusId) {
+		this.applicationStatusId = applicationStatusId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="application_status_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ApplicationStatus getApplicationStatus() {
+		return applicationStatus;
+	}
+	public void setApplicationStatus(ApplicationStatus applicationStatus) {
+		this.applicationStatus = applicationStatus;
+	}
+	
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
+	@Column(name = "inserted_by")
+	public Long getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(Long insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+	
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	
+	@Column(name = "updated_by")
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 	
 	
