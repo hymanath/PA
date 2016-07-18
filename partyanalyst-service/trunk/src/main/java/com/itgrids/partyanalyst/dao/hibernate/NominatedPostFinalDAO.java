@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -12,9 +13,33 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 
 	public NominatedPostFinalDAO() {
 		super(NominatedPostFinal.class);
-		// TODO Auto-generated constructor stub
 	}
 
+	public List<Object[]> getFinalShortListedApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.nominatedPost.nominatedPostMember.boardLevelId, count(model.nominatedPostFinalId)  from NominatedPostFinal model where  " +
+				" model.applicationStatus.status ='Shortlisted'  ");
+		
+		if(boardLevelId != null && boardLevelId.longValue()>0)
+			queryStr.append(" and  model.nominatedPost.nominatedPostMember.boardLevelId = :boardLevelId ");
+		
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.nominatedPost.insertedTime) between :startDate and :endDate ");
+		
+		queryStr.append(" group by  model.nominatedPost.nominatedPostMember.boardLevelId order by model.boardLevelId  ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(boardLevelId != null && boardLevelId.longValue()>0L)
+			query.setParameter("boardLevelId", boardLevelId);
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type){
 		StringBuilder sb = new StringBuilder();
 		
