@@ -13,6 +13,21 @@ public class NominatedPostVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
+	
+	/*private Long availableCount;
+	private Long applicationsCount;
+	private Long shortlistCount;
+	private Long pendingCount;
+	private Long finalReviewCount;
+	private Long finalizedCount;
+	private Long G_O_IssueCount;
+	*/	
+	
+	private Long totalDept;
+	private Long totalCorp;
+	private Long totalPositions;
+	private String perc;
+	
 	private Long stateId;
 	private Long districtId;
 	private Long ConstituencyId;
@@ -22,6 +37,7 @@ public class NominatedPostVO implements Serializable{
 	private String address2;
 	private String pincode;
 	private String 	mobileNo;
+	private List<NominatedPostVO> subList =null;
 	private Long boardLevelId;
 	private Long deptId;
 	private Long deptBoardId;
@@ -34,6 +50,8 @@ public class NominatedPostVO implements Serializable{
 	private List<IdNameVO> panList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> mandalsList = new ArrayList<IdNameVO>(0);
 	
+	public NominatedPostVO(){}
+	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	public String getVoterCardNo() {
 		return voterCardNo;
 	}
@@ -72,6 +90,37 @@ public class NominatedPostVO implements Serializable{
 		this.deptBoardPostnId = deptBoardPostnId;
 	}
 	
+	
+	public Long getTotalDept() {
+		return totalDept;
+	}
+	public void setTotalDept(Long totalDept) {
+		this.totalDept = totalDept;
+	}
+	public Long getTotalCorp() {
+		return totalCorp;
+	}
+	public void setTotalCorp(Long totalCorp) {
+		this.totalCorp = totalCorp;
+	}
+	public Long getTotalPositions() {
+		return totalPositions;
+	}
+	public void setTotalPositions(Long totalPositions) {
+		this.totalPositions = totalPositions;
+	}
+	public String getPerc() {
+		return perc;
+	}
+	public void setPerc(String perc) {
+		this.perc = perc;
+	}
+	public List<NominatedPostVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<NominatedPostVO> subList) {
+		this.subList = subList;
+	}
 	public Long getId() {
 		return id;
 	}
