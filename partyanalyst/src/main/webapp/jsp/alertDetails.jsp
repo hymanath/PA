@@ -223,6 +223,10 @@
 				</div>
 			</div>
 				<jsp:include page="commonCadreSearch.jsp" flush="true"/>
+				<div style="margin-top:10px;display:none;" class="col-md-3" id="assignBtnId" >
+				<div id="assignEroorDiv"></div>
+										<input type="button" value="ASSIGN ALERT" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
+										</div>
 		</div>
 
 				

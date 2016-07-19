@@ -841,6 +841,7 @@ function showHideSearch(type)
 	 	
  }
    var cloneCount=0;
+   var commontdpCadreIds = [];
    $(document).on("click",".apptDetailsDiv",function(){
 	  
 		 if($(this).is(':checked')){
@@ -865,13 +866,17 @@ function showHideSearch(type)
 			   $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().top
                 }, 2000);
+				$("#assignBtnId").show();
+				commontdpCadreIds.push(attrId);
 		 }
    })
+  
 $(document).on("click",".closeIcon",function(){
 $(this).parent().remove();
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
+	tdpCadreIds.pop(id);
 });
 
 

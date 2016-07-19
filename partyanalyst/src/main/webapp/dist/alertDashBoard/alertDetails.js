@@ -1,5 +1,28 @@
 getAlertData();
 getAlertStatusCommentsTrackingDetails();
+function saveAlertAssignedUser ()
+	{
+	
+		if(commontdpCadreIds.length == 0)
+		{
+			$("#assignEroorDiv").html("at least one Candidate Required").css("color","red");
+			return;
+		}
+		var jsObj =
+		     {
+				 tdpCadreIds : commontdpCadreIds,
+				 alertId : alertId,
+				task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'saveAlertAssignedUserAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+				   if(result.resultCode == 0)
+				 $("#assignEroorDiv").html("assigned Successfully").css("color","green");
+			 })
+	}
 function getAlertData()
 {
 	$("#alertCandidateDataId").html('<img src="images/search.gif" />');
