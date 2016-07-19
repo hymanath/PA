@@ -38,10 +38,10 @@
                     </div>
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10">
                     	<label class="checkbox-inline">
-                        	<input type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" />Cadre
+                        	<input value="Cadre" type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" />Cadre
                         </label>
                         <label class="checkbox-inline">
-                        	<input type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
+                        	<input value="Not Cadre" type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
                         </label>
                     </div>
 					</div>
@@ -112,17 +112,18 @@
                  </div>
 				 </div>
 				 <div id="cadreById" style="display:none;">
+				 <div id="notCadreErrMsg" style="color:red;"></div>
 				 <div class="col-md-4 col-xs-12">
-					<label>Name*</label>
-					<input class="form-control" type="text"/>
+					<label>Name</label><span class="starCls" style="color:red;">*</span>
+					<input class="form-control" type="text" id="notCadreNameId"/>
 				 </div>
 				 <div class="col-md-4 col-xs-12">
-					<label>Voter ID* </label>
-					<input class="form-control" type="text"/>
+					<label>Voter ID </label><span class="starCls" style="color:red;">*</span>
+					<input class="form-control" type="text" id="notCadreVoterId"/>
 				 </div>
 				 <div class="col-md-4 col-xs-12">
-					<label>Contact Number* </label>
-					<input class="form-control" type="text"/>
+					<label>Contact Number </label><span class="starCls" style="color:red;">*</span>
+					<input class="form-control" type="text" id="notCadreMobilNoId"/>
 				 </div>
 				 </div>
 				 <form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">

@@ -511,6 +511,11 @@ function getNominatedPostApplication(startIndex)
 		$("#cadreSearchSize").hide();
 		$("#cadreSearchDtls").html("");
 		$("#searchData").html("");
+		$("#notCadreNameId").val("");
+		$("#notCadreVoterId").val("");
+		$("#notCadreMobilNoId").val("");
+		$("#notCadreErrMsg").html("");
+		
 	}
 getDistricts();
 function getDistricts(){
@@ -841,21 +846,60 @@ $(document).on("click","#addOneMore",function(){
 });
 function savingApplication(){
 	
-	if(!validateFields()){
-		return;
-	}
+	$(".cadreCheckCls").each(function(){
+				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
+					if(!validatationFields()){
+						return;
+					}
+				}else{
+					var numericExpression = /^[0-9]+$/;
+					var mobileNo = $('#notCadreMobilNoId').val();
+					if($("#notCadreNameId").val() == ""){
+						$("#notCadreErrMsg").html("Please Fill Name");
+						return;
+					}
+					else if($("#notCadreVoterId").val() == ""){
+						$("#notCadreErrMsg").html("Please Fill VoterCardNo ");
+						return;
+					}
+					else if(!$('#notCadreMobilNoId').val().match(numericExpression)){
+						$('#notCadreErrMsg').html('Enter Numerics Only.');
+						return;
+					}
+					else if(mobileNo.trim().length == 0 )
+					{
+						$('#notCadreErrMsg').html('Please enter Mobile No.');
+						return;
+					}else if(mobileNo.trim().length != 10)
+					{
+						$('#notCadreErrMsg').html('Invalid Mobile No.');
+						return;				
+					}else{
+						$('#notCadreErrMsg').html("");
+					}
+				}
+			});
 			var cadreName = '';
 			var cadreId = '';
 			var cadreVoterId = '';
 			var cadreMobilNo= '';
-			$("#savingAjaxImg").css("display","block");			
-			$(".checkboxCls").each(function(){
-			if($(this).prop('checked')==true){
-				cadreName = $(this).parent().find(".cadreName").text();
-				cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
-				cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
-				cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
-			}
+			$("#savingAjaxImg").css("display","block");	
+			$(".cadreCheckCls").each(function(){
+				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
+					$(".checkboxCls").each(function(){
+						if($(this).prop('checked')==true){
+							cadreName = $(this).parent().find(".cadreName").text();
+							cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
+							cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
+							cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
+						}
+					});	
+				}else{
+					cadreName = $("#notCadreNameId").val();
+					cadreVoterId = $("#notCadreVoterId").val();
+					cadreMobilNo =  $("#notCadreMobilNoId").val();
+				}
+			
 		});
 		//var files = $('#filer_input3').get(0).dropzone.getAcceptedFiles();
 			$(".tdpCadreId").val(cadreId);
@@ -867,7 +911,7 @@ function savingApplication(){
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
-					showSbmitStatus(uploadResult);
+					//showSbmitStatus(uploadResult);
 				}
 			};
 	
@@ -875,22 +919,25 @@ function savingApplication(){
 			YAHOO.util.Connect.asyncRequest('POST','savingNominatedPostApplicationAction.action',uploadHandler);
 		
 	}
-	
+	var globalNominatedCandId ;
 	function showSbmitStatus(result){
-		//console.log(result)
-		if(result.message == "SUCCESS"){
+		globalNominatedCandId = "";
+		console.log(result)
+		if(result > 0){
+			globalNominatedCandId = result;
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Submitted Successfully.</span>");
 			setTimeout(function(){
 			$("#savingStatusDivId").html("");
 			}, 5000);
 			saveFieldsEmpty();
-		}else if (result.message == "FAIL"){
+		}else {
 			setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
 			}, 1000);
 		}
 	}
 	 function validatationFields(){
+		
 		searchByApplicant();
 		$(".errorMsgCls").html("");
 		var flag = true;
