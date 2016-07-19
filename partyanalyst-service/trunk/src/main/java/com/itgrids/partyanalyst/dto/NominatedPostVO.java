@@ -16,20 +16,12 @@ public class NominatedPostVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
-	
-	/*private Long availableCount;
-	private Long applicationsCount;
-	private Long shortlistCount;
-	private Long pendingCount;
-	private Long finalReviewCount;
-	private Long finalizedCount;
-	private Long G_O_IssueCount;
-	*/	
-	
-	private Long totalDept;
-	private Long totalCorp;
-	private Long totalPositions;
-	private String perc;
+
+	private Long totalDept=0L;
+	private Long totalCorp=0L;
+	private Long totalPositions=0L;
+	private String perc="0.0";
+	private String perc1="0.0";
 	
 	private Long stateId;
 	private Long districtId;
@@ -316,6 +308,10 @@ public class NominatedPostVO implements Serializable{
 	public void setLocationVal(Long locationVal) {
 		this.locationVal = locationVal;
 	}
-	
-	
+	public String getPerc1() {
+		return perc1;
+	}
+	public void setPerc1(String perc1) {
+		this.perc1 = perc1;
+	}	
 }
