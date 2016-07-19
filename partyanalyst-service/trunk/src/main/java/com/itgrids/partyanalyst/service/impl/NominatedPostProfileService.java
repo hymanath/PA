@@ -1698,7 +1698,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					else if(VO.getId() == 6L){
 						VO.setName(localElectionBodyDAO.get(VO.getLocationVal()).getName());
 					}
-					else if(VO.getId() == 6L){
+					else if(VO.getId() == 7L){
 						VO.setName(panchayatDAO.get(VO.getLocationVal()).getPanchayatName());
 					}
 					VO.setStateId(commonMethodsUtilService.getLongValueForObject(obj[0]));

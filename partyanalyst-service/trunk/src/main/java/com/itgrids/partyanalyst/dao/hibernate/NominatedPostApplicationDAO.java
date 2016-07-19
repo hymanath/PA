@@ -328,7 +328,7 @@ public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId)
 	        " model.position.positionId,model.position.positionName, " +
 	        " model.locationValue " +
 	        " from NominatedPostApplication model " +
-	        " where model.nominationPostCandidateId = : candidateId and " +
+	        " where model.nominationPostCandidateId = :candidateId " +
 	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
 	        
 	        query.setParameter("candidateId", candidateId);
