@@ -67,6 +67,7 @@ public class NominatedPostVO implements Serializable{
 	private Long thirdAgeGroupCount=0l;
 	private Long fourthAgeGroupCount=0l;
 	private Long fifthAgeGroupCount=0l;
+	private Long locationVal;
 	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
@@ -308,6 +309,12 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setMandalsList(List<IdNameVO> mandalsList) {
 		this.mandalsList = mandalsList;
+	}
+	public Long getLocationVal() {
+		return locationVal;
+	}
+	public void setLocationVal(Long locationVal) {
+		this.locationVal = locationVal;
 	}
 	
 	

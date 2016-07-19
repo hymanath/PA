@@ -21,4 +21,5 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 			Long locationValue,String type);
 	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId);
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate);
+	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 }

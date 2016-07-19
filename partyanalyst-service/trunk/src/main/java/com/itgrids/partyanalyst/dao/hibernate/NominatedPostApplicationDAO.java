@@ -313,4 +313,20 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        query.setParameter("tdpCadreId", tdpCadreId);
 	        return query.list();
 	  }
+	
+public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
+	    
+	    Query query = getSession().createQuery( " select model.applicationStatus.applicationStatusId,model.applicationStatus.status,model.boardLevel.boardLevelId," +
+	    		"model.boardLevel.level,model.departments.departmentId," +
+	        " model.departments.deptName," +
+	        " model.board.boardId,model.board.boardName," +
+	        " model.position.positionId,model.position.positionName " +
+	        " model.locationValue " +
+	        " from NominatedPostApplication model " +
+	        " where model.nominationPostCandidateId = : candidateId and " +
+	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+	        
+	        query.setParameter("candidateId", candidateId);
+	        return query.list();
+	  }
 }
