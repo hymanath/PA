@@ -129,12 +129,12 @@
 							<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 						
 						<div class="row m_top25">
-						<div class="col-md-12" id="clearSerchDivId">
+						<div class="col-md-12 col-xs-12 col-sm-12" id="clearSerchDivId">
 							<div id="apptmemberDetailsDiv"></div>
 						</div>
 						
-						<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
-							<div class="col-md-12">
+						<div class="m_top10" id="involvedCandidatesDiv" style="display:none;">
+							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<h4 class="panel-title">INVOVLED CANDIDATES</h4>

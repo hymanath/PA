@@ -1,9 +1,7 @@
-
 getAlertData();
 getAlertStatusCommentsTrackingDetails();
 function getAlertData()
 {
-	
 	$("#alertCandidateDataId").html('<img src="images/search.gif" />');
     var jsObj =
 		     {
@@ -39,17 +37,16 @@ function getAlertStatusCommentsTrackingDetails()
 	function buildAlertCommentsForTracking(result,aptName){
 		
 		var str='';
-		
 		if(result == null || result.length == 0)
 		{
 			$("#alertCommentsDiv").html('No Data Available');
 			return;
 		}
-			str+='<div class="panel panel-default panelAlert m_top10">';
+			str+='<div class="panel panel-default panelAlert">';
 			str+='<div class="panel-heading">';
 				str+='<h4 class="panel-title text-success">'+aptName+' Alert Status Tracking</h4>';
 			str+='</div>';
-			str+='<div class="panel-body">';
+			str+='<div class="panel-body" style="height:320px;">';
 			str+='<ul class="alertStatusTracking">';
 				for(var i in result){
 					str+='<li>';
@@ -73,7 +70,13 @@ function getAlertStatusCommentsTrackingDetails()
 		str+='</div>';
 		str+='</div>';
 		$("#alertCommentsDiv").html(str);
-		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
+		if(result.length >= 3)
+		{
+			$("#alertCommentsDiv .panel-body").mCustomScrollbar({setHeight:'320px'});
+		}
+		
+		
+		//$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
 	}
 $(document).on("click",".locationLevelCls",function(){
 	var levelId = $(this).attr("attr-levelId");
@@ -83,9 +86,6 @@ $(document).on("click",".locationLevelCls",function(){
 	$("#errorId").html("");
 	getLocationLevelAlertData(levelId,statusId,fromDate,toDate);
 });
-
-
-
 function buildAlertData(result,jsObj)
 {
 	if(result == null || result.length == 0)
@@ -168,12 +168,9 @@ function buildAlertData(result,jsObj)
 	str+='</table>';
 	$("#locationLevelDataId").html(str);
 }
-
 $(document).on("click",".alertCandidate",function(){
-
 getAlertCandidatesData($(this).attr("attr-id"));
 });
-
 function getAlertCandidatesData(alertId)
 {
 	$("#alertCandidateDataId").html('<img src="images/search.gif" />');
@@ -199,11 +196,10 @@ function buildAlertCandidateData(result)
 		$("#alertCandidateDataId").html('No Data Available..');
 		return;
 	}
-		
 	var str='';
 	for(var i in result)
 				{
-	str+='<div  style="border-radius:50% solid #ddd;padding:8px;margin-top:5px;" class="media">';
+	str+='<div  style="border:1px solid #ddd;padding:8px;margin-top:5px;" class="media">';
 	str+='<div class="media-left">';
 	str+='<img src="'+result[i].image+' "  onerror="setDefaultImage(this);" class="media-object img-center img-responsive  thumbnailSearch thumbnail" alt="Image" style="width: 60px !important; height: 60px  !important;"/>';
 	str+='</div>';
@@ -222,16 +218,17 @@ function buildAlertCandidateData(result)
 				str+='</div>';
 				str+='</div>';
 				}
-	
-	
-	
 	$("#alertCandidateDataId").html(str);
+	if(result.length > 3)
+	{
+		$("#alertCandidateDataId").mCustomScrollbar({setHeight:'320px'});
+	}
+	
 }
-
-	function setDefaultImage(img){
+function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
-function showPopUpAlertData(alertId)
+/*function showPopUpAlertData(alertId)
 {
 	
 	for(var i in GlobalAlertData)
@@ -294,15 +291,12 @@ function showPopUpAlertData(alertId)
 			buildAlertCandidateData(GlobalAlertData[i].subList);
 		}
 	}
-	
-}
+	}*/
 function updateAlertStatus()
 {
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
-	 
-	//var str = '';
 	if(comments.length==0||comments=='')
 	{
 		  $('#errorId').html(' comments required').css("color","red");
@@ -310,14 +304,12 @@ function updateAlertStatus()
 	}
 	if(statusId==0)
 	{
-		//alert(2);
-	   $('#errorId').html(' Status required').css("color","red"); 
+	 $('#errorId').html(' Status required').css("color","red"); 
         return;	   
 	}
-	
 	var jsObj =
 		     {
-		alertId : GlobalalertId,
+		alertId : alertId,
 		alertStatusId :statusId,
 		comments:comments,
 			task : ""
