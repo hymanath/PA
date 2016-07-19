@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostCommentDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
@@ -93,10 +94,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	
 	private ICasteCategoryDAO casteCategoryDAO;
 	private ITdpCadreReportDAO tdpCadreReportDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ActivityService					activityService;
 	private IApplicationDocumentDAO         applicationDocumentDAO;
 	
 	
+	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	
 	public IApplicationDocumentDAO getApplicationDocumentDAO() {
 		return applicationDocumentDAO;
@@ -1229,9 +1240,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
 						
 						List<IdNameVO> lst = mainVo.getIdNameVoList();
-						if(lst !=null && lst.size()>0){
+ 						if(lst !=null && lst.size()>0){
 							for (IdNameVO idNameVO : lst) {
-								if(idNameVO.getId() == (Long)obj[2]){
+								String idStr = obj[2].toString();
+				                if(idNameVO.getId().toString().equalsIgnoreCase(idStr)){
 									idNameVO.setCount(obj[4] !=null ? (Long)obj[4]:0l);
 								}
 							}
@@ -1437,4 +1449,53 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			return resultStatus;
 		}
+	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
+		List<NominatedPostVO> returnVoList = new ArrayList<NominatedPostVO>();
+		try {
+			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName
+			List<Object[]> DepOCorpList = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
+			if(DepOCorpList != null && DepOCorpList.size() > 0){
+				for (Object[] obj : DepOCorpList) {
+					NominatedPostVO VO = new NominatedPostVO();	
+					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					VO.setLocationVal(commonMethodsUtilService.getLongValueForObject(obj[10]));
+					if(VO.getId() == 1L){
+						VO.setName("India");
+					}
+					else if(VO.getId() == 2L){
+						VO.setName(stateDAO.get(VO.getLocationVal()).getStateName());
+					}
+					else if(VO.getId() == 3L){
+						VO.setName(districtDAO.get(VO.getLocationVal()).getDistrictName());
+					}
+					else if(VO.getId() == 4L){
+						VO.setName(constituencyDAO.get(VO.getLocationVal()).getName());
+					}
+					else if(VO.getId() == 5L){
+						VO.setName(tehsilDAO.get(VO.getLocationVal()).getTehsilName());
+					}
+					else if(VO.getId() == 6L){
+						VO.setName(localElectionBodyDAO.get(VO.getLocationVal()).getName());
+					}
+					else if(VO.getId() == 6L){
+						VO.setName(panchayatDAO.get(VO.getLocationVal()).getPanchayatName());
+					}
+					VO.setStateId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					VO.setPerc(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					VO.setHno(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					VO.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[5]));
+					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+					VO.setPincode(commonMethodsUtilService.getStringValueForObject(obj[7]));
+					VO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+					VO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(obj[9]));
+					returnVoList.add(VO);
+				}
+								
+			}
+		} catch (Exception e) {
+			LOG.error("Exceptionr riased at getBrdWisNominPstAppliedDepOrCorpDetails", e);
+		}
+		return returnVoList;
+	}
 }
