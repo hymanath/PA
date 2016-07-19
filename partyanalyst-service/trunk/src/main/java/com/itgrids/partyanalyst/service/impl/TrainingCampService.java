@@ -3833,7 +3833,7 @@ class TrainingCampService implements ITrainingCampService{
 			}
 			
 			if(level7List!=null && level7List.size()>0){
-				List<Object[]> villageDetails = panchayatDAO.getPanchayatIdsByMandalIdsList(level7List);
+				List<Object[]> villageDetails = panchayatDAO.getPanchayatsByPanchayatIdsList(level7List);
 				if(villageDetails!=null && villageDetails.size()>0){
 					for (Object[] objects : villageDetails) {
 						level7Map.put((Long)objects[0], objects[1].toString());
