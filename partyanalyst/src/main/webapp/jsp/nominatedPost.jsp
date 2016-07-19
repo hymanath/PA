@@ -24,7 +24,7 @@
                     </div>
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10">
                     	<label class="checkbox-inline">
-                        	<input type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" />Cadre
+                        	<input type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" />Cadre
                         </label>
                         <label class="checkbox-inline">
                         	<input type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
