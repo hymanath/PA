@@ -172,7 +172,7 @@ function buildAlertData(result,jsObj)
 		j++;
 	str+='<tr>';	
 	str+='<td>'+j+'</td>';
-	str+='<td><a  class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
+	str+='<td><a target="_blank" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].status+'</td>';
@@ -198,15 +198,13 @@ var GlobalalertId;
 var globalAlertName;
 $(document).on("click",".alertModel",function(){
 GlobalalertId = $(this).attr("attr-id");
-	$("#ModalShow").modal('show');
-	GlobalalertId = $(this).attr("attr-id");
-	
+	/*$("#ModalShow").modal('show');
 	showPopUpAlertData(GlobalalertId);
 	 globalAlertName=$(this).attr("attr-des");
 	 	$("#descriptionTitleId").html(globalAlertName);
-	getAlertStatusCommentsTrackingDetails();
+	getAlertStatusCommentsTrackingDetails();*/
 	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
-	
+	window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
 });
 $(document).on("click",".alertCandidate",function(){
 
