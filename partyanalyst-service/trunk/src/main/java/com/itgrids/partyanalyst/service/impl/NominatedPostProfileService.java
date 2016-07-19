@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -97,7 +98,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ActivityService					activityService;
 	private IApplicationDocumentDAO         applicationDocumentDAO;
-	
+	private IVoterDAO         				voterDAO;
 	
 	
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
@@ -107,8 +108,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
-
-	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
 	public IApplicationDocumentDAO getApplicationDocumentDAO() {
 		return applicationDocumentDAO;
 	}
@@ -625,14 +630,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * description  { Saving Nominated Post Prifile Application Candidate into Database }
 	 */
 	public ResultStatus savingNominatedPostProfileApplication(final NominatedPostVO nominatedPostVO,final Long loggerUserId){
-		ResultStatus status = new ResultStatus ();
+		final ResultStatus status = new ResultStatus ();
 		
 		try{
 			
-			status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+			 transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
-					ResultStatus rs = new ResultStatus ();
+					//ResultStatus rs = new ResultStatus ();
 						NominationPostCandidate nominationPostCandidate = new NominationPostCandidate();
 						NominatedPostApplication nominatedPostApplication = null;
 						
@@ -645,6 +650,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Long voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
 						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
 						nominationPostCandidate.setTdpCadreId(nominatedPostVO.getId());
+					}else{
+						Long voterId = voterDAO.getVoterIdByIdCardNo(nominatedPostVO.getVoterCardNo());
+						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
 					}
 						
 						
@@ -698,9 +706,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 				}
 		
-				rs.setMessage("SUCCESS");
-				rs.setResultCode(0);
-				return rs;
+					status.setMessage("SUCCESS");
+					status.setResultCode(0);
+					status.setResultState(nominationPostCandidate.getNominationPostCandidateId());
+				return status;
 		}
 	});
 }catch(Exception e){
@@ -1431,17 +1440,23 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	        }
 	        return month;
 	    }
-	  	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId)
+	  	/**
+		 * @Author  HYMAVATHI
+		 * @Version NominatedPostProfileService.java  July 19, 2016 04:50:00 PM 
+		 * @return ResultStatus
+		 * description  { Deleting Nomination Post Profile Uploaded Forms From Database By application Document Id}
+		 */
+	  	public ResultStatus deleteNominatedUploadedFile(String applctnDocId)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			try{
-				List<Long> activityInfoDocIdList = new ArrayList<Long>();
-				String[] idStr = acitivityInfoDocId.split(",");
+				List<Long> appltnDocIdList = new ArrayList<Long>();
+				String[] idStr = applctnDocId.split(",");
 				for(String id: idStr){
-					activityInfoDocIdList.add(Long.parseLong(id));
+					appltnDocIdList.add(Long.parseLong(id));
 				}
 				
-				applicationDocumentDAO.deleteNominatedUploadedFile(activityInfoDocIdList);
+				applicationDocumentDAO.deleteNominatedUploadedFile(appltnDocIdList);
 				resultStatus.setResultCode(0);
 			}catch (Exception e) {
 				resultStatus.setResultCode(1);
