@@ -43,7 +43,7 @@ public class AlertAssigned extends BaseModel implements Serializable {
 		this.alertAssignedId = alertAssignedId;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "alert_id")
+	@JoinColumn(name = "alert_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Alert getAlert() {
@@ -60,7 +60,7 @@ public class AlertAssigned extends BaseModel implements Serializable {
 		this.alertId = alertId;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tdp_cadre_id")
+	@JoinColumn(name = "tdp_cadre_id", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public TdpCadre getTdpCadre() {
@@ -91,7 +91,7 @@ public class AlertAssigned extends BaseModel implements Serializable {
 		this.updatedTime = updatedTime;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by")
+	@JoinColumn(name = "created_by", insertable=false, updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
