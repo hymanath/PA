@@ -230,9 +230,9 @@ function getPanchayatWardByMandal(num,id){
 			
 	}
 	getConstituenciesForState(0);
-	 function getConstituenciesForState(state){
+     function getConstituenciesForState(state){	
   
- $("#searchDataImgForConst").show();
+   $("#searchDataImgForConst").show();
    var jsObj=
    {				
 				stateId:0,
@@ -267,7 +267,7 @@ function getAllCadreInPanchayat()
 		refreshExistingDetails();
 	} 
 function getNominatedPostApplication(startIndex)
-		{
+		{		
 		var locationLevel = 0;
 		var locationValue = 0;
 		var searchName = '';
@@ -282,8 +282,7 @@ function getNominatedPostApplication(startIndex)
 		var gender = '';
 		var houseNo = '';
 		var membershipAndMobileNo = '';
-				
-		
+						
 	$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 	if(startIndex == 0)
 	{
@@ -467,7 +466,7 @@ function getNominatedPostApplication(startIndex)
 			});  
 
 	}
-   function buildCadreDetails(result){ 
+   function buildCadreDetails(result){   
 		var str='';
 		var str1='';
 		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>';
@@ -1334,4 +1333,17 @@ function getMandalsByConstituencyForReferPopup()
 		  }
      
     }
- 
+ $(document).on("click",".cadreCheckCls",function(){
+	 $("#searchData").html(''); 
+	 $("#cadreSearchDtls").html('');  
+  if ($("#cadreSearchId").is(":checked")) {
+		$("#searchMemberDiv").show();
+		$("#cadreById").hide();
+	}
+	else {
+	 $("#searchMemberDiv").hide();
+	 $("#cadreById").show();
+	 $("#scrollDivId").hide();
+	 $("#textId").hide();
+	}
+});
