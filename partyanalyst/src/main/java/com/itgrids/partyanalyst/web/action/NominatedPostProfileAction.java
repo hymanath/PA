@@ -323,4 +323,18 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	{
 	 return Action.SUCCESS;
 	}
+	public String getNominatedPostPostionDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			nominatePostList = nominatedPostProfileService.getNominatedPostPostionDetails(jObj.getLong("depmtId"),jObj.getLong("boardId"),jObj.getLong("positionId"),
+					jObj.getLong("bLId"),jObj.getLong("lValue"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getNominatedPostPostionDetails Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
