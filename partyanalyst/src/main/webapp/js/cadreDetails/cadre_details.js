@@ -858,13 +858,18 @@ var globalidentityMembershipNo = ""	;
 							for(var i in result.verifierVOList){
 								str+='<div class="panel panel-default m_0">';
 								str+='<div class="panel-heading bg_f9 innerDivFamilyCls" attr_survy_divId="familySurveyTable'+i+'" role="tab" id="heading'+i+'">';
-								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\',\''+votercardNo+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
+								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="getTdpCadreFamilySurveyDetails('+globalCadreId+','+result.verifierVOList[i].id+',\'null\',\'NotAll\',\'familySurveyTable'+i+'\',\'true\',\''+votercardNo+'\',\''+result.verifierVOList[i].isSampleVerified+'\');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
-								if(result.verifierVOList[i].isSampleVerified != null && result.verifierVOList[i].isSampleVerified =='false')
+								
+								if(result.verifierVOList[i].isSampleVerified != null && result.verifierVOList[i].isSampleVerified =='false'){
 									str+='   - <b>Verification Status :</b> <span style="color:red;"> Not Verified </span> ';
-								else{
+								}else if(result.verifierVOList[i].isSampleVerified != null  && result.verifierVOList[i].isSampleVerified =='true'){
 									str+='   - <b>Verification Status :</b> <span style="color:green;"> '+result.verifierVOList[i].isSampleVerified+'.</span> ';
+								}else if(result.verifierVOList[i].isSampleVerified == "null"){
+									str+='   - <b>Verification Status :</b> -  ';
+								}else{
+									str+='   - <b>Verification Status :</b> -  ';
 								}
 								
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
@@ -885,7 +890,7 @@ var globalidentityMembershipNo = ""	;
 				}
 			});
 		}
-		function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
+		function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo,isVerified){
 		$("#"+divId+"").html("");
 		if($("#"+divId).hasClass("showSurveyCls")){
 			return;
@@ -936,22 +941,29 @@ var globalidentityMembershipNo = ""	;
 						
 						for(var i in result.verifierVOList[0].verifierVOList){
 							if(result.verifierVOList[0].verifierVOList[i].option != null && result.verifierVOList[0].verifierVOList[i].option.length>0){
-						str+='<tr>';
-							str+='<td>'+result.verifierVOList[0].verifierVOList[i].name+'</td>';
-							
-							if(result.verifierVOList[0].verifierVOList[i].isSampleVerified != null && result.verifierVOList[0].verifierVOList[i].isSampleVerified =='false'){
-								str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'';
-							}else{
-								str+='<td style="background-color:lightgreen;">'+result.verifierVOList[0].verifierVOList[i].option+'';
-							}
-							str+='</td>';
-							
-						str+='</tr>';
+								str+='<tr>';
+									str+='<td>'+result.verifierVOList[0].verifierVOList[i].name+'</td>';
+									
+									if(isVerified != null && isVerified =="true"){
+										if(result.verifierVOList[0].verifierVOList[i].isSampleVerified != null && result.verifierVOList[0].verifierVOList[i].isSampleVerified =='false'){
+											str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'';
+										}else{
+											str+='<td style="background-color:lightgreen;">'+result.verifierVOList[0].verifierVOList[i].option+'';
+										}
+									}
+									else if(isVerified != null && isVerified =="false"){
+											str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'';
+									}
+									else
+										str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'';
+									str+='</td>';
+									
+								str+='</tr>';
+								}						
 						}
 						str+='</tbody>';
 						str+='</table>';
 						str+='</div>';
-						}
 					}				
 					$("#"+divId+"").show();		
 					$("#"+divId+"").html(str);	
@@ -1149,7 +1161,7 @@ var globalidentityMembershipNo = ""	;
 									str+='<div class="panel-body">';										
 									str+='</div>';
 									str+='</div>';
-									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
+									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
 									str+='</div>';
 						str+='</div>';
 
