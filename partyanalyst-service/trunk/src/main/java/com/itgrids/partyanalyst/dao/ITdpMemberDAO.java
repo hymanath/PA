@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.model.TdpMember;
 
 public interface ITdpMemberDAO extends GenericDao<TdpMember, Long>{
-	public List<Object[]>  searchTdpMemberByCriteria(String searchType,String searchValue,LocationInputVO locationVo);
+	 public List<Object[]>  searchTdpMemberByCriteria(String searchType,String searchValue,LocationInputVO locationVo);
 
 }
