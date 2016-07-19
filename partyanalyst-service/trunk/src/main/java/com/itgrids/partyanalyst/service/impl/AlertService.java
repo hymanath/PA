@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -48,6 +49,7 @@ import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AppointmentComment;
 import com.itgrids.partyanalyst.model.AppointmentTracking;
+import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -75,10 +77,18 @@ private IAlertTypeDAO alertTypeDAO;
 private IAlertSourceUserDAO alertSourceUserDAO;
 private IAlertAssignedDAO alertAssignedDAO;
 private DateUtilService dateUtilService = new DateUtilService();
+private IMemberTypeDAO memberTypeDAO;
 
 
 
 
+public IMemberTypeDAO getMemberTypeDAO() {
+	return memberTypeDAO;
+}
+
+public void setMemberTypeDAO(IMemberTypeDAO memberTypeDAO) {
+	this.memberTypeDAO = memberTypeDAO;
+}
 
 public IAlertAssignedDAO getAlertAssignedDAO() {
 	return alertAssignedDAO;
@@ -851,13 +861,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		ResultStatus rs = new ResultStatus();
 		try{
 			 DateUtilService date = new DateUtilService();
-			AlertAssigned alertAssigned = new AlertAssigned();
-			alertAssigned.setAlertId(inputVO.getAlertTypeId());
-			alertAssigned.setTdpCadreId(inputVO.getTdpCadreId());
-			alertAssigned.setCreatedBy(userId);
-			alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
-			alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
-			alertAssignedDAO.save(alertAssigned);
+			 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
+			 for(IdNameVO vo : inputVO.getIdNamesList() )
+			 {
+				AlertAssigned alertAssigned = new AlertAssigned();
+				alertAssigned.setAlertId(inputVO.getAlertTypeId());
+				alertAssigned.setTdpCadreId(vo.getId());
+				alertAssigned.setCreatedBy(userId);
+				alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+				alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+				alertAssignedDAO.save(alertAssigned);
+			 }
 			rs.setResultCode(0);
 		}
 		catch(Exception e)
@@ -866,6 +880,30 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			rs.setResultCode(121);
 		}
 		return rs;
+	}
+	
+	public List<IdNameVO> getMemberTypesList()
+	{
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+			List<MemberType> list = memberTypeDAO.getAll();
+			if(list != null && list.size() > 0)
+			{
+				for(MemberType obj : list)
+				{
+					IdNameVO vo = new IdNameVO();
+					vo.setId(obj.getMemberTypeId());
+					vo.setName(obj.getType());
+					returnList.add(vo);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception in getMemberTypesList()",e);	
+			
+		}
+		return returnList;
 	}
 	
 }

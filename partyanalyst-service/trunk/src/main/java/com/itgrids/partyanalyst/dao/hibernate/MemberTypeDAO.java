@@ -12,5 +12,8 @@ public class MemberTypeDAO extends GenericDaoHibernate<MemberType, Long> impleme
 		super(MemberType.class);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+	
 
 }

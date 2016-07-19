@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 
@@ -21,4 +22,5 @@ public interface IAlertService {
 	public List<AlertDataVO> getAlertCandidatesData(Long alertId);
 	public ResultStatus saveAlertAssignedUser(AlertVO inputVO,Long userId);
 	public List<AlertDataVO> getAlertsData(Long alertId);
+	public List<IdNameVO> getMemberTypesList();
 }
