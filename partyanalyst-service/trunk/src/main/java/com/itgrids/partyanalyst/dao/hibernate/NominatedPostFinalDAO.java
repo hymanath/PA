@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -44,23 +45,27 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select NPA.nominationPostCandidate.nominationPostCandidateId," +
-					" NPA.nominationPostCandidate.tdpCadreId," +
+					" TC.tdpCadreId," +
 					" NPA.nominationPostCandidate.voterId," +
 					" NPA.nominationPostCandidate.candidateName," +
 					" NPA.nominationPostCandidate.mobileNo," +
 					" TC.firstname," +
 					" TC.mobileNo," +
 					" TC.age," +
-					" TC.casteState.casteCategoryGroup.casteCategory.categoryName," +
-					" TC.casteState.casteCategoryGroup.casteCategoryGroupName," +
-					" TC.casteState.caste.casteName," +
-					" NPF.applicationStatus.applicationStatusId," +
-					" NPF.applicationStatus.status," +
-					" NPF.nominatedPost.nominatedPostId");
-		sb.append(" from NominatedPostFinal NPF,NominatedPostApplication NPA " +
+					" CC.categoryName," +
+					" CCG.casteCategoryGroupName," +
+					" caste.casteName," +
+					" NPA.applicationStatus.applicationStatusId," +
+					" NPA.applicationStatus.status," +
+					" NPA.nominatedPostApplicationId");
+					//" NPA.nominatedPost.nominatedPostId");
+		sb.append(" from NominatedPostApplication NPA " +
 					" left join NPA.nominationPostCandidate.tdpCadre TC" +
-					" where NPF.nominationPostCandidate.nominationPostCandidateId = NPA.nominationPostCandidate.nominationPostCandidateId" +
-					" and NPA.boardLevel.boardLevelId = :levelId" +
+					" left join TC.casteState CS" +
+					" left join CS.casteCategoryGroup CCG" +
+					" left join CCG.casteCategory CC" +
+					" left join CS.caste caste" +
+					" where NPA.boardLevel.boardLevelId = :levelId" +
 					" and NPA.locationValue = :levelValue" +
 					" and NPA.departments.departmentId = :departmentId");
 		
@@ -73,7 +78,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 						" and NPA.positionId != :positionId");
 		}
 		sb.append(" and NPA.nominationPostCandidate.isDeleted = 'N'" +
-					" and NPF.isDeleted = 'N'");
+					" and NPA.isDeleted = 'N'");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("levelId", levelId);
@@ -96,5 +101,28 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		query.setParameter("nominationPostCandidateId", nominationPostCandidateId);
 		
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds){
+		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId," +
+												" count(distinct model.departments.departmentId)" +
+												" from NominatedPostApplication model" +
+												" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
+												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+												" group by model.nominationPostCandidate.nominationPostCandidateId");
+		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+		
+		return query.list();
+	}
+	
+	public List<Long> getAnyShortlistedDepartmentsForCandidateList(Set<Long> nominatedPostCandidateIds){
+		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId" +
+												" from NominatedPostApplication model" +
+												" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
+												" and model.applicationStatus.applicationStatusId = 3" +
+												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
+		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+		
+		return query.list();
 	}
 }

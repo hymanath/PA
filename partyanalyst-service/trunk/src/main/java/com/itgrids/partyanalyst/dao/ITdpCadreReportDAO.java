@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.TdpCadreReport;
 
 public interface ITdpCadreReportDAO extends GenericDao<TdpCadreReport, Long> {
 	public List<Object[]> getCadreReportDetails(Long cadreId);
-
+	public List<Object[]> getCadreReportDetailsByCadreList(List<Long> cadreIds);
 }

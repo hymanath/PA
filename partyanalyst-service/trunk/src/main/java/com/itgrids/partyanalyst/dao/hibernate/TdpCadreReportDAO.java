@@ -27,4 +27,16 @@ public class TdpCadreReportDAO extends
 		query.setParameter("cadreId", cadreId);
 		return query.list();
 	}*/
+	
+	public List<Object[]> getCadreReportDetailsByCadreList(List<Long> cadreIds){
+		Query query = getSession().createQuery("select model.tdpCadre.tdpCadreId," +
+											" model.reportType," +
+											" model.tdpCadreReportStatus.tdpCadreReportStatusId," +
+											" model.tdpCadreReportStatus.status," +
+											" model.reportPath" +
+											" from TdpCadreReport model" +
+											" where model.tdpCadre.tdpCadreId in (:cadreIds)");
+		query.setParameterList("cadreIds", cadreIds);
+		return query.list();
+	}
 }
