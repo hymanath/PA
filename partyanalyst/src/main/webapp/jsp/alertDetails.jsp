@@ -14,6 +14,7 @@
 	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
+	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<!-- JQuery files (Start) -->
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
@@ -24,15 +25,25 @@
 	<link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<style type="text/css">
+		#commomCadreSearchDiv .panel .panel-body
+		{
+			background:#fff !important;
+		}
+		body
+		{
+			background:#ebebeb
+		}
 		.panelAlert
 		{
 			border:0px;
-			box-shadow:none
+			box-shadow:none;
+			box-shadow:0px 0px 4px rgba(0,0,0,0.4);
+			background:#fff;
 		}
 		.panelAlert .panel-heading , .panelAlert .panel-body
 		{
 			background:#fff;
-			padding:5px;
+			padding:15px;
 		}
 		.createAlertModalCls
 		{
@@ -76,6 +87,7 @@
 			list-style:none;
 			border-radius:4px;
 			position:relative;
+			margin-top:5px;
 		}
 		.alertStatusTracking li:before
 		{
@@ -125,13 +137,13 @@
 <div class="container">
 
         <div class="row">
-			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="col-md-6 col-xs-12 col-sm-6">
 				
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
 						<h4 class="panel-title text-success">ALERT TYPE</h4>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" style="height:130px;">
 						<table class="table table-condensed tableModal">
 							<tr>
 								<td colspan="2"><b>Type Of Alert :</b><span id="typeId"></span> <b>created on</b> <span  id="createdDate"></span></td>
@@ -145,43 +157,49 @@
 								</td>
 							</tr>
 							<tr>
-								<td style="width:50%;">
-								<b>Description </b>:<p id="descriptionId"></p>
+								<td>
+								<b>Description </b>:<span id="descriptionId"></span>
 								</td>
 						</table>
 					</div>
 				</div>
+			</div>
+			<div class="col-md-6 col-xs-12 col-sm-6">
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
 						<h4 class="panel-title text-success">ALERT LOCATION</h4>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" style="height:130px;">
 						<p id="LocationId"></p>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-xs-12 col-sm-6">
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
 						<h4 class="panel-title text-success">INVOLVED CANDIDATES</h4>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" style="height:320px;">
 						
-						<div class="media" style="border:1px solid #ddd;padding:8px;margin-top:5px;" id="alertCandidateDataId">
+						<div class="media" id="alertCandidateDataId">
 							
 						</div>
 					</div>
 				</div>
 				
 			</div>
+			<div class="col-md-6 col-xs-12 col-sm-6">
+				<div id="alertCommentsDiv"></div>
+			</div>  
 		</div>
 		
        <div class="row">
-		  <div class="col-md-12 col-xs-12 col-sm-12">
-			
-			<div id="alertCommentsDiv"></div>
-		  </div>  
+		 
 		</div>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
 						<h4 class="panel-title text-success">UPDATE ALERT STATUS</h4>
@@ -198,7 +216,7 @@
 						<label>Comments</label><span ></span>
 						<textarea class="form-control" id="commentsId"></textarea>
 						<div id="errorId"></div>
-						<button class="btn btn-success updateAlertStatusCls">UPDATE</button>
+						<button class="btn btn-success updateAlertStatusCls m_top10">UPDATE</button>
 					</div>
 					
 					
@@ -217,6 +235,7 @@ $(".dropkickClass").dropkick();
 
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 
 </body>
 </html>
