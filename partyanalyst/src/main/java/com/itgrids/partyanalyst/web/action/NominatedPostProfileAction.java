@@ -230,9 +230,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			
 			if(resultStatus!=null){
 				if(resultStatus.getResultCode() == 0){
-					inputStream = new StringBufferInputStream("SUCCESS");
+					inputStream = new StringBufferInputStream(resultStatus.getResultState().toString());
 				}else if(resultStatus.getResultCode() == 1){
-					inputStream = new StringBufferInputStream("FAIL");
+					inputStream = new StringBufferInputStream(resultStatus.getMessage().toString());
 				}
 			}
 			
