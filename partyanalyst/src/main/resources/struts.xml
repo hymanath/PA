@@ -12984,5 +12984,12 @@
 				<param name="root">alertDataList</param>
 			</result>
 	</action>
+	
+	<action name="getMemberTypesAction" class="createAlertAction" method="getMemberTypes">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+	</action>
+	
 </package>
 </struts>      
