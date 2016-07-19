@@ -133,7 +133,7 @@ function disableByLevel(index)
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
 			
-			if(selectVal == 2)
+			if(selectVal == "PR")
 			{
 			
 				$(".advancePRCls,#searchBtnId").show();
@@ -151,7 +151,7 @@ function disableByLevel(index)
 				//disableByLevel();
 				
 			}
-			else if(selectVal == 3)
+			else if(selectVal == "committee")
 			{
 				$("#searchBtnId").show();
 				$(".advancePRCls").hide();
@@ -171,7 +171,7 @@ function disableByLevel(index)
 				setToDefaultAdvancedSearch();
 				//disableByLevel();
 			}
-			else if(selectVal == 1)
+			else if(selectVal == "name")
 			{
 				$("#searchBtnId").show();
 				$(".stateShowCls").show();
@@ -183,9 +183,9 @@ function disableByLevel(index)
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
-				
 			}
-			else if(selectVal == "mobileno" || selectVal == "mebershipno" || selectVal == "votercardno")
+			
+			else if((selectVal != "PR" || selectVal != "committee"))
 			{
 			
 				$(".levelShowCls").hide();
@@ -365,7 +365,7 @@ function disableByLevel(index)
 		 $("#commonLevelId").find('option').remove();
 		  str+='<option value="10">State</option>';
 		  str+='<option value="11">District</option>';
-		  if(searchType != 3)
+		  if(searchType != "committee")
 		  str+='<option value="1">Constituency</option>';
 		  str+='<option value="5">Mandal/Muncipality</option>';
 		  str+='<option value="6">Village/Ward</option>';
@@ -523,7 +523,7 @@ function showHideSearch(type)
 			 $("#errorDivId").html(errorStr);
 		 }
 		  var aptUserId = 0;
-		if(advanceSearchType == 1)
+		if(advanceSearchType == "name")
 		{
 			levelStr ="";
 			 searchType = "name";
@@ -543,12 +543,12 @@ function showHideSearch(type)
 			getDetailsBySrch();
 			return;
 		}
-		else if(advanceSearchType == 2)
+		else if(advanceSearchType == "PR")
 		{
 			 searchType = "publicRepresentative";
 			 searchValue = $("#advanceDesignationId").val();
 		}
-		else if(advanceSearchType == 3)
+		else if(advanceSearchType == "committee")
 		{
 			 searchType = "CadreCommittee";
 				$("#cadreCommitteeDiv option:selected").each(function ()
@@ -681,7 +681,7 @@ function showHideSearch(type)
 		committeeId = referCommitteeId;	
 	}
 	//Public Representatives
-	if(advanceSearchType !=null && advanceSearchType == 2){
+	if(advanceSearchType !=null && advanceSearchType == "PR"){
 		var desgnaValue = $("#advanceDesignationId").val();
 		if(desgnaValue > 0)
 		statusArr.push(desgnaValue);

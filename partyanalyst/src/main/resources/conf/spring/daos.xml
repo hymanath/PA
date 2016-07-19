@@ -3114,5 +3114,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
 	
+	 <bean id="tdpMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpMemberDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
 	
 </beans>		
