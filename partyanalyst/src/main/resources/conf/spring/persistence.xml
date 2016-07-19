@@ -889,7 +889,6 @@
 					<value>com.itgrids.partyanalyst.model.DebateSmsQuestion</value>									  
 					<value>com.itgrids.partyanalyst.model.DebateSmsQuestionOption</value>							
 					<value>com.itgrids.partyanalyst.model.DebateReport</value>
-					 <!-- debate End-->
 					<value>com.itgrids.partyanalyst.model.Alert</value>
 					<value>com.itgrids.partyanalyst.model.AlertType</value>
 					<value>com.itgrids.partyanalyst.model.AlertSeverity</value>
@@ -905,6 +904,7 @@
 					<value>com.itgrids.partyanalyst.model.AlertSourceUser</value>
 					
 					
+				   <!-- debate End-->
 				   <!-- employee attendance report start-->
 				   <value>com.itgrids.partyanalyst.model.PartyOffice</value>
 				   <value>com.itgrids.partyanalyst.model.Employee</value>
@@ -945,7 +945,8 @@
 				    <value>com.itgrids.partyanalyst.model.TdpCadreReportStatus</value>
 				    <value>com.itgrids.partyanalyst.model.NominationPostCandidate</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPostMember</value>
-				     <value>com.itgrids.partyanalyst.model.MemberType</value> 
+				    <value>com.itgrids.partyanalyst.model.NominatedPostComment</value>
+				    <value>com.itgrids.partyanalyst.model.MemberType</value>
 				    
 				 </list>
 			

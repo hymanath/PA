@@ -1,5 +1,10 @@
-<!doctype html>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>BOARD WISE NOMINATED POSTS</title>
@@ -93,7 +98,7 @@
                 </div>
                 <div class="panel-body pad_0">
                 	<div class="table-responsive">
-                    	<table class="table table-bordered table-condensed tableShort">
+                    	<!--<table class="table table-bordered table-condensed tableShort">
                         	<thead>
                             	<th>Name</th>
                                 <th>Age</th>
@@ -629,13 +634,30 @@
                             	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
                             </tr>
                         </table>
-                        <p><i>Note:Click on <i class="glyphicon glyphicon-user"></i> to view complete profile and click on the applied count and know the status of last applied</i> </p>
+                        <p><i>Note:Click on <i class="glyphicon glyphicon-user"></i> to view complete profile and click on the applied count and know the status of last applied</i> </p>-->
+						<div id="resultDivId"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
+	<div class="modal-dialog" style="width:60%;">      
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+			</div>
+			<div class="modal-body" id="pdfReportDetailsId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!— /.modal-content —>
+	</div><!— /.modal-dialog —>
+</div><!— /.modal —>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -661,16 +683,16 @@ $(document).on("click",".appliedCount",function(e){
 	$(this).closest('tr').find(".appliedPostPopup").show();
 	e.stopPropagation()
 });
-
+getBoardWiseNominatedPostMemberDetails();
 function getBoardWiseNominatedPostMemberDetails(){
 	var jsObj=
 	   {				
-		levelId:levelId,
-		levelValue:levelValue,
-		departmentId:departmentId,
-		boardId:boardId,
-		positionId:positionId,
-		type:type
+		levelId:4,		//levelId,
+		levelValue:101,		//levelValue,
+		departmentId:2,		//departmentId,
+		boardId:1,		//boardId,
+		positionId:1,		//positionId,
+		type:"this"		//type
 		}
     $.ajax({
           type:'GET',
@@ -694,7 +716,7 @@ function buildNominatedPostMemberDetails(result){
 			str+='<th>Caste</th>';
 			str+='<th>Sub Caste</th>';
 			str+='<th>Party Designations</th>';
-			str+='<th>Reports</th>';
+			str+='<th style="width:80px">Reports</th>';
 			str+='<th>Applied Any Dep/Corp</th>';
 			str+='<th>Shortlisted in any dep/ Corp</th>';
 			str+='<th>Current Status For this post</th>';
@@ -704,24 +726,38 @@ function buildNominatedPostMemberDetails(result){
 		for(var i in result.subList){
 			str+='<tr>';
 			if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
-					str+='<td rowspan="2">'+result.subList[i].cadreMobile+'</td>';
-					str+='<td rowspan="2">'+result.subList[i].age+'</td>';
-					str+='<td rowspan="2">'+result.subList[i].caste+'</td>';
-					str+='<td rowspan="2">'+result.subList[i].casteName+'</td>';
-					str+='<td rowspan="2">'+result.subList[i].partyPosition+'</td>';
+					str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
+					str+='<td>'+result.subList[i].cadreMobile+'</td>';
+					str+='<td>'+result.subList[i].age+'</td>';
+					str+='<td>'+result.subList[i].caste+'</td>';
+					str+='<td>'+result.subList[i].casteName+'</td>';
+					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.trim.length > 0)
+						str+='<td>'+result.subList[i].partyPosition+'</td>';
+					else
+						str+='<td> - </td>';
+					str+='<td>';
+					if(result.subList[i].idNamevoList != null && result.subList[i].idNamevoList.length > 0){
+						for(var j in result.subList[i].idNamevoList){
+							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].idNamevoList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].idNamevoList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
+						}
+					}
+					else
+						str+=' - ';
+					str+='</td>';
+					//Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
 			}
 			else{
-				str+='<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
-					str+='<td rowspan="2">'+result.subList[i].voterMoblie+'</td>';
-					str+='<td rowspan="2"> - </td>';
-					str+='<td rowspan="2"> - </td>';
-					str+='<td rowspan="2"> - </td>';
-					str+='<td rowspan="2"> - </td>';
+				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+					str+='<td>'+result.subList[i].voterMoblie+'</td>';
+					str+='<td> - </td>';
+					str+='<td> - </td>';
+					str+='<td> - </td>';
+					str+='<td> - </td>';
+					str+='<td> - </td>';
 			}
-				str+='<td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
-				str+='<td rowspan="2" style="position:relative" class="text-center">';
-					str+='<span class="appliedCount">02</span>';
+				//str+='<td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
+				str+='<td style="position:relative" class="text-center">';
+					str+='<span class="appliedCount">'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow">';
 							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
@@ -750,43 +786,57 @@ function buildNominatedPostMemberDetails(result){
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
-				str+='<td rowspan="2">No</td>';
-				str+='<td rowspan="2">'+result.subList[i].status+'</td>';
-				str+='<td rowspan="2" style="position:relative;">';
+				if(result.subList[i].otherDeptShortListed != null && result.subList[i].otherDeptShortListed == 'YES')
+					str+='<td>'+result.subList[i].otherDeptShortListed+'</td>';
+				else
+					str+='<td> NO </td>';
+				str+='<td>'+result.subList[i].status+'</td>';
+				str+='<td style="position:relative;">';
 					str+='<button class="btn btn-success btnPopup">UPDATE</button>';
 					str+='<div class="updateDropDown">';
 						str+='<div class="updateDropDownArrow">';
 							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
 							str+='<label>Select Status</label>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
-								str+='<option>Shortlisted/Rejected</option>';
+								str+='<option value="3">Shortlisted/Rejected</option>';
 							str+='</select>';
 							str+='<label>Comments</label>';
-							str+='<textarea class="form-control"></textarea>';
-							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_post_id="'+result.subList[i].nominatedPostId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_selected_status_id="updatedStatusSelectId'+i+'">SUBMIT</button>';
+							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
+							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
 			str+='</tr>';
-			str+='<tr>';
+			/*str+='<tr>';
 				str+='<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
-			str+='</tr>';
+			str+='</tr>';*/
 		}
 	}
 	str+='</table>';
+	
+	$("#resultDivId").html(str);
 }
 
+$(document).on('click','.showPdfCls',function(){        
+	var str = '';
+	var filePath = $(this).attr("attr_filePath");
+	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+	str += '</iframe>';
+	$("#pdfReportDetailsId").html(str);
+}); 
+
 $(document).on("click",".updateStatusCls",function(){
-	var postId = $(this).attr("attr_post_id");
-	var postCandidateId = $(this).attr("attr_candidate_id");
+	var applicationId = $(this).attr("attr_application_id");
 	var selectDivId = $(this).attr("attr_selected_status_id");
+	var commentDivId = $(this).attr("attr_comment_id");
 	
 	var status = $("#"+selectDivId).val();
+	var comment = $("#"+commentDivId).val();
 	var jsObj=
 	   {				
-		nominatedPostId:postId,
-		nominatedPostCandidateId:postCandidateId,
-		statusId:status
+		nominatePostApplicationId:applicationId,
+		statusId:status,
+		comment :comment
 		}
     $.ajax({
           type:'GET',
