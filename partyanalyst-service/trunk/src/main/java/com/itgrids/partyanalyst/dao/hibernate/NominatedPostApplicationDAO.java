@@ -325,7 +325,7 @@ public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId)
 	    		"model.boardLevel.level,model.departments.departmentId," +
 	        " model.departments.deptName," +
 	        " model.board.boardId,model.board.boardName," +
-	        " model.position.positionId,model.position.positionName " +
+	        " model.position.positionId,model.position.positionName, " +
 	        " model.locationValue " +
 	        " from NominatedPostApplication model " +
 	        " where model.nominationPostCandidateId = : candidateId and " +

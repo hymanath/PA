@@ -42,6 +42,7 @@ public class NomintedPostMemberVO {
 	private Long deptBoardId;
 	private Long deptBoardPostnId;
 	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
+	private Long referCandCount;
 	
 	
 	public Long getId() {
@@ -205,5 +206,11 @@ public class NomintedPostMemberVO {
 	}
 	public void setIdNamevoList(List<IdNameVO> idNamevoList) {
 		this.idNamevoList = idNamevoList;
+	}
+	public Long getReferCandCount() {
+		return referCandCount;
+	}
+	public void setReferCandCount(Long referCandCount) {
+		this.referCandCount = referCandCount;
 	}
 }

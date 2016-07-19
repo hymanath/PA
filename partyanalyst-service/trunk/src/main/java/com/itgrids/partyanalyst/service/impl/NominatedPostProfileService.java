@@ -36,10 +36,12 @@ import com.itgrids.partyanalyst.dao.INominatedPostCommentDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -95,6 +97,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	
 	private ICasteCategoryDAO casteCategoryDAO;
 	private ITdpCadreReportDAO tdpCadreReportDAO;
+	private INominatedPostReferDetailsDAO nominatedPostReferDetailsDAO;
+	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ActivityService					activityService;
 	private IApplicationDocumentDAO         applicationDocumentDAO;
@@ -129,6 +133,23 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	}
 	
 	
+	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
+		return tdpCadreCandidateDAO;
+	}
+
+	public void setTdpCadreCandidateDAO(ITdpCadreCandidateDAO tdpCadreCandidateDAO) {
+		this.tdpCadreCandidateDAO = tdpCadreCandidateDAO;
+	}
+
+	public INominatedPostReferDetailsDAO getNominatedPostReferDetailsDAO() {
+		return nominatedPostReferDetailsDAO;
+	}
+
+	public void setNominatedPostReferDetailsDAO(
+			INominatedPostReferDetailsDAO nominatedPostReferDetailsDAO) {
+		this.nominatedPostReferDetailsDAO = nominatedPostReferDetailsDAO;
+	}
+
 	public ITdpCadreReportDAO getTdpCadreReportDAO() {
 		return tdpCadreReportDAO;
 	}
@@ -428,6 +449,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			Map<Long,Long> departmentsMap = new LinkedHashMap<Long, Long>();
 			Map<Long,String> deptShortListedMap = new LinkedHashMap<Long, String>();
 			Map<Long,List<IdNameVO>> reportMap = new LinkedHashMap<Long, List<IdNameVO>>();
+			Map<Long,Long> referMap = new LinkedHashMap<Long, Long>();
 			
 			//0.nominationPostCandidateId,1.tdpCadreId,2.voterId,3.candidateName,4.mobileNo,5.cadreFirstname,6.cadreMobileNo,7.age,
 						//8.caste,9.subCaste,10.casteName,11.applicationStatusId,12.status,13.nominatedPostId
@@ -496,7 +518,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					 partyPostionMap.put(cadreId, partyPositionStr);
 				}
 			 }
-			 
 			 if(commonMethodsUtilService.isListOrSetValid(subList)){
 				 for (NomintedPostMemberVO vo : subList) {
 					 if(vo.getTdpCadreId() != null && vo.getTdpCadreId().longValue() > 0l){
@@ -533,7 +554,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			 }
-			 
 			 if(commonMethodsUtilService.isListOrSetValid(subList)){
 				 for (NomintedPostMemberVO vo : subList) {
 					 if(vo.getTdpCadreId() != null && vo.getTdpCadreId().longValue() > 0l){
@@ -543,12 +563,101 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			 }
 			 
+			 List<Object[]> referList = nominatedPostReferDetailsDAO.getReferedCountForCandidateList(nominatedPostCandidateIds);
+			 if(commonMethodsUtilService.isListOrSetValid(referList)){
+				 for (Object[] obj : referList) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					referMap.put(id, count);
+				}
+			 }
+			 if(commonMethodsUtilService.isListOrSetValid(subList)){
+				 for (NomintedPostMemberVO vo : subList) {
+					 Long count = referMap.get(vo.getNominatedPostCandidateId());
+					 vo.setReferCandCount(count);
+				 }
+			 }
+			 
 			 returnvo.setSubList(subList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in getNominatedPostMemberDetails()", e);
 		}
 		return returnvo;
+	}
+	
+	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try {
+			List<Long> cadreIds = new ArrayList<Long>();
+			Map<Long,String> publicRepMap = new LinkedHashMap<Long, String>();
+			Map<Long,String> partyPostMap = new LinkedHashMap<Long, String>();
+			
+			List<Object[]> list = nominatedPostReferDetailsDAO.getReferedCadreDetailsForCandidate(candidateId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					
+					IdNameVO vo = new IdNameVO();
+					vo.setId(id);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setPercentage(obj[2] != null ? obj[2].toString():"");//membershipNo
+					vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+					vo.setStatus(obj[4] != null ? obj[4].toString():"");//image
+					returnList.add(vo);
+					cadreIds.add(id);
+				}
+			}
+			
+			List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(cadreIds);
+			if(commonMethodsUtilService.isListOrSetValid(publicRepDertails)){
+				for(Object[] obj:publicRepDertails){
+					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String type = obj[2] != null ? obj[2].toString():"";
+					String position = publicRepMap.get(cadreId);
+					if(position != null && position.trim().length() > 0l){
+						position = position+" , "+type;
+					}
+					else{
+						position = type;
+						publicRepMap.put(cadreId, position);
+					}
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				for (IdNameVO vo : returnList) {
+					vo.setPublicRepr(publicRepMap.get(vo.getId()));
+				}
+			}
+			
+			 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(cadreIds);
+			 if(commonMethodsUtilService.isListOrSetValid(partyPositionDetails)){
+				 for (Object[] obj : partyPositionDetails) {
+					 
+					 String level = obj[0] != null ? obj[0].toString() : "" ;
+					 String role = obj[1] != null ? obj[1].toString() : "";
+					 Long cadreId = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+					 String state = commonMethodsUtilService.getStringValueForObject(obj[6]);
+					 String commiteestr = obj[2] != null ? obj[2].toString() : "";
+					 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+					 {
+						 level = state+" "+level;
+					 }
+					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+					 partyPostMap.put(cadreId, partyPositionStr);
+				}
+			 }
+			 if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				for (IdNameVO vo : returnList) {
+					vo.setPartyPos(partyPostMap.get(vo.getId()));
+				}
+			}
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getNominatedPostMemberDetails()", e);
+		}
+		return returnList;
 	}
 	
 	public NomintedPostMemberVO getMatchedVO(List<NomintedPostMemberVO> returnList,Long id)

@@ -19,6 +19,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<IdNameVO> idnameList = new ArrayList<IdNameVO>();
 	private String mobileNo;
 	private String status;
+	private String publicRepr;
+	private String partyPos;
 	
 	@Override
 	public int compare(IdNameVO o2, IdNameVO o1) {
@@ -133,5 +135,21 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPublicRepr() {
+		return publicRepr;
+	}
+
+	public void setPublicRepr(String publicRepr) {
+		this.publicRepr = publicRepr;
+	}
+
+	public String getPartyPos() {
+		return partyPos;
+	}
+
+	public void setPartyPos(String partyPos) {
+		this.partyPos = partyPos;
 	}
 }
