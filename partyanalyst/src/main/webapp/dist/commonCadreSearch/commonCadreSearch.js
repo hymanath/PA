@@ -876,7 +876,7 @@ $(this).parent().remove();
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
-	tdpCadreIds.pop(id);
+	commontdpCadreIds.pop(id);
 });
 
 
