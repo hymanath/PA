@@ -206,6 +206,23 @@ GlobalalertId = $(this).attr("attr-id");
 	//window.location.href = "alertDetailsAction.action?alertId="+GlobalalertId+"";
 	window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
 });
+function saveAlertAssignedUser()
+	{
+		var tdpCadreIds = [];
+		tdpCadreIds.push("1","2");
+		var jsObj =
+		     {
+				 tdpCadreIds : tdpCadreIds,
+				 alertId : GlobalalertId,
+				task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'saveAlertAssignedUserAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+			 })
+	}
 $(document).on("click",".alertCandidate",function(){
 
 getAlertCandidatesData($(this).attr("attr-id"));
@@ -466,6 +483,8 @@ function getAlertStatusCommentsTrackingDetails()
 		$("#alertCommentsDiv").html(str);
 		$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
 	}
+	
+	
 
 
 

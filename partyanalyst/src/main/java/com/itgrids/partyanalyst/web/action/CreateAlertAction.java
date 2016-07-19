@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.InputStream;
 
 import java.io.StringBufferInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,12 +15,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
@@ -42,9 +45,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private  List<StatusTrackingVO> statusTrackingVOList;
 	private ResultStatus resultStatus;
 	private Long alertId;
+	private List<IdNameVO> idNameVOList;
 	
 	
 	
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
+
 	public Long getAlertId() {
 		return alertId;
 	}
@@ -328,7 +340,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try{
 		session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		//List<Long> ids = (List<Long>) jObj.getJSONArray("tdpCadreIds");
+		JSONArray jArray = jObj.getJSONArray("tdpCadreIds");
+		List<IdNameVO> cadreList = new ArrayList<IdNameVO>();
+		 for (int i = 0; i < jArray.length(); i++) 
+			{
+			 IdNameVO vo = new IdNameVO();
+			 vo.setId((Long.parseLong(jArray.getString(i))));
+			 cadreList.add(vo);
+			}
 		AlertVO alertVO = new AlertVO();
+		alertVO.setIdNamesList(cadreList);
+		alertVO.setAlertTypeId(jObj.getLong("alertId"));
 		resultStatus = alertService.saveAlertAssignedUser(alertVO,regVo.getRegistrationID());
 		}
 		catch (Exception e) {
@@ -337,5 +361,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;	
 	}
 	
-
+	public String getMemberTypes()
+	{
+		try{
+		
+			idNameVOList = alertService.getMemberTypesList();
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getMemberTypesList",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+	
 }
