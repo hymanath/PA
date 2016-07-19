@@ -35,7 +35,7 @@ function buildMemberTypes(result)
 }
 function disableByLevel(index)
   {
-	
+
 	  setDefault(index);	
 	  var levelId = $("#commonLevelId"+index).val();
 	 
@@ -225,6 +225,8 @@ function disableByLevel(index)
 	}
  function setDefault(index)
   {
+	  
+	  
 	  $("#referconstituencyId"+index).find('option').not(':first').remove();
 	  $("#refermandalNameId"+index).find('option').not(':first').remove();
 	  $("#referpanchayatId"+index).find('option').not(':first').remove();
@@ -235,6 +237,15 @@ function disableByLevel(index)
 		var select = new Dropkick("#referpanchayatId"+index);
 		select.refresh();
   } 
+  
+  function clearCommonFields()
+  {
+	   $("#advanceSearchTypeId").val(0);
+	   var select = new Dropkick("#advanceSearchTypeId");
+		select.refresh();
+	  $("#advanceSearchValueId").val('');
+	  showHideBySearchType();
+  }
   function getDistrictsForReferPopup(index) {
 {
 	var stateId = $("#stateId"+index).val();

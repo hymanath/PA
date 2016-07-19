@@ -370,7 +370,7 @@ function updateAlertStatus()
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
 	 
-	//var str = '';
+	
 	if(comments.length==0||comments=='')
 	{
 		  $('#errorId').html(' comments required').css("color","red");
@@ -378,7 +378,7 @@ function updateAlertStatus()
 	}
 	if(statusId==0)
 	{
-		//alert(2);
+		
 	   $('#errorId').html(' Status required').css("color","red"); 
         return;	   
 	}

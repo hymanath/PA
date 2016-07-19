@@ -20,7 +20,10 @@ function saveAlertAssignedUser ()
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 				   if(result.resultCode == 0)
-				 $("#assignEroorDiv").html("assigned Successfully").css("color","green");
+					$("#assignEroorDiv").html("assigned Successfully").css("color","green");
+					$("#involvedCandidatesDiv").html('');
+					$("#apptmemberDetailsDiv").html('');
+					clearCommonFields();
 			 })
 	}
 function getAlertData()
