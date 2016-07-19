@@ -184,23 +184,7 @@ function disableByLevel(index)
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
 			}
-			
-			else if((selectVal != "PR" || selectVal != "committee"))
-			{
-			
-				$(".levelShowCls").hide();
-				$(".stateShowCls").hide();
-				$(".advanceprcls").show();
-				$(".advanceNameCls").show();
-				$(".advancePRCls").hide();
-				$(".advanceCadreCommittee").hide();
-				$(".locationsFilterCls").show();
-				$("#advanceSearchValueId").val("");
-				$(".advanceprclsDiv").show();
-				$("#searchBtnId").show();
-				$("#cadreCommitteeDiv_chosen").hide();
-			}
-			else
+			else if(selectVal == "0")
 			{
 			
 				$(".levelShowCls").hide();
@@ -216,6 +200,22 @@ function disableByLevel(index)
 				$(".advancePRCls").parent().hide();
 			
 			}
+			else 
+			{
+			
+				$(".levelShowCls").hide();
+				$(".stateShowCls").hide();
+				$(".advanceprcls").show();
+				$(".advanceNameCls").show();
+				$(".advancePRCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$("#advanceSearchValueId").val("");
+				$(".advanceprclsDiv").show();
+				$("#searchBtnId").show();
+				$("#cadreCommitteeDiv_chosen").hide();
+			}
+			
 				disableByLevel('');
 				$(".stateCls").show();
 				$(".distCls").hide();
@@ -538,11 +538,7 @@ function showHideSearch(type)
 				 return; 
 			 }
 		}
-		else if(advanceSearchType == "mobileno" || advanceSearchType == "mebershipno" || advanceSearchType == "votercardno")
-		{
-			getDetailsBySrch();
-			return;
-		}
+		
 		else if(advanceSearchType == "PR")
 		{
 			 searchType = "publicRepresentative";
@@ -562,6 +558,13 @@ function showHideSearch(type)
 				}		
 			});
 			 referCommitteeId = $("#referCommitteeId").val();
+		}
+		
+		//else if(advanceSearchType == "mobileno" || advanceSearchType == "mebershipno" || advanceSearchType == "votercardno")
+		else 
+		{
+			getDetailsBySrch();
+			return;
 		}
 		 districtId = $("#referdistrictId").val();
 		 constituencyId = $("#referconstituencyId").val();
@@ -725,43 +728,50 @@ function showHideSearch(type)
 	}
 	function getDetailsBySrch()
 	{
+		
 		//clearing the Data Div
 		$("#apptmemberDetailsDiv").html("");
 		//clearing err Div
-		$("#errDigitsId").html(" ");
+		$("#errorDivId").html(" ");
 		
-		var searchValue=$("#searchValueId").val();
+		var searchValue=$("#advanceSearchValueId").val().trim();
+		
 		var errStr=false;
 		//Validations
-		if($("#searchTypeId").val()==0){
-			 $("#errDigitsId").html("Please Select Search Type");
+		if(searchValue==0){
+			 $("#errorDivId").html("Please Select Search Type");
 			 errStr=true;
 		}
-		else if($("#searchTypeId").val()=="mobileno"){			
+		else if($("#advanceSearchTypeId").val()=="mobileno"){
+			
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please enter Mobile No");
+					  $("#errorDivId").html("Please enter Mobile No");
 					  errStr=true;
+					  
 				 }	
-				else if(searchValue.length != 10 || isNaN(searchValue)){		
-					$("#errDigitsId").html("Please Enter Valid Mobile Number");
+				else if(searchValue.length < 10 || isNaN(searchValue)){		
+					$("#errorDivId").html("Please Enter Valid Mobile Number");
 					 errStr=true;
 				}
-		}else if($("#searchTypeId").val() == "mebershipno"){
+		}else if($("#advanceSearchTypeId").val() == "mebershipno"){
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please Enter MembershipNo ");
+					  $("#errorDivId").html("Please Enter MembershipNo ");
 					  errStr=true;
-			}else if(searchValue.length !=8 || isNaN(searchValue)){
-				  $("#errDigitsId").html("Please Enter valid Membership ");
+					 
+			}else if(searchValue.length < 8 || isNaN(searchValue)){
+				 
+				  $("#errorDivId").html("Please Enter valid Membership ");
 					  errStr=true;
 			}
-		}else if($("#searchTypeId").val() == "votercardno"){
+		}else if($("#advanceSearchTypeId").val() == "votercardno"){
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please Enter Votercardno ");
+					  $("#errorDivId").html("Please Enter Votercardno ");
 					  errStr=true;
 			}
 		}
 		
 		if(errStr){
+			
 			return;
 		}else{
 				getSearchDetails();
