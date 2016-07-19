@@ -655,9 +655,9 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-		</div><!— /.modal-content —>
-	</div><!— /.modal-dialog —>
-</div><!— /.modal —>
+		</div><!â /.modal-content â>
+	</div><!â /.modal-dialog â>
+</div><!â /.modal â>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -681,7 +681,9 @@ $(document).on("click",".closeIcon",function(e){
 $(document).on("click",".appliedCount",function(e){
 	$(".appliedPostPopup").hide();
 	$(this).closest('tr').find(".appliedPostPopup").show();
-	e.stopPropagation()
+	e.stopPropagation();
+	var candidateId =$(this).attr("attr_cand_id");
+getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
 });
 getBoardWiseNominatedPostMemberDetails();
 function getBoardWiseNominatedPostMemberDetails(){
@@ -757,7 +759,7 @@ function buildNominatedPostMemberDetails(result){
 			}
 				//str+='<td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
 				str+='<td style="position:relative" class="text-center">';
-					str+='<span class="appliedCount">'+result.subList[i].otherDepartmentsCount+'</span>';
+					str+='<span class="appliedCount" attr_cand_id='+result.subList[i].nominatedPostCandidateId+'>'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow">';
 							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
@@ -863,10 +865,18 @@ function getNominatedPostPostionDetails(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		   var str='';
+		  if(result != null){
+			  buildNominatePostPositionDetails(result);
+		  }
+			
+	   });  
+}
+function buildNominatePostPositionDetails(result){
+	 var str='';
 		   if(result !=null && result.length>0){
-			   for(var i in result){				   				
-					str+='<table class="table table-bordered">';
+			   //console.log(result);
+			   for(var i in result){			   
+					str+='<table class="table table-bordered" id="nominatePositionDetilsId">';
 					str+='<thead>';
 					str+='<tr>';
 					str+='<th rowspan="2"></th>';
@@ -877,10 +887,9 @@ function getNominatedPostPostionDetails(){
 					str+='<th colspan="5">AGE GROUP</th>';
 					str+='</tr>';
 					str+='<tr>';
-					str+='<th>SC</th>';
-					str+='<th>ST</th>';
-					str+='<th>BC</th>';
-					str+='<th>OC</th>';
+					for(var j in result[i].idNameVoList){
+					str+='<th>'+result[i].idNameVoList[j].name+'</th>';
+					}
 					str+='<th>20-29</th>';
 					str+='<th>30-39</th>';
 					str+='<th>40-49</th>';
@@ -892,22 +901,21 @@ function getNominatedPostPostionDetails(){
 					str+='<tr>';
 					str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
 					//str+='<td>02</td>';
-					str+='<td>10</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
+					str+='<td>'+result[i].receivedCount+'</td>';
+					str+='<td>'+result[i].shortListedCount+'</td>';
+					for(var j in result[i].idNameVoList){
+					str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+					}
+					str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+					str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+					str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+					str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+					str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
 					str+='</tr>';
 					str+='<tr>';
 					str+='<td><p>ANY POST</p><small>Requested for any post members shortlisted for this</small>';str+='</td>';
 					//str+='<td>02</td>';
-					str+='<td>10</td>';
+					str+='<td>01</td>';
 					str+='<td>01</td>';
 					str+='<td>01</td>';
 					str+='<td>01</td>';
@@ -925,11 +933,22 @@ function getNominatedPostPostionDetails(){
 			   
 			   $("#positionDivId").html(str);
 		   }
-			
-	   });
-	   
-	   
-	   
+}
+function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId){
+	var jsObj=
+	   {				
+		candidateId:candidateId
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getBrdWisNominPstAppliedDepOrCorpDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null){
+		   
+	   }
+   });
 }
 </script>
 </body>
