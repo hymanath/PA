@@ -147,7 +147,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	}
 
 	
-	
 	public INominatedPostMemberDAO getNominatedPostMemberDAO() {
 		return nominatedPostMemberDAO;
 	}
@@ -917,35 +916,84 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			//if(commonMethodsUtilService.isMapValid(levelwiseNominatedPostsMap)){
 				List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
+				List<Object[]> totalAvailablePostsList = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,startDate,endDate,statusList);
+				Long totalPositionsCount=0L;
+				Long totalCorpCount=0L;
+				if(commonMethodsUtilService.isListOrSetValid(totalAvailablePostsList)){
+					for (Object[] param : totalAvailablePostsList) {
+						NominatedPostVO vo = applicationsStatusDtlsMap.get("TOTAL CORPORATIONS");
+						if(vo != null){
+							vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+							vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+							vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+							
+							totalPositionsCount = vo.getTotalPositions();
+							totalCorpCount = vo.getTotalCorp();
+						}
+					}
+				}
+				
 				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,startDate,endDate,statusList);
+			
 				if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
 					for (Object[] param : levelWiseAvailablePostsList) {
 						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[2]);
 						String statusStr = commonMethodsUtilService.getStringValueForObject(param[1]);
 						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
 						//if(vo1 != null){
-							if(statusStr.trim().equalsIgnoreCase("1")){
+						
+						/*if(statusStr.trim().equalsIgnoreCase("1")){
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
 								if(vo != null){
 									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+									
+									totalPositionsCount = vo.getTotalPositions();
+									totalCorpCount = vo.getTotalCorp();
 								}
-							}
-							else if(statusStr.trim().equalsIgnoreCase("2")){
+							}*/
+						
+							 if(statusStr.trim().equalsIgnoreCase("2")){
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[4].trim());
 								if(vo != null){
 									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+									
+									if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+										if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+											String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+											vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+										}
+										
+										if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+											String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+											vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+										}
+									}
+									
 								}
 							}
 							else if(statusStr.trim().equalsIgnoreCase("3")){
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[5].trim());
 								if(vo != null){
+									
 									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+									
+									if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+										if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+											String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+											vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+										}
+										
+										if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+											String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+											vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+										}
+									}
 								}
 							}
 							else if(statusStr.trim().equalsIgnoreCase("4")){
@@ -954,6 +1002,18 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+									
+									if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+										if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+											String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+											vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+										}
+										
+										if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+											String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+											vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+										}
+									}
 								}
 							}
 						//}
@@ -971,6 +1031,18 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
 								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
 								vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[3]));
+								
+								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+									if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+										String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+										vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+									}
+									
+									if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+										String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+										vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+									}
+								}
 							}
 						//}
 					}
@@ -987,24 +1059,49 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
 								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
 								vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[3]));
+								
+								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+									if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+										String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+										vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+									}
+									
+									if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+										String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+										vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+									}
+								}
 							}
 						//}
 					}
 				}
 				
-				NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
-				if(vo != null){
+				//String[] aa =  IConstants.NOMINATED_POST_APPLICATION_STATUSES;
+				NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
+				if(vo2 != null){
 					if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
 						if(levelId != null && levelId.longValue()>0L){
 								NominatedPostVO totalVO = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
 								NominatedPostVO appliedVO = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
 								NominatedPostVO runningVO = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
-								if(appliedVO != null && runningVO != null){
-									NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
+								if(appliedVO != null && runningVO != null && appliedVO.getTotalPositions().longValue()>0L){
+									//NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
 									if(vo2 != null){
 										vo2.setTotalPositions((totalVO.getTotalPositions()-(appliedVO.getTotalPositions() + runningVO.getTotalPositions())));
 										vo2.setTotalDept((totalVO.getTotalDept()-(appliedVO.getTotalDept() + runningVO.getTotalDept())));
 										vo2.setTotalCorp((totalVO.getTotalCorp()-(appliedVO.getTotalCorp() + runningVO.getTotalCorp())));
+										
+										if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+											if(vo2.getTotalPositions() != null && vo2.getTotalPositions().longValue()>0L){
+												String perc = String.valueOf(vo2.getTotalPositions()*100.0/totalPositionsCount);
+												vo2.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+											}
+											
+											if(vo2.getTotalCorp() != null && vo2.getTotalCorp().longValue()>0L){
+												String perc1 = String.valueOf(vo2.getTotalCorp()*100.0/totalCorpCount);
+												vo2.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+											}
+										}
 									}
 								}
 						}else{
