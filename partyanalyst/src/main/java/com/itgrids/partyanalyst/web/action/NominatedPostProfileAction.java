@@ -1,21 +1,29 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -35,7 +43,6 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private NominatedPostVO                     nominatedPostVO;
 	private ResultStatus 						resultStatus;
 	private InputStream 						inputStream;
-	
 	
 	public List<NominatedPostVO> getNominatePostList() {
 		return nominatePostList;	}
@@ -332,6 +339,58 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		}
 		return Action.SUCCESS;
 	}
-	
+	 public String nominatedPostUploadForm()
+		{
+			try{
+				
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				
+				Long cadreId= new Long(request.getParameter("cadreId"));
+				
+				EventFileUploadVO eventFileUploadVO = new EventFileUploadVO();
+				Map<File,String> mapfiles = new HashMap<File,String>();
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			       String fileUrl = "" ;
+			       List<String> filePaths = null;
+			   		while(fileParams.hasMoreElements())
+			   		{
+			   			String key = fileParams.nextElement();
+			   			
+					   			File[] files = multiPartRequestWrapper.getFiles(key);
+					   			filePaths = new ArrayList<String>();
+					   			if(files != null && files.length > 0)
+					   			for(File f : files)
+					   			{
+					   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+					   	            String ext = "";
+					   	            if(extension.length > 1){
+					   	            	ext = extension[extension.length-1];
+					   	            	mapfiles.put(f,ext);
+					   	            }
+					   	        
+					   			}
+			   		}
+			     
+			   		resultStatus = nominatedPostProfileService.saveNominatedPostUploadFiles(mapfiles, cadreId);
+				
+			}catch (Exception e) {
+				LOG.error("Exception Occured in nominatedPostUploadForm() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+	 
+	 public String deleteNominatedUploadedFile()
+		{
+			try{
+				
+				jObj = new JSONObject(getTask());
+				resultStatus = nominatedPostProfileService.deleteNominatedUploadedFile(jObj.getString("applicatnDocId"));
+				
+			}catch (Exception e) {
+				LOG.error("Exception Occured in deleteNominatedUploadedFile() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;
+		}
 	
 }

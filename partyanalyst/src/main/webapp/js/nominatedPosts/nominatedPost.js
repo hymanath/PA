@@ -501,6 +501,7 @@ function getNominatedPostApplication(startIndex)
 		
 	}
 	function refreshExistingDetails(){ 
+		//$("#uploadFlDivId").hide();
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
 		$(".paginationDivId").html('');
@@ -667,8 +668,12 @@ $('.searchTypeCls').click(function(){
 getBoardLevels("boardLvlId"); 
 getDepartments("depmtsId"); 
 $(document).on("click",".checkboxCls",function(){
+	
+	globalCadreId = $(this).attr("attr_cadreId");
     $(".checkboxCls").prop( "checked" ,false);
+	//$("#uploadFlDivId").hide();
 	$( this ).prop( 'checked', true );
+	//$("#uploadFlDivId").show();
 })
 function showHideByNominatedPost(num)
 {
@@ -852,6 +857,7 @@ function savingApplication(){
 				cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
 			}
 		});
+		//var files = $('#filer_input3').get(0).dropzone.getAcceptedFiles();
 			$(".tdpCadreId").val(cadreId);
 			$(".tdpCadreName").val(cadreName);
 			$(".cadreVoterId").val(cadreVoterId);
@@ -884,7 +890,7 @@ function savingApplication(){
 			}, 1000);
 		}
 	}
-	function validateFields(){
+	 function validatationFields(){
 		searchByApplicant();
 		$(".errorMsgCls").html("");
 		var flag = true;
@@ -986,7 +992,7 @@ function savingApplication(){
 		return  false;
 		}
 		return true;
-	}
+	} 
 $(document).on("click","#addressCheckId",function(){
 	if ($(this).is(':checked')) {
 		$("#changePhoneNumberDiv").show();
@@ -1253,6 +1259,7 @@ function getMandalsByConstituencyForReferPopup()
 		    $("#addVillageId").trigger("chosen:updated");
    });	
   }
+
  function getCandidateAppliedPostsByCadre(globalCadreId){
 
 		var jsObj={
@@ -1317,23 +1324,24 @@ function getMandalsByConstituencyForReferPopup()
 	 }
 	 $("#appliedPostForSelectedId").html(str);
 }
-   function searchByApplicant()
-    {
-	var search=$("#searchbtn").val();
+function searchByApplicant()
+  {
+  var search=$("#searchbtn").val();
     var cadres = [];
     $(".checkboxCls:checked").each(function() {
      cadres.push(this.value);
-     });
-	 if(search == 0&&cadres.length==0){
-	     $("#searchErrDiv").html("please required search Applicant");
-	     return;
-	      }
-		  else{
-			  $("#searchErrDiv").html('');
-		  }
+	 });
+   if(search == 0&&cadres.length==0){
+       $("#searchErrDiv").html("please required search Applicant");
+       return;
+        }
+      else{
+        $("#searchErrDiv").html('');
+      }
      
     }
- $(document).on("click",".cadreCheckCls",function(){
+	
+	$(document).on("click",".cadreCheckCls",function(){
 	 $("#searchData").html('');
      $("#cadreSearchDtls").html('');	 
   if ($("#cadreSearchId").is(":checked")) {
@@ -1347,4 +1355,25 @@ function getMandalsByConstituencyForReferPopup()
 	 $("#scrollDivId").hide();
 	 $("#textId").hide();
 	}
+});
+$(document).on("click",".deleteFile",function() {
+ 
+ var applicatnDocId = $(this).attr("id");
+ 
+ var jsObj=
+   {				
+	  applicatnDocId:applicatnDocId,
+	  task:"deleteFile"				
+	}
+	$.ajax({
+			  type:'GET',
+			  url: 'deleteNominatedUploadedFileAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result.resultCode == 0){
+	         $(this).closest("li").html("");
+		   }
+	   });
+
 });

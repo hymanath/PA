@@ -3296,6 +3296,8 @@
 		<property name="panchayatDAO" ref="panchayatDAO"></property>
 		<property name="tehsilDAO" ref="tehsilDAO"></property>
 		<property name="casteCategoryDAO" ref="casteCategoryDAO"></property>
+		<property name="activityService" ref="activityService"></property>
+		<property name="applicationDocumentDAO" ref="applicationDocumentDAO"></property>
 		<property name="nominatedPostCommentDAO" ref="nominatedPostCommentDAO"></property>
 		<property name="tdpCadreReportDAO" ref="tdpCadreReportDAO"></property>
 	</bean>

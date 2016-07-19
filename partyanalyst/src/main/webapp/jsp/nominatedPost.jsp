@@ -8,6 +8,20 @@
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/Plugins/Dropzone/basic.css" rel="stylesheet" type="text/css"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
+<style type="text/css">
+.jFiler-input-dragDrop
+{
+	width:100%;
+}
+.panel-footer
+{
+	background:#ccc;
+	cursor:pointer;
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -33,7 +47,6 @@
 					</div>
 					
           <div id="searchMemberDiv">
-		  
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
                     	<label>State</label>
                         <select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect">
@@ -112,7 +125,7 @@
 					<input class="form-control" type="text"/>
 				 </div>
 				 </div>
-				 <form name="submitApplication" id="submitApplication"  method="post">
+				 <form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">
                  <div class="row">
 				 <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px; display: none;" id="searchDataImg" class="offset7" src="images/icons/cadreSearch.gif">
                     <div class="col-md-12 col-xs-12 col-sm-12">
@@ -223,10 +236,10 @@
                     </div>
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<h4 class="m_0 text-success">NOMINATED LEVEL AND LOCATION 
-							<span class="pull-right f_14" style="cursor:pointer"  id="addOneMore">
+							<!--<span class="pull-right f_14" style="cursor:pointer" >
 								Add One More 
 								<i class="glyphicon glyphicon-plus-sign"></i>
-							</span>
+							</span>-->
 						</h4>
                     </div>
 					
@@ -297,6 +310,9 @@
 								<input type="hidden" class="cadreMobileNo" name="nominatedPostVO.mobileNo">
 								<input type="hidden" class="cadreVoterId" name="nominatedPostVO.voterCardNo">
 							</div>
+							<div class="panel-footer m_top10"  id="addOneMore">
+                            	<p class="text-center text-capital" >+ Click to add more nominations</p>
+                            </div>
 						</div>
 						<div class="addBlockNew cloneBlockDiv" id="cloneDivBlock" style="display:none;">
 							<div class="row">
@@ -360,14 +376,15 @@
 						</div>
 					</div>
 					
+					
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div id="addOneMoreBlock"></div>
 					</div>
                 </div>
-                <div class="row">
+                <div class="row" id="uploadFlDivId" >
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p>UPLOAD SCAN COPY</p>
-                            <input type="file" class="form-control"/>
+								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
                         </div>
                     </div>
                     <div class="row">
@@ -383,6 +400,129 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" style="width:85%" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg_cc">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Refer Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        	<div class="col-md-2 col-xs-12 col-sm-2">
+            	<label>Level</label>
+                <select class="chosenSelect">
+                	<option>District</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-xs-12 col-sm-2">
+            	<label>District</label>
+                <select class="chosenSelect">
+                	<option>All</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-xs-12 col-sm-2">
+            	<label>Assembly</label>
+                <select class="chosenSelect">
+                	<option>All</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3">
+            	<label>Mandal/Municipality</label>
+                <select class="chosenSelect">
+                	<option>All</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3">
+            	<label>Panchayat</label>
+                <select class="chosenSelect">
+                	<option>All</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-4 col-xs-12 col-sm-4">
+            	<div class="row">
+                	<div class="col-md-12 col-xs-12 col-sm-12">
+					<div class="bg_cc pad_10">
+                        	<label class="radio-inline">
+                                <input type="radio"/>Cadre Committee
+                            </label><br/>
+                            <label class="radio-inline">
+                                <input type="radio"/>Public Representative
+                            </label><br/>
+                            <label class="radio-inline">
+                                <input type="radio"/>Other
+                            </label><br/>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+                    	<label>Select Committee</label>
+                        <select class="chosenSelect">
+                        	<option>All</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 m_top10">
+                    	<ul class="positionSelect">
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        	<li>
+                            	President <input type="checkbox" class="pull-right"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                    	<button class="btn btn-success">GET DETAILS</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xs-12 col-sm-8">
+            	<div class="table-responsive">
+                	<table class="table table-bordered" id="membersDetailsTable">
+                    	<thead class="text-capital">
+                        	<th></th>
+                        	<th>District</th>
+                            <th>Constituency</th>
+                            <th>Mandal/Muncipality</th>
+                            <th>Candidate Name</th>
+                            <th>Committee</th>
+                            <th>Committee Level</th>
+                        </thead>
+                        <tbody>
+                        	<tr>
+                            	<td><input type="checkbox"/></td>
+                                <td>Chittoor</td>
+                                <td>Tirupathi</td>
+                                <td>Tirupathi(Urban)Mandal</td>
+                                <td>B Sridhar Varma</td>
+                               	<td>Telugu Yuvatha</td> 
+                                <td>District</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 var globalCadreId=0;
 </script>
@@ -390,7 +530,11 @@ var globalCadreId=0;
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>
+
 <script type="text/javascript">
+
 $('.chosenSelect').chosen();
 $(document).on("click",".btnClassChange",function(){
 	$(".btnClassChange").removeClass("btnActive");
