@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITdpMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserAppointmentUserDAO;
@@ -165,8 +166,17 @@ public class AppointmentService implements IAppointmentService{
 	private IUserAppointmentUserDAO userAppointmentUserDAO;
 	private IAppointmentStatusFlowDAO appointmentStatusFlowDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	private ITdpMemberDAO tdpMemberDAO;
 	
 	
+	
+	
+	public ITdpMemberDAO getTdpMemberDAO() {
+		return tdpMemberDAO;
+	}
+	public void setTdpMemberDAO(ITdpMemberDAO tdpMemberDAO) {
+		this.tdpMemberDAO = tdpMemberDAO;
+	}
 	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
 		return tdpCommitteeMemberDAO;
 	}
@@ -8176,8 +8186,11 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  			 try {
  				      List<Object[]> membersList = null;
  				      List<Long> tdpCadreIds = new ArrayList<Long>();
- 				   
- 				    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);
+ 				      if(searchType.equalsIgnoreCase("mobileno") || searchType.equalsIgnoreCase("votercardno") || searchType.equalsIgnoreCase("mebershipno"))
+				    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);
+ 				      else
+ 				    	  membersList =  tdpMemberDAO.searchTdpMemberByCriteria(searchType,searchValue,null);
+ 
  				    	  if(membersList!=null && membersList.size()>0){
  				    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
  				    		  for(Object[] obj: membersList){
