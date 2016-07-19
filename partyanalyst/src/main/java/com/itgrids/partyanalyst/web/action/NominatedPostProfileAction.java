@@ -392,5 +392,16 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			}
 			return Action.SUCCESS;
 		}
+	public String getBrdWisNominPstAppliedDepOrCorpDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			nominatePostList = nominatedPostProfileService.getBrdWisNominPstAppliedDepOrCorpDetails(jObj.getLong("candidateId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getBrdWisNominPstAppliedDepOrCorpDetails Action",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }

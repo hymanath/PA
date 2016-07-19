@@ -12999,5 +12999,11 @@
 				<param name="root">resultStatus</param>
 			</result>
 	   </action>
+	
+	<action name="getBrdWisNominPstAppliedDepOrCorpDetailsAction" class="nominatedPostProfileAction" method="getBrdWisNominPstAppliedDepOrCorpDetails">
+	  <result type="json" name="success">
+			<param name="root">nominatePostList</param>
+		</result>
+	</action>
 </package>
 </struts>      

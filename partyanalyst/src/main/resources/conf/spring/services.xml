@@ -3300,6 +3300,7 @@
 		<property name="applicationDocumentDAO" ref="applicationDocumentDAO"></property>
 		<property name="nominatedPostCommentDAO" ref="nominatedPostCommentDAO"></property>
 		<property name="tdpCadreReportDAO" ref="tdpCadreReportDAO"></property>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
 	</bean>
 </beans>		
 	
