@@ -28,6 +28,7 @@ public class ApplicationDocument extends BaseModel implements Serializable{
 	private Long applicationDocumentId;
 	private Long nominationPostCandidateId;
 	private String filePath;
+	private String isDeleted;
 	
 	private NominationPostCandidate nominationPostCandidate;
 	@Id
@@ -65,6 +66,15 @@ public class ApplicationDocument extends BaseModel implements Serializable{
 	public void setNominationPostCandidate(
 			NominationPostCandidate nominationPostCandidate) {
 		this.nominationPostCandidate = nominationPostCandidate;
+	}
+
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	

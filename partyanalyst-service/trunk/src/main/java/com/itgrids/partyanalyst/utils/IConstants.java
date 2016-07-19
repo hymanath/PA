@@ -746,7 +746,7 @@ public interface IConstants {
 
    // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
   //  public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
-   // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
+    //public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
     
     
     //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
@@ -1106,5 +1106,6 @@ public interface IConstants {
 		 "YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED"};
 	
 	public static final String SHORTLISTED_STATUS ="Shortlisted";
+	public static final String NOMINATED_POST_DOCUMENTS ="nominated_post_documents";
 	
 }
