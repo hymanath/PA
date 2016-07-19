@@ -282,8 +282,8 @@ function getNominatedPostApplication(startIndex)
 		var gender = '';
 		var houseNo = '';
 		var membershipAndMobileNo = '';
-						
-	$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+	
+    $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 	if(startIndex == 0)
 	{
 		$(".paginationDivId").html('');
@@ -1334,11 +1334,12 @@ function getMandalsByConstituencyForReferPopup()
      
     }
  $(document).on("click",".cadreCheckCls",function(){
-	 $("#searchData").html(''); 
-	 $("#cadreSearchDtls").html('');  
+	 $("#searchData").html('');
+     $("#cadreSearchDtls").html('');	 
   if ($("#cadreSearchId").is(":checked")) {
 		$("#searchMemberDiv").show();
 		$("#cadreById").hide();
+		$("#scrollDivId").show();
 	}
 	else {
 	 $("#searchMemberDiv").hide();
