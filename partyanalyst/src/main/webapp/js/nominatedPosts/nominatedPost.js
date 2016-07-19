@@ -467,7 +467,7 @@ function getNominatedPostApplication(startIndex)
 			});  
 
 	}
-	function buildCadreDetails(result){
+   function buildCadreDetails(result){ 
 		var str='';
 		var str1='';
 		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>';
@@ -886,6 +886,7 @@ function savingApplication(){
 		}
 	}
 	function validateFields(){
+		searchByApplicant();
 		$(".errorMsgCls").html("");
 		var flag = true;
 		var errorMsg='';
@@ -898,7 +899,7 @@ function savingApplication(){
 			}
 				if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6 || $(this).val() == 7){
 						$(".nominatedStaeCls").each(function(){
-							alert($(this).val())
+							//alert($(this).val())
 							if($(this).val() == 0){
 								$(this).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please Select State";
@@ -1316,4 +1317,21 @@ function getMandalsByConstituencyForReferPopup()
                    str+='</div>';
 	 }
 	 $("#appliedPostForSelectedId").html(str);
- }
+}
+   function searchByApplicant()
+    {
+	var search=$("#searchbtn").val();
+    var cadres = [];
+    $(".checkboxCls:checked").each(function() {
+     cadres.push(this.value);
+     });
+	 if(search == 0&&cadres.length==0){
+	     $("#searchErrDiv").html("please required search Applicant");
+	     return;
+	      }
+		  else{
+			  $("#searchErrDiv").html('');
+		  }
+     
+    }
+ 
