@@ -228,6 +228,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
@@ -239,18 +240,20 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select district model.boardLevelId, count(model2.nominatedPostApplicationId), " +
+		queryStr.append(" select distinct model.nominatedPostMember.boardLevelId, count(model2.nominatedPostApplicationId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPost model,NominatedPostApplication model2 " +
 				"   where  model.nominationPostCandidateId = model2.nominationPostCandidateId and " +
 				"   model.nominationPostCandidate.isDeleted ='N'  and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and " +
-				"   model2.isDeleted='N' and model.boardLevelId = model2.boardLevelId and model2.applicationStatusId = 1 ");
+				"   model2.isDeleted='N' and model.nominatedPostMember.boardLevelId = model2.boardLevelId and model2.applicationStatusId = 1  " +
+				"  and model.nominatedPostMember.boardLevelId =:levelId ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
-		queryStr.append(" and model.applicationStatusId = 1 and model2.");//applied
-		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		//queryStr.append(" and model.applicationStatusId = 1");//applied
+		queryStr.append(" group  by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
@@ -262,18 +265,20 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select district model.boardLevelId, count(model2.nominatedPostApplicationId), " +
+		queryStr.append(" select distinct model.nominatedPostMember.boardLevelId, count(model2.nominatedPostApplicationId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPost model,NominatedPostApplication model2 " +
 				"   where  model.nominationPostCandidateId = model2.nominationPostCandidateId and " +
 				"   model.nominationPostCandidate.isDeleted ='N'  and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and " +
-				"   model2.isDeleted='N' and model.boardLevelId = model2.boardLevelId and model2.applicationStatusId in (2,3) ");
+				"   model2.isDeleted='N' and model.nominatedPostMember.boardLevelId = model2.boardLevelId and model2.applicationStatusId in (2,3)  " +
+				" and model.nominatedPostMember.boardLevelId =:levelId  ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
-		queryStr.append(" and model.applicationStatusId = 1 and model2.");//applied
-		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		//queryStr.append(" and model.applicationStatusId <>1  ");
+		queryStr.append(" group  by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
