@@ -13,7 +13,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDepartmentBoard(Long depmtId);
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId);
 	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
-	public String updateApplicationStatusDetails(final Long userId,final Long nominatedPostId,final Long nominatedPostCandidateId,final Long statusId);
+	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment);
 	public ResultStatus savingNominatedPostProfileApplication(NominatedPostVO nominatedPostVO,final Long loggedUserId);
 	public String savechangeAddressForNominatedPost(final NominatedPostVO nominatedPostVO);
 	public List<NominatedPostVO> getApplicantDetailsForMember(Long tdpCadreId);

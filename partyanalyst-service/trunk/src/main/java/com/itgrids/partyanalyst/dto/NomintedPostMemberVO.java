@@ -32,12 +32,17 @@ public class NomintedPostMemberVO {
 	private String status;
 	private String partyPosition;
 	private Long nominatedPostId;
+	private Long nominatePostApplicationId;
+	private Long otherDepartmentsCount;
+	private String otherDeptShortListed;
 	private List<NomintedPostMemberVO> subList = new ArrayList<NomintedPostMemberVO>();
 	private List<NomintedPostMemberVO> subList1 = new ArrayList<NomintedPostMemberVO>();
 	private String level;
 	private Long deptId;
 	private Long deptBoardId;
 	private Long deptBoardPostnId;
+	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
+	
 	
 	public Long getId() {
 		return id;
@@ -147,6 +152,24 @@ public class NomintedPostMemberVO {
 	public void setNominatedPostId(Long nominatedPostId) {
 		this.nominatedPostId = nominatedPostId;
 	}
+	public Long getNominatePostApplicationId() {
+		return nominatePostApplicationId;
+	}
+	public void setNominatePostApplicationId(Long nominatePostApplicationId) {
+		this.nominatePostApplicationId = nominatePostApplicationId;
+	}
+	public Long getOtherDepartmentsCount() {
+		return otherDepartmentsCount;
+	}
+	public void setOtherDepartmentsCount(Long otherDepartmentsCount) {
+		this.otherDepartmentsCount = otherDepartmentsCount;
+	}
+	public String getOtherDeptShortListed() {
+		return otherDeptShortListed;
+	}
+	public void setOtherDeptShortListed(String otherDeptShortListed) {
+		this.otherDeptShortListed = otherDeptShortListed;
+	}
 	public String getLevel() {
 		return level;
 	}
@@ -177,6 +200,10 @@ public class NomintedPostMemberVO {
 	public void setSubList1(List<NomintedPostMemberVO> subList1) {
 		this.subList1 = subList1;
 	}
-	
-	
+	public List<IdNameVO> getIdNamevoList() {
+		return idNamevoList;
+	}
+	public void setIdNamevoList(List<IdNameVO> idNamevoList) {
+		this.idNamevoList = idNamevoList;
+	}
 }
