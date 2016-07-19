@@ -3107,9 +3107,9 @@
 	</bean>
 	
 	
-	<bean id="memberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberTypeDAO" >
+	<!-- <bean id="memberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	</bean> -->
 	
 	
 </beans>		
