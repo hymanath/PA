@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -21,5 +23,6 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getVillagesForMandalId(Long mandalId);
 	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId);
 	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue);
-	
+	public ResultStatus saveNominatedPostUploadFiles(Map<File,String> mapfiles,Long nomiPostCandiId);
+	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
 }

@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.io.File;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,6 +21,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
@@ -43,7 +47,9 @@ import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.ApplicationDocument;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostComment;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
@@ -53,6 +59,7 @@ import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 
@@ -86,6 +93,24 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	
 	private ICasteCategoryDAO casteCategoryDAO;
 	private ITdpCadreReportDAO tdpCadreReportDAO;
+	private ActivityService					activityService;
+	private IApplicationDocumentDAO         applicationDocumentDAO;
+	
+	
+	
+	public IApplicationDocumentDAO getApplicationDocumentDAO() {
+		return applicationDocumentDAO;
+	}
+	public void setApplicationDocumentDAO(
+			IApplicationDocumentDAO applicationDocumentDAO) {
+		this.applicationDocumentDAO = applicationDocumentDAO;
+	}
+	public ActivityService getActivityService() {
+		return activityService;
+	}
+	public void setActivityService(ActivityService activityService) {
+		activityService = activityService;
+	}
 	
 	
 	public ITdpCadreReportDAO getTdpCadreReportDAO() {
@@ -582,6 +607,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return status;
 	}
 	
+	/**
+	 * @Author  HYMAVATHI
+	 * @Version NominatedPostProfileService.java  July 15, 2016 11:50:00 AM 
+	 * @return ResultStatus
+	 * description  { Saving Nominated Post Prifile Application Candidate into Database }
+	 */
 	public ResultStatus savingNominatedPostProfileApplication(final NominatedPostVO nominatedPostVO,final Long loggerUserId){
 		ResultStatus status = new ResultStatus ();
 		
@@ -645,7 +676,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
 							nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
 							nominatedPostApplication.setPositionId(Vo.getDeptBoardPostnId() != null ? Vo.getDeptBoardPostnId() : null) ;
-							
+							nominatedPostApplication.setInsertedBy(loggerUserId);
+							nominatedPostApplication.setUpdatedBy(loggerUserId);
+							nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostApplication.setIsDeleted("N");
+							nominatedPostApplication.setApplicationStatusId(1l);
 							nominatedPostApplicationDAO.save(nominatedPostApplication);
 						
 						}
@@ -1276,5 +1312,129 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return casteGrpList;
 		
 	} 
-	
+	/**
+	 * @Author  HYMAVATHI
+	 * @Version NominatedPostProfileService.java  July 15, 2016 11:50:00 AM 
+	 * @return ResultStatus
+	 * description  { Saving Nominated Post Prifile Application Candidate Uploaded Files into Database }
+	 */
+	public ResultStatus saveNominatedPostUploadFiles(final Map<File,String> mapfiles,final Long nomiPostCandiId){
+		
+		final ResultStatus resultStatus = new ResultStatus();
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+		String folderName = folderCreation();
+		ApplicationDocument applicationDocument = null;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		 int year = calendar.get(Calendar.YEAR);
+		 int month = calendar.get(Calendar.MONTH);
+		 int day = calendar.get(Calendar.DAY_OF_MONTH);
+		 int temp = month+1;
+		 String monthText = getMonthForInt(temp);
+		
+		 StringBuilder pathBuilder = new StringBuilder();
+		 StringBuilder str ;
+		 
+			
+		 for (Map.Entry<File, String> entry : mapfiles.entrySet())
+		 {
+			 str = new StringBuilder();
+			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+				
+			 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
+			 .append(entry.getValue());
+			 str.append(randomNumber).append(".").append(entry.getValue());
+			 activityService = new ActivityService();
+			String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+			 
+				if(fileCpyStts.equalsIgnoreCase("error")){
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					LOG.error(" Exception Raise in copying file");
+					throw new ArithmeticException();
+				}
+				
+				applicationDocument = new ApplicationDocument();
+				applicationDocument.setFilePath(pathBuilder.toString());
+				applicationDocument.setNominationPostCandidateId(nomiPostCandiId);
+				applicationDocument.setIsDeleted("N");
+				applicationDocument = applicationDocumentDAO.save(applicationDocument);
+				
+		 }
+		 resultStatus.setResultCode(0);
+		 resultStatus.setResultState(applicationDocument.getApplicationDocumentId());
+		 
+				}
+			});
+		}catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			LOG.error(" Exception Occured in saveNominatedPostUploadFiles() method, Exception - ",e);
+		}
+		return resultStatus;
+	}
+	public static String folderCreation(){
+	  	 try {
+	  		 LOG.debug(" in FolderForArticle ");
+	  		
+	  		Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			
+			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			 String nominatedPostDir = ActivityService.createFolder(staticPath+"/"+IConstants.NOMINATED_POST_DOCUMENTS);
+			 
+			 String yr = String.valueOf(year); // YEAR YYYY
+			
+			 StringBuilder str = new StringBuilder();
+			 int temp = month+1;
+			 String monthText = getMonthForInt(temp);
+			 str.append(monthText).append("-").append(yr);
+			 
+			 
+			 String mnthYr = str.toString();
+			 String mnthYrDir = staticPath+"/"+IConstants.NOMINATED_POST_DOCUMENTS+"/"+mnthYr;
+			 String mnthDirSts = ActivityService.createFolder(mnthYrDir);
+			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"/"+IConstants.NOMINATED_POST_DOCUMENTS+"/"+mnthYr;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");
+			return "FAILED";
+		}
+	}
+	  	public static String getMonthForInt(int num) {
+	        String month = "";
+	        DateFormatSymbols dfs = new DateFormatSymbols();
+	        String[] months = dfs.getMonths();
+	        if (num >= 0 && num <= 11 ) {
+	            month = months[num];
+	        }
+	        return month;
+	    }
+	  	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				List<Long> activityInfoDocIdList = new ArrayList<Long>();
+				String[] idStr = acitivityInfoDocId.split(",");
+				for(String id: idStr){
+					activityInfoDocIdList.add(Long.parseLong(id));
+				}
+				
+				applicationDocumentDAO.deleteNominatedUploadedFile(activityInfoDocIdList);
+				resultStatus.setResultCode(0);
+			}catch (Exception e) {
+				resultStatus.setResultCode(1);
+				LOG.error(" Exception Occured in deleteNominatedUploadedFile() method, Exception - ",e);
+			}
+			return resultStatus;
+		}
 }

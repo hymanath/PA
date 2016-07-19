@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Teja
@@ -50,6 +53,10 @@ public class NominatedPostVO implements Serializable{
 	private List<IdNameVO> consList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> panList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> mandalsList = new ArrayList<IdNameVO>(0);
+	private List<String> candiImageUrls;
+	private String fileExtension;
+	private File file;
+	private Map<File,String> files = new HashMap<File,String>();
 	
 	private Long receivedCount=0l;
 	private Long shortListedCount=0l;
@@ -112,6 +119,30 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setFifthAgeGroupCount(Long fifthAgeGroupCount) {
 		this.fifthAgeGroupCount = fifthAgeGroupCount;
+	}
+	public Map<File, String> getFiles() {
+		return files;
+	}
+	public void setFiles(Map<File, String> files) {
+		this.files = files;
+	}
+	public File getFile() {
+		return file;
+	}
+	public void setFile(File file) {
+		this.file = file;
+	}
+	public String getFileExtension() {
+		return fileExtension;
+	}
+	public void setFileExtension(String fileExtension) {
+		this.fileExtension = fileExtension;
+	}
+	public List<String> getCandiImageUrls() {
+		return candiImageUrls;
+	}
+	public void setCandiImageUrls(List<String> candiImageUrls) {
+		this.candiImageUrls = candiImageUrls;
 	}
 	public String getVoterCardNo() {
 		return voterCardNo;

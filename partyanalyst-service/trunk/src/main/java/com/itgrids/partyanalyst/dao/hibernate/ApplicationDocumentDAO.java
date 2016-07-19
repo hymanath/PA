@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.model.ApplicationDocument;
@@ -10,6 +13,13 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 	public ApplicationDocumentDAO() {
 		super(ApplicationDocument.class);
 		
+	}
+	public Integer deleteNominatedUploadedFile(List<Long> applicatnDocIdList)
+	{
+		Query query = getSession().createQuery(" update  ApplicationDocument model set model.isDeleted = 'Y' where model.applicationDocumentId in(:applicatnDocIdList) ");
+		
+		query.setParameterList("applicatnDocIdList", applicatnDocIdList);
+		return query.executeUpdate();
 	}
 
 }
