@@ -404,6 +404,17 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		return Action.SUCCESS;
 	}
 	
+	public String getReferCadreDetailsForCandidate(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getReferCadreDetailsForCandidate(jObj.getLong("candidateId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getReferCadreDetailsForCandidate Action",e);
+		}
+		return Action.SUCCESS;
+	}
 
 	public String getNominatedPostsOverview(){
 		try {

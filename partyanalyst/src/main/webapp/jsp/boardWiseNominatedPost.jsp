@@ -655,9 +655,24 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-		</div><!â /.modal-content â>
-	</div><!â /.modal-dialog â>
-</div><!â /.modal â>
+		</div>
+	</div>
+</div>
+<div class="modal fade" tabindex="-1" id="referModelId" role="dialog">  
+	<div class="modal-dialog" style="width:60%;">      
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">REFERENCE DETAILS</h4>
+			</div>
+			<div class="modal-body" id="referenceDetailsId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -682,8 +697,9 @@ $(document).on("click",".appliedCount",function(e){
 	$(".appliedPostPopup").hide();
 	$(this).closest('tr').find(".appliedPostPopup").show();
 	e.stopPropagation();
-	var candidateId =$(this).attr("attr_cand_id");
-getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
+	var candidateId = $(this).attr("attr_cand_id");
+	var divId = $(this).attr("attr_divId");
+getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId);
 });
 getBoardWiseNominatedPostMemberDetails();
 function getBoardWiseNominatedPostMemberDetails(){
@@ -720,6 +736,7 @@ function buildNominatedPostMemberDetails(result){
 			str+='<th>Party Designations</th>';
 			str+='<th style="width:80px">Reports</th>';
 			str+='<th>Applied Any Dep/Corp</th>';
+			str+='<th>Reference</th>';
 			str+='<th>Shortlisted in any dep/ Corp</th>';
 			str+='<th>Current Status For this post</th>';
 			str+='<th>Update Application Status</th>';
@@ -757,12 +774,11 @@ function buildNominatedPostMemberDetails(result){
 					str+='<td> - </td>';
 					str+='<td> - </td>';
 			}
-				//str+='<td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
 				str+='<td style="position:relative" class="text-center">';
-					str+='<span class="appliedCount" attr_cand_id='+result.subList[i].nominatedPostCandidateId+'>'+result.subList[i].otherDepartmentsCount+'</span>';
+					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'">'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
-						str+='<div class="appliedPostPopupArrow">';
-							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
+							/*str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
 							str+='<table class="table table-condensed">';
 								str+='<thead>';
 									str+='<th>Department</th>';
@@ -784,10 +800,14 @@ function buildNominatedPostMemberDetails(result){
 										str+='<td>Shortlisted</td>';
 									str+='</tr>';
 								str+='</tbody>';
-							str+='</table>';
+							str+='</table>';*/
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
+				if(result.subList[i].referCandCount != null)
+					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">'+result.subList[i].referCandCount+'</a></td>';
+				else
+					str+='<td> - </td>';
 				if(result.subList[i].otherDeptShortListed != null && result.subList[i].otherDeptShortListed == 'YES')
 					str+='<td>'+result.subList[i].otherDeptShortListed+'</td>';
 				else
@@ -797,6 +817,7 @@ function buildNominatedPostMemberDetails(result){
 					str+='<button class="btn btn-success btnPopup">UPDATE</button>';
 					str+='<div class="updateDropDown">';
 						str+='<div class="updateDropDownArrow">';
+						str+='<div class="text-success" id="successDivId'+i+'"></div>'
 							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
 							str+='<label>Select Status</label>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
@@ -804,7 +825,7 @@ function buildNominatedPostMemberDetails(result){
 							str+='</select>';
 							str+='<label>Comments</label>';
 							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
-							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'">SUBMIT</button>';
+							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -819,6 +840,52 @@ function buildNominatedPostMemberDetails(result){
 	$("#resultDivId").html(str);
 }
 
+$(document).on('click','.referenceCls',function(){
+	var candidateId = $(this).attr("attr_candidate_id");
+	
+	var jsObj=
+	   {				
+		candidateId:candidateId
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getReferCadreDetailsForCandidateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result.length > 0){
+		   buildReferenceCandidateDetails(result);
+	   }
+   });
+});
+
+function buildReferenceCandidateDetails(result){
+	var str='';
+	
+	str+='<table class="table table-condensed table-bordered">';
+		str+='<thead>';
+			str+='<th>Image</th>';
+			str+='<th>Name</th>';
+			str+='<th>Membership No</th>';
+			str+='<th>Mobile No</th>';
+			str+='<th>Position</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td><i class="glyphicon glyphicon-user"></i></td>';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].percentage+'</td>';
+				str+='<td>'+result[i].mobileNo+'</td>';
+				str+='<td><p>'+result[i].publicRepr+'</p><p>'+result[i].partyPos+'</p></td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	
+	$("#referenceDetailsId").html(str);
+}
+
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $(this).attr("attr_filePath");
@@ -831,6 +898,7 @@ $(document).on("click",".updateStatusCls",function(){
 	var applicationId = $(this).attr("attr_application_id");
 	var selectDivId = $(this).attr("attr_selected_status_id");
 	var commentDivId = $(this).attr("attr_comment_id");
+	var divId = $(this).attr("attr_success_div");
 	
 	var status = $("#"+selectDivId).val();
 	var comment = $("#"+commentDivId).val();
@@ -846,7 +914,8 @@ $(document).on("click",".updateStatusCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-		
+		if(result != null && result == 'success')
+			$("#"+divId).html("Successfully Updated...");
    });
 });
 getNominatedPostPostionDetails();
@@ -934,7 +1003,7 @@ function buildNominatePostPositionDetails(result){
 			   $("#positionDivId").html(str);
 		   }
 }
-function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId){
+function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId){
 	var jsObj=
 	   {				
 		candidateId:candidateId
@@ -945,10 +1014,39 @@ function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   if(result != null){
-		   
+	   if(result != null && result.length > 0){
+		   buildDepartmentDetails(result,divId);
 	   }
    });
+}
+
+function buildDepartmentDetails(result,divId){
+	var str='';
+	
+	//str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
+	str+='<table class="table table-condensed">';
+		str+='<thead>';
+			str+='<th>Level</th>';
+			str+='<th>Location</th>';
+			str+='<th>Department</th>';
+			str+='<th>Corporation</th>';
+			str+='<th>Position</th>';
+			str+='<th>Status</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].hno+'</td>';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].mobileNo+'</td>';
+				str+='<td>'+result[i].pincode+'</td>';
+				str+='<td>'+result[i].voterCardNo+'</td>';
+				str+='<td>'+result[i].perc+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	$("#"+divId).html(str);
 }
 </script>
 </body>
