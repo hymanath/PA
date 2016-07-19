@@ -27,5 +27,5 @@ public interface INominatedPostProfileService {
 	public ResultStatus saveNominatedPostUploadFiles(Map<File,String> mapfiles,Long nomiPostCandiId);
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
 	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
-	
+	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId);
 }
