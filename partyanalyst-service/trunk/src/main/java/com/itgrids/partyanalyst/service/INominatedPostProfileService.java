@@ -4,21 +4,8 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
-import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
-import com.itgrids.partyanalyst.dto.IvrOptionsVO;
-import com.itgrids.partyanalyst.dto.LocationVO;
-import com.itgrids.partyanalyst.dto.MahanaduEventVO;
-import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
-import com.itgrids.partyanalyst.dto.NominatedPostVO;
-import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
-import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
-import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
-import com.itgrids.partyanalyst.dto.TdpCadreVO;
-import com.itgrids.partyanalyst.dto.VerifierVO;
-import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 
 public interface INominatedPostProfileService {
 	public List<IdNameVO> getBoardLevels();
@@ -33,5 +20,6 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDistrictsForState(Long stateId);
 	public List<IdNameVO> getVillagesForMandalId(Long mandalId);
 	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId);
+	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue);
 	
 }

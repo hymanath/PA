@@ -45,13 +45,74 @@ public class NominatedPostVO implements Serializable{
 	private Long mandalId;
 	private String voterCardNo;
 	private List<NominatedPostVO> nominatdList = new ArrayList<NominatedPostVO>();
+		
 	private List<IdNameVO> distList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> consList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> panList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> mandalsList = new ArrayList<IdNameVO>(0);
 	
+	private Long receivedCount=0l;
+	private Long shortListedCount=0l;
+	
+	private List<IdNameVO> idNameVoList =  new ArrayList<IdNameVO>(0);
+	private Long firstAgeGroupCount=0l;
+	private Long secondAgeGroupCount=0l;
+	private Long thirdAgeGroupCount=0l;
+	private Long fourthAgeGroupCount=0l;
+	private Long fifthAgeGroupCount=0l;
+	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
+	
+	
+	public Long getReceivedCount() {
+		return receivedCount;
+	}
+	public void setReceivedCount(Long receivedCount) {
+		this.receivedCount = receivedCount;
+	}
+	public Long getShortListedCount() {
+		return shortListedCount;
+	}
+	public void setShortListedCount(Long shortListedCount) {
+		this.shortListedCount = shortListedCount;
+	}
+	public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
+	}
+	public Long getFirstAgeGroupCount() {
+		return firstAgeGroupCount;
+	}
+	public void setFirstAgeGroupCount(Long firstAgeGroupCount) {
+		this.firstAgeGroupCount = firstAgeGroupCount;
+	}
+	public Long getSecondAgeGroupCount() {
+		return secondAgeGroupCount;
+	}
+	public void setSecondAgeGroupCount(Long secondAgeGroupCount) {
+		this.secondAgeGroupCount = secondAgeGroupCount;
+	}
+	public Long getThirdAgeGroupCount() {
+		return thirdAgeGroupCount;
+	}
+	public void setThirdAgeGroupCount(Long thirdAgeGroupCount) {
+		this.thirdAgeGroupCount = thirdAgeGroupCount;
+	}
+	public Long getFourthAgeGroupCount() {
+		return fourthAgeGroupCount;
+	}
+	public void setFourthAgeGroupCount(Long fourthAgeGroupCount) {
+		this.fourthAgeGroupCount = fourthAgeGroupCount;
+	}
+	public Long getFifthAgeGroupCount() {
+		return fifthAgeGroupCount;
+	}
+	public void setFifthAgeGroupCount(Long fifthAgeGroupCount) {
+		this.fifthAgeGroupCount = fifthAgeGroupCount;
+	}
 	public String getVoterCardNo() {
 		return voterCardNo;
 	}

@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPostApplication, Long> implements INominatedPostApplicationDAO{
 
@@ -15,6 +16,166 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		super(NominatedPostApplication.class);
 		
 	}
+	
+	public List<Object[]> getAppliationsReceievedStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+			Long locationValue,String type){
+		
+		StringBuilder str = new StringBuilder();
+		//Query
+		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
+				" FROM NominatedPostApplication model  left join model.position position " +
+				" WHERE " +
+				"  model.departments.departmentId = :departmentId" +
+				" AND model.board.boardId = :boardId " +				
+				" AND model.boardLevel.boardLevelId=:boardLevelId" +
+				" AND model.locationValue = :locationValue ");
+		
+		if(type !=null && type.equalsIgnoreCase("Any")){
+			str.append(" AND position.positionId is null ");
+		}else if(positionId !=null && positionId>0){
+			str.append(" AND position.positionId=:positionId " );
+		}
+		
+		str.append("GROUP BY position.positionId ");
+		
+		//Query Calling
+		Query query = getSession().createQuery(str.toString());
+		
+		//Parameters Setting(max 6)
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		if(type ==null && positionId !=null && positionId>0 ){
+			query.setParameter("positionId", positionId);
+		}
+		query.setParameter("boardLevelId", boardLevelId);
+		query.setParameter("locationValue", locationValue);
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+			Long locationValue,String type){
+	
+		StringBuilder str = new StringBuilder();
+		
+		//Query
+		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
+				" FROM NominatedPostFinal model1,NominatedPostApplication model left join model.position position  " +
+				" WHERE " +
+				" model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
+				" AND model.departments.departmentId = :departmentId" +
+				" AND model.board.boardId = :boardId " +				
+				" AND model.boardLevel.boardLevelId=:boardLevelId" +
+				" AND model.locationValue = :locationValue" +
+				" AND model1.applicationStatus.status = :status  ");
+		
+		if(type !=null && type.equalsIgnoreCase("Any")){
+			str.append(" AND position.positionId is null ");
+		}else if(positionId !=null && positionId>0){
+			str.append(" AND position.positionId=:positionId " );
+		}
+		
+		str.append("GROUP BY position.positionId ");
+		
+		//Query Calling
+		Query query = getSession().createQuery(str.toString());
+		
+		//Parameters Setting(max 6)
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		if(type ==null && positionId !=null && positionId>0 ){
+			query.setParameter("positionId", positionId);
+		}
+		query.setParameter("boardLevelId", boardLevelId);
+		query.setParameter("locationValue", locationValue);		
+		query.setParameter("status",IConstants.SHORTLISTED_STATUS);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+			Long locationValue,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		//Query
+		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+				" model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+				" count(distinct model.nominatedPostApplicationId) " +
+				" FROM NominatedPostApplication model left join model.position position " +
+				" WHERE " +
+				"  model.departments.departmentId = :departmentId" +
+				" AND model.board.boardId = :boardId " +				
+				" AND model.boardLevel.boardLevelId=:boardLevelId" +
+				" AND model.locationValue = :locationValue" );
+		
+				if(type !=null && type.equalsIgnoreCase("Any")){
+					str.append(" AND position.positionId is null ");
+				}else if(positionId !=null && positionId>0){
+					str.append(" AND position.positionId=:positionId " );
+				}
+				str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
+		
+				str.append("GROUP BY position.positionId,model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+				
+		//Query Calling
+				Query query = getSession().createQuery(str.toString());
+				
+				//Parameters Setting(max 5)
+				query.setParameter("departmentId", departmentId);
+				query.setParameter("boardId", boardId);
+				if(type ==null && positionId !=null && positionId>0 ){
+					query.setParameter("positionId", positionId);
+				}
+				query.setParameter("boardLevelId", boardLevelId);
+				query.setParameter("locationValue", locationValue);						
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getAgeRangeWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+			Long locationValue,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		//Query
+		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.tdpCadre.age," +
+				" count(distinct model.nominatedPostApplicationId) " +
+				" FROM NominatedPostApplication model left join model.position position " +
+				" WHERE " +
+				"  model.departments.departmentId = :departmentId" +
+				" AND model.board.boardId = :boardId " +				
+				" AND model.boardLevel.boardLevelId=:boardLevelId" +
+				" AND model.locationValue = :locationValue" );
+		
+		if(type !=null && type.equalsIgnoreCase("Any")){
+			str.append(" AND position.positionId is null ");
+		}else if(positionId !=null && positionId>0){
+			str.append(" AND position.positionId=:positionId " );
+		}
+		str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
+		
+		str.append("GROUP BY position.positionId,model.nominationPostCandidate.tdpCadre.age ");
+		
+		//Query Calling
+		Query query = getSession().createQuery(str.toString());
+		
+		//Parameters Setting(max 5)
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		if(type ==null && positionId !=null && positionId>0 ){
+			query.setParameter("positionId", positionId);
+		}
+		query.setParameter("boardLevelId", boardLevelId);
+		query.setParameter("locationValue", locationValue);						
+
+		return query.list();
+		
+	}
+	
+	
 	
 	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type){
 		StringBuilder sb = new StringBuilder();
@@ -56,7 +217,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		return query.list();
 	}
 	
-	public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Date startDate,Date endDate){
+public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Date startDate,Date endDate){
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select district model.boardLevelId, count(model.nominationPostCandidateId), from NominatedPostApplication model where " +

@@ -1105,4 +1105,6 @@ public interface IConstants {
 	public static final String[] NOMINATED_POST_APPLICATION_STATUSES = {"TOTAL CORPORATIONS","APPLICATIONS NOT RECIEVED",
 		 "YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED"};
 	
+	public static final String SHORTLISTED_STATUS ="Shortlisted";
+	
 }

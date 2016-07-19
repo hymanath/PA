@@ -4,6 +4,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
+import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
@@ -76,8 +78,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private INominatedPostDAO nominatedPostDAO;
 	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
-	
-	
+	private ICasteCategoryDAO casteCategoryDAO;
 	
 	public INominatedPostMemberDAO getNominatedPostMemberDAO() {
 		return nominatedPostMemberDAO;
@@ -104,6 +105,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public void setNominatedPostDAO(INominatedPostDAO nominatedPostDAO) {
 		this.nominatedPostDAO = nominatedPostDAO;
 	}
+	
+	public void setCasteCategoryDAO(ICasteCategoryDAO casteCategoryDAO) {
+		this.casteCategoryDAO = casteCategoryDAO;
+	}
+
 	public TehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -965,5 +971,177 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 		return returnVo;
 	}
+	
+	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue){
+		
+		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);
+		
+		try{
+			/*Long departmentId = 1l;
+			Long boardId = 36l;
+			Long positionId = 1l;
+			Long boardLevelId = 5l;
+			Long locationValue = 835l;*/
+			
+			Map<Long,NominatedPostVO> finalMap = new HashMap<Long, NominatedPostVO>();
+			
+			NominatedPostVO VO = new NominatedPostVO();				
+			VO.setId(positionId);		
+			VO.setIdNameVoList(getCasteCategoryDetails());
+							
+			NominatedPostVO anyVO = new NominatedPostVO();
+			anyVO.setId(null);
+			anyVO.setIdNameVoList(getCasteCategoryDetails());
+			
+			finalMap.put(positionId, VO);
+			finalMap.put(null, anyVO);
+			
+			List<Object[]> receivedObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
+					null,boardLevelId,locationValue,null);
+			
+			if(receivedObj !=null && receivedObj.size()>0){
+				for(Object[] obj : receivedObj){
+					
+					NominatedPostVO mainVo =null;
+					if(obj[0] ==null){
+						 mainVo =	finalMap.get(null);
+					}else{
+						 mainVo = finalMap.get((Long)obj[0]);
+					}
+					
+					if(mainVo != null){
+						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+						mainVo.setReceivedCount(obj[2] !=null ? (Long)obj[2]:0l);						
+					}						
+				}
+			}
+			
+			/*List<Object[]> receivedAnyObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
+					positionId,boardLevelId,locationValue,"Any");
+			
+			if(receivedAnyObj !=null && receivedAnyObj.size()>0){
+				for(Object[] obj : receivedAnyObj){
+					
+				}
+			}*/
+			
+			//Short Listed Candidates
+			
+			List<Object[]> shrtObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, null);
+			
+					if(shrtObj !=null && shrtObj.size()>0){
+						for(Object[] obj : shrtObj){
+							
+							NominatedPostVO mainVo =null;
+							if(obj[0] ==null){
+								 mainVo =	finalMap.get(null);
+							}else{
+								 mainVo = finalMap.get((Long)obj[0]);
+							}
+							
+							if(mainVo != null){
+								mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+								mainVo.setShortListedCount(obj[2] !=null ? (Long)obj[2]:0l);						
+							}						
+						}
+					} 
+			
+			List<Object[]> casteObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, null);
+			if(casteObj !=null && casteObj.size()>0){
+				for(Object[] obj : casteObj){
+					
+					NominatedPostVO mainVo =null;
+					if(obj[0] ==null){
+						 mainVo =	finalMap.get(null);
+					}else{
+						 mainVo = finalMap.get((Long)obj[0]);
+					}						
+					if(mainVo !=null){
+						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+						
+						List<IdNameVO> lst = mainVo.getIdNameVoList();
+						if(lst !=null && lst.size()>0){
+							for (IdNameVO idNameVO : lst) {
+								if(idNameVO.getId() == (Long)obj[2]){
+									idNameVO.setCount(obj[4] !=null ? (Long)obj[4]:0l);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			/*List<Object[]> casteAnyObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, "Any");
+			
+			if(casteAnyObj !=null && casteAnyObj.size()>0){
+				for(Object[] obj : casteAnyObj){
+					
+				}
+			}*/
+			
+			List<Object[]> ageObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, null);
+			
+			if(ageObj !=null && ageObj.size()>0){
+				for(Object[] obj : ageObj){
+					
+					NominatedPostVO mainVo =null;
+					if(obj[0] ==null){
+						 mainVo =	finalMap.get(null);
+					}else{
+						 mainVo = finalMap.get((Long)obj[0]);
+					}
+					if(mainVo !=null){
+						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+						
+						if(obj[2] !=null){
+							if((Long)obj[2]>=20l && (Long)obj[2]<=29l){
+								mainVo.setFirstAgeGroupCount(mainVo.getFirstAgeGroupCount() + (obj[3] !=null ? (Long)obj[3]:0l));
+							}else if((Long)obj[2]>=30l && (Long)obj[2]<=39l){
+								mainVo.setSecondAgeGroupCount(mainVo.getSecondAgeGroupCount() + ( obj[3] !=null ? (Long)obj[3]:0l));
+							}else if((Long)obj[2]>=40l && (Long)obj[2]<=49l){
+								mainVo.setThirdAgeGroupCount(mainVo.getThirdAgeGroupCount() + ( obj[3] !=null ? (Long)obj[3]:0l));
+							}else if((Long)obj[2]>=50l && (Long)obj[2]<=59l){
+								mainVo.setFourthAgeGroupCount(mainVo.getFourthAgeGroupCount() +( obj[3] !=null ? (Long)obj[3]:0l));
+							}else{
+								mainVo.setFifthAgeGroupCount(mainVo.getFifthAgeGroupCount() +( obj[3] !=null ? (Long)obj[3]:0l));
+							}
+						} 
+													
+					}
+					
+				}
+			}
+			
+			/*List<Object[]> ageAnyObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, "Any");
+			if(ageAnyObj !=null && ageAnyObj.size()>0){
+				for(Object[] obj : ageAnyObj){
+					
+				}
+			}*/
+			
+			if(finalMap !=null && finalMap.size()>0){
+				finalList = new ArrayList<NominatedPostVO>(finalMap.values());
+			}
+							
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
+		
+    }
+	public List<IdNameVO> getCasteCategoryDetails(){
+		List<IdNameVO> casteGrpList = new ArrayList<IdNameVO>(0);
+		try{
+			List<Object[]> categObjList = casteCategoryDAO.getCasteCategoryDetails();
+			if(categObjList !=null && categObjList.size()>0){
+				String[] setterPropertiesList = {"id","name"};
+				casteGrpList = setterAndGetterUtilService.setValuesToVO(categObjList, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return casteGrpList;
+		
+	} 
 	
 }
