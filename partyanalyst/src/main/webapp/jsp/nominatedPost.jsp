@@ -22,6 +22,18 @@
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<p class="text-success">SEARCH APPLICANT</p>
                     </div>
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10">
+                    	<label class="checkbox-inline">
+                        	<input type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" />Cadre
+                        </label>
+                        <label class="checkbox-inline">
+                        	<input type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
+                        </label>
+                    </div>
+					</div>
+					
+          <div id="searchMemberDiv">
+		  
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
                     	<label>State</label>
                         <select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect">
@@ -53,10 +65,10 @@
 							<option value="0"> Select Panchayat </option>
                         </select>
                     </div>
-                </div>
-                <div class="row">
+                
+                <div class="row" class="searchMemberCls">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
-                    	<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
+					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
                         <div class="searchDiv">
                             <div class="row">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
@@ -85,17 +97,32 @@
                         </div>
                      </div>
                  </div>
+				 </div>
+				 <div id="cadreById" style="display:none;">
+				 <div class="col-md-4 col-xs-12">
+					<label>Name*</label>
+					<input class="form-control" type="text"/>
+				 </div>
+				 <div class="col-md-4 col-xs-12">
+					<label>Voter ID* </label>
+					<input class="form-control" type="text"/>
+				 </div>
+				 <div class="col-md-4 col-xs-12">
+					<label>Contact Number* </label>
+					<input class="form-control" type="text"/>
+				 </div>
+				 </div>
 				 <form name="submitApplication" id="submitApplication"  method="post">
                  <div class="row">
 				 <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px; display: none;" id="searchDataImg" class="offset7" src="images/icons/cadreSearch.gif">
                     <div class="col-md-12 col-xs-12 col-sm-12">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
                         	<div id="searchData"></div>
-                        	<div class="scroll-div">
+                        	<div class="scroll-div" id="scrollDivId">
                                 <ul class="list-inline best-matched-profile " id="cadreSearchDtls">
                                 </ul>
                              </div>
-                             <p class="text-muted"><small>Note: Please select matches profile</small></p>
+                             <p class="text-muted" id="textId"><small>Note: Please select matches profile</small></p>
 	                    </div>
 						<div id="appliedPostForSelectedId"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
