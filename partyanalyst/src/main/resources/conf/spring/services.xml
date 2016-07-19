@@ -3289,6 +3289,8 @@
 		<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate"></property>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+		<property name="nominatedPostStatusDAO" ref="nominatedPostStatusDAO"></property>
+		<property name="nominatedPostDAO" ref="nominatedPostDAO"></property>
 		
 		<property name="userAddressDAO" ref="userAddressDAO"></property>
 		<property name="stateDAO" ref="stateDAO"></property>
