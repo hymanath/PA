@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
@@ -14,9 +13,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
-import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
@@ -207,7 +204,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
-			status = nominatedPostProfileService.updateApplicationStatusDetails(userId,jObj.getLong("nominatedPostId"),jObj.getLong("nominatedPostCandidateId"),jObj.getLong("statusId"));
+			status = nominatedPostProfileService.updateApplicationStatusDetails(userId,jObj.getLong("nominatePostApplicationId"),jObj.getLong("statusId"),jObj.getString("comment"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
