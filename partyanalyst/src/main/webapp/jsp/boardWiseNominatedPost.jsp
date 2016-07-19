@@ -26,8 +26,8 @@
             <h5>State Level ? Labour Department</h5>
         	<div class="panel panel-default panelDepartmentHead">
             	<div class="panel-body">
-                	<div class="table-responsive">
-                    	<table class="table table-bordered">
+                	<div class="table-responsive" id="positionDivId">					
+                    <!--	<table class="table table-bordered">
                         	<thead>
                             	<tr>
                                 	<th rowspan="2"></th>
@@ -81,7 +81,7 @@
                                     <td>01</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table>-->
                     </div>
                 </div>
             </div>
@@ -776,7 +776,7 @@ function buildNominatedPostMemberDetails(result){
 	str+='</table>';
 }
 
-$(dcument).on("click",".updateStatusCls",function(){
+$(document).on("click",".updateStatusCls",function(){
 	var postId = $(this).attr("attr_post_id");
 	var postCandidateId = $(this).attr("attr_candidate_id");
 	var selectDivId = $(this).attr("attr_selected_status_id");
@@ -797,6 +797,90 @@ $(dcument).on("click",".updateStatusCls",function(){
 		
    });
 });
+getNominatedPostPostionDetails();
+function getNominatedPostPostionDetails(){
+	var jsObj=
+	   {				
+			depmtId:1,
+			boardId:36,
+			positionId:1,
+			bLId:5,
+			lValue:835
+	   }
+	    $.ajax({
+          type:'GET',
+          url: 'getNominatedPostPostionDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   var str='';
+		   if(result !=null && result.length>0){
+			   for(var i in result){				   				
+					str+='<table class="table table-bordered">';
+					str+='<thead>';
+					str+='<tr>';
+					str+='<th rowspan="2"></th>';
+					//str+='<th rowspan="2">TOTAL AVAILABLE POSTS</th>';
+					str+='<th rowspan="2">APPLICATIONS RECEIVED</th>';
+					str+='<th rowspan="2">SHORTLISTED</th>';
+					str+='<th colspan="4">CASTE GROUP</th>';
+					str+='<th colspan="5">AGE GROUP</th>';
+					str+='</tr>';
+					str+='<tr>';
+					str+='<th>SC</th>';
+					str+='<th>ST</th>';
+					str+='<th>BC</th>';
+					str+='<th>OC</th>';
+					str+='<th>20-29</th>';
+					str+='<th>30-39</th>';
+					str+='<th>40-49</th>';
+					str+='<th>50-59</th>';
+					str+='<th>60+</th>';
+					str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+					str+='<tr>';
+					str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
+					//str+='<td>02</td>';
+					str+='<td>10</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='</tr>';
+					str+='<tr>';
+					str+='<td><p>ANY POST</p><small>Requested for any post members shortlisted for this</small>';str+='</td>';
+					//str+='<td>02</td>';
+					str+='<td>10</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='<td>01</td>';
+					str+='</tr>';
+					str+='</tbody>';
+					str+='</table>';
+			   }
+			   
+			   $("#positionDivId").html(str);
+		   }
+			
+	   });
+	   
+	   
+	   
+}
 </script>
 </body>
 </html>

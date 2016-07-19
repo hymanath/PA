@@ -3293,6 +3293,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO"></property>
 		<property name="panchayatDAO" ref="panchayatDAO"></property>
 		<property name="tehsilDAO" ref="tehsilDAO"></property>
+		<property name="casteCategoryDAO" ref="casteCategoryDAO"></property>
 	</bean>
 </beans>		
 	
