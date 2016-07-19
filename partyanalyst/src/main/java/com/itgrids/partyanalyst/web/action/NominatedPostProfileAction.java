@@ -404,4 +404,19 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		return Action.SUCCESS;
 	}
 	
+
+	public String getNominatedPostsOverview(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long levelId = jObj.getLong("levelId");
+			String startDateStr = jObj.getString("startDateStr");
+			String endDateStr = jObj.getString("endDateStr");
+			
+			nominatePostList = nominatedPostProfileService.getNominatedPostsStatusDetailsInAllLevels(levelId,startDateStr,endDateStr);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getNominatedPostsOverview() in NominatedPostProfileAction ",e);
+		}
+		 return Action.SUCCESS;
+	}
 }
