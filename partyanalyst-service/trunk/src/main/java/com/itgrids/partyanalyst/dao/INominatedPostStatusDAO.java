@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.NominatedPostStatus;
 
 public interface INominatedPostStatusDAO extends GenericDao<NominatedPostStatus, Long>{
 	public List<Long> getStatusIdsList();
+	public List<Object[]> getAllNominatedStatusList();
 }
