@@ -12938,8 +12938,8 @@
 		</result>
 	</action>
 	<action name="savingNominatedPostApplicationAction" class="nominatedPostProfileAction" method="savingNominatedPostProfileApplication">
-		<result type="json" name="success">
-   			<param name="root">idNameVOList</param>
+		<result type="stream" name="success">
+   			<param name="inputName">inputStream</param>
    		</result>
 	</action>
 	<action name="savechangeAddressForNominatedPostAction" class="nominatedPostProfileAction" method="savechangeAddressForNominatedPost">

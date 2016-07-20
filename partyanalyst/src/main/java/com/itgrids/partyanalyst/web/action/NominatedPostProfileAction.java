@@ -230,9 +230,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			
 			if(resultStatus!=null){
 				if(resultStatus.getResultCode() == 0){
-					inputStream = new StringBufferInputStream(resultStatus.getResultState().toString());
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
 				}else if(resultStatus.getResultCode() == 1){
-					inputStream = new StringBufferInputStream(resultStatus.getMessage().toString());
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
 				}
 			}
 			
@@ -345,7 +345,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 				
 				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 				
-				Long cadreId= new Long(request.getParameter("cadreId"));
+				Long cadreId= new Long(request.getParameter("nominatedCandId"));
 				
 				EventFileUploadVO eventFileUploadVO = new EventFileUploadVO();
 				Map<File,String> mapfiles = new HashMap<File,String>();
