@@ -716,6 +716,9 @@ footer
                     </li>
 				</c:if>	
 				<li style="text-align: right">
+                        <a href="createAlertAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Create Alert</span></a>
+                 </li>
+				<li style="text-align: right">
                         <a href="alertDashboardAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Alert</span></a>
                  </li>
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
