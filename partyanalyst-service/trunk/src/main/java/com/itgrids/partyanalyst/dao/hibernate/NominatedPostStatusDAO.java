@@ -18,4 +18,9 @@ public class NominatedPostStatusDAO extends GenericDaoHibernate<NominatedPostSta
 		Query query = getSession().createQuery("select distinct model.nominatedPostStatusId from NominatedPostStatus model ");
 		return query.list();
 	}
+	
+	public List<Object[]> getAllNominatedStatusList(){
+		Query query = getSession().createQuery("select model.nominatedPostStatusId,model.status from NominatedPostStatus model ");
+		return query.list();
+	}
 }

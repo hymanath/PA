@@ -318,8 +318,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        query.setParameter("tdpCadreId", tdpCadreId);
 	        return query.list();
 	  }
-	
-public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
+	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
 	    
 	    Query query = getSession().createQuery( " select model.applicationStatus.applicationStatusId,model.applicationStatus.status,model.boardLevel.boardLevelId," +
 	    		"model.boardLevel.level,model.departments.departmentId," +
@@ -334,4 +333,51 @@ public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId)
 	        query.setParameter("candidateId", candidateId);
 	        return query.list();
 	  }
+	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds){
+		
+		StringBuilder str = new StringBuilder();
+		
+		
+		str.append(" SELECT position.positionId,position.positionName,model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
+				" count(distinct model.nominatedPostApplicationId) " +
+				" FROM NominatedPostApplication model left join model.position position" +
+				" WHERE " +
+				" model.isDeleted = 'N' " );
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			str.append(" AND model.boardLevel.boardLevelId=:boardLevelId");			
+		}
+		if(locationValues !=null && locationValues.size()>0){
+			str.append(" AND model.locationValue in (:locationValues)");
+		}
+		if(deptsIds !=null && deptsIds.size()>0){
+			str.append(" AND model.departments.departmentId in (:deptsIds) ");
+		}
+		if(boardIds !=null && boardIds.size()>0){
+			str.append(" AND model.board.boardId in (:boardIds) ");
+		}
+		
+		str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +
+					" ORDER BY position.positionId");
+		
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			query.setParameter("boardLevelId", boardLevelId);		
+		}
+		if(locationValues !=null && locationValues.size()>0){
+			query.setParameterList("locationValues",locationValues);
+		}
+		if(deptsIds !=null && deptsIds.size()>0){
+			query.setParameterList("deptsIds",deptsIds);
+		}
+		if(boardIds !=null && boardIds.size()>0){
+			query.setParameterList("boardIds",boardIds);
+		}
+		
+		return query.list();
+	}
+	
+	
 }
