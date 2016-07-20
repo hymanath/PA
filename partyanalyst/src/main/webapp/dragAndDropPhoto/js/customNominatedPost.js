@@ -70,7 +70,7 @@ $(document).ready(function() {
 		  
             url: "nominatedPostUploadFormAction.action",
 			//autoProcessQueue: false,
-            data: {"cadreId":7637453},
+            data: {"nominatedCandId":globalNominatedCandId},
             type: 'POST',
 			
            enctype: 'multipart/form-data',

@@ -674,7 +674,6 @@ getBoardLevels("boardLvlId");
 getDepartments("depmtsId"); 
 $(document).on("click",".checkboxCls",function(){
 	
-	globalCadreId = $(this).attr("attr_cadreId");
     $(".checkboxCls").prop( "checked" ,false);
 	//$("#uploadFlDivId").hide();
 	$( this ).prop( 'checked', true );
@@ -845,13 +844,13 @@ $(document).on("click","#addOneMore",function(){
   cloneCount=cloneCount+1;
 });
 function savingApplication(){
-	
+	$('#notCadreErrMsg').html("");
 	$(".cadreCheckCls").each(function(){
 				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
 					if(!validatationFields()){
 						return;
 					}
-				}else{
+				}else if($(this).prop('checked')==true && $(this).val() == "Not Cadre"){
 					var numericExpression = /^[0-9]+$/;
 					var mobileNo = $('#notCadreMobilNoId').val();
 					if($("#notCadreNameId").val() == ""){
@@ -879,29 +878,31 @@ function savingApplication(){
 					}
 				}
 			});
-			var cadreName = '';
-			var cadreId = '';
-			var cadreVoterId = '';
-			var cadreMobilNo= '';
+			var cadreName ;
+			var cadreId;
+			var cadreVoterId ;
+			var cadreMobilNo;
+			
 			$("#savingAjaxImg").css("display","block");	
 			$(".cadreCheckCls").each(function(){
-				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
+				if($(this).is(":checked")==true && $(this).val() == "Cadre"){
 					$(".checkboxCls").each(function(){
-						if($(this).prop('checked')==true){
+						if($(this).is(":checked")){
 							cadreName = $(this).parent().find(".cadreName").text();
 							cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
 							cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
 							cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
 						}
 					});	
-				}else{
+				}else if($(this).is(":checked")==true && $(this).val() == "Not Cadre")
+				{
 					cadreName = $("#notCadreNameId").val();
 					cadreVoterId = $("#notCadreVoterId").val();
 					cadreMobilNo =  $("#notCadreMobilNoId").val();
 				}
 			
 		});
-		//var files = $('#filer_input3').get(0).dropzone.getAcceptedFiles();
+		
 			$(".tdpCadreId").val(cadreId);
 			$(".tdpCadreName").val(cadreName);
 			$(".cadreVoterId").val(cadreVoterId);
@@ -911,7 +912,7 @@ function savingApplication(){
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
-					//showSbmitStatus(uploadResult);
+					showSbmitStatus(uploadResult);
 				}
 			};
 	
@@ -922,14 +923,14 @@ function savingApplication(){
 	var globalNominatedCandId ;
 	function showSbmitStatus(result){
 		globalNominatedCandId = "";
-		console.log(result)
-		if(result > 0){
-			globalNominatedCandId = result;
+		if(result.indexOf("SUCCESS") > -1){
+			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
+			
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Submitted Successfully.</span>");
 			setTimeout(function(){
 			$("#savingStatusDivId").html("");
 			}, 5000);
-			saveFieldsEmpty();
+			
 		}else {
 			setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
