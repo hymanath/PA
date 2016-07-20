@@ -1719,4 +1719,186 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 		return returnVoList;
 	}
+	
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue){
+		
+		List<IdNameVO>  finalList = new ArrayList<IdNameVO>(0);
+		try{
+			
+			
+			Map<Long,IdNameVO> deptMap = new HashMap<Long, IdNameVO>();
+			List<Object[]> deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValue);
+			if(deptBoardObj !=null && deptBoardObj.size()>0){
+				for (Object[] obj : deptBoardObj) {
+				
+					IdNameVO VO = deptMap.get((Long)obj[0]);
+					if(VO == null){
+						VO = new IdNameVO();
+						VO.setId((Long)obj[0]);
+						VO.setName(obj[1] !=null ? obj[1].toString():"");
+						deptMap.put((Long)obj[0], VO);
+					}
+					
+					List<IdNameVO> boardList = VO.getIdnameList();
+					
+					if(boardList ==null || boardList.size() == 0){
+						boardList = new ArrayList<IdNameVO>();					
+						VO.setIdnameList(boardList);
+					}
+						IdNameVO inneVo = new IdNameVO();
+						inneVo.setId(obj[2] !=null ? (Long)obj[2]:0l);
+						inneVo.setName(obj[3] !=null ? obj[3].toString():"");			
+					
+						boardList.add(inneVo);								
+				}
+				
+				if(deptMap !=null && deptMap.size()>0){
+					finalList = new ArrayList<IdNameVO>(deptMap.values());
+				}
+				
+				//System.out.println(finalList);
+				
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
+		
+	}
+	
+	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds){
+		
+		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);
+		
+		try{			
+			
+			//
+			Map<Long,NominatedPostVO> finalMap = new HashMap<Long, NominatedPostVO>();
+			List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(boardLevelId,levelValues,deptIds,boardIds);
+			
+			//total Positions Available to the Requested inputs
+			if(postObj !=null && postObj.size()>0){
+				for (Object[] obj : postObj) {					
+					NominatedPostVO VO = new NominatedPostVO();
+					if(obj[0] !=null){
+						VO.setId((Long)obj[0]);//postionId
+					}else{
+						VO.setId(null);
+					}
+					VO.setName(obj[1] !=null ? obj[1].toString():"");//positionName					
+					VO.setIdNameVoList(getAllNominatedStatusList());//statusList
+					VO.setDistList(getAllApplicationStatusList());
+					
+					finalMap.put(VO.getId(), VO);
+				}
+			}
+			
+			//postionId,position,nomiatedPostStatusId,status,count
+			List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds);
+			
+			if(deptsObj !=null && deptsObj.size()>0){
+				finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+			}
+			//postionId,position,applicationStatusId,status,count
+			List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds);
+			
+			if(applicationSttusObj !=null && applicationSttusObj.size()>0){
+				finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
+			}
+			
+			if(finalMap !=null &&  finalMap.size()>0){
+				
+				finalList = new ArrayList<NominatedPostVO>(finalMap.values());
+				System.out.println(finalList);
+			}
+			
+			if(finalList !=null && finalList.size()>0){
+				for (NominatedPostVO obj : finalList) {				
+					Long applicationReceivedCount =0l;					
+					List<IdNameVO> totalApplications =  obj.getDistList();
+					
+					if(totalApplications !=null && totalApplications.size()>0){
+						for (IdNameVO idNameVO : totalApplications) {							
+							applicationReceivedCount = applicationReceivedCount +  (idNameVO.getCount() !=null ? idNameVO.getCount().longValue():0l);
+						}						
+						obj.setReceivedCount(applicationReceivedCount);					
+					}
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return finalList;
+	}
+	
+	public Map<Long,NominatedPostVO> setDataToFinalMap(Map<Long,NominatedPostVO> finalMap,List<Object[]> objArr,String type){
+		try{
+			
+			for (Object[] obj : objArr) {
+				NominatedPostVO mainVo =null;
+				if(obj[0] ==null){
+					 mainVo =	finalMap.get(null);
+				}else{
+					 mainVo = finalMap.get((Long)obj[0]);
+				}
+
+				List<IdNameVO> statusList =new ArrayList<IdNameVO>(0);
+				if(type !=null && type.trim().equalsIgnoreCase("nominatedStatus")){
+					statusList = mainVo.getIdNameVoList();	
+				}else if(type !=null && type.trim().equalsIgnoreCase("applicationStatus")){
+					statusList = mainVo.getDistList();	
+				}
+								
+				if(statusList !=null && statusList.size()>0){						
+					for (IdNameVO idNameVO : statusList) {							
+						if(idNameVO.getId() == (obj[2] !=null ? (Long)obj[2]:0l)){
+							idNameVO.setCount(obj[4] !=null ? (Long)obj[4]:0l);
+						}							
+					}						
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalMap;
+	}
+	
+	public List<IdNameVO> getAllNominatedStatusList(){
+		
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+		
+		try{
+			List<Object[]> objList  = nominatedPostStatusDAO.getAllNominatedStatusList();
+			if(objList !=null && objList.size()>0){
+				String[] setterPropertiesList = {"id","name"};
+				finalList = setterAndGetterUtilService.setValuesToVO(objList, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
+	}
+	
+	public List<IdNameVO> getAllApplicationStatusList(){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+		
+		try{
+			List<Object[]> objList  = applicationStatusDAO.getAllApplicationStatusList();
+			if(objList !=null && objList.size()>0){
+				String[] setterPropertiesList = {"id","name"};
+				finalList = setterAndGetterUtilService.setValuesToVO(objList, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
+	}
+	
 }
