@@ -208,7 +208,6 @@
 						<label>Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 						<select class="dropkickClass" id="statusId">
 							<option value='0'>Select Status</option>
-							
 							<option value='1'>Created</option>
 							<option value='2'>Action In Progess</option>
 							<option value='3'>Completed</option>
@@ -222,11 +221,39 @@
 					
 				</div>
 			</div>
+			
+			<input type="button" value="ASSIGN" class="btn btn-primary assignModel">
+			
+		<div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" style="width:85%;">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="descriptionTitleId">Modal title</h4>
+			  </div>
+			  <div class="modal-body">
 				<jsp:include page="commonCadreSearch.jsp" flush="true"/>
-				<div style="margin-top:10px;display:none;" class="col-md-3" id="assignBtnId" >
-				<div id="assignEroorDiv"></div>
-										<input type="button" value="ASSIGN ALERT" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
-										</div>
+			 </div>
+			 <div class="modal-footer">
+				<div style="display:none;" id="assignBtnId" >
+					<div id="assignEroorDiv"></div>
+						<input type="button" value="ASSIGN ALERT" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
+				</div>	
+			 </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+				
+			
+				
+				
+				
+				
+				
+				
+				
+				
+				
 		</div>
 
 				

@@ -5,19 +5,19 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<div class="col-md-12" id="commomCadreSearchDiv">
+<div class="row">
+	<div class="col-md-12" id="commomCadreSearchDiv">
 			<div class="panel panel-default" style="border-radius:0px;">
 				<div class="panel-heading" style="background:#ccc;border-radius:0px;">
 					<h4 class="panel-title">POLITICAL ALERT</h4>
 				</div>
 				<div class="panel-body" style="background:#eee;">
-					<div class="row">
-						<div class="col-md-12">
+					
 				<div>
 					<div class="row">
 					<div class="col-md-12">
 					<div style="background:#fff">
+					<div class="row">
 					<div class="col-md-12 m_top10">
 						<h3 class="panel-title text-success">SEARCH</h3>
 					</div>
@@ -152,10 +152,11 @@
 						</div>
 						</div>
 						</div>
+						</div>
 				</div>
+				
 				</div>
-				</div>
-				</div>
+			</div>
 			</div>
 			</div>
 		

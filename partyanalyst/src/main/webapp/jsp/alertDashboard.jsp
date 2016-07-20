@@ -28,6 +28,7 @@
 	
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<style type="text/css">
+		
 		.panelAlert
 		{
 			border:0px;
@@ -167,6 +168,9 @@
 		</div>        
 	</div>
 </div>
+
+<button target="_blank" class="btn btn-danger btnCreateAlert" data-toggle="tooltip" data-placement="left" onClick="createAlert()" title="Create Alert" ><i class="glyphicon glyphicon-plus" style="font-size:20px;right:-1px;top:-1px"></i></button>
+
 <div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-xs">
     <div class="modal-content">
@@ -264,6 +268,11 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+function createAlert(){
+	window.open("createAlertAction.action", '_blank');
+}
+
+$('[data-toggle="tooltip"]').tooltip()
 $(document).ready(function(){
 	$("#dateRangePickerId").daterangepicker({
 		opens:'left',
