@@ -13012,5 +13012,18 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	
+	<action name="getAllDeptsAndBoardsByLevelAction" class="nominatedPostProfileAction" method="getAllDeptsAndBoardsByLevel">
+	  <result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
+	<action name="getDepartmentWiseBoardAndPositionDetailsAction" class="nominatedPostProfileAction" method="getDepartmentWiseBoardAndPositionDetails">
+	  <result type="json" name="success">
+			<param name="root">nominatePostList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
