@@ -13024,6 +13024,10 @@
 			<param name="root">nominatePostList</param>
 		</result>
 	</action>
-	
+	<action name="getAlertAssignedCandidatesAction" class="createAlertAction" method="getAlertAssignedCandidates">
+			<result type="json" name="success">
+				<param name="root">alertDataList</param>
+			</result>
+		</action>	
 </package>
 </struts>      

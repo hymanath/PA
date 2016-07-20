@@ -251,8 +251,24 @@ control.makeTransliteratable(['commentsId']);
 				<div id="alertCommentsDiv"></div>
 			</div>  
 		</div>
-		
-       <div class="row">
+		 <div class="row">
+			<div class="col-md-6 col-xs-12 col-sm-6">
+				<div class="panel panel-default panelAlert">
+					<div class="panel-heading">
+						<h4 class="panel-title text-success">ASSIGNED CANDIDATES</h4>
+					</div>
+					<div class="panel-body" style="height:320px;">
+						
+						<div class="media" id="alertAssignedCandidateDataId">
+							
+						</div>
+					</div>
+				</div>
+				
+			</div> 			
+		</div>
+	
+      <div class="row">
 		 
 		</div>
 		<div class="row">
