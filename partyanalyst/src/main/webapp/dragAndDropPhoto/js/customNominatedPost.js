@@ -77,6 +77,7 @@ $(document).ready(function() {
             beforeSend: function(){},
             success: function(data, el){
 				if(data.resultCode==0){
+					$("#savingStatusDivId").html("");
 					var parent = el.find(".jFiler-jProgressBar").parent();
 					el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
 						$("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");    
