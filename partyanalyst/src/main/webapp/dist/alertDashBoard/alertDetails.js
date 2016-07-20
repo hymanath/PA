@@ -3,7 +3,7 @@ getAlertStatusCommentsTrackingDetails();
 
 
 $(document).on("click",".assignModel",function(){
-alert('aa')
+
 	$("#ModalShow").modal('show');
 	
 });
