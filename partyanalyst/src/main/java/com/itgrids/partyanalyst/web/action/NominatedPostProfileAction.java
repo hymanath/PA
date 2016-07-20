@@ -430,4 +430,47 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		}
 		 return Action.SUCCESS;
 	}
+	
+	public String getAllDeptsAndBoardsByLevel(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long levelId = jObj.getLong("levelId");
+			Long levelValue = jObj.getLong("levelValues");
+			
+			List<Long> levelValues = new ArrayList<Long>(0);
+			levelValues.add(levelValue);
+			
+			idNameVOList = nominatedPostProfileService.getAllDeptsAndBoardsByLevel(levelId,levelValues);
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAllDeptsAndBoardsByLevel() in NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDepartmentWiseBoardAndPositionDetails(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long levelId = jObj.getLong("levelId");
+			Long levelValue = jObj.getLong("levelValues");
+			Long dept = jObj.getLong("depts");
+			Long board = jObj.getLong("boards");
+			
+			List<Long> levelValues = new ArrayList<Long>(0);
+			List<Long> depts = new ArrayList<Long>(0);
+			List<Long> boards = new ArrayList<Long>(0);
+			levelValues.add(levelValue);
+			depts.add(dept);
+			boards.add(board);
+			
+			nominatePostList = nominatedPostProfileService.getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards);
+	}catch (Exception e) {
+		LOG.error("Exception Occured in getDepartmentWiseBoardAndPositionDetails() in NominatedPostProfileAction ",e);
+	}
+	return Action.SUCCESS;
+  }
+	
 }
