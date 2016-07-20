@@ -228,7 +228,7 @@
                                 </div>
                                 <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
                                 	<div class="btn-group">
-                                      <button type="button" class="btn btnClassChange btnNewCustom btnActive">Nominated Post</button>
+                                      <button type="button" class="btn btnClassChange btnNewCustom btnActive" onclick="">Nominated Post</button>
                                       <button type="button" class="btn btnClassChange btnNewCustom">Party Post</button>
                                     </div>
                                 </div>
@@ -253,13 +253,13 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="chosenSelect boardLvlCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost('');">
+									<select class="chosenSelect boardLvlCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost('');" attr_no="">
 									<option value="0">Select Board Level</option>
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
-									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId">
+									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
 										<option value="0">Select State</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
@@ -268,41 +268,41 @@
 						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
 									<label>District</label>
 									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
-									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId">
+									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
 									<label>Constituency</label>
-									<select class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].ConstituencyId">
+									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].ConstituencyId">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
-									<select class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
+									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
 									
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
-									<select class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId">
+									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId">
 										
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Department Name</label>
-									<select class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');" name="nominatedPostVO.nominatdList[0].deptId">
+									<select attr_no="" class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');" name="nominatedPostVO.nominatdList[0].deptId">
 									<option value="0">Select Department</option>
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
-									<select class="chosenSelect deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');" name="nominatedPostVO.nominatdList[0].deptBoardId">
+									<select attr_no="" class="chosenSelect deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');" name="nominatedPostVO.nominatdList[0].deptBoardId">
 									<option value="0">Select Department Board</option>	
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
-									<select class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].deptBoardPostnId">
+									<select attr_no="" class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].deptBoardPostnId">
 									<option value="0">Select Board Position</option>
 									</select>
 								</div>
@@ -317,25 +317,26 @@
 						</div>
 						<div class="addBlockNew cloneBlockDiv" id="cloneDivBlock" style="display:none;">
 							<div class="row">
+							<div class="errorMsgCls" style="color:red;"></div>
 								<span class="iconClose" style="display:none;cursor:pointer;">
 									<i class="glyphicon glyphicon-remove"></i>
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');">
+									<select class="boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');" >
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
-									<select class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
-										<!--<option value="0">Select State</option>-->
+									<select  class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
+										<option value="0">Select State</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
 									<label>District</label>
-									<select class="nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
+									<select  class="nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"nominatedDistId">
 									</select>
 								</div>
@@ -346,30 +347,30 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
-									<select class="nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
+									<select  class="nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
 										
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
-									<select class="nominatedPanchayatCls" id="nominatedPanchayatId">
+									<select  class="nominatedPanchayatCls" id="nominatedPanchayatId">
 										
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Department Name</label>
-									<select class="depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');">
+									<select  class="depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
-									<select class="deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');">
+									<select  class="deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');">
 										
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
-									<select class="deptBoardPostnCls" id="deptBoardPostnId">
+									<select  class="deptBoardPostnCls" id="deptBoardPostnId">
 									</select>
 								</div>
 								
@@ -382,18 +383,19 @@
 						<div id="addOneMoreBlock"></div>
 					</div>
                 </div>
-                <div class="row" id="uploadFlDivId" >
-                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<p>UPLOAD SCAN COPY</p>
-								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
-                        </div>
-                    </div>
+                
                     <div class="row">
                     	<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12 col-lg-4 col-lg-offset-4 m_top20">
                         	<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
                         </div>
 						<div style="margin-top:12px;"><img id="savingAjaxImg" src="images/icons/loading.gif" style="display:none;"/></div>
 						<div class="col-md-6 m_top25" id="savingStatusDivId"></div>
+                    </div>
+					<div class="row" id="uploadFlDivId" >
+                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                        	<p>UPLOAD SCAN COPY</p>
+								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
+                        </div>
                     </div>
 					</form>
               </div>
