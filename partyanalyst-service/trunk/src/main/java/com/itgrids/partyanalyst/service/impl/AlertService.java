@@ -808,7 +808,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 	{
 		
-		if(dataList == null || dataList.size() == 0)
+		if(dataList == null)
 			dataList = new ArrayList<AlertDataVO>();
 		if(list != null && list.size() > 0)
 		{
@@ -818,7 +818,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				if(alertVo == null)
 				{
 					alertVo = new AlertDataVO();
-					alertVo.setId((Long)params[1]);
+					alertVo.setId((Long)params[0]);
 					dataList.add(alertVo);
 				}
 				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
@@ -905,6 +905,77 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return returnList;
 	}
+	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId)
+	{
+		List<AlertDataVO> dataList = new ArrayList<AlertDataVO>();
+		try{
+			List<Long> alertIds = new ArrayList<Long>();
+			
+			alertIds.add(alertId);
+			List<Object[]> list = alertCandidateDAO.getAlertAssignedCandidates(alertIds);
+			setAlertAssignedCandidateData(list,dataList);
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception in getAlertAssignedCandidates()",e);	
+		}
+		return dataList;
+	}
+	
+	
+	public void setAlertAssignedCandidateData(List<Object[]> list,List<AlertDataVO> dataList)
+
+	{
+		
+		if(dataList == null)
+			dataList = new ArrayList<AlertDataVO>();
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				AlertDataVO alertVo =(AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(dataList, "id", params[0].toString());
+				if(alertVo == null)
+				{
+					alertVo = new AlertDataVO();
+					alertVo.setId((Long)params[0]);
+					dataList.add(alertVo);
+				}
+				AlertDataVO candidateVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(alertVo.getSubList(), "id", params[1].toString());
+				if(candidateVO == null)
+				{
+					candidateVO = new AlertDataVO();
+					alertVo.getSubList().add(candidateVO);
+				}
+				candidateVO.setId((Long)params[1]);
+				candidateVO.setName(params[2] != null ? params[2].toString() : "");
+				 LocationVO locationVO = new LocationVO();
+				 locationVO.setWardId(params[16] != null ? (Long)params[16] : null);
+				 locationVO.setWardName(params[17] != null ? params[17].toString() : "");
+				 locationVO.setStateId(params[14] != null ? (Long)params[14] : null);
+				 locationVO.setState(params[15] != null ? params[15].toString() : "");
+				 locationVO.setDistrictId(params[9] != null ? (Long)params[9] : null);
+				 locationVO.setDistrictName(params[10] != null ?params[10].toString() : "");
+				 locationVO.setConstituencyId(params[12] != null ? (Long)params[12] : null);
+				 locationVO.setConstituencyName(params[13] != null ? params[13].toString() : "");
+				 locationVO.setTehsilId(params[3] != null ? (Long)params[3] : null);
+				 locationVO.setTehsilName(params[4] != null ? params[4].toString() : "");
+				 locationVO.setVillageId(params[5] != null ? (Long)params[5] : null);
+				 locationVO.setVillageName(params[6] != null ? params[6].toString() : "");
+				 locationVO.setLocalBodyId(params[7] != null ? (Long)params[7] : null);
+				 String eleType = params[11] != null ? params[11].toString() : "";
+				 locationVO.setLocalEleBodyName(params[8] != null ? params[8].toString() +" "+eleType : "");
+				 candidateVO.setLocationVO(locationVO);
+				 
+				/* candidateVO.setImpactId(params[17] != null ? (Long)params[17] : null);
+				 candidateVO.setImpact(params[18] != null ? params[18].toString() : "");*/
+				 candidateVO.setImage(params[17] != null ? params[17].toString() : "");
+				
+			}
+		}
+		
+	}
+	
 	
 }
 
