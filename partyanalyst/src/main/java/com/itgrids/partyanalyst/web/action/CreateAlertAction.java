@@ -372,6 +372,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	public String getAlertAssignedCandidates()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			
+			alertDataList = alertService.getAlertAssignedCandidates(jObj.getLong("alertId"));
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception rised in getAlertAssignedCandidates",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
 	
 	
 }

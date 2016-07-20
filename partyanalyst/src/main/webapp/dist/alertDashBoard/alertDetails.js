@@ -1,7 +1,6 @@
 getAlertData();
 getAlertStatusCommentsTrackingDetails();
-
-
+getAlertAssignedCandidates(alertId);
 $(document).on("click",".assignModel",function(){
 
 	$("#ModalShow").modal('show');
@@ -27,7 +26,7 @@ function saveAlertAssignedUser ()
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 				   if(result.resultCode == 0)
-					$("#assignEroorDiv").html("assigned Successfully").css("color","green");
+				    $("#assignEroorDiv").html("assigned Successfully").css("color","green");
 					$("#involvedCandidatesDiv").html('');
 					$("#apptmemberDetailsDiv").html('');
 					clearCommonFields();
@@ -203,6 +202,7 @@ function buildAlertData(result,jsObj)
 }
 $(document).on("click",".alertCandidate",function(){
 getAlertCandidatesData($(this).attr("attr-id"));
+//getAlertAssignedCandidates($(this).attr("attr-id"));
 });
 function getAlertCandidatesData(alertId)
 {
@@ -238,6 +238,8 @@ function buildAlertCandidateData(result)
 	str+='</div>';
 	str+='<div class="media-body">';
 	str+='<p><b>Name </b>:'+result[i].name+' </p>';
+	if(result[i].locationVO != null)
+	{
 		if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
 							{
 	str+='<p><b>State </b>:'+result[i].locationVO.state+' <b>District </b>: '+result[i].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].locationVO.constituencyName+' <b>Town </b>:'+result[i].locationVO.localEleBodyName+' <b>Ward </b>:'+result[i].locationVO.wardName+'</p>';
@@ -248,6 +250,7 @@ function buildAlertCandidateData(result)
 			str+='<p><b>State </b>:'+result[i].locationVO.state+' <b>District </b>: '+result[i].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].locationVO.constituencyName+' <b>Mandal </b>:'+result[i].locationVO.tehsilName+' <b>Village </b>:'+result[i].locationVO.villageName+'</p>';
 			
 				}
+	}
 				str+='</div>';
 				str+='</div>';
 				}
@@ -425,6 +428,57 @@ function buildAlertData(result)
 	}
 	
 }
+function getAlertAssignedCandidates(alertId)
+{
+	$("#alertAssignedCandidateDataId").html('<img src="images/search.gif" />');
+    GlobalAlertData = [];
+		var jsObj =
+		     {
+			alertId  : alertId,
+			task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'getAlertAssignedCandidatesAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+			      buildAlertAssignedCandidateData(result);
+				});
+}
+function buildAlertAssignedCandidateData(result)
+{
+	
+	if(result == null || result.length == 0)
+	{
+	 $("#alertAssignedCandidateDataId").html('No Data Available..');
+		return;
+	}
+	var str='';
+	for(var i in result)
+				{
+	for(var j in result[i].subList)
+	{
+	str+='<div  style="border:1px solid #ddd;padding:8px;margin-top:5px;" class="media">';
+	str+='<div class="media-left">';
+	str+='<img src="'+result[i].image+' "  onerror="setDefaultImage(this);" class="media-object img-center img-responsive  thumbnailSearch thumbnail" alt="Image" style="width: 60px !important; height: 60px  !important;"/>';
+	str+='</div>';
+	str+='<div class="media-body">';
+	
+	str+='<p><b>Name </b>:'+result[i].subList[j].name+' </p>';	
+	str+='<p><b>State </b>:'+result[i].subList[j].locationVO.state+' <b>District </b>: '+result[i].subList[j].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].subList[j].locationVO.constituencyName+' <b>Mandel </b>:'+result[i].subList[j].locationVO.tehsilName+' <b>Village </b>:'+result[i].subList[j].locationVO.villageName+'</p>';
+	str+='</div>';
+	str+='</div>';
+	}
+	}
+	$("#alertAssignedCandidateDataId").html(str);
+	if(result[i].subList.length > 3)
+	{
+		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
+	}
+	
+}
+
+
 
 
 
