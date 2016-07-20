@@ -100,4 +100,31 @@ public class AlertCandidateDAO extends
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		return query.list();
 	}
+	public List<Object[]> getAlertAssignedCandidates(List<Long> alertIds)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.alertId,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname");
+		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
+		str.append(" ,constituency.constituencyId,constituency.name");
+		str.append(" ,state.stateId,state.stateName");
+		str.append(" ,ward.constituencyId,ward.name");
+		str.append(" ,model.tdpCadre.image");
+		str.append(" from AlertAssigned model left join model.tdpCadre.userAddress.panchayat panc ");
+		str.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
+		str.append(" left join model.tdpCadre.userAddress.constituency constituency ");
+		str.append(" left join model.tdpCadre.userAddress.localElectionBody localElectionBody ");
+		str.append(" left join model.tdpCadre.userAddress.localElectionBody.electionType electionType ");
+		str.append(" left join model.tdpCadre.userAddress.district district ");
+		str.append(" left join model.tdpCadre.userAddress.state state ");
+		str.append(" left join model.tdpCadre.userAddress.ward ward ");
+	
+		str.append(" where model.alert.isDeleted ='N' and model.alert.alertId in(:alertIds) and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
+		str.append(" group by model.alertId,model.tdpCadre.tdpCadreId");
+		Query query = getSession().createQuery(str.toString());
+		if(alertIds != null && alertIds.size() > 0)
+		query.setParameterList("alertIds", alertIds);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		return query.list();
+	}
+	
 }

@@ -23,4 +23,5 @@ public interface IAlertService {
 	public ResultStatus saveAlertAssignedUser(AlertVO inputVO,Long userId);
 	public List<AlertDataVO> getAlertsData(Long alertId);
 	public List<IdNameVO> getMemberTypesList();
+	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
 }
