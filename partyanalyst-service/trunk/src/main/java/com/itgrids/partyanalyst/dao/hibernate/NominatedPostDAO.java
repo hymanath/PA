@@ -75,4 +75,97 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		return query.list();
 	}
 	
+	public List<Object[]> getNominatedPostsByBoardsAndDepts(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId){
+		StringBuilder str = new StringBuilder();
+		str.append("SELECT position.positionId," +
+				" position.positionName " +
+				"	FROM NominatedPost model left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" left join nominatedPostPosition.position position " +
+				"   WHERE model.isDeleted ='N'" +
+				" and nominatedPostMember.isDeleted = 'N'" +
+				" and nominatedPostPosition.isDeleted = 'N'" );
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+		}
+		if(levelValue !=null && levelValue.size()>0){
+			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
+		}
+		if(deptId !=null && deptId.size() >0){
+			str.append(" and nominatedPostPosition.department.departmentId in (:deptId) ");
+		}
+		if(boardId !=null && boardId.size()>0){
+			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
+		}
+		
+		str.append(" GROUP BY position.positionId ORDER BY position.positionId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(levelValue !=null && levelValue.size()>0){
+			query.setParameterList("levelValue", levelValue);
+		}
+		if(deptId !=null && deptId.size() >0){
+			query.setParameterList("deptId", deptId);
+		}
+		if(boardId !=null && boardId.size()>0){
+			query.setParameterList("boardId", boardId);
+		}
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("SELECT position.positionId," +
+				" position.positionName,model.nominatedPostStatus.nominatedPostStatusId" +
+				",model.nominatedPostStatus.status,count(distinct model.nominatedPostId) " +
+				"	FROM NominatedPost model left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" left join nominatedPostPosition.position position " +
+				"   WHERE model.isDeleted ='N' " +
+				" and nominatedPostMember.isDeleted = 'N'" +
+				"  and nominatedPostPosition.isDeleted = 'N' " );
+		
+		if(boardLevelId !=null && boardLevelId>0l){
+			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+		}
+		if(levelValue !=null && levelValue.size()>0){
+			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
+		}
+		if(deptId !=null && deptId.size() >0){
+			str.append(" and nominatedPostPosition.department.departmentId in (:deptId) ");
+		}
+		if(boardId !=null && boardId.size()>0){
+			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
+		}
+		
+		str.append("GROUP BY position.positionId,model.nominatedPostStatus.nominatedPostStatusId " +
+				" ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId desc ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(levelValue !=null && levelValue.size()>0){
+			query.setParameterList("levelValue", levelValue);
+		}
+		if(deptId !=null && deptId.size() >0){
+			query.setParameterList("deptId", deptId);
+		}
+		if(boardId !=null && boardId.size()>0){
+			query.setParameterList("boardId", boardId);
+		}
+		
+		return query.list();		
+	}
+	
 }
