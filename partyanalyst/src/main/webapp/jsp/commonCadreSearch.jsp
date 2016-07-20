@@ -36,7 +36,7 @@
 					
 					
 					 <div class="col-md-3 pad_0 advanceSearchCls advanceprclsDiv">
-						<label class="advanceNameCls">Search By Name/Membership No*<span class="text-danger">*</span></label>
+						<label class="advanceNameCls" id="searchNameLabel">Search By Name/Membership No*<span class="text-danger">*</span></label>
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 						
 					</div>
