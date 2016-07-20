@@ -1760,7 +1760,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 			}
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exceptionr riased at getAllDeptsAndBoardsByLevel", e);
 		}
 		return finalList;
 		
@@ -1828,7 +1828,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exceptionr riased at getDepartmentWiseBoardAndPositionDetails", e);
 		}
 		
 		return finalList;
