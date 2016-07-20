@@ -28,4 +28,6 @@ public interface INominatedPostProfileService {
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
 	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId);
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue);
+	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds);
 }
