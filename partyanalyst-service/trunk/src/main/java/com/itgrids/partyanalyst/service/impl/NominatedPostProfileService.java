@@ -814,9 +814,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 				}
 		
-					status.setMessage("SUCCESS");
+					//status.setMessage("SUCCESS");
 					status.setResultCode(0);
-					status.setResultState(nominationPostCandidate.getNominationPostCandidateId());
+					status.setMessage("SUCCESS - "+nominationPostCandidate.getNominationPostCandidateId());
 				return status;
 		}
 	});
