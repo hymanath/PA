@@ -183,6 +183,7 @@ function disableByLevel(index)
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
+				$("#searchNameLabel").text("Search By Name/Membership No*");
 			}
 			else if(selectVal == "0")
 			{
@@ -214,6 +215,12 @@ function disableByLevel(index)
 				$(".advanceprclsDiv").show();
 				$("#searchBtnId").show();
 				$("#cadreCommitteeDiv_chosen").hide();
+				if(selectVal != "mebershipno" && selectVal != "votercardno")
+				$("#searchNameLabel").text("Search By Mobile");
+				else
+				$("#searchNameLabel").text("Search By Name/Membership No*");
+			
+		
 			}
 			
 				disableByLevel('');
@@ -769,6 +776,7 @@ function showHideSearch(type)
 					  errStr=true;
 			}
 		}
+		
 		
 		if(errStr){
 			
