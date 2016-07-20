@@ -3307,6 +3307,7 @@
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
 		<property name="voterDAO" ref="voterDAO"></property>
+		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>
 	</bean>
 </beans>		
 	
