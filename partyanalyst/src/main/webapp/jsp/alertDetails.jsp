@@ -132,8 +132,65 @@
 			margin-top: -6px;
 		}
 	</style>
- </head>                                         							
+ </head>     
+
+<!-- language convertion-->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+// Load the Google Transliterate API
+   google.load("elements", "1", {
+         packages: "transliteration"
+       });
+
+</script> 
+<script type="text/javascript">
+	var control;
+	var lang;
+   function onLoad() {
+	
+       lang = $("input[name=language]:checked").val();
+     var options = {
+         sourceLanguage:
+             google.elements.transliteration.LanguageCode.ENGLISH,
+         destinationLanguage:
+             [''+lang+''],
+         shortcutKey: 'alt+t',
+         transliterationEnabled: true
+     };
+
+     // Create an instance on TransliterationControl with the required
+     // options.
+     control =
+         new google.elements.transliteration.TransliterationControl(options);
+
+     // Enable transliteration in the textbox with id
+     // 'descrptionId'.
+
+	 	if ($('#commentsId').length){
+control.makeTransliteratable(['commentsId']);
+ }
+   }
+   function languageChangeHandler() {
+  
+        var lang1 = $("input[name=language]:checked").val();
+		if(lang1 =="en")
+	   {
+		control.disableTransliteration();
+		}
+		else
+	   {
+		   control.enableTransliteration();
+           control.setLanguagePair(
+            google.elements.transliteration.LanguageCode.ENGLISH,
+            lang1);
+			}
+      }
+ google.setOnLoadCallback(onLoad);
+</script> 
 <body style="position:relative;">
+
+
 <div class="container">
 
         <div class="row">
@@ -212,6 +269,8 @@
 							<option value='2'>Action In Progess</option>
 							<option value='3'>Completed</option>
 						</select>
+						
+						<div><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
 						<label>Comments</label><span ></span>
 						<textarea class="form-control" id="commentsId"></textarea>
 						<div id="errorId"></div>
@@ -229,7 +288,7 @@
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="descriptionTitleId">Modal title</h4>
+				<h4 class="modal-title" id="descriptionTitleId">Assign Alert</h4>
 			  </div>
 			  <div class="modal-body">
 				<jsp:include page="commonCadreSearch.jsp" flush="true"/>
