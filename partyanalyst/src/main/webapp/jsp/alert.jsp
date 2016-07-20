@@ -328,9 +328,6 @@
 										<div><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
 											<label>Description</label>
 											<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
-											
-											
-											
 										</div>
 									</div>
 								</div>
