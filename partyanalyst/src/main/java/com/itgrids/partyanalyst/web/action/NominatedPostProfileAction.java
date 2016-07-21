@@ -512,6 +512,38 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	return Action.SUCCESS;
   }
 	
+	public String getAllApplicationStatusList(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getAllApplicationStatusList();
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAllApplicationStatusList Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String savingAnyPostCandidatesToPosition(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			status = nominatedPostProfileService.savingAnyPostCandidatesToPosition(userId,jObj.getLong("applicationId"),jObj.getLong("candidateId"),jObj.getLong("levelId"),
+					jObj.getLong("levelVal"),jObj.getLong("deptId"),jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getLong("statusId"),jObj.getString("comment"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into savingAnyPostCandidatesToPosition Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	public String nominatedPostManagement(){
 		
 		return Action.SUCCESS;

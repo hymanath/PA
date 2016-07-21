@@ -947,7 +947,8 @@
 				    <value>com.itgrids.partyanalyst.model.NominatedPostMember</value>
 				    <value>com.itgrids.partyanalyst.model.MemberType</value> 
 				    <value>com.itgrids.partyanalyst.model.AlertAssigned</value> 
-				     <value>com.itgrids.partyanalyst.model.TdpMember</value> 
+				    <value>com.itgrids.partyanalyst.model.TdpMember</value> 
+				    <value>com.itgrids.partyanalyst.model.NominatedPostComment</value> 
 				    
 				 </list>
 			

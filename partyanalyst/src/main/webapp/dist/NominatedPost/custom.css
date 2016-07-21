@@ -243,6 +243,15 @@ label
 	background:#EFF3F4;
 	padding:0px;
 }
+.updateDropDownAny
+{
+	background:#fff;
+	width:800px;
+	right:0px;
+	z-index:10;
+	display:none;
+	position:absolute;
+}
 .updateDropDown
 {
 	background:#fff;
@@ -261,7 +270,7 @@ label
 }
 .updateDropDownArrow:after, .updateDropDownArrow:before {
 	bottom: 100%;
-	right: 10%;
+	right: 20px;
 	border: solid transparent;
 	content: " ";
 	height: 0;
@@ -285,8 +294,8 @@ label
 .appliedPostPopup
 {
 	position:absolute;
-	width:400px;
-	left:-80%;
+	width:480px;
+	left:-145%;
 	z-index:9;
 	display:none;
 }

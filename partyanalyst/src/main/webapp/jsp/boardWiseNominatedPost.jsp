@@ -683,6 +683,11 @@ $(document).on("click",".btnPopup",function(e){
 	$(this).closest('tr').find(".updateDropDown").show();
 	e.stopPropagation()
 });
+$(document).on("click",".btnPopupAny",function(e){
+	$(".updateDropDownAny").hide();
+	$(this).closest('tr').find(".updateDropDownAny").show();
+	e.stopPropagation()
+});
 $(document).on("click",function(){
 	$(".updateDropDown").hide();
 	$(".appliedPostPopup").hide();
@@ -706,11 +711,11 @@ function getBoardWiseNominatedPostMemberDetails(){
 	var jsObj=
 	   {				
 		levelId:4,		//levelId,
-		levelValue:101,		//levelValue,
+		levelValue:299,		//levelValue,
 		departmentId:2,		//departmentId,
 		boardId:1,		//boardId,
-		positionId:1,		//positionId,
-		type:"this"		//type
+		positionId:3,		//positionId,
+		type:"any"		//type
 		}
     $.ajax({
           type:'GET',
@@ -719,11 +724,11 @@ function getBoardWiseNominatedPostMemberDetails(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null)
-		   buildNominatedPostMemberDetails(result);
+		   buildNominatedPostMemberDetails(result,"any",4,299);
    });
 }
 
-function buildNominatedPostMemberDetails(result){
+function buildNominatedPostMemberDetails(result,type,levelId,levelValue){
 	var str='';
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
@@ -778,29 +783,6 @@ function buildNominatedPostMemberDetails(result){
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'">'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
-							/*str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
-							str+='<table class="table table-condensed">';
-								str+='<thead>';
-									str+='<th>Department</th>';
-									str+='<th>Corporation</th>';
-									str+='<th>Position</th>';
-									str+='<th>Status</th>';
-								str+='</thead>';
-								str+='<tbody>';
-									str+='<tr>';
-										str+='<td>Agriculture Marketing</td>';
-										str+='<td>Agriculture market committees</td>';
-										str+='<td>Chairman</td>';
-										str+='<td>Shortlisted</td>';
-									str+='</tr>';
-									str+='<tr>';
-										str+='<td>Agriculture Marketing</td>';
-										str+='<td>Agriculture market committees</td>';
-										str+='<td>Chairman</td>';
-										str+='<td>Shortlisted</td>';
-									str+='</tr>';
-								str+='</tbody>';
-							str+='</table>';*/
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -814,20 +796,62 @@ function buildNominatedPostMemberDetails(result){
 					str+='<td> NO </td>';
 				str+='<td>'+result.subList[i].status+'</td>';
 				str+='<td style="position:relative;">';
-					str+='<button class="btn btn-success btnPopup">UPDATE</button>';
+				if(type == "this"){
+					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'">UPDATE</button>';
 					str+='<div class="updateDropDown">';
 						str+='<div class="updateDropDownArrow">';
-						str+='<div class="text-success" id="successDivId'+i+'"></div>'
+						str+='<div class="text-success" id="successDivId'+i+'"></div>';
+						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
 							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
 							str+='<label>Select Status</label>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
-								str+='<option value="3">Shortlisted/Rejected</option>';
+								str+='<option value="0">Select Status</option>';
 							str+='</select>';
 							str+='<label>Comments</label>';
 							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
 							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
+				}
+				else if(type == "any"){
+					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls" attr_count="'+i+'">UPDATE</button>';
+					str+='<div class="updateDropDownAny">';
+						str+='<div class="updateDropDownArrow">';
+						str+='<div class="text-success" id="successDivAnyId'+i+'"></div>';
+								str+='<div class="row">';
+								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+									str+='<label>Department</label>';
+									str+='<select class="chosenSelect" id="departmentAnyId'+i+'" onchange="getBoardsForDepartments('+i+')">';
+										str+='<option value="0">Select Department</option>';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+									str+='<label>Corporation/Board</label>';
+									str+='<select class="chosenSelect" id="boardAnyId'+i+'" onchange="getPositionsForBoard('+i+')">';
+										str+='<option value="0">Select Status</option>';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+									str+='<label>Position</label>';
+									str+='<select class="chosenSelect" id="positionAnyId'+i+'">';
+										str+='<option value="0">Select Status</option>';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
+									str+='<label>Select Status</label>';
+									str+='<select class="chosenSelect" id="updatedStatusAnyId'+i+'">';
+										str+='<option value="0">Select Status</option>';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<label>Comments</label>';
+									str+='<textarea class="form-control" id="statusCommentAnyId'+i+'"></textarea>';
+									str+='<button class="btn btn-success btn-block m_top10 updateStatusAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'">SUBMIT</button>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}	
 				str+='</td>';
 			str+='</tr>';
 			/*str+='<tr>';
@@ -894,6 +918,107 @@ $(document).on('click','.showPdfCls',function(){
 	$("#pdfReportDetailsId").html(str);
 }); 
 
+$(document).on("click",".updateButtonCls",function(){
+	var selectDivId = $(this).attr("attr_selected_status_id");
+	getApplicationStatus(selectDivId);
+});
+
+$(document).on("click",".updateButtonAnyCls",function(){
+	var num = $(this).attr("attr_count");
+	getDepartments(num);
+	getApplicationStatus("updatedStatusAnyId"+num);
+	$("#positionAnyId"+num).chosen();
+	$("#boardAnyId"+num).chosen();
+});
+
+function getApplicationStatus(divId){
+	$("#"+divId+" option").remove();
+	
+	var jsObj={}
+	$.ajax({
+          type:'GET',
+          url: 'getAllApplicationStatusListAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result != null && result.length > 0){
+		   $("#"+divId).append('<option value="0">Select Status</option>');
+		   for(var i in result){
+			   $("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#"+divId).chosen();
+	   }
+   });
+}
+
+function getDepartments(num){
+	$("#departmentAnyId"+num+" option").remove();
+	
+	var jsObj={}
+	$.ajax({
+          type:'GET',
+          url: 'getDepartmentsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result != null && result.length > 0){
+		   $("#departmentAnyId"+num).append('<option value="0">Select Department</option>');
+		   for(var i in result){
+			   $("#departmentAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#departmentAnyId"+num).chosen();
+	   }
+   });
+}
+
+function getBoardsForDepartments(num){
+	$("#boardAnyId"+num+" option").remove();
+	var depmtId = $("#departmentAnyId"+num).val();
+	
+	var jsObj={
+		depmtId : depmtId
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getDepartmentBoardsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result != null && result.length > 0){
+			$("#boardAnyId"+num).append('<option value="0">Select Corporation/Board</option>');
+		   for(var i in result){
+			   $("#boardAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#boardAnyId"+num).trigger('chosen:updated');
+	   }
+   });
+}
+
+function getPositionsForBoard(num){
+	$("#positionAnyId"+num+" option").remove();
+	var depmtId = $("#departmentAnyId"+num).val();
+	var boardId = $("#boardAnyId"+num).val();
+	
+	var jsObj={
+		depmtId : depmtId,
+		boardId : boardId
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getDepartmentBoardPositionsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result != null && result.length > 0){
+		   $("#positionAnyId"+num).append('<option value="0">Select Position</option>');
+		   for(var i in result){
+			   $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#positionAnyId"+num).trigger('chosen:updated');
+	   }
+   });
+}
+
 $(document).on("click",".updateStatusCls",function(){
 	var applicationId = $(this).attr("attr_application_id");
 	var selectDivId = $(this).attr("attr_selected_status_id");
@@ -916,8 +1041,49 @@ $(document).on("click",".updateStatusCls",function(){
    }).done(function(result){
 		if(result != null && result == 'success')
 			$("#"+divId).html("Successfully Updated...");
+		else
+			$("#"+divId).html("Sorry,Exception Occured...Please try again...");
    });
 });
+
+$(document).on("click",".updateStatusAnyCls",function(){
+	var applicationId = $(this).attr("attr_application_id");
+	var candidateId = $(this).attr("attr_candidate_id");
+	var num = $(this).attr("attr_count");
+	var levelId= $(this).attr("attr_levelId");
+	var levelVal = $(this).attr("attr_level_value");
+	
+	var deptId = $("#departmentAnyId"+num).val();
+	var boardId = $("#boardAnyId"+num).val();
+	var positionId = $("#positionAnyId"+num).val();
+	var statusId = $("#updatedStatusAnyId"+num).val();
+	var comment = $("#statusCommentAnyId"+num).val();
+	
+	var jsObj=
+	   {	
+		applicationId : applicationId,
+		candidateId : candidateId,
+		levelId : levelId,
+		levelVal : levelVal,
+		deptId : deptId,
+		boardId : boardId,
+		positionId : positionId,
+		statusId : statusId,
+		comment : comment
+		}
+    $.ajax({
+          type:'GET',
+          url: 'savingAnyPostCandidatesToPositionAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		if(result != null && result == 'success')
+			$("#successDivAnyId"+num).html("Successfully Updated...");
+		else
+			$("#successDivAnyId"+num).html("Sorry,Exception Occured...Please try again...");
+   });
+});
+
 getNominatedPostPostionDetails();
 function getNominatedPostPostionDetails(){
 	var jsObj=
