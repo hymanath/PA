@@ -33,7 +33,7 @@
     }
     .onoffswitch-label {
         display: block; overflow: hidden; cursor: pointer;
-        border: 2px solid #999999; border-radius: 20px;
+        border-radius: 20px;
     }
     .onoffswitch-inner {
         display: block; width: 200%; margin-left: -100%;
@@ -52,7 +52,7 @@
     .onoffswitch-inner:after {
         content: "NEGATIVE";
         padding-right: 10px;
-        background-color: #34A7C1; color: #FFF;
+        background-color: #d9534f; color: #FFF;
         text-align: right;
     }
     .onoffswitch-switch {
@@ -60,7 +60,7 @@
         background: #FFFFFF;
         position: absolute; top: 0; bottom: 0;
         right: 77px;
-        border: 2px solid #999999; border-radius: 20px;
+        border-radius: 20px;
         transition: all 0.3s ease-in 0s; 
 		height:17px;
     }
@@ -87,7 +87,124 @@
 				
 				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
 				<div>
-					<div class="row">
+					
+					<!--<div class="row">
+						<div class="col-md-6">
+							<label>Search Candidates</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="candidateNameId"/>
+								<span class="input-group-addon" onclick="getCandidateNameDetails()">
+									<i class="glyphicon glyphicon-search" ></i>
+								</span>
+							</div>
+						</div>
+						
+						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
+						<div class="col-md-3">
+							<label>Select Candidates</label>
+							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
+							<option value="0">Select Candidate</option>	
+							</select>
+						</div>-->
+						
+						
+						
+						<div class="row m_top10">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">CREATE ALERT</h4>
+									</div>
+									<div class="panel-body">
+										<div class="col-md-4 m_top10">
+											<label>Alert Type</label>
+											<select class="dropkickClass" name="alertVO.alertTypeId" id="alertTypeId">
+												<option value="0">Select Alert</option>
+											</select>
+											
+											
+										</div>
+										<div class="col-md-4 m_top10">
+											<label>Alert Source</label>
+											<select class="dropkickClass" name="alertVO.alertSourceId" id="alertSourceId">
+												<option value="0">Select Alert Source</option>
+											</select>
+											
+											
+										</div>
+									
+										<div class="col-md-4 m_top10">
+											<label>Alert Severity</label>
+											<select class="dropkickClass" name="alertVO.severity" id="alertSeverityId">
+												<option value="0">Select Alert Severity</option>
+												<option value="1">High</option>
+												<option value="2">Medium</option>
+												<option value="3">Low</option>
+											</select>
+										</div>
+										<div class="col-md-4 levelShowCls1 m_top10" >
+											<label>Level</label>
+											<select class="dropkickClass" id="alertlevelId1" attr-index="1" onchange="disableByLevel(1);" >
+											<option value="2">State</option>
+											 <option value="3">District</option>
+											 <option value="4">Constituency</option>
+											 <option value="5">Mandal/Muncipality</option>
+											 <option value="6">Village/Ward</option>
+											</select>
+										</div>
+										<div class="col-md-4 stateShowCls1 m_top10" >
+											<label>State</label>
+											 <select class="dropkickClass" class="stateCls" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
+											 <option value="0">Select State</option>
+											 <option value="1">AP</option>
+											 <option value="36">TS</option>
+											 </select>
+										</div>
+								   
+										<div class="col-md-4 locationsFilterCls distCls1 m_top10">
+											 <label>District</label>
+											 <select class="dropkickClass" id="referdistrictId1" onChange="getConstituenciesBydistrictForReferPopup(1);" name="alertVO.districtId">
+											 <option value="0">Select District</option></select>
+										</div>
+										<div class="col-md-4 locationsFilterCls constiCls1 m_top10">
+											<label>Assembly</label>
+											<select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
+											<option value="0">Select Assembly</option>
+											</select>
+										</div>
+										<div class="col-md-4 locationsFilterCls mandalCls1 m_top10">
+											<label>Mandal/ Municipality</label>
+											 <select class="dropkickClass" id="refermandalNameId1" onChange="getPanchayatsForReferPopup(1);" name="alertVO.tehsilId">
+												<option value="0">Select Mandal/ Municipality</option>
+											 </select>
+										</div>
+										<div class="col-md-4 locationsFilterCls panchayatCls1 m_top10">
+											<label>Panchayat/Ward</label>
+											<select class="dropkickClass" id="referpanchayatId1" name="alertVO.panchayatId">
+											<option value="0">Select Panchayat/Ward</option>
+											</select>
+										</div>
+										<div class="col-md-12">
+										
+											<div class="m_top10"><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
+										</div>
+										<div class="col-md-6 m_top10" style="clear: both;">
+										
+										
+											<label>Description</label>
+											<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+				</div>
+				
+				<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
+				<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
+				
+				<div class="row">
 					<div class="col-md-12">
 					<div style="background:#fff">
 					<div class="col-md-12 m_top10">
@@ -213,31 +330,11 @@
 						</div>
 						</div>
 						</div>
-					<!--<div class="row">
-						<div class="col-md-6">
-							<label>Search Candidates</label>
-							<div class="input-group">
-								<input type="text" class="form-control" id="candidateNameId"/>
-								<span class="input-group-addon" onclick="getCandidateNameDetails()">
-									<i class="glyphicon glyphicon-search" ></i>
-								</span>
-							</div>
-						</div>
-						
-						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
-						<div class="col-md-3">
-							<label>Select Candidates</label>
-							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
-							<option value="0">Select Candidate</option>	
-							</select>
-						</div>-->
-						
-						
 						<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<h4 class="panel-title">INVOVLED CANDIDATES</h4>
+										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
 									</div>
 									<div class="panel-body">
 										<div class="row">
@@ -247,106 +344,14 @@
 								</div>
 							</div>
 						</div>
-						<div class="row m_top10">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">CREATE ALERT</h4>
-									</div>
-									<div class="panel-body">
-										<div class="col-md-4">
-											<label>Alert Type</label>
-											<select class="dropkickClass" name="alertVO.alertTypeId" id="alertTypeId">
-												<option value="0">Select Alert</option>
-											</select>
-											
-											
-										</div>
-										<div class="col-md-4">
-											<label>Alert Source</label>
-											<select class="dropkickClass" name="alertVO.alertSourceId" id="alertSourceId">
-												<option value="0">Select Alert Source</option>
-											</select>
-											
-											
-										</div>
-									
-										<div class="col-md-4">
-											<label>Alert Severity</label>
-											<select class="dropkickClass" name="alertVO.severity" id="alertSeverityId">
-												<option value="0">Select Alert Severity</option>
-												<option value="1">High</option>
-												<option value="2">Medium</option>
-												<option value="3">Low</option>
-											</select>
-										</div>
-										<div class="col-md-4 levelShowCls1" >
-											<label>Level</label>
-											<select class="dropkickClass" id="alertlevelId1" attr-index="1" onchange="disableByLevel(1);" >
-											<option value="2">State</option>
-											 <option value="3">District</option>
-											 <option value="4">Constituency</option>
-											 <option value="5">Mandal/Muncipality</option>
-											 <option value="6">Village/Ward</option>
-											</select>
-										</div>
-										<div class="col-md-4 stateShowCls1" >
-											<label>State</label>
-											 <select class="dropkickClass" class="stateCls" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
-											 <option value="0">Select State</option>
-											 <option value="1">AP</option>
-											 <option value="36">TS</option>
-											 </select>
-										</div>
-								   
-										<div class="col-md-4 locationsFilterCls distCls1">
-											 <label>District</label>
-											 <select class="dropkickClass" id="referdistrictId1" onChange="getConstituenciesBydistrictForReferPopup(1);" name="alertVO.districtId">
-											 <option value="0">Select District</option></select>
-										</div>
-										<div class="col-md-4 locationsFilterCls constiCls1">
-											<label>Assembly</label>
-											<select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
-											<option value="0">Select Assembly</option>
-											</select>
-										</div>
-										<div class="col-md-4 locationsFilterCls mandalCls1">
-											<label>Mandal/ Municipality</label>
-											 <select class="dropkickClass" id="refermandalNameId1" onChange="getPanchayatsForReferPopup(1);" name="alertVO.tehsilId">
-												<option value="0">Select Mandal/ Municipality</option>
-											 </select>
-										</div>
-										<div class="col-md-4 locationsFilterCls panchayatCls1">
-											<label>Panchayat/Ward</label>
-											<select class="dropkickClass" id="referpanchayatId1" name="alertVO.panchayatId">
-											<option value="0">Select Panchayat/Ward</option>
-											</select>
-										</div>
-										<div class="col-md-6" style="clear: both;">
-										
-										
-										<div><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
-											<label>Description</label>
-											<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					<div class="row">
+				<div class="row">
 					<div id="errorDiv1" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;"></div>
 						<div class="col-md-3" style="margin-top:10px">
 						<input class="btn btn-primary btnNewCustom1" id="addThisalertId" onclick="createAlert();" type="button" value="CREATE ALERT" ></input>
 						<!--<button  type="button" class="btn btn-primary">CREATE ALERT</button>-->
 						</div>
 					</div>
-				</div>
-				
-				<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
-				<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
-				
-				
-				
+					
 							</form>
 								
 						</div>
