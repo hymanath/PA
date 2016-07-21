@@ -377,10 +377,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartments(){
+	public List<IdNameVO> getDepartments(Long postTpe){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = departmentsDAO.getDepartments();
+		List<Object[]> list = departmentsDAO.getDepartments(postTpe);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -768,6 +768,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Long voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
 						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
 						nominationPostCandidate.setTdpCadreId(nominatedPostVO.getId());
+						
 					}else{
 						Long voterId = voterDAO.getVoterIdByIdCardNo(nominatedPostVO.getVoterCardNo());
 						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
@@ -786,40 +787,25 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							nominationPostCandidate = nominationPostCandidateDAO.save(nominationPostCandidate);
 					
 					if(nominatedPostVO.getNominatdList() != null && !nominatedPostVO.getNominatdList().isEmpty() ){
-						nominatedPostApplication = new NominatedPostApplication();
+						
 						for(NominatedPostVO Vo : nominatedPostVO.getNominatdList()){
-							
-							nominatedPostApplication.setNominationPostCandidateId(nominationPostCandidate.getNominationPostCandidateId() != null ? nominationPostCandidate.getNominationPostCandidateId() : null);
-							
-							if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 1){
-								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 2){
-								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-								nominatedPostApplication.setLocationValue(Vo.getStateId() != null ? Vo.getStateId() : null) ;
-							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 3){
-								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-								nominatedPostApplication.setLocationValue(Vo.getDistrictId() != null ? Vo.getDistrictId() : null) ;
-							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 4){
-								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-								nominatedPostApplication.setLocationValue(Vo.getConstituencyId() != null ? Vo.getConstituencyId() : null) ;
-							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 5 || Vo.getBoardLevelId().longValue() == 6){
-								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-								nominatedPostApplication.setLocationValue(Vo.getMandalId() != null ? Vo.getMandalId() : null) ;
-							}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 7){
-								nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-								nominatedPostApplication.setLocationValue(Vo.getPanchayatId() != null ? Vo.getPanchayatId() : null) ;
+							String[] positnArr = null ;
+							String positions = Vo.getPositions();
+							if(positions != null && positions.length() > 0){
+								positnArr = new String[0];
+								 positnArr = positions.split(",");
 							}
 							
-							nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
-							nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
-							nominatedPostApplication.setPositionId(Vo.getDeptBoardPostnId() != null ? Vo.getDeptBoardPostnId() : null) ;
-							nominatedPostApplication.setInsertedBy(loggerUserId);
-							nominatedPostApplication.setUpdatedBy(loggerUserId);
-							nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostApplication.setIsDeleted("N");
-							nominatedPostApplication.setApplicationStatusId(1l);
-							nominatedPostApplicationDAO.save(nominatedPostApplication);
+								if(positnArr != null && positnArr.length >0){
+									for(String position : positnArr){
+										//nominatedPostApplication = new NominatedPostApplication();
+										saveNominatedPostApplication(Vo,nominationPostCandidate.getNominationPostCandidateId(),position.trim(),loggerUserId);
+									}
+								}else{
+									//nominatedPostApplication = new NominatedPostApplication();
+									saveNominatedPostApplication(Vo,nominationPostCandidate.getNominationPostCandidateId(),null,loggerUserId);
+								}
+							
 						
 						}
 				}
@@ -877,6 +863,55 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		status.setResultCode(1);
 	}
 		return status;
+	}
+	/**
+	 * @Author  HYMAVATHI
+	 * @Version NominatedPostProfileService.java  July 15, 2016 11:50:00 AM 
+	 * @return void
+	 * description  { Saving Nominated Post Prifile Application Candidate into Database for Each Position}
+	 */
+	public void saveNominatedPostApplication(NominatedPostVO Vo ,Long nominatedPostCandi,String position,final Long loggerUserId){
+		try{
+			NominatedPostApplication nominatedPostApplication = new NominatedPostApplication();
+		nominatedPostApplication.setPositionId(position != null ? Long.parseLong(position.trim()) : null) ;
+		
+		nominatedPostApplication.setNominationPostCandidateId(nominatedPostCandi != null ? nominatedPostCandi : null);
+		
+		if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 1){
+			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 2){
+			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getStateId() != null ? Vo.getStateId() : null) ;
+		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 3){
+			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getDistrictId() != null ? Vo.getDistrictId() : null) ;
+		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 4){
+			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getConstituencyId() != null ? Vo.getConstituencyId() : null) ;
+		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 5 || Vo.getBoardLevelId().longValue() == 6){
+			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getMandalId() != null ? Vo.getMandalId() : null) ;
+		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 7){
+			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getPanchayatId() != null ? Vo.getPanchayatId() : null) ;
+		}
+		
+		nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
+		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
+		//nominatedPostApplication.setPositionId(Vo.getDeptBoardPostnId() != null ? Vo.getDeptBoardPostnId() : null) ;
+		nominatedPostApplication.setInsertedBy(loggerUserId);
+		nominatedPostApplication.setUpdatedBy(loggerUserId);
+		nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		nominatedPostApplication.setIsDeleted("N");
+		nominatedPostApplication.setApplicationStatusId(1l);
+		nominatedPostApplicationDAO.save(nominatedPostApplication);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in saveNominatedPostApplication()", e);
+			//status.setMessage("FAIL");
+			//status.setResultCode(1);
+		}
 	}
 	
 	/**
