@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -9,7 +8,7 @@
 	<div class="col-md-12" id="commomCadreSearchDiv">
 			<div class="panel panel-default" style="border-radius:0px;">
 				<div class="panel-heading" style="background:#ccc;border-radius:0px;">
-					<h4 class="panel-title">POLITICAL ALERT</h4>
+					<h4 class="panel-title">SEARCH CADRE</h4>
 				</div>
 				<div class="panel-body" style="background:#eee;">
 					
@@ -91,9 +90,6 @@
 							<option value="0">Select Panchayat/Ward</option>
 							</select>
 						</div>
-						
-						
-						
 						<div>
 									<div class="advanceCadreCommittee" id="referCommitteeDiv">
 									 <div class="col-md-3">
@@ -159,313 +155,7 @@
 			</div>
 			</div>
 			</div>
-		
-	
 <script type="text/javascript">
-
-
-function getCandidatesByName(){
-		var  CandidateName=$("#candidateNameId").val();
-		var jsObj =
-		        {
-			CandidateName : CandidateName
-		          }
-		//$('#ajaxImage').show();
-				$.ajax({
-					  type:'GET',
-					  url: 'getCandidatesByNameAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					$('#candidatesNameListId').append('<option value="0"> Select Candidate </option>');
-					if(result != null)
-					{
-						for(var i in result)
-						{			
-							$('#candidatesNameListId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-						}
-						$("#candidatesNameListId").dropkick();
-							var select1 = new Dropkick("#candidatesNameListId");
-							select1.refresh();
-					}
-				  
-				});
-		}
-		function getCandidateNameDetails()
-		{
-			
-		 $("#errorDiv").html('');
-		 var CandidateName=$("#candidateNameId").val();
-		 if(CandidateName.trim().length<=3 || CandidateName ==""){
-          $("#errorDiv").html('plz enter minimum 3 characters ');
-	      return;
-         }	
-		 getCandidatesByName();
-		}
-		
-function createAlert()
-{
-  var  alertType=$("#alertTypeId").val();
-  var alertSourceId = $("#alertSourceId").val();
-  var alertSeverityId = $("#alertSeverityId").val();
-  var  level=$("#alertlevelId1").val();
-  var  state=$("#stateId1").val();
-  var  district=$("#referdistrictId1").val();
-  var  assembly=$("#referconstituencyId1").val();
-  var  mandal=$("#refermandalNameId1").val();
-  var  panchayat=$("#referpanchayatId1").val();
- // var  candidate=$("#candidatesNameListId").val();
-  //var  candidateName=$("#candidateNameId").val();
-  var  description=$("#alertdescriptionId").val().trim();
-   $("#errorDiv1").html('');
-  $("#errorDiv1").css("color","red");
-  if(alertType==0)
-  {
-    $("#errorDiv1").html(" Please select Alert Type ");
-        return;
-  }
-  if(alertSourceId==0)
-  {
-    $("#errorDiv1").html(" Please select Alert Source ");
-        return;
-  }
-   if(alertSeverityId==0)
-  {
-    $("#errorDiv1").html(" Please select Alert Severity ");
-        return;
-  }
-  
-  if(level==0)
-  {
-     $("#errorDiv1").html(" Please select level ");
-  }
-  
-  if(level==2)
-  {
-    if(state==0)
-      {
-      $("#errorDiv1").html(" Please select state ");
-          return;
-    }
-	$("#locationLevelIdhidden").val(2);
-	$("#locationLevelValhidden").val(state);
-    
-  }
-  if(level==3)
-  {
-    if(state==0)
-    {
-      $("#errorDiv1").html(" Please select state ");
-          return;
-    }
-    if(district==0)
-    {
-      $("#errorDiv1").html(" Please select District ");
-          return;
-    }
-	$("#locationLevelIdhidden").val(3);
-	$("#locationLevelValhidden").val(district);
-  }
-  
- if(level==4)
-  {
-    if(state==0)
-      {
-        $("#errorDiv1").html(" Please select state ");
-            return;
-      }
-    if(district==0)
-      {
-        $("#errorDiv1").html(" Please select District ");
-            return;
-      }
-    if(assembly==0)
-    {
-      $("#errorDiv1").html(" Please select Assembly ");
-          return;
-    }
-	$("#locationLevelIdhidden").val(4);
-	$("#locationLevelValhidden").val(assembly);
-  }
-  if(level==5)
-  {
-	  var mandalName = $("#refermandalNameId1 option:selected").text();
-    if(state==0)
-      {
-        $("#errorDiv1").html(" Please select state ");
-            return;
-      }
-    if(district==0)
-      {
-        $("#errorDiv1").html(" Please select District ");
-            return;
-      }
-    if(assembly==0)
-     {
-      $("#errorDiv1").html(" Please select Assembly ");
-          return;
-     }
-    
-    if(mandal==0)
-    {
-      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
-          return;
-    }
-	$("#locationLevelValhidden").val(mandal);
-		if(mandalName.indexOf('Mandal') == -1)
-		$("#locationLevelIdhidden").val(7);
-	else
-		$("#locationLevelIdhidden").val(5);
-		
-  }
-  if(level==6)
-  {
-	   var panchayatName = $("#referpanchayatId1 option:selected").text();
-    if(state==0)
-      {
-        $("#errorDiv1").html(" Please select state ");
-            return;
-      }
-    if(district==0)
-      {
-        $("#errorDiv1").html(" Please select District ");
-            return;
-      }
-      if(assembly==0)
-     {
-      $("#errorDiv1").html(" Please select Assembly ");
-          return;
-     }
-    
-      if(mandal==0)
-     {
-      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
-          return;
-     }
-     if(panchayat==0)
-     {
-    $("#errorDiv1").html(" Please select Panchayat ");
-        return;
-     }
-	 $("#locationLevelValhidden").val(panchayat);
-		 if(panchayatName.indexOf('WARD') == -1)
-			$("#locationLevelIdhidden").val(6);
-		else
-			$("#locationLevelIdhidden").val(8);
-    }
-	var candidateId="";
-	$(".memberDatacls").each(function(){
-		if($(this).val() != null && $(this).val().length > 0)
-		candidateId += $(this).val()+",";
-	})
- if(candidateId==0 || candidateId.length == 0)
-  {
-    $("#errorDiv1").html(" Please select Candidate ");
-        return;
-  }
-	var n=candidateId.lastIndexOf(",");
-    candidateId=candidateId.substring(0,n) ;
-	$("#candidateId").val(candidateId);
-	
-
-   if(description.length==0 ||description=='')
-  {
-    $("#errorDiv1").html(" Please select description ");
-        return;
-  }
-
-var uploadHandler = {
-				upload: function(o) {
-					uploadResult = o.responseText;
-					if(uploadResult.indexOf("success") !=-1)
-					{
-					 $("#errorDiv1").html(" Alert Created Successfully ").css("color","green");	
-					}
-					clearFields();
-					disableByLevel(1);
-					return false;
-				}
-			};
-
-		YAHOO.util.Connect.setForm('saveAlertForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','saveAlertAction.action',uploadHandler);
-}
-
-function clearFields()
-{
-	$(".alertclearCls").val("");
-	 $("#alertTypeId").val(0);
-	  var select = new Dropkick("#alertTypeId");
-				select.refresh();
-	 $("#alertSeverityId").val(0);
-	   var select = new Dropkick("#alertSeverityId");
-				select.refresh();
-		$("#alertlevelId1").val(2);
-	   var select = new Dropkick("#alertlevelId1");
-				select.refresh();
-		$("#alertSourceId").val(0);
-	   var select = new Dropkick("#alertSourceId");
-				select.refresh();
-	 var select = new Dropkick("#stateId1");
-				select.refresh();
-				$("#apptmemberDetailsDiv").html("");
-				$(".membersBlock").html("");
-				$("#involvedCandidatesDiv").hide();
-				
-				
-}
-function getAlertType(){
-		$("#alertTypeId").html('');
-		var jsObj =
-		        {
-			task:""
-		          }
-				$.ajax({
-					  type:'GET',
-					  url: 'getAlertTypeAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					$('#alertTypeId').append('<option value="0"> Select Alert Type </option>');
-					if(result != null)
-					{
-						for(var i in result)
-						{			
-							$('#alertTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-						}
-						$("#alertTypeId").dropkick();
-							var select1 = new Dropkick("#alertTypeId");
-							select1.refresh();
-					}
-				  
-				});
-		}
-		
-var loginUserId = "${sessionScope.USER.registrationID}";
-function getAlertsource(){
-		$("#alertSourceId").html('');
-		var jsObj =
-		        {
-					userId : loginUserId,
-				task:""
-		          }
-				$.ajax({
-					  type:'GET',
-					  url: 'getAlertSourceForUserAction.action',
-					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
-					$('#alertSourceId').append('<option value="0"> Select Alert Source </option>');
-					if(result != null)
-					{
-						for(var i in result)
-						{			
-							$('#alertSourceId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-						}
-						$("#alertSourceId").dropkick();
-							var select1 = new Dropkick("#alertSourceId");
-							select1.refresh();
-					}
-				  
-				});
-		}
 function buildapptmemberDetails(result){
 		var str='';
 		if(result !=null && result.length>0){
@@ -541,7 +231,7 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
+								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
 							  
 								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
 									
