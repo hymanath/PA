@@ -45,4 +45,22 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		
 		return query.list();
 	}
+	
+	public Long getNominatedPostMemberId(Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId){
+		Query query = getSession().createQuery("select model.nominatedPostMemberId" +
+											" from NominatedPostMember model" +
+											" where model.boardLevel.boardLevelId = :levelId" +
+											" and model.locationValue = :levelValue" +
+											" and model.nominatedPostPosition.department.departmentId = :deptId" +
+											" and model.nominatedPostPosition.board.boardId = :boardId" +
+											" and model.nominatedPostPosition.position.positionId = :positionId" +
+											" and model.isDeleted = 'N' and model.nominatedPostPosition.isDeleted = 'N'");
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("deptId", deptId);
+		query.setParameter("boardId", boardId);
+		query.setParameter("positionId", positionId);
+		
+		return (Long) query.uniqueResult();
+	}
 }

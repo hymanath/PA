@@ -66,16 +66,17 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
 					" where NPA.boardLevel.boardLevelId = :levelId" +
-					" and NPA.locationValue = :levelValue" +
-					" and NPA.departments.departmentId = :departmentId");
+					" and NPA.locationValue = :levelValue");
 		
-		if(type.equalsIgnoreCase("this") && boardId != null && positionId != null){
-			sb.append(" and NPA.board.boardId = :boardId" +
+		if(type.equalsIgnoreCase("this")){
+			sb.append(" and NPA.departments.departmentId = :departmentId" +
+						" and NPA.board.boardId = :boardId" +
 						" and NPA.position.positionId = :positionId");
 		}
 		else if(type.equalsIgnoreCase("any")){
-			sb.append(" and NPA.boardId != :boardId" +
-						" and NPA.positionId != :positionId");
+			sb.append(" and (NPA.departments.departmentId is null" +
+						" or NPA.boardId is null" +
+						" or NPA.positionId is null)");
 		}
 		sb.append(" and NPA.nominationPostCandidate.isDeleted = 'N'" +
 					" and NPA.isDeleted = 'N'");
@@ -83,9 +84,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameter("levelValue", levelValue);
-		query.setParameter("departmentId", departmentId);
-		query.setParameter("boardId", boardId);
-		query.setParameter("positionId", positionId);
+		if(type.equalsIgnoreCase("this")){
+			query.setParameter("departmentId", departmentId);
+			query.setParameter("boardId", boardId);
+			query.setParameter("positionId", positionId);
+		}
 		
 		return query.list();
 	}
