@@ -956,7 +956,7 @@
 		var resultArr = result.split(',');
 		if(result.search('SUCCESS') != -1)
 		{
-			
+			/*
 			str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
 			str+='<input type="hidden" name="ip" value="49.204.21.50" readonly>';
 			str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';
@@ -980,7 +980,7 @@
 			str+='<input type="submit" name="submit button" value="PAY NOW">'; 
 			str+='</form>';
 			
-			/*
+			*/
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<p class="text-align">Thank You For Your Registration</p>';
@@ -996,7 +996,7 @@
 			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
-			*/
+			
 		}
 		else if(result.search('FAILURE') != -1)
 		{
