@@ -3,7 +3,6 @@ buildLevelsByIndex('');
 getMemberTypes();
 //showHideSearch("advanceSearch");
 showHideBySearchType();
-
 function getMemberTypes()
 {
 	
@@ -132,10 +131,8 @@ function disableByLevel(index)
   function showHideBySearchType(){
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
-			
 			if(selectVal == "PR")
 			{
-			
 				$(".advancePRCls,#searchBtnId").show();
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
@@ -149,7 +146,6 @@ function disableByLevel(index)
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
 				//disableByLevel();
-				
 			}
 			else if(selectVal == "committee")
 			{
@@ -187,7 +183,6 @@ function disableByLevel(index)
 			}
 			else if(selectVal == "0")
 			{
-			
 				$(".levelShowCls").hide();
 				$(".stateShowCls").hide();
 				$(".advanceprcls").show();
@@ -222,7 +217,6 @@ function disableByLevel(index)
 			
 		
 			}
-			
 				disableByLevel('');
 				$(".stateCls").show();
 				$(".distCls").hide();
@@ -232,8 +226,6 @@ function disableByLevel(index)
 	}
  function setDefault(index)
   {
-	  
-	  
 	  $("#referconstituencyId"+index).find('option').not(':first').remove();
 	  $("#refermandalNameId"+index).find('option').not(':first').remove();
 	  $("#referpanchayatId"+index).find('option').not(':first').remove();
