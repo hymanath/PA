@@ -168,6 +168,7 @@ function getDistrictsForStates(state,id,num){
 				{
 					if(id == "constituencyId"){
 						$("#mandalList").empty();
+						$("#mandalList").append('<option value="0">Select Mandal</option>');
 					}else {
 						$("#nominatedMandlId"+num).empty();
 					}
@@ -212,6 +213,7 @@ function getPanchayatWardByMandal(num,id){
 			}).done(function(result){
 				if(id == "mandalList"){
 						$("#panchaytList").empty();
+						$("#panchaytList").append('<option value="0">Select Panchayat</option>');
 					}else {
 						$("#nominatedPanchayatId"+num).empty();
 					}
@@ -268,7 +270,7 @@ function getAllCadreInPanchayat()
 		refreshExistingDetails();
 	} 
 function getNominatedPostApplication(startIndex)
-		{		
+		{			
 		var locationLevel = 0;
 		var locationValue = 0;
 		var searchName = '';
@@ -293,7 +295,7 @@ function getNominatedPostApplication(startIndex)
 		
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
-		//$("#cadreSearchDtls").hide();
+		//$("#cadreSearchDtls").show();
 		var searchBy = $('#searchBy').val().trim();
 		var searchRadioType =$('#cadreSearchType').val();;
 		var parentLocation = 0;
@@ -459,15 +461,17 @@ function getNominatedPostApplication(startIndex)
 				{
 				buildCadreDetails(result.previousRoles);
 				}
-				else
+				 else
 				{
 					
 					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
-				}
+				} 
 			});  
 
 	}
-   function buildCadreDetails(result){   
+   function buildCadreDetails(result){ 
+       $("#scrollDivId").show();
+	   $("#textId").show();
 		var str='';
 		var str1='';
 		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>';
@@ -518,6 +522,31 @@ function getNominatedPostApplication(startIndex)
 		$("#notCadreErrMsg").html("");
 		
 	}
+	function refreshExistingDetailsInNominatedLevel()
+	{
+		alert(7);
+		$('#boardLvlId').val(0).trigger('chosen:updated');
+		$('#nominatedStaeId').val(0).trigger('chosen:updated');
+		$("#nominatedDistId").val(0).trigger("chosen:updated");
+		$("#nominatdConstId").val(0).trigger("chosen:updated");
+		$("#nominatedMandlId").val(0).trigger("chosen:updated");
+		$("#nominatedPanchayatId").val(0).trigger("chosen:updated");
+		$("#depmtsId").val(0).trigger("chosen:updated");
+		$("#deptBoardId").val(0).trigger("chosen:updated");
+		$("#deptBoardPostnId").val(0).trigger("chosen:updated");
+		$("#statesDivId").val(0).trigger("chosen:updated");
+		$("#districtId").val(0).trigger("chosen:updated");
+		$("#constituencyId").val(0).trigger("chosen:updated");
+		$("#mandalList").val(0).trigger("chosen:updated");
+		$("#panchaytList").val(0).trigger("chosen:updated");
+		$("#addOneMoreBlock").html("");
+	    $("#scrollDivId").hide();
+	    $("#textId").hide();
+		$("#cadreSearchSize").hide(); 
+        $("#searchData").html("");
+		$("#searchErrDiv").hide();
+		
+		}
 getDistricts();
 function getDistricts(){
 	$("#searchDataImgForDist").show();
@@ -926,7 +955,7 @@ function savingApplication(){
 			$(".tdpCadreName").val(cadreName);
 			$(".cadreVoterId").val(cadreVoterId);
 			$(".cadreMobileNo").val(cadreMobilNo);
-			
+		
 			var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
@@ -949,6 +978,8 @@ function savingApplication(){
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
 			
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application received  successfully , To complete the registration ,Upload the profiles below</span>");
+			refreshExistingDetailsInNominatedLevel();
+			refreshExistingDetails();
 			//setTimeout(function(){
 			//$("#savingStatusDivId").html("");
 			//}, 5000);
@@ -1457,7 +1488,7 @@ function searchByApplicant()
   if ($("#cadreSearchId").is(":checked")) {
 		$("#searchMemberDiv").show();
 		$("#cadreById").hide();
-		$("#scrollDivId").show();
+
 	}
 	else {
 	 $("#searchMemberDiv").hide();
