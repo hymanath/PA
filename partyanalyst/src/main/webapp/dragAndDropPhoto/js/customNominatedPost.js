@@ -52,7 +52,7 @@ $(document).ready(function() {
 			</div>\
 		</li>',
 		progressBar: '<div class="bar"></div>',
-		itemAppendToEnd: false,
+		itemAppendToEnd: true,
             removeConfirmation: true,
             _selectors: {
                 list: '.jFiler-items-list',
@@ -66,7 +66,7 @@ $(document).ready(function() {
             dragLeave: null,
             drop: null,
         },
-       uploadFile: {
+      /*  uploadFile: {
 		  
             url: "nominatedPostUploadFormAction.action",
 			//autoProcessQueue: false,
@@ -101,10 +101,10 @@ $(document).ready(function() {
             onProgress: null,
             onComplete: null
         },
-		 
+		  */
 		
 		files: null,
-        addMore: false,
+        addMore: true,
         clipBoardPaste: true,
         excludeName: null,
         beforeRender: null,
