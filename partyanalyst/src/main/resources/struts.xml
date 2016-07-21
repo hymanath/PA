@@ -13028,7 +13028,17 @@
 			<result type="json" name="success">
 				<param name="root">alertDataList</param>
 			</result>
+		</action>
+	<action name="getAllApplicationStatusListAction" class="nominatedPostProfileAction" method="getAllApplicationStatusList">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
 	</action>	
+	<action name="savingAnyPostCandidatesToPositionAction" class="nominatedPostProfileAction" method="savingAnyPostCandidatesToPosition">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
 	<action name="nominatedPostManagementAction" class="nominatedPostProfileAction" method="nominatedPostManagement">
 		<result name="success">/jsp/nominatedPostManagement.jsp</result>
 	</action>
