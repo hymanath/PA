@@ -19111,4 +19111,38 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 	 return VOList;
  }
  
+ public List<LocationWiseBoothDetailsVO> getSubLevelForConstituency(Long stateId, List<Long> districtIds, List<Long> constituencyIds, Long locationLevelId){
+	 List<LocationWiseBoothDetailsVO> finaVoList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try{
+			List<Long> constiIds = new ArrayList<Long>();
+		/*	List<Long> mandalIds = new ArrayList<Long>();
+			List<Long> localBodyIds = new ArrayList<Long>();*/
+			if(locationLevelId.equals(5l)){
+				if(constituencyIds!=null && constituencyIds.size()>0){
+					constiIds = constituencyIds;
+				}else{
+					//List<Object[]> rslt = constituencyDAO.getConstituenciesByStateAndDistrict(stateId, districtIds);
+					List<LocationWiseBoothDetailsVO> rslt = getConstituencyOfDistrict(stateId, districtIds);
+					if(rslt!=null && rslt.size()>0){
+						for(LocationWiseBoothDetailsVO obj:rslt){
+							constiIds.add(obj.getLocationId());
+						}
+					}					
+				}
+			}
+			
+			
+			if(locationLevelId.equals(5l)){
+				finaVoList =  getMandalMunicCorpDetailsOfConstituencies(constiIds);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getSubLevelForConstituency", e);
+		}
+		
+		return finaVoList;
+	}
+	
+ 
+ 
 }
