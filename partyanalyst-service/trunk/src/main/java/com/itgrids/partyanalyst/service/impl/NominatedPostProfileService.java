@@ -737,7 +737,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return ResultStatus
 	 * description  { Saving Nominated Post Prifile Application Candidate into Database }
 	 */
-	public ResultStatus savingNominatedPostProfileApplication(final NominatedPostVO nominatedPostVO,final Long loggerUserId){
+	public ResultStatus savingNominatedPostProfileApplication(final NominatedPostVO nominatedPostVO,final Long loggerUserId,final Map<File,String> mapfiles){
 		final ResultStatus status = new ResultStatus ();
 		
 		try{
@@ -813,7 +813,47 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						}
 				}
-		
+					String folderName = folderCreation();
+					ApplicationDocument applicationDocument = null;
+					
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(new Date());
+					 int year = calendar.get(Calendar.YEAR);
+					 int month = calendar.get(Calendar.MONTH);
+					 int day = calendar.get(Calendar.DAY_OF_MONTH);
+					 int temp = month+1;
+					 String monthText = getMonthForInt(temp);
+					
+					 StringBuilder pathBuilder = null;
+					 StringBuilder str ;
+					 
+						
+					 for (Map.Entry<File, String> entry : mapfiles.entrySet())
+					 {
+						 pathBuilder = new StringBuilder();
+						 str = new StringBuilder();
+						 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+						 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+							
+						 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
+						 .append(entry.getValue());
+						 str.append(randomNumber).append(".").append(entry.getValue());
+						 activityService = new ActivityService();
+						String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+						 
+							if(fileCpyStts.equalsIgnoreCase("error")){
+								status.setResultCode(ResultCodeMapper.FAILURE);
+								LOG.error(" Exception Raise in copying file");
+								throw new ArithmeticException();
+							}
+							
+							applicationDocument = new ApplicationDocument();
+							applicationDocument.setFilePath(pathBuilder.toString());
+							applicationDocument.setNominationPostCandidateId(nominationPostCandidate.getNominationPostCandidateId() != null ? nominationPostCandidate.getNominationPostCandidateId() : null);
+							applicationDocument.setIsDeleted("N");
+							applicationDocument = applicationDocumentDAO.save(applicationDocument);
+							
+					 }
 					//status.setMessage("SUCCESS");
 					status.setResultCode(0);
 					status.setMessage("SUCCESS - "+nominationPostCandidate.getNominationPostCandidateId());
