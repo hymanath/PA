@@ -652,6 +652,7 @@ var uploadHandler = {
 function clearFields()
 {
 	$(".alertclearCls").val("");
+	$(".clearCls").val("");
 	 $("#alertTypeId").val(0);
 	  var select = new Dropkick("#alertTypeId");
 				select.refresh();
@@ -664,11 +665,19 @@ function clearFields()
 		$("#alertSourceId").val(0);
 	   var select = new Dropkick("#alertSourceId");
 				select.refresh();
-	 var select = new Dropkick("#stateId1");
+	 var select = new Dropkick("#stateId1").val(0);
 				select.refresh();
 				$("#apptmemberDetailsDiv").html("");
 				$(".membersBlock").html("");
 				$("#involvedCandidatesDiv").hide();
+		 var select = new Dropkick("#advanceSearchTypeId");
+				select.refresh();	
+		showHideBySearchType();	
+		disableByLevel('')		;
+		 var select = new Dropkick("#advanceSearchTypeId");
+				select.refresh();	
+		
+				
 				
 				
 }
