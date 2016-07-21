@@ -867,9 +867,9 @@ var globalidentityMembershipNo = ""	;
 								}else if(result.verifierVOList[i].isSampleVerified != null  && result.verifierVOList[i].isSampleVerified =='true'){
 									str+='   - <b>Verification Status :</b> <span style="color:green;"> '+result.verifierVOList[i].isSampleVerified+'.</span> ';
 								}else if(result.verifierVOList[i].isSampleVerified == "null"){
-									str+='   - <b>Verification Status :</b> -  ';
+									str+='   - <b>Verification Status :</b>  <span style="color:red;"> Not Verified </span> ';
 								}else{
-									str+='   - <b>Verification Status :</b> -  ';
+									str+='   - <b>Verification Status :</b>  <span style="color:red;"> Not Verified </span> ';
 								}
 								
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
@@ -1595,13 +1595,13 @@ function getTotalComplaintsForCandidate(){
 	
 		$.ajax({
 				type : "POST",
-				//url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-				url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 				  data: JSON.stringify(arr),
 				 contentType: "application/json; charset=utf-8",
 				 dataType: "json",
-				 //username: "grievance",
-				 //password: "grievance@!tG"	
+				 username: "grievance",
+				 password: "grievance@!tG"	
 				 }).done(function(myresult){
 					$("#candidateapprovedDiv").hide();
 					$("#candidatedeathDiv").hide();
@@ -1760,13 +1760,13 @@ function getMemberComplaints()
   $("#familyMemberDiv").html('');
 	$.ajax({
 			type : "POST",
-			//url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			 url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
-			 //username: "grievance",
-             //password: "grievance@!tG"
+			username: "grievance",
+				 password: "grievance@!tG"	
 			 }).done(function(myresult){
 				$("#familyMemberImg").hide();
 				 $("#familydeathDiv").hide();
@@ -5355,12 +5355,12 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show(); 
 	$.ajax({
 		type:'GET',
-		//url: "http://mytdp.com/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
-		url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		url: "http://mytdp.com/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
-			//username: "grievance",
-          //  password: "grievance@!tG"
+			username: "grievance",
+				 password: "grievance@!tG"	
 	}).done(function(result){
 		$("#referralGrievanceLoadingImg").hide();
 		var value='';
@@ -5384,13 +5384,13 @@ function getRefferelDetailsStatusWise(){
 				}
 				$.ajax({
 					type:'POST',
-					//url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
-					url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 						 dataType: "json",
 						 data: JSON.stringify(obj),
 						 contentType: "application/json; charset=utf-8",
-						 //username: "grievance",
-						 //password: "grievance@!tG"
+						username: "grievance",
+				 password: "grievance@!tG"	
 				}).done(function(result){
 					
 					value += '<div class="panel-body pad_0">';
@@ -5440,13 +5440,13 @@ $(document).on('click','.referalGrievenceCls',function(){
 	
 	$.ajax({
 		type:'POST',
-		//url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
-		url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
 			 contentType: "application/json; charset=utf-8",
-			 //username: "grievance",
-             //password: "grievance@!tG"
+			 username: "grievance",
+				 password: "grievance@!tG"	
 	}).done(function(result){
 		buildPopupComplaintInfo1(result);
 		
