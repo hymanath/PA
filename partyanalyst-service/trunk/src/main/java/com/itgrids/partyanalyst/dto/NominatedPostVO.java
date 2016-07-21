@@ -60,11 +60,18 @@ public class NominatedPostVO implements Serializable{
 	private Long fourthAgeGroupCount=0l;
 	private Long fifthAgeGroupCount=0l;
 	private Long locationVal;
+	private String positions;
 	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
 	
+	public String getPositions() {
+		return positions;
+	}
+	public void setPositions(String positions) {
+		this.positions = positions;
+	}
 	public Long getReceivedCount() {
 		return receivedCount;
 	}
