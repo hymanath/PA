@@ -679,29 +679,31 @@ $('.searchTypeCls').click(function(){
 	  $("#deptBoardId"+num).trigger("chosen:updated");
    });
   }
-  function getDepartments(id){
+  function getDepartments(num,postType){
 	//$("#searchDataImgForDist").show();
-    
-	var jsObj = {}
+   
+	var jsObj = {postType:postType}
     $.ajax({
           type:'GET',
           url: 'getDepartmentsAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-   $("#"+id).empty();
+	   $("#deptBoardId"+num).empty();
+	   $("#deptBoardPostnId"+num).empty();
+   $("#depmtsId"+num).empty();
     
    if(result != null && result.length >0){
-		$("#"+id).append('<option value="0">Select Department</option>'); 
+		$("#depmtsId"+num).append('<option value="0">Select Department</option>'); 
      for(var i in result){
-	   $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
    }
-	  $("#"+id).trigger("chosen:updated");
+	  $("#depmtsId"+num).trigger("chosen:updated");
    });
   }
 getBoardLevels("boardLvlId"); 
-getDepartments("depmtsId"); 
+getDepartments("",1); 
 $(document).on("click",".checkboxCls",function(){
 	
     $(".checkboxCls").prop( "checked" ,false);
@@ -802,7 +804,12 @@ $(document).on("click","#addOneMore",function(){
   e.attr("id",'block'+cloneCount);
   e.attr("attr_count",cloneCount);
   e.show();
+  e.find(".nominatdPostSelCls").attr("id","nomintdPostId"+cloneCount);
+  e.find(".nominatdPostSelCls").attr("onClick",'getDepartments('+cloneCount+',1);');
+  e.find(".partyPostSelCls").attr("id","partyPostId"+cloneCount);
+  e.find(".partyPostSelCls").attr("onClick",'getDepartments('+cloneCount+',2);');
   e.find(".iconClose").show();
+  
  e.find(".boardLvlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].boardLevelId');
   e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
   e.find(".boardLvlCls").attr("attr_no",cloneCount);
@@ -841,16 +848,17 @@ $(document).on("click","#addOneMore",function(){
   e.find(".depmtsCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptId');  
   e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
   e.find(".depmtsCls").attr("attr_no",cloneCount);
-  getDepartments("depmtsId"+cloneCount);
-  e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+');');
+  getDepartments(cloneCount,1);
+  e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+',1);');
   
   e.find(".deptBoardCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptBoardId');
   e.find(".deptBoardCls").attr("id","deptBoardId"+cloneCount);
   e.find(".deptBoardCls").attr("attr_no",cloneCount);
   e.find(".deptBoardCls").attr("onChange",'getDepartmentBoardPositions('+cloneCount+');');
   
-  e.find(".deptBoardPostnCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptBoardPostnId');
+  e.find(".deptBoardPostnCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].positions');
   e.find(".deptBoardPostnCls").attr("id","deptBoardPostnId"+cloneCount);
+  e.find(".deptBoardPostnCls").attr("multiple","multiple");
   e.find(".deptBoardPostnCls").attr("attr_no",cloneCount);
   $("#addOneMoreBlock").append(e);
   
@@ -886,7 +894,7 @@ $(document).on("click","#addOneMore",function(){
 function savingApplication(){
 	 $('#notCadreErrMsg').html("");
 	var flag = true;
-	$(".cadreCheckCls").each(function(){
+	 $(".cadreCheckCls").each(function(){
 				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
 					if(!searchByApplicant()){
 						return flag = false;
@@ -949,13 +957,13 @@ function savingApplication(){
 					cadreMobilNo =  $("#notCadreMobilNoId").val();
 				}
 			
-		});
+		}); 
 		
 			$(".tdpCadreId").val(cadreId);
 			$(".tdpCadreName").val(cadreName);
 			$(".cadreVoterId").val(cadreVoterId);
 			$(".cadreMobileNo").val(cadreMobilNo);
-		
+			 
 			var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
@@ -963,6 +971,7 @@ function savingApplication(){
 					showSbmitStatus(uploadResult);
 				}
 			};
+			
 			
 	if(flag){
 		$("#savingAjaxImg").css("display","block");	

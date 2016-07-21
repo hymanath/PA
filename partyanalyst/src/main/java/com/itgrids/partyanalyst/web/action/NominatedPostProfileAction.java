@@ -161,7 +161,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			
 			jObj = new JSONObject(getTask());
 			
-			idNameVOList = nominatedPostProfileService.getDepartments();
+			idNameVOList = nominatedPostProfileService.getDepartments(jObj.getLong("postType"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getDepartments Action",e);
