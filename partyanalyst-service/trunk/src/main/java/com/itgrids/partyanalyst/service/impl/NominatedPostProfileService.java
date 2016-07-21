@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -1886,11 +1887,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 
 				List<IdNameVO> statusList =new ArrayList<IdNameVO>(0);
-				if(type !=null && type.trim().equalsIgnoreCase("nominatedStatus")){
-					statusList = mainVo.getIdNameVoList();	
-				}else if(type !=null && type.trim().equalsIgnoreCase("applicationStatus")){
-					statusList = mainVo.getDistList();	
+				if(mainVo !=null){
+					if(type !=null && type.trim().equalsIgnoreCase("nominatedStatus")){
+						statusList = mainVo.getIdNameVoList();	
+					}else if(type !=null && type.trim().equalsIgnoreCase("applicationStatus")){
+						statusList = mainVo.getDistList();	
+					}
 				}
+				
 								
 				if(statusList !=null && statusList.size()>0){						
 					for (IdNameVO idNameVO : statusList) {							
@@ -1939,6 +1943,5 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			e.printStackTrace();
 		}
 		return finalList;
-	}
-	
+	}	
 }
