@@ -1518,3 +1518,7 @@ $(document).on("click",".deleteFile",function() {
 	   });
 
 });
+$(document).on("click",".referenceModal",function(){
+    $(".referenceModal").prop( "checked" ,false);
+	$( this ).prop( 'checked', true );
+})
