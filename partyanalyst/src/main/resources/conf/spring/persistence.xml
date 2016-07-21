@@ -948,8 +948,6 @@
 				    <value>com.itgrids.partyanalyst.model.MemberType</value> 
 				    <value>com.itgrids.partyanalyst.model.AlertAssigned</value> 
 				     <value>com.itgrids.partyanalyst.model.TdpMember</value> 
-				     <value>com.itgrids.partyanalyst.model.NominatedPostAccessType</value> 
-				     <value>com.itgrids.partyanalyst.model.NominatedPostAccessUser</value> 
 				    
 				 </list>
 			
