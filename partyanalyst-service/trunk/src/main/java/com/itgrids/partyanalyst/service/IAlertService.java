@@ -15,7 +15,7 @@ public interface IAlertService {
 	public String createAlert(final AlertVO inputVO,final Long userId);
 	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String FromDate,String toDate);
 	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO);
-	public String updateAlertStatus(final Long userId,final Long alertId,final Long alertStatusId,final String comments);
+	public String updateAlertStatus(final Long userId,final AlertVO inputVo);
 	public List<StatusTrackingVO> getAlertStatusCommentsTrackingDetails(Long alertId);
 	public List<BasicVO> getAlertType();
 	public List<BasicVO> getAlertSourceForUser(Long userId);

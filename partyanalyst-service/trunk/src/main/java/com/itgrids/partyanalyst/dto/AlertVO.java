@@ -23,11 +23,25 @@ public class AlertVO {
 	private List<IdNameVO> idNamesList;
 	
 	private Long tdpCadreId;
+	private Long id;
+	private Long statusId;
 	
 	
 	
 	
 	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
