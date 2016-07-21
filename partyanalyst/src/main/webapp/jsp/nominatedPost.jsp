@@ -30,6 +30,16 @@
 	background:#ccc;
 	cursor:pointer;
 }
+.createAppointmentSearch {
+    padding: 0;
+}
+.createAppointmentSearch li {
+    border: 1px solid #ddd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    list-style: outside none none;
+    margin-top: 8px;
+    padding: 8px;
+}
 </style>
 </head>
 <body>
@@ -231,17 +241,7 @@
 
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<div class="bg_ff pad_10">
-                        	<div class="row">
-                            	<div class="col-md-4 col-sm-4 col-xs-12 m_top10 col-lg-4">
-                                	<h4 class="panel-title">PLEASE SELECT APPLYING POST TYPE</h4>
-                                </div>
-                                <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
-                                	<div class="btn-group">
-                                      <button type="button" class="btn btnClassChange btnNewCustom btnActive" onclick="">Nominated Post</button>
-                                      <button type="button" class="btn btnClassChange btnNewCustom">Party Post</button>
-                                    </div>
-                                </div>
-                            </div>
+                        	
                         </div>
                     </div>
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
@@ -255,6 +255,17 @@
 					
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div class="addBlockNew cloneBlockDiv">
+							<div class="row">
+                            	<div class="col-md-4 col-sm-4 col-xs-12 m_top10 col-lg-4">
+                                	<h4 class="panel-title">PLEASE SELECT APPLYING POST TYPE</h4>
+                                </div>
+                                <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
+                                	<div class="btn-group">
+                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs" onclick="getDepartments('',1);">Nominated Post</button>
+                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs" onclick="getDepartments('',2);">Party Post</button>
+                                    </div>
+                                </div>
+                            </div>
 							<div class="row">
 							<div class="errorMsgCls" style="color:red;"></div>
 								<span class="iconClose" style="display:none;cursor:pointer;">
@@ -311,7 +322,7 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
-									<select attr_no="" class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].deptBoardPostnId">
+									<select attr_no="" multiple class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].positions">
 									<option value="0">Select Board Position</option>
 									</select>
 								</div>
@@ -320,11 +331,20 @@
 								<input type="hidden" class="cadreMobileNo" name="nominatedPostVO.mobileNo">
 								<input type="hidden" class="cadreVoterId" name="nominatedPostVO.voterCardNo">
 							</div>
-							<div class="panel-footer m_top10"  id="addOneMore">
-                            	<p class="text-center text-capital" >+ Click to add more nominations</p>
-                            </div>
+							
 						</div>
 						<div class="addBlockNew cloneBlockDiv" id="cloneDivBlock" style="display:none;">
+							<div class="row">
+                            	<div class="col-md-4 col-sm-4 col-xs-12 m_top10 col-lg-4">
+                                	<h4 class="panel-title">PLEASE SELECT APPLYING POST TYPE</h4>
+                                </div>
+                                <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
+                                	<div class="btn-group">
+                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" >Nominated Post</button>
+                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" >Party Post</button>
+                                    </div>
+                                </div>
+                            </div>
 							<div class="row">
 							<div class="errorMsgCls" style="color:red;"></div>
 								<span class="iconClose" style="display:none;cursor:pointer;">
@@ -384,13 +404,19 @@
 								</div>
 								
 							</div>
+							
 						</div>
+						
 					</div>
 					
 					
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
 						<div id="addOneMoreBlock"></div>
+						<div class="panel-footer m_top10"  id="addOneMore">
+							<p class="text-center text-capital" >+ Click to add more nominations</p>
+						</div>
 					</div>
+					
                 </div>
                  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                         <h4 class="panel-title text-success">REFERRAL</h4>
@@ -443,7 +469,7 @@ var globalCadreId=0;
 $(".dropkickClass").dropkick();
 $('.chosenSelect').chosen();
 $(document).on("click",".btnClassChange",function(){
-	$(".btnClassChange").removeClass("btnActive");
+	$(this).parent().find(".btnActive").removeClass("btnActive");
 	$(this).addClass("btnActive");
 });
 $(".referenceModal").click(function(){
@@ -462,6 +488,7 @@ $(document).on("change","#addConstituencyId",function(){
 $(document).on("change","#addMandalsId",function(){
   getPanchayatsForMandal();
 });
+$(".changHeading").html("SELECT REFER DETAILS<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>")
 </script>
 </body>
 </html>

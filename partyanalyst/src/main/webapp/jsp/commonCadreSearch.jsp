@@ -8,7 +8,7 @@
 	<div class="col-md-12" id="commomCadreSearchDiv">
 			<div class="panel panel-default" style="border-radius:0px;">
 				<div class="panel-heading" style="background:#ccc;border-radius:0px;">
-					<h4 class="panel-title">SEARCH CADRE</h4>
+					<h4 class="panel-title changHeading">SEARCH CADRE</h4>
 				</div>
 				<div class="panel-body" style="background:#eee;">
 					
