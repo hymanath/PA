@@ -141,11 +141,11 @@
                     <div class="col-md-12 col-xs-12 col-sm-12">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
                         	<div id="searchData"></div>
-                        	<div class="scroll-div" id="scrollDivId">
-                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls">
+                        	<div class="scroll-div" id="scrollDivId" style="display:none;">
+                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls" >
                                 </ul>
                              </div>
-                             <p class="text-muted" id="textId"><small>Note: Please select matches profile</small></p>
+                             <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
 	                    </div>
 						<div id="appliedPostForSelectedId"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
