@@ -855,7 +855,7 @@ $(document).on("click","#addOneMore",function(){
   cloneCount=cloneCount+1;
 });
 function savingApplication(){
-	$('#notCadreErrMsg').html("");
+	 $('#notCadreErrMsg').html("");
 	var flag = true;
 	$(".cadreCheckCls").each(function(){
 				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
@@ -970,7 +970,7 @@ function savingApplication(){
 		$(".boardLvlCls").each(function(){
 			$(".errorMsgCls").html("");
 			 var clonNo = $(this).attr("attr_no");
-			 alert(clonNo)
+			 
 			if($(this).val() == 0){
 				$(this).parent().find(".chosen-single").css("border","1px solid red");
 				errorMsg = "Please Select Board Level";
