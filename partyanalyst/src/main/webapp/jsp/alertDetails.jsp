@@ -255,7 +255,8 @@ control.makeTransliteratable(['commentsId']);
 			<div class="col-md-6 col-xs-12 col-sm-6">
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
-						<h4 class="panel-title text-success">ASSIGNED CANDIDATES</h4>
+						<h4 class="panel-title text-success">ASSIGNED CANDIDATES <span id="assignCandidatesCnt"> - 0</span></h4>
+						<input type="button" class="btn btn-primary assignModel pull-left" value="ASSIGN">
 					</div>
 					<div class="panel-body" style="height:320px;">
 						
@@ -297,7 +298,7 @@ control.makeTransliteratable(['commentsId']);
 				</div>
 			</div>
 			
-			<input type="button" value="ASSIGN" class="btn btn-primary assignModel">
+			<!--<input type="button" value="ASSIGN" class="btn btn-primary assignModel">-->
 			
 		<div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" style="width:85%;">
@@ -318,22 +319,11 @@ control.makeTransliteratable(['commentsId']);
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-				
-			
-				
-				
-				
-				
-				
-				
-				
-				
-				
 		</div>
 
 				
-
 <script type="text/javascript">
+
 
 var alertId = '${alertId}';
 

@@ -47,7 +47,7 @@ function buildLocationLevelAlert(result,jsObj){
 	str+='<th>Level</th>';
 	str+='<th>Total</th>';
 	for(var i in result[0].locationsList)
-	str+='<td>'+result[0].locationsList[i].name+'</td>';
+	str+='<td><b>'+result[0].locationsList[i].name+'</b></td>';
 	str+='</thead>';
 	str+='<tbody>';
 	str+='<tr>';
@@ -55,7 +55,7 @@ function buildLocationLevelAlert(result,jsObj){
 		str+='<td>'+result[i].name+'</td>';
 		if(result[i].count > 0)
 		{
-		str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></td>';	
+		str+='<td><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></td>';	
 		}
 		else
 		{
@@ -66,7 +66,7 @@ function buildLocationLevelAlert(result,jsObj){
 		for(var j in returnList){
 			if(returnList[j].count > 0)
 			{
-			str+='<td><a class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></td>';	
+			str+='<td><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></td>';	
 			}
 			else{
 				str+='<td>'+returnList[j].count+'</td>';
@@ -172,7 +172,7 @@ function buildAlertData(result,jsObj)
 		j++;
 	str+='<tr>';	
 	str+='<td>'+j+'</td>';
-	str+='<td><a target="_blank" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
+	str+='<td><a target="_blank" title="Click here to View Alert Details" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].status+'</td>';
