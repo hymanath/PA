@@ -26,7 +26,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class NominatedPostFinal extends BaseModel implements Serializable{
 
 	private Long nominatedPostFinalId;
-	private Long nominatedPostId;
+	private Long nominatedPostMemberId;
 	private Long nominationPostCandidateId;
 	private Long applicationStatusId;
 	private Long insertedBy;
@@ -35,7 +35,7 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private String isDeleted;
 	
-	private NominatedPost nominatedPost;
+	private NominatedPostMember nominatedPostMember;
 	private NominationPostCandidate nominationPostCandidate;
 	private ApplicationStatus applicationStatus;
 	
@@ -49,12 +49,12 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 		this.nominatedPostFinalId = nominatedPostFinalId;
 	}
 	
-	@Column(name="nominated_post_id")
-	public Long getNominatedPostId() {
-		return nominatedPostId;
+	@Column(name="nominated_post_member_id")
+	public Long getNominatedPostMemberId() {
+		return nominatedPostMemberId;
 	}
-	public void setNominatedPostId(Long nominatedPostId) {
-		this.nominatedPostId = nominatedPostId;
+	public void setNominatedPostMemberId(Long nominatedPostMemberId) {
+		this.nominatedPostMemberId = nominatedPostMemberId;
 	}
 	
 	@Column(name = "nomination_post_candidate_id")
@@ -114,14 +114,14 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="nominated_post_id", insertable=false, updatable = false)
+	@JoinColumn(name="nominated_post_member_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public NominatedPost getNominatedPost() {
-		return nominatedPost;
+	public NominatedPostMember getNominatedPostMember() {
+		return nominatedPostMember;
 	}
-	public void setNominatedPost(NominatedPost nominatedPost) {
-		this.nominatedPost = nominatedPost;
+	public void setNominatedPostMember(NominatedPostMember nominatedPostMember) {
+		this.nominatedPostMember = nominatedPostMember;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
