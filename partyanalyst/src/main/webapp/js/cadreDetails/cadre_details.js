@@ -521,7 +521,7 @@ var globalidentityMembershipNo = ""	;
 					 globalDistName = result.districtName;
 					    
 						
-					getCandidateAndConstituencySurveyResult();
+					//getCandidateAndConstituencySurveyResult();
 					complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					getCandidateElectDetatails(localCadreId);
 					getCheckCandidateExits();
@@ -1100,7 +1100,7 @@ var globalidentityMembershipNo = ""	;
 							
 							str+='<li  style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
 							
-							getCandidateAndConstituencySurveyResult();
+							//getCandidateAndConstituencySurveyResult();
 						}
 						else{
 							str+='<li style="padding:10px 15px;" >CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;'+result.count+'</li>';
@@ -1109,7 +1109,7 @@ var globalidentityMembershipNo = ""	;
 								str+='<li class="active li_arr" style="margin-top: 0px;padding:0px; left: 10px;" id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
 							
 								str+='<li    style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
-								getCandidateAndConstituencySurveyResult();
+								//getCandidateAndConstituencySurveyResult();
 							}
 							else if(candiConstiSurveyCount == null || candiConstiSurveyCount == 0){
 								str+='<li style="margin-top: 0px;padding:0px; left: 10px;">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</li>';
@@ -1161,7 +1161,7 @@ var globalidentityMembershipNo = ""	;
 									str+='<div class="panel-body">';										
 									str+='</div>';
 									str+='</div>';
-									//getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
+									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
 									str+='</div>';
 						str+='</div>';
 
@@ -4137,25 +4137,26 @@ function getCandidateAndConstituencySurveyResult()
 		constituencyId = globalConstituencyId;
 	}
 	var surveyId = 0;
-	
-	var jsObj={
-			candidateId:candidateId,
-			constituencyId:constituencyId,
-			surveyId:surveyId
-	}
-	$.ajax({
-		type:'GET',
-		url :'getCandidateAndConstituencySurveyResultAction.action',
-		data : {task:JSON.stringify(jsObj)} ,
-	}).done(function(result){
-		if(result != null){
-			if(result.length != null && result.length > 0){
-				candiConstiSurveyCount = result.length;
-			}
-			buildCandidateAndConstituencySurveyResult(result,surveyId,null);
-			
+	if (typeof(candidateId) != "undefined"){
+		var jsObj={
+				candidateId:candidateId,
+				constituencyId:constituencyId,
+				surveyId:surveyId
 		}
-	});
+		$.ajax({
+			type:'GET',
+			url :'getCandidateAndConstituencySurveyResultAction.action',
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null){
+				if(result.length != null && result.length > 0){
+					candiConstiSurveyCount = result.length;
+				}
+				buildCandidateAndConstituencySurveyResult(result,surveyId,null);
+				
+			}
+		});
+	}
 }
 function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
 	var candidateId = globalCandidateId;
@@ -4168,22 +4169,23 @@ function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
 	}
 	var surveyId = surveyId;
 	//$("#"+divId+"").html("");
-	
-	var jsObj={
-			candidateId:candidateId,
-			constituencyId:constituencyId,
-			surveyId:surveyId
-	}
-	$.ajax({
-		type:'GET',
-		url :'getCandidateAndConstituencySurveyResultAction.action',
-		data : {task:JSON.stringify(jsObj)} ,
-	}).done(function(result){
-		if(result != null){
-			buildCandidateAndConstituencySurveyResult(result,surveyId,divId);
-			
+	if (typeof(candidateId) != "undefined"){
+		var jsObj={
+				candidateId:candidateId,
+				constituencyId:constituencyId,
+				surveyId:surveyId
 		}
-	});
+		$.ajax({
+			type:'GET',
+			url :'getCandidateAndConstituencySurveyResultAction.action',
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null){
+				buildCandidateAndConstituencySurveyResult(result,surveyId,divId);
+				
+			}
+		});
+	}
 }
 
 function buildCandidateAndConstituencySurveyResult(result,surveyId,divId){
