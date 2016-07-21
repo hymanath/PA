@@ -351,7 +351,7 @@ function updateAlertStatus()
 			task : ""
 		      }
 			$.ajax({
-					  type:'GET',
+					  type:'POST',
 					  url: 'updateAlertStatusAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
