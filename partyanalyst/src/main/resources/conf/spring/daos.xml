@@ -3118,10 +3118,4 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
 	
-	 <bean id="nominatedPostAccessTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessTypeDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean> 
-	<bean id="nominatedPostAccessUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessUserDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 </beans>		
