@@ -913,7 +913,7 @@ function disableByLevel(index)
 							 
 			  cloneCount = cloneCount+1;
 			   $('html, body').animate({
-                    scrollTop: $('.membersBlock').offset().top
+                    scrollTop: $('.membersBlock').offset().bottom
                 }, 2000);
 		 }
    })

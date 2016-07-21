@@ -108,7 +108,7 @@ function getAlertStatusCommentsTrackingDetails()
 		}
 		
 		
-		//$('html,body').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
+		//$('.modal-content').animate({scrollTop: $("#alertCommentsDiv").offset().top}, 'slow');
 	}
 $(document).on("click",".locationLevelCls",function(){
 	var levelId = $(this).attr("attr-levelId");

@@ -255,25 +255,14 @@ control.makeTransliteratable(['commentsId']);
 			<div class="col-md-6 col-xs-12 col-sm-6">
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
-						<h4 class="panel-title text-success">ASSIGNED CANDIDATES <span id="assignCandidatesCnt"> - 0</span></h4>
-						<input type="button" class="btn btn-primary assignModel pull-left" value="ASSIGN">
+						<h4 class="panel-title text-success">ASSIGNED CANDIDATES - <span id="assignCandidatesCnt"> - 0</span><input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN"/></h4>
 					</div>
 					<div class="panel-body" style="height:320px;">
-						
-						<div class="media" id="alertAssignedCandidateDataId">
-							
-						</div>
+						<div class="media" id="alertAssignedCandidateDataId"></div>
 					</div>
 				</div>
-				
 			</div> 			
-		</div>
-	
-      <div class="row">
-		 
-		</div>
-		<div class="row">
-			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="col-md-6 col-xs-12 col-sm-6">
 				<div class="panel panel-default panelAlert">
 					<div class="panel-heading">
 						<h4 class="panel-title text-success">UPDATE ALERT STATUS</h4>
@@ -287,17 +276,17 @@ control.makeTransliteratable(['commentsId']);
 							<option value='3'>Completed</option>
 						</select>
 						
-						<div><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
-						<label>Comments</label><span ></span>
+						<div class="m_top10"><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
+						<label class="m_top10">Comments</label>
 						<textarea class="form-control" id="commentsId"></textarea>
-						<div id="errorId"></div>
+						<div id="errorId" class="m_top10"></div>
 						<button class="btn btn-success updateAlertStatusCls m_top10">UPDATE</button>
 					</div>
 					
 					
 				</div>
 			</div>
-			
+		</div>	
 			<!--<input type="button" value="ASSIGN" class="btn btn-primary assignModel">-->
 			
 		<div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
