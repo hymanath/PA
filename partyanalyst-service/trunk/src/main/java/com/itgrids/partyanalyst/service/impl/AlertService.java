@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
@@ -78,7 +80,7 @@ private IAlertSourceUserDAO alertSourceUserDAO;
 private IAlertAssignedDAO alertAssignedDAO;
 private DateUtilService dateUtilService = new DateUtilService();
 private IMemberTypeDAO memberTypeDAO;
-
+private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 
 
 
@@ -632,7 +634,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	
 	
 
-	public String updateAlertStatus(final Long userId,final Long alertId,final Long alertStatusId,final String comments)
+	public String updateAlertStatus(final Long userId,final AlertVO inputVo)
 	{
 		String resultStatus = (String) transactionTemplate
 				.execute(new TransactionCallback() {
@@ -640,14 +642,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						String rs = new String();
 						try {
 			Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
-			Alert alert =	alertDAO.get(alertId);
-			alert.setAlertStatusId(alertStatusId);
+			Alert alert =	alertDAO.get(inputVo.getId());
+			alert.setAlertStatusId(inputVo.getStatusId());
 			alert = alertDAO.save(alert);
 		    rs = "success";
 		    
 		    AlertComment alertComment = new AlertComment();
-		    alertComment.setComments(comments);
-		    alertComment.setAlertId(alertId);
+		    if(inputVo.getDesc() != null && !inputVo.getDesc().isEmpty())
+		    	//alertComment.setComments(commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(IConstants.TRAINING_CAMP_FEEDBACK_SMS_CONTENT)));
+		   alertComment.setComments(StringEscapeUtils.unescapeJava(inputVo.getDesc().toString()));
+		    alertComment.setAlertId(inputVo.getId());
 		    alertComment.setInsertedTime(currentDateAndTime);
 		    alertComment.setIsDeleted("N");
 		    alertComment.setInsertedBy(userId);
@@ -658,7 +662,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 alertTrackingVO.setUserId(userId);
 			 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
 			// alertTrackingVO.setAlertUserTypeId();
-			 alertTrackingVO.setAlertStatusId(alertStatusId);
+			 alertTrackingVO.setAlertStatusId(inputVo.getStatusId());
 			 alertTrackingVO.setAlertId(alert.getAlertId());
 			 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 			 saveAlertTrackingDetails(alertTrackingVO)	;	
