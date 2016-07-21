@@ -471,6 +471,7 @@ function createAlert()
   var  description=$("#alertdescriptionId").val().trim();
    $("#errorDiv1").html('');
   $("#errorDiv1").css("color","red");
+  $("#candidateId").val('');
   if(alertType==0)
   {
     $("#errorDiv1").html(" Please select Alert Type ");
@@ -610,11 +611,11 @@ function createAlert()
 		if($(this).val() != null && $(this).val().length > 0)
 		candidateId += $(this).val()+",";
 	})
- if(candidateId==0 || candidateId.length == 0)
+ /*if(candidateId==0 || candidateId.length == 0)
   {
     $("#errorDiv1").html(" Please select Candidate ");
         return;
-  }
+  }*/
 	var n=candidateId.lastIndexOf(",");
     candidateId=candidateId.substring(0,n) ;
 	$("#candidateId").val(candidateId);
