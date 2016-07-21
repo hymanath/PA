@@ -451,6 +451,7 @@ function buildAlertAssignedCandidateData(result)
 	if(result == null || result.length == 0)
 	{
 	 $("#alertAssignedCandidateDataId").html('No Data Available..');
+	 $("#assignCandidatesCnt").html('0');
 		return;
 	}
 	var str='';
@@ -471,7 +472,9 @@ function buildAlertAssignedCandidateData(result)
 	}
 	}
 	$("#alertAssignedCandidateDataId").html(str);
-	if(result[i].subList.length > 3)
+	
+	$("#assignCandidatesCnt").html(result[0].subList.length);
+	if(result[0].subList.length > 3)
 	{
 		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
 	}
