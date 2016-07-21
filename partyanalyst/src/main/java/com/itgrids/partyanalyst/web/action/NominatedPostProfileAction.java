@@ -15,15 +15,17 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.service.IActivityService;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -43,7 +45,19 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private NominatedPostVO                     nominatedPostVO;
 	private ResultStatus 						resultStatus;
 	private InputStream 						inputStream;
-	
+	private List<LocationWiseBoothDetailsVO> locations;
+	private ICadreCommitteeService	cadreCommitteeService;
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+	public List<LocationWiseBoothDetailsVO> getLocations() {
+		return locations;
+	}
+	public void setLocations(List<LocationWiseBoothDetailsVO> locations) {
+		this.locations = locations;
+	}
 	public List<NominatedPostVO> getNominatePostList() {
 		return nominatePostList;	}
 	public void setNominatePostList(List<NominatedPostVO> nominatePostList) {
@@ -497,5 +511,41 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	return Action.SUCCESS;
   }
+	
+	public String nominatedPostManagement(){
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getSubLevelForConstituency(){
+		LOG.info("entered into getSubLevelForConstituency");
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long stateId = jObj.getLong("stateId");
+			Long locationLevel = jObj.getLong("locationLevel");
+			
+			List<Long> distIds = new ArrayList<Long>();
+			JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+			for (int i = 0; i < jsonArray1.length(); i++) {
+				Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+				distIds.add(distId1);
+			}
+			
+			List<Long> constiIds = new ArrayList<Long>();
+			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+			for (int i = 0; i < jsonArray2.length(); i++) {
+				Long constiId = Long.valueOf(jsonArray2.get(i).toString());
+				constiIds.add(constiId);
+			}
+						
+			locations = cadreCommitteeService.getSubLevelForConstituency(stateId,distIds,constiIds,locationLevel);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getSubLevelForConstituency() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
