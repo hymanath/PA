@@ -832,6 +832,10 @@
 		            <value>com.itgrids.partyanalyst.model.EventAgeRangeDayInfo</value>
 		            <value>com.itgrids.partyanalyst.model.EventGenderInfo</value>
 		            <value>com.itgrids.partyanalyst.model.EventGenderDayInfo</value>
+		            
+		           <value>com.itgrids.partyanalyst.model.NominatedPostAccessType</value> 
+				   <value>com.itgrids.partyanalyst.model.NominatedPostAccessUser</value> 
+		            
 			</list>
 		</property>
 	</bean>
@@ -2708,10 +2712,16 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
-   
    <bean id="panchayatResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatResultDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   
+   <bean id="nominatedPostAccessTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="nominatedPostAccessUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
    <bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="stateDAO" ref="stateDAO"/>
