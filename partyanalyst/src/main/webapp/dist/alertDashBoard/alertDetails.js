@@ -2,10 +2,21 @@ getAlertData();
 getAlertStatusCommentsTrackingDetails();
 getAlertAssignedCandidates(alertId);
 $(document).on("click",".assignModel",function(){
-
+	clearAssignFields();
 	$("#ModalShow").modal('show');
 	
 });
+function clearAssignFields()
+{
+commontdpCadreIds = [];
+$("#involvedCandidatesDiv").hide();
+ $(".membersBlock").html('');
+ $("#apptmemberDetailsDiv").html('');
+	$("#advanceSearchTypeId").val(0);
+	  var select = new Dropkick("#advanceSearchTypeId");
+		select.refresh();
+	showHideBySearchType();//Clear Fields	
+}
 function saveAlertAssignedUser ()
 	{
 	
@@ -264,70 +275,7 @@ function buildAlertCandidateData(result)
 function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
-/*function showPopUpAlertData(alertId)
-{
-	
-	for(var i in GlobalAlertData)
-	{
-		if(alertId == GlobalAlertData[i].id)
-		{
-		
-			$("#typeId").html(''+GlobalAlertData[i].alertType+'');
-			$("#severityId").html(''+GlobalAlertData[i].severity+'');
-			$("#createdDate").html(''+GlobalAlertData[i].date+'');
-			
-			$("#levelId").html(''+GlobalAlertData[i].regionScope+'');
-			var location ='';
-			
-			if(GlobalAlertData[i].regionScope == "STATE")
-			{
-				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p>';
-			}
-			
-			else if(GlobalAlertData[i].regionScope == "DISTRICT")
-			{
-				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p>';
-			}
-			
-			else if(GlobalAlertData[i].regionScope == "CONSTITUENCY")
-			{
-				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p>';
-			}
-			
-			
-			else if(GlobalAlertData[i].regionScope == "MANDAL" || GlobalAlertData[i].regionScope == "MUNICIPAL-CORP-GMC" )
-			{
-				
-					if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
-				{
-				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' </p>';	
-				}
-				else{
-					location +='<p>State:'+GlobalAlertData[i].locationVO.state+' </p><p>Dist : '+GlobalAlertData[i].locationVO.districtName+' </p><p>Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Mandal : '+GlobalAlertData[i].locationVO.tehsilName+'</p>';
-				}
-			}
-			
-			else if(GlobalAlertData[i].regionScope == "VILLAGE" || GlobalAlertData[i].regionScope == "WARD" )
-			{
-			
-				if(GlobalAlertData[i].locationVO.localEleBodyName != null && GlobalAlertData[i].locationVO.localEleBodyName.length > 0)
-				{
-				location +='<p>State:'+GlobalAlertData[i].locationVO.state+'</p><p> Dist : '+GlobalAlertData[i].locationVO.districtName+'</p><p> Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Town : '+GlobalAlertData[i].locationVO.localEleBodyName+' </p><p>Ward : '+GlobalAlertData[i].locationVO.wardName+'</p>';	
-				}
-				else{
-					location +='<p>State:'+GlobalAlertData[i].locationVO.state+' </p><p>Dist : '+GlobalAlertData[i].locationVO.districtName+' </p><p>Constituency :'+GlobalAlertData[i].locationVO.constituencyName+'</p><p> Mandal : '+GlobalAlertData[i].locationVO.tehsilName+'</p><p> Panchayat : '+GlobalAlertData[i].locationVO.villageName+'</p>';
-				}
-				
-			}	
-			
-			$("#LocationId").html(''+location+'');
-			$("#statusId").val(''+GlobalAlertData[i].statusId+'');
-			  $("#statusId").dropkick('refresh')
-			$("#descriptionId").html(''+GlobalAlertData[i].desc+'');
-			buildAlertCandidateData(GlobalAlertData[i].subList);
-		}
-	}
-	}*/
+
 function updateAlertStatus()
 {
 	var comments = $("#commentsId").val();
