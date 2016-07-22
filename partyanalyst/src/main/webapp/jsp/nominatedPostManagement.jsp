@@ -81,8 +81,11 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedPostManagement.js" type="text/javascript"></script>
 <script type="text/javascript">
-var globalLevelId = 5;
-var globalStateId = 36;
+/* var globalLevelId = '${param.lId}';
+var globalStateId = '${param.stId}'; 
+var globalStatus='${param.sts}';*/
+var globalLevelId = 2;
+var globalStateId = 1;
 
 $("#stateId").val(globalStateId);
 
@@ -90,7 +93,6 @@ var grlobalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTowDivArr=[];
 $(document).ready(function() {
-	//getAllDeptsAndBoardsByLevel();
 	if(globalLevelId !=1 && globalLevelId !=2){
 		getDistrictsForStates(globalStateId);
 	}else{
