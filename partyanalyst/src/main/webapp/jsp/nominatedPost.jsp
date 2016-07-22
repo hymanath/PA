@@ -443,10 +443,10 @@
                         <label>Do you have reference</label><br/>
 						
                         <label class="radio-inline">
-                        	<input type="radio" class="referenceModal"/>Yes
+                        	<input type="radio" class="referenceModal" name="radio"/>Yes
                         </label>
                         <label class="radio-inline">
-                        	<input type="radio"/>No
+                        	<input type="radio" checked="true" name="radio"/>No
                         </label>
                     </div>
 					<div class="row" id="uploadFlDivId" >
