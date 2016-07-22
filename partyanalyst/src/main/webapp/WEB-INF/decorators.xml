@@ -679,5 +679,7 @@
 	   <pattern>/nominatedPostApplicationReviewAction*</pattern>
 	   <pattern>/alertDetailsAction*</pattern>
 	    <pattern>/nominatedPostManagementAction*</pattern>
+	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
+	
 	</decorator> 
 </decorators>

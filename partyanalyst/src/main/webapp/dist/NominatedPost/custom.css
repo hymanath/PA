@@ -554,3 +554,351 @@ label
     /* symbol for "collapsed" panels */
     content:"\e114";
 }
+
+.panelCustom .panel-heading
+{
+	background:#fff;
+	border-radius:0px;
+	height:80px;
+	padding:5px;
+}
+.panelCustom .panel-heading .pull-right
+{
+	font-size:12px;
+}
+.panelCustom .panel-body
+{
+	background:#4DCFEF;
+	padding:5px;
+}
+.panelCustom .panel-footer
+{
+	background:#666666;
+	color:#fff;
+	border-radius:0px;
+	padding:5px;
+}
+.panelCustom .panel-footer p
+{
+	color:#fff;
+}
+.breadcrumb
+{
+	background:none;
+}
+.tabsCustom
+{
+	background:#F9F9F9;
+	padding-left:5px;
+}
+.tabsCustom li
+{
+	width:100%;
+}
+.tabsCustom > li.active > a, .tabsCustom > li.active > a:hover, .tabsCustom > li.active > a:focus
+{
+	background:#fff;
+	border-radius:0px;
+	border-right:0px;
+	border-bottom:1px solid #ddd
+}
+.tableCollapse thead th
+{
+	font-size:12px;
+	font-weight:400;
+	vertical-align:middle !important;
+}
+.tabCollapseIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\e113";
+    float: right;
+	font-size:14px;
+	margin-top:1px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#006442;
+	margin-left:5px;
+}
+.tabCollapseIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\e114";
+}
+.tabsCustomFinal
+{
+	padding-left:5px;
+}
+.tabsCustomFinal li
+{
+	width:100%;
+	text-transform:uppercase;
+}
+.tabsCustomFinal li a
+{
+	color:#666;
+	right:-2px;
+}
+.tabsCustomFinal > li.active > a, .tabsCustomFinal > li.active > a:hover, .tabsCustomFinal > li.active > a:focus
+{
+	background:#EBEBEB;
+	border-radius:0px;
+	border-right:0px;
+	border-bottom:1px solid #ddd
+}
+.labelCustom
+{
+	background:#DFE0DF;
+	color:#EA6266;
+	font-size:16px
+}
+.labelCustomGo
+{
+	background:#DFE0DF;
+	color:#40A5D1;
+	font-size:16px;
+	margin-left:30px;
+	padding:3px;
+}
+.labelCustomFinal
+{
+	background:#DFE0DF;
+	color:#52AA53;
+	font-size:16px;
+	padding:3px;
+}
+.tabsCustomFinal1
+{
+	padding-left:5px;
+}
+.tabsCustomFinal1 li
+{
+	width:100%;
+	text-transform:uppercase;
+}
+.tabsCustomFinal1 li a
+{
+	color:#666;
+	right:-2px;
+}
+.tabsCustomFinal1 > li.active > a, .tabsCustomFinal1 > li.active > a:hover, .tabsCustomFinal1 > li.active > a:focus
+{
+	background:#F6F6F6;
+	border-radius:0px;
+	border-right:0px;
+	border-bottom:1px solid #ddd
+}
+.positionsUl
+{
+	padding:0px;
+}
+.positionsUl li
+{
+	list-style:none;
+}
+.positionsCls
+{
+	background:#ECF1F5;
+	border:1px solid #ddd;
+	margin:1px;
+	padding:5px;
+	text-transform:uppercase
+}
+.positionsCls img
+{
+	width:16px;
+	height:16px;
+}
+.font8
+{
+	font-size:8px;
+}
+.chairmenFinaliseModal .modal-header
+{
+	background:#CCCCCC
+}
+.finalisingModalCollapse .panel-default
+{
+	border-radius:0px;
+	border:1px solid #ddd;
+}
+.finalisingModalCollapse .panel-default .panel-heading
+{
+	background:#41A8D3
+}
+.finalisingModalCollapse .panel-default .panel-body
+{
+	padding:0px;
+	background:#EFF3F4;
+}
+.finaliseModalIcon , .finaliseModalIcon:active ,.finaliseModalIcon:hover
+{
+	color:#999 !important
+}
+.finaliseModalIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+	font-size:13px;
+	margin-top:0px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#999;
+	padding:6px 8px;
+	background:#CBCBCB;
+	border-radius:5px;
+	border:1px solid #333;
+}
+.finaliseModalIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+.wishList
+{
+	border:1px  solid #fff;
+	border-radius:5px;
+	padding:4px;
+	width:120px;
+}
+.textEffect
+{
+	 -webkit-text-stroke-width: 1px;
+	 -webkit-text-stroke-color: green;
+	 color:#fff;
+	 font-weight:bold;
+}
+.textEffect img
+{
+	width:36px;
+	height:34px;
+	margin-left:5px;
+}
+.commentsUl
+{
+	padding:0px;
+}
+.commentsUl li
+{
+	padding-left:15px;
+	list-style:none;
+	position:relative;
+}
+.commentsUl li.finaLize:before
+{
+	width:20px;
+	height:20px;
+	content:' ';
+	display:block;
+	background:#1E86BD;
+	border-radius:50%;
+	left:-30px;
+	position:absolute;
+}
+.commentsUl li.shortList:before
+{
+	width:20px;
+	height:20px;
+	content:' ';
+	display:block;
+	background:#CE352D;
+	border-radius:50%;
+	left:-10px;
+	position:absolute;
+}
+.commentsPanel
+{
+	border-left:1px solid #ddd;
+	border-bottom:0px !important;
+	border-top:0px !important;
+	border-right:0px !important;
+	box-shadow:none;
+}
+.commentsPanel .panel-heading
+{
+	background:#fff !important;
+	border-bottom:0px;
+}
+.commentsUl li.shortList .commentsPanel .panel-body
+{
+	border-top:1px solid #CE352D !important;
+	background:#fff !important;
+	padding:15px;
+}
+.commentsUl li.finaLize .commentsPanel .panel-body
+{
+	border-top:1px solid #1E86BD !important;
+	background:#fff !important;
+}
+.CommentsModalIcon , .CommentsModalIcon:active ,.CommentsModalIcon:hover
+{
+	color:#999 !important
+}
+.CommentsModalIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+	font-size:10px;
+	margin-top:0px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#999;
+	padding:2px 4px;
+	background:#CBCBCB;
+	border-radius:5px;
+}
+.CommentsModalIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+.Comment
+{
+	border:1px solid #ddd;
+	padding:5px;
+	position:relative;
+	margin-top:5px;
+}
+.Comment:before
+{
+	content:'----';
+	position:absolute;
+	left:-16px;
+	color:#ddd;
+	top:5px;
+}
+.commentsDiv
+{
+	background:#fff;
+	position:absolute;
+	display:none;
+}
+.commentDropDownArrow {
+	position: relative;
+	background: #fff;
+	border: 1px solid #ddd;
+	padding:10px;
+	box-shadow:0px 0px 5px 3px rgba(0,0,0,0.4);
+}
+.commentDropDownArrow:after, .commentDropDownArrow:before {
+	bottom: 100%;
+	right: 30%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.commentDropDownArrow:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #fff;
+	border-width: 8px;
+	margin-left: -8px;
+}
+.commentDropDownArrow:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-bottom-color: #ddd;
+	border-width: 9px;
+	margin-left: -9px;
+}
