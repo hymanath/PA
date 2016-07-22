@@ -129,6 +129,7 @@ function disableByLevel(index)
 		}
 }
   function showHideBySearchType(){
+	 
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
 			if(selectVal == "PR")
