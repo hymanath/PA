@@ -129,7 +129,7 @@ function getConstituenciesForDistricts(district,stateId){
 			constituencyId : assmblyArrTemp,//228
 			//mandalId : mandalId,
 			//locationLevel : locationLevel,
-			locationLevel : globalLevelId,
+			locationLevel : 5,
 			task:""
 		}
 		$.ajax({
