@@ -461,8 +461,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			Long levelId = jObj.getLong("levelId");
 			String startDateStr = jObj.getString("startDateStr");
 			String endDateStr = jObj.getString("endDateStr");
+			Long stateId = jObj.getLong("stateId");
 			
-			nominatePostList = nominatedPostProfileService.getNominatedPostsStatusDetailsInAllLevels(levelId,startDateStr,endDateStr);
+			nominatePostList = nominatedPostProfileService.getNominatedPostsStatusDetailsInAllLevels(levelId,startDateStr,endDateStr,stateId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getNominatedPostsOverview() in NominatedPostProfileAction ",e);
