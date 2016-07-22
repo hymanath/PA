@@ -70,9 +70,15 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedPostManagement.js" type="text/javascript"></script>
 <script type="text/javascript">
+var globalLevelId = 5;
+var globalStateId = 1;
+
+var grlobalDistrictArr=[];
+var globalAssmblyArr=[];
+var globalMandalTowDivArr=[];
 $(document).ready(function() {
-	getAllDeptsAndBoardsByLevel();
-	getDistrictsForStates(1);
+	//getAllDeptsAndBoardsByLevel();
+	getDistrictsForStates(globalStateId);
 });
 
 </script>
