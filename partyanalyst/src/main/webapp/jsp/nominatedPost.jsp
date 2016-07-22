@@ -62,6 +62,10 @@
                         <label class="checkbox-inline">
                         	<input value="Not Cadre" type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
                         </label>
+						<span style="margin-left:8px;cursor:pointer" class="addMemberModal">
+							<i class="glyphicon glyphicon-plus-sign"></i>
+							Add Member
+						</span>
                     </div>
 					</div>
 					
@@ -132,18 +136,34 @@
 				 </div>
 				 <div id="cadreById" style="display:none;">
 				 <div id="notCadreErrMsg" style="color:red;"></div>
-				 <div class="col-md-4 col-xs-12">
-					<label>Name</label><span class="starCls" style="color:red;">*</span>
-					<input class="form-control" type="text" id="notCadreNameId"/>
-				 </div>
-				 <div class="col-md-4 col-xs-12">
-					<label>Voter ID </label><span class="starCls" style="color:red;">*</span>
-					<input class="form-control" type="text" id="notCadreVoterId"/>
-				 </div>
-				 <div class="col-md-4 col-xs-12">
-					<label>Contact Number </label><span class="starCls" style="color:red;">*</span>
-					<input class="form-control" type="text" id="notCadreMobilNoId"/>
-				 </div>
+				 <div class="row" class="searchMemberCls">
+                	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
+					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
+                        <div class="searchDiv">
+                            <div class="row">
+                                <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
+                                	<div class="pad_5 bg_ff">
+									    <label class="radio-inline">
+											<input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" />Voter ID
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio"  name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"/>Mobile Number
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"/>Name
+                                        </label>
+										<input type="hidden" id="cadreSearchType" value="membershipId" />
+                                    </div>
+                                    <input type="text" class="form-control" id="searchBy"/>
+									<div id="searchErrDiv" style="color:red;"></div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3 pad_left0">
+                                    <button class="btn btn-success btn-block btnSearch" id="searchbtn" onclick="getNominatedPostApplication(0)">SEARCH</button>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                 </div>
 				 </div>
 				 <form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">
                  <div class="row">
@@ -459,6 +479,130 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="addMemberModalBlock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" style="width:85%;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+		<div class="row">
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">voter Id</label>
+				<input type="text"  id="voterId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">name</label>
+				<input type="text" id="nameId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">mobile no</label>
+				<input type="text" id="mobilenoId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">houseno</label>
+				<input type="text" id="HouseId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">gender</label>
+				<select class="form-control" id="genderId">
+					<option value="0">Select Gender</option>
+					<option value="1">Male</option>
+					<option value="36">female</option>
+				</select>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">age</label>
+				<input type="text"  id="ageId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">date of birth</label>
+				<div class="input-group">
+					<input type="text"  id="DOBId" class="form-control"/>
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+				</div>
+				
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">relative name</label>
+				<input type="text" id="relativenamebyId" class="form-control"/>
+			</div>
+	<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">relative type</label>
+				<select class="form-control" id="relativetypeId">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">imageurl</label>
+				<input type="file" id="imageurlId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">caste state id</label>
+				<input type="text" id="casteId" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">address1</label>
+				<input type="text" id="address1Id" class="form-control"/>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">address2</label>
+				<input type="text" id="address2Id" class="form-control"/>
+			</div>
+			
+			<div id="searchMemberDiv">
+                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
+                    	<label>State</label>
+                        <select id="statesDivId"  onchange="getDistrictsForStatesForNotCadre(this.value,this.id,'');" class="chosenSelect">
+                        	<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="36">Telangana</option>
+                        </select>
+                    </div>
+					
+			<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
+									<label>District</label>
+									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistrictsForNotcadre(this.value,this.id,'');" id=
+									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
+								</select>
+						</div>
+					
+					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
+									<label>Constituency</label>
+									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituencyForNotcadre('',this.id);" id="nominatedDistId" name="nominatedPostVO.nominatdList[0].ConstituencyId">
+									</select>
+						</div>
+					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
+									<label>Mandal/ Muncipality / Corporation</label>
+									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandalForNotcadre('',this.id);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
+									
+									</select>
+							</div>
+					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
+									<label>Panchayat/ Ward / Division/City</label>
+									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId">
+										
+									</select>
+								</div>
+					
+					
+					
+		<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">pincode</label>
+				<input class="form-control" id="pincodeId" type="text"/>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 var globalCadreId=0;
 </script>
@@ -467,6 +611,9 @@ var globalCadreId=0;
 
 <script type="text/javascript">
 $(".dropkickClass").dropkick();
+$(document).on("click",".addMemberModal",function(){
+	$("#addMemberModalBlock").modal('show');
+})
 $('.chosenSelect').chosen();
 $(document).on("click",".btnClassChange",function(){
 	$(this).parent().find(".btnActive").removeClass("btnActive");
