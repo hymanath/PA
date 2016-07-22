@@ -43,10 +43,17 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private String relativetype;
 	private String imageurl;
 	private Long castestateId;
+	private Long addressId;
 	
 	
 	
 	
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
 	public String getGender() {
 		return gender;
 	}
