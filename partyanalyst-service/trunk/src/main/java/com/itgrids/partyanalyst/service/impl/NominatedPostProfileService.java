@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostApplicationHistoryDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostCommentDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
@@ -58,6 +59,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ApplicationDocument;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
+import com.itgrids.partyanalyst.model.NominatedPostApplicationHistory;
 import com.itgrids.partyanalyst.model.NominatedPostComment;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
@@ -108,8 +110,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private ActivityService					activityService;
 	private IApplicationDocumentDAO         applicationDocumentDAO;
 	private IVoterDAO         				voterDAO;
+	private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
 	
 	
+	
+	public INominatedPostApplicationHistoryDAO getNominatedPostApplicationHistoryDAO() {
+		return nominatedPostApplicationHistoryDAO;
+	}
+
+	public void setNominatedPostApplicationHistoryDAO(
+			INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO) {
+		this.nominatedPostApplicationHistoryDAO = nominatedPostApplicationHistoryDAO;
+	}
+
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
@@ -718,6 +731,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					//if(nominatedPostFinalId != null && nominatedPostFinalId.longValue() > 0l){
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(nominatePostApplicationId);
 						
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -742,6 +757,36 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			LOG.error("Exception Occured in updateApplicationStatusDetails()", e);
 		}
 		return status;
+	}
+	
+	public void savingNominatedPostApplicationHistoryDetails(final NominatedPostApplication nominatedPostApplication){
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					NominatedPostApplicationHistory nominatedPostApplicationHistory = new NominatedPostApplicationHistory();
+					
+					nominatedPostApplicationHistory.setTrackedTime(dateUtilService.getCurrentDateAndTime());
+					nominatedPostApplicationHistory.setNominatedPostApplicationId(nominatedPostApplication.getNominatedPostApplicationId());
+					nominatedPostApplicationHistory.setNominationPostCandidateId(nominatedPostApplication.getNominationPostCandidateId());
+					nominatedPostApplicationHistory.setDepartmentId(nominatedPostApplication.getDepartmentId());
+					nominatedPostApplicationHistory.setBoardId(nominatedPostApplication.getBoardId());
+					nominatedPostApplicationHistory.setPositionId(nominatedPostApplication.getPositionId());
+					nominatedPostApplicationHistory.setBoardLevelId(nominatedPostApplication.getBoardLevelId());
+					nominatedPostApplicationHistory.setLocationValue(nominatedPostApplication.getLocationValue());
+					nominatedPostApplicationHistory.setApplicationStatusId(nominatedPostApplication.getApplicationStatusId());
+					nominatedPostApplicationHistory.setInsertedBy(nominatedPostApplication.getInsertedBy());
+					nominatedPostApplicationHistory.setInsertedTime(nominatedPostApplication.getInsertedTime());
+					nominatedPostApplicationHistory.setUpdatedBy(nominatedPostApplication.getUpdatedBy());
+					nominatedPostApplicationHistory.setUpdatedTime(nominatedPostApplication.getUpdatedTime());
+					nominatedPostApplicationHistory.setIsDeleted(nominatedPostApplication.getIsDeleted());
+					
+					nominatedPostApplicationHistory = nominatedPostApplicationHistoryDAO.save(nominatedPostApplicationHistory);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in savingNominatedPostApplicationHistoryDetails()", e);
+		}
 	}
 	
 	/**
