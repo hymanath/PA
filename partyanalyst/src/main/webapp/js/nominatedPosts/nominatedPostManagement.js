@@ -32,8 +32,7 @@ function getDistrictsForStates(state){
 					grlobalDistrictArr.push(result[i].id);
 				}
 			}			
-			 console.log(grlobalDistrictArr);
-			getConstituenciesForDistricts(0,state,grlobalDistrictArr);
+			getConstituenciesForDistricts(0,state);
 	   });
 	  
 }
@@ -44,7 +43,7 @@ $(document).on("change","#districtId",function(){
 	getConstituenciesForDistricts(districtId,stateId);
 });
 
-function getConstituenciesForDistricts(district,stateId,grlobalDistrictArr){
+function getConstituenciesForDistricts(district,stateId){
 	   
 	   $("#manTowDivId  option").remove();
 		//$("#manTowDivId").append('<option value="">Select Mandal/Town/Divison</option>');		
@@ -52,8 +51,6 @@ function getConstituenciesForDistricts(district,stateId,grlobalDistrictArr){
 		$("#constituencyId  option").remove();
 		//$("#constituencyId").append('<option value="">Select Constituency</option>');
 		//var stateId = $("#statesDivId").val();
-		
-		console.log(grlobalDistrictArr);
 		
 		var distArrTemp = [];
 		if(district==0){
@@ -85,7 +82,7 @@ function getConstituenciesForDistricts(district,stateId,grlobalDistrictArr){
 				   }
 			 }	
 
-			getMandalVillageDetails(0,stateId,grlobalDistrictArr,globalAssmblyArr);
+			getMandalVillageDetails(0,stateId);
 			 
 		});
 	}
@@ -101,7 +98,7 @@ function getConstituenciesForDistricts(district,stateId,grlobalDistrictArr){
 	
 	
 	
-	function getMandalVillageDetails(constituencyId,stateId,grlobalDistrictArr,globalAssmblyArr){
+	function getMandalVillageDetails(constituencyId,stateId){
 	
 	/* 	var stateId = $("#statesDivId").val();*/
 		var districtId = $("#districtId").val();
@@ -352,7 +349,6 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
 									readyForFinalReview = result[i].idNameVoList[j].count;
 								}else if(result[i].idNameVoList[j].name =="Confirmed"){
 									finalized = result[i].idNameVoList[j].count;
-									console.log();
 								}else if(result[i].idNameVoList[j].name =="GO Issued"){
 									goPassed = result[i].idNameVoList[j].count;
 								}
@@ -436,7 +432,6 @@ $(document).on("click","#locationWiseDataId",function(){
 	}else if(globalLevelId == 3){
 		
 		if(districtId==0){
-			console.log(grlobalDistrictArr);
 			levelValuesArr = grlobalDistrictArr;
 		}else{
 			levelValuesArr.push(districtId);
