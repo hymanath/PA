@@ -35,7 +35,42 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
+	private String houseno;
+	private String gender;
+	private Long age;
+	private String dob;
+	private String relativename;
+	private String relativetype;
+	private String imageurl;
+	private Long castestateId;
 	
+	
+	
+	
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getDob() {
+		return dob;
+	}
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+	public String getImageurl() {
+		return imageurl;
+	}
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
+	}
+	public Long getCastestateId() {
+		return castestateId;
+	}
+	public void setCastestateId(Long castestateId) {
+		this.castestateId = castestateId;
+	}
 	private TdpCadre tdpCadre;
 	private Voter voter;
 	
@@ -142,4 +177,34 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	@Column(name="house_no")
+	public String getHouseno() {
+		return houseno;
+	}
+	public void setHouseno(String houseno) {
+		this.houseno = houseno;
+	}
+	@Column(name="age")
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	@Column(name="relative_name")
+	public String getRelativename() {
+		return relativename;
+	}
+	public void setRelativename(String relativename) {
+		this.relativename = relativename;
+	}
+	@Column(name="relative_type")
+	public String getRelativetype() {
+		return relativetype;
+	}
+	public void setRelativetype(String relativetype) {
+		this.relativetype = relativetype;
+	}
+	
+	
 }
