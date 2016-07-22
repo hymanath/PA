@@ -8,7 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 
 public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostApplication, Long>{
-	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate);
+	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate,Long stateId);
 	public List<Object[]> getPendingApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate);
 	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
 	public List<Object[]> getAppliationsReceievedStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
@@ -20,7 +20,7 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getAgeRangeWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 			Long locationValue,String type);
 	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId);
-	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate);
+	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId);
 	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> levelValues,List<Long> deptsIds,List<Long> boardIds);
 }
