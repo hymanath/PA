@@ -894,6 +894,7 @@ $(document).on("click","#addOneMore",function(){
 function savingApplication(){
 	 $('#notCadreErrMsg').html("");
 	var flag = true;
+	
 	 $(".cadreCheckCls").each(function(){
 				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
 					if(!searchByApplicant()){
@@ -957,13 +958,20 @@ function savingApplication(){
 					cadreMobilNo =  $("#notCadreMobilNoId").val();
 				}
 			
-		}); 
-		
+		});  
+		var refferCadreId="";
+			for(var i=0;i<commontdpCadreIds.length;i++)
+				 refferCadreId += commontdpCadreIds[i]+",";
+			 
+			 var n=refferCadreId.lastIndexOf(",");
+			refferCadreId=refferCadreId.substring(0,n) ;
+			
 			$(".tdpCadreId").val(cadreId);
 			$(".tdpCadreName").val(cadreName);
 			$(".cadreVoterId").val(cadreVoterId);
 			$(".cadreMobileNo").val(cadreMobilNo);
-			 
+			$(".referCadreIds").val(refferCadreId); 
+			
 			var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
@@ -971,7 +979,6 @@ function savingApplication(){
 					showSbmitStatus(uploadResult);
 				}
 			};
-			
 			
 	if(flag){
 		$("#savingAjaxImg").css("display","block");	
@@ -1107,37 +1114,7 @@ function savingApplication(){
 		}
 				
 	});
-					/* $(".depmtsCls").each(function(){
-							if($(this).val() == 0){
-								$(this).parent().find(".chosen-single").css("border","1px solid red");
-								errorMsg = "Please select department";
-								flag = false;
-							}else{
-								$(this).parent().find(".chosen-single").css("border","1px solid gray");
-								flag = true;
-								} 
-					});
-					$(".deptBoardCls").each(function(){
-							if($(this).val() == 0){
-								$(this).parent().find(".chosen-single").css("border","1px solid red");
-								errorMsg = "Please select department boards";
-								flag = false;
-							}else{
-								$(this).parent().find(".chosen-single").css("border","1px solid gray");
-								flag = true;
-								} 
-					});
-					$(".deptBoardPostnCls").each(function(){
-							if($(this).val() == 0){
-								$(this).parent().find(".chosen-single").css("border","1px solid red");
-								errorMsg = "Please select position";
-								flag = false;
-							}else{
-								$(this).parent().find(".chosen-single").css("border","1px solid gray");
-								flag = true;
-								} 
-								
-					}); */
+				
 		
 		return flag;
 	} 
@@ -1531,3 +1508,14 @@ $(document).on("click",".referenceModal",function(){
     $(".referenceModal").prop( "checked" ,false);
 	$( this ).prop( 'checked', true );
 })
+function clearAssignFields()
+{
+commontdpCadreIds = [];
+$("#involvedCandidatesDiv").hide();
+ $(".membersBlock").html('');
+ $("#apptmemberDetailsDiv").html('');
+  $("#advanceSearchTypeId").val(0);
+    var select = new Dropkick("#advanceSearchTypeId");
+    select.refresh();
+  showHideBySearchType();//Clear Fields  
+}
