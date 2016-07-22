@@ -476,10 +476,15 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			
 			jObj = new JSONObject(getTask());
 			Long levelId = jObj.getLong("levelId");
-			Long levelValue = jObj.getLong("levelValues");
+			JSONArray levelValueArr = jObj.getJSONArray("levelValues");
 			
 			List<Long> levelValues = new ArrayList<Long>(0);
-			levelValues.add(levelValue);
+			if(levelValueArr !=null && levelValueArr.length()>0){
+				for (int i = 0; i < levelValueArr.length(); i++) {
+					Long levelValue = Long.valueOf(levelValueArr.get(i).toString());
+					levelValues.add(levelValue);
+				}
+			}
 			
 			idNameVOList = nominatedPostProfileService.getAllDeptsAndBoardsByLevel(levelId,levelValues);
 			
@@ -495,14 +500,20 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		try{
 			jObj = new JSONObject(getTask());
 			Long levelId = jObj.getLong("levelId");
-			Long levelValue = jObj.getLong("levelValues");
+			JSONArray levelValueArr = jObj.getJSONArray("levelValues");
+			List<Long> levelValues = new ArrayList<Long>(0);
+			if(levelValueArr !=null && levelValueArr.length()>0){
+				for (int i = 0; i < levelValueArr.length(); i++) {
+					Long levelValue = Long.valueOf(levelValueArr.get(i).toString());
+					levelValues.add(levelValue);
+				}
+			}
 			Long dept = jObj.getLong("depts");
 			Long board = jObj.getLong("boards");
 			
-			List<Long> levelValues = new ArrayList<Long>(0);
+			
 			List<Long> depts = new ArrayList<Long>(0);
 			List<Long> boards = new ArrayList<Long>(0);
-			levelValues.add(levelValue);
 			depts.add(dept);
 			boards.add(board);
 			
