@@ -350,6 +350,8 @@
 								<input type="hidden" class="tdpCadreName" name="nominatedPostVO.name">
 								<input type="hidden" class="cadreMobileNo" name="nominatedPostVO.mobileNo">
 								<input type="hidden" class="cadreVoterId" name="nominatedPostVO.voterCardNo">
+								<input type="hidden" class="referCadreIds" name="nominatedPostVO.refferCadreIds">
+								<input type="hidden" class="nominatedCandId" name="nominatedPostVO.nominatedCandId">
 							</div>
 							
 						</div>
@@ -620,6 +622,8 @@ $(document).on("click",".btnClassChange",function(){
 	$(this).addClass("btnActive");
 });
 $(".referenceModal").click(function(){
+	commontdpCadreIds = [];
+	clearAssignFields();
 	$("#myModal").modal('show')
 });
 $("#membersDetailsTable").dataTable();
