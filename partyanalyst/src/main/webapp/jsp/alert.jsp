@@ -665,21 +665,16 @@ function clearFields()
 		$("#alertSourceId").val(0);
 	   var select = new Dropkick("#alertSourceId");
 				select.refresh();
-	 var select = new Dropkick("#stateId1").val(0);
-				select.refresh();
-				$("#apptmemberDetailsDiv").html("");
-				$(".membersBlock").html("");
-				$("#involvedCandidatesDiv").hide();
+	   $("#apptmemberDetailsDiv").html("");
+	   $(".membersBlock").html("");
+	   $("#involvedCandidatesDiv").hide();
+	   $("#advanceSearchTypeId").val(0);
 		 var select = new Dropkick("#advanceSearchTypeId");
 				select.refresh();	
 		showHideBySearchType();	
-		disableByLevel('')		;
-		 var select = new Dropkick("#advanceSearchTypeId");
-				select.refresh();	
-		
-				
-				
-				
+		$("#stateId1").val(0);
+		 var select = new Dropkick("#stateId1");
+				select.refresh();
 }
 function getAlertType(){
 		$("#alertTypeId").html('');
