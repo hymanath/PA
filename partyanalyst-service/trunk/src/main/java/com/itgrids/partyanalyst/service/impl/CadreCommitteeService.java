@@ -16188,7 +16188,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				
 			}
 		}else{
-			if(!mandalStr.equalsIgnoreCase("0")){
+			if(!mandalStr.equalsIgnoreCase("0") && !mandalStr.trim().equalsIgnoreCase("") ){
 				String firstLetter = mandalStr.substring(0, 1);
 				if(firstLetter.equalsIgnoreCase("4")){
 					Long mandalId = Long.valueOf(mandalStr.substring(1));

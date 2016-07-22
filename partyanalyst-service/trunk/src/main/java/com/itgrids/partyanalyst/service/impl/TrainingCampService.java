@@ -10792,4 +10792,49 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		return trainingCampDetlsVOList;
 	}
+	public List<SimpleVO> getMandalsForDistrictIdDetails(List<Long> list)
+	  {
+	    List<SimpleVO>  resultList = new ArrayList<SimpleVO>();
+	    try {
+	      
+	      List<Object[]> result = constituencyDAO.getMandalsForDistrictWiseDetails(list);
+	      if(result != null && result.size() > 0)
+	      {
+	        for(Object[] params : result)
+	        {
+	          SimpleVO vo = new SimpleVO();
+	          vo.setId(commonMethodsUtilService.getLongValueForObject(params[0]));
+	          vo.setName(commonMethodsUtilService.getStringValueForObject(params[1]));
+	          resultList.add(vo);
+	        }
+	      }
+	      
+	    } catch (Exception e) {
+	      LOG.error(" Exception occured in getMandalsForDistrictIdDetails method in TrainingCampService class.",e);
+	    }
+	    return resultList;
+	  }
+	public List<SimpleVO> getVillagesForDistrictIdDetails(List<Long> districtId)
+	{
+		List<SimpleVO>  resultList = new ArrayList<SimpleVO>();
+		try {
+			
+			List<Object[]> result = constituencyDAO.getVillagesForDistrictWiseDetails(districtId);
+			if(result != null && result.size() > 0)
+			{
+				for(Object[] params : result)
+				{
+					SimpleVO vo = new SimpleVO();
+					BigInteger largeValue = (BigInteger) params[0];
+					vo.setId(largeValue.longValue());
+					vo.setName(params[1].toString());
+					resultList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getVillagesForDistrictIdDetails method in TrainingCampService class.",e);
+		}
+		return resultList;
+	}
+
 }

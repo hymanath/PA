@@ -1463,7 +1463,8 @@ public List<Long> getConstituenciesByState(Long stateId) {
 				  }else if(stateId.equals(1l)){
 					  str.append(" and model.district.state.stateId = 1 and model.district.districtId between 11 and 23 ");
 				  }else{
-					  str.append(" and model.district.state.stateId in(1,36) ");
+					  //str.append(" and model.district.state.stateId in(1,36) ");
+					  str.append(" and model.district.districtId between 1 and 23 ");
 				  }
 				  
 				  if(districtIds!=null && districtIds.size()>0){
@@ -1872,6 +1873,22 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameterList("tehsilIds", tehsilIds);
 		return query.list();
 	}
+	public List<Object[]> getMandalsForDistrictWiseDetails(List<Long> districtId){
+		Query query = getSession().createQuery("select distinct  T.tehsilId,T.tehsilName from Booth B left join B.tehsil T where " +
+				" B.constituency.district.districtId between 11 and 23 and B.publicationDate.publicationDateId=11 and B.constituency.district.districtId=:districtId ");
+		query.setParameterList("districtId", districtId);
+		return query.list();
+	}
+	
+public List<Object[]> getVillagesForDistrictWiseDetails(List<Long> districtId){
+		Query query = getSession().createSQLQuery(" select distinct  P.panchayat_id,P.panchayat_name from constituency C,booth B " +
+				" left outer join panchayat P on B.panchayat_id=P.panchayat_id " +
+				" where B.constituency_id=C.constituency_id " +
+				" and C.district_id between 11 and 23 and B.publication_date_id=11 and C.district_id=:districtId");
+		query.setParameterList("districtId", districtId);
+		return query.list();
+	}
+
 }
 
 
