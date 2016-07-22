@@ -2297,4 +2297,90 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 		return finalMap;
 	}
+	/**
+	 * @Author  Santosh
+	 * @Version NominatedPostProfileService.java  July 22, 2016 06:00:00 PM 
+	 * @return List<IdNameVO>
+	 * description  { This service is used to get final Review Candidate count  }
+	 */
+	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){
+		List<IdNameVO> fnlCnddtCuntLst = new ArrayList<IdNameVO>(0);
+		  try{
+			  
+			  Map<Long,IdNameVO> finalMap = new HashMap<Long, IdNameVO>();
+			  
+			  List<Long> mandalList = new ArrayList<Long>();
+			  List<Long> townList = new ArrayList<Long>();
+			  List<Long> divisonList = new ArrayList<Long>();			  
+			  
+			  
+			  if(LocationLevelId.equals(5l)){
+			        if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
+			          for (Long manTowDivId : lctnLevelValueList) {
+			        	  
+			            String mtdId = manTowDivId.toString();
+			            char temp = mtdId.charAt(0);
+			            Long firstChar=Long.parseLong(temp+"");
+			            if(firstChar==4l){
+			              mandalList.add(Long.parseLong(mtdId.substring(1)));
+			            }else if(firstChar==5l){
+			              townList.add(Long.parseLong(mtdId.substring(1)));
+			            }else if(firstChar==6l){
+			              divisonList.add(Long.parseLong(mtdId.substring(1)));
+			            }            
+			          }
+			        }
+			        if(mandalList !=null && mandalList.size()>0){
+			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId);
+					     finalMap = setDataToMapForFinalReview(mandalObjList,finalMap);
+				    }
+			        if(townList != null && townList.size() > 0){
+			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId);
+					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap);
+					        
+			        }
+			        if(divisonList != null && divisonList.size()>0){
+			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId);
+					        finalMap = setDataToMapForFinalReview(divObjList,finalMap);
+			        }
+			  }else{
+				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId);
+				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap);
+				  
+			  }
+			  
+			  if(finalMap !=null && finalMap.size() > 0){
+				  fnlCnddtCuntLst = new ArrayList<IdNameVO>(finalMap.values());
+			  }
+			
+			  
+		 }catch(Exception e) {
+			 LOG.error("Exceptionr riased at getFinalReviewCandidateCountLocationWise in NominatedPostProfileService class", e); 
+		 }
+		  return fnlCnddtCuntLst;
+	}
+
+	public Map<Long,IdNameVO> setDataToMapForFinalReview(List<Object[]> rtrnObjList,Map<Long,IdNameVO> finalMap){
+		try{
+			if(rtrnObjList != null && !rtrnObjList.isEmpty()){
+		    	for (Object[] obj : rtrnObjList) {
+		    		
+		    		IdNameVO vo  = finalMap.get(obj[0] !=null ? (Long)obj[0]:0l);
+		    		if(vo == null){
+		    			vo = new IdNameVO();
+		    			 vo.setId((Long)obj[0]);
+						 vo.setName(obj[1] != null ? obj[1].toString(): "");
+						 vo.setApplicationStatusId(obj[2] != null ? (Long)obj[2]: 0l);
+						 vo.setApplicationStatus(obj[3] != null ? obj[3].toString() : "");
+						 finalMap.put((Long)obj[0], vo);
+		    		}
+		   		   vo.setCount(vo.getCount() +( obj[4] != null ? (Long)obj[4]:0l));
+				}
+		    }
+			
+		}catch (Exception e) {
+			 LOG.error("Exceptionr riased at setDataToMapForFinalReview in NominatedPostProfileService class", e); 
+		}
+		return finalMap;
+	}
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.aspectj.apache.bcel.generic.LNEG;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
@@ -406,6 +407,59 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		return query.list();
 	}
-	
-	
+ public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){
+		
+		       StringBuilder queryStr = new StringBuilder();
+		       
+		       queryStr.append(" select ");
+		          
+		       if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+		    	   queryStr.append(" model.departments.departmentId,model.departments.deptName,");
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+		      	   queryStr.append(" model.board.boardId,model.board.boardName,");
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+		 		  queryStr.append(" model.position.positionId,model.position.positionName,");
+		 	   }
+		       queryStr.append(" model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(model.nominatedPostApplicationId)");
+		       queryStr.append(" from  NominatedPostApplication model where model.isDeleted = 'N' and model.applicationStatus.applicationStatusId = 3 ");
+		       
+		     /*  if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+		    	   queryStr.append(" and model.applicationStatus.applicationStatusId = 3 ");
+		       }else{
+		    	   queryStr.append(" and model.applicationStatus.applicationStatusId >= 3 ");
+		       }*/
+		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+		    	    queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
+		       }
+		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+		    	   queryStr.append(" and model.locationValue in (:lctnLevelValueList)");
+		       }
+		       if(departmentId != null && departmentId.longValue() > 0){
+		    	   queryStr.append(" and model.departments.departmentId=:departmentId ");
+		       }
+		       if(boardId != null && boardId.longValue() > 0){
+		    	   queryStr.append(" and model.board.boardId=:boardId ");
+		       }
+		       if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+		    	   queryStr.append(" group by model.departments.departmentId order by model.departments.departmentId ");
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+		     	   queryStr.append(" group by model.board.boardId order by model.board.boardId ");
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+		    	   queryStr.append(" group by model.position.positionId order by  model.position.positionId ");
+		       }
+		       Query query = getSession().createQuery(queryStr.toString());
+		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+		    	   query.setParameter("LocationLevelId", LocationLevelId);
+		       }
+		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+		    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
+		       }
+		       if(departmentId != null && departmentId.longValue() > 0){
+		    	   query.setParameter("departmentId", departmentId);
+		       }
+		       if(boardId != null && boardId.longValue() > 0){
+		    	   query.setParameter("boardId", boardId);
+		       }
+		    return query.list();
+	}
 }

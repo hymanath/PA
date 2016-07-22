@@ -21,7 +21,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String status;
 	private String publicRepr;
 	private String partyPos;
-	
+	private Long applicationStatusId;
+	private String applicationStatus;
 	@Override
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -152,4 +153,21 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setPartyPos(String partyPos) {
 		this.partyPos = partyPos;
 	}
+
+	public Long getApplicationStatusId() {
+		return applicationStatusId;
+	}
+
+	public void setApplicationStatusId(Long applicationStatusId) {
+		this.applicationStatusId = applicationStatusId;
+	}
+
+	public String getApplicationStatus() {
+		return applicationStatus;
+	}
+
+	public void setApplicationStatus(String applicationStatus) {
+		this.applicationStatus = applicationStatus;
+	}
+	
 }
