@@ -6,6 +6,7 @@ import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -545,8 +546,29 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		LOG.error("Exception Occured in getDepartmentWiseBoardAndPositionDetails() in NominatedPostProfileAction ",e);
 	}
 	return Action.SUCCESS;
+	}
+  public String getNominatedReadyToFinalReview(){
+	  return Action.SUCCESS;
   }
-	
+ public String getFinalReviewCandidateCountLocationWise(){
+	 try{
+		    jObj = new JSONObject(getTask());
+		    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 
+		    Long LocationLevelId = jObj.getLong("LocationLevelId");
+			Long departmentId = jObj.getLong("departmentId");
+			Long boardId = jObj.getLong("boardId");
+			JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
+			    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
+			    	for(int i = 0;i<locationLevelValueArr.length();i++){
+			    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
+			    	}
+			    }
+		 idNameVOList = nominatedPostProfileService.getFinalReviewCandidateCountLocationWise(LocationLevelId,lctnLevelValueList,departmentId,boardId); 
+	 }catch(Exception e) {
+		 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+	}
+   return Action.SUCCESS;	
+ }
 	public String getAllApplicationStatusList(){
 		try{
 			
