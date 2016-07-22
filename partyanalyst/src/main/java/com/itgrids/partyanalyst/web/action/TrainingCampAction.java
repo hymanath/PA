@@ -1434,8 +1434,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			List<Long> constiIds = new ArrayList<Long>();
 			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
 			for (int i = 0; i < jsonArray2.length(); i++) {
-				Long constiId = Long.valueOf(jsonArray2.get(i).toString());
-				constiIds.add(constiId);
+				if(jsonArray2.get(i) != null && !jsonArray2.get(i).toString().equalsIgnoreCase("null")){
+					Long constiId = Long.valueOf(jsonArray2.get(i).toString());
+					constiIds.add(constiId);
+				}
+				
 			}
 						
 			locations = cadreCommitteeService.getLocationsOfSublevelConstituencyMandal(stateId,distIds,constiIds,mandalId,locationLevel);
@@ -2832,4 +2835,40 @@ public String getUpdateTrainingCampSpeakersDetails(){
 		}
     	return Action.SUCCESS;
     }
+public String getMandalsForDistrictIdDetails(){
+	try{
+		jObj = new JSONObject(getTask());
+		JSONArray arr = jObj.getJSONArray("districtId");
+		List<Long> list = new ArrayList<Long>(0);
+		
+		if(arr != null && arr.length() > 0){
+			for(int i=0;i<arr.length();i++){
+				list.add(Long.parseLong(arr.getString(i)));
+			}
+		}
+		
+		simpleVOList =trainingCampService.getMandalsForDistrictIdDetails(list);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getMandalsForDistrictIdDetails", e);
+	}
+	return Action.SUCCESS;
+}
+public String getVillagesForDistrictIdDetails(){
+	try{
+		jObj = new JSONObject(getTask());
+		JSONArray arr = jObj.getJSONArray("districtId");
+		List<Long> list = new ArrayList<Long>(0);
+		
+		if(arr != null && arr.length() > 0){
+			for(int i=0;i<arr.length();i++){
+				list.add(Long.parseLong(arr.getString(i)));
+			}
+		}
+		
+		simpleVOList =trainingCampService.getVillagesForDistrictIdDetails(list);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getVillagesForDistrictIdDetails", e);
+	}
+	return Action.SUCCESS;
+}
 }

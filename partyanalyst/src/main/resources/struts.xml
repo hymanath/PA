@@ -13046,7 +13046,16 @@
 			<result type="json" name="success">
 				<param name="root">locations</param>
 			</result>
-	</action>
-	
+	</action>	
+	<action name="getMandalsForDistrictIdAction" class="trainingCampAction" method="getMandalsForDistrictIdDetails">
+			<result type="json" name="success">
+				<param name="root">simpleVOList</param>
+			</result>
+	</action>	
+	<action name="getVillagesForDistrictIdAction" class="trainingCampAction" method="getVillagesForDistrictIdDetails">
+			<result type="json" name="success">
+				<param name="root">simpleVOList</param>
+			</result>
+	</action>	
 </package>
 </struts>      
