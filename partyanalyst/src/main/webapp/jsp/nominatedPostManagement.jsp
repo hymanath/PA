@@ -33,24 +33,35 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-3 col-xs-12 col-sm-3" id="stateMainId" >
+							<label>State</label>
+							<select class="form-control" id="stateId">
+								<option value="">Select State</option>
+								<option value="1">Andhara Pradesh</option>
+								<option value="36">Telangana</option>
+							</select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="districtMainId">
 							<label>District</label>
 							<select class="form-control" id="districtId">
 								<option value="">Select District</option>
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
 							<label>Constituency</label>
 							<select class="form-control" id="constituencyId">
 								<option value="">Select Constituency</option>
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
 							<label>Mandal/Town/Division</label>
 							<select class="form-control" id="manTowDivId">
 								<option value="">Select Mandal/Town/Division</option>
 							</select>
 						</div>
+						
+					</div class="row">
+					<div>
 						<div class="col-md-3 col-xs-12 col-sm-3">						
 							<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
 						</div>
@@ -71,14 +82,22 @@
 <script src="js/nominatedPosts/nominatedPostManagement.js" type="text/javascript"></script>
 <script type="text/javascript">
 var globalLevelId = 5;
-var globalStateId = 1;
+var globalStateId = 36;
+
+$("#stateId").val(globalStateId);
 
 var grlobalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTowDivArr=[];
 $(document).ready(function() {
 	//getAllDeptsAndBoardsByLevel();
-	getDistrictsForStates(globalStateId);
+	if(globalLevelId !=1 && globalLevelId !=2){
+		getDistrictsForStates(globalStateId);
+	}else{
+		$("#districtMainId").hide();
+		$("#constituencyMainId").hide();
+		$("#manTowDivMainId").hide();
+	}	
 });
 
 </script>
