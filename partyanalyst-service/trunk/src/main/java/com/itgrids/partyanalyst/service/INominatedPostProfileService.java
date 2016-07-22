@@ -33,4 +33,5 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getAllApplicationStatusList();
 	public String savingAnyPostCandidatesToPosition(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
 						final Long deptId,final Long boardId,final Long positionId,final Long statusId,final String comment);
+	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId);
 }
