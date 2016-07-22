@@ -949,7 +949,7 @@
 				    <value>com.itgrids.partyanalyst.model.AlertAssigned</value> 
 				    <value>com.itgrids.partyanalyst.model.TdpMember</value> 
 				    <value>com.itgrids.partyanalyst.model.NominatedPostComment</value> 
-				    
+				    <value>com.itgrids.partyanalyst.model.NominatedPostApplicationHistory</value>
 				 </list>
 			
 		</property>

@@ -3308,6 +3308,7 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
 		<property name="voterDAO" ref="voterDAO"></property>
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>
+		<property name="nominatedPostApplicationHistoryDAO" ref="nominatedPostApplicationHistoryDAO"></property>
 	</bean>
 </beans>		
 	
