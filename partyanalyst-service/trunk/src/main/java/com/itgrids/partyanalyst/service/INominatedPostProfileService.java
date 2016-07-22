@@ -22,7 +22,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDistrictsForState(Long stateId);
 	public List<IdNameVO> getVillagesForMandalId(Long mandalId);
 	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId);
-	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr);
+	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr,Long stateId);
 	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue);
 	public ResultStatus saveNominatedPostUploadFiles(Map<File,String> mapfiles,Long nomiPostCandiId);
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
