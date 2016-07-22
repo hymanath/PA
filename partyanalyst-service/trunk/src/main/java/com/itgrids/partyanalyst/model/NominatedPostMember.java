@@ -35,9 +35,11 @@ public class NominatedPostMember extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
+	private Long addressId;
 	
 	private NominatedPostPosition nominatedPostPosition;
 	private BoardLevel boardLevel;
+	private UserAddress address;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -142,4 +144,24 @@ public class NominatedPostMember extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getAddress() {
+		return address;
+	}
+	public void setAddress(UserAddress address) {
+		this.address = address;
+	}
+	
 }
