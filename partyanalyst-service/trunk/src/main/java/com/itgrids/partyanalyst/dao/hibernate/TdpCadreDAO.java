@@ -7044,6 +7044,8 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		Query query = getSession().createQuery(" select model.mobileNo,model.houseNo,model.presentAddress.addressLane1,model.presentAddress.addressLane2," +
 				" model.presentAddress.state.stateId,model.presentAddress.district.districtId," +
 				" model.presentAddress.constituency.constituencyId,model.presentAddress.tehsil.tehsilId,model.presentAddress.panchayat.panchayatId,model.presentAddress.pinCode " +
+				" ,model.tdpCadreId , model.voter.voterId, model.firstname,model.lastname, model.relativename, model.relativeType, model.gender, model.age, model.dateOfBirth, model.image, model.casteStateId, " +
+				" model.userAddress.userAddressId "+
 				" from TdpCadre model " +
 				" where model.tdpCadreId=:tdpCadreId ");
 		query.setParameter("tdpCadreId", tdpCadreId);

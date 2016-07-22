@@ -61,11 +61,25 @@ public class NominatedPostVO implements Serializable{
 	private Long fifthAgeGroupCount=0l;
 	private Long locationVal;
 	private String positions;
+	private String refferCadreIds;
+	private Long nominatedCandId ;
 	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
 	
+	public Long getNominatedCandId() {
+		return nominatedCandId;
+	}
+	public void setNominatedCandId(Long nominatedCandId) {
+		this.nominatedCandId = nominatedCandId;
+	}
+	public String getRefferCadreIds() {
+		return refferCadreIds;
+	}
+	public void setRefferCadreIds(String refferCadreIds) {
+		this.refferCadreIds = refferCadreIds;
+	}
 	public String getPositions() {
 		return positions;
 	}

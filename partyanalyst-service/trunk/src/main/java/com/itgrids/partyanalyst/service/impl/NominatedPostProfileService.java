@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.Trimmean;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.NominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -58,6 +60,7 @@ import com.itgrids.partyanalyst.model.ApplicationDocument;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostComment;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
+import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -755,37 +758,47 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			 transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
-					//ResultStatus rs = new ResultStatus ();
-						NominationPostCandidate nominationPostCandidate = new NominationPostCandidate();
-						NominatedPostApplication nominatedPostApplication = null;
+					NominationPostCandidate nominationPostCandidate = new NominationPostCandidate();
+					NominatedPostApplication nominatedPostApplication = null;
 						
-						
-					if(nominatedPostVO.getName() != null){
-							nominationPostCandidate.setCandidateName(nominatedPostVO.getName());
-					}
-						
+					Long nominatedCandiPostId= null;
+					Long voterId = null;
 					if(nominatedPostVO.getId() != null && nominatedPostVO.getId().longValue() > 0l){
-						Long voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
+						voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
 						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
 						nominationPostCandidate.setTdpCadreId(nominatedPostVO.getId());
-						
-					}else{
-						Long voterId = voterDAO.getVoterIdByIdCardNo(nominatedPostVO.getVoterCardNo());
-						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
+						List<Object[]> cadreDetails = tdpCadreDAO.getApplicationMemberDetails(nominatedPostVO.getId());
+						if(cadreDetails != null && cadreDetails.size() >0){
+							for(Object[] cadre : cadreDetails){
+								
+								String fnamr = cadre[12] != null ? cadre[12].toString() : "";
+								String lastnaem = cadre[12] != null ? cadre[12].toString() : "";
+								nominationPostCandidate.setCandidateName(fnamr + " " + lastnaem) ;	
+								
+								nominationPostCandidate.setMobileNo(commonMethodsUtilService.getStringValueForObject(cadre[0]));
+								nominationPostCandidate.setHouseno(commonMethodsUtilService.getStringValueForObject(cadre[1]));
+								nominationPostCandidate.setGender(commonMethodsUtilService.getStringValueForObject(cadre[16]));
+								nominationPostCandidate.setAge(commonMethodsUtilService.getLongValueForObject(cadre[17]));
+								nominationPostCandidate.setDob(commonMethodsUtilService.getStringValueForObject(cadre[18]));
+								nominationPostCandidate.setRelativename(commonMethodsUtilService.getStringValueForObject(cadre[14]));
+								nominationPostCandidate.setRelativetype(commonMethodsUtilService.getStringValueForObject(cadre[15]));
+								nominationPostCandidate.setImageurl(commonMethodsUtilService.getStringValueForObject(cadre[19]));
+								nominationPostCandidate.setCastestateId(commonMethodsUtilService.getLongValueForObject(cadre[20]));
+								nominationPostCandidate.setAddressId(commonMethodsUtilService.getLongValueForObject(cadre[21]));
+								nominationPostCandidate.setInsertedBy(loggerUserId);
+								nominationPostCandidate.setUpdatedBy(loggerUserId);
+								nominationPostCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								nominationPostCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								nominationPostCandidate.setIsDeleted("N");
+								nominationPostCandidate = nominationPostCandidateDAO.save(nominationPostCandidate);
+								nominatedCandiPostId = nominationPostCandidate.getNominationPostCandidateId();
+							}
+						}
+					}else {
+						nominatedCandiPostId = nominatedPostVO.getNominatedCandId();
 					}
-						
-						
-					if(nominatedPostVO.getMobileNo() != null){
-							nominationPostCandidate.setMobileNo(nominatedPostVO.getMobileNo());
-					}
-						
-							nominationPostCandidate.setInsertedBy(loggerUserId);
-							nominationPostCandidate.setUpdatedBy(loggerUserId);
-							nominationPostCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							nominationPostCandidate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominationPostCandidate.setIsDeleted("N");
-							nominationPostCandidate = nominationPostCandidateDAO.save(nominationPostCandidate);
 					
+						
 					if(nominatedPostVO.getNominatdList() != null && !nominatedPostVO.getNominatdList().isEmpty() ){
 						
 						for(NominatedPostVO Vo : nominatedPostVO.getNominatdList()){
@@ -798,59 +811,39 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							
 								if(positnArr != null && positnArr.length >0){
 									for(String position : positnArr){
-										//nominatedPostApplication = new NominatedPostApplication();
-										saveNominatedPostApplication(Vo,nominationPostCandidate.getNominationPostCandidateId(),position.trim(),loggerUserId);
+										saveNominatedPostApplication(Vo,nominatedCandiPostId,position.trim(),loggerUserId,mapfiles);
 									}
 								}else{
-									//nominatedPostApplication = new NominatedPostApplication();
-									saveNominatedPostApplication(Vo,nominationPostCandidate.getNominationPostCandidateId(),null,loggerUserId);
+									saveNominatedPostApplication(Vo,nominatedCandiPostId,null,loggerUserId,mapfiles);
 								}
 							
 						
 						}
 				}
-					String folderName = folderCreation();
-					ApplicationDocument applicationDocument = null;
 					
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(new Date());
-					 int year = calendar.get(Calendar.YEAR);
-					 int month = calendar.get(Calendar.MONTH);
-					 int day = calendar.get(Calendar.DAY_OF_MONTH);
-					 int temp = month+1;
-					 String monthText = getMonthForInt(temp);
-					
-					 StringBuilder pathBuilder = null;
-					 StringBuilder str ;
-					 
+					if(nominatedPostVO.getRefferCadreIds() != null && nominatedPostVO.getRefferCadreIds().length() >0){
+						String[] refferalCadreIdArr = null ;
+						String refferalCadreIds =nominatedPostVO.getRefferCadreIds();
+						if(refferalCadreIds != null && refferalCadreIds.length() > 0){
+							refferalCadreIdArr = new String[0];
+							refferalCadreIdArr = refferalCadreIds.split(",");
+						}
 						
-					 for (Map.Entry<File, String> entry : mapfiles.entrySet())
-					 {
-						 pathBuilder = new StringBuilder();
-						 str = new StringBuilder();
-						 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-						 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-							
-						 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
-						 .append(entry.getValue());
-						 str.append(randomNumber).append(".").append(entry.getValue());
-						 activityService = new ActivityService();
-						String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
-						 
-							if(fileCpyStts.equalsIgnoreCase("error")){
-								status.setResultCode(ResultCodeMapper.FAILURE);
-								LOG.error(" Exception Raise in copying file");
-								throw new ArithmeticException();
+							if(refferalCadreIdArr != null && refferalCadreIdArr.length >0){
+								for(String cadreId: refferalCadreIdArr){
+										NominatedPostReferDetails NPRD = new NominatedPostReferDetails();
+										NPRD.setNominationPostCandidateId(nominatedCandiPostId);
+										NPRD.setReferCadreId(Long.parseLong(cadreId.trim()));
+										NPRD.setInsertedBy(loggerUserId);
+										NPRD.setUpdatedBy(loggerUserId);
+										NPRD.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										NPRD.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										NPRD.setIsDeleted("N");
+										nominatedPostReferDetailsDAO.save(NPRD);
+								}
 							}
-							
-							applicationDocument = new ApplicationDocument();
-							applicationDocument.setFilePath(pathBuilder.toString());
-							applicationDocument.setNominationPostCandidateId(nominationPostCandidate.getNominationPostCandidateId() != null ? nominationPostCandidate.getNominationPostCandidateId() : null);
-							applicationDocument.setIsDeleted("N");
-							applicationDocument = applicationDocumentDAO.save(applicationDocument);
-							
-					 }
-					//status.setMessage("SUCCESS");
+					}
+					
 					status.setResultCode(0);
 					status.setMessage("SUCCESS - "+nominationPostCandidate.getNominationPostCandidateId());
 				return status;
@@ -870,7 +863,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return void
 	 * description  { Saving Nominated Post Prifile Application Candidate into Database for Each Position}
 	 */
-	public void saveNominatedPostApplication(NominatedPostVO Vo ,Long nominatedPostCandi,String position,final Long loggerUserId){
+	public void saveNominatedPostApplication(NominatedPostVO Vo ,Long nominatedPostCandi,String position,final Long loggerUserId,final Map<File,String> mapfiles){
 		try{
 			NominatedPostApplication nominatedPostApplication = new NominatedPostApplication();
 		nominatedPostApplication.setPositionId(position != null ? Long.parseLong(position.trim()) : null) ;
@@ -898,22 +891,73 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		
 		nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
 		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
-		//nominatedPostApplication.setPositionId(Vo.getDeptBoardPostnId() != null ? Vo.getDeptBoardPostnId() : null) ;
 		nominatedPostApplication.setInsertedBy(loggerUserId);
 		nominatedPostApplication.setUpdatedBy(loggerUserId);
 		nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		nominatedPostApplication.setIsDeleted("N");
 		nominatedPostApplication.setApplicationStatusId(1l);
-		nominatedPostApplicationDAO.save(nominatedPostApplication);
+		nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
+		saveApplicationDocuments(nominatedPostApplication.getNominatedPostApplicationId(),nominatedPostCandi,mapfiles);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in saveNominatedPostApplication()", e);
+		}
+		
+	}
+	public void saveApplicationDocuments(Long applctnId,Long candId,final Map<File,String> mapfiles){
+		
+		try{
+		String folderName = folderCreation();
+		ApplicationDocument applicationDocument = null;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		 int year = calendar.get(Calendar.YEAR);
+		 int month = calendar.get(Calendar.MONTH);
+		 int day = calendar.get(Calendar.DAY_OF_MONTH);
+		 int temp = month+1;
+		 String monthText = getMonthForInt(temp);
+		
+		 StringBuilder pathBuilder = null;
+		 StringBuilder str ;
+		 
+			
+		 for (Map.Entry<File, String> entry : mapfiles.entrySet())
+		 {
+			 pathBuilder = new StringBuilder();
+			 str = new StringBuilder();
+			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+				
+			 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
+			 .append(entry.getValue());
+			 str.append(randomNumber).append(".").append(entry.getValue());
+			 activityService = new ActivityService();
+			String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+			 
+				if(fileCpyStts.equalsIgnoreCase("error")){
+					//status.setResultCode(ResultCodeMapper.FAILURE);
+					LOG.error(" Exception Raise in copying file");
+					throw new ArithmeticException();
+				}
+				
+				applicationDocument = new ApplicationDocument();
+				applicationDocument.setFilePath(pathBuilder.toString());
+				applicationDocument.setNominationPostCandidateId(candId != null ? candId : null);
+				applicationDocument.setNominatedPostApplicationId(applctnId != null ? applctnId : null);
+				applicationDocument.setIsDeleted("N");
+				applicationDocument = applicationDocumentDAO.save(applicationDocument);
+				
+		 }
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in saveNominatedPostApplication()", e);
 			//status.setMessage("FAIL");
 			//status.setResultCode(1);
 		}
+		
 	}
-	
 	/**
 	 * @Author  Teja
 	 * @Version NominatedPostProfileService.java  July 15, 2016 02:50:00 PM 
