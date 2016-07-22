@@ -47,7 +47,23 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private InputStream 						inputStream;
 	private List<LocationWiseBoothDetailsVO> locations;
 	private ICadreCommitteeService	cadreCommitteeService;
+	
+	private Long lId;
+	private Long stId;
 
+	
+	public Long getlId() {
+		return lId;
+	}
+	public void setlId(Long lId) {
+		this.lId = lId;
+	}
+	public Long getStId() {
+		return stId;
+	}
+	public void setStId(Long stId) {
+		this.stId = stId;
+	}
 	public void setCadreCommitteeService(
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
