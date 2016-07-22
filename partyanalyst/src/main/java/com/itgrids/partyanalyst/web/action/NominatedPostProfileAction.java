@@ -50,8 +50,15 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	
 	private Long lId;
 	private Long stId;
-
+	private String sts;
 	
+	
+	public String getSts() {
+		return sts;
+	}
+	public void setSts(String sts) {
+		this.sts = sts;
+	}
 	public Long getlId() {
 		return lId;
 	}
