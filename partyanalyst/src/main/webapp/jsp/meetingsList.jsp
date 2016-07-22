@@ -217,7 +217,6 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i><span class="caret"></span></span>
 									<input type="text" class="form-control" id="datePickerBlockId">
-									
 									<span></span>
 								</div>
 							<!--	<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;">
@@ -629,7 +628,7 @@ getUserAccessLocationDetails();
 				$("#statesDivId").val(stateArr[0]).trigger('change');
 				setTimeout(function(){
 					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
-					$("#viewMeetings").trigger( "click" );
+					//$("#viewMeetings").trigger( "click" );
 				},1000); 
 			} else if(stateArr.length>0 && distArr.length>0 && parlArr.length==0){
 				$('#meetingLocationLevel').val('2').trigger('change');
@@ -637,7 +636,7 @@ getUserAccessLocationDetails();
 				setTimeout(function(){
 					$('#typeOfMeeting').val(firstMeetingId).trigger('change');
 					$('#districtId').val(distArr[0]).trigger('change');
-					$("#viewMeetings").trigger( "click" );
+					//$("#viewMeetings").trigger( "click" );
 					
 				},1000); 
 				
@@ -652,7 +651,7 @@ getUserAccessLocationDetails();
 				
 				setTimeout(function(){
 					$('select[name="constBox"] option:eq(2)').attr('selected', 'selected');
-					$("#viewMeetings").trigger( "click" );
+					//$("#viewMeetings").trigger( "click" );
 				},2000);
 			} 
 		});
@@ -1208,6 +1207,9 @@ getUserAccessLocationDetails();
 				districtId.push(district);
 			}
 			resultArr = districtId;
+			
+			//getMandalsForDistrictId(districtId);
+			//getVillagesForDistrictId(districtId);
 		}else if(forLocation=="constituency"){
 			var assembly = $("#constituencyId").val();
 			var constituencyId = [];
@@ -1251,7 +1253,7 @@ getUserAccessLocationDetails();
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   $("#searchDataImgForDist").hide();
-		    $("#districtId").append('<option value=0>ALL</option>');
+		    $("#districtId").append('<option value="0">ALL</option>');
 			for(var i in result){
 				if(distArr.length>0){
 				   if($.inArray(result[i].id, distArr) > -1){
@@ -1262,14 +1264,23 @@ getUserAccessLocationDetails();
 				}
 			}
 			getConstituenciesForDistricts('');
+			setTimeout(
+			function(){		
+				getMandalVillageDetails(4);
+				setTimeout(
+			function(){						
+				getMandalVillageDetails(5);
+			}, 1000);
+			
+			}, 2000);
 	   });
 	}
 	function getConstituenciesForDistricts(district){
 	   
 	   $("#manTowDivId  option").remove();
-		$("#manTowDivId").append('<option value="">Select Mandal/Town/Divison</option>');
+		$("#manTowDivId").append('<option value="">ALL</option>');
 		$("#villWardId  option").remove();
-		$("#villWardId").append('<option value="">Select Village/Ward</option>');
+		$("#villWardId").append('<option value="">ALL</option>');
 	   
 		$("#constituencyId  option").remove();
 		//$("#constituencyId").append('<option value="">Select Constituency</option>');
@@ -1277,7 +1288,7 @@ getUserAccessLocationDetails();
 		
 		var distArrTemp = [];
 		if(district==0){
-			distArrTemp = distArr;
+			distArrTemp = distArr; //8888
 		}else{
 			distArrTemp.push(district);
 		}
@@ -1294,7 +1305,7 @@ getUserAccessLocationDetails();
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   $("#searchDataImgForcons").hide();
-		   $("#constituencyId").append('<option value=0>ALL</option>');
+		   $("#constituencyId").append('<option value="0">ALL</option>');
 			for(var i in result){
 			   if(assmblyArr.length>0){
 				   if($.inArray(result[i].locationId, assmblyArr) > -1){
@@ -1319,7 +1330,7 @@ getUserAccessLocationDetails();
 	});
 	//Location Showing and Hiding
 		$("#meetingLocationLevel").change(function(){
-				
+			
 			$("#districtId").val($("#districtId option:first").val());
 			$("#constituencyId").val($("#constituencyId option:first").val());
 			$("#manTowDivId").val($("#manTowDivId option:first").val());
@@ -1356,9 +1367,11 @@ getUserAccessLocationDetails();
 				$("#VillWardShowId").hide();
 				
 			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
-				
 				getConstituenciesForDistricts("");				
+				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 				setTimeout(function(){getMandalVillageDetails(4);}, 2000);
+				</c:if>
+				getMandalsForDistrictId();
 				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
@@ -1369,8 +1382,20 @@ getUserAccessLocationDetails();
 			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
 				
 				getConstituenciesForDistricts("");
-				setTimeout(function(){getMandalVillageDetails(5);}, 2000);
-				
+				 <c:if test="${sessionScope.USER.isAdmin == 'true'}">
+				setTimeout(
+					function(){		
+						getMandalVillageDetails(4);
+						setTimeout(
+					function(){						
+						getMandalVillageDetails(5);
+					}, 1000);
+					
+					}, 2000);
+				//console.log(getMandalVillageDetails(5));
+				</c:if>
+				getMandalsForDistrictId();
+				getVillagesForDistrictId();
 				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
@@ -1400,14 +1425,12 @@ getUserAccessLocationDetails();
 				}
 			
 		});
-		
-	function getMandalVillageDetails(locationLevel){
+function getMandalVillageDetails(locationLevel){
 		//$("#manTowDivId  option").remove();
 		//$("#villWardId option").remove();
 		var stateId = $("#statesDivId").val();
 		var districtId = $("#districtId").val();
 		var constituencyId = $("#constituencyId").val();
-		
 		var distArrTemp = [];
 		if(districtId==0){
 			distArrTemp = distArr;
@@ -1422,30 +1445,27 @@ getUserAccessLocationDetails();
 		if(locationLevel==5){
 			mandalId = $("#manTowDivId").val();
 			//$("#manTowDivId").html("")
-			$("#villWardId").html("");
+			if(mandalId >0)
+				$("#villWardId").html("");
 		}
-		
 		var assmblyArrTemp = [];
-		console.log(constituencyId +"Balu");
 		if(constituencyId==0){
 			//assmblyArrTemp = assmblyArr;	
 			var divId = "#manTowDivId";
-			$(divId).html("");
-				 $(divId).append("<option value=''>Select Mandal/Town/Divison</option>");
-			  if(locationLevel ==5){
+			//divId = "#villWardId";//teja
+			//$(divId).html("");
+			if(locationLevel ==5){
 				  divId = "#villWardId";
-				$(divId).append("<option value=''>Select Village/Ward</option>");
-			  }
-			
-			return;
-		}else if($("#manTowDivId").val()==null || $("#manTowDivId").val() == 0){
+			}
+		}/* else if($("#manTowDivId").val()==null || $("#manTowDivId").val() == 0){
+			alert(54);
 			$("#villWardId  option").remove();
-			$("#villWardId").append('<option value="">Select Village/Ward</option>');
+			$("#villWardId").append('<option value="">ALL</option>');
 			assmblyArrTemp.push(constituencyId);
-		}else{
+		} */
+		else{
 			assmblyArrTemp.push(constituencyId);
 		}
-		
 		$("#searchDataImgForman").show();
 	   var jsObj={				
 			stateId : stateId,
@@ -1455,6 +1475,7 @@ getUserAccessLocationDetails();
 			locationLevel : locationLevel,
 			task:""
 		}
+		
 		$.ajax({
 			  type:'GET',
 			  url: 'getSubLevelLctnsForConstituencyAndMandalAction.action',
@@ -1463,14 +1484,10 @@ getUserAccessLocationDetails();
 	   }).done(function(result){
 		   $("#searchDataImgForman").hide();
 			  var divId = "#manTowDivId";
-				 //$(divId).append("<option value=''>Select Mandal/Town/Divison</option>");
-			  if(locationLevel ==5){
+				  if(locationLevel ==5){					  
 				  divId = "#villWardId";
-				//$(divId).append("<option value=''>Select Village/Ward</option>");
-			  }
-			  
-			  $(divId).append("<option value='0'>ALL</option>");
-			  
+				 }
+			$(divId).append("<option value='0'>ALL</option>");
 			for(var i in result){
 				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 			}
@@ -2013,8 +2030,68 @@ $(document).on("click","#updateDetailsBtnId",function(){
 		updateConductedReason(remarksVal);
 	}	
 });
-
-
+ function getMandalsForDistrictId(){
+	 $("#manTowDivId  option").remove();
+	var districtId = $("#districtId").val();
+			var districtId = [];
+			if(districtId==0){
+				if(distArr.length>0){
+					districtId = distArr;
+				}else{
+					districtId.push(0);
+				}
+			}else{
+				districtId.push(districtId);
+			}
+			districtId = districtId;
+	 var jsObj={
+			districtId :districtId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getMandalsForDistrictIdAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				$("#manTowDivId").append("<option value='0'>ALL</option>");
+			   for(var i in result){
+				   $("#manTowDivId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+		   }
+   });	
+  }
+function getVillagesForDistrictId(){
+	$("#villWardId  option").remove();
+	 var districtId = $("#districtId").val();
+			var districtId = [];
+			if(districtId==0){
+				if(distArr.length>0){
+					districtId = distArr;
+				}else{
+					districtId.push(0);
+				}
+			}else{
+				districtId.push(districtId);
+			}
+			districtId = districtId;
+	 		var jsObj={
+			districtId :districtId
+		}
+		$.ajax({
+			type:"POST",
+			url :"getVillagesForDistrictIdAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				$("#villWardId").append("<option value='0'>ALL</option>");
+				for(var i in result){
+				   $("#villWardId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+		   }
+   });	
+ }
 </script>
 
 </body>
