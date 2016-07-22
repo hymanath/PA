@@ -38,7 +38,9 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Long updatedBy;
 	private Date updatedTime;
+	private Long addressId;
 	
+	private UserAddress address;
 	private NominationPostCandidate nominationPostCandidate;
 	private Departments departments;
 	private Board board;
@@ -215,6 +217,23 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 		this.updatedTime = updatedTime;
 	}
 	
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
 	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getAddress() {
+		return address;
+	}
+	public void setAddress(UserAddress address) {
+		this.address = address;
+	}	
 	
 }
