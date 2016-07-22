@@ -16,21 +16,36 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		super(NominatedPost.class);
 	}
 
-	public List<Object[]> getAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,List<Long> statusList){
+	public List<Object[]> getAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,List<Long> statusList,Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.nominatedPostStatus.status, model.nominatedPostStatusId, " +
 				" model.nominatedPostMember.boardLevelId, count(model.nominatedPostId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(model.nominatedPostMember.nominatedPostPosition.positionId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) " +
-				" from NominatedPost model where  " +
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
+		queryStr.append(" from NominatedPost model   " );
+		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null)
+			queryStr.append(" ,UserAddress model2 where model.nominatedPostMember.addressId = model2.userAddressId and " );
+		else
+			queryStr.append(" where ");
+		
+		queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
 				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' ");		
 		if(new CommonMethodsUtilService().isListOrSetValid(statusList))
 			queryStr.append(" and model.nominatedPostStatusId in (:statusList) ");			
 		if(boardLevelId != null && boardLevelId.longValue()>0)
 			queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");		
 		if(startDate != null && endDate != null)
-			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");		
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		
+		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append(" model2.district.districtId between 11 and 23 ");
+			else if(stateId.longValue() ==2L)
+				queryStr.append(" model2.district.districtId between 1 and 10 ");
+			else
+				queryStr.append(" model2.district.districtId between 1 and 23 ");
+		}
+		
 		queryStr.append(" group by model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -47,19 +62,32 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getTotalAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,List<Long> statusList){
+	public List<Object[]> getTotalAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,List<Long> statusList,Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select '','', model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(model.nominatedPostMember.nominatedPostPosition.positionId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) " +
-				" from NominatedPost model where  " +
-				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
+		queryStr.append(" from NominatedPost model   " );
+		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null)
+			queryStr.append(",UserAddress model2 where model.nominatedPostMember.addressId = model2.userAddressId and " );
+		else
+			queryStr.append(" where ");
+		queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
 				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' ");		
 			
 		if(boardLevelId != null && boardLevelId.longValue()>0)
 			queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");		
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");		
+		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append(" model2.district.districtId between 11 and 23 ");
+			else if(stateId.longValue() ==2L)
+				queryStr.append(" model2.district.districtId between 1 and 10 ");
+			else
+				queryStr.append(" model2.district.districtId between 1 and 23 ");
+		}
+		
 		queryStr.append(" group by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
