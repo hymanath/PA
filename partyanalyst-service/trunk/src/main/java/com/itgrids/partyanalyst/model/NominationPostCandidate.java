@@ -38,7 +38,7 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private String houseno;
 	private String gender;
 	private Long age;
-	private String dob;
+	private Date dob;
 	private String relativename;
 	private String relativetype;
 	private String imageurl;
@@ -197,10 +197,10 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	}
 	
 	@Column(name = "date_of_birth")
-	public String getDob() {
+	public Date getDob() {
 		return dob;
 	}
-	public void setDob(String dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 	
