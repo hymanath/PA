@@ -1076,7 +1076,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * 
 	 * */
 	
-	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr){
+	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr,Long stateId){
 		List<NominatedPostVO> returnList = null;
 		try {
 			Date startDate = null;
@@ -1110,7 +1110,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			//if(commonMethodsUtilService.isMapValid(levelwiseNominatedPostsMap)){
 				List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
-				List<Object[]> totalAvailablePostsList = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,startDate,endDate,statusList);
+				List<Object[]> totalAvailablePostsList = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,startDate,endDate,statusList,stateId);
 				Long totalPositionsCount=0L;
 				Long totalCorpCount=0L;
 				if(commonMethodsUtilService.isListOrSetValid(totalAvailablePostsList)){
@@ -1127,7 +1127,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 				
-				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,startDate,endDate,statusList);
+				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,startDate,endDate,statusList,stateId);
 			
 				if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
 					for (Object[] param : levelWiseAvailablePostsList) {
@@ -1214,7 +1214,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 				
-				List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,startDate,endDate);
+				List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,startDate,endDate,stateId);
 				if(commonMethodsUtilService.isListOrSetValid(levelWiseApplicatinStatusDetailsList)){
 					for (Object[] param : levelWiseApplicatinStatusDetailsList) {
 						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -1242,7 +1242,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 				
-				List<Object[]> levelWiseRunningApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsRunningAppliedApplicationsDtals(levelId,startDate,endDate);
+				List<Object[]> levelWiseRunningApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsRunningAppliedApplicationsDtals(levelId,startDate,endDate,stateId);
 				if(commonMethodsUtilService.isListOrSetValid(levelWiseRunningApplicatinStatusDetailsList)){
 					for (Object[] param : levelWiseRunningApplicatinStatusDetailsList) {
 						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
