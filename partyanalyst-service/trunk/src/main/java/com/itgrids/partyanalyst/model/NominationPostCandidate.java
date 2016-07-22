@@ -45,39 +45,6 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private Long castestateId;
 	private Long addressId;
 	
-	
-	
-	
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public String getDob() {
-		return dob;
-	}
-	public void setDob(String dob) {
-		this.dob = dob;
-	}
-	public String getImageurl() {
-		return imageurl;
-	}
-	public void setImageurl(String imageurl) {
-		this.imageurl = imageurl;
-	}
-	public Long getCastestateId() {
-		return castestateId;
-	}
-	public void setCastestateId(Long castestateId) {
-		this.castestateId = castestateId;
-	}
 	private TdpCadre tdpCadre;
 	private Voter voter;
 	
@@ -213,5 +180,44 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 		this.relativetype = relativetype;
 	}
 	
+	@Column(name = "address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	
+	@Column(name = "gender")
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	@Column(name = "date_of_birth")
+	public String getDob() {
+		return dob;
+	}
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+	
+	@Column(name = "image_url")
+	public String getImageurl() {
+		return imageurl;
+	}
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
+	}
+	
+	@Column(name = "caste_state_id")
+	public Long getCastestateId() {
+		return castestateId;
+	}
+	public void setCastestateId(Long castestateId) {
+		this.castestateId = castestateId;
+	}
 	
 }
