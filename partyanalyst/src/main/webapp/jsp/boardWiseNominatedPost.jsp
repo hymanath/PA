@@ -688,6 +688,11 @@ $(document).on("click",".btnPopupAny",function(e){
 	$(this).closest('tr').find(".updateDropDownAny").show();
 	e.stopPropagation()
 });
+$(document).on("click",".btnPopupThisAny",function(e){
+	$(".updateDropDownThisAny").hide();
+	$(this).closest('tr').find(".updateDropDownThisAny").show();
+	e.stopPropagation()
+});
 $(document).on("click",function(){
 	$(".updateDropDown").hide();
 	$(".appliedPostPopup").hide();
@@ -724,11 +729,11 @@ function getBoardWiseNominatedPostMemberDetails(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null)
-		   buildNominatedPostMemberDetails(result,"any",4,299);
+		   buildNominatedPostMemberDetails(result,"any",4,299,2,1,3);
    });
 }
 
-function buildNominatedPostMemberDetails(result,type,levelId,levelValue){
+function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departmentId,boardId,positionId){
 	var str='';
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
@@ -798,11 +803,11 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue){
 				str+='<td style="position:relative;">';
 				if(type == "this"){
 					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'">UPDATE</button>';
-					str+='<div class="updateDropDown">';
+					str+='<div class="updateDropDown" id="updateDropDownId'+i+'">';
 						str+='<div class="updateDropDownArrow">';
 						str+='<div class="text-success" id="successDivId'+i+'"></div>';
 						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
-							str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
+							str+='<i class="glyphicon glyphicon-remove pull-right closeDivCls" id="updateDropDownId'+i+'" style="cursor:pointer;"></i>';
 							str+='<label>Select Status</label>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
@@ -814,10 +819,25 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue){
 					str+='</div>';
 				}
 				else if(type == "any"){
-					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls" attr_count="'+i+'">UPDATE</button>';
-					str+='<div class="updateDropDownAny">';
+					str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">ASSIGN THIS POSITION</button>';
+					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'">ASSIGN A POSITION</button>';
+					str+='<div class="updateDropDownThisAny" id="updateDropDownThisAny'+i+'">';
+						str+='<div class="updateDropDownArrow">';
+						str+='<div class="text-success" id="successDivThisAnyId'+i+'"></div>';
+								str+='<i class="glyphicon glyphicon-remove pull-right closeDivThisAnyCls" id="updateDropDownThisAny'+i+'" style="cursor:pointer;"></i>';
+								str+='<label>Select Status</label>';
+								str+='<select class="chosenSelect" id="updatedStatusThisAnyId'+i+'">';
+									str+='<option value="0">Select Status</option>';
+								str+='</select>';
+								str+='<label>Comments</label>';
+								str+='<textarea class="form-control" id="statusCommentThisAnyId'+i+'"></textarea>';
+								str+='<button class="btn btn-success btn-block m_top10 updateStatusThisAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'">SUBMIT</button>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="updateDropDownAny" id="updateDropDownAny'+i+'">';
 						str+='<div class="updateDropDownArrow">';
 						str+='<div class="text-success" id="successDivAnyId'+i+'"></div>';
+							str+='<i class="glyphicon glyphicon-remove pull-right closeDivAnyCls" id="updateDropDownAny'+i+'" style="cursor:pointer;"></i>';
 								str+='<div class="row">';
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 									str+='<label>Department</label>';
@@ -828,13 +848,13 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue){
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 									str+='<label>Corporation/Board</label>';
 									str+='<select class="chosenSelect" id="boardAnyId'+i+'" onchange="getPositionsForBoard('+i+')">';
-										str+='<option value="0">Select Status</option>';
+										str+='<option value="0">Select Board</option>';
 									str+='</select>';
 								str+='</div>';
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 									str+='<label>Position</label>';
 									str+='<select class="chosenSelect" id="positionAnyId'+i+'">';
-										str+='<option value="0">Select Status</option>';
+										str+='<option value="0">Select Position</option>';
 									str+='</select>';
 								str+='</div>';
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
@@ -863,6 +883,19 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue){
 	
 	$("#resultDivId").html(str);
 }
+
+$(document).on('click','.closeDivCls',function(){
+	var divId = $(this).attr("id");
+	$("#"+divId).hide();
+});
+$(document).on('click','.closeDivThisAnyCls',function(){
+	var divId = $(this).attr("id");
+	$("#"+divId).hide();
+});
+$(document).on('click','.closeDivAnyCls',function(){
+	var divId = $(this).attr("id");
+	$("#"+divId).hide();
+});
 
 $(document).on('click','.referenceCls',function(){
 	var candidateId = $(this).attr("attr_candidate_id");
@@ -924,11 +957,18 @@ $(document).on("click",".updateButtonCls",function(){
 });
 
 $(document).on("click",".updateButtonAnyCls",function(){
+	$(".updateDropDownThisAny").hide();
 	var num = $(this).attr("attr_count");
 	getDepartments(num);
 	getApplicationStatus("updatedStatusAnyId"+num);
 	$("#positionAnyId"+num).chosen();
 	$("#boardAnyId"+num).chosen();
+});
+
+$(document).on("click",".updateButtonThisAnyCls",function(){
+	$(".updateDropDownAny").hide();
+	var num = $(this).attr("attr_count");
+	getApplicationStatus("updatedStatusThisAnyId"+num);
 });
 
 function getApplicationStatus(divId){
@@ -954,7 +994,9 @@ function getApplicationStatus(divId){
 function getDepartments(num){
 	$("#departmentAnyId"+num+" option").remove();
 	
-	var jsObj={}
+	var jsObj={
+		postType : 1
+	}
 	$.ajax({
           type:'GET',
           url: 'getDepartmentsAction.action',
@@ -1043,6 +1085,44 @@ $(document).on("click",".updateStatusCls",function(){
 			$("#"+divId).html("Successfully Updated...");
 		else
 			$("#"+divId).html("Sorry,Exception Occured...Please try again...");
+   });
+});
+
+$(document).on("click",".updateStatusThisAnyCls",function(){
+	var applicationId = $(this).attr("attr_application_id");
+	var candidateId = $(this).attr("attr_candidate_id");
+	var num = $(this).attr("attr_count");
+	var levelId= $(this).attr("attr_levelId");
+	var levelVal = $(this).attr("attr_level_value");
+	var deptId = $(this).attr("attr_departmentId");
+	var boardId = $(this).attr("attr_boardId");
+	var positionId = $(this).attr("attr_positionId");
+	
+	var statusId = $("#updatedStatusThisAnyId"+num).val();
+	var comment = $("#statusCommentThisAnyId"+num).val();
+	
+	var jsObj=
+	   {	
+		applicationId : applicationId,
+		candidateId : candidateId,
+		levelId : levelId,
+		levelVal : levelVal,
+		deptId : deptId,
+		boardId : boardId,
+		positionId : positionId,
+		statusId : statusId,
+		comment : comment
+		}
+    $.ajax({
+          type:'GET',
+          url: 'savingAnyPostCandidatesToPositionAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+		if(result != null && result == 'success')
+			$("#successDivThisAnyId"+num).html("Successfully Updated...");
+		else
+			$("#successDivThisAnyId"+num).html("Sorry,Exception Occured...Please try again...");
    });
 });
 
