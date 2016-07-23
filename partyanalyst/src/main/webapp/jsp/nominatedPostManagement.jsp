@@ -37,6 +37,7 @@
 							<label>State</label>
 							<select class="form-control" id="stateId">
 								<option value="">Select State</option>
+								<option value="0">All</option>
 								<option value="1">Andhara Pradesh</option>
 								<option value="36">Telangana</option>
 							</select>
@@ -81,11 +82,11 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedPostManagement.js" type="text/javascript"></script>
 <script type="text/javascript">
-/* var globalLevelId = '${param.lId}';
+var globalLevelId = '${param.lId}';
 var globalStateId = '${param.stId}'; 
-var globalStatus='${param.sts}';*/
-var globalLevelId = 2;
-var globalStateId = 1;
+var globalStatus='${param.sts}';
+/* var globalLevelId = 2;
+var globalStateId = 1; */
 
 $("#stateId").val(globalStateId);
 

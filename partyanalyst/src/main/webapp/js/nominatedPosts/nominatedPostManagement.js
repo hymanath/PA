@@ -168,7 +168,8 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	var levelValues = 299; */
 	var jsObj={
 		levelId:levelId,
-		levelValues:levelValues
+		levelValues:levelValues,
+		statusType:globalStatus 
 	}
 	$.ajax({
           type:'GET',
@@ -186,7 +187,8 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
 		levelId:levelId,
 		levelValues:levelValues,
 		depts:depts,
-		boards:boards
+		boards:boards,
+		statusType:globalStatus
 	}
 	$.ajax({
           type:'GET',
