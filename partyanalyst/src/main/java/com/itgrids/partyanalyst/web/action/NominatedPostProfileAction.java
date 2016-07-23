@@ -19,6 +19,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -48,6 +49,8 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private InputStream 						inputStream;
 	private List<LocationWiseBoothDetailsVO> locations;
 	private ICadreCommitteeService	cadreCommitteeService;
+	private List<NominatedPostVO> 				candidatesList;
+	private List<CadreCommitteeVO>                    cadreCommitteeVOList;
 	
 	private Long lId;
 	private Long stId;
@@ -72,6 +75,14 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setStId(Long stId) {
 		this.stId = stId;
 	}
+	
+	public List<CadreCommitteeVO> getCadreCommitteeVOList() {
+		return cadreCommitteeVOList;
+	}
+	public void setCadreCommitteeVOList(List<CadreCommitteeVO> cadreCommitteeVOList) {
+		this.cadreCommitteeVOList = cadreCommitteeVOList;
+	}
+	
 	public void setCadreCommitteeService(
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
@@ -167,6 +178,13 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		return Action.SUCCESS;
 	}
 	
+	
+	public List<NominatedPostVO> getCandidatesList() {
+		return candidatesList;
+	}
+	public void setCandidatesList(List<NominatedPostVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
 	public String getBoardLevels(){
 		try{
 			
@@ -433,6 +451,8 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 					   	            }
 					   	        
 					   			}
+					   			
+					   			
 			   		}
 			     
 			   		resultStatus = nominatedPostProfileService.saveNominatedPostUploadFiles(mapfiles, cadreId);
@@ -635,6 +655,17 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			LOG.error("Exception Occured in getSubLevelForConstituency() method, Exception - ",e);
 		}
 		return Action.SUCCESS;
+	}
+public String notCadresearch(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			cadreCommitteeVOList =nominatedPostProfileService.notCadresearch(jObj.getString("searchType"),jObj.getString("searchValue"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at notCadresearch() method of NominatedPostProfileAction", e);
+		}
+	
+	return Action.SUCCESS;
 	}
 	
 }

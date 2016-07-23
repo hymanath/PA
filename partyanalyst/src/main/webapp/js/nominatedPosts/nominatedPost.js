@@ -489,6 +489,7 @@ function getNominatedPostApplication(startIndex)
        // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
         str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
         str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'">V.ID:'+result[i].voterCardNo+'</p>';
+		if(result[i].memberShipCardId != null && result[i].memberShipCardId != "")
         str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'">M.NO:'+result[i].memberShipCardId+'</p>';
         str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'">'+result[i].mobileNo+'</p>';
 		str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'"/>';
@@ -519,12 +520,11 @@ function getNominatedPostApplication(startIndex)
 		$("#notCadreNameId").val("");
 		$("#notCadreVoterId").val("");
 		$("#notCadreMobilNoId").val("");
-		$("#notCadreErrMsg").html("");
-		
-	}
+		$("#notCadreErrMsg").html("");  
+		$("#searchById").val("");
+		}
 	function refreshExistingDetailsInNominatedLevel()
 	{
-		alert(7);
 		$('#boardLvlId').val(0).trigger('chosen:updated');
 		$('#nominatedStaeId').val(0).trigger('chosen:updated');
 		$("#nominatedDistId").val(0).trigger("chosen:updated");
@@ -1519,3 +1519,35 @@ $("#involvedCandidatesDiv").hide();
     select.refresh();
   showHideBySearchType();//Clear Fields  
 }
+function notCadresearch(){
+	 var searchType=$("input[name='radioGroup']:checked").val();
+	   var searchValue=$("#searchById").val();
+	  // alert($('#searchByca').val());
+		var jsObj =
+		        {
+		searchType : searchType,
+		searchValue : searchValue,
+		task       : ""
+		          }
+				$.ajax({
+					  type:'GET',
+					  url: 'notCadresearchAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					
+					if(result != null)
+					{
+					buildCadreDetails(result);	
+					}
+				  
+				});
+		}
+ $(document).on("click","#searchbtn",function(){
+	  var value = $("input[name='checkBoxName']:checked").val();
+	  if(value == "Cadre"){
+		getNominatedPostApplication(0);
+	}
+	else if(value == "Not Cadre"){
+		notCadresearch();
+	}
+ });

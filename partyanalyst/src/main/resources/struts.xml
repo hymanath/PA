@@ -13069,6 +13069,11 @@
 	  <result type="json" name="success">
 			<param name="root">idNameVOList</param>
 		</result>
+	</action>
+	<action name="notCadresearchAction" class="nominatedPostProfileAction" method="notCadresearch">
+		<result type="json" name="success">
+			<param name="root">cadreCommitteeVOList</param>
+		</result>
 	</action>	
 </package>
 </struts>      
