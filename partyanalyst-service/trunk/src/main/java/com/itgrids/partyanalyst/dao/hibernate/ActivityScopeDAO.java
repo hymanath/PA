@@ -106,7 +106,7 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 			queryStr.append(" OR ( model.scopeId = 4 and model.scopeValue =:constituencyId)  " );
 		}		
 		else if((addressVO.getTehsilId() != null && addressVO.getTehsilId()>0L) || (addressVO.getLocalElectionBodyId() != null && addressVO.getLocalElectionBodyId()>0L)){
-			queryStr.append("  ( model.scopeId = in (5,7) and model.scopeValue =:mandalORMuncId)  " );
+			queryStr.append("  ( model.scopeId  in (5,7) and model.scopeValue =:mandalORMuncId)  " );
 		if(addressVO.getDistrictId() != null && addressVO.getDistrictId()>0L)
 			queryStr.append(" OR ( model.scopeId = 3 and model.scopeValue =:districtId )  " );
 		if(addressVO.getStateId() != null && addressVO.getStateId()>0L)
