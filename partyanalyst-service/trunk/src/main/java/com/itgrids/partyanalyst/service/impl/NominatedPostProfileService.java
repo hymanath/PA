@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -110,7 +111,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private ActivityService					activityService;
 	private IApplicationDocumentDAO         applicationDocumentDAO;
 	private IVoterDAO         				voterDAO;
-	private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
+    private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
 	
 	
 	
@@ -2498,4 +2499,33 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 		return finalMap;
 	}
+
+public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchValue){
+		List<CadreCommitteeVO>  finalList = null;
+		 
+		 try {
+			  
+			    List<Object[]> membersList = nominationPostCandidateDAO.notCadresearch(searchType,searchValue);
+			      if(membersList!=null && membersList.size()>0){
+			    	  finalList = new ArrayList<CadreCommitteeVO>();
+			    		   for(Object[] obj: membersList){
+			    			   CadreCommitteeVO vo = new CadreCommitteeVO();
+			    			   vo.setTdpCadreId(obj[0]!=null?(Long)obj[0]:0l);
+			    			   vo.setMemberShipCardId("");
+			    			   vo.setMobileNo(obj[1]!=null?obj[1].toString():"");
+			    			   vo.setCadreName(obj[2]!=null?obj[2].toString():"");
+			    			   vo.setVoterCardNo(obj[3]!=null?obj[3].toString():"");
+			    			   vo.setImageURL(obj[4]!=null?"images/cadre_images/"+obj[4].toString():null);
+			    			   vo.setConstituencyId(obj[5]!=null?(Long)obj[5]:01);
+			    			   vo.setConstituency(obj[6]!=null?obj[6].toString():"");
+			    			   finalList.add(vo);
+				    	}
+			    	  }
+			        
+			   	} catch (Exception e) {
+			LOG.error("Exception raised at notCadresearch() method of NominatedPostProfileService", e);
+		}
+		 return finalList;
+	 }
+
 }
