@@ -45,6 +45,7 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private String imageurl;
 	private Long castestateId;
 	private Long addressId;
+	private UserAddress address;
 	
 	private TdpCadre tdpCadre;
 	private Voter voter;
@@ -179,6 +180,16 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	}
 	public void setRelativetype(String relativetype) {
 		this.relativetype = relativetype;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getAddress() {
+		return address;
+	}
+	public void setAddress(UserAddress address) {
+		this.address = address;
 	}
 	
 	@Column(name = "address_id")
