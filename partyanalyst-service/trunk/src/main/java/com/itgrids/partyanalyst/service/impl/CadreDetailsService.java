@@ -5213,6 +5213,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			  Client client = Client.create();
 			  //client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
 			  WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
+			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
 			  
 			  //Response
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
@@ -5237,6 +5238,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 	    		    JSONObject srvyTmp = (JSONObject) finalArray.get(i);
 	 	    		    vo.setSurveyId(srvyTmp.getLong("surveyId"));
 	 	    		    vo.setSurveyName(srvyTmp.getString("surveyName"));
+	 	    		    vo.setStartDate(srvyTmp.getString("startDate"));
+	 	    		    vo.setEndDate(srvyTmp.getString("endDate"));
 	 	    		    
 	 	    		    List<QuestionAnswerVO> qstnsLst = new ArrayList<QuestionAnswerVO>();
 	 	    		    org.codehaus.jettison.json.JSONArray questsArr = srvyTmp.getJSONArray("questions");
@@ -5251,16 +5254,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 	    		    		org.codehaus.jettison.json.JSONArray optnsArr = qstnTemp.getJSONArray("options");
 		  	 	    		    if(optnsArr!=null && optnsArr.length()>0){
 		  	 	    		    	for(int k=0;k<optnsArr.length();k++){
-		  	 	    		    		QuestionAnswerVO optn=new QuestionAnswerVO();
-		  	 	    		    		JSONObject optnTemp = (JSONObject) optnsArr.get(k);
-		  	 	    		    		optn.setOptionValue(optnTemp.getLong("optionValue"));
-		  	 	    		    		optn.setOptionVal(optnTemp.getString("optionVal"));
-		  	 	    		    		optn.setCount(optnTemp.getLong("count"));
-		  	 	    		    		optn.setPercentage(optnTemp.getString("percentage"));
-		  	 	    		    		optn.setUserId(optnTemp.getLong("userId"));
-		  	 	    		    		optnsLst.add(optn);
 		  	 	    		    		
-		  	 	    		    		userIds.add(optnTemp.getLong("userId"));
+		  	 	    		    			QuestionAnswerVO optn=new QuestionAnswerVO();
+			  	 	    		    		JSONObject optnTemp = (JSONObject) optnsArr.get(k);
+			  	 	    		    		optn.setOptionValue(optnTemp.getLong("optionValue"));
+			  	 	    		    		optn.setOptionVal(optnTemp.getString("optionVal"));
+			  	 	    		    		optn.setCount(optnTemp.getLong("count"));
+			  	 	    		    		optn.setPercentage(optnTemp.getString("percentage"));
+			  	 	    		    		try {
+			  	 	    		    		optn.setUserId(optnTemp.getLong("userId"));
+			  	 	    		    		userIds.add(optnTemp.getLong("userId"));
+			  	 	    		    		} catch (Exception e) {}
+			  	 	    		    		optnsLst.add(optn);
 		  	 	    		    	}
 		  	 	    		   	}
 		  	 	    		    
