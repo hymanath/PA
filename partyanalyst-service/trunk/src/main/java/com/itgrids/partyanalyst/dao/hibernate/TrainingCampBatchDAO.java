@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.model.TrainingCampBatch;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch, Long> implements ITrainingCampBatchDAO{
@@ -236,6 +236,66 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		return query.list();
 	}
 	
+public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<Long> campIdsList){
+		
+		if(new CommonMethodsUtilService().isListOrSetValid(datesList)){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select distinct  model.trainingCampBatchId,model.trainingCampBatchName,model.trainingCampSchedule.trainingCamp.trainingCampId, " +
+					" model.trainingCampSchedule.trainingCamp.campName,date(model.fromDate),  date(model.toDate) from TrainingCampBatch model  where " +
+					" model.trainingCampSchedule.trainingCamp.trainingCampId in (:campIdsList)  and model.isCancelled = 'false' and model.attendeeType.attendeeTypeId=1 ");
+
+			for (int i=0;i<datesList.size();i++) {
+				if(i==0)
+					queryStr.append(" and ( ");
+				queryStr.append(" ( '"+datesList.get(i)+"' between date(model.fromDate) and date(model.toDate) )   ");
+				if(i==datesList.size()-1)
+					queryStr.append(" ) ");
+				else
+					queryStr.append(" or ");
+			}
+			
+			//queryStr.append(" group by  model.trainingCampBatchId  ");
+			Query query = getSession().createQuery(queryStr.toString()); 
+			
+			query.setParameterList("campIdsList",campIdsList);
+			/*for (int i=0;i<datesList.size();i++) {
+				query.setParameter("presentDate"+i+"", datesList.get(i));
+			}*/
+			return query.list();
+			/*
+			 StringBuilder sb = new StringBuilder();
+			  
+			  sb.append(" select distinct model.trainingCampBatch.trainingCampBatchId, model.trainingCampBatch.trainingCampBatchName, " +
+			  		" model.trainingCampBatch.trainingCampSchedule.trainingCampId, model.trainingCampBatch.trainingCampSchedule.trainingCamp.campName, " +
+			  		" date(model.attendance.attendedTime) " +
+				  	" from TrainingCampAttendance model where ");
+			  sb.append("  model.trainingCampBatch.attendeeType.isDeleted='false' " );
+			  sb.append(" and model.trainingCampBatch.isCancelled='false' ");
+			  if(campIdsList != null && campIdsList.size()>0)
+				  sb.append(" and  model.trainingCampBatch.trainingCampSchedule.trainingCamp.trainingCampId in (:campIdsList) ");
+					for(int i=0;i<datesList.size();i++){
+						if(i==0)
+							sb.append(" and date(model.attendance.attendedTime) in (  ");
+						
+							sb.append(" '"+datesList.get(i)+"'");
+						if(i<datesList.size()-1)
+							sb.append(",");
+						else
+							sb.append(" )");
+					}
+						
+			  Query query = getSession().createQuery(sb.toString());
+			  if(campIdsList != null && campIdsList.size()>0)
+				  query.setParameterList("campIdsList", campIdsList);
+			 // query.setParameterList("datesList", datesList);
+			  
+			  return query.list();*/
+		}
+		
+		return null;
+	}
+	
+
 	public List<TrainingCampBatch> getAllRecordsByBatchId(Long batchId)
 	{
 		Query query = getSession().createQuery(" select model from TrainingCampBatch model where model.trainingCampBatchId > :batchId and model.isCancelled = 'false' and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' and model.attendeeType.attendeeTypeId=1 and model.attendeeType.isDeleted='false' order by model.trainingCampBatchId ");

@@ -517,11 +517,18 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 	
 	public List<Object[]> getInviteeCountOfCadreProgramWise(Long cadreId){
 		
-		Query query = getSession().createQuery(" select model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+	/*	Query query = getSession().createQuery(" select model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 				" count(model.trainingCampScheduleInviteeId),model.trainingCampSchedule.trainingCampProgram.programName " +
 				" from TrainingCampScheduleInvitee model " +
 				" where model.tdpCadre.tdpCadreId =:cadreId and model.trainingCampBatch.attendeeTypeId = 1 " +
 				" group by model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
+		*/
+		
+		Query query = getSession().createQuery(" select model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+				" count(model.trainingCampBatchAttendeeId),model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.programName " +
+				" from TrainingCampBatchAttendee model " +
+				" where model.tdpCadre.tdpCadreId =:cadreId and model.isDeleted='false'  " +
+				" group by model.trainingCampBatch.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
 		
 		query.setParameter("cadreId",cadreId);
 		
