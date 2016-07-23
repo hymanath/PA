@@ -8384,18 +8384,23 @@ class TrainingCampService implements ITrainingCampService{
 				
 				Long attendedcount=0l;
 				if(attendedCount !=null && attendedCount.size()>0){
+					List<String> attendedDates = new ArrayList<String>(0);
+					SimpleVO vo = new SimpleVO();
 					for (Object[] objects : attendedCount) {
-						SimpleVO vo = new SimpleVO();
-						vo.setId((Long)objects[0]);//programId
-						vo.setCount(objects[1] !=null ? (Long)objects[1]:0l);//attendedCount
+						String dateStr = commonMethodsUtilService.getStringValueForObject(objects[3]);
+						
+						vo.setId((Long)objects[0]);
 						vo.setProgName(objects[2] !=null ? objects[2].toString():"");
 						
-						attendedcount = attendedcount+1;
+						if(!attendedDates.contains(dateStr))
+							attendedDates.add(dateStr);
+						
+						vo.setCount(Long.valueOf(String.valueOf(attendedDates.size())));//attendedCount
 						
 						attendList.add(vo);
 						attendedMap.put((Long)objects[0], vo);
-						
 					}
+					
 				}
 				
 				//considering non-invitee scenario also
@@ -8552,86 +8557,162 @@ class TrainingCampService implements ITrainingCampService{
 		
 		public SimpleVO getAttendedTrainingCampBatchDetailsOfCadre(Long programId,Long cadreId){
 			
-			SimpleVO cadreVo =null;
+			SimpleVO cadreVo1 =new SimpleVO();
 			try{
 				
 				//0.cadreId,1.attendedTime,2.batchid,3.batchName,4.campId,5.campName,6.programId,7.programName
 				List<Object[]> trainingDetails = trainingCampAttendanceDAO.getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
-				
-			//	Map<String,Long> cadreDateWiseDetailsMap = new LinkedHashMap<String, Long>();
+				List<SimpleVO> finalList = new ArrayList<SimpleVO>(0);
+				Map<Long,SimpleVO> cadreDateWiseDetailsMap = new LinkedHashMap<Long, SimpleVO>();
+			
+				List<Long> campIdsList  = new ArrayList<Long>(0);
+				Set<String> dates = new HashSet<String>(0);
 				if(trainingDetails !=null && trainingDetails.size()>0){
-					cadreVo=new SimpleVO();
 					
-					Object[] batchIdInfo= trainingDetails.get(0);
-					
-					Long batchId = 0l;
-					if(batchIdInfo[2] !=null){
-						batchId = (Long)batchIdInfo[2];
-					}
-					
-					 cadreVo.setProgName(batchIdInfo[7] !=null ? batchIdInfo[7].toString():"");
-					 cadreVo.setCampName(batchIdInfo[5] !=null ? batchIdInfo[5].toString():"");
-					 cadreVo.setBatchName(batchIdInfo[3] !=null ? batchIdInfo[3].toString():"");
-					
-					 List<String> datesStr =null;
-					if(batchId !=null && batchId !=0l && !cadreVo.getBatchName().trim().equalsIgnoreCase("Speakers")){
+					for (Object[] param : trainingDetails) {
+						SimpleVO cadreVo=new SimpleVO();
 						
-						//batch startDate and and endDate 
-						  Object[] batchDates=trainingCampBatchDAO.getBatchDatesWithOutDates(batchId);
-						  Date fromDate=null;
-						  Date toDate=null;
-						  if(batchDates!=null){
-							  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
-							  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
-						  }
-						  //list of totalDates of Batch
-						 datesStr=getBetweenDatesInString(fromDate,toDate);
-					}
-					
-					List<String> attendedDates = new ArrayList<String>();
-					for(Object[] object:trainingDetails){
-						attendedDates.add(object[1] !=null ? object[1].toString():"");
-					}
-					if(commonMethodsUtilService.isListOrSetValid(attendedDates) && cadreVo.getBatchName().trim().equalsIgnoreCase("Speakers")){
-						datesStr = new ArrayList<String>(0);
-						datesStr.addAll(attendedDates);
-					}
-					
-					List<SimpleVO> isdAttendedDatesList =null;
-					if(datesStr !=null){
-						isdAttendedDatesList = new ArrayList<SimpleVO>(); 
-						setMatchedVoForDates(datesStr,isdAttendedDatesList);
+						Object[] batchIdInfo= param;//trainingDetails.get(0);
 						
-						/*if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
-								cadreVo.setSimpleVOList1(isdAttendedDatesList);
+						Long batchId = 0l;
+						if(batchIdInfo[2] !=null){
+							batchId = (Long)batchIdInfo[2];
+						}
+						
+						 cadreVo.setProgName(batchIdInfo[7] !=null ? batchIdInfo[7].toString():"");
+						 cadreVo.setCampId(commonMethodsUtilService.getLongValueForObject(batchIdInfo[4]));
+						 cadreVo.setCampName(batchIdInfo[5] !=null ? batchIdInfo[5].toString():"");
+						 cadreVo.setBatchId(commonMethodsUtilService.getLongValueForObject(batchIdInfo[2]));
+						 cadreVo.setBatchName(batchIdInfo[3] !=null ? batchIdInfo[3].toString():"");
+						 cadreVo.setDateString(batchIdInfo[1] !=null ? batchIdInfo[1].toString():"");
+						 
+						 campIdsList.add(cadreVo.getCampId());
+						 dates.add(batchIdInfo[1] !=null ? batchIdInfo[1].toString():"");
+						 
+						 List<String> datesStr =null;
+						if(batchId !=null && batchId !=0l && !cadreVo.getBatchName().trim().equalsIgnoreCase("Speakers")){
+							
+							//batch startDate and and endDate 
+							  Object[] batchDates=trainingCampBatchDAO.getBatchDatesWithOutDates(batchId);
+							  Date fromDate=null;
+							  Date toDate=null;
+							  if(batchDates!=null){
+								  fromDate=batchDates[0]!=null?(Date)batchDates[0]:null;
+								  toDate=batchDates[1]!=null?(Date)batchDates[1]:null;
+							  }
+							  //list of totalDates of Batch
+							 datesStr=getBetweenDatesInString(fromDate,toDate);
+						}
+						
+						List<String> attendedDates = new ArrayList<String>();
+							attendedDates.add(batchIdInfo[1] !=null ? batchIdInfo[1].toString():"");
+						/*for(Object[] object:trainingDetails){
+							attendedDates.add(object[1] !=null ? object[1].toString():"");
 						}*/
+						
+						if(commonMethodsUtilService.isListOrSetValid(attendedDates) && cadreVo.getBatchName().trim().equalsIgnoreCase("Speakers")){
+							datesStr = new ArrayList<String>(0);
+							datesStr.addAll(attendedDates);
+						}
+						
+						List<SimpleVO> isdAttendedDatesList =null;
+						if(datesStr !=null){
+							isdAttendedDatesList = new ArrayList<SimpleVO>(); 
+							setMatchedVoForDates(datesStr,isdAttendedDatesList);
+							
+							/*if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+									cadreVo.setSimpleVOList1(isdAttendedDatesList);
+							}*/
+						}
+						
+						
+					if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+							
+							for (SimpleVO string : isdAttendedDatesList) {
+								if(attendedDates !=null && attendedDates.size()>0){
+									
+									if(attendedDates.contains(string.getDateString())){
+										string.setIsAttended("Attended");
+									}else{
+										string.setIsAttended("Absent");
+									}
+								}
+							}
+							
+						}
+					
+						if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+								cadreVo.setSimpleVOList1(isdAttendedDatesList);
+						}
+						finalList.add(cadreVo);
+						cadreDateWiseDetailsMap.put(cadreVo.getCampId(), cadreVo);
 					}
 					
+				}
+				if(commonMethodsUtilService.isListOrSetValid(finalList)){
 					
-				if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
+					List<Object[]> batchDetails = trainingCampBatchDAO.getBatchsInfoByProgramAndCamp(new ArrayList<String>(dates), campIdsList);
+					if(commonMethodsUtilService.isListOrSetValid(batchDetails)){
+						Map<Long,Map<String,String>> dateWisePrgmsMap = new HashMap<Long,Map<String,String>>(0);
+						for (Object[] param : batchDetails) {
+							Long campId = commonMethodsUtilService.getLongValueForObject(param[2]);
+							//String dateStr = commonMethodsUtilService.getStringValueForObject(param[4]);
+							String batchStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+							
+							String fromDateStr = commonMethodsUtilService.getStringValueForObject(param[4]);
+							String toDateStr = commonMethodsUtilService.getStringValueForObject(param[5]);
+							SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+							List<String> betweenDatesList = commonMethodsUtilService.getBetweenDatesInString(format.parse(fromDateStr), format.parse(toDateStr));
+							Map<String,String> dateMap = new HashMap<String, String>(0);
+							if(dateWisePrgmsMap.get(campId) != null)
+								dateMap = dateWisePrgmsMap.get(campId);
+							if(commonMethodsUtilService.isListOrSetValid(betweenDatesList))
+								for (String dateStr : betweenDatesList) {
+									dateMap.put(dateStr, batchStr);
+								}
+							dateWisePrgmsMap.put(campId, dateMap);
+						}
 						
-						for (SimpleVO string : isdAttendedDatesList) {
-							if(attendedDates !=null && attendedDates.size()>0){
-								
-								if(attendedDates.contains(string.getDateString())){
-									string.setIsAttended("Attended");
-								}else{
-									string.setIsAttended("Absent");
+						if(commonMethodsUtilService.isMapValid(dateWisePrgmsMap)){
+							for (Long campId : dateWisePrgmsMap.keySet()) {
+								SimpleVO vo = cadreDateWiseDetailsMap.get(campId);
+								if(vo != null){
+									Map<String,String> dateMap = dateWisePrgmsMap.get(campId);
+									if(commonMethodsUtilService.isMapValid(dateMap)){
+										
+										for (SimpleVO samplevo : finalList) {
+											if(samplevo.getCampId().longValue() == campId.longValue()){
+												//for (String dateStr : dateMap.keySet()) {
+													samplevo.setBatchName(dateMap.get(samplevo.getDateString()));
+												//}
+											}
+										}
+										
+										
+										/*for (String dateStr : dateMap.keySet()) {
+											if(dateStr.trim().length()>0 && !dateMap.get(dateStr).trim().equalsIgnoreCase("Speakers"))
+												vo.setBatchName(dateMap.get(vo.getDateString()));
+										}*/
+										
+									}
 								}
 							}
 						}
-						
 					}
-				
-					if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
-							cadreVo.setSimpleVOList1(isdAttendedDatesList);
-					}
+					
+					
 				}
-				return cadreVo;
+				if(commonMethodsUtilService.isListOrSetValid(finalList)){
+					cadreVo1 = new SimpleVO();
+					//finalList.addAll(cadreDateWiseDetailsMap.values());
+					cadreVo1.setSimpleVOList1(finalList);
+				}
+				
+				return cadreVo1;
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-			return cadreVo;
+			return cadreVo1;
 		}
 		public List<SimpleVO> getRemarkSOfCadreByCallPurpose(Long programId,Long cadreId){
 			
