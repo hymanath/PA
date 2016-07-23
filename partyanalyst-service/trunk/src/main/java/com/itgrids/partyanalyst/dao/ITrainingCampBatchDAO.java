@@ -12,7 +12,7 @@ public interface ITrainingCampBatchDAO extends GenericDao<TrainingCampBatch,Long
 	public List<Object[]> getBatchesForSchedule(Long scheduleId);
 	
 	public List<Object[]> getAllBatchesForSchedules(List<Long> scheduleIds);
-	
+	public List<Object[]> getBatchsInfoByProgramAndCamp(List<String> datesList,List<Long> campIdsList);
 	public List<Object[]> getTrainingCampBatchesOfSchedule(Long trainingCampScheduleId);
 	public List<Object[]> getCompletedBatchIds(Date currDate,String type,List<Long> batchIds);
 	public Long getMaxNumbersForBacth(Long batchId);
