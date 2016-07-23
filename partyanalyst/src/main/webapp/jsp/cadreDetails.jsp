@@ -36,6 +36,9 @@
 	
 						<!-- End -->
 <style type="text/css">
+.font-12{
+	font-size:12px !important;
+}
 .mobileDetailsUl
 {
 	padding:0px;
@@ -202,7 +205,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
 
-									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i>
+									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="notesId" title="Click Here To Get Notes Details"></i>
 								<!--
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'USER_NOTES_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
@@ -223,14 +226,15 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                     <tr>
                     	<td>
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
-							<i class="glyphicon glyphicon-info-sign" style="cursor:pointer;display:none;" title="Click here to get Mobile details" id="mobileDetailsId"></i>
+							<i class="glyphicon glyphicon-info-sign" style="cursor:pointer;display:none;" title="Click here to get Mobile details" id="mobileDetailsId"></i><span style="float: right" id="wAppImageId"></span><span style="float: right" id="fbUrlImageId"></span>
+							
                         	<span class="pull-right" id="emailMainSpanId">
 	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
                             </span><br>
-							<div style="margin-top:10px;margin-left:10px;">
+							<!-- <div style="margin-top:10px;margin-left:10px;">
 								<span id="fbUrlImageId"></span>
 								<span id="wAppImageId"></span>
-							</div>
+							</div> -->
 							<i class="glyphicon glyphicon-chevron-down changeIcon" style="margin-left:30px;display:none;"></i>
                         </td>
                     </tr>
