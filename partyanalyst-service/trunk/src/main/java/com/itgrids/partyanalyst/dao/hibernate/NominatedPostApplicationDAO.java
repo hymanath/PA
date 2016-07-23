@@ -35,7 +35,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
 			str.append(" AND model.departments.departmentId = :departmentId" +
 				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " );
+				" AND position.positionId=:positionId " +
+				" AND position.positionId is not null" );
 		}
 		
 		str.append(" GROUP BY position.positionId ");
@@ -77,7 +78,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
 			str.append(" AND model.departments.departmentId = :departmentId" +
 				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " );
+				" AND position.positionId=:positionId" +
+				" AND position.positionId is not null " );
 		}
 		
 		str.append("GROUP BY position.positionId ");
@@ -118,7 +120,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
 					str.append(" AND model.departments.departmentId = :departmentId" +
 				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " );
+				" AND position.positionId=:positionId " +
+				" AND position.positionId is not null" );
 				}
 				str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
 		
@@ -159,7 +162,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
 			str.append(" AND model.departments.departmentId = :departmentId" +
 				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " );
+				" AND position.positionId=:positionId " +
+				" AND position.positionId is not null" );
 		}
 		str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
 		
