@@ -530,7 +530,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 				}
 			}
 			
-			idNameVOList = nominatedPostProfileService.getAllDeptsAndBoardsByLevel(levelId,levelValues);
+			String statusType = jObj.getString("statusType");
+						
+			idNameVOList = nominatedPostProfileService.getAllDeptsAndBoardsByLevel(levelId,levelValues,statusType);
 			
 			
 		}catch (Exception e) {
@@ -554,6 +556,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			}
 			Long dept = jObj.getLong("depts");
 			Long board = jObj.getLong("boards");
+			String statusType =  jObj.getString("statusType");
 			
 			
 			List<Long> depts = new ArrayList<Long>(0);
@@ -561,7 +564,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			depts.add(dept);
 			boards.add(board);
 			
-			nominatePostList = nominatedPostProfileService.getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards);
+			nominatePostList = nominatedPostProfileService.getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,statusType);
 	}catch (Exception e) {
 		LOG.error("Exception Occured in getDepartmentWiseBoardAndPositionDetails() in NominatedPostProfileAction ",e);
 	}
