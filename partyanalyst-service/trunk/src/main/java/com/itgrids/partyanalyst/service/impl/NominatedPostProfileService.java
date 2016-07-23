@@ -1965,7 +1965,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return returnVoList;
 	}
 	
-	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues){
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues,String statusType){
 		
 		List<IdNameVO>  finalList = new ArrayList<IdNameVO>(0);
 		try{
@@ -2004,20 +2004,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 				if(mandalList !=null && mandalList.size()>0){
-					List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, mandalList);	
+					List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType);	
 					deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
 				}
 				if(townList !=null && townList.size()>0){
-					List<Object[]> townObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(6l, townList);	
+					List<Object[]> townObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType);	
 					deptMap = setDataToDeptBoardMap(townObj,deptMap);
 				}
 				if(divisonList !=null && divisonList.size()>0){
-					List<Object[]> divObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(7l, divisonList);
+					List<Object[]> divObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType);
 					 deptMap = setDataToDeptBoardMap(divObj,deptMap);
 				}
 				
 			}else{
-				deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues);
+				deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType);
 				deptMap = setDataToDeptBoardMap(deptBoardObj,deptMap);
 			}
 			
@@ -2116,7 +2116,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	}
 	
 	
-	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds){
+	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,
+			List<Long> boardIds,String statusType){
 		
 		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);
 		
@@ -2157,19 +2158,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 				if(mandalList !=null && mandalList.size()>0){
-					List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(5l,mandalList,deptIds,boardIds);
+					List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(5l,mandalList,deptIds,boardIds,statusType);
 					finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
 					
 					
 					
 					//postionId,position,nomiatedPostStatusId,status,count
-					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(5l,mandalList,deptIds,boardIds);
+					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(5l,mandalList,deptIds,boardIds,statusType);
 					
 					if(deptsObj !=null && deptsObj.size()>0){
 						finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
 					}
 					//postionId,position,applicationStatusId,status,count
-					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(5l,mandalList,deptIds,boardIds);
+					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(5l,mandalList,deptIds,boardIds,statusType);
 					
 					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
 						finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
@@ -2179,17 +2180,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 				if(townList !=null && townList.size()>0){
-					List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(6l,townList,deptIds,boardIds);
+					List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(6l,townList,deptIds,boardIds,statusType);
 					finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
 					
 					//postionId,position,nomiatedPostStatusId,status,count
-					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds);
+					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds,statusType);
 					
 					if(deptsObj !=null && deptsObj.size()>0){
 						finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
 					}
 					//postionId,position,applicationStatusId,status,count
-					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(6l,townList,deptIds,boardIds);
+					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(6l,townList,deptIds,boardIds,statusType);
 					
 					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
 						finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
@@ -2197,17 +2198,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 				if(divisonList !=null && divisonList.size()>0){
-					List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(7l,divisonList,deptIds,boardIds);
+					List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(7l,divisonList,deptIds,boardIds,statusType);
 					finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
 					
 					//postionId,position,nomiatedPostStatusId,status,count
-					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds);
+					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds,statusType);
 					
 					if(deptsObj !=null && deptsObj.size()>0){
 						finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
 					}
 					//postionId,position,applicationStatusId,status,count
-					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(7l,divisonList,deptIds,boardIds);
+					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(7l,divisonList,deptIds,boardIds,statusType);
 					
 					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
 						finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
@@ -2215,17 +2216,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 			}else{
-				List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(boardLevelId,levelValues,deptIds,boardIds);
+				List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(boardLevelId,levelValues,deptIds,boardIds,statusType);
 				finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
 				
 				//postionId,position,nomiatedPostStatusId,status,count
-				List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds);
+				List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds,statusType);
 				
 				if(deptsObj !=null && deptsObj.size()>0){
 					finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
 				}
 				//postionId,position,applicationStatusId,status,count
-				List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds);
+				List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds,statusType);
 				
 				if(applicationSttusObj !=null && applicationSttusObj.size()>0){
 					finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");

@@ -29,8 +29,8 @@ public interface INominatedPostProfileService {
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
 	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId);
-	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue);
-	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds);
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue,String statusType);
+	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds,String statusType);
 	public List<IdNameVO> getAllApplicationStatusList();
 	public String savingAnyPostCandidatesToPosition(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
 						final Long deptId,final Long boardId,final Long positionId,final Long statusId,final String comment);
