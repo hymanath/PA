@@ -331,13 +331,14 @@ var globalidentityMembershipNo = ""	;
 					/* end Survey Fields */
 					
 					/*  fb Details */
-					
+
 					if(result.fbUrl !=null && result.fbUrl !="" && result.fbUrl !="-"){
-						$("#fbUrlImageId").html('<a href="'+result.fbUrl+'"><img src="images/fbIcon.png" width="100px" height="50px;"></a>');
+						$("#fbUrlImageId").html('<a href="'+result.fbUrl+'"><img src="images/fbIcon.png" width="20px" height="20px"></a>');
 					}
 					if(result.wAppStatus !=null && result.wAppStatus !="" && result.wAppStatus =="YES"){
-						$("#wAppImageId").html('<img src="images/watsApp.png" width="100px" height="50px;">');
+						$("#wAppImageId").html('<img src="images/watsApp.png" width="20px" height="20px" style="margin-left: 10px;">');
 					}
+					
 					
 					/* candidate Delete Reason*/
 					if(result.deletedStatus !=null && result.deletedStatus =="MD"){
@@ -521,12 +522,12 @@ var globalidentityMembershipNo = ""	;
 					 globalDistName = result.districtName;
 					    
 						
-					//getCandidateAndConstituencySurveyResult();
+					getCandidateAndConstituencySurveyResult();
 					complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					getCandidateElectDetatails(localCadreId);
 					getCheckCandidateExits();
 					getDeathsAndHospitalizationDetails();
-					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
+					//getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
 					getRefferelDetailsStatusWise();
@@ -1098,7 +1099,7 @@ var globalidentityMembershipNo = ""	;
 							
 							str+='<li  style="margin-top: 0px;padding:0px; left: 10px;" id="list3" ><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
 							
-							str+='<li  style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+							str+='<li  style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'false\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
 							
 							//getCandidateAndConstituencySurveyResult();
 						}
@@ -1108,7 +1109,7 @@ var globalidentityMembershipNo = ""	;
 							if(candiConstiSurveyCount != null && candiConstiSurveyCount >0){
 								str+='<li class="active li_arr" style="margin-top: 0px;padding:0px; left: 10px;" id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
 							
-								str+='<li    style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+								str+='<li    style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'false\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
 								//getCandidateAndConstituencySurveyResult();
 							}
 							else if(candiConstiSurveyCount == null || candiConstiSurveyCount == 0){
@@ -1116,26 +1117,30 @@ var globalidentityMembershipNo = ""	;
 							
 								str+='<li  class="active li_arr"  style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
 								
-								getTdpCadreSurveyDetails(globalCadreId,surveyId,'null','All','','true');
+								//getTdpCadreSurveyDetails(globalCadreId,surveyId,'null','All','','true');
 							}
 							else{
 								str+='<li class="" style="margin-top: 0px;padding:0px; left: 10px;" id="list3"><a href="#participated" onclick="getCandidateAndConstituencySurveyResult();">SURVEYS ON CANDIDATE &nbsp;&nbsp;&nbsp;&nbsp;'+candiConstiSurveyCount+'</a></li>';
 							
-								str+='<li    class="active li_arr" style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'true\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
-								getTdpCadreSurveyDetails(globalCadreId,surveyId,'null','All','','true');
+								str+='<li    class="active li_arr" style="margin-top: 0px;padding:0px; left: 20px;" id="list2" ><a href="#area" onclick="getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\'\',\'false\');" class="text-bold" data-toggle="tab"  style="cursor:pointer;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>';
+								//getTdpCadreSurveyDetails(globalCadreId,surveyId,'null','All','','true');
 							}
 						}
 						str+='</ul>';
 						$('.surveyDetailssCls').html(str);
 					}
 					
-					
+					//console.log("candiConstiSurveyCount : "+candiConstiSurveyCount);
+					//console.log("result.verifierVOList.length : "+result.verifierVOList.length);
+					//console.log("isPriority : "+isPriority);
+					if(isPriority == 'false' || (candiConstiSurveyCount == null || candiConstiSurveyCount == 0)){
+						isPriority = 'true';
 					str='';
 					str+='<div class="tab-content m_top20">';
 					str+='<div role="tabpanel" class="tab-pane active" id="area">';
 					str+='<div class="panel-group m_0" id="accordion1" role="tablist" aria-multiselectable="true">';
 					
-
+					
 							for(var i in result.verifierVOList){
 								if(result.isVerified != null && result.isVerified =='true')
 								{
@@ -1161,7 +1166,8 @@ var globalidentityMembershipNo = ""	;
 									str+='<div class="panel-body">';										
 									str+='</div>';
 									str+='</div>';
-									getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
+									
+										getTdpCadreSurveyDetails(globalCadreId,result.verifierVOList[i].id,indexId,searchTypeStr,'surveyTable'+i+'',isPriority);
 									str+='</div>';
 						str+='</div>';
 
@@ -1173,6 +1179,7 @@ var globalidentityMembershipNo = ""	;
 					str+='</div>';
 					
 					$('.surveyDetailsCls').html(str);
+					}
 					//console.log(participatedSurveysArr);
 				}
 				else if(surveyId !=0 ){
@@ -1468,7 +1475,7 @@ function getCadreFamilyDetailsByCadreId(){
 	 imagePath:imgPath
 	 };
 	 familyInfoArr.push(familyObj);
-	 	 str += '<li>';
+	 	 str += '<li style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">';
          str += '<div class="media">';
 		 var imgPath='';
 		 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0){ 
@@ -1477,7 +1484,7 @@ function getCadreFamilyDetailsByCadreId(){
 		 /*else{
 			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
 		 }*/
-		  str += '<div class="media-left ">';
+		  str += '<div class="media-left font-12" >';
 		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 45px;width:45px;border:1px solid #ddd;" >';
 		  str += '</div>';
 		 /*if(result[i].tdpCadreId != null ){
@@ -1504,9 +1511,9 @@ function getCadreFamilyDetailsByCadreId(){
 		  } */
          str += '<div class="media-body">';
 		  if(result[i].deletedStatus == "MD"){
-			  str += '<div class="m_0"><span style="color:red">'+result[i].name+'</span>';
+			  str += '<div class="m_0"><span style="color:red;">'+result[i].name+'</span>';
 		  }else{
-			  str += '<div class="m_0">'+result[i].name+'';
+			  str += '<div class="m_0"> <b>'+result[i].name+'</b>';
 		  }
 		 if(result[i].tdpCadreId != null )
 		str+=' [ <b><a href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" data-toggle="tooltip" data-placement="right" title="Membership No" class="membershipno-cls">'+result[i].membershipNo+'</a></b> ] ';
@@ -1514,10 +1521,7 @@ function getCadreFamilyDetailsByCadreId(){
 			str+='[<b>'+result[i].publicRepresentativeStr+'</b>]';
 		}*/
 		 str += '<span class="pull-right">';
-		 if(result[i].count != null && result[i].count> 0)
-           str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" >';
-		   else
-		  //str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
+		
 		 str += '</span>';
 		 str += '<ul class="survey-hover survey-hover'+i+' arrow_box3" style="display:none">';
         
@@ -1527,9 +1531,9 @@ function getCadreFamilyDetailsByCadreId(){
          if(result[i].occupation != null && result[i].occupation.trim().length > 0)
 			 str += '<li>Occupation : <span class="pull-right">'+result[i].occupation+'</span></li>';
 		 
-         if(result[i].count != null && result[i].count> 0)
+        /* if(result[i].count != null && result[i].count> 0)
 			 str += '<li>Participated in Survey : <span class="pull-right" style="cursor:pointer; color:#485EDB;" data-toggle="modal" data-target=".modalForSurvey" onclick = "familyMembersSurveyDetails(\''+result[i].votercardNo+'\')">'+result[i].count+'</span></li>';
-		 
+		 */
 		 str += '</ul>';
          str += '</div>';
          str += '<p class="m_0">Relation : <span class="textTransFormCls">'+result[i].relation+'</span>';
@@ -1549,7 +1553,14 @@ function getCadreFamilyDetailsByCadreId(){
 			str += '<p class="m_0" style="font-weight:bold">Party Position: <span class="textTransFormCls" style="color:#2772C0">'+result[i].partyPositionStr+'</span>';
 		}
          str += '</p>';
-		 
+		  if(result[i].count != null && result[i].count> 0){
+           //str += '<img class="img-responsive survey-drop" src="img/survey.png" style="cursor:pointer;" id="survey-dropdown" >';
+		   //glyphicon-list-alt
+		   str += ' <p  style="padding: 2px 5px; border-radius: 3px; background-color: rgba(0, 0, 255, 0.1);" > Participated Surveys :<span class="pull-right" style="cursor:pointer; color:#485EDB;" data-toggle="modal" data-target=".modalForSurvey" onclick = "familyMembersSurveyDetails(\''+result[i].votercardNo+'\')"> <u style="color:green;margin-right: 55px;font-weight:bold;">'+result[i].count+'</u></span></p>';
+		 }
+		   else
+		  //str += '<img class="img-responsive" src="img/survey.png" id="survey-dropdown">';
+	  
 		 if(result[i].deletedStatus == "MD"){
 			 str += '<p class="m_0" style="font-weight:bold">Deleted Reason : <span class="textTransFormCls" style="color:#2772C0">'+result[i].deletedReason+'</span>';
 		 }
@@ -4153,7 +4164,7 @@ function getCandidateAndConstituencySurveyResult()
 					candiConstiSurveyCount = result.length;
 				}
 				buildCandidateAndConstituencySurveyResult(result,surveyId,null);
-				
+				getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 			}
 		});
 	}
@@ -4596,7 +4607,8 @@ function buiildingTrainigStatusDetailsOfCadre(result){
 }
 
 function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
-	
+	$("#trainingDetailsTableId").html("");
+
 	var jsObj ={
 		programId:programId,
 		tdpCadreId:cadreId
@@ -4608,6 +4620,36 @@ function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
 	}).done(function(result){
 		if(result != null)
 		{
+			
+			
+			var str='';
+			str+='<table class="table table-bordered" id="attendanceTab">';
+				str+='<thead>';
+					str+='<th>Program Name</th>';
+					str+='<th>Center Name</th>';
+					str+='<th>Batch Name</th>';
+					str+='<th>Attended date</th>';
+					/*for(var i in result.simpleVOList1){
+						var day = parseInt(i) + parseInt(1);
+						str+='<th>Day '+day+' ('+result.simpleVOList1[i].dateString+')</th>';
+					}*/
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result.simpleVOList1){
+					if(result.simpleVOList1[i] != null && result.simpleVOList1[i].batchName != "Speakers"){
+						str+='<tr>';
+							str+='<td>'+result.simpleVOList1[i].progName+'</td>';
+							str+='<td>'+result.simpleVOList1[i].campName+'</td>';
+							str+='<td>'+result.simpleVOList1[i].batchName+'</td>';
+							str+='<td>'+result.simpleVOList1[i].dateString+'</td>';							
+						str+='</tr>';
+					}
+				}
+				str+='</tbody>';
+			str+='</table>';
+			
+			
+			/*
 			var str='';
 			str+='<table class="table table-bordered">';
 				str+='<thead>';
@@ -4630,8 +4672,10 @@ function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
 					str+='</tr>';
 				str+='</tbody>';
 			str+='</table>';
-			
+			*/
 			$("#trainingDetailsTableId").html(str);
+			
+			$('#attendanceTab').dataTable();
 		}else{
 			//$("#trainingDetailsTableId").html("NO ATTENDNACE DATA AVAILABLE...");
 			$("#trainingDetailsTableId").html("");
