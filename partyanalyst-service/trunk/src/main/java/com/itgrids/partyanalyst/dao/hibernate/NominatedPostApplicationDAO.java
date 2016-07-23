@@ -371,7 +371,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        query.setParameter("candidateId", candidateId);
 	        return query.list();
 	  }
-	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds){
+	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -395,6 +395,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			str.append(" AND model.board.boardId in (:boardIds) ");
 		}
 		
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+			str.append(" AND model.applicationStatus.status = :notYet ");
+		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+			str.append(" AND model.applicationStatus.status != :notYet ");
+		}
+		
 		str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +
 					" ORDER BY position.positionId");
 		
@@ -412,6 +418,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		}
 		if(boardIds !=null && boardIds.size()>0){
 			query.setParameterList("boardIds",boardIds);
+		}
+		
+		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
+			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
 		}
 		
 		return query.list();
