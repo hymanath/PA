@@ -144,17 +144,17 @@
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
                                 	<div class="pad_5 bg_ff">
 									    <label class="radio-inline">
-											<input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" />Voter ID
+											<input type="radio" name="radioGroup" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" />Voter ID
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio"  name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"/>Mobile Number
+                                            <input type="radio"  name="radioGroup" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"/>Mobile Number
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"/>Name
+                                            <input type="radio" name="radioGroup" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"/>Name
                                         </label>
 										<input type="hidden" id="cadreSearchType" value="membershipId" />
                                     </div>
-                                    <input type="text" class="form-control" id="searchBy"/>
+                                    <input type="text" class="form-control" id="searchById"/>
 									<div id="searchErrDiv" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3 pad_left0">
