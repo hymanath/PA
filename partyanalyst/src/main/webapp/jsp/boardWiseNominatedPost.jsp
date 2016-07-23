@@ -25,6 +25,36 @@
 </head>
 <body>
 <div class="container">
+	<!-- <div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<label>District</label>
+							<select class="form-control" id="districtId">
+							</select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<label>Constituency</label>
+							<select class="form-control" id="constituencyId">
+								<option value="0">Select Constituency</option>
+							</select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">
+							<label>Mandal/Town/Division</label>
+							<select class="form-control" id="manTowDivId">
+								<option value="0">Select Mandal/Town/Division</option>
+							</select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-3">						
+							<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="submitBtnId"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
         	<h4>SHORTLISTING -CHAIRMAN POST - <small>A.P BUILDING AND OTHER CONSTRUCTION WORKERS WELFARE BOARD</small></h4>
@@ -677,6 +707,17 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+/*var globalDistrictArr=[];
+var globalAssmblyArr=[];
+var globalMandalTownDivArr=[];
+var globalLocationLevelValueArr =[];
+var globalLocationLevel=4;
+var globalLocationLevelId = 3;
+var globalDepartmentId = 0 ;
+var globalBoardId = 0;
+var globalPositionId = 0;*/
+
 $('.chosenSelect').chosen();
 $(document).on("click",".btnPopup",function(e){
 	$(".updateDropDown").hide();
@@ -1189,9 +1230,7 @@ function getNominatedPostPostionDetails(){
 function buildNominatePostPositionDetails(result){
 	 var str='';
 		   if(result !=null && result.length>0){
-			   //console.log(result);
-			   for(var i in result){			   
-					str+='<table class="table table-bordered" id="nominatePositionDetilsId">';
+			   	str+='<table class="table table-bordered" id="nominatePositionDetilsId">';
 					str+='<thead>';
 					str+='<tr>';
 					str+='<th rowspan="2"></th>';
@@ -1202,8 +1241,8 @@ function buildNominatePostPositionDetails(result){
 					str+='<th colspan="5">AGE GROUP</th>';
 					str+='</tr>';
 					str+='<tr>';
-					for(var j in result[i].idNameVoList){
-					str+='<th>'+result[i].idNameVoList[j].name+'</th>';
+					for(var j in result[0].idNameVoList){
+					str+='<th>'+result[0].idNameVoList[j].name+'</th>';
 					}
 					str+='<th>20-29</th>';
 					str+='<th>30-39</th>';
@@ -1213,38 +1252,41 @@ function buildNominatePostPositionDetails(result){
 					str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
-					str+='<tr>';
-					str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
-					//str+='<td>02</td>';
-					str+='<td>'+result[i].receivedCount+'</td>';
-					str+='<td>'+result[i].shortListedCount+'</td>';
-					for(var j in result[i].idNameVoList){
-					str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+			   //console.log(result);
+			   for(var i in result){
+					if(result[i].id != null && result[i].id > 0){
+						str+='<tr>';
+						str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
+						//str+='<td>02</td>';
+						str+='<td>'+result[i].receivedCount+'</td>';
+						str+='<td>'+result[i].shortListedCount+'</td>';
+						for(var j in result[i].idNameVoList){
+						str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+						}
+						str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+						str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+						str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+						str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+						str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
+						str+='</tr>';
 					}
-					str+='<td>'+result[i].firstAgeGroupCount+'</td>';
-					str+='<td>'+result[i].secondAgeGroupCount+'</td>';
-					str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
-					str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
-					str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-					str+='</tr>';
-					str+='<tr>';
-					str+='<td><p>ANY POST</p><small>Requested for any post members shortlisted for this</small>';str+='</td>';
-					//str+='<td>02</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='<td>01</td>';
-					str+='</tr>';
-					str+='</tbody>';
-					str+='</table>';
-			   }
+					else{
+						str+='<tr>';
+						str+='<td><p>ANY POST</p><small>Requested for any post members shortlisted for this</small></td>';
+						//str+='<td>02</td>';
+						str+='<td>'+result[i].receivedCount+'</td>';
+						str+='<td>'+result[i].shortListedCount+'</td>';
+						for(var j in result[i].idNameVoList){
+						str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+						}
+						str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+						str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+						str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+						str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+						str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
+						str+='</tr>';
+					}
+				}
 			   
 			   $("#positionDivId").html(str);
 		   }
