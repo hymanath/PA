@@ -19,7 +19,7 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 			Long locationValue,String type);
 	public List<Object[]> getAgeRangeWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 			Long locationValue,String type);
-	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId);
+	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId);
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId);
 	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> levelValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionsType );
