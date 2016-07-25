@@ -371,7 +371,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        query.setParameter("candidateId", candidateId);
 	        return query.list();
 	  }
-	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType){
+	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -388,12 +388,22 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(locationValues !=null && locationValues.size()>0){
 			str.append(" AND model.locationValue in (:locationValues)");
 		}
+	// Any Dept && Board && post Scenarios Consideration && non Consideration
+	if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
 		if(deptsIds !=null && deptsIds.size()>0){
 			str.append(" AND model.departments.departmentId in (:deptsIds) ");
 		}
 		if(boardIds !=null && boardIds.size()>0){
 			str.append(" AND model.board.boardId in (:boardIds) ");
 		}
+		
+		str.append(" and  model.positionId is not null ");
+		
+	}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
+		str.append(" AND (model.departmentId is null " +
+				" or model.boardId is null " +
+				" or model.positionId is null ) ");
+	}
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" AND model.applicationStatus.status = :notYet ");
@@ -413,11 +423,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(locationValues !=null && locationValues.size()>0){
 			query.setParameterList("locationValues",locationValues);
 		}
-		if(deptsIds !=null && deptsIds.size()>0){
-			query.setParameterList("deptsIds",deptsIds);
-		}
-		if(boardIds !=null && boardIds.size()>0){
-			query.setParameterList("boardIds",boardIds);
+		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+			if(deptsIds !=null && deptsIds.size()>0){
+				query.setParameterList("deptsIds",deptsIds);
+			}
+			if(boardIds !=null && boardIds.size()>0){
+				query.setParameterList("boardIds",boardIds);
+			}
 		}
 		
 		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
