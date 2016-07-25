@@ -1210,8 +1210,12 @@ $( document ).on("click",".cadreCls",function(){
 	  getCandidateAppliedPostsByCadre(globalCadreId);
 });
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
-var jObj={
-		globalCadreId:globalCadreId
+ var type = $("input[type='radio']:checked").val();
+		
+   var jObj={
+		globalCadreId:globalCadreId,
+		searchType:type,
+		//nominateCandId:1329
 	};
 	$.ajax({
 	  type:'POST',
@@ -1400,9 +1404,11 @@ function getMandalsByConstituencyForReferPopup()
   }
 
  function getCandidateAppliedPostsByCadre(globalCadreId){
-
+	 var type = $("input[type='radio']:checked").val();
 		var jsObj={
-				globalCadreId :globalCadreId
+				globalCadreId :globalCadreId,
+				searchType:type,
+				nominateCandId:1329
 		}
 		$.ajax({
 			type:"POST",
