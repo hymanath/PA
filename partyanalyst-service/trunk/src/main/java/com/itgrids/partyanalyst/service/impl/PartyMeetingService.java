@@ -3307,7 +3307,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			}*/
 			
 			Map<Long,PartyMeetingVO> levelMap = new HashMap<Long, PartyMeetingVO>();
-			Map<Long,List<Long>> userLevelValuesMap = new HashMap<Long, List<Long>>();
+			Map<String,List<Long>> userLevelValuesMap = new HashMap<String, List<Long>>();
 			
 			//GETTING USER ACCESS LEVELS
 			List<Object[]> allLevels = partyMeetingUserAccessLevelDAO.getrAccessLevelsOfUserId(userId);
@@ -3330,6 +3330,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			List<Long> levelValues = new ArrayList<Long>(0);
 			List<String> levelStr=new ArrayList<String>(0);
 			String level="";
+			Map<Long,List<Long>> levelMapFinal  = new HashMap<Long, List<Long>>();
 			List<Object[]> allLevelValues = userAccessLevelValueDAO.getAccessValuesOfUserId(userId);
 			if(allLevelValues!=null && allLevelValues.size()>0){
 				/*
@@ -3344,13 +3345,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 				
 				for(Object[] obj:allLevelValues){
 					
-					levelValues.add(obj[1] !=null ? Long.valueOf(obj[1].toString()):0l);
-					levelStr.add(obj[2] !=null ? obj[2].toString():"");
+					List<Long> locationIds = userLevelValuesMap.get(obj[2] !=null ? obj[2].toString():"");
+					if(locationIds==null){
+						locationIds = new ArrayList<Long>();
+						userLevelValuesMap.put(obj[2].toString(), locationIds);
+					}
+					locationIds.add(Long.valueOf(obj[1].toString()));
+					
+					
+					/*levelValues.add(obj[1] !=null ? Long.valueOf(obj[1].toString()):0l);
+					levelStr.add(obj[2] !=null ? obj[2].toString():"");*/
 					
 				}
 			}
-			if(levelStr !=null && levelStr.size()>0){
-				level=levelStr.get(0);
+			if(userLevelValuesMap !=null && userLevelValuesMap.size()>0){
+				
+				Map.Entry<String, List<Long>> entry = userLevelValuesMap.entrySet().iterator().next();				
+				level=entry.getKey();
+				levelValues = entry.getValue();
+				
 			}
 			
 			List<Object[]> conductedObj = partyMeetingDAO.getLevelWiseMeetingDetails(startDate,endDate,level,levelValues);
