@@ -422,7 +422,9 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		{
 			jObj = new JSONObject(getTask());
 			Long tdpCadreId = jObj.getLong("globalCadreId");
-			nominatePostList = nominatedPostProfileService.getApplicantDetailsForMember(tdpCadreId);
+			String searchType = jObj.getString("searchType");
+			//Long nominateCandId = jObj.getLong("nominateCandId");
+			nominatePostList = nominatedPostProfileService.getApplicantDetailsForMember(tdpCadreId,searchType);
 			
 		}catch(Exception e)
 		{
@@ -462,7 +464,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		try
 		{
 			jObj = new JSONObject(getTask());
-			nomintedPostMemberVO = nominatedPostProfileService.getCandidateAppliedPostsByCadre(jObj.getLong("globalCadreId"));
+			nomintedPostMemberVO = nominatedPostProfileService.getCandidateAppliedPostsByCadre(jObj.getLong("globalCadreId"),jObj.getString("searchType"),jObj.getLong("nominateCandId"));
 		}catch(Exception e)
 		{
 			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
