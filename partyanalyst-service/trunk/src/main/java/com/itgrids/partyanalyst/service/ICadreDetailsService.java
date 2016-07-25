@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -123,5 +124,6 @@ public interface ICadreDetailsService {
 	public String saveImportantLeadersType(final String position,final Long levelId,final Long userId);
 	public List<CadreReportVO> getCadreReportDetails(Long cadreId);
 	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue);
+	public List<GrievanceReportVO> getGrievancePDFReport(String membershipId);
 	//public String checkPositionExists(String position);
 }

@@ -488,4 +488,45 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getNominatedPostComplaintPDF(String membershipNo)
+	{
+		Query query = getSession().createSQLQuery("select model.issue_type as issueType,model.Completed_Status as status,model.Raised_Date as raisedDate,model.Complaint_id as complaintId from complaint_master model" +
+				" where (model.delete_status !='0' or model.delete_status is null) and model.subject !=''" +
+				" and model.issue_type = 'Nominated posts' " +
+				" and model.membership_id = :membershipNo")
+				.addScalar("issueType",Hibernate.STRING)
+				.addScalar("status",Hibernate.STRING)
+				.addScalar("raisedDate",Hibernate.STRING)
+				.addScalar("complaintId",Hibernate.LONG);
+				query.setParameter("membershipNo", membershipNo);
+		return query.list();
+	}
+	
+	public List<Object[]> getNominatedComplaintScanCopies(List<Long> complaintIds){
+		Query query = getSession().createSQLQuery(" select SC.scanned_copy_id as id,SC.scanned_copy_path as path,CSC.inserted_time as insertedTime,CM.Complaint_id as complaintId from complaint_scanned_copy CSC,complaint_master CM,scanned_copy SC " +
+				" where SC.is_deleted = 'N'  and (CM.delete_status !='0' or CM.delete_status is null) and CM.subject !='' " +
+				" and CSC.scanned_copy_id = SC.scanned_copy_id and CM.Complaint_id =  CSC.complaint_id " +
+				" and CM.Complaint_id in(:complaintIds) " +
+				" and CM.issue_type = 'Nominated posts' order by SC.scanned_copy_id desc ")
+				.addScalar("id",Hibernate.LONG)
+				.addScalar("path",Hibernate.STRING)
+				.addScalar("insertedTime",Hibernate.DATE)
+				.addScalar("complaintId",Hibernate.LONG);
+		query.setParameterList("complaintIds", complaintIds);
+		return query.list();
+	}
+	public List<Object[]> getNominatedPostScanCopyForComplaint(List<Long> complaintIds)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.scan_copy as path,model.Complaint_id as complaintId from complaint_master model where " +
+				" (model.delete_status !='0' or model.delete_status is null) and model.subject !='' " +
+				" and model.Complaint_id in(:complaintIds) ");
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("path",Hibernate.STRING)
+				.addScalar("complaintId",Hibernate.LONG);
+		query.setParameterList("complaintIds", complaintIds);
+		return query.list();	
+	}
+	
 }

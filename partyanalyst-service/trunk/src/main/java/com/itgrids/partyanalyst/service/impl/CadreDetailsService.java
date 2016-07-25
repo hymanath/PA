@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.io.File;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -104,9 +106,11 @@ import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
+import com.itgrids.partyanalyst.dto.ComplaintScanCopyVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -10692,4 +10696,106 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 		}
 		return status;
 	}*/
+
+
+  	//Nominated Post Complaint
+
+	public List<GrievanceReportVO> getGrievancePDFReport(String membershipId)
+	{
+		List<GrievanceReportVO> returnList = new ArrayList<GrievanceReportVO>();
+		try{
+			
+			List<Object[]> list = cadreHealthStatusDAO.getNominatedPostComplaintPDF(membershipId);
+			List<Long> complaintIds = new ArrayList<Long>();
+			if(list != null && list.size() > 0)
+			{
+				
+				for(Object[] params : list)
+				{
+					GrievanceReportVO vo = new GrievanceReportVO();
+					vo.setIssueType(params[0] != null ?params[0].toString() : "");
+					vo.setStatus(params[1] != null ?params[1].toString() : "");
+					vo.setDate(params[2] != null ?params[2].toString() : "");
+					vo.setId((Long)params[3]);
+					returnList.add(vo);
+					if(!complaintIds.contains(params[3] != null && complaintIds.contains((Long)params[3])))
+						complaintIds.add((Long)params[3]);
+				}
+				getComplaintScanCopies(complaintIds,returnList); 
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into the getGrievancePDFReport method of CadreDetailsService service",e);
+		}
+		return returnList;
+	}
+	
+	public void getComplaintScanCopies(List<Long> complaintIds,List<GrievanceReportVO> returnList)
+	{
+	try{
+			
+			List<Object[]> list = cadreHealthStatusDAO.getNominatedComplaintScanCopies(complaintIds);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					if(params[1] != null)
+					{
+						
+						GrievanceReportVO complaintVO = (GrievanceReportVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id",params[3].toString());
+						if(complaintVO != null)
+						{
+						File f = new File(""+IConstants.STATIC_CONTENT_FOLDER_URL+"complaintScannedCopy/"+params[1].toString());
+							/*if(f.exists())
+							{*/
+								com.itgrids.partyanalyst.dto.ComplaintScanCopyVO vo = new com.itgrids.partyanalyst.dto.ComplaintScanCopyVO();
+								vo.setPath(params[1] != null ? params[1].toString() : "");
+								vo.setScanCopyId(params[0] != null ? (Long)params[0] : 0l);
+								vo.setNewCopy(true);
+								if(params[2]!=null){
+									String dateString=((Date)params[2]).toString();
+									if(dateString.length() > 18){
+										vo.setDateString(new DateUtilService().convert12HoursDateFormat(dateString.substring(0, 18)));
+									 }
+								}
+								
+								complaintVO.getScanCopyList().add(vo);
+							//}
+						}
+					}
+				}
+			}
+			else
+			{
+				List<Object[]> list1 = cadreHealthStatusDAO.getNominatedPostScanCopyForComplaint(complaintIds);
+				if(list1 != null && list1.size() > 0)
+				{
+					if(list1  != null && list1.size() > 0)
+					{
+						for(Object[] params : list1)
+						{
+							File f = new File(""+IConstants.STATIC_CONTENT_FOLDER_URL+"complaintScannedCopy/old/"+params[0].toString());
+							/*if(f.exists())
+							{*/
+								GrievanceReportVO complaintVO = (GrievanceReportVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id",params[1].toString());
+								if(complaintVO != null)
+								{
+									ComplaintScanCopyVO vo = new ComplaintScanCopyVO();
+									vo.setPath(params[0] != null ? params[0].toString() : "");
+									vo.setNewCopy(false);
+									complaintVO.getScanCopyList().add(vo);
+								}
+							//}
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getComplaitnScanCopies() method, Exception - ",e);
+		}
+		
+	}
 }
