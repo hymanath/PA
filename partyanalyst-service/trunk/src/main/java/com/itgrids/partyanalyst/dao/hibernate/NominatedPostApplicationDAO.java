@@ -359,12 +359,15 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
 	    
 	    Query query = getSession().createQuery( " select model.applicationStatus.applicationStatusId,model.applicationStatus.status,model.boardLevel.boardLevelId," +
-	    		"model.boardLevel.level,model.departments.departmentId," +
-	        " model.departments.deptName," +
-	        " model.board.boardId,model.board.boardName," +
-	        " model.position.positionId,model.position.positionName, " +
+	    		"model.boardLevel.level,dept.departmentId," +
+	        " dept.deptName," +
+	        " board.boardId,board.boardName," +
+	        " position.positionId,position.positionName, " +
 	        " model.locationValue " +
-	        " from NominatedPostApplication model " +
+	        " from NominatedPostApplication model" +
+	        " left join model.departments dept" +
+	        " left join model.board board" +
+	        " left join model.position position " +
 	        " where model.nominationPostCandidateId = :candidateId " +
 	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
 	        
