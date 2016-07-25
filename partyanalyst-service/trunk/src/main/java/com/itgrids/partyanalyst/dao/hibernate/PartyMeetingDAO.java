@@ -887,8 +887,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	if(levelValues !=null && levelValues.size()>0){
 	    		if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("STATE")){
 		    		
-		    		str.append(" and model.meetingAddress.state.stateId in (:levelValues) ");
-		    		
+	    			if(levelValues !=null && levelValues.size()==1){
+	    				if(levelValues.contains(1l)){
+	    					str.append(" and (model.meetingAddress.district.districtId between 1 and 10 ) ");
+	    				}else if(levelValues.contains(36l)){
+	    					str.append(" and (model.meetingAddress.district.districtId between 11 and 23 ) ");
+	    				}
+	    					    				
+	    			}else{
+	    				str.append(" and (model.meetingAddress.district.districtId between 1 and 23 ) ");
+	    			}
+	    							    		
 		    	}else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("DISTRICT")){
 		    		
 		    		str.append(" and model.meetingAddress.district.districtId in (:levelValues) ");
@@ -909,7 +918,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	}
 	    	
 	    	if(levelValues !=null && levelValues.size()>0 && level !=null && !level.isEmpty() ){
-	    		query.setParameterList("levelValues", levelValues);
+	    		if(!level.equalsIgnoreCase("STATE")){
+	    			query.setParameterList("levelValues", levelValues);
+	    		}	    		
 	    	}
 	    	
 	    	return query.list();
