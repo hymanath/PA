@@ -3,10 +3,31 @@ var globalAssmblyArr=[];
 var globalMandalTownDivArr=[];
 var globalLocationLevelValueArr =[];
 var globalLocationLevel=5;
-var globalLocationLevelId = 3;
+var globalLocationLevelId = 0;
 var globalDepartmentId = 0 ;
-var globalBoardId = 0;
-
+var globalStateId = 0;
+function getBoardLevelId(boardLevelId,stateId){
+	globalStateId = stateId;
+	globalLocationLevelValueArr = [];
+	globalLocationLevelId = boardLevelId;
+	if(boardLevelId != null && boardLevelId == 1){
+	  globalLocationLevelValueArr.push(1);	 
+	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,0,"");	
+	}else if(boardLevelId != null && boardLevelId == 2){
+		 if(stateId != 0){
+		   globalLocationLevelValueArr.push(stateId);	 
+		 }else{
+			globalLocationLevelValueArr.push(1);
+            globalLocationLevelValueArr.push(36);			
+		 }
+		 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,0,"");
+	}else{
+	   getDistrictsForStates(stateId);
+	   setTimeout(function(){
+	   getDistrictConstituencyAndMndlTwnDvsnLvlData(boardLevelId);
+       }, 1500); 
+	} 
+}
 function getDistrictsForStates(state){
 	   var jsObj=
 	   {				
@@ -20,28 +41,30 @@ function getDistrictsForStates(state){
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		   	$("#districtId  option").remove();
-		    $("#districtId").append('<option value="-1">ALL</option>');			
+		    $("#districtId").append('<option value="0">ALL</option>');			
 			if(result !=null && result.length>0){
 				for(var i in result){
 					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 					globalDistrictArr.push(result[i].id);
 					globalLocationLevelValueArr = globalDistrictArr;
 				}
-			}		
-			getConstituenciesForDistricts(-1,1);
-        getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalDistrictArr,globalDepartmentId,globalBoardId,"");			
+			}
+             if(globalLocationLevelId !=1 && globalLocationLevelId !=2 && globalLocationLevelId !=3){
+				getConstituenciesForDistricts(0,state);
+			 }
 	   });
 }
 $(document).on("change","#districtId",function(){
 	var districtId = $(this).val();
-	var stateId = 1;
-	getConstituenciesForDistricts(districtId,stateId);
+	if(globalLocationLevelId !=1 && globalLocationLevelId !=2 && globalLocationLevelId !=3){
+	 getConstituenciesForDistricts(districtId,globalStateId);
+	}
 });
 
 function getConstituenciesForDistricts(district,stateId){
 	    globalAssmblyArr=[];
 	 	var distArrTemp = [];
-		if(district==-1){
+		if(district==0){
 			distArrTemp = globalDistrictArr;
 		}else{
 			distArrTemp.push(district);
@@ -58,29 +81,34 @@ function getConstituenciesForDistricts(district,stateId){
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		     $("#manTowDivId  option").remove();
-		    $("#manTowDivId").append('<option value="0">Select constituency</option>');
-		   	$("#constituencyId  option").remove();
-			 $("#constituencyId").append('<option value="0">Select constituency</option>');
-		   $("#constituencyId").append('<option value="-1">ALL</option>');
+		     $("#constituencyId  option").remove();
+		     $("#constituencyId").append('<option value="0">ALL</option>');
 			 if(result !=null && result.length>0){
 				 for(var i in result){			  
 					$("#constituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 					globalAssmblyArr.push(result[i].locationId);
 				   }
+				   if(globalLocationLevelId == 4){
+					   globalLocationLevelValueArr =[];
+					   globalLocationLevelValueArr = globalAssmblyArr; 
+				   }
 			 }	
+			if(globalLocationLevelId !=1 && globalLocationLevelId !=2 && globalLocationLevelId !=3 && globalLocationLevelId !=4){
+				getMandalVillageDetails(0,stateId);
+			}
 		});
 	}
 $(document).on("change","#constituencyId",function(){
 		var constituencyId=$(this).val();
-		var stateId = 1;
-		getMandalVillageDetails(constituencyId,stateId);
+		if(globalLocationLevelId !=1 && globalLocationLevelId !=2 && globalLocationLevelId !=3 && globalLocationLevelId !=4){
+			getMandalVillageDetails(constituencyId,globalStateId);
+		}
 	});
 function getMandalVillageDetails(constituencyId,stateId){
 	   globalMandalTownDivArr = [];
-	/* 	var stateId = $("#statesDivId").val();*/
 		var districtId = $("#districtId").val();
 		var distArrTemp = [];
-		if(districtId==-1){
+		if(districtId==0){
 			distArrTemp = globalDistrictArr;
 		}else{
 			distArrTemp.push(districtId);
@@ -91,7 +119,7 @@ function getMandalVillageDetails(constituencyId,stateId){
 		}
 		
 		var assmblyArrTemp = [];
-		if(constituencyId==-1){
+		if(constituencyId==0){
 			assmblyArrTemp = globalAssmblyArr;	
 		}else{
 			assmblyArrTemp.push(constituencyId);
@@ -113,48 +141,56 @@ function getMandalVillageDetails(constituencyId,stateId){
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		    $("#manTowDivId  option").remove();
-		    $("#manTowDivId").append('<option value="0">Select constituency</option>');
-			$("#manTowDivId").append("<option value='-1'>ALL</option>");			  
+			$("#manTowDivId").append("<option value='0'>ALL</option>");			  
 			for(var i in result){
 				$("#manTowDivId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				globalMandalTownDivArr.push(result[i].locationId);
 			}
+			  if(globalLocationLevelId >= 5){
+			   globalLocationLevelValueArr =[];
+			   globalLocationLevelValueArr = globalMandalTownDivArr; 
+			  }
 		});
 	}
+
+function getDistrictConstituencyAndMndlTwnDvsnLvlData(boardLevelId){
+	if(boardLevelId != null && boardLevelId == 3){
+		getFinalReviewCandidateCountLocationWise(boardLevelId,globalDistrictArr,globalDepartmentId,0,"");	
+	}else if(boardLevelId != null && boardLevelId == 4){
+		getFinalReviewCandidateCountLocationWise(boardLevelId,globalAssmblyArr,globalDepartmentId,0,"");	
+	}else if(boardLevelId != null && boardLevelId == 5){
+	    getFinalReviewCandidateCountLocationWise(boardLevelId,globalMandalTownDivArr,globalDepartmentId,0,"");	
+	}
+}
 $(document).on("click","#submitBtnId",function(){
 	var locationLevelValueArr = [];
-	var LocationLevelId = 0;
 	var districtId = $("#districtId").val();
 	var constituencyId = $("#constituencyId").val();
 	var manTowDivId = $("#manTowDivId").val();
-	 if(districtId == -1){
-		 locationLevelValueArr = globalDistrictArr;
-		 LocationLevelId = 3;
-	 }else{
-		 locationLevelValueArr.push(districtId); 
-		 LocationLevelId = 3;
+	 if(districtId != null){
+		if(districtId == 0){
+			 locationLevelValueArr = globalDistrictArr;
+		 }else{
+			 locationLevelValueArr.push(districtId); 
+		 } 
 	 }
-	 if(constituencyId !=0){
+	 if(constituencyId != null){	 
 		 locationLevelValueArr =[];
-	    if(constituencyId == -1){
-		 locationLevelValueArr = globalAssmblyArr
-		 LocationLevelId = 4;
-	 }else{
-		 locationLevelValueArr.push(constituencyId);
-		 LocationLevelId = 4;
-	 } 
+		 if(constituencyId == 0){
+			 locationLevelValueArr = globalAssmblyArr
+		 }else{
+			 locationLevelValueArr.push(constituencyId);
+		 } 
 	 }
-    if(manTowDivId != 0){
+	if(manTowDivId != null){
 		locationLevelValueArr =[];
-	   if(manTowDivId == -1){
-		 locationLevelValueArr = globalMandalTownDivArr
-		 LocationLevelId = 5;
-	 }else{
-		 locationLevelValueArr.push(manTowDivId);
-		 LocationLevelId = 5;
-	 }
+		if(manTowDivId == 0){
+			 locationLevelValueArr = globalMandalTownDivArr
+		 }else{
+			 locationLevelValueArr.push(manTowDivId);
+		 }
 	}
-	 globalLocationLevelId = LocationLevelId;
+	 globalLocationLevelValueArr = [];
 	 globalLocationLevelValueArr = locationLevelValueArr;
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,locationLevelValueArr,0,0," ");
 });
@@ -180,14 +216,14 @@ function getFinalReviewCandidateCountLocationWise(LocationLevelId,locationLevelV
 			   buildCandidateReviewRslt(result);  
 			 }
 		}else{
-		  //$("#boardRsltDivId").html(' ');
-          //$("#positionRsltDivId").html(' ');
 		   if(locationType == "department"){
 				$("#boardRsltDivId").html('NO DATA AVAILABLE'); 
 			 }else if(locationType == "board"){
 				$("#positionRsltDivId").html('NO DATA AVAILABLE');
 			 }else{
 			   $("#candiateReadyToFinalReviewDivId").html("NO DATA AVAILABLE.");
+			    $("#boardRsltDivId").html(' ');
+                $("#positionRsltDivId").html(' ');
 			 }
 		}
 	}); 
