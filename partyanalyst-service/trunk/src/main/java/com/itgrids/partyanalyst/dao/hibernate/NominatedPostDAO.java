@@ -240,4 +240,36 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		return query.list();		
 	}
 	
+	public List<NominatedPost> getnominatedPostDetailsBySearchCriteria(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long searchLevelId,Long searchLevelValue){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model from NominatedPost model where model.nominatedPostMember.boardLevelId=:boardLevelId and " +
+				" model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId and  " +
+				"  model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and  " +
+				"  model.nominatedPostMember.nominatedPostPosition.positionId = :positionId ");
+		
+		if(searchLevelId != null && searchLevelId.longValue()>0L){
+			if(searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L)
+				queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
+			else if(searchLevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+			else if(searchLevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+				queryStr.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+			else if(searchLevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+				queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+			else if(searchLevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+				queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+			else if(searchLevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+				queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		query.setParameter("positionId", positionId);
+		query.setParameter("boardLevelId", boardLevelId);
+		query.setParameter("searchLevelValue", searchLevelValue);
+
+		return query.list();
+	}
 }
