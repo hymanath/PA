@@ -2454,7 +2454,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setGender(voter.getGender());
 						vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
 						if(constituencyId != null){
-							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(constituencyId), voter.getVoterId());
+							List<String> partNos = boothPublicationVoterDAO.getPartNoForRTCRegistration(Long.valueOf(constituencyId), voter.getVoterId());
 							if(voter.getVoterIDCardNo() != null && partNos.size() > 0 && partNos.get(0) != null){
 								String filePath = staticContentLoc + IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 								if(checkFileExistingOrNot(filePath)){
@@ -2888,7 +2888,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						vo.setTeluguName(voterName);
 					}
-					List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList, IConstants.VOTER_DATA_PUBLICATION_ID);
+					List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList, IConstants.AFFILIATED_VOTER_PUBLICATION_ID);
 					if(tdpMemberTypeId == null || tdpMemberTypeId.longValue()<2){
 					if(voterInfo != null && voterInfo.size()>0)
 					{
@@ -11041,7 +11041,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 				}
 				//get voter images by publication id 11.
-				List<Object[]> imagesList = boothPublicationVoterDAO.getVoterImagesByVoterIds(voterIds,11l);
+				List<Object[]> imagesList = boothPublicationVoterDAO.getVoterImagesByVoterIds(voterIds,IConstants.AFFILIATED_VOTER_PUBLICATION_ID);
 				if(imagesList!=null && imagesList.size()>0){
 					for(Object[] obj:imagesList){
 						
