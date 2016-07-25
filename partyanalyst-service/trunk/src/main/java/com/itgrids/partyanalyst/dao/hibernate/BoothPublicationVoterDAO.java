@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterFlag;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAO extends GenericDaoHibernate<BoothPublicationVoter, Long> implements	IBoothPublicationVoterDAO {
@@ -7513,6 +7514,14 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	   return query.list();
    }
    
+   public List<String> getPartNoForRTCRegistration(Long constituencyId,Long voterId){
+	   Query query = getSession().createQuery("select model.booth.partNo from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = "+IConstants.AFFILIATED_VOTER_PUBLICATION_ID+" " +
+	   		" and model.voter.voterId =:voterId ");
+	   query.setParameter("constituencyId", constituencyId);
+  		query.setParameter("voterId", voterId);
+	   return query.list();
+   }
+   
 	public List<Object[]> getLocationWiseVoterAgeRangeCount(List<Long> locationIdsList,String locationType,Long publicationDateId)
 	{
 		StringBuilder str = new StringBuilder();
@@ -8287,6 +8296,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public List<Object[]> getVoterImagesByVoterIds(List<Long> voterIds,Long publicationId){
 		
+		if(new CommonMethodsUtilService().isListOrSetValid(voterIds)){
 		Query query=getSession().createQuery("" +
 		 " select  BPV.voter.voterId,BPV.voter.voterIDCardNo,BPV.booth.constituency.constituencyId,BPV.booth.partNo " +
 		 " from    BoothPublicationVoter BPV " +
@@ -8295,6 +8305,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("publicationDate", publicationId);
 		query.setParameterList("voterIds",voterIds );
 		return query.list();
+		}
+		return null;
 		
 	}
 	
