@@ -447,21 +447,16 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       
 		       queryStr.append(" select ");
 		          
-		       if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+		       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
 		    	   queryStr.append(" model.departments.departmentId,model.departments.deptName,");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
 		      	   queryStr.append(" model.board.boardId,model.board.boardName,");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
 		 		  queryStr.append(" model.position.positionId,model.position.positionName,");
 		 	   }
 		       queryStr.append(" model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(model.nominatedPostApplicationId)");
 		       queryStr.append(" from  NominatedPostApplication model where model.isDeleted = 'N' and model.applicationStatus.applicationStatusId = 3 ");
 		       
-		     /*  if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
-		    	   queryStr.append(" and model.applicationStatus.applicationStatusId = 3 ");
-		       }else{
-		    	   queryStr.append(" and model.applicationStatus.applicationStatusId >= 3 ");
-		       }*/
 		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 		    	    queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
 		       }
@@ -474,11 +469,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       if(boardId != null && boardId.longValue() > 0){
 		    	   queryStr.append(" and model.board.boardId=:boardId ");
 		       }
-		       if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+		       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
 		    	   queryStr.append(" group by model.departments.departmentId order by model.departments.departmentId ");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
 		     	   queryStr.append(" group by model.board.boardId order by model.board.boardId ");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 3l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
 		    	   queryStr.append(" group by model.position.positionId order by  model.position.positionId ");
 		       }
 		       Query query = getSession().createQuery(queryStr.toString());
