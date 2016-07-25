@@ -738,4 +738,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVoterImagesVoterIdcardNo(List<String> voterIDCardNos);
 	  public Long getTotalAvailableVotesByLocationId(Long locationId,String locationType,Long constituencyId,List<Long> constituencyIdsList);
 	  public Object[] getBoothDetailsByVoterId(String voterId);
+	  public List<String> getPartNoForRTCRegistration(Long constituencyId,Long voterId);
 }
