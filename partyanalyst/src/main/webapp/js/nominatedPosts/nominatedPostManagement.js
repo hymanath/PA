@@ -320,7 +320,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
 					str+='<th>Posts</th>';					
 					str+='<th>Total Positions Available</th>';//Open Status					
 					str+='<th>Total Applications Received</th>';					
-					str+='<th>Reports Pending</th>';
+					str+='<th>Ready to Shortlist</th>';
 					str+='<th>Rejected</th>';					
 					str+='<th>Shortlisted</th>';					
 					
@@ -372,14 +372,14 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
 								}
 						}
 					}
-			var reportsPending = 0;
+			var rdyToShortlist = 0;
 			var shortListed = 0;
 			var rejected =0;
 			
 				if(result[i].distList !=null && result[i].distList.length>0){
 						for(var j in result[i].distList){
 								if(result[i].distList[j].name =="Applied"){
-									reportsPending = result[i].distList[j].count;
+									rdyToShortlist = result[i].distList[j].count;
 								}else if(result[i].distList[j].name =="Rejected"){
 									rejected  = result[i].distList[j].count;
 								}else if(result[i].distList[j].name =="Shortlisted"){
@@ -389,10 +389,16 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
 					} 
 			
 				str+='<tr>';
-						str+='<td><label class="checkbox-inline"><input type="checkbox"/>'+result[i].name+'</label></td>';
+				
+				if(result[i].id != null){
+					str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' />'+result[i].name+'</label></td>';
+				}else{
+					str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+'/>Any Post</label></td>';
+				}
+						
 						str+='<td>'+availablePosts+'</td>';
 						str+='<td>'+result[i].receivedCount+'</td>';
-						str+='<td>'+reportsPending+'</td>';
+						str+='<td>'+rdyToShortlist+'</td>';
 						str+='<td>'+rejected+'</td>';
 						str+='<td>'+shortListed+'</td>';
 						
@@ -430,7 +436,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
 		str+='</tbody>';
 		str+='</table>';
 		str+='<div class="pad_15">';
-			str+='<button class="btn btn-success">Ready For Final Review</button>';
+			str+='<button class="btn btn-success" class="">Ready For Final Review</button>';
 			str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 		str+='</div>';
 		$("#"+bodyId).html(str);
