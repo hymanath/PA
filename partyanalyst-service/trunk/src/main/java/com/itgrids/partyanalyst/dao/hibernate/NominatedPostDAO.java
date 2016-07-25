@@ -40,11 +40,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null){
 			if(stateId.longValue() ==1L)
-				queryStr.append(" model2.district.districtId between 11 and 23 ");
+				queryStr.append(" and  model2.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() ==2L)
-				queryStr.append(" model2.district.districtId between 1 and 10 ");
+				queryStr.append("  and model2.district.districtId between 1 and 10 ");
 			else
-				queryStr.append(" model2.district.districtId between 1 and 23 ");
+				queryStr.append("  and model2.district.districtId between 1 and 23 ");
 		}
 		
 		queryStr.append(" group by model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
@@ -82,11 +82,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");		
 		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null){
 			if(stateId.longValue() ==1L)
-				queryStr.append(" model2.district.districtId between 11 and 23 ");
+				queryStr.append("  and model2.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() ==2L)
-				queryStr.append(" model2.district.districtId between 1 and 10 ");
+				queryStr.append(" and  model2.district.districtId between 1 and 10 ");
 			else
-				queryStr.append(" model2.district.districtId between 1 and 23 ");
+				queryStr.append("  and model2.district.districtId between 1 and 23 ");
 		}
 		
 		queryStr.append(" group by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
