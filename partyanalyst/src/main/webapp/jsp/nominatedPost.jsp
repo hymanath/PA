@@ -158,7 +158,7 @@
 										<input type="hidden" id="cadreSearchType" value="membershipId" />
                                     </div>
                                     <input type="text" class="form-control" id="searchById"/>
-									<div id="searchErrDiv" style="color:red;"></div>
+									<div id="searchErrDiv1" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3 pad_left0">
                                     <button class="btn btn-success btn-block btnSearch" id="searchbtn">SEARCH</button>
