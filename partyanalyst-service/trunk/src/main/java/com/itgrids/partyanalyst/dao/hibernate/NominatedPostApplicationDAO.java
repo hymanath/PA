@@ -253,7 +253,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" select distinct model.nominatedPostMember.boardLevelId, count(model2.nominatedPostApplicationId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId)  " +
-				" from NominatedPost model,NominatedPostApplication model2  where ");
+				" from NominatedPost model,NominatedPostApplication model2 ");
 		if(levelId != null && levelId.longValue()>1 && stateId != null)
 			queryStr.append(" ,UserAddress model3 where model.nominatedPostMember.addressId = model3.userAddressId and " );
 		else
