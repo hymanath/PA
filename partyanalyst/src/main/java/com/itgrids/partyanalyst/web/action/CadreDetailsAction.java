@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceReportVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -96,8 +98,19 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<CadreDetailsVO> cadreDetailsVO;
 	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
 	private List<CadreReportVO> cadreReportVOList = new ArrayList<CadreReportVO>(0);
+	private List<GrievanceReportVO> grievanceReportVOList;
 	
 	
+	
+	
+	public List<GrievanceReportVO> getGrievanceReportVOList() {
+		return grievanceReportVOList;
+	}
+	public void setGrievanceReportVOList(
+			List<GrievanceReportVO> grievanceReportVOList) {
+		this.grievanceReportVOList = grievanceReportVOList;
+	}
+
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	private GrievanceSimpleVO grievanceSampleVO;
@@ -1646,6 +1659,21 @@ public String updateCadreNotesInfrmationAction()
 		}catch(Exception e)
 		{
 			LOG.error("Exception Occured in saveImportantLeadersType() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getGrievancePDFReport()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			grievanceReportVOList = cadreDetailsService.getGrievancePDFReport(jObj.getString("membershipId"));
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getGrievancePDFReport() in CadreDetailsAction ",e);
 		}
 		return Action.SUCCESS;
 	}
