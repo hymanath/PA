@@ -762,4 +762,24 @@ public String getNotCadreDetailsById(){
 	
 	return Action.SUCCESS;
 	}
+	public String updateNominatedPostStatsDetails(){
+		
+		try {
+				jObj = new JSONObject(getTask());
+				Long deptId = jObj.getLong("deptId");
+				Long boardId = jObj.getLong("boardId");
+				Long positionId = jObj.getLong("positionId");
+				Long levelId = jObj.getLong("levelId");
+				Long searchLevelId = jObj.getLong("searchLevelId");
+				Long searchLevelValue = jObj.getLong("searchLevelValue");
+				Long statusId = jObj.getLong("statusId");
+				
+				resultStatus =nominatedPostProfileService.updateNominatedPostStatusDetails(deptId,boardId, positionId, levelId,searchLevelId,searchLevelValue,statusId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at updateNominatedPostStatsDetails() method of NominatedPostProfileAction", e);
+		}
+
+	return Action.SUCCESS;
+	}
+
 }
