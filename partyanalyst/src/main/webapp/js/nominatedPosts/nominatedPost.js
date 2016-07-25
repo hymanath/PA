@@ -297,7 +297,7 @@ function getNominatedPostApplication(startIndex)
 		$("#cadreDetailsDiv").hide();
 		//$("#cadreSearchDtls").show();
 		var searchBy = $('#searchBy').val().trim();
-		var searchRadioType =$('#cadreSearchType').val();;
+		var searchRadioType =$('#cadreSearchType').val();
 		var parentLocation = 0;
 		var panchayatId = $("#panchaytList").val();
 		var mandalId = $("#mandalList").val();
@@ -511,7 +511,6 @@ function getNominatedPostApplication(startIndex)
 		
 	}
 	function refreshExistingDetails(){ 
-		//$("#uploadFlDivId").hide();
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
 		$(".paginationDivId").html('');
@@ -526,6 +525,7 @@ function getNominatedPostApplication(startIndex)
 		$("#notCadreMobilNoId").val("");
 		$("#notCadreErrMsg").html("");  
 		$("#searchById").val("");
+		$("#searchErrDiv1").html("");
 		}
 	function refreshExistingDetailsInNominatedLevel()
 	{
@@ -1540,9 +1540,61 @@ $("#involvedCandidatesDiv").hide();
   showHideBySearchType();//Clear Fields  
 }
 function notCadresearch(){
-	 var searchType=$("input[name='radioGroup']:checked").val();
+	var searchById = $('#searchById').val().trim();
+	var searchRadioType =$('#cadreSearchType').val();
+	if(searchRadioType == 'voterId')
+		{
+			voterCardNo = $('#searchById').val().trim();
+			
+			if(searchById.trim().length == 0)
+			{
+				$('#searchErrDiv1').html('Please enter Voter Card No.');
+				return;
+			}
+		}
+		if(searchRadioType == 'mobileNo')
+		{	
+			mobileNo = $('#searchById').val().trim();
+			
+			if(searchRadioType=="mobileNo"){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchById').val().match(numericExpression)){
+						$('#searchErrDiv1').html('Enter Numerics Only.');
+						return;
+					}
+			}	
+			
+			if(searchById.trim().length == 0 )
+			{
+				$('#searchErrDiv1').html('Please enter Mobile No.');
+				return;
+			}
+			
+			else if(mobileNo.trim().length != 10)
+			{
+				$('#searchErrDiv1').html('Invalid Mobile No.');
+				return;				
+			}
+			
+		}
+		if(searchRadioType == 'name')
+		{
+			searchName = $('#searchById').val().trim();
+			
+			if(searchById.trim().length == 0 )
+			{
+				$('#searchErrDiv1').html('Please enter Name.');
+				return;
+			}
+			else if(searchById.trim().length < 3)
+			{
+				$('#searchErrDiv1').html('Please enter Minimum 3 Characters.');
+				return;
+			}
+		}	
+	var searchType=$("input[name='radioGroup']:checked").val();
 	   var searchValue=$("#searchById").val();
-	  // alert($('#searchByca').val());
 		var jsObj =
 		        {
 		searchType : searchType,
