@@ -8435,8 +8435,8 @@ class TrainingCampService implements ITrainingCampService{
 				if(inviteeList !=null && inviteeList.size()>0){
 					
 					for(SimpleVO ListVo:inviteeList){
-						if(ListVo.getCount() !=null && ListVo.getCount()>0){
-							if(ListVo.getTotal() ==null || ListVo.getTotal()<=0){
+						if(ListVo.getCount() !=null && ListVo.getCount().longValue()>0L){
+							if(ListVo.getTotal() ==null || ListVo.getTotal()<=0L){
 								ListVo.setDateString("Absent");//status Of Cadre For Training
 								absentCount = absentCount+1;
 							}
