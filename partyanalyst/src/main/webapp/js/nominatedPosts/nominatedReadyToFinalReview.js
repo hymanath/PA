@@ -158,7 +158,7 @@ function getDistrictConstituencyAndMndlTwnDvsnLvlData(boardLevelId){
 		getFinalReviewCandidateCountLocationWise(boardLevelId,globalDistrictArr,globalDepartmentId,0,"");	
 	}else if(boardLevelId != null && boardLevelId == 4){
 		getFinalReviewCandidateCountLocationWise(boardLevelId,globalAssmblyArr,globalDepartmentId,0,"");	
-	}else if(boardLevelId != null && boardLevelId == 5){
+	}else if(boardLevelId != null && boardLevelId >= 5){
 	    getFinalReviewCandidateCountLocationWise(boardLevelId,globalMandalTownDivArr,globalDepartmentId,0,"");	
 	}
 }
