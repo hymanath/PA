@@ -276,7 +276,10 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	var boardId = $(this).attr("attr_boardId");
 	var bodyId = $(this).attr("attr_id"); 
 	var levelValuesArr=[];
-	if(globalLevelId == 2){
+	if(globalLevelId == 1){
+		levelValuesArr.push(1);
+	}
+	else if(globalLevelId == 2){
 		
 		levelValuesArr.push(globalStateId);
 		
@@ -451,7 +454,10 @@ $(document).on("click","#locationWiseDataId",function(){
 	var assmblyArrTemp=[]; */
 	var levelValuesArr=[];
 
-	if(globalLevelId == 2){		
+	if(globalLevelId == 1){
+		levelValuesArr.push(1);
+	}
+	else if(globalLevelId == 2){		
 		levelValuesArr.push(globalStateId);		
 	}else if(globalLevelId == 3){
 		
