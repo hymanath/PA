@@ -197,7 +197,7 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null && result.length > 0){
-		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId);
+		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards);
 	   }
    });
 }
@@ -314,7 +314,7 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId);
 });
 
-function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
+function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 	var str='';
 	if(result !=null && result.length>0){
 		
@@ -439,12 +439,60 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId){
 		str+='</tbody>';
 		str+='</table>';
 		str+='<div class="pad_15">';
-			str+='<button class="btn btn-success" class="">Ready For Final Review</button>';
+			str+='<button class="btn btn-success moveToFinalReviewCls" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
 			str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 		str+='</div>';
 		$("#"+bodyId).html(str);
+	
 	}	
 }
+
+$(document).on("click",".moveToFinalReviewCls",function(){
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId = globalStateId;
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	var deptId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_dept_id');
+	var positionId = 1;
+	var searchLevelValue =stateId;
+	if(stateId ==0)
+		searchLevelValue =1;
+	if(mandalTownDivId >0)
+		searchLevelValue = mandalTownDivId;
+	else if(constituencyId >0)
+		searchLevelValue = constituencyId;
+	else if(districtId >0)
+		searchLevelValue = districtId;
+	
+	var jsObj={		
+		deptId : 1,
+		boardId : 1,
+		positionId : 1,
+		statusId:2,
+		levelId : globalLevelId,
+		searchLevelId : 1,
+		searchLevelValue:searchLevelValue
+	}
+	$.ajax({
+          type:'GET',
+          url: 'updateNominatedPostStatusDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  console.log(result);
+	  if(result != null && result.resultCode==0){
+		  alert("Suucessfully this position Moved to Final Review...");
+	  }
+	  else if(result != null && result.resultCode==1){
+		  alert("Error Occured while moving this position to Final Review");
+	  }
+   });
+	
+});
+
 $(document).on("click","#locationWiseDataId",function(){
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
