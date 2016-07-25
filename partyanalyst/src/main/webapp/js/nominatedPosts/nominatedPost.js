@@ -904,8 +904,9 @@ function savingApplication(){
 					if(!searchByApplicant()){
 						return flag = false;
 					}
-				}else if($(this).prop('checked')==true && $(this).val() == "Not Cadre"){
-					var numericExpression = /^[0-9]+$/;
+				}
+				/*else if($(this).prop('checked')==true && $(this).val() == "Not Cadre"){
+					 var numericExpression = /^[0-9]+$/;
 					var mobileNo = $('#notCadreMobilNoId').val();
 					if($("#notCadreNameId").val() == ""){
 						$("#notCadreErrMsg").html("Please Fill Name");
@@ -931,8 +932,8 @@ function savingApplication(){
 					}else{
 						$('#notCadreErrMsg').html("");
 						flag = true;
-					}
-				}
+					} 
+				}*/
 			});
 			if(flag){
 					if(!validatationFields()){
@@ -953,13 +954,26 @@ function savingApplication(){
 							cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
 							cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
 							cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
+							$(".tdpCadreId").val(cadreId);
+							$(".tdpCadreName").val(cadreName);
+							$(".cadreVoterId").val(cadreVoterId);
+							$(".cadreMobileNo").val(cadreMobilNo);
 						}
 					});	
 				}else if($(this).is(":checked")==true && $(this).val() == "Not Cadre")
 				{
-					cadreName = $("#notCadreNameId").val();
-					cadreVoterId = $("#notCadreVoterId").val();
-					cadreMobilNo =  $("#notCadreMobilNoId").val();
+					$(".checkboxCls").each(function(){
+						if($(this).is(":checked")){
+							//cadreName = $(this).parent().find(".cadreName").text();
+							cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
+							//cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
+							//cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
+							//$(".tdpCadreName").val(cadreName);
+							//$(".cadreVoterId").val(cadreVoterId);
+							//$(".cadreMobileNo").val(cadreMobilNo);
+							$(".nominatedCandId").val(cadreId);
+					}
+					});	
 				}
 			
 		});  
@@ -970,10 +984,6 @@ function savingApplication(){
 			 var n=refferCadreId.lastIndexOf(",");
 			refferCadreId=refferCadreId.substring(0,n) ;
 			
-			$(".tdpCadreId").val(cadreId);
-			$(".tdpCadreName").val(cadreName);
-			$(".cadreVoterId").val(cadreVoterId);
-			$(".cadreMobileNo").val(cadreMobilNo);
 			$(".referCadreIds").val(refferCadreId); 
 			
 			var uploadHandler = {
