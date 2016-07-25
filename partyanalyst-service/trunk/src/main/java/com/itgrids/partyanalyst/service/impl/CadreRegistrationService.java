@@ -11010,8 +11010,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					searchQuery.append(" BPV.voter.houseNo like '%"+houseNo+"%' and" );
 				}
 
-				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencIdRTC(constituencyId,IConstants.VOTER_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre,startIndex,maxIndex);
-				 count = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencIdCountRTC(constituencyId,IConstants.VOTER_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre);
+				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencIdRTC(constituencyId,IConstants.AFFILIATED_VOTER_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre,startIndex,maxIndex);
+				 count = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencIdCountRTC(constituencyId,IConstants.AFFILIATED_VOTER_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre);
 				
 				List<Long> voterIds = new ArrayList<Long>();
 				if(searchList != null && searchList.size()>0 )
