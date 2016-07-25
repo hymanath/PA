@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
@@ -52,8 +54,8 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
-import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -67,6 +69,7 @@ import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -111,8 +114,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private ActivityService					activityService;
 	private IApplicationDocumentDAO         applicationDocumentDAO;
 	private IVoterDAO         				voterDAO;
-    private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
-	
+	 private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
+	private ICasteStateDAO casteStateDAO;
 	
 	
 	public INominatedPostApplicationHistoryDAO getNominatedPostApplicationHistoryDAO() {
@@ -122,6 +125,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public void setNominatedPostApplicationHistoryDAO(
 			INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO) {
 		this.nominatedPostApplicationHistoryDAO = nominatedPostApplicationHistoryDAO;
+	}
+	
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
 	}
 
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
@@ -2202,7 +2213,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 					
 					
-					
 				}
 				if(townList !=null && townList.size()>0){
 					List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(6l,townList,deptIds,boardIds,statusType);
@@ -2597,5 +2607,153 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		}
 		 return finalList;
 	 }
-
+	
+	// adding new service method
+	
+		public ResultStatus saveNotcadreRegistrationPost(final  AddNotcadreRegistrationVO notcadreRegistrationVO,final Map<File,String> mapfiles,final Long loggerUserId){
+			//LOG.info("Entered into the savechangeNotcadreRegistrationPost service method");
+			final ResultStatus rs = new ResultStatus();
+			try {
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+						
+						UserAddress UA = new UserAddress();
+						UA.setHouseNo(notcadreRegistrationVO.getHouseno() != null?notcadreRegistrationVO.getHouseno():null);
+						UA.setAddressLane1(notcadreRegistrationVO.getAddress1()!= null?notcadreRegistrationVO.getAddress1():null);
+						UA.setAddressLane2(notcadreRegistrationVO.getAddress2() != null?notcadreRegistrationVO.getAddress2():null);
+						UA.setPinCode(notcadreRegistrationVO.getPincode() != null?notcadreRegistrationVO.getPincode():null);
+						UA.setState(notcadreRegistrationVO.getStateId() != null?stateDAO.get(notcadreRegistrationVO.getStateId()):null);
+						UA.setDistrict(notcadreRegistrationVO.getDistrictId() != null?districtDAO.get(notcadreRegistrationVO.getDistrictId()):null);
+						UA.setConstituency(notcadreRegistrationVO.getConstituencyId() != null?constituencyDAO.get(notcadreRegistrationVO.getConstituencyId()):null);
+						UA.setPanchayatId(notcadreRegistrationVO.getPanchayatId() != null?notcadreRegistrationVO.getPanchayatId():null);
+					    UA=  userAddressDAO.save(UA);
+						//UA.getUserAddressId();
+                        NominationPostCandidate NPC=new NominationPostCandidate();
+                        
+                        Long voterId = voterDAO.getVoterIdByIdCardNo(notcadreRegistrationVO.getVoterId().toString());
+                        NPC.setVoterId(voterId != null ? voterId : null);
+                        NPC.setCandidateName(notcadreRegistrationVO.getName()!=null?notcadreRegistrationVO.getName():null);
+	                    NPC.setAge(notcadreRegistrationVO.getAge()!=null?notcadreRegistrationVO.getAge():null);
+	                    NPC.setGender(notcadreRegistrationVO.getGender()!=null?notcadreRegistrationVO.getGender():null);
+	                    NPC.setHouseno(notcadreRegistrationVO.getHouseno()!=null?notcadreRegistrationVO.getHouseno():null);
+	                    NPC.setMobileNo(notcadreRegistrationVO.getMobileno()!=null?notcadreRegistrationVO.getMobileno():null);
+	                    NPC.setRelativename(notcadreRegistrationVO.getRelativename()!=null?notcadreRegistrationVO.getRelativename():null);
+	                    NPC.setRelativetype(notcadreRegistrationVO.getRelativetype()!=null?notcadreRegistrationVO.getRelativetype():null);
+	                    NPC.setAddressId(UA.getUserAddressId());
+	                    NPC.setCastestateId(notcadreRegistrationVO.getCastestateId() !=null?notcadreRegistrationVO.getCastestateId():null);
+	                    Date fromDate = null;
+	                    if(notcadreRegistrationVO.getDob() != null && notcadreRegistrationVO.getDob().trim().length()>0){
+	                    	 try {
+								fromDate = format.parse(notcadreRegistrationVO.getDob().toString());
+								NPC.setDob1(fromDate);
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+	                    }
+	                    String folderName = folderCreationForNotCadre();
+                    StringBuilder pathBuilder = null; 
+	                    for (Map.Entry<File, String> entry : mapfiles.entrySet())
+	           		 {
+	                    	 pathBuilder = new StringBuilder();
+	                    	 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+	                    	 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+	         				String destinationPath = folderName+"/"+randomNumber+"."+entry.getValue();
+	         				 pathBuilder.append(IConstants.NOT_CADRE_IMAGES).append("/").append(randomNumber).append(".")
+	         				 .append(entry.getValue());
+	         				activityService = new ActivityService();
+	         				   String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destinationPath);
+	         				   LOG.error("Status : "+status);
+	         				   if(fileCpyStts.equalsIgnoreCase("success")){
+	         					  NPC.setImageurl(pathBuilder.toString());
+	         					   LOG.error("Success:"+pathBuilder.toString()+".jpg");
+	         				   }else if(fileCpyStts.equalsIgnoreCase("error")){
+	         					  rs.setResultCode(1);
+	         					 rs.setMessage("FAIL"); 
+	         					  LOG.error("Error:"+pathBuilder.toString()+".jpg");
+	         				   }
+	         			   	
+	                  }
+	                    NPC.setInsertedBy(loggerUserId);
+	                    NPC.setUpdatedBy(loggerUserId);
+	                    NPC.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+	                    NPC.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+	                    NPC.setIsDeleted("N");
+	                    NPC=nominationPostCandidateDAO.save(NPC);
+				   
+				    rs.setResultCode(0);
+				    rs.setMessage("SUCCESS - "+NPC.getNominationPostCandidateId());
+				   
+			}
+		});
+	} catch (Exception e) {
+		rs.setResultCode(1);
+		rs.setMessage("FAIL");
+				e.printStackTrace();
+				LOG.error("Exception raised at saveNotcadreRegistrationPost", e);
+			}
+				return rs;
+		}
+		
+	public List<IdNameVO> getCastesForAP(){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		
+		List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L);
+		if(castesList != null && castesList.size() >0){
+			for(Object[] obj : castesList){
+				IdNameVO vo = new IdNameVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				vo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				returnList.add(vo);
+			}
+		}
+		return returnList;
+		
+	}
+	public static String folderCreationForNotCadre(){
+	  	 try {
+	  		 LOG.debug(" in FolderForNotCadre ");
+	  		
+	  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"/"+IConstants.NOT_CADRE_IMAGES);
+			 
+			 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
+			 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"/"+IConstants.NOT_CADRE_IMAGES;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");
+			return "FAILED";
+		}
+	}
+	public  List<CadreCommitteeVO> getNotCadreDetailsById(Long nominatedPostCandiId){
+		List<CadreCommitteeVO>  finalList = null;
+		 
+		 try {
+			  
+			    List<Object[]> membersList = nominationPostCandidateDAO.getNotCadreDetailsById(nominatedPostCandiId);
+			      if(membersList!=null && membersList.size()>0){
+			    	  finalList = new ArrayList<CadreCommitteeVO>();
+			    		   for(Object[] obj: membersList){
+			    			   CadreCommitteeVO vo = new CadreCommitteeVO();
+			    			   vo.setTdpCadreId(obj[0]!=null?(Long)obj[0]:0l);
+			    			   vo.setMemberShipCardId("");
+			    			   vo.setMobileNo(obj[1]!=null?obj[1].toString():"");
+			    			   vo.setCadreName(obj[2]!=null?obj[2].toString():"");
+			    			   vo.setVoterCardNo(obj[3]!=null?obj[3].toString():"");
+			    			   vo.setImageURL(obj[4]!=null?obj[4].toString():null);
+			    			   vo.setConstituencyId(obj[5]!=null?(Long)obj[5]:01);
+			    			   vo.setConstituency(obj[6]!=null?obj[6].toString():"");
+			    			   finalList.add(vo);
+				    	}
+			    	  }
+			        
+			   	} catch (Exception e) {
+			LOG.error("Exception raised at notCadresearch() method of NominatedPostProfileService", e);
+		}
+		 return finalList;
+	 }
 }

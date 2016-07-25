@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.NominationPostCandidate;
 public interface INominationPostCandidateDAO extends GenericDao<NominationPostCandidate, Long>{
 
 	public List<Object[]>  notCadresearch(String searchType,String searchValue);
+	public List<Object[]> getNotCadreDetailsById(Long nominatedCandiId);
 }

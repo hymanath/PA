@@ -21,7 +21,7 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,model.voter.voterIDCardNo," +
 				"   model.imageurl,model.address.constituency.constituencyId,model.address.constituency.name" +
 				"   FROM   NominationPostCandidate model" +
-				"   WHERE  model.tdpCadreId is null ");
+				"   WHERE  model.tdpCadreId is null and model.isDeleted = 'N' ");
 		if(searchType.equalsIgnoreCase("3")){
 			
 			sb.append(" AND model.mobileNo = :searchValue ");
@@ -41,6 +41,17 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 				}
 		return query.list();
 		
+	}
+	public List<Object[]> getNotCadreDetailsById(Long nominatedCandiId){
+		StringBuilder sb=new StringBuilder();
+		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,model.voter.voterIDCardNo," +
+				"   model.imageurl,model.address.constituency.constituencyId,model.address.constituency.name" +
+				"   FROM   NominationPostCandidate model" +
+				"   WHERE  model.nominationPostCandidateId = :nominatedCandiId and model.isDeleted = 'N' ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("nominatedCandiId", nominatedCandiId);
+		return query.list();
 	}
 
 }

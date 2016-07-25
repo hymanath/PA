@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -36,4 +37,8 @@ public interface INominatedPostProfileService {
 						final Long deptId,final Long boardId,final Long positionId,final Long statusId,final String comment);
 	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId);
     public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchValue);
+    public ResultStatus saveNotcadreRegistrationPost(final  AddNotcadreRegistrationVO notcadreRegistrationVO,final Map<File,String> mapfiles,final Long loggerUserId);
+	public List<IdNameVO> getCastesForAP();
+	public  List<CadreCommitteeVO> getNotCadreDetailsById(Long nominatedPostCandiId);
+
 }
