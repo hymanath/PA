@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container">
-<div class="row">
+<div class="row hideRowCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<!--<div class="panel-heading">
@@ -20,22 +20,22 @@
 				</div>-->
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-3 col-xs-12 col-sm-3 hideDistrictDivCls">
 							<label>District</label>
 							<select class="form-control" id="districtId">
 								<!--<option value="">Select District</option>-->
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-3 col-xs-12 col-sm-3 hideConstituencyDivCls">
 							<label>Constituency</label>
 							<select class="form-control" id="constituencyId">
-								<option value="0">Select Constituency</option>
+								<!--<option value="0">Select Constituency</option>-->
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
+						<div class="col-md-3 col-xs-12 col-sm-3 hidemanTowDivCls">
 							<label>Mandal/Town/Division</label>
 							<select class="form-control" id="manTowDivId">
-								<option value="0">Select Mandal/Town/Division</option>
+								<!--<option value="0">Select Mandal/Town/Division</option>-->
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">						
@@ -73,8 +73,24 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
 <script type="text/javascript">
+var boardLevelId = '${param.lId}';
+var stateId = '${param.stateId}';
 $(document).ready(function(){
-getDistrictsForStates(1);
+if(boardLevelId == 1 || boardLevelId ==2){
+ $(".hideRowCls").hide();	
+}
+if(boardLevelId == 3){	
+$(".hideConstituencyDivCls").hide();
+$(".hidemanTowDivCls").hide();	
+}
+if(boardLevelId == 4){
+$(".hidemanTowDivCls").hide();
+}
+if(boardLevelId != null && boardLevelId >= 5){
+getBoardLevelId(5,stateId);		
+}else{
+getBoardLevelId(boardLevelId,stateId);		
+}
 });
 </script>
 </body>
