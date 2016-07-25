@@ -23,4 +23,7 @@ public interface ICadreHealthStatusDAO extends GenericDao<CadreHealthStatus, Lon
 	  public List<Object[]> getApprovedAmountDetailsForGovtAndWilfareByLocation(Long locationId,String locationType);
 	  public List<Object[]> getApprovedAmountDetailsForWilfareByLocation(Long locationId,String locationType);
 	  public List<Object[]> getGrievanceBenifitsDetailsByLocation(Long locationId,String locationType,String typeOfIssue,String otherBenifit);
+		public List<Object[]> getNominatedPostComplaintPDF(String membershipNo);
+		public List<Object[]> getNominatedComplaintScanCopies(List<Long> complaintIds);
+		public List<Object[]> getNominatedPostScanCopyForComplaint(List<Long> complaintIds);
 }
