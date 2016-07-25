@@ -131,6 +131,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
 		}
 		
+		str.append(" and  nominatedPostPosition.positionId is not null ");
+		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" and model1.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
@@ -162,7 +164,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 	}
 	
-	public List<Object[]> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType){
+	public List<Object[]> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType,String positionType){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -185,12 +187,24 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
 		}
-		if(deptId !=null && deptId.size() >0){
-			str.append(" and nominatedPostPosition.department.departmentId in (:deptId) ");
+		
+		// Any Dept && Board && post Scenarios Consideration && non Consideration
+		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+			if(deptId !=null && deptId.size() >0){
+				str.append(" and nominatedPostPosition.department.departmentId in (:deptId) ");
+			}
+			if(boardId !=null && boardId.size()>0){
+				str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
+			}
+			
+			str.append(" and  nominatedPostPosition.positionId is not null ");
+			
+		}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
+			str.append(" and (nominatedPostPosition.departmentId is null " +
+					" or nominatedPostPosition.boardId is null " +
+					" or  nominatedPostPosition.positionId is null) ");
 		}
-		if(boardId !=null && boardId.size()>0){
-			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
-		}
+		
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" and model1.applicationStatus.status = :notYet ");
@@ -210,11 +224,13 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		if(levelValue !=null && levelValue.size()>0){
 			query.setParameterList("levelValue", levelValue);
 		}
-		if(deptId !=null && deptId.size() >0){
-			query.setParameterList("deptId", deptId);
-		}
-		if(boardId !=null && boardId.size()>0){
-			query.setParameterList("boardId", boardId);
+		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+			if(deptId !=null && deptId.size() >0){
+				query.setParameterList("deptId", deptId);
+			}
+			if(boardId !=null && boardId.size()>0){
+				query.setParameterList("boardId", boardId);
+			}
 		}
 		
 		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
