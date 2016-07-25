@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Trimmean;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -51,16 +50,16 @@ import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ApplicationDocument;
+import com.itgrids.partyanalyst.model.NominatedPost;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostApplicationHistory;
 import com.itgrids.partyanalyst.model.NominatedPostComment;
@@ -69,7 +68,6 @@ import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -2773,4 +2771,36 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		}
 		 return finalList;
 	 }
+	
+	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final Long positionId,final Long levelId,final Long searchLevelId,final Long searchLevelValue,final Long statusId){
+		ResultStatus status = new ResultStatus();
+		try {
+			String statusStr = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					List<NominatedPost> nominatedPostsList = nominatedPostDAO.getnominatedPostDetailsBySearchCriteria(deptId,boardId,positionId,levelId,searchLevelId,searchLevelValue);
+					if(commonMethodsUtilService.isListOrSetValid(nominatedPostsList)){
+						NominatedPost nominatedPostObj = nominatedPostsList.get(0);
+						nominatedPostObj.setNominatedPostStatusId(statusId);
+						nominatedPostDAO.save(nominatedPostObj);
+						return "success";
+					}
+					return null;
+				}
+			});
+			if(statusStr != null&& statusStr.equalsIgnoreCase("success")){
+			status.setResultCode(0);
+			status.setMessage("SUCCESS");
+			}
+			else
+			{
+				status.setResultCode(1);
+				status.setMessage("FAILURE");
+			}
+		} catch (Exception e) {
+			status.setResultCode(1);
+			status.setMessage("FAILURE");
+			LOG.error("Exception raised at updateNominatedPostStatusDetails() method of NominatedPostProfileService", e);
+		}
+		return status;
+	}
 }
