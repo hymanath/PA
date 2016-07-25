@@ -841,7 +841,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
 						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
 						nominationPostCandidate.setTdpCadreId(nominatedPostVO.getId());
-						List<Object[]> cadreDetails = tdpCadreDAO.getApplicationMemberDetails(nominatedPostVO.getId());
+						List<Object[]> cadreDetails = tdpCadreDAO.getApplicationMemberDetails(nominatedPostVO.getId(),"");
 						if(cadreDetails != null && cadreDetails.size() >0){
 							for(Object[] cadre : cadreDetails){
 								
