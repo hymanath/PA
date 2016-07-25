@@ -19,5 +19,5 @@ public class VoterRelationDAO extends GenericDaoHibernate<VoterRelation, Long> i
 		
 		return query.list();
 	}
- 
+	
 }

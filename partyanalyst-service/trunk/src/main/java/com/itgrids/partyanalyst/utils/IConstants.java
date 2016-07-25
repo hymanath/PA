@@ -746,7 +746,7 @@ public interface IConstants {
 
    // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
   //  public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
-    //public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
+   // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
     
     
     //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
@@ -1110,5 +1110,5 @@ public interface IConstants {
 	public static final String NOMINATED_POST_DOCUMENTS ="nominated_post_documents";
 	
 	public static final String NOMINATED_APPLIED_STATUS ="Applied";
-	
+	public static final String NOT_CADRE_IMAGES = "not_cadre_images";
 }
