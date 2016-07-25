@@ -20,10 +20,10 @@ public interface INominatedPostProfileService {
 	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment);
 	public ResultStatus savingNominatedPostProfileApplication(NominatedPostVO nominatedPostVO,final Long loggedUserId,final Map<File,String> mapfiles);
 	public String savechangeAddressForNominatedPost(final NominatedPostVO nominatedPostVO);
-	public List<NominatedPostVO> getApplicantDetailsForMember(Long tdpCadreId);
+	public List<NominatedPostVO> getApplicantDetailsForMember(Long tdpCadreId,String searchType);
 	public List<IdNameVO> getDistrictsForState(Long stateId);
 	public List<IdNameVO> getVillagesForMandalId(Long mandalId);
-	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId);
+	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId);
 	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr,Long stateId);
 	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue);
 	public ResultStatus saveNominatedPostUploadFiles(Map<File,String> mapfiles,Long nomiPostCandiId);

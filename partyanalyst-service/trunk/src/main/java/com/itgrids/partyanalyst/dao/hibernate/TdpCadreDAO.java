@@ -7039,16 +7039,32 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		return (Long) query.uniqueResult();
 	}
-	public List<Object[]> getApplicationMemberDetails(Long tdpCadreId){
+	public List<Object[]> getApplicationMemberDetails(Long tdpCadreId,String searchType){
 		
-		Query query = getSession().createQuery(" select model.mobileNo,model.houseNo,model.presentAddress.addressLane1,model.presentAddress.addressLane2," +
+	StringBuilder str = new StringBuilder();
+	 if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+		str.append(" select model.mobileNo,model.houseNo,model.presentAddress.addressLane1,model.presentAddress.addressLane2," +
 				" model.presentAddress.state.stateId,model.presentAddress.district.districtId," +
 				" model.presentAddress.constituency.constituencyId,model.presentAddress.tehsil.tehsilId,model.presentAddress.panchayat.panchayatId,model.presentAddress.pinCode " +
 				" ,model.tdpCadreId , model.voter.voterId, model.firstname,model.lastname, model.relativename, model.relativeType, model.gender, model.age, model.dateOfBirth, model.image, model.casteStateId, " +
 				" model.userAddress.userAddressId "+
 				" from TdpCadre model " +
 				" where model.tdpCadreId=:tdpCadreId ");
-		query.setParameter("tdpCadreId", tdpCadreId);
+	 }
+	  else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+			str.append(" select model.mobileNo,model.houseno,model.address.addressLane1,model.address.addressLane2," +
+					" model.address.state.stateId,model.address.district.districtId," +
+					" model.address.constituency.constituencyId,model.address.tehsil.tehsilId,model.address.panchayat.panchayatId,model.address.pinCode " +
+					" from NominationPostCandidate model " +
+					" where model.nominationPostCandidateId=:tdpCadreId ");
+	  }
+		Query query = getSession().createQuery(str.toString());
+	//if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+       	  query.setParameter("tdpCadreId", tdpCadreId);
+      // }
+       /*else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+       	  query.setParameter("nominateCandId", nominateCandId);
+       }*/
 		return  query.list();
 	}
 }

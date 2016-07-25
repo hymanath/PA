@@ -344,16 +344,32 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	}
 	
 	
-	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId){
-	    
-	    Query query = getSession().createQuery( " select model.applicationStatus.applicationStatusId,model.applicationStatus.status,model.boardLevel.boardLevelId,model.boardLevel.level,model.departments.departmentId," +
-	        " model.departments.deptName,model.board.boardId,model.board.boardName,model.position.positionId,model.position.positionName,model.departments.postTypeId " +
+	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
+				" model.boardLevel.boardLevelId,model.boardLevel.level,model.departments.departmentId," +
+	        " model.departments.deptName,model.board.boardId,model.board.boardName,model.position.positionId," +
+	        " model.position.positionName,model.departments.postTypeId " +
 	        " from NominatedPostApplication model " +
-	        " where model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId " +
-	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' " +
-	        " order by model.departments.postTypeId ");
+	        " where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+	        	str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId ");
+	        }
+	        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+	        	str.append(" and model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId ");
+	        }
 	        
-	        query.setParameter("tdpCadreId", tdpCadreId);
+	        str.append( " order by model.departments.postTypeId ");
+	        
+	        Query query = getSession().createQuery(str.toString());
+	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+	        	  query.setParameter("tdpCadreId", tdpCadreId);
+	        }
+	        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+	        	  query.setParameter("nominateCandId", nominateCandId);
+	        }
+	      
 	        return query.list();
 	  }
 	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
