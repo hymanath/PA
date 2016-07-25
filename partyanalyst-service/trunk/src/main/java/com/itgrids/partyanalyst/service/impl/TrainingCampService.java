@@ -8384,7 +8384,7 @@ class TrainingCampService implements ITrainingCampService{
 				
 				Long attendedcount=0l;
 				if(attendedCount !=null && attendedCount.size()>0){
-					List<String> attendedDates = new ArrayList<String>(0);
+					Set<String> attendedDates = new HashSet<String>(0);
 					SimpleVO vo = new SimpleVO();
 					for (Object[] objects : attendedCount) {
 						String dateStr = commonMethodsUtilService.getStringValueForObject(objects[3]);
@@ -8393,7 +8393,7 @@ class TrainingCampService implements ITrainingCampService{
 						vo.setProgName(objects[2] !=null ? objects[2].toString():"");
 						
 						if(!attendedDates.contains(dateStr))
-							attendedDates.add(dateStr);
+							attendedDates.add(dateStr.trim());
 						
 						vo.setCount(Long.valueOf(String.valueOf(attendedDates.size())));//attendedCount
 						
@@ -8442,6 +8442,7 @@ class TrainingCampService implements ITrainingCampService{
 							}
 							else{
 								ListVo.setDateString("Present");//status Of Cadre For Training
+								attendedcount=attendedcount+1;
 							}
 						}
 					}
