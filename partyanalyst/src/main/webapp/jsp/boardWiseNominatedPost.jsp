@@ -25,36 +25,6 @@
 </head>
 <body>
 <div class="container">
-	<!-- <div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-3 col-xs-12 col-sm-3">
-							<label>District</label>
-							<select class="form-control" id="districtId">
-							</select>
-						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
-							<label>Constituency</label>
-							<select class="form-control" id="constituencyId">
-								<option value="0">Select Constituency</option>
-							</select>
-						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">
-							<label>Mandal/Town/Division</label>
-							<select class="form-control" id="manTowDivId">
-								<option value="0">Select Mandal/Town/Division</option>
-							</select>
-						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">						
-							<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="submitBtnId"/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
         	<h4>SHORTLISTING -CHAIRMAN POST - <small>A.P BUILDING AND OTHER CONSTRUCTION WORKERS WELFARE BOARD</small></h4>
@@ -761,7 +731,7 @@ function getBoardWiseNominatedPostMemberDetails(){
 		departmentId:2,		//departmentId,
 		boardId:1,		//boardId,
 		positionId:3,		//positionId,
-		type:"any"		//type
+		type:"this"		//type
 		}
     $.ajax({
           type:'GET',
@@ -770,7 +740,7 @@ function getBoardWiseNominatedPostMemberDetails(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null)
-		   buildNominatedPostMemberDetails(result,"any",4,299,2,1,3);
+		   buildNominatedPostMemberDetails(result,"this",4,299,2,1,3);
    });
 }
 
@@ -1326,9 +1296,18 @@ function buildDepartmentDetails(result,divId){
 			str+='<tr>';
 				str+='<td>'+result[i].hno+'</td>';
 				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].mobileNo+'</td>';
-				str+='<td>'+result[i].pincode+'</td>';
-				str+='<td>'+result[i].voterCardNo+'</td>';
+				if(result[i].mobileNo != null && result[i].mobileNo != "")
+					str+='<td>'+result[i].mobileNo+'</td>';
+				else
+					str+='<td> Any </td>';
+				if(result[i].pincode != null && result[i].pincode != "")
+					str+='<td>'+result[i].pincode+'</td>';
+				else
+					str+='<td> Any </td>';
+				if(result[i].voterCardNo != null && result[i].voterCardNo != "")
+					str+='<td>'+result[i].voterCardNo+'</td>';
+				else
+					str+='<td> Any </td>';
 				str+='<td>'+result[i].perc+'</td>';
 			str+='</tr>';
 		}
