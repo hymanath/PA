@@ -13075,7 +13075,7 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
-	<!-- adding new action-->
+<!-- adding new action-->
 	<action name="saveNotCadreDetailsAction" class="nominatedPostProfileAction" method="saveNotCadreDetails">
 	  <result type="stream" name="success">
    			<param name="inputName">inputStream</param>
@@ -13097,5 +13097,11 @@
 			<param name="root">cadreCommitteeVOList</param>
 		</result>
 	</action>	
+	 <action name="getGrievancePDFReportAction" class="cadreDetailsAction" method="getGrievancePDFReport">
+	  <result type="json" name="success">
+			<param name="root">grievanceReportVOList</param>
+		</result>
+	</action>	
+	
 </package>
 </struts>      

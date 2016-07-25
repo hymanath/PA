@@ -211,13 +211,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 								</c:if>
 								-->
-								
-								  		<c:if test="${fn:length(cadreReportVOList) gt 0}">  
+								&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <span id="reportsInfoId"></span>
+								  		<!--<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
 										</c:if>
 										<c:if test="${fn:length(cadreReportVOList) eq 0}">  
 											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>
-										</c:if>
+										</c:if>-->
 								</p>
 								</div>
                             </div>
@@ -2466,11 +2466,34 @@ $(document).on("click",".notesClass",function(){
 </script>
 <script>
 //swadhin
-buildReport();   
+  
+getPDFReportsForNominatedComplaints();
+var nominatedResult = [];
+function getPDFReportsForNominatedComplaints(){
+
+	var membershipId = $('#cadreMemberShipId').val();
+	var obj = {
+		"membershipId" :"12345678"
+	}
+	$.ajax({
+     type: "POST",
+     url: "getGrievancePDFReportAction.action",
+	 dataType: 'json',
+     data: {task:JSON.stringify(obj)}
+    })
+    .done(function( result ) {
+		nominatedResult = result;
+		buildReport(); 
+	
+				});
+	}
+	
 function buildReport()
 {
 	var str = '';
+	var flag = false;
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
+	flag = true;
 	str +='<table id="reportTableId" class="table table-bordered">';
 		str +='<thead>';
 			str +='<th>REPORT TYPE</th>';
@@ -2487,13 +2510,84 @@ function buildReport()
 					str +='</tr>';    
 				</c:forEach>         
 			</c:forEach>
+			if(nominatedResult != null && nominatedResult.length > 0)
+			{
+				for(var i in nominatedResult)
+				{
+				str +='<tr>'; 
+				if(nominatedResult[i].scanCopyList != null && nominatedResult[i].scanCopyList.length > 0)
+				{
+						for(var j in nominatedResult[i].scanCopyList)
+						{
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
+					}
+				}
+					else
+					{
+							str +='<td><span>'+nominatedResult[i].issueType+'</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].status+'</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
+					}
+				
+			str +='</tr>';  	
+				}
+			}
 		str +='</tbody>';
 	str +='</table>';    
 	</c:if>
-	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
-		$("#reportDetailsId").html(str);
-		$("#reportTableId").dataTable(); 
-	</c:if>
+	if(flag == false)
+	{
+		
+			if(nominatedResult != null && nominatedResult.length > 0)
+			{
+			flag = true;
+			str +='<table id="reportTableId" class="table table-bordered">';
+			str +='<thead>';
+			str +='<th>REPORT TYPE</th>';
+			str +='<th>PREFERABLE STATUS</th>';  
+			str +='<th>REPORT DATE</th>';
+			str +='</thead>';  
+			str +='<tbody>';
+				for(var i in nominatedResult)
+				{
+				str +='<tr>'; 
+				if(nominatedResult[i].scanCopyList != null && nominatedResult[i].scanCopyList.length > 0)
+				{
+						for(var j in nominatedResult[i].scanCopyList)
+						{
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
+					}
+				}
+					else
+					{
+							str +='<td><span>'+nominatedResult[i].issueType+'</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].status+'</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
+					}
+				
+			str +='</tr>';  	
+				}
+			}
+		str +='</tbody>';
+	str +='</table>'; 
+	}
+
+	if(flag == true)
+		{
+			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>');
+			$("#reportDetailsId").html(str);
+			$("#reportTableId").dataTable(); 
+		}
+		else
+		{
+			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>');
+		}
+	
+	
 }
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
@@ -2501,7 +2595,15 @@ $(document).on('click','.showPdfCls',function(){
 	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
-});   
+}); 
+
+$(document).on('click','.showPdfCls1',function(){        
+	var str = '';
+	var filePath = $("#showPdfId").attr("filePath");
+	str += '<iframe src="http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
+	str += '</iframe>';
+	$("#pdfReportDetailsId").html(str);
+});  
 
 </script>
 </body>
