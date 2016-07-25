@@ -3309,6 +3309,7 @@
 		<property name="voterDAO" ref="voterDAO"></property>
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>
 		<property name="nominatedPostApplicationHistoryDAO" ref="nominatedPostApplicationHistoryDAO"></property>
+		<property name="casteStateDAO" ref="casteStateDAO"></property>
 	</bean>
 </beans>		
 	

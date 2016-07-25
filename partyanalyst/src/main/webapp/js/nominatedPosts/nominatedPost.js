@@ -470,6 +470,7 @@ function getNominatedPostApplication(startIndex)
 
 	}
    function buildCadreDetails(result){ 
+  
        $("#scrollDivId").show();
 	   $("#textId").show();
 		var str='';
@@ -496,6 +497,9 @@ function getNominatedPostApplication(startIndex)
 		if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 				{
         str +='<p class="text-center m_0">'+result[i].addressVO.constituencyName+'</p>';
+		str +='</li>';
+				}else if(result[i].constituency != null && result[i].constituency.length > 0){
+					 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
 		str +='</li>';
 				}
 			 }
