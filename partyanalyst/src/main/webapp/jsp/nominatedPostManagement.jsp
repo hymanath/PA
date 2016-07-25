@@ -94,7 +94,7 @@ var grlobalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTowDivArr=[];
 $(document).ready(function() {
-	if(globalLevelId !=1 && globalLevelId !=2){
+	if(globalLevelId !=null && globalLevelId !="" && globalLevelId !=1 && globalLevelId !=2){
 		getDistrictsForStates(globalStateId);
 	}else{
 		$("#districtMainId").hide();
