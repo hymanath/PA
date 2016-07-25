@@ -734,13 +734,30 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return null;
 	}
 	
-	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment){
+	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment,final Long levelId,
+								final Long levelValue,final Long deptId,final Long boardId,final Long positionId,final Long candidateId){
 		String status = null;
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {	
 					//Long nominatedPostFinalId = nominatedPostFinalDAO.getNominatedPostFinalDetails(nominatedPostId, nominatedPostCandidateId);
 					//if(nominatedPostFinalId != null && nominatedPostFinalId.longValue() > 0l){
+					Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
+					if(nominatedPostMemberId != null && nominatedPostMemberId.longValue() > 0l){
+							NominatedPostFinal nominatedPostFinal = new NominatedPostFinal();
+							
+							nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
+							nominatedPostFinal.setNominationPostCandidateId(candidateId);
+							nominatedPostFinal.setApplicationStatusId(statusId);
+							nominatedPostFinal.setInsertedBy(userId);
+							nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostFinal.setUpdatedBy(userId);
+							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostFinal.setIsDeleted("N");
+							
+							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						}
+					
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(nominatePostApplicationId);
 						
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);

@@ -17,7 +17,8 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDepartmentBoard(Long depmtId);
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId);
 	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
-	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment);
+	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment,final Long levelId,
+			final Long levelValue,final Long deptId,final Long boardId,final Long positionId,final Long candidateId);
 	public ResultStatus savingNominatedPostProfileApplication(NominatedPostVO nominatedPostVO,final Long loggedUserId,final Map<File,String> mapfiles);
 	public String savechangeAddressForNominatedPost(final NominatedPostVO nominatedPostVO);
 	public List<NominatedPostVO> getApplicantDetailsForMember(Long tdpCadreId,String searchType);
