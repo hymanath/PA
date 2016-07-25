@@ -19,6 +19,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -49,6 +50,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private InputStream 						inputStream;
 	private List<LocationWiseBoothDetailsVO> locations;
 	private ICadreCommitteeService	cadreCommitteeService;
+	private AddNotcadreRegistrationVO addNotcadreRegistrationVO;
 	private List<NominatedPostVO> 				candidatesList;
 	private List<CadreCommitteeVO>                    cadreCommitteeVOList;
 	
@@ -83,6 +85,14 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		this.cadreCommitteeVOList = cadreCommitteeVOList;
 	}
 	
+	
+	public AddNotcadreRegistrationVO getAddNotcadreRegistrationVO() {
+		return addNotcadreRegistrationVO;
+	}
+	public void setAddNotcadreRegistrationVO(
+			AddNotcadreRegistrationVO addNotcadreRegistrationVO) {
+		this.addNotcadreRegistrationVO = addNotcadreRegistrationVO;
+	}
 	public void setCadreCommitteeService(
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
@@ -93,6 +103,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setLocations(List<LocationWiseBoothDetailsVO> locations) {
 		this.locations = locations;
 	}
+	
 	public List<NominatedPostVO> getNominatePostList() {
 		return nominatePostList;	}
 	public void setNominatePostList(List<NominatedPostVO> nominatePostList) {
@@ -350,6 +361,60 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	// adding new method
+	public String saveNotCadreDetails()
+	{
+		try
+		{
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+		       String fileUrl = "" ;
+		       List<String> filePaths = null;
+		   		while(fileParams.hasMoreElements())
+		   		{
+		   			String key = fileParams.nextElement();
+		   			
+				   			File[] files = multiPartRequestWrapper.getFiles(key);
+				   			filePaths = new ArrayList<String>();
+				   			if(files != null && files.length > 0)
+				   			for(File f : files)
+				   			{
+				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+				   	            String ext = "";
+				   	            if(extension.length > 1){
+				   	            	ext = extension[extension.length-1];
+				   	            	mapfiles.put(f,ext);
+				   	            }
+				   	        
+				   			}
+		   		}
+		     
+			resultStatus = nominatedPostProfileService.saveNotcadreRegistrationPost(addNotcadreRegistrationVO,mapfiles,user.getRegistrationID());
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
+				}else if(resultStatus.getResultCode() == 1){
+					inputStream = new StringBufferInputStream(resultStatus.getMessage());
+				}
+			}
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 	
 	public String getPopulateApplicantDetailsForMember()
 	{
@@ -670,5 +735,28 @@ public String notCadresearch(){
 	
 	return Action.SUCCESS;
 	}
+	public String getCastesForAP(){
+try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getCastesForAP();
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastesForAP Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+public String getNotCadreDetailsById(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			cadreCommitteeVOList =nominatedPostProfileService.getNotCadreDetailsById(jObj.getLong("nominatedPostCandiId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNotCadreDetailsById() method of NominatedPostProfileAction", e);
+		}
 	
+	return Action.SUCCESS;
+	}
 }

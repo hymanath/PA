@@ -1274,6 +1274,7 @@
 			<result name="success">/jsp/revenueVillageElectionResults.jsp</result>	
 		</action>
 		
+		
 		<action name="panchayatWiseElectionResultsAction" class="townshipElectionResultsAction">
 			<result name="success">/jsp/panchayatWiseElectionResults.jsp</result>	
 		</action>
@@ -8368,7 +8369,7 @@
 			<result name="success">/jsp/candidateAnalysis.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=candidateAnalysisAction</result>
 		</action>
-		<action name="getCandidateAnalysisAction" class="candidateUpdateDetailsAction" method="getCandidateInfo">
+	<action name="getCandidateAnalysisAction" class="candidateUpdateDetailsAction" method="getCandidateInfo">
         	 <result type="json" name="success">
            		<param name="root">candidateVOList</param>
         	</result>
@@ -12947,6 +12948,10 @@
 			<param name="root">status</param>
 		</result>
 	</action>
+	
+	
+	
+	  
 	<action name="getPopulateApplicantDetailsForMemberAction" class="nominatedPostProfileAction" method="getPopulateApplicantDetailsForMember">
 	  <result type="json" name="success">
 			<param name="root">nominatePostList</param>
@@ -13070,7 +13075,24 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<!-- adding new action-->
+	<action name="saveNotCadreDetailsAction" class="nominatedPostProfileAction" method="saveNotCadreDetails">
+	  <result type="stream" name="success">
+   			<param name="inputName">inputStream</param>
+   		</result>
+	  </action>
+	  <action name="getCastesForAPAction" class="nominatedPostProfileAction" method="getCastesForAP">
+	  <result type="json" name="success">
+	  <param name="root">idNameVOList</param>
+	  </result>
+	  </action>
+	  
 	<action name="notCadresearchAction" class="nominatedPostProfileAction" method="notCadresearch">
+		<result type="json" name="success">
+			<param name="root">cadreCommitteeVOList</param>
+		</result>
+	</action>	
+	<action name="getNotCadreDetailsAction" class="nominatedPostProfileAction" method="getNotCadreDetailsById">
 		<result type="json" name="success">
 			<param name="root">cadreCommitteeVOList</param>
 		</result>
