@@ -825,7 +825,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 							str+='</select>';
 							str+='<label>Comments</label>';
 							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
-							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'">SUBMIT</button>';
+							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 				}
@@ -1077,6 +1077,12 @@ $(document).on("click",".updateStatusCls",function(){
 	var selectDivId = $(this).attr("attr_selected_status_id");
 	var commentDivId = $(this).attr("attr_comment_id");
 	var divId = $(this).attr("attr_success_div");
+	var levelId= $(this).attr("attr_levelId");
+	var levelVal = $(this).attr("attr_level_value");
+	var deptId = $(this).attr("attr_departmentId");
+	var boardId = $(this).attr("attr_boardId");
+	var positionId = $(this).attr("attr_positionId");
+	var candidateId = $(this).attr("attr_candidate_id");
 	
 	var status = $("#"+selectDivId).val();
 	var comment = $("#"+commentDivId).val();
@@ -1084,7 +1090,13 @@ $(document).on("click",".updateStatusCls",function(){
 	   {				
 		nominatePostApplicationId:applicationId,
 		statusId:status,
-		comment :comment
+		comment :comment,
+		levelId : levelId,
+		levelVal : levelVal,
+		deptId : deptId,
+		boardId : boardId,
+		positionId : positionId,
+		candidateId : candidateId
 		}
     $.ajax({
           type:'GET',

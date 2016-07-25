@@ -278,7 +278,8 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
-			status = nominatedPostProfileService.updateApplicationStatusDetails(userId,jObj.getLong("nominatePostApplicationId"),jObj.getLong("statusId"),jObj.getString("comment"));
+			status = nominatedPostProfileService.updateApplicationStatusDetails(userId,jObj.getLong("nominatePostApplicationId"),jObj.getLong("statusId"),jObj.getString("comment"),
+						jObj.getLong("levelId"),jObj.getLong("levelVal"),jObj.getLong("deptId"),jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getLong("candidateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
