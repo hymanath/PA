@@ -132,4 +132,5 @@ public interface ITrainingCampService {
 	public List<SimpleVO> getAllTrainingCampDetails();
 	public List<SimpleVO> getVillagesForDistrictIdDetails(List<Long> districtId);
 	public List<SimpleVO> getMandalsForDistrictIdDetails(List<Long> list);
+	public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels);
 }

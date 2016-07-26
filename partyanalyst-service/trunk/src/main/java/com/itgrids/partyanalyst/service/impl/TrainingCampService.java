@@ -10922,5 +10922,30 @@ class TrainingCampService implements ITrainingCampService{
 		}
 		return resultList;
 	}
+	
+public List<CallStatusVO> getMeetingTypesNew(List<Long> locationLevels){
+		
+		List<CallStatusVO> meetingTypes = new ArrayList<CallStatusVO>();
+		try {
+			LOG.info("Entered into getMeetingTypesNew");
+			
+			List<Object[]> meetingTypesList = partyMeetingTypeDAO.getMeetingTypesBasedOnLocationLevelNew(locationLevels);
+			
+			if(meetingTypesList!=null && meetingTypesList.size()>0){
+				for (Object[] objects : meetingTypesList) {
+					CallStatusVO vo = new CallStatusVO();
+					
+					vo.setId((Long)objects[0]);
+					vo.setMeetingType(objects[1].toString());
+					
+					meetingTypes.add(vo);
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getMeetingTypesNew",e);
+		}
+		return meetingTypes;
+	}
 
 }

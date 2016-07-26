@@ -3490,7 +3490,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		
 		Date date = new DateUtilService().getCurrentDateAndTime();
 		
-		if(remarks !=null || remarks.isEmpty()){
+		if(remarks ==null || remarks.isEmpty()){
 			remarks=null;
 		}
 		
