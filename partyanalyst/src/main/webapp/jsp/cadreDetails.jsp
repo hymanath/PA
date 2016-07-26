@@ -2497,9 +2497,9 @@ function buildReport()
 				{
 						for(var j in nominatedResult[i].scanCopyList)
 						{
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 
 					}
 				}
 					else
@@ -2535,9 +2535,9 @@ function buildReport()
 				{
 						for(var j in nominatedResult[i].scanCopyList)
 						{
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
 					}
 				}
 					else
