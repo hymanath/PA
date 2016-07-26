@@ -30,7 +30,7 @@ public class NominatedPostPosition extends BaseModel implements Serializable{
 	private Long positionId;
 	private String isDeleted;
 	
-	private Department department;
+	private Departments departments;
 	private Board board;
 	private Position position;
 	
@@ -80,11 +80,11 @@ public class NominatedPostPosition extends BaseModel implements Serializable{
 	@JoinColumn(name="department_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Department getDepartment() {
-		return department;
+	public Departments getDepartments() {
+		return departments;
 	}
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setDepartments(Departments departments) {
+		this.departments = departments;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -97,7 +97,6 @@ public class NominatedPostPosition extends BaseModel implements Serializable{
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="position_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
