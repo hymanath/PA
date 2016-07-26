@@ -30,12 +30,15 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 			}*/
 			if(locationValuesList != null && locationValuesList.size()>0)
 			{
-				queryStr.append(" select distinct candidate_id from public_representative model where model.representative_level_value in (:locationValuesList) and " +
+				queryStr.append(" select distinct model.candidate_id from public_representative model , tdp_cadre_candidate  model2, tdp_cadre model3 where " +
+						" model.candidate_id = model2.candidate_id and model2.tdp_cadre_id = model3.tdp_cadre_id and model3.is_deleted ='N' and  " +
+						"  model.representative_level_value in (:locationValuesList) and " +
 						" model.public_representative_type_id =:positionId  ");
 			}
 			else
 			{
-				queryStr.append(" select distinct model.representative_level_value from public_representative model where  " +
+				queryStr.append(" select distinct model.representative_level_value from public_representative model, tdp_cadre_candidate  model2, tdp_cadre model3 where " +
+						" model.candidate_id = model2.candidate_id and model2.tdp_cadre_id = model3.tdp_cadre_id and model3.is_deleted ='N' and  " +
 						" model.public_representative_type_id in ("+IConstants.MPTC_ELCTION_TYPE_ID+","+IConstants.ZPTC_ELCTION_TYPE_ID+") ");
 			}
 			
