@@ -1454,7 +1454,7 @@ function getMandalsByConstituencyForReferPopup()
                                         str+='<div class="panel-body">';
                                         	str+='<ul class="ulPost">';
 											for(var i in result.subList1){
-                                            	str+='<li>';
+                                                str+='<li>';
                                                 	str+='<span class="labelStatus shortlisted">Shortlisted</span>';
                                                 	str+=result.subList[i].level+" → "+result.subList[i].subCaste+" → "+result.subList[i].cadreName+" "+result.subList[i].voterName+":"+result.subList[i].status+"</li>";
 											}
@@ -1540,23 +1540,24 @@ $("#involvedCandidatesDiv").hide();
   showHideBySearchType();//Clear Fields  
 }
 function notCadresearch(){
-	var searchById = $('#searchById').val().trim();
-	var searchRadioType =$('#cadreSearchType').val();
-	if(searchRadioType == 'voterId')
+		
+		var searchType=$("input[name='radioGroup']:checked").val();
+		  var searchValue=$("#searchById").val();
+		if(searchType == 2)
 		{
 			voterCardNo = $('#searchById').val().trim();
 			
-			if(searchById.trim().length == 0)
+			if(voterCardNo.length == 0 )
 			{
 				$('#searchErrDiv1').html('Please enter Voter Card No.');
 				return;
 			}
 		}
-		if(searchRadioType == 'mobileNo')
+		if(searchType == 3)
 		{	
 			mobileNo = $('#searchById').val().trim();
 			
-			if(searchRadioType=="mobileNo"){
+			if(searchType==3){
 					
 					var numericExpression = /^[0-9]+$/;
 					if(!$('#searchById').val().match(numericExpression)){
@@ -1565,7 +1566,7 @@ function notCadresearch(){
 					}
 			}	
 			
-			if(searchById.trim().length == 0 )
+			if(mobileNo.length == 0 )
 			{
 				$('#searchErrDiv1').html('Please enter Mobile No.');
 				return;
@@ -1578,23 +1579,22 @@ function notCadresearch(){
 			}
 			
 		}
-		if(searchRadioType == 'name')
+		if(searchType == 4)
 		{
 			searchName = $('#searchById').val().trim();
 			
-			if(searchById.trim().length == 0 )
+			if(searchName.length == 0 )
 			{
 				$('#searchErrDiv1').html('Please enter Name.');
 				return;
 			}
-			else if(searchById.trim().length < 3)
+			else if(searchName.length < 3)
 			{
 				$('#searchErrDiv1').html('Please enter Minimum 3 Characters.');
 				return;
 			}
-		}	
-	var searchType=$("input[name='radioGroup']:checked").val();
-	   var searchValue=$("#searchById").val();
+		}
+		
 		var jsObj =
 		        {
 		searchType : searchType,
@@ -1623,3 +1623,4 @@ function notCadresearch(){
 		notCadresearch();
 	}
  });
+ 
