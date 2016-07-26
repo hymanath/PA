@@ -10907,9 +10907,13 @@ class TrainingCampService implements ITrainingCampService{
 				for(Object[] params : result)
 				{
 					SimpleVO vo = new SimpleVO();
-					BigInteger largeValue = (BigInteger) params[0];
+					/*BigInteger largeValue = (BigInteger) params[0];
 					vo.setId(largeValue.longValue());
-					vo.setName(params[1].toString());
+					vo.setName(params[1].toString());*/
+					
+					vo.setId(params[0] !=null ? (Long)params[0]:0l);
+					vo.setName(params[1] !=null ? params[1].toString():"");
+					
 					resultList.add(vo);
 				}
 			}
