@@ -24,8 +24,8 @@
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
 	<style type="text/css">
-	    .onoffswitch {
-        position: relative; width: 111px;
+	.onoffswitch {
+        position: relative; width: 70px;
         -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
     }
     .onoffswitch-checkbox {
@@ -45,12 +45,12 @@
         box-sizing: border-box;
     }
     .onoffswitch-inner:before {
-        content: "POSITIVE";
+        content: "+ Ve";
         padding-left: 10px;
         background-color: #34A7C1; color: #FFFFFF;
     }
     .onoffswitch-inner:after {
-        content: "NEGATIVE";
+        content: "- Ve";
         padding-right: 10px;
         background-color: #d9534f; color: #FFF;
         text-align: right;
@@ -59,7 +59,7 @@
         display: block; width: 18px; margin: 5px;
         background: #FFFFFF;
         position: absolute; top: 0; bottom: 0;
-        right: 77px;
+        right: 40px;
         border-radius: 20px;
         transition: all 0.3s ease-in 0s; 
 		height:17px;
@@ -70,146 +70,217 @@
     .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
         right: 0px; 
     }
+	.involveBlock
+	{
+		background:#F8F9FB;
+		border:1px solid #ddd;
+		padding:5px;
+	}
+	.involveBlockNew
+	{
+		border:1px dashed #ddd;
+		background:#F8F9FB;
+		height:105px;
+		cursor:pointer;
+	}
+	.involveBlockNew .media-left , .involveBlockNew .media-body
+	{
+		padding:17px;
+		position:relative;
+	}
+	.text-capital
+	{
+		text-transform:uppercase;
+	}
+	.removeIconNew
+	{
+		position:absolute;
+		top:0px;
+		right:15px;
+		display:none;
+		cursor:pointer;
+	}
+	.involveBlock:hover .removeIconNew
+	{
+		display:block;
+	}
+	.involveBlock:hover
+	{
+		box-shadow:0px 0px 5px 2px rgba(0,0,0,0.4)
+	}
+	.bg_EF
+	{
+		background:#EFF3F4
+	}
+	.bg_cc
+	{
+		background:#ccc;
+	}
+	.m_top10
+	{
+		margin-top:10px;
+	}
 	</style>
 	</head>  	
 <body>
 <div class="container">
 	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-default" style="border-radius:0px;">
-				<div class="panel-heading" style="background:#ccc;border-radius:0px;">
-					<h4 class="panel-title">POLITICAL ALERT</h4>
-				</div>
-				<div class="panel-body" style="background:#eee;">
-					<div class="row">
-						<div class="col-md-12">
-					
-				
+    	<div class="col-md-12 col-xs-12 col-sm-12">
+        	<div class="panel panel-default">
+            	<div class="panel-heading bg_cc">
+                	<h4 class="panel-title">NEW ALERT</h4>
+                </div>
 				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
-				<div>
-					
-					<!--<div class="row">
-						<div class="col-md-6">
-							<label>Search Candidates</label>
-							<div class="input-group">
-								<input type="text" class="form-control" id="candidateNameId"/>
-								<span class="input-group-addon" onclick="getCandidateNameDetails()">
-									<i class="glyphicon glyphicon-search" ></i>
-								</span>
-							</div>
-						</div>
-						
-						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
-						<div class="col-md-3">
-							<label>Select Candidates</label>
-							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
-							<option value="0">Select Candidate</option>	
-							</select>
-						</div>-->
-						
-						
-						
-						<div class="row m_top10">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">CREATE ALERT</h4>
-									</div>
-									<div class="panel-body">
-										<div class="col-md-4 m_top10">
-											<label>Alert Type</label>
-											<select class="dropkickClass" name="alertVO.alertTypeId" id="alertTypeId">
-												<option value="0">Select Alert</option>
-											</select>
-											
-											
-										</div>
-										<div class="col-md-4 m_top10">
-											<label>Alert Source</label>
-											<select class="dropkickClass" name="alertVO.alertSourceId" id="alertSourceId">
-												<option value="0">Select Alert Source</option>
-											</select>
-											
-											
-										</div>
-									
-										<div class="col-md-4 m_top10">
-											<label>Alert Severity</label>
-											<select class="dropkickClass" name="alertVO.severity" id="alertSeverityId">
-												<option value="0">Select Alert Severity</option>
+                <div class="panel-body bg_EF">
+                	<div class="row">
+                    	<div class="col-md-4 col-sm-4 col-xs-12">
+                        	<label>Select Alert Type</label>
+                            <select class="dropkickClass" id="alertTypeId" >
+                            	<option value="0">Select Alert</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row m_top10">
+                    	<!--<div class="col-md-3 col-sm-3 col-xs-12">
+                        	<label>Alert Category</label>
+                            <select class="dropkickClass">
+                            	<option>Party</option>
+                            </select>
+                        </div>-->
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                        	<label>Information Source For Alert</label>
+                            <select class="dropkickClass"  id="alertSourceId" name="alertVO.alertSourceId" >
+                            	<option value="0"> Select Alert Source </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                        	<label>Alert Severity</label>
+                            <select class="dropkickClass" id="alertSeverityId" name="alertVO.severity">
+                            		<option value="0">Select Alert Severity</option>
 												<option value="1">High</option>
 												<option value="2">Medium</option>
 												<option value="3">Low</option>
-											</select>
-										</div>
-										<div class="col-md-4 levelShowCls1 m_top10" >
-											<label>Level</label>
-											<select class="dropkickClass" id="alertlevelId1" attr-index="1" onchange="disableByLevel(1);" >
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+                        	<label>Alert Location Level</label>
+                            <select class="dropkickClass" id="alertlevelId1" attr-index="1" onchange="disableByLevel(1);" >
 											<option value="2">State</option>
 											 <option value="3">District</option>
 											 <option value="4">Constituency</option>
 											 <option value="5">Mandal/Muncipality</option>
 											 <option value="6">Village/Ward</option>
-											</select>
-										</div>
-										<div class="col-md-4 stateShowCls1 m_top10" >
-											<label>State</label>
-											 <select class="dropkickClass" class="stateCls" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
+                            </select>
+                        </div>
+                   </div>
+                   <div class="row m_top10">
+                        <div class="col-md-2 col-sm-2 col-xs-12 stateShowCls1">
+                        	<label>State</label>
+                            <select class="dropkickClass" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
 											 <option value="0">Select State</option>
 											 <option value="1">AP</option>
 											 <option value="36">TS</option>
-											 </select>
-										</div>
-								   
-										<div class="col-md-4 locationsFilterCls distCls1 m_top10">
-											 <label>District</label>
-											 <select class="dropkickClass" id="referdistrictId1" onChange="getConstituenciesBydistrictForReferPopup(1);" name="alertVO.districtId">
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12 locationsFilterCls distCls1">
+                        	<label>District</label>
+                            <select class="dropkickClass" id="referdistrictId1" onChange="getConstituenciesBydistrictForReferPopup(1);" name="alertVO.districtId">
 											 <option value="0">Select District</option></select>
-										</div>
-										<div class="col-md-4 locationsFilterCls constiCls1 m_top10">
-											<label>Assembly</label>
-											<select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12 locationsFilterCls constiCls1">
+                        	<label>Constituency</label>
+                            <select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
 											<option value="0">Select Assembly</option>
-											</select>
-										</div>
-										<div class="col-md-4 locationsFilterCls mandalCls1 m_top10">
-											<label>Mandal/ Municipality</label>
-											 <select class="dropkickClass" id="refermandalNameId1" onChange="getPanchayatsForReferPopup(1);" name="alertVO.tehsilId">
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12 locationsFilterCls mandalCls1">
+                        	<label>Mandal/Muncipality/Cor</label>
+                            <select class="dropkickClass" id="refermandalNameId1" onChange="getPanchayatsForReferPopup(1);" name="alertVO.tehsilId">
 												<option value="0">Select Mandal/ Municipality</option>
-											 </select>
-										</div>
-										<div class="col-md-4 locationsFilterCls panchayatCls1 m_top10">
-											<label>Panchayat/Ward</label>
-											<select class="dropkickClass" id="referpanchayatId1" name="alertVO.panchayatId">
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12 locationsFilterCls panchayatCls1">
+                        	<label>Panchayat/Ward/Division</label>
+                            <select class="dropkickClass" id="referpanchayatId1" name="alertVO.panchayatId">
 											<option value="0">Select Panchayat/Ward</option>
-											</select>
-										</div>
-										<div class="col-md-12">
-										
-											<div class="m_top10"><b>Select Language: </b> <input type="radio"  value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"> Telugu<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"> English </div>
-										</div>
-										<div class="col-md-6 m_top10" style="clear: both;">
-										
-										
-											<label>Description</label>
-											<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row m_top10">
+                    	<div class="col-md-12 col-xs-12 col-sm-12">
+                        	<label>Alert Description</label>
+                            <label class="radio-inline">
+                            	<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row m_top10">
+                    	<div class="col-md-12 col-sm-12 col-xs-12">
+                        	<textarea class="form-control alertclearCls" id="alertdescriptionId" name="alertVO.desc"></textarea>
+                        </div>
+                    </div> 
+                    <div class="row m_top10">
+                    	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
+                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted">(02 - Members added)</small></h4>
+                        </div>
+						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="membersBlock col-md-12" style="display:none;"></div>
 										</div>
 									</div>
 								</div>
 							</div>
+						</div>-->
+						<div class="membersBlock"></div>
+                        <div class="col-md-3">
+                        	<div class="involveBlockNew">
+                            	<div class="media">
+                                	<div class="media-left" style="font-size:36px">
+                                    	+
+                                    </div>
+                                    <div class="media-body">
+                                    	Click to Search Involved Members Link to this alert
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="row m_top10">
+
+						<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+						<div style="font-weight:bold;color:red;font-size:15px;" class="col-md-12" id="errorDiv1"></div>
+							<button type="button" class="btn btn-success btn-block btnNewCustom1" onclick="createAlert();" id="addThisalertId">CREATE ALERT</button>
 						</div>
-					
-				</div>
-				
-				<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
+					</div>
+                </div>
+					<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
 				<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
-				
-				<div class="row">
+				</form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width:90%" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
 					<div class="col-md-12">
 					<div style="background:#fff">
-					<div class="col-md-12 m_top10">
-						<h3 class="panel-title text-success">SEARCH</h3>
-					</div>
 					<div class="col-md-3 advanceSearchCls">
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
@@ -250,10 +321,10 @@
 						</div>
 						<div class="col-md-3 stateShowCls" >
 							<label>State</label>
-							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup('');">
-							 <option value="0">Select State</option>
-							 <option value="1">AP</option>
-							 <option value="36">TS</option>
+							 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
+								 <option value="0">Select State</option>
+								 <option value="1">AP</option>
+								 <option value="36">TS</option>
 							 </select>
 						</div>
 				   
@@ -330,44 +401,22 @@
 						</div>
 						</div>
 						</div>
-						<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="membersBlock col-md-12" style="display:none;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-				<div class="row">
-					<div id="errorDiv1" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;"></div>
-						<div class="col-md-3" style="margin-top:10px">
-						<input class="btn btn-primary btnNewCustom1" id="addThisalertId" onclick="createAlert();" type="button" value="CREATE ALERT" ></input>
-						<!--<button  type="button" class="btn btn-primary">CREATE ALERT</button>-->
-						</div>
-					</div>
-					
-							</form>
-								
-						</div>
-									 
-					</div>
-					</div>
-
-
-				</div>
-			</div>
-		</div>
-	</div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 		<!-- language convertion-->
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-
+$(document).on("click",".involveBlockNew",function(){
+	$("#myModal").modal('show');
+	 $("#apptmemberDetailsDiv").html("");
+	 $("#advanceSearchTypeId").val(0);
+	var select = new Dropkick("#advanceSearchTypeId");
+				select.refresh();	
+		showHideBySearchType();	
+					disableByLevel(1);
+})
 // Load the Google Transliterate API
    google.load("elements", "1", {
          packages: "transliteration"
@@ -675,6 +724,7 @@ function clearFields()
 		$("#stateId1").val(0);
 		 var select = new Dropkick("#stateId1");
 				select.refresh();
+				involvedCadreIds =[];
 }
 function getAlertType(){
 		$("#alertTypeId").html('');

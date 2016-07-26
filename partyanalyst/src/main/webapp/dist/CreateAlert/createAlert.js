@@ -879,6 +879,7 @@ function disableByLevel(index)
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
 	var cloneCount=0;
+	var involvedCadreIds = [];
    $(document).on("click",".apptDetailsDiv",function(){
 		
 		 if($(this).is(':checked')){
@@ -888,18 +889,20 @@ function disableByLevel(index)
 			  var image = $(this).attr("attr_img_url");
 			  var attrId = $(this).attr("attr_id");
 			  var attrConsti =  $(this).attr("attr-consti");
-			  
+			   var mobile = $(this).attr("attr_mobile");
 			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
 			var str ='';
-			str+='<div class="col-md-12 block">';
+			str+='<div class="col-md-3">';
+            str+='<div class="involveBlock">';
 			str+='<div class="media"><div class="media-left">';
 			str+='<img src="'+image+'" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
-			str+='<div class="col-md-4 m_top5"><label>Name : '+name+'</label></div>';
-			str+='<div class="col-md-4 m_top5"><label>Constituency : '+attrConsti+'</label></div>';
-			str+='<div class="col-md-4"><div class="form-inline"><label style="position:relative;top:-5px">Alert Impact : </label>';
+			str+='<div class="col-md-12"><b>'+name+'</b></div>';
+			str+='<div class="col-md-12"><b>'+mobile+'</b></div>';
+			str+='<div class="col-md-12"><label>'+attrConsti+'</label></div>';
+			str+='<div class="col-md-12"><div class="form-inline">';
 			//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
 			str+='<div class="onoffswitch" style="display:inline-block">';
 			str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
@@ -908,9 +911,10 @@ function disableByLevel(index)
             str+='<span class="onoffswitch-switch"></span>';
 			str+='</label>';
 			str+='</div>';
-			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" ></i></span></div>';
+			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew"></i></span></div></div>';
 			 $(".membersBlock").append(str);
-							 
+			 //jQuery.inArray( attrId, involvedCadreIds )
+				involvedCadreIds.push(attrId);			 
 			  cloneCount = cloneCount+1;
 			   $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().bottom
