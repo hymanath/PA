@@ -515,8 +515,9 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			}
 			
 			jObj = new JSONObject(getTask());
+			String remarks = jObj.getString("remarks");
 			
-			status = partyMeetingService.updateConductedReason(jObj.getLong("meetingId"),jObj.getString("remarks"),loggedUser);
+			status = partyMeetingService.updateConductedReason(jObj.getLong("meetingId"),remarks,loggedUser);
 			
 		}catch (Exception e) {
 			LOG.error("Entered into updateConductedDetails Action",e);

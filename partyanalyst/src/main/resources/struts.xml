@@ -13108,6 +13108,11 @@
 			<param name="root">grievanceReportVOList</param>
 		</result>
 	</action>	
+	<action name="getMeetingTypesNewAction" class="trainingCampAction" method="getMeetingTypesNew">
+		<result type="json" name="success">
+				<param name="root">retResult</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      
