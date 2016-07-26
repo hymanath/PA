@@ -941,6 +941,9 @@ function savingApplication(){
 					}
 			}
 				
+			 var value = $("input[name='checkBoxName']:checked").val();
+			 $("#candidateTypeId").val(value);
+			 
 			var cadreName ;
 			var cadreId;
 			var cadreVoterId ;
@@ -1007,7 +1010,10 @@ function savingApplication(){
 		if(result.indexOf("SUCCESS") > -1){
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
 			
-			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application received  successfully , To complete the registration ,Upload the profiles below</span>");
+			//$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application received  successfully , To complete the registration ,Upload the profiles below</span>");
+			if (confirm('Application Received Successfully...')) {
+				location.reload();
+			}
 			refreshExistingDetailsInNominatedLevel();
 			refreshExistingDetails();
 			//setTimeout(function(){
