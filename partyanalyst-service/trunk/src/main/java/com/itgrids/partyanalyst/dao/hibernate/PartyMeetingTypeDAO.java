@@ -23,4 +23,13 @@ public class PartyMeetingTypeDAO extends GenericDaoHibernate<PartyMeetingType,Lo
 		
 		return query.list();
 	}
+	public List<Object[]> getMeetingTypesBasedOnLocationLevelNew(List<Long> locationLevels){
+		Query query = getSession().createQuery("select model.partyMeetingTypeId,model.type from PartyMeetingType model " +
+				" where model.isActive = 'Y' " +
+				" and model.partyMeetingLevelId in (:locationLevels) ");
+		query.setParameterList("locationLevels", locationLevels);
+		
+		return query.list();
+	}
+	
 }

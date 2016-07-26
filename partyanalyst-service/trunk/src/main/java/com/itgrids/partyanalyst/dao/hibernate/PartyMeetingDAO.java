@@ -164,11 +164,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	                    sb.append(" and model.meetingAddress.ward.constituencyId in (:divisonList) ");
 	                }
 	            }else{
-	            	 if(mandalList !=null && mandalList.size()<=0){
+	            	 /*if(mandalList !=null && mandalList.size()<=0){
 	                    sb.append(" and model.meetingAddress.tehsil.tehsilId is not null ");
 	                }else if(mandalList !=null){
 	                    sb.append(" and model.meetingAddress.tehsil.tehsilId in (:mandalList) ");
-	                }
+	                }*/
+	            	 if(townList !=null && townList.size()<=0){
+	 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId is not null ");
+	 	            }else if(townList !=null){
+	 	                sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:townList) ");
+	 	            }
+	            	
 	                if(wardList !=null && wardList.size()<=0){
 	                    sb.append(" and model.meetingAddress.ward.constituencyId is not null ");
 	                }else if(wardList !=null ){
