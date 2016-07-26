@@ -2466,28 +2466,6 @@ $(document).on("click",".notesClass",function(){
 </script>
 <script>
 //swadhin
-  
-getPDFReportsForNominatedComplaints();
-var nominatedResult = [];
-function getPDFReportsForNominatedComplaints(){
-
-	var membershipId = $('#cadreMemberShipId').val();
-	var obj = {
-		"membershipId" :membershipId
-	}
-	$.ajax({
-     type: "POST",
-     url: "getGrievancePDFReportAction.action",
-	 dataType: 'json',
-     data: {task:JSON.stringify(obj)}
-    })
-    .done(function( result ) {
-		nominatedResult = result;
-		buildReport(); 
-	
-				});
-	}
-	
 function buildReport()
 {
 	var str = '';
