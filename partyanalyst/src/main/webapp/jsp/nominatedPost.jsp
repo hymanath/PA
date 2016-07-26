@@ -62,7 +62,7 @@
                     	<label class="checkbox-inline">
                         	<input value="Cadre" type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" />Cadre
                         </label>
-                        <label class="checkbox-inline">
+                        <label class="checkbox-inline" style="padding-left: 10px;">
                         	<input value="Not Cadre" type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
                         </label>
 						<span style="margin-left:8px;cursor:pointer" class="addMemberModal">
@@ -263,9 +263,9 @@
                     </div>
 
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
-                    	<div class="bg_ff pad_10">
+                    	<!--<div class="bg_ff pad_10">
                         	
-                        </div>
+                        </div>-->
                     </div>
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<h4 class="m_0 text-success">NOMINATED LEVEL AND LOCATION 
@@ -489,7 +489,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">ADDING NEW CANDIDATE</h4>
       </div>
 	  <form name="saveNotCadre" id="saveNotCadre"  method="post" enctype="multipart/form-data">
       <div class="modal-body">
@@ -507,22 +507,22 @@
 				<input type="text" id="mobilenoId" class="form-control" name="addNotcadreRegistrationVO.mobileno"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">houseno</label>
+				<label class="text-capitalize">house no</label>
 				<input type="text" id="HouseId" class="form-control" name="addNotcadreRegistrationVO.houseno"/>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">gender</label>
-				<select class="form-control" id="genderId" name="addNotcadreRegistrationVO.gender">
+				<select class="chosenSelect" id="genderId" name="addNotcadreRegistrationVO.gender">
 					<option value="0">Select Gender</option>
 					<option value="Male">Male</option>
 					<option value="Female">female</option>
 				</select>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">age</label>
 				<input type="text"  id="ageId" class="form-control" name="addNotcadreRegistrationVO.age"/>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">date of birth</label>
 				<div class="input-group">
 					<input type="text"  id="DOBId" class="form-control" name="addNotcadreRegistrationVO.dob" />
@@ -532,32 +532,32 @@
 				</div>
 				
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">relative name</label>
 				<input type="text" id="relativenamebyId" class="form-control" name="addNotcadreRegistrationVO. relativename"/>
 			</div>
-	<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">relative type</label>
-				<select class="form-control" id="relativetypeId" name="addNotcadreRegistrationVO. relativetype">
+	<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+				<label class="text-capitalize">relation type</label>
+				<select class="chosenSelect" id="relativetypeId" name="addNotcadreRegistrationVO. relativetype">
 					<option></option>
 				</select>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">imageurl</label>
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+				<label class="text-capitalize">image</label>
 				<input type="file" id="imageurlId" class="form-control" name="file"/>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">caste state id</label>
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+				<label class="text-capitalize">caste</label>
 				<!--<input type="text" id="casteId" class="form-control" name="addNotcadreRegistrationVO. castestateId"/> -->
 				 <select id="casteId" class="chosenSelect" name="addNotcadreRegistrationVO.castestateId">
                         	
                         </select>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">address1</label>
 				<input type="text" id="address1Id" class="form-control" name="addNotcadreRegistrationVO.address1"/>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">address2</label>
 				<input type="text" id="address2Id" class="form-control" name="addNotcadreRegistrationVO.address2"/>
 			</div>
@@ -607,7 +607,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveID" onclick="saveNotCadreDetails();">Save changes</button>
+        <button type="button" class="btn btn-primary" id="saveID" onclick="saveNotCadreDetails();">Add Candidate</button>
 		<div id="notCadreSavId"></div>
       </div>
     </div>

@@ -67,7 +67,7 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 				};
 				 $.ajax({
 					type : "GET",
-					url : "getMandalDetailsByConstituencyAction.action",
+					url : "getMandalDetailsByConstituencyAction.action",//getMandalsForAConstituencyAjaxAction
 					data : {task:JSON.stringify(jsObj)} 
 				}).done(function(result){
 				if(result !=null)
@@ -76,7 +76,12 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 					
 					for(var i in result)
 					{
-						$("#notCadreMandlId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+						if(result[i].id == 0){
+							$("#notCadreMandlId").append('<option value='+result[i].id+'>Select Mandal/Muncipality/Corporation</option>');
+						}
+						else{
+							$("#notCadreMandlId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+						}
 					}	
 				}
 				$("#notCadreMandlId").trigger("chosen:updated");
@@ -98,9 +103,12 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 						$("#notCadrePanchayatId").empty();
 					
 			for(var i in result){
-				
+				if(result[i].id == 0){
+							$("#notCadrePanchayatId").append('<option value='+result[i].id+'>Select Panchayat/Ward/Division/City</option>');
+						}
+						else{
 					$("#notCadrePanchayatId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				
+						}
 			}
 			
 				$("#notCadrePanchayatId").trigger("chosen:updated");	
@@ -110,7 +118,7 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 	}
 
 	function getRelationTypeDetails(){
-		 $("#relativetypeId").html('');
+		$("#relativetypeId").empty();
   var jsObj={
         task:""
       }
@@ -121,13 +129,13 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
       if(result !=null){
-      $("#relativetypeId").append("<option value='0'>Select RelativeType</option>");
+      $("#relativetypeId").append("<option value='0'>Select RelationType</option>");
         for(var i in result)
             $("#relativetypeId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
         }
-      });
+		$("#relativetypeId").trigger("chosen:updated");
+		});
 
-		
 	}
 
   
