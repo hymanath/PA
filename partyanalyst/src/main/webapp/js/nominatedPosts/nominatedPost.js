@@ -489,14 +489,14 @@ function getNominatedPostApplication(startIndex)
        str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_membership_id='+result[i].memberShipCardId+'/>';
        // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
         str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
-        str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'">V.ID:'+result[i].voterCardNo+'</p>';
+        str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'">VOTERID:'+result[i].voterCardNo+'</p>';
 		if(result[i].memberShipCardId != null && result[i].memberShipCardId != "")
-        str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'">M.NO:'+result[i].memberShipCardId+'</p>';
-        str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'">'+result[i].mobileNo+'</p>';
+        str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'">MEMBERSHIP NO:'+result[i].memberShipCardId+'</p>';
+        str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'">MOBILE:'+result[i].mobileNo+'</p>';
 		str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'"/>';
 		if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 				{
-        str +='<p class="text-center m_0">'+result[i].addressVO.constituencyName+'</p>';
+        str +='<p class="text-center m_0">ASSEMBLY:'+result[i].addressVO.constituencyName+'</p>';
 		str +='</li>';
 				}else if(result[i].constituency != null && result[i].constituency.length > 0){
 					 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
