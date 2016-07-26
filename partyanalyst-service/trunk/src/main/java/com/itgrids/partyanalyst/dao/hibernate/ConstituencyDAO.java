@@ -1881,10 +1881,12 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	}
 	
 public List<Object[]> getVillagesForDistrictWiseDetails(List<Long> districtId){
-		Query query = getSession().createSQLQuery(" select distinct  P.panchayat_id,P.panchayat_name from constituency C,booth B " +
+		Query query = getSession().createSQLQuery(" select distinct  P.panchayat_id as panId,P.panchayat_name as name from constituency C,booth B " +
 				" left outer join panchayat P on B.panchayat_id=P.panchayat_id " +
 				" where B.constituency_id=C.constituency_id " +
-				" and C.district_id between 11 and 23 and B.publication_date_id=11 and C.district_id=:districtId");
+				" and C.district_id between 11 and 23 and B.publication_date_id=11 and C.district_id=:districtId")
+				.addScalar("panId",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING);
 		query.setParameterList("districtId", districtId);
 		return query.list();
 	}
