@@ -2499,7 +2499,7 @@ function buildReport()
 						{
 						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
 						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
-						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
+						str +='<td><span filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 
 					}
 				}
 					else
@@ -2556,6 +2556,7 @@ function buildReport()
 
 	if(flag == true)
 		{
+	
 			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>');
 			$("#reportDetailsId").html(str);
 			$("#reportTableId").dataTable(); 
@@ -2578,7 +2579,8 @@ $(document).on('click','.showPdfCls',function(){
 $(document).on('click','.showPdfCls1',function(){  
      
 	var str = '';
-	var filePath = $("#showPdfId").attr("filePath");
+	
+	var filePath = $(this).attr("filePath");
 	str += '<iframe src="http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
