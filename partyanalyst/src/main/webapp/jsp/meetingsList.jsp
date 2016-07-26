@@ -693,12 +693,15 @@ getUserAccessLocationDetails();
 		 timePickerIncrement: 1,
 		 timePicker12Hour: true,
 		 ranges: {
-		 //'Today': [moment(), moment()],
-		 //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		 //'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		 //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		 //'This Month': [moment().startOf('month'), moment().endOf('month')],
-		 //'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			 'Today': [moment(), moment()],
+			 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+			 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			 'This Month': [moment().startOf('month'), moment().endOf('month')],
+			 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			 'Last 3 Months': [moment().subtract(3, 'month'),moment()],
+			 'Last 6 Months': [moment().subtract(6, 'month'),moment()],
+			 'Last 1 Year': [moment().subtract(1, 'year'),moment()]
 		 },
 		 opens: 'left',
 		 buttonClasses: ['btn btn-default'],
@@ -736,16 +739,16 @@ getUserAccessLocationDetails();
 
 		 $('#reportrange').daterangepicker(optionSet1, cb);
 
-		 $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-		 $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-		 $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+		 //$('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+		 //$('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+		 /* $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
 		 console.log("apply event fired, start/end dates are " 
 		 + picker.startDate.format('MMMM D, YYYY') 
 		 + " to " 
 		 + picker.endDate.format('MMMM D, YYYY')
 		 ); 
-		 });
-		 $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+		 }); */
+		 /* $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); }); */
 
    
    //$("#mainheading").html(" PARTY MEETINGS - MOM & ATR ");
@@ -1367,11 +1370,17 @@ getUserAccessLocationDetails();
 				$("#VillWardShowId").hide();
 				
 			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+				
 				getConstituenciesForDistricts("");				
 				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 				setTimeout(function(){getMandalVillageDetails(4);}, 2000);
 				</c:if>
-				getMandalsForDistrictId();
+				
+				<c:if test="${sessionScope.USER.isAdmin == 'false'}">
+				setTimeout(function(){getMandalsForDistrictId();}, 2000);
+				</c:if>
+				
+				
 				
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
@@ -1382,18 +1391,10 @@ getUserAccessLocationDetails();
 			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
 				
 				getConstituenciesForDistricts("");
-				 <c:if test="${sessionScope.USER.isAdmin == 'true'}">
-				setTimeout(
-					function(){		
-						getMandalVillageDetails(4);
-						setTimeout(
-					function(){						
-						getMandalVillageDetails(5);
-					}, 1000);
-					
-					}, 2000);
-				//console.log(getMandalVillageDetails(5));
-				</c:if>
+				/* start */
+				getMandalVillageDetails(4);
+				/* end */
+				
 				getMandalsForDistrictId();
 				getVillagesForDistrictId();
 				
@@ -1491,6 +1492,8 @@ function getMandalVillageDetails(locationLevel){
 			for(var i in result){
 				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 			}
+			if(locationLevel ==4)
+					 getMandalVillageDetails(5);
 		});
 	}
 		
