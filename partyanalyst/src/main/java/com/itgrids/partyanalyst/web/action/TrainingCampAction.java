@@ -2871,4 +2871,25 @@ public String getVillagesForDistrictIdDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getMeetingTypesNew(){
+	try{
+		LOG.info("Entered into getMeetingTypes");
+		jObj = new JSONObject(getTask());
+		
+		JSONArray arr = jObj.getJSONArray("locationLevelsArr");
+		List<Long> list = new ArrayList<Long>(0);
+		
+		if(arr != null && arr.length() > 0){
+			for(int i=0;i<arr.length();i++){
+				list.add(Long.parseLong(arr.getString(i)));
+			}
+		}
+		
+		retResult = trainingCampService.getMeetingTypesNew(list);
+	}catch (Exception e) {
+		LOG.error("Exception raised into getMeetingTypesNew",e);
+	}
+	return Action.SUCCESS;
+}
+
 }
