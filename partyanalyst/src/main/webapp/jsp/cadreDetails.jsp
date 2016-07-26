@@ -2575,7 +2575,8 @@ $(document).on('click','.showPdfCls',function(){
 	$("#pdfReportDetailsId").html(str);
 }); 
 
-$(document).on('click','.showPdfCls1',function(){        
+$(document).on('click','.showPdfCls1',function(){  
+     
 	var str = '';
 	var filePath = $("#showPdfId").attr("filePath");
 	str += '<iframe src="http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
