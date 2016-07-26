@@ -530,6 +530,7 @@ var globalidentityMembershipNo = ""	;
 					//getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
+					getPDFReportsForNominatedComplaints();
 					getRefferelDetailsStatusWise();
 					getConductedPartyMeetingDetails("","","true","0");
 					getTrainingCampAttendenceInfoInCadreLocation();
@@ -1630,6 +1631,27 @@ function getTotalComplaintsForCandidate(){
 					//$("#complaintsDiv").html('No Data Available.');
 					
 				} */
+				});
+	}
+	
+	
+	var nominatedResult = [];
+function getPDFReportsForNominatedComplaints(){
+
+	var membershipId = $('#cadreMemberShipId').val();
+	var obj = {
+		"membershipId" :membershipId
+	}
+	$.ajax({
+     type: "POST",
+     url: "getGrievancePDFReportAction.action",
+	 dataType: 'json',
+     data: {task:JSON.stringify(obj)}
+    })
+    .done(function( result ) {
+		nominatedResult = result;
+		buildReport(); 
+	
 				});
 	}
 	function buildTotalComplaints(result,complaintId)
