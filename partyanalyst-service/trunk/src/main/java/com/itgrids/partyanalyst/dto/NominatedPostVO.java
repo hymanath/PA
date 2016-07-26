@@ -62,7 +62,8 @@ public class NominatedPostVO implements Serializable{
 	private Long locationVal;
 	private String positions;
 	private String refferCadreIds;
-	private Long nominatedCandId ;
+	private Long nominatedCandId;
+	private String candidateType;
 	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
@@ -334,5 +335,11 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setPerc1(String perc1) {
 		this.perc1 = perc1;
+	}
+	public String getCandidateType() {
+		return candidateType;
+	}
+	public void setCandidateType(String candidateType) {
+		this.candidateType = candidateType;
 	}	
 }
