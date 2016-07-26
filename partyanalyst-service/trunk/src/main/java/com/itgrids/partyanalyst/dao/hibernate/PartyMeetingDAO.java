@@ -881,7 +881,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    			" model.isActive = 'Y'" );
 	    	
 	    	if(startDate !=null && endDate !=null){
-	    		str.append(" and date(model.startDate) >=:startDate and  date(model.endDate) <= :endDate ");
+	    		str.append(" and (date(model.startDate) between :startDate and  :endDate )");
 	    	}
 	    	
 	    	if(levelValues !=null && levelValues.size()>0){
@@ -894,9 +894,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    					str.append(" and (model.meetingAddress.district.districtId between 11 and 23 ) ");
 	    				}
 	    					    				
-	    			}else{
-	    				str.append(" and (model.meetingAddress.district.districtId between 1 and 23 ) ");
-	    			}
+	    			}/*else{
+	    				str.append(" and (model.meetingAddress.district.districtId is not null ) ");
+	    			}*/
 	    							    		
 		    	}else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("DISTRICT")){
 		    		
