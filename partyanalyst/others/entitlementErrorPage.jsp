@@ -51,7 +51,7 @@
 				
 			</div>											
 		</div>	-->
-		<div style="display: block;" id="accessDiv"><img style="display:inline;" alt="sorry" src="images/icons/smiley_sad.png">&nbsp;&nbsp;<h3 style="color: rgb(255, 0, 0); display: inline; position: relative; top: -10px; font: bold 12px/25px verdana;">Sorry! You don't have access to view this content!</br><span>Please contact us for access privileges.</span></h3><span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">Phone No:+91 40 40124153 / +91 96766 96760<br>Email: <a href="mailTo:info@partyanalyst.com">info@partyanalyst.com</a></span></div>
+		<div style="display: block;" id="accessDiv"><img style="display:inline;" alt="sorry" src="images/icons/smiley_sad.png">&nbsp;&nbsp;<h3 style="color: rgb(255, 0, 0); display: inline; position: relative; top: -10px; font: bold 12px/25px verdana;">Sorry! You don't have access to view this content!</br><span>Please contact us for access privileges.</span></h3></div>
 	</div>
 </div>	
 </body>
