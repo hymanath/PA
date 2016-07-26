@@ -491,7 +491,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 	
 	public List<Object[]> getNominatedPostComplaintPDF(String membershipNo)
 	{
-		Query query = getSession().createSQLQuery("select model.issue_type as issueType,model.Completed_Status as status,model.Raised_Date as raisedDate,model.Complaint_id as complaintId from complaint_master model" +
+		Query query = getSession().createSQLQuery("select model.issue_type as issueType,model.Completed_Status as status,date(model.Raised_Date) as raisedDate,model.Complaint_id as complaintId from complaint_master model" +
 				" where (model.delete_status !='0' or model.delete_status is null) and model.subject !=''" +
 				" and model.issue_type = 'Nominated posts' " +
 				" and model.membership_id = :membershipNo")
@@ -504,7 +504,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 	}
 	
 	public List<Object[]> getNominatedComplaintScanCopies(List<Long> complaintIds){
-		Query query = getSession().createSQLQuery(" select SC.scanned_copy_id as id,SC.scanned_copy_path as path,CSC.inserted_time as insertedTime,CM.Complaint_id as complaintId from complaint_scanned_copy CSC,complaint_master CM,scanned_copy SC " +
+		Query query = getSession().createSQLQuery(" select SC.scanned_copy_id as id,SC.scanned_copy_path as path,date(CSC.inserted_time) as insertedTime,CM.Complaint_id as complaintId from complaint_scanned_copy CSC,complaint_master CM,scanned_copy SC " +
 				" where SC.is_deleted = 'N'  and (CM.delete_status !='0' or CM.delete_status is null) and CM.subject !='' " +
 				" and CSC.scanned_copy_id = SC.scanned_copy_id and CM.Complaint_id =  CSC.complaint_id " +
 				" and CM.Complaint_id in(:complaintIds) " +
