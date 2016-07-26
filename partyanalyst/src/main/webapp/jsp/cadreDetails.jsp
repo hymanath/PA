@@ -2473,7 +2473,7 @@ function getPDFReportsForNominatedComplaints(){
 
 	var membershipId = $('#cadreMemberShipId').val();
 	var obj = {
-		"membershipId" :"12345678"
+		"membershipId" :membershipId
 	}
 	$.ajax({
      type: "POST",
