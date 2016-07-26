@@ -837,7 +837,7 @@ getUserAccessLocationDetails();
 		var locationLevel = $("#meetingLocationLevel").val();
 		
 		if($("#typeOfMeeting").val()==0){
-			$("#typeofMeetingErrorMessage").html("Pleas Select Meeting");
+			$("#typeofMeetingErrorMessage").html("Please Select Meeting");
 			//alert("Pleas Select Meeting");
 			return;
 		}
