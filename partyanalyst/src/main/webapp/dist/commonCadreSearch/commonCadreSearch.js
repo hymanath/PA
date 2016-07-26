@@ -868,7 +868,9 @@ function showHideSearch(type)
 	  
 		 if($(this).is(':checked')){
 			 $("#involvedCandidatesDiv").show();
+			 $("#involvedCandidatesDiv1").show();
 			 $(".membersBlock").show();
+			 $(".membersBlock1").show();
 			  var name  = $(this).attr("attr_name");
 			  var image = $(this).attr("attr_img_url");
 			  var attrId = $(this).attr("attr_id");
@@ -882,11 +884,15 @@ function showHideSearch(type)
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
 			str+='<div class="col-md-4 m_top5"><label>Name : '+name+'</label></div>';
 			str+='<div class="col-md-4 m_top5"><label>Constituency : '+attrConsti+'</label></div>';
-			str+='</div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" ></i></span></div>';
+			str+='</div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div>';
 			 $(".membersBlock").append(str);
+			 $(".membersBlock1").append(str);
 			 cloneCount = cloneCount+1;
 			   $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().top
+                }, 2000);
+				$('html, body').animate({
+                    scrollTop: $('.membersBlock1').offset().top
                 }, 2000);
 				$("#assignBtnId").show();
 				commontdpCadreIds.push(attrId);

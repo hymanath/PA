@@ -24,6 +24,10 @@
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 
 <style type="text/css">
+.createAppointmentSearch>li{
+	width:300px !important;
+	
+}
 .jFiler-input-dragDrop
 {
 	width:100%;
@@ -355,6 +359,7 @@
 								<input type="hidden" class="cadreVoterId" name="nominatedPostVO.voterCardNo">
 								<input type="hidden" class="referCadreIds" name="nominatedPostVO.refferCadreIds">
 								<input type="hidden" class="nominatedCandId" name="nominatedPostVO.nominatedCandId">
+								<input type="hidden" id="candidateTypeId" name="nominatedPostVO.candidateType">
 							</div>
 							
 						</div>
@@ -454,6 +459,21 @@
                         	<input type="radio" checked="true" name="radio"/>No
                         </label>
                     </div>
+					<div class="m_top10" id="involvedCandidatesDiv1" style="display:none;">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">INVOVLED CANDIDATES</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="membersBlock1 col-md-12" style="display:none;"></div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
 					<div class="row" id="uploadFlDivId" >
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p>UPLOAD SCAN COPY</p>
