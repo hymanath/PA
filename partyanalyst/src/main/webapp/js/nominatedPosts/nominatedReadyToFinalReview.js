@@ -28,6 +28,13 @@ function getBoardLevelId(boardLevelId,stateId){
        }, 1500); 
 	} 
 }
+$(document).on("change","#stateId",function(){
+	var stateId = $(this).val();
+	if(globalLocationLevelId !=1 && globalLocationLevelId !=2){
+		getDistrictsForStates(stateId);
+	}
+});
+
 function getDistrictsForStates(state){
 	   var jsObj=
 	   {				

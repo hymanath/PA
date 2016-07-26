@@ -20,6 +20,15 @@
 				</div>-->
 				<div class="panel-body">
 					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-3 hideStateDivCls" id="stateMainId" >
+							<label>State</label>
+							<select class="form-control" id="stateId">
+								<option value="">Select State</option>
+								<option value="0">All</option>
+								<option value="1">Andhara Pradesh</option>
+								<option value="36">Telangana</option>
+							</select>
+						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3 hideDistrictDivCls">
 							<label>District</label>
 							<select class="form-control" id="districtId">
@@ -74,10 +83,16 @@
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
 <script type="text/javascript">
 var boardLevelId = '${param.lId}';
-var stateId = '${param.stateId}';
+var stateId = '${param.stId}';
+$("#stateId").val(stateId);
 $(document).ready(function(){
-if(boardLevelId == 1 || boardLevelId ==2){
+if(boardLevelId == 1){
  $(".hideRowCls").hide();	
+}
+if(boardLevelId == 2){
+$(".hideDistrictDivCls").hide();	
+$(".hideConstituencyDivCls").hide();
+$(".hidemanTowDivCls").hide();		
 }
 if(boardLevelId == 3){	
 $(".hideConstituencyDivCls").hide();
