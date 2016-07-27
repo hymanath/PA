@@ -732,7 +732,7 @@ public String notCadresearch(){
 		
 		try {
 			jObj = new JSONObject(getTask());
-			cadreCommitteeVOList =nominatedPostProfileService.notCadresearch(jObj.getString("searchType"),jObj.getString("searchValue"));
+			cadreCommitteeVOList =nominatedPostProfileService.notCadresearch(jObj.getString("searchType"),jObj.getString("searchValue").trim());
 		} catch (Exception e) {
 			LOG.error("Exception raised at notCadresearch() method of NominatedPostProfileAction", e);
 		}
