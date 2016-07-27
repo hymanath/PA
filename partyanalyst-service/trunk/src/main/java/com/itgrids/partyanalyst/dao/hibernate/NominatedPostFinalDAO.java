@@ -65,8 +65,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
-					" where NPA.boardLevel.boardLevelId = :levelId" +
-					" and NPA.locationValue = :levelValue");
+					" where NPA.boardLevel.boardLevelId = :levelId");
+		if(levelValue != null && levelValue.longValue() > 0l)
+			sb.append(" and NPA.locationValue = :levelValue");
 		
 		if(type.equalsIgnoreCase("this")){
 			sb.append(" and NPA.departments.departmentId = :departmentId" +
@@ -83,7 +84,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("levelId", levelId);
-		query.setParameter("levelValue", levelValue);
+		if(levelValue != null && levelValue.longValue() > 0l)
+			query.setParameter("levelValue", levelValue);
 		if(type.equalsIgnoreCase("this")){
 			query.setParameter("departmentId", departmentId);
 			query.setParameter("boardId", boardId);
