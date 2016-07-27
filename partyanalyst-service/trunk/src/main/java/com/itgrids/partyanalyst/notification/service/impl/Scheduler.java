@@ -360,4 +360,15 @@ public class Scheduler {
 			log.info("\n\n Total sendPdfReport "); 
 		}
 	}
+	public void sendPdfReportOnEmployeeAttendanceOnDept()
+	{
+		try{
+			   //schedulerService.runTheJobForEveryDayToSendEmployeeAttendance();
+			System.out.println("job started");
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n Total sendPdfReport "); 
+		}
+	}
 }
