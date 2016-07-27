@@ -74,13 +74,15 @@
 	function getNominatdPostsOverview(divId,levelId){
 		
 		$('#'+divId+'').html('<img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		var stateId = $('input[name=stateName]:checked').val();
 		var jsObj =
 		{
 			levelId:levelId,
 			startDateStr:"",
 			endDateStr:"",
-			stateId : 1
+			stateId : stateId
 		};
+		
 		$.ajax({
 				type : "POST",
 				url : "getNominatdPostsOverviewAction.action",
@@ -102,7 +104,7 @@
 						if(result[i].name == "YET TO START" || result[i].name == "RUNNING"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalCorp+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								</c:when> 
 								<c:otherwise>
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
@@ -113,7 +115,7 @@
 						else if(result[i].name == "READY FOR FINAL REVIEW"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT' )}">
-									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalCorp+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								</c:when>
 								<c:otherwise>
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
@@ -123,7 +125,7 @@
 						else if(result[i].name == "FINALYZED"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_FINALYZE_ENTITLEMENT' )}">
-									str+='<h3><span class="finalyzedCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+									str+='<h3><span class="finalyzedCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalCorp+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								</c:when>
 								<c:otherwise>
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
@@ -133,7 +135,7 @@
 						else if(result[i].name == "GO PASSED / COMPLETED"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_G_O_PASSED_ENTITLEMENT' )}">
-									str+='<h3><span class="goPassedCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+									str+='<h3><span class="goPassedCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalCorp+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								</c:when>
 								<c:otherwise>
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalCorp+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
@@ -191,7 +193,7 @@ $(document).on("click",".finalReviewCls",function(){
 	var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finalReview','_blank');
 	
 });
-/*$(document).on("click",".finalyzedCls",function(){
+$(document).on("click",".finalyzedCls",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var status = $(this).attr("attr_status");
 	var stateId = $('input[name=stateName]:checked').val();
@@ -204,7 +206,18 @@ $(document).on("click",".goPassedCls",function(){
 	var stateId = $('input[name=stateName]:checked').val();
 	
 	var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=g_o_passed','_blank');
-});*/
+});
+
+
+$(document).on("click",".stateCls",function(){
+	
+		getNominatdPostsOverview("stateWiseOverviewId",2);
+		getNominatdPostsOverview("districtWiseOverviewId",3);
+		getNominatdPostsOverview("assemblyWiseOverviewId",4);
+		getNominatdPostsOverview("mandalORMunciWiseOverviewId",5);
+		//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+});
+
 </script>
 </body>
 </html>
