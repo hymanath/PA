@@ -327,6 +327,8 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		}else if(stateId.longValue()==36){
 			str.append(" and model.districtId = 518 or model.districtId < 11");
 		}
+	     str.append(" order by  model.districtName ");
+		  
 		Query query = getSession().createQuery(str.toString());
 		if(stateId!=0){
 			query.setParameter("stateId", stateId);

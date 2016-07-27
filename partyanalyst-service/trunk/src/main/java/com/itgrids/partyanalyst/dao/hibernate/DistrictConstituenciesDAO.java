@@ -19,7 +19,7 @@ public class DistrictConstituenciesDAO extends GenericDaoHibernate<DistrictConst
 				" model.district.districtName," +
 				" model.constituency.constituencyId," +
 				" model.constituency.name" +
-				" from DistrictConstituencies model ");
+				" from DistrictConstituencies model order by model.constituency.name ");
 		
 		return query.list();
 	}
