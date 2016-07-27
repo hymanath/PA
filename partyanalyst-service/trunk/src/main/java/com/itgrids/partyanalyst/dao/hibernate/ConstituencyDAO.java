@@ -1468,9 +1468,9 @@ public List<Long> getConstituenciesByState(Long stateId) {
 				  }
 				  
 				  if(districtIds!=null && districtIds.size()>0){
-					  str.append(" and model.district.districtId in(:districtIds) order by model.district.districtName");
+					  str.append(" and model.district.districtId in(:districtIds) order by model.name");
 				  }else{
-					  str.append(" order by model.district.districtName ");
+					  str.append(" order by model.name ");
 				  }
 			 
 			  Query query = getSession().createQuery(str.toString());
