@@ -269,7 +269,7 @@ function getAllCadreInPanchayat()
 		//$(".allcls").show();
 		refreshExistingDetails();
 	} 
-function getNominatedPostApplication(startIndex)
+function getNominatedPostApplication(startIndex,divId)
 		{			
 		var locationLevel = 0;
 		var locationValue = 0;
@@ -285,6 +285,7 @@ function getNominatedPostApplication(startIndex)
 		var gender = '';
 		var houseNo = '';
 		var membershipAndMobileNo = '';
+	$('#'+divId+'').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 	
     $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 	if(startIndex == 0)
@@ -459,7 +460,7 @@ function getNominatedPostApplication(startIndex)
 				$('#cadreDetailsDiv').show();
 				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
 				{
-				buildCadreDetails(result.previousRoles);
+					buildCadreDetails(result.previousRoles,divId);
 				}
 				 else
 				{
@@ -469,45 +470,77 @@ function getNominatedPostApplication(startIndex)
 			});  
 
 	}
-   function buildCadreDetails(result){ 
+	var alreadyBuildMmberIdsArr = [];
+   function buildCadreDetails(result,divId){ 
   
        $("#scrollDivId").show();
-	   $("#textId").show();
+       $("#scrollDivId1").show();
+	   $("#textId1,#textId").show();
 		var str='';
 		var str1='';
-		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>';
-		str1+='<p>Search Results: <b><u id="cadreSearchSize">'+result.length+'</u></b> Members</p>';
-		$("#searchData").html(str1);
+		
+		if(divId=="cadreSearchDtls"){
+			  $("#textId").show();
+			str1+='<h4 class="m_0 text-success"> CADRE PROFILE DETAILS : </h4>';
+			str1+='<p>Search Results: <b><u id="cadreSearchSize">'+result.length+'</u></b> Members</p>';
+			$("#searchData").html(str1);
+		}		
+		else{
+			  $("#textId1").show();
+			str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS : </h4>';
+			str1+='<p>Search Results: <b><u id="cadreSearchSize">'+result.length+'</u></b> Members</p>';
+			$("#searchData1").html(str1);
+		}
+			
 		if(result != null && result.length >0){
 		for(var i in result)
-			{
-		str +='<li>';
-        str +='<div class="img-center">';
-        str +='<img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
-		//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
-        str +='</div>';
-       str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_membership_id='+result[i].memberShipCardId+'/>';
-       // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
-        str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
-        str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'">VOTERID:'+result[i].voterCardNo+'</p>';
-		if(result[i].memberShipCardId != null && result[i].memberShipCardId != "")
-        str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'">MEMBERSHIP NO:'+result[i].memberShipCardId+'</p>';
-        str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'">MOBILE:'+result[i].mobileNo+'</p>';
-		str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'"/>';
-		if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
-				{
-        str +='<p class="text-center m_0">ASSEMBLY:'+result[i].addressVO.constituencyName+'</p>';
-		str +='</li>';
-				}else if(result[i].constituency != null && result[i].constituency.length > 0){
-					 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
-		str +='</li>';
+			{			
+			//console.log(alreadyBuildMmberIdsArr);
+				var isBuild ="false";
+				if(alreadyBuildMmberIdsArr != null){
+					for(var k in alreadyBuildMmberIdsArr){
+						if(result[i].voterCardNo.trim() == alreadyBuildMmberIdsArr[k].trim())
+							isBuild ="true";
+					}
 				}
-			 }
+				alreadyBuildMmberIdsArr.push(result[i].voterCardNo.trim());
+		
+			if(isBuild == "false")	{	
+				if(divId=="cadreSearchDtls1")
+					str +='<li style="background: green;">';
+				else
+					str +='<li>';
+				str +='<div class="img-center">';
+				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+				
+				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
+				str +='</div>';
+			   str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_membership_id='+result[i].memberShipCardId+'/>';
+			   // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
+				str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
+				str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'"><b>VOTERID : </b> '+result[i].voterCardNo+'</p>';
+				if(result[i].memberShipCardId != null && result[i].memberShipCardId != "")
+				str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'"><b> MEMBERSHIP : </b> '+result[i].memberShipCardId+'</p>';
+				str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'"><b>MOBILE : </b> '+result[i].mobileNo+'</p>';
+				str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'"/>';
+				
+					if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
+					{
+						str +='<p class="text-center m_0"><b> ASSEMBLY : </b> '+result[i].addressVO.constituencyName+'</p>';
+						str +='</li>';
+					}else if(result[i].constituency != null && result[i].constituency.length > 0){
+						 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
+						str +='</li>';
+					}
+				 }
+			}
 		}else{
 		str+='No Data Available';	
 		}
 		
-		$("#cadreSearchDtls").html(str);
+		//$("#cadreSearchDtls").html(str);
+		$("#"+divId+"").html(str);
+		
 		
 	}
 	function refreshExistingDetails(){ 
@@ -520,6 +553,7 @@ function getNominatedPostApplication(startIndex)
 		$("#cadreSearchSize").hide();
 		$("#cadreSearchDtls").html("");
 		$("#searchData").html("");
+		$("#searchData1").html("");
 		$("#notCadreNameId").val("");
 		$("#notCadreVoterId").val("");
 		$("#notCadreMobilNoId").val("");
@@ -545,9 +579,10 @@ function getNominatedPostApplication(startIndex)
 		$("#panchaytList").val(0).trigger("chosen:updated");
 		$("#addOneMoreBlock").html("");
 	    $("#scrollDivId").hide();
+	    $("#scrollDivId1").hide();
 	    $("#textId").hide();
 		$("#cadreSearchSize").hide(); 
-        $("#searchData").html("");
+        $("#searchData1").html("");
 		$("#searchErrDiv").hide();
 		
 		}
@@ -1567,6 +1602,7 @@ function searchByApplicant()
 	
 	$(document).on("click",".cadreCheckCls",function(){
 	 $("#searchData").html('');
+	 $("#searchData1").html('');
      $("#cadreSearchDtls").html('');	 
   if ($("#cadreSearchId").is(":checked")) {
 		$("#searchMemberDiv").show();
@@ -1577,6 +1613,7 @@ function searchByApplicant()
 	 $("#searchMemberDiv").hide();
 	 $("#cadreById").show();
 	 $("#scrollDivId").hide();
+	 $("#scrollDivId1").hide();
 	 $("#textId").hide();
 	}
 });
@@ -1617,61 +1654,68 @@ $("#involvedCandidatesDiv").hide();
   showHideBySearchType();//Clear Fields  
 }
 function notCadresearch(){
+		var cadreTypeStr=$("input[name='checkBoxName']:checked").val();
+		var searchType=$("input[name='searchBasedOn']:checked").val();
+		var searchValue=$("#searchBy").val();
 		
-		var searchType=$("input[name='radioGroup']:checked").val();
-		  var searchValue=$("#searchById").val();
-		if(searchType == 2)
+		if(cadreTypeStr == "Not Cadre"){
+			searchType=$("input[name='radioGroup']:checked").val();
+			searchValue=$("#searchById").val();
+		}
+		
+		debugger;
+		if(searchType == "1")
 		{
-			voterCardNo = $('#searchById').val().trim();
-			
-			if(voterCardNo.length == 0 )
+			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv1').html('Please enter Voter Card No.');
+				$('#searchErrDiv').html('Please enter Membership No.');
 				return;
 			}
 		}
-		if(searchType == 3)
-		{	
-			mobileNo = $('#searchById').val().trim();
-			
-			if(searchType==3){
-					
-					var numericExpression = /^[0-9]+$/;
-					if(!$('#searchById').val().match(numericExpression)){
-						$('#searchErrDiv1').html('Enter Numerics Only.');
-						return;
-					}
-			}	
-			
-			if(mobileNo.length == 0 )
+		else if(searchType == "2")
+		{
+			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv1').html('Please enter Mobile No.');
+				$('#searchErrDiv').html('Please enter Voter Card No.');
 				return;
 			}
+		}
+		else if(searchType == "3")
+		{
 			
-			else if(mobileNo.trim().length != 10)
+			var numericExpression = /^[0-9]+$/;
+			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv1').html('Invalid Mobile No.');
+				$('#searchErrDiv').html('Please enter Mobile No.');
+				return;
+			}		
+			if(!searchValue.match(numericExpression)){
+				$('#searchErrDiv').html('Enter Numerics Only.');
+				return;
+			}	
+			else if(searchValue.trim().length != 10)
+			{
+				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;				
 			}
 			
 		}
-		if(searchType == 4)
+		else if(searchType == 4)
 		{
-			searchName = $('#searchById').val().trim();
-			
-			if(searchName.length == 0 )
+			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv1').html('Please enter Name.');
+				$('#searchErrDiv').html('Please enter Name.');
 				return;
 			}
-			else if(searchName.length < 3)
+			else if(searchValue.length < 3)
 			{
-				$('#searchErrDiv1').html('Please enter Minimum 3 Characters.');
+				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
 				return;
 			}
 		}
-		
+		$('#cadreSearchDtls1').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
+	$("#searchData1,#searchData").html('');
+	$("#textId1,#textId").hide();
 		var jsObj =
 		        {
 		searchType : searchType,
@@ -1683,22 +1727,32 @@ function notCadresearch(){
 					  url: 'notCadresearchAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-					
-					if(result != null)
-					{
-					buildCadreDetails(result);	
+					$('#cadreSearchDtls1').html('');				   
+					if(result != null){
+						$("#textId1,#textId").show();
+						buildCadreDetails(result,"cadreSearchDtls1");
+						if(cadreTypeStr =="Cadre")
+							getNominatedPostApplication(0,"cadreSearchDtls");						
 					}
+					else if(cadreTypeStr =="Cadre"){
+						getNominatedPostApplication(0,"cadreSearchDtls");
+					}
+					else
+						$("#cadreSearchDtls").html("No Data Available...");
 				  
 				});
 		}
  $(document).on("click","#searchbtn",function(){
-	  var value = $("input[name='checkBoxName']:checked").val();
+	 // var value = $("input[name='checkBoxName']:checked").val();
+	  $("#cadreSearchDtls").html("");
+	  notCadresearch();
+	  /*
 	  if(value == "Cadre"){
-		getNominatedPostApplication(0);
-	}
-	else if(value == "Not Cadre"){
-		notCadresearch();
-	}
+			getNominatedPostApplication(0);
+		}
+		else if(value == "Not Cadre"){
+			notCadresearch();
+		}*/
  });
  
  function subLevelForConstituency(locationLevel){
