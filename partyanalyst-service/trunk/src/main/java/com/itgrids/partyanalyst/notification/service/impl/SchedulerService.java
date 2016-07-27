@@ -2171,7 +2171,7 @@ public class SchedulerService implements ISchedulerService{
 			document.add(tbl);
 			
 			f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
-			c = new Chunk("OFFICE WISE ATTENDED EMPLOYEE'S DETAILS", f);
+			c = new Chunk("DEPARTMENT WISE ATTENDED EMPLOYEE'S DETAILS", f);
 			//c.setBackground(BaseColor.RED);
 			Paragraph paragraph2=new Paragraph(c);
 			//paragraph2.add("OFFICE WISE ATTENDED EMPLOYEE'S DETAILS");
@@ -2182,7 +2182,7 @@ public class SchedulerService implements ISchedulerService{
 			document.add(table2);
 			
 			f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
-			c = new Chunk("OFFICE WISE ABSENT EMPLOYEE'S DETAILS", f);
+			c = new Chunk("DEPARTMENT WISE ABSENT EMPLOYEE'S DETAILS", f);
 			//c.setBackground(BaseColor.RED);
 			Paragraph paragraph3=new Paragraph(c);
 			//paragraph3.add("OFFICE WISE ABSENT EMPLOYEE'S DETAILS");
