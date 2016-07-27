@@ -987,7 +987,7 @@ public class SchedulerService implements ISchedulerService{
 			Date toDate = dateUtilService.getCurrentDateAndTime();
 			String currentDateStr = sdf.format(currentDateAndTime);
 			emailVo.setDate(currentDateStr);    
-			emailVo.setSubject("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION");  
+			emailVo.setSubject("Party Office Emplyees Attendance Information");  
 			List<Object[]> listOfDeptPerEmailId = reportEmailDAO.getDeptList(1l);
 			Map<Long,List<Long>> emailIdAndDeptIdListMap = new HashMap<Long,List<Long>>();
 			prepareEmailIdAndDeptIdListMap(listOfDeptPerEmailId, emailIdAndDeptIdListMap);
@@ -1069,7 +1069,7 @@ public class SchedulerService implements ISchedulerService{
 			Date toDate = dateUtilService.getCurrentDateAndTime();
 			String currentDateStr = sdf.format(currentDateAndTime);
 			emailVo.setDate(currentDateStr);
-			emailVo.setSubject("PARTY OFFICE EMPLOYEES ATTENDANCE INFORMATION");
+			emailVo.setSubject("Party Office Emplyees Attendance Information");
 			List<Object[]> officeWiseTotalEmployeeList = employeeWorkLocationDAO.getOfficeWiseTotalEmployeeList();
 			List<Object[]> officeWiseTotalAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalAttendedEmployee(fromDate, toDate);
 			List<Object[]> departmentWiseTotalEmployeeList = employeeDepartmentDAO.getDepartmentWiseTotalEmployeeList();
