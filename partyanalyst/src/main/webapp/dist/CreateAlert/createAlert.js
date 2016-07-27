@@ -896,7 +896,7 @@ function disableByLevel(index)
 			str+='<div class="col-md-3">';
             str+='<div class="involveBlock">';
 			str+='<div class="media"><div class="media-left">';
-			str+='<img src="'+image+'" alt="image" style="height:30px;width:30px;" class="img-circle">';
+			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
