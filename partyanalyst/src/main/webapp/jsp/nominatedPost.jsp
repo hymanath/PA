@@ -1,5 +1,10 @@
-<!doctype html>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -174,16 +179,29 @@
 				 </div>
 				 <form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">
                  <div class="row">
-				 <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px; display: none;" id="searchDataImg" class="offset7" src="images/icons/cadreSearch.gif">
-                    <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId">
+				
+						<div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId1">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
-                        	<div id="searchData"></div>
-                        	<div class="scroll-div" id="scrollDivId" style="display:none;">
-                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls" >
+                        	<div id="searchData1"></div>
+                        	<div class="" id="scrollDivId1" style="display:none;">
+                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls1" >
                                 </ul>
                              </div>
+							
                              <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
 	                    </div>
+						
+						<div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId">
+                    		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
+                        	<div id="searchData"></div>
+                        	<div class="" id="scrollDivId" style="display:none;">
+                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls" >
+                                </ul>
+                             </div>							
+                             <p class="text-muted" id="textId1" style="display:none;"><small>Note: Please select matches profile</small></p>
+	                    </div>
+						
+						
 						<div id="appliedPostForSelectedId"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
                     	<div class="panel panel-default panelNewDepartments">
@@ -647,6 +665,20 @@ $(".dropkickClass").dropkick();
 $("#DOBId").daterangepicker({singleDatePicker:true});
 $("#DOBId").val(moment().format('MM/DD/YYYY'));
 
+$(document).keypress(function(e) {
+				if(e.keyCode==13){
+					  $("#cadreSearchDtls").html("");
+					 notCadresearch();
+					 /* if(value == "Cadre"){
+							getNominatedPostApplication(0);
+						}
+						else if(value == "Not Cadre"){
+							notCadresearch();
+						}
+						*/
+				}
+		  });
+		  
 $(document).on("click",".addMemberModal",function(){
 	$("#addMemberModalBlock").modal('show');
 })
