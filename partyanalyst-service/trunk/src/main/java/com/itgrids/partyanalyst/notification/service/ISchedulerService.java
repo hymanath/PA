@@ -27,4 +27,5 @@ public interface ISchedulerService {
 	public void changeApptStatusToAttended(Date fromDate,Long attendedStatusId,Long fixedStatusId);
 	public void sendPdfReport();
 	public void runTheJobForEveryDayToSendEmployeeAttendance();
+	public void runTheJobForEveryDayToSendEmpAttendanceDeptWise();
 }
