@@ -16270,6 +16270,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
         		  }
         	  }
 	        }
+	        Collections.sort(locationsList,new Comparator<LocationWiseBoothDetailsVO>() {
+				public int compare(LocationWiseBoothDetailsVO o1,
+						LocationWiseBoothDetailsVO o2) {
+					return o1.getLocationName().compareTo(o2.getLocationName());
+				}
+			});
 	        return locationsList;
 	}
 	
