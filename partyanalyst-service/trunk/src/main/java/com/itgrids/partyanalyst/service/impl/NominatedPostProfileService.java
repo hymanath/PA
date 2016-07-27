@@ -66,7 +66,6 @@ import com.itgrids.partyanalyst.model.NominatedPostComment;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
-import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -858,7 +857,28 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								nominationPostCandidate.setRelativetype(commonMethodsUtilService.getStringValueForObject(cadre[15]));
 								nominationPostCandidate.setImageurl(commonMethodsUtilService.getStringValueForObject(cadre[19]));
 								nominationPostCandidate.setCastestateId(commonMethodsUtilService.getLongValueForObject(cadre[20]));
-								nominationPostCandidate.setAddressId(commonMethodsUtilService.getLongValueForObject(cadre[21]));
+								
+								//New OR Replica, UserAddress Object created For NominatedPost Candidate By using Clone()
+								UserAddress newAddress =null;
+								UserAddress userAddress = userAddressDAO.get(commonMethodsUtilService.getLongValueForObject(cadre[21]));
+								if(userAddress !=null){
+									UserAddress address = new UserAddress();									
+									try {
+										address = (UserAddress)userAddress.clone();
+									} catch (CloneNotSupportedException e) {
+										LOG.error("Exception Occured at UserAddress Cloning in savingNominatedPostProfileApplication()", e);
+									}
+									if(address !=null){
+										address.setUserAddressId(null);
+										newAddress = userAddressDAO.save(address);
+									}
+									
+								}
+								if(newAddress !=null){
+									nominationPostCandidate.setAddress(newAddress);
+									nominationPostCandidate.setAddressId(newAddress.getUserAddressId());
+								}
+								
 								nominationPostCandidate.setInsertedBy(loggerUserId);
 								nominationPostCandidate.setUpdatedBy(loggerUserId);
 								nominationPostCandidate.setInsertedTime(dateUtilService.getCurrentDateAndTime());
@@ -918,8 +938,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							}
 							
 							userAddressDAO.save(UA);	
-						}
-											
+						}										
 					}
 					
 					
