@@ -911,6 +911,10 @@
 				   <value>com.itgrids.partyanalyst.model.Department</value>
 				   <value>com.itgrids.partyanalyst.model.EmployeeDepartment</value>
 				   <value>com.itgrids.partyanalyst.model.EmployeeWorkLocation</value>
+				   <value>com.itgrids.partyanalyst.model.UserEmailDepartment</value>
+				   <value>com.itgrids.partyanalyst.model.UserEmail</value>
+				   <value>com.itgrids.partyanalyst.model.EmailReport</value>  
+				   <value>com.itgrids.partyanalyst.model.ReportEmail</value>
 				   <!-- employee attendance report end-->
 				    <value>com.itgrids.partyanalyst.model.CadreCallingFeedback</value>
 				    <value>com.itgrids.partyanalyst.model.CallSupportType</value>
@@ -931,10 +935,6 @@
 				    <value>com.itgrids.partyanalyst.model.ApplicationStatus</value> 
 				    <value>com.itgrids.partyanalyst.model.ApplicationDocument</value> 
 				    <!-- Nominated Post End -->
-				    <value>com.itgrids.partyanalyst.model.UserEmail</value>
-				    <value>com.itgrids.partyanalyst.model.EmailReport</value>
-				    <value>com.itgrids.partyanalyst.model.ReportEmail</value>
-				    
 				    <value>com.itgrids.partyanalyst.model.NominatedPostPosition</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPost</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPostFinal</value>

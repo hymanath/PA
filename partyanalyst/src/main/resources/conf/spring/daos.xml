@@ -3120,5 +3120,8 @@
 	<bean id="nominatedPostApplicationHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostApplicationHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
+	<bean id="userEmailDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEmailDepartmentDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
 	
 </beans>		
