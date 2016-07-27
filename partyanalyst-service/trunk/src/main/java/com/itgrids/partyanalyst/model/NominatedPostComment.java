@@ -27,10 +27,13 @@ public class NominatedPostComment extends BaseModel implements Serializable{
 
 	private Long nominatedPostCommentId;
 	private Long nominatedPostApplicationId;
+	private Long nominatedPostFinalId;
 	private String remarks;
 	private Long insertedBy;
 	private Date insertedTime;
+	
 	private NominatedPostApplication nominatedPostApplication;
+	private NominatedPostFinal nominatedPostFinal;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,5 +87,24 @@ public class NominatedPostComment extends BaseModel implements Serializable{
 	public void setNominatedPostApplication(
 			NominatedPostApplication nominatedPostApplication) {
 		this.nominatedPostApplication = nominatedPostApplication;
+	}
+	
+	@Column(name="nominated_post_final_id")
+	public Long getNominatedPostFinalId() {
+		return nominatedPostFinalId;
+	}
+	public void setNominatedPostFinalId(Long nominatedPostFinalId) {
+		this.nominatedPostFinalId = nominatedPostFinalId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="nominated_post_final_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NominatedPostFinal getNominatedPostFinal() {
+		return nominatedPostFinal;
+	}
+	public void setNominatedPostFinal(NominatedPostFinal nominatedPostFinal) {
+		this.nominatedPostFinal = nominatedPostFinal;
 	}
 }
