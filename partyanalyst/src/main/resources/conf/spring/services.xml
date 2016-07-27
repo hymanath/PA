@@ -1359,7 +1359,7 @@
     	<property name="jobDetail" ref="everyDayBatchJob" />
     	<property name="cronExpression" value="0 0 14 * * ?" />
 	</bean>
-
+	<!-- swadhin -->
 	<bean name="everyDayBatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendance" /> 
@@ -1369,7 +1369,17 @@
     	<property name="jobDetail" ref="everyDayBatchJobForEmployeeAttendance" />
     	<property name="cronExpression" value="0 0 5  * * ?" />     
 	</bean>
-
+	
+	<bean name="BatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendanceOnDept" /> 
+	</bean> 
+	
+	<bean name="cronTriggerForJobEmployeeAttendanceOnDept" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="BatchJobForEmployeeAttendance" />
+    	<property name="cronExpression" value="0 0/2 *  * * ?" />     
+	</bean>
+	<!-- swadhin -->
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayMobilesInsertJob" />
     	<property name="cronExpression" value="0 0 15 * * ?" />
@@ -1579,6 +1589,7 @@
 			<ref bean="mahanaduVisitInfoTrig" />
 			<ref bean="updateTrainingCampSpeakers" />
 			<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />
+			<ref bean="cronTriggerForJobEmployeeAttendanceOnDept" />
 			<!-- <ref bean="mahanaduEventPdfReport" /> swadhin-->
 			
 			<!--  <ref bean="insertTriggerForEveryDayChangeApptStatus" /> -->
