@@ -80,7 +80,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		}
 		
 		str.append(" group by model.departments.departmentId,model.board.boardId  ");
-		
+		str.append(" order by model.departments.deptName");
 		Query query = getSession().createQuery(str.toString());
 		
 		if(boardLevelId !=null && boardLevelId>0){

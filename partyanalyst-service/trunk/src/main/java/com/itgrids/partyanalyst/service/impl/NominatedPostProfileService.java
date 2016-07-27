@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -2208,9 +2210,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}catch (Exception e) {
 			LOG.error("Exceptionr riased at getAllDeptsAndBoardsByLevel", e);
 		}
+		Collections.sort(finalList,sortByName);
 		return finalList;
-		
-	}
+		}
+	public static Comparator<IdNameVO> sortByName = new Comparator<IdNameVO>()
+    {    
+          public int compare(IdNameVO arg1,IdNameVO arg2)
+          {
+            return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
+          }
+    };
+	
 	
 	public Map<Long,IdNameVO> setDataToDeptBoardMap(List<Object[]> deptBoardObj,Map<Long,IdNameVO> deptMap){
 		try{
