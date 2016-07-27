@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.ReportEmail;
 
 public interface IReportEmailDAO extends GenericDao<ReportEmail, Long> {
 	public List<Object[]> getEmailList(Long emailReportId);
+	public List<Object[]> getDeptList(Long emailReportId);
 }
