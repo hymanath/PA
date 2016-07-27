@@ -483,8 +483,8 @@ function getNominatedPostApplication(startIndex)
 			{
 		str +='<li>';
         str +='<div class="img-center">';
-        //str +='<img src="images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
-		str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
+        str +='<img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+		//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
         str +='</div>';
        str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_membership_id='+result[i].memberShipCardId+'/>';
        // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
@@ -1229,7 +1229,7 @@ function getPopulateApplicantDetailsForMember(globalCadreId){
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jObj)},
 	  }).done(function(result){
-		  if(result != null){
+		  if(result != null && result.length>0){
 				populateFields(result);  
 			}
 			
@@ -1320,7 +1320,7 @@ function populateFields(result){
 		$("#addVillageId").trigger("chosen:updated");
 	}
 }
- function getDistrictsForReferPopup()
+/*  function getDistrictsForReferPopup()
 {
 	var stateId = $("#addStateId").val();
 	var jobj = {
@@ -1341,7 +1341,78 @@ function populateFields(result){
 		 }
 		 $("#addDistrictId").trigger("chosen:updated");
 	});
+ } */
+ function getDistrictsForReferPopup()
+{
+	var stateId = $("#addStateId").val();
+	
+	 $("#addConstituencyId").html("");
+	 $("#addConstituencyId").append('<option value="0">Select Constituency</option>');
+	 
+	 $("#addMandalsId").html("");
+	 $("#addMandalsId").append('<option value="0">Select Mandal</option>');
+	 
+	 $("#addVillageId").html("");
+	 $("#addVillageId").append('<option value="0">Select Village</option>');
+	 
+	var jobj = {
+		stateId : stateId,
+		elmtId:"districtList_d",
+		type:"default",
+		task:"getDistrictsForState"
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getNewDistrictsOfStateSplittedAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jobj)} 
+	}).done(function(result){
+		 if(result !=null && result.length>0){
+				$("#addDistrictId").html("");
+				$("#addDistrictId").append('<option value="0">Select District</option>');
+			   for(var i in result){   
+				$("#addDistrictId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+		 }
+		 $("#addDistrictId").trigger("chosen:updated");
+	});
  }
+ function getConstituenciesForDistrict(){
+	 var districtArr=[];
+	  var districtId= $("#addDistrictId").val();
+	  var stateId= $("#addStateId").val();
+
+	 $("#addMandalsId").html("");
+	 $("#addMandalsId").append('<option value="0">Select Mandal</option>');
+	 
+	 $("#addVillageId").html("");
+	 $("#addVillageId").append('<option value="0">Select Village</option>');
+	  
+	  districtArr.push(districtId);
+	  
+		 var jsObj={
+			 stateId:stateId,
+			 districtId:districtArr
+		 }
+		          
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesOfDistrictWithSplittedAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#addConstituencyId").html("");
+		   $("#addConstituencyId").append('<option value="0">Select Constituency</option>');
+		   if(result !=null && result.length>0){
+			   for(var i in result){
+				   $("#addConstituencyId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+			   }
+		   }
+		    $("#addConstituencyId").trigger("chosen:updated");
+	   });
+	}
+ 
+ /* 
   function getConstituenciesForDistrict(){
 	  var districtId= $("#addDistrictId").val();
 		 var jsObj={ districtId:districtId }
@@ -1361,8 +1432,8 @@ function populateFields(result){
 		   }
 		    $("#addConstituencyId").trigger("chosen:updated");
 	   });
-	}
-function getMandalsByConstituencyForReferPopup()
+	} */
+/* function getMandalsByConstituencyForReferPopup()
 {
 	var constituencyId = $('#addConstituencyId').val();
 	var jobj = {
@@ -1407,7 +1478,7 @@ function getMandalsByConstituencyForReferPopup()
 		   }
 		    $("#addVillageId").trigger("chosen:updated");
    });	
-  }
+  } */
 
  function getCandidateAppliedPostsByCadre(globalCadreId){
 	 var type = $("input[type='radio']:checked").val();
@@ -1629,4 +1700,59 @@ function notCadresearch(){
 		notCadresearch();
 	}
  });
+ 
+ function subLevelForConstituency(locationLevel){
+	 var distArrTemp=[];
+	 var assmblyArrTemp=[];
+	 var mandalId=0;
+	 var constituencyId = $('#addConstituencyId').val();
+	 var stateId = $('#addStateId').val();
+	 var districtId = $('#addDistrictId').val();
+	 var mandal= $('#addDistrictId').val();
+	 distArrTemp.push(districtId);
+	 assmblyArrTemp.push(constituencyId);
+	 if(mandal !=null && mandal !="" && mandalId>0){
+		 assmblyArrTemp.push();
+	 }
+	  var jsObj={				
+			stateId : stateId,
+			districtId : distArrTemp,
+			constituencyId : assmblyArrTemp,//228
+			mandalId : mandalId,
+			locationLevel : locationLevel,
+			task:""
+		}
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandalAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result != null && result.length > 0){
+			   
+			   if(locationLevel == 4){
+				    $("#addMandalsId").html("");
+					$("#addMandalsId").append('<option value="0">Select Mandal</option>');
+			   }else if(locationLevel == 5){
+				    $("#addVillageId").html("");
+					$("#addVillageId").append('<option value="0">Select Village</option>');
+			   }
+		   if(result !=null && result.length>0){
+			    if(locationLevel == 4){
+					for(var i in result){				 
+					   $("#addMandalsId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+					}
+					$("#addMandalsId").trigger("chosen:updated");
+				}else if(locationLevel == 5){
+					for(var i in result){		
+					  $("#addVillageId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
+					}
+					$("#addVillageId").trigger("chosen:updated");
+				  }				  
+			   }
+		   }
+		    
+		 }); 
+ }
  

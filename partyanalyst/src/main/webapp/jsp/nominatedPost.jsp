@@ -196,7 +196,7 @@
                                    	<div class="col-md-4 col-lg-4 col-sm-5 col-xs-11">
                                     	<label>CHANGE PHONE NUMBER</label>
                                     	<div class="input-group">
-                                        	<input type="text" class="form-control" id="phoneNumId"/>
+                                        	<input type="text" class="form-control" id="phoneNumId" name="nominatedPostVO.phoneNumName"/>
                                             <span class="input-group-addon bg_ff">
                                             	<i class="glyphicon glyphicon-plus-sign"></i>
                                                 <i class="glyphicon glyphicon-minus-sign"></i>
@@ -210,19 +210,19 @@
                                     </div>
                                 	<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>H No</label>
-                                        <input type="text" class="form-control" id="houseNumberId"/>
+                                        <input type="text" class="form-control" id="houseNumberId" name="nominatedPostVO.houseNumberName"/>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Address Lane 1</label>
-                                        <input type="text" class="form-control" id="addressLane1Id"/>
+                                        <input type="text" class="form-control" id="addressLane1Id" name="nominatedPostVO.addressLane1Name"/>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Address Lane 2</label>
-                                        <input type="text" class="form-control" id="addressLane2Id"/>
+                                        <input type="text" class="form-control" id="addressLane2Id" name="nominatedPostVO.addressLane2Name"/>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>State</label>
-                                        <select class="chosenSelect" id="addStateId">
+                                        <select class="chosenSelect" id="addStateId" name="nominatedPostVO.addStateName">
 										<option value="0">Select State</option>
                                         	<option value="1">AndhraPradesh</option>
 											<option value="36">Telangana</option>
@@ -232,35 +232,35 @@
                                 <div class="row">
                                 	<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>District</label>
-                                        <select class="chosenSelect" id="addDistrictId">
+                                        <select class="chosenSelect" id="addDistrictId" name="nominatedPostVO.addDistrictName">
                                         	<option>District</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Constituency</label>
-                                        <select class="chosenSelect" id="addConstituencyId">
+                                        <select class="chosenSelect" id="addConstituencyId" name="nominatedPostVO.addConstituencyName">
                                         	<option>Constituency </option>
                                         </select>
                                     </div>
 									  <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Mandals/Municipality</label>
-                                        <select class="chosenSelect" id="addMandalsId">
+                                        <select class="chosenSelect" id="addMandalsId" name="nominatedPostVO.addMandalsName">
                                         	<option>Mandals/Municipality </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Village</label>
-                                        <select class="chosenSelect" id="addVillageId">
+                                        <select class="chosenSelect" id="addVillageId" name="nominatedPostVO.addVillageName">
                                         	<option>Village Name</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Pincode</label>
-                                        <input type="text" class="form-control" id="addPincodeId"/>
+                                        <input type="text" class="form-control" id="addPincodeId" name="nominatedPostVO.addPincodeName"/>
                                     </div>
-									 <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10 col-md-offset-6">
+									 <!--<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10 col-md-offset-6">
                                     	<button type="button" class="btn btn-primary btn-sm pull-right" id="updateButnId" onclick="savechangeAddressForNominatedPost()" style="margin-top:25px;">UPDATE</button>
-                                    </div>
+                                    </div>-->
 								</div>
                             </div>
                         </div>
@@ -668,10 +668,12 @@ $(document).on("change","#addDistrictId",function(){
   getConstituenciesForDistrict();
 });
 $(document).on("change","#addConstituencyId",function(){
-  getMandalsByConstituencyForReferPopup();
+  //getMandalsByConstituencyForReferPopup();
+  subLevelForConstituency(4);
 });
 $(document).on("change","#addMandalsId",function(){
-  getPanchayatsForMandal();
+	subLevelForConstituency(5);
+ // getPanchayatsForMandal(5);
 });
 $(".changHeading").html("SELECT REFER DETAILS<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>")
 

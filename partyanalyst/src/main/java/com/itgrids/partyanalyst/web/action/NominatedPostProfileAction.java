@@ -353,6 +353,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		    Vo.setConstituencyId(jObj.getLong("constituencyId"));
 		    Vo.setPanchayatId(jObj.getLong("panchayatId"));
 		    Vo.setMandalId(jObj.getLong("mandalId"));
+		    Vo.setNominatedCandId(jObj.getLong("nominatedCandidateId"));
 		    
 			status = nominatedPostProfileService.savechangeAddressForNominatedPost(Vo);
 			
