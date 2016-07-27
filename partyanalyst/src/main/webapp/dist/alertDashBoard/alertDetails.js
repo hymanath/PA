@@ -330,6 +330,7 @@ function buildAlertAssignedCandidateData(result)
 		 str+=' </div>';
 		 str+=' </div>';
 	}
+	$("#assignCandidatesCnt").html(result[0].subList.length);
 	}
 	$("#alertAssignedCandidateDataId").html(str);
 	/*str+='<div  style="border:1px solid #ddd;padding:8px;margin-top:5px;" class="media">';
