@@ -3123,7 +3123,18 @@
 	<bean id="userEmailDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEmailDepartmentDAO" >  
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
-	
+	<bean id="dashboardComponentDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardComponentDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="dashboardSettingTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardSettingTypeDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="dashboardSettingValueDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardSettingValueDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="dashboardComponentSettingDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardComponentSettingDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
 	<!-- CORE DASHBOARD -->
 	<bean id="userTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTypeDAO" >  
 		<property name="sessionFactory" ref="sessionFactory" />

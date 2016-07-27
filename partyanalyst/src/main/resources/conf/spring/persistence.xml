@@ -955,7 +955,10 @@
 				    <value>com.itgrids.partyanalyst.model.DashboardUserAccessType</value> 
 				    <value>com.itgrids.partyanalyst.model.UserLevel</value> 
 				    <value>com.itgrids.partyanalyst.model.DashboardUserAccessLevel</value> 
-				    
+				    <value>com.itgrids.partyanalyst.model.DashboardComponent</value>
+				    <value>com.itgrids.partyanalyst.model.DashboardSettingType</value>
+				    <value>com.itgrids.partyanalyst.model.DashboardSettingValue</value>
+				    <value>com.itgrids.partyanalyst.model.DashboardComponentSetting</value>
 				 </list>
 			
 		</property>
