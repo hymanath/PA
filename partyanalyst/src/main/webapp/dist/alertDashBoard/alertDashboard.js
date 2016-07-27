@@ -32,6 +32,75 @@ function getLocationLevelAlertCount()
 					
 				});
 }
+
+/*function buildLocationLevelAlert(result,jsObj){
+	
+	
+	var str='';
+	if(result == null || result.length == 0)
+	{
+		
+		$("#locationLevelId").html('No data Available..');
+		return;
+	}
+	str+='<table class="table table-bordered tableDashboard">';
+	for(var i in result){
+    str+='<tr>';
+    str+=' <td>';
+    str+='<h2>500</h2>';
+    str+='<h4 class="text-capital textColor_333">total alerts</h4>';
+     str+='</td>';
+     str+=' <td>';
+     str+=' <h2>500</h2>';
+     str+='<h4 class="text-capital textColor_333">low</h4>';
+     str+=' </td>';
+     str+='<td>';
+     str+='<h2>500</h2>';
+     str+='<h4 class="text-capital textColor_333">medium</h4>';
+     str+='</td>';
+     str+=' <td>';
+     str+=' <h2>500</h2>';
+     str+=' <h4 class="text-capital textColor_333">high</h4>';
+     str+=' </td>';
+     str+=' <td>';
+     str+=' <h2>500</h2>';
+     str+='<h4 class="text-capital textColor_333">critical</h4>';
+     str+=' </td>';
+     str+=' </tr>';
+      str+='<tr>';
+     str+=' <td>';
+     str+=' <p>100</p>';
+     str+=' <p class="text-capital">State</p>';
+     str+=' </td>';
+      str+='<td>30</td>';
+      str+='  <td>30</td>';
+      str+='<td>30</td>';
+      str+='<td>30</td>';
+      str+=' </tr>';
+      str+=' <tr>';
+      str+='<td>';
+      str+=' <p>100</p>';
+      str+='<p class="text-capital">District</p>';
+      str+=' </td>';
+      str+='<td>30</td>';
+      str+='<td>30</td>';
+      str+='<td>30</td>';
+      str+=' <td>30</td>';
+      str+=' </tr>';
+      str+='<tr>';
+      str+='<td>';
+      str+=' <p>100</p>';
+      str+=' <p class="text-capital">constituency</p>';
+      str+=' </td>';
+      str+='<td>30</td>';
+      str+='<td>30</td>';
+      str+=' <td>30</td>';
+      str+='<td>30</td>';
+      str+=' </tr>';
+	}
+      str+='</table>';
+	$("#locationLevelId").html(str);
+}*/
 function buildLocationLevelAlert(result,jsObj){
 	
 	
@@ -42,37 +111,67 @@ function buildLocationLevelAlert(result,jsObj){
 		$("#locationLevelId").html('No data Available..');
 		return;
 	}
-	str+='<table class="table table-bordered">';
-	str+='<thead>';
-	str+='<th>Level</th>';
-	str+='<th>Total</th>';
-	for(var i in result[0].locationsList)
-	str+='<td><b>'+result[0].locationsList[i].name+'</b></td>';
-	str+='</thead>';
+	str+='<table class="table table-bordered tableDashboard">';
 	str+='<tbody>';
 	str+='<tr>';
+	 str+=' <td>';
+	 var totalAlerts = 0;
+	 for(var i in result)
+	 {
+		 totalAlerts = totalAlerts + result[i].count;
+	 }
+	 if(totalAlerts > 0)
+    str+='<h3><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalAlerts+'</a></h3>';
+	else
+	str+='<h3>'+totalAlerts+'</h3>';
+    str+='<h4 class="text-capital textColor_333">total alerts</h4>';
+     str+='</td>';
+	for(var i in result[0].locationsList)
+	{
+		var totalCnt = 0;
+		str+='<td>';
+		for(var j in result)
+		{
+			var returnList=result[j].locationsList;
+			for(var k in returnList){
+				if(result[0].locationsList[i].id == returnList[k].id)
+				totalCnt = totalCnt + returnList[k].count;
+			}
+		}
+			if(totalCnt > 0)
+			str+=' <h3><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></h3>';
+			else
+			{
+					str+=' <h3>'+totalCnt+'</h3>';
+			}
+		str+='<h4 class="text-capital textColor_333">'+result[0].locationsList[i].name+'</h4>';
+		str+='</td>';
+	}
+	
+	str+='</tr>';
+	str+='<tr>';
 	for(var i in result){
-		str+='<td>'+result[i].name+'</td>';
+		
+		str+='<td>';
 		if(result[i].count > 0)
 		{
-		str+='<td><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></td>';	
+		 str+=' <h4><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+result[i].count+'</a></h4>';
 		}
 		else
 		{
-				str+='<td>'+result[i].count+'</td>';
+			 str+=' <h2>'+result[i].count+'</h2>';
 		}
-		
+		str+='<h4 class="text-capital textColor_333">'+result[i].name+'</h4>';
+		str+='</td>';
 		var returnList=result[i].locationsList;
 		for(var j in returnList){
 			if(returnList[j].count > 0)
 			{
-			str+='<td><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></td>';	
+			str+='<td><h4><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></h4></td>';
 			}
 			else{
 				str+='<td>'+returnList[j].count+'</td>';
 			}
-			
-			
 		}
 		str+='</tr>';
 	}
@@ -143,19 +242,20 @@ function buildAlertData(result,jsObj)
 		Level = "VILLAGE";
 	}
 	var str='';
+	
 	if(jsObj.statusId > 0)
-	str+='<h4 style="text-transform: uppercase;">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
+	str+='<h4 class="text-success text-capital m_top10">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
 	else
-	str+='<h4 style="text-transform: uppercase;">'+Level+' Wise  Alert Details</h4>';	
-	str+='<table class="table table-bordered">';
+	str+='<h4 class="text-success text-capital m_top10">'+Level+' Wise  Alert Details</h4>';	
+	str+='<table class="table table-bordered bg_ff">';
 	str+='<thead>';
-	str+='<th>S.NO</th>';
-	str+='<th>Desc</th>';
+	//str+='<th>S.NO</th>';
+	//str+='<th>Desc</th>';
 	str+='<th>Alert Type</th>';
-	str+='<th>Severity</th>';
 	str+='<th>Status</th>';
-	str+='<th>involved Candidates</th>';
-	str+='<th>Source</th>';
+	str+='<th>Involved No Of Candidates</th>';
+	str+='<th>Information Source</th>';
+	str+='<th>Severity</th>';
 	if(jsObj.levelId == 2)
 	{
 	str+='<th>STATE</th>';	
@@ -171,16 +271,15 @@ function buildAlertData(result,jsObj)
 	{
 		j++;
 	str+='<tr>';	
-	str+='<td>'+j+'</td>';
-	str+='<td><a target="_blank" title="Click here to View Alert Details" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
+	//str+='<td>'+j+'</td>';
+	//str+='<td><a target="_blank" title="Click here to View Alert Details" class="alertModel" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">'+result[i].desc+'</a></td>';
 	str+='<td>'+result[i].alertType+'</td>';
-	str+='<td>'+result[i].severity+'</td>';
 	str+='<td>'+result[i].status+'</td>';
-	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
 	str+='<td>'+result[i].count+'</td>';
 	str+='<td>'+result[i].userType+'</td>';
-	
-		if(jsObj.levelId == 2)
+	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
+	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
+	if(jsObj.levelId == 2)
 			{
 				str+='<td>'+result[i].locationVO.state+'</td>';
 			}
@@ -188,6 +287,8 @@ function buildAlertData(result,jsObj)
 			{
 			str+='<td>'+result[i].locationVO.districtName+'</td>';	
 			}
+	//str+='<td><button class="btn btn-success">VIEW</button></td>';
+	str+='<td><button class="btn btn-success alertModel" target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">VIEW</button></td>';
 	
 	str+='</tr>';	
 	}

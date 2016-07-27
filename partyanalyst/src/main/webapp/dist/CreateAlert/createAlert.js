@@ -883,6 +883,7 @@ function disableByLevel(index)
    $(document).on("click",".apptDetailsDiv",function(){
 		
 		 if($(this).is(':checked')){
+		
 			 $("#involvedCandidatesDiv").show();
 			 $(".membersBlock").show();
 			  var name  = $(this).attr("attr_name");
@@ -912,9 +913,22 @@ function disableByLevel(index)
 			str+='</label>';
 			str+='</div>';
 			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew"></i></span></div></div>';
-			 $(".membersBlock").append(str);
-			 //jQuery.inArray( attrId, involvedCadreIds )
-				involvedCadreIds.push(attrId);			 
+			$("#duplicateCandidateBlock").html('');
+			if(jQuery.inArray(attrId, involvedCadreIds) == -1)
+			{
+				involvedCadreIds.push(attrId);	
+				$(".membersBlock").append(str);
+				$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+			}else{
+				var duplicateStr ='';
+				duplicateStr+='<p class="text-capital" >'+name+'</p>';
+				duplicateStr+='<p>'+mobile+'</p>';
+				duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+				$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+				$("#myModalConformation").modal('show');
+			}
+			 
+					 
 			  cloneCount = cloneCount+1;
 			   $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().bottom
@@ -926,9 +940,9 @@ function disableByLevel(index)
 	var id=$(this).attr("id");
 	
 	$(".candidatecls"+id).prop('checked', false); 
-	//var blockCount = $(this).attr("clone_block_count");
 	$(".close"+id).prop('checked', false); 
-	//$("#uncheck"+id).parent().find(".apptDetailsDiv").prop('checked', false); 
+	involvedCadreIds.pop(id);	
+	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 });
  
 	

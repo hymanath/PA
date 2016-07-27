@@ -13,6 +13,7 @@
 	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
+	<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 	<!-- JQuery files (Start) -->
@@ -135,7 +136,7 @@
                 	<div class="row">
                     	<div class="col-md-4 col-sm-4 col-xs-12">
                         	<label>Select Alert Type</label>
-                            <select class="dropkickClass" id="alertTypeId" >
+                            <select class="dropkickClass" id="alertTypeId" name="alertVO.alertTypeId">
                             	<option value="0">Select Alert</option>
                             </select>
                         </div>
@@ -225,7 +226,7 @@
                     </div> 
                     <div class="row m_top10">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
-                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted">(02 - Members added)</small></h4>
+                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(02 - Members added)</small></h4>
                         </div>
 						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
 							<div class="col-md-12">
@@ -405,9 +406,32 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div class="modal fade" id="myModalConformation" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="background:rgba(0,0,0,0.8);">
+		<div class="modal-body">
+			<button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<div class="media" style="color:#fff;">
+				<div class="media-left">
+					<img src="" class="media-object"/>
+				</div>
+				<div class="media-body" id="duplicateCandidateBlock">
+					
+				</div>
+			</div>
+			<p class="text-capital" style="color:yellow;">already added member to this alert</p>
+		</div>
+	</div>
+  </div>
+</div>
 		<!-- language convertion-->
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
+
+$(document).on("click",".modalCloseAndShow",function(){
+	$("#myModalConformation").modal('hide');
+	$("#myModal").modal('show');
+});
 $(document).on("click",".involveBlockNew",function(){
 	$("#myModal").modal('show');
 	 $("#apptmemberDetailsDiv").html("");
