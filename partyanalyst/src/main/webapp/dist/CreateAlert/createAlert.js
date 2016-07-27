@@ -914,9 +914,11 @@ function disableByLevel(index)
 			str+='</div>';
 			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew"></i></span></div></div>';
 			$("#duplicateCandidateBlock").html('');
+			
 			if(jQuery.inArray(attrId, involvedCadreIds) == -1)
 			{
 				involvedCadreIds.push(attrId);	
+				
 				$(".membersBlock").append(str);
 				$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 			}else{
@@ -942,6 +944,7 @@ function disableByLevel(index)
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
 	involvedCadreIds.pop(id);	
+
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 });
  

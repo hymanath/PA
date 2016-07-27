@@ -276,7 +276,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
+        <h4 class="modal-title">Search Members</h4>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -413,7 +413,7 @@
 			<button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<div class="media" style="color:#fff;">
 				<div class="media-left">
-					<img src="" class="media-object"/>
+					<img src="img/alert.png" class="media-object" />
 				</div>
 				<div class="media-body" id="duplicateCandidateBlock">
 					
