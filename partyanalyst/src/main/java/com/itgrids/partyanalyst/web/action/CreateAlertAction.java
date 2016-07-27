@@ -291,7 +291,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			AlertVO inputVO = new AlertVO();
 			inputVO.setId(jObj.getLong("alertId"));
 			inputVO.setDesc(jObj.getString("comments"));
-			inputVO.setStateId(jObj.getLong("alertStatusId"));
+			inputVO.setStatusId(jObj.getLong("alertStatusId"));
 			
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			status = alertService.updateAlertStatus(regVo.getRegistrationID(),inputVO);

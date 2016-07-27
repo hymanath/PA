@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+	<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
 	<!-- JQuery files (Start) -->
 	<script src="dist/js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
@@ -22,17 +23,14 @@
 	<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-	<link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
+	
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<style type="text/css">
 		#commomCadreSearchDiv .panel .panel-body
 		{
 			background:#fff !important;
 		}
-		body
-		{
-			background:#ebebeb
-		}
+		
 		.panelAlert
 		{
 			border:0px;
@@ -194,44 +192,139 @@ control.makeTransliteratable(['commentsId']);
 <div class="container">
 
         <div class="row">
-			<div class="col-md-6 col-xs-12 col-sm-6">
-				
-				<div class="panel panel-default panelAlert">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title text-success">ALERT TYPE</h4>
+						<h4 class="panel-title">ALERT DETAILS</h4>
 					</div>
-					<div class="panel-body" style="height:130px;">
-						<table class="table table-condensed tableModal">
-							<tr>
-								<td colspan="2"><b>Type Of Alert :</b><span id="typeId"></span> <b>created on</b> <span  id="createdDate"></span></td>
-							</tr>
-							<tr>
-								<td style="width:50%;">
-									<b>Alert Level </b>: <span id="levelId"></span>
-								</td>
-								<td style="width:50%;">
-									<b>Severity </b>: <span id="severityId"></span>
-								</td>
-							</tr>
+					<div class="panel-body">
+						<div class="table-responsive" id="alertBasicDataDiv"></div>
+						<table class="table table-bordered tableCategory">
 							<tr>
 								<td>
-								<b>Description </b>:<span id="descriptionId"></span>
+									<p class="text-muted text-capital">type of alert</p>
+									<p id="typeId"></p>
 								</td>
+								<td>
+									<p class="text-muted text-capital">alert created</p>
+									<p id="createdDate"></p>
+								</td>
+								<td>
+									<p class="text-muted text-capital">status</p>
+									<p id="alertStatus"></p>
+								</td>
+								<td>
+									<p class="text-muted text-capital">alert severity</p>
+									<p><span class="circle critical"></span><span  id="severityId">Critical</span></p>
+								</td>
+								<td>
+									<p class="text-muted text-capital">alert location level</p>
+									<p class="text-capitalize" id="levelId"></p>
+								</td>
+								<td>
+									<p class="text-muted text-capital">alert location</p>
+									<p class="text-capitalize" id="LocationId"></p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="8">
+									<p class="text-muted text-capital">alert description</p>
+									<p id="descriptionId"></p>
+								</td>
+							</tr>
 						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-xs-12 col-sm-6">
-				<div class="panel panel-default panelAlert">
-					<div class="panel-heading">
-						<h4 class="panel-title text-success">ALERT LOCATION</h4>
-					</div>
-					<div class="panel-body" style="height:130px;">
-						<p id="LocationId"></p>
+						 <div class="row m_top10">
+							<div class="col-md-4 col-xs-12 col-sm-4" style="border-right:1px solid #ddd;">
+								<h4 class="panel-title text-capital">involved members in this alert</h4>
+								<ul class="involvedMembersUl" id="alertCandidateDataId">
+									<li>
+										<div class="media">
+											<div class="media-left">
+												<img src="dist/img/thumb.jpg" alt="Profile Image" style="width:50px;"/>
+											</div>
+											<div class="media-body">
+											   <!-- <p class="text-capital"><b>Ramesh</b></p>
+												<p>+91 99848455</p>
+												<p>Constituency Name</p>
+												<span class="label label-success">+ Ve</span>-->
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="col-md-8 col-xs-12 col-sm-8">
+								<h4 class="panel-title text-capital">alert status tracking comments</h4>
+								<div  id="alertCommentsDiv"></div>
+							</div>
+						</div>
+						<div class="row m_top10">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="bg_cc pad_10">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-4">
+											<div class="panel panel-default">
+												<div class="panel-heading bg_ff">
+													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
+														<span id="assignCandidatesCnt">0</span>
+														<input type="button" value="ASSIGN" class="btn btn-primary assignModel pull-right btn-xs">
+													</h4>
+												</div>
+												<div class="panel-body">
+													<div  id="alertAssignedCandidateDataId"></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-8 col-xs-12 col-sm-8">
+											<label>Alert Status</label>
+											<select class="dropkickClass" id="statusId">
+											<option value='0'>Select Status</option>
+											<option value='1'>Notified</option>
+											<option value='2'>Action In Progess</option>
+											<option value='3'>Completed</option>
+											</select>
+											<label>Comments</label>
+											<label class="radio-inline">
+												<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+											</label>
+											<label class="radio-inline">
+												<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+											</label>
+											<textarea class="form-control" placeholder="alert tracking comments" id="commentsId"></textarea>
+											<div id="errorId" class="m_top10"></div>
+											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert status</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+		
+<div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width:85%;">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="descriptionTitleId">Assign Alert</h4>
+	  </div>
+	  <div class="modal-body">
+		<jsp:include page="commonCadreSearch.jsp" flush="true"/>
+	 </div>
+	 <div class="modal-footer">
+		<div id="assignBtnId" >
+			<div id="assignEroorDiv"></div>
+				<input type="button" value="ASSIGN ALERT" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
+		</div>	
+	 </div>
+	</div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+		
+		<!--
 		<div class="row">
 			<div class="col-md-6 col-xs-12 col-sm-6">
 				<div class="panel panel-default panelAlert">
@@ -287,7 +380,7 @@ control.makeTransliteratable(['commentsId']);
 				</div>
 			</div>
 		</div>	
-			<!--<input type="button" value="ASSIGN" class="btn btn-primary assignModel">-->
+			<!--<input type="button" value="ASSIGN" class="btn btn-primary assignModel">
 			
 		<div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" style="width:85%;">
@@ -305,10 +398,10 @@ control.makeTransliteratable(['commentsId']);
 						<input type="button" value="ASSIGN ALERT" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
 				</div>	
 			 </div>
-			</div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-		</div>
+			</div><!-- /.modal-content 
+		  </div><!-- /.modal-dialog 
+		</div><!-- /.modal 
+		</div>-->
 
 				
 <script type="text/javascript">
