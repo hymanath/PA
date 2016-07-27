@@ -950,6 +950,12 @@
 				    <value>com.itgrids.partyanalyst.model.TdpMember</value> 
 				    <value>com.itgrids.partyanalyst.model.NominatedPostComment</value> 
 				    <value>com.itgrids.partyanalyst.model.NominatedPostApplicationHistory</value>
+				    <!-- CORE DASHBOARD -->
+				    <value>com.itgrids.partyanalyst.model.UserType</value> 
+				    <value>com.itgrids.partyanalyst.model.DashboardUserAccessType</value> 
+				    <value>com.itgrids.partyanalyst.model.UserLevel</value> 
+				    <value>com.itgrids.partyanalyst.model.DashboardUserAccessLevel</value> 
+				    
 				 </list>
 			
 		</property>

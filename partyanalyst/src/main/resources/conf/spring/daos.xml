@@ -3124,4 +3124,18 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
 	
+	<!-- CORE DASHBOARD -->
+	<bean id="userTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTypeDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="dashboardUserAccessTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardUserAccessTypeDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="userLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserLevelDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="dashboardUserAccessLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardUserAccessLevelDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	
 </beans>		
