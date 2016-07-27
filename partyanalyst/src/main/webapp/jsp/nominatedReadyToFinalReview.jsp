@@ -15,15 +15,11 @@
 <div class="row hideRowCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
-				<!--<div class="panel-heading">
-					<h4 class="panel-title">Select Location</h4>
-				</div>-->
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-3 col-xs-12 col-sm-3 hideStateDivCls" id="stateMainId" >
 							<label>State</label>
 							<select class="form-control" id="stateId">
-								<option value="">Select State</option>
 								<option value="0">All</option>
 								<option value="1">Andhara Pradesh</option>
 								<option value="36">Telangana</option>
@@ -32,19 +28,16 @@
 						<div class="col-md-3 col-xs-12 col-sm-3 hideDistrictDivCls">
 							<label>District</label>
 							<select class="form-control" id="districtId">
-								<!--<option value="">Select District</option>-->
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3 hideConstituencyDivCls">
 							<label>Constituency</label>
 							<select class="form-control" id="constituencyId">
-								<!--<option value="0">Select Constituency</option>-->
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3 hidemanTowDivCls">
 							<label>Mandal/Town/Division</label>
 							<select class="form-control" id="manTowDivId">
-								<!--<option value="0">Select Mandal/Town/Division</option>-->
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3">						

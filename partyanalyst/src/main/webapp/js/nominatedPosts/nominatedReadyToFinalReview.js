@@ -5,14 +5,12 @@ var globalLocationLevelValueArr =[];
 var globalLocationLevel=5;
 var globalLocationLevelId = 0;
 var globalDepartmentId = 0 ;
-var globalStateId = 0;
 function getBoardLevelId(boardLevelId,stateId){
-	globalStateId = stateId;
 	globalLocationLevelValueArr = [];
 	globalLocationLevelId = boardLevelId;
 	if(boardLevelId != null && boardLevelId == 1){
 	  globalLocationLevelValueArr.push(1);	 
-	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,0,"");	
+	  getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,0,"");	
 	}else if(boardLevelId != null && boardLevelId == 2){
 		 if(stateId != 0){
 		   globalLocationLevelValueArr.push(stateId);	 
@@ -23,9 +21,6 @@ function getBoardLevelId(boardLevelId,stateId){
 		 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,0,"");
 	}else{
 	   getDistrictsForStates(stateId,"true");
-	/*    setTimeout(function(){
-	  // getDistrictConstituencyAndMndlTwnDvsnLvlData(boardLevelId,"true");
-       }, 2000); */ 
 	} 
 }
 $(document).on("change","#stateId",function(){
@@ -60,8 +55,7 @@ function getDistrictsForStates(state,isFirst){
 		 	if(globalLocationLevelId == 3 && isFirst =="true"){
 				 getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 			 } 
-		
-   		  if(globalLocationLevelId !=1 && globalLocationLevelId !=2 && globalLocationLevelId !=3){
+		  if(globalLocationLevelId !=1 && globalLocationLevelId !=2 && globalLocationLevelId !=3){
 				getConstituenciesForDistricts(0,state,isFirst);
 			 }
 			 
@@ -102,10 +96,6 @@ function getConstituenciesForDistricts(district,stateId,isFirst){
 					$("#constituencyId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 					globalAssmblyArr.push(result[i].locationId);
 				   }
-				  /*  if(globalLocationLevelId == 4){
-					   globalLocationLevelValueArr =[];
-					   globalLocationLevelValueArr = globalAssmblyArr; 
-				   } */
 				   if(globalLocationLevelId == 4 && isFirst=="true"){
 					   globalLocationLevelValueArr =[];
 					   globalLocationLevelValueArr = globalAssmblyArr; 
@@ -171,10 +161,6 @@ function getMandalVillageDetails(constituencyId,stateId,isFirst){
 			   globalLocationLevelValueArr = globalMandalTownDivArr; 
 			    getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 			  }
-			 /*  if(globalLocationLevelId >= 5){
-			   globalLocationLevelValueArr =[];
-			   globalLocationLevelValueArr = globalMandalTownDivArr; 
-			  } */
 		});
 	}
 
