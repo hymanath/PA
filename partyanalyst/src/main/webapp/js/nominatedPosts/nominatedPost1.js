@@ -20,7 +20,7 @@ function getDistrictsForStatesForNotCadre(state){
       
  for(var i in result) {
 if(result[i].id == 0){
-				  $("#notCadreDistId").append('<option value='+result[i].id+'>ALL</option>');
+				  $("#notCadreDistId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }else{
 				  $("#notCadreDistId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
@@ -50,7 +50,7 @@ if(result[i].id == 0){
 	   }
 	for(var i in result){   
 	 if(result[i].id == 0){
-				  $("#notCadreConstId").append('<option value='+result[i].id+'>ALL</option>');
+				  $("#notCadreConstId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }else{
 				  $("#notCadreConstId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
@@ -162,15 +162,17 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 			$("#notCadreSavId").html("<span style='color: green;font-size:22px;'>Not Cadre Saved Successfully</span>");
 			setTimeout(function(){
 			$("#notCadreSavId").html("");
+			//$("#addMemberModalBlock").modal('hide');
 			}, 5000);
 			getNotCadreDetails(globalNominatedCandId);
 		}else {
 			setTimeout(function(){
 			$("#notCadreSavId").html("<span style='color: red;font-size:22px;'>Application Saved Failed. Please Try Again.</span>");
+			//$("#addMemberModalBlock").modal('hide');
 			}, 1000);
 		}
 	}
-		
+
 	function getCastesForAP(){
 	
 		var jsObj={}
@@ -212,3 +214,98 @@ function getNotCadreDetails(globalNominatedCandId){
 	   });
 }
 getRelationTypeDetails();
+
+function validateAddNewCandidateFields(){
+	var voterId =$(".voterCls").val();
+	var name = $("#nameId").val(); 
+	var mobileNo = $("#mobilenoId").val();
+	var gender = $("#genderId").val();
+	var dob=$("#DOBId").val();
+	var image = $("#imageurlId").val();
+	var casteId = $("#casteId").val();
+	var stateId = $(".stateSlctBxCls").val();
+	var districtId = $("#notCadreDistId").val();
+	var  constituencyId = $("#notCadreConstId").val();
+	var  panWardDivisionId = $("#notCadreMandlId").val();
+	var  notCadrePanchayatId = $("#notCadrePanchayatId").val();
+	 if(voterId == null || voterId.trim().length == 0){
+		 $(".addNewCandidateErrorCls").html("Please Enter Voter Id.");
+		 return false;
+	 }
+	 if(name == null || name.trim().length == 0){
+		 $(".addNewCandidateErrorCls").html("Please Enter Name.");
+		 return false;
+	 }
+	 if(mobileNo == null || mobileNo.trim().length == 0){
+		 $(".addNewCandidateErrorCls").html("Please Enter Mobile No.");
+		 return false;
+	 }
+	  var mobileValidateDigits= /^\d{10}$/;
+	 if(!mobileValidateDigits.test(mobileNo)) {
+		 $(".addNewCandidateErrorCls").html("Mobile Number Must be 10 digits");  
+		  return false; 
+	 }
+	 if(gender==0){
+		 $(".addNewCandidateErrorCls").html("Please Select Gender.");
+		 return false; 
+	 }
+	 
+	 if(dob== null || dob.trim().length == 0){
+		 $(".addNewCandidateErrorCls").html("Please Date Of Birth.");
+		 return false;  
+	 }
+ 	 if(dob !=null && dob !=undefined && dob.trim() !=""){
+		 var dobArr=dob.split("/");	
+		  var year=(new Date().getFullYear())-(dobArr[2]);
+		  $("#ageId").val(year);
+	 }	 
+	 var age = $("#ageId").val();
+	 if(age == null || age.trim().length == 0 || age == 0){
+		 $(".addNewCandidateErrorCls").html("Please Enter Age.");
+		 return false; 
+	 }
+	 if(image == null || image.trim().length == 0){
+	   $(".addNewCandidateErrorCls").html("Please Upload Image.");
+		return false;  
+	 }
+	 if(casteId==0){
+		$(".addNewCandidateErrorCls").html("Please Select Caste.");
+		return false;   
+	 }
+	 if(stateId==0){
+		$(".addNewCandidateErrorCls").html("Please Select State.");
+		return false;   
+	 }
+	 if(districtId==0){
+		$(".addNewCandidateErrorCls").html("Please Select District.");
+		return false;   
+	 }
+	 if(constituencyId==0){
+		$(".addNewCandidateErrorCls").html("Please Select Constituency.");
+		return false;   
+	 }
+	 if(panWardDivisionId==0){
+		$(".addNewCandidateErrorCls").html("Please Select Mandal/ Muncipality / Corporation.");
+		return false;   
+	 }
+	 if(notCadrePanchayatId==0){
+		$(".addNewCandidateErrorCls").html("Please Select Panchayat/ Ward / Division/City.");
+		return false;   
+	 }
+	 $(".addNewCandidateErrorCls").html(" ");
+	  return true;
+}
+ $(document).on("blur","#DOBId",function(){
+	var dob=$("#DOBId").val();
+	if(dob!=null && dob!=undefined && dob.trim() !=""){		
+	 var dobArr=dob.split("/");	
+	 var year=(new Date().getFullYear())-(dobArr[2]);
+	 $("#ageId").val(year);
+	}
+}); 
+$(document).on("click","#addCandidateBtnId",function(){
+	var flag = validateAddNewCandidateFields();
+	if(flag){
+		saveNotCadreDetails();
+	}
+});
