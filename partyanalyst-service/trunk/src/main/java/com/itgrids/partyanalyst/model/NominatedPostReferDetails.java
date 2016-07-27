@@ -27,6 +27,7 @@ public class NominatedPostReferDetails extends BaseModel implements Serializable
 
 	private Long nominatedPostReferDetailsId;
 	private Long nominationPostCandidateId;
+	private Long nominatedPostApplicationId;
 	private Long referCadreId;
 	private Long insertedBy;
 	private Date insertedTime;
@@ -35,7 +36,9 @@ public class NominatedPostReferDetails extends BaseModel implements Serializable
 	private String isDeleted;
 	
 	private NominationPostCandidate nominationPostCandidate;
+	private NominatedPostApplication nominatedPostApplication;
 	private TdpCadre referCadre;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -125,4 +128,26 @@ public class NominatedPostReferDetails extends BaseModel implements Serializable
 	public void setReferCadre(TdpCadre referCadre) {
 		this.referCadre = referCadre;
 	}
+	
+	@Column(name="nominated_post_application_id")
+	public Long getNominatedPostApplicationId() {
+		return nominatedPostApplicationId;
+	}
+	public void setNominatedPostApplicationId(Long nominatedPostApplicationId) {
+		this.nominatedPostApplicationId = nominatedPostApplicationId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="nominated_post_application_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NominatedPostApplication getNominatedPostApplication() {
+		return nominatedPostApplication;
+	}
+	public void setNominatedPostApplication(
+			NominatedPostApplication nominatedPostApplication) {
+		this.nominatedPostApplication = nominatedPostApplication;
+	}
+	
+	
+	
 }
