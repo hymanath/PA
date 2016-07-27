@@ -13,7 +13,7 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 	public EmployeeDepartmentDAO(){
 		super(EmployeeDepartment.class);
 	}
-	
+
 	//Swadhin Lenka[ItGrids]
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDepartmentWiseTotalEmployeeList(){
@@ -59,7 +59,7 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 		query.setDate("toDate", toDate);
 		return query.list();
 	}
-	//PO.event_id = E.event_id and EA.event_id = E.event_id
+	
 	//Swadhin Lenka[ItGrids]
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalAttendedEmployee(Date fromDate, Date toDate){
@@ -93,5 +93,78 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 		Query query = getSession().createQuery(sqlQuery.toString());
 		query.setParameter("cadreId", cadreId);
 		return  query.list();
+	}
+	//Swadhin Lenka[ItGrids]
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDepartmentWiseTotalEmployeeListFilter(List<Long> deptList){
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, count(ED.department.departmentId) " +
+						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, TdpCadre TC " +
+						" where " +
+						" ED.employee.employeeId = EWL.employee.employeeId and " +
+						" ED.employee.tdpCadreId = TC.tdpCadreId and " +
+						//" EWL.partyOffice.event.parentEventId = 44 and " +
+						" ED.isDeleted = 'N' and " +
+						" ED.employee.isDeleted = 'N' and " +
+						" ED.employee.isActive = 'Y' and " +
+						" ED.department.departmentId in (:deptList)" +
+						" group by " +
+						" ED.department.departmentId " +
+						" order by " +
+						" ED.department.departmentId ");
+		Query query = getSession().createQuery(sqlQuery.toString());
+		query.setParameterList("deptList", deptList);
+		return query.list();
+	}
+	public List<Object[]> getDepartmentWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList){
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, count(distinct ED.employee.tdpCadreId)" +
+						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, EventAttendee EA " +
+						" where " +
+						" ED.employee.employeeId = EWL.employee.employeeId and " +
+						" EWL.partyOffice.event.eventId = EA.event.eventId and " +
+						//" EWL.partyOffice.event.parentEventId = 44 and " +
+						" ED.employee.tdpCadreId = EA.tdpCadre.tdpCadreId and " +
+						" date(EA.attendedTime) between :fromDate and :toDate and " +
+						" ED.isDeleted = 'N' and " +
+						" ED.employee.isDeleted = 'N' and " +
+						" ED.employee.isActive = 'Y' and " +
+						" ED.department.departmentId in (:deptList)" +
+						" group by " +
+						" ED.department.departmentId " +
+						" order by " +
+						" ED.department.departmentId ");
+		Query query = getSession().createQuery(sqlQuery.toString());
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameterList("deptList", deptList);
+		return query.list();
+	}
+	//Swadhin Lenka[ItGrids]
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList){
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, count(distinct EA.tdpCadre.tdpCadreId) " +
+						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, EventAttendee EA " +
+						" where " +
+						" ED.employee.employeeId = EWL.employee.employeeId and " +
+						" ED.employee.tdpCadreId = EA.tdpCadre.tdpCadreId and " +
+						//" EWL.partyOffice.event.parentEventId = 44 and " +
+						" EWL.partyOffice.event.eventId = EA.event.eventId and " +
+						" date(EA.attendedTime) between :fromDate and :toDate and " +
+						" ED.isDeleted = 'N' and " +
+						" ED.employee.isDeleted = 'N' and " +
+						" ED.employee.isActive = 'Y' and " +
+						" EWL.partyOffice.isDeleted = 'N' and" +
+						" ED.department.departmentId in (:deptList)" +
+						" group by " +
+						" ED.department.departmentId, EWL.partyOffice.partyOfficeId " +
+						" order by " +
+						" ED.department.departmentId, EWL.partyOffice.partyOfficeId ");
+		Query query = getSession().createQuery(sqlQuery.toString());
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameterList("deptList", deptList);
+		return query.list();
 	}
 }
