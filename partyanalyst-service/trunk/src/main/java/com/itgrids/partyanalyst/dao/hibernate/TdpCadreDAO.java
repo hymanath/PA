@@ -7043,9 +7043,9 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		
 	StringBuilder str = new StringBuilder();
 	 if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
-		str.append(" select model.mobileNo,model.houseNo,model.presentAddress.addressLane1,model.presentAddress.addressLane2," +
-				" model.presentAddress.state.stateId,model.presentAddress.district.districtId," +
-				" model.presentAddress.constituency.constituencyId,model.presentAddress.tehsil.tehsilId,model.presentAddress.panchayat.panchayatId,model.presentAddress.pinCode " +
+		str.append(" select model.mobileNo,model.houseNo,model.userAddress.addressLane1,model.userAddress.addressLane2," +
+				" model.userAddress.state.stateId,model.userAddress.district.districtId," +
+				" model.userAddress.constituency.constituencyId,model.userAddress.tehsil.tehsilId,model.userAddress.panchayat.panchayatId,model.userAddress.pinCode " +
 				" ,model.tdpCadreId , model.voter.voterId, model.firstname,model.lastname, model.relativename, model.relativeType, model.gender, model.age, model.dateOfBirth, model.image, model.casteStateId, " +
 				" model.userAddress.userAddressId "+
 				" from TdpCadre model " +

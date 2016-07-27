@@ -65,6 +65,18 @@ public class NominatedPostVO implements Serializable{
 	private Long nominatedCandId;
 	private String candidateType;
 	
+	public String phoneNumName;
+	public String houseNumberName ;
+	public String addressLane1Name;
+	public String addressLane2Name;
+ 
+	public Long addStateName;
+	public Long addDistrictName;
+	public Long addConstituencyName;
+	public Long addMandalsName;
+	public Long addVillageName;
+	public String addPincodeName;
+	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
@@ -341,5 +353,67 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setCandidateType(String candidateType) {
 		this.candidateType = candidateType;
+	}
+	public String getPhoneNumName() {
+		return phoneNumName;
+	}
+	public void setPhoneNumName(String phoneNumName) {
+		this.phoneNumName = phoneNumName;
+	}
+	public String getHouseNumberName() {
+		return houseNumberName;
+	}
+	public void setHouseNumberName(String houseNumberName) {
+		this.houseNumberName = houseNumberName;
+	}
+	public String getAddressLane1Name() {
+		return addressLane1Name;
+	}
+	public void setAddressLane1Name(String addressLane1Name) {
+		this.addressLane1Name = addressLane1Name;
+	}
+	public String getAddressLane2Name() {
+		return addressLane2Name;
+	}
+	public void setAddressLane2Name(String addressLane2Name) {
+		this.addressLane2Name = addressLane2Name;
+	}
+	public Long getAddStateName() {
+		return addStateName;
+	}
+	public void setAddStateName(Long addStateName) {
+		this.addStateName = addStateName;
+	}
+	public Long getAddDistrictName() {
+		return addDistrictName;
+	}
+	public void setAddDistrictName(Long addDistrictName) {
+		this.addDistrictName = addDistrictName;
+	}
+	public Long getAddConstituencyName() {
+		return addConstituencyName;
+	}
+	public void setAddConstituencyName(Long addConstituencyName) {
+		this.addConstituencyName = addConstituencyName;
+	}
+	public Long getAddMandalsName() {
+		return addMandalsName;
+	}
+	public void setAddMandalsName(Long addMandalsName) {
+		this.addMandalsName = addMandalsName;
+	}
+	public Long getAddVillageName() {
+		return addVillageName;
+	}
+	public void setAddVillageName(Long addVillageName) {
+		this.addVillageName = addVillageName;
+	}
+	public String getAddPincodeName() {
+		return addPincodeName;
+	}
+	public void setAddPincodeName(String addPincodeName) {
+		this.addPincodeName = addPincodeName;
 	}	
+	
+	
 }
