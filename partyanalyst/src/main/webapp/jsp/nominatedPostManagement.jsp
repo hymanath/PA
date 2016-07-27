@@ -44,19 +44,22 @@
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="districtMainId">
 							<label>District</label>
+							<span id="districtIdImg"><img src="images/search.gif"/></span>
 							<select class="form-control" id="districtId">
 								<option value="">Select District</option>
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
 							<label>Constituency</label>
+							<span id="constituencyIdImg"><img src="images/search.gif"/></span>
 							<select class="form-control" id="constituencyId">
 								<option value="">Select Constituency</option>
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
 							<label>Mandal/Town/Division</label>
-							<select class="form-control" id="manTowDivId">
+								<span id="manTowDivIdImg"><img src="images/search.gif"/></span>
+				            <select class="form-control" id="manTowDivId">
 								<option value="">Select Mandal/Town/Division</option>
 							</select>
 						</div>

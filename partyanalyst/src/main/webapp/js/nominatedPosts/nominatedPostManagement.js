@@ -7,7 +7,8 @@ $(document).on("change","#stateId",function(){
 });
 
 function getDistrictsForStates(state){
-		
+		 
+		$("#districtIdImg").show();
 		$("#districtMainId").show();
 		
 		$("#districtId  option").remove();
@@ -29,6 +30,7 @@ function getDistrictsForStates(state){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		    $("#districtIdImg").hide();
 		    $("#districtId").append('<option value=0>ALL</option>');			
 			if(result !=null && result.length>0){
 				for(var i in result){
@@ -41,7 +43,7 @@ function getDistrictsForStates(state){
 			}
 			
 	   });
-	  
+	        	   
 }
 
 $(document).on("change","#districtId",function(){
@@ -53,7 +55,7 @@ $(document).on("change","#districtId",function(){
 });
 
 function getConstituenciesForDistricts(district,stateId){
-	   
+	   $("#constituencyIdImg").show();
 	   $("#constituencyMainId").show();
 	   
 	   $("#manTowDivId  option").remove();
@@ -84,6 +86,7 @@ function getConstituenciesForDistricts(district,stateId){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		    $("#constituencyIdImg").hide();
 		   $("#searchDataImgForcons").hide();
 		   $("#constituencyId").append('<option value=0>ALL</option>');
 			 if(result !=null && result.length>0){
@@ -97,7 +100,7 @@ function getConstituenciesForDistricts(district,stateId){
 				getMandalVillageDetails(0,stateId);
 			}
 			 
-		});
+		});		
 	}
 	
 	
@@ -113,7 +116,7 @@ function getConstituenciesForDistricts(district,stateId){
 	
 	
 	function getMandalVillageDetails(constituencyId,stateId){
-		
+		$("#manTowDivIdImg").show();
 		$("#manTowDivMainId").show();
 	
 	/* 	var stateId = $("#statesDivId").val();*/
@@ -154,6 +157,7 @@ function getConstituenciesForDistricts(district,stateId){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		   $("#manTowDivIdImg").hide();
 			//$("#manTowDivId").append("<option value=''>Select Mandal/Town/Divison</option>");
 			$("#manTowDivId").append("<option value='0'>ALL</option>");			  
 			for(var i in result){
