@@ -1663,7 +1663,7 @@ function notCadresearch(){
 			searchValue=$("#searchById").val();
 		}
 		
-		debugger;
+		
 		if(searchType == "1")
 		{
 			if(searchValue.length == 0 )
