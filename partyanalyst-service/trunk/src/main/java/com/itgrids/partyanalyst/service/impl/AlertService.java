@@ -851,9 +851,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 locationVO.setLocalEleBodyName(params[8] != null ? params[8].toString() +" "+eleType : "");
 				 candidateVO.setLocationVO(locationVO);
 				 
-				 candidateVO.setImpactId(params[17] != null ? (Long)params[17] : null);
-				 candidateVO.setImpact(params[18] != null ? params[18].toString() : "");
-				 candidateVO.setImage(params[19] != null ? params[19].toString() : "");
+				 candidateVO.setImpactId(params[18] != null ? (Long)params[18] : null);
+				 candidateVO.setImpact(params[19] != null ? params[19].toString() : "");
+				 candidateVO.setImage(params[20] != null ? params[20].toString() : "");
+				 candidateVO.setMobileNo(params[21] != null ? params[21].toString() : "");
 				
 			}
 		}
@@ -973,8 +974,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 
 				/* candidateVO.setImpactId(params[17] != null ? (Long)params[17] : null);
 				 candidateVO.setImpact(params[18] != null ? params[18].toString() : "");*/
-				 candidateVO.setImage(params[17] != null ? params[17].toString() : "");
-				
+				 candidateVO.setImage(params[18] != null ? params[18].toString() : "");
+				candidateVO.setMobileNo(params[19] != null ? params[19].toString() : "");
 			}
 		}
 		
