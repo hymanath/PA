@@ -39,7 +39,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "user_address")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class UserAddress implements java.io.Serializable {
+public class UserAddress implements java.io.Serializable,Cloneable {
 
 	/**
 	 * 
@@ -77,6 +77,11 @@ public class UserAddress implements java.io.Serializable {
 	public UserAddress() {
 		super();		
 	}
+	
+	public Object clone()throws CloneNotSupportedException{  
+		return super.clone();  
+		}
+	
 
 	public UserAddress(Long userAddressId, Country country, State state,
 			District district, Constituency constituency, Tehsil tehsil,
