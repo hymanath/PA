@@ -83,6 +83,7 @@ public class AlertCandidateDAO extends
 		str.append(" ,ward.constituencyId,ward.name");
 		str.append(",model.alertImpact.alertImpactId,model.alertImpact.impact");
 		str.append(" ,model.tdpCadre.image");
+		str.append(" ,model.tdpCadre.mobileNo");
 		str.append(" from AlertCandidate model left join model.tdpCadre.userAddress.panchayat panc ");
 		str.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
 		str.append(" left join model.tdpCadre.userAddress.constituency constituency ");
@@ -108,7 +109,7 @@ public class AlertCandidateDAO extends
 		str.append(" ,constituency.constituencyId,constituency.name");
 		str.append(" ,state.stateId,state.stateName");
 		str.append(" ,ward.constituencyId,ward.name");
-		str.append(" ,model.tdpCadre.image");
+		str.append(" ,model.tdpCadre.image,model.tdpCadre.mobileNo");
 		str.append(" from AlertAssigned model left join model.tdpCadre.userAddress.panchayat panc ");
 		str.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");
 		str.append(" left join model.tdpCadre.userAddress.constituency constituency ");

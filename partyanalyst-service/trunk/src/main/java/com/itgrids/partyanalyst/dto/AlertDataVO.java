@@ -20,10 +20,17 @@ public class AlertDataVO {
 	private String impact;
 	private String image;
 	private Long impactId;
+	private String mobileNo;
 	private List<AlertDataVO> subList = new ArrayList<AlertDataVO>();
 	
 	
 	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
 	public List<AlertDataVO> getSubList() {
 		return subList;
 	}
