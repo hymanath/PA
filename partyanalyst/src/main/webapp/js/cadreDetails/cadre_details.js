@@ -7204,9 +7204,11 @@ for(var i in result)
 str += '</ul>';
 	$('#notesExisting').html(str);	
 	    if(result != null && result.length>0 && result[0].totalVoters != null && result[0].totalVoters > 0){
+				$("#notesId").css({'color': 'green'});
 	$("#notesId").addClass('text-success');//green color
 	}
 	else{
+			$("#notesId").css({'color': 'green'});
 	$("#notesId").removeClass('text-success');//gray color	
 	} 
 	if(jObj.startIndex==0){
