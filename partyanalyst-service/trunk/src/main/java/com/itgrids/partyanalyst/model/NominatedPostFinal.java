@@ -34,6 +34,7 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
+	private String isPrefered;
 	
 	private NominatedPostMember nominatedPostMember;
 	private NominationPostCandidate nominationPostCandidate;
@@ -145,5 +146,13 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	}
 	public void setApplicationStatus(ApplicationStatus applicationStatus) {
 		this.applicationStatus = applicationStatus;
+	}
+	
+	@Column(name="is_prefered")
+	public String getIsPrefered() {
+		return isPrefered;
+	}
+	public void setIsPrefered(String isPrefered) {
+		this.isPrefered = isPrefered;
 	}
 }
