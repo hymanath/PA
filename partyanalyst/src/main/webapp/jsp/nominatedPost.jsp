@@ -176,7 +176,8 @@
                         </div>
                      </div>
                  </div>
-				 </div>
+				 </div> 
+				 
 				 <form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">
                  <div class="row">
 				
@@ -191,7 +192,7 @@
                              <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
 	                    </div>
 						
-						<div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId">
+				   <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
                         	<div id="searchData"></div>
                         	<div class="" id="scrollDivId" style="display:none;">
@@ -199,11 +200,9 @@
                                 </ul>
                              </div>							
                              <p class="text-muted" id="textId1" style="display:none;"><small>Note: Please select matches profile</small></p>
-	                    </div>
-						
-						
-						<div id="appliedPostForSelectedId"></div>
-                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
+	                </div>
+					<div id="appliedPostForSelectedId" class="hideDivCls"></div>
+                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
                             	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId"/></h4>
@@ -284,12 +283,12 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
+                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<!--<div class="bg_ff pad_10">
                         	
                         </div>-->
                     </div>
-                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
+                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<h4 class="m_0 text-success">NOMINATED LEVEL AND LOCATION 
 							<!--<span class="pull-right f_14" style="cursor:pointer" >
 								Add One More 
@@ -298,7 +297,7 @@
 						</h4>
                     </div>
 					
-					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 hideDivCls">
 						<div class="addBlockNew cloneBlockDiv">
 							<div class="row">
                             	<div class="col-md-4 col-sm-4 col-xs-12 m_top10 col-lg-4">
@@ -458,7 +457,7 @@
 					</div>
 					
 					
-					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 hideDivCls">
 						<div id="addOneMoreBlock"></div>
 						<div class="panel-footer m_top10"  id="addOneMore">
 							<p class="text-center text-capital" >+ Click to add more nominations</p>
@@ -466,7 +465,7 @@
 					</div>
 					
                 </div>
-                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 hideDivCls">
                         <h4 class="panel-title text-success">REFERRAL</h4>
                         <label>Do you have reference</label><br/>
 						
@@ -477,7 +476,7 @@
                         	<input type="radio" checked="true" name="radio"/>No
                         </label>
                     </div>
-					<div class="m_top10" id="involvedCandidatesDiv1" style="display:none;">
+					<div class="m_top10 hideDivCls" id="involvedCandidatesDiv1" style="display:none;">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">
@@ -492,13 +491,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="row" id="uploadFlDivId" >
+					<div class="row hideDivCls" id="uploadFlDivId" >
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p>UPLOAD SCAN COPY</p>
 								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row hideDivCls">
                     	<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12 col-lg-4 col-lg-offset-4 m_top20">
                         	<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
                         </div>
@@ -507,7 +506,7 @@
                     </div>
 					
 					</form>
-              </div>
+	       </div>
       	  </div>
         </div>
     </div>
@@ -517,7 +516,6 @@
     <div class="modal-content">
       <div class="modal-body" style="padding:0px;">
 	  <jsp:include page="commonCadreSearch.jsp" flush="true"/>
-       
       </div>
     </div>
   </div>
@@ -708,6 +706,10 @@ $(document).on("change","#addMandalsId",function(){
  // getPanchayatsForMandal(5);
 });
 $(".changHeading").html("SELECT REFER DETAILS<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>")
+
+$(document).ready(function(){
+	$(".hideDivCls").hide();
+});
 
 </script>
 </body>
