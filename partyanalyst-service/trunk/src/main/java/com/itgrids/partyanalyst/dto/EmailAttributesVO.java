@@ -15,6 +15,7 @@ public class EmailAttributesVO implements Serializable{
 	private String 		 date;
 	private String 		fileName;
 	private String 		filePath;
+	private Long 		emailId;
 	
 	public List<String> getPdfNames() {
 		return pdfNames;
@@ -76,6 +77,13 @@ public class EmailAttributesVO implements Serializable{
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	public Long getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(Long emailId) {
+		this.emailId = emailId;
+	}
+	
 	
 	
 	
