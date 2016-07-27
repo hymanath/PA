@@ -53,5 +53,16 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		query.setParameter("nominatedCandiId", nominatedCandiId);
 		return query.list();
 	}
+	public NominationPostCandidate getUserAddressByCandidate(Long postCandidateId){
+		
+		Query query = getSession().createQuery("select model from  NominationPostCandidate model " +
+				" where " +
+				" model.nominationPostCandidateId = :postCandidateId" +
+				" and model.isDeleted = 'N' ");
+		
+		query.setParameter("postCandidateId", postCandidateId);
+		
+		return (NominationPostCandidate) query.uniqueResult();
+	}
 
 }

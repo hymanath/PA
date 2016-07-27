@@ -16251,7 +16251,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
-		        	vo.setLocationName(localBodi[1].toString() +" "+ localBodi[2].toString());
+		        	vo.setLocationName(localBodi[4].toString() +" "+ localBodi[2].toString());
 		        	locationsList.add(vo);
 	        	}else{
 	        		if(!greaterCorpIds.contains(localBdyId)){

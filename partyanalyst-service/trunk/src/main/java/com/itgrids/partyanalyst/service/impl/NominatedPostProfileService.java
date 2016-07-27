@@ -835,7 +835,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 					Long nominatedCandiPostId= null;
 					Long voterId = null;
-					if(nominatedPostVO.getId() != null && nominatedPostVO.getId().longValue() > 0l){
+					
+					if(nominatedPostVO.getNominatedCandId() == null && nominatedPostVO.getId() != null && nominatedPostVO.getId().longValue() > 0l)
+					{
 						voterId = tdpCadreDAO.getVoterIdByTdpCadreId(nominatedPostVO.getId().longValue());
 						nominationPostCandidate.setVoterId(voterId != null ? voterId : null);
 						nominationPostCandidate.setTdpCadreId(nominatedPostVO.getId());
@@ -844,7 +846,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							for(Object[] cadre : cadreDetails){
 								
 								String fnamr = cadre[12] != null ? cadre[12].toString() : "";
-								String lastnaem = cadre[12] != null ? cadre[12].toString() : "";
+								String lastnaem = cadre[13] != null ? cadre[13].toString() : "";
 								nominationPostCandidate.setCandidateName(fnamr + " " + lastnaem) ;	
 								
 								nominationPostCandidate.setMobileNo(commonMethodsUtilService.getStringValueForObject(cadre[0]));
@@ -870,7 +872,59 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedCandiPostId = nominatedPostVO.getNominatedCandId();
 					}
 					
+					//Address Change Scenario
+					
+					if(nominatedCandiPostId !=null && nominatedCandiPostId.longValue()>0l){						
+						NominationPostCandidate tc = nominationPostCandidateDAO.getUserAddressByCandidate(nominatedCandiPostId);//tdpCadreId						
+						//UserAddress UA = new UserAddress();					
+						UserAddress UA = null;					
+						if(tc !=null){ 
+							 UA = userAddressDAO.get(tc.getAddressId());
+							 tc.setMobileNo(nominatedPostVO.getMobileNo());
+						}
 						
+						if(UA !=null){
+							UA.setHouseNo(nominatedPostVO.getHouseNumberName() != null?nominatedPostVO.getHouseNumberName().toString():null);
+							UA.setAddressLane1(nominatedPostVO.getAddressLane1Name() != null?nominatedPostVO.getAddressLane1Name().toString():null);
+							UA.setAddressLane2(nominatedPostVO.getAddressLane2Name() != null?nominatedPostVO.getAddressLane2Name():null);
+							UA.setPinCode(nominatedPostVO.getAddPincodeName() != null?nominatedPostVO.getAddPincodeName():null);
+							UA.setState(nominatedPostVO.getAddStateName() != null?stateDAO.get(nominatedPostVO.getAddStateName()):null);
+							UA.setDistrict(nominatedPostVO.getAddDistrictName() != null?districtDAO.get(nominatedPostVO.getAddDistrictName()):null);
+							UA.setConstituency(nominatedPostVO.getAddConstituencyName() != null?constituencyDAO.get(nominatedPostVO.getAddConstituencyName()):null);
+							
+							if(nominatedPostVO.getMandalId() !=null && nominatedPostVO.getMandalId().longValue()>0l){
+								char value = nominatedPostVO.getMandalId().toString().charAt(0);
+								Long temp = Long.parseLong(value+"");
+								if(temp !=null && temp==4){
+									UA.setTehsil(tehsilDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
+								}else if(temp !=null && temp==5){
+									UA.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
+								}else if(temp !=null && temp==6){
+									UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
+								}							
+							}						
+							//UA.setTehsil(nominatedPostVO.getMandalId() != null?tehsilDAO.get(nominatedPostVO.getMandalId()):null);
+							
+							if(nominatedPostVO.getPanchayatId() !=null && nominatedPostVO.getPanchayatId().longValue()>0l){
+								char value = nominatedPostVO.getPanchayatId().toString().charAt(0);
+								Long temp = Long.parseLong(value+"");
+								
+								if(temp !=null && temp==7){
+									UA.setPanchayat(panchayatDAO.get(Long.parseLong(nominatedPostVO.getPanchayatId().toString().substring(1))));
+								}else if(temp !=null && temp==8){
+									UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getPanchayatId().toString().substring(1))));
+								}
+								
+							}
+							
+							userAddressDAO.save(UA);	
+						}
+											
+					}
+					
+					
+					
+					
 					if(nominatedPostVO.getNominatdList() != null && !nominatedPostVO.getNominatdList().isEmpty() ){
 						
 						for(NominatedPostVO Vo : nominatedPostVO.getNominatdList()){
@@ -1043,7 +1097,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-					UserAddress UA = new UserAddress();
+					
+					
+					NominationPostCandidate tc = nominationPostCandidateDAO.getUserAddressByCandidate(nominatedPostVO.getNominatedCandId());//tdpCadreId
+					
+					//UserAddress UA = new UserAddress();					
+					UserAddress UA = null;					
+					if(tc !=null){
+						 UA = tc.getAddress();
+						 tc.setMobileNo(nominatedPostVO.getMobileNo());
+					}
+					
 					UA.setHouseNo(nominatedPostVO.getHno() != null?nominatedPostVO.getHno():null);
 					UA.setAddressLane1(nominatedPostVO.getAddress1() != null?nominatedPostVO.getAddress1():null);
 					UA.setAddressLane2(nominatedPostVO.getAddress2() != null?nominatedPostVO.getAddress2():null);
@@ -1051,16 +1115,54 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					UA.setState(nominatedPostVO.getStateId() != null?stateDAO.get(nominatedPostVO.getStateId()):null);
 					UA.setDistrict(nominatedPostVO.getDistrictId() != null?districtDAO.get(nominatedPostVO.getDistrictId()):null);
 					UA.setConstituency(nominatedPostVO.getConstituencyId() != null?constituencyDAO.get(nominatedPostVO.getConstituencyId()):null);
-					UA.setPanchayatId(nominatedPostVO.getPanchayatId() != null?nominatedPostVO.getPanchayatId():null);
-					UA.setTehsil(nominatedPostVO.getMandalId() != null?tehsilDAO.get(nominatedPostVO.getMandalId()):null);
+					
+					if(nominatedPostVO.getMandalId() !=null && nominatedPostVO.getMandalId().longValue()>0l){
+						char value = nominatedPostVO.getMandalId().toString().charAt(0);
+						Long temp = Long.parseLong(value+"");
+						if(temp !=null && temp==4){
+							UA.setTehsil(tehsilDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
+						}else if(temp !=null && temp==5){
+							UA.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
+						}else if(temp !=null && temp==6){
+							UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
+						}
+						
+					}
+					
+					//UA.setTehsil(nominatedPostVO.getMandalId() != null?tehsilDAO.get(nominatedPostVO.getMandalId()):null);
+					
+					if(nominatedPostVO.getPanchayatId() !=null && nominatedPostVO.getPanchayatId().longValue()>0l){
+						char value = nominatedPostVO.getPanchayatId().toString().charAt(0);
+						Long temp = Long.parseLong(value+"");
+						
+						if(temp !=null && temp==7){
+							UA.setPanchayat(panchayatDAO.get(Long.parseLong(nominatedPostVO.getPanchayatId().toString().substring(1))));
+						}else if(temp !=null && temp==8){
+							UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getPanchayatId().toString().substring(1))));
+						}
+						
+					}
+					//UA.setPanchayatId(nominatedPostVO.getPanchayatId() != null?nominatedPostVO.getPanchayatId():null);
+					
+					
 					UserAddress presentAddress =  userAddressDAO.save(UA);
 					
-					TdpCadre tc = tdpCadreDAO.get(nominatedPostVO.getId());//tdpCadreId
+					/*TdpCadre tc = tdpCadreDAO.get(nominatedPostVO.getId());//tdpCadreId
 					if(tc != null){
 						tc.setPresentAddress(presentAddress);
 						tc.setMobileNo(nominatedPostVO.getMobileNo());
 						tdpCadreDAO.save(tc);
-					}
+					}*/
+					
+					
+					/*if(tc != null){
+						tc.setPresentAddress(presentAddress);
+						tc.setMobileNo(nominatedPostVO.getMobileNo());
+						tdpCadreDAO.save(tc);
+					}*/
+					
+					
+					
 				}
 			});
 			status = "success";
