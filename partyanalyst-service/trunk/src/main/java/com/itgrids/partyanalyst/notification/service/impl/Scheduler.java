@@ -363,8 +363,9 @@ public class Scheduler {
 	public void sendPdfReportOnEmployeeAttendanceOnDept()
 	{
 		try{
-			   //schedulerService.runTheJobForEveryDayToSendEmployeeAttendance();
-			System.out.println("job started");
+			   
+			//System.out.println("job started");
+			schedulerService.runTheJobForEveryDayToSendEmpAttendanceDeptWise();
 		}
 		catch(Exception e)
 		{
