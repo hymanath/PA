@@ -515,7 +515,7 @@ function getNominatedPostApplication(startIndex,divId)
 				
 				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
 				str +='</div>';
-			   str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_membership_id='+result[i].memberShipCardId+'/>';
+			   str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_membership_id='+result[i].memberShipCardId+'/>';
 			   // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
 				str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
 				str +='<p class="m_0 m_top5 text-center cadreVotrCardId" value="'+result[i].voterCardNo+'"><b>VOTERID : </b> '+result[i].voterCardNo+'</p>';
@@ -743,13 +743,13 @@ $('.searchTypeCls').click(function(){
   }
 getBoardLevels("boardLvlId"); 
 getDepartments("",1); 
-$(document).on("click",".checkboxCls",function(){
+/* $(document).on("click",".checkboxCls",function(){
 	
     $(".checkboxCls").prop( "checked" ,false);
 	//$("#uploadFlDivId").hide();
 	$( this ).prop( 'checked', true );
 	//$("#uploadFlDivId").show();
-})
+}) */
 function showHideByNominatedPost(num)
 {
 	var selectVal = $("#boardLvlId"+num).val();
@@ -1246,10 +1246,10 @@ var jObj={
 			
 	  });
 }
-$( document ).on("click",".cadreCls",function(){
+/* $( document ).on("click",".cadreCls",function(){
 	globalCadreId = $(this).attr("attr_cadreId"); 
 	  getCandidateAppliedPostsByCadre(globalCadreId);
-});
+}); */
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
  var type = $("input[type='radio']:checked").val();
 		
@@ -1809,4 +1809,25 @@ function notCadresearch(){
 		    
 		 }); 
  }
- 
+ var isAlreadyChecked=false;
+var isSameCheckBoxClicked=0;
+ $(document).on("click",".hideShowDivCls",function(){
+   $(".hideShowDivCls").prop( "checked", false);
+   $(this).prop( "checked", true);
+   var currentClickTdpCadredId= $(this).attr("attr_cadreId");
+    if(currentClickTdpCadredId!=isSameCheckBoxClicked){
+	    isAlreadyChecked = false;	  	 
+	 }
+ isSameCheckBoxClicked = currentClickTdpCadredId;
+  if(isAlreadyChecked){
+	 $(".hideShowDivCls").prop( "checked", false); 
+      $(".hideDivCls").hide();	
+      isAlreadyChecked = false;	  
+   }
+   if($(this).is(':checked')){
+	  globalCadreId = $(this).attr("attr_cadreId"); 
+	  getCandidateAppliedPostsByCadre(globalCadreId); 
+	   $(".hideDivCls").show();
+        isAlreadyChecked = true;	   
+   }
+ });
