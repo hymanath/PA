@@ -13123,6 +13123,9 @@
 				<param name="root">userDataVO</param>
 		</result>
 	</action>
-	
+	<action name="coreDashboardAction" class="coreDashboardAction" >
+		<result name="success">/jsp/coreDashboard.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
 </package>
 </struts>      

@@ -1685,6 +1685,5 @@
 	<bean id="coreDashboardAction" class="com.itgrids.partyanalyst.web.action.CoreDashboardAction" singleton="false">	
 		<property name="coreDashboardService" ref="coreDashboardService"/>
 	</bean>
-	
 </beans>	
 	
