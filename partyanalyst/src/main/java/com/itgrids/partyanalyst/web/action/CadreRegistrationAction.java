@@ -2342,13 +2342,13 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +"," +surveyCadreResponceVO.getMembershipNo()  +",");
 					}
 				*/
-			         /* String checkSumDetails = commonMethodsUtilService.getChecksumDetails("CADRE_2016"+surveyCadreResponceVO.getMembershipNo(),"100","http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success");
+			         /* String checkSumDetails = commonMethodsUtilService.getChecksumDetails("CADRE_2016"+surveyCadreResponceVO.getMembershipNo(),"100","https://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success");
 			            
 			            inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +
 			                "" +surveyCadreResponceVO.getMembershipNo()+"," +//2
 			                ""+"CADRE_2016"+surveyCadreResponceVO.getMembershipNo()+"," +//3
 			                ""+checkSumDetails+"," +//4
-			                ""+"http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success"+"," +//5
+			                ""+"https://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success"+"," +//5
 			                "100,");//6*/
 					PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,surveyCadreResponceVO.getMembershipNo().trim(),surveyCadreResponceVO.getEnrollmentNumber().trim(),"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION");			            
 					inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +//1
