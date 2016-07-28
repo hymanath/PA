@@ -3328,6 +3328,9 @@
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
 	  <property name="dashboardUserAccessTypeDAO"  ref="dashboardUserAccessTypeDAO"></property>
+	  <property name="tdpCommitteeDAO"  ref="tdpCommitteeDAO"></property>
+	  <property name="tdpCommitteeLevelDAO"  ref="tdpCommitteeLevelDAO"></property>
+	  <property name="tdpBasicCommitteeDAO"  ref="tdpBasicCommitteeDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>

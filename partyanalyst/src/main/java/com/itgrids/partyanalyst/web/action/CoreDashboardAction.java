@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,8 +8,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
@@ -25,6 +28,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private JSONObject jObj;
 	private List<UserDataVO> userDataVOList;
 	private UserDataVO userDataVO;
+	private List<CommitteeVO> committeeVOList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	
@@ -61,6 +65,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setUserDataVO(UserDataVO userDataVO) {
 		this.userDataVO = userDataVO;
 	}
+	
+	public List<CommitteeVO> getCommitteeVOList() {
+		return committeeVOList;
+	}
+
+	public void setCommitteeVOList(List<CommitteeVO> committeeVOList) {
+		this.committeeVOList = committeeVOList;
+	}
 
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
@@ -89,7 +101,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			userDataVOList = coreDashboardService.getUserAccessLevelAndValues(jObj.getLong("userId"));
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at getUserAccessLevelAndValues() method of AppointmentAction", e);
+			LOG.error("Exception raised at getUserAccessLevelAndValues() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -100,10 +112,43 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			userDataVO = coreDashboardService.getUserTypeByUserId(jObj.getLong("userId"));
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at getUserTypeByUserId() method of AppointmentAction", e);
+			LOG.error("Exception raised at getUserTypeByUserId() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getCommitteesWiseLevelsBasedDetails(){
+		try{
+			LOG.info("Entered into getCommitteesWiseLevelsBasedDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			
+			committeeVOList = coreDashboardService.getCommitteesWiseLevelsBasedDetails(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteesWiseLevelsBasedDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 }
