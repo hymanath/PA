@@ -680,6 +680,7 @@
 	   <pattern>/alertDetailsAction*</pattern>
 	    <pattern>/nominatedPostManagementAction*</pattern>
 	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
+	   <pattern>/coreDashboardAction*</pattern>
 	
 	</decorator> 
 </decorators>
