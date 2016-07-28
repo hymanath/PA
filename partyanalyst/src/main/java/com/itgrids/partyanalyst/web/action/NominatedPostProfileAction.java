@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
@@ -55,6 +56,8 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private AddNotcadreRegistrationVO addNotcadreRegistrationVO;
 	private List<NominatedPostVO> 				candidatesList;
 	private List<CadreCommitteeVO>                    cadreCommitteeVOList;
+	private NominatedPostReferVO 				nominatedPostReferVO;
+	private IdNameVO							idNameVO;
 	private List<CastePositionVO> castePositionVOList;
 	private INominatedPostMainDashboardService        nominatedPostMainDashboardService;
 	
@@ -64,6 +67,18 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private NominatedPostDashboardVO nominatedPostDashboardVO;
 	
 	
+	public IdNameVO getIdNameVO() {
+		return idNameVO;
+	}
+	public void setIdNameVO(IdNameVO idNameVO) {
+		this.idNameVO = idNameVO;
+	}
+	public NominatedPostReferVO getNominatedPostReferVO() {
+		return nominatedPostReferVO;
+	}
+	public void setNominatedPostReferVO(NominatedPostReferVO nominatedPostReferVO) {
+		this.nominatedPostReferVO = nominatedPostReferVO;
+	}
 	public NominatedPostDashboardVO getNominatedPostDashboardVO() {
 		return nominatedPostDashboardVO;
 	}
@@ -856,4 +871,32 @@ public String getAllPositions(){
 
 return Action.SUCCESS;
 }
+	public String getAllReferredMemberDetailsForPosition(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			nominatedPostReferVO = nominatedPostProfileService.getAllReferredMemberDetailsForPosition(jObj.getLong("levelId"),jObj.getLong("levelValue"),
+							jObj.getLong("departmentId"),jObj.getLong("boardId"),jObj.getLong("positionId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAllReferredMemberDetailsForPosition Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getOverAllCommentsForCandidate(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVO = nominatedPostProfileService.getOverAllCommentsForCandidate(jObj.getLong("candidateId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getOverAllCommentsForCandidate Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
