@@ -57,7 +57,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.userAddress.district district ");
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
-		str.append(" where model.isDeleted ='N' and model.impactLevelId=:levelId");
+		str.append(" where model.isDeleted ='N'");
+		if(levelId != null && levelId > 0)
+		str.append(" and model.impactLevelId=:levelId");
 		if(sourceIds != null && sourceIds.size() > 0)
 			str.append(" and model.alertSource.alertSourceId in(:sourceIds)");
 		if(fromDate != null)
@@ -75,6 +77,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			query.setParameterList("sourceIds", sourceIds);
 		if(statusId != null && statusId > 0)
 			query.setParameter("statusId", statusId);
+		if(levelId != null && levelId > 0)
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}
