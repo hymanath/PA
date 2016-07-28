@@ -130,4 +130,62 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getShortlistedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds){
+		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId," +
+												" count(distinct model.departments.departmentId)" +
+												" from NominatedPostApplication model" +
+												" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
+												" and model.applicationStatus.applicationStatusId = 3" +
+												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+												" group by model.nominationPostCandidate.nominationPostCandidateId");
+		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominatedPostFinalId," +
+					" model.nominationPostCandidate.nominationPostCandidateId," +
+					" TC.tdpCadreId," +
+					" model.nominationPostCandidate.voterId," +
+					" model.nominationPostCandidate.candidateName," +
+					" model.nominationPostCandidate.mobileNo," +
+					" model.nominationPostCandidate.gender," +
+					" TC.firstname," +
+					" TC.mobileNo," +
+					" TC.age," +
+					" TC.gender," +
+					" CC.categoryName," +
+					" CCG.casteCategoryGroupName," +
+					" caste.casteName," +
+					" model.applicationStatus.applicationStatusId," +
+					" model.applicationStatus.status" +
+					" from NominatedPostFinal model" +
+					" left join model.nominationPostCandidate.tdpCadre TC" +
+					" left join TC.casteState CS" +
+					" left join CS.casteCategoryGroup CCG" +
+					" left join CCG.casteCategory CC" +
+					" left join CS.caste caste" +
+					" where model.nominatedPostMember.boardLevelId = :levelId" +
+					" and model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId" +
+					" and model.nominatedPostMember.nominatedPostPosition.boardId = :boardId" +
+					" and model.nominatedPostMember.nominatedPostPosition.positionId = :positionId" +
+					" and model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N'" +
+					" and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
+					" and model.nominationPostCandidate.isDeleted = 'N'");
+		if(levelValue != null && levelValue.longValue() > 0l)
+			sb.append(" and model.nominatedPostMember.locationValue = :levelValue");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("levelId", levelId);
+		if(levelValue != null && levelValue.longValue() > 0l)
+			query.setParameter("levelValue", levelValue);
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		query.setParameter("positionId", positionId);
+		
+		return query.list();
+	}
 }
