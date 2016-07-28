@@ -6,7 +6,6 @@ import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.INominatedPostMainDashboardService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -53,6 +54,8 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private AddNotcadreRegistrationVO addNotcadreRegistrationVO;
 	private List<NominatedPostVO> 				candidatesList;
 	private List<CadreCommitteeVO>                    cadreCommitteeVOList;
+	private List<CastePositionVO> castePositionVOList;
+	private INominatedPostMainDashboardService        nominatedPostMainDashboardService;
 	
 	private Long lId;
 	private Long stId;
@@ -77,7 +80,19 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setStId(Long stId) {
 		this.stId = stId;
 	}
-	
+	public List<CastePositionVO> getCastePositionVOList() {
+		return castePositionVOList;
+	}
+	public void setCastePositionVOList(List<CastePositionVO> castePositionVOList) {
+		this.castePositionVOList = castePositionVOList;
+	}
+	public INominatedPostMainDashboardService getNominatedPostMainDashboardService() {
+		return nominatedPostMainDashboardService;
+	}
+	public void setNominatedPostMainDashboardService(
+			INominatedPostMainDashboardService nominatedPostMainDashboardService) {
+		this.nominatedPostMainDashboardService = nominatedPostMainDashboardService;
+	}
 	public List<CadreCommitteeVO> getCadreCommitteeVOList() {
 		return cadreCommitteeVOList;
 	}
@@ -782,5 +797,30 @@ public String getNotCadreDetailsById(){
 
 	return Action.SUCCESS;
 	}
+public String getNominatedPostMainDashboard(){
+	return Action.SUCCESS;
+}
+public String getLocationWiseCastePositionCount(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationWiseCastePositionCount() method of NominatedPostProfileAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
+public String getLocationWiseCasteGroupPositionCount(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+		castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"));
+	} catch (Exception e) {
+		LOG.error("Exception raised at getLocationWiseCasteGroupPositionCount() method of NominatedPostProfileAction", e);
+	}
+
+return Action.SUCCESS;
+}
 
 }

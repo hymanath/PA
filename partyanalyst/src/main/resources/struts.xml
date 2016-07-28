@@ -13113,7 +13113,7 @@
 				<param name="root">retResult</param>
 		</result>
 	</action>
-	<action name="getUserAccessLevelAndValuesAction" class="coreDashboardAction" method="getUserAccessLevelAndValues">
+		<action name="getUserAccessLevelAndValuesAction" class="coreDashboardAction" method="getUserAccessLevelAndValues">
 		<result type="json" name="success">
 				<param name="root">userDataVOList</param>
 		</result>
@@ -13126,6 +13126,19 @@
 	<action name="coreDashboardAction" class="coreDashboardAction" >
 		<result name="success">/jsp/coreDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>
+	</action>
+	 <action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
+		<result name="success">/jsp/nominatedPostMainDashboard.jsp</result>
+	</action>
+	 <action name="getLocationWiseCastePositionCountAction" class="nominatedPostProfileAction" method="getLocationWiseCastePositionCount">
+	  <result type="json" name="success">
+			<param name="root">castePositionVOList</param>
+		</result>
+	</action>	
+	<action name="getLocationWiseCasteGroupPositionCountAction" class="nominatedPostProfileAction" method="getLocationWiseCasteGroupPositionCount">
+		<result type="json" name="success">
+				<param name="root">castePositionVOList</param>
+		</result>
 	</action>
 </package>
 </struts>      
