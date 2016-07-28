@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 
 import com.itgrids.partyanalyst.dao.IPositionDAO;
@@ -13,4 +16,8 @@ public class PositionDAO extends GenericDaoHibernate<Position, Long> implements 
 		
 	}
 
+	public List<Object[]> getAllPositions(){
+		Query query = getSession().createQuery("select model.positionId,model.positionName from Position model ");
+		return query.list();
+	}
 }

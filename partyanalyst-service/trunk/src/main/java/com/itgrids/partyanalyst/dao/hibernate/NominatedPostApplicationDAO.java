@@ -541,4 +541,22 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       }
 		    return query.list();
 	}
+ 
+ 	public List<Object[]> getApplicationStatusCntByPositionId(Long positionId){
+ 		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.applicationStatus.applicationStatusId, model.applicationStatus.status,count(distinct model.nominatedPostFinalId)  from NominatedPostFinal model,NominatedPostApplication model1  " +
+				"where model.isDeleted = 'N'  and model1.isDeleted = 'N' and model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId ");
+		
+		
+		 if(positionId != null && positionId.longValue() > 0l){
+			queryStr.append(" and model1.position.positionId = :positionId ");
+		}
+		 queryStr.append(" group by model.applicationStatus.applicationStatusId "); 
+		Query query = getSession().createQuery(queryStr.toString());
+		if(positionId != null && positionId.longValue() > 0l){
+			query.setParameter("positionId", positionId);
+		}
+		
+		return query.list();
+ 	}
 }

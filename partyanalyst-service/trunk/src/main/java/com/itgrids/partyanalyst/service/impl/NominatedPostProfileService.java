@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.INominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -52,11 +53,13 @@ import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PositionDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -118,9 +121,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
 	private ICasteStateDAO casteStateDAO;
 	private ICadreCommitteeService cadreCommitteeService;
+	private IPositionDAO positionDAO;
 	
 	
-	
+	public IPositionDAO getPositionDAO() {
+		return positionDAO;
+	}
+
+	public void setPositionDAO(IPositionDAO positionDAO) {
+		this.positionDAO = positionDAO;
+	}
+
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -129,7 +140,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
 	}
-
 	public INominatedPostApplicationHistoryDAO getNominatedPostApplicationHistoryDAO() {
 		return nominatedPostApplicationHistoryDAO;
 	}
@@ -3025,5 +3035,76 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			LOG.error("Exception raised at updateNominatedPostStatusDetails() method of NominatedPostProfileService", e);
 		}
 		return status;
+	}
+	
+	/**
+	 * @Author  Hyma
+	 * @Version NominatedPostProfileService.java  July 28, 2016 05:30:00 PM 
+	 * @return List<IdNameVO>
+	 * description  { Getting All Status Count By Position Id From Database }
+	 */
+	public NominatedPostDashboardVO getAllPositionWiseStatus(Long positionId){
+		NominatedPostDashboardVO returnVO = new NominatedPostDashboardVO();
+		try{
+		List<Object[]> allNomintdStatslist = nominatedPostStatusDAO.getAllNominatedStatusList();
+		if(commonMethodsUtilService.isListOrSetValid(allNomintdStatslist)){
+			List<NominatedPostDashboardVO> nominatedStatsVoList = new ArrayList<NominatedPostDashboardVO>();
+			String[] setterPropertiesList = {"statusId","statusName"};
+			nominatedStatsVoList = (List<NominatedPostDashboardVO>) setterAndGetterUtilService.setValuesToVO(allNomintdStatslist, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostDashboardVO");
+			returnVO.setNominatedStatusList(nominatedStatsVoList);
+		}
+		
+		List<Object[]> nomintdStats = nominatedPostDAO.getNominatdPostStatusCntByPosition(positionId);
+		if(commonMethodsUtilService.isListOrSetValid(nomintdStats)){
+			for(Object[] obj : nomintdStats){
+			NominatedPostDashboardVO matchedVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getNominatedStatusList(), "id", commonMethodsUtilService.getStringValueForObject(obj[0]));
+			if(matchedVO != null){
+				matchedVO.setStatusCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+			}
+		}
+	}
+		
+		List<Object[]> allApplctnStatsList = applicationStatusDAO.getAllApplicationStatusList();
+		if(commonMethodsUtilService.isListOrSetValid(allApplctnStatsList)){
+			List<NominatedPostDashboardVO> appctnStatusVoList = new ArrayList<NominatedPostDashboardVO>();
+			String[] setterPropertiesList = {"statusId","statusName"};
+			appctnStatusVoList = (List<NominatedPostDashboardVO>) setterAndGetterUtilService.setValuesToVO(allApplctnStatsList, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostDashboardVO");
+			returnVO.setApplicatnStatsList(appctnStatusVoList);
+		}
+		
+		List<Object[]> appctnStatus = nominatedPostApplicationDAO.getApplicationStatusCntByPositionId(positionId);
+		if(commonMethodsUtilService.isListOrSetValid(appctnStatus)){
+			for(Object[] obj : appctnStatus){
+			NominatedPostDashboardVO matchedVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getApplicatnStatsList(), "id", commonMethodsUtilService.getStringValueForObject(obj[0]));
+			if(matchedVO != null){
+				matchedVO.setStatusCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+			}
+		}
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+	LOG.error("Exception raised at getAllPositionWiseStatus() method of NominatedPostProfileService", e);
+}
+		return returnVO;
+}
+	/**
+	 * @Author  Hyma
+	 * @Version NominatedPostProfileService.java  July 28, 2016 05:30:00 PM 
+	 * @return List<IdNameVO>
+	 * description  { Getting All Positions From Database }
+	 */
+	public List<IdNameVO> getPositions(){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+		List<Object[]> list = positionDAO.getAllPositions();
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			String[] setterPropertiesList = {"id","name"};
+			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getPositions()", e);
+		}
+		return returnList;
 	}
 }
