@@ -5664,6 +5664,7 @@
 			 <result type="redirect"  name="bloodBankDashboard" >bloodBankDashBoardAction.action</result>
 			 <result type="redirect"  name="bloodBankBleeding" >bloodBankBleadingAction.action</result>
 			 <result type="redirect"  name="debate" >debateAction.action</result>
+			 <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -13016,6 +13017,10 @@
 	  <result type="json" name="success">
 			<param name="root">idNameVOList</param>
 		</result>
+	</action>
+	
+	<action name="debateUnicodeConvertion" class="debateAction" method="debateUnicodeConvertion" >
+		<result name="success" type="redirect">debateAction.action</result>
 	</action>
 	
 	<action name="getAllDeptsAndBoardsByLevelAction" class="nominatedPostProfileAction" method="getAllDeptsAndBoardsByLevel">
