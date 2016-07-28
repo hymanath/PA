@@ -30,7 +30,7 @@ public class DashboardUserAccessLevel extends BaseModel{
 	private Long levelValue;
 	
 	private User user;
-	private UserType userLevel;
+	private UserLevel userLevel;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -81,10 +81,10 @@ public class DashboardUserAccessLevel extends BaseModel{
 	@JoinColumn(name="user_level_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserType getUserLevel() {
+	public UserLevel getUserLevel() {
 		return userLevel;
 	}
-	public void setUserLevel(UserType userLevel) {
+	public void setUserLevel(UserLevel userLevel) {
 		this.userLevel = userLevel;
 	}
 	
