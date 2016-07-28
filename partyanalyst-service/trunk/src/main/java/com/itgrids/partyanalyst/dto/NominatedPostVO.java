@@ -25,7 +25,7 @@ public class NominatedPostVO implements Serializable{
 	
 	private Long stateId;
 	private Long districtId;
-	private Long ConstituencyId;
+	private Long constituencyId;
 	private Long panchayatId;
 	private String hno;
 	private String address1;
@@ -264,11 +264,12 @@ public class NominatedPostVO implements Serializable{
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
 	}
+	
 	public Long getConstituencyId() {
-		return ConstituencyId;
+		return constituencyId;
 	}
 	public void setConstituencyId(Long constituencyId) {
-		ConstituencyId = constituencyId;
+		this.constituencyId = constituencyId;
 	}
 	public Long getPanchayatId() {
 		return panchayatId;

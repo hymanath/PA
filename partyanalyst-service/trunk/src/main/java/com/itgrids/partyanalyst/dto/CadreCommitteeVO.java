@@ -5,6 +5,7 @@ import java.util.List;
 
 public class CadreCommitteeVO implements java.io.Serializable{
 	
+	private Long id;
 	private Long tdpCadreId;
 	private String cadreName;
 	private String relativeName;
@@ -81,6 +82,13 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String fromYear;
 	private String toYear;
 	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getImportantLeaderCadreId() {
 		return importantLeaderCadreId;
 	}
