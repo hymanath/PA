@@ -13113,6 +13113,16 @@
 				<param name="root">retResult</param>
 		</result>
 	</action>
+	<action name="getAllReferredMemberDetailsForPositionAction" class="nominatedPostProfileAction" method="getAllReferredMemberDetailsForPosition">
+		<result type="json" name="success">
+   			<param name="root">nominatedPostReferVO</param>
+   		</result>
+	</action>
+	<action name="getOverAllCommentsForCandidateAction" class="nominatedPostProfileAction" method="getOverAllCommentsForCandidate">
+		<result type="json" name="success">
+   			<param name="root">idNameVO</param>
+   		</result>
+	</action>
 		<action name="getUserAccessLevelAndValuesAction" class="coreDashboardAction" method="getUserAccessLevelAndValues">
 		<result type="json" name="success">
 				<param name="root">userDataVOList</param>
