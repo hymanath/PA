@@ -21,6 +21,7 @@
 	
 	$(document).ready(function(){
 		onLoadCalls();
+		getCommitteesWiseLevelsBasedDetails();
 	});
 	
     function onLoadCalls(){
@@ -49,6 +50,41 @@
 			
 		});
 	}
+    
+    function getCommitteesWiseLevelsBasedDetails(){
+    	
+       var userAccessLevelValues = [];
+       userAccessLevelValues.push(19);
+       userAccessLevelValues.push(23);
+       
+       var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   
+       var startDateString = '01/01/2015';
+	   var endDateString = '28/07/2016';
+	   var userAccessLevelId = '3';
+	   var state = 'AP';
+	   
+ 	   var jsObj ={ userAccessLevelId:userAccessLevelId,
+ 			        userAccessLevelValuesArray : userAccessLevelValues,
+ 			        state : state,
+ 			        basicCommitteeIdsArray:basicCommitteeIdsArray,
+ 			        startDateString : startDateString,
+ 			        endDateString :   endDateString
+ 			      };
+ 	   
+ 	   $.ajax({
+ 			type : 'POST',
+ 			url : 'getCommitteesWiseLevelsBasedDetailsAction.action',
+ 			dataType : 'json',
+ 			data : {task:JSON.stringify(jsObj)}
+ 		}).done(function(result){
+ 			alert(123);
+ 		});
+ 	}
+    
 </script>
 </body>
 </html>

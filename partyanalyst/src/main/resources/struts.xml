@@ -13150,5 +13150,10 @@
 				<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="getCommitteesWiseLevelsBasedDetailsAction" class="coreDashboardAction" method="getCommitteesWiseLevelsBasedDetails">
+		<result type="json" name="success">
+				<param name="root">committeeVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
