@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
@@ -119,7 +120,16 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
 	private ICasteStateDAO casteStateDAO;
 	private ICadreCommitteeService cadreCommitteeService;
+	private ICountryDAO countryDAO;
 	
+	
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
 
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
@@ -899,6 +909,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 									}
 									if(address !=null){
 										address.setUserAddressId(null);
+										address.setCountry(countryDAO.get(1L));
 										newAddress = userAddressDAO.save(address);
 									}
 									
@@ -937,9 +948,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							UA.setAddressLane1(nominatedPostVO.getAddressLane1Name() != null?nominatedPostVO.getAddressLane1Name().toString():null);
 							UA.setAddressLane2(nominatedPostVO.getAddressLane2Name() != null?nominatedPostVO.getAddressLane2Name():null);
 							UA.setPinCode(nominatedPostVO.getAddPincodeName() != null?nominatedPostVO.getAddPincodeName():null);
-							UA.setState(nominatedPostVO.getAddStateName() != null?stateDAO.get(nominatedPostVO.getAddStateName()):null);
-							UA.setDistrict(nominatedPostVO.getAddDistrictName() != null?districtDAO.get(nominatedPostVO.getAddDistrictName()):null);
-							UA.setConstituency(nominatedPostVO.getAddConstituencyName() != null?constituencyDAO.get(nominatedPostVO.getAddConstituencyName()):null);
+							UA.setState(nominatedPostVO.getAddStateName() != null  && nominatedPostVO.getAddStateName().longValue()>0L ?stateDAO.get(nominatedPostVO.getAddStateName()):null);
+							UA.setDistrict(nominatedPostVO.getAddDistrictName() != null && nominatedPostVO.getAddDistrictName().longValue()>0L ?districtDAO.get(nominatedPostVO.getAddDistrictName()):null);
+							UA.setConstituency(nominatedPostVO.getAddConstituencyName() != null  && nominatedPostVO.getAddConstituencyName().longValue()>0L  ?constituencyDAO.get(nominatedPostVO.getAddConstituencyName()):null);
 							
 							if(nominatedPostVO.getAddMandalsName() !=null && nominatedPostVO.getAddMandalsName().longValue()>0l){
 								char value = nominatedPostVO.getAddMandalsName().toString().charAt(0);
@@ -964,7 +975,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								}
 								
 							}
-							
+							UA.setCountry(countryDAO.get(1L));
 							userAddressDAO.save(UA);	
 						}										
 					}
@@ -1091,6 +1102,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				nominatedPostAddress.setWard(constituencyDAO.get(Long.parseLong(Vo.getPanchayatId().toString().substring(1))));
 			}
 		}
+		nominatedPostAddress.setCountry(countryDAO.get(1L));
 		nominatedPostAddress = userAddressDAO.save(nominatedPostAddress);
 		
 		nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
@@ -1120,7 +1132,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		calendar.setTime(new Date());
 		 int year = calendar.get(Calendar.YEAR);
 		 int month = calendar.get(Calendar.MONTH);
-		 int day = calendar.get(Calendar.DAY_OF_MONTH);
+		 //int day = calendar.get(Calendar.DAY_OF_MONTH);
 		 int temp = month+1;
 		 String monthText = getMonthForInt(temp);
 		
@@ -1222,8 +1234,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 					}
 					//UA.setPanchayatId(nominatedPostVO.getPanchayatId() != null?nominatedPostVO.getPanchayatId():null);
-					
-					
+					UA.setCountry(countryDAO.get(1L));
 					UserAddress presentAddress =  userAddressDAO.save(UA);
 					
 					/*TdpCadre tc = tdpCadreDAO.get(nominatedPostVO.getId());//tdpCadreId
@@ -1599,9 +1610,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								if(appliedVO != null && runningVO != null && appliedVO.getTotalPositions().longValue()>0L){
 									//NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
 									if(vo2 != null){
-										vo2.setTotalPositions((totalVO.getTotalPositions()-(appliedVO.getTotalPositions() + runningVO.getTotalPositions())));
-										vo2.setTotalDept((totalVO.getTotalDept()-(appliedVO.getTotalDept() + runningVO.getTotalDept())));
-										vo2.setTotalCorp((totalVO.getTotalCorp()-(appliedVO.getTotalCorp() + runningVO.getTotalCorp())));
+										vo2.setTotalPositions(totalVO.getTotalPositions().longValue()>0L?(totalVO.getTotalPositions()-(appliedVO.getTotalPositions() + runningVO.getTotalPositions())):0L);
+										vo2.setTotalDept(totalVO.getTotalDept().longValue()>0L ? (totalVO.getTotalDept()-(appliedVO.getTotalDept() + runningVO.getTotalDept())):0L);
+										vo2.setTotalCorp(totalVO.getTotalCorp().longValue()>0l? (totalVO.getTotalCorp()-(appliedVO.getTotalCorp() + runningVO.getTotalCorp())):0L);
 										
 										if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
 											if(vo2.getTotalPositions() != null && vo2.getTotalPositions().longValue()>0L){
@@ -1616,8 +1627,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 										}
 									}
 								}
-						}else{
-							;
 						}
 					}
 				}
@@ -2032,7 +2041,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		calendar.setTime(new Date());
 		 int year = calendar.get(Calendar.YEAR);
 		 int month = calendar.get(Calendar.MONTH);
-		 int day = calendar.get(Calendar.DAY_OF_MONTH);
+		// int day = calendar.get(Calendar.DAY_OF_MONTH);
 		 int temp = month+1;
 		 String monthText = getMonthForInt(temp);
 		
@@ -2373,7 +2382,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Long> townList = new ArrayList<Long>(0);
 			List<Long> divisonList = new ArrayList<Long>(0);
 			
-			List<Object[]> deptBoardObj = new ArrayList<Object[]>(0);
+			//List<Object[]> deptBoardObj = new ArrayList<Object[]>(0);
 			
 			/*List<Object[]> mandalObj = new ArrayList<Object[]>(0);
 			List<Object[]> townObj = new ArrayList<Object[]>(0);
@@ -2852,6 +2861,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						UA.setState(notcadreRegistrationVO.getStateId() != null?stateDAO.get(notcadreRegistrationVO.getStateId()):null);
 						UA.setDistrict(notcadreRegistrationVO.getDistrictId() != null?districtDAO.get(notcadreRegistrationVO.getDistrictId()):null);
 						UA.setConstituency(notcadreRegistrationVO.getConstituencyId() != null?constituencyDAO.get(notcadreRegistrationVO.getConstituencyId()):null);
+						UA.setCountry(countryDAO.get(1L));
 						//UA.setPanchayatId(notcadreRegistrationVO.getPanchayatId() != null?notcadreRegistrationVO.getPanchayatId():null);
 						
 						String mandalORLEBIdStr = notcadreRegistrationVO.getMandalId() != null && notcadreRegistrationVO.getMandalId().longValue()>0L?notcadreRegistrationVO.getMandalId().toString():"";
@@ -2909,7 +2919,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	           		 {
 	                    	 pathBuilder = new StringBuilder();
 	                    	 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-	                    	 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+	                    	// String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 	         				String destinationPath = folderName+"/"+randomNumber+"."+entry.getValue();
 	         				 pathBuilder.append(IConstants.NOT_CADRE_IMAGES).append("/").append(randomNumber).append(".")
 	         				 .append(entry.getValue());
