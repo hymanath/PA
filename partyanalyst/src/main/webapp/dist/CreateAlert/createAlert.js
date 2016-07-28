@@ -938,13 +938,12 @@ function disableByLevel(index)
 		 }
    })
    $(document).on("click",".closeIcon",function(){
-	$(this).parent().remove();
+	//$(this).parent().remove();
+	$(this).closest(".col-md-3").remove();
 	var id=$(this).attr("id");
-	
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
 	involvedCadreIds.pop(id);	
-
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 });
  
