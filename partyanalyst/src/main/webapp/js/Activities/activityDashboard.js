@@ -1685,7 +1685,7 @@ function buildDayWiseImages(result,divId)
 				if(j < 20)
 				{
 					str+='<li>';
-					str+='<img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" alt="" style="height:25px;cursor:pointer;" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
+					str+='<img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" alt="" style="height:25px;cursor:pointer;" data-toggle="modal" class="Imagepopup"  dayattr="'+result[i].day+'" imgpath="'+result[i].subList[j].path+'"/>';
 					str+='</li>';
 				}
 			
@@ -1753,13 +1753,13 @@ $(document).on('click', '.Imagepopup', function(){
 				 str+='</nav>';
 				 str+='<div class="bg_cc pad_10" id="popupImages">';
 					 /*str+='<ul class="slider-for">';
-						 str+='<li><img src="http://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
-						 str+='<li><img src="http://mytdp.com/activity_documents  /Desert.jpg"></li>';
+						 str+='<li><img src="https://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
+						 str+='<li><img src="https://mytdp.com/activity_documents  /Desert.jpg"></li>';
 						
 					 str+='</ul>';
 					 str+='<ul class="slider-nav">';
-						 str+='<li><img src="http://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
-						 str+='<li><img src="http://mytdp.com/activity_documents  /Desert.jpg"></li>';
+						 str+='<li><img src="https://mytdp.com/activity_documents  /Chrysanthemum.jpg"></li>';
+						 str+='<li><img src="https://mytdp.com/activity_documents  /Desert.jpg"></li>';
 					 str+='</ul>';*/
 				 str+='</div>';
 				str+=' <div id="paginationDivId"></div>';
@@ -2157,24 +2157,24 @@ function buildDayWiseImagesForPopup1(result,jObj,path)
 	
 		str+='<ul class="slider-for">';
 		if(path != null && path.length>0)
-			str+='<li><img src="http://mytdp.com/activity_documents/' +path+'"></li>';
+			str+='<li><img src="https://mytdp.com/activity_documents/' +path+'"></li>';
 			for(var i in result)
 			{
 			for(var j in result[i].subList)
 			{
 				
-				str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
+				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
 			}
 			}
 			  str+='</ul>';
 		str+='<ul class="slider-nav">';	
 		if(path != null && path.length>0)
-			str+='<li><img src="http://mytdp.com/activity_documents/' +path+'" style="cursor:pointer;"></li>';
+			str+='<li><img src="https://mytdp.com/activity_documents/' +path+'" style="cursor:pointer;"></li>';
 		for(var i in result)
 		{	 
 			for(var j in result[i].subList)
 			{
-				str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
+				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';	
 			}
 		}
 				str+='</ul>';
@@ -2252,7 +2252,7 @@ function buildDayWiseImagesForPopup(result,path,day)
 			{
 				if(j < 20)
 				{
-						str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
+						str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
 				}
 			}
 			  str+='</ul>';
@@ -2263,9 +2263,9 @@ function buildDayWiseImagesForPopup(result,path,day)
 				if(j < 20)
 				{
 				if(result[i].subList[j].path==path)
-					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></a></li>';
+					str+='<li class="imgTrig1"><a class="imgTrig1"><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></a></li>';
 				else
-				 str+='<li><img src="http://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';		
+				 str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"></li>';		
 				}
 		  }
 				str+='</ul>';
