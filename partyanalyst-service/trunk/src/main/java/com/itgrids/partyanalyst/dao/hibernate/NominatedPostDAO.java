@@ -106,9 +106,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	
 	public List<Object[]> getNominatedPostsByBoardsAndDepts(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType){
 		StringBuilder str = new StringBuilder();
-		str.append("SELECT position.positionId," +
+		/*str.append("SELECT position.positionId," +
 				" position.positionName " +
-				"	FROM NominatedPostApplication model1,NominatedPost model left join model.nominatedPostMember nominatedPostMember " +
+				"	FROM NominatedPostApplication model1,NominatedPost model" +
+				"  left join model.nominatedPostMember nominatedPostMember " +
 				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
 				" left join nominatedPostPosition.position position " +
 				"   WHERE model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
@@ -116,30 +117,36 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" and nominatedPostMember.isDeleted = 'N'" +
 				" and nominatedPostPosition.isDeleted = 'N' " +
 				" and model1.isDeleted = 'N'" +
-				" and model1.nominationPostCandidate.isDeleted = 'N' " );
+				" and model1.nominationPostCandidate.isDeleted = 'N' " );*/
+		
+		str.append("SELECT model.position.positionId," +
+				" model.position.positionName " +
+				"	FROM NominatedPostApplication model" +
+				"   WHERE " +
+				"  model.isDeleted ='N'" );
 		
 		if(boardLevelId !=null && boardLevelId>0){
-			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+			str.append(" and model.boardLevelId =:boardLevelId ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
-			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
+			str.append(" and model.locationValue in (:levelValue) ");
 		}
 		if(deptId !=null && deptId.size() >0){
-			str.append(" and nominatedPostPosition.department.departmentId in (:deptId) ");
+			str.append(" and model.departments.departmentId in (:deptId) ");
 		}
 		if(boardId !=null && boardId.size()>0){
-			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
+			str.append(" and model.board.boardId in (:boardId) ");
 		}
 		
-		str.append(" and  nominatedPostPosition.positionId is not null ");
+		str.append(" and  model.positionId is not null ");
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
-			str.append(" and model1.applicationStatus.status = :notYet ");
+			str.append(" and model.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" and model1.applicationStatus.status != :notYet ");
+			str.append(" and model.applicationStatus.status != :notYet ");
 		}
 		
-		str.append(" GROUP BY position.positionId ORDER BY position.positionId ");
+		str.append(" GROUP BY model.position.positionId ORDER BY model.position.positionId ");
 		
 		Query query = getSession().createQuery(str.toString());
 		
@@ -168,7 +175,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append("SELECT position.positionId," +
+		/*str.append("SELECT position.positionId," +
 				" position.positionName,model.nominatedPostStatus.nominatedPostStatusId" +
 				",model.nominatedPostStatus.status,count(distinct model.nominatedPostId) " +
 				"	FROM NominatedPostApplication model1, NominatedPost model left join model.nominatedPostMember nominatedPostMember " +
@@ -179,7 +186,18 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" and nominatedPostMember.isDeleted = 'N'" +
 				"  and nominatedPostPosition.isDeleted = 'N' " +
 				" and model1.isDeleted = 'N'" +
-				" and model1.nominationPostCandidate.isDeleted = 'N' " );
+				" and model1.nominationPostCandidate.isDeleted = 'N' " );*/
+		
+		str.append("SELECT position.positionId," +
+				" position.positionName,model.nominatedPostStatus.nominatedPostStatusId" +
+				",model.nominatedPostStatus.status,count(distinct model.nominatedPostId) " +
+				"	FROM NominatedPost model left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" left join nominatedPostPosition.position position " +
+				"   WHERE  " +
+				"  model.isDeleted ='N' " +
+				" and nominatedPostMember.isDeleted = 'N'" +
+				"  and nominatedPostPosition.isDeleted = 'N' "  );
 		
 		if(boardLevelId !=null && boardLevelId>0l){
 			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
@@ -191,7 +209,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		// Any Dept && Board && post Scenarios Consideration && non Consideration
 		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
 			if(deptId !=null && deptId.size() >0){
-				str.append(" and nominatedPostPosition.department.departmentId in (:deptId) ");
+				str.append(" and nominatedPostPosition.departments.departmentId in (:deptId) ");
 			}
 			if(boardId !=null && boardId.size()>0){
 				str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
@@ -206,11 +224,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		}
 		
 		
-		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+	/*	if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" and model1.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
 			str.append(" and model1.applicationStatus.status != :notYet ");
-		}
+		}*/
 		
 		
 		str.append("GROUP BY position.positionId,model.nominatedPostStatus.nominatedPostStatusId " +
@@ -233,9 +251,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			}
 		}
 		
-		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
+	/*	if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
-		}
+		}*/
 		
 		return query.list();		
 	}
