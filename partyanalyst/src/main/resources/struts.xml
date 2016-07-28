@@ -13140,5 +13140,15 @@
 				<param name="root">castePositionVOList</param>
 		</result>
 	</action>
+	<action name="getAllPositionWiseStatusAction" class="nominatedPostProfileAction" method="getAllPositionWiseStatus">
+		<result type="json" name="success">
+				<param name="root">nominatedPostDashboardVO</param>
+		</result>
+	</action>
+	<action name="getAllPositionsAction" class="nominatedPostProfileAction" method="getAllPositions">
+		<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

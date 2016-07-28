@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -60,8 +61,16 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long lId;
 	private Long stId;
 	private String sts;
+	private NominatedPostDashboardVO nominatedPostDashboardVO;
 	
 	
+	public NominatedPostDashboardVO getNominatedPostDashboardVO() {
+		return nominatedPostDashboardVO;
+	}
+	public void setNominatedPostDashboardVO(
+			NominatedPostDashboardVO nominatedPostDashboardVO) {
+		this.nominatedPostDashboardVO = nominatedPostDashboardVO;
+	}
 	public String getSts() {
 		return sts;
 	}
@@ -797,30 +806,54 @@ public String getNotCadreDetailsById(){
 
 	return Action.SUCCESS;
 	}
-public String getNominatedPostMainDashboard(){
-	return Action.SUCCESS;
-}
-public String getLocationWiseCastePositionCount(){
+	public String getNominatedPostMainDashboard(){
+		return Action.SUCCESS;
+	}
+	public String getLocationWiseCastePositionCount(){
+			
+			try {
+				jObj = new JSONObject(getTask());
+				castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"));
+			} catch (Exception e) {
+				LOG.error("Exception raised at getLocationWiseCastePositionCount() method of NominatedPostProfileAction", e);
+			}
+		
+		return Action.SUCCESS;
+		}
+	public String getLocationWiseCasteGroupPositionCount(){
 		
 		try {
 			jObj = new JSONObject(getTask());
-			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"));
+			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"));
 		} catch (Exception e) {
-			LOG.error("Exception raised at getLocationWiseCastePositionCount() method of NominatedPostProfileAction", e);
+			LOG.error("Exception raised at getLocationWiseCasteGroupPositionCount() method of NominatedPostProfileAction", e);
 		}
-	
+
 	return Action.SUCCESS;
 	}
-public String getLocationWiseCasteGroupPositionCount(){
+public String getAllPositionWiseStatus(){
+		
+		try {
+				jObj = new JSONObject(getTask());
+				Long positionId = jObj.getLong("positionId");
+				
+				nominatedPostDashboardVO =nominatedPostMainDashboardService.getAllPositionWiseStatus(positionId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllPositionWiseStatus() method of NominatedPostProfileAction", e);
+		}
+
+	return Action.SUCCESS;
+	}
+public String getAllPositions(){
 	
 	try {
-		jObj = new JSONObject(getTask());
-		castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"));
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList =nominatedPostMainDashboardService.getPositions();
 	} catch (Exception e) {
-		LOG.error("Exception raised at getLocationWiseCasteGroupPositionCount() method of NominatedPostProfileAction", e);
+		LOG.error("Exception raised at getAllPositions() method of NominatedPostProfileAction", e);
 	}
 
 return Action.SUCCESS;
 }
-
 }
