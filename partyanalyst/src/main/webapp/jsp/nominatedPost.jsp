@@ -190,16 +190,6 @@
 				 <form name="submitApplication" id="submitApplication"  method="post" enctype="multipart/form-data">
                  <div class="row">
 				
-						<div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId1">
-                    		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
-                        	<div id="searchData1"></div>
-                        	<div class="" id="scrollDivId1" style="display:none;">
-                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls1" >
-                                </ul>
-                             </div>
-							
-                             <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
-	                    </div>
 						
 				   <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
@@ -207,8 +197,9 @@
                         	<div class="" id="scrollDivId" style="display:none;">
                                 <ul class="list-inline best-matched-profile " id="cadreSearchDtls" >
                                 </ul>
+								<div class="" id="loadingSmblDivId"></div>
                              </div>							
-                             <p class="text-muted" id="textId1" style="display:none;"><small>Note: Please select matches profile</small></p>
+                             <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
 	                </div>
 					<div id="appliedPostForSelectedId" class="hideDivCls"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
@@ -248,7 +239,7 @@
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>State</label>
-                                        <select class="chosenSelect" id="addStateId" name="nominatedPostVO.addStateName">
+                                        <select class="chosenSelect" attr_id="addStateId" id="changestateId" onchange="getDistrictsForStates(this.value,this.id,'');"  name="nominatedPostVO.addStateName">
 										<option value="0">Select State</option>
                                         	<option value="1">AndhraPradesh</option>
 											<option value="36">Telangana</option>
@@ -258,25 +249,25 @@
                                 <div class="row">
                                 	<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>District</label>
-                                        <select class="chosenSelect" id="addDistrictId" name="nominatedPostVO.addDistrictName">
+                                        <select class="chosenSelect" attr_id="addDistrictId" id="changedistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" name="nominatedPostVO.addDistrictName">
                                         	<option>District</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Constituency</label>
-                                        <select class="chosenSelect" id="addConstituencyId" name="nominatedPostVO.addConstituencyName">
+                                        <select class="chosenSelect" attr_id="addConstituencyId" id="changeConstiId"  onchange="getMandalCorporationsByConstituency('',this.id);" name="nominatedPostVO.addConstituencyName">
                                         	<option>Constituency </option>
                                         </select>
                                     </div>
 									  <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Mandals/Municipality</label>
-                                        <select class="chosenSelect" id="addMandalsId" name="nominatedPostVO.addMandalsName">
+                                        <select class="chosenSelect" attr_id="addMandalsId" id="changeMandalId" onchange="getPanchayatWardByMandal('',this.id);" name="nominatedPostVO.addMandalsName">
                                         	<option>Mandals/Municipality </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Village</label>
-                                        <select class="chosenSelect" id="addVillageId" name="nominatedPostVO.addVillageName">
+                                        <select class="chosenSelect" attr_id="addVillageId" id="changePanchyatId"  onchange="getAllCadreInPanchayat();" name="nominatedPostVO.addVillageName">
                                         	<option>Village Name</option>
                                         </select>
                                     </div>
@@ -333,7 +324,7 @@
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
-										<option value="0">Select State</option>
+										<option value="0">All</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
@@ -346,7 +337,7 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
 									<label>Constituency</label>
-									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].ConstituencyId">
+									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
@@ -414,7 +405,7 @@
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select  class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
-										<option value="0">Select State</option>
+										<option value="0">All</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
@@ -608,28 +599,27 @@
 			
 			<div id="searchMemberDiv">
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
-                    	<label>State<span style="color:red;">*<span></label>
-                        <select id="statesDivId"  onchange="getDistrictsForStatesForNotCadre(this.value);" class="chosenSelect stateSlctBxCls" name="addNotcadreRegistrationVO.stateId">
-						   <option value="0">Select State</option>
-                        	<!--<option value="0">All</option>-->
+                    	<label>State</label>
+                        <select id="notCadreStateId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect" name="addNotcadreRegistrationVO.stateId">
+							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="36">Telangana</option>
                         </select>
                     </div>
 			         <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls">
 									<label>District<span style="color:red;">*<span></label>
-									<select class="chosenSelect " onchange="getConstituenciesForDistrictsForNotcadre(this.value);" id=
+									<select class="chosenSelect " onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"notCadreDistId" name="addNotcadreRegistrationVO.districtId">
 								</select>
 						</div>
 					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls">
 									<label>Constituency<span style="color:red;">*<span></label>
-									<select class="chosenSelect" onchange="getMandalCorporationsByConstituencyForNotcadre(this.value);" id="notCadreConstId"  name="addNotcadreRegistrationVO.ConstituencyId">
+									<select class="chosenSelect" onchange="getMandalCorporationsByConstituency('',this.id);" id="notCadreConstId"  name="addNotcadreRegistrationVO.constituencyId">
 									</select>
 						</div>
 					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls">
 									<label>Mandal/ Muncipality / Corporation<span style="color:red;">*<span></label>
-									<select  class="chosenSelect" onchange="getPanchayatWardByMandalForNotcadre(this.value);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">
+									<select  class="chosenSelect" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">
 									
 									</select>
 							</div>
@@ -659,6 +649,7 @@
 </div>
 <script>
 var globalCadreId=0;
+var globalNPCandiId=0;
 </script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPost.js"></script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPost1.js"></script>
@@ -670,21 +661,15 @@ $(".dropkickClass").dropkick();
 $("#DOBId").daterangepicker({singleDatePicker:true});
 $("#DOBId").val(moment().format('MM/DD/YYYY'));
 $("#DOBId").val(" ");
-
+/*
 $(document).keypress(function(e) {
 				if(e.keyCode==13){
 					  $("#cadreSearchDtls").html("");
 					 notCadresearch();
-					 /* if(value == "Cadre"){
-							getNominatedPostApplication(0);
-						}
-						else if(value == "Not Cadre"){
-							notCadresearch();
-						}
-						*/
+					
 				}
 		  });
-		  
+		  */
 $(document).on("click",".addMemberModal",function(){
 	 $(".addNewCandidateErrorCls").html(" ");
 	$("#addMemberModalBlock").modal('show');
