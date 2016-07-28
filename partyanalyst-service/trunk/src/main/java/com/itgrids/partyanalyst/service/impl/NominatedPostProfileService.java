@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -69,6 +70,7 @@ import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -115,8 +117,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IVoterDAO         				voterDAO;
 	 private INominatedPostApplicationHistoryDAO nominatedPostApplicationHistoryDAO;
 	private ICasteStateDAO casteStateDAO;
+	private ICadreCommitteeService cadreCommitteeService;
 	
 	
+	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
 	public INominatedPostApplicationHistoryDAO getNominatedPostApplicationHistoryDAO() {
 		return nominatedPostApplicationHistoryDAO;
 	}
@@ -833,7 +846,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 					NominationPostCandidate nominationPostCandidate = new NominationPostCandidate();
 					NominatedPostApplication nominatedPostApplication = null;
-						
+					
 					Long nominatedCandiPostId= null;
 					Long voterId = null;
 					
@@ -862,7 +875,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								
 								//New OR Replica, UserAddress Object created For NominatedPost Candidate By using Clone()
 								UserAddress newAddress =null;
-								UserAddress userAddress = userAddressDAO.get(commonMethodsUtilService.getLongValueForObject(cadre[21]));
+								UserAddress userAddress = (UserAddress) cadre[21];//userAddressDAO.get(commonMethodsUtilService.getLongValueForObject(cadre[21]));
 								if(userAddress !=null){
 									UserAddress address = new UserAddress();									
 									try {
@@ -914,27 +927,26 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							UA.setDistrict(nominatedPostVO.getAddDistrictName() != null?districtDAO.get(nominatedPostVO.getAddDistrictName()):null);
 							UA.setConstituency(nominatedPostVO.getAddConstituencyName() != null?constituencyDAO.get(nominatedPostVO.getAddConstituencyName()):null);
 							
-							if(nominatedPostVO.getMandalId() !=null && nominatedPostVO.getMandalId().longValue()>0l){
-								char value = nominatedPostVO.getMandalId().toString().charAt(0);
+							if(nominatedPostVO.getAddMandalsName() !=null && nominatedPostVO.getAddMandalsName().longValue()>0l){
+								char value = nominatedPostVO.getAddMandalsName().toString().charAt(0);
 								Long temp = Long.parseLong(value+"");
-								if(temp !=null && temp==4){
-									UA.setTehsil(tehsilDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
-								}else if(temp !=null && temp==5){
-									UA.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
-								}else if(temp !=null && temp==6){
-									UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getMandalId().toString().substring(1))));
-								}							
+								if(temp !=null && temp==2L){ 
+									UA.setTehsil(tehsilDAO.get(Long.parseLong(nominatedPostVO.getAddMandalsName().toString().substring(1))));
+								}else if(temp !=null && temp==1L){
+									UA.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(nominatedPostVO.getAddMandalsName().toString().substring(1))));
+								}						
 							}						
 							//UA.setTehsil(nominatedPostVO.getMandalId() != null?tehsilDAO.get(nominatedPostVO.getMandalId()):null);
 							
-							if(nominatedPostVO.getPanchayatId() !=null && nominatedPostVO.getPanchayatId().longValue()>0l){
-								char value = nominatedPostVO.getPanchayatId().toString().charAt(0);
+							if(nominatedPostVO.getAddVillageName() !=null && nominatedPostVO.getAddVillageName().longValue()>0l){
+								char value = nominatedPostVO.getAddVillageName().toString().charAt(0);
 								Long temp = Long.parseLong(value+"");
 								
-								if(temp !=null && temp==7){
-									UA.setPanchayat(panchayatDAO.get(Long.parseLong(nominatedPostVO.getPanchayatId().toString().substring(1))));
-								}else if(temp !=null && temp==8){
-									UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getPanchayatId().toString().substring(1))));
+								if(temp !=null && temp.longValue()==1L){
+									UA.setPanchayat(panchayatDAO.get(Long.parseLong(nominatedPostVO.getAddVillageName().toString().substring(1))));
+									UA.setPanchayatId(Long.parseLong(nominatedPostVO.getAddVillageName().toString().substring(1)));
+								}else if(temp !=null && temp==2L){
+									UA.setWard(constituencyDAO.get(Long.parseLong(nominatedPostVO.getAddVillageName().toString().substring(1))));
 								}
 								
 							}
@@ -958,10 +970,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							
 								if(positnArr != null && positnArr.length >0){
 									for(String position : positnArr){
-										saveNominatedPostApplication(Vo,nominatedCandiPostId,position.trim(),loggerUserId,mapfiles);
+										nominatedPostApplication = saveNominatedPostApplication(Vo,nominatedCandiPostId,position.trim(),loggerUserId,mapfiles);
 									}
 								}else{
-									saveNominatedPostApplication(Vo,nominatedCandiPostId,null,loggerUserId,mapfiles);
+									nominatedPostApplication = saveNominatedPostApplication(Vo,nominatedCandiPostId,null,loggerUserId,mapfiles);
 								}
 							
 						
@@ -985,6 +997,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 										NPRD.setUpdatedBy(loggerUserId);
 										NPRD.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 										NPRD.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										NPRD.setNominatedPostApplicationId(nominatedPostApplication.getNominatedPostApplicationId());
 										NPRD.setIsDeleted("N");
 										nominatedPostReferDetailsDAO.save(NPRD);
 								}
@@ -1010,9 +1023,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return void
 	 * description  { Saving Nominated Post Prifile Application Candidate into Database for Each Position}
 	 */
-	public void saveNominatedPostApplication(NominatedPostVO Vo ,Long nominatedPostCandi,String position,final Long loggerUserId,final Map<File,String> mapfiles){
+	public NominatedPostApplication saveNominatedPostApplication(NominatedPostVO Vo ,Long nominatedPostCandi,String position,final Long loggerUserId,final Map<File,String> mapfiles){
+		NominatedPostApplication nominatedPostApplication = null;
 		try{
-			NominatedPostApplication nominatedPostApplication = new NominatedPostApplication();
+			nominatedPostApplication = new NominatedPostApplication();
 		nominatedPostApplication.setPositionId(position != null ? Long.parseLong(position.trim()) : null) ;
 		
 		nominatedPostApplication.setNominationPostCandidateId(nominatedPostCandi != null ? nominatedPostCandi : null);
@@ -1030,11 +1044,40 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			nominatedPostApplication.setLocationValue(Vo.getConstituencyId() != null ? Vo.getConstituencyId() : null) ;
 		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 5 || Vo.getBoardLevelId().longValue() == 6){
 			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-			nominatedPostApplication.setLocationValue(Vo.getMandalId() != null ? Vo.getMandalId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getMandalId() != null ? Long.parseLong(Vo.getMandalId().toString().trim().substring(1)) : null) ;
 		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 7){
 			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
-			nominatedPostApplication.setLocationValue(Vo.getPanchayatId() != null ? Vo.getPanchayatId() : null) ;
+			nominatedPostApplication.setLocationValue(Vo.getPanchayatId() != null ? Long.parseLong(Vo.getPanchayatId().toString().trim().substring(1)) : null) ;
 		}
+		
+		UserAddress nominatedPostAddress = new UserAddress();
+		if(Vo.getStateId() != null && Vo.getStateId().longValue()>0L)
+			nominatedPostAddress.setState(stateDAO.get(Vo.getStateId().longValue()));
+		if(Vo.getDistrictId() != null && Vo.getDistrictId().longValue()>0L)
+			nominatedPostAddress.setDistrict(districtDAO.get(Vo.getDistrictId().longValue()));
+		if(Vo.getConstituencyId() != null && Vo.getConstituencyId().longValue()>0L)
+			nominatedPostAddress.setConstituency(constituencyDAO.get(Vo.getConstituencyId()));
+		if(Vo.getMandalId() != null && Vo.getMandalId().longValue()>0L){
+			char value =Vo.getMandalId().toString().charAt(0);
+			Long temp = Long.parseLong(value+"");
+			if(temp !=null && temp==2L){ 
+				nominatedPostAddress.setTehsil(tehsilDAO.get(Long.parseLong(Vo.getMandalId().toString().substring(1))));
+			}else if(temp !=null && temp==1L){
+				nominatedPostAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(Vo.getMandalId().toString().substring(1))));
+			}						
+		}
+		if(Vo.getPanchayatId() != null && Vo.getPanchayatId().longValue()>0L){
+			char value = Vo.getPanchayatId().toString().charAt(0);
+			Long temp = Long.parseLong(value+"");
+			
+			if(temp !=null && temp.longValue()==1L){
+				nominatedPostAddress.setPanchayat(panchayatDAO.get(Long.parseLong(Vo.getPanchayatId().toString().substring(1))));
+				nominatedPostAddress.setPanchayatId(Long.parseLong(Vo.getPanchayatId().toString().substring(1)));
+			}else if(temp !=null && temp==2L){
+				nominatedPostAddress.setWard(constituencyDAO.get(Long.parseLong(Vo.getPanchayatId().toString().substring(1))));
+			}
+		}
+		nominatedPostAddress = userAddressDAO.save(nominatedPostAddress);
 		
 		nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
 		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
@@ -1044,13 +1087,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		nominatedPostApplication.setIsDeleted("N");
 		nominatedPostApplication.setApplicationStatusId(1l);
+		nominatedPostApplication.setAddressId(nominatedPostAddress.getUserAddressId());
 		nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 		saveApplicationDocuments(nominatedPostApplication.getNominatedPostApplicationId(),nominatedPostCandi,mapfiles);
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in saveNominatedPostApplication()", e);
 		}
-		
+		return nominatedPostApplication;
 	}
 	public void saveApplicationDocuments(Long applctnId,Long candId,final Map<File,String> mapfiles){
 		
@@ -1210,7 +1254,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					//District
 					vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[5]));
 					if(vo.getDistrictId()!= null && vo.getDistrictId() > 0){
-						List<Object[]> distList = districtDAO.getDistrictIdAndNameByState(vo.getStateId());
+						List<Object[]> distList = districtDAO.getDistrictsWithNewSplitted(vo.getStateId());
 						if(distList != null && distList.size() > 0){
 							for (Object[] objects : distList) {
 								IdNameVO voIn = new IdNameVO();
@@ -1235,7 +1279,16 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 					vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7]));
 					if(vo.getMandalId()!= null && vo.getMandalId() > 0){
-						List<Object[]> manList = tehsilDAO.getMandalsForConstituencyId(vo.getConstituencyId());
+						List<Long> constituencyIds = new ArrayList<Long>(0);
+						constituencyIds.add(vo.getConstituencyId());
+						List<LocationWiseBoothDetailsVO> list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
+						if(commonMethodsUtilService.isListOrSetValid(list))
+							for (LocationWiseBoothDetailsVO vo1 : list) {
+								vo.getMandalsList().add(new IdNameVO(vo1.getLocationId(),vo1.getLocationName()));
+							}
+							
+						
+						/*List<Object[]> manList = tehsilDAO.getMandalsForConstituencyId(vo.getConstituencyId());
 						if(manList != null && manList.size() > 0){
 							for (Object[] objects : manList) {
 								IdNameVO voMan = new IdNameVO();
@@ -1243,13 +1296,25 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								voMan.setName(objects[1].toString());
 								vo.getMandalsList().add(voMan);
 							}
-						}
+						}*/
 					}
 					
 					vo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(obj[8]));
 					//Panchayats
-					if(vo.getPanchayatId()!= null && vo.getPanchayatId() > 0){
-						List<Object[]> panList = panchayatDAO.getPanchayatsByTehsilId(vo.getMandalId());
+					//if(vo.getPanchayatId()!= null && vo.getPanchayatId() > 0){
+						List<Long>  locationIds = new ArrayList<Long>(0);
+						locationIds.add(vo.getMandalId());
+						
+						List<Long>  lebsList = new ArrayList<Long>(0);
+						lebsList.add(commonMethodsUtilService.getLongValueForObject(obj[22]));
+						
+						
+						List<LocationWiseBoothDetailsVO> list = cadreCommitteeService.getPanchayatWardDivisionDetailsOfSubLocation(null, locationIds, lebsList);
+						if(commonMethodsUtilService.isListOrSetValid(list))
+							for (LocationWiseBoothDetailsVO vo1 : list) 
+								vo.getPanList().add(new IdNameVO(vo1.getLocationId(),vo1.getLocationName()));
+							
+						/*List<Object[]> panList = panchayatDAO.getPanchayatsByTehsilId(vo.getMandalId());
 						if(panList != null && panList.size() > 0){
 							for (Object[] objects : panList) {
 								IdNameVO voPan = new IdNameVO();
@@ -1257,8 +1322,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								voPan.setName(objects[1].toString());
 								vo.getPanList().add(voPan);
 							}
-						}
-					}
+						}*/
+					//}
 					vo.setPincode(commonMethodsUtilService.getStringValueForObject(obj[9]));
 					
 					appMembersList.add(vo);
@@ -2736,7 +2801,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			    	  finalList = new ArrayList<CadreCommitteeVO>();
 			    		   for(Object[] obj: membersList){
 			    			   CadreCommitteeVO vo = new CadreCommitteeVO();
-			    			   vo.setTdpCadreId(obj[0]!=null?(Long)obj[0]:0l);
+			    			   vo.setTdpCadreId(obj[0]!=null?(Long)obj[0]:0l);//nominatedpostCandidateId
+			    			   vo.setId(commonMethodsUtilService.getLongValueForObject(obj[7]));//tdpcadreId
 			    			   vo.setMemberShipCardId("");
 			    			   vo.setMobileNo(obj[1]!=null?obj[1].toString():"");
 			    			   vo.setCadreName(obj[2]!=null?obj[2].toString():"");
@@ -2772,7 +2838,33 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						UA.setState(notcadreRegistrationVO.getStateId() != null?stateDAO.get(notcadreRegistrationVO.getStateId()):null);
 						UA.setDistrict(notcadreRegistrationVO.getDistrictId() != null?districtDAO.get(notcadreRegistrationVO.getDistrictId()):null);
 						UA.setConstituency(notcadreRegistrationVO.getConstituencyId() != null?constituencyDAO.get(notcadreRegistrationVO.getConstituencyId()):null);
-						UA.setPanchayatId(notcadreRegistrationVO.getPanchayatId() != null?notcadreRegistrationVO.getPanchayatId():null);
+						//UA.setPanchayatId(notcadreRegistrationVO.getPanchayatId() != null?notcadreRegistrationVO.getPanchayatId():null);
+						
+						String mandalORLEBIdStr = notcadreRegistrationVO.getMandalId() != null && notcadreRegistrationVO.getMandalId().longValue()>0L?notcadreRegistrationVO.getMandalId().toString():"";
+						if(mandalORLEBIdStr != null && !mandalORLEBIdStr.trim().isEmpty())
+						{
+							char digit = mandalORLEBIdStr.charAt(0);
+							Long temp = Long.parseLong(digit+"");
+							
+							if(temp.longValue() == 2L)
+								UA.setTehsil(tehsilDAO.get(Long.valueOf(notcadreRegistrationVO.getMandalId().toString().substring(1))));
+							else if(temp.longValue() == 1L)
+								UA.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(notcadreRegistrationVO.getMandalId().toString().substring(1))));
+						}
+						
+						String villageORWardIdStr = notcadreRegistrationVO.getPanchayatId() != null && notcadreRegistrationVO.getPanchayatId().longValue()>0L?notcadreRegistrationVO.getPanchayatId().toString():"";
+						if(villageORWardIdStr != null && !villageORWardIdStr.trim().isEmpty())
+						{
+							char digit = villageORWardIdStr.charAt(0);
+							Long temp = Long.parseLong(digit+"");
+							
+							if(temp.longValue() == 2L)
+								UA.setWard(constituencyDAO.get(Long.valueOf(notcadreRegistrationVO.getPanchayatId().toString().substring(1))));
+							else if(temp.longValue() == 1L)
+								UA.setPanchayatId(Long.valueOf(notcadreRegistrationVO.getPanchayatId().toString().substring(1)));
+						}
+						
+						
 					    UA=  userAddressDAO.save(UA);
 						//UA.getUserAddressId();
                         NominationPostCandidate NPC=new NominationPostCandidate();
