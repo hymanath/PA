@@ -695,7 +695,7 @@ function getNominatedPostApplication(startIndex,id)
 				else
 					str +='<li>';
 				str +='<div class="img-center">';
-				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 				
 				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
 				str +='</div>';
@@ -853,7 +853,8 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 		 $("#"+id).append('<option value="0">Select Board</option>');
      for(var i in result){
-	   $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		 if(result[i].id != 5)
+			$("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
    }
 	  $("#"+id).trigger("chosen:updated");
