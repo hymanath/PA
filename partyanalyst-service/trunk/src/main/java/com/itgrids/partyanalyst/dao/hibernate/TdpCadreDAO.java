@@ -7043,19 +7043,32 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		
 	StringBuilder str = new StringBuilder();
 	 if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
-		str.append(" select model.mobileNo,model.houseNo,model.userAddress.addressLane1,model.userAddress.addressLane2," +
-				" model.userAddress.state.stateId,model.userAddress.district.districtId," +
-				" model.userAddress.constituency.constituencyId,model.userAddress.tehsil.tehsilId,model.userAddress.panchayat.panchayatId,model.userAddress.pinCode " +
+		str.append(" select model.mobileNo,model.houseNo,address.addressLane1,address.addressLane2," +
+				" address.state.stateId,district.districtId," +
+				" constituency.constituencyId,tehsil.tehsilId,panchayat.panchayatId,address.pinCode " +
 				" ,model.tdpCadreId , model.voter.voterId, model.firstname,model.lastname, model.relativename, model.relativeType, model.gender, model.age, model.dateOfBirth, model.image, model.casteStateId, " +
-				" model.userAddress.userAddressId "+
+				" model.userAddress ,leb.localElectionBodyId,leb.name "+
 				" from TdpCadre model " +
+				" left join model.userAddress address" +
+				" left join address.tehsil tehsil" +
+				" left join address.panchayat panchayat " +
+				" left join address.localElectionBody leb" +
+				" left join address.constituency constituency " +
+				" left join address.district district  " +
 				" where model.tdpCadreId=:tdpCadreId ");
 	 }
 	  else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
-			str.append(" select model.mobileNo,model.houseno,model.address.addressLane1,model.address.addressLane2," +
-					" model.address.state.stateId,model.address.district.districtId," +
-					" model.address.constituency.constituencyId,model.address.tehsil.tehsilId,model.address.panchayat.panchayatId,model.address.pinCode " +
+			str.append(" select model.mobileNo,model.houseno,address.addressLane1,address.addressLane2," +
+					" address.state.stateId,district.districtId," +
+					" constituency.constituencyId,tehsil.tehsilId,panchayat.panchayatId,address.pinCode," +
+					" '','','','','','','','','','','','',leb.localElectionBodyId,leb.name " +
 					" from NominationPostCandidate model " +
+					" left join model.address address" +
+					" left join address.tehsil tehsil" +
+					" left join address.panchayat panchayat " +
+					" left join address.localElectionBody leb" +
+					" left join address.constituency constituency " +
+					" left join address.district district  " +
 					" where model.nominationPostCandidateId=:tdpCadreId ");
 	  }
 		Query query = getSession().createQuery(str.toString());
