@@ -7,6 +7,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
@@ -43,6 +44,8 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getCastesForAP();
 	public  List<CadreCommitteeVO> getNotCadreDetailsById(Long nominatedPostCandiId);
 	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final Long positionId,final Long levelId,final Long searchLevelId,final Long searchLevelValue,final Long statusId);
+	public NominatedPostReferVO getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId);
+	public IdNameVO getOverAllCommentsForCandidate(Long candidateId);
 	
 
 }

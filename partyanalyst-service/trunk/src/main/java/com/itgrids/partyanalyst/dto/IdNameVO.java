@@ -15,7 +15,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String percentage;
 	private Long count = 0l;
 	private String dateStr;
-	private List<String> subList;
+	private List<String> subList = new ArrayList<String>();
 	private List<IdNameVO> idnameList = new ArrayList<IdNameVO>();
 	private String mobileNo;
 	private String status;
@@ -23,6 +23,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String partyPos;
 	private Long applicationStatusId;
 	private String applicationStatus;
+	private List<IdNameVO> subList1 = new ArrayList<IdNameVO>();
+	
 	@Override
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -168,6 +170,14 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setApplicationStatus(String applicationStatus) {
 		this.applicationStatus = applicationStatus;
+	}
+
+	public List<IdNameVO> getSubList1() {
+		return subList1;
+	}
+
+	public void setSubList1(List<IdNameVO> subList1) {
+		this.subList1 = subList1;
 	}
 	
 }
