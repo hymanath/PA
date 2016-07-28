@@ -19,7 +19,7 @@ function getDistrictsForStates(state,id,num){
 			$("#mandalList").trigger("chosen:updated");
 			$("#panchaytList").trigger("chosen:updated");
 			
-			
+			 
 	}else if(id == "changestateId"){
 			getConstituenciesForState(state,'changeConstiId');
 			$("#searchDataImgForDist").show();
@@ -654,13 +654,13 @@ function getNominatedPostApplication(startIndex,id)
 	}
 	var alreadyBuildMmberIdsArr = [];
    function buildCadreDetails(result,id){ 
-  
+  //alert(id);
 	   //$("#textId").show();
 	   if(id==2){
-			$("#cadreSearchDtls").html('');
-			//$('#loadingSmblDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
+			$("#loadingSmblDivId").html('');			
 	   }else if(id==1){
 			$("#cadreSearchDtls").html('');
+			//$('#loadingSmblDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 	   }
 		else{
 		   $('#loadingSmblDivId').html('');
@@ -729,9 +729,9 @@ function getNominatedPostApplication(startIndex,id)
 		
 		//$("#cadreSearchDtls").html(str);
 		if(id == 2)
-			$("#cadreSearchDtls").html(str);
-		else
 			$("#cadreSearchDtls").append(str);
+		else
+			$("#cadreSearchDtls").html(str);
 	}
 	function refreshExistingDetails(){ 
 		$("#searchBy").val("");
@@ -741,7 +741,7 @@ function getNominatedPostApplication(startIndex,id)
 		$("#searchErrDiv").html("");
 		$("#membrshipAndMobileNoDiv").html("");
 		$("#cadreSearchSize").hide();
-		//$("#cadreSearchDtls").html("");
+		$("#cadreSearchDtls").html("");
 		$("#searchData").html("");
 		$("#searchData1").html("");
 		$("#notCadreNameId").val("");
