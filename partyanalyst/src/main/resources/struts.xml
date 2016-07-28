@@ -13113,6 +13113,16 @@
 				<param name="root">retResult</param>
 		</result>
 	</action>
+	<action name="getUserAccessLevelAndValuesAction" class="coreDashboardAction" method="getUserAccessLevelAndValues">
+		<result type="json" name="success">
+				<param name="root">userDataVOList</param>
+		</result>
+	</action>
+	<action name="getUserTypeByUserIdAction" class="coreDashboardAction" method="getUserTypeByUserId">
+		<result type="json" name="success">
+				<param name="root">userDataVO</param>
+		</result>
+	</action>
 	
 </package>
 </struts>      

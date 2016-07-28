@@ -3323,5 +3323,10 @@
 		<property name="nominatedPostApplicationHistoryDAO" ref="nominatedPostApplicationHistoryDAO"></property>
 		<property name="casteStateDAO" ref="casteStateDAO"></property>
 	</bean>
+	
+	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
+	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
+	  <property name="dashboardUserAccessTypeDAO"  ref="dashboardUserAccessTypeDAO"></property>
+	</bean>
 </beans>		
 	
