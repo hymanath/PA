@@ -671,6 +671,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			else if(entitlements.contains("APPOINTMENTS_MANAGE_ENTITLEMENT".trim())){
 				return "appointmentsManagmentPage";
 			}
+			else if(entitlements.contains("AFFILIATED_UNION_REGISTRATION_REDIRECT_ENTITLEMENT"))
+			{
+				return "affiliatedUnionRegistrationPage";
+			}
 		}
 		
 		
