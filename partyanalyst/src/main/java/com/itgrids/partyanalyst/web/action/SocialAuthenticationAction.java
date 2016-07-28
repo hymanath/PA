@@ -72,8 +72,8 @@ public class SocialAuthenticationAction extends ActionSupport implements Servlet
         socialAuthManager.setSocialAuthConfig(conf);
 
         String returnToUrl ="";
-        if(getPath().equalsIgnoreCase("http://www.partyanalyst.com")){
-        	 returnToUrl = "http://www.partyanalyst.com/socialAuthSuccessAction.action";	
+        if(getPath().equalsIgnoreCase("https://www.partyanalyst.com")){
+        	 returnToUrl = "https://www.partyanalyst.com/socialAuthSuccessAction.action";	
         }else{
         	 returnToUrl = getPath()+"/socialAuthSuccessAction.action";		
         }      
