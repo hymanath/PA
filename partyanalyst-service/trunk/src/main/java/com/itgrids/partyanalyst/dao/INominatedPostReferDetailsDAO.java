@@ -11,4 +11,5 @@ public interface INominatedPostReferDetailsDAO extends GenericDao<NominatedPostR
 
 	public List<Object[]> getReferedCountForCandidateList(Set<Long> candidateIds);
 	public List<Object[]> getReferedCadreDetailsForCandidate(Long candidateId);
+	public List<Object[]> getReferedCandidatesCountForCandidate(List<Long> cadreIds);
 }

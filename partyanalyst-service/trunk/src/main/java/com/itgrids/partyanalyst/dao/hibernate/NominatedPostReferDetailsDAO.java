@@ -40,4 +40,15 @@ public class NominatedPostReferDetailsDAO extends GenericDaoHibernate<NominatedP
 		query.setParameter("candidateId", candidateId);
 		return query.list();
 	}
+	
+	public List<Object[]> getReferedCandidatesCountForCandidate(List<Long> cadreIds){
+		Query query = getSession().createQuery("select model.referCadreId," +
+											" count(distinct model.nominationPostCandidate.nominationPostCandidateId)" +
+											" from NominatedPostReferDetails model" +
+											" where model.referCadreId in (:cadreIds)" +
+											" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+											" group by model.referCadreId");
+		query.setParameterList("cadreIds", cadreIds);
+		return query.list();
+	}
 }
