@@ -18,27 +18,27 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 	{
 		StringBuilder sb=new StringBuilder();
 		
-		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,model.voter.voterIDCardNo," +
-				"   model.imageurl,model.address.constituency.constituencyId,model.address.constituency.name" +
-				"   FROM   NominationPostCandidate model" +
-				"   WHERE  model.tdpCadreId is null and model.isDeleted = 'N' ");
-		if(searchType.equalsIgnoreCase("3")){
-			
+		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,voter.voterIDCardNo," +
+				"   model.imageurl,constiteuncy.constituencyId,constiteuncy.name,tdpCadre.tdpCadreId " +
+				"   FROM   NominationPostCandidate model " +
+				" left join model.voter voter" +
+				" left join model.address address" +
+				" left join model.address.constituency constiteuncy " +
+				" left join model.tdpCadre tdpCadre " +
+			//	"   WHERE  model.tdpCadreId is null and model.isDeleted = 'N' ");
+				"   WHERE  model.isDeleted = 'N' ");
+		if(searchType.equalsIgnoreCase("1"))
+			sb.append(" AND model.tdpCadre.memberShipNo like '%"+searchValue.trim()+"%' ");
+		else if(searchType.equalsIgnoreCase("3"))
 			sb.append(" AND model.mobileNo = :searchValue ");
-			
-		}else if(searchType.equalsIgnoreCase("2")){
-			
+		else if(searchType.equalsIgnoreCase("2"))
 			sb.append(" AND model.voter.voterIDCardNo = :searchValue ");
-		}
 		else if(searchType.equalsIgnoreCase("4"))
-		{
-			sb.append(" AND model.candidateName LIKE '%"+searchValue+"%' ");
-		}
+			sb.append(" AND model.candidateName LIKE '%"+searchValue.trim()+"%' ");
+		
 		Query query = getSession().createQuery(sb.toString());
-		if(!searchType.equalsIgnoreCase("4"))
-				{
+		if(!searchType.equalsIgnoreCase("4") && !searchType.equalsIgnoreCase("1"))
 			query.setParameter("searchValue", searchValue);
-				}
 		return query.list();
 		
 	}
