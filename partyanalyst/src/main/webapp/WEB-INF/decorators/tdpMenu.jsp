@@ -715,12 +715,21 @@ footer
                         <a href="debateAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Debate</span></a>
                     </li>
 				</c:if>	
-				<li style="text-align: right">
-                        <a href="createAlertAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Create Alert</span></a>
-                 </li>
-				<li style="text-align: right">
-                        <a href="alertDashboardAction.action"><img style="width:18px;float:left" src="img/cadre_debate.png"><span>&nbsp;&nbsp;Alert</span></a>
-                 </li>
+									<li>
+										<a href="#"><i class="fa fa-pencil ico-white"></i><span>&nbsp;&nbsp;Alert</span></a>
+										 <h2><i class="fa fa-pencil ico-white line_heightDiv"></i> Alert</h2>
+										 <ul>
+										 
+										  <li>
+										<a href="createAlertAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
+										</li>
+										  <li>
+										<a href="alertDashboardAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
+										</li>
+				
+										 </ul>
+									</li>
+				 
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
