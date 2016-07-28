@@ -21,10 +21,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.nominatedPostStatus.status, model.nominatedPostStatusId, " +
 				" model.nominatedPostMember.boardLevelId, count(model.nominatedPostId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(model.nominatedPostMember.nominatedPostPosition.positionId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostMember.nominatedPostPosition.positionId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
 		queryStr.append(" from NominatedPost model   " );
-		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null)
+		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
 			queryStr.append(" ,UserAddress model2 where model.nominatedPostMember.addressId = model2.userAddressId and " );
 		else
 			queryStr.append(" where ");
@@ -38,14 +38,14 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		
-		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null){
+		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append(" and  model2.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() ==2L)
 				queryStr.append("  and model2.district.districtId between 1 and 10 ");
-			else
-				queryStr.append("  and model2.district.districtId between 1 and 23 ");
 		}
+		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model2.state.stateId=:stateId ");
 		
 		queryStr.append(" group by model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
@@ -54,12 +54,13 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			query.setParameter("boardLevelId", boardLevelId);
 			
 		if(startDate != null && endDate != null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		if(new CommonMethodsUtilService().isListOrSetValid(statusList))
 			query.setParameterList("statusList", statusList);
-		
+		if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
 		return query.list();
 	}
 	
@@ -69,25 +70,25 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(model.nominatedPostMember.nominatedPostPosition.positionId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
 		queryStr.append(" from NominatedPost model   " );
-		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null)
+		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
 			queryStr.append(",UserAddress model2 where model.nominatedPostMember.addressId = model2.userAddressId and " );
 		else
 			queryStr.append(" where ");
 		queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
-				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' ");		
+				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and  model.nominatedPostStatusId = 1 ");		
 			
-		if(boardLevelId != null && boardLevelId.longValue()>0)
+		if(boardLevelId != null && boardLevelId.longValue()>0L)
 			queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");		
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");		
-		if(boardLevelId != null && boardLevelId.longValue()>1 && stateId != null){
+		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append("  and model2.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() ==2L)
 				queryStr.append(" and  model2.district.districtId between 1 and 10 ");
-			else
-				queryStr.append("  and model2.district.districtId between 1 and 23 ");
 		}
+		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model2.state.stateId=:stateId ");
 		
 		queryStr.append(" group by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
@@ -99,7 +100,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
-	
+		if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
 		
 		return query.list();
 	}
