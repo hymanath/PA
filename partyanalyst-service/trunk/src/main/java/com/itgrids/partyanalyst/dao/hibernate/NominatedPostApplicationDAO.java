@@ -541,9 +541,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       }
 		    return query.list();
 	}
- 
- 	public List<Object[]> getApplicationStatusCntByPositionId(Long positionId){
- 		StringBuilder queryStr = new StringBuilder();
+ public List<Object[]> getApplicationStatusCntByPositionId(Long positionId){
+		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.applicationStatus.applicationStatusId, model.applicationStatus.status,count(distinct model.nominatedPostFinalId)  from NominatedPostFinal model,NominatedPostApplication model1  " +
 				"where model.isDeleted = 'N'  and model1.isDeleted = 'N' and model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId ");
 		
@@ -558,5 +557,48 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		}
 		
 		return query.list();
- 	}
+	}
+  public List<Object[]> getLocationWiseCastePositionCount(Long LocationLevelId){
+	  
+	  StringBuilder queryStr = new StringBuilder();
+	            
+	   queryStr.append(" select model.nominationPostCandidate.casteState.caste.casteId,model.nominationPostCandidate.casteState.caste.casteName," +
+	   	          	   " model.position.positionId,model.position.positionName,count(model.position.positionId) " +
+	   	          	   " from NominatedPostApplication model where model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N' ");
+	   
+			      if(LocationLevelId != null && LocationLevelId > 0){
+			   	    queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
+			      }
+
+	             queryStr.append(" group by model.nominationPostCandidate.casteState.caste.casteId,model.position.positionId order by model.position.positionId ");
+         
+	             Query query = getSession().createQuery(queryStr.toString());
+	    
+	             if(LocationLevelId != null && LocationLevelId > 0){
+			    	query.setParameter("LocationLevelId", LocationLevelId);
+			    }
+	   return query.list();
+  }
+ public List<Object[]> getLocationWiseCasteGroupPositionCount(Long LocationLevelId){
+	
+	    StringBuilder queryStr = new StringBuilder();
+     
+	    queryStr.append(" select model.nominationPostCandidate.casteState.casteStateId,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
+	   	          	   " model.position.positionId,model.position.positionName,count(model.position.positionId) " +
+	   	          	   " from NominatedPostApplication model where model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N' ");
+	   
+	             if(LocationLevelId != null && LocationLevelId > 0){
+			        queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
+			      }
+
+	             queryStr.append("   group by model.nominationPostCandidate.casteState.caste.casteId,model.position.positionId order by model.position.positionId ");
+       
+	             Query query = getSession().createQuery(queryStr.toString());
+	    
+	             if(LocationLevelId != null && LocationLevelId > 0){
+			    	query.setParameter("LocationLevelId", LocationLevelId);
+			    }
+	   return query.list();
+	 
+ }
 }
