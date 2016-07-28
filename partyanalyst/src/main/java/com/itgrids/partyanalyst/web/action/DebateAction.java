@@ -1672,6 +1672,15 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS; 
 	}
 	
-	
+	public String debateUnicodeConvertion()
+	{
+		try{
+			debateService.convertDebateContentToUnicode();
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS; 
+	}
 
 }
