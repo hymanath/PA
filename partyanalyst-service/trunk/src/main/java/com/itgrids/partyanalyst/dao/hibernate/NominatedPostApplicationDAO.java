@@ -250,33 +250,30 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.nominatedPostMember.boardLevelId, count(model2.nominatedPostApplicationId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId)  " +
-				" from NominatedPost model,NominatedPostApplication model2 ");
-		if(levelId != null && levelId.longValue()>1 && stateId != null)
-			queryStr.append(" ,UserAddress model3 where model.nominatedPostMember.addressId = model3.userAddressId and " );
+		queryStr.append(" select distinct model.boardLevelId, count(model.nominatedPostApplicationId), " +
+				" count(distinct model.departmentId), " +
+				" count(distinct model.boardId)  " +
+				" from NominatedPostApplication model ");
+		if(levelId != null && levelId.longValue()>1L && stateId != null)
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
 		else
 			queryStr.append(" where ");
 		
-		queryStr.append(" model.nominationPostCandidateId = model2.nominationPostCandidateId and " +
-				"   model.nominationPostCandidate.isDeleted ='N'  and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and " +
-				"   model2.isDeleted='N' and model.nominatedPostMember.boardLevelId = model2.boardLevelId and model2.applicationStatusId = 1  " +
-				"  and model.nominatedPostMember.boardLevelId =:levelId ");
+		queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId = 1   and model.boardLevelId =:levelId ");
 		if(startDate != null && endDate != null)
-			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		//queryStr.append(" and model.applicationStatusId = 1");//applied
 		
-		if(levelId != null && levelId.longValue()>1 && stateId != null){
+		if(levelId != null && levelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append(" and model3.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() ==2L)
 				queryStr.append(" and model3.district.districtId between 1 and 10 ");
-			else
-				queryStr.append(" and model3.district.districtId between 1 and 23 ");
 		}
+		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId ");
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("levelId", levelId);
@@ -284,6 +281,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
 		}
+		if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
 		
 		return query.list();
 	}
@@ -291,37 +290,36 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.nominatedPostMember.boardLevelId, count(model2.nominatedPostApplicationId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPost model,NominatedPostApplication model2 " );
-		if(levelId != null && levelId.longValue()>1 && stateId != null)
-			queryStr.append(" ,UserAddress model3 where model.nominatedPostMember.addressId = model3.userAddressId and " );
+		queryStr.append(" select distinct model.boardLevelId, count(model.nominatedPostApplicationId), " +
+				" count(distinct model.departmentId), " +
+				" count(distinct model.boardId) from NominatedPostApplication model " );
+		if(levelId != null && levelId.longValue()>1L && stateId != null)
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
 		else
 			queryStr.append(" where ");
-		queryStr.append("     model.nominationPostCandidateId = model2.nominationPostCandidateId and " +
-				"   model.nominationPostCandidate.isDeleted ='N'  and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and " +
-				"   model2.isDeleted='N' and model.nominatedPostMember.boardLevelId = model2.boardLevelId and model2.applicationStatusId in (2,3)  " +
-				" and model.nominatedPostMember.boardLevelId =:levelId  ");
+		queryStr.append(" model.isDeleted='N' and model.applicationStatusId in (2,3) and model.boardLevelId =:levelId  ");
 		if(startDate != null && endDate != null)
-			queryStr.append(" and date(model.nominationPostCandidate.insertedTime) between :startDate and :endDate ");
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		//queryStr.append(" and model.applicationStatusId <>1  ");
-		if(levelId != null && levelId.longValue()>1 && stateId != null){
+		if(levelId != null && levelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append(" and model3.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() ==2L)
 				queryStr.append(" and model3.district.districtId between 1 and 10 ");
-			else
-				queryStr.append(" and model3.district.districtId between 1 and 23 ");
 		}
-		queryStr.append(" group  by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId ");
+		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model3.state.stateId=:stateId ");
+		
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
-			query.setParameter("startDate", startDate);
-			query.setParameter("endDate", endDate);
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
-		
+		if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
 		return query.list();
 	}
 
