@@ -3332,6 +3332,10 @@
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
 		<property name="nominatedPostApplicationDAO" ref="nominatedPostApplicationDAO"></property>
+		<property name="applicationStatusDAO" ref="applicationStatusDAO"></property>
+		<property name="nominatedPostDAO" ref="nominatedPostDAO"></property>
+		<property name="nominatedPostStatusDAO" ref="nominatedPostStatusDAO"></property>
+		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
 	</bean>
 </beans>		
 	
