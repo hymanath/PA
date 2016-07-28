@@ -1,6 +1,7 @@
 body
 {
 	font-family:roboto;
+	background:#ECF1F5;
 	color:#333;
 }
 h1,h2,h3,h4,h5,h6 ,p ,table,ul
@@ -910,4 +911,278 @@ label
 	border-bottom-color: #ddd;
 	border-width: 9px;
 	margin-left: -9px;
+}
+
+.panelDashboard
+{
+	border-radius:0px
+}
+.panelDashboard .panel-heading
+{
+	background:#fff;
+	border-radius:0px;
+	text-transform:uppercase;
+}
+.panelDashboard .panel-body
+{
+	border:0px !important;
+}
+.panelDashboardIcon , .panelDashboardIcon:active ,.panelDashboardIcon:hover
+{
+	color:#76514C !important
+}
+.panelDashboardIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+	font-size:8px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#76514C;
+	background:#ddd;
+	padding:3px 5px;;
+	border-radius:5px;
+}
+.panelDashboardIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+.navTabsSelection
+{
+	background:#fff;
+	border-bottom:1px solid #ddd
+}
+.navTabsSelection li a
+{
+	text-transform:uppercase;
+	color:#666
+}
+.navTabsSelection .NavTab a
+{
+	text-decoration:none;
+}
+.navTabsSelection .NavTab	 
+{
+	padding:10px;
+	color:#333 !important;
+	text-transform:uppercase;
+}
+.navTabsSelection .active a
+{
+	color:#69433E !important;
+	padding-bottom:6px;
+	text-decoration:none;
+	border-bottom:4px solid #69433E !important;
+	border-top:0px !important;
+	border-left:0px !important;
+	border-right:0px !important;
+}
+.navTabsSelection .NavTab a
+{
+	color:#333
+}
+.navTabsSelection .slick-prev , .navTabsSelection .slick-next
+{
+	background:#fff;
+	height:100%;
+	color:#333
+}
+.navTabsSelectionBody
+{
+	background:#fff;
+}
+.slick-list
+{
+	margin:0px 20px !important;
+}
+div.dataTables_wrapper div.clear
+{
+	display:none;
+}
+.showingResult
+{
+	display:inline;
+	padding:2px;
+	background:#69423D;
+	color:#fff;
+	position:relative;
+	top:-6px;
+	font-size:16px;
+	text-transform:uppercase
+}
+.geoGrpahicBreadCrumb { 
+	list-style: none; 
+	overflow: hidden; 
+	font: 16px Helvetica, Arial, Sans-Serif;
+	padding-left:0px;
+	display:inline-block;
+}
+.geoGrpahicBreadCrumb li { 
+	float: left; 
+}
+.geoGrpahicBreadCrumb li:first-child
+{
+	padding-left:10px;
+}
+
+.geoGrpahicBreadCrumb li{
+	color: white;
+	text-decoration: none; 
+	padding: 3px 0 3px 45px;
+	background: brown;                   /* fallback color */
+	background: #846663; 
+	position: relative; 
+	display: block;
+	float: left;
+	text-transform:capitalize;
+}
+.geoGrpahicBreadCrumb li:after { 
+	content: " "; 
+	display: block; 
+	width: 0; 
+	height: 0;
+	border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid #846663;
+	position: absolute;
+	top: 50%;
+	margin-top: -50px; 
+	left: 100%;
+	z-index: 2; 
+}
+.geoGrpahicBreadCrumb li:before { 
+	content: " "; 
+	display: block; 
+	width: 0; 
+	height: 0;
+	border-top: 50px solid transparent;       
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid white;
+	position: absolute;
+	top: 50%;
+	margin-top: -50px; 
+	margin-left: 1px;
+	left: 100%;
+	z-index: 1; 
+}
+.geoGrpahicBreadCrumb li:last-child
+{
+	padding-right:8px;
+}
+.geoGrpahicBreadCrumb li:last-child:after { 
+	content: " "; 
+	border-top: 50px solid #ECF1F5;       
+	border-bottom: 50px solid #ECF1F5 !important;
+	border-left: 30px solid #ECF1F5 !important;
+	position: absolute;
+	padding-right:5px;
+}
+.bg_F1
+{
+	background:F1F6BE
+}
+.bg_D4
+{
+	background:#D4E2FC
+}
+.bg_CB
+{
+	background:#CBE8BA
+}
+.tablePadding tr td
+{
+	padding:15px  6px !important;
+	border:1px solid #ccc !important;
+}
+.changeIconClass
+{
+	border:1px solid #ddd;
+	padding:3px;
+	background:#ccc;
+	border-radius:3px;
+	font-size:8px;
+	color:#666;
+	cursor:pointer;
+}
+.positionsUl
+{
+	padding:0px;
+}
+.positionsUl li
+{
+	list-style:none;
+	padding:4px;
+}
+.positionsUl li.total
+{
+	background:rgba(255, 242, 179,0.4)
+}
+.positionsUl li.total .statusBox
+{
+	background:rgba(255, 242, 179,1)
+}
+.positionsUl li.noCandidate
+{
+	background:rgba(241, 197, 161,0.4)
+}
+.positionsUl li.noCandidate .statusBox
+{
+	background:rgba(241, 197, 161,1)
+}
+.positionsUl li.shortListed
+{
+	background:rgba(238, 179, 175,0.4)
+}
+.positionsUl li.shortListed .statusBox
+{
+	background:rgba(238, 179, 175,1)
+}
+
+.positionsUl li.notStarted
+{
+	background:rgba(178, 212, 240,0.4)
+}
+.positionsUl li.notStarted .statusBox
+{
+	background:rgba(178, 212, 240,1)
+}
+.positionsUl li.readyForReview
+{
+	background:rgba(194, 190, 223,0.4)
+}
+.positionsUl li.readyForReview .statusBox
+{
+	background:rgba(194, 190, 223,0.4)
+}
+.positionsUl li.finalised
+{
+	background:rgba(190, 224, 225,0.4)
+}
+.positionsUl li.finalised .statusBox
+{
+	background:rgba(190, 224, 225,1)
+}
+.positionsUl li.goIssued 
+{
+	background:rgba(173, 149, 145,0.4)
+}
+.positionsUl li.goIssued  .statusBox
+{
+	background:rgba(173, 149, 145,1)
+}
+.positionsUl li span.statusBox
+{
+	height:15px;
+	width:15px;
+	display:inline-block;
+	background:#ddd;
+	position:relative;
+	top:3px;
+	margin-right:3px;
+}
+#chartdiv {
+  width: 100%;
+  height: 300px;
+  margin: auto;
 }
