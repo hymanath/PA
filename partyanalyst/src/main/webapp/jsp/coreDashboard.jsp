@@ -8,6 +8,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="js/coreDashboard/coreDashboard.js" type="text/javascript"></script>
 </head>
 <body>
 <h4>fff</h4>
