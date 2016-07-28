@@ -49,6 +49,7 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	
 	private TdpCadre tdpCadre;
 	private Voter voter;
+	private CasteState casteState;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -232,6 +233,16 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	}
 	public void setDob(String dob) {
 		this.dob = dob;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="caste_state_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
+	}
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
 	}
 	
 	
