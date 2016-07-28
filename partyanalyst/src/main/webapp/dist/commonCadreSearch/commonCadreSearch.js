@@ -865,16 +865,16 @@ function showHideSearch(type)
    var cloneCount=0;
    var commontdpCadreIds = [];
    $(document).on("click",".apptDetailsDiv",function(){
-	  
-		 if($(this).is(':checked')){
-			 $("#involvedCandidatesDiv").show();
-			// $("#involvedCandidatesDiv1").show();
-			 $(".membersBlock").show();
-			// $(".membersBlock1").show();
-			  var name  = $(this).attr("attr_name");
+	  var name  = $(this).attr("attr_name");
 			  var image = $(this).attr("attr_img_url");
 			  var attrId = $(this).attr("attr_id");
 			  var attrConsti =  $(this).attr("attr-consti");
+		 if($(this).is(':checked')){
+			 $("#involvedCandidatesDiv").show();
+			 $("#involvedCandidatesDiv1").show();
+			 $(".membersBlock").show();
+			$(".membersBlock1").show();
+			  
 			var str ='';
 			str+='<div class="col-md-12 block">';
 			str+='<div class="media"><div class="media-left">';
@@ -884,19 +884,25 @@ function showHideSearch(type)
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
 			str+='<div class="col-md-4 m_top5"><label>Name : '+name+'</label></div>';
 			str+='<div class="col-md-4 m_top5"><label>Constituency : '+attrConsti+'</label></div>';
-			str+='</div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div>';
+			str+='</div></div><span class="closeIcon closeIcon'+attrId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div>';
 			 $(".membersBlock").append(str);
 			 $(".membersBlock1").append(str);
 			 cloneCount = cloneCount+1;
 			   $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().top
                 }, 2000);
-				/*$('html, body').animate({
+				$('html, body').animate({
                     scrollTop: $('.membersBlock1').offset().top
-                }, 2000);*/
+                }, 2000);
 				$("#assignBtnId").show();
 				commontdpCadreIds.push(attrId);
 		 }
+		 else
+   {
+	   commontdpCadreIds.pop(attrId);	
+	   $(".closeIcon"+attrId).parent().remove();
+	
+   }
    })
   
 $(document).on("click",".closeIcon",function(){
@@ -904,7 +910,7 @@ $(this).parent().remove();
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
-	commontdpCadreIds.pop(id);
+	commontdpCadreIds.pop(id);	
 });
 
 
