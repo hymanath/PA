@@ -56,4 +56,6 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> getCommitteesCountByLevelIdAndLevelValueForVillageMunicipal(Long levelId,Long tehsilId,Long constituencyId);
 	public List<Object[]> getStartedOrComplcommitteesCountByLevelIdAndLevelValueForVillageMunicipal(Long levelId,Long tehsilId,Long constituencyId,String status);
 	public List<Object[]> getCommitteesForLevelId(Long levelId);
+	
+	public List<Object[]> getDistrictAccessDetails(List<Long> districtIds,List<Long> districtAccessRequiredLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status);
 }

@@ -958,5 +958,64 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+    //CORE DASHBOARD RELATED
+    public List<Object[]> getDistrictAccessDetails(List<Long> districtIds,List<Long> districtAccessRequiredLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status){
+		StringBuilder str = new StringBuilder();
+        
+		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
+				"           model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name," +//3
+				   "        model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel," +//5
+				   "        count(distinct model.tdpCommitteeId)" +//6
+				  "  from   TdpCommittee model " +
+				  "  where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:districtAccessRequiredLevelIds) and " +
+				  "         model.district.districtId in (:districtIds) and " +
+				  "         model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+		if(status.equalsIgnoreCase("started")){
+			str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' ");
+			if( startDate!=null){
+				str.append( " and date(model.startedDate)>=:startDate " );
+			}
+			if(endDate!=null){
+				str.append( " and date(model.startedDate)<=:endDate " );
+			}
+		}
+		else if(status.equalsIgnoreCase("completed")){
+			str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			if( startDate!=null){
+				str.append( " and date(model.completedDate)>=:startDate " );
+			}
+			if(endDate!=null){
+				str.append( " and date(model.completedDate)<=:endDate " );
+			}
+		}
+		else if(status.equalsIgnoreCase("notStarted")){
+			str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+		}
+			
+		if(state != null && !state.isEmpty()){
+			str.append(" and model.state = :state");
+		}
+		str.append(" group by model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpCommitteeLevel.tdpCommitteeLevelId " +
+				   " order by model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpCommitteeLevel.tdpCommitteeLevelId ");
 
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameterList("districtAccessRequiredLevelIds", districtAccessRequiredLevelIds);
+		query.setParameterList("districtIds", districtIds);
+		query.setParameterList("basicCommitteeIds", basicCommitteeIds);
+		if(status.equalsIgnoreCase("started") || status.equalsIgnoreCase("completed")){
+			if( startDate!=null){
+				query.setDate("startDate",startDate);
+			}
+			if(endDate!=null){
+				query.setDate("endDate",endDate);
+			}
+		}
+		
+		if(state != null && !state.isEmpty()){
+			query.setParameter("state", state);
+		}
+		
+		return query.list();
+	}
 }
