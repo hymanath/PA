@@ -250,25 +250,25 @@
                                 	<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>District</label>
                                         <select class="chosenSelect" attr_id="addDistrictId" id="changedistrictId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" name="nominatedPostVO.addDistrictName">
-                                        	<option>District</option>
+                                        	<option value="0"> Select District</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Constituency</label>
                                         <select class="chosenSelect" attr_id="addConstituencyId" id="changeConstiId"  onchange="getMandalCorporationsByConstituency('',this.id);" name="nominatedPostVO.addConstituencyName">
-                                        	<option>Constituency </option>
+                                        	<option value="0"> Select Constituency </option>
                                         </select>
                                     </div>
 									  <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Mandals/Municipality</label>
                                         <select class="chosenSelect" attr_id="addMandalsId" id="changeMandalId" onchange="getPanchayatWardByMandal('',this.id);" name="nominatedPostVO.addMandalsName">
-                                        	<option>Mandals/Municipality </option>
+                                        	<option value="0"> Select Mandals/Municipality </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Village</label>
                                         <select class="chosenSelect" attr_id="addVillageId" id="changePanchyatId"  onchange="getAllCadreInPanchayat();" name="nominatedPostVO.addVillageName">
-                                        	<option>Village Name</option>
+                                        	<option value="0"> Select Panchayat </option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
@@ -700,11 +700,11 @@ $(document).on("change","#addMandalsId",function(){
  // getPanchayatsForMandal(5);
 });
 $(".changHeading").html("SELECT REFER DETAILS<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>")
-
+/*
 $(document).ready(function(){
 	$(".hideDivCls").hide();
 });
-
+*/
 </script>
 </body>
 </html>
