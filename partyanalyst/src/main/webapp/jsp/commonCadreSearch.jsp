@@ -10,7 +10,7 @@
 				<div class="panel-heading" style="background:#ccc;border-radius:0px;">
 					<h4 class="panel-title changHeading">SEARCH CADRE</h4>
 				</div>
-				<div class="panel-body" style="background:#eee;">
+				<div class="panel-body" style="background:#fff;">
 					
 				<div>
 					<div class="row">
@@ -137,7 +137,7 @@
 									</div>
 									<div class="panel-body">
 										<div class="row">
-											<div class="membersBlock col-md-12" style="display:none;"></div>
+											<div class="membersBlock col-md-12" style="display:none;"></div>	
 										</div>
 									</div>
 									
@@ -179,7 +179,7 @@ function buildapptmemberDetails(result){
 								str+='<div class="col-md-12">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
-											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
+										 str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
 										str+='</div>';
 										str+='<div class="media-body">';
 										

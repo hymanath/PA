@@ -29,6 +29,15 @@
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 
 <style type="text/css">
+#searchedMembersId_length , #searchedMembersId_filter , #searchedMembersId_info , #searchedMembersId_paginate , #searchedMembersId thead th
+{
+	display:none;
+}
+.panelPost .panel-body
+{
+	height:250px;
+	overflow-y:scroll;
+}
 .createAppointmentSearch>li{
 	width:300px !important;
 	
