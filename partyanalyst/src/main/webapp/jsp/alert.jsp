@@ -226,7 +226,7 @@
                     </div> 
                     <div class="row m_top10">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
-                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(02 - Members added)</small></h4>
+                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
 						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
 							<div class="col-md-12">
