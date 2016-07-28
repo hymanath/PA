@@ -139,7 +139,7 @@ function buildLocationLevelAlert(result,jsObj){
 			}
 		}
 			if(totalCnt > 0)
-			str+=' <h3><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></h3>';
+			str+=' <h3><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></h3>';
 			else
 			{
 					str+=' <h3>'+totalCnt+'</h3>';
@@ -279,7 +279,7 @@ function buildAlertData(result,jsObj)
 	str+='<td>'+result[i].userType+'</td>';
 	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
 	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
-	if(jsObj.levelId == 2)
+	if(result[i].regionScopeId== 2)
 			{
 				str+='<td>'+result[i].locationVO.state+'</td>';
 			}
