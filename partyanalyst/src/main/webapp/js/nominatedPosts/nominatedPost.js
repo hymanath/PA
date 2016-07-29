@@ -1190,14 +1190,25 @@ function savingApplication(){
 				}
 			
 		});  
-		var refferCadreId="";
+		var candidateId="";
+		$(".checkedReffrl").each(function(){
+						if($(this).is(":checked")){
+						if($(this).val() != null && $(this).val().length > 0)	
+						candidateId += $(this).val()+",";	
+						}
+		});
+	
+	var n=candidateId.lastIndexOf(",");
+    candidateId=candidateId.substring(0,n) ;
+	//$("#candidateId").val(candidateId);
+		/* var refferCadreId="";
 			for(var i=0;i<commontdpCadreIds.length;i++)
 				 refferCadreId += commontdpCadreIds[i]+",";
 			 
 			 var n=refferCadreId.lastIndexOf(",");
-			refferCadreId=refferCadreId.substring(0,n) ;
+			refferCadreId=refferCadreId.substring(0,n) ; */
 			
-			$(".referCadreIds").val(refferCadreId); 
+			$(".referCadreIds").val(candidateId); 
 			
 			var uploadHandler = {
 				upload: function(o) {
@@ -1206,7 +1217,7 @@ function savingApplication(){
 					showSbmitStatus(uploadResult);
 				}
 			};
-			
+		
 	if(flag){
 		$("#savingAjaxImg").css("display","block");	
 			YAHOO.util.Connect.setForm('submitApplication',true);
