@@ -1125,4 +1125,5 @@ public interface IConstants {
 	public static final Long[] DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {11l ,5l,7l,9l, 6l,8l}; 
 	public static final Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5"; 
 }
