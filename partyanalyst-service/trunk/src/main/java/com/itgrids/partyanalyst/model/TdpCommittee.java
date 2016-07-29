@@ -37,6 +37,10 @@ public class TdpCommittee {
 	private Long districtId;
 	private District district;
 	
+	private Long  userAddressId;
+	private UserAddress userAddress;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_committee_id", unique = true, nullable = false)
@@ -177,8 +181,26 @@ public class TdpCommittee {
 		this.district = district;
 	}
 	
+	@Column(name = "address_id")
+	public Long getUserAddressId() {
+		return userAddressId;
+	}
+
+	public void setUserAddressId(Long userAddressId) {
+		this.userAddressId = userAddressId;
+	}
 	
-	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "address_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
+	}
 	
 }
 

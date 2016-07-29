@@ -519,7 +519,8 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	@SuppressWarnings("unchecked")
 	public List<Long> getAssemblyConstituencyIdsByPCId(Long constituencyId)
 	{
-		Query query = getSession().createQuery(" select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = 2009 " +
+		Query query = getSession().createQuery(" select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model " +
+				" where model.delimitationConstituency.year = 2009 " +
 				" and model.delimitationConstituency.constituency.constituencyId = :constituencyId ");
 		
 		query.setParameter("constituencyId", constituencyId);
@@ -529,7 +530,8 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public Long getParliamentConstituencyIdByAssemblyConstituencyId(Long constituencyId)
 	{
 		try{
-			Query query = getSession().createQuery("SELECT model.delimitationConstituency.constituency.constituencyId FROM DelimitationConstituencyAssemblyDetails model WHERE model.constituency.constituencyId = :constituencyId and model.delimitationConstituency.year = 2009");
+			Query query = getSession().createQuery("SELECT model.delimitationConstituency.constituency.constituencyId FROM DelimitationConstituencyAssemblyDetails model" +
+					" WHERE model.constituency.constituencyId = :constituencyId and model.delimitationConstituency.year = 2009");
 			query.setParameter("constituencyId",constituencyId);
 			return (Long)query.uniqueResult();
 		}catch(Exception e)
@@ -538,4 +540,14 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		}
 	}
 	
+	public List<Long> getAssemblyConstituenciesByParliamentList(List<Long> parliamentConstituencyIds) {
+		
+		Query query = getSession().createQuery("" +
+		" select model.constituency.constituencyId " +
+		" from   DelimitationConstituencyAssemblyDetails model " +
+		" where  model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and model.delimitationConstituency.year = 2009 ");
+			
+		query.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
+		return query.list();
+	}
 }

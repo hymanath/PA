@@ -1113,14 +1113,16 @@ public interface IConstants {
 	public static final String NOT_CADRE_IMAGES = "not_cadre_images";
 	
     //core dashboard
-	public static final Long STATE_LEVEl_ID    = 2l; 
-	public static final Long DISTRICT_LEVEl_ID = 3l; 
-	public static final Long MANDAL_LEVEl_ID   = 4l; 
-	public static final Long TOWN_LEVEl_ID     = 5l; 
-	public static final Long DIVISION_LEVEl_ID = 6l; 
+	public static final Long STATE_LEVEl_ACCESS_ID      = 1l; 
+	public static final Long DISTRICT_LEVEl_ACCESS_ID   = 2l; 
+	public static final Long PARLIAMENT_LEVEl_ACCESS_ID = 3l;
+	public static final Long ASSEMBLY_LEVEl_ACCESS_ID   = 4l;
+	public static final Long MANDAL_LEVEl_ID   = 5l; 
+	public static final Long MUNCIPALITY_LEVEl_ID  = 6l; 
 	public static final Long VILLAGE_LEVEl_ID  = 7l; 
 	public static final Long WARD_LEVEl_ID     = 8l; 
 	
 	public static final Long[] DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {11l ,5l,7l,9l, 6l,8l}; 
-	
+	public static final Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+	public static final Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 }

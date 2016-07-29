@@ -13,14 +13,15 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessTypeDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 
 public class CoreDashboardService implements ICoreDashboardService{
 	
@@ -32,6 +33,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private ITdpCommitteeDAO tdpCommitteeDAO;
 	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	//setters
 	public void setDashboardUserAccessLevelDAO(
@@ -52,6 +54,10 @@ public class CoreDashboardService implements ICoreDashboardService{
 	
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
 		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
+	}
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 	
 	//business methods.
@@ -103,25 +109,61 @@ public class CoreDashboardService implements ICoreDashboardService{
 		    	 endDate = sdf.parse(endDateString);
 		     }
 		     
-		     if(userAccessLevelId == IConstants.DISTRICT_LEVEl_ID){
+		     Map<Long,CommitteeVO> basicCommitteeMap = new LinkedHashMap<Long,CommitteeVO>(0);
+		     
+		     List<Object[]> completedList = null;
+		     List<Object[]> startedList = null;
+		     List<Object[]> yetToStartList = null;
+		     
+		     if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue()){
 		    	 
 		    	 List<Long> districtAccessRequiredLevelIds = Arrays.asList(IConstants.DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS);
 		    	 //instantiation.
-		    	 Map<Long,CommitteeVO> basicCommitteeMap = new LinkedHashMap<Long,CommitteeVO>(0);
 		    	 committeesInstantiationlogic(basicCommitteeMap,basicCommitteeIds,districtAccessRequiredLevelIds);
-		    	 
-		    	 List<Long> districtIds = userAccessLevelValues;
-		    	 List<Object[]> completedList = tdpCommitteeDAO.getDistrictAccessDetails(districtIds,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
-		    	 List<Object[]> startedList = tdpCommitteeDAO.getDistrictAccessDetails(districtIds,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
-		    	 List<Object[]> yetToStartList = tdpCommitteeDAO.getDistrictAccessDetails(districtIds,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
-		    	 
-		    	 setCommitteeStatusCount(completedList,basicCommitteeMap,"completed");
-		    	 setCommitteeStatusCount(startedList,basicCommitteeMap,"started");
-		    	 setCommitteeStatusCount(yetToStartList,basicCommitteeMap,"yetToStartList");
-		    	 
-		    	 finalList = getRequiredList(basicCommitteeMap);
+		    	
+		    	 completedList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
+		    	 startedList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
+		    	 yetToStartList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
 		     }
-			
+		     else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
+		    	 
+		    	 List<Long> assemblyConstIds = null;
+		    	 List<Long> ParOrConstAccessRequiredLevelIds = Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS);
+		    	 
+		    	 if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
+		    		 assemblyConstIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(userAccessLevelValues);
+		    	 }else{
+		    		 assemblyConstIds =  userAccessLevelValues;
+		    	 }
+		    	 //instantiation.
+		    	 committeesInstantiationlogic(basicCommitteeMap,basicCommitteeIds,ParOrConstAccessRequiredLevelIds);
+		    	 
+		    	 completedList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
+		    	 startedList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
+		    	 yetToStartList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
+		    
+		     }
+		     else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
+		    	 
+		    	 List<Long> assemblyConstIds = null;
+		    	 List<Long> mandalAccessRequiredLevelIds = Arrays.asList(IConstants.MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS);
+		    	
+		    	 //instantiation.
+		    	 committeesInstantiationlogic(basicCommitteeMap,basicCommitteeIds,mandalAccessRequiredLevelIds);
+		    	 
+		    	 completedList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,assemblyConstIds,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
+		    	 startedList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,assemblyConstIds,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
+		    	 yetToStartList = tdpCommitteeDAO.getCommitteeWiseLevelsWiseDetails(userAccessLevelId,assemblyConstIds,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
+		    
+		     }
+		     
+		     setCommitteeStatusCount(completedList,basicCommitteeMap,"completed");
+	    	 setCommitteeStatusCount(startedList,basicCommitteeMap,"started");
+	    	 setCommitteeStatusCount(yetToStartList,basicCommitteeMap,"yetToStartList");
+	    	 
+	    	 
+		     finalList = getRequiredList(basicCommitteeMap);
+		     
 		}catch(Exception e){
 			LOG.error("exception occurred in getCommitteesWiseLevelsBasedDetails", e);
 		}
