@@ -44,29 +44,65 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private String 								task;
 	private JSONObject							jObj;
 	private INominatedPostProfileService        nominatedPostProfileService;
-	private String status;
+	private String 								status;
 	private List<IdNameVO> 						idNameVOList;
 	private List<NominatedPostVO> 				nominatePostList;
 	private NomintedPostMemberVO 				nomintedPostMemberVO;
 	private NominatedPostVO                     nominatedPostVO;
 	private ResultStatus 						resultStatus;
 	private InputStream 						inputStream;
-	private List<LocationWiseBoothDetailsVO> locations;
-	private ICadreCommitteeService	cadreCommitteeService;
-	private AddNotcadreRegistrationVO addNotcadreRegistrationVO;
+	private List<LocationWiseBoothDetailsVO> 	locations;
+	private ICadreCommitteeService				cadreCommitteeService;
+	private AddNotcadreRegistrationVO 			addNotcadreRegistrationVO;
 	private List<NominatedPostVO> 				candidatesList;
-	private List<CadreCommitteeVO>                    cadreCommitteeVOList;
+	private List<CadreCommitteeVO>              cadreCommitteeVOList;
 	private NominatedPostReferVO 				nominatedPostReferVO;
 	private IdNameVO							idNameVO;
 	private List<CastePositionVO> castePositionVOList;
 	private INominatedPostMainDashboardService        nominatedPostMainDashboardService;
-	
+	private NominatedPostDashboardVO nominatedPostDashboardVO;
 	private Long lId;
 	private Long stId;
 	private String sts;
-	private NominatedPostDashboardVO nominatedPostDashboardVO;
+	private Long deptId;
+	private Long boardId;
+	private Long positionId;
+	private Long searchLevelId;
+	private Long searchLevelValue;
 	
-	
+	public Long getSearchLevelId() {
+		return searchLevelId;
+	}
+	public void setSearchLevelId(Long searchLevelId) {
+		this.searchLevelId = searchLevelId;
+	}
+	public Long getSearchLevelValue() {
+		return searchLevelValue;
+	}
+	public void setSearchLevelValue(Long searchLevelValue) {
+		this.searchLevelValue = searchLevelValue;
+	}
+	public Long getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+	public Long getBoardId() {
+		return boardId;
+	}
+	public void setBoardId(Long boardId) {
+		this.boardId = boardId;
+	}
+	public Long getPositionId() {
+		return positionId;
+	}
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
+	}
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
 	public IdNameVO getIdNameVO() {
 		return idNameVO;
 	}
@@ -95,7 +131,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public Long getlId() {
 		return lId;
 	}
-	public void setlId(Long lId) {
+	public void setlId(Long lId) { 
 		this.lId = lId;
 	}
 	public Long getStId() {
@@ -295,7 +331,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			jObj = new JSONObject(getTask());
 			
 			nomintedPostMemberVO = nominatedPostProfileService.getNominatedPostMemberDetails(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("departmentId"),
-															jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getString("type"));
+															jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getString("type"),jObj.getLong("searchLevelId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
@@ -521,7 +557,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			jObj = new JSONObject(getTask());
 			
 			nominatePostList = nominatedPostProfileService.getNominatedPostPostionDetails(jObj.getLong("depmtId"),jObj.getLong("boardId"),jObj.getLong("positionId"),
-					jObj.getLong("bLId"),jObj.getLong("lValue"));
+					jObj.getLong("bLId"),jObj.getLong("lValue"),jObj.getLong("searchLevelId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostPostionDetails Action",e);
