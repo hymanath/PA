@@ -56,46 +56,34 @@ public class CoreDashboardService implements ICoreDashboardService{
 	
 	//business methods.
 	
-	public List<UserDataVO> getUserAccessLevelAndValues(Long userId){
+	public UserDataVO getUserBasicDetails(Long userId){
 		
-		LOG.info(" entered in to getUserAccessLevelAndValues()");
-		List<UserDataVO> finalList = null;
-		try{
-			
-			List<Object[]> userLevelsList = dashboardUserAccessLevelDAO.getUserAccessLevelAndValues(userId);
-			if( userLevelsList != null && userLevelsList.size()>0){
-				finalList = new ArrayList<UserDataVO>();
-				for (Object[] obj : userLevelsList) {
-					UserDataVO VO = new UserDataVO();
-					VO.setUserId(userId);
-					VO.setUserLevelId( obj[0]!= null ? (Long)obj[0] : 0l);
-					VO.setLevel(obj[1]!= null ? obj[1].toString() : "");
-					VO.setLevelValue(obj[2]!= null ? (Long)obj[2] : 0l);
-					finalList.add(VO);
-				}
-			}
-		}catch(Exception e){
-			LOG.error("error occurred in getUserAccessLevelAndValues() of CoreDashboardService class",e);
-		}
-		return finalList;
-	}
-	
-	public UserDataVO getUserTypeByUserId(Long userId){
-		
-		LOG.info(" entered in to getUserTypeByUserId() ");
-		 UserDataVO finalVO = null;
+		LOG.info(" entered in to getUserBasicDetails() ");
+		UserDataVO finalVO = new UserDataVO();
 		try{
 			
 			List<Object[]> userTypeList = dashboardUserAccessTypeDAO.getUserTypeByUserId(userId);
+			List<Object[]> userLevelsList = dashboardUserAccessLevelDAO.getUserAccessLevelAndValues(userId);
+			
+			finalVO.setUserId(userId);
+			
 			if( userTypeList != null && userTypeList.size()>0){
 			    Object[] obj = userTypeList.get(0);
-				finalVO = new UserDataVO();
-				finalVO.setUserId(userId);
 				finalVO.setUserTypeId( obj[0]!= null ? (Long)obj[0] : 0l);
 				finalVO.setUserType(obj[1]!= null ? obj[1].toString() : "");
 			}
+			if( userLevelsList != null && userLevelsList.size()>0){
+				for (Object[] obj : userLevelsList) {
+					finalVO.setUserAccessLevelId( obj[0]!= null ? (Long)obj[0] : 0l);
+					finalVO.setUserAccessLevel(obj[1]!= null ? obj[1].toString() : "");
+					if( finalVO.getUserAccessLevelValuesList() == null){
+						finalVO.setUserAccessLevelValuesList(new ArrayList<Long>(0));
+					}
+					finalVO.getUserAccessLevelValuesList().add(obj[2]!= null ? (Long)obj[2] : 0l);
+				}
+			}
 		}catch(Exception e){
-			LOG.error("error occurred in getUserTypeByUserId() of CoreDashboardService class",e);
+			LOG.error("error occurred in getUserBasicDetails() of CoreDashboardService class",e);
 		}
 		return finalVO;
 	}

@@ -8,8 +8,7 @@ import com.itgrids.partyanalyst.dto.UserDataVO;
 
 public interface ICoreDashboardService {
 	
-	public List<UserDataVO> getUserAccessLevelAndValues(Long userId);
-	public UserDataVO getUserTypeByUserId(Long userId);
+	public UserDataVO getUserBasicDetails(Long userId);
 	public List<CommitteeBasicVO> getMainCommitteeCountDetails(Long committeeId,String state);
 	public List<CommitteeVO> getCommitteesWiseLevelsBasedDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString);
 }
