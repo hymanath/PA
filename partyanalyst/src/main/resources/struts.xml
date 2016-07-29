@@ -13142,7 +13142,7 @@
 		<result name="success">/jsp/coreDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
-	 <action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
+	<action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
 		<result name="success">/jsp/nominatedPostMainDashboard.jsp</result>
 	</action>
 	 <action name="getLocationWiseCastePositionCountAction" class="nominatedPostProfileAction" method="getLocationWiseCastePositionCount">
@@ -13168,6 +13168,11 @@
 	<action name="getCommitteesWiseLevelsBasedDetailsAction" class="coreDashboardAction" method="getCommitteesWiseLevelsBasedDetails">
 		<result type="json" name="success">
 				<param name="root">committeeVOList</param>
+		</result>
+	</action>
+	<action name="getMainCommitteeCountDetailsAction" class="coreDashboardAction" method="getMainCommitteeCountDetails">
+		<result type="json" name="success">
+				<param name="root">committeeBasicVO</param>
 		</result>
 	</action>
 </package>

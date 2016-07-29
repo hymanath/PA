@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.itgrids.partyanalyst.dto.CommitteeVO;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
@@ -28,6 +28,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private JSONObject jObj;
 	private List<UserDataVO> userDataVOList;
 	private UserDataVO userDataVO;
+	private List<CommitteeBasicVO> committeeBasicVO;
 	private List<CommitteeVO> committeeVOList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
@@ -66,12 +67,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		this.userDataVO = userDataVO;
 	}
 	
-	public List<CommitteeVO> getCommitteeVOList() {
-		return committeeVOList;
+	
+
+	public List<CommitteeBasicVO> getCommitteeBasicVO() {
+		return committeeBasicVO;
 	}
 
-	public void setCommitteeVOList(List<CommitteeVO> committeeVOList) {
-		this.committeeVOList = committeeVOList;
+	public void setCommitteeBasicVO(List<CommitteeBasicVO> committeeBasicVO) {
+		this.committeeBasicVO = committeeBasicVO;
 	}
 
 	//Implementation method
@@ -117,6 +120,16 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getMainCommitteeCountDetailsAction(){
+		try{
+			jObj = new JSONObject(getTask());
+			committeeBasicVO = coreDashboardService.getMainCommitteeCountDetails(jObj.getLong("committeeId"),jObj.getString("state"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getMainCommitteeCountDetails() method of coreDashboardAction", e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	public String getCommitteesWiseLevelsBasedDetails(){
 		try{
 			LOG.info("Entered into getCommitteesWiseLevelsBasedDetails()  of CoreDashboardAction");
