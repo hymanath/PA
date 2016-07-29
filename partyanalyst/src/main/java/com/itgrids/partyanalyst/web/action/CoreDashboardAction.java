@@ -120,7 +120,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	public String getMainCommitteeCountDetailsAction(){
+	public String getMainCommitteeCountDetails(){
 		try{
 			jObj = new JSONObject(getTask());
 			committeeBasicVO = coreDashboardService.getMainCommitteeCountDetails(jObj.getLong("committeeId"),jObj.getString("state"));
