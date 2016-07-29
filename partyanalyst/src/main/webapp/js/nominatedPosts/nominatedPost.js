@@ -130,6 +130,7 @@ function getDistrictsForStates(state,id,num){
    });
   }
  function getConstituenciesForDistricts(district,id,num){
+	// debugger;
 	 if(id == "districtId"){
 			$("#searchDataImgForConst").show();
 			//refreshExistingDetails();
@@ -234,7 +235,7 @@ function getDistrictsForStates(state,id,num){
 		$("#constituencyId").trigger("chosen:updated");
 	 }else if(id == "notCadreDistId"){
 		   	$("#notCadreConstId").trigger("chosen:updated");
-		}else if(id == "changedistrictId"){
+	 }else if(id == "changedistrictId"){
 			$("#changeConstiId").trigger("chosen:updated");
 	 }else{
 		$("#nominatdConstId"+num).trigger("chosen:updated"); 
@@ -853,7 +854,7 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 		 $("#"+id).append('<option value="0">Select Board</option>');
      for(var i in result){
-		 if(result[i].id != 5)
+		 if(result[i].id != 7)
 			$("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
    }
@@ -1049,15 +1050,15 @@ $(document).on("click","#addOneMore",function(){
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
   e.find(".nominatedStaeCls").attr("attr_no",cloneCount);
   e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
-  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates("",nominatedStaeId'+cloneCount+','+cloneCount+');');
+  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');');
   
   e.find(".nominatedDistCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].districtId');
   e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
   e.find(".nominatedDistCls").attr("attr_no",cloneCount);
   e.find(".districtShowCls").attr("id","districtShowDivId"+cloneCount);
-  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts("",nominatedDistId'+cloneCount+','+cloneCount+');');
+  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts(this.value,nominatedDistId'+cloneCount+','+cloneCount+');');
   
-  e.find(".nominatdConstCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].ConstituencyId');
+  e.find(".nominatdConstCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].constituencyId');
   e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
   e.find(".nominatdConstCls").attr("attr_no",cloneCount);
   e.find(".constituencyShowCls").attr("id","constituencyshowDivId"+cloneCount);
