@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.model.TdpCommittee;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  implements ITdpCommitteeDAO {
 
@@ -959,7 +960,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	 //CORE DASHBOARD RELATED
-    public List<Object[]> getDistrictAccessDetails(List<Long> districtIds,List<Long> districtAccessRequiredLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status){
+    public List<Object[]> getCommitteeWiseLevelsWiseDetails(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status){
 		StringBuilder str = new StringBuilder();
         
 		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
@@ -967,9 +968,25 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				   "        model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel," +//5
 				   "        count(distinct model.tdpCommitteeId)" +//6
 				  "  from   TdpCommittee model " +
-				  "  where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:districtAccessRequiredLevelIds) and " +
-				  "         model.district.districtId in (:districtIds) and " +
+				  "  where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:userAccessRequiredCommitteeLevelIds) and " +
 				  "         model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+		if(userAccessLevelId == IConstants.STATE_LEVEl_ACCESS_ID){
+			if(committeeLevelValueIds.contains(1l) && committeeLevelValueIds.contains(36l)){
+				str.append(" and model.state in ('AP','TS') ");
+			}else if(committeeLevelValueIds.contains(1l)){
+				str.append(" and model.state = 'AP' ");
+			}else if(committeeLevelValueIds.contains(36l)){
+				str.append(" and model.state = 'TS' ");
+			}
+		}
+		if(userAccessLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			str.append(" and model.userAddress.district.districtId in (:committeeLevelValueIds) ");
+		}else if(userAccessLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID || userAccessLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			str.append(" and model.userAddress.constituency.constituencyId in (:committeeLevelValueIds) ");
+		}else if(userAccessLevelId == IConstants.MANDAL_LEVEl_ID){
+			str.append(" and model.userAddress.tehsil.tehsilId in (:committeeLevelValueIds) ");
+		}
+		
 		if(status.equalsIgnoreCase("started")){
 			str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' ");
 			if( startDate!=null){
@@ -992,16 +1009,18 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		}
 			
-		if(state != null && !state.isEmpty()){
-			str.append(" and model.state = :state");
+		if(state!= null && !state.isEmpty() ){
+			str.append(" and model.state =:state ");
 		}
 		str.append(" group by model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpCommitteeLevel.tdpCommitteeLevelId " +
 				   " order by model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpCommitteeLevel.tdpCommitteeLevelId ");
 
 		Query query = getSession().createQuery(str.toString());
 		
-		query.setParameterList("districtAccessRequiredLevelIds", districtAccessRequiredLevelIds);
-		query.setParameterList("districtIds", districtIds);
+		query.setParameterList("userAccessRequiredCommitteeLevelIds", userAccessRequiredCommitteeLevelIds);
+		if(userAccessLevelId != IConstants.STATE_LEVEl_ACCESS_ID){
+			query.setParameterList("committeeLevelValueIds", committeeLevelValueIds);
+		}
 		query.setParameterList("basicCommitteeIds", basicCommitteeIds);
 		if(status.equalsIgnoreCase("started") || status.equalsIgnoreCase("completed")){
 			if( startDate!=null){
@@ -1011,11 +1030,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				query.setDate("endDate",endDate);
 			}
 		}
-		
-		if(state != null && !state.isEmpty()){
-			query.setParameter("state", state);
+		if(state!= null && !state.isEmpty() ){
+			query.setParameter("state",state);
 		}
-		
 		return query.list();
 	}
 	public List<Object[]> getCompletedCommitteeCounts(Long committeeId,String state){
