@@ -47,7 +47,7 @@ public class NominatedPostCommentDAO extends GenericDaoHibernate<NominatedPostCo
 										" model1.lastName" +
 										" from NominatedPostComment model,User model1" +
 										" where model.insertedBy = model1.userId" +
-										" where model.nominatedPostApplication.nominationPostCandidateId = :candidateId" +
+										" and model.nominatedPostApplication.nominationPostCandidateId = :candidateId" +
 										" and model.nominatedPostFinalId is null");
 		query.setParameter("candidateId", candidateId);
 		return query.list();

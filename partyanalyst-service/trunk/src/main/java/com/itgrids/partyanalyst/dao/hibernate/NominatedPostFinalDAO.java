@@ -161,7 +161,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" CCG.casteCategoryGroupName," +
 					" caste.casteName," +
 					" model.applicationStatus.applicationStatusId," +
-					" model.applicationStatus.status" +
+					" model.applicationStatus.status," +
+					" model.isPrefered" +
 					" from NominatedPostFinal model" +
 					" left join model.nominationPostCandidate.tdpCadre TC" +
 					" left join TC.casteState CS" +
