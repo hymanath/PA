@@ -1,41 +1,25 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDataVO implements Serializable{
 	
 	private Long userId;
 	
-	private Long   userLevelId;
-	private String level;
-	private Long   levelValue;
+	private Long   userAccessLevelId;
+	private String userAccessLevel;
+	private List<Long>   userAccessLevelValuesList;
 	
 	private Long userTypeId;
 	private String userType;
+	
 	
 	public Long getUserId() {
 		return userId;
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
-	}
-	public Long getUserLevelId() {
-		return userLevelId;
-	}
-	public void setUserLevelId(Long userLevelId) {
-		this.userLevelId = userLevelId;
-	}
-	public String getLevel() {
-		return level;
-	}
-	public void setLevel(String level) {
-		this.level = level;
-	}
-	public Long getLevelValue() {
-		return levelValue;
-	}
-	public void setLevelValue(Long levelValue) {
-		this.levelValue = levelValue;
 	}
 	public Long getUserTypeId() {
 		return userTypeId;
@@ -49,7 +33,23 @@ public class UserDataVO implements Serializable{
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	
-	
+	public Long getUserAccessLevelId() {
+		return userAccessLevelId;
+	}
+	public void setUserAccessLevelId(Long userAccessLevelId) {
+		this.userAccessLevelId = userAccessLevelId;
+	}
+	public String getUserAccessLevel() {
+		return userAccessLevel;
+	}
+	public void setUserAccessLevel(String userAccessLevel) {
+		this.userAccessLevel = userAccessLevel;
+	}
+	public List<Long> getUserAccessLevelValuesList() {
+		return userAccessLevelValuesList;
+	}
+	public void setUserAccessLevelValuesList(List<Long> userAccessLevelValuesList) {
+		this.userAccessLevelValuesList = userAccessLevelValuesList;
+	}
 
 }
