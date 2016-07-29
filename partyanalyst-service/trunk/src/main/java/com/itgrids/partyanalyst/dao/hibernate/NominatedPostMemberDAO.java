@@ -101,7 +101,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 											" from NominatedPostMember model" +
 											" where model.boardLevel.boardLevelId = :levelId" +
 											" and model.locationValue = :levelValue" +
-											" and model.nominatedPostPosition.department.departmentId = :deptId" +
+											" and model.nominatedPostPosition.departments.departmentId = :deptId" +
 											" and model.nominatedPostPosition.board.boardId = :boardId" +
 											" and model.nominatedPostPosition.position.positionId = :positionId" +
 											" and model.isDeleted = 'N' and model.nominatedPostPosition.isDeleted = 'N'");
