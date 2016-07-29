@@ -179,6 +179,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	public NominatedPostDashboardVO getAllPositionWiseStatus(Long positionId){
 		NominatedPostDashboardVO returnVO = new NominatedPostDashboardVO();
 		try{
+			
 		List<Object[]> allNomintdStatslist = nominatedPostStatusDAO.getAllNominatedStatusList();
 		if(commonMethodsUtilService.isListOrSetValid(allNomintdStatslist)){
 			List<NominatedPostDashboardVO> nominatedStatsVoList = new ArrayList<NominatedPostDashboardVO>();
@@ -190,7 +191,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		List<Object[]> nomintdStats = nominatedPostDAO.getNominatdPostStatusCntByPosition(positionId);
 		if(commonMethodsUtilService.isListOrSetValid(nomintdStats)){
 			for(Object[] obj : nomintdStats){
-			NominatedPostDashboardVO matchedVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getNominatedStatusList(), "id", commonMethodsUtilService.getStringValueForObject(obj[0]));
+			NominatedPostDashboardVO matchedVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getNominatedStatusList(), "statusId", commonMethodsUtilService.getStringValueForObject(obj[0]));
 			if(matchedVO != null){
 				matchedVO.setStatusCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
 			}
@@ -208,7 +209,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		List<Object[]> appctnStatus = nominatedPostApplicationDAO.getApplicationStatusCntByPositionId(positionId);
 		if(commonMethodsUtilService.isListOrSetValid(appctnStatus)){
 			for(Object[] obj : appctnStatus){
-			NominatedPostDashboardVO matchedVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getApplicatnStatsList(), "id", commonMethodsUtilService.getStringValueForObject(obj[0]));
+			NominatedPostDashboardVO matchedVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getApplicatnStatsList(), "statusId", commonMethodsUtilService.getStringValueForObject(obj[0]));
 			if(matchedVO != null){
 				matchedVO.setStatusCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
 			}
