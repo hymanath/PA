@@ -170,6 +170,7 @@ function getConstituenciesForDistricts(district,stateId){
 function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	/* var levelId=4;
 	var levelValues = 299; */
+	$("#departmentsBuildId").html("");
 	$("#departmentsBuildSearchId").show();
 	var jsObj={
 		levelId:levelId,
@@ -541,7 +542,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
    });
 	
 });
-
+ setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 6000);
 $(document).on("click","#locationWiseDataId",function(){
 	var stateId = $("#stateId").val();
 	var districtId=$("#districtId").val();
