@@ -41,7 +41,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	
-	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type){
+	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select NPA.nominationPostCandidate.nominationPostCandidateId," +
@@ -66,8 +66,20 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
 					" where NPA.boardLevel.boardLevelId = :levelId");
-		if(levelValue != null && levelValue.longValue() > 0l)
-			sb.append(" and NPA.locationValue = :levelValue");
+			if(searchLevelId != null && searchLevelId.longValue()>0L){
+				if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.locationValue = :levelValue ");
+				else if(searchLevelId.longValue() ==3L && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.address.district.districtId =:levelValue ");
+				else if(searchLevelId.longValue() ==4L  && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.address.constituency.constituencyId =:levelValue ");
+				else if(searchLevelId.longValue() ==5L  && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.address.tehsil.tehsilId =:levelValue ");
+				else if(searchLevelId.longValue() ==6L  && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.address.localElectionBody.localElectionBodyId =:levelValue ");
+				else if(searchLevelId.longValue() ==7L  && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.address.panchayatId =:levelValue ");
+			}
 		
 		if(type.equalsIgnoreCase("this")){
 			sb.append(" and NPA.departments.departmentId = :departmentId" +
