@@ -324,7 +324,7 @@ var str = '';
 						str+='<li>';
                         	str+='<div class="row">';
                             	str+='<div class="col-md-10 col-xs-12 col-sm-10 pad_right0 ">';
-                                	str+='<div class="positionsCls modalViewBtn referenceCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
+                                	str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
                                     	str+='<span>'+result[i].name+'</span>';
                                         str+='<span class="label label-primary labelCustom pull-right">'+result[i].count+'</span>';
                                     str+='</div>';
@@ -407,10 +407,10 @@ $(document).on('click','.showPdfCls',function(){
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
 }); 
-
+var totalWishListCount = 0;
 function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departmentId,boardId,positionId){
 	var str='';
-	var totalWishListCount = 0;
+	totalWishListCount = 0;
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead>';
@@ -486,7 +486,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 				else
 					str+='<td> - </td>';
 				str+='<td style="position:relative;width:180px">';
-					str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
+					str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
 					str+='<span class="commentCount">'+result.subList[i].commentCount+'</span>';
 					str+='<div class="commentsDiv">';
 						str+='<div class="commentDropDownArrow" id="commentsDivId'+i+'">';
@@ -495,10 +495,10 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='</div>';
 					if(result.subList[i].isPrefered == "Y"){
 						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
-						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;"/> ';
+						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" id="wishListId'+i+'" attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					else{
-						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;"/> ';
+						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_status_id="statusSelectId'+i+'">UPDATE</button>';
@@ -546,10 +546,14 @@ $(document).on("click",".wishListCls",function(){
 		   if(remark == 'Y'){
 			    $("#"+id).attr("src","dist/nominatedImages/Icon7.png");
 			    $("#"+id).attr("attr_remark","N");
+				totalWishListCount = parseInt(totalWishListCount)-parseInt(1);
+				$("#wishListCountId").html(totalWishListCount);
 		   }
 		   else if(remark == 'N'){
 			   $("#"+id).attr("src","dist/nominatedImages/Icon4.png");
 			   $("#"+id).attr("attr_remark","Y");
+			   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
+				$("#wishListCountId").html(totalWishListCount);
 		   }
 		}
 	});
