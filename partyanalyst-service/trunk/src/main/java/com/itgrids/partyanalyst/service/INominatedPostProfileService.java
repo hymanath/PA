@@ -18,7 +18,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDepartments(Long postTpe);
 	public List<IdNameVO> getDepartmentBoard(Long depmtId);
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId);
-	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
+	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId);
 	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment,final Long levelId,
 			final Long levelValue,final Long deptId,final Long boardId,final Long positionId,final Long candidateId);
 	public ResultStatus savingNominatedPostProfileApplication(NominatedPostVO nominatedPostVO,final Long loggedUserId,final Map<File,String> mapfiles);
@@ -28,7 +28,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getVillagesForMandalId(Long mandalId);
 	public NomintedPostMemberVO getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId);
 	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr,Long stateId);
-	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue);
+	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue,Long searchLevelId);
 	public ResultStatus saveNominatedPostUploadFiles(Map<File,String> mapfiles,Long nomiPostCandiId);
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
 	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
