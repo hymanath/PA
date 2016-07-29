@@ -14,8 +14,23 @@ public class CommitteeBasicVO {
 	private String locationType;
 	private String areaType="";
 	
+	private Long mainCommNotYetStarted =0l;
+	private String commiteeName;
 	
 	
+	
+	public Long getMainCommNotYetStarted() {
+		return mainCommNotYetStarted;
+	}
+	public void setMainCommNotYetStarted(Long mainCommNotYetStarted) {
+		this.mainCommNotYetStarted = mainCommNotYetStarted;
+	}
+	public String getCommiteeName() {
+		return commiteeName;
+	}
+	public void setCommiteeName(String commiteeName) {
+		this.commiteeName = commiteeName;
+	}
 	public Long getMainCommTotalCount() {
 		return mainCommTotalCount;
 	}
