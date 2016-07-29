@@ -27,7 +27,7 @@
 	   var jsObj ={committeeId:committeeId,state:state}
 	   $.ajax({
 			type : 'GET',
-			url : 'getCompleteAndStartedAndNotYetStartedCommittesCountAction.action',
+			url : 'getMainCommitteeCountDetailsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(results){
