@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 
 public class CoreDashboardService implements ICoreDashboardService{
 	
@@ -54,6 +55,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 	}
 	
 	//business methods.
+	
 	public List<UserDataVO> getUserAccessLevelAndValues(Long userId){
 		
 		LOG.info(" entered in to getUserAccessLevelAndValues()");
@@ -244,4 +246,47 @@ public class CoreDashboardService implements ICoreDashboardService{
 	     return committeeNamesMap;
 	}
 	
+	public List<CommitteeBasicVO> getMainCommitteeCountDetails(Long committeeId,String state){
+		
+		LOG.info(" entered in to getMainCommitteeCountDetails() ");
+		List<CommitteeBasicVO> resultList = new ArrayList<CommitteeBasicVO>(0); 
+		try{
+			
+			List<Object[]> completeCommitteeCount = null;
+	    	List<Object[]> StartedCommitteeCount = null;
+	    	List<Object[]> notYetStartedCommitteeCount =null;
+	    	  
+			 completeCommitteeCount = tdpCommitteeDAO.getCompletedCommitteeCounts(committeeId,state);
+			 StartedCommitteeCount = tdpCommitteeDAO.getStartedCommitteeCounts(committeeId,state);
+			 notYetStartedCommitteeCount = tdpCommitteeDAO.getNotYetStartedCommitteeCounts(committeeId,state);
+			 
+			 CommitteeBasicVO vo = new CommitteeBasicVO();
+			 
+			if( completeCommitteeCount != null && completeCommitteeCount.size()>0){
+				for(Object[] obj:completeCommitteeCount)
+				 {
+					vo.setCommiteeName(obj[0]!=null?obj[0].toString():"");
+					vo.setMainCommCompletedCount(obj[1]!=null?(Long)obj[1]:0l);
+					
+				 }
+			}
+			if( StartedCommitteeCount != null && StartedCommitteeCount.size()>0){
+				for(Object[] obj:StartedCommitteeCount)
+				 {
+					vo.setMainCommStartedCount(obj[1]!=null?(Long)obj[1]:0l);
+				 }
+			}
+			if( notYetStartedCommitteeCount != null && notYetStartedCommitteeCount.size()>0){
+				for(Object[] obj:notYetStartedCommitteeCount)
+				 {
+					vo.setMainCommNotYetStarted(obj[1]!=null?(Long)obj[1]:0l);
+				 }
+			}
+			
+			resultList.add(vo);
+		}catch (Exception e) {
+			LOG.error("error occurred in getMainCommitteeCountDetails() of CoreDashboardService class",e);
+		}
+		 return resultList;
+	}
 }

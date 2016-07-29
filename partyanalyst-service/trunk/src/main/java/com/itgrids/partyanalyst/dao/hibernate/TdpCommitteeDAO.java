@@ -958,7 +958,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
-    //CORE DASHBOARD RELATED
+	 //CORE DASHBOARD RELATED
     public List<Object[]> getDistrictAccessDetails(List<Long> districtIds,List<Long> districtAccessRequiredLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status){
 		StringBuilder str = new StringBuilder();
         
@@ -1018,4 +1018,38 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+	public List<Object[]> getCompletedCommitteeCounts(Long committeeId,String state){
+		
+		Query query = getSession().createQuery(" select tc.tdpBasicCommittee.name, count(distinct tc.tdpCommitteeId)" +
+				"  from TdpCommittee tc " +
+				"  where  tc.isCommitteeConfirmed = 'Y' and tc.startedDate is not null and tc.completedDate is not null" +
+				"  and tc.tdpBasicCommitteeId = :committeeId and tc.state =:state");
+		query.setParameter("committeeId", committeeId);
+		query.setParameter("state", state);
+		return query.list();
+	}
+	
+	public List<Object[]> getStartedCommitteeCounts(Long committeeId,String state){
+		
+		Query query = getSession().createQuery(" select tc.tdpBasicCommittee.name, count(distinct tc.tdpCommitteeId)" +
+				"  from TdpCommittee tc " +
+				"  where tc.isCommitteeConfirmed = 'N' and tc.startedDate is not null and tc.completedDate is  null" +
+				"  and tc.tdpBasicCommitteeId = :committeeId and tc.state =:state");
+		
+		query.setParameter("committeeId", committeeId);
+		query.setParameter("state", state);
+		return query.list();
+	}
+	public List<Object[]> getNotYetStartedCommitteeCounts(Long committeeId,String state){
+		
+		Query query = getSession().createQuery(" select tc.tdpBasicCommittee.name, count(distinct tc.tdpCommitteeId)" +
+				"  from TdpCommittee tc " +
+				"  where tc.isCommitteeConfirmed = 'N' and tc.startedDate is  null and tc.completedDate is  null" +
+				"  and tc.tdpBasicCommitteeId = :committeeId and tc.state =:state");
+		
+		query.setParameter("committeeId", committeeId);
+		query.setParameter("state", state);
+		return query.list();
+	}
+	
 }
