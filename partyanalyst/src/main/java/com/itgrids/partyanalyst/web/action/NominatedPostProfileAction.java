@@ -805,16 +805,40 @@ public String getNotCadreDetailsById(){
 	public String updateNominatedPostStatsDetails(){
 		
 		try {
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
 				jObj = new JSONObject(getTask());
 				Long deptId = jObj.getLong("deptId");
 				Long boardId = jObj.getLong("boardId");
-				Long positionId = jObj.getLong("positionId");
 				Long levelId = jObj.getLong("levelId");
+				Long statusId = jObj.getLong("statusId");
+
+				/*Long positionId = jObj.getLong("positionId");
+				
 				Long searchLevelId = jObj.getLong("searchLevelId");
 				Long searchLevelValue = jObj.getLong("searchLevelValue");
-				Long statusId = jObj.getLong("statusId");
+				Long statusId = jObj.getLong("statusId");*/
 				
-				resultStatus =nominatedPostProfileService.updateNominatedPostStatusDetails(deptId,boardId, positionId, levelId,searchLevelId,searchLevelValue,statusId);
+				
+				List<Long> positions = new ArrayList<Long>();
+				JSONArray positionArr = jObj.getJSONArray("positionArr");
+				for (int i = 0; i < positionArr.length(); i++) {
+					Long positon = Long.valueOf(positionArr.get(i).toString());
+					positions.add(positon);
+				}
+				
+				List<Long> levelValues = new ArrayList<Long>();
+				JSONArray levelValuesArr = jObj.getJSONArray("levelValuesArr");
+				for (int i = 0; i < levelValuesArr.length(); i++) {
+					Long levelValue = Long.valueOf(levelValuesArr.get(i).toString());
+					levelValues.add(levelValue);
+				}
+				
+				
+				resultStatus =nominatedPostProfileService.updateNominatedPostStatusDetails(deptId,boardId, positions, levelId,levelValues,statusId,regVO.getRegistrationID());
 		} catch (Exception e) {
 			LOG.error("Exception raised at updateNominatedPostStatsDetails() method of NominatedPostProfileAction", e);
 		}
