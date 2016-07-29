@@ -420,11 +420,17 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 						
 						str+='<td>'+availablePosts+'</td>';
 						str+='<td>'+result[i].receivedCount+'</td>';
-						str+='<td>'+rdyToShortlist+'</td>';
+						if(rdyToShortlist>0)
+						str+='<td id="shortListPositinCls" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> <u>'+rdyToShortlist+'</u></td>';
+						else
+							str+='<td>0</td>';
 						str+='<td>'+rejected+'</td>';
 						str+='<td>'+shortListed+'</td>';
 						
-						str+='<td>'+readyForFinalReview+'</td>';
+						if(readyForFinalReview>0)
+							str+='<td id="readyTofinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"><u>'+readyForFinalReview+'</u></td>';
+						else
+							str+='<td>0</td>';
 						str+='<td>'+finalized+'</td>';
 						str+='<td>'+goPassed+'</td>';
 						
@@ -458,13 +464,80 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 		str+='</tbody>';
 		str+='</table>';
 		str+='<div class="pad_15">';
-			str+='<button class="btn btn-success moveToFinalReviewCls" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
+			str+='<button class="btn btn-success moveToFinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
 			str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 		str+='</div>';
 		$("#"+bodyId).html(str);
 	
 	}	
 }
+
+
+$(document).on("click","#readyTofinalReviewCls",function(){
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId = globalStateId;
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	var deptId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_board_id');
+	var positionId = $(this).attr('attr_position_id');
+
+	var searchLevelValue =stateId;
+	if(stateId ==0){
+		searchLevelValue =1;
+		searchLevelId=2;
+	}		
+	if(mandalTownDivId >0){
+		searchLevelValue = mandalTownDivId;
+		searchLevelId= 5;
+	}	
+	else if(constituencyId >0){
+		searchLevelValue = constituencyId;
+		searchLevelId=4;
+	}		
+	else if(districtId >0){
+		searchLevelValue = districtId;
+		searchLevelId=3;
+	}
+		
+	
+	window.open("nominatedReadyToFinalReviewAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"");
+});
+
+$(document).on("click","#shortListPositinCls",function(){
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId = globalStateId;
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	var deptId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_board_id');
+	var positionId = $(this).attr('attr_position_id');
+
+	var searchLevelValue =stateId;
+	if(stateId ==0){
+		searchLevelValue =1;
+		searchLevelId=2;
+	}		
+	if(mandalTownDivId >0){
+		searchLevelValue = mandalTownDivId;
+		searchLevelId= 5;
+	}	
+	else if(constituencyId >0){
+		searchLevelValue = constituencyId;
+		searchLevelId=4;
+	}		
+	else if(districtId >0){
+		searchLevelValue = districtId;
+		searchLevelId=3;
+	}
+		
+	
+	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"");
+});
 
 $(document).on("click",".moveToFinalReviewCls",function(){
 	var districtId=$("#districtId").val();

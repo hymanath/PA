@@ -720,13 +720,13 @@ function getNominatedPostApplication(startIndex)
 	}
 	function refreshExistingDetails(){ 
 		$("#searchBy").val("");
-		$("#cadreDetailsDiv").html("");
+		//$("#cadreDetailsDiv").html("");
 		$(".paginationDivId").html('');
-		$("#cadreDetailsDiv").hide();
+		//$("#cadreDetailsDiv").hide();
 		$("#searchErrDiv").html("");
 		$("#membrshipAndMobileNoDiv").html("");
 		$("#cadreSearchSize").hide();
-		$("#cadreSearchDtls").html("");
+		//$("#cadreSearchDtls").html("");
 		$("#searchData").html("");
 		$("#searchData1").html("");
 		$("#notCadreNameId").val("");
@@ -836,7 +836,7 @@ $('.searchTypeCls').click(function(){
    $("#"+id).empty();
     
    if(result != null && result.length >0){
-		 $("#"+id).append('<option value="0">Select Level</option>');
+		 $("#"+id).append('<option value="0">Select Post Level </option>');
      for(var i in result){
 		 if(result[i].id != 7)
 			$("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -1026,7 +1026,7 @@ else if(selectVal==2)
 	
 }
 $(document).on("click",".iconClose",function(){
-	$(this).closest(".addBlockNew").remove()
+	$(this).closest(".addBlockNew").remove();
 });
 var cloneCount=1;
 
