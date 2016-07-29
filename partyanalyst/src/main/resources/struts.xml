@@ -13128,16 +13128,13 @@
    			<param name="root">idNameVO</param>
    		</result>
 	</action>
-		<action name="getUserAccessLevelAndValuesAction" class="coreDashboardAction" method="getUserAccessLevelAndValues">
-		<result type="json" name="success">
-				<param name="root">userDataVOList</param>
-		</result>
-	</action>
-	<action name="getUserTypeByUserIdAction" class="coreDashboardAction" method="getUserTypeByUserId">
+		
+	<action name="getUserBasicDetailsAction" class="coreDashboardAction" method="getUserBasicDetails">
 		<result type="json" name="success">
 				<param name="root">userDataVO</param>
 		</result>
 	</action>
+	
 	<action name="coreDashboardAction" class="coreDashboardAction" >
 		<result name="success">/jsp/coreDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>

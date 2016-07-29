@@ -192,10 +192,18 @@
 
  //GLOBAL VARIABLES.
 	var globalUserId = '${sessionScope.USER.registrationID}';
+	var globalUserTypeId;
+	var globalUserAccessLevelId;
+	var globalUserAccessLevelValues = [];
+	
+	getUserBasicDetails();
+	function onLoadCalls(){
+		getMainCommitteeCountDetails();
+		getCommitteesWiseLevelsBasedDetails();
+	}
+	
 	$(document).ready(function(){
 		$(".eventsheader").hide();
-		onLoadCalls();
-		getCommitteesWiseLevelsBasedDetails();
 		
 	$('#meetings').highcharts({
 		colors:['#D6EB59','#FF5C54','#D6EB59'],
@@ -437,21 +445,13 @@
 	});
 	});
 	
-	function onLoadCalls(){
-		getUserAccessLevelAndValues();
-		getUserTypeByUserId();
-		getMainCommitteeCountDetails();
-	}
-
-$(document).on("click",".committeesExpandIcon",function(){
-	$(".committeesBlock").toggleClass("col-md-4").toggleClass("col-md-8")
-});
+	
+     
+	$(document).on("click",".committeesExpandIcon",function(){
+		$(".committeesBlock").toggleClass("col-md-4").toggleClass("col-md-8")
+	});
     
     function getCommitteesWiseLevelsBasedDetails(){
-    	
-       var userAccessLevelValues = [];
-       userAccessLevelValues.push(19);
-       userAccessLevelValues.push(23);
        
        var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -460,11 +460,11 @@ $(document).on("click",".committeesExpandIcon",function(){
 	   
        var startDateString = '01/01/2015';
 	   var endDateString = '28/07/2016';
-	   var userAccessLevelId = '3';
 	   var state = 'AP';
 	   
- 	   var jsObj ={ userAccessLevelId:userAccessLevelId,
- 			        userAccessLevelValuesArray : userAccessLevelValues,
+ 	   var jsObj ={ 
+	                userAccessLevelId : globalUserAccessLevelId,
+ 			        userAccessLevelValuesArray : globalUserAccessLevelValues,
  			        state : state,
  			        basicCommitteeIdsArray:basicCommitteeIdsArray,
  			        startDateString : startDateString,
@@ -477,7 +477,7 @@ $(document).on("click",".committeesExpandIcon",function(){
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
- 			alert(123);
+ 			//alert(123);
  		});
  	}
     

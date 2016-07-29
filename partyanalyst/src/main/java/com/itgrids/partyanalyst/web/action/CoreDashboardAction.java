@@ -103,25 +103,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	public String getUserAccessLevelAndValues(){
+	public String getUserBasicDetails(){
 		try{
-			LOG.info("Entered into getUserAccessLevelAndValues()  of CoreDashboardAction");
+			LOG.info("Entered into getUserBasicDetails()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
-			userDataVOList = coreDashboardService.getUserAccessLevelAndValues(jObj.getLong("userId"));
+			userDataVO = coreDashboardService.getUserBasicDetails(jObj.getLong("userId"));
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at getUserAccessLevelAndValues() method of CoreDashBoard", e);
-		}
-		return Action.SUCCESS;
-	}
-	public String getUserTypeByUserId(){
-		try{
-			LOG.info("Entered into getUserTypeByUserId()  of CoreDashboardAction");
-			jObj = new JSONObject(getTask());
-			userDataVO = coreDashboardService.getUserTypeByUserId(jObj.getLong("userId"));
-			
-		}catch(Exception e){
-			LOG.error("Exception raised at getUserTypeByUserId() method of CoreDashBoard", e);
+			LOG.error("Exception raised at getUserBasicDetails() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
