@@ -66,8 +66,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setUserDataVO(UserDataVO userDataVO) {
 		this.userDataVO = userDataVO;
 	}
-	
-	
 
 	public List<CommitteeBasicVO> getCommitteeBasicVO() {
 		return committeeBasicVO;
@@ -75,6 +73,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setCommitteeBasicVO(List<CommitteeBasicVO> committeeBasicVO) {
 		this.committeeBasicVO = committeeBasicVO;
+	}
+	
+	public List<CommitteeVO> getCommitteeVOList() {
+		return committeeVOList;
+	}
+
+	public void setCommitteeVOList(List<CommitteeVO> committeeVOList) {
+		this.committeeVOList = committeeVOList;
 	}
 
 	//Implementation method
