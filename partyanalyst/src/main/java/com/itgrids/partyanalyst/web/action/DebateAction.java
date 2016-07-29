@@ -1672,7 +1672,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS; 
 	}
 	
-	public String debateUnicodeConvertion()
+	/*public String debateUnicodeConvertion()
 	{
 		try{
 			debateService.convertDebateContentToUnicode();
@@ -1681,6 +1681,6 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			LOG.error(e);
 		}
 		return Action.SUCCESS; 
-	}
+	}*/
 
 }
