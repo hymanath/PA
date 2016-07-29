@@ -43,7 +43,7 @@ public interface INominatedPostProfileService {
     public ResultStatus saveNotcadreRegistrationPost(final  AddNotcadreRegistrationVO notcadreRegistrationVO,final Map<File,String> mapfiles,final Long loggerUserId);
 	public List<IdNameVO> getCastesForAP();
 	public  List<CadreCommitteeVO> getNotCadreDetailsById(Long nominatedPostCandiId);
-	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final Long positionId,final Long levelId,final Long searchLevelId,final Long searchLevelValue,final Long statusId);
+	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final List<Long> positions,final Long levelId,final List<Long> searchLevelValues,final Long statusId,final Long userId);
 	public NominatedPostReferVO getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId);
 	public IdNameVO getOverAllCommentsForCandidate(Long candidateId);
 	

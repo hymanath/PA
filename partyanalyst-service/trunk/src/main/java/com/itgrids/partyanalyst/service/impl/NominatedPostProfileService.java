@@ -910,6 +910,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 									if(address !=null){
 										address.setUserAddressId(null);
 										address.setCountry(countryDAO.get(1L));
+										
+										if(address.getDistrict() !=null &&address.getDistrict().getDistrictId() !=null && ((address.getDistrict().getDistrictId() >=11) && (address.getDistrict().getDistrictId()<=23))){
+											address.setState(stateDAO.get(1l));
+										}else if(address.getDistrict() !=null &&address.getDistrict().getDistrictId() !=null && ((address.getDistrict().getDistrictId() >=1) && (address.getDistrict().getDistrictId()<=10))){
+											address.setState(stateDAO.get(36l));
+										}										
 										newAddress = userAddressDAO.save(address);
 									}
 									
@@ -3019,16 +3025,22 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		 return finalList;
 	 }
 	
-	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final Long positionId,final Long levelId,final Long searchLevelId,final Long searchLevelValue,final Long statusId){
+	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final List<Long> positions,final Long levelId,final List<Long> searchLevelValues,final Long statusId,final Long userId){
 		ResultStatus status = new ResultStatus();
 		try {
 			String statusStr = (String)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
-					List<NominatedPost> nominatedPostsList = nominatedPostDAO.getnominatedPostDetailsBySearchCriteria(deptId,boardId,positionId,levelId,searchLevelId,searchLevelValue);
+					List<NominatedPost> nominatedPostsList = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,levelId,searchLevelValues);
 					if(commonMethodsUtilService.isListOrSetValid(nominatedPostsList)){
-						NominatedPost nominatedPostObj = nominatedPostsList.get(0);
-						nominatedPostObj.setNominatedPostStatusId(statusId);
-						nominatedPostDAO.save(nominatedPostObj);
+						
+						for(NominatedPost nominatedPostObj:nominatedPostsList){
+							nominatedPostObj.setNominatedPostStatusId(statusId);
+							nominatedPostObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostObj.setUpdatedBy(userId);
+							nominatedPostDAO.save(nominatedPostObj);
+						}
+						
+						
 						return "success";
 					}
 					return null;
