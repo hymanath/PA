@@ -46,7 +46,9 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 .navbarHeader .profileDropDown img
 {
 	height:30px;
-	width:50px;
+	width:30px;
+	border:1px solid #ddd;
+	border-radius:50%;
 }
 .navbarHeader .profileDropDown .caret
 {
@@ -121,6 +123,34 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	top:6px;
 	position:relative;
 }
+.settingsDropDown
+{
+	display:inline-block;
+	position:relative;
+}
+.settingsDropDownOptions
+{
+	position:absolute;
+	min-width:150px;
+	right:0px;
+	background:#fff;
+	z-index:99;
+	display:none;
+}
+.open .settingsDropDownOptions
+{
+	display:block;
+}
+.open .settingsIcon
+{
+	color:#fff;
+	background:#FFCC2D;
+	padding:2px;
+}
+.settingsDropDown .dropdown-menu
+{
+	right:-100%
+}
 .text-capital
 {
 	text-transform:uppercase;
@@ -148,19 +178,23 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 }
 .chart
 {
-	height:200px;
+	height:250px;
 	width:100%;
 }
 .logo
 {
-	background:url("../img/IconSet.png");
-	background-position:10px 0px;
+	background-image:url("../img/IconSet.png");
+	background-position:5px -15px;
 	height:50px;
 	width:70px;
 	display:inline-block;
-	background-size:350px 350px;
+	background-size:420px 420px;
+	padding-left:72px;
+}
+.logoText
+{
 	position:relative;
-	top:6px;
+	top:-18px;
 }
 .coreIcons
 {
@@ -174,37 +208,42 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 }
 .committeesIcon
 {
-	background:url("../img/IconSet.png");
+	background-image:url("../img/IconSet.png");
 	background-position:-365px -26px;
 	background-size:540px 540px;
 }
 .meetingsIcon
 {
-	background:url("../img/IconSet.png");
+	background-image:url("../img/IconSet.png");
 	background-position:-309px -26px;
 	background-size:540px 540px;
 }
 .newsIcon
 {
-	background:url("../img/IconSet.png");
+	background-image:url("../img/IconSet.png");
 	background-position:-253px -26px;
 	background-size:540px 540px;
 }
 .debateIcon
 {
-	background:url("../img/IconSet.png");
+	background-image:url("../img/IconSet.png");
 	background-position:-205px -26px;
 	background-size:540px 540px;	
 }
 .trainingIcon
 {
-	background:url("../img/IconSet.png");
+	background-image:url("../img/IconSet.png");
 	background-position:-147px -26px;
 	background-size:540px 540px;
 }
 .eventsIcon
 {
-	background:url("../img/IconSet.png");
+	background-image:url("../img/IconSet.png");
 	background-position:-99px -26px;
 	background-size:540px 540px;
+}
+.expandIcon
+{
+	cursor:pointer;
+	font-size:16px
 }
