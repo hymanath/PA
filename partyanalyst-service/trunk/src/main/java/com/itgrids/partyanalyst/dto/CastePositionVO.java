@@ -9,7 +9,7 @@ public class CastePositionVO {
 	private String casteName;
 	private Long positionId;
 	private String positionName;
-	private Long count;
+	private Long count = 0l;
 	private List<CastePositionVO> casteList = new ArrayList<CastePositionVO>(0);
 	
 	
