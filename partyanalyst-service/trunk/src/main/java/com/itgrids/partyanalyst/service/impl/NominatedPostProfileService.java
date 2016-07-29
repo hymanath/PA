@@ -1644,7 +1644,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								NominatedPostVO totalVO = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
 								NominatedPostVO appliedVO = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
 								NominatedPostVO runningVO = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
-								if(appliedVO != null && runningVO != null && appliedVO.getTotalPositions().longValue()>0L){
+								//if(appliedVO != null && runningVO != null && appliedVO.getTotalPositions().longValue()>0L){
 									//NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
 									if(vo2 != null){
 										vo2.setTotalPositions(totalVO.getTotalPositions().longValue()>0L?(totalVO.getTotalPositions()-(appliedVO.getTotalPositions() + runningVO.getTotalPositions())):0L);
@@ -1662,7 +1662,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 												vo2.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
 											}
 										}
-									}
+									//}
 								}
 						}
 					}
