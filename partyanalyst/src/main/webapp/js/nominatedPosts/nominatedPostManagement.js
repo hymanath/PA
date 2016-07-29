@@ -474,7 +474,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 	var levelId = globalLevelId;
 	var searchLevelId = 1;
 	var deptId = $(this).attr('attr_dept_id');
-	var boardId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_board_id');
 	var positionId = 1;
 	//var searchLevelValue =stateId;
 		
@@ -516,14 +516,12 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 		var positionId = $(this).attr("id");
 		positionArr.push(positionId);
 	});
-	
-	return;
-	
+		
 	var jsObj={		
 		deptId :deptId,
 		boardId :boardId,
-		positionArr:positionArr
-		apstatus:"shortListed",
+		positionArr:positionArr,
+		statusId:2,
 		levelId : globalLevelId,
 		levelValuesArr:levelValuesArr
 	}
