@@ -41,7 +41,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append(" and  model2.district.districtId between 11 and 23 ");
-			else if(stateId.longValue() ==2L)
+			else if(stateId.longValue() ==36L)
 				queryStr.append("  and model2.district.districtId between 1 and 10 ");
 		}
 		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
@@ -84,7 +84,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append("  and model2.district.districtId between 11 and 23 ");
-			else if(stateId.longValue() ==2L)
+			else if(stateId.longValue() ==36L)
 				queryStr.append(" and  model2.district.districtId between 1 and 10 ");
 		}
 		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
@@ -316,82 +316,4 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		return query.list();
 	}
-   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId){
-	   
-	   StringBuilder queryStr = new StringBuilder();
-	   
-	    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
-	    		       " model.nominatedPostMember.nominatedPostPosition.departments.deptName from NominatedPost " +
-	    		       " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
-	    		       " and model.nominatedPostStatus.nominatedPostStatusId=1 ");
-	    
-	    if(postType != null && postType.longValue() > 0){
-	          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.postType.postTypeId=:postTypeId ");
-	    }
-	    if(boardLevelId != null && boardLevelId.longValue() > 0){
-	    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
-	    }
-	    Query query = getSession().createQuery(queryStr.toString());
-	    
-	    if(postType != null && postType.longValue() > 0){
-	    	query.setParameter("postTypeId", postType);
-	    }
-	    if(boardLevelId != null && boardLevelId.longValue() > 0){
-	    	query.setParameter("boardLevelId", boardLevelId);
-	    }
-	    return query.list();
-   }
- public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId){
-	   
-	   StringBuilder queryStr = new StringBuilder();
-	   
-	    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.board.boardId," +
-	    		       " model.nominatedPostMember.nominatedPostPosition.board.boardName from NominatedPost " +
-	    		       " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N'");
-	    
-	    if(departmentId != null && departmentId.longValue() > 0){
-	          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId");
-	    }
-	    if(boardLevelId != null && boardLevelId.longValue() > 0){
-	    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
-	    }
-	    Query query = getSession().createQuery(queryStr.toString());
-	    if(departmentId != null && departmentId.longValue() > 0){
-	    	query.setParameter("departmentId", departmentId);
-	    }
-	    if(boardLevelId != null && boardLevelId.longValue() > 0){
-	    	query.setParameter("boardLevelId", boardLevelId);
-	    }
-	    return query.list();
-   }
- public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId){
-	   
-	   StringBuilder queryStr = new StringBuilder();
-	   
-	    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.position.positionId," +
-	    		        " model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPost " +
-	    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
-	    
-	       if(departmentId != null && departmentId.longValue()> 0){
-		      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deapartmentId ");	
-		    }
-           if(boardId != null && boardId.longValue()> 0){
-		      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId =:boardId ");	
-		    }
-           if(boardLevelId != null && boardLevelId.longValue() > 0){
-  	    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
-  	      }
-		    Query query = getSession().createQuery(queryStr.toString());
-		    
-			 if(departmentId != null && departmentId.longValue()> 0){
-					query.setParameter("deapartmentId", departmentId);
-			 }
-			 if(boardId != null && boardId.longValue()> 0){
-					query.setParameter("boardId", boardId); 
-			 }
-			 if(boardLevelId != null && boardLevelId.longValue() > 0){
-			    	query.setParameter("boardLevelId", boardLevelId);
-			  }
-	    return query.list();
- }
 }
