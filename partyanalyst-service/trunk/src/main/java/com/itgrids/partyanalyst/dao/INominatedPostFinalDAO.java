@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.NominatedPostFinal;
 
 public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, Long>{
 	public List<Object[]> getFinalShortListedApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate);
-	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
+	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId);
 	public Long getNominatedPostFinalDetails(Long nominatedPostId,Long nominationPostCandidateId);
 	public List<Long> getAnyShortlistedDepartmentsForCandidateList(Set<Long> nominatedPostCandidateIds);
 	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds);

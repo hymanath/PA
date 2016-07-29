@@ -12,13 +12,13 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getPendingApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate);
 	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type);
 	public List<Object[]> getAppliationsReceievedStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type);
+			Long locationValue,String type,Long searchLevelId);
 	public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type);
+			Long locationValue,String type,Long searchLevelId);
 	public List<Object[]> getCasteWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type);
+			Long locationValue,String type,Long searchLevelId);
 	public List<Object[]> getAgeRangeWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type);
+			Long locationValue,String type,Long searchLevelId);
 	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId);
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId);
 	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
