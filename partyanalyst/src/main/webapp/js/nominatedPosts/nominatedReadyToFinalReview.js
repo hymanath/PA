@@ -5,6 +5,9 @@ var globalLocationLevelValueArr =[];
 var globalLocationLevel=5;
 var globalLocationLevelId = 0;
 var globalDepartmentId = 0 ;
+var globalDepartmentName;
+var globalBoardName;
+
 function getBoardLevelId(boardLevelId,stateId){
 	globalLocationLevelValueArr = [];
 	globalLocationLevelId = boardLevelId;
@@ -257,9 +260,9 @@ function buildCandidateReviewRslt(result){
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
-		  str+='<li role="presentation" class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="label label-primary pull-right labelCustom">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
+		  str+='<li role="presentation" class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="label label-primary pull-right labelCustom">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
 		 }else{
-		 str+='<li role="presentation"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" data-toggle="tab">'+result[i].name+' <span class="label label-primary pull-right labelCustom">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
+		 str+='<li role="presentation"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab">'+result[i].name+' <span class="label label-primary pull-right labelCustom">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
 		}
       }
 	  str+='</ul>';
@@ -275,7 +278,7 @@ function buildCandidateBoardRslt(result,departmentId){
 	    for(var i in result){
 			if(i==0){
 		   str+='<li role="presentation" class="active">';	
-			str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
+			str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
@@ -290,7 +293,7 @@ function buildCandidateBoardRslt(result,departmentId){
 		   str+='</li>'; 
 		}else{
 			 str+='<li role="presentation">';	
-			  str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
+			  str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
@@ -321,7 +324,7 @@ var str = '';
 						str+='<li>';
                         	str+='<div class="row">';
                             	str+='<div class="col-md-10 col-xs-12 col-sm-10 pad_right0 ">';
-                                	str+='<div class="positionsCls modalViewBtn referenceCls" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
+                                	str+='<div class="positionsCls modalViewBtn referenceCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
                                     	str+='<span>'+result[i].name+'</span>';
                                         str+='<span class="label label-primary labelCustom pull-right">'+result[i].count+'</span>';
                                     str+='</div>';
@@ -346,25 +349,34 @@ $(document).on("click",".referenceCls",function(){
 	var departmentId = $(this).attr("attr_department_id");
 	var boardId = $(this).attr("attr_board_id");
 	var positionId = $(this).attr("attr_position_id");
+	var positionName = $(this).attr("attr_position_name");
+	
 	var levelId = boardLevelId;
 	var levelValue = 1;
+	var level = "central";
 	/*if(levelId == 1){
 		levelValue = $("#stateId").val();	
 	}*/
 	if(levelId == 2){
-		levelValue = $("#stateId").val();		
+		levelValue = $("#stateId").val();	
+		level = "state";
 	}
 	else if(levelId == 3){	
 		levelValue = $("#districtId").val();
+		level = "District";
 	}
 	else if(levelId == 4){
 		levelValue = $("#constituencyId").val();
+		level = "Constituency";
 	}
 	else if(levelId >= 5){
 		levelValue = $("#manTowDivId").val();
+		level = "Mandal";
 	}
 	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId)
 	$("#myModal").modal("show");
+	$("#headingPostId").html(positionName+" POST");
+	$("#totalHeadingId").html(level+" Level - "+globalDepartmentName+" Department - "+globalBoardName+" Board");
 });
 
 function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId){
@@ -398,6 +410,7 @@ $(document).on('click','.showPdfCls',function(){
 
 function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departmentId,boardId,positionId){
 	var str='';
+	var totalWishListCount = 0;
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead>';
@@ -472,158 +485,36 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='<td><a class="referenceDetailsCls" style="cursor:pointer;" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">'+result.subList[i].referenceCount+'</a></td>';
 				else
 					str+='<td> - </td>';
-				str+='<td style="position:relative;width:150px">';
-					str+='<span class="commentsDetailsCls" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'"><img src="dist/nominatedImages/Icon5.png" class="commentsBtn" style="height:28px;"/></span>'; 
+				str+='<td style="position:relative;width:180px">';
+					str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
 					str+='<span class="commentCount">'+result.subList[i].commentCount+'</span>';
 					str+='<div class="commentsDiv">';
 						str+='<div class="commentDropDownArrow" id="commentsDivId'+i+'">';
-							str+='<p>COMMENTS <span class="pull-right">X</span></p>';
-							str+='<ul class="commentsUl">';
-								str+='<li class="shortList">';
-									str+='<div class="panel-group" id="commentsAccordion" role="tablist" aria-multiselectable="true">';
-									  str+='<div class="panel panel-default commentsPanel">';
-										str+='<div class="panel-heading" role="tab" id="CommentsCollapseHeading">';
-											str+='<a role="button" data-toggle="collapse" class="CommentsModalIcon" data-parent="#commentsAccordion" href="#CommentsCollapse" aria-expanded="true" aria-controls="CommentsCollapse">';
-											  str+='<h4>Shortlisting</h4>';
-											str+='</a>';
-										str+='</div>';
-										str+='<div id="CommentsCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CommentsCollapseHeading">';
-										  str+='<div class="panel-body">';
-											str+='<div class="Comment">';
-												str+='Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting';
-												str+='<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>';
-												str+='<p class="text-danger"><i>Updated By Ramesh</i></p>';
-											str+='</div>';
-											str+='<div class="Comment">';
-												str+='Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting';
-												str+='<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>';
-												str+='<p class="text-danger"><i>Updated By Ramesh</i></p>';
-											str+='</div>';
-											str+='<div class="Comment">';
-												str+='Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting';
-												str+='<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>';
-												str+='<p class="text-danger"><i>Updated By Ramesh</i></p>';
-											str+='</div>';
-										  str+='</div>';
-										str+='</div>';
-									  str+='</div>';
-									str+='</div>';
-								str+='</li>';
-								str+='<li class="finaLize">';
-									str+='<div class="panel-group" id="commentsAccordion12" role="tablist" aria-multiselectable="true">';
-									  str+='<div class="panel panel-default commentsPanel">';
-										str+='<div class="panel-heading" role="tab" id="CommentsCollapseHeading112">';
-											str+='<a class="collapsed CommentsModalIcon" role="button" data-toggle="collapse" data-parent="#commentsAccordion12" href="#CommentsCollapseHeading112" aria-expanded="false" aria-controls="CommentsCollapseHeading2">';
-												str+='<h4>Finalization</h4>';
-											str+='</a>';
-										str+='</div>';
-										str+='<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CommentsCollapseHeading112">';
-										  str+='<div class="panel-body">';
-											str+='<div class="Comment">';
-												str+='Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting';
-												str+='<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>';
-												str+='<p class="text-danger"><i>Updated By Ramesh</i></p>';
-											str+='</div>';
-											str+='<div class="Comment">';
-												str+='Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting';
-												str+='<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>';
-												str+='<p class="text-danger"><i>Updated By Ramesh</i></p>';
-											str+='</div>';
-										  str+='</div>';
-										str+='</div>';
-									  str+='</div>';
-									str+='</div>';
-								str+='</li>';
-							str+='</ul>';
+							
 						str+='</div>';
 					str+='</div>';
-					str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
-					str+='<button class="btn btn-success updateBtnDrop">UPDATE</button>';
+					if(result.subList[i].isPrefered == "Y"){
+						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
+						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;"/> ';
+					}
+					else{
+						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;"/> ';
+					}
+					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
+					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_status_id="statusSelectId'+i+'">UPDATE</button>';
 					str+='<div class="updateDropDown">';
 						str+='<div class="updateDropDownArrow">';
+						str+='<div class="text-success" id="successDivId'+i+'"></div>';
 							str+='<label class="m_top10">Select Status</label>';
-							str+='<select class="form-control">';
-								str+='<option>Status</option>';
+							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
+								str+='<option value="0">Select Status</option>';
 							str+='</select>';
 							str+='<label class="m_top10">Comments</label>';
-							str+='<textarea class="form-control"></textarea>';
-							str+='<button class="btn btn-success btn-block">SUBMIT</button>';
+							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
+							str+='<button class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
-				/*str+='<td style="position:relative;">';
-				//if(type == "this"){
-					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'">UPDATE</button>';
-					str+='<div class="updateDropDown" id="updateDropDownId'+i+'">';
-						str+='<div class="updateDropDownArrow">';
-						str+='<div class="text-success" id="successDivId'+i+'"></div>';
-						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
-							str+='<i class="glyphicon glyphicon-remove pull-right closeDivCls" id="updateDropDownId'+i+'" style="cursor:pointer;"></i>';
-							str+='<label>Select Status</label>';
-							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
-								str+='<option value="0">Select Status</option>';
-							str+='</select>';
-							str+='<label>Comments</label>';
-							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
-							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">SUBMIT</button>';
-						str+='</div>';
-					str+='</div>';*/
-				//}
-				/*else if(type == "any"){
-					str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">ASSIGN THIS POSITION</button>';
-					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'">ASSIGN A POSITION</button>';
-					str+='<div class="updateDropDownThisAny" id="updateDropDownThisAny'+i+'">';
-						str+='<div class="updateDropDownArrow">';
-						str+='<div class="text-success" id="successDivThisAnyId'+i+'"></div>';
-								str+='<i class="glyphicon glyphicon-remove pull-right closeDivThisAnyCls" id="updateDropDownThisAny'+i+'" style="cursor:pointer;"></i>';
-								str+='<label>Select Status</label>';
-								str+='<select class="chosenSelect" id="updatedStatusThisAnyId'+i+'">';
-									str+='<option value="0">Select Status</option>';
-								str+='</select>';
-								str+='<label>Comments</label>';
-								str+='<textarea class="form-control" id="statusCommentThisAnyId'+i+'"></textarea>';
-								str+='<button class="btn btn-success btn-block m_top10 updateStatusThisAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'">SUBMIT</button>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="updateDropDownAny" id="updateDropDownAny'+i+'">';
-						str+='<div class="updateDropDownArrow">';
-						str+='<div class="text-success" id="successDivAnyId'+i+'"></div>';
-							str+='<i class="glyphicon glyphicon-remove pull-right closeDivAnyCls" id="updateDropDownAny'+i+'" style="cursor:pointer;"></i>';
-								str+='<div class="row">';
-								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-									str+='<label>Department</label>';
-									str+='<select class="chosenSelect" id="departmentAnyId'+i+'" onchange="getBoardsForDepartments('+i+')">';
-										str+='<option value="0">Select Department</option>';
-									str+='</select>';
-								str+='</div>';
-								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-									str+='<label>Corporation/Board</label>';
-									str+='<select class="chosenSelect" id="boardAnyId'+i+'" onchange="getPositionsForBoard('+i+')">';
-										str+='<option value="0">Select Board</option>';
-									str+='</select>';
-								str+='</div>';
-								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-									str+='<label>Position</label>';
-									str+='<select class="chosenSelect" id="positionAnyId'+i+'">';
-										str+='<option value="0">Select Position</option>';
-									str+='</select>';
-								str+='</div>';
-								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
-									str+='<label>Select Status</label>';
-									str+='<select class="chosenSelect" id="updatedStatusAnyId'+i+'">';
-										str+='<option value="0">Select Status</option>';
-									str+='</select>';
-								str+='</div>';
-								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-									str+='<label>Comments</label>';
-									str+='<textarea class="form-control" id="statusCommentAnyId'+i+'"></textarea>';
-									str+='<button class="btn btn-success btn-block m_top10 updateStatusAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'">SUBMIT</button>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				}	*/
-				//str+='</td>';
 			str+='</tr>';
 			/*str+='<tr>';
 				str+='<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
@@ -632,12 +523,173 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	}
 	str+='</table>';
 	
+	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
 }
 
-/*$(document).on('click','.commentsDetailsCls',function(){
+$(document).on("click",".wishListCls",function(){
+	var postFinalId = $(this).attr("attr_final_id");
+	var remark = $(this).attr("attr_remark");
+	var id = $(this).attr("id");
+	
+	var jsObj={
+		postFinalId : postFinalId,
+		remark : remark
+	}
+	$.ajax({
+          type:'GET',
+          url: 'updateWishListForCandidateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result == 'success'){
+		   if(remark == 'Y'){
+			    $("#"+id).attr("src","dist/nominatedImages/Icon7.png");
+			    $("#"+id).attr("attr_remark","N");
+		   }
+		   else if(remark == 'N'){
+			   $("#"+id).attr("src","dist/nominatedImages/Icon4.png");
+			   $("#"+id).attr("attr_remark","Y");
+		   }
+		}
+	});
+});
+
+$(document).on("click",".statusUpdateBntCls",function(){
+	var selectDivId = $(this).attr("attr_status_id");
+	getApplicationStatus(selectDivId);
+});
+
+function getApplicationStatus(divId){
+	$("#"+divId+" option").remove();
+	
+	var jsObj={}
+	$.ajax({
+          type:'GET',
+          url: 'getAllApplicationStatusListAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result != null && result.length > 0){
+		   $("#"+divId).append('<option value="0">Select Status</option>');
+		   for(var i in result){
+			   $("#"+divId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#"+divId).chosen();
+	   }
+   });
+}
+
+$(document).on("click",".submitBtnCls",function(){
+	var postFinalId = $(this).attr("attr_final_id");
+	var statusId = $(this).attr("attr_status_id");
+	var commentId = $(this).attr("attr_comment_id");
+	var divId = $(this).attr("attr_success_div_id");
+	
+	var status = $("#"+statusId).val();
+	var comment = $("#"+commentId).val();
+	
+	var jsObj=
+	   {				
+		postFinalId:postFinalId,
+		statusId:status,
+		comment :comment,
+	   }
+    $.ajax({
+          type:'GET',
+          url: 'updateFinalyzationStatusForPostAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result == 'success')
+			$("#"+divId).html("Successfully Updated...");
+		else
+			$("#"+divId).html("Sorry,Exception Occured...Please try again...");
+   });
+});
+
+$(document).on('click','.commentsDetailsCls',function(){
 	var candidateId = $(this).attr("attr_candidate_id");
-});*/
+	var divId = $(this).attr("attr_div_id");
+	getOverAllCommentDetails(candidateId,divId);
+});
+
+function getOverAllCommentDetails(candidateId,divId){
+	$("#"+divId).html("");
+	var jsObj=
+	   {				
+		candidateId:candidateId
+		}
+    $.ajax({
+          type:'GET',
+          url: 'getOverAllCommentsForCandidateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null){
+		   buildOverAllComments(result,divId);
+	   }
+   });
+}
+
+function buildOverAllComments(result,divId){
+	var str='';
+	
+	str+='<p>COMMENTS</p>';
+	str+='<ul class="commentsUl">';
+		str+='<li class="finaLize">';
+			str+='<div class="panel-group" id="commentsAccordion12" role="tablist" aria-multiselectable="true">';
+			  str+='<div class="panel panel-default commentsPanel">';
+				str+='<div class="panel-heading" role="tab" id="CommentsCollapseHeading112">';
+					str+='<a class="CommentsModalIcon" role="button" data-toggle="collapse" data-parent="#commentsAccordion12" href="#CommentsCollapseHeading12" aria-expanded="false" aria-controls="CommentsCollapseHeading12">';
+						str+='<h4>Finalization</h4>';
+					str+='</a>';
+				str+='</div>';
+				str+='<div id="CommentsCollapseHeading12" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CommentsCollapseHeading112">';
+				  str+='<div class="panel-body">';
+				  if(result.idnameList != null && result.idnameList.length > 0){
+					  for(var i in result.idnameList){
+						str+='<div class="Comment">';
+							str+=''+result.idnameList[i].status+'';
+							str+='<p class="text-danger"><i>- '+result.idnameList[i].dateStr+'</i></p>';
+							str+='<p class="text-danger"><i>Updated By '+result.idnameList[i].name+' '+result.idnameList[i].mobileNo+'</i></p>';
+						str+='</div>';
+					    }
+				    }
+					str+='</div>';
+				str+='</div>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</li>';
+		str+='<li class="shortList">';
+			str+='<div class="panel-group" id="commentsAccordion" role="tablist" aria-multiselectable="true">';
+			  str+='<div class="panel panel-default commentsPanel">';
+				str+='<div class="panel-heading" role="tab" id="CommentsCollapseHeading">';
+					str+='<a role="button" data-toggle="collapse" class="CommentsModalIcon collapsed" data-parent="#commentsAccordion" href="#CommentsCollapse" aria-expanded="true" aria-controls="CommentsCollapse">';
+					  str+='<h4>Shortlisting</h4>';
+					str+='</a>';
+				str+='</div>';
+				str+='<div id="CommentsCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CommentsCollapseHeading">';
+				  str+='<div class="panel-body">';
+				    if(result.subList1 != null && result.subList1.length > 0){
+					  for(var i in result.subList1){
+						str+='<div class="Comment">';
+							str+=''+result.subList1[i].status+'';
+							str+='<p class="text-danger"><i>- '+result.subList1[i].dateStr+'</i></p>';
+							str+='<p class="text-danger"><i>Updated By '+result.subList1[i].name+' '+result.subList1[i].mobileNo+'</i></p>';
+						str+='</div>';
+					    }
+				    }
+					str+='</div>';
+				str+='</div>';
+			  str+='</div>';
+			str+='</div>';
+		str+='</li>';
+	str+='</ul>';
+	
+	$("#"+divId).html(str);
+	
+}
 
 $(document).on('click','.referenceDetailsCls',function(){
 	var candidateId = $(this).attr("attr_candidate_id");
@@ -698,10 +750,14 @@ function buildReferenceCandidateDetails(result){
 
 $(document).on("click",".deptHrfCls",function(){
 	 var deptId = $(this).attr("attr_dept_id");
+	 var deptName = $(this).attr("attr_department_name");
 	 globalDepartmentId = deptId;
+	 globalDepartmentName = deptName;
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,"department");
 });
 $(document).on("click",".boardHrfCls",function(){
 	var boardId = $(this).attr("attr_board_id");
+	var boardName = $(this).attr("attr_board_name");
+	globalBoardName = boardName;
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,boardId,"board");
 });

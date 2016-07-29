@@ -893,7 +893,7 @@ label
 }
 .commentDropDownArrow:after, .commentDropDownArrow:before {
 	bottom: 100%;
-	right: 50px;
+	right: 100px;
 	border: solid transparent;
 	content: " ";
 	height: 0;
@@ -922,9 +922,12 @@ label
 	background: lightgrey; 
 	border-radius: 50%; 
 	padding: 3px; 
-	color:#fff;
+	color:#666;
 	top: 0px; 
+	width:17px;
+	text-align:center;
 	box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.4);
+	font-weight:bold;
 }
 
 .panelDashboard

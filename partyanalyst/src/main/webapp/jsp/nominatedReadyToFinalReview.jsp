@@ -9,6 +9,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 .filterIcon
 {
@@ -91,13 +92,13 @@
         
         <div class="row">
             <div class="col-md-10 col-xs-12 col-sm-10">
-                <h3>FINALIZING - CHAIRMAN POST</h3>
-                <p>State Level - Labour Department - A.P Building and Other Construction Workers Welfare Board</p>
+                <h3>FINALIZING - <span id="headingPostId"></span></h3>
+                <p id="totalHeadingId">State Level - Labour Department - A.P Building and Other Construction Workers Welfare Board</p>
             </div>
             <div class="col-md-2 col-xs-12 col-sm-2">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="wishList">
-                	<h1 class="textEffect"><img src="dist/nominatedImages/Icon4.png" alt="count"/> 05</h1>
+                	<h1 class="textEffect"><img src="dist/nominatedImages/Icon4.png" alt="count"/><span id="wishListCountId"> 0 </span></h1>
                 	<p class="text-success">Added to wishlist</p>
                 </div>
             </div>
@@ -275,6 +276,7 @@
 </div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
 <script type="text/javascript">
 
