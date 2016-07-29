@@ -75,6 +75,8 @@
 		
 		$('#'+divId+'').html('<img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		var stateId = $('input[name=stateName]:checked').val();
+		if(stateId >1)
+			stateId = 36;
 		var jsObj =
 		{
 			levelId:levelId,

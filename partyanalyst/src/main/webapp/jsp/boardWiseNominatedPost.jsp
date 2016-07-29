@@ -32,61 +32,7 @@
         	<div class="panel panel-default panelDepartmentHead">
             	<div class="panel-body">
                 	<div class="table-responsive" id="positionDivId">					
-                    <!--	<table class="table table-bordered">
-                        	<thead>
-                            	<tr>
-                                	<th rowspan="2"></th>
-	                                <th rowspan="2">TOTAL AVAILABLE POSTS</th>
-                                    <th rowspan="2">APPLICATIONS RECEIVED</th>
-                                    <th rowspan="2">SHORTLISTED</th>
-                                    <th colspan="4">CASTE GROUP</th>
-                                    <th colspan="5">AGE GROUP</th>
-                                </tr>
-                                <tr>
-                                	<th>SC</th>
-                                    <th>ST</th>
-                                    <th>BC</th>
-                                    <th>OC</th>
-                                    <th>20-29</th>
-                                    <th>30-39</th>
-                                    <th>40-49</th>
-                                    <th>50-59</th>
-                                    <th>60+</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            	<tr>
-                                	<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>
-                                    <td>02</td>
-                                    <td>10</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                </tr>
-                            	<tr>
-                                	<td><p>ANY POST</p><small>Requested for any post members shortlisted for this</small></td>
-                                    <td>02</td>
-                                    <td>10</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                    <td>01</td>
-                                </tr>
-                            </tbody>
-                        </table>-->
+                    
                     </div>
                 </div>
             </div>
@@ -97,544 +43,8 @@
                 	<h4 class="panel-title">APPLIED THIS POST - MEMBERS DETAILS</h4>
                 </div>
                 <div class="panel-body pad_0">
-                	<div class="table-responsive">
-                    	<!--<table class="table table-bordered table-condensed tableShort">
-                        	<thead>
-                            	<th>Name</th>
-                                <th>Age</th>
-                                <th>Caste</th>
-                                <th>Sub Caste</th>
-                                <th>Party Designations</th>
-                                <th>Reports</th>
-                                <th>Applied Any Dep/Corp</th>
-                                <th>Shortlisted in any dep/ Corp</th>
-                                <th>Current Status For this post</th>
-                                <th>Update Application Status</th>
-                            </thead>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" style="position:relative" class="text-center">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove closeIcon pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                            <tr>
-                            	<td rowspan="2"><i class="glyphicon glyphicon-user"></i>  Shivaji</td>
-                                <td rowspan="2">35</td>
-                                <td rowspan="2">SC</td>
-                                <td rowspan="2">Mala</td>
-                                <td rowspan="2">State Organizing Secretary</td>
-                                <td>Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                                <td rowspan="2" class="text-center" style="position:relative">
-                                	<span class="appliedCount">02</span>
-                                    <div class="appliedPostPopup">
-                                    	<div class="appliedPostPopupArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                    <th>Department</th>
-                                                    <th>Corporation</th>
-                                                    <th>Position</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Agriculture Marketing</td>
-                                                        <td>Agriculture market committees</td>
-                                                        <td>Chairman</td>
-                                                        <td>Shortlisted</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">No</td>
-                                <td rowspan="2">Shortlisted</td>
-                                <td rowspan="2" style="position:relative;">
-                                	<button class="btn btn-success btnPopup">UPDATE</button>
-                                    <div class="updateDropDown">
-                                        <div class="updateDropDownArrow">
-                                        	<i class="glyphicon glyphicon-remove pull-right"></i>
-                                            <label>Select Status</label>
-                                            <select class="chosenSelect">
-                                                <option>Shortlisted/Rejected</option>
-                                            </select>
-                                            <label>Comments</label>
-                                            <textarea class="form-control"></textarea>
-                                            <button class="btn btn-success btn-block m_top10">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-                            </tr>
-                        </table>
-                        <p><i>Note:Click on <i class="glyphicon glyphicon-user"></i> to view complete profile and click on the applied count and know the status of last applied</i> </p>-->
+                	<div class="">
+                    	
 						<div id="resultDivId"></div>
                     </div>
                 </div>
@@ -665,8 +75,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">REFERENCE DETAILS</h4>
 			</div>
-			<div class="modal-body" id="referenceDetailsId">
-			</div>
+			<div class="modal-body" id="referenceDetailsId"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
@@ -722,16 +131,19 @@ $(document).on("click",".appliedCount",function(e){
 	var divId = $(this).attr("attr_divId");
 getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId);
 });
-getBoardWiseNominatedPostMemberDetails();
+
 function getBoardWiseNominatedPostMemberDetails(){
+	
+		$('#resultDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset7" src="images/search.gif">');
 	var jsObj=
 	   {				
-		levelId:4,		//levelId,
-		levelValue:299,		//levelValue,
-		departmentId:2,		//departmentId,
-		boardId:1,		//boardId,
-		positionId:3,		//positionId,
-		type:"this"		//type
+		levelId:parseInt('${lId}'),//levelId,
+		searchLevelId:parseInt('${searchLevelId}'),
+		levelValue:parseInt('${searchLevelValue}'),	//levelValue,
+		departmentId:parseInt('${deptId}'),//departmentId,
+		boardId:parseInt('${boardId}'),//boardId,
+		positionId:parseInt('${positionId}'),//positionId,
+		type:"this"//type
 		}
     $.ajax({
           type:'GET',
@@ -803,7 +215,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='</div>';
 				str+='</td>';
 				if(result.subList[i].referCandCount != null)
-					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">'+result.subList[i].referCandCount+'</a></td>';
+					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" style="font-weight:bold;color:green;cursor:pointer;" >'+result.subList[i].referCandCount+'</a></td>';
 				else
 					str+='<td> - </td>';
 				if(result.subList[i].otherDeptShortListed != null && result.subList[i].otherDeptShortListed == 'YES')
@@ -942,10 +354,29 @@ function buildReferenceCandidateDetails(result){
 		for(var i in result){
 			str+='<tr>';
 				str+='<td><i class="glyphicon glyphicon-user"></i></td>';
-				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].percentage+'</td>';
-				str+='<td>'+result[i].mobileNo+'</td>';
-				str+='<td><p>'+result[i].publicRepr+'</p><p>'+result[i].partyPos+'</p></td>';
+				if(result[i].name != null)
+					str+='<td>'+result[i].name+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].percentage != null)
+					str+='<td>'+result[i].percentage+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].mobileNo != null)
+					str+='<td>'+result[i].mobileNo+'</td>';
+				else
+					str+='<td> - </td>';
+				str+='<td>';
+				if(result[i].publicRepr != null )
+					str+='<p>'+result[i].publicRepr+'</p>';
+				else
+					str+='<p> - </p>';
+				
+				if(result[i].partyPos != null)
+					str+='<p>'+result[i].partyPos+'</p>';
+				else
+					str+='<p> - </p>';
+				str+='</td>';
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -1188,14 +619,17 @@ $(document).on("click",".updateStatusAnyCls",function(){
 });
 
 getNominatedPostPostionDetails();
+getBoardWiseNominatedPostMemberDetails();
 function getNominatedPostPostionDetails(){
+$('#positionDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset7" src="images/search.gif">');
 	var jsObj=
-	   {				
-			depmtId:1,
-			boardId:36,
-			positionId:1,
-			bLId:5,
-			lValue:835
+	   {	
+			depmtId:parseInt('${deptId}'),
+			boardId:parseInt('${boardId}'),
+			positionId:parseInt('${positionId}'),
+			bLId:parseInt('${lId}'),
+			searchLevelId:parseInt('${searchLevelId}'),
+			lValue:parseInt('${searchLevelValue}')
 	   }
 	    $.ajax({
           type:'GET',
@@ -1203,10 +637,10 @@ function getNominatedPostPostionDetails(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		  // getBoardWiseNominatedPostMemberDetails();
 		  if(result != null){
 			  buildNominatePostPositionDetails(result);
 		  }
-			
 	   });  
 }
 function buildNominatePostPositionDetails(result){
@@ -1326,6 +760,15 @@ function buildDepartmentDetails(result,divId){
 		str+='</tbody>';
 	str+='</table>';
 	$("#"+divId).html(str);
+}
+
+tableResponsive();
+function tableResponsive()
+{
+  if($(window).width < 800)
+  {
+    $("#resultDivId").addClass("table-responsive");
+  }
 }
 </script>
 </body>
