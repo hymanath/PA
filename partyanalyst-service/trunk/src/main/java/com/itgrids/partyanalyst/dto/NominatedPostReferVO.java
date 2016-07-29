@@ -41,6 +41,7 @@ public class NominatedPostReferVO {
 	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
 	private Long referenceCount = 0l;
 	private Long commentCount = 0l;
+	private String isPrefered;
 	
 	public Long getId() {
 		return id;
@@ -191,5 +192,11 @@ public class NominatedPostReferVO {
 	}
 	public void setCommentCount(Long commentCount) {
 		this.commentCount = commentCount;
+	}
+	public String getIsPrefered() {
+		return isPrefered;
+	}
+	public void setIsPrefered(String isPrefered) {
+		this.isPrefered = isPrefered;
 	}
 }

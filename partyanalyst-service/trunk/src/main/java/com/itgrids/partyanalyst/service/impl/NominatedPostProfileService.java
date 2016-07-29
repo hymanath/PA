@@ -3079,7 +3079,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","cadreName",
-						"cadreMobile","age","cadreGender","caste","subCaste","casteName","applStatusId","status"};
+						"cadreMobile","age","cadreGender","caste","subCaste","casteName","applStatusId","status","isPrefered"};
 			subList = (List<NominatedPostReferVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostReferVO");
 			}
 			
@@ -3245,10 +3245,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (Object[] obj : finalList) {
 					IdNameVO vo = new IdNameVO();
-					vo.setStatus(obj[0] != null ? obj[0].toString():"");
-					vo.setDateStr(obj[1] != null ? obj[1].toString():"");
-					vo.setName(obj[2] != null ? obj[2].toString():"");
-					vo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+					vo.setStatus(obj[0] != null ? obj[0].toString():"");   //remarks
+					vo.setDateStr(obj[1] != null ? obj[1].toString():"");  //time
+					vo.setName(obj[2] != null ? obj[2].toString():"");    //firstName
+					vo.setMobileNo(obj[3] != null ? obj[3].toString():"");//lastName
 					subList.add(vo);
 				}
 			}
@@ -3272,5 +3272,53 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnvo;
 	}
 	
+	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId){
+		String status = null;
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {	
+					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
+					nominatedPostFinal.setApplicationStatusId(statusId);
+					nominatedPostFinal.setUpdatedBy(userId);
+					nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+					
+					NominatedPostComment nominatedPostComment = new NominatedPostComment();
+					nominatedPostComment.setNominatedPostFinalId(postFinalId);
+					nominatedPostComment.setRemarks(comment);
+					nominatedPostComment.setInsertedBy(userId);
+					nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
+				}
+			});
+			status = "success";
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception raised at updateFinalyzationStatusForPost() method of NominatedPostProfileService", e);
+		}
+		return status;
+	}
 	
+	public String updateWishListForCandidate(final Long postFinalId,final String remark){
+		String status = null;
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
+					if(remark.equalsIgnoreCase("Y")){
+						nominatedPostFinal.setIsPrefered("N");
+					}
+					else if(remark.equalsIgnoreCase("N")){
+						nominatedPostFinal.setIsPrefered("Y");
+					}
+					nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+				}
+			});
+			status = "success";
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception raised at updateFinalyzationStatusForPost() method of NominatedPostProfileService", e);
+		}
+		return status;
+	}
 }
