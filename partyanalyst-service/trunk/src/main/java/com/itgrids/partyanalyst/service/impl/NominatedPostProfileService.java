@@ -3079,7 +3079,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","cadreName",
-						"cadreMobile","age","cadreGender","caste","subCaste","casteName","applStatusId","status","isPrefered"};
+						"cadreMobile","age","cadreGender","caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId"};
 			subList = (List<NominatedPostReferVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostReferVO");
 			}
 			
@@ -3272,7 +3272,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnvo;
 	}
 	
-	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId){
+	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId){
 		String status = null;
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -3284,6 +3284,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
 					
 					NominatedPostComment nominatedPostComment = new NominatedPostComment();
+					nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
 					nominatedPostComment.setNominatedPostFinalId(postFinalId);
 					nominatedPostComment.setRemarks(comment);
 					nominatedPostComment.setInsertedBy(userId);
@@ -3299,12 +3300,14 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return status;
 	}
 	
-	public String updateWishListForCandidate(final Long postFinalId,final String remark){
+	public String updateWishListForCandidate(final Long postFinalId,final String remark,final Long userId){
 		String status = null;
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
+					nominatedPostFinal.setUpdatedBy(userId);
+					nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					if(remark.equalsIgnoreCase("Y")){
 						nominatedPostFinal.setIsPrefered("N");
 					}

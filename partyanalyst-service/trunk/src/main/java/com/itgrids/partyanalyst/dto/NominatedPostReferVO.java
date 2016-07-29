@@ -42,6 +42,7 @@ public class NominatedPostReferVO {
 	private Long referenceCount = 0l;
 	private Long commentCount = 0l;
 	private String isPrefered;
+	private Long nominatedPostApplicationId;
 	
 	public Long getId() {
 		return id;
@@ -198,5 +199,11 @@ public class NominatedPostReferVO {
 	}
 	public void setIsPrefered(String isPrefered) {
 		this.isPrefered = isPrefered;
+	}
+	public Long getNominatedPostApplicationId() {
+		return nominatedPostApplicationId;
+	}
+	public void setNominatedPostApplicationId(Long nominatedPostApplicationId) {
+		this.nominatedPostApplicationId = nominatedPostApplicationId;
 	}
 }
