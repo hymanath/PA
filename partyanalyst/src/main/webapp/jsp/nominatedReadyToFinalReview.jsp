@@ -9,11 +9,23 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style type="text/css">
+.filterIcon
+{
+	background:#ddd;
+	padding:6px;
+	border-radius:50%;
+	cursor:pointer
+}
+</style>
 </head>
 <body>
 <div class="container">
-<div class="row hideRowCls">
-		<div class="col-md-12 col-xs-12 col-sm-12">
+   <div class="row hideRowCls">
+         <div class="col-md-12 col-xs-12 col-sm-12">
+			<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i> LOCATION FILTER</button>
+		</div>
+		<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="row">
@@ -319,6 +331,7 @@ getBoardLevelId(5,stateId);
 }else{
 getBoardLevelId(boardLevelId,stateId);		
 }
+$(".filterSection").hide();
 });
 tableResponsive();
 function tableResponsive()
@@ -328,6 +341,9 @@ function tableResponsive()
 		$("#resultDivId").addClass("table-responsive");
 	}
 }
+$(document).on("click",".filterBtn",function(){
+	$(".filterSection").toggle("slow");
+});
 </script>
 </body>
 </html>

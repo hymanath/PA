@@ -21,12 +21,22 @@
 {
 	width:7% !important
 }
+.filterIcon
+{
+	background:#ddd;
+	padding:6px;
+	border-radius:50%;
+	cursor:pointer
+}
 </style>
 </head>
 <body>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
+			<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i> LOCATION FILTER</button>
+		</div>
+		<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">Select Location</h4>
@@ -63,9 +73,6 @@
 								<option value="">Select Mandal/Town/Division</option>
 							</select>
 						</div>
-						
-					</div class="row">
-					<div>
 						<div class="col-md-3 col-xs-12 col-sm-3">						
 							<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
 						</div>
@@ -106,6 +113,10 @@ $(document).ready(function() {
 		$("#constituencyMainId").hide();
 		$("#manTowDivMainId").hide();
 	}	
+	$(".filterSection").hide();
+});
+$(document).on("click",".filterBtn",function(){
+	$(".filterSection").toggle("slow");
 });
 
 </script>
