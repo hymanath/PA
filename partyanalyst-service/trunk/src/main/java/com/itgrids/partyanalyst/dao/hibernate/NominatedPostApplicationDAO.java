@@ -484,7 +484,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" AND model.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" AND model.applicationStatus.status != :notYet ");
+			str.append(" AND model.applicationStatus.status not in (:running) ");
 		}
 		
 		str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +
@@ -508,8 +508,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			}
 		}
 		
-		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
+		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
+		}else if(statusType !=null && (statusType.trim().equalsIgnoreCase("running"))){
+			query.setParameter("running",IConstants.NOMINATED_POST_NOT_RUNNING_STATUS);
 		}
 		
 		return query.list();
