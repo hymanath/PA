@@ -76,7 +76,9 @@
 	</div>
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-			<div id="departmentsBuildId"></div>
+		<center><img src="images/search.gif" id="departmentsBuildSearchId" style="display:none;width:30px;height:20px;"/></center>
+			<div id="departmentsBuildId">			
+			</div>
 		</div>
 	</div>
 </div>
