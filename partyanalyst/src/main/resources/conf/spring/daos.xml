@@ -3148,5 +3148,7 @@
 	<bean id="dashboardUserAccessLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardUserAccessLevelDAO" >  
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
-	
+	<bean id="nominatedPostAgeRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAgeRangeDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
 </beans>		
