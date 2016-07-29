@@ -341,7 +341,7 @@
 							</span>-->
 						</h4>
                     </div>
-					
+					<!-- ss -->
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 hideDivCls">
 						<div class="addBlockNew cloneBlockDiv">
 							<div class="row">
@@ -350,8 +350,8 @@
                                 </div>
                                 <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
                                 	<div class="btn-group">
-                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs" onclick="getDepartments('',1);">Nominated Post</button>
-                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs" onclick="getDepartments('',2);">Party Post</button>
+                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs" attr_postId="1" ">Nominated Post</button>
+                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs" attr_postId="2" ">Party Post</button>
                                     </div>
                                 </div>
                             </div>
@@ -362,7 +362,7 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="chosenSelect boardLvlCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost('');" attr_no="">
+									<select class="chosenSelect boardLvlCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments('')" attr_no="">
 									<option value="0">Select Board Level</option>
 									</select>
 								</div>
@@ -432,8 +432,8 @@
                                 </div>
                                 <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
                                 	<div class="btn-group">
-                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" >Nominated Post</button>
-                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" >Party Post</button>
+                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" attr_postId="1">Nominated Post</button>
+                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" attr_postId="2">Party Post</button>
                                     </div>
                                 </div>
                             </div>
@@ -444,7 +444,7 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');" >
+									<select class="boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');getDepartments('');" >
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">

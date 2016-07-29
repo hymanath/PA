@@ -836,7 +836,7 @@ $('.searchTypeCls').click(function(){
    $("#"+id).empty();
     
    if(result != null && result.length >0){
-		 $("#"+id).append('<option value="0">Select Board</option>');
+		 $("#"+id).append('<option value="0">Select Level</option>');
      for(var i in result){
 		 if(result[i].id != 7)
 			$("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -848,10 +848,12 @@ $('.searchTypeCls').click(function(){
   
   function getDepartmentBoardPositions(num){
 	//$("#searchDataImgForDist").show();
-    
+   
 	var jsObj = {
+		
 		depmtId : $("#depmtsId"+num).val(),
-		boardId : $("#deptBoardId"+num).val()
+		boardId : $("#deptBoardId"+num).val(),
+		boardLevelId : $("#boardLvlId"+num).val()
 	}
     $.ajax({
           type:'GET',
@@ -861,7 +863,8 @@ $('.searchTypeCls').click(function(){
    }).done(function(result){
     $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
-	  $("#deptBoardPostnId"+num).append('<option value="0">Select Board Position</option>');
+	  $("#deptBoardPostnId"+num).append('<option value=" ">Select Board Position</option>');
+	   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
 		for(var i in result){
 			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	  }
@@ -870,11 +873,11 @@ $('.searchTypeCls').click(function(){
    });
   }
   
-   function getDepartmentBoards(num){
+    function getDepartmentBoards(num){
 	//$("#searchDataImgForDist").show();
-    
-	var jsObj = {
-		depmtId : $("#depmtsId"+num).val()
+   var jsObj = {
+		depmtId : $("#depmtsId"+num).val(),
+		boardLevelId : $("#boardLvlId"+num).val()
 	}
     $.ajax({
           type:'GET',
@@ -885,18 +888,29 @@ $('.searchTypeCls').click(function(){
    //$("#searchDataImgForDist").hide();
   $("#deptBoardId"+num).empty();
    if(result != null && result.length >0){
-	     $("#deptBoardId"+num).append('<option value="0">Select Department Board</option>');
+	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
+		   $("#deptBoardId"+num).append('<option value="0">Any</option>');
 		for(var i in result){
 			$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	  }
    }
 	  $("#deptBoardId"+num).trigger("chosen:updated");
    });
-  }
-  function getDepartments(num,postType){
+  }  
+  function getDepartments(num){
 	//$("#searchDataImgForDist").show();
-   
-	var jsObj = {postType:postType}
+	 var postTypeId=0;
+	 var boardLevelId = $("#boardLvlId"+num).val();
+     var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
+	   if(isActive){
+		 postTypeId = $("#nomintdPostId"+num).attr("attr_postid");  
+	   }else{
+		postTypeId = $("#partyPostId"+num).attr("attr_postid");     
+	   }
+	var jsObj = {
+		postType:postTypeId,
+		boardLevelId:boardLevelId
+		}
     $.ajax({
           type:'GET',
           url: 'getDepartmentsAction.action',
@@ -908,7 +922,8 @@ $('.searchTypeCls').click(function(){
    $("#depmtsId"+num).empty();
     
    if(result != null && result.length >0){
-		$("#depmtsId"+num).append('<option value="0">Select Department</option>'); 
+		$("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
+		$("#depmtsId"+num).append('<option value="0">Any</option>'); 
      for(var i in result){
 	   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
@@ -917,7 +932,7 @@ $('.searchTypeCls').click(function(){
    });
   }
 getBoardLevels("boardLvlId"); 
-getDepartments("",1); 
+//getDepartments("",1); 
 /* $(document).on("click",".checkboxCls",function(){
 	
     $(".checkboxCls").prop( "checked" ,false);
@@ -1019,16 +1034,17 @@ $(document).on("click","#addOneMore",function(){
   e.attr("attr_count",cloneCount);
   e.show();
   e.find(".nominatdPostSelCls").attr("id","nomintdPostId"+cloneCount);
-  e.find(".nominatdPostSelCls").attr("onClick",'getDepartments('+cloneCount+',1);');
+ // e.find(".nominatdPostSelCls").attr("onClick",'getDepartments('+cloneCount+',1);');
   e.find(".partyPostSelCls").attr("id","partyPostId"+cloneCount);
-  e.find(".partyPostSelCls").attr("onClick",'getDepartments('+cloneCount+',2);');
+ // e.find(".partyPostSelCls").attr("onClick",'getDepartments('+cloneCount+',2);');
   e.find(".iconClose").show();
   
  e.find(".boardLvlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].boardLevelId');
   e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
   e.find(".boardLvlCls").attr("attr_no",cloneCount);
   getBoardLevels("boardLvlId"+cloneCount);
-  e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');');
+  e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');getDepartments('+cloneCount+');');
+ // e.find(".boardLvlCls").attr("onChange",'');
   
   e.find(".nominatedStaeCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].stateId');
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
@@ -1062,7 +1078,7 @@ $(document).on("click","#addOneMore",function(){
   e.find(".depmtsCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptId');  
   e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
   e.find(".depmtsCls").attr("attr_no",cloneCount);
-  getDepartments(cloneCount,1);
+  //getDepartments(cloneCount,1);
   e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+',1);');
   
   e.find(".deptBoardCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptBoardId');
@@ -1325,7 +1341,7 @@ function savingApplication(){
 								flag = true;
 								} 
 				}
-				if($("#depmtsId"+clonNo).val() == 0){
+			/* 	if($("#depmtsId"+clonNo).val() == null || $("#depmtsId"+clonNo).val() == " " || $("#depmtsId"+clonNo).val() == undefined){
 						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
@@ -1333,22 +1349,22 @@ function savingApplication(){
 						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
 							flag = true;
 				} 
-				if($("#deptBoardId"+clonNo).val() == 0){
+				if($("#deptBoardId"+clonNo).val() == null || $("#deptBoardId"+clonNo).val() == " " || $("#deptBoardId"+clonNo).val() == undefined){
 						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
 								flag = true;
-				} 
-				if($("#deptBoardPostnId"+clonNo).val() == 0){
+				} 			
+				if($("#deptBoardPostnId"+clonNo).val() == null || $("#deptBoardPostnId"+clonNo).val() == " " || $("#deptBoardPostnId"+clonNo).val() == undefined){
 						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
 								flag = true;
-				} 
+				}  */
 				if(errorMsg != ''){
 		$(this).parent().find(".errorMsgCls").html(errorMsg);
 			flag = false;
