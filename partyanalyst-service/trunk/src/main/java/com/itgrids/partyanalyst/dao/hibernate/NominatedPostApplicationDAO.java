@@ -317,8 +317,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
 		else
 			queryStr.append(" where ");
-		
-		queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId = 1   and model.boardLevelId =:levelId ");
+		//queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId =1   and model.boardLevelId =:levelId ");
+		queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId is not null   and model.boardLevelId =:levelId ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		//queryStr.append(" and model.applicationStatusId = 1");//applied
@@ -356,7 +356,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
 		else
 			queryStr.append(" where ");
-		queryStr.append(" model.isDeleted='N' and model.applicationStatusId in (2,3) and model.boardLevelId =:levelId  ");
+		queryStr.append(" model.isDeleted='N' and model.applicationStatusId not in (1,5) and model.boardLevelId =:levelId  ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		//queryStr.append(" and model.applicationStatusId <>1  ");
