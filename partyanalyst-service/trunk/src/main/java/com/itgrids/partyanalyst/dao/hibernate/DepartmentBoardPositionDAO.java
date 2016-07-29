@@ -15,11 +15,23 @@ public class DepartmentBoardPositionDAO extends GenericDaoHibernate<DepartmentBo
 		
 	}
 	public List<Object[]> getDepartmentBoardPositionsByDeptIdABrdId(Long deapartmentId,Long boardId){
-		Query query = getSession().createQuery(" select  model.position.positionId,model.position.positionName,model.departmentBoardPositionId from DepartmentBoardPosition model where " +
-				" model.departments.departmentId =:deapartmentId and model.board.boardId =:boardId and model.isDeleted = 'N' ");
 		
-		query.setParameter("deapartmentId", deapartmentId);
-		query.setParameter("boardId", boardId);
+		    StringBuilder queryStr = new StringBuilder();
+		   queryStr.append(" select  model.position.positionId,model.position.positionName,model.departmentBoardPositionId from DepartmentBoardPosition model where model.isDeleted = 'N' ");
+		   
+		    if(deapartmentId != null && deapartmentId.longValue()> 0){
+		      queryStr.append(" and model.departments.departmentId =:deapartmentId ");	
+		    }
+            if(boardId != null && boardId.longValue()> 0){
+		      queryStr.append(" and model.board.boardId =:boardId ");	
+		    }
+		    Query query = getSession().createQuery(queryStr.toString());
+			 if(deapartmentId != null && deapartmentId.longValue()> 0){
+					query.setParameter("deapartmentId", deapartmentId);
+			 }
+			 if(boardId != null && boardId.longValue()> 0){
+					query.setParameter("boardId", boardId); 
+			 }
 		return query.list();
 	}
 }

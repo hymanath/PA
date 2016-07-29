@@ -28,6 +28,8 @@ public class Departments extends BaseModel implements Serializable{
 	private Long departmentId;
 	private String deptName;
 	private Long postTypeId;
+	
+	private PostType postType;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "department_id", unique = true, nullable = false)
@@ -50,6 +52,16 @@ public class Departments extends BaseModel implements Serializable{
 	}
 	public void setPostTypeId(Long postTypeId) {
 		this.postTypeId = postTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="post_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PostType getPostType() {
+		return postType;
+	}
+	public void setPostType(PostType postType) {
+		this.postType = postType;
 	}
 	
 		

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.aspectj.apache.bcel.generic.LNEG;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
@@ -620,7 +619,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	  
 	  StringBuilder queryStr = new StringBuilder();
 	            
-	   queryStr.append(" select model.nominationPostCandidate.casteState.caste.casteId,model.nominationPostCandidate.casteState.caste.casteName," +
+	   queryStr.append(" select model.nominationPostCandidate.casteState.casteStateId,model.nominationPostCandidate.casteState.caste.casteName," +
 	   	          	   " model.position.positionId,model.position.positionName,count(model.position.positionId) " +
 	   	          	   " from NominatedPostApplication model where model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N' ");
 	   
@@ -658,5 +657,27 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			    }
 	   return query.list();
 	 
+ }
+ public List<Object[]> getCandidateCasteList(Long locationLevelId){
+	 
+	 StringBuilder queryStr = new StringBuilder();
+	 queryStr.append(" select distinct model.nominationPostCandidate.casteState.casteStateId,model.nominationPostCandidate.casteState.caste.casteName from NominatedPostApplication model where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted='N'");
+	 
+	   if(locationLevelId != null && locationLevelId.longValue() > 0){
+		   if(locationLevelId != 5){
+			   queryStr.append(" and model.boardLevelId=:locationLevelId ");   
+		   }else{
+			   queryStr.append(" and model.boardLevelId in (5,6,7) ");
+		   }
+		 
+	   }
+	   queryStr.append(" order by model.nominationPostCandidate.casteState.caste.casteName ");
+	 
+	 Query query = getSession().createQuery(queryStr.toString());
+ 	 
+	 if(locationLevelId != null && locationLevelId.longValue() > 0 && locationLevelId.longValue()!=5){
+		  query.setParameter("locationLevelId", locationLevelId);
+	 }
+	 return query.list();
  }
 }

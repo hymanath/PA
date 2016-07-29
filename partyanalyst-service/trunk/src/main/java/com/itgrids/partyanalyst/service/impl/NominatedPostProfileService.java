@@ -426,10 +426,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartments(Long postTpe){
+	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = departmentsDAO.getDepartments(postTpe);
+		List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -447,12 +447,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All DepartmentBoards From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoard(Long depmtId){
+	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = departmentBoardDAO.getDepartmentBoardByDeptId(depmtId);
+		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
-			String[] setterPropertiesList = {"id","name","districtid"};
+			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
 		}
 		}catch(Exception e){
@@ -467,12 +467,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId){
+	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = departmentBoardPositionDAO.getDepartmentBoardPositionsByDeptIdABrdId(deptId,boardId);
+		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
-			String[] setterPropertiesList = {"id","name","districtid"};
+			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
 		}
 		}catch(Exception e){
@@ -1058,9 +1058,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public NominatedPostApplication saveNominatedPostApplication(NominatedPostVO Vo ,Long nominatedPostCandi,String position,final Long loggerUserId,final Map<File,String> mapfiles){
 		NominatedPostApplication nominatedPostApplication = null;
 		try{
-			nominatedPostApplication = new NominatedPostApplication();
-		nominatedPostApplication.setPositionId(position != null ? Long.parseLong(position.trim()) : null) ;
-		
+			
+		nominatedPostApplication = new NominatedPostApplication();
+		if(position !=null && !position.isEmpty() && !position.trim().equalsIgnoreCase("0")){
+			nominatedPostApplication.setPositionId(Long.parseLong(position.trim())) ;
+		}
+				
 		nominatedPostApplication.setNominationPostCandidateId(nominatedPostCandi != null ? nominatedPostCandi : null);
 		
 		if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 1){
@@ -1112,8 +1115,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		nominatedPostAddress.setCountry(countryDAO.get(1L));
 		nominatedPostAddress = userAddressDAO.save(nominatedPostAddress);
 		
-		nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
-		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;
+		if(Vo.getDeptId() !=null && Vo.getDeptId() >0){
+			nominatedPostApplication.setDepartmentId(Vo.getDeptId());
+		}
+		if(Vo.getDeptBoardId() !=null && Vo.getDeptBoardId()>0){
+			nominatedPostApplication.setBoardId(Vo.getDeptBoardId());
+		}
+	/*	nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
+		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;*/
 		nominatedPostApplication.setInsertedBy(loggerUserId);
 		nominatedPostApplication.setUpdatedBy(loggerUserId);
 		nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
