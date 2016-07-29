@@ -933,7 +933,7 @@ return Action.SUCCESS;
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
-			status = nominatedPostProfileService.updateFinalyzationStatusForPost(jObj.getLong("postFinalId"),jObj.getLong("statusId"),jObj.getString("comment"),userId);
+			status = nominatedPostProfileService.updateFinalyzationStatusForPost(jObj.getLong("postFinalId"),jObj.getLong("statusId"),jObj.getString("comment"),userId,jObj.getLong("postApplId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
@@ -944,14 +944,14 @@ return Action.SUCCESS;
 	
 	public String updateWishListForCandidate(){
 		try{
-			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO==null){
 				return "input";
 			}
-			Long userId = regVO.getRegistrationID();*/
+			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
-			status = nominatedPostProfileService.updateWishListForCandidate(jObj.getLong("postFinalId"),jObj.getString("remark"));
+			status = nominatedPostProfileService.updateWishListForCandidate(jObj.getLong("postFinalId"),jObj.getString("remark"),userId);
 			
 		}catch (Exception e) {
 			LOG.error("Entered into updateWishListForCandidate Action",e);
