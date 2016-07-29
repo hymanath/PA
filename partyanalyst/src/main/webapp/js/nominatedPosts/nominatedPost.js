@@ -449,8 +449,12 @@ function getAllCadreInPanchayat()
 		//$(".allcls").show();
 		refreshExistingDetails();
 	} 
-function getNominatedPostApplication(startIndex,id)
-		{			
+	
+	var isFree =true;
+function getNominatedPostApplication(startIndex)
+		{
+		if(isFree){
+			 isFree =false;
 		var locationLevel = 0;
 		var locationValue = 0;
 		var searchName = '';
@@ -466,7 +470,7 @@ function getNominatedPostApplication(startIndex,id)
 		var houseNo = '';
 		var membershipAndMobileNo = '';
 
-		if(id == 1)
+		
 			$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 	
 	$("#scrollDivId").show();
@@ -633,6 +637,7 @@ function getNominatedPostApplication(startIndex,id)
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				 isFree =true;
 			$(".paginationDivId").show();
 				 if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
@@ -643,7 +648,7 @@ function getNominatedPostApplication(startIndex,id)
 				$('#cadreDetailsDiv').show();
 				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
 				{
-					buildCadreDetails(result.previousRoles,2);
+					buildCadreDetails(result.previousRoles);
 				}
 				 else
 				{
@@ -651,21 +656,13 @@ function getNominatedPostApplication(startIndex,id)
 					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 				} 
 			});  
-
+		}
 	}
-	var alreadyBuildMmberIdsArr = [];
-   function buildCadreDetails(result,id){ 
-  //alert(id);
+	
+   function buildCadreDetails(result){ 
+
 	   //$("#textId").show();
-	   if(id==2){
-			$("#loadingSmblDivId").html('');			
-	   }else if(id==1){
-			$("#cadreSearchDtls").html('');
-			//$('#loadingSmblDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
-	   }
-		else{
-		   $('#loadingSmblDivId').html('');
-	   }
+	    $("#cadreSearchDtls").html('');
 		$("#cadreSearchDtls").show();
 		$("#scrollDivId").show();
 		var str='';
@@ -680,21 +677,8 @@ function getNominatedPostApplication(startIndex,id)
 			
 		if(result != null && result.length >0){
 		for(var i in result)
-			{		
-				var isBuild ="false";
-				if(alreadyBuildMmberIdsArr != null && alreadyBuildMmberIdsArr.length>0){
-					for(var k in alreadyBuildMmberIdsArr){
-						if(result[i].voterCardNo.trim() == alreadyBuildMmberIdsArr[k].trim())
-							isBuild ="true";
-					}
-				}
-
-			if(isBuild == "false")	{
-			alreadyBuildMmberIdsArr.push(result[i].voterCardNo.trim());				
-				if(id==1)
-					str +='<li style="background: green;">';
-				else
-					str +='<li>';
+			{	
+				str +='<li>';
 				str +='<div class="img-center">';
 				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 				
@@ -722,17 +706,17 @@ function getNominatedPostApplication(startIndex,id)
 						 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
 						str +='</li>';
 					}
-				 }
+				 
 			}
 		}else{
 				str+='No Data Available';	
 		}
 		
-		//$("#cadreSearchDtls").html(str);
-		if(id == 2)
+		$("#cadreSearchDtls").html(str);
+		/*if(id == 2)
 			$("#cadreSearchDtls").append(str);
 		else
-			$("#cadreSearchDtls").html(str);
+			$("#cadreSearchDtls").html(str);*/
 	}
 	function refreshExistingDetails(){ 
 		$("#searchBy").val("");
@@ -1445,9 +1429,9 @@ var jObj={
 });
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
  var type = $("input[type='radio']:checked").val();
- var id =globalNPCandiId;
-		if(globalCadreId > 0)
-			id =globalCadreId;
+ var id =globalCadreId;
+		if(globalNPCandiId > 0)
+			id =globalNPCandiId;
    var jObj={
 		globalCadreId:id,
 		searchType:type
@@ -1847,7 +1831,11 @@ $("#involvedCandidatesDiv").hide();
     select.refresh();
   showHideBySearchType();//Clear Fields  
 }
+var isNotCadreFree=true;
 function notCadresearch(){
+	
+	if(isNotCadreFree){
+		isNotCadreFree = false;
 		var cadreTypeStr=$("input[name='checkBoxName']:checked").val();
 		var searchType=$("input[name='searchBasedOn']:checked").val();
 		var searchValue=$("#searchBy").val();
@@ -1925,31 +1913,27 @@ function notCadresearch(){
 					  url: 'notCadresearchAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-									   
+					isNotCadreFree =true;	   
 					if(result != null){
-						buildCadreDetails(result,1);
-						if(cadreTypeStr =="Cadre")
-							getNominatedPostApplication(0,2);						
+						buildCadreDetails(result);					
 					}
 					else if(cadreTypeStr =="Cadre"){
-						getNominatedPostApplication(0,2);
+						getNominatedPostApplication(0);
 					}
 					else
 						$("#cadreSearchDtls").html("No Data Available...");
 				  
 				});
+			}
 		}
  $(document).on("click","#searchbtn",function(){
-	 // var value = $("input[name='checkBoxName']:checked").val();
-	  $("#cadreSearchDtls").html("");
-	  notCadresearch();
-	  /*
+	  var value = $("input[name='checkBoxName']:checked").val();
 	  if(value == "Cadre"){
 			getNominatedPostApplication(0);
 		}
 		else if(value == "Not Cadre"){
 			notCadresearch();
-		}*/
+		}
  });
  
  function subLevelForConstituency(locationLevel){
