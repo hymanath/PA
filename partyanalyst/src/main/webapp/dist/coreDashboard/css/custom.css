@@ -1,0 +1,210 @@
+body
+{
+	background:#EBEBEB
+}
+h1,h2,h3,h4,h5,h6,p,ul,.table
+{
+	margin:0px !important;
+}
+.navbarHeader
+{
+	background:#555;
+	margin-bottom:0px;
+}
+.navbarHeader .navbar-brand , .navbarHeader .navbar-brand:active , .navbarHeader .navbar-brand:hover , .navbarHeader .navbar-brand:focus
+{
+	color:#FFCC2D;
+	font-family: 'Oswald', sans-serif;
+	padding:5px 0px;
+}
+.navbarHeader .navbar-brand img
+{
+	height:50px;width:70px;display:inline-block
+}
+.headerSearch
+{
+	margin-top:5px;
+}
+.headerSearch .input-group-addon
+{
+	background:#fff;
+	border-top-left-radius:17px;
+	border-bottom-left-radius:17px;
+}
+.headerSearch .form-control
+{
+	border-left:0px;
+	box-shadow:none;
+	border-top-right-radius:17px;
+	border-bottom-right-radius:17px;
+}
+.navbarHeader .glyphicon-bell
+{
+	font-size:24px;
+	color:#F1F1F1;
+}
+.navbarHeader .profileDropDown img
+{
+	height:30px;
+	width:50px;
+}
+.navbarHeader .profileDropDown .caret
+{
+	color:#FFCC2D
+}
+.headerSearch .form-control::-moz-placeholder {
+  color: red;
+  opacity: 1;
+}
+.headerSearch .form-control:-ms-input-placeholder {
+  color: red;
+}
+.headerSearch .form-control::-webkit-input-placeholder {
+	color: red;
+}
+.headerProfileName
+{
+	font-family: 'Oswald', sans-serif;
+	font-size:18px
+}
+.headerProfileName .caret
+{
+	color:#f1f1f1
+}
+.headerProfileName .caretBackground
+{
+	background:#555;
+	border-radius:50%;
+	padding:0px 8px 0px 6px;
+	height:10px;
+}
+.navbarProfile
+{
+	background:#fff;
+	height:40px;
+	margin-bottom:0px;
+}
+.profileSelection li
+{
+	padding:10px;
+}
+.profileSelection li a
+{
+	font-family: 'Oswald', sans-serif;
+	text-transform:uppercase;
+	color:#555;
+}
+.profileSelection li.active a
+{
+	border-bottom:2px solid #FFCC2D;
+	color:#FFCC2D;
+	padding:8px;
+}
+.btnYellow , .btnYellow:active , .btnYellow:hover
+{
+	color:#555 !important;
+	text-transform:capitalize;
+	background:#FFCC2D !important;
+	border:1px solid #FFCC2D !important;
+	border-radius:0px;
+}
+.btnYellow img
+{
+	height:20px;
+	width:20px;
+	display:inline-block
+}
+.settingsIcon
+{
+	color:#555;
+	font-size:24px;
+	top:6px;
+	position:relative;
+}
+.text-capital
+{
+	text-transform:uppercase;
+}
+.m_top10
+{
+	margin-top:10px !important;
+}
+.m_top20
+{
+	margin-top:20px !important;
+}
+.panelCustomBlock
+{
+	border-radius:0px;
+}
+.panelCustomBlock .panel-heading  , .panelCustomBlock .panel-body
+{
+	background:#fff;
+}
+.panelCustomBlock .panel-heading .panel-title
+{
+	color:#555;
+	text-transform:uppercase;
+}
+.chart
+{
+	height:200px;
+	width:100%;
+}
+.logo
+{
+	background:url("../img/IconSet.png");
+	background-position:10px 0px;
+	height:50px;
+	width:70px;
+	display:inline-block;
+	background-size:350px 350px;
+	position:relative;
+	top:6px;
+}
+.coreIcons
+{
+	height:30px;
+	width:30px;
+	display:inline-block;
+	padding-left:32px;
+	padding-top:7px;
+	font-size:18px;
+	font-family: 'Oswald', sans-serif;
+}
+.committeesIcon
+{
+	background:url("../img/IconSet.png");
+	background-position:-365px -26px;
+	background-size:540px 540px;
+}
+.meetingsIcon
+{
+	background:url("../img/IconSet.png");
+	background-position:-309px -26px;
+	background-size:540px 540px;
+}
+.newsIcon
+{
+	background:url("../img/IconSet.png");
+	background-position:-253px -26px;
+	background-size:540px 540px;
+}
+.debateIcon
+{
+	background:url("../img/IconSet.png");
+	background-position:-205px -26px;
+	background-size:540px 540px;	
+}
+.trainingIcon
+{
+	background:url("../img/IconSet.png");
+	background-position:-147px -26px;
+	background-size:540px 540px;
+}
+.eventsIcon
+{
+	background:url("../img/IconSet.png");
+	background-position:-99px -26px;
+	background-size:540px 540px;
+}
