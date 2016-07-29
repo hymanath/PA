@@ -490,7 +490,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return NomintedPostMemberVO
 	 * description  { Getting All Applied Member Details From Database }
 	 */
-	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type){
+	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,
+			 Long positionId,String type,Long searchLevelId){
 		NomintedPostMemberVO returnvo = new NomintedPostMemberVO();
 		try {
 			List<Long> tdpCadreIds = new ArrayList<Long>();
@@ -504,7 +505,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			//0.nominationPostCandidateId,1.tdpCadreId,2.voterId,3.candidateName,4.mobileNo,5.cadreFirstname,6.cadreMobileNo,7.age,
 						//8.caste,9.subCaste,10.casteName,11.applicationStatusId,12.status,13.nominatedPostId
-			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type);
+			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type,searchLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","cadreName","cadreMobile","age",
 							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId"};
@@ -1308,14 +1309,24 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							}
 						}
 					}
-					vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7]));
+					vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7])); 
 					if(vo.getMandalId()!= null && vo.getMandalId() > 0){
 						List<Long> constituencyIds = new ArrayList<Long>(0);
 						constituencyIds.add(vo.getConstituencyId());
 						List<LocationWiseBoothDetailsVO> list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
 						if(commonMethodsUtilService.isListOrSetValid(list))
 							for (LocationWiseBoothDetailsVO vo1 : list) {
-								vo.getMandalsList().add(new IdNameVO(vo1.getLocationId(),vo1.getLocationName()));
+								String digit = vo1.getLocationId().toString().charAt(0)+"";
+								Long id = 0L;
+								if(digit.trim().equalsIgnoreCase("5")){
+									String locatnId = vo1.getLocationId().toString().substring(1);
+									id = Long.valueOf("2"+locatnId);
+								}
+								else if(digit.trim().equalsIgnoreCase("6") || digit.trim().equalsIgnoreCase("7")){
+									String locatnId = vo1.getLocationId().toString().substring(1);
+									id = Long.valueOf("1"+locatnId);
+								}
+								vo.getMandalsList().add(new IdNameVO(id,vo1.getLocationName()));
 							}
 							
 						
@@ -1342,8 +1353,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						List<LocationWiseBoothDetailsVO> list = cadreCommitteeService.getPanchayatWardDivisionDetailsOfSubLocation(null, locationIds, lebsList);
 						if(commonMethodsUtilService.isListOrSetValid(list))
-							for (LocationWiseBoothDetailsVO vo1 : list) 
-								vo.getPanList().add(new IdNameVO(vo1.getLocationId(),vo1.getLocationName()));
+							for (LocationWiseBoothDetailsVO vo1 : list) {
+								String digit = vo1.getLocationId().toString().charAt(0)+"";
+								Long id = 0L;
+								if(digit.trim().equalsIgnoreCase("7")){
+									String locatnId = vo1.getLocationId().toString().substring(1);
+									id = Long.valueOf("1"+locatnId);
+								}
+								else if(digit.trim().equalsIgnoreCase("8")){
+									String locatnId = vo1.getLocationId().toString().substring(1);
+									id = Long.valueOf("2"+locatnId);
+								}
+								vo.getPanList().add(new IdNameVO(id,vo1.getLocationName()));
+							}
 							
 						/*List<Object[]> panList = panchayatDAO.getPanchayatsByTehsilId(vo.getMandalId());
 						if(panList != null && panList.size() > 0){
@@ -1785,7 +1807,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return returnVo;
 	}
 	
-	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue){
+	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue,Long searchLevelId){
 		
 		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);
 		
@@ -1810,7 +1832,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			finalMap.put(null, anyVO);
 			
 			List<Object[]> receivedObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
-					null,boardLevelId,locationValue,null);
+					positionId,boardLevelId,locationValue,null,searchLevelId);
 			
 			if(receivedObj !=null && receivedObj.size()>0){
 				for(Object[] obj : receivedObj){
@@ -1830,7 +1852,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			List<Object[]> receivedAnyObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
-					positionId,boardLevelId,locationValue,"Any");
+					null,boardLevelId,locationValue,"Any",searchLevelId);
 			
 			if(receivedAnyObj !=null && receivedAnyObj.size()>0){
 				for(Object[] obj : receivedAnyObj){
@@ -1850,7 +1872,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			//Short Listed Candidates
 			
-			List<Object[]> shrtObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, null);
+			List<Object[]> shrtObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
 			
 					if(shrtObj !=null && shrtObj.size()>0){
 						for(Object[] obj : shrtObj){
@@ -1869,7 +1891,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 					} 
 					
-				List<Object[]> shrtAnyObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, "Any");
+				List<Object[]> shrtAnyObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
 					
 					if(shrtAnyObj !=null && shrtAnyObj.size()>0){
 						for(Object[] obj : shrtAnyObj){
@@ -1888,7 +1910,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 					} 
 			
-			List<Object[]> casteObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, null);
+			List<Object[]> casteObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
 			if(casteObj !=null && casteObj.size()>0){
 				for(Object[] obj : casteObj){
 					
@@ -1914,7 +1936,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> casteAnyObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, "Any");
+			List<Object[]> casteAnyObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
 			
 			if(casteAnyObj !=null && casteAnyObj.size()>0){
 				for(Object[] obj : casteAnyObj){
@@ -1940,7 +1962,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> ageObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, null);
+			List<Object[]> ageObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
 			
 			if(ageObj !=null && ageObj.size()>0){
 				for(Object[] obj : ageObj){
@@ -1973,7 +1995,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> ageAnyObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, "Any");
+			List<Object[]> ageAnyObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
 			if(ageAnyObj !=null && ageAnyObj.size()>0){
 				for(Object[] obj : ageAnyObj){
 					NominatedPostVO mainVo =null;
