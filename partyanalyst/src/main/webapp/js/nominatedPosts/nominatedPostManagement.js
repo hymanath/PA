@@ -170,23 +170,28 @@ function getConstituenciesForDistricts(district,stateId){
 function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	/* var levelId=4;
 	var levelValues = 299; */
+	$("#departmentsBuildSearchId").show();
 	var jsObj={
 		levelId:levelId,
 		levelValues:levelValues,
 		statusType:globalStatus 
 	}
 	$.ajax({
-          type:'GET',
+          type:'POST',
           url: 'getAllDeptsAndBoardsByLevelAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#departmentsBuildSearchId").hide();
 	   if(result != null && result.length > 0){
 		   buildAllDeptsAndBoardsByLevel(result,levelId,levelValues);
 	   }
    });
 }
-function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,bodyId){
+function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,bodyId,searchId){
+	
+	$("#"+searchId).show();
+	
 	var jsObj={
 		levelId:levelId,
 		levelValues:levelValues,
@@ -200,6 +205,7 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#"+searchId).hide();
 	   if(result != null && result.length > 0){
 		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards);
 	   }
@@ -234,7 +240,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 							 str+='<div class="panel panel-default">';
 								/* str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_levelId='+levelId+' attr_levelValue='+levelValues+' attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">'; */
 								
-								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">';
+								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
 										str+='<h4 class="panel-title text-capital">'+result[i].idnameList[j].name+'';
@@ -244,7 +250,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 								str+='</div>';
 								str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" >';
 								  str+='<div class="panel-body pad_0" id="boardDivBodyId'+i+''+j+'">';
-									
+											str+='<center><img src="images/search.gif" id="boardDivBodySearchId'+i+''+j+'" style="display:none;width:30px;height:20px; "/></center>';
 								  str+='</div>';
 								str+='</div>';
 							  str+='</div>';
@@ -279,6 +285,8 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	var deptId = $(this).attr("attr_deptId");
 	var boardId = $(this).attr("attr_boardId");
 	var bodyId = $(this).attr("attr_id"); 
+	var searchId = $(this).attr("attr_searchId"); 
+	
 	var levelValuesArr=[];
 	if(globalLevelId == 1){
 		levelValuesArr.push(1);
@@ -315,7 +323,7 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	}
 	
 	
-	getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId);
+	getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
 });
 
 function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
@@ -398,9 +406,15 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 				str+='<tr>';
 				
 				if(result[i].id != null){
-					str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' />'+result[i].name+'</label></td>';
+					/* if(shortListed !=null && shortListed>0){ */
+						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_finalReviewCls="" />'+result[i].name+'</label></td>';
+					//}
+					/* else{
+						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;">'+result[i].name+'</span></label></td>';
+					} */					
 				}else{
-					str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+'/>Any Post</label></td>';
+
+					str+='<td><label>Any Post</td>';
 				}
 						
 						str+='<td>'+availablePosts+'</td>';
@@ -470,6 +484,13 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 		searchLevelValue = constituencyId;
 	else if(districtId >0)
 		searchLevelValue = districtId;
+	var positionArr = [];
+	$(".positionUpdateCls").each(function(){
+		var positionId = $(this).attr("id");
+		positionArr.push(positionId);
+	});
+	
+	return;
 	
 	var jsObj={		
 		deptId : 1,
@@ -481,7 +502,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 		searchLevelValue:searchLevelValue
 	}
 	$.ajax({
-          type:'GET',
+          type:'POST',
           url: 'updateNominatedPostStatusDetailsAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
@@ -498,6 +519,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 });
 
 $(document).on("click","#locationWiseDataId",function(){
+	var stateId = $("#stateId").val();
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
@@ -509,8 +531,13 @@ $(document).on("click","#locationWiseDataId",function(){
 	if(globalLevelId == 1){
 		levelValuesArr.push(1);
 	}
-	else if(globalLevelId == 2){		
-		levelValuesArr.push(globalStateId);		
+	else if(globalLevelId == 2){
+		if(stateId == 0){
+			levelValuesArr.push(1);
+			levelValuesArr.push(36);
+		}else{
+			levelValuesArr.push(stateId);		
+		}				
 	}else if(globalLevelId == 3){
 		
 		if(districtId==0){
