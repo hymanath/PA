@@ -378,15 +378,15 @@ $(document).on("click",".referenceCls",function(){
 	$("#headingPostId").html(positionName+" POST");
 	$("#totalHeadingId").html(level+" Level - "+globalDepartmentName+" Department - "+globalBoardName+" Board");
 });
-
+//111
 function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId){
  var jsObj=
 	{				
-		levelId : 4,				
-		levelValue : 299,
-		departmentId : 2,
-		boardId : 1,
-		positionId : 1
+		levelId : levelId,				
+		levelValue : levelVal,
+		departmentId : deptId,
+		boardId : boardId,
+		positionId : positionId
 	}
 	$.ajax({
 		  type:'GET',
