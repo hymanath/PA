@@ -19,14 +19,29 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 	}
 	
 	public List<Object[]> getAppliationsReceievedStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type){
+			Long locationValue,String type,Long searchLevelId){
 		
 		StringBuilder str = new StringBuilder();
 		//Query
 		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model  left join model.position position " +
-				" WHERE model.boardLevel.boardLevelId=:boardLevelId" +
-				" AND model.locationValue = :locationValue ");
+				" WHERE model.boardLevel.boardLevelId=:boardLevelId");
+				//" AND model.locationValue = :locationValue ");
+		
+			if(searchLevelId != null && searchLevelId.longValue()>0L){
+				if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.locationValue = :locationValue ");
+				else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.address.district.districtId =:locationValue ");
+				else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.address.constituency.constituencyId =:locationValue ");
+				else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.address.tehsil.tehsilId =:locationValue ");
+				else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.address.localElectionBody.localElectionBodyId =:locationValue ");
+				else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.address.panchayatId =:locationValue ");
+			}
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
 			str.append(" AND (model.departments.departmentId is null" +
@@ -58,7 +73,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 	
 	
 	public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type){
+			Long locationValue,String type,Long searchLevelId){
 	
 		StringBuilder str = new StringBuilder();
 		
@@ -68,8 +83,23 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" WHERE " +
 				" model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
 				" AND model.boardLevel.boardLevelId=:boardLevelId" +
-				" AND model.locationValue = :locationValue" +
+				//" AND model.locationValue = :locationValue" +
 				" AND model1.applicationStatus.status = :status  ");
+		
+		if(searchLevelId != null && searchLevelId.longValue()>0L){
+			if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.locationValue = :locationValue ");
+			else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.district.districtId =:locationValue ");
+			else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.constituency.constituencyId =:locationValue ");
+			else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.tehsil.tehsilId =:locationValue ");
+			else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.localElectionBody.localElectionBodyId =:locationValue ");
+			else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.panchayatId =:locationValue ");
+		}
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
 			str.append(" AND (model.departments.departmentId is null" +
@@ -101,7 +131,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 	}
 	
 	public List<Object[]> getCasteWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type){
+			Long locationValue,String type,Long searchLevelId){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -110,8 +140,23 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
 				" count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model left join model.position position " +
-				" WHERE model.boardLevel.boardLevelId=:boardLevelId" +
-				" AND model.locationValue = :locationValue" );
+				" WHERE model.boardLevel.boardLevelId=:boardLevelId" );
+				//" AND model.locationValue = :locationValue" );
+		
+				if(searchLevelId != null && searchLevelId.longValue()>0L){
+					if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.locationValue = :locationValue ");
+					else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.address.district.districtId =:locationValue ");
+					else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.address.constituency.constituencyId =:locationValue ");
+					else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.address.tehsil.tehsilId =:locationValue ");
+					else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.address.localElectionBody.localElectionBodyId =:locationValue ");
+					else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.address.panchayatId =:locationValue ");
+				}
 		
 				if(type !=null && type.equalsIgnoreCase("Any")){
 					str.append(" AND (model.departments.departmentId is null" +
@@ -144,7 +189,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 	
 	
 	public List<Object[]> getAgeRangeWiseApplications(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-			Long locationValue,String type){
+			Long locationValue,String type,Long searchLevelId){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -152,8 +197,23 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.tdpCadre.age," +
 				" count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model left join model.position position " +
-				" WHERE model.boardLevel.boardLevelId=:boardLevelId" +
-				" AND model.locationValue = :locationValue" );
+				" WHERE model.boardLevel.boardLevelId=:boardLevelId" );
+				//" AND model.locationValue = :locationValue" );
+					if(searchLevelId != null && searchLevelId.longValue()>0L){
+						if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.locationValue = :locationValue ");
+						else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.address.district.districtId =:locationValue ");
+						else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.address.constituency.constituencyId =:locationValue ");
+						else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.address.tehsil.tehsilId =:locationValue ");
+						else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.address.localElectionBody.localElectionBodyId =:locationValue ");
+						else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.address.panchayatId =:locationValue ");
+					}
+					
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
 			str.append(" AND (model.departments.departmentId is null" +
