@@ -1,25 +1,23 @@
-	function getUserAccessLevelAndValues(){
-	   var jsObj ={userId:globalUserId}
-	   $.ajax({
+	
+	function getUserBasicDetails(){
+		
+		var jsObj ={userId:globalUserId}
+		$.ajax({
 			type : 'GET',
-			url : 'getUserAccessLevelAndValuesAction.action',
+			url : 'getUserBasicDetailsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			
-		});
-   }
-    function getUserTypeByUserId(){
-	   var jsObj ={userId:globalUserId}
-	   $.ajax({
-			type : 'GET',
-			url : 'getUserTypeByUserIdAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			
+			if(result != null){
+				globalUserTypeId = result.userTypeId;
+				globalUserAccessLevelId = result.userAccessLevelId;
+				globalUserAccessLevelValues = result.userAccessLevelValuesList;
+				
+				onLoadCalls();
+			}
 		});
 	}
+	
 	function getMainCommitteeCountDetails(){
 		
 		var committeeId = 1;
