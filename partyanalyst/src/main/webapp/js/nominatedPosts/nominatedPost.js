@@ -917,9 +917,13 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#deptBoardId"+num).empty();
-	   $("#deptBoardPostnId"+num).empty();
-   $("#depmtsId"+num).empty();
+	  
+	   $("#deptBoardId"+num).html('');
+	   $("#deptBoardId"+num).trigger("chosen:updated")
+	   $("#deptBoardPostnId"+num).html('');
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
+       $("#depmtsId"+num).html('');
+	   $("#depmtsId"+num).trigger("chosen:updated")
     
    if(result != null && result.length >0){
 		$("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
