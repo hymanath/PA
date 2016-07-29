@@ -260,14 +260,14 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		return query.list();		
 	}
 	
-	public List<NominatedPost> getnominatedPostDetailsBySearchCriteria(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long searchLevelId,Long searchLevelValue){
+	public List<NominatedPost> getNominatedPostDetailsBySearchCriteria(Long departmentId,Long boardId,List<Long> positionIds,Long boardLevelId,List<Long> searchLevelValue){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model from NominatedPost model where model.nominatedPostMember.boardLevelId=:boardLevelId and " +
 				" model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId and  " +
 				"  model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and  " +
-				"  model.nominatedPostMember.nominatedPostPosition.positionId = :positionId ");
+				"  model.nominatedPostMember.nominatedPostPosition.positionId in  (:positionIds) ");
 		
-		if(searchLevelId != null && searchLevelId.longValue()>0L){
+		/*if(searchLevelId != null && searchLevelId.longValue()>0L){
 			if(searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L)
 				queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
 			else if(searchLevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
@@ -280,15 +280,21 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
 			else if(searchLevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
 				queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+		}*/
+				
+		if(searchLevelValue !=null && searchLevelValue.size()>0){
+			queryStr.append(" and model.nominatedPostMember.locationValue in (:searchLevelValue) ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		query.setParameter("departmentId", departmentId);
 		query.setParameter("boardId", boardId);
-		query.setParameter("positionId", positionId);
+		query.setParameterList("positionIds", positionIds);
 		query.setParameter("boardLevelId", boardLevelId);
-		query.setParameter("searchLevelValue", searchLevelValue);
+		if(searchLevelValue !=null && searchLevelValue.size()>0){
+			query.setParameterList("searchLevelValue", searchLevelValue);
+		}
 
 		return query.list();
 	}
