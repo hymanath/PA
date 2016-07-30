@@ -2794,7 +2794,8 @@
 		   <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
 		 
 		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
-		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />		
+		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />
+		    <property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO" />		
 		      
     </bean>
 	
