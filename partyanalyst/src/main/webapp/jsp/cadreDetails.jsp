@@ -36,6 +36,18 @@
 	
 						<!-- End -->
 <style type="text/css">
+.mouse-over1
+    {
+        
+       
+        color:#fff;
+        background:rgba(0,0,0,0.5);
+        padding:10px;
+        font-size:22px;
+		margin-top:20px;
+    }
+
+
 .font-12{
 	font-size:12px !important;
 }
@@ -1393,7 +1405,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 		<!-- Model for Report End-->  
 		<!-- Model for pdf Report start swadhin-->
 		<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
-			<div class="modal-dialog" style="width:60%;">      
+			<div class="modal-dialog" style="width:80%;">      
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -1408,6 +1420,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div><!— /.modal-dialog —>
 		</div><!— /.modal —>
 		<!-- Model for pdf Report End-->
+
 <div class="modal fade" id="notesModalDivId" style="display:none;">
 			  <div class="modal-dialog" style="width:80%">
 				<div class="modal-content">
@@ -2470,6 +2483,7 @@ function buildReport()
 {
 	var str = '';
 	var flag = false;
+
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 	flag = true;
 	str +='<table id="reportTableId" class="table table-bordered">';
@@ -2482,9 +2496,9 @@ function buildReport()
 			<c:forEach items="${cadreReportVOList}" var="cadreReportVO" varStatus="loop1">
 				<c:forEach items="${cadreReportVO.reportVOList}" var="ReportVO" varStatus="loop2">
 					str +='<tr>';     
-					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls" >${ReportVO.reportType}</span></td>'; 
-					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls" id="showPdfId" >${ReportVO.status}</span></td>'; 
-					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls" >${ReportVO.insertedTime}</span></td>';  
+					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;" class="showPdfCls" >${ReportVO.reportType}</span></td>'; 
+					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;"  class="showPdfCls" id="showPdfId" >${ReportVO.status}</span></td>'; 
+					str +='<td><span filePath="${ReportVO.reportPath}" style="cursor:pointer;"  class="showPdfCls" >${ReportVO.insertedTime}</span></td>';  
 					str +='</tr>';    
 				</c:forEach>         
 			</c:forEach>
@@ -2568,12 +2582,30 @@ function buildReport()
 	
 	
 }
+function openPdf(aravind){	
+	window.open(aravind);
+}
+
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $("#showPdfId").attr("filePath");
-	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
-	str += '</iframe>';
-	$("#pdfReportDetailsId").html(str);
+
+	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+		$("#pdfModelId").modal("hide");
+		window.open('http://mytdp.com/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+	
+		/*setTimeout(function(){
+		$(w.document).find('html').append('<head><title>your title</title></head>');}, 2000); */
+		//w.onload = function() { this.document.title = "your new title"; }
+		
+
+	}else{
+		$("#pdfModelId").modal("show");
+		str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+		str += '</iframe>';
+		$("#pdfReportDetailsId").html(str);
+	}
+	
 }); 
 
 $(document).on('click','.showPdfCls1',function(){  
@@ -2581,9 +2613,16 @@ $(document).on('click','.showPdfCls1',function(){
 	var str = '';
 	
 	var filePath = $(this).attr("filePath");
-	str += '<iframe src="http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
-	str += '</iframe>';
-	$("#pdfReportDetailsId").html(str);
+	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+		$("#pdfModelId").modal("hide");
+		window.open('http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+	}else{
+		$("#pdfModelId").modal("show");
+		str += '<iframe src="http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
+		str += '</iframe>';
+		$("#pdfReportDetailsId").html(str);
+	}
+	
 });  
 
 </script>
