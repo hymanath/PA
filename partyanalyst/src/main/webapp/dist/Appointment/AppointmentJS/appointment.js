@@ -3647,14 +3647,14 @@ function getPanchayatsForReferPopup(){
 							if(result[i].actionId !=null && result[i].actionId == 1){
 								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 								if(result[i].comments !=null && result[i].comments.length>0){
-									str+='<p>Appointment Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
+									str+='<p>Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
 								}
 							}else if(result[i].actionId !=null && result[i].actionId == 2){
-								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';							
+								str+='<p>Appointment Comment : <span class="text-danger"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';							
 							}else{
 								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 								if(result[i].comments !=null && result[i].comments.length>0){
-									str+='<p>Appointment Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
+									str+='<p>Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
 								}
 							}
 						}
@@ -3919,7 +3919,7 @@ function getPanchayatsForReferPopup(){
 									str+='<p>Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
 								}
 							}else if(result[i].actionId !=null && result[i].actionId == 2){
-								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';							
+								str+='<p>Appointment Comment : <span class="text-danger"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';							
 							}else{
 								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 								if(result[i].comments !=null && result[i].comments.length>0){
