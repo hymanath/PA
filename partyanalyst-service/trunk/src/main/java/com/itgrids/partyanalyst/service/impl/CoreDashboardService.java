@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -342,7 +343,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 	  * @param  String secondMonthString
 	  * @return List<CommitteeVO>
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-	  *  This Service Method is used to get the comparative level wise counts by the given basiccommittee ids and for the given dates. 
+	  *   This Service Method is used to get the basic committee  wise comparative counts  for given months. 
 	  *  @since 30-JULY-2016
 	  */
 	public List<CommitteeVO> getBasicComparativeWiseCommitteesCounts(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String firstMonthString,String secondMonthString){
@@ -426,6 +427,202 @@ public class CoreDashboardService implements ICoreDashboardService{
 				}
 			}
 		}
+	}
+	
+	/**
+	  * @param  Long userAccessLevelId
+	  * @param  List<Long> userAccessLevelValues
+	  * @param  String state
+	  * @param  List<Long> basicCommitteeIds
+	  * @param  String firstMonthString
+	  * @param  String secondMonthString
+	  * @return List<CommitteeVO>
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the committee level wise comparative counts for basic commitees for given months. 
+	  *  @since 30-JULY-2016
+	  */
+	public List<CommitteeVO> levelWiseComparativeCountsByBasicCommittees(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String firstMonthString,String secondMonthString){
+		
+		LOG.info(" entered in to levelWiseComparativeCountsByBasicCommittees() ");
+		List<CommitteeVO> finalList = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM");
+		
+		try{
+			
+			 String firstSetMonthName = null;
+			 int firstSetMonth = 0;
+			 int firstSetYear = 0;
+		     if(firstMonthString != null && !firstMonthString.isEmpty()){
+		    	 firstSetMonthName = sdf1.format(sdf.parse(firstMonthString));
+		    	 String[] array = firstMonthString.split("/");
+		    	 firstSetMonth = Integer.valueOf(array[0]);
+		    	 firstSetYear  = Integer.valueOf(array[1]);
+		     }
+		     
+		     String secondSetMonthName = null;
+		     int secondSetMonth = 0;
+			 int secondSetYear = 0;
+		     if(secondMonthString != null && !secondMonthString.isEmpty()){
+		    	 secondSetMonthName = sdf1.format(sdf.parse(secondMonthString));
+		    	 String[] array = secondMonthString.split("/");
+		    	 secondSetMonth = Integer.valueOf(array[0]);
+		    	 secondSetYear  = Integer.valueOf(array[1]);
+		     }
+		     
+		     Map<Long,CommitteeVO> basicCommitteeMap = new LinkedHashMap<Long,CommitteeVO>(0);
+		     
+		     List<Object[]> firstSetCompletedList = null;
+		     List<Object[]> secondSetCompletedList = null;
+		     
+		     if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue()){
+		    	 List<Long> districtAccessRequiredLevelIds = Arrays.asList(IConstants.DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS);
+		    	 setCommitteesComparativeInitialisationlogic(basicCommitteeMap,basicCommitteeIds,districtAccessRequiredLevelIds,firstSetMonthName,secondSetMonthName);
+		    	 firstSetCompletedList =  tdpCommitteeDAO.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		    	 secondSetCompletedList = tdpCommitteeDAO.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,secondSetMonth,secondSetYear);
+		     }
+		     else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
+		    	 List<Long> assemblyConstIds = null;
+		    	 List<Long> ParOrConstAccessRequiredLevelIds = Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS);
+		    	 if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
+		    		 assemblyConstIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(userAccessLevelValues);
+		    	 }else{
+		    		 assemblyConstIds =  userAccessLevelValues;
+		    	 }
+		    	 setCommitteesComparativeInitialisationlogic(basicCommitteeMap,basicCommitteeIds,ParOrConstAccessRequiredLevelIds,firstSetMonthName,secondSetMonthName);
+		    	 firstSetCompletedList  = tdpCommitteeDAO.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		    	 secondSetCompletedList = tdpCommitteeDAO.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		    
+		     }
+		     else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
+		    	 List<Long> mandalAccessRequiredLevelIds = Arrays.asList(IConstants.MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS); 
+		    	 setCommitteesComparativeInitialisationlogic(basicCommitteeMap,basicCommitteeIds,mandalAccessRequiredLevelIds,firstSetMonthName,secondSetMonthName);
+		    	 firstSetCompletedList  = tdpCommitteeDAO.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		    	 secondSetCompletedList = tdpCommitteeDAO.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		     }
+		     
+		     setCommitteesComparativeCounts(firstSetCompletedList,basicCommitteeMap,"set1");
+		     setCommitteesComparativeCounts(secondSetCompletedList,basicCommitteeMap,"set2");
+		     
+		     finalList = getFinalCommitteesList(basicCommitteeMap);
+		}catch(Exception e){
+			LOG.error("exception occurred in levelWiseComparativeCountsByBasicCommittees", e);
+		}
+		return finalList;
+	}
+	
+	public void setCommitteesComparativeInitialisationlogic(Map<Long,CommitteeVO> basicCommitteeMap,List<Long> basicCommitteeIds,List<Long> requiredCommitteeLevelIds,String firstSetMonthName,String secondSetMonthName){
+		
+		try{
+			
+			Map<Long,String> committeeLevelNameMap = getAllCommitteeLevels();
+			Map<Long,String> committeeNameMap      = getCommitteesNames();
+			
+			if( basicCommitteeIds != null && basicCommitteeIds.size() > 0){
+				for( Long basicCommitteeId : basicCommitteeIds){
+					
+					CommitteeVO basicCommitteeVO = new CommitteeVO();
+					basicCommitteeVO.setId(basicCommitteeId);
+					basicCommitteeVO.setName(committeeNameMap.get(basicCommitteeId));
+			        
+					//committee levels
+					if( requiredCommitteeLevelIds != null && requiredCommitteeLevelIds.size() >0){
+						Map<Long,CommitteeVO> committeeLevelsMap = new LinkedHashMap<Long, CommitteeVO>();
+						
+						for( Long reqLevelId :requiredCommitteeLevelIds ){
+							if(reqLevelId != 7 && reqLevelId != 9 && reqLevelId != 8 ){
+								
+			    				 CommitteeVO committeeLevelVO = new CommitteeVO();
+			    				 committeeLevelVO.setId(reqLevelId);
+			    				 committeeLevelVO.setName(committeeLevelNameMap.get(reqLevelId));
+			    				 
+			    				 //months
+			    				 Map<String,CommitteeVO> monthsMap = new LinkedHashMap<String, CommitteeVO>();
+			    				 for( int i=1; i<=2 ; i++){
+			    					 CommitteeVO monthVO = new CommitteeVO();
+			    			    	 monthVO.setType("set"+i);
+			    			    	 if(i==1){
+			    			    		 monthVO.setName(firstSetMonthName);
+			    			    	 }else{
+			    			    		 monthVO.setName(secondSetMonthName); 
+			    			    	 }
+			    			    	 monthsMap.put(monthVO.getType(),monthVO);
+			    				 }
+			    				 
+			    				 committeeLevelVO.setSubMap(monthsMap);
+			    				 committeeLevelsMap.put(reqLevelId, committeeLevelVO);
+			    			 }
+						}
+						
+						basicCommitteeVO.setSubMap(committeeLevelsMap);
+					}
+					basicCommitteeMap.put(basicCommitteeVO.getId(), basicCommitteeVO);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("exception occurred in setCommitteesComparativeInitialisationlogic ", e);
+		}
+	}
+	
+	
+	public void setCommitteesComparativeCounts(List<Object[]> list,Map<Long,CommitteeVO> basicCommitteeMap,String setType){
+		
+		try{
+			
+			if(list != null && list .size() > 0)
+			{
+	    		 for( Object[] obj : list)
+	    		 { 
+	    			 if( obj[2] != null)
+	    			 {
+	    				 CommitteeVO basicCommitteeVO  =  basicCommitteeMap.get((Long)obj[2]);
+	    				 if(basicCommitteeVO != null && obj[4] != null && basicCommitteeVO.getSubMap()!=null)
+	    				 { 
+	    					 CommitteeVO committeeLevelVO = null;
+	    					 if( ((Long)obj[4]).longValue() == 7 || ((Long)obj[4]).longValue() == 9){ // Mandal/town/division
+	    						 committeeLevelVO = basicCommitteeVO.getSubMap().get(5l);
+	    					 }else if( ((Long)obj[4]).longValue() == 8 ){ // village/ward
+	    						 committeeLevelVO = basicCommitteeVO.getSubMap().get(6l);
+	    					 }else{
+	    						 committeeLevelVO = basicCommitteeVO.getSubMap().get(obj[4]);
+	    					 }
+	    					 
+	    					 if(committeeLevelVO != null && committeeLevelVO.getSubMap() != null)
+	    					 {
+	    						 CommitteeVO  monthVO = committeeLevelVO.getSubMap().get(setType);
+	    						 if( monthVO != null){
+	    							 monthVO.setCompletedCount(monthVO.getCompletedCount() + (Long)obj[6] ); 
+	    						 }	 
+	    					 }
+	    				 }
+	    			}
+	    		}
+	    	}
+	    	
+		}catch(Exception e){
+			LOG.error("exception occurred in setCommitteeStatusCount()", e);
+		}
+	}
+	public List<CommitteeVO>  getFinalCommitteesList(Map<Long,CommitteeVO> basicCommitteeMap){
+		
+		List<CommitteeVO> finalList = new ArrayList<CommitteeVO>();
+		
+		if(basicCommitteeMap != null && basicCommitteeMap.size() > 0){
+			for (Map.Entry<Long, CommitteeVO> basicCommitteeEntry : basicCommitteeMap.entrySet()){
+				
+				if(basicCommitteeEntry.getValue()!=null && basicCommitteeEntry.getValue().getSubMap()!=null){
+					for(Entry<?, CommitteeVO> committeeLevelEntry :    basicCommitteeEntry.getValue().getSubMap().entrySet() ){
+						committeeLevelEntry.getValue().setSubList(new ArrayList<CommitteeVO>(committeeLevelEntry.getValue().getSubMap().values()));
+						committeeLevelEntry.getValue().getSubMap().clear();
+					}
+					basicCommitteeEntry.getValue().setSubList(new ArrayList<CommitteeVO>(basicCommitteeEntry.getValue().getSubMap().values()));
+					basicCommitteeEntry.getValue().getSubMap().clear();
+				}
+			}
+			finalList.addAll(basicCommitteeMap.values());
+		}
+		return finalList;
 	}
 	
 }

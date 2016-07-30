@@ -14,7 +14,7 @@ public class CommitteeVO implements Serializable {
 	private Long startedCount = 0l;
 	private Long yetToStartCount = 0l;
 	
-	private Map<Long,CommitteeVO> subMap;
+	private Map<?,CommitteeVO> subMap;
 	private List<CommitteeVO> subList;
 	
 	public Long getId() {
@@ -47,10 +47,10 @@ public class CommitteeVO implements Serializable {
 	public void setYetToStartCount(Long yetToStartCount) {
 		this.yetToStartCount = yetToStartCount;
 	}
-	public Map<Long, CommitteeVO> getSubMap() {
+	public Map<?, CommitteeVO> getSubMap() {
 		return subMap;
 	}
-	public void setSubMap(Map<Long, CommitteeVO> subMap) {
+	public void setSubMap(Map<?, CommitteeVO> subMap) {
 		this.subMap = subMap;
 	}
 	public List<CommitteeVO> getSubList() {
