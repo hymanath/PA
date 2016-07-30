@@ -411,7 +411,7 @@ function getCommitteeLocations(){
 					 
 					    for(var i=0;i<result.hamletsOfTownship.length;i++){
 						  str+='<tr>';
-						  str+='<td><img width="32"  height="32" src="http://www.mytdp.com/images/cadre_images/'+result.hamletsOfTownship[i].url+'" onerror="setDefaultImage(this);"/></td>';
+						  str+='<td><img width="32"  height="32" src="https://www.mytdp.com/images/cadre_images/'+result.hamletsOfTownship[i].url+'" onerror="setDefaultImage(this);"/></td>';
 
 						  //str+='<td>'+result.hamletsOfTownship[i].value+'</td>';
 						  str+='<td id="CommMember'+i+'" data-attr="'+result.hamletsOfTownship[i].orderId+'" data-attr-tdpCadreId="'+result.hamletsOfTownship[i].mainAccountId+'" >'+result.hamletsOfTownship[i].name+'</td>';
@@ -732,7 +732,7 @@ function getCommitteeLocations(){
 				   
 				    for(var j in result[i].locationsList)
 					{					
-						 str+='<td ><img data-attr-tdpCommitteememberId="'+result[i].locationsList[j].tdpCommitteeMemberId+'" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
+						 str+='<td ><img data-attr-tdpCommitteememberId="'+result[i].locationsList[j].tdpCommitteeMemberId+'" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="https://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
 						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].position+'</td>';
 						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].memberShipNo+'</td>';
 						 str+='<td data-attr-currentRoleId="'+result[i].locationsList[j].currentRoleId+'" style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].currentRole+'</td>';
