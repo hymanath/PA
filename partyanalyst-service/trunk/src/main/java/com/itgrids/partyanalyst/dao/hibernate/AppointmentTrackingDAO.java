@@ -19,7 +19,8 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 	{
 		Query query = getSession().createQuery("select model.appointmentStatus.appointmentStatusId,"
 				+ "model.appointmentStatus.status,model.user.userId,model.user.firstName,model.user.lastName,model.remarks,model.actionTime,"
-				+ "appointmentComment.appointmentCommentId,appointmentComment.comment,fromAppointmentStatus.appointmentStatusId,fromAppointmentStatus.status"
+				+ "appointmentComment.appointmentCommentId,appointmentComment.comment,fromAppointmentStatus.appointmentStatusId,fromAppointmentStatus.status," +
+				" model.appointmentAction.appointmentActionId,model.appointmentAction.action "
 				+ " from AppointmentTracking model left join model.appointmentComment appointmentComment " +
 				" left join model.fromAppointmentStatus fromAppointmentStatus"
 				+ " where model.appointment.appointmentId = :appointmentId"

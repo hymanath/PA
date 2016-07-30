@@ -18,6 +18,22 @@ public class StatusTrackingVO {
 	private Long fromStatusId;
 	private String fromStatus;
 	
+	private Long actionId;
+	private String actionStatus;
+	
+	
+	public Long getActionId() {
+		return actionId;
+	}
+	public void setActionId(Long actionId) {
+		this.actionId = actionId;
+	}
+	public String getActionStatus() {
+		return actionStatus;
+	}
+	public void setActionStatus(String actionStatus) {
+		this.actionStatus = actionStatus;
+	}
 	public List<String> getCommentsList() {
 		return commentsList;
 	}
