@@ -225,19 +225,20 @@
 	var globalUserAccessLevelId;
 	var globalUserAccessLevelValues = [];
 	
+	 
 	getUserBasicDetails();
 	function onLoadCalls(){
 		getMainCommitteeCountDetails();
 		getCommitteesWiseLevelsBasedDetails();
-		blockHeights(); 
+		getBasicComparativeWiseCommitteesCounts();
 	}
 	
 	$(document).ready(function(){
 		
 		//Main header remove
 		$(".eventsheader").hide();
+		blockHeights();
 		buildBasicgraphs();
-	
 	});
 	
 	 

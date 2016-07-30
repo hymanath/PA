@@ -10,8 +10,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.itgrids.partyanalyst.dto.CommitteeVO;
+
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
+import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
@@ -156,6 +157,41 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteesWiseLevelsBasedDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBasicComparativeWiseCommitteesCounts(){
+		try{
+			LOG.info("Entered into getBasicComparativeWiseCommitteesCounts()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String firstMonthString = jObj.getString("firstMonthString");
+			String secondMonthString = jObj.getString("secondMonthString");
+			
+			committeeVOList = coreDashboardService.getBasicComparativeWiseCommitteesCounts(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstMonthString,secondMonthString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getBasicComparativeWiseCommitteesCounts() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
