@@ -7,6 +7,7 @@ import java.util.Map;
 public class CommitteeVO implements Serializable {
 	
 	private Long id;
+	private String type;
 	private String name;
 	
 	private Long completedCount = 0l;
@@ -58,7 +59,11 @@ public class CommitteeVO implements Serializable {
 	public void setSubList(List<CommitteeVO> subList) {
 		this.subList = subList;
 	}
-	
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }
