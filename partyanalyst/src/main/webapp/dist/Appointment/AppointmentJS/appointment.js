@@ -3633,7 +3633,6 @@ function getPanchayatsForReferPopup(){
 		
 	}
 	function buildAppointCommentsForTracking(result,aptName){
-		
 		var str='';
 		str+='<h4>'+aptName+' Appointment Status Tracking </h4>';
 		if(result == null || result.length == 0)
@@ -3644,15 +3643,21 @@ function getPanchayatsForReferPopup(){
 						str+='<div class="arrow_box">';
 						if(result[i].id == 1)
 							str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
-						else
-							str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
+						else if(result[i].id > 1){
+							if(result[i].actionId !=null && result[i].actionId == 1){
+								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+							}else if(result[i].actionId !=null && result[i].actionId == 2){
+								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+							}
+						}
+							
+						/* if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
 								str+='<u style="font-size:15px;">Comments</u>';
 							for(var j in result[i].commentsList){
 					
 								str+='<p>'+result[i].commentsList[j]+'</p>';	
 							}
-						}	
+						} */	
 				
 						str+='</div>';
 					str+='</li>';	
@@ -3898,18 +3903,22 @@ function getPanchayatsForReferPopup(){
 			str+='<li>';
 				str+='<div class="arrow_box_left">';
 				if(result[i].id == 1)
-				str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
-					else
-					str+='<p>Appointment status changed to <span class="" style="color:'+color+'"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-					if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0)
-					{
-						str+='<u style="font-size:15px;">Comments</u>';
-						for(var j in result[i].commentsList)
-						{
-						
-						str+='<p>'+result[i].commentsList[j]+'</p>';	
+					str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+					else if(result[i].id > 1){
+							if(result[i].actionId !=null && result[i].actionId == 1){
+								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+							}else if(result[i].actionId !=null && result[i].actionId == 2){
+								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+							}
 						}
-					}
+							
+						/* if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
+								str+='<u style="font-size:15px;">Comments</u>';
+							for(var j in result[i].commentsList){
+					
+								str+='<p>'+result[i].commentsList[j]+'</p>';	
+							}
+						} */
 					
 				str+='</div>';
 			str+='</li>';	
