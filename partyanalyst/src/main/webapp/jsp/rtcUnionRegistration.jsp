@@ -126,7 +126,7 @@
 	</style>
 	<%!	
 	String randomNumber = getRandomNumber();
-	String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+randomNumber, "1", "http://www.mytdp.com/activitiesDashboard.action", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
+	String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+randomNumber, "1", "https://www.mytdp.com/activitiesDashboard.action", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
 	String getChecksum(String MerchantId, String OrderId, String Amount, String redirectUrl, String WorkingKey) {
 		String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
 
@@ -962,7 +962,7 @@
 			str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';
 			str+='<input type="hidden" name="Amount" value="1">';
 			str+='<input type="hidden" name="Order_Id" value="CADRE_2016<%=randomNumber%>">';
-			str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/activitiesDashboard.action">';
+			str+='<input type="hidden" name="Redirect_Url" value="https://www.mytdp.com/activitiesDashboard.action">';
 			str+='<input type="hidden" name="Checksum" value="<%=checksumValue%>">';
 			str+='<input type="hidden" name="billing_cust_name" value="">';
 			str+='<input type="hidden" name="billing_cust_address" value="">';

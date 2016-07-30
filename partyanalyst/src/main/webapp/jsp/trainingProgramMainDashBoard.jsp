@@ -826,7 +826,7 @@ function getSurveyDetails()
 	
 	$.ajax({
 		//url: "http://localhost:8080/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
-		  url: "http://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
+		  url: "https://mytdp.com/Survey/WebService/getTrainingSurveyDetails/"+programId+"/"+campId+"/"+batchId+""
 	}).then(function(result) {
 		if(result != null && result.length > 0){
 			buildSurveyDetails(result);
