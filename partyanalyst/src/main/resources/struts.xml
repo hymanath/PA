@@ -13192,5 +13192,35 @@
 				<param name="root">committeeVOList</param>
 		</result>
 	</action>
+	<action name="getCastGroupListAction" class="nominatedPostProfileAction" method="getCastGroupList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getApplicationStatusListAction" class="nominatedPostProfileAction" method="getApplicationStatusList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getPositionListAction" class="nominatedPostProfileAction" method="getPositionList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getLocationLevelListAction" class="nominatedPostProfileAction" method="getLocationLevelList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getDepartmentListAction" class="nominatedPostProfileAction" method="getDepartmentList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
+	<action name="getBoardListAction" class="nominatedPostProfileAction" method="getBoardList">
+		<result type="json" name="success">
+			<param name="root">idAndNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

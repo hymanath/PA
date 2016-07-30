@@ -22,10 +22,11 @@ import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
-import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -69,6 +70,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long positionId;
 	private Long searchLevelId;
 	private Long searchLevelValue;
+	private List<IdAndNameVO> idAndNameVOList;
 	
 	public Long getSearchLevelId() {
 		return searchLevelId;
@@ -263,8 +265,12 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	{
 		return Action.SUCCESS;
 	}
-	
-	
+	public List<IdAndNameVO> getIdAndNameVOList() {
+		return idAndNameVOList;
+	}
+	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
+		this.idAndNameVOList = idAndNameVOList;
+	}
 	public List<NominatedPostVO> getCandidatesList() {
 		return candidatesList;
 	}
@@ -964,7 +970,7 @@ return Action.SUCCESS;
 	
 	public String updateFinalyzationStatusForPost(){
 		try{
-			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
 			if(regVO==null){
 				return "input";
 			}
@@ -997,4 +1003,66 @@ return Action.SUCCESS;
 		
 		return Action.SUCCESS;
 	}
+	public String getCastGroupList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getCastGroupList();  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getApplicationStatusList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getApplicationStatusList();  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getPositionList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getPositionList();  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getLocationLevelList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getLocationLevelList();  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getDepartmentList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getDepartmentList();  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getBoardList(){
+		try{
+			idAndNameVOList = nominatedPostMainDashboardService.getBoardList();    
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
 }
