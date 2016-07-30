@@ -646,7 +646,7 @@ function buildFeedbackDetailsOfCadre(result,constId,dates,title){
 	
 	$(document).on("click",".redirectToCadrePageCls",function(){
 		var cadreId = $(this).attr("attr_cadreId");
-		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
+		window.open("https://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
 	});
 	
 	$( ".cadreDetailsExcelCls" ).click(function() {

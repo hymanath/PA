@@ -1559,7 +1559,7 @@ function getMandalVillageDetails(locationLevel){
 					var str='';
 					for(var i in result.docsList){
 						str+='<div style="border-bottom:1px dashed; padding:5px;">';
-						str+='<a target="_tab" href="http://mytdp.com/DocFiles/'+result.docsList[i].path+'">'+result.docsList[i].name+'</a>';
+						str+='<a target="_tab" href="https://mytdp.com/DocFiles/'+result.docsList[i].path+'">'+result.docsList[i].name+'</a>';
 						str+='</div>';
 					}
 					$("#modelBody").html(str);
