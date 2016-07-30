@@ -3341,6 +3341,7 @@
 		<property name="nominatedPostDAO" ref="nominatedPostDAO"></property>
 		<property name="nominatedPostStatusDAO" ref="nominatedPostStatusDAO"></property>
 		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
 		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO"></property>
 		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>  
