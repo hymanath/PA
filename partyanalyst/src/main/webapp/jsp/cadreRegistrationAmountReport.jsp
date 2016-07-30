@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadre Registration Amount Report</title>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 <script type="text/javascript" src="js/exportexcel.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
