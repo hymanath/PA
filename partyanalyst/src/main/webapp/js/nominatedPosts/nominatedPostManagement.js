@@ -175,7 +175,8 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	var jsObj={
 		levelId:levelId,
 		levelValues:levelValues,
-		statusType:globalStatus 
+		statusType:globalStatus,
+		task:""
 	}
 	$.ajax({
           type:'POST',
@@ -198,7 +199,8 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
 		levelValues:levelValues,
 		depts:depts,
 		boards:boards,
-		statusType:globalStatus
+		statusType:globalStatus,
+		task:""
 	}
 	$.ajax({
           type:'GET',
@@ -323,8 +325,12 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 		}
 	}
 	
+	if(globalStatus !=null &&  globalStatus.trim().length>0 && globalStatus == "Open"){
+		getDepartmentWiseBoardAndPositionDetailsForAll(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
+	}else{
+		getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
+	}
 	
-	getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
 });
 
 function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
@@ -463,10 +469,13 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 		}		
 		str+='</tbody>';
 		str+='</table>';
-		str+='<div class="pad_15">';
-			str+='<button class="btn btn-success moveToFinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
-			str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
-		str+='</div>';
+		if(globalStatus !=null && globalStatus.trim().length>0 && globalStatus.trim() != "Open"){
+			str+='<div class="pad_15">';
+				str+='<button class="btn btn-success moveToFinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
+				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
+			str+='</div>';
+		}
+		
 		$("#"+bodyId).html(str);
 	
 	}	
@@ -657,5 +666,58 @@ $(document).on("click","#locationWiseDataId",function(){
 			levelValuesArr.push(mandalTownDivId);
 		}
 	}
-	getAllDeptsAndBoardsByLevel(globalLevelId,levelValuesArr);
+	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Open"){
+		getAllDeptsAndBoardsByLevelForAll(globalLevelId,levelValuesArr);
+	}else{
+		getAllDeptsAndBoardsByLevel(globalLevelId,levelValuesArr);
+	}
+	
+	
 });
+
+function getAllDeptsAndBoardsByLevelForAll(levelId,levelValues){
+
+	$("#departmentsBuildId").html("");
+	$("#departmentsBuildSearchId").show();
+	var jsObj={
+		levelId:levelId,
+		levelValues:levelValues,
+		statusType:globalStatus,
+		task:"totalOpen"
+	}
+	$.ajax({
+          type:'POST',
+          url: 'getAllDeptsAndBoardsByLevelAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#departmentsBuildSearchId").hide();
+	   if(result != null && result.length > 0){
+		   buildAllDeptsAndBoardsByLevel(result,levelId,levelValues);
+	   }
+   });
+}
+function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,depts,boards,bodyId,searchId){
+	
+	$("#"+searchId).show();
+	
+	var jsObj={
+		levelId:levelId,
+		levelValues:levelValues,
+		depts:depts,
+		boards:boards,
+		statusType:globalStatus,
+		task:"totalOpen"
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getDepartmentWiseBoardAndPositionDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#"+searchId).hide();
+	   if(result != null && result.length > 0){
+		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards);
+	   }
+   });
+}
