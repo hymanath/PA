@@ -1035,6 +1035,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
+    
     public List<Object[]> getBasicComparativeWiseCommitteesCounts(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,List<Long> basicCommitteeIds,int month,int year){
 		StringBuilder str = new StringBuilder();
         
@@ -1074,6 +1075,60 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 
 		Query query = getSession().createQuery(str.toString());
 		
+		if(userAccessLevelId != IConstants.STATE_LEVEl_ACCESS_ID){
+			query.setParameterList("committeeLevelValueIds", committeeLevelValueIds);
+		}
+		query.setParameterList("basicCommitteeIds", basicCommitteeIds);
+		if( month > 0 && year > 0){
+			query.setParameter("month",month);
+			query.setParameter("year",year);
+		}
+		if(state!= null && !state.isEmpty() ){
+			query.setParameter("state",state);
+		}
+		return query.list();
+	}
+    public List<Object[]> levelWiseComparativeCountsByBasicCommittees(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,int month,int year){
+		StringBuilder str = new StringBuilder();
+        
+		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
+				"           model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name," +//3
+				   "        model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel," +//5
+				   "        count(distinct model.tdpCommitteeId)" +//6
+				  "  from   TdpCommittee model " +
+				  "  where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:userAccessRequiredCommitteeLevelIds) and " +
+				  "         model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+		if(userAccessLevelId == IConstants.STATE_LEVEl_ACCESS_ID){
+			if(committeeLevelValueIds.contains(1l) && committeeLevelValueIds.contains(36l)){
+				str.append(" and model.state in ('AP','TS') ");
+			}else if(committeeLevelValueIds.contains(1l)){
+				str.append(" and model.state = 'AP' ");
+			}else if(committeeLevelValueIds.contains(36l)){
+				str.append(" and model.state = 'TS' ");
+			}
+		}
+		if(userAccessLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			str.append(" and model.userAddress.district.districtId in (:committeeLevelValueIds) ");
+		}else if(userAccessLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID || userAccessLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			str.append(" and model.userAddress.constituency.constituencyId in (:committeeLevelValueIds) ");
+		}else if(userAccessLevelId == IConstants.MANDAL_LEVEl_ID){
+			str.append(" and model.userAddress.tehsil.tehsilId in (:committeeLevelValueIds) ");
+		}
+		
+		str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		if( month > 0 && year > 0){
+			str.append( " and month(model.completedDate)= :month and year(model.completedDate) = :year" );
+		}
+			
+		if(state!= null && !state.isEmpty() ){
+			str.append(" and model.state =:state ");
+		}
+		str.append(" group by model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpCommitteeLevel.tdpCommitteeLevelId" +
+				   " order by model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpCommitteeLevel.tdpCommitteeLevelId");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameterList("userAccessRequiredCommitteeLevelIds", userAccessRequiredCommitteeLevelIds);
 		if(userAccessLevelId != IConstants.STATE_LEVEl_ACCESS_ID){
 			query.setParameterList("committeeLevelValueIds", committeeLevelValueIds);
 		}
