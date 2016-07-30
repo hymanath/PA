@@ -2057,3 +2057,7 @@ var isSameCheckBoxClicked=0;
         isAlreadyChecked = true;	   
    }
  });
+
+ $(document).on('click','.cadreCls',function(){
+		$("#showAndHideDivId").show();
+	});
