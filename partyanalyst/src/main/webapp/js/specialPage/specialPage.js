@@ -2687,7 +2687,7 @@ function showFirstFourNewsRecords(results)
 	document.getElementById("showNewsDiv").innerHTML=str;
 
 	var lb = document.getElementById("facebookCommentsInNewsDiv");
-	lb.innerHTML='<div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId='+specialPageId+'&contentId='+results.contentId+'" data-num-posts="5" data-width="500"></div>';
+	lb.innerHTML='<div class="fb-comments" data-href="https://www.partyanalyst.com/specialPageAction.action?specialPageId='+specialPageId+'&contentId='+results.contentId+'" data-num-posts="5" data-width="500"></div>';
 	FB.XFBML.parse(lb);
  
  }
@@ -3285,8 +3285,8 @@ function buildVideoGallaryDiv(result)
 	var str = '';
 
 	str += '<DIV>';
-	str += '<a rel="#voverlay" href="http://www.youtube.com/v/'+result[0].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
-	str += '<img src="http://img.youtube.com/vi/'+result[0].path+'/0.jpg" width="230px;" height="210px;"/></a>';
+	str += '<a rel="#voverlay" href="https://www.youtube.com/v/'+result[0].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+	str += '<img src="https://img.youtube.com/vi/'+result[0].path+'/0.jpg" width="230px;" height="210px;"/></a>';
 	str += '</DIV>';
 
 	if(result.length >= 2)
@@ -3294,8 +3294,8 @@ function buildVideoGallaryDiv(result)
 		str += '<DIV><table><tr>';
 		for(var i=1;i<result.length && i<5;i++)
 		{
-			str += '<td><a rel="#voverlay" href="http://www.youtube.com/v/'+result[i].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer" width="70px;">';
-	str += '<img src="http://img.youtube.com/vi/'+result[i].path+'/0.jpg" width="75px;" height="70px;"/></a></td>';
+			str += '<td><a rel="#voverlay" href="https://www.youtube.com/v/'+result[i].path+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer" width="70px;">';
+	str += '<img src="https://img.youtube.com/vi/'+result[i].path+'/0.jpg" width="75px;" height="70px;"/></a></td>';
 		}
 		str += '</tr></table></DIV>';
 	}
@@ -3351,7 +3351,7 @@ function showAllVideoGalleries(){
 	{
 		str += '<td><table><tr><td><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
 		str += '<tr><td>';
-		str+='<img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
+		str+='<img src="https://img.youtube.com/vi/'+results[i].path+'/0.jpg" width="72px;" height="75px;" style="cursor: pointer;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/></td></tr>';
 		str+='</div>';
 		str+= '<tr><td><div style="font-size: 13px; font-family: verdana,arial;""><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
 		str += '<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></table></td>';
@@ -3373,7 +3373,7 @@ function buildVideoGallaries(results)
 			str +='<tr height="185px;">';
 			str +='<td valign="top" width="25%">';
 			str +='<table width="100%" style="margin-bottom: 15px;">';
-			str +='<tr><td style="padding-left:4px;"><img src="http://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="110px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/>';
+			str +='<tr><td style="padding-left:4px;"><img src="https://img.youtube.com/vi/'+results[i].path+'/0.jpg" height="120px;" width="110px;" style="cursor: pointer; border-radius: 5px 5px 5px 5px; left: 13px; padding: 7px; border: 1px solid #ccc; background: none repeat scroll 0pt 0pt #d3d3d3;" onClick="getVideosInAGallary('+results[i].gallaryId+')"/>';
 			str +='</td></tr>';
 			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryDescription+'</b></font></td></tr>';
 			str +='<tr><td><div style="font-size: 13px; font-family: verdana,arial;"><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div> </td></tr>';
@@ -3454,9 +3454,9 @@ function buildAllVideosInGallary(results){
 			str+='<td style="border:2px solid #ccc;padding:5px;width:100px;">';
 			str+= '<a href=javascript:{} onclick="getVideoDetails('+results[i].contentId+')">';
 		
-			//str+='<a target="blank"  href="http://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
+			//str+='<a target="blank"  href="https://www.youtube.com/v/'+results[i].pathOfFile+'?autoplay=1&rel=0&enablejsapi=1&playerapiid=ytplayer">';
 			//str+='<img style="border: 2px solid #CCCCCC;padding:5px;background:#cccccc;" src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" title="'+results[i].description+'"/></a></td>';
-			str+='<img src="http://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" title="'+results[i].description+'"/></a></td>';
+			str+='<img src="https://img.youtube.com/vi/'+results[i].pathOfFile+'/0.jpg" width="160px;" height="160px;" title="'+results[i].description+'"/></a></td>';
 			str+='</tr>';
 			str+='<tr>';
 			/* str+='<td width="30%"><div style="margin-top:5px;">'+results[i].description+'</div>';
