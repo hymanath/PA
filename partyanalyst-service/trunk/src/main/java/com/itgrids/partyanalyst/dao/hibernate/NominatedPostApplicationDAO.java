@@ -326,7 +326,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(levelId != null && levelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append(" and model3.district.districtId between 11 and 23 ");
-			else if(stateId.longValue() ==2L)
+			else if(stateId.longValue() ==36L)
 				queryStr.append(" and model3.district.districtId between 1 and 10 ");
 		}
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
@@ -363,7 +363,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(levelId != null && levelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
 				queryStr.append(" and model3.district.districtId between 11 and 23 ");
-			else if(stateId.longValue() ==2L)
+			else if(stateId.longValue() ==36L)
 				queryStr.append(" and model3.district.districtId between 1 and 10 ");
 		}
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
