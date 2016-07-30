@@ -37,7 +37,6 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private SetterAndGetterUtilService setterAndGetterUtilService ;
 	private INominatedPostFinalDAO nominatedPostFinalDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
-	private INominatedPostFinalDAO nominatedPostFinalDAO;
 	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	
 	
@@ -101,15 +100,6 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			INominationPostCandidateDAO nominationPostCandidateDAO) {
 		this.nominationPostCandidateDAO = nominationPostCandidateDAO;
 	}
-	
-	public INominatedPostFinalDAO getNominatedPostFinalDAO() {
-		return nominatedPostFinalDAO;
-	}
-	public void setNominatedPostFinalDAO(
-			INominatedPostFinalDAO nominatedPostFinalDAO) {
-		this.nominatedPostFinalDAO = nominatedPostFinalDAO;
-	}
-	
 	public INominatedPostMemberDAO getNominatedPostMemberDAO() {
 		return nominatedPostMemberDAO;
 	}
