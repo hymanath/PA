@@ -9,8 +9,8 @@ import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 
 public interface INominatedPostMainDashboardService {
 
-	 public List<CastePositionVO> getLocationWiseCastePositionCount(Long LocationLevelId);
-	 public List<CastePositionVO> getLocationWiseCasteGroupPositionCount(Long LocationLevelId);
+	 public List<CastePositionVO> getLocationWiseCastePositionCount(Long LocationLevelId,Long positionId);
+	 public List<CastePositionVO> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId);
 	 public List<IdNameVO> getPositions();
 	 public NominatedPostDashboardVO getAllPositionWiseStatus(Long positionId);
 	 public List<IdAndNameVO> getCastGroupList();

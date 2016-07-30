@@ -208,9 +208,126 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		return query.list();
 	}
-	/*
-	 * Swadhin
-	 */
+	
+	 public List<Object[]> getCandidateCasteList(Long locationLevelId){
+		 
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select distinct model.nominationPostCandidate.casteState.casteStateId,model.nominationPostCandidate.casteState.caste.casteName" +
+		 		"  from NominatedPostFinal model where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted='N'");
+		 
+		   if(locationLevelId != null && locationLevelId.longValue() > 0){
+			   if(locationLevelId != 5){
+				   queryStr.append(" and model.nominatedPostMember.boardLevelId=:locationLevelId ");   
+			   }else{
+				   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+			   }
+		   }
+		   queryStr.append(" order by model.nominationPostCandidate.casteState.caste.casteName ");
+		 
+		 Query query = getSession().createQuery(queryStr.toString());
+	 	 
+		 if(locationLevelId != null && locationLevelId.longValue() > 0 && locationLevelId.longValue()!=5){
+			  query.setParameter("locationLevelId", locationLevelId);
+		 }
+		 return query.list();
+	 }
+	 
+	  public List<Object[]> getLocationWiseCastePositionCount(Long LocationLevelId,Long positionId){
+		  
+		  StringBuilder queryStr = new StringBuilder();
+		            
+		   queryStr.append(" select model.nominationPostCandidate.casteState.casteStateId," +
+		   		           " model.nominationPostCandidate.casteState.caste.casteName," +
+		   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+		   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionName," +
+		   	          	   " count(distinct model.nominationPostCandidate.nominationPostCandidateId) " +
+		   	          	   " from NominatedPostFinal model " +
+		   	          	   " where " +
+		   	          	   " model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N'" +
+		   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'" +
+		   	          	   " and model.applicationStatus.status in ('Confirmed','Go Issued') ");
+		   
+				      if(LocationLevelId != null && LocationLevelId > 0){
+				   	    queryStr.append(" and model.nominatedPostMember.boardLevelId=:LocationLevelId ");
+				      }
+                      if(positionId != null && positionId.longValue() > 0){
+                    	queryStr.append("model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId");  
+                      }
+                      
+		              queryStr.append(" group by model.nominationPostCandidate.casteState.caste.casteId," +
+		              		          " model.nominatedPostMember.nominatedPostPosition.position.positionId " +
+		              		          " order by model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+	         
+		              Query query = getSession().createQuery(queryStr.toString());
+		    
+		             if(LocationLevelId != null && LocationLevelId.longValue() > 0){
+				    	query.setParameter("LocationLevelId", LocationLevelId);
+				     }
+		             if(positionId != null && positionId.longValue() > 0){
+					    	query.setParameter("positionId", positionId);
+					  }
+		   return query.list();
+	  }
+  public List<Object[]> getCasteGroup(Long locationLevelId){
+	  
+	  StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select distinct model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName" +
+		 		"  from NominatedPostFinal model where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted='N'");
+		 
+		   if(locationLevelId != null && locationLevelId.longValue() > 0){
+			   if(locationLevelId != 5){
+				   queryStr.append(" and model.nominatedPostMember.boardLevelId=:locationLevelId ");   
+			   }else{
+				   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+			   }
+		   }
+		   queryStr.append(" order by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName ");
+		 
+		 Query query = getSession().createQuery(queryStr.toString());
+	 	 
+		 if(locationLevelId != null && locationLevelId.longValue() > 0 && locationLevelId.longValue()!=5){
+			  query.setParameter("locationLevelId", locationLevelId);
+		 }
+		 return query.list();
+	 
+  }
+  public List<Object[]> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId){
+		
+	  StringBuilder queryStr = new StringBuilder();
+      //model.nominationPostCandidate.casteState.casteStateId
+	   queryStr.append(" select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+	   		           " model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
+	   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+	   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionName," +
+	   	          	   " count(distinct model.nominationPostCandidate.nominationPostCandidateId) " +
+	   	          	   " from NominatedPostFinal model " +
+	   	          	   " where " +
+	   	          	   " model.isDeleted='N' and model.nominationPostCandidate.isDeleted='N'" +
+	   	          	   " and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'" +
+	   	          	   " and model.applicationStatus.status in ('Confirmed','Go Issued') ");
+	   
+			      if(LocationLevelId != null && LocationLevelId > 0){
+			   	    queryStr.append(" and model.nominatedPostMember.boardLevelId=:LocationLevelId ");
+			      }
+                 if(positionId != null && positionId.longValue() > 0){
+               	queryStr.append("model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId");  
+                 }
+                 
+	              queryStr.append(" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+	              		          " model.nominatedPostMember.nominatedPostPosition.position.positionId " +
+	              		          " order by model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+        
+	              Query query = getSession().createQuery(queryStr.toString());
+	    
+	             if(LocationLevelId != null && LocationLevelId.longValue() > 0){
+			    	query.setParameter("LocationLevelId", LocationLevelId);
+			    }
+	            if(positionId != null && positionId.longValue() > 0){
+				    	query.setParameter("positionId", positionId);
+				 }
+	   return query.list();
+	 
+}
 	public List<Object[]> getApplicationStatusList(){
 		Query query = getSession().createQuery("select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status from NominatedPostFinal model");  
 		return query.list();
