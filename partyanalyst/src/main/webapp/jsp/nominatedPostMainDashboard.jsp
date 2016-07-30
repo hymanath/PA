@@ -60,7 +60,7 @@
                                 <div role="tabpanel" class="tab-pane" id="applicationsTab">
                                 	<div id="chartdiv1"></div>
                                 </div>
-                              </div>
+                              </div>    
                             </div>
                         </div>
                     </div>
@@ -531,38 +531,38 @@
             	<div class="row">
                 	<div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Position</label>
-                        <select class="chosenSelect">
-                        	<option></option>
+                        <select class="chosenSelect" id="positionId">
+                        	<option value="all">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Location Level</label>
-                        <select class="chosenSelect">
-                        	<option></option>
+                        <select class="chosenSelect" id="locationLevelId">
+                        	<option value="all">ALL</option>  
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-xs-12">
+                    <div class="col-md-2 col-sm-4 col-xs-12">    
                     	<label>Department</label>
-                        <select class="chosenSelect">
-                        	<option></option>
+                        <select class="chosenSelect" id="departmentId">       
+                        	<option value="all">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Corporation</label>
-                        <select class="chosenSelect">
-                        	<option></option>
+                        <select class="chosenSelect" id="corporationId">
+                        	<option value="all">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Caste Group</label>
-                        <select class="chosenSelect">
-                        	<option></option>
+                        <select class="chosenSelect" id="casteGroupId">
+                        	<option value="all">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Position Status</label>
-                        <select class="chosenSelect">
-                        	<option></option>
+                        <select class="chosenSelect" id="positionStatusId">
+                        	<option value="all">ALL</option>  
                         </select>
                     </div>
                 </div>
