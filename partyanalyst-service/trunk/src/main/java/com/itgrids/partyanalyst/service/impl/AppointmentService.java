@@ -6335,7 +6335,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				
 				List<Object[]> list = appointmentTrackingDAO.getAppointmentTrackingDetails(appointmentId);
 				
-						resultList = getStatusCommentsList(list);
+						resultList = getStatusCommentsList1(list);
 						/*setTimeDiffForTracking(orderStatusList);
 						if(resultList != null && resultList.size() > 0)
 						{
@@ -6499,7 +6499,76 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			LOG.error("Entered in getStatusFlowList() method");
+			LOG.error("Entered in getStatusCommentsList() method");
+		}
+		return resultList;
+	}
+	
+	public List<StatusTrackingVO> getStatusCommentsList1(List<Object[]> list)
+	{
+		List<StatusTrackingVO>  resultList = new ArrayList<StatusTrackingVO>();
+		try{
+			for(int i=0;i<list.size();i++)
+			{
+				
+				
+				/*model.appointmentStatus.appointmentStatusId,0
+						model.appointmentStatus.status,1
+						model.user.userId 2 ,model.user.firstName 3,model.user.lastName 4,model.remarks 5,model.actionTime 6,
+						appointmentComment.appointmentCommentId 7,appointmentComment.comment 8,fromAppointmentStatus.appointmentStatusId 9 ,fromAppointmentStatus.status 10*/
+				
+				
+				Object[] params = list.get(i);
+				StatusTrackingVO vo = new StatusTrackingVO();
+				vo.setId((Long)params[0]);
+				vo.setStatus(params[1] != null ? params[1].toString() : "");
+				vo.setUserId((Long)params[2]);
+				String fname = params[3] != null ? params[3].toString() : "";
+				String lname = params[4] != null ? params[4].toString() : "";
+				vo.setUname(fname+" "+lname);
+			/*	if(vo.getCommentsList() == null || vo.getCommentsList().size() > 0)
+				{
+					vo.setCommentsList(new ArrayList<String>());
+					vo.getCommentsList().add(params[8] != null ? params[8].toString() : "");
+				}*/
+				
+				vo.setComments(params[8] != null ? params[8].toString() : "");
+				
+				vo.setDate(params[6] != null ? params[6].toString().substring(0, 19) : "");
+				if(params[9] != null)
+				{
+					vo.setFromStatusId((Long)params[9]);
+					vo.setFromStatus(params[10].toString());
+				}
+				
+				if(params[11] !=null){
+					vo.setActionId((Long)params[11]);
+					vo.setActionStatus(params[12] !=null ? params[12].toString():"");
+				}
+				
+				/*
+				  for(int j=i+1;j<list.size();j++)
+				  {
+					  Object[] params1 = list.get(j);
+					//  Long l = (Long)params[0];
+					  if(params[1].toString().equalsIgnoreCase(params1[1].toString()))
+					  {
+						  vo.getCommentsList().add(params1[8] != null ? params1[8].toString() : "");
+						  i++;
+					  }
+					  else
+					  {
+						  break;
+					  }
+					  
+				  }*/
+				resultList.add(vo);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getStatusCommentsList1() method");
 		}
 		return resultList;
 	}
