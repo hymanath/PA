@@ -11,9 +11,13 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
+import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.model.Position;
@@ -31,6 +35,9 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private INominatedPostStatusDAO nominatedPostStatusDAO;
 	private INominatedPostDAO nominatedPostDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService ;
+	private INominationPostCandidateDAO nominationPostCandidateDAO;
+	private INominatedPostFinalDAO nominatedPostFinalDAO;
+	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	
 	
 	public IApplicationStatusDAO getApplicationStatusDAO() {
@@ -78,6 +85,30 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	}
 	public void setPositionDAO(IPositionDAO positionDAO) {
 		this.positionDAO = positionDAO;
+	}
+	
+	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
+		return nominationPostCandidateDAO;
+	}
+	public void setNominationPostCandidateDAO(
+			INominationPostCandidateDAO nominationPostCandidateDAO) {
+		this.nominationPostCandidateDAO = nominationPostCandidateDAO;
+	}
+	
+	public INominatedPostFinalDAO getNominatedPostFinalDAO() {
+		return nominatedPostFinalDAO;
+	}
+	public void setNominatedPostFinalDAO(
+			INominatedPostFinalDAO nominatedPostFinalDAO) {
+		this.nominatedPostFinalDAO = nominatedPostFinalDAO;
+	}
+	
+	public INominatedPostMemberDAO getNominatedPostMemberDAO() {
+		return nominatedPostMemberDAO;
+	}
+	public void setNominatedPostMemberDAO(
+			INominatedPostMemberDAO nominatedPostMemberDAO) {
+		this.nominatedPostMemberDAO = nominatedPostMemberDAO;
 	}
 	@Override
 	public List<CastePositionVO> getLocationWiseCastePositionCount(Long LocationLevelId) {
@@ -289,7 +320,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	 * @return List<IdNameVO>
 	 * description  { Getting All Positions From Database }
 	 */
-	public List<IdNameVO> getPositions(){
+	public List<IdNameVO> getPositions(){  
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 		List<Object[]> list = positionDAO.getAllPositions();
@@ -298,11 +329,123 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
 		}
 		}catch(Exception e){
-			e.printStackTrace();
+			e.printStackTrace();  
 			LOG.error("Exception Occured in getPositions()", e);
 		}
 		return returnList;
 	}
+	public List<IdAndNameVO> getCastGroupList(){
+		LOG.info("Entered into getCastGroupList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> cstGrpList = new ArrayList<IdAndNameVO>();
+			List<Object[]> castGroupList = nominationPostCandidateDAO.getCastGroupList();
+			if(castGroupList != null && castGroupList.size() > 0){
+				setDataToVO(castGroupList, cstGrpList);
+			}
+			return cstGrpList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getCastGroupList()", e);
+		}
+		return null;    
+	}
+	public List<IdAndNameVO> getApplicationStatusList(){
+		LOG.info("Entered into getApplicationStatusList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> appStatusList = new ArrayList<IdAndNameVO>();
+			List<Object[]> applicationStatusList = nominatedPostFinalDAO.getApplicationStatusList();
+			if(applicationStatusList != null && applicationStatusList.size() > 0){
+				setDataToVO(applicationStatusList, appStatusList);  
+			}
+			return appStatusList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getCastGroupList()", e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getPositionList(){
+		LOG.info("Entered into getPositionList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> pstnList = new ArrayList<IdAndNameVO>();
+			List<Object[]> positionList = nominatedPostMemberDAO.getPositionList();
+			if(positionList != null && positionList.size() > 0){
+				setDataToVO(positionList, pstnList);
+			}
+			return pstnList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getPositionList()", e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getLocationLevelList(){
+		LOG.info("Entered into getLocationLevelList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> locationLvlList = new ArrayList<IdAndNameVO>();
+			List<Object[]> locationLevelList = nominatedPostMemberDAO.getLocationLevelList();
+			if(locationLevelList != null && locationLevelList.size() > 0){
+				setDataToVO(locationLevelList, locationLvlList);
+			}
+			return locationLvlList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getLocationLevelList()", e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getDepartmentList(){
+		LOG.info("Entered into getDepartmentList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> deptList = new ArrayList<IdAndNameVO>();
+			List<Object[]> departmentList = nominatedPostMemberDAO.getDepartmentList();
+			if(departmentList != null && departmentList.size() > 0){
+				setDataToVO(departmentList, deptList);
+			}
+			return deptList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getDepartmentList()", e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getBoardList(){
+		LOG.info("Entered into getboardList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> brdList = new ArrayList<IdAndNameVO>();
+			List<Object[]> boardList = nominatedPostMemberDAO.getBoardList();
+			if(boardList != null && boardList.size() > 0){
+				setDataToVO(boardList, brdList);
+			}
+			return brdList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getBoardList()", e);
+		}
+		return null;
+	}
+	public void setDataToVO(List<Object[]> objectArrayList, List<IdAndNameVO> voList){
+		try{
+			IdAndNameVO idAndNameVO = null;
+			for(Object[] castGroup : objectArrayList){
+				idAndNameVO = new IdAndNameVO();
+				idAndNameVO.setId(castGroup[0] != null ? (Long)castGroup[0] : 0l);
+				idAndNameVO.setName(castGroup[1] != null ? castGroup[1].toString() : "");
+				voList.add(idAndNameVO);
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getPositions() of NominatedPostMainDashboardService", e);
+		}
+	}
+	
  
    
 }
