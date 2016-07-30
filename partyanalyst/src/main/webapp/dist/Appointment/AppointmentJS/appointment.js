@@ -3646,8 +3646,16 @@ function getPanchayatsForReferPopup(){
 						else if(result[i].id > 1){
 							if(result[i].actionId !=null && result[i].actionId == 1){
 								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+								if(result[i].comments !=null && result[i].comments.length>0){
+									str+='<p>Appointment Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
+								}
 							}else if(result[i].actionId !=null && result[i].actionId == 2){
-								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';							
+							}else{
+								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+								if(result[i].comments !=null && result[i].comments.length>0){
+									str+='<p>Appointment Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
+								}
 							}
 						}
 							
@@ -3901,14 +3909,22 @@ function getPanchayatsForReferPopup(){
 		for(var i in result){
 			var color = getColorCodeByStatus(result[i].status);
 			str+='<li>';
-				str+='<div class="arrow_box_left">';
-				if(result[i].id == 1)
-					str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
-					else if(result[i].id > 1){
+						str+='<div class="arrow_box">';
+						if(result[i].id == 1)
+							str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						else if(result[i].id > 1){
 							if(result[i].actionId !=null && result[i].actionId == 1){
 								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+								if(result[i].comments !=null && result[i].comments.length>0){
+									str+='<p>Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
+								}
 							}else if(result[i].actionId !=null && result[i].actionId == 2){
-								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+								str+='<p>Appointment Comment : <span class="text-success"><b>'+result[i].comments+'</b></span> updated on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';							
+							}else{
+								str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+								if(result[i].comments !=null && result[i].comments.length>0){
+									str+='<p>Comment : <span class="text-danger"><b>'+result[i].comments+'</b></p>';
+								}
 							}
 						}
 							
@@ -3918,10 +3934,10 @@ function getPanchayatsForReferPopup(){
 					
 								str+='<p>'+result[i].commentsList[j]+'</p>';	
 							}
-						} */
-					
+						} */	
+				
 				str+='</div>';
-			str+='</li>';	
+			str+='</li>';
 		}
 		str+='</ul>';
 		$("#apptStatusTracking").html(str)
