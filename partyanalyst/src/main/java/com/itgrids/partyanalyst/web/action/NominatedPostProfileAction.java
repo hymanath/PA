@@ -896,7 +896,7 @@ public String getNotCadreDetailsById(){
 			
 			try {
 				jObj = new JSONObject(getTask());
-				castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"));
+				castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"),jObj.getLong("positionId"));
 			} catch (Exception e) {
 				LOG.error("Exception raised at getLocationWiseCastePositionCount() method of NominatedPostProfileAction", e);
 			}
@@ -907,7 +907,7 @@ public String getNotCadreDetailsById(){
 		
 		try {
 			jObj = new JSONObject(getTask());
-			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"));
+			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"),jObj.getLong("positionId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCasteGroupPositionCount() method of NominatedPostProfileAction", e);
 		}

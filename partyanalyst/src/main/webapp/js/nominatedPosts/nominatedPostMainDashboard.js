@@ -1,6 +1,16 @@
 $(document).ready(function(){
-	getLocationWiseCastePositionCount();
-    getLocationWiseCasteGroupPositionCount();
+	getLocationWiseCastePositionCount("overall",0);
+    getLocationWiseCasteGroupPositionCount("overallCasteGroup",0);
+});
+$(document).on("click",".castePositionCls",function(){
+	var hrefId = $(this).attr("attr_href_id");
+	var levelId = $(this).attr("attr_level_value");
+	getLocationWiseCastePositionCount(hrefId,levelId)
+});
+$(document).on("click",".casteGroupCls",function(){
+	var hrefId = $(this).attr("attr_href_id");
+	var levelId = $(this).attr("attr_level_value");
+	getLocationWiseCasteGroupPositionCount(hrefId,levelId)
 	getCastGroupList();
 	getApplicationStatusList();
 	getPositionList();
@@ -8,10 +18,12 @@ $(document).ready(function(){
 	getDepartmentList();
 	getBoardList();
 });
-
- function getLocationWiseCastePositionCount(){
+ 
+ function getLocationWiseCastePositionCount(hrefId,levelId){
+   $("#castePostionDivId").html(' ');
   var jsObj={
-        LocationLevelId : 0
+        LocationLevelId : levelId,
+		positionId : 0
       }
       $.ajax({
          type:'GET',
@@ -19,21 +31,133 @@ $(document).ready(function(){
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
+		  if(result != null && result.length > 0){
+			  buildCasteWisePositionRslt(result,hrefId);
+		  }else{
+			 $("#castePostionDivId").html("NO DATA AVAILABLE"); 
+		  }
     });
  }
- function getLocationWiseCasteGroupPositionCount(){
+ function buildCasteWisePositionRslt(result,hrefId){
+	 
+	 	var str='';
+	    if(result[0].casteList.length==0){
+			str+='No DATA AVAILABLE'; 
+			$("#castePostionDivId").html(str);
+			return;
+		 }
+	
+/* 	     str+='<div role="tabpanel" class="tab-pane active pad_10 pad_right0" id="'+hrefId+'">'
+         str+='<div class="row">';
+	     str+='<div class="col-md-2 pad_right0" style="-webkit-box-shadow: 10px 0 5px -2px #888; box-shadow: 10px 0 5px -2px #888;">';
+         str+='<table class="table table-bordered">';
+		 str+='<tr>';
+         str+='	<td>&nbsp;</td>';                                     
+         str+='</tr>'
+		 for(var i in result){
+			 str+='<tr>';
+			   str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
+			 str+='</tr>';
+		 }
+		 str+='</table>';
+		 str+='</div>'; */
+		 str+='<div class="col-md-12 pad_left0">';
+         str+='<div class="table-responsive">';
+        str+='<table class="table table-bordered dataTableCaste" style="margin:0px !important">';
+		if(result[0].casteList != null && result[0].casteList.length > 0){
+		  str+='<thead class="text-capital">';
+		  str+='<th></th>';
+		  for(var i in result[0].casteList){
+			  str+='<th id="'+result[0].casteList[i].casteId+'">'+result[0].casteList[i].casteName+'</th>';
+		  }	
+          str+='</thead>';		  
+		}
+		str+='<tbody>';
+		for(var i in result){
+			var casteList = result[i].casteList;
+			 if(casteList != null && casteList.length > 0){
+				str+='<tr>';
+				str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
+				 for(var j in result[i].casteList){
+					str+='<td>'+casteList[j].count+'</td>'; 
+				 }
+				str+='</tr>';
+			 }
+		}
+	    str+='</tbody>';
+		str+='</table>';
+        str+='</div>';
+        str+='</div>';
+        //str+='</div>';
+        //str+='</div>';  
+       $("#castePostionDivId").html(str);
+        $(".dataTableCaste").dataTable({
+	      "sDom": '<"top">rt<"bottom"><"clear"iflp>'
+         });	   
+      
+ }
+
+ function getLocationWiseCasteGroupPositionCount(hrefId,LocationLevelId){
+	 
+	 $("#casteGroupPostionDivId").html(' ');
   var jsObj={
-        LocationLevelId : 0
+        LocationLevelId : LocationLevelId,
+		positionId : 0
       }
       $.ajax({
          type:'GET',
-         url:'getLocationWiseCasteGroupPositionCount.action',
+         url:'getLocationWiseCasteGroupPositionCountAction.action',
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
+		  if(result != null && result.length > 0){
+			  buildCasteGroupWisePositionRslt(result,hrefId);
+		  }else{
+		      $("#casteGroupPostionDivId").html("NO DATA AVAILABLE");			  
+		  }
     });	
  }
- getAllPositions();
+ function buildCasteGroupWisePositionRslt(result,hrefId){
+	 var str='';
+      if(result[0].casteList.length==0){
+		str+='No DATA AVAILABLE'; 
+		$("#casteGroupPostionDivId").html(str);
+		return;
+	 }
+	 str+='<div class="tab-content navTabsSelectionBody">';
+     str+='<div role="tabpanel" class="tab-pane active" id="'+hrefId+'">';
+     str+='<div class="table-responsive">';
+     str+='<table class="table table-bordered dataTableCasteGroup">';
+	 if(result[0].casteList != null && result[0].casteList.length > 0){
+		  str+='<thead class="text-capital">';
+		  str+='<th></th>';
+		  for(var i in result[0].casteList){
+			  str+='<th id="'+result[0].casteList[i].casteId+'">'+result[0].casteList[i].casteName+'</th>';
+		  }	
+          str+='</thead>';		  
+		}
+      str+='<tbody>';
+		for(var i in result){
+			var casteList = result[i].casteList;
+			 if(casteList != null && casteList.length > 0){
+				str+='<tr>';
+				str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
+				 for(var j in result[i].casteList){
+					str+='<td>'+casteList[j].count+'</td>'; 
+				 }
+				str+='</tr>';
+			 }
+		}
+	    str+='</tbody>';	 
+		str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		$("#casteGroupPostionDivId").html(str);	
+		 $(".dataTableCasteGroup").dataTable({
+	     "sDom": '<"top">rt<"bottom"><"clear"iflp>'
+        });
+ }
  function getAllPositions(){
 	var jsObj={}
       $.ajax({

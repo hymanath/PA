@@ -150,124 +150,16 @@
                         	<div>
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs navTabsSelection" role="tablist">
-                                <li role="presentation" class="active"><a href="#overall" aria-controls="overall" role="tab" data-toggle="tab">Overall</a></li>
-                                <li role="presentation"><a href="#state" aria-controls="state" role="tab" data-toggle="tab">State</a></li>
-                                <li role="presentation"><a href="#district" aria-controls="district" role="tab" data-toggle="tab">district</a></li>
-                                <li role="presentation"><a href="#constituency" aria-controls="constituency" role="tab" data-toggle="tab">constituency</a></li>
+                                <li role="presentation" class="active"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="0" class="castePositionCls" role="tab" data-toggle="tab">Overall</a></li>
+                                <li role="presentation"><a href="#state" aria-controls="state" attr_href_id="state" role="tab" attr_level_value="2" class="castePositionCls" data-toggle="tab">State</a></li>
+                                <li role="presentation"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab">district</a></li>
+                                <li role="presentation"><a href="#constituency" aria-controls="constituency" attr_href_id="constituency" attr_level_value="4" class="castePositionCls" role="tab" data-toggle="tab">constituency</a></li>
+								<li role="presentation"><a href="#mndlmncpltyCrprtn" aria-controls="mndlmncpltyCrprtn" attr_href_id="mndlmncpltyCrprtn" attr_level_value="5" class="castePositionCls" role="tab" data-toggle="tab">Mandal/Muncipality/Corporation</a></li>
                               </ul>
-                            
                               <!-- Tab panes -->
                               <div class="tab-content navTabsSelectionBody">
-                                <div role="tabpanel" class="tab-pane active pad_10 pad_right0" id="overall">
-                                	<div class="row">
-                                    	<div class="col-md-2 pad_right0" style="-webkit-box-shadow: 10px 0 5px -2px #888; box-shadow: 10px 0 5px -2px #888;">
-                                        	<table class="table table-bordered">
-                                            	<tr>
-                                                	<td>&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairman</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>Chairman</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>Chairman</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>Chairman</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>Chairman</td>
-                                                </tr>
-                                            	<tr>
-                                                	<td>Chairman</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="col-md-10 pad_left0">
-                                        	<div class="table-responsive">
-                                                <table class="table table-bordered dataTableCaste" style="margin:0px !important">
-                                                    <thead class="text-capital">
-                                                        <th>REDDY</th>
-                                                        <th>kamma</th>
-                                                        <th>velama</th>
-                                                        <th>kapu</th>
-                                                        <th>nayudu</th>
-                                                        <th>reddy</th>
-                                                        <th>malla</th>
-                                                        <th>madiga</th>
-                                                    </thead>
-                                                    <tr>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                        <td>52</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="state">...</div>
-                                <div role="tabpanel" class="tab-pane" id="district">...</div>
-                                <div role="tabpanel" class="tab-pane" id="constituency">...</div>
+							   <div id="castePostionDivId"></div>
                               </div>
-                            
                             </div>
                         </div>
                     </div>
@@ -282,244 +174,16 @@
 
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick" role="tablist">
-                                <li role="presentation" class="active NavTab"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-                                <li role="presentation" class="NavTab"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-                                <li role="presentation" class="NavTab"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-                                <li role="presentation" class="NavTab"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                                <li role="presentation" class="active"><a href="#overallCasteGroup" attr_href_id="overallCasteGroup" aria-controls="overallCasteGroup" attr_level_value="0" class="casteGroupCls" role="tab" data-toggle="tab">Overall</a></li>
+                                <li role="presentation"><a href="#stateCasteGroup" aria-controls="stateCasteGroup" attr_href_id="stateCasteGroup" role="tab" attr_level_value="2" class="casteGroupCls" data-toggle="tab">State</a></li>
+                                <li role="presentation"><a href="#districtCasteGroup" aria-controls="districtCasteGroup" attr_href_id="districtCasteGroup" attr_level_value="3" class="casteGroupCls" role="tab" data-toggle="tab">district</a></li>
+                                <li role="presentation"><a href="#constituencyCasteGroup" aria-controls="constituencyCasteGroup" attr_href_id="constituencyCasteGroup" attr_level_value="4" class="casteGroupCls" role="tab" data-toggle="tab">constituency</a></li>
+								<li role="presentation"><a href="#mndlmncpltyCrprtnCasteGroup" aria-controls="mndlmncpltyCrprtnCasteGroup" attr_href_id="mndlmncpltyCrprtnCasteGroup" attr_level_value="5" class="casteGroupCls" role="tab" data-toggle="tab">Mandal/Muncipality/Corporation</a></li>
                               </ul>
-                            
                               <!-- Tab panes -->
                               <div class="tab-content navTabsSelectionBody">
-                                <div role="tabpanel" class="tab-pane active" id="home">
-                                	<div class="table-responsive">
-                                    	<table class="table table-bordered dataTableCasteGroup">
-                                        	<thead>
-                                            	<th></th>
-                                                <th>OC</th>
-                                                <th>SC</th>
-                                                <th>ST</th>
-                                                <th>BC</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="profile">
-                                	<div class="table-responsive">
-                                    	<table class="table table-bordered dataTableCasteGroup">
-                                        	<thead>
-                                            	<th></th>
-                                                <th>OC</th>
-                                                <th>SC</th>
-                                                <th>ST</th>
-                                                <th>BC</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="messages">
-                                	<div class="table-responsive">
-                                    	<table class="table table-bordered dataTableCasteGroup">
-                                        	<thead>
-                                            	<th></th>
-                                                <th>OC</th>
-                                                <th>SC</th>
-                                                <th>ST</th>
-                                                <th>BC</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="settings">
-                                	<div class="table-responsive">
-                                    	<table class="table table-bordered dataTableCasteGroup">
-                                        	<thead>
-                                            	<th></th>
-                                                <th>OC</th>
-                                                <th>SC</th>
-                                                <th>ST</th>
-                                                <th>BC</th>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Chairmen</td>
-                                                    <td>52</td>
-                                                    <td>52</td>
-                                                    <td>62</td>
-                                                    <td>62</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+							   <div id="casteGroupPostionDivId"></div>
                               </div>
-                            
                             </div>
                         </div>
                     </div>
@@ -968,7 +632,7 @@
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
 <script type="text/javascript">
 $('.chosenSelect').chosen();
-$(".navTabSelectionSlick li a").on('click', function(e){
+ $(".navTabSelectionSlick li a").on('click', function(e){
     $(".navTabsSelection li").removeClass('active');
     $(this).addClass('active');
 });
@@ -978,13 +642,7 @@ $(".navTabSelectionSlick").slick({
 	  slidesToShow: 3,
 	  centerMode: false,
 	  variableWidth: true
-});
-$(".dataTableCasteGroup").dataTable({
-	"sDom": '<"top">rt<"bottom"><"clear"iflp>'
-});
-$(".dataTableCaste").dataTable({
-	"sDom": '<"top">rt<"bottom"><"clear"iflp>'
-});
+}); 
 $(function () {
     $('#casteGroup').highcharts({
 		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
