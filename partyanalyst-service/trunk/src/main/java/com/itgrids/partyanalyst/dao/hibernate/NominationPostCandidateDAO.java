@@ -50,7 +50,7 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 				"   WHERE  model.nominationPostCandidateId = :nominatedCandiId and model.isDeleted = 'N' ");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("nominatedCandiId", nominatedCandiId);
+		query.setParameter("nominatedCandiId", nominatedCandiId); 
 		return query.list();
 	}
 	public NominationPostCandidate getUserAddressByCandidate(Long postCandidateId){
@@ -73,4 +73,13 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		query.setParameterList("cadreIdsLsit", cadreIdsLsit);
 		return query.list();
 	}
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getCastGroupList(){
+		Query query = getSession().createQuery("select distinct model.casteState.casteCategoryGroup.casteCategory.casteCategoryId, model.casteState.casteCategoryGroup.casteCategory.categoryName" +
+				   " from NominationPostCandidate model");
+		return query.list();
+	}
+	
 }
