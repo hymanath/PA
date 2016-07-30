@@ -16,4 +16,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds);
 	public List<Object[]> getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId);
 	public List<Object[]> getShortlistedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds);
+	public List<Object[]> getApplicationStatusList();
 }

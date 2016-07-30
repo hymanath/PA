@@ -208,4 +208,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		return query.list();
 	}
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getApplicationStatusList(){
+		Query query = getSession().createQuery("select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status from NominatedPostFinal model");  
+		return query.list();
+	}
 }
