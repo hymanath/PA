@@ -76,7 +76,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" and model.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" and model.applicationStatus.status != :notYet ");
+			str.append(" and model.applicationStatus.status not in (:running) ");
 		}
 		
 		str.append(" group by model.departments.departmentId,model.board.boardId  ");
@@ -89,8 +89,10 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		if(levelValue !=null && levelValue.size()>0){
 			query.setParameterList("levelValue", levelValue);
 		}
-		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
+		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
+		}else if(statusType !=null && (statusType.trim().equalsIgnoreCase("running"))){
+			query.setParameter("running",IConstants.NOMINATED_POST_NOT_RUNNING_STATUS);
 		}
 		
 		return query.list();

@@ -175,6 +175,67 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 	}
 	
+	public List<Object[]> getNominatedPostsByBoardsAndDeptsForOpen(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("SELECT position.positionId," +
+				" position.positionName " +
+				"	FROM NominatedPost model" +
+				"  left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" left join nominatedPostPosition.position position " +
+				"   WHERE " +
+				"  model.isDeleted ='N'" +
+				" and nominatedPostMember.isDeleted = 'N'" +
+				" and nominatedPostPosition.isDeleted = 'N' ");
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+		}
+		if(levelValue !=null && levelValue.size()>0){
+			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
+		}
+		if(deptId !=null && deptId.size() >0){
+			str.append(" and nominatedPostPosition.departments.departmentId in (:deptId) ");
+		}
+		if(boardId !=null && boardId.size()>0){
+			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
+		}
+		
+		str.append(" and  nominatedPostPosition.positionId is not null ");
+		
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
+			str.append("and model.nominatedPostStatus.status = :Open");
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		str.append(" GROUP BY nominatedPostPosition.positionId ORDER BY nominatedPostPosition.positionId ");
+		
+		if(boardLevelId !=null && boardLevelId>0){
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(levelValue !=null && levelValue.size()>0){
+			query.setParameterList("levelValue", levelValue);
+		}
+		if(deptId !=null && deptId.size() >0){
+			query.setParameterList("deptId", deptId);
+		}
+		if(boardId !=null && boardId.size()>0){
+			query.setParameterList("boardId", boardId);
+		}
+		
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("Open"))
+		{
+			query.setParameter("Open", statusType);
+		}
+		
+		return query.list();
+		
+	}
+	
+	
 	public List<Object[]> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType,String positionType){
 		
 		StringBuilder str = new StringBuilder();
@@ -228,11 +289,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		}
 		
 		
-	/*	if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
-			str.append(" and model1.applicationStatus.status = :notYet ");
-		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" and model1.applicationStatus.status != :notYet ");
-		}*/
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
+				str.append(" and model.nominatedPostStatus.status = :open ");
+		}
 		
 		
 		str.append("GROUP BY position.positionId,model.nominatedPostStatus.nominatedPostStatusId " +
@@ -255,9 +314,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			}
 		}
 		
-	/*	if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")) ){
-			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
-		}*/
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
+			query.setParameter("open",statusType);
+		}
 		
 		return query.list();		
 	}
@@ -398,4 +457,46 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				  }
 		    return query.list();
 	 }
+	 
+	 public List<Object[]> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> levelValue,String statusType){
+		 
+		 StringBuilder str = new StringBuilder();
+		 
+		 str.append(" SELECT model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+		 		"	model.nominatedPostMember.nominatedPostPosition.departments.deptName," +
+					" model.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPostMember.nominatedPostPosition.board.boardName " +
+					" FROM NominatedPost model " +
+					" WHERE model.isDeleted = 'N'" +
+					" and model.nominatedPostMember.isDeleted = 'N' " +
+					" and model.nominatedPostMember.nominatedPostPosition.isDeleted ='N'"  );
+			if(boardLevelId !=null && boardLevelId>0){
+				str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+			}
+			if(levelValue !=null && levelValue.size()>0){
+				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
+			}
+			
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("open")){
+				str.append(" and model.nominatedPostStatus.status = :open ");
+			}
+			
+			str.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+					" model.nominatedPostMember.nominatedPostPosition.board.boardId  ");
+			str.append(" order by model.nominatedPostMember.nominatedPostPosition.departments.deptName ");
+			Query query = getSession().createQuery(str.toString());
+			
+			if(boardLevelId !=null && boardLevelId>0){
+				query.setParameter("boardLevelId", boardLevelId);
+			}
+			if(levelValue !=null && levelValue.size()>0){
+				query.setParameterList("levelValue", levelValue);
+			}
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("open")){
+				query.setParameter("open",statusType);
+			}
+			
+			return query.list();
+		 
+	 }
+	 
 }

@@ -2247,7 +2247,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return returnVoList;
 	}
 	
-	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues,String statusType){
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues,String statusType,String task){
 		
 		List<IdNameVO>  finalList = new ArrayList<IdNameVO>(0);
 		try{
@@ -2265,43 +2265,89 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> townObj = new ArrayList<Object[]>(0);
 			List<Object[]> divObj = new ArrayList<Object[]>(0);*/
 			
-			if(boardLevelId.equals(5l)){
-				if(locationValues !=null && locationValues.size()>0){
-					for (Long manTowDivId : locationValues) {
-						
-						String mtdId = manTowDivId.toString();
-						char temp = mtdId.charAt(0);
-						boardLevelId=Long.parseLong(temp+"");
-						if(boardLevelId==4l){
-							mandalList.add(Long.parseLong(mtdId.substring(1)));
-							boardLevelId = 5l;
-						}else if(boardLevelId==5l){
-							townList.add(Long.parseLong(mtdId.substring(1)));
-							boardLevelId = 6l;
-						}else if(boardLevelId==6l){
-							divisonList.add(Long.parseLong(mtdId.substring(1)));
-							boardLevelId = 7l;
-						}						
+			if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+				
+				
+				if(boardLevelId.equals(5l)){
+					if(locationValues !=null && locationValues.size()>0){
+						for (Long manTowDivId : locationValues) {
+							
+							String mtdId = manTowDivId.toString();
+							char temp = mtdId.charAt(0);
+							boardLevelId=Long.parseLong(temp+"");
+							if(boardLevelId==4l){
+								mandalList.add(Long.parseLong(mtdId.substring(1)));
+								boardLevelId = 5l;
+							}else if(boardLevelId==5l){
+								townList.add(Long.parseLong(mtdId.substring(1)));
+								boardLevelId = 6l;
+							}else if(boardLevelId==6l){
+								divisonList.add(Long.parseLong(mtdId.substring(1)));
+								boardLevelId = 7l;
+							}						
+						}
 					}
+
+					if(mandalList !=null && mandalList.size()>0){
+						List<Object[]> mandalObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType);	
+						deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
+					}
+					if(townList !=null && townList.size()>0){
+						List<Object[]> townObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType);	
+						deptMap = setDataToDeptBoardMap(townObj,deptMap);
+					}
+					if(divisonList !=null && divisonList.size()>0){
+						List<Object[]> divObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType);
+						 deptMap = setDataToDeptBoardMap(divObj,deptMap);
+					}
+					
+				}else{
+					deptBoardObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType);
+					deptMap = setDataToDeptBoardMap(deptBoardObj,deptMap);
 				}
 				
-				if(mandalList !=null && mandalList.size()>0){
-					List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType);	
-					deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
-				}
-				if(townList !=null && townList.size()>0){
-					List<Object[]> townObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType);	
-					deptMap = setDataToDeptBoardMap(townObj,deptMap);
-				}
-				if(divisonList !=null && divisonList.size()>0){
-					List<Object[]> divObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType);
-					 deptMap = setDataToDeptBoardMap(divObj,deptMap);
-				}
 				
 			}else{
-				deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType);
-				deptMap = setDataToDeptBoardMap(deptBoardObj,deptMap);
+				
+				if(boardLevelId.equals(5l)){
+					if(locationValues !=null && locationValues.size()>0){
+						for (Long manTowDivId : locationValues) {
+							
+							String mtdId = manTowDivId.toString();
+							char temp = mtdId.charAt(0);
+							boardLevelId=Long.parseLong(temp+"");
+							if(boardLevelId==4l){
+								mandalList.add(Long.parseLong(mtdId.substring(1)));
+								boardLevelId = 5l;
+							}else if(boardLevelId==5l){
+								townList.add(Long.parseLong(mtdId.substring(1)));
+								boardLevelId = 6l;
+							}else if(boardLevelId==6l){
+								divisonList.add(Long.parseLong(mtdId.substring(1)));
+								boardLevelId = 7l;
+							}						
+						}
+					}
+
+					if(mandalList !=null && mandalList.size()>0){
+						List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType);	
+						deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
+					}
+					if(townList !=null && townList.size()>0){
+						List<Object[]> townObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType);	
+						deptMap = setDataToDeptBoardMap(townObj,deptMap);
+					}
+					if(divisonList !=null && divisonList.size()>0){
+						List<Object[]> divObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType);
+						 deptMap = setDataToDeptBoardMap(divObj,deptMap);
+					}
+					
+				}else{
+					deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType);
+					deptMap = setDataToDeptBoardMap(deptBoardObj,deptMap);
+				}
 			}
+			
 			
 			
 			/*if(deptBoardObj !=null && deptBoardObj.size()>0){
@@ -2407,7 +2453,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	
 	
 	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,
-			List<Long> boardIds,String statusType){
+			List<Long> boardIds,String statusType,String task){
 		
 		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);
 		
@@ -2454,9 +2500,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 				if(mandalList !=null && mandalList.size()>0){
-					List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(5l,mandalList,deptIds,boardIds,statusType);
-					finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
 					
+					if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+						List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(5l,mandalList,deptIds,boardIds,statusType);
+						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
+					}else{
+						List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(5l,mandalList,deptIds,boardIds,statusType);
+						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
+					}
 					
 					
 					//postionId,position,nomiatedPostStatusId,status,count
@@ -2494,8 +2545,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 				if(townList !=null && townList.size()>0){
-					List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(6l,townList,deptIds,boardIds,statusType);
-					finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
+					
+					if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+						List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(6l,townList,deptIds,boardIds,statusType);
+						finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
+					}else{
+						List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(6l,townList,deptIds,boardIds,statusType);
+						finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
+					}
 					
 					//postionId,position,nomiatedPostStatusId,status,count
 					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds,statusType,"post");
@@ -2525,8 +2582,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 				if(divisonList !=null && divisonList.size()>0){
-					List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(7l,divisonList,deptIds,boardIds,statusType);
-					finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
+					if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+						List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(7l,divisonList,deptIds,boardIds,statusType);
+						finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
+					}else{
+						List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(7l,divisonList,deptIds,boardIds,statusType);
+						finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
+					}
 					
 					//postionId,position,nomiatedPostStatusId,status,count
 					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds,statusType,"post");
@@ -2559,8 +2621,15 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 			}else{
-				List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(boardLevelId,levelValues,deptIds,boardIds,statusType);
-				finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
+				
+				if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+					List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(boardLevelId,levelValues,deptIds,boardIds,statusType);
+					finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
+				}else{
+					List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(boardLevelId,levelValues,deptIds,boardIds,statusType);
+					finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
+				}
+				
 				
 				//postionId,position,nomiatedPostStatusId,status,count
 				List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds,statusType,"post");
@@ -2605,8 +2674,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
 			}*/
 			
-			if(finalMap !=null &&  finalMap.size()>0){
-				
+			if(finalMap !=null &&  finalMap.size()>0){				
 				finalList = new ArrayList<NominatedPostVO>(finalMap.values());
 			}
 			
