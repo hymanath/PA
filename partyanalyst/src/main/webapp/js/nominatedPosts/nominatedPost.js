@@ -1473,7 +1473,10 @@ function getPopulateApplicantDetailsForMember(globalCadreId){
  var id =globalNPCandiId;
 		if(id > 0){
 			type="Not Cadre";
-		}else if(id == undefined || id <=0){
+		}else if(id !== "undefined" || id <=0){
+			id =globalCadreId;
+			type="Cadre";
+		}else{
 			id =globalCadreId;
 			type="Cadre";
 		}
