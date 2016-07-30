@@ -231,6 +231,7 @@
 		getMainCommitteeCountDetails();
 		getCommitteesWiseLevelsBasedDetails();
 		getBasicComparativeWiseCommitteesCounts();
+		levelWiseComparativeCountsByBasicCommittees();
 	}
 	
 	$(document).ready(function(){

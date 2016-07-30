@@ -13187,5 +13187,10 @@
 				<param name="root">committeeVOList</param>
 		</result>
 	</action>
+	<action name="levelWiseComparativeCountsByBasicCommitteesAction" class="coreDashboardAction" method="levelWiseComparativeCountsByBasicCommittees">
+		<result type="json" name="success">
+				<param name="root">committeeVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
