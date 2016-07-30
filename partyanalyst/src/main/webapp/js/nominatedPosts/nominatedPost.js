@@ -630,7 +630,7 @@ function getNominatedPostApplication(startIndex)
 			startIndex:startIndex,
 			maxIndex : 50,
 			removedStatus:removedStatus,
-			task:"tdpCadreSearch"
+			task:"NominatedPostSearch"
 		}
 		$.ajax({
 				type : "POST",
@@ -678,17 +678,27 @@ function getNominatedPostApplication(startIndex)
 		if(result != null && result.length >0){
 		for(var i in result)
 			{	
-				str +='<li>';
+				if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 )
+					str +='<li  style="background:lightgrey">';
+				else
+					str +='<li>';
+				
 				str +='<div class="img-center">';
 				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 				
 				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
 				str +='</div>';
 				
-				if(result[i].id != null){
+				if(result[i].id != null){ // no cadre search  candidate id
 					str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
 				}else{
-						str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].id+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+						// cadre search  candidate id
+						if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 ){
+							str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+						}else{
+							str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].id+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+						}
+						
 				}
 			   // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
 				str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
@@ -1460,9 +1470,13 @@ var jObj={
 });
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
  var type = $("input[type='radio']:checked").val();
- var id =globalCadreId;
-		if(globalNPCandiId > 0)
-			id =globalNPCandiId;
+ var id =globalNPCandiId;
+		if(id > 0){
+			type="Not Cadre";
+		}else if(id == undefined || id <=0){
+			id =globalCadreId;
+			type="Cadre";
+		}
    var jObj={
 		globalCadreId:id,
 		searchType:type
@@ -1541,11 +1555,11 @@ function populateFields(result){
 	$("#changeMandalId").html("");
 	$("#changeMandalId").append("<option value='0'>Select Mandal</option>");
 	if(result[0].consList != null && result[0].consList.length > 0){
-		for(var i in result[0].consList){
-			if(result[0].constituencyId != null && result[0].consList[i].id == result[0].constituencyId){
-				$("#changeMandalId").append("<option selected value='"+result[0].consList[i].id+"'>"+result[0].consList[i].name+"</option>");
+		for(var i in result[0].mandalsList){
+			if(result[0].mandalsList[i].id != null && result[0].mandalsList[i].id == result[0].mandalId){
+				$("#changeMandalId").append("<option selected value='"+result[0].mandalsList[i].id+"'>"+result[0].mandalsList[i].name+"</option>");
 			}else{
-				$("#changeMandalId").append("<option value='"+result[0].consList[i].id+"'>"+result[0].consList[i].name+"</option>");
+				$("#changeMandalId").append("<option value='"+result[0].mandalsList[i].id+"'>"+result[0].mandalsList[i].name+"</option>");
 			}
 		}
 		$("#changeMandalId").trigger("chosen:updated");
