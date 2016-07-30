@@ -7047,21 +7047,22 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 				" address.state.stateId,district.districtId," +
 				" constituency.constituencyId,tehsil.tehsilId,panchayat.panchayatId,address.pinCode " +
 				" ,model.tdpCadreId , model.voter.voterId, model.firstname,model.lastname, model.relativename, model.relativeType, model.gender, model.age, model.dateOfBirth, model.image, model.casteStateId, " +
-				" model.userAddress ,leb.localElectionBodyId,leb.name "+
+				" model.userAddress ,leb.localElectionBodyId,leb.name,ward.constituencyId "+
 				" from TdpCadre model " +
 				" left join model.userAddress address" +
 				" left join address.tehsil tehsil" +
 				" left join address.panchayat panchayat " +
 				" left join address.localElectionBody leb" +
 				" left join address.constituency constituency " +
-				" left join address.district district  " +
+				" left join address.district district" +
+				" left join address.ward ward  " +
 				" where model.tdpCadreId=:tdpCadreId ");
 	 }
 	  else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
 			str.append(" select model.mobileNo,model.houseno,address.addressLane1,address.addressLane2," +
 					" address.state.stateId,district.districtId," +
 					" constituency.constituencyId,tehsil.tehsilId,panchayat.panchayatId,address.pinCode," +
-					" '','','','','','','','','','','','',leb.localElectionBodyId,leb.name " +
+					" '','','','','','','','','','','',address,leb.localElectionBodyId,leb.name ,ward.constituencyId " +
 					" from NominationPostCandidate model " +
 					" left join model.address address" +
 					" left join address.tehsil tehsil" +
@@ -7069,6 +7070,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 					" left join address.localElectionBody leb" +
 					" left join address.constituency constituency " +
 					" left join address.district district  " +
+					" left join address.ward ward  " +
 					" where model.nominationPostCandidateId=:tdpCadreId ");
 	  }
 		Query query = getSession().createQuery(str.toString());

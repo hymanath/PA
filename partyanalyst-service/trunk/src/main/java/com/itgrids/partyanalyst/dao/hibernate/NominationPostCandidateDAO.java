@@ -65,4 +65,12 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		return (NominationPostCandidate) query.uniqueResult();
 	}
 
+	public List<Object[]> getNOminatedCadreList(List<Long> cadreIdsLsit){
+		
+		Query query = getSession().createQuery(" select distinct model.tdpCadreId, model.nominationPostCandidateId from " +
+				" NominationPostCandidate model where model.tdpCadreId in (:cadreIdsLsit) and model.isDeleted='N' ");
+		
+		query.setParameterList("cadreIdsLsit", cadreIdsLsit);
+		return query.list();
+	}
 }
