@@ -887,7 +887,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
 					Long stateId = 1L;
 					
-					if(user.getAccessType().equalsIgnoreCase("MLA")){
+					if(user.getAccessType().equalsIgnoreCase("MLA") || user.getAccessType().equalsIgnoreCase("DISTRICT")){
 						selectOptionVOList =	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
 					}else{
 						selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
