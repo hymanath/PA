@@ -195,4 +195,40 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String levelWiseComparativeCountsByBasicCommittees(){
+		try{
+			LOG.info("Entered into levelWiseComparativeCountsByBasicCommittees()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String firstMonthString = jObj.getString("firstMonthString");
+			String secondMonthString = jObj.getString("secondMonthString");
+			
+			committeeVOList = coreDashboardService.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstMonthString,secondMonthString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at levelWiseComparativeCountsByBasicCommittees() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
