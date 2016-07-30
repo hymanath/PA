@@ -1318,7 +1318,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							}
 						}
 					}
-					vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7])); 
+					//vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7])); 
+					
+					if(obj[7] != null)//mandal
+						vo.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(obj[7])));
+					else if(obj[20] != null)//localelectionBody
+						vo.setMandalId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(obj[20])));
+					
 					if(vo.getMandalId()!= null && vo.getMandalId() > 0){
 						List<Long> constituencyIds = new ArrayList<Long>(0);
 						constituencyIds.add(vo.getConstituencyId());
@@ -1326,12 +1332,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						if(commonMethodsUtilService.isListOrSetValid(list))
 							for (LocationWiseBoothDetailsVO vo1 : list) {
 								String digit = vo1.getLocationId().toString().charAt(0)+"";
-								Long id = 0L;
-								if(digit.trim().equalsIgnoreCase("5")){
+								Long id = vo1.getLocationId();
+								if(digit.trim().equalsIgnoreCase("4")){
 									String locatnId = vo1.getLocationId().toString().substring(1);
 									id = Long.valueOf("2"+locatnId);
 								}
-								else if(digit.trim().equalsIgnoreCase("6") || digit.trim().equalsIgnoreCase("7")){
+								else if(digit.trim().equalsIgnoreCase("5") || digit.trim().equalsIgnoreCase("6")){
 									String locatnId = vo1.getLocationId().toString().substring(1);
 									id = Long.valueOf("1"+locatnId);
 								}
@@ -1349,12 +1355,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							}
 						}*/
 					}
-					
-					vo.setPanchayatId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+					if(obj[8] != null)
+						vo.setPanchayatId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(obj[8])));
+					else if(obj[22] != null)
+						vo.setPanchayatId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(obj[22])));
 					//Panchayats
 					//if(vo.getPanchayatId()!= null && vo.getPanchayatId() > 0){
 						List<Long>  locationIds = new ArrayList<Long>(0);
-						locationIds.add(vo.getMandalId());
+						locationIds.add(commonMethodsUtilService.getLongValueForObject(obj[7]));
 						
 						List<Long>  lebsList = new ArrayList<Long>(0);
 						lebsList.add(commonMethodsUtilService.getLongValueForObject(obj[22]));
@@ -1364,7 +1372,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						if(commonMethodsUtilService.isListOrSetValid(list))
 							for (LocationWiseBoothDetailsVO vo1 : list) {
 								String digit = vo1.getLocationId().toString().charAt(0)+"";
-								Long id = 0L;
+								Long id =vo1.getLocationId();
 								if(digit.trim().equalsIgnoreCase("7")){
 									String locatnId = vo1.getLocationId().toString().substring(1);
 									id = Long.valueOf("1"+locatnId);

@@ -89,6 +89,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.INewDistrictConstituencyDAO;
+import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
@@ -278,10 +279,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private SetterAndGetterUtilService setterAndGetterUtilService;
 	private IActivityLocationInfoDatesDAO activityLocationInfoDatesDAO;
 	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
+	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	
 	
 	
-	
+	public INominationPostCandidateDAO getNominationPostCandidateDAO() {
+		return nominationPostCandidateDAO;
+	}
+
+	public void setNominationPostCandidateDAO(
+			INominationPostCandidateDAO nominationPostCandidateDAO) {
+		this.nominationPostCandidateDAO = nominationPostCandidateDAO;
+	}
+
 	public IActivityScopeRequiredAttributesDAO getActivityScopeRequiredAttributesDAO() {
 		return activityScopeRequiredAttributesDAO;
 	}
@@ -2032,7 +2042,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		CadreCommitteeVO cadreCommitteeVO = new CadreCommitteeVO();
 		try {
-			
+			List<Long> tdpCadreIdsNominatedIdsList = new ArrayList<Long>(0);
 			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, searchName,memberShipCardNo, 
 					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved);
 			List<CadreCommitteeVO> cadreCommitteeList = null;
@@ -2049,7 +2059,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					for (TdpCadreVO tdpCadre : tdpCadreVOList)
 					{
 						tdpCadreIdsList.add(tdpCadre.getId());
-						
+						tdpCadreIdsNominatedIdsList.add(tdpCadre.getId());
 						CadreCommitteeVO committeeVO = new CadreCommitteeVO();
 						committeeVO.setTdpCadreId(tdpCadre.getId());
 						if(tdpCadre.getMemberShipNo() != null){
@@ -2095,8 +2105,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					
 				}
 				
-				cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
+				//cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
 			}
+			
+			if(maxIndex == 0 && commonMethodsUtilService.isListOrSetValid(tdpCadreIdsNominatedIdsList)){
+				List<Object[]> nominatedCandidatesList = nominationPostCandidateDAO.getNOminatedCadreList(tdpCadreIdsNominatedIdsList);
+				if(commonMethodsUtilService.isListOrSetValid(nominatedCandidatesList)){
+					for (Object[] param : nominatedCandidatesList) {
+						CadreCommitteeVO cadreCommitteVO =  (CadreCommitteeVO) setterAndGetterUtilService.getMatchedVOfromList(cadreCommitteeList, "tdpCadreId", commonMethodsUtilService.getStringValueForObject(param[0]));
+						if(cadreCommitteVO != null){
+							cadreCommitteVO.setNominatedPostCandidateId(commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+				}
+			}
+			
+			cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCadreCommitte", e);
