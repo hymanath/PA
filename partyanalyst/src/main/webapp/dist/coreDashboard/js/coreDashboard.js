@@ -135,6 +135,33 @@
  			buildCommitteesWiseLevelsBasedDetails(result);
  		});
  	}
+	function getBasicComparativeWiseCommitteesCounts(){
+		
+	   var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+		
+	   var state = 'AP';
+	   var firstMonthString = '04/2015';
+	   var secondMonthString = '04/2016';
+	   var jsObj ={ 
+				userAccessLevelId : globalUserAccessLevelId,
+				userAccessLevelValuesArray : globalUserAccessLevelValues,
+				state : state,
+				basicCommitteeIdsArray:basicCommitteeIdsArray,
+				firstMonthString  : firstMonthString,
+				secondMonthString :   secondMonthString
+			  };
+		 $.ajax({
+ 			type : 'POST',
+ 			url : 'getBasicComparativeWiseCommitteesCountsAction.action',
+ 			dataType : 'json',
+ 			data : {task:JSON.stringify(jsObj)}
+ 		}).done(function(result){
+ 			
+ 		});
+	}
 	
 	function buildCommitteesWiseLevelsBasedDetails(result){
 		if(result != null && result.length > 0){
@@ -295,9 +322,9 @@
 				
 		}
 	}
-	
 		
 }
+
 function blockHeights()
 {
 	var maxHeight = 0;
