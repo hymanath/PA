@@ -431,13 +431,19 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
 			str+='<tr>';
+				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				str+='<td>'+result.subList[i].voterMoblie+'</td>';
+				str+='<td>'+result.subList[i].voterGender+'</td>';
+				str+='<td>'+result.subList[i].age+'</td>';
+				str+='<td>'+result.subList[i].caste+'</td>';
+				str+='<td>'+result.subList[i].casteName+'</td>';
 			if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
+					/*str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
 					str+='<td>'+result.subList[i].cadreMobile+'</td>';
 					str+='<td>'+result.subList[i].cadreGender+'</td>';
 					str+='<td>'+result.subList[i].age+'</td>';
 					str+='<td>'+result.subList[i].caste+'</td>';
-					str+='<td>'+result.subList[i].casteName+'</td>';
+					str+='<td>'+result.subList[i].casteName+'</td>';*/
 					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.trim.length > 0)
 						str+='<td>'+result.subList[i].partyPosition+'</td>';
 					else
@@ -454,14 +460,12 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					//Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
 			}
 			else{
-				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
-					str+='<td>'+result.subList[i].voterMoblie+'</td>';
 					str+='<td> - </td>';
 					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
+					//str+='<td> - </td>';
+					//str+='<td> - </td>';
+					//str+='<td> - </td>';
+					//str+='<td> - </td>';
 			}
 				str+='<td>'+result.subList[i].appliedDeptCount+'</td>';
 				str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
