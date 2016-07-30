@@ -246,6 +246,9 @@
                              </div>							
                              <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
 	                </div>
+	                </div>
+	               
+				   <div class="row" style="display:none;" id="showAndHideDivId">
 					<div id="appliedPostForSelectedId" class="hideDivCls"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
@@ -509,7 +512,7 @@
 						</div>
 					</div>
 					
-                </div>
+               
                  <div class="col-md-12 col-xs-12 col-sm-12 m_top10 hideDivCls">
                         <h4 class="panel-title text-success">REFERRAL</h4>
                         <label>Do you have reference</label><br/>
@@ -520,7 +523,7 @@
                         <label class="radio-inline">
                         	<input type="radio" checked="true" name="radio"/>No
                         </label>
-                    </div>
+                 </div>
 					<!--<div class="m_top10 hideDivCls" id="involvedCandidatesDiv1">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
@@ -568,7 +571,7 @@
                             </div>
                         </div>-->
                     </div>
-					<div class="row hideDivCls" id="uploadFlDivId" >
+					<div class="row hideDivCls" id="uploadFlDivId">
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p>UPLOAD SCAN COPY</p>
 								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
@@ -581,8 +584,8 @@
 						<div style="margin-top:12px;"><img id="savingAjaxImg" src="images/icons/loading.gif" style="display:none;"/></div>
 						<div class="col-md-6 m_top25" id="savingStatusDivId"></div>
                     </div>
-					
-					</form>
+					</div>
+				</form>
 	       </div>
       	  </div>
         </div>

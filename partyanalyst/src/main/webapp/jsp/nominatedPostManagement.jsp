@@ -34,7 +34,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-			<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i> LOCATION FILTER</button>
+			<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i></button>
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
 			<div class="panel panel-default">
