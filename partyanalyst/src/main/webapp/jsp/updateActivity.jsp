@@ -844,7 +844,7 @@ function buildingResults(result,locationName){
 		str+='</thead>';
 		for(var i in result){
 		 str+='<tr>';
-		str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
+		str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="https://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
 		
 		 str+=' </td>';
 		 str+='<td> '+result[i].name+' ';

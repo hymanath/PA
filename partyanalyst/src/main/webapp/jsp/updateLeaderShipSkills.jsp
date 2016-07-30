@@ -514,12 +514,12 @@ function getLeaderShipDetails()
 								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 									if(results.healthCardAttachments[i].name != null && results.healthCardAttachments[i].name.trim().lenght>0)
 									{
-										str+='<img src="http://www.mytdp.com/tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+										str+='<img src="https://www.mytdp.com/tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
 										
 									}
 									else
 									{
-									str+='<img src="http://www.mytdp.com/tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+									str+='<img src="https://www.mytdp.com/tdp_cadre_health_cards'+results.healthCardAttachments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
 									}
 									
 								
@@ -583,12 +583,12 @@ function getLeaderShipDetails()
 								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 									if(results.feedbackDocuments[i].name != null && results.feedbackDocuments[i].name.trim().lenght>0)
 									{
-str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
 										
 									}
 									else
 									{
-str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+str+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
 									}
 									
 									
@@ -609,8 +609,8 @@ str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDo
 								
 								buildStr+='<li class="slick-training-slide">';
 								buildStr+='<div class="" style="width: 800px;">';
-								buildStr+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'" class="img-responsive " alt="" >';
-								//buildStr+='<img src="http://www.mytdp.com/tdp_cadre_health_cards/2015/10/73ae4177-fea7-49f2-bfd7-4a077bf239e2_6677977.jpg" class="img-responsive " alt="" style="padding: 3px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(211, 211, 211); margin-left: 10px;" >';
+								buildStr+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'" class="img-responsive " alt="" >';
+								//buildStr+='<img src="https://www.mytdp.com/tdp_cadre_health_cards/2015/10/73ae4177-fea7-49f2-bfd7-4a077bf239e2_6677977.jpg" class="img-responsive " alt="" style="padding: 3px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 1px solid rgb(211, 211, 211); margin-left: 10px;" >';
 								buildStr+='<p class="">${subList.name}</p>';
 								buildStr+='</div>';
 								buildStr+='</li>';
@@ -619,12 +619,12 @@ str+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDo
 								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 									if(results.feedbackDocuments[i].name != null && results.feedbackDocuments[i].name.trim().lenght>0)
 									{
-										buildStr+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+										buildStr+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
 										
 									}
 									else
 									{
-										buildStr+='<img src="http://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
+										buildStr+='<img src="https://www.mytdp.com/cadre_feedback_document'+results.feedbackDocuments[i].name+'\" width="85%" height="300px;" style="margin-top:10px;"/>';
 									}
 									 */
 									

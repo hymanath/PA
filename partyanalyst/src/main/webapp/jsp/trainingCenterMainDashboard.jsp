@@ -1173,7 +1173,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<tbody>';
 					for(var i in result){
 						str+='<tr>';
-						str+='<td><a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" ><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageStr+'" style="width: 50px;"/></a></td>';
+						str+='<td><a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" ><img src="https://www.mytdp.com/images/cadre_images/'+result[i].imageStr+'" style="width: 50px;"/></a></td>';
 						str+='<td> <b> NAME: </b> <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].name+' </a><br> ';
 						
 						if(result[i].status != null)
@@ -1222,7 +1222,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<tbody>';
 					for(var i in result){
 						str+='<tr>';						
-						str+='<td><a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" ><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageStr+'" style="width: 50px;"/></a></td>';
+						str+='<td><a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" ><img src="https://www.mytdp.com/images/cadre_images/'+result[i].imageStr+'" style="width: 50px;"/></a></td>';
 						str+='<td> <b> NAME: </b> <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].name+' </a><br>';
 						
 						if(result[i].status != null)
@@ -1665,7 +1665,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 	
 	/* $(document).on("click",".cadreCls",function(){
 		var cadreId = $(this).attr("attr_cadre_id");
-		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
+		window.open("https://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
 	}); */
 
 	
