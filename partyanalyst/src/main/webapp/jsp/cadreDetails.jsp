@@ -19,7 +19,7 @@
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link href="js/scrollator/fm.scrollator.jquery.css" rel="stylesheet" type="text/css">
 	<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
@@ -2511,15 +2511,15 @@ function buildReport()
 				{
 						for(var j in nominatedResult[i].scanCopyList)
 						{
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >N/A</span></td>'; 
 						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 
 					}
 				}
 					else
 					{
-							str +='<td><span>'+nominatedResult[i].issueType+'</span></td>'; 
-							str +='<td><span>'+nominatedResult[i].status+'</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
+							str +='<td><span>N/A</span></td>'; 
 							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
 					}
 				
@@ -2549,15 +2549,15 @@ function buildReport()
 				{
 						for(var j in nominatedResult[i].scanCopyList)
 						{
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+'</span></td>'; 
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >'+nominatedResult[i].status+'</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >N/A</span></td>'; 
 						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
 					}
 				}
 					else
 					{
-							str +='<td><span>'+nominatedResult[i].issueType+'</span></td>'; 
-							str +='<td><span>'+nominatedResult[i].status+'</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
+							str +='<td><span>N/A</span></td>'; 
 							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
 					}
 				
