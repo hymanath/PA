@@ -160,15 +160,16 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominatedPostFinalId," +
 					" model.nominationPostCandidate.nominationPostCandidateId," +
-					" TC.tdpCadreId," +
+					" model.nominationPostCandidate.tdpCadreId," +
 					" model.nominationPostCandidate.voterId," +
 					" model.nominationPostCandidate.candidateName," +
 					" model.nominationPostCandidate.mobileNo," +
 					" model.nominationPostCandidate.gender," +
-					" TC.firstname," +
+					" model.nominationPostCandidate.age," +
+					/*" TC.firstname," +
 					" TC.mobileNo," +
 					" TC.age," +
-					" TC.gender," +
+					" TC.gender," +*/
 					" CC.categoryName," +
 					" CCG.casteCategoryGroupName," +
 					" caste.casteName," +
@@ -177,21 +178,25 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" model.isPrefered," +
 					" model1.nominatedPostApplicationId" +
 					" from NominatedPostFinal model,NominatedPostApplication model1" +
-					" left join model.nominationPostCandidate.tdpCadre TC" +
-					" left join TC.casteState CS" +
+					//" left join model.nominationPostCandidate.tdpCadre TC" +
+					" left join model.nominationPostCandidate.casteState CS" +
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
 					" where model.nominationPostCandidateId = model1.nominationPostCandidateId" +
-					" and model.nominatedPostMember.boardLevelId = :levelId" +
+					" and model1.boardLevelId = :levelId" +
+					" and model1.departmentId = :departmentId" +
+					" and model1.boardId = :boardId" +
+					" and model1.positionId = :positionId" +
+					/*" and model.nominatedPostMember.boardLevelId = :levelId" +
 					" and model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId" +
 					" and model.nominatedPostMember.nominatedPostPosition.boardId = :boardId" +
-					" and model.nominatedPostMember.nominatedPostPosition.positionId = :positionId" +
+					" and model.nominatedPostMember.nominatedPostPosition.positionId = :positionId" +*/
 					" and model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N'" +
 					" and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
 					" and model.nominationPostCandidate.isDeleted = 'N'");
 		if(levelValue != null && levelValue.longValue() > 0l)
-			sb.append(" and model.nominatedPostMember.locationValue = :levelValue");
+			sb.append(" and model1.locationValue = :levelValue");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("levelId", levelId);

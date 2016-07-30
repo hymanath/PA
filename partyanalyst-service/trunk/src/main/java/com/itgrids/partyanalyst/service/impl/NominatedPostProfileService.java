@@ -3117,8 +3117,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
-				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","cadreName",
-						"cadreMobile","age","cadreGender","caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId"};
+				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","age",
+						"caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId"};
 			subList = (List<NominatedPostReferVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostReferVO");
 			}
 			
