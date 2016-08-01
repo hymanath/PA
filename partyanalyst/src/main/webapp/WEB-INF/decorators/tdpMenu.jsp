@@ -729,6 +729,20 @@ footer
 				
 										 </ul>
 									</li>
+									<li>
+										<a href="#"><i class="fa  fa-calendar-plus-o ico-white"></i><span>&nbsp;&nbsp;Nominated Post </span></a>
+										 <h2><i class="fa fa-pencil ico-white line_heightDiv"></i> Nominated Post </h2>
+										 <ul>
+										 
+										  <li>
+										<a href="nominatedPostProfileAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Apply Nominated Post</span></a>
+										</li>
+										  <li>
+										<a href="nominatedPostApplicationReviewAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Nominated Posts Overview</span></a>
+										</li>
+				
+										 </ul>
+									</li>
 				 
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
