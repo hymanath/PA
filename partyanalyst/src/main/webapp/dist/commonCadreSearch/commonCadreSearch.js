@@ -872,9 +872,9 @@ function showHideSearch(type)
 			  var attrConsti =  $(this).attr("attr-consti");
 		 if($(this).is(':checked')){
 			 $("#involvedCandidatesDiv").show();
-			 $("#involvedCandidatesDiv1").show();
+			// $("#involvedCandidatesDiv1").show();
 			 $(".membersBlock").show();
-			$(".membersBlock1").show();
+			//$(".membersBlock1").show();
 			  
 			var str ='';
 			str+='<div class="col-md-12 block">';
@@ -892,9 +892,9 @@ function showHideSearch(type)
 			   $('html, body').animate({
                     scrollTop: $('.membersBlock').offset().top
                 }, 2000);
-				$('html, body').animate({
+				/*$('html, body').animate({
                     scrollTop: $('.membersBlock1').offset().top
-                }, 2000);
+                }, 2000);*/
 				$("#assignBtnId").show();
 				commontdpCadreIds.push(attrId);
 		 }
