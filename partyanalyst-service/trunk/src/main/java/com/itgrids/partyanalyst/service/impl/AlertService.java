@@ -864,20 +864,36 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public ResultStatus saveAlertAssignedUser(AlertVO inputVO,Long userId)
 	{
 		ResultStatus rs = new ResultStatus();
+		List<Long> tdpCadreIds = new ArrayList();
 		try{
 			 DateUtilService date = new DateUtilService();
+			  List<Long> existCadreIds = new ArrayList<Long>();
 			 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
-			 for(IdNameVO vo : inputVO.getIdNamesList() )
 			 {
-				AlertAssigned alertAssigned = new AlertAssigned();
-				alertAssigned.setAlertId(inputVO.getAlertTypeId());
-				alertAssigned.setTdpCadreId(vo.getId());
-				alertAssigned.setCreatedBy(userId);
-				alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
-				alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
-				alertAssignedDAO.save(alertAssigned);
+				 
+				 for(IdNameVO vo : inputVO.getIdNamesList() )
+				 {
+					 tdpCadreIds.add(vo.getId());
+				 }
+				  existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(tdpCadreIds,inputVO.getAlertTypeId());
+				  
+				 for(IdNameVO vo : inputVO.getIdNamesList() )
+				 {
+					 if(!existCadreIds.contains(vo.getId()))
+					 {
+						AlertAssigned alertAssigned = new AlertAssigned();
+						alertAssigned.setAlertId(inputVO.getAlertTypeId());
+						alertAssigned.setTdpCadreId(vo.getId());
+						alertAssigned.setCreatedBy(userId);
+						alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+						alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+						alertAssignedDAO.save(alertAssigned);
+					 }
+				 }
 			 }
 			rs.setResultCode(0);
+			if(existCadreIds != null && existCadreIds.size() > 0)
+			rs.setMessage(Integer.toString(existCadreIds.size()));
 		}
 		catch(Exception e)
 		{
