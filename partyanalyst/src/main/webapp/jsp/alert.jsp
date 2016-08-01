@@ -242,8 +242,8 @@
 								</div>
 							</div>
 						</div>-->
-						<div class="membersBlock"></div>
-                        <div class="col-md-3">
+						<div class="row membersBlock"></div>
+                        <div class="col-md-3  m_top10">
                         	<div class="involveBlockNew">
                             	<div class="media">
                                 	<div class="media-left" style="font-size:36px">
@@ -439,7 +439,7 @@ $(document).on("click",".involveBlockNew",function(){
 	var select = new Dropkick("#advanceSearchTypeId");
 				select.refresh();	
 		showHideBySearchType();	
-					disableByLevel(1);
+					
 })
 // Load the Google Transliterate API
    google.load("elements", "1", {
