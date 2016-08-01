@@ -172,36 +172,9 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	var levelValues = 299; */
 	$("#departmentsBuildId").html("");
 	$("#departmentsBuildSearchId").show();
-	var searchlevelId = parseInt('{lId}');
-	var searchlevelValue = parseInt('{stId}');
-
-	var stateId = $("#stateId").val();
-	var districtId=$("#districtId").val();
-	var constituencyId=$("#constituencyId").val();
-	var mandalTownDivId=$("#manTowDivId").val();
-	
-	if(mandalTownDivId >0){
-		searchlevelId = 5;
-		searchlevelValue = mandalTownDivId;
-	}
-	else if(constituencyId >0){
-		searchlevelId = 4;
-		searchlevelValue = constituencyId;
-	}
-	else if(districtId >0){
-		searchlevelId = 3;
-		searchlevelValue = districtId;
-	}
-	else if(stateId >0){
-		searchlevelId = 2;
-		searchlevelValue = stateId;
-	}
-
 	var jsObj={
-		levelId:parseInt('{lId}'),
+		levelId:levelId,
 		levelValues:levelValues,
-		searchlevelId:searchlevelId,
-		searchlevelValue:searchlevelValue,
 		statusType:globalStatus,
 		task:""
 	}
