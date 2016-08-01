@@ -515,7 +515,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 							str+='</select>';
 							str+='<label class="m_top10">Comments</label>';
 							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
-							str+='<button class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
+							str+='<button class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -593,6 +593,8 @@ $(document).on("click",".submitBtnCls",function(){
 	var statusId = $(this).attr("attr_status_id");
 	var commentId = $(this).attr("attr_comment_id");
 	var divId = $(this).attr("attr_success_div_id");
+	var candidateId = $(this).attr("attr_candidate_id");
+	var applicationId = $(this).attr("attr_application_id");
 	
 	var status = $("#"+statusId).val();
 	var comment = $("#"+commentId).val();
@@ -602,6 +604,8 @@ $(document).on("click",".submitBtnCls",function(){
 		postFinalId:postFinalId,
 		statusId:status,
 		comment :comment,
+		applicationId :applicationId,
+		candidateId :candidateId
 	   }
     $.ajax({
           type:'GET',
