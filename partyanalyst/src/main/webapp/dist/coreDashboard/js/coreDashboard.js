@@ -21,8 +21,8 @@
 	function getMainCommitteeCountDetails(){
 		
 		var committeeId = 1;
-		var state ="AP"
-	   var jsObj ={committeeId:committeeId,state:state}
+		
+	   var jsObj ={committeeId:committeeId,state:globalState}
 	   $.ajax({
 			type : 'GET',
 			url : 'getMainCommitteeCountDetailsAction.action',
@@ -42,11 +42,8 @@
 				CommCompletedArray=results[i].mainCommCompletedCount;
 				CommStartedArray=results[i].mainCommStartedCount;
 				CommYetToStarted=results[i].mainCommNotYetStarted;
-				
 			}
-			
 		}
-		
 		$('#committees').highcharts({
 			colors:['#CBE7B9','#00C7F7','#D6EB59'],
 			chart: {
@@ -103,7 +100,6 @@
 			}]
 
 		  });
-	
 	}
 	
 	function getCommitteesWiseLevelsBasedDetails(){
@@ -115,12 +111,11 @@
 	   
        var startDateString = '01/01/2015';
 	   var endDateString = '28/07/2016';
-	   var state = 'AP';
 	   
  	   var jsObj ={ 
 	                userAccessLevelId : globalUserAccessLevelId,
  			        userAccessLevelValuesArray : globalUserAccessLevelValues,
- 			        state : state,
+ 			        state : globalState,
  			        basicCommitteeIdsArray:basicCommitteeIdsArray,
  			        startDateString : startDateString,
  			        endDateString :   endDateString
@@ -141,14 +136,13 @@
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
-		
-	   var state = 'AP';
+	   
 	   var firstMonthString = '04/2015';
 	   var secondMonthString = '02/2016';
 	   var jsObj ={ 
 				userAccessLevelId : globalUserAccessLevelId,
 				userAccessLevelValuesArray : globalUserAccessLevelValues,
-				state : state,
+				state : globalState,
 				basicCommitteeIdsArray:basicCommitteeIdsArray,
 				firstMonthString  : firstMonthString,
 				secondMonthString :   secondMonthString
@@ -169,14 +163,13 @@
 	       basicCommitteeIdsArray.push(1);
 	       basicCommitteeIdsArray.push(2);
 	       basicCommitteeIdsArray.push(3);
-			
-		   var state = 'AP';
+		   
 		   var firstMonthString = '04/2015';
 		   var secondMonthString = '05/2016';
 		   var jsObj ={ 
 					userAccessLevelId : globalUserAccessLevelId,
 					userAccessLevelValuesArray : globalUserAccessLevelValues,
-					state : state,
+					state : globalState,
 					basicCommitteeIdsArray:basicCommitteeIdsArray,
 					firstMonthString  : firstMonthString,
 					secondMonthString :   secondMonthString
