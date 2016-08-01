@@ -1108,4 +1108,26 @@ return Action.SUCCESS;
 		
 		return Action.SUCCESS;
 	}
+	
+public String getPositionsForDistrict(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			Long positionId = jObj.getLong("positionId");
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			Long deptId = jObj.getLong("deptId");
+			Long boardId = jObj.getLong("boardId");
+			Long castegroupId = jObj.getLong("castegroupId");
+			Long positionStatusId = jObj.getLong("positionStatusId");
+			Long stateId = jObj.getLong("stateId");
+			Long districtId = jObj.getLong("districtId");
+			
+			nominatedPostDashboardvoList =nominatedPostMainDashboardService.getPositionsForDistrict(positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNotCadreDetailsById() method of NominatedPostProfileAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
+	
 }

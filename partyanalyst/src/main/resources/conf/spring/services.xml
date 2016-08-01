@@ -3345,6 +3345,7 @@
 		<property name="nominationPostCandidateDAO" ref="nominationPostCandidateDAO"></property>
 		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>  
+		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO"></property> 
 	</bean>
 </beans>		
 	

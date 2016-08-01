@@ -554,63 +554,7 @@
                                         <td>10</td>
                                         <td><i class="glyphicon glyphicon-plus changeIconClass"></i></td>
                                     </tr>
-                                    <tr class="showHideTr">
-                                    	<td colspan="9" class="pad_15">
-                                        	<table class="table table-condensed table-striped">
-                                            	<thead class="text-capital">
-                                                	<th>Position</th>
-                                                    <th>total positions</th>
-                                                    <th>M</th>
-                                                    <th>F</th>
-                                                    <th>20-29</th>
-                                                    <th>30-39</th>
-                                                    <th>50-59</th>
-                                                    <th>60+</th>
-                                                </thead>
-                                                <tbody class="text-capital">
-                                                	<tr>
-                                                    	<td>charimen</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>charimen</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>charimen</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                    </tr>
-                                                    <tr>
-                                                    	<td>charimen</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                        <td>04</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
+                                    <tr class="showHideTr" id="districtPositionId">
                                     </tr>
                                 </tbody>
                             </table>
