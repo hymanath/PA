@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
@@ -12,6 +15,16 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 	public AlertAssignedDAO() {
 		super(AlertAssigned.class);
 		
+	}
+	
+	
+	public List<Long> checkCadreExistsForAlert(List<Long> tdpCadreIds,Long alertId)
+	{
+		Query query = getSession().createQuery("select distinct model.tdpCadre.tdpCadreId from AlertAssigned model" +
+				" where model.alert.alertId = :alertId and model.tdpCadre.tdpCadreId in(:tdpCadreIds)");
+		query.setParameter("alertId", alertId);
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return query.list();
 	}
 
 }
