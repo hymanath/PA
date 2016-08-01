@@ -1612,8 +1612,8 @@ function getTotalComplaintsForCandidate(){
 				  data: JSON.stringify(arr),
 				 contentType: "application/json; charset=utf-8",
 				 dataType: "json",
-				 username: "grievance",
-				 password: "grievance@!tG"	
+					username: "grievance",
+					password: "grievance@!tG"	
 				 }).done(function(myresult){
 					$("#candidateapprovedDiv").hide();
 					$("#candidatedeathDiv").hide();
@@ -1690,7 +1690,7 @@ function getPDFReportsForNominatedComplaints(){
 		}else{
 		$("#candidateapprovedDiv").hide();
 		}
-		$("#candidateBenifitsCountsId").html(totalCounts);
+		$("#candidateBenifitsCountsId").html(result[0].count + result[1].count);
 	}
 	var comp = '';
 	comp += '<ul class="inbox-messages custom-scroll-ins" style="margin-bottom:0px;">';
