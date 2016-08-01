@@ -15,9 +15,36 @@ public class NominatedPostDashboardVO {
 	private List<NominatedPostDashboardVO>  applicatnStatsList= new ArrayList<NominatedPostDashboardVO>();
 	private List<NominatedPostDashboardVO>  positinsList= new ArrayList<NominatedPostDashboardVO>();
 	private List<NominatedPostDashboardVO>  nominatedStatusList= new ArrayList<NominatedPostDashboardVO>();
+	private Long id;
+	private String name;
+	private Long maleCount = 0l;
+	private Long femaleCount = 0l;
 	
 	
-	
+	public Long getMaleCount() {
+		return maleCount;
+	}
+	public void setMaleCount(Long maleCount) {
+		this.maleCount = maleCount;
+	}
+	public Long getFemaleCount() {
+		return femaleCount;
+	}
+	public void setFemaleCount(Long femaleCount) {
+		this.femaleCount = femaleCount;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public List<NominatedPostDashboardVO> getApplicatnStatsList() {
 		return applicatnStatsList;
 	}

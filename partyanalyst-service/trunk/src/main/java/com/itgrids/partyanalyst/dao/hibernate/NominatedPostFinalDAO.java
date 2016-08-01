@@ -209,6 +209,171 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	
+	public List<Object[]> getGenderWiseTotalCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.gender," +
+					" count(model.nominatedPostFinalId)");
+		sb.append(" from NominatedPostFinal model" +
+					" where");
+		if(positionId != null && positionId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+		if(levelId != null && levelId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		if(deptId != null && deptId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+		if(boardId != null && boardId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			sb.append(" model.applicationStatusId = :applStatusId and");
+		
+		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+					" group by model.nominationPostCandidate.gender");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(positionId != null && positionId.longValue() > 0l)
+			query.setParameter("positionId", positionId);
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("levelId", levelId);
+		if(deptId != null && deptId.longValue() > 0l)
+			query.setParameter("deptId", deptId);
+		if(boardId != null && boardId.longValue() > 0l)
+			query.setParameter("boardId", boardId);
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			query.setParameter("casteGroupId", casteGroupId);
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			query.setParameter("applStatusId", applStatusId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteWiseTotalCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+					" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
+					" count(model.nominatedPostFinalId)");
+		sb.append(" from NominatedPostFinal model" +
+					" where");
+		if(positionId != null && positionId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+		if(levelId != null && levelId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		if(deptId != null && deptId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+		if(boardId != null && boardId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			sb.append(" model.applicationStatusId = :applStatusId and");
+		
+		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+					" group by model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(positionId != null && positionId.longValue() > 0l)
+			query.setParameter("positionId", positionId);
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("levelId", levelId);
+		if(deptId != null && deptId.longValue() > 0l)
+			query.setParameter("deptId", deptId);
+		if(boardId != null && boardId.longValue() > 0l)
+			query.setParameter("boardId", boardId);
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			query.setParameter("casteGroupId", casteGroupId);
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			query.setParameter("applStatusId", applStatusId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAgeGroupWiseTotalCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
+					" count(model.nominatedPostFinalId)");
+		sb.append(" from NominatedPostFinal model" +
+					" where");
+		if(positionId != null && positionId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+		if(levelId != null && levelId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		if(deptId != null && deptId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+		if(boardId != null && boardId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			sb.append(" model.applicationStatusId = :applStatusId and");
+		
+		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+					" group by model.nominationPostCandidate.nominatedPostAgeRangeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(positionId != null && positionId.longValue() > 0l)
+			query.setParameter("positionId", positionId);
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("levelId", levelId);
+		if(deptId != null && deptId.longValue() > 0l)
+			query.setParameter("deptId", deptId);
+		if(boardId != null && boardId.longValue() > 0l)
+			query.setParameter("boardId", boardId);
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			query.setParameter("casteGroupId", casteGroupId);
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			query.setParameter("applStatusId", applStatusId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteCategoryGroupWiseCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+					" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
+					" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
+					" model.nominationPostCandidate.gender," +
+					" count(model.nominatedPostFinalId)");
+		sb.append(" from NominatedPostFinal model" +
+					" where");
+		if(positionId != null && positionId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+		if(levelId != null && levelId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		if(deptId != null && deptId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+		if(boardId != null && boardId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			sb.append(" model.applicationStatusId = :applStatusId and");
+		
+		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+					" group by" +
+					" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+					" model.nominationPostCandidate.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.gender");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(positionId != null && positionId.longValue() > 0l)
+			query.setParameter("positionId", positionId);
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("levelId", levelId);
+		if(deptId != null && deptId.longValue() > 0l)
+			query.setParameter("deptId", deptId);
+		if(boardId != null && boardId.longValue() > 0l)
+			query.setParameter("boardId", boardId);
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			query.setParameter("casteGroupId", casteGroupId);
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			query.setParameter("applStatusId", applStatusId);
+		
+		return query.list();
+	}
+	
 	 public List<Object[]> getCandidateCasteList(Long locationLevelId){
 		 
 		 StringBuilder queryStr = new StringBuilder();
