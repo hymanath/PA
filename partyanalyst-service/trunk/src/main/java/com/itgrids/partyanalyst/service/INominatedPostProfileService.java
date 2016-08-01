@@ -48,5 +48,6 @@ public interface INominatedPostProfileService {
 	public IdNameVO getOverAllCommentsForCandidate(Long candidateId);
 	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId);
 	public String updateWishListForCandidate(final Long postFinalId,final String remark,final Long userId);
+	public NominatedPostDashboardVO getOverAllTotalCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId);
 	public List<NominatedPostDashboardVO> getCasteGroupWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId);
 }
