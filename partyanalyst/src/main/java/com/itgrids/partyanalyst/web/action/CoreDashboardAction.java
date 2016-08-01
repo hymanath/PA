@@ -31,6 +31,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private UserDataVO userDataVO;
 	private List<CommitteeBasicVO> committeeBasicVO;
 	private List<CommitteeVO> committeeVOList;
+	private CommitteeVO committeeVO ;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	
@@ -83,6 +84,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCommitteeVOList(List<CommitteeVO> committeeVOList) {
 		this.committeeVOList = committeeVOList;
 	}
+	
+	public CommitteeVO getCommitteeVO() {
+		return committeeVO;
+	}
+
+	public void setCommitteeVO(CommitteeVO committeeVO) {
+		this.committeeVO = committeeVO;
+	}
 
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
@@ -116,19 +125,34 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	public String getMainCommitteeCountDetails(){
+	public String getCommitteesCumulativeBasicReportChart(){
 		try{
 			jObj = new JSONObject(getTask());
-			committeeBasicVO = coreDashboardService.getMainCommitteeCountDetails(jObj.getLong("committeeId"),jObj.getString("state"));
+			
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			Long basicCommitteeId = jObj.getLong("basicCommitteeId");
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			
+			committeeVO = coreDashboardService.getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValues,state,basicCommitteeId,startDateString,endDateString);
 		}catch(Exception e){
 			LOG.error("Exception raised at getMainCommitteeCountDetails() method of coreDashboardAction", e);
 		}
 		
 		return Action.SUCCESS;
 	}
-	public String getCommitteesWiseLevelsBasedDetails(){
+	
+	public String getCommitteesCumulaticeOverallReportCharts(){
 		try{
-			LOG.info("Entered into getCommitteesWiseLevelsBasedDetails()  of CoreDashboardAction");
+			LOG.info("Entered into getCommitteesCumulaticeOverallReportCharts()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
 			
 			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
@@ -153,17 +177,17 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String startDateString = jObj.getString("startDateString");
 			String endDateString = jObj.getString("endDateString");
 			
-			committeeVOList = coreDashboardService.getCommitteesWiseLevelsBasedDetails(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			committeeVOList = coreDashboardService.getCommitteesCumulaticeOverallReportCharts(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at getCommitteesWiseLevelsBasedDetails() method of CoreDashBoard", e);
+			LOG.error("Exception raised at getCommitteesCumulaticeOverallReportCharts() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
 	
-	public String getBasicComparativeWiseCommitteesCounts(){
+	public String getCommitteesComparativeBascicReportChart(){
 		try{
-			LOG.info("Entered into getBasicComparativeWiseCommitteesCounts()  of CoreDashboardAction");
+			LOG.info("Entered into getCommitteesComparativeBascicReportChart()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
 			
 			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
@@ -188,15 +212,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String firstMonthString = jObj.getString("firstMonthString");
 			String secondMonthString = jObj.getString("secondMonthString");
 			
-			committeeVOList = coreDashboardService.getBasicComparativeWiseCommitteesCounts(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstMonthString,secondMonthString);
+			committeeVOList = coreDashboardService.getCommitteesComparativeBascicReportChart(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstMonthString,secondMonthString);
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at getBasicComparativeWiseCommitteesCounts() method of CoreDashBoard", e);
+			LOG.error("Exception raised at getCommitteesComparativeBascicReportChart() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
 	
-	public String levelWiseComparativeCountsByBasicCommittees(){
+	public String getCommitteesComparativeOverallReportChart(){
 		try{
 			LOG.info("Entered into levelWiseComparativeCountsByBasicCommittees()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
@@ -223,10 +247,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String firstMonthString = jObj.getString("firstMonthString");
 			String secondMonthString = jObj.getString("secondMonthString");
 			
-			committeeVOList = coreDashboardService.levelWiseComparativeCountsByBasicCommittees(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstMonthString,secondMonthString);
+			committeeVOList = coreDashboardService.getCommitteesComparativeOverallReportChart(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstMonthString,secondMonthString);
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at levelWiseComparativeCountsByBasicCommittees() method of CoreDashBoard", e);
+			LOG.error("Exception raised at getCommitteesComparativeOverallReportChart() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}

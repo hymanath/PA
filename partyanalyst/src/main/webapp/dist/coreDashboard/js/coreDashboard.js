@@ -3,7 +3,7 @@
 		
 		var jsObj ={userId:globalUserId}
 		$.ajax({
-			type : 'GET',
+			type : 'POST',
 			url : 'getUserBasicDetailsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
@@ -18,31 +18,39 @@
 		});
 	}
 	
-	function getMainCommitteeCountDetails(){
+	function getCommitteesCumulativeBasicReportChart(){
 		
-		var committeeId = 1;
-		
-	   var jsObj ={committeeId:committeeId,state:globalState}
+	    var basicCommitteeId = 1;
+        var startDateString = '01/01/2015';
+	    var endDateString = '28/07/2016';
+	   
+ 	   var jsObj ={ 
+	                userAccessLevelId : globalUserAccessLevelId,
+ 			        userAccessLevelValuesArray : globalUserAccessLevelValues,
+ 			        state : globalState,
+ 			        basicCommitteeId:basicCommitteeId,
+ 			        startDateString : startDateString,
+ 			        endDateString :   endDateString
+ 			      };
+	  
 	   $.ajax({
-			type : 'GET',
-			url : 'getMainCommitteeCountDetailsAction.action',
+			type : 'POST',
+			url : 'getCommitteesCumulativeBasicReportChartAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(results){
 			buildMainCommitteChart(results);
 		});
 	}
-	function buildMainCommitteChart(results){
+	function buildMainCommitteChart(result){
 		
 		var CommCompletedArray ="";
 		var CommStartedArray ="";
 		var CommYetToStarted ="";
-		if(results !=null ){
-			for(var i in results){
-				CommCompletedArray=results[i].mainCommCompletedCount;
-				CommStartedArray=results[i].mainCommStartedCount;
-				CommYetToStarted=results[i].mainCommNotYetStarted;
-			}
+		if(result !=null ){
+			CommCompletedArray=result.completedCount;
+			CommStartedArray=result.startedCount;
+			CommYetToStarted=result.yetToStartCount;
 		}
 		$('#committees').highcharts({
 			colors:['#CBE7B9','#00C7F7','#D6EB59'],
@@ -102,7 +110,7 @@
 		  });
 	}
 	
-	function getCommitteesWiseLevelsBasedDetails(){
+	function getCommitteesCumulaticeOverallReportCharts(){
        
        var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -123,14 +131,14 @@
  	   
  	   $.ajax({
  			type : 'POST',
- 			url : 'getCommitteesWiseLevelsBasedDetailsAction.action',
+ 			url : 'getCommitteesCumulaticeOverallReportChartsAction.action',
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
  			buildCommitteesWiseLevelsBasedDetails(result);
  		});
  	}
-	function getBasicComparativeWiseCommitteesCounts(){
+	function getCommitteesComparativeBascicReportChart(){
 		
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -149,7 +157,7 @@
 			  };
 		 $.ajax({
  			type : 'POST',
- 			url : 'getBasicComparativeWiseCommitteesCountsAction.action',
+ 			url : 'getCommitteesComparativeBascicReportChartAction.action',//getBasicComparativeWiseCommitteesCountsAction
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
@@ -157,7 +165,7 @@
  		});
 	}
 	
-	function levelWiseComparativeCountsByBasicCommittees(){
+	function getCommitteesComparativeOverallReportChart(){
 		
 		   var basicCommitteeIdsArray= [];
 	       basicCommitteeIdsArray.push(1);
@@ -176,7 +184,7 @@
 				  };
 			 $.ajax({
 	 			type : 'POST',
-	 			url : 'levelWiseComparativeCountsByBasicCommitteesAction.action',
+	 			url : 'getCommitteesComparativeOverallReportChartAction.action',
 	 			dataType : 'json',
 	 			data : {task:JSON.stringify(jsObj)}
 	 		}).done(function(result){

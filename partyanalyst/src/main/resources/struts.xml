@@ -13162,16 +13162,18 @@
 				<param name="root">idNameVOList</param>
 		</result>
 	</action>
-	<action name="getCommitteesWiseLevelsBasedDetailsAction" class="coreDashboardAction" method="getCommitteesWiseLevelsBasedDetails">
+	<action name="getCommitteesCumulaticeOverallReportChartsAction" class="coreDashboardAction" method="getCommitteesCumulaticeOverallReportCharts">
 		<result type="json" name="success">
 				<param name="root">committeeVOList</param>
 		</result>
 	</action>
-	<action name="getMainCommitteeCountDetailsAction" class="coreDashboardAction" method="getMainCommitteeCountDetails">
+	
+	<action name="getCommitteesCumulativeBasicReportChartAction" class="coreDashboardAction" method="getCommitteesCumulativeBasicReportChart">
 		<result type="json" name="success">
-				<param name="root">committeeBasicVO</param>
+				<param name="root">committeeVO</param>
 		</result>
 	</action>
+	
 	<action name="updateFinalyzationStatusForPostAction" class="nominatedPostProfileAction" method="updateFinalyzationStatusForPost">
 		<result type="json" name="success">
 			<param name="root">status</param>
@@ -13182,12 +13184,12 @@
 			<param name="root">status</param>
 		</result>
 	</action>
-	<action name="getBasicComparativeWiseCommitteesCountsAction" class="coreDashboardAction" method="getBasicComparativeWiseCommitteesCounts">
+	<action name="getCommitteesComparativeBascicReportChartAction" class="coreDashboardAction" method="getCommitteesComparativeBascicReportChart">
 		<result type="json" name="success">
 				<param name="root">committeeVOList</param>
 		</result>
 	</action>
-	<action name="levelWiseComparativeCountsByBasicCommitteesAction" class="coreDashboardAction" method="levelWiseComparativeCountsByBasicCommittees">
+	<action name="getCommitteesComparativeOverallReportChartAction" class="coreDashboardAction" method="getCommitteesComparativeOverallReportChart">
 		<result type="json" name="success">
 				<param name="root">committeeVOList</param>
 		</result>
