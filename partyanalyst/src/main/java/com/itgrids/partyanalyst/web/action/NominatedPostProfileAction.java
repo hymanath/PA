@@ -71,7 +71,16 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long searchLevelId;
 	private Long searchLevelValue;
 	private List<IdAndNameVO> idAndNameVOList;
+	private List<NominatedPostDashboardVO> nominatedPostDashboardvoList;
 	
+	
+	public List<NominatedPostDashboardVO> getNominatedPostDashboardvoList() {
+		return nominatedPostDashboardvoList;
+	}
+	public void setNominatedPostDashboardvoList(
+			List<NominatedPostDashboardVO> nominatedPostDashboardvoList) {
+		this.nominatedPostDashboardvoList = nominatedPostDashboardvoList;
+	}
 	public Long getSearchLevelId() {
 		return searchLevelId;
 	}
@@ -1064,5 +1073,39 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
+	public String getOverAllTotalCountsByPosition(){
+		try{
+			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();*/
+			jObj = new JSONObject(getTask());
+			
+			nominatedPostDashboardVO = nominatedPostProfileService.getOverAllTotalCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getOverAllTotalCountsByPosition Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	
+	public String getCasteGroupWiseCountsByPosition(){
+		try{
+			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();*/
+			jObj = new JSONObject(getTask());
+			
+			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteGroupWiseCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCasteGroupWiseCountsByPosition Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
