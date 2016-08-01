@@ -205,36 +205,36 @@ function disableByLevel(index)
 	 var str ='';
 	  if(jQuery.inArray(designationId, stateGrpIds ) > -1)
 	 {
-		 str+='<option value="10">State</option>';
+		 str+='<option value="2">State</option>';
 		
 		 $("#alertlevelId").append(str);
 	 }
 	else if(jQuery.inArray(designationId, distGrpIds ) > -1)
 	 {
-		 str+='<option value="10">State</option>';
-		 str+='<option value="11">District</option>';
+		 str+='<option value="2">State</option>';
+		 str+='<option value="3">District</option>';
 		 $("#alertlevelId").append(str);
 	 }
 	 else if(jQuery.inArray(designationId, distGrpIds ) > -1)
 	 {
-		 str+='<option value="10">State</option>';
-		 str+='<option value="11">District</option>';
-		  str+='<option value="1">Constituency</option>';
+		 str+='<option value="2">State</option>';
+		 str+='<option value="3">District</option>';
+		  str+='<option value="4">Constituency</option>';
 		 $("#alertlevelId").append(str);
 	 }
 	 else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
 	 {
-		 str+='<option value="10">State</option>';
-		 str+='<option value="11">District</option>';
+		 str+='<option value="2">State</option>';
+		 str+='<option value="3">District</option>';
 		 str+='<option value="5">Mandal/Muncipality</option>';
 		 $("#alertlevelId").append(str);
 	 }
 	 
 	else
 	 {
-		  str+='<option value="10">State</option>';
-		  str+='<option value="11">District</option>';
-		   str+='<option value="1">Constituency</option>';
+		  str+='<option value="2">State</option>';
+		  str+='<option value="3">District</option>';
+		   str+='<option value="4">Constituency</option>';
 		  str+='<option value="5">Mandal/Muncipality</option>';
 		  str+='<option value="6">Village/Ward</option>';
 		  $("#alertlevelId").append(str);
