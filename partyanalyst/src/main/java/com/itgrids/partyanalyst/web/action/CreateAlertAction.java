@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -181,8 +182,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 
 	public String execute()
 	{
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.CREATE_ALERT_ENTITLEMENT))
 		return Action.SUCCESS;
+		else
+			return Action.ERROR;	
 	}
+	public String alertDashboardExe()
+	{
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		if(regVo.getEntitlements() != null && regVo.getEntitlements().contains(IConstants.ALERT_DASHBOARD_ENTITLEMENT))
+		return Action.SUCCESS;
+		else
+			return Action.ERROR;	
+	}
+	
 	public String getCandidatesByName(){
 		try{
 			jObj = new JSONObject(getTask());

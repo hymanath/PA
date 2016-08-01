@@ -130,9 +130,9 @@
 		</div>        
 	</div>
 </div>-->
-
+	<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT' )}">
 <button target="_blank" class="btn btn-danger btnCreateAlert" data-toggle="tooltip" data-placement="left" onClick="createAlert()" title="Create Alert" ><i class="glyphicon glyphicon-plus" style="font-size:20px;right:-1px;top:-1px"></i></button>
-
+</c:if>
 <div class="modal fade" id="ModalShow" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-xs">
     <div class="modal-content">
