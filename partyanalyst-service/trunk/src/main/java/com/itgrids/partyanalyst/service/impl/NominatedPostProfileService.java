@@ -3393,16 +3393,43 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnvo;
 	}
 	
-	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId){
+	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId,final Long candidateId){
 		String status = null;
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {	
 					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
-					nominatedPostFinal.setApplicationStatusId(statusId);
-					nominatedPostFinal.setUpdatedBy(userId);
-					nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+					
+					if(statusId != null && statusId.longValue() == 5l){
+						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
+						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
+						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
+							NominatedPost nominatedPost = nominatedPostList.get(0);
+							nominatedPost.setNominationPostCandidateId(candidateId);
+							nominatedPost.setNominatedPostStatusId(3l);
+							nominatedPost.setUpdatedBy(userId);
+							nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPost = nominatedPostDAO.save(nominatedPost);
+							
+							nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
+							nominatedPostFinal.setApplicationStatusId(statusId);
+							nominatedPostFinal.setUpdatedBy(userId);
+							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						}
+						else{
+							nominatedPostFinal.setApplicationStatusId(statusId);
+							nominatedPostFinal.setUpdatedBy(userId);
+							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						}
+					}
+					else{
+						nominatedPostFinal.setApplicationStatusId(statusId);
+						nominatedPostFinal.setUpdatedBy(userId);
+						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+					}
 					
 					NominatedPostComment nominatedPostComment = new NominatedPostComment();
 					nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
