@@ -228,10 +228,11 @@
 	
 	getUserBasicDetails();
 	function onLoadCalls(){
-		getMainCommitteeCountDetails();
-		getCommitteesWiseLevelsBasedDetails();
-		getBasicComparativeWiseCommitteesCounts();
-		levelWiseComparativeCountsByBasicCommittees();
+		getCommitteesCumulativeBasicReportChart();
+		getCommitteesCumulaticeOverallReportCharts();
+		
+		getCommitteesComparativeBascicReportChart();
+		getCommitteesComparativeOverallReportChart();
 	}
 	
 	$(document).ready(function(){
