@@ -499,4 +499,14 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 	 }
 	 
+	 public List<NominatedPost> getNominatedPostDetailsByNominatedPostMember(Long nominatedPostMemberId){
+		 Query query = getSession().createQuery("select *" +
+		 									" from NominatedPost model" +
+		 									" where model.nominatedPostMemberId = :nominatedPostMemberId" +
+		 									" and model.nominationPostCandidateId is null" +
+		 									" and model.isDeleted = 'N' and model.isExpired = 'N'");
+		 query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
+		 
+		 return query.list();
+	 }
 }

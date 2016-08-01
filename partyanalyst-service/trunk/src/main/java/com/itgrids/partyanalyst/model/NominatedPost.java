@@ -34,6 +34,7 @@ public class NominatedPost extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
+	private String isExpired;
 	
 	private NominatedPostMember nominatedPostMember;
 	private NominationPostCandidate nominationPostCandidate;
@@ -145,5 +146,13 @@ public class NominatedPost extends BaseModel implements Serializable{
 	}
 	public void setNominatedPostStatus(NominatedPostStatus nominatedPostStatus) {
 		this.nominatedPostStatus = nominatedPostStatus;
+	}
+	
+	@Column(name="is_expired")
+	public String getIsExpired() {
+		return isExpired;
+	}
+	public void setIsExpired(String isExpired) {
+		this.isExpired = isExpired;
 	}
 }
