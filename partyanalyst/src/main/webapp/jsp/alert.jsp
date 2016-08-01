@@ -8,7 +8,7 @@
 	<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title> Alerts </title>
+	<title> Alert </title>
 	<!-- Bootstrap -->
 	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
