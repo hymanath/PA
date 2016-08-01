@@ -13222,5 +13222,15 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getOverAllTotalCountsByPositionAction" class="nominatedPostProfileAction" method="getOverAllTotalCountsByPosition">
+		<result type="json" name="success">
+			<param name="root">nominatedPostDashboardVO</param>
+		</result>
+	</action>
+	<action name="getCasteGroupWiseCountsByPositionAction" class="nominatedPostProfileAction" method="getCasteGroupWiseCountsByPosition">
+		<result type="json" name="success">
+			<param name="root">nominatedPostDashboardvoList</param>
+		</result>
+	</action>
 </package>
 </struts>      
