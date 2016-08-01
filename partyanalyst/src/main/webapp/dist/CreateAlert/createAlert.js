@@ -95,7 +95,7 @@ function disableByLevel(index)
 		}
 		
   }
-  
+ 
   function showHideBySearchType(){
 		
 		//setToDefaultAdvancedSearch();
@@ -191,6 +191,60 @@ function disableByLevel(index)
 				$(".mandalCls").hide();
 				$(".panchayatCls").hide();
 	}
+	
+	 function getLevelByDesignation()
+ {
+	
+	  $("#alertlevelId").find('option').remove();
+	   var stateGrpIds = ["6","23","7","12","16","22"];
+	 var distGrpIds = ["1","9","11"];
+	 var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
+	 var constiGrpIds =["2","8","10",];
+	 var designationId =$("#advanceDesignationId").val();
+	
+	 var str ='';
+	  if(jQuery.inArray(designationId, stateGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		
+		 $("#alertlevelId").append(str);
+	 }
+	else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		 str+='<option value="11">District</option>';
+		 $("#alertlevelId").append(str);
+	 }
+	 else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		 str+='<option value="11">District</option>';
+		  str+='<option value="1">Constituency</option>';
+		 $("#alertlevelId").append(str);
+	 }
+	 else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		 str+='<option value="11">District</option>';
+		 str+='<option value="5">Mandal/Muncipality</option>';
+		 $("#alertlevelId").append(str);
+	 }
+	 
+	else
+	 {
+		  str+='<option value="10">State</option>';
+		  str+='<option value="11">District</option>';
+		   str+='<option value="1">Constituency</option>';
+		  str+='<option value="5">Mandal/Muncipality</option>';
+		  str+='<option value="6">Village/Ward</option>';
+		  $("#alertlevelId").append(str);
+	 }
+	   $("#alertlevelId").dropkick();
+			 var select = new Dropkick("#alertlevelId");
+			 select.refresh();
+			 		disableByLevel();
+	 	
+ }
  function setDefault(index)
   {
 	  $("#referconstituencyId"+index).find('option').not(':first').remove();
