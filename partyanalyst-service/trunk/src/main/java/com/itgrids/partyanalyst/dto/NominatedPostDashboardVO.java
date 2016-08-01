@@ -15,12 +15,41 @@ public class NominatedPostDashboardVO {
 	private List<NominatedPostDashboardVO>  applicatnStatsList= new ArrayList<NominatedPostDashboardVO>();
 	private List<NominatedPostDashboardVO>  positinsList= new ArrayList<NominatedPostDashboardVO>();
 	private List<NominatedPostDashboardVO>  nominatedStatusList= new ArrayList<NominatedPostDashboardVO>();
+	private String ageRange;
+	private Long ageCount = 0l;
+	private Long totalCnt = 0l;
+	private List<NominatedPostDashboardVO>  ageList= new ArrayList<NominatedPostDashboardVO>();
+	private Long ageRangeId;
 	private Long id;
 	private String name;
 	private Long maleCount = 0l;
 	private Long femaleCount = 0l;
 	
 	
+	public Long getAgeRangeId() {
+		return ageRangeId;
+	}
+	public void setAgeRangeId(Long ageRangeId) {
+		this.ageRangeId = ageRangeId;
+	}
+	public List<NominatedPostDashboardVO> getAgeList() {
+		return ageList;
+	}
+	public void setAgeList(List<NominatedPostDashboardVO> ageList) {
+		this.ageList = ageList;
+	}
+	public String getAgeRange() {
+		return ageRange;
+	}
+	public void setAgeRange(String ageRange) {
+		this.ageRange = ageRange;
+	}
+	public Long getAgeCount() {
+		return ageCount;
+	}
+	public void setAgeCount(Long ageCount) {
+		this.ageCount = ageCount;
+	}
 	public Long getMaleCount() {
 		return maleCount;
 	}
@@ -44,6 +73,12 @@ public class NominatedPostDashboardVO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Long getTotalCnt() {
+		return totalCnt;
+	}
+	public void setTotalCnt(Long totalCnt) {
+		this.totalCnt = totalCnt;
 	}
 	public List<NominatedPostDashboardVO> getApplicatnStatsList() {
 		return applicatnStatsList;

@@ -497,4 +497,42 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		Query query = getSession().createQuery("select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status from NominatedPostFinal model");  
 		return query.list();
 	}
+	
+	public List<Object[]> getPositionCountForGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId,String type){
+		 StringBuilder queryStr = new StringBuilder();
+	    
+		 	queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		   
+		   if(type.toString().equalsIgnoreCase("Gender"))
+		   {
+			   queryStr.append(" ,model.nominationPostCandidate.gender,count(model.nominationPostCandidate.nominationPostCandidateId) " );
+		   }else if(type.toString().equalsIgnoreCase("Age"))
+		   {
+			   queryStr.append(" ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId,model.nominationPostCandidate.nominatedPostAgeRange.ageRange,count(model.nominationPostCandidate.nominationPostCandidateId) " );   
+		   }
+		   
+		   queryStr.append(" from  NominatedPostFinal model " +
+				   " where model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and " +
+				   " model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and " +
+				   " model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castegroupId and  model.applicationStatusId = :positionStatusId  and " +
+				   " model.nominationPostCandidate.address.district.districtId = :districtId and model.isDeleted = 'N' ");
+		   
+		   if(type.toString().equalsIgnoreCase("Gender")){
+			   queryStr.append(" group by model.nominationPostCandidate.gender ");
+		   }else if(type.toString().equalsIgnoreCase("Age")){
+			   queryStr.append(" group by model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId "); 
+		   }
+				   Query query = getSession().createQuery(queryStr.toString());	
+				   
+		   query.setParameter("positionId", positionId);
+		   query.setParameter("boardLevelId", boardLevelId);
+		   query.setParameter("deptId", deptId);
+		   query.setParameter("boardId", boardId);
+		   query.setParameter("castegroupId", castegroupId);
+		   query.setParameter("positionStatusId", positionStatusId);
+		
+		   query.setParameter("districtId", districtId);
+		   
+				   return query.list();
+	}
 }

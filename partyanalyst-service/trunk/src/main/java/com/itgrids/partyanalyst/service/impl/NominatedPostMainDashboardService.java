@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
@@ -38,8 +39,16 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private INominatedPostFinalDAO nominatedPostFinalDAO;
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private INominatedPostMemberDAO nominatedPostMemberDAO;
+	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
 	
 	
+	public INominatedPostAgeRangeDAO getNominatedPostAgeRangeDAO() {
+		return nominatedPostAgeRangeDAO;
+	}
+	public void setNominatedPostAgeRangeDAO(
+			INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO) {
+		this.nominatedPostAgeRangeDAO = nominatedPostAgeRangeDAO;
+	}
 	public IApplicationStatusDAO getApplicationStatusDAO() {
 		return applicationStatusDAO;
 	}
@@ -296,7 +305,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
    }
    /**
 	 * @Author  Hyma
-	 * @Version NominatedPostProfileService.java  July 28, 2016 05:30:00 PM 
+	 * @Version NominatedPostMainDashboardService.java  July 28, 2016 05:30:00 PM 
 	 * @return List<IdNameVO>
 	 * description  { Getting All Status Count By Position Id From Database }
 	 */
@@ -347,7 +356,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 }
 	/**
 	 * @Author  Hyma
-	 * @Version NominatedPostProfileService.java  July 28, 2016 05:30:00 PM 
+	 * @Version NominatedPostMainDashboardService.java  July 28, 2016 05:30:00 PM 
 	 * @return List<IdNameVO>
 	 * description  { Getting All Positions From Database }
 	 */
@@ -477,6 +486,68 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 	}
 	
+	/**
+	 * @Author  Hyma
+	 * @Version NominatedPostMainDashboardService.java  July 28, 2016 05:30:00 PM 
+	 * @return List<NominatedPostDashboardVO>
+	 * description  { Getting All Position Count For District From Database }
+	 */
+	public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId){
+		
+		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
+		try{
+			
+			// Preparing Template For Positions 
+			List<Object[]> positionsList = positionDAO.getAllPositions();
+			if(commonMethodsUtilService.isListOrSetValid(positionsList)){
+				String[] setterPropertiesList = {"statusId","statusName"};
+				returnList = (List<NominatedPostDashboardVO>) setterAndGetterUtilService.setValuesToVO(positionsList, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostDashboardVO");
+			}
+			
+			// Preparing Template For Age Ranges 
+			List<NominatedPostDashboardVO> ageRangesList = new ArrayList<NominatedPostDashboardVO>();
+			List<Object[]> ageList = nominatedPostAgeRangeDAO.getAllAgeRanges();
+			if(commonMethodsUtilService.isListOrSetValid(ageList)){
+				String[] setterPropertiesList = {"ageRangeId","ageRange"};
+				ageRangesList = (List<NominatedPostDashboardVO>) setterAndGetterUtilService.setValuesToVO(ageList, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostDashboardVO");
+			}
+			
+			for(NominatedPostDashboardVO position : returnList){
+				position.setAgeList(ageRangesList);
+			}
+			List<Object[]> PostnCntForGender = nominatedPostFinalDAO.getPositionCountForGender(positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,"Gender");
+			Long femaleCnt = 0l;
+			Long maleCnt = 0l;
+			Long totalCnt = 0l;
+			for(Object[] obj : PostnCntForGender){
+				NominatedPostDashboardVO positionVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnList, "statusId", commonMethodsUtilService.getStringValueForObject(obj[0]));
+				if(positionVO != null){
+					if(obj[1].toString().equalsIgnoreCase("Female")){
+						positionVO.setFemaleCount(femaleCnt + commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if(obj[1].toString().equalsIgnoreCase("Male")){
+						positionVO.setMaleCount(maleCnt + commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}
+					positionVO.setTotalCnt(totalCnt+positionVO.getMaleCount()+positionVO.getFemaleCount());
+				}
+			}
+			
+			List<Object[]> ageRangeList = nominatedPostFinalDAO.getPositionCountForGender(positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,"Age");
+			Long ageRangeCnt = 0l;
+			for(Object[] obj : ageRangeList){
+				NominatedPostDashboardVO positionVo = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(returnList, "statusId", commonMethodsUtilService.getStringValueForObject(obj[0]));
+				if(positionVo != null){
+					NominatedPostDashboardVO ageRangeVO = (NominatedPostDashboardVO)setterAndGetterUtilService.getMatchedVOfromList(positionVo.getAgeList(), "ageRangeId", commonMethodsUtilService.getStringValueForObject(obj[1]));
+					if(ageRangeVO != null){
+						ageRangeVO.setAgeCount(ageRangeCnt + commonMethodsUtilService.getLongValueForObject(obj[3]));
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getPositionsForDistrict() of NominatedPostMainDashboardService", e);
+		}
+		return returnList;
+	}
  
    
 }
