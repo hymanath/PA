@@ -266,7 +266,9 @@ control.makeTransliteratable(['commentsId']);
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
 														<span id="assignCandidatesCnt">0</span>
+														<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
 														<input type="button" value="ASSIGN" class="btn btn-primary assignModel pull-right btn-xs">
+														</c:if>
 													</h4>
 												</div>
 												<div class="panel-body">
@@ -274,6 +276,7 @@ control.makeTransliteratable(['commentsId']);
 												</div>
 											</div>
 										</div>
+										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
 										<div class="col-md-8 col-xs-12 col-sm-8">
 											<label>Alert Status</label>
 											<select class="dropkickClass" id="statusId">
@@ -293,6 +296,7 @@ control.makeTransliteratable(['commentsId']);
 											<div id="errorId" class="m_top10"></div>
 											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert status</button>
 										</div>
+										</c:if>
 									</div>
 								</div>
 							</div>
