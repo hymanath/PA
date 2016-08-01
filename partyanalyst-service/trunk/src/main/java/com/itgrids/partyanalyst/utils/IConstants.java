@@ -322,6 +322,9 @@ public interface IConstants {
     public static final String TDP_CADRE_2014_ADMIN = "TDP_CADRE_2014_ADMIN";
     public static final String TDP_CADRE_SEARCH = "TDP_CADRE_SEARCH";
     public static final String TDP_CADRE_DETAILS = "TDP_CADRE_DETAILS";
+    public static final String CREATE_ALERT_ENTITLEMENT = "CREATE_ALERT_ENTITLEMENT";
+	public static final String UPDATE_ALERT_ENTITLEMENT = "UPDATE_ALERT_ENTITLEMENT";
+	public static final String ALERT_DASHBOARD_ENTITLEMENT= "ALERT_DASHBOARD_ENTITLEMENT";
     
     //Problem Management
     public static final String MLA = "MLA";
@@ -744,7 +747,7 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
 
-   // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+  // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
   //  public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
     
@@ -1126,4 +1129,5 @@ public interface IConstants {
 	public static final Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5"; 
+	
 }
