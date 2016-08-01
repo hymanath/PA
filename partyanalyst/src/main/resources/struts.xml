@@ -13234,6 +13234,16 @@
 			<param name="root">nominatedPostDashboardvoList</param>
 		</result>
 	</action>
+	<action name="getCasteWiseCountsByPositionAction" class="nominatedPostProfileAction" method="getCasteWiseCountsByPosition">
+		<result type="json" name="success">
+			<param name="root">nominatedPostDashboardvoList</param>
+		</result>
+	</action>
+	<action name="getCasteWisePositionsCountsByPositionAction" class="nominatedPostProfileAction" method="getCasteWisePositionsCountsByPosition">
+		<result type="json" name="success">
+			<param name="root">nominatedPostDashboardvoList</param>
+		</result>
+	</action>
 	<action name="getPositionsForDistrictAction" class="nominatedPostProfileAction" method="getPositionsForDistrict">
 		<result type="json" name="success">
 			<param name="root">nominatedPostDashboardvoList</param>
