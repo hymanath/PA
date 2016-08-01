@@ -319,6 +319,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 			if(selectVal == 2)
 			{
 				$(".advancePRCls,#searchBtnId").show();
+				$(".advancePRCls").parent().show();
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
