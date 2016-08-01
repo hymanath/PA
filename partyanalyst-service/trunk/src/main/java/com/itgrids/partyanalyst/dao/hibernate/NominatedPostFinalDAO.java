@@ -328,11 +328,17 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	
-	public List<Object[]> getCasteCategoryGroupWiseCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+	public List<Object[]> getCasteCategoryGroupWiseCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,String type){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
-					" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
-					" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+		sb.append("select");
+		if(type != null && type.equalsIgnoreCase("casteCategory"))
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName,");
+		else if(type != null && type.equalsIgnoreCase("casteName"))
+			sb.append(" model.nominationPostCandidate.casteState.caste.casteId," +
+						" model.nominationPostCandidate.casteState.caste.casteName,");
+		
+		sb.append(" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
 					" model.nominationPostCandidate.gender," +
 					" count(model.nominatedPostFinalId)");
@@ -352,10 +358,19 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.applicationStatusId = :applStatusId and");
 		
 		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
-					" group by" +
-					" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
-					" model.nominationPostCandidate.nominatedPostAgeRangeId," +
-					" model.nominationPostCandidate.gender");
+					" group by");
+		if(type != null && type.equalsIgnoreCase("casteCategory"))
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId,");
+		else if(type != null && type.equalsIgnoreCase("casteName"))
+			sb.append(" model.nominationPostCandidate.casteState.caste.casteId,");
+					
+		sb.append(" model.nominationPostCandidate.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.gender" +
+					" order by");
+		if(type != null && type.equalsIgnoreCase("casteCategory"))
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+		else if(type != null && type.equalsIgnoreCase("casteName"))
+			sb.append(" model.nominationPostCandidate.casteState.caste.casteName");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(positionId != null && positionId.longValue() > 0l)
@@ -370,6 +385,57 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			query.setParameter("casteGroupId", casteGroupId);
 		if(applStatusId != null && applStatusId.longValue() > 0l)
 			query.setParameter("applStatusId", applStatusId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionName," +
+						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
+						" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
+						" model.nominationPostCandidate.gender," +
+						" count(model.nominatedPostFinalId)");
+		sb.append(" from NominatedPostFinal model" +
+					" where");
+		if(positionId != null && positionId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+		if(levelId != null && levelId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		if(deptId != null && deptId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+		if(boardId != null && boardId.longValue() > 0l)
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			sb.append(" model.applicationStatusId = :applStatusId and");
+		if(casteId != null && casteId.longValue() > 0l)
+			sb.append(" model.nominationPostCandidate.casteState.caste.casteId = :casteId and");
+		
+		sb.append(" model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+					" group by");
+		sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId," +
+					" model.nominationPostCandidate.nominatedPostAgeRangeId," +
+					" model.nominationPostCandidate.gender");
+		//sb.append(" model.nominationPostCandidate.casteState.caste.casteName");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(positionId != null && positionId.longValue() > 0l)
+			query.setParameter("positionId", positionId);
+		if(levelId != null && levelId.longValue() > 0l)
+			query.setParameter("levelId", levelId);
+		if(deptId != null && deptId.longValue() > 0l)
+			query.setParameter("deptId", deptId);
+		if(boardId != null && boardId.longValue() > 0l)
+			query.setParameter("boardId", boardId);
+		if(casteGroupId != null && casteGroupId.longValue() > 0l)
+			query.setParameter("casteGroupId", casteGroupId);
+		if(applStatusId != null && applStatusId.longValue() > 0l)
+			query.setParameter("applStatusId", applStatusId);
+		if(casteId != null && casteId.longValue() > 0l)
+			query.setParameter("casteId", casteId);
 		
 		return query.list();
 	}
