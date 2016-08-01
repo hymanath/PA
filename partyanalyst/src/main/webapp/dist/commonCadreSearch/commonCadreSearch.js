@@ -135,6 +135,7 @@ function disableByLevel(index)
 			if(selectVal == "PR")
 			{
 				$(".advancePRCls,#searchBtnId").show();
+				$(".advancePRCls").parent().show();
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
