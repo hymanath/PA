@@ -1109,6 +1109,42 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
+	public String getCasteWiseCountsByPosition(){
+		try{
+			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();*/
+			jObj = new JSONObject(getTask());
+			
+			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteWiseCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCasteWiseCountsByPosition Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getCasteWisePositionsCountsByPosition(){
+		try{
+			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();*/
+			jObj = new JSONObject(getTask());
+			
+			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteWisePositionsCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"),jObj.getLong("casteId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getCasteWisePositionsCountsByPosition Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 public String getPositionsForDistrict(){
 		
 		try {
