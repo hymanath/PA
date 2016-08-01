@@ -196,40 +196,43 @@
                 	<div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Position</label>
                         <select class="chosenSelect" id="positionId">
-                        	<option value="all">ALL</option>
+                        	<option value="0">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Location Level</label>
                         <select class="chosenSelect" id="locationLevelId">
-                        	<option value="all">ALL</option>  
+                        	<option value="0">ALL</option>  
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">    
                     	<label>Department</label>
                         <select class="chosenSelect" id="departmentId">       
-                        	<option value="all">ALL</option>
+                        	<option value="0">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Corporation</label>
                         <select class="chosenSelect" id="corporationId">
-                        	<option value="all">ALL</option>
+                        	<option value="0">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Caste Group</label>
                         <select class="chosenSelect" id="casteGroupId">
-                        	<option value="all">ALL</option>
+                        	<option value="0">ALL</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Position Status</label>
                         <select class="chosenSelect" id="positionStatusId">
-                        	<option value="all">ALL</option>  
+                        	<option value="0">ALL</option>  
                         </select>
                     </div>
-                </div>
+					
+					<div class="col-md-2 col-sm-2 col-xs-12">
+                    	<button type="button" value="getDetails" class="btn btn-success m_top10" onclick="getAllStatusDetails();">SUBMIT</button>
+					</div>
             </div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12">
@@ -250,165 +253,38 @@
                 	<div class="pad_15 bg_ff">
                     	<div class="row">
                         	<div class="col-md-2 col-xs-12 col-sm-2">
-                            	<table class="table table-bordered table-condensed bg_F1">
+                            	<table class="table table-bordered table-condensed bg_F1" id="totalMaleAndFemaleId">
                                 	<tr>
                                     	<td rowspan="2" style="vertical-align:middle">
                                         	<p class="text-capital">total</p>
-                                            <p>1200</p>
+                                            <p id="totalMaleFemaleId"></p>
                                         </td>
                                         <td>
                                         	<p class="text-capital">male</p>
-                                            <p>1200</p>
+                                            <p id="totalMaleId"></p>
                                         </td>
                                     </tr>
                                     <tr>
                                     	<td>
                                         	<p class="text-capital">Female</p>
-                                            <p>1200</p>
+                                            <p id="totalFemaleId"></p>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                            	<table class="table table-bordered bg_D4 tablePadding">
-                                	<tr class="text-center">
-                                    	<td>OC</td>
-                                        <td>BC</td>
-                                        <td>SC</td>
-                                        <td>ST</td>
-                                    </tr>
-                                    <tr class="text-center">
-                                    	<td>400</td>
-                                        <td>400</td>
-                                        <td>400</td>
-                                        <td>400</td>
-                                    </tr>
+                            	<table class="table table-bordered bg_D4 tablePadding"id="totalCasteId">
                                 </table>
                             </div>
                             <div class="col-md-5 col-xs-12 col-sm-5">
-                            	<table class="table table-bordered bg_CB tablePadding">
-                                	<tr>
-                                    	<td>20-29 Age</td>
-                                        <td>30-39 Age</td>
-                                        <td>40-49 Age</td>
-                                        <td>50-59 Age</td>
-                                        <td>60+ Age</td>
-                                    </tr>
-                                    <tr>
-                                    	<td class="text-center">100</td>
-                                        <td class="text-center">100</td>
-                                        <td class="text-center">100</td>
-                                        <td class="text-center">100</td>
-                                        <td class="text-center">100</td>
-                                    </tr>
+                            	<table class="table table-bordered bg_CB tablePadding" id="totalAgeWiseId">
                                 </table>
                             </div>
                         </div>
                         <div class="row m_top20">
                         	<div class="col-md-8 col-xs-12 col-sm-8">
                             	<div class="table-responsive">
-                                	<table class="table table-bordered text-center text-capital">
-                                    	<thead class="bg_ef text-capital text-center">
-                                        	<tr>
-                                            	<th rowspan="2" style="vertical-align:middle;">caste<br/> group</th>
-                                                <th colspan="3">total</th>
-                                                <th colspan="2">20 - 29</th>
-                                                <th colspan="2">20 - 29</th>
-                                                <th colspan="2">20 - 29</th>
-                                                <th colspan="2">20 - 29</th>
-                                                <th colspan="2">60+</th>
-                                            </tr>
-                                            <tr>
-                                            	<th>T</th>
-                                                <th>M</th>
-                                                <th>F</th>
-                                                <th>M</th>
-                                                <th>F</th>
-                                                <th>M</th>
-                                                <th>F</th>
-                                                <th>M</th>
-                                                <th>F</th>
-                                                <th>M</th>
-                                                <th>F</th>
-                                                <th>M</th>
-                                                <th>F</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        	<tr>
-                                            	<td>OC</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                            </tr>
-                                            <tr>
-                                            	<td>OC</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                            </tr>
-                                            <tr>
-                                            	<td>OC</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                            </tr>
-                                            <tr>
-                                            	<td>OC</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                                <td>35</td>
-                                            </tr>
-                                            <tr class="bg_cc text-center text-capital">
-                                            	<td>total</td>
-                                                <td colspan="3">760</td>
-                                                <td colspan="2">446</td>
-                                                <td colspan="2">446</td>
-                                                <td colspan="2">446</td>
-                                                <td colspan="2">446</td>
-                                                <td colspan="2">446</td>
-                                            </tr>
-                                        </tbody>
+                                	<table class="table table-bordered text-center text-capital" id="casteAndAgeWiseId">
                                     </table>
                                 </div>
                                 <div class="table-responsive m_top20">
