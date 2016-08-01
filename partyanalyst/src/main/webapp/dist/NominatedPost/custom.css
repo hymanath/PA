@@ -999,6 +999,10 @@ label
 {
 	color:#333
 }
+.selectionTab li
+{
+	padding:10px;
+}
 .navTabsSelection .slick-prev , .navTabsSelection .slick-next
 {
 	background:#fff;

@@ -173,7 +173,7 @@
                         	<div>
 
                               <!-- Nav tabs -->
-                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick" role="tablist">
+                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab" role="tablist">
                                 <li role="presentation" class="active"><a href="#overallCasteGroup" attr_href_id="overallCasteGroup" aria-controls="overallCasteGroup" attr_level_value="0" class="casteGroupCls" role="tab" data-toggle="tab">Overall</a></li>
                                 <li role="presentation"><a href="#stateCasteGroup" aria-controls="stateCasteGroup" attr_href_id="stateCasteGroup" role="tab" attr_level_value="2" class="casteGroupCls" data-toggle="tab">State</a></li>
                                 <li role="presentation"><a href="#districtCasteGroup" aria-controls="districtCasteGroup" attr_href_id="districtCasteGroup" attr_level_value="3" class="casteGroupCls" role="tab" data-toggle="tab">district</a></li>
