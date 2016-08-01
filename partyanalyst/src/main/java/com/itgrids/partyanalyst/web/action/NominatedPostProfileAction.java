@@ -986,7 +986,7 @@ return Action.SUCCESS;
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
-			status = nominatedPostProfileService.updateFinalyzationStatusForPost(jObj.getLong("postFinalId"),jObj.getLong("statusId"),jObj.getString("comment"),userId,jObj.getLong("postApplId"));
+			status = nominatedPostProfileService.updateFinalyzationStatusForPost(jObj.getLong("postFinalId"),jObj.getLong("statusId"),jObj.getString("comment"),userId,jObj.getLong("applicationId"),jObj.getLong("candidateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
