@@ -113,10 +113,10 @@
                 <div class="col-md-2 col-xs-12 col-sm-2">
                 	<ul class="list-inline profileSelection">
                     	<li class="active">
-                        	<a href="#">AP</a>
+                        	<a href="" class="stateCls">AP</a>
                         </li>
                         <li>
-                        	<a href="#">TS</a>
+                        	<a href="" class="stateCls">TS</a>
                         </li>
                     </ul>
                 </div>
@@ -224,8 +224,8 @@
 	var globalUserTypeId;
 	var globalUserAccessLevelId;
 	var globalUserAccessLevelValues = [];
+	var globalState = 'TS';
 	
-	 
 	getUserBasicDetails();
 	function onLoadCalls(){
 		getMainCommitteeCountDetails();
@@ -249,8 +249,13 @@
 		$("#graphsDivId").toggle();
 		blockHeights();
 	});
-    
-    
+	
+    $(".stateCls").click(function(event){
+      $(".stateCls").parent().removeClass("active");
+	  $(this).parent().addClass("active");
+	  globalState = $(this).html();
+	  event.preventDefault();
+    });
     
 </script>
 </body>
