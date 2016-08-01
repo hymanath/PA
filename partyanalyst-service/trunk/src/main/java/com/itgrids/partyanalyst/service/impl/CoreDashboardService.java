@@ -18,7 +18,6 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
-import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
@@ -528,37 +527,36 @@ public class CoreDashboardService implements ICoreDashboardService{
 					basicCommitteeVO.setId(basicCommitteeId);
 					basicCommitteeVO.setName(committeeNameMap.get(basicCommitteeId));
 			        
-					//committee levels
-					if( requiredCommitteeLevelIds != null && requiredCommitteeLevelIds.size() >0){
-						Map<Long,CommitteeVO> committeeLevelsMap = new LinkedHashMap<Long, CommitteeVO>();
+					//months
+					Map<String,CommitteeVO> monthsMap = new LinkedHashMap<String, CommitteeVO>();
+					for( int i=1; i<=2 ; i++){
 						
-						for( Long reqLevelId :requiredCommitteeLevelIds ){
-							if(reqLevelId != 7 && reqLevelId != 9 && reqLevelId != 8 ){
-								
-			    				 CommitteeVO committeeLevelVO = new CommitteeVO();
-			    				 committeeLevelVO.setId(reqLevelId);
-			    				 committeeLevelVO.setName(committeeLevelNameMap.get(reqLevelId));
-			    				 
-			    				 //months
-			    				 Map<String,CommitteeVO> monthsMap = new LinkedHashMap<String, CommitteeVO>();
-			    				 for( int i=1; i<=2 ; i++){
-			    					 CommitteeVO monthVO = new CommitteeVO();
-			    			    	 monthVO.setType("set"+i);
-			    			    	 if(i==1){
-			    			    		 monthVO.setName(firstSetMonthName);
-			    			    	 }else{
-			    			    		 monthVO.setName(secondSetMonthName); 
-			    			    	 }
-			    			    	 monthsMap.put(monthVO.getType(),monthVO);
-			    				 }
-			    				 
-			    				 committeeLevelVO.setSubMap(monthsMap);
-			    				 committeeLevelsMap.put(reqLevelId, committeeLevelVO);
-			    			 }
-						}
-						
-						basicCommitteeVO.setSubMap(committeeLevelsMap);
-					}
+	   					 CommitteeVO monthVO = new CommitteeVO();
+	   			    	 monthVO.setType("set"+i);
+	   			    	 if(i==1){
+	   			    		 monthVO.setName(firstSetMonthName);
+	   			    	 }else{
+	   			    		 monthVO.setName(secondSetMonthName); 
+	   			    	 }
+	   			    	 
+	   			    	 //committee levels
+	   			    	if(requiredCommitteeLevelIds != null && requiredCommitteeLevelIds.size() >0){
+	   			    		Map<Long,CommitteeVO> committeeLevelsMap = new LinkedHashMap<Long, CommitteeVO>();
+	   			    		for( Long reqLevelId :requiredCommitteeLevelIds ){
+	   			    			if(reqLevelId != 7 && reqLevelId != 9 && reqLevelId != 8 ){
+	   			    				
+	   			    				CommitteeVO committeeLevelVO = new CommitteeVO();
+	   			    				committeeLevelVO.setId(reqLevelId);
+	   			    				committeeLevelVO.setName(committeeLevelNameMap.get(reqLevelId));
+	   			    				
+	   			    				committeeLevelsMap.put(reqLevelId,committeeLevelVO);
+	   			    			}
+	   			    		}
+	   			    		monthVO.setSubMap(committeeLevelsMap);
+	   			    	}
+	   			    	monthsMap.put(monthVO.getType(),monthVO);
+   				     }
+					basicCommitteeVO.setSubMap(monthsMap);
 					basicCommitteeMap.put(basicCommitteeVO.getId(), basicCommitteeVO);
 				}
 			}
@@ -573,33 +571,36 @@ public class CoreDashboardService implements ICoreDashboardService{
 		
 		try{
 			
-			if(list != null && list .size() > 0)
-			{
-	    		 for( Object[] obj : list)
-	    		 { 
-	    			 if( obj[2] != null)
-	    			 {
+			if(list != null && list .size() > 0){
+			
+	    		 for( Object[] obj : list){
+	    			 
 	    				 CommitteeVO basicCommitteeVO  =  basicCommitteeMap.get((Long)obj[2]);
-	    				 if(basicCommitteeVO != null && obj[4] != null && basicCommitteeVO.getSubMap()!=null)
+	    				 if(basicCommitteeVO != null && basicCommitteeVO.getSubMap()!=null)
 	    				 { 
-	    					 CommitteeVO committeeLevelVO = null;
-	    					 if( ((Long)obj[4]).longValue() == 7 || ((Long)obj[4]).longValue() == 9){ // Mandal/town/division
-	    						 committeeLevelVO = basicCommitteeVO.getSubMap().get(5l);
-	    					 }else if( ((Long)obj[4]).longValue() == 8 ){ // village/ward
-	    						 committeeLevelVO = basicCommitteeVO.getSubMap().get(6l);
-	    					 }else{
-	    						 committeeLevelVO = basicCommitteeVO.getSubMap().get(obj[4]);
+	    					 CommitteeVO monthVO = null;
+	    					 if(basicCommitteeVO.getSubMap().containsKey(setType)){
+	    						 monthVO = basicCommitteeVO.getSubMap().get(setType);
+	    						 
+	    						 if(monthVO.getSubMap() != null &&  monthVO.getSubMap().size() > 0){
+	    							 
+	    							 CommitteeVO committeeLevelVO = null;
+	    							 
+	    							 if( ((Long)obj[4]).longValue() == 7 || ((Long)obj[4]).longValue() == 9){ // Mandal/town/division
+	    	    						 committeeLevelVO = monthVO.getSubMap().get(5l);
+	    	    					 }else if( ((Long)obj[4]).longValue() == 8 ){ // village/ward
+	    	    						 committeeLevelVO = monthVO.getSubMap().get(6l);
+	    	    					 }else{
+	    	    						 committeeLevelVO = monthVO.getSubMap().get(obj[4]);
+	    	    					 }
+	    							 if( committeeLevelVO != null){
+	    								 committeeLevelVO.setCompletedCount(committeeLevelVO.getCompletedCount() + (Long)obj[6] ); 
+	    							 }
+	    						 }
 	    					 }
 	    					 
-	    					 if(committeeLevelVO != null && committeeLevelVO.getSubMap() != null)
-	    					 {
-	    						 CommitteeVO  monthVO = committeeLevelVO.getSubMap().get(setType);
-	    						 if( monthVO != null){
-	    							 monthVO.setCompletedCount(monthVO.getCompletedCount() + (Long)obj[6] ); 
-	    						 }	 
-	    					 }
 	    				 }
-	    			}
+	    				 
 	    		}
 	    	}
 	    	
