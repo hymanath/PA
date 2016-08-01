@@ -19,4 +19,5 @@ public interface INominatedPostMainDashboardService {
 	 public List<IdAndNameVO> getLocationLevelList();
 	 public List<IdAndNameVO> getDepartmentList();
 	 public List<IdAndNameVO> getBoardList();
+	 public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId);
 }
