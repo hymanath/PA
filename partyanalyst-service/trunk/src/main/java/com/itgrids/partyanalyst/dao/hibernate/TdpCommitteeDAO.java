@@ -960,7 +960,77 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	 //CORE DASHBOARD RELATED
-    public List<Object[]> getCommitteeWiseLevelsWiseDetails(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status){
+	public Long getCommitteesCumulativeBasicReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,Long basicCommitteeId,Date startDate,Date endDate,String status){
+		StringBuilder str = new StringBuilder();
+        
+		str.append(" select count(distinct model.tdpCommitteeId) "+
+			       " from   TdpCommittee model " +
+				   " where  model.tdpBasicCommittee.tdpBasicCommitteeId = :basicCommitteeId ");
+		
+		if(userAccessLevelId == IConstants.STATE_LEVEl_ACCESS_ID){
+			if(committeeLevelValueIds.contains(1l) && committeeLevelValueIds.contains(36l)){
+				str.append(" and model.state in ('AP','TS') ");
+			}else if(committeeLevelValueIds.contains(1l)){
+				str.append(" and model.state = 'AP' ");
+			}else if(committeeLevelValueIds.contains(36l)){
+				str.append(" and model.state = 'TS' ");
+			}
+		}
+		if(userAccessLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			str.append(" and model.userAddress.district.districtId in (:committeeLevelValueIds) ");
+		}else if(userAccessLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID || userAccessLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			str.append(" and model.userAddress.constituency.constituencyId in (:committeeLevelValueIds) ");
+		}else if(userAccessLevelId == IConstants.MANDAL_LEVEl_ID){
+			str.append(" and model.userAddress.tehsil.tehsilId in (:committeeLevelValueIds) ");
+		}
+		
+		if(status.equalsIgnoreCase("started")){
+			str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' ");
+			if( startDate!=null){
+				str.append( " and date(model.startedDate)>=:startDate " );
+			}
+			if(endDate!=null){
+				str.append( " and date(model.startedDate)<=:endDate " );
+			}
+		}
+		else if(status.equalsIgnoreCase("completed")){
+			str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			if( startDate!=null){
+				str.append( " and date(model.completedDate)>=:startDate " );
+			}
+			if(endDate!=null){
+				str.append( " and date(model.completedDate)<=:endDate " );
+			}
+		}
+		else if(status.equalsIgnoreCase("notStarted")){
+			str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+		}
+			
+		if(state!= null && !state.isEmpty() ){
+			str.append(" and model.state =:state ");
+		}
+
+		Query query = getSession().createQuery(str.toString());
+		
+		if(userAccessLevelId != IConstants.STATE_LEVEl_ACCESS_ID){
+			query.setParameterList("committeeLevelValueIds", committeeLevelValueIds);
+		}
+		query.setParameter("basicCommitteeId", basicCommitteeId);
+		if(status.equalsIgnoreCase("started") || status.equalsIgnoreCase("completed")){
+			if( startDate!=null){
+				query.setDate("startDate",startDate);
+			}
+			if(endDate!=null){
+				query.setDate("endDate",endDate);
+			}
+		}
+		if(state!= null && !state.isEmpty() ){
+			query.setParameter("state",state);
+		}
+		return (Long)query.uniqueResult();
+	}
+	
+    public List<Object[]> getCommitteesCumulaticeOverallReportChartsQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,Date startDate,Date endDate,String status){
 		StringBuilder str = new StringBuilder();
         
 		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
@@ -1036,7 +1106,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
     
-    public List<Object[]> getBasicComparativeWiseCommitteesCounts(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,List<Long> basicCommitteeIds,int month,int year){
+    public List<Object[]> getCommitteesComparativeBascicReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,List<Long> basicCommitteeIds,int month,int year){
 		StringBuilder str = new StringBuilder();
         
 		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
@@ -1088,7 +1158,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
-    public List<Object[]> levelWiseComparativeCountsByBasicCommittees(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,int month,int year){
+    public List<Object[]> getCommitteesComparativeOverallReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,int month,int year){
 		StringBuilder str = new StringBuilder();
         
 		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
@@ -1142,38 +1212,6 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
-	public List<Object[]> getCompletedCommitteeCounts(Long committeeId,String state){
-		
-		Query query = getSession().createQuery(" select tc.tdpBasicCommittee.name, count(distinct tc.tdpCommitteeId)" +
-				"  from TdpCommittee tc " +
-				"  where  tc.isCommitteeConfirmed = 'Y' and tc.startedDate is not null and tc.completedDate is not null" +
-				"  and tc.tdpBasicCommitteeId = :committeeId and tc.state =:state");
-		query.setParameter("committeeId", committeeId);
-		query.setParameter("state", state);
-		return query.list();
-	}
 	
-	public List<Object[]> getStartedCommitteeCounts(Long committeeId,String state){
-		
-		Query query = getSession().createQuery(" select tc.tdpBasicCommittee.name, count(distinct tc.tdpCommitteeId)" +
-				"  from TdpCommittee tc " +
-				"  where tc.isCommitteeConfirmed = 'N' and tc.startedDate is not null and tc.completedDate is  null" +
-				"  and tc.tdpBasicCommitteeId = :committeeId and tc.state =:state");
-		
-		query.setParameter("committeeId", committeeId);
-		query.setParameter("state", state);
-		return query.list();
-	}
-	public List<Object[]> getNotYetStartedCommitteeCounts(Long committeeId,String state){
-		
-		Query query = getSession().createQuery(" select tc.tdpBasicCommittee.name, count(distinct tc.tdpCommitteeId)" +
-				"  from TdpCommittee tc " +
-				"  where tc.isCommitteeConfirmed = 'N' and tc.startedDate is  null and tc.completedDate is  null" +
-				"  and tc.tdpBasicCommitteeId = :committeeId and tc.state =:state");
-		
-		query.setParameter("committeeId", committeeId);
-		query.setParameter("state", state);
-		return query.list();
-	}
 	
 }
