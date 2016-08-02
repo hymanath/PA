@@ -72,6 +72,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long searchLevelValue;
 	private List<IdAndNameVO> idAndNameVOList;
 	private List<NominatedPostDashboardVO> nominatedPostDashboardvoList;
+	private List<NominatedPostVO> nominatedPostVOs;
 	private CastePositionVO castePositionVO;
 	
 	
@@ -287,6 +288,13 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setCandidatesList(List<NominatedPostVO> candidatesList) {
 		this.candidatesList = candidatesList;
+	}
+	
+	public List<NominatedPostVO> getNominatedPostVOs() {
+		return nominatedPostVOs;
+	}
+	public void setNominatedPostVOs(List<NominatedPostVO> nominatedPostVOs) {
+		this.nominatedPostVOs = nominatedPostVOs;
 	}
 	public CastePositionVO getCastePositionVO() {
 		return castePositionVO;
@@ -1035,7 +1043,7 @@ return Action.SUCCESS;
 			idAndNameVOList = nominatedPostMainDashboardService.getApplicationStatusList();  
 			
 		}catch (Exception e) {
-			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+			LOG.error("Entered into getApplicationStatusList method of NominatedPostProfileAction Action",e);
 		}
 		
 		return Action.SUCCESS;
@@ -1045,7 +1053,7 @@ return Action.SUCCESS;
 			idAndNameVOList = nominatedPostMainDashboardService.getPositionList();  
 			
 		}catch (Exception e) {
-			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+			LOG.error("Entered into getPositionList method of NominatedPostProfileAction Action",e);
 		}
 		
 		return Action.SUCCESS;
@@ -1055,7 +1063,7 @@ return Action.SUCCESS;
 			idAndNameVOList = nominatedPostMainDashboardService.getLocationLevelList();  
 			
 		}catch (Exception e) {
-			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+			LOG.error("Entered into getLocationLevelList method of NominatedPostProfileAction Action",e);
 		}
 		
 		return Action.SUCCESS;
@@ -1065,7 +1073,7 @@ return Action.SUCCESS;
 			idAndNameVOList = nominatedPostMainDashboardService.getDepartmentList();  
 			
 		}catch (Exception e) {
-			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+			LOG.error("Entered into getDepartmentList method of NominatedPostProfileAction Action",e);
 		}
 		
 		return Action.SUCCESS;
@@ -1075,11 +1083,71 @@ return Action.SUCCESS;
 			idAndNameVOList = nominatedPostMainDashboardService.getBoardList();    
 			
 		}catch (Exception e) {
-			LOG.error("Entered into getCastGroupList method of NominatedPostProfileAction Action",e);
+			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
 		}
 		
 		return Action.SUCCESS;
 	}
+	public String getNominatedCandidateGroupByDist(){
+		try{
+			jObj = new JSONObject(getTask());
+			//collect position id list here.............
+			List<Long> positionIdList = new ArrayList<Long>();
+			JSONArray positionIdArr = jObj.getJSONArray("positionIdList");
+			for (int i = 0; i < positionIdArr.length(); i++) {
+				Long positon = Long.valueOf(positionIdArr.get(i).toString());
+				positionIdList.add(positon);
+			}
+			//collect location level id list here.............
+			List<Long> locationLevelIdList = new ArrayList<Long>();
+			JSONArray locationLevelIdArr = jObj.getJSONArray("locationLevelIdList");
+			for (int i = 0; i < locationLevelIdArr.length(); i++) {
+				Long positon = Long.valueOf(locationLevelIdArr.get(i).toString());
+				locationLevelIdList.add(positon);
+			}
+			//collect dept id list here.............
+			List<Long> deptIdList = new ArrayList<Long>();
+			JSONArray deptIddArr = jObj.getJSONArray("deptIdList");
+			for (int i = 0; i < deptIddArr.length(); i++) {
+				Long positon = Long.valueOf(deptIddArr.get(i).toString());
+				deptIdList.add(positon);
+			}
+			
+			//collect corporation id list here.............
+			List<Long> corporationIdList = new ArrayList<Long>();
+			JSONArray corporationIdArr = jObj.getJSONArray("corporationIdList");
+			for (int i = 0; i < corporationIdArr.length(); i++) {
+				Long positon = Long.valueOf(corporationIdArr.get(i).toString());
+				corporationIdList.add(positon);
+			}
+			
+			//collect cast group id list here.............
+			List<Long> castGroupIdList = new ArrayList<Long>();
+			JSONArray castGroupIdArr = jObj.getJSONArray("castGroupIdList");
+			for (int i = 0; i < castGroupIdArr.length(); i++) {
+				Long positon = Long.valueOf(castGroupIdArr.get(i).toString());
+				castGroupIdList.add(positon);
+			}
+			
+			//collect position status id list here.............
+			List<Long> positionStatusIdList = new ArrayList<Long>();
+			JSONArray positionStatusIdArr = jObj.getJSONArray("positionStatusIdList");
+			for (int i = 0; i < positionStatusIdArr.length(); i++) {
+				Long positon = Long.valueOf(positionStatusIdArr.get(i).toString());
+				positionStatusIdList.add(positon);
+			}
+			  
+			Long stateId = jObj.getLong("stateId");
+			
+			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedCandidateGroupByDist(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
+			
+		}catch(Exception e){
+			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+
+	
 	public String getOverAllTotalCountsByPosition(){
 		try{
 			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
@@ -1173,7 +1241,6 @@ public String getPositionsForDistrict(){
 	return Action.SUCCESS;
 	}
 public String getPositionAndApplicationDetailsCntPositionWise(){
-	
 	try{
 		jObj = new JSONObject(getTask());
 		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntPositionWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"));
