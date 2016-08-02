@@ -95,7 +95,7 @@ function getAlertStatusCommentsTrackingDetails()
 							str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 						else
 							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0){
+						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0 && result[i].id != 1){
 								str+='<u style="font-size:15px;">Comments</u>';
 							for(var j in result[i].commentsList){
 					
@@ -149,7 +149,7 @@ function buildAlertCandidateData(result)
 	
 	if(result == null || result.length == 0)
 	{
-		$("#alertCandidateDataId").html('No Data Available..');
+		$("#alertCandidateDataId").html('No Involved Members..');
 		return;
 	}
 	var str='';
@@ -189,6 +189,7 @@ function setDefaultImage(img){
 
 function updateAlertStatus()
 {
+	
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
@@ -202,6 +203,7 @@ function updateAlertStatus()
 	 $('#errorId').html(' Status required').css("color","red"); 
         return;	   
 	}
+	$("#updateAlertajaxImg").html('<img src="images/search.gif"/>');
 	var jsObj =
 		     {
 		alertId : alertId,
@@ -215,6 +217,7 @@ function updateAlertStatus()
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 				  $("#commentsId").val('');
+				  $("#updateAlertajaxImg").html('');
 					if(result="success")
 					{
 						$("#errorId").html(" Alert Updated Successfully ").css("color","green");
@@ -310,7 +313,7 @@ function buildAlertAssignedCandidateData(result)
 	
 	if(result == null || result.length == 0)
 	{
-	 $("#alertAssignedCandidateDataId").html('No Data Available..');
+	 $("#alertAssignedCandidateDataId").html('No Assigned Candidates..');
 	 $("#assignCandidatesCnt").html('0');
 		return;
 	}
