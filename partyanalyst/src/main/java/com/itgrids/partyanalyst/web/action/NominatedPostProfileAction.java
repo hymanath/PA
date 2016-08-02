@@ -72,6 +72,8 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private Long searchLevelValue;
 	private List<IdAndNameVO> idAndNameVOList;
 	private List<NominatedPostDashboardVO> nominatedPostDashboardvoList;
+	private CastePositionVO castePositionVO;
+	
 	
 	
 	public List<NominatedPostDashboardVO> getNominatedPostDashboardvoList() {
@@ -285,6 +287,12 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setCandidatesList(List<NominatedPostVO> candidatesList) {
 		this.candidatesList = candidatesList;
+	}
+	public CastePositionVO getCastePositionVO() {
+		return castePositionVO;
+	}
+	public void setCastePositionVO(CastePositionVO castePositionVO) {
+		this.castePositionVO = castePositionVO;
 	}
 	public String getBoardLevels(){
 		try{
@@ -1072,7 +1080,6 @@ return Action.SUCCESS;
 		
 		return Action.SUCCESS;
 	}
-	
 	public String getOverAllTotalCountsByPosition(){
 		try{
 			/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER"); 
@@ -1165,5 +1172,25 @@ public String getPositionsForDistrict(){
 	
 	return Action.SUCCESS;
 	}
+public String getPositionAndApplicationDetailsCntPositionWise(){
 	
+	try{
+		jObj = new JSONObject(getTask());
+		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntPositionWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"));
+		
+	 }catch(Exception e) {
+		 LOG.error("Entered into getPositionAndApplicationDetailsCntPositionWise() method of NominatedPostProfileAction Action",e);
+	}
+	return Action.SUCCESS;
+}
+public String getPositionAndApplicationDetailsCntLocationWise(){
+	
+	try{
+		jObj = new JSONObject(getTask());
+		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntLocationWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"));
+	 }catch(Exception e) {
+		 LOG.error("Entered into getPositionAndApplicationDetailsCntLocationWise() method of NominatedPostProfileAction Action",e);
+	}
+	return Action.SUCCESS;
+}
 }

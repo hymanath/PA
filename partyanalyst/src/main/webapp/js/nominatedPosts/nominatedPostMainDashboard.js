@@ -1,6 +1,14 @@
 $(document).ready(function(){
 	getLocationWiseCastePositionCount("overall",0);
     getLocationWiseCasteGroupPositionCount("overallCasteGroup",0);
+	getPositionAndApplicationDetailsCntPositionWise(0,0,"position");
+	getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId");
+	getCastGroupList();
+	getApplicationStatusList();
+	 getPositionList();
+	getLocationLevelList();
+	getDepartmentList();
+	getBoardList();
 });
 $(document).on("click",".castePositionCls",function(){
 	var hrefId = $(this).attr("attr_href_id");
@@ -11,12 +19,6 @@ $(document).on("click",".casteGroupCls",function(){
 	var hrefId = $(this).attr("attr_href_id");
 	var levelId = $(this).attr("attr_level_value");
 	getLocationWiseCasteGroupPositionCount(hrefId,levelId)
-	getCastGroupList();
-	getApplicationStatusList();
-	getPositionList();
-	getLocationLevelList();
-	getDepartmentList();
-	getBoardList();
 });
  
  function getLocationWiseCastePositionCount(hrefId,levelId){
@@ -211,6 +213,7 @@ $(document).on("click",".casteGroupCls",function(){
 			}
 		});     
 	}
+	//getPositionList();
 	function getPositionList(){
 		var jsObj={}
 		$.ajax({
@@ -220,6 +223,7 @@ $(document).on("click",".casteGroupCls",function(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
+				buildPositionTabMenu(result);
 				for(var i in result){
 					$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
@@ -447,7 +451,7 @@ function buildOverAllTotalCountsByPosition(result){
 		}
 		
 	
-function getPositionsForDistrict(divId){
+	function getPositionsForDistrict(divId){
 		var jsObj={
 		positionId 			: 1,
 		boardLevelId 		: 1,
@@ -506,3 +510,491 @@ function getPositionsForDistrict(divId){
         //str+='</tr>
                                                     
 	}
+function buildPositionTabMenu(result){
+	var str='';
+	 str+='<ul class="nav nav-tabs tabsCustomFinal ulCls" role="tablist">';
+     str+='<li role="presentation" attr_id="0" class="active postionliCls"><a href="#positionoverView" aria-controls="positionoverView" role="tab"  data-toggle="tab">Completed Overview</a></li>';
+		for(var i in result){
+		  str+='<li attr_id="'+result[i].id+'" class="postionliCls" role="presentation"><a href="#positon'+i+'" aria-controls="positon'+i+'" role="tab" data-toggle="tab">'+result[i].name+'</li>';	
+		}
+	str+='</ul>';
+	$("#positonDivId").html(str);
+}	
+function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLevelId,reportType){
+   $("#chartdiv").html(' ');
+  var jsObj={
+        locationLevelId : locationLevelId,
+		positionId : positionId,
+		reportType : reportType
+      }
+      $.ajax({
+         type:'GET',
+         url:'getPositionAndApplicationDetailsCntPositionWiseAction.action',
+         dataType: 'json',
+         data: {task:JSON.stringify(jsObj)}
+      }).done(function(result){
+		  if(result != null){
+			 if(reportType=="position"){
+			  buildPostionRslt(result);  
+		    }else if(reportType=="application"){
+			   buildApplicationOverviewRslt(result);   
+		    }  
+		   }
+    });		
+}
+var postionId=0;
+$(document).on("click",".postionliCls",function(){
+	 postionId= $(this).attr("attr_id");
+	 getPositionAndApplicationDetailsCntPositionWise(postionId,0,"position");
+     getPositionAndApplicationDetailsCntLocationWise(postionId,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId");
+});
+
+$(document).on("click",".overviewHrfCls",function(){
+	var reportType = $(this).attr("attr_report_type");
+	getPositionAndApplicationDetailsCntPositionWise(postionId,0,reportType);
+});
+function buildPostionRslt(result){
+	var totalPostionCnt = result.totalPositionCn;
+	var totalPositionCntPer=result.totalPositionCntPer;
+	var noCandidateCnt = result.noCandidateCnt;
+	var noCandidateCntPer= result.noCandidateCntPer;
+	var shortedListedCndtCnt = result.shortedListedCndtCnt;
+	var shortListedCntper = result.shortListedCntper;
+	var finalReviewCantCnt = result.finalReviewCantCnt;
+	var finalReviewPer = result.finalReviewPer;
+	var confirmCntCnt = result.confirmCntCnt;
+	var confirmCntPern = result.confirmCntPer;
+	var goIssuedCnt= result.goIssuedCnt;
+	var goIssuedPer = result.goIssuedPer;
+	buildPostionGaugeHighChart(totalPostionCnt,noCandidateCnt,shortedListedCndtCnt,
+	finalReviewCantCnt,confirmCntCnt,goIssuedCnt,totalPositionCntPer,noCandidateCntPer,shortListedCntper,finalReviewPer,confirmCntPern,goIssuedPer);
+}
+function buildPostionGaugeHighChart(totalPostionCnt,noCandidateCnt,shortedListedCndtCnt,finalReviewCantCnt,confirmCntCnt,goIssuedCnt,totalPositionCntPer,
+noCandidateCntPer,shortListedCntper,finalReviewPer,confirmCntPern,goIssuedPer){
+var gaugeChart = AmCharts.makeChart("chartdiv", {
+  "type": "gauge",
+  "theme": "light",
+  "axes": [{
+    "axisAlpha": 0,
+    "tickAlpha": 0,
+    "labelsEnabled": false,
+    "startValue": 0,
+    "endValue": 100,
+    "startAngle": 0,
+    "endAngle": 270,
+    "bands": [{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "100%",
+      "innerRadius": "85%"
+    }, {
+      "color": "#FDD401",
+      "startValue": 0,
+      "endValue": totalPositionCntPer,
+      "radius": "100%",
+      "innerRadius": "95%",
+      "balloonText": totalPostionCnt
+    },{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "88%",
+      "innerRadius": "88%"
+    }, {
+      "color": "#E48D45",
+      "startValue": 0,
+      "endValue": noCandidateCntPer,
+      "radius": "88%",
+      "innerRadius": "83%",
+      "balloonText": noCandidateCnt
+    },{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "75%",
+      "innerRadius": "75%"
+    }, {
+      "color": "#DE675D",
+      "startValue": 0,
+      "endValue": shortListedCntper,
+      "radius": "75%",
+      "innerRadius": "70%",
+      "balloonText": shortedListedCndtCnt
+    },{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "65%",
+      "innerRadius": "65%"
+    }, {
+      "color": "#65A6E2",
+      "startValue": 0,
+      "endValue": finalReviewPer,
+      "radius": "65%",
+      "innerRadius": "60%",
+      "balloonText":finalReviewCantCnt
+    }, {
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "50%",
+      "innerRadius": "50%"
+    }, {
+      "color": "#867CC0",
+      "startValue": 0,
+      "endValue": confirmCntPern,
+      "radius": "50%",
+      "innerRadius": "45%",
+      "balloonText": confirmCntCnt
+    }, {
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "35%",
+      "innerRadius": "35%"
+    }, {
+      "color": "#7DC0C2",
+      "startValue": 0,
+      "endValue": goIssuedPer,
+      "radius": "35%",
+      "innerRadius": "30%",
+      "balloonText": goIssuedCnt
+    }]
+  }],
+  "allLabels": [{
+    "text": "Total",
+    "x": "49%",
+    "y": "5%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "No Candidate ",
+    "x": "49%",
+    "y": "10%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "Short Listed",
+    "x": "49%",
+    "y": "15%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "Ready For Review",
+    "x": "49%",
+    "y": "20%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "Finalized",
+    "x": "49%",
+    "y": "26%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "G.O.Issued",
+    "x": "49%",
+    "y": "33%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }],
+  "export": {
+    "enabled": false
+  }
+});
+}
+
+function buildApplicationOverviewRslt(result){
+	var totalAppReceivedCnt = result.totalAppReceivedCnt;
+	var totalAppRecevidPer = result.totalAppRecevidPer;
+	var rejectedCnt = result.rejectedCnt;
+	var rejectedAppPer = result.rejectedAppPer;
+	var inProgressCnt = result.inProgressCnt;
+	var inProgressAppPer = result.inProgressAppPer;
+	var confirmCntCnt = result.confirmCntCnt;
+	var confirmCntPer = result.confirmCntPer;
+	buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejectedCnt,rejectedAppPer,inProgressCnt,inProgressAppPer,confirmCntCnt,confirmCntPer);
+}
+function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejectedCnt,rejectedAppPer,inProgressCnt,inProgressAppPer,confirmCntCnt,confirmCntPer){
+	var gaugeChart = AmCharts.makeChart("chartdiv1", {
+  "type": "gauge",
+  "theme": "light",
+  "axes": [{
+    "axisAlpha": 0,
+    "tickAlpha": 0,
+    "labelsEnabled": false,
+    "startValue": 0,
+    "endValue": 100,
+    "startAngle": 0,
+    "endAngle": 270,
+    "bands": [{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "100%",
+      "innerRadius": "85%"
+    }, {
+      "color": "#FDD401",
+      "startValue": 0,
+      "endValue": totalAppRecevidPer,
+      "radius": "100%",
+      "innerRadius": "95%",
+      "balloonText": totalAppReceivedCnt
+    },{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "88%",
+      "innerRadius": "88%"
+    }, {
+      "color": "#E48D45",
+      "startValue": 0,
+      "endValue": rejectedAppPer,
+      "radius": "88%",
+      "innerRadius": "83%",
+      "balloonText": rejectedCnt
+    },{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "75%",
+      "innerRadius": "75%"
+    }, {
+      "color": "#DE675D",
+      "startValue": 0,
+      "endValue": inProgressAppPer,
+      "radius": "75%",
+      "innerRadius": "70%",
+      "balloonText": inProgressCnt
+    },{
+      "color": "#fff",
+      "startValue": 0,
+      "endValue": 100,
+      "radius": "65%",
+      "innerRadius": "65%"
+    }, {
+      "color": "#65A6E2",
+      "startValue": 0,
+      "endValue": confirmCntPer,
+      "radius": "65%",
+      "innerRadius": "60%",
+      "balloonText":confirmCntCnt
+    }]
+  }],
+  "allLabels": [{
+    "text": "Received",
+    "x": "49%",
+    "y": "5%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "Rejected",
+    "x": "49%",
+    "y": "10%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "In Progress",
+    "x": "49%",
+    "y": "15%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }, {
+    "text": "Completed",
+    "x": "49%",
+    "y": "20%",
+    "size": 10,
+    "bold": true,
+    "color": "#333",
+    "align": "right"
+  }],
+  "export": {
+    "enabled": false
+  }
+});
+}
+$(document).on("click",".locationLevelcollapseCls",function(){
+	var  collapseLevelId = $(this).attr("attr_collapse_level_Id");
+	var collapseHrefId = $(this).attr("attr_collapse_href_id");
+	var locationLevelId = $(this).attr("attr_level_Id");
+	var postionHighChartId = $(this).attr("attr_postion_highChart_id");
+	var appHighChartId = $(this).attr("attr_app_highChart_id");
+	 getPositionAndApplicationDetailsCntLocationWise(postionId,locationLevelId," ",collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId)
+	
+});
+function getPositionAndApplicationDetailsCntLocationWise(positionId,locationLevelId,reportType,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId){
+  var jsObj={
+        locationLevelId : locationLevelId,
+		positionId : positionId,
+		reportType : reportType
+      }
+      $.ajax({
+         type:'GET',
+         url:'getPositionAndApplicationDetailsCntLocationWiseAction.action',
+         dataType: 'json',
+         data: {task:JSON.stringify(jsObj)}
+      }).done(function(result){
+		  if(result!=null){
+			  buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId);
+		  }
+    });			
+}
+function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId){
+	var positionRslt = result.positionList;
+	var applicationRslt = result.applicationList;
+	if(positionRslt != null && positionRslt.length > 0){
+	 var str='';
+			str+='<div class="row">';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<div id="'+postionHighChartId+'" style="height:80px;"></div>';
+					str+='<ul class="positionsUl">';
+						str+='<li class="total"><span class="statusBox"></span>TOTAL POSITIONS<span class="count pull-right">'+positionRslt[0].totalPositionCn+'</span></li>';
+						str+='<li class="noCandidate"><span class="statusBox"></span>NO CANDIDATE POSITIONS<span class="count pull-right">'+positionRslt[0].noCandidateCnt+'</span></li>';
+						str+='<li class="shortListed"><span class="statusBox"></span>SHORT LISTED POSITIONS<span class="count pull-right">'+positionRslt[0].shortedListedCndtCnt+'</span></li>';
+					   // str+='<li class="notStarted"><span class="statusBox"></span>Not Started<span class="count">1200</span></li>';
+						str+='<li class="readyForReview"><span class="statusBox"></span>READY FOR REVIEW POSITIONS<span class="count pull-right">'+positionRslt[0].finalReviewCantCnt+'</span></li>';
+						str+='<li class="finalised"><span class="statusBox"></span>FINALIZED POSITIONS<span class="count pull-right">'+positionRslt[0].confirmCntCnt+'</span></li>';
+						str+='<li class="goIssued"><span class="statusBox"></span>GO ISSUED POSITIONS<span class="count pull-right">'+positionRslt[0].goIssuedCnt+'</span></li>';
+					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+					str+='<div id="'+appHighChartId+'"></div>';
+				str+='</div>';
+			str+='</div>';
+		if(locationLevelId==2){
+		  $(".stateBodyDivCls").html(str);	
+		}else if(locationLevelId == 3){
+		 $(".districtBodyDivCls").html(str);
+		}else if(locationLevelId == 4){
+		 $(".constituencyBodyDivCls").html(str);
+		}else if(locationLevelId == 5){
+		 $(".manMunCorBodyDivCls").html(str);
+		}	
+	  buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId);	
+	}
+	if(applicationRslt != null && applicationRslt.length > 0){
+		 buildLocatinWiseApplicationHighChartsRslt(applicationRslt,appHighChartId);  
+	} 
+}
+function buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId){
+var headingArr=[];
+ headingArr.push('TOTAL POSITIONS');
+ headingArr.push('NO CANDIDATE POSITIONS');
+ headingArr.push('SHORT LISTED POSITIONS');
+ headingArr.push('READY FOR REVIEW POSITIONS');
+ headingArr.push('FINALIZED POSITIONS');
+ headingArr.push('GO ISSUED POSITIONS');
+var jsonDataArr=[];
+	jsonDataArr.push({y:parseFloat(positionRslt[0].totalPositionCntPer),color:'#fff2b3'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].noCandidateCntPer),color:'#f1c5a1'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].shortListedCntper),color:'#eeb3af'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].finalReviewPer),color:'#c2bedf'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].confirmCntPer),color:'#bee0e1'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].goIssuedPer),color:'#ad9591'})
+	buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighChartId)
+}
+function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighChartId){
+	$("#"+postionHighChartId).highcharts({
+		//colors:['#fff2b3','#f1c5a1','#eeb3af','#c2bedf','#bee0e1','#ad9591'],
+        chart: {
+            type: 'column'
+        },
+        xAxis: {
+			labels: {
+                enabled: false
+            },
+            categories:headingArr,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ' '
+            },
+			labels: {
+                enabled: false
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: ' ',
+            data: jsonDataArr
+
+        }]
+    });
+}
+function buildLocatinWiseApplicationHighChartsRslt(applicationRslt,appHighChartId){
+var colorArr=[];
+ colorArr.push('#E58D45');	
+ colorArr.push('#867DC0');	
+ colorArr.push('#65A7E1');	
+ colorArr.push('#7DC1C2');	
+ var jsonDataArr=[];
+  jsonDataArr.push(['Received',parseFloat(applicationRslt[0].totalAppRecevidPer)]);
+  jsonDataArr.push(['Rejected',parseFloat(applicationRslt[0].rejectedAppPer)]);
+  jsonDataArr.push(['In Progress',parseFloat(applicationRslt[0].inProgressAppPer)]);
+  jsonDataArr.push(['Completed',parseFloat(applicationRslt[0].confirmCntPer)]);  
+  buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId);
+}
+function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
+	$("#"+appHighChartId).highcharts({
+		colors:colorArr,
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+         plotOptions: {
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: false
+				},
+				showInLegend: true
+			}
+		},
+		legend: {
+                enabled: true,
+			 },
+        series: [{
+            name: ' ',
+            data:jsonDataArr
+        }]
+    });
+}
+	
