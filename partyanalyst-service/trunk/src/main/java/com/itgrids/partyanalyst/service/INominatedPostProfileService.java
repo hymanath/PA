@@ -33,7 +33,7 @@ public interface INominatedPostProfileService {
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
 	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId);
-	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue,String statusType,String task);
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue,String statusType,String task,Long searchlevelId,Long searchLevelValue);
 	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds,String statusType,String task);
 	public List<IdNameVO> getAllApplicationStatusList();
 	public String savingAnyPostCandidatesToPosition(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
