@@ -3760,7 +3760,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		try {
 			Map<Long,NominatedPostDashboardVO> positionMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
 			
-			if(positionId != null && positionId.longValue() > 0l){
+			if(positionId != null && positionId.longValue() == 0l){
 				List<Object[]> list = positionDAO.getAllPositions();
 				if(commonMethodsUtilService.isListOrSetValid(list)){
 					for (Object[] obj : list) {
@@ -3816,23 +3816,32 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			if(commonMethodsUtilService.isMapValid(positionMap)){
 				for (Map.Entry<Long, NominatedPostDashboardVO> entry : positionMap.entrySet()){
 					NominatedPostDashboardVO posvo = entry.getValue();
-					List<NominatedPostDashboardVO> ageList = posvo.getApplicatnStatsList();
-					NominatedPostDashboardVO totalvo = new NominatedPostDashboardVO();
-					totalvo.setId(posvo.getId());
-					totalvo.setName(posvo.getName());
-					totalvo.setStatusName("Total");
-					if(commonMethodsUtilService.isListOrSetValid(ageList)){
-						for (NominatedPostDashboardVO vo : ageList) {
-							totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
-							totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
-							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
+					if(posvo != null){
+						List<NominatedPostDashboardVO> ageList = posvo.getApplicatnStatsList();
+						NominatedPostDashboardVO totalvo = new NominatedPostDashboardVO();
+						totalvo.setId(posvo.getId());
+						totalvo.setName(posvo.getName());
+						totalvo.setStatusName("Total");
+						if(commonMethodsUtilService.isListOrSetValid(ageList)){
+							for (NominatedPostDashboardVO vo : ageList) {
+								totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
+								totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
+								totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
+							}
 						}
+						ageList.add(totalvo);
 					}
-					ageList.add(totalvo);
 				}
 			}
 			
-			returnList = new ArrayList<NominatedPostDashboardVO>(positionMap.values());
+			if(commonMethodsUtilService.isMapValid(positionMap)){
+				for (Map.Entry<Long, NominatedPostDashboardVO> entry : positionMap.entrySet()){
+					NominatedPostDashboardVO vo = entry.getValue();
+					if(vo != null)
+						returnList.add(vo);
+				}
+			}
+			//returnList = new ArrayList<NominatedPostDashboardVO>(positionMap.values());
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteWisePositionsCountsByPosition() method of NominatedPostProfileService", e);
 		}
