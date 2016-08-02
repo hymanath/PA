@@ -11,8 +11,40 @@ public class CastePositionVO {
 	private String positionName;
 	private Long count = 0l;
 	private List<CastePositionVO> casteList = new ArrayList<CastePositionVO>(0);
+	private Long totalPositionCn=0l;
+	private Long noCandidateCnt=0l;
+	private Long shortedListedCndtCnt=0l;
+	private Long notStartedCantCnt=0l;
+	private Long finalReviewCantCnt=0l;
+	private Long finalizedCnt=0l;
+	private Long confirmCntCnt=0l;
+	private Long openPostCnt=0l;
+	private Long goIssuedCnt=0l;
+	private Long rejectedCnt=0l;
+	private Long inProgressCnt=0l;
+	private Long totalAppReceivedCnt=0l;
+	private List<CastePositionVO> positionList = new ArrayList<CastePositionVO>(0);
+	private List<CastePositionVO> applicationList = new ArrayList<CastePositionVO>(0);
+	private String totalPositionCntPer="0";
+	private String noCandidateCntPer="0";
+	private String shortListedCntper="0";
+	private String notStaredCntPer="0";
+	private String finalReviewPer="0";
+	private String confirmCntPer="0";
+	private String goIssuedPer="0";
+	private String rejectedAppPer="0";
+	private String inProgressAppPer="0";
+	private String completedAppPer="0";
+	private String openPostCntPer="0";
+	private String totalAppRecevidPer="0";
 	
 	
+	public String getOpenPostCntPer() {
+		return openPostCntPer;
+	}
+	public void setOpenPostCntPer(String openPostCntPer) {
+		this.openPostCntPer = openPostCntPer;
+	}
 	public Long getCasteId() {
 		return casteId;
 	}
@@ -49,6 +81,157 @@ public class CastePositionVO {
 	public void setCasteList(List<CastePositionVO> casteList) {
 		this.casteList = casteList;
 	}
+    
+	public Long getTotalPositionCn() {
+		return totalPositionCn;
+	}
+	public void setTotalPositionCn(Long totalPositionCn) {
+		this.totalPositionCn = totalPositionCn;
+	}
+	public Long getNoCandidateCnt() {
+		return noCandidateCnt;
+	}
+	public void setNoCandidateCnt(Long noCandidateCnt) {
+		this.noCandidateCnt = noCandidateCnt;
+	}
+	public Long getShortedListedCndtCnt() {
+		return shortedListedCndtCnt;
+	}
+	public void setShortedListedCndtCnt(Long shortedListedCndtCnt) {
+		this.shortedListedCndtCnt = shortedListedCndtCnt;
+	}
+	public Long getNotStartedCantCnt() {
+		return notStartedCantCnt;
+	}
+	public void setNotStartedCantCnt(Long notStartedCantCnt) {
+		this.notStartedCantCnt = notStartedCantCnt;
+	}
+	public Long getFinalReviewCantCnt() {
+		return finalReviewCantCnt;
+	}
+	public void setFinalReviewCantCnt(Long finalReviewCantCnt) {
+		this.finalReviewCantCnt = finalReviewCantCnt;
+	}
+	public Long getFinalizedCnt() {
+		return finalizedCnt;
+	}
+	public void setFinalizedCnt(Long finalizedCnt) {
+		this.finalizedCnt = finalizedCnt;
+	}
+    
+	public Long getConfirmCntCnt() {
+		return confirmCntCnt;
+	}
+	public void setConfirmCntCnt(Long confirmCntCnt) {
+		this.confirmCntCnt = confirmCntCnt;
+	}
+	public Long getOpenPostCnt() {
+		return openPostCnt;
+	}
+	public void setOpenPostCnt(Long openPostCnt) {
+		this.openPostCnt = openPostCnt;
+	}
+	public Long getGoIssuedCnt() {
+		return goIssuedCnt;
+	}
+	public void setGoIssuedCnt(Long goIssuedCnt) {
+		this.goIssuedCnt = goIssuedCnt;
+	}
+	public Long getRejectedCnt() {
+		return rejectedCnt;
+	}
+	public void setRejectedCnt(Long rejectedCnt) {
+		this.rejectedCnt = rejectedCnt;
+	}
+	public Long getInProgressCnt() {
+		return inProgressCnt;
+	}
+	public void setInProgressCnt(Long inProgressCnt) {
+		this.inProgressCnt = inProgressCnt;
+	}
+	public Long getTotalAppReceivedCnt() {
+		return totalAppReceivedCnt;
+	}
+	public void setTotalAppReceivedCnt(Long totalAppReceivedCnt) {
+		this.totalAppReceivedCnt = totalAppReceivedCnt;
+	}
+	public List<CastePositionVO> getPositionList() {
+		return positionList;
+	}
+	public void setPositionList(List<CastePositionVO> positionList) {
+		this.positionList = positionList;
+	}
+	public List<CastePositionVO> getApplicationList() {
+		return applicationList;
+	}
+	public void setApplicationList(List<CastePositionVO> applicationList) {
+		this.applicationList = applicationList;
+	}
+	public String getTotalPositionCntPer() {
+		return totalPositionCntPer;
+	}
+	public void setTotalPositionCntPer(String totalPositionCntPer) {
+		this.totalPositionCntPer = totalPositionCntPer;
+	}
+	public String getNoCandidateCntPer() {
+		return noCandidateCntPer;
+	}
+	public void setNoCandidateCntPer(String noCandidateCntPer) {
+		this.noCandidateCntPer = noCandidateCntPer;
+	}
+	public String getShortListedCntper() {
+		return shortListedCntper;
+	}
+	public void setShortListedCntper(String shortListedCntper) {
+		this.shortListedCntper = shortListedCntper;
+	}
+	public String getNotStaredCntPer() {
+		return notStaredCntPer;
+	}
+	public void setNotStaredCntPer(String notStaredCntPer) {
+		this.notStaredCntPer = notStaredCntPer;
+	}
+	public String getFinalReviewPer() {
+		return finalReviewPer;
+	}
+	public void setFinalReviewPer(String finalReviewPer) {
+		this.finalReviewPer = finalReviewPer;
+	}
+	public String getConfirmCntPer() {
+		return confirmCntPer;
+	}
+	public void setConfirmCntPer(String confirmCntPer) {
+		this.confirmCntPer = confirmCntPer;
+	}
+	public String getGoIssuedPer() {
+		return goIssuedPer;
+	}
+	public void setGoIssuedPer(String goIssuedPer) {
+		this.goIssuedPer = goIssuedPer;
+	}
+	public String getRejectedAppPer() {
+		return rejectedAppPer;
+	}
+	public void setRejectedAppPer(String rejectedAppPer) {
+		this.rejectedAppPer = rejectedAppPer;
+	}
+	public String getInProgressAppPer() {
+		return inProgressAppPer;
+	}
+	public void setInProgressAppPer(String inProgressAppPer) {
+		this.inProgressAppPer = inProgressAppPer;
+	}
+	public String getCompletedAppPer() {
+		return completedAppPer;
+	}
+	public void setCompletedAppPer(String completedAppPer) {
+		this.completedAppPer = completedAppPer;
+	}
+	public String getTotalAppRecevidPer() {
+		return totalAppRecevidPer;
+	}
+	public void setTotalAppRecevidPer(String totalAppRecevidPer) {
+		this.totalAppRecevidPer = totalAppRecevidPer;
+	}
 	
-
 }

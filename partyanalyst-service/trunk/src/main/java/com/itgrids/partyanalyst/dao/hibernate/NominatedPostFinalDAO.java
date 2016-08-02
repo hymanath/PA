@@ -530,8 +530,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
   public List<Object[]> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId){
 		
 	  StringBuilder queryStr = new StringBuilder();
-      //model.nominationPostCandidate.casteState.casteStateId
-	   queryStr.append(" select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+       queryStr.append(" select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 	   		           " model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
 	   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionId," +
 	   	          	   " model.nominatedPostMember.nominatedPostPosition.position.positionName," +
@@ -568,7 +567,6 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		Query query = getSession().createQuery("select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status from NominatedPostFinal model");  
 		return query.list();
 	}
-	
 	public List<Object[]> getPositionCountForGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId,String type){
 		 StringBuilder queryStr = new StringBuilder();
 	    
@@ -606,4 +604,29 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   
 				   return query.list();
 	}
+	
+     public Object[] getShortListedPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+	  
+	  StringBuilder queryStr = new StringBuilder();
+	  
+	    queryStr.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPost.nominatedPostId) from NominatedPostFinal model " +
+	    		        " where" +
+	    		        " model.isDeleted='N' and model.nominatedPost.isExpired='N' and model.nominatedPost.isDeleted='N' and model.applicationStatus.status='Shortlisted' ");
+	  
+	     if(positionId != null && positionId.longValue() > 0){
+	    	 queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
+	     }
+	     if(boardLevelId != null && boardLevelId.longValue() > 0){
+	    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId "); 
+	     }
+	    
+	     Query query = getSession().createQuery(queryStr.toString());
+	     if(positionId != null && positionId.longValue() > 0){
+	      query.setParameter("positionId", positionId);	 
+	     }
+	     if(boardLevelId != null && boardLevelId.longValue() > 0){
+	      query.setParameter("boardLevelId", boardLevelId);	 	 
+	     }
+          return (Object[]) query.uniqueResult(); 
+  }
 }
