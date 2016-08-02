@@ -36,6 +36,9 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		else if(searchType.equalsIgnoreCase("4"))
 			sb.append(" AND model.candidateName LIKE '%"+searchValue.trim()+"%' ");
 		
+		sb.append(" AND model.tdpCadreId is null ");
+		sb.append(" AND model.voterId is not null ");
+		
 		Query query = getSession().createQuery(sb.toString());
 		if(!searchType.equalsIgnoreCase("4") && !searchType.equalsIgnoreCase("1"))
 			query.setParameter("searchValue", searchValue);
