@@ -20,6 +20,7 @@
 <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
+<link href="dist/slick/slick.css" rel="stylesheet" type="text/css"/>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
@@ -28,8 +29,7 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
-
-
+<script src="dist/slick/slick.js" type="text/javascript"></script>
 <style type="text/css">
 #searchedMembersId_length , #searchedMembersId_filter , #searchedMembersId_info , #searchedMembersId_paginate , #searchedMembersId thead th
 {
@@ -106,6 +106,14 @@
 	{
 		display:block;
 	}
+	.best-matched-profile .slick-list
+    {
+       margin:0px !important;
+    }
+	.slick-prev::before, .slick-next::before
+	{
+		color:#333 !important;
+	}
 </style>
 </head>
 <body>
@@ -128,16 +136,19 @@
                         <label class="checkbox-inline" style="padding-left: 10px;">
                         	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName"/>Not Cadre
                         </label>
+						<div id="addMemberDivId" style="display:none;">
 						<span style="margin-left:8px;cursor:pointer" class="addMemberModal">
 							<i class="glyphicon glyphicon-plus-sign"></i>
 							Add Member
 						</span>
+						 </div>
                     </div>
 					</div>
 					
           <div id="searchMemberDiv">
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
                     	<label>State</label>
+						<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect">
                         	<option value="0">All</option>
 							<option value="1">AndhraPradesh</option>
@@ -146,23 +157,27 @@
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="districtDiv">
                     	<label>District</label>
+						<span id="districtIdImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="districtId" onchange="getConstituenciesForDistricts(this.value,this.id,'');" class="chosenSelect" >
                         
                         </select>
                     </div>
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="constitunecyDiv">
                     	<label>Constituency</label>
+						<span id="constituencyIdImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="constituencyId" onchange="getMandalCorporationsByConstituency('',this.id);" class="chosenSelect" >
                         </select>
                     </div>
                     <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10" id="mandalDiv">
                     	<label>Mandal/Muncipality/Corporation</label>
+						<span id="mandalListImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="mandalList" onchange="getPanchayatWardByMandal('',this.id);"  class="chosenSelect">
 							<option value="0"> Select Mandal/Municipality </option>
                         </select>
                     </div>
                     <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3 m_top10" id="panchayatDiv">
                     	<label>Panchayat/Ward/Division</label>
+						<span id="panchaytListImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="panchaytList"  onchange="getAllCadreInPanchayat();" class="chosenSelect">
 							<option value="0"> Select Panchayat </option>
                         </select>
@@ -240,8 +255,8 @@
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
                         	<div id="searchData"></div>
                         	<div class="" id="scrollDivId" style="display:none;">
-                                <ul class="list-inline best-matched-profile " id="cadreSearchDtls" >
-                                </ul>
+								<div  id="cadreSearchDtls" ></div>
+                                
 								<div class="" id="loadingSmblDivId"></div>
                              </div>							
                              <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
@@ -606,7 +621,7 @@
   <div class="modal-dialog" style="width:85%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearAssignValues();"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">ADDING NEW CANDIDATE <span style="color:red;" class="addNewCandidateErrorCls"><span></h4>
       </div>
 	  <form name="saveNotCadre" id="saveNotCadre"  method="post" enctype="multipart/form-data">
@@ -614,23 +629,23 @@
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">voter Id<span style="color:red;">*<span></label>
-				<input type="text"  id="voterId" class="form-control voterCls" name="addNotcadreRegistrationVO.voterId"/>
+				<input type="text"  id="voterId" class="form-control voterCls clearClss" name="addNotcadreRegistrationVO.voterId"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">name<span style="color:red;">*<span></label>
-				<input type="text" id="nameId" class="form-control"  name="addNotcadreRegistrationVO.name"/>
+				<input type="text" id="nameId" class="form-control clearClss"  name="addNotcadreRegistrationVO.name"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">mobile no<span style="color:red;">*<span></label>
-				<input type="text" id="mobilenoId" class="form-control" name="addNotcadreRegistrationVO.mobileno"/>
+				<input type="text" id="mobilenoId" class="form-control clearClss" name="addNotcadreRegistrationVO.mobileno"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">house no</label>
-				<input type="text" id="HouseId" class="form-control" name="addNotcadreRegistrationVO.houseno"/>
+				<input type="text" id="HouseId" class="form-control clearClss" name="addNotcadreRegistrationVO.houseno"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">gender<span style="color:red;">*<span></label>
-				<select class="chosenSelect" id="genderId" name="addNotcadreRegistrationVO.gender">
+				<select class="chosenSelect clearSelectClss" id="genderId" name="addNotcadreRegistrationVO.gender">
 					<option value="0">Select Gender</option>
 					<option value="Male">Male</option>
 					<option value="Female">female</option>
@@ -639,7 +654,7 @@
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 			<label class="text-capitalize">date of birth<span style="color:red;">*<span></label>
 			<div class="input-group">
-				<input type="text"  id="DOBId" class="form-control" name="addNotcadreRegistrationVO.dob" />
+				<input type="text"  id="DOBId" class="form-control clearClss" name="addNotcadreRegistrationVO.dob" />
 				<span class="input-group-addon">
 					<i class="glyphicon glyphicon-calendar"></i>
 				</span>
@@ -647,41 +662,41 @@
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">age<span style="color:red;">*<span></label>
-				<input type="text"  id="ageId" class="form-control" name="addNotcadreRegistrationVO.age"/>
+				<input type="text"  id="ageId" class="form-control clearClss" name="addNotcadreRegistrationVO.age"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">relative name</label>
-				<input type="text" id="relativenamebyId" class="form-control" name="addNotcadreRegistrationVO. relativename"/>
+				<input type="text" id="relativenamebyId" class="form-control clearClss" name="addNotcadreRegistrationVO. relativename"/>
 			</div>
 	<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">relation type</label>
-				<select class="chosenSelect" id="relativetypeId" name="addNotcadreRegistrationVO. relativetype">
+				<select class="chosenSelect clearSelectClss" id="relativetypeId" name="addNotcadreRegistrationVO. relativetype">
 					<option></option>
 				</select>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">image<span style="color:red;">*<span></label>
-				<input type="file" id="imageurlId" class="form-control" name="file"/>
+				<input type="file" id="imageurlId" class="form-control clearClss" name="file"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">caste<span style="color:red;">*<span></label>
 				<!--<input type="text" id="casteId" class="form-control" name="addNotcadreRegistrationVO. castestateId"/> -->
-				 <select id="casteId" class="chosenSelect" name="addNotcadreRegistrationVO.castestateId">
+				 <select id="casteId" class="chosenSelect clearSelectClss" name="addNotcadreRegistrationVO.castestateId">
                  </select>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">address1</label>
-				<input type="text" id="address1Id" class="form-control" name="addNotcadreRegistrationVO.address1"/>
+				<input type="text" id="address1Id" class="form-control clearClss" name="addNotcadreRegistrationVO.address1"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">address2</label>
-				<input type="text" id="address2Id" class="form-control" name="addNotcadreRegistrationVO.address2"/>
+				<input type="text" id="address2Id" class="form-control clearClss" name="addNotcadreRegistrationVO.address2"/>
 			</div>
 			
 			<div id="searchMemberDiv">
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
                     	<label>State<span style="color:red;">*<span></label>
-                        <select id="notCadreStateId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect" name="addNotcadreRegistrationVO.stateId">
+                        <select id="notCadreStateId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect clearSelectClss" name="addNotcadreRegistrationVO.stateId">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="36">Telangana</option>
@@ -689,24 +704,24 @@
                     </div>
 			         <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls">
 									<label>District<span style="color:red;">*<span></label>
-									<select class="chosenSelect " onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
+									<select class="chosenSelect clearSelectClss" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"notCadreDistId" name="addNotcadreRegistrationVO.districtId">
 								</select>
 						</div>
 					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls">
 									<label>Constituency<span style="color:red;">*<span></label>
-									<select class="chosenSelect" onchange="getMandalCorporationsByConstituency('',this.id);" id="notCadreConstId"  name="addNotcadreRegistrationVO.constituencyId">
+									<select class="chosenSelect clearSelectClss" onchange="getMandalCorporationsByConstituency('',this.id);" id="notCadreConstId"  name="addNotcadreRegistrationVO.constituencyId">
 									</select>
 						</div>
 					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls">
 									<label>Mandal/ Muncipality / Corporation<span style="color:red;">*<span></label>
-									<select  class="chosenSelect" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">
+									<select  class="chosenSelect clearSelectClss" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">
 									
 									</select>
 							</div>
 					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls">
 									<label>Panchayat/ Ward / Division/City<span style="color:red;">*<span></label>
-									<select  class="chosenSelect" id="notCadrePanchayatId" name="addNotcadreRegistrationVO.panchayatId">
+									<select  class="chosenSelect clearSelectClss" id="notCadrePanchayatId" name="addNotcadreRegistrationVO.panchayatId">
 										
 									</select>
 								</div>
@@ -715,7 +730,7 @@
 					
 		<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">pincode</label>
-				<input class="form-control" id="pincodeId" type="text" name="addNotcadreRegistrationVO.pincode"/>
+				<input class="form-control clearClss" id="pincodeId" type="text" name="addNotcadreRegistrationVO.pincode"/>
 			</div>
 		</div>
       </div>
@@ -926,6 +941,17 @@ $(document).ready(function(){
 	$(".hideDivCls").hide();
 });
 */
+function clearAssignValues() 
+{
+	$(".clearClss").val('');
+	$('.clearSelectClss').val(0).trigger('chosen:updated');	
+	if(saveFlag==true)
+	{
+	window.location.reload();
+	cadreReloadFun();
+	}
+	
+}
 $(document).on("click",".referenceModal",function(){
 	$("#myModal").modal('show')
 	commontdpCadreIds = [];;
@@ -1074,6 +1100,10 @@ function buildapptmemberDetails(result){
 		$('.check').tooltip()
 		
 		applyPagination();
+	}
+	function cadreReloadFun()
+	{
+		$("#cadreSearchId").prop('checked', true);
 	}
 </script>
 </body>

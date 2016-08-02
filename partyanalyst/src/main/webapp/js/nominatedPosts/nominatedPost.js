@@ -1,7 +1,8 @@
 function getDistrictsForStates(state,id,num){
-
+	
 	//$(".allcls").hide();
 	if(id == "statesDivId"){
+		$('#districtIdImg').show();
 			getConstituenciesForState(state,'constituencyId');
 			$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
@@ -88,11 +89,12 @@ function getDistrictsForStates(state,id,num){
           url: 'getDistrictsListForStateAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
+   }).done(function(result){   
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
 	   if(id == "statesDivId"){
+		   $("#districtIdImg").hide();
 			$("#districtId").empty();
 	   }else if(id == "notCadreStateId"){
 		   $("#notCadreDistId").empty();
@@ -131,8 +133,9 @@ function getDistrictsForStates(state,id,num){
    });
   }
  function getConstituenciesForDistricts(district,id,num){
-	// debugger;
+	// debugger; 
 	 if(id == "districtId"){
+		 $("#constituencyIdImg").show();
 			$("#searchDataImgForConst").show();
 			//refreshExistingDetails();
 			$("#constituencyId").empty();
@@ -208,6 +211,7 @@ function getDistrictsForStates(state,id,num){
 		   location.reload(); 
 	   }
 	   if(id == "districtId"){
+		    $("#constituencyIdImg").hide();
 			$("#constituencyId").empty();
 	   }else if(id == "notCadreDistId"){
 		   	$("#notCadreConstId").empty();
@@ -247,6 +251,7 @@ function getDistrictsForStates(state,id,num){
 	{	
 	var constituencyId  =0;
 	if(id == "constituencyId"){
+		$("#mandalListImg").show();
 			$("#searchDataImgForMandl").show();
 			//refreshExistingDetails();
 			constituencyId = $('#constituencyId').val();
@@ -298,6 +303,7 @@ function getDistrictsForStates(state,id,num){
 				if(result !=null)
 				{
 					if(id == "constituencyId"){
+						$("#mandalListImg").hide();
 						$("#mandalList").empty();
 						//$("#mandalList").append('<option value="0">Select Mandal</option>');
 					}else if(id == "notCadreConstId"){
@@ -339,10 +345,11 @@ function getDistrictsForStates(state,id,num){
 				}				
 				});
 	}
-function getPanchayatWardByMandal(num,id){ 
+function getPanchayatWardByMandal(num,id){
 			var mandalId=0;
 			var constituencyId = 0; //cadreSearchDtls
-		if(id == "mandalList"){			
+		if(id == "mandalList"){	
+                $("#panchaytListImg").show();		
 				$("#searchDataImgForPanc").show();
 				//refreshExistingDetails();
 				mandalId=$("#mandalList").val();
@@ -382,6 +389,7 @@ function getPanchayatWardByMandal(num,id){
 				data : {task:JSON.stringify(jsObj)} 
 			}).done(function(result){
 				if(id == "mandalList"){
+					$("#panchaytListImg").hide();
 						$("#panchaytList").empty();
 						//$("#panchaytList").append('<option value="0">Select Panchayat</option>');
 				}else if(id == "notCadreMandlId"){
@@ -677,6 +685,8 @@ function getNominatedPostApplication(startIndex)
 		
 			
 		if(result != null && result.length >0){
+			str +='<ul class="list-inline best-matched-profile ">';
+                                
 		for(var i in result)
 			{	
 				if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 )
@@ -722,15 +732,19 @@ function getNominatedPostApplication(startIndex)
 					}
 				 
 			}
+			str +='</ul>';		
+			if(result.length>3)
+			{
+			$(".best-matched-profile").slick({
+				slide: 'li',
+				slidesToShow: 4,
+			   infinite: false
+			   });
+			}
 		}else{
 				str+='No Data Available';	
 		}
-		
-		$("#cadreSearchDtls").html(str);
-		/*if(id == 2)
-			$("#cadreSearchDtls").append(str);
-		else
-			$("#cadreSearchDtls").html(str);*/
+	  $("#cadreSearchDtls").html(str);  
 	}
 	function refreshExistingDetails(){ 
 		$("#searchBy").val("");
@@ -1825,20 +1839,23 @@ function searchByApplicant()
      return flag;
     }
 	
-	$(document).on("click",".cadreCheckCls",function(){
+	$(document).on("click",".cadreCheckCls",function(){ 
 	 $("#searchData").html('');
 	 $("#searchData1").html('');
     // $("#cadreSearchDtls").html('');	 
   if ($("#cadreSearchId").is(":checked")) {
 		$("#searchMemberDiv").show();
 		$("#cadreById").hide();
-
+         $("#addMemberDivId").hide();
+       		 
 	}
 	else {
 	 $("#searchMemberDiv").hide();
 	 $("#cadreById").show();
 	 $("#scrollDivId").hide();
 	 $("#textId").hide();
+	 $("#addMemberDivId").show();
+	  
 	}
 });
 $(document).on("click",".deleteFile",function() {
