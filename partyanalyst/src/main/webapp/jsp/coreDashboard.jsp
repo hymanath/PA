@@ -33,51 +33,218 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
+          	<li><a href="#"><i class="glyphicon glyphicon-gift"></i></a></li>
             <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
             <li class="dropdown profileDropDown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">Change Password</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
+                <li><a href="#">Sign Out</a></li>
               </ul>
             </li>
           </ul>
-          <div class="navbar-form navbar-right">
-          	<div class="input-group headerSearch">
-            	<span class="input-group-addon">
-                	<i class="glyphicon glyphicon-search"></i>
-                </span>
-                <input type="text" class="form-control" placeholder="Search...">
-            </div>
-          </div>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
-            	<div class="col-md-8 col-xs-12 col-sm-8">
+            	<div class="col-md-7 col-xs-12 col-sm-7">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
-                        <li class="dropdown profileDropDown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ASHOK DAKAVARAM 
+                        <li class="dropdown profileDropDown toggleViewIcon">
+                          <a href="#">ASHOK DAKAVARAM 
                           	<span class="caretBackground">
-                            	<span class="caret"></span>
+                            	<span class="caret" style="margin-top: 9px;"></span>
                             </span>
                           </a>
-                          <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                          </ul>
+                          <div class="dropdown-menu settingsDropDownOptionsView">
+                          	<div class="input-group">
+                            	<input type="text" class="form-control"/>
+                                <span class="input-group-addon">
+                                	<i class="glyphicon glyphicon-search"></i>
+                                </span>
+                            </div>
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                              <div class="panel panel-default panelProfileView">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                  <a role="button" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <h4 class="panel-title">
+                                      GS VIew
+                                      <span class="profileImageView">
+                                      	<img src="dist/coreDashboard/img/logo.png" />
+                                      </span>
+                                    </h4>
+                                  </a>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                  <div class="panel-body">
+                                    <!---SUB VIEW-->
+                                    <div class="panel-group" id="accordionSub" role="tablist" aria-multiselectable="true">
+                                      <div class="panel panel-default panelProfileView">
+                                        <div class="panel-heading" role="tab" id="headingOneSubView2">
+                                          <a role="button" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionSub" href="#collapseOneSubView2" aria-expanded="true" aria-controls="collapseOneSubView2">
+                                            <h4 class="panel-title">
+                                              GS - Nageshwar Rao
+                                              <span class="profileImageView">
+                                                <img src="dist/coreDashboard/img/logo.png" />
+                                              </span>
+                                            </h4>
+                                          </a>
+                                        </div>
+                                        <div id="collapseOneSubView2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneSubView2">
+                                          <div class="panel-body">
+                                                <!-- Sub Sub View -->
+                                                    <div class="panel-group" id="accordionSubSub" role="tablist" aria-multiselectable="true">
+                                                      <div class="panel panel-default panelProfileView">
+                                                        <div class="panel-heading" role="tab" id="headingOneSubSubView2">
+                                                          <a role="button" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionSubSub" href="#collapseOneSubSubView2" aria-expanded="true" aria-controls="collapseOneSubSubView2">
+                                                            <h4 class="panel-title">
+                                                              GS - G Jaya Nageshwar Reddy
+                                                              <span class="profileImageView">
+                                                                <img src="dist/img/logo.png" />
+                                                              </span>
+                                                            </h4>
+                                                          settingsDropDownOptionsView                                                          </a>
+                                                        </div>
+                                                        <div id="collapseOneSubSubView2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneSubSubView2">
+                                                          <div class="panel-body pad_15">
+                                                            <ul class="radioStyling">
+                                                              <li>
+                                                                <input type="radio" id="f" name="selector">
+                                                                <label for="f">MadakaSira - MLA</label>
+                                                                
+                                                                <div class="check"></div>
+                                                              </li>
+                                                              <li>
+                                                                <input type="radio" id="s" name="selector">
+                                                                <label for="s">Hindupur - MLA - Nandamuri BalaKrishna</label>
+                                                                
+                                                                <div class="check"><div class="inside"></div></div>
+                                                              </li>
+                                                            </ul>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="panel panel-default panelProfileView">
+                                                        <div class="panel-heading" role="tab" id="headingTwoSubSubView1">
+                                                            <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordionSubSub" href="#collapseTwoSubSubView1" aria-expanded="false" aria-controls="collapseTwoSubSubView1">
+                                                              <h4 class="panel-title">
+                                                                 GS - B Buchaiah Chowdary
+                                                                 <span class="profileImageView">
+                                                                    <img src="dist/coreDashboard/img/logo.png" />
+                                                                  </span>
+                                                              </h4>
+                                                            </a>
+                                                        </div>
+                                                        <div id="collapseTwoSubSubView1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoSubSubView1">
+                                                          <div class="panel-body">
+                                                            
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="panel panel-default panelProfileView">
+                                                        <div class="panel-heading" role="tab" id="headingThreeSubSubView">
+                                                            <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordionSubSub" href="#collapseThreeSubSubView" aria-expanded="false" aria-controls="collapseThreeSubSubView">
+                                                              <h4 class="panel-title">
+                                                                 GS - B T Naidu
+                                                                 <span class="profileImageView">
+                                                                    <img src="dist/coreDashboard/img/logo.png" />
+                                                                  </span>
+                                                              </h4>
+                                                            </a>
+                                                        </div>
+                                                        <div id="collapseThreeSubSubView" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThreeSubSubView">
+                                                          <div class="panel-body">
+                                                            
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                <!-- Sub Sub View End-->
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="panel panel-default panelProfileView">
+                                        <div class="panel-heading" role="tab" id="headingTwoSubView1">
+                                            <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordionSub" href="#collapseTwoSubView1" aria-expanded="false" aria-controls="collapseTwoSubView1">
+                                              <h4 class="panel-title">
+                                                 GS - B Buchaiah Chowdary
+                                                 <span class="profileImageView">
+                                                    <img src="dist/coreDashboard/img/logo.png" />
+                                                  </span>
+                                              </h4>
+                                            </a>
+                                        </div>
+                                        <div id="collapseTwoSubView1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoSubView1">
+                                          <div class="panel-body">
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="panel panel-default panelProfileView">
+                                        <div class="panel-heading" role="tab" id="headingThreeSubView">
+                                            <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordionSub" href="#collapseThreeSubView" aria-expanded="false" aria-controls="collapseThreeSubView">
+                                              <h4 class="panel-title">
+                                                 GS - B T Naidu
+                                                 <span class="profileImageView">
+                                                    <img src="dist/coreDashboard/img/logo.png" />
+                                                  </span>
+                                              </h4>
+                                            </a>
+                                        </div>
+                                        <div id="collapseThreeSubView" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThreeSubView">
+                                          <div class="panel-body">
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!--SUB VIEW END-->
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="panel panel-default panelProfileView">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                      <h4 class="panel-title">
+                                          District view
+                                          <span class="profileImageView">
+                                            <img src="dist/coreDashboard/img/logo.png" />
+                                          </span>
+                                      </h4>
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                  <div class="panel-body">
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="panel panel-default panelProfileView">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                      <h4 class="panel-title">
+                                          mp view
+                                          <span class="profileImageView">
+                                            <img src="dist/coreDashboard/img/logo.png" />
+                                          </span>
+                                      </h4>
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                  <div class="panel-body">
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-2 col-xs-12 col-sm-2">
+                <div class="col-md-3 col-xs-12 col-sm-3">
                 	<ul class="list-inline profileSelection">
                     	<li class="active">
                         	<a href="#">general</a>
@@ -90,14 +257,69 @@
                 <div class="col-md-2 col-xs-12 col-sm-2">
                 	<button class="btn btn-success btnYellow"><img src="dist/coreDashboard/img/Icon.png" alt="Icon" class="img-responsive"/>query builder</button>
                    
-                    <div class="dropdown settingsDropDown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-cog settingsIcon"></i></a>
+                    <div class="settingsDropDown">
+                      <a href="#"> <i class="glyphicon glyphicon-cog settingsIcon"></i></a>                      
                       <ul class="settingsDropDownOptions">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                      	<li><a href="#">Dashboard settings</a></li>
+                        <li><a href="#">committee settings</a>
+                        	<div class="settingsDropDownOptionsSub">
+                            	<h4 class="panel-title text-capital text-center">committees block settings</h4>
+                                <div class="m_top20">
+                                    <ul class="radioStyling">
+                                      <li>
+                                        <input type="radio" id="f-option" name="selector">
+                                        <label for="f-option">Cumulative</label>
+                                        
+                                        <div class="check"></div>
+                                      </li>
+                                      <li>
+                                        <input type="radio" id="s-option" name="selector">
+                                        <label for="s-option">Comparative</label>
+                                        
+                                        <div class="check"><div class="inside"></div></div>
+                                      </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <label class="m_top20">Select Period</label>
+                                    <select class="select selectBoxStyle">
+                                        <option>Till Date</option>
+                                    </select>
+                                </div>
+                                <div class="m_top20">
+                                	<label class="text-capital">select type of committees</label>
+                                    <ul class="committeesSelect">
+                                    	<li>
+                                        	<div class="squaredOne">
+                                              <input type="checkbox" value="None" id="squaredOne" name="check" />
+                                              <label for="squaredOne"></label>
+                                            </div>
+                                            <span>Main Committee</span>
+                                        </li>
+                                        <li>
+                                        	<div class="squaredOne">
+                                              <input type="checkbox" value="None" id="squaredOne1" name="check" />
+                                              <label for="squaredOne1"></label>
+                                            </div>
+                                            <span>Telugu Yuvatha</span>
+                                        </li>
+                                        <li>
+                                        	<div class="squaredOne">
+                                              <input type="checkbox" value="None" id="squaredOne2" name="check"/>
+                                              <label for="squaredOne2"></label>
+                                            </div>
+                                            <span>Telugu Mahila</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="m_top20 text-center">
+                                	<button class="btn btn-success btnYellow btn-lg">SUBMIT</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#">meetings</a></li>
+                        <li><a href="#">party news</a></li>
+                        <li><a href="#">govt news</a></li>
                       </ul>
                     </div>
                 </div>
@@ -107,10 +329,7 @@
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
-            	<div class="col-md-4 col-xs-12 col-sm-4">
-                	<p class="m_top10 text-capitalize">Dashboard</p>
-                </div>
-				<div class="col-md-4 col-xs-12 col-sm-4 col-xs-offset-2">
+            	<div class="col-md-4 col-xs-12 col-sm-4 col-xs-offset-2">
 				<p class="m_top10">
                 	<label class="radio-inline">
 					  <input type="radio" name="inlineRadioOptions" id="cumulativeId" value="cumulative" checked> COMULATIVE
@@ -120,7 +339,8 @@
 					</label>
 					</p>
                 </div>
-                <div class="col-md-2 col-xs-12 col-sm-2">
+				
+                <div class="col-md-2 col-xs-12 col-sm-2 pull-right"  style="margin-top: -10px;">
                 	<ul class="list-inline profileSelection">
                     	<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">AP</a>
@@ -319,6 +539,15 @@
 	  globalState = $(this).html();
 	  event.preventDefault();
     });
+	$(document).on("click",".settingsDropDown",function(){
+		$(this).toggleClass("dropdownOpen")
+	});
+	$(document).on("click",".toggleViewIcon",function(){
+		$(this).toggleClass("dropDownView")
+	});
+	$(document).on("click",".settingsDropDownOptions li,.toggleViewIcon .settingsDropDownOptionsView",function(e){
+		e.stopPropagation();
+	});
 </script>
 </body>
 </html>
