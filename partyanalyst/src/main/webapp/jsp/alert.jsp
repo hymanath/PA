@@ -135,7 +135,7 @@
                 <div class="panel-body bg_EF">
                 	<div class="row">
                     	<div class="col-md-4 col-sm-4 col-xs-12">
-                        	<label>Select Alert Type</label>
+                        	<label>Select Alert Type</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertTypeId" name="alertVO.alertTypeId">
                             	<option value="0">Select Alert</option>
                             </select>
@@ -149,13 +149,13 @@
                             </select>
                         </div>-->
                         <div class="col-md-3 col-sm-3 col-xs-12">
-                        	<label>Information Source For Alert</label>
+                        	<label>Information Source For Alert</label><span class="text-danger">*</span>
                             <select class="dropkickClass"  id="alertSourceId" name="alertVO.alertSourceId" >
                             	<option value="0"> Select Alert Source </option>
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12">
-                        	<label>Alert Severity</label>
+                        	<label>Alert Severity</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertSeverityId" name="alertVO.severity">
                             		<option value="0">Select Alert Severity</option>
 												<option value="1">High</option>
@@ -164,7 +164,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12">
-                        	<label>Alert Location Level</label>
+                        	<label>Alert Location Level</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="alertlevelId1" attr-index="1" onchange="disableByLevel(1);" >
 											<option value="2">State</option>
 											 <option value="3">District</option>
@@ -176,7 +176,7 @@
                    </div>
                    <div class="row m_top10">
                         <div class="col-md-2 col-sm-2 col-xs-12 stateShowCls1">
-                        	<label>State</label>
+                        	<label>State</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="stateId1" onChange="getDistrictsForReferPopup(1);" name="alertVO.stateId">
 											 <option value="0">Select State</option>
 											 <option value="1">AP</option>
@@ -184,25 +184,25 @@
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12 locationsFilterCls distCls1">
-                        	<label>District</label>
+                        	<label>District</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="referdistrictId1" onChange="getConstituenciesBydistrictForReferPopup(1);" name="alertVO.districtId">
 											 <option value="0">Select District</option></select>
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12 locationsFilterCls constiCls1">
-                        	<label>Constituency</label>
+                        	<label>Constituency</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
 											<option value="0">Select Assembly</option>
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12 locationsFilterCls mandalCls1">
-                        	<label>Mandal/Muncipality/Cor</label>
+                        	<label>Mandal/Muncipality/Cor</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="refermandalNameId1" onChange="getPanchayatsForReferPopup(1);" name="alertVO.tehsilId">
 												<option value="0">Select Mandal/ Municipality</option>
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12 locationsFilterCls panchayatCls1">
-                        	<label>Panchayat/Ward/Division</label>
+                        	<label>Panchayat/Ward/Division</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="referpanchayatId1" name="alertVO.panchayatId">
 											<option value="0">Select Panchayat/Ward</option>
                             </select>
@@ -210,7 +210,7 @@
                     </div>
                     <div class="row m_top10">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<label>Alert Description</label>
+                        	<label>Alert Description</label><span class="text-danger">*</span>
                             <label class="radio-inline">
                             	<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
                             </label>

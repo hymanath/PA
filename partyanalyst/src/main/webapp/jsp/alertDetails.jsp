@@ -295,6 +295,7 @@ control.makeTransliteratable(['commentsId']);
 											<textarea class="form-control" placeholder="alert tracking comments" id="commentsId"></textarea>
 											<div id="errorId" class="m_top10"></div>
 											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert status</button>
+											<span id="updateAlertajaxImg" class="m_top10"></span>
 										</div>
 										</c:if>
 									</div>
