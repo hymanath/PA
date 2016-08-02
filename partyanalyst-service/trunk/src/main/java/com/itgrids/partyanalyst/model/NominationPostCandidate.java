@@ -45,9 +45,9 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private String imageurl;
 	private Long castestateId;
 	private Long addressId;
-	private UserAddress address;
 	private Long nominatedPostAgeRangeId;
 	
+	private UserAddress address;
 	private TdpCadre tdpCadre;
 	private Voter voter;
 	private CasteState casteState;
@@ -222,7 +222,7 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	public void setDob1(Date dob1) {
 		this.dob1 = dob1;
 	}
-	public void setImageurl(String imageurl) {
+	public void setImageurl(String imageurl) {     
 		this.imageurl = imageurl;
 	}
 	
@@ -246,18 +246,16 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
 	}
-	
 	@Column(name = "nominated_post_age_range_id")
-	public Long getNominatedPostAgeRangeId() {
+	public Long getNominatedPostAgeRangeId() {  
 		return nominatedPostAgeRangeId;
 	}
 	public void setNominatedPostAgeRangeId(Long nominatedPostAgeRangeId) {
 		this.nominatedPostAgeRangeId = nominatedPostAgeRangeId;
 	}
-	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="nominated_post_age_range_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@LazyToOne(LazyToOneOption.NO_PROXY)  
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public NominatedPostAgeRange getNominatedPostAgeRange() {
 		return nominatedPostAgeRange;
