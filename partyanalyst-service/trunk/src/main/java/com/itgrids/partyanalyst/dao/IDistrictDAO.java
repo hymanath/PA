@@ -100,6 +100,7 @@ public interface IDistrictDAO extends GenericDao<District, Long>{
     public Long getDistrictByStateIdAndDistrictName(Long stateId,String districtName);
     public List<Object[]> getDistrictsList();
     public List<Long> getLocalBodiesOfDistrict(List<Long> distrctIds);
+    public List<Object[]> getAllDistrictList(Long stateId);
 
 
    
