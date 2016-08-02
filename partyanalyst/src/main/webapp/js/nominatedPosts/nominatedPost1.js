@@ -138,9 +138,9 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 
 	}
 
-  
+  	var saveFlag=false;
 	function saveNotCadreDetails(){
-		
+		saveFlag=false;
 		var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
@@ -158,10 +158,12 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 		globalNominatedCandId = "";
 		if(result.indexOf("SUCCESS") > -1){
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
-			
+				saveFlag =true;
 			$("#notCadreSavId").html("<span style='color: green;font-size:22px;'>Not Cadre Saved Successfully</span>");
 			 setTimeout(function(){
 			$("#notCadreSavId").html("");
+			//alert(saveFlag);
+		
 			//$("#addMemberModalBlock").modal('hide');
 			}, 2000); 
 			$("#notCadreSearchId").attr("checked","true");
@@ -946,13 +948,13 @@ function setDefaultImage(img){
 			str+='<div class="col-md-12"><div class="form-inline">';
 			//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
 			str+='<div class="onoffswitch" style="display:inline-block">';
-			//str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox checkedReffrl" id="myonoffswitch'+cloneCount+'" checked value="'+attrId+'">';
+			/*str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox checkedReffrl" id="myonoffswitch'+cloneCount+'" checked value="'+attrId+'">';*/
 			str+='<label class="onoffswitch-label" for="myonoffswitch'+cloneCount+'">';
             str+='<span class="onoffswitch-inner"></span>';
             str+='<span class="onoffswitch-switch"></span>';
 			str+='</label>';
 			str+='</div>';
-			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew"></i></span></div></div>';
+			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display: block;"  onclick="getConfirmation();"></i></span></div></div>';
 			$("#duplicateCandidateBlock").html('');
 			
 			if(jQuery.inArray(attrId, involvedCadreIds) == -1)
@@ -1196,5 +1198,13 @@ function getDetailsBySrch()
        var select = new Dropkick("#alertlevelId");
        select.refresh();
            disableByLevel();
-     
- }
+     }
+	 function getConfirmation(){
+               var retVal = confirm("Are you sure want to remove this refer ?");
+               if( retVal == true ){
+                  return true;
+               }
+               else{
+                  return false;
+               }
+            }
