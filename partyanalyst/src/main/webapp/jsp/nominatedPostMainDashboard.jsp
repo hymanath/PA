@@ -225,8 +225,8 @@
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                 	<div class="pad_15 bg_ff">
                     	<div class="row">
-                        	<div class="col-md-2 col-xs-12 col-sm-2">
-                            	<table class="table table-bordered table-condensed bg_F1" id="totalMaleAndFemaleId">
+                        	<div class="col-md-2 col-xs-12 col-sm-2" id="totalMaleAndFemaleId">
+                            	<table class="table table-bordered table-condensed bg_F1">
                                 	<tr>
                                     	<td rowspan="2" style="vertical-align:middle">
                                         	<p class="text-capital">total</p>
@@ -245,13 +245,9 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-5 col-xs-12 col-sm-5">
-                            	<table class="table table-bordered bg_D4 tablePadding"id="totalCasteId">
-                                </table>
+                            <div class="col-md-5 col-xs-12 col-sm-5" id="totalCasteId">
                             </div>
-                            <div class="col-md-5 col-xs-12 col-sm-5">
-                            	<table class="table table-bordered bg_CB tablePadding" id="totalAgeWiseId">
-                                </table>
+                            <div class="col-md-5 col-xs-12 col-sm-5" id="totalAgeWiseId">
                             </div>
                         </div>
                         <div class="row m_top20">
@@ -260,91 +256,7 @@
                                 	<table class="table table-bordered text-center text-capital" id="casteAndAgeWiseId">
                                     </table>
                                 </div>
-                                <div class="table-responsive m_top20">
-                                	<table class="table table-condensed" style="border:1px solid #ddd;">
-                                        <thead class="bg_ef text-capital">
-                                            <th>District</th>
-                                            <th>Finalised Positions Total</th>
-                                            <th>Male</th>
-                                            <th>Female</th>
-                                            <th>20-29 AGE</th>
-                                            <th>30-39 AGE</th>
-                                            <th>50-59 AGE</th>
-                                            <th>60+ AGE</th>
-                                            <th></th>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="text-capital">
-                                                <td>east godavari</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td><i class="glyphicon glyphicon-plus changeIconClass"></i></td>
-                                            </tr>
-                                            <tr class="showHideTr" style="display:none;">
-                                                <td colspan="9" class="pad_15">
-                                                    <table class="table table-condensed table-striped">
-                                                        <thead class="text-capital">
-                                                            <th>Position</th>
-                                                            <th>total positions</th>
-                                                            <th>M</th>
-                                                            <th>F</th>
-                                                            <th>20-29</th>
-                                                            <th>30-39</th>
-                                                            <th>50-59</th>
-                                                            <th>60+</th>
-                                                        </thead>
-                                                        <tbody class="text-capital">
-                                                            <tr>
-                                                                <td>charimen</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>charimen</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>charimen</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>charimen</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                                <td>04</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="table-responsive m_top20" id="casteNameWiseTotlaCntsId">
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-12 col-sm-4">
@@ -592,8 +504,19 @@ $(function () {
     });
 });
 $(document).on("click",".changeIconClass",function(){
+	if($(".changeIconClass").hasClass("glyphicon-minus"))
+	{
+		$(".changeIconClass").removeClass("glyphicon-plus").removeClass("glyphicon-minus").addClass("glyphicon-plus")
+	}
 	$(this).closest('tr').next('tr.showHideTr').toggle();
-	$(this).toggleClass("glyphicon-minus");
+	$(this).toggleClass("glyphicon-minus").toggleClass("glyphicon-plus");
+	var casteId =$(this).attr("attr_id");
+	if($(this).hasClass("glyphicon-minus")){
+		casteWisePositionsCountsByPosition(casteId,"expand");
+	}else{
+		casteWisePositionsCountsByPosition(casteId,"close");
+	}
+	
 });
  /*   var gaugeChart = AmCharts.makeChart("chartdiv1", {
   "type": "gauge",
