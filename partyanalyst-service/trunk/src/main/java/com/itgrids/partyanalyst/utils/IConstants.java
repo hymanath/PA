@@ -1106,10 +1106,11 @@ public interface IConstants {
 	public static final String[] ATTENDANCE_REPORT_EMAIL_GROUP = {"a.dakavaram@itgrids.com,a.dakavaram@gmail.com,kamalakar@itgrids.com"};
 	public static final String EMAIL_USERNAME = "info@itgrids.com";
 	public static final String EMAIL_PASSWORD = "itgrids$678";
-	public static final String[] NOMINATED_POST_APPLICATION_STATUSES = {"TOTAL CORPORATIONS","APPLICATIONS NOT RECIEVED",
-		 "YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED"};
+	public static final String[] NOMINATED_POST_APPLICATION_STATUSES = {"TOTAL AVAILABLE","APPLICATIONS NOT RECIEVED",
+		 "YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED","TOTAL"};
 	
 	public static final String SHORTLISTED_STATUS ="Shortlisted";
+	public static final String RUNNING_NOMINATED_POSTS_STATUS_IDS ="1";
 	public static final String NOMINATED_POST_DOCUMENTS ="nominated_post_documents";
 	
 	public static final String NOMINATED_APPLIED_STATUS ="Applied";
@@ -1129,5 +1130,6 @@ public interface IConstants {
 	public static final Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5"; 
-	
+	public static final String AP_NEW_DISTRICTS_IDS_LIST = "11,12,13,14,15,16,17,18,19,20,21,22,23,517";
+	public static final String TS_NEW_DISTRICTS_IDS_LIST = "1,2,3,4,5,6,7,8,9,10,518";
 }
