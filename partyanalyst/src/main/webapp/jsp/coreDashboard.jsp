@@ -35,7 +35,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
             <li class="dropdown profileDropDown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">Action</a></li>
                 <li><a href="#">Another action</a></li>
@@ -88,7 +88,7 @@
                     </ul>
                 </div>
                 <div class="col-md-2 col-xs-12 col-sm-2">
-                	<button class="btn btn-success btnYellow"><img src="dist/img/Icon.png" alt="Icon" class="img-responsive"/>query builder</button>
+                	<button class="btn btn-success btnYellow"><img src="dist/coreDashboard/img/Icon.png" alt="Icon" class="img-responsive"/>query builder</button>
                    
                     <div class="dropdown settingsDropDown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-cog settingsIcon"></i></a>
@@ -107,16 +107,26 @@
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
-            	<div class="col-md-10 col-xs-12 col-sm-10">
+            	<div class="col-md-4 col-xs-12 col-sm-4">
                 	<p class="m_top10 text-capitalize">Dashboard</p>
+                </div>
+				<div class="col-md-4 col-xs-12 col-sm-4 col-xs-offset-2">
+				<p class="m_top10">
+                	<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="cumulativeId" value="cumulative" checked> COMULATIVE
+					</label>
+					<label class="radio-inline">
+					  <input type="radio" name="inlineRadioOptions" id="comparitiveId" value="comparitive"> COMPARITIVE
+					</label>
+					</p>
                 </div>
                 <div class="col-md-2 col-xs-12 col-sm-2">
                 	<ul class="list-inline profileSelection">
-                    	<li class="active">
-                        	<a href="" class="stateCls">AP</a>
+                    	<li class="active" >
+                        	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">AP</a>
                         </li>
                         <li>
-                        	<a href="" class="stateCls">TS</a>
+                        	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">TS</a>
                         </li>
                     </ul>
                 </div>
@@ -136,11 +146,24 @@
 				 <div class="panel-body">
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<div id="committees" class="chart"></div>
+                        	<div id="committeesForComulative" class="chart"></div>
+							<div class="row">
+							<div id="CamparitiveBasicBlock" style ="display:none;"></div>
+							<!--<div class="col-xs-6"><div id="committeesForCamparitive" class="" style ="display:none;width:100%;height:250px;"></div></div>
+							<div class="col-xs-6"><div id="committeesForCamparitive1" class="" style ="display:none;width:100%;height:250px;"></div></div>-->
+							
+							
+							</div>
+							
                         </div>
-						<div id="graphsDivId" style ="display:none;"></div>
+						<div id="levelWiseComulativeForCommittees" style ="display:none;"></div>
+						<div id="levelWiseComparativeForCommittees" style ="display:none;"></div>
+						<!--<div class="col-md-4 col-xs-12 col-sm-4"><div id="committeesForCamparitivelarge" class="chart " style ="display:none;"></div></div>
+						<div class="col-md-4 col-xs-12 col-sm-4"><div id="committeesForCamparitivelarge1" class="chart " style ="display:none;"></div></div>
+						<div class="col-md-4 col-xs-12 col-sm-4"><div id="committeesForCamparitivelarge2" class="chart " style ="display:none;"></div></div>-->
+						
                         <div class="col-md-12 col-xs-12 col-sm-12">
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right committeesExpandIcon expandIcon"></i>
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right committeesExpandIcon " style ="cursor:pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -231,8 +254,6 @@
 		getCommitteesCumulativeBasicReportChart();
 		getCommitteesCumulaticeOverallReportCharts();
 		
-		getCommitteesComparativeBascicReportChart();
-		getCommitteesComparativeOverallReportChart();
 	}
 	
 	$(document).ready(function(){
@@ -241,15 +262,56 @@
 		$(".eventsheader").hide();
 		blockHeights();
 		buildBasicgraphs();
+		
+		$("#cumulativeId").prop("checked",true);
 	});
 	
 	 
 	$(document).on("click",".committeesExpandIcon",function(){
-		$(".committeesBlock").toggleClass("col-md-4").toggleClass("col-md-12");
-		$("#committees").toggle();
-		$("#graphsDivId").toggle();
+		$(".committeesExpandIcon").addClass("expandIcon");
+		$(".committeesBlock").removeClass("col-md-4").addClass("col-md-12");
+		if($("#cumulativeId").is(':checked')){
+			$("#committeesForComulative").hide();
+			$("#levelWiseComulativeForCommittees").show();
+		}
+		if($("#comparitiveId").is(':checked')){
+			$("#CamparitiveBasicBlock").hide();
+			$("#levelWiseComparativeForCommittees").show();
+		
+		}
 		blockHeights();
 	});
+	$(document).on("click",".expandIcon",function(){
+		$(".committeesBlock").addClass("col-md-4").removeClass("col-md-12");
+		$(".committeesExpandIcon").removeClass("expandIcon");
+		if($("#cumulativeId").is(':checked')){
+			$("#committeesForComulative").show();
+			$("#levelWiseComulativeForCommittees").hide();
+			$("#levelWiseComparativeForCommittees").hide();
+		}
+		if($("#comparitiveId").is(':checked')){
+			$("#CamparitiveBasicBlock").show();
+			$("#levelWiseComparativeForCommittees").hide();
+		}
+		blockHeights();
+	});
+   $(document).on("click","#comparitiveId",function(){
+	   $(".committeesBlock").addClass("col-md-4").removeClass("col-md-12");
+		$("#committeesForComulative").hide();
+		$("#CamparitiveBasicBlock").show();
+		$("#levelWiseComulativeForCommittees").hide();
+		$("#levelWiseComparativeForCommittees").hide();
+		getCommitteesComparativeBascicReportChart();
+		getCommitteesComparativeOverallReportChart();
+	}); 
+    $(document).on("click","#cumulativeId",function(){
+		$(".committeesBlock").addClass("col-md-4").removeClass("col-md-12");
+		$("#committeesForComulative").show();
+		$("#CamparitiveBasicBlock").hide();
+		$("#levelWiseComparativeForCommittees").hide();
+		
+	}); 
+	
 	
     $(".stateCls").click(function(event){
       $(".stateCls").parent().removeClass("active");
@@ -257,7 +319,6 @@
 	  globalState = $(this).html();
 	  event.preventDefault();
     });
-    
 </script>
 </body>
 </html>
