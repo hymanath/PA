@@ -1110,7 +1110,7 @@ public class SchedulerService implements ISchedulerService{
 													departmentWiseThenOfficeWiseTotalAttendedEmployee, 
 													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
-				//ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
+				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
 				System.out.println("Hi");     
 			}
 		
