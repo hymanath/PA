@@ -1091,6 +1091,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		
 		if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 1){
 			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
+			nominatedPostApplication.setLocationValue(1l) ;
 		}else if(Vo.getBoardLevelId() != null && Vo.getBoardLevelId().longValue() == 2){
 			nominatedPostApplication.setBoardLevelId(Vo.getBoardLevelId() != null ? Vo.getBoardLevelId() : null) ;
 			nominatedPostApplication.setLocationValue(Vo.getStateId() != null ? Vo.getStateId() : null) ;
@@ -3030,7 +3031,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						//UA.getUserAddressId();
                         NominationPostCandidate NPC=new NominationPostCandidate();
                         
-                        Long voterId = voterDAO.getVoterIdByIdCardNo(notcadreRegistrationVO.getVoterId().toString());
+                        Long voterId = voterDAO.getVoterIdByIdCardNoNew(notcadreRegistrationVO.getVoterId().toString());
+                        
                         NPC.setVoterId(voterId != null ? voterId : null);
                         NPC.setCandidateName(notcadreRegistrationVO.getName()!=null?notcadreRegistrationVO.getName():null);
 	                    NPC.setAge(notcadreRegistrationVO.getAge()!=null?notcadreRegistrationVO.getAge():null);
@@ -3038,7 +3040,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	                    NPC.setHouseno(notcadreRegistrationVO.getHouseno()!=null?notcadreRegistrationVO.getHouseno():null);
 	                    NPC.setMobileNo(notcadreRegistrationVO.getMobileno()!=null?notcadreRegistrationVO.getMobileno():null);
 	                    NPC.setRelativename(notcadreRegistrationVO.getRelativename()!=null?notcadreRegistrationVO.getRelativename():null);
-	                    NPC.setRelativetype(notcadreRegistrationVO.getRelativetype()!=null?notcadreRegistrationVO.getRelativetype():null);
+	                    if(notcadreRegistrationVO.getRelativetype() !=null && !notcadreRegistrationVO.getRelativetype().trim().isEmpty() &&
+	                    		!notcadreRegistrationVO.getRelativetype().trim().equalsIgnoreCase("0")){
+	                    	 NPC.setRelativetype(notcadreRegistrationVO.getRelativetype());
+	                    }
+	                   
 	                    NPC.setAddressId(UA.getUserAddressId());
 	                    NPC.setCastestateId(notcadreRegistrationVO.getCastestateId() !=null?notcadreRegistrationVO.getCastestateId():null);
 	                    Date fromDate = null;
