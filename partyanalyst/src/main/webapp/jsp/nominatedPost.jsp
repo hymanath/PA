@@ -678,7 +678,7 @@
 			
 			<div id="searchMemberDiv">
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
-                    	<label>State</label>
+                    	<label>State<span style="color:red;">*<span></label>
                         <select id="notCadreStateId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect" name="addNotcadreRegistrationVO.stateId">
 							<option value="0">Select State</option>
 							<option value="1">AndhraPradesh</option>
