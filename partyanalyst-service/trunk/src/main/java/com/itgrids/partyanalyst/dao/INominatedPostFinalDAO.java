@@ -27,5 +27,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public List<Object[]> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId);
 	 public List<Object[]> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId);
 	 public List<Object[]> getPositionCountForGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId,String type);
-
+	 public Object[] getShortListedPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId);
 }

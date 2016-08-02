@@ -498,7 +498,6 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			return query.list();
 		 
 	 }
-	 
 	 public List<NominatedPost> getNominatedPostDetailsByNominatedPostMember(Long nominatedPostMemberId){
 		 Query query = getSession().createQuery("select *" +
 		 									" from NominatedPost model" +
@@ -509,4 +508,57 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 		 return query.list();
 	 }
+	public List<Object[]> getTotalPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+		 
+		   StringBuilder queryStr = new StringBuilder();
+		          
+		    queryStr.append("select model.nominatedPostStatus.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId) from NominatedPost model " +
+		    		       " where " +
+		    		       " model.isExpired='N' and model.isDeleted='N' ");
+		    
+           if(positionId != null && positionId.longValue() > 0){
+        	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
+           }
+           if(boardLevelId != null && boardLevelId.longValue() > 0){
+        	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
+           }
+		  queryStr.append(" group by model.nominatedPostStatus.nominatedPostStatusId ");
+		  
+		  Query query = getSession().createQuery(queryStr.toString());
+		  
+		  if(positionId != null && positionId.longValue() > 0){
+		   query.setParameter("positionId", positionId);
+		   }  
+		   if(boardLevelId != null && boardLevelId.longValue() > 0){
+			query.setParameter("boardLevelId", boardLevelId);   
+		   }
+            return query.list();
+	 }
+  public Long getNoCandiateCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+	  
+	     StringBuilder queryStr = new StringBuilder();
+	    
+	      queryStr.append(" select count(distinct model.nominatedPostId) from NominatedPost model " +
+	  		             " where " +
+	  		             " model.isDeleted='N' and model.isExpired='N' and model.nominationPostCandidateId is null   ");
+	  
+	    if(positionId != null && positionId.longValue() > 0){
+     	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
+        }
+        if(boardLevelId != null && boardLevelId.longValue() > 0){
+     	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
+        }
+        
+       Query query = getSession().createQuery(queryStr.toString());
+		  
+	  if(positionId != null && positionId.longValue() > 0){
+	   query.setParameter("positionId", positionId);
+	   }  
+	   if(boardLevelId != null && boardLevelId.longValue() > 0){
+		query.setParameter("boardLevelId", boardLevelId);   
+	   }
+		   
+	  return (Long) query.uniqueResult();
+  }
+	 
 }

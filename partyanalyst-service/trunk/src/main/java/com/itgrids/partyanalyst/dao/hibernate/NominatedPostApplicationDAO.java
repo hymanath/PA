@@ -694,4 +694,31 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	 }
 	 return query.list();
  }
+ public List<Object[]> getApplicationDetailsCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+	 
+	 StringBuilder queryStr = new StringBuilder();
+	 
+	   queryStr.append("select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(model.nominatedPostApplicationId) from NominatedPostApplication model " +
+	 		" where" +
+	 		" model.isDeleted='N' ");
+	   
+		   if(positionId != null && positionId.longValue() > 0){
+			   queryStr.append(" and model.position.positionId = :positionId");
+		   }
+		   if(boardLevelId != null && boardLevelId.longValue() > 0){
+			   queryStr.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
+		   }
+	   
+	       queryStr.append(" group by model.applicationStatus.applicationStatusId ");
+	   
+	      Query query = getSession().createQuery(queryStr.toString());
+		  
+		  if(positionId != null && positionId.longValue() > 0){
+		   query.setParameter("positionId", positionId);
+		   }  
+		   if(boardLevelId != null && boardLevelId.longValue() > 0){
+			query.setParameter("boardLevelId", boardLevelId);   
+		   }
+	  return query.list();
+ }
 }
