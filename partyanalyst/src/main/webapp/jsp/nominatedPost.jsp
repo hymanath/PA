@@ -126,7 +126,7 @@
                         	<input value="Cadre" type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" />Cadre
                         </label>
                         <label class="checkbox-inline" style="padding-left: 10px;">
-                        	<input value="Not Cadre" type="radio" class="cadreCheckCls" name="checkBoxName"/>Not Cadre
+                        	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName"/>Not Cadre
                         </label>
 						<span style="margin-left:8px;cursor:pointer" class="addMemberModal">
 							<i class="glyphicon glyphicon-plus-sign"></i>
@@ -353,9 +353,10 @@
                                 </div>
                                 <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
                                 	<div class="btn-group">
-                                      <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs" attr_postId="1" ">Nominated Post</button>
-                                      <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs" attr_postId="2" ">Party Post</button>
-                                    </div>
+                                      <button  type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" attr_postId="1">Nominated Post</button>
+                                      <button  type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" attr_postId="2">Party Post</button>
+										<input attr_no='' type="hidden" class="postTypeCls" id="postTypeId" name="nominatedPostVO.nominatdList[0].postTypeId">
+									</div>
                                 </div>
                             </div>
 							<div class="row">
@@ -437,6 +438,7 @@
                                 	<div class="btn-group">
                                       <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" attr_postId="1">Nominated Post</button>
                                       <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" attr_postId="2">Party Post</button>
+									  <input type="hidden" class="postTypeCls" id="postTypeId">
                                     </div>
                                 </div>
                             </div>
