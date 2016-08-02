@@ -19,7 +19,7 @@
 					<div style="background:#fff">
 					<div class="row">
 					<div class="col-md-12 m_top10">
-						<h3 class="panel-title text-success">SEARCH</h3>
+						<h3 class="panel-title text-success"></h3>
 					</div>
 					<div class="col-md-3 advanceSearchCls">
 						<label>Search Type</label>
