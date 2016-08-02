@@ -152,11 +152,11 @@ function getBoardWiseNominatedPostMemberDetails(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null)
-		   buildNominatedPostMemberDetails(result,"this",4,299,2,1,3);
+		   buildNominatedPostMemberDetails(result,"this",parseInt('${deptId}'),parseInt('${boardId}'),parseInt('${positionId}'));
    });
 }
 
-function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departmentId,boardId,positionId){
+function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positionId){
 	var str='';
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
@@ -237,7 +237,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 							str+='</select>';
 							str+='<label>Comments</label>';
 							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
-							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">SUBMIT</button>';
+							str+='<button class="btn btn-success btn-block m_top10 updateStatusCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_selected_status_id="updatedStatusSelectId'+i+'" attr_comment_id="statusCommentId'+i+'" attr_success_div="successDivId'+i+'" attr_levelId="'+result.subList[i].boardLevelId+'" attr_level_value="'+result.subList[i].levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 				}
@@ -254,7 +254,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 								str+='</select>';
 								str+='<label>Comments</label>';
 								str+='<textarea class="form-control" id="statusCommentThisAnyId'+i+'"></textarea>';
-								str+='<button class="btn btn-success btn-block m_top10 updateStatusThisAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'">SUBMIT</button>';
+								str+='<button class="btn btn-success btn-block m_top10 updateStatusThisAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+result.subList[i].boardLevelId+'" attr_level_value="'+result.subList[i].levelValue+'" attr_departmentId="'+departmentId+'" attr_boardId="'+boardId+'" attr_positionId="'+positionId+'">SUBMIT</button>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="updateDropDownAny" id="updateDropDownAny'+i+'">';
@@ -289,7 +289,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<label>Comments</label>';
 									str+='<textarea class="form-control" id="statusCommentAnyId'+i+'"></textarea>';
-									str+='<button class="btn btn-success btn-block m_top10 updateStatusAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+levelId+'" attr_level_value="'+levelValue+'">SUBMIT</button>';
+									str+='<button class="btn btn-success btn-block m_top10 updateStatusAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+result.subList[i].boardLevelId+'" attr_level_value="'+result.subList[i].levelValue+'">SUBMIT</button>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';

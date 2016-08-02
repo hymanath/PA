@@ -519,16 +519,16 @@ $(document).on("click","#shortListPositinCls",function(){
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
-	var stateId = globalStateId;
+	var stateId = $("#stateId").val();;
 	var levelId = globalLevelId;
 	var searchLevelId = 1;
 	var deptId = $(this).attr('attr_dept_id');
 	var boardId = $(this).attr('attr_board_id');
 	var positionId = $(this).attr('attr_position_id');
 
-	var searchLevelValue =stateId;
-	if(stateId ==0){
-		searchLevelValue =1;
+	var searchLevelValue = stateId;
+	if(stateId >= 0){
+		searchLevelValue = stateId;
 		searchLevelId=2;
 	}		
 	if(mandalTownDivId >0){
