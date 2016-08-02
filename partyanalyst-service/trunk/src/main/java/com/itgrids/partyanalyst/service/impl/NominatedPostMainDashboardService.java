@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
@@ -22,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.model.Position;
 import com.itgrids.partyanalyst.service.INominatedPostMainDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -41,8 +44,9 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
+	private IDistrictDAO districtDAO;
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
-	
+
 	
 	public INominatedPostAgeRangeDAO getNominatedPostAgeRangeDAO() {
 		return nominatedPostAgeRangeDAO;
@@ -117,6 +121,13 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	public void setNominatedPostMemberDAO(
 			INominatedPostMemberDAO nominatedPostMemberDAO) {
 		this.nominatedPostMemberDAO = nominatedPostMemberDAO;
+	}
+	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 	/**
 	 * @Author  Santosh
@@ -496,8 +507,76 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Exception Occured in getPositions() of NominatedPostMainDashboardService", e);
+			LOG.error("Exception Occured in setDataToVO() of NominatedPostMainDashboardService", e);
 		}
+	}
+	public List<NominatedPostVO> getNominatedCandidateGroupByDist(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+		LOG.info("Entered into getNominatedCandidateGroupByDist() of NominatedPostMainDashboardService.");
+		try{
+			
+			Map<Long,NominatedPostVO> idNominatedVOMap = new HashMap<Long,NominatedPostVO>();
+			NominatedPostVO  nominatedPostVO = null;
+			List<Object[]> districtList = districtDAO.getAllDistrictList(stateId);
+			List<Object[]> nominatedCandidateGroupByDist = nominatedPostFinalDAO.getNominatedCandidateGroupByDist(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
+			List<Object[]> nominatedCandidateGroupByDistAndGender = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndGender(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
+			List<Object[]> nominatedCandidateGroupByDistAndAgeGroup = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndAgeGroup(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
+			for(Object[] distIdAndName : districtList){
+				nominatedPostVO = new NominatedPostVO();
+				nominatedPostVO.setDistrictId(distIdAndName[0] != null ? (Long)distIdAndName[0] : 0l);
+				nominatedPostVO.setName(distIdAndName[1] != null ? distIdAndName[1].toString() : "");
+				idNominatedVOMap.put((Long)distIdAndName[0], nominatedPostVO);
+			}
+			Long distId = 0l;
+			for(Object[] candidateGroupByDist : nominatedCandidateGroupByDist){
+				distId = (Long)candidateGroupByDist[0];
+				nominatedPostVO = idNominatedVOMap.get(distId);
+				nominatedPostVO.setTotalPositions((Long)candidateGroupByDist[2]);
+				nominatedPostVO.setContains("true");  
+			}
+			for(Object[] candidateGroupByDistAndGender : nominatedCandidateGroupByDistAndGender){
+				distId = (Long)candidateGroupByDistAndGender[0];
+				nominatedPostVO = idNominatedVOMap.get(distId);
+				if(candidateGroupByDistAndGender[2].toString().equalsIgnoreCase("male")){
+					nominatedPostVO.setMaleCount((Long)candidateGroupByDistAndGender[3]);
+				}else{
+					nominatedPostVO.setFemaleCount((Long)candidateGroupByDistAndGender[3]);
+				}
+			}
+			for(Object[] candidateGroupByDistAndAgeGroup : nominatedCandidateGroupByDistAndAgeGroup){
+				if(candidateGroupByDistAndAgeGroup[0] != null){
+					distId = (Long)candidateGroupByDistAndAgeGroup[0];
+				}
+				distId = (Long)candidateGroupByDistAndAgeGroup[0];
+				nominatedPostVO = idNominatedVOMap.get(distId);
+				Long count = (Long)candidateGroupByDistAndAgeGroup[2];
+				if(count != null){
+					if(count.equals(1l)){
+						nominatedPostVO.setFirstAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
+					}else if(count.equals(2l)){
+						nominatedPostVO.setSecondAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
+					}else if(count.equals(3l)){
+						nominatedPostVO.setThirdAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
+					}else if(count.equals(4l)){
+						nominatedPostVO.setFourthAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
+					}else if(count.equals(5l)){
+						nominatedPostVO.setFifthAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
+					}
+				}
+				
+			}
+			Collection<NominatedPostVO> nominatedPostVOList = idNominatedVOMap.values();
+			List<NominatedPostVO> nominatedPostVOFinalList = new ArrayList<NominatedPostVO>(0);
+			for(NominatedPostVO nominatedPostVOTemp : nominatedPostVOList){
+				if(nominatedPostVOTemp.getContains().equalsIgnoreCase("true")){
+					nominatedPostVOFinalList.add(nominatedPostVOTemp);
+				}
+			}  
+		return nominatedPostVOFinalList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getNominatedCandidateGroupByDist() of NominatedPostMainDashboardService", e);
+		}
+		return null;
 	}
 	
 	/**
