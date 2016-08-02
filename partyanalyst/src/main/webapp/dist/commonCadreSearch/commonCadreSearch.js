@@ -938,15 +938,16 @@ function showHideSearch(type)
 			//$(".membersBlock1").show();
 			  
 			var str ='';
-			str+='<div class="col-md-12 block">';
+			str+='<div class="col-md-4 ">';
+			str+='<div class="block">';
 			str+='<div class="media"><div class="media-left">';
 			str+='<img src="'+image+'" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
 			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
-			str+='<div class="col-md-4 m_top5"><label>Name : '+name+'</label></div>';
-			str+='<div class="col-md-4 m_top5"><label>Constituency : '+attrConsti+'</label></div>';
-			str+='</div></div><span class="closeIcon closeIcon'+attrId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div>';
+			str+='<div class="col-md-12 m_top5"><label><b>Name </b>: '+name+'</label></div>';
+			str+='<div class="col-md-12 m_top5"><label><b>Constituency </b>: '+attrConsti+'</label></div>';
+			str+='</div></div><span class="closeIcon closeIcon'+attrId+'" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove" style="cursor:pointer;"></i></span></div></div>';
 			 $(".membersBlock").append(str);
 			 $(".membersBlock1").append(str);
 			 cloneCount = cloneCount+1;
@@ -962,13 +963,13 @@ function showHideSearch(type)
 		 else
    {
 	   commontdpCadreIds.pop(attrId);	
-	   $(".closeIcon"+attrId).parent().remove();
+	   $(".closeIcon"+attrId).closest(".col-md-4").remove();
 	
    }
    })
   
 $(document).on("click",".closeIcon",function(){
-$(this).parent().remove();
+	$(this).closest(".col-md-4").remove();
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 

@@ -130,7 +130,7 @@
 							<div id="apptmemberDetailsDiv"></div>
 						</div>
 						
-						<div class="m_top10" id="involvedCandidatesDiv" style="display:none;">
+						<div class="m_top10" id="involvedCandidatesDiv" style="display:none;padding:0px 15px;">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
@@ -138,7 +138,7 @@
 									</div>
 									<div class="panel-body">
 										<div class="row">
-											<div class="membersBlock col-md-12" style="display:none;"></div>	
+											<div class="membersBlock" style="display:none;"></div>	
 										</div>
 									</div>
 									
@@ -161,7 +161,7 @@ function buildapptmemberDetails(result){
 		var str='';
 		if(result !=null && result.length>0){
 			str+='<table id="searchedMembersId">';
-			str+='<thead><th></th><th></th><th></th></thead>';
+			str+='<thead style="display:none"><th></th><th></th><th></th></thead>';
 			str+='<tbody>';
 			var xindex =0;
 			for(var i in result){
@@ -171,7 +171,7 @@ function buildapptmemberDetails(result){
 			}
 				
 				
-				str+='<td style="padding:0px !important;">';
+				str+='<td style="padding:0px !important;width:33% !important">';
 					str+='<div class="col-md-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';

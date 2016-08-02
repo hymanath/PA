@@ -90,13 +90,13 @@ function getAlertStatusCommentsTrackingDetails()
 			str+='<ul class="alertStatusTracking">';
 				for(var i in result){
 					str+='<li>';
-						str+='<div class="arrow_box">';
+						str+='<div class="arrow_box_left">';
 						if(result[i].id == 1)
 							str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 						else
 							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0 && result[i].id != 1){
-								str+='<u style="font-size:15px;">Comments</u>';
+								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
 							for(var j in result[i].commentsList){
 					
 								str+='<p>'+result[i].commentsList[j]+'</p>';	
@@ -106,7 +106,7 @@ function getAlertStatusCommentsTrackingDetails()
 						str+='</div>';
 					str+='</li>';	
 				}
-		str+='</ul>';
+			str+='</ul>';
 		
 		$("#alertCommentsDiv").html(str);
 		if(result.length >= 3)
@@ -189,7 +189,6 @@ function setDefaultImage(img){
 
 function updateAlertStatus()
 {
-	
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
