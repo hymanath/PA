@@ -1,0 +1,65 @@
+body
+{
+	background:#EBEBEB
+}
+
+
+.rel{position:relative !important;vertical-align:middle}
+.abs{position:absolute; top: calc(50% - 55px);left: calc(50% - 45px);text-align:center;color:#fff;}
+#coverflow
+{
+	background:#fff;
+	padding:15px;
+}
+.tableBirthday thead th
+{
+	background:#FFCC2D !important;
+	padding:15px 30px 15px !important;
+}
+table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after, table.dataTable thead .sorting_asc_disabled::after, table.dataTable thead .sorting_desc_disabled::after
+{
+	bottom:15px !important;
+}
+.tableBirthday tr:nth-child(odd)
+{
+	background:#F6F5F5 !important;
+}
+.tableBirthday tr:nth-child(even)
+{
+	background:#fff !important;
+}
+.tableBirthday tr td:first-child img
+{
+	width:50px;
+	height:50px;
+	display:block;
+	margin:auto;
+	border:2px solid #ffcc2d
+}
+.btnWished , .btnWished:active , .btnWished:focus , .btnWished:hover
+{
+	background:#009587;
+	border-radius:0px;
+	border:1px solid #455351
+}
+.btnNotWished
+{
+	background:#BFBFBF;
+	border:1px solid #666;
+	border-radius:0px;
+}
+.birthdaysBlock
+{
+	background:#fff;
+	padding:15px;
+	border:2px solid #ffcc2d
+}
+div.dataTables_wrapper div.dataTables_paginate
+{
+	text-align:center !important;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus
+{
+	background:#FFCC2D;
+	border:1px solid #428bca;
+}
