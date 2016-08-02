@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ApplicationDocument;
 import com.itgrids.partyanalyst.model.NominatedPost;
+import com.itgrids.partyanalyst.model.NominatedPostAgeRange;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostApplicationHistory;
 import com.itgrids.partyanalyst.model.NominatedPostComment;
@@ -914,7 +915,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								nominationPostCandidate.setMobileNo(commonMethodsUtilService.getStringValueForObject(cadre[0]));
 								nominationPostCandidate.setHouseno(commonMethodsUtilService.getStringValueForObject(cadre[1]));
 								nominationPostCandidate.setGender(commonMethodsUtilService.getStringValueForObject(cadre[16]));
-								nominationPostCandidate.setAge(commonMethodsUtilService.getLongValueForObject(cadre[17]));
+								
+								List<NominatedPostAgeRange> nominatedPostAgeRanges = nominatedPostAgeRangeDAO.getAll();
+								Long nominatedPostAgeRangeId =1L;
+								Long age = commonMethodsUtilService.getLongValueForObject(cadre[17]);
+								
+								if(commonMethodsUtilService.isListOrSetValid(nominatedPostAgeRanges)){
+									for (NominatedPostAgeRange rangevo : nominatedPostAgeRanges) 
+										if(rangevo.getMinValue().longValue()>= age && rangevo.getMaxValue().longValue() <= age.longValue())
+											nominatedPostAgeRangeId = rangevo.getNominatedPostAgeRangeId();
+								}
+								
+								nominationPostCandidate.setAge(age);
+								nominationPostCandidate.setNominatedPostAgeRangeId(nominatedPostAgeRangeId);
+								
 								nominationPostCandidate.setDob(commonMethodsUtilService.getStringValueForObject(cadre[18]));
 								nominationPostCandidate.setRelativename(commonMethodsUtilService.getStringValueForObject(cadre[14]));
 								nominationPostCandidate.setRelativetype(commonMethodsUtilService.getStringValueForObject(cadre[15]));
@@ -1503,7 +1517,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}*/
 			
-			//{"TOTAL CORPORATIONS","APPLICATIONS NOT RECIEVED","YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED"}
+			//{"TOTAL AVAILABLE","APPLICATIONS NOT RECIEVED","YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED","TOTAL"}
 			Map<String,NominatedPostVO> applicationsStatusDtlsMap = new LinkedHashMap<String,NominatedPostVO>(0);
 			String[] applicationStatusArr = IConstants.NOMINATED_POST_APPLICATION_STATUSES;
 			if(applicationStatusArr != null && applicationStatusArr.length>0)
@@ -1511,13 +1525,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					applicationsStatusDtlsMap.put(applicationStatusArr[i].trim(),  new NominatedPostVO(Long.valueOf(String.valueOf(i)),applicationStatusArr[i]) );
 			
 			//if(commonMethodsUtilService.isMapValid(levelwiseNominatedPostsMap)){
-				List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
-				List<Object[]> totalAvailablePostsList = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,startDate,endDate,statusList,stateId);
+				
+				List<Object[]> totalAvailablePostsList = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,startDate,endDate,stateId,"Total");
+				
 				Long totalPositionsCount=0L;
 				Long totalCorpCount=0L;
 				if(commonMethodsUtilService.isListOrSetValid(totalAvailablePostsList)){
 					for (Object[] param : totalAvailablePostsList) {
-						NominatedPostVO vo = applicationsStatusDtlsMap.get("TOTAL CORPORATIONS");
+						NominatedPostVO vo = applicationsStatusDtlsMap.get("TOTAL");
 						if(vo != null){
 							vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
 							vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
@@ -1529,6 +1544,22 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 				
+				List<Object[]> totalAvailablePostsList1 = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,startDate,endDate,stateId,"Open");
+				if(commonMethodsUtilService.isListOrSetValid(totalAvailablePostsList1)){
+					for (Object[] param : totalAvailablePostsList1) {
+						NominatedPostVO vo = applicationsStatusDtlsMap.get("TOTAL AVAILABLE");
+						if(vo != null){
+							vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+							vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+							vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+							
+							//totalPositionsCount = vo.getTotalPositions();
+							//totalCorpCount = vo.getTotalCorp();
+						}
+					}
+				}
+				
+				List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
 				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,startDate,endDate,statusList,stateId);
 			
 				if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
@@ -1677,15 +1708,43 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				if(vo2 != null){
 					if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
 						if(levelId != null && levelId.longValue()>0L){
-								NominatedPostVO totalVO = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
+							
+							List<Object[]> list = nominatedPostDAO.getTotalCorpAndBoardsAndPositions(levelId,startDate,endDate,stateId);
+							NominatedPostVO totalVO = applicationsStatusDtlsMap.get(applicationStatusArr[7].trim());
+							if(commonMethodsUtilService.isListOrSetValid(list)){
+								Object[] applnObj = list.get(0);
+								Long totalDepts = commonMethodsUtilService.getLongValueForObject(applnObj[0]);
+								Long totalCorps = commonMethodsUtilService.getLongValueForObject(applnObj[1]) ;
+								Long totalPositions = commonMethodsUtilService.getLongValueForObject(applnObj[2]) ;
+								
+								vo2.setTotalPositions(totalVO.getTotalPositions() != null && totalVO.getTotalPositions().longValue() >0L?totalVO.getTotalPositions().longValue()-totalPositions:0L);
+								vo2.setTotalDept(totalVO.getTotalDept() != null && totalVO.getTotalDept().longValue() >0L?totalVO.getTotalDept().longValue()-totalDepts:0L);
+								vo2.setTotalCorp(totalVO.getTotalCorp() != null && totalVO.getTotalCorp().longValue() >0L?totalVO.getTotalCorp().longValue()-totalCorps:0L);
+								
+								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+									if(vo2.getTotalPositions() != null && vo2.getTotalPositions().longValue()>0L){
+										String perc = String.valueOf(vo2.getTotalPositions()*100.0/totalPositionsCount);
+										vo2.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+									}
+									
+									if(vo2.getTotalCorp() != null && vo2.getTotalCorp().longValue()>0L){
+										String perc1 = String.valueOf(vo2.getTotalCorp()*100.0/totalCorpCount);
+										vo2.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+									}
+								}
+								
+							}
+							/*
+								//NominatedPostVO totalVO = applicationsStatusDtlsMap.get(applicationStatusArr[0].trim());
+							
 								NominatedPostVO appliedVO = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
 								NominatedPostVO runningVO = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
 								//if(appliedVO != null && runningVO != null && appliedVO.getTotalPositions().longValue()>0L){
 									//NominatedPostVO vo2 = applicationsStatusDtlsMap.get(applicationStatusArr[1].trim());
 									if(vo2 != null){
-										vo2.setTotalPositions(totalVO.getTotalPositions().longValue()>0L?(totalVO.getTotalPositions()-(appliedVO.getTotalPositions() + runningVO.getTotalPositions())):0L);
-										vo2.setTotalDept(totalVO.getTotalDept().longValue()>0L ? (totalVO.getTotalDept()-(appliedVO.getTotalDept() + runningVO.getTotalDept())):0L);
-										vo2.setTotalCorp(totalVO.getTotalCorp().longValue()>0l? (totalVO.getTotalCorp()-(appliedVO.getTotalCorp() + runningVO.getTotalCorp())):0L);
+										vo2.setTotalPositions(totalVO.getTotalPositions().longValue()>0L?(appliedVO.getTotalPositions() + runningVO.getTotalPositions()):0L);
+										vo2.setTotalDept(totalVO.getTotalDept().longValue()>0L ? (appliedVO.getTotalDept() + runningVO.getTotalDept()):0L);
+										vo2.setTotalCorp(totalVO.getTotalCorp().longValue()>0l? (appliedVO.getTotalCorp() + runningVO.getTotalCorp()):0L);
 										
 										if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
 											if(vo2.getTotalPositions() != null && vo2.getTotalPositions().longValue()>0L){
@@ -1700,6 +1759,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 										}
 									//}
 								}
+						*/
+							
 						}
 					}
 				}
@@ -1707,7 +1768,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 
 				if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
 					returnList = new ArrayList<NominatedPostVO>();
-					returnList.addAll(applicationsStatusDtlsMap.values());
+					for (String status : applicationsStatusDtlsMap.keySet()) {
+						if(status.equalsIgnoreCase("TOTAL"))
+							returnList.add(0,applicationsStatusDtlsMap.get("TOTAL"));
+						else
+							returnList.add(applicationsStatusDtlsMap.get(status));
+					}
+					
+				//	returnList.addAll(applicationsStatusDtlsMap.values());
 							
 				}
 		} catch (Exception e) {
@@ -2319,7 +2387,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return returnVoList;
 	}
 	
-	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues,String statusType,String task){
+	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues,String statusType,String task, Long searchlevelId, Long searchLevelValue){
 		
 		List<IdNameVO>  finalList = new ArrayList<IdNameVO>(0);
 		try{
@@ -2361,20 +2429,23 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 
 					if(mandalList !=null && mandalList.size()>0){
-						List<Object[]> mandalObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType);	
+						List<Object[]> mandalObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType, searchlevelId, searchLevelValue);	
 						deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
 					}
 					if(townList !=null && townList.size()>0){
-						List<Object[]> townObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType);	
+						List<Object[]> townObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType, searchlevelId, searchLevelValue);	
 						deptMap = setDataToDeptBoardMap(townObj,deptMap);
 					}
 					if(divisonList !=null && divisonList.size()>0){
-						List<Object[]> divObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType);
+						List<Object[]> divObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType, searchlevelId, searchLevelValue);
+						 deptMap = setDataToDeptBoardMap(divObj,deptMap);
+					}else{
+						List<Object[]> divObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(5l, null,statusType, searchlevelId, searchLevelValue);
 						 deptMap = setDataToDeptBoardMap(divObj,deptMap);
 					}
 					
 				}else{
-					deptBoardObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType);
+					deptBoardObj = nominatedPostDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType, searchlevelId, searchLevelValue);
 					deptMap = setDataToDeptBoardMap(deptBoardObj,deptMap);
 				}
 				
@@ -2402,20 +2473,23 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 
 					if(mandalList !=null && mandalList.size()>0){
-						List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType);	
+						List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, mandalList,statusType, searchlevelId, searchLevelValue);	
 						deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
 					}
 					if(townList !=null && townList.size()>0){
-						List<Object[]> townObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType);	
+						List<Object[]> townObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(6l, townList,statusType, searchlevelId, searchLevelValue);	
 						deptMap = setDataToDeptBoardMap(townObj,deptMap);
 					}
 					if(divisonList !=null && divisonList.size()>0){
-						List<Object[]> divObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType);
+						List<Object[]> divObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(7l, divisonList,statusType, searchlevelId, searchLevelValue);
 						 deptMap = setDataToDeptBoardMap(divObj,deptMap);
+					}else{
+						List<Object[]> mandalObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(5l, null,statusType, searchlevelId, searchLevelValue);	
+						deptMap = setDataToDeptBoardMap(mandalObj,deptMap);
 					}
 					
 				}else{
-					deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType);
+					deptBoardObj = nominatedPostMemberDAO.getAllDeptsAndBoardsByLevel(boardLevelId, locationValues,statusType, searchlevelId, searchLevelValue);
 					deptMap = setDataToDeptBoardMap(deptBoardObj,deptMap);
 				}
 			}
@@ -3495,6 +3569,37 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
 					}
 					
+					if(statusId != null && statusId.longValue() == 5l){
+						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
+						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
+						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
+							NominatedPost nominatedPost = nominatedPostList.get(0);
+							nominatedPost.setNominationPostCandidateId(candidateId);
+							nominatedPost.setNominatedPostStatusId(3l);
+							nominatedPost.setUpdatedBy(userId);
+							nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPost = nominatedPostDAO.save(nominatedPost);
+							
+							nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
+							nominatedPostFinal.setApplicationStatusId(statusId);
+							nominatedPostFinal.setUpdatedBy(userId);
+							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						}
+						else{
+							nominatedPostFinal.setApplicationStatusId(statusId);
+							nominatedPostFinal.setUpdatedBy(userId);
+							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						}
+					}
+					else{
+						nominatedPostFinal.setApplicationStatusId(statusId);
+						nominatedPostFinal.setUpdatedBy(userId);
+						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+					}
+					
 					NominatedPostComment nominatedPostComment = new NominatedPostComment();
 					nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
 					nominatedPostComment.setNominatedPostFinalId(postFinalId);
@@ -3760,7 +3865,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		try {
 			Map<Long,NominatedPostDashboardVO> positionMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
 			
-			if(positionId != null && positionId.longValue() == 0l){
+			if(positionId != null && positionId.longValue() > 0l){
 				List<Object[]> list = positionDAO.getAllPositions();
 				if(commonMethodsUtilService.isListOrSetValid(list)){
 					for (Object[] obj : list) {
@@ -3816,32 +3921,23 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			if(commonMethodsUtilService.isMapValid(positionMap)){
 				for (Map.Entry<Long, NominatedPostDashboardVO> entry : positionMap.entrySet()){
 					NominatedPostDashboardVO posvo = entry.getValue();
-					if(posvo != null){
-						List<NominatedPostDashboardVO> ageList = posvo.getApplicatnStatsList();
-						NominatedPostDashboardVO totalvo = new NominatedPostDashboardVO();
-						totalvo.setId(posvo.getId());
-						totalvo.setName(posvo.getName());
-						totalvo.setStatusName("Total");
-						if(commonMethodsUtilService.isListOrSetValid(ageList)){
-							for (NominatedPostDashboardVO vo : ageList) {
-								totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
-								totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
-								totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
-							}
+					List<NominatedPostDashboardVO> ageList = posvo.getApplicatnStatsList();
+					NominatedPostDashboardVO totalvo = new NominatedPostDashboardVO();
+					totalvo.setId(posvo.getId());
+					totalvo.setName(posvo.getName());
+					totalvo.setStatusName("Total");
+					if(commonMethodsUtilService.isListOrSetValid(ageList)){
+						for (NominatedPostDashboardVO vo : ageList) {
+							totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
+							totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
+							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
 						}
-						ageList.add(totalvo);
 					}
+					ageList.add(totalvo);
 				}
 			}
 			
-			if(commonMethodsUtilService.isMapValid(positionMap)){
-				for (Map.Entry<Long, NominatedPostDashboardVO> entry : positionMap.entrySet()){
-					NominatedPostDashboardVO vo = entry.getValue();
-					if(vo != null)
-						returnList.add(vo);
-				}
-			}
-			//returnList = new ArrayList<NominatedPostDashboardVO>(positionMap.values());
+			returnList = new ArrayList<NominatedPostDashboardVO>(positionMap.values());
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteWisePositionsCountsByPosition() method of NominatedPostProfileService", e);
 		}
