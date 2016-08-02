@@ -170,7 +170,7 @@ function getConstituenciesForDistricts(district,stateId){
 function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	/* var levelId=4;
 	var levelValues = 299; */
-	$("#departmentsBuildId").html("");
+	/*$("#departmentsBuildId").html("");
 	$("#departmentsBuildSearchId").show();
 	var jsObj={
 		levelId:levelId,
@@ -188,7 +188,51 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	   if(result != null && result.length > 0){
 		   buildAllDeptsAndBoardsByLevel(result,levelId,levelValues);
 	   }
+   });*/
+   
+   
+	$("#departmentsBuildId").html("");
+	$("#departmentsBuildSearchId").show();
+	var searchlevelId = parseInt('{lId}');
+	var searchlevelValue = parseInt('{stId}');
+
+	var stateId = $("#stateId").val();
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	if(mandalTownDivId >0){
+		searchlevelId = 5;
+		searchlevelValue = mandalTownDivId;
+	}else if(constituencyId >0){
+		searchlevelId = 4;
+		searchlevelValue = constituencyId;
+	}else if(districtId >0){
+		searchlevelId = 3;
+		searchlevelValue = districtId;
+	}else if(stateId >=0){
+		searchlevelId = 2;
+		searchlevelValue = stateId;
+	}
+	var jsObj={
+		levelId:globalLevelId,
+		levelValues:levelValues,
+		searchlevelId:searchlevelId,
+		searchlevelValue:searchlevelValue,
+		statusType:globalStatus ,
+		task:""
+	}
+	$.ajax({
+          type:'POST',
+          url: 'getAllDeptsAndBoardsByLevelAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#departmentsBuildSearchId").hide();
+	   if(result != null && result.length > 0){
+		   buildAllDeptsAndBoardsByLevel(result,levelId,levelValues);
+	   }
    });
+   
 }
 function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,bodyId,searchId){
 	
