@@ -530,7 +530,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type,searchLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","cadreName","cadreMobile","age",
-							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId"};
+							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId","boardLevelId","levelValue"};
 				subList = (List<NomintedPostMemberVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NomintedPostMemberVO");
 			}
 			

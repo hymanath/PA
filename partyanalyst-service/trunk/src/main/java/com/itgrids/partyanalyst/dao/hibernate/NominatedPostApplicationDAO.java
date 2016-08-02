@@ -28,8 +28,10 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				//" AND model.locationValue = :locationValue ");
 		
 			if(searchLevelId != null && searchLevelId.longValue()>0L){
-				if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
-					str.append(" and model.locationValue = :locationValue ");
+				if((searchLevelId.longValue() == 1L))
+					str.append(" and model.address.country.countryId  = 1 ");
+				else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+					str.append(" and model.address.state.stateId  = :locationValue ");
 				else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
 					str.append(" and model.address.district.districtId =:locationValue ");
 				else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
@@ -65,7 +67,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			query.setParameter("positionId", positionId);
 		}
 		query.setParameter("boardLevelId", boardLevelId);
-		query.setParameter("locationValue", locationValue);
+		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);
 		
 		return query.list();
 	}
@@ -86,8 +89,10 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" AND model1.applicationStatus.status = :status  ");
 		
 		if(searchLevelId != null && searchLevelId.longValue()>0L){
-			if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
-				str.append(" and model.locationValue = :locationValue ");
+			if((searchLevelId.longValue() == 1L))
+				str.append(" and model.address.country.countryId  = 1 ");
+			else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+				str.append(" and model.address.state.stateId  = :locationValue ");
 			else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
 				str.append(" and model.address.district.districtId =:locationValue ");
 			else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
@@ -123,7 +128,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			query.setParameter("positionId", positionId);
 		}
 		query.setParameter("boardLevelId", boardLevelId);
-		query.setParameter("locationValue", locationValue);		
+		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);		
 		query.setParameter("status",IConstants.SHORTLISTED_STATUS);
 		
 		return query.list();
@@ -143,8 +149,10 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				//" AND model.locationValue = :locationValue" );
 		
 				if(searchLevelId != null && searchLevelId.longValue()>0L){
-					if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
-						str.append(" and model.locationValue = :locationValue ");
+					if((searchLevelId.longValue() == 1L))
+						str.append(" and model.address.country.countryId  = 1 ");
+					else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+						str.append(" and model.address.state.stateId  = :locationValue ");
 					else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
 						str.append(" and model.address.district.districtId =:locationValue ");
 					else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
@@ -181,7 +189,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					query.setParameter("positionId", positionId);
 				}
 				query.setParameter("boardLevelId", boardLevelId);
-				query.setParameter("locationValue", locationValue);						
+				if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
+					query.setParameter("locationValue", locationValue);						
 		
 		return query.list();
 	}
@@ -199,8 +208,10 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" WHERE model.boardLevel.boardLevelId=:boardLevelId" );
 				//" AND model.locationValue = :locationValue" );
 					if(searchLevelId != null && searchLevelId.longValue()>0L){
-						if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
-							str.append(" and model.locationValue = :locationValue ");
+						if((searchLevelId.longValue() == 1L))
+							str.append(" and model.address.country.countryId  = 1 ");
+						else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
+							str.append(" and model.address.state.stateId  = :locationValue ");
 						else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
 							str.append(" and model.address.district.districtId =:locationValue ");
 						else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
@@ -238,7 +249,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			query.setParameter("positionId", positionId);
 		}
 		query.setParameter("boardLevelId", boardLevelId);
-		query.setParameter("locationValue", locationValue);						
+		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
+			query.setParameter("locationValue", locationValue);						
 
 		return query.list();
 		
