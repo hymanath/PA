@@ -691,9 +691,12 @@ function getNominatedPostApplication(startIndex)
 				str +='</div>';
 				
 				if(result[i].id != null){ // no cadre search  candidate id
-					str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+					str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
 				}else{
 						// cadre search  candidate id
+						if(result[i].nominatedPostCandidateId == null){
+							result[i].nominatedPostCandidateId = 0;
+						}
 						if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 ){
 							str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
 						}else{
@@ -1040,11 +1043,10 @@ $(document).on("click",".iconClose",function(){
 	$(this).closest(".addBlockNew").remove();
 });
 var cloneCount=1;
-
 $(document).on("click","#addOneMore",function(){
 	$(".errorMsgCls").html("");
   var e = $("#cloneDivBlock").clone();
-  e.removeClass("cloneBlockDiv")
+  e.removeClass("cloneBlockDiv");
   e.attr("id",'block'+cloneCount);
   e.attr("attr_count",cloneCount);
   e.show();
@@ -2065,7 +2067,8 @@ var isSameCheckBoxClicked=0;
    }
    if($(this).is(':checked')){
 	  globalCadreId = $(this).attr("attr_cadreId"); 
-	  getCandidateAppliedPostsByCadre(globalCadreId); 
+	  candidateId = $(this).attr("attr_nominated_post_candidate_id"); 
+	  getCandidateAppliedPostsByCadre(globalCadreId,candidateId); 
 	   $(".hideDivCls").show();
         isAlreadyChecked = true;	   
    }
