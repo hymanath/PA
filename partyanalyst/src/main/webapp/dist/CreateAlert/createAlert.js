@@ -97,13 +97,10 @@ function disableByLevel(index)
   }
  
   function showHideBySearchType(){
-		
-		//setToDefaultAdvancedSearch();
+	 
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
-			
-			
-			if(selectVal == 2)
+			if(selectVal == "PR")
 			{
 				$(".advancePRCls,#searchBtnId").show();
 				$(".advancePRCls").parent().show();
@@ -119,9 +116,8 @@ function disableByLevel(index)
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
 				//disableByLevel();
-				
 			}
-			else if(selectVal == 3)
+			else if(selectVal == "committee")
 			{
 				$("#searchBtnId").show();
 				$(".advancePRCls").hide();
@@ -141,7 +137,7 @@ function disableByLevel(index)
 				setToDefaultAdvancedSearch();
 				//disableByLevel();
 			}
-			else if(selectVal == 1)
+			else if(selectVal == "name")
 			{
 				$("#searchBtnId").show();
 				$(".stateShowCls").show();
@@ -153,13 +149,26 @@ function disableByLevel(index)
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
 				clearNameSearchTypeFields();
-				
+				$("#searchNameLabel").text("Search By Name/Membership No*");
 			}
-			else if(selectVal == "mobileno" || selectVal == "mebershipno" || selectVal == "votercardno")
+			else if(selectVal == "0")
 			{
-				
-				
-				
+				$(".levelShowCls").hide();
+				$(".stateShowCls").hide();
+				$(".advanceprcls").show();
+				$(".advanceNameCls").show();
+				$(".advancePRCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$("#advanceSearchValueId").val("");
+				$(".advanceprclsDiv").hide();
+				$("#advanceDesignationId").css("display","none");
+				$(".advancePRCls").parent().hide();
+			
+			}
+			else 
+			{
+			
 				$(".levelShowCls").hide();
 				$(".stateShowCls").hide();
 				$(".advanceprcls").show();
@@ -170,19 +179,11 @@ function disableByLevel(index)
 				$("#advanceSearchValueId").val("");
 				$(".advanceprclsDiv").show();
 				$("#searchBtnId").show();
-			}
-			else
-			{
-				
-				$(".levelShowCls").hide();
-				$(".stateShowCls").hide();
-				$(".advanceprcls").show();
-				$(".advanceNameCls").show();
-				$(".advancePRCls").hide();
-				$(".advanceCadreCommittee").hide();
-				$(".locationsFilterCls").show();
-				$("#advanceSearchValueId").val("");
-				$(".advanceprclsDiv").hide();
+				$("#cadreCommitteeDiv_chosen").hide();
+				if(selectVal != "mebershipno" && selectVal != "votercardno")
+				$("#searchNameLabel").text("Search By Mobile");
+				else
+				$("#searchNameLabel").text("Search By Name/Membership No*");
 			}
 				disableByLevel('');
 				$(".stateCls").show();
@@ -614,7 +615,7 @@ function disableByLevel(index)
 		 }
 		  var aptUserId = 0;
 		 // aptUserId = $("#appointmentUserSelectBoxId").val();
-		if(advanceSearchType == 1)
+		if(advanceSearchType == "name")
 		{
 			levelStr ="";
 			 searchType = "name";
@@ -629,19 +630,15 @@ function disableByLevel(index)
 				 return; 
 			 }
 		}
-		else if(advanceSearchType == "mobileno" || advanceSearchType == "mebershipno" || advanceSearchType == "votercardno")
-		{
-			getDetailsBySrch();
-			return;
-		}
 		
-		else if(advanceSearchType == 2)
+		
+		else if(advanceSearchType == "PR")
 		{
 			 searchType = "publicRepresentative";
 			 searchValue = $("#advanceDesignationId").val();
 			
 		}
-		else if(advanceSearchType == 3)
+		else if(advanceSearchType == "committee")
 		{
 			 searchType = "CadreCommittee";
 				$("#cadreCommitteeDiv option:selected").each(function ()
@@ -656,7 +653,11 @@ function disableByLevel(index)
 			});
 			 referCommitteeId = $("#referCommitteeId").val();
 		}
-		
+		else 
+		{
+			getDetailsBySrch();
+			return;
+		}
 		 districtId = $("#referdistrictId").val();
 		 constituencyId = $("#referconstituencyId").val();
 		var tehsilName =  $("#refermandalNameId selected:option").text();
@@ -785,7 +786,7 @@ function disableByLevel(index)
        } 
 	   
 	//Party Commitee Members	
-	if(advanceSearchType !=null && advanceSearchType == 3){
+	if(advanceSearchType !=null && advanceSearchType == "committee"){
 		$("#cadreCommitteeDiv option:selected").each(function ()
 		{		
 			var desgnaValue = $(this).attr("value");
@@ -800,7 +801,7 @@ function disableByLevel(index)
 	}
 	
 	//Public Representatives
-	if(advanceSearchType !=null && advanceSearchType == 2){
+	if(advanceSearchType !=null && advanceSearchType == "PR"){
 		var desgnaValue = $("#advanceDesignationId").val();
 		if(desgnaValue > 0)
 		statusArr.push(desgnaValue);
@@ -1001,5 +1002,35 @@ function disableByLevel(index)
 	involvedCadreIds.pop(id);	
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
 });
+
+function getMemberTypes()
+{
+	
+	var jsObj =
+		     {
+			task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'getMemberTypesAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+				   
+				   buildMemberTypes(result);
+			   })
+}
+
+function buildMemberTypes(result)
+{
+
+	for(var i in result)
+	{
+	$("#advanceSearchTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');	
+	}
+	   var select = new Dropkick("#advanceSearchTypeId");
+				select.refresh();
+	
+	
+}
  
 	

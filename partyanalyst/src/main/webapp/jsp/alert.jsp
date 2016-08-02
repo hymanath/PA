@@ -286,18 +286,18 @@
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
 							<option value="0">Select Search Type</option>
-							<option value="1">Name</option>
+							<option value="name">Name</option>
 							<option value="mobileno">Mobile No</option>
 							<option value="mebershipno">Membership No</option>
 							<option value="votercardno">Voter Id Card No</option>
-							<option value="2">Public Representative</option>
-							<option value="3">Party Committee</option>
+							<option value="PR">Public Representative</option>
+							<option value="committee">Party Committee</option>
 						</select>
 					</div>
 					
 					
 					 <div class="col-md-3 pad_0 advanceSearchCls advanceprclsDiv">
-						<label class="advanceNameCls">Search By Name/Membership No*<span class="text-danger">*</span></label>
+						<label class="advanceNameCls" id="searchNameLabel">Search By Name/Membership No*<span class="text-danger">*</span></label>
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 						
 					</div>
@@ -953,7 +953,7 @@ $("#apptmemberDetailsDiv").html("");
 
 //showHideSearch("advanceSearch");
 //showHideBySearchType();
-
+getMemberTypes();
 </script>
 </body>
 </html>
