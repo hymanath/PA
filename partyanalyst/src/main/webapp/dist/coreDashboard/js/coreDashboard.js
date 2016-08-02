@@ -83,9 +83,9 @@
 				floating: true,
 				verticalAlign: 'bottom',
 				align:'left',
-				y:8,
-				x:-0.5,
-				//width:100,
+				y:20,
+				x:5,
+				width:700,
 				useHtml: ' {point.x}'
 			},
 			plotOptions: {
