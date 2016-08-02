@@ -893,16 +893,16 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	if(levelValues !=null && levelValues.size()>0){
 	    		if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("STATE")){
 		    		
-	    			if(levelValues !=null && levelValues.size()==1){
+	    			/*if(levelValues !=null && levelValues.size()==1){
 	    				if(levelValues.contains(1l)){
-	    					str.append(" and (model.meetingAddress.district.districtId between 1 and 10 ) ");
+	    					str.append(" and (model.meetingAddress.state.stateId = 1) ");
 	    				}else if(levelValues.contains(36l)){
 	    					str.append(" and (model.meetingAddress.district.districtId between 11 and 23 ) ");
 	    				}
-	    					    				
-	    			}/*else{
-	    				str.append(" and (model.meetingAddress.district.districtId is not null ) ");
+	    								
 	    			}*/
+	    			
+	    			str.append(" and (model.meetingAddress.state.stateId in (:levelValues)) "); 
 	    							    		
 		    	}else if(level !=null && !level.isEmpty() && level.equalsIgnoreCase("DISTRICT")){
 		    		
@@ -923,10 +923,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    		query.setParameter("endDate", endDate);
 	    	}
 	    	
-	    	if(levelValues !=null && levelValues.size()>0 && level !=null && !level.isEmpty() ){
-	    		if(!level.equalsIgnoreCase("STATE")){
-	    			query.setParameterList("levelValues", levelValues);
-	    		}	    		
+	    	if(levelValues !=null && levelValues.size()>0 && level !=null && !level.isEmpty() ){	    		
+	    			query.setParameterList("levelValues", levelValues);	    			    	
 	    	}
 	    	
 	    	return query.list();
