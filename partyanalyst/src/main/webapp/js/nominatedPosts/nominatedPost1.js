@@ -223,7 +223,7 @@ function validateAddNewCandidateFields(){
 	var dob=$("#DOBId").val();
 	var image = $("#imageurlId").val();
 	var casteId = $("#casteId").val();
-	var stateId = $(".stateSlctBxCls").val();
+	var stateId = $("#notCadreStateId").val();
 	var districtId = $("#notCadreDistId").val();
 	var  constituencyId = $("#notCadreConstId").val();
 	var  panWardDivisionId = $("#notCadreMandlId").val();
@@ -272,23 +272,23 @@ function validateAddNewCandidateFields(){
 		$(".addNewCandidateErrorCls").html("Please Select Caste.");
 		return false;   
 	 }
-	 if(stateId==0){
+	 if(stateId ==null || stateId == undefined || stateId =="" || stateId==0){
 		$(".addNewCandidateErrorCls").html("Please Select State.");
 		return false;   
 	 }
-	 if(districtId==0){
+	 if(districtId ==null || districtId == undefined || districtId=="" || districtId==0){
 		$(".addNewCandidateErrorCls").html("Please Select District.");
 		return false;   
 	 }
-	 if(constituencyId==0){
+	 if(constituencyId ==null || constituencyId == undefined || constituencyId==0 || constituencyId==0){
 		$(".addNewCandidateErrorCls").html("Please Select Constituency.");
 		return false;   
 	 }
-	 if(panWardDivisionId==0){
+	 if(panWardDivisionId ==null || panWardDivisionId == undefined || panWardDivisionId==0 || panWardDivisionId==0){
 		$(".addNewCandidateErrorCls").html("Please Select Mandal/ Muncipality / Corporation.");
 		return false;   
 	 }
-	 if(notCadrePanchayatId==0){
+	 if(notCadrePanchayatId ==null || notCadrePanchayatId == undefined || notCadrePanchayatId == "" || notCadrePanchayatId==0){
 		$(".addNewCandidateErrorCls").html("Please Select Panchayat/ Ward / Division/City.");
 		return false;   
 	 }
@@ -916,7 +916,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
-	var cloneCount=0;
+	//var cloneCount=0;
 	var involvedCadreIds = [];
    $(document).on("click",".apptDetailsDiv",function(){
 		
