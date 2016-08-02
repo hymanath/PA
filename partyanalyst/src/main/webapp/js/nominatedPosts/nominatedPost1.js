@@ -160,10 +160,11 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
 			
 			$("#notCadreSavId").html("<span style='color: green;font-size:22px;'>Not Cadre Saved Successfully</span>");
-			setTimeout(function(){
+			 setTimeout(function(){
 			$("#notCadreSavId").html("");
 			//$("#addMemberModalBlock").modal('hide');
-			}, 5000);
+			}, 2000); 
+			$("#notCadreSearchId").attr("checked","true");
 			getNotCadreDetails(globalNominatedCandId);
 		}else {
 			setTimeout(function(){
@@ -1144,3 +1145,56 @@ function getDetailsBySrch()
 			}
 		   });
 		}
+		function getLevelByDesignation()
+ {
+  
+    $("#alertlevelId").find('option').remove();
+     var stateGrpIds = ["6","23","7","12","16","22"];
+   var distGrpIds = ["1","9","11"];
+   var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
+   var constiGrpIds =["2","8","10",];
+   var designationId =$("#advanceDesignationId").val();
+  
+   var str ='';
+    if(jQuery.inArray(designationId, stateGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+    
+     $("#alertlevelId").append(str);
+   }
+  else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+     str+='<option value="3">District</option>';
+     $("#alertlevelId").append(str);
+   }
+   else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+     str+='<option value="3">District</option>';
+      str+='<option value="4">Constituency</option>';
+     $("#alertlevelId").append(str);
+   }
+   else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
+   {
+     str+='<option value="2">State</option>';
+     str+='<option value="3">District</option>';
+     str+='<option value="5">Mandal/Muncipality</option>';
+     $("#alertlevelId").append(str);
+   }
+   
+  else
+   {
+      str+='<option value="2">State</option>';
+      str+='<option value="3">District</option>';
+       str+='<option value="4">Constituency</option>';
+      str+='<option value="5">Mandal/Muncipality</option>';
+      str+='<option value="6">Village/Ward</option>';
+      $("#alertlevelId").append(str);
+   }
+     $("#alertlevelId").dropkick();
+       var select = new Dropkick("#alertlevelId");
+       select.refresh();
+           disableByLevel();
+     
+ }
