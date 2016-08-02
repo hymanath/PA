@@ -59,6 +59,9 @@ public class NominatedPostVO implements Serializable{
 	private Long thirdAgeGroupCount=0l;
 	private Long fourthAgeGroupCount=0l;
 	private Long fifthAgeGroupCount=0l;
+	private Long maleCount = 0l;
+	private Long femaleCount = 0l;
+	private String contains = "false";
 	private Long locationVal;
 	private String positions;
 	private String refferCadreIds;
@@ -76,15 +79,7 @@ public class NominatedPostVO implements Serializable{
 	public Long addMandalsName;
 	public Long addVillageName;
 	public String addPincodeName;
-	private Long postTypeId; 
 	
-	
-	public Long getPostTypeId() {
-		return postTypeId;
-	}
-	public void setPostTypeId(Long postTypeId) {
-		this.postTypeId = postTypeId;
-	}
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
@@ -422,7 +417,27 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setAddPincodeName(String addPincodeName) {
 		this.addPincodeName = addPincodeName;
-	}	
+	}
+	public Long getMaleCount() {
+		return maleCount;
+	}
+	public void setMaleCount(Long maleCount) {
+		this.maleCount = maleCount;
+	}
+	public Long getFemaleCount() {
+		return femaleCount;
+	}
+	public void setFemaleCount(Long femaleCount) {
+		this.femaleCount = femaleCount;
+	}
+	public String getContains() {
+		return contains;
+	}
+	public void setContains(String contains) {
+		this.contains = contains;
+	}
+	
+	
 	
 	
 }
