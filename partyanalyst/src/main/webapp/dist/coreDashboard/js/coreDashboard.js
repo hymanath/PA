@@ -47,12 +47,14 @@
 		var CommCompletedArray ="";
 		var CommStartedArray ="";
 		var CommYetToStarted ="";
+		var committeeName;
 		if(result !=null ){
 			CommCompletedArray=result.completedCount;
 			CommStartedArray=result.startedCount;
 			CommYetToStarted=result.yetToStartCount;
+			committeeName = result.name;
 		}
-		$('#committees').highcharts({
+		$('#committeesForComulative').highcharts({
 			colors:['#CBE7B9','#00C7F7','#D6EB59'],
 			chart: {
 			  plotBackgroundColor: null,
@@ -60,9 +62,18 @@
 			  plotShadow: false,
 			  type: 'pie',
 			 
+			 
 			},
 			title: {
-						text: null
+						 enabled: true,
+						text: committeeName,
+						verticalAlign: 'top',
+						align: 'center',
+						style: {
+								fontSize: '12px',
+								color: 'rgb(85, 85, 85)'
+							}
+						
 					},
 			tooltip: {
 			  pointFormat: ' <b>{point.percentage:.1f}%</b>'
@@ -146,7 +157,7 @@
        basicCommitteeIdsArray.push(3);
 	   
 	   var firstMonthString = '04/2015';
-	   var secondMonthString = '02/2016';
+	   var secondMonthString = '04/2015';
 	   var jsObj ={ 
 				userAccessLevelId : globalUserAccessLevelId,
 				userAccessLevelValuesArray : globalUserAccessLevelValues,
@@ -161,7 +172,7 @@
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
- 			
+ 			buildGraphComparativeForBasicCommitteeBlock(result);
  		});
 	}
 	
@@ -173,7 +184,7 @@
 	       basicCommitteeIdsArray.push(3);
 		   
 		   var firstMonthString = '04/2015';
-		   var secondMonthString = '05/2016';
+		   var secondMonthString = '05/2015';
 		   var jsObj ={ 
 					userAccessLevelId : globalUserAccessLevelId,
 					userAccessLevelValuesArray : globalUserAccessLevelValues,
@@ -188,7 +199,7 @@
 	 			dataType : 'json',
 	 			data : {task:JSON.stringify(jsObj)}
 	 		}).done(function(result){
-	 			
+	 			buildlevelWiseComparativeCountsByBasicCommittees(result);
 	 		});
 	 }
 	
@@ -203,7 +214,7 @@
 			}
 			
 		}
-	$("#graphsDivId").html(str);
+	$("#levelWiseComulativeForCommittees").html(str);
 	if(result != null && result.length > 0){
 		for(var i in result){
 				var pieChartDataArray=[];
@@ -211,6 +222,7 @@
 				var barChartLocDetailsForComArray=[];
 				var barChartLocDetailsForStarArray=[];
 				var barChartLocDetailsForYetArray=[];
+				var committeeNameForBarAndPie;
 				
 				 var obj1 = {
 							name: 'Completed',
@@ -223,7 +235,8 @@
 				var obj3 = {
 							name: 'Yet To Started',
 							y: result[i].yetToStartCount
-						};						
+						};	
+				committeeNameForBarAndPie = result[i].name
 				pieChartDataArray.push(obj1);
 				pieChartDataArray.push(obj2);
 				pieChartDataArray.push(obj3);
@@ -235,6 +248,7 @@
 					var completedCount;
 					var startedCount;
 					var yetToStartCount;
+					
 					if(result[i].subList[j].completedCount == null || result[i].subList[j].completedCount == 0){
 						 completedCount ="";
 					}else{
@@ -251,6 +265,8 @@
 						yetToStartCount = result[i].subList[j].yetToStartCount;
 					}
 					
+					
+					
 					barChartLocDetailsForComArray.push(completedCount);
 					barChartLocDetailsForStarArray.push(startedCount);
 					barChartLocDetailsForYetArray.push(yetToStartCount);
@@ -265,7 +281,11 @@
 						type: 'column'
 					},
 					title: {
-						text: null
+						text: committeeNameForBarAndPie,
+						style: {
+								fontSize: '12px',
+								color: 'rgb(85, 85, 85)'
+							}
 					},
 					xAxis: {
 						categories: barChartLocLevelArray,
@@ -354,6 +374,244 @@
 		
 }
 
+function buildGraphComparativeForBasicCommitteeBlock(result){
+	
+	if(result != null && result.length > 0){
+		
+			var str='';
+			
+			for(var i in result){
+				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				str+='<div id="committeesForCamparitiveBasic'+i+'" class="chart"></div>';
+				str+='</div>';
+			}
+			
+		}
+	$("#CamparitiveBasicBlock").html(str);
+		if(result != null && result.length > 0){
+			
+			var monthName;
+			for(var i in result){
+				 monthName = result[i].name;
+				 
+				if(result[i].subList != null && result[i].subList.length >0){
+						var committeeNamesForBasicArray =[];
+						var completedCountForBasicCommitteeArray =[];
+						var completedCountForBasic;
+						var committeeNamesForBasic;
+						for(var j in result[i].subList){
+							committeeNamesForBasic = result[i].subList[j].name;
+							 if(result[i].subList[j].completedCount == null || result[i].subList[j].completedCount == 0){
+								 completedCountForBasic  = '';
+							 }else{
+								completedCountForBasic  = result[i].subList[j].completedCount; 
+							 }
+							
+						 
+						 committeeNamesForBasicArray.push(committeeNamesForBasic);
+						 completedCountForBasicCommitteeArray.push(completedCountForBasic);
+						
+					}
+					
+				}
+			
+				$('#committeesForCamparitiveBasic'+i+'').highcharts({
+					colors:['#CBE7B9','#00C7F7','#D6EB59'],
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: monthName
+					},
+					
+					xAxis: {
+						categories: committeeNamesForBasicArray,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0
+					},
+					yAxis: {
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						min: 0,
+						labels:
+						{
+						  enabled: false
+						},
+						title: {
+							text: null
+						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold'
+								//color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							}
+						}
+					},
+					legend: {
+						enabled: false,
+						align: 'right',
+						x: -30,
+						verticalAlign: 'bottom',
+						y: 25,
+						floating: true,
+						backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+						borderColor: '#CCC',
+						borderWidth: 1,
+						shadow: false
+					},
+					tooltip: {
+						headerFormat: '<b>{point.x}</b><br/>',
+						pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+					},
+					 plotOptions: {
+						column: {
+							pointPadding: 0.2,
+							borderWidth: 2,
+							groupPadding: 0.2
+						}
+						
+					}, 
+					series: [{
+						name: 'Completed',
+						dataLabels: {
+							enabled: true
+						},
+						data: completedCountForBasicCommitteeArray
+					}]
+				});
+			}
+		}
+
+	}
+
+	function buildlevelWiseComparativeCountsByBasicCommittees(result){
+		
+		if(result != null && result.length > 0){
+		
+			var str='';
+			
+			for(var i in result){
+				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+				str+='<div id="levelWiseComparativeForCommitteesDetails'+i+'" class="chart"></div>';
+				str+='</div>';
+			}
+			
+		}
+		$("#levelWiseComparativeForCommittees").html(str);
+			
+		if(result != null && result.length > 0){
+			for(var i in result){
+				var result1 = result[i];
+				var committeeName = result1.name;
+				var valuesArr = [];
+				
+				if(result1.subList != null && result1.subList.length > 0){
+					for(var j in result1.subList){
+						var valInArr=[];
+						var mnthName=result1.subList[j].name;
+						if(result1.subList[j].subList != null && result1.subList[j].subList.length > 0){
+							for(var k in result1.subList[j].subList){
+								var completedCount;
+								if(result1.subList[j].subList[k].completedCount == null || result1.subList[j].subList[k].completedCount == 0){
+									completedCount ='';
+								}else{
+									completedCount = result1.subList[j].subList[k].completedCount;
+								}
+								valInArr.push(completedCount);
+							}
+						}
+						var obj={
+							name: mnthName,
+							data: valInArr
+						};
+						valuesArr.push(obj);
+					}
+				}
+				
+				var catName=[];
+				if(result1.subList != null && result1.subList.length > 0){
+					if(result1.subList[0].subList != null && result1.subList[0].subList.length > 0){
+						for(var s in result1.subList[0].subList){
+							catName.push(result1.subList[0].subList[s].name);
+						}	
+					}
+				}
+				
+				var getWidth = $('.committeesBlock').width()
+				$('#levelWiseComparativeForCommitteesDetails'+i).css("width",getWidth+'px');	
+				
+				$('#levelWiseComparativeForCommitteesDetails'+i).highcharts({
+					colors:['#CBE7B9','#00C7F7','#D6EB59'],
+					chart: {
+						type: 'column'
+					},
+					title: {
+							text: committeeName,
+							verticalAlign: 'bottom',
+							align: 'center',
+							y:13,
+							style: {
+									fontSize: '12px',
+									color: 'rgb(85, 85, 85)',
+									fontWeight:'bold'
+								}
+						},
+					xAxis: {
+						categories: catName,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+					},
+					yAxis: {
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						min: 0,
+						title: {
+							text:''
+						},
+						
+						labels:
+						{
+						  enabled: true
+						},
+					},
+					legend: {
+						enabled: false,
+						align: 'right',
+						x: -30,
+						verticalAlign: 'top',
+						y: 25,
+						floating: true,
+						backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+						borderColor: '#CCC',
+						borderWidth: 1,
+						shadow: false
+					},
+					tooltip: {
+						headerFormat: '<b>{point.x}</b><br/>',
+						pointFormat: '{series.name}: {point.y}<br/>'
+					},
+					 plotOptions: {
+						column: {
+							pointPadding: 0.2,
+							borderWidth: 2,
+							groupPadding: 0.2,
+							stacking: '',
+							dataLabels: {
+							enabled: true,
+							 format: '{series.name}:{point.y}'
+						},
+						 	
+						}
+					}, 
+					series:  valuesArr,
+					
+					
+				});
+			}
+		}
+	}
+	
 function blockHeights()
 {
 	var maxHeight = 0;
@@ -605,3 +863,6 @@ function buildBasicgraphs(){
 		}]
 	});
 }
+
+
+	
