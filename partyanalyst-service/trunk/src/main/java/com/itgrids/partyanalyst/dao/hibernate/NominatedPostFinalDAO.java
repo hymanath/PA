@@ -57,7 +57,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" caste.casteName," +
 					" NPA.applicationStatus.applicationStatusId," +
 					" NPA.applicationStatus.status," +
-					" NPA.nominatedPostApplicationId");
+					" NPA.nominatedPostApplicationId," +
+					" NPA.boardLevelId," +
+					" NPA.locationValue");
 					//" NPA.nominatedPost.nominatedPostId");
 		sb.append(" from NominatedPostApplication NPA " +
 					" left join NPA.nominationPostCandidate.tdpCadre TC" +
@@ -65,10 +67,12 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
-					" where NPA.boardLevel.boardLevelId = :levelId");
+					" where NPA.boardLevel.boardLevelId = :levelId ");
 			if(searchLevelId != null && searchLevelId.longValue()>0L){
-				if((searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L) && levelValue != null && levelValue.longValue()>0L)
-					sb.append(" and NPA.locationValue = :levelValue ");
+				if((searchLevelId.longValue() == 1L))
+					sb.append(" and NPA.address.country.countryId  = 1 ");
+				else if((searchLevelId.longValue() == 2L) && levelValue != null && levelValue.longValue()>0L)
+					sb.append(" and NPA.address.state.stateId  = :levelValue ");
 				else if(searchLevelId.longValue() ==3L && levelValue != null && levelValue.longValue()>0L)
 					sb.append(" and NPA.address.district.districtId =:levelValue ");
 				else if(searchLevelId.longValue() ==4L  && levelValue != null && levelValue.longValue()>0L)
@@ -96,8 +100,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("levelId", levelId);
-		if(levelValue != null && levelValue.longValue() > 0l)
-			query.setParameter("levelValue", levelValue);
+		if((searchLevelId.longValue() != 1L) && levelValue != null && levelValue.longValue() > 0l)
+				query.setParameter("levelValue", levelValue);
+		
 		if(type.equalsIgnoreCase("this")){
 			query.setParameter("departmentId", departmentId);
 			query.setParameter("boardId", boardId);

@@ -43,8 +43,22 @@ public class NomintedPostMemberVO {
 	private Long deptBoardPostnId;
 	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
 	private Long referCandCount;
+	private Long boardLevelId;
+	private Long levelValue;
 	
 	
+	public Long getBoardLevelId() {
+		return boardLevelId;
+	}
+	public void setBoardLevelId(Long boardLevelId) {
+		this.boardLevelId = boardLevelId;
+	}
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
 	public Long getId() {
 		return id;
 	}
