@@ -1338,6 +1338,7 @@
 		<property name="employeeDepartmentDAO" ref="employeeDepartmentDAO"/>
 		<property name="reportEmailDAO" ref="reportEmailDAO"/>
 		<property name="userEmailDAO" ref="userEmailDAO"/>
+		<property name="partyOfficeDAO" ref="partyOfficeDAO"/>     
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1360,7 +1361,7 @@
     	<property name="jobDetail" ref="everyDayBatchJob" />
     	<property name="cronExpression" value="0 0 14 * * ?" />
 	</bean>
-	<!-- swadhin -->
+	<!-- swadhin 
 	<bean name="everyDayBatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendance" /> 
@@ -1370,15 +1371,15 @@
     	<property name="jobDetail" ref="everyDayBatchJobForEmployeeAttendance" />
     	<property name="cronExpression" value="0 0 5  * * ?" />     
 	</bean>
-	
+	-->
 	<bean name="BatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendanceOnDept" /> 
 	</bean> 
 	
-	<bean name="cronTriggerForJobEmployeeAttendanceOnDept" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	<bean name="cronTriggerForJobEmployeeAttendanceOnDept" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="BatchJobForEmployeeAttendance" />
-    	<property name="cronExpression" value="0 0 5  * * ?" />     
+    	<property name="cronExpression" value="0 0 5  * * ?" />        
 	</bean>
 	<!-- swadhin -->
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -1589,7 +1590,7 @@
 			<!-- <ref bean="mahanaduEventInfo" /> -->
 			<ref bean="mahanaduVisitInfoTrig" />
 			<ref bean="updateTrainingCampSpeakers" />
-			<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />
+			<!--<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />-->
 			<ref bean="cronTriggerForJobEmployeeAttendanceOnDept" />
 			<!-- <ref bean="mahanaduEventPdfReport" /> swadhin-->
 			
@@ -3347,6 +3348,7 @@
 		<property name="nominatedPostFinalDAO" ref="nominatedPostFinalDAO"></property>
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>  
 		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO"></property> 
+		<property name="districtDAO" ref="districtDAO"></property> 
 	</bean>
 
 	<bean name="birthDayDetailsService"  class="com.itgrids.partyanalyst.service.impl.BirthDayDetailsService">

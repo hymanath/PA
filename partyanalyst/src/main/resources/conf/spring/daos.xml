@@ -207,7 +207,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean name="partyElectionResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultDAO" >
+	<bean name="partyElectionResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultDAO" >  
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -3157,5 +3157,7 @@
 	<bean id="leaderOccasionWishDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.LeaderOccasionWishDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
-	
+	<bean id="partyOfficeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyOfficeDAO" > 
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
 </beans>		
