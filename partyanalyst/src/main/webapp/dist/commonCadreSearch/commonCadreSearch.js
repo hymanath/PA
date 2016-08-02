@@ -824,7 +824,14 @@ function showHideSearch(type)
 					  errStr=true;
 			}
 		}
-		
+		else
+		{
+			 if((searchValue.length >0 && searchValue.length < 10) || isNaN(searchValue)){
+								 
+					$("#errorDivId").html("Please Enter Valid Mobile Number");
+					 errStr=true;
+				}
+		}
 		
 		if(errStr){
 			

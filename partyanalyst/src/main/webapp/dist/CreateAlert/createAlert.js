@@ -849,42 +849,52 @@ function disableByLevel(index)
 	
 	function getDetailsBySrch()
 	{
+	
 		//clearing the Data Div
 		$("#apptmemberDetailsDiv").html("");
 		//clearing err Div
-		$("#errDigitsId").html(" ");
+		$("#errorDivId").html(" ");
 		
-		var searchValue=$("#searchValueId").val();
+		var searchValue=$("#advanceSearchValueId").val();
+		
 		var errStr=false;
 		//Validations
-		if($("#searchTypeId").val()==0){
-			 $("#errDigitsId").html("Please Select Search Type");
+		if($("#advanceSearchTypeId").val()==0){
+			 $("#errorDivId").html("Please Select Search Type");
 			 errStr=true;
 		}
-		else if($("#searchTypeId").val()=="mobileno"){			
+		else if($("#advanceSearchTypeId").val()=="mobileno"){			
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please enter Mobile No");
+					  $("#errorDivId").html("Please enter Mobile No");
 					  errStr=true;
 				 }	
 				else if(searchValue.length != 10 || isNaN(searchValue)){		
-					$("#errDigitsId").html("Please Enter Valid Mobile Number");
+					$("#errorDivId").html("Please Enter Valid Mobile Number");
 					 errStr=true;
 				}
-		}else if($("#searchTypeId").val() == "mebershipno"){
+		}else if($("#advanceSearchTypeId").val() == "mebershipno"){
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please Enter MembershipNo ");
+					  $("#errorDivId").html("Please Enter MembershipNo ");
 					  errStr=true;
 			}else if(searchValue.length !=8 || isNaN(searchValue)){
-				  $("#errDigitsId").html("Please Enter valid Membership ");
+				  $("#errorDivId").html("Please Enter valid Membership ");
 					  errStr=true;
 			}
-		}else if($("#searchTypeId").val() == "votercardno"){
+		}else if($("#advanceSearchTypeId").val() == "votercardno"){
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please Enter Votercardno ");
+					  $("#errorDivId").html("Please Enter Votercardno ");
 					  errStr=true;
 			}
 		}
 		
+		else
+		{
+			 if((searchValue.length >0 && searchValue.length < 10) || isNaN(searchValue)){
+								 
+					$("#errorDivId").html("Please Enter Valid Mobile Number");
+					 errStr=true;
+				}
+		}
 		if(errStr){
 			return;
 		}else{
@@ -893,8 +903,6 @@ function disableByLevel(index)
 			}
 		
 	}
-	
-
 	function getSearchDetails(){
 	  
 	  $("#searchMemberAjax").css("display","block");
