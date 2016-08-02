@@ -3151,4 +3151,11 @@
 	<bean id="nominatedPostAgeRangeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAgeRangeDAO" >  
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
+	<bean id="leaderOccasionDAO" class="com.itgrids.partyanalyst.dao.hibernate.LeaderOccasionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="leaderOccasionWishDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.LeaderOccasionWishDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	
 </beans>		
