@@ -709,9 +709,11 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			String task = jObj.getString("task");
 			
 			
-		idNameVOList = nominatedPostProfileService.getAllDeptsAndBoardsByLevel(levelId,levelValues,statusType,task);
-
-						
+			Long searchLevelId = jObj.getLong("searchlevelId");
+			Long searchlevelValue = jObj.getLong("searchlevelValue");
+			idNameVOList = nominatedPostProfileService.getAllDeptsAndBoardsByLevel(levelId,levelValues,statusType,task,searchLevelId,searchlevelValue);
+			
+			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getAllDeptsAndBoardsByLevel() in NominatedPostProfileAction ",e);
 		}
