@@ -62,19 +62,18 @@
 			  plotShadow: false,
 			  type: 'pie',
 			 
-			 
 			},
 			title: {
-						 enabled: true,
-						text: committeeName,
-						verticalAlign: 'top',
-						align: 'center',
-						style: {
-								fontSize: '12px',
-								color: 'rgb(85, 85, 85)'
-							}
+				 enabled: true,
+				text: committeeName,
+				verticalAlign: 'top',
+				align: 'center',
+				style: {
+					fontSize: '12px',
+					color: 'rgb(85, 85, 85)'
+				}
 						
-					},
+			},
 			tooltip: {
 			  pointFormat: ' <b>{point.percentage:.1f}%</b>'
 			},
@@ -90,7 +89,7 @@
 			},
 			plotOptions: {
 			  series: {
-				allowPointSelect: false,
+				allowPointSelect: true,
 				cursor: 'pointer',
 				 dataLabels: {
 				
@@ -183,7 +182,7 @@
 	       basicCommitteeIdsArray.push(2);
 	       basicCommitteeIdsArray.push(3);
 		   
-		   var firstMonthString = '04/2015';
+		   var firstMonthString = '03/2015';
 		   var secondMonthString = '05/2015';
 		   var jsObj ={ 
 					userAccessLevelId : globalUserAccessLevelId,
@@ -209,7 +208,7 @@
 			
 			for(var i in result){
 				  str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-				str+='<div id="commiteelarge'+i+'" class="chart"></div>';
+				str+='<div id="levelWiseComulativeForCommitteeslarge'+i+'" class="chart"></div>';
 				str+='</div>';
 			}
 			
@@ -274,88 +273,63 @@
 				}
 			}
 				var getWidth = $('.committeesBlock').width()
-				$('#commiteelarge'+i+'').css("width",getWidth+'px');	
-				$('#commiteelarge'+i+'').highcharts({
-					colors:['#CBE7B9','#00C7F7','#D6EB59'],
-					chart: {
-						type: 'column'
-					},
-					title: {
-						text: committeeNameForBarAndPie,
-						style: {
-								fontSize: '12px',
-								color: 'rgb(85, 85, 85)'
-							}
-					},
-					xAxis: {
-						categories: barChartLocLevelArray,
-						gridLineWidth: 0,
-						minorGridLineWidth: 0
-					},
-					yAxis: {
-						gridLineWidth: 0,
-						minorGridLineWidth: 0,
-						min: 0,
-						labels:
-						{
-						  enabled: false
+				$('#levelWiseComulativeForCommitteeslarge'+i+'').css("width",getWidth+'px');
+					
+				 $('#levelWiseComulativeForCommitteeslarge'+i+'').highcharts({
+					 colors:['#CBE7B9','#00C7F7','#D6EB59'],
+						chart: {
+							type: 'column'
 						},
 						title: {
-							text: null
+							text: committeeNameForBarAndPie
 						},
-						stackLabels: {
-							enabled: true,
-							
-							
-							style: {
-								fontWeight: 'bold'
-								//color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					
+						xAxis: {
+							categories: barChartLocLevelArray,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0
+						   // crosshair: true
+						},
+						yAxis: {
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							min: 0,
+							title: {
+								text: ''
+							},
+							labels:{
+								enabled: true
+							},
+						},
+						tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '{series.name}: {point.y}'
+								},
+						plotOptions: {
+							column: {
+								pointPadding: 0.2,
+								borderWidth: 0,
+								groupPadding: 0.0,
+								dataLabels: {
+									enabled: true,
+									format: '{point.y}'
+									
+								},
 							}
-						}
-					},
-					legend: {
-						align: 'left',
-						x: 30,
-						verticalAlign: 'bottom',
-						y: 15,
-						floating: false,
-						//backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-						borderColor: '#CCC',
-						borderWidth: 1,
-						shadow: false,
-						enabled:true,
-					},
-					tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-				},
-					plotOptions: {
-						column: {
-							stacking: 'normal',
-							minPointLength: 4,
-							dataLabels: {
-								enabled: true,
-								color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-								style: {
-									textShadow: '0 0 3px black'
-								}
-							}
-						}
-					},
-					series: [{
+						},
+						series: [{
 							name: 'Completed',
-							  data: barChartLocDetailsForComArray
-							
+							data: barChartLocDetailsForComArray
+
 						}, {
 							name: 'Started',
-							 data: barChartLocDetailsForStarArray
-						
-							
+							data: barChartLocDetailsForStarArray
+
 						}, {
-							name: 'Yet TO Started',
+							name: 'Yet To Started',
 							data: barChartLocDetailsForYetArray
-							
-						},{
+
+						}/* ,{
 						type: 'pie',
 						name: 'Total consumption',
 						data: pieChartDataArray,
@@ -365,9 +339,8 @@
 						dataLabels: {
 							enabled: false
 						}
-					}]
+					} */]
 				});
-			
 				
 		}
 	}
