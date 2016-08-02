@@ -725,7 +725,7 @@ function buildApplicationOverviewRslt(result){
 	var inProgressCnt = result.inProgressCnt;
 	var inProgressAppPer = result.inProgressAppPer;
 	var confirmCntCnt = result.confirmCntCnt;
-	var confirmCntPer = result.confirmCntPer;
+	var confirmCntPer = result.completedAppPer;
 	buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejectedCnt,rejectedAppPer,inProgressCnt,inProgressAppPer,confirmCntCnt,confirmCntPer);
 }
 function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejectedCnt,rejectedAppPer,inProgressCnt,inProgressAppPer,confirmCntCnt,confirmCntPer){
