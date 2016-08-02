@@ -1051,7 +1051,7 @@ public class SchedulerService implements ISchedulerService{
  				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList);
  				
  				//push this information into officeWiseTotalAttendedEmployee because this employees(officeWiseTotalMigratedAttendedEmployee) are detected as absent 
- 				if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
+ 				/*if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
  				
  					Long officeId = null;
  					Long presentCount = null;
@@ -1064,7 +1064,7 @@ public class SchedulerService implements ISchedulerService{
  							}
  						}
  					}
- 				}
+ 				}*/
  				
  				//push the information into departmenWiseTotalAttendedEmployee because this employees(departmenWiseTotalMigratedAttendedEmployee) are detected as absent
  				if(departmenWiseTotalMigratedAttendedEmployee != null && departmenWiseTotalMigratedAttendedEmployee.size() > 0){
@@ -1110,8 +1110,8 @@ public class SchedulerService implements ISchedulerService{
 													departmentWiseThenOfficeWiseTotalAttendedEmployee, 
 													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
-				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
-				System.out.println("Hi");    
+				//ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
+				System.out.println("Hi");     
 			}
 		
 		}
