@@ -971,6 +971,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						if(tc !=null){ 
 							 UA = userAddressDAO.get(tc.getAddressId());
 							 tc.setMobileNo(nominatedPostVO.getPhoneNumName());
+							 tc.setHouseno(nominatedPostVO.getHouseNumberName());
 						}
 						
 						if(UA !=null){
