@@ -3348,5 +3348,12 @@
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>  
 		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO"></property> 
 	</bean>
+
+	<bean name="birthDayDetailsService"  class="com.itgrids.partyanalyst.service.impl.BirthDayDetailsService">
+	   
+		<property name="leaderOccasionDAO" ref="leaderOccasionDAO"></property>
+		<property name="leaderOccasionWishDetailsDAO" ref="leaderOccasionWishDetailsDAO"></property>
+	
+	</bean>
 </beans>		
 	
