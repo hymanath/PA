@@ -15,42 +15,43 @@ import org.jfree.util.Log;
 
 /**
  * This Class Provides Utility Services On Date,Time and Calander.
- *  @author Kamalakar Dandu
+ * 
+ * @author Kamalakar Dandu
  */
 public class DateUtilService {
-	
+
 	private static final Logger log = Logger.getLogger(DateUtilService.class);
+
 	/**
-	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss in String 
-	 * Format with default Indian Time Zone.
+	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss in String Format
+	 * with default Indian Time Zone.
+	 * 
 	 * @return String
 	 * @author Kamalakar Dandu
 	 */
-	public String getCurrentDateAndTimeInStringFormat()
-	{
-		try
-		{
+	public String getCurrentDateAndTimeInStringFormat() {
+		try {
 			Date updatedDate = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
 			sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 			return sdf.format(updatedDate);
-			
-		}catch(Exception e){
-			log.error("Exception Occured in DateUtilService.getCurrentDateAndTimeInStringFormat() " +
-					" check for log details");
+
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTimeInStringFormat() "
+					+ " check for log details");
 			return null;
 		}
 	}
-	
+
 	/**
-	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss 
-	 * Format of Date Object with default Indian Time Zone.
+	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss Format of Date
+	 * Object with default Indian Time Zone.
+	 * 
 	 * @return Date
 	 * @author Kamalakar Dandu
 	 */
-	public Date getCurrentDateAndTime()
-	{
-		try{
+	public Date getCurrentDateAndTime() {
+		try {
 			Date updatedDate = new Date();
 			Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 			geCal.setTimeInMillis(updatedDate.getTime());
@@ -63,302 +64,287 @@ public class DateUtilService {
 			calendar.set(Calendar.MINUTE, geCal.get(Calendar.MINUTE));
 			calendar.set(Calendar.SECOND, geCal.get(Calendar.SECOND));
 			calendar.set(Calendar.MILLISECOND, geCal.get(Calendar.MILLISECOND));
-			
+
 			return calendar.getTime();
-			
-		}catch (Exception e) {
-			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " +
-			" check for log details");
+
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " + " check for log details");
 			return null;
 		}
 	}
-	
-	public String getCurrentDateInStringFormat()
-	{
-		try
-		{
+
+	public String getCurrentDateInStringFormat() {
+		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			return sdf.format(new Date());
-			
-		}catch(Exception e){
-			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " +
-					" check for log details");
+
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " + " check for log details");
 			return null;
 		}
 	}
-	
-	public String getYesterdayDateString()
-	{
+
+	public String getYesterdayDateString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);    
-        return dateFormat.format(cal.getTime());
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		return dateFormat.format(cal.getTime());
 	}
-	public Date getDayBeforeYesterDayDate()
-	{
-		try{
+
+	public Date getDayBeforeYesterDayDate() {
+		try {
 			Date updatedDate = new Date();
 			Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 			geCal.setTimeInMillis(updatedDate.getTime());
 
 			Calendar calendar = Calendar.getInstance();
-			
+
 			calendar.set(Calendar.YEAR, geCal.get(Calendar.YEAR));
 			calendar.set(Calendar.MONTH, geCal.get(Calendar.MONTH));
 			calendar.set(Calendar.DAY_OF_MONTH, geCal.get(Calendar.DAY_OF_MONTH));
-	            	calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
 			calendar.set(Calendar.MINUTE, geCal.get(Calendar.MINUTE));
 			calendar.set(Calendar.SECOND, geCal.get(Calendar.SECOND));
 			calendar.set(Calendar.MILLISECOND, geCal.get(Calendar.MILLISECOND));
 			calendar.add(Calendar.DATE, -2);
-			
+
 			return calendar.getTime();
-		}catch (Exception e) {
-			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " +
-			" check for log details");
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " + " check for log details");
 			return null;
 		}
 	}
-	
-	public Date getYesterDayDate()
-	{
-		try{
+
+	public Date getYesterDayDate() {
+		try {
 			Date updatedDate = new Date();
 			Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 			geCal.setTimeInMillis(updatedDate.getTime());
-
 			Calendar calendar = Calendar.getInstance();
-			
 			calendar.set(Calendar.YEAR, geCal.get(Calendar.YEAR));
 			calendar.set(Calendar.MONTH, geCal.get(Calendar.MONTH));
 			calendar.set(Calendar.DAY_OF_MONTH, geCal.get(Calendar.DAY_OF_MONTH));
-	        calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
 			calendar.set(Calendar.MINUTE, geCal.get(Calendar.MINUTE));
 			calendar.set(Calendar.SECOND, geCal.get(Calendar.SECOND));
 			calendar.set(Calendar.MILLISECOND, geCal.get(Calendar.MILLISECOND));
 			calendar.add(Calendar.DATE, -1);
-			
 			return calendar.getTime();
-		}catch (Exception e) {
-			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " +
-			" check for log details");
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " + " check for log details");
 			return null;
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		List<Date> list = getDatesOfNextMonth();
 		System.out.println(list);
 	}
-	
-	public Date getDateAndTime(String DateString)
-	{
-		try{
+
+	public Date getDateAndTime(String DateString) {
+		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_WITH_SECONDS);
 			return sdf.parse(DateString);
-		}catch(Exception e)
-		{
-			log.error("Exception Occured in DateUtilService.getDateAndTime() " +
-					" check for log details");
-					return null;
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getDateAndTime() " + " check for log details");
+			return null;
 		}
-		
+
 	}
-	
-	public Long noOfDayBetweenDates(String startDate,String endDate){
-		
+
+	public Long noOfDayBetweenDates(String startDate, String endDate) {
+
 		SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Long diff = 0l;
 		Long noOfDays = 0l;
 		try {
-		    Date date1 = myFormat.parse(startDate);
-		    Date date2 = myFormat.parse(endDate);
-		    diff = date2.getTime() - date1.getTime();
-		    
-		  //  System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
-		    noOfDays =  TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+			Date date1 = myFormat.parse(startDate);
+			Date date2 = myFormat.parse(endDate);
+			diff = date2.getTime() - date1.getTime();
+
+			// System.out.println ("Days: " + TimeUnit.DAYS.convert(diff,
+			// TimeUnit.MILLISECONDS));
+			noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 		} catch (ParseException e) {
-		    log.error("Exception Raised in noOfDayBetweenDates ");
+			log.error("Exception Raised in noOfDayBetweenDates ");
 		}
-		return noOfDays+1;
+		return noOfDays + 1;
 	}
-	
-	/*public String getCurrentDateInStringFormatYYYYMMDD(){
-		try
-		{
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			return sdf.format(new Date());
-			
-		}catch(Exception e){
-			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " +
-					" check for log details");
-			return null;
-		}
-	}*/
-	
-	public String getCurrentDateInStringFormatYYYYMMDD(){
-		try	{
+
+	/*
+	 * public String getCurrentDateInStringFormatYYYYMMDD(){ try {
+	 * SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); return
+	 * sdf.format(new Date());
+	 * 
+	 * }catch(Exception e){ log.error(
+	 * "Exception Occured in DateUtilService.getCurrentDateInStringFormat() " +
+	 * " check for log details"); return null; } }
+	 */
+
+	public String getCurrentDateInStringFormatYYYYMMDD() {
+		try {
 			Date updatedDate = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 			return sdf.format(updatedDate);
-			
-		}catch(Exception e){
-			log.error("Exception Occured in DateUtilService.getCurrentDateAndTimeInStringFormat() " +
-					" check for log details");
+
+		} catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTimeInStringFormat() "
+					+ " check for log details");
 			return null;
 		}
 	}
-	
-	public Date getDateByStringAndFormat(String dateString,String format)
-	{
-		try{
+
+	public Date getDateByStringAndFormat(String dateString, String format) {
+		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(format);
 			return sdf.parse(dateString.trim());
-		}catch(Exception e)
-		{
-			log.error("Exception occured in getDateByStringAndFormat - ",e);
+		} catch (Exception e) {
+			log.error("Exception occured in getDateByStringAndFormat - ", e);
 		}
 		return null;
 	}
-	
-	public String getDateInStringFormatByDate(Date date,String format)
-	{
-		try{
+
+	public String getDateInStringFormatByDate(Date date, String format) {
+		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(format);
 			return sdf.format(date);
-		}catch(Exception e)
-		{
-			log.error("Exception occured in getDateByStringAndFormat - ",e);
+		} catch (Exception e) {
+			log.error("Exception occured in getDateByStringAndFormat - ", e);
 		}
 		return "";
 	}
-	//June 30 2015 1:15pm (yyyy-MM-dd hh:mm:ss)
-		public String convert12HoursDateFormat(String dateStr)
-		{
-			try{
-				
-				SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-				SimpleDateFormat outputformat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
-				Date date = inputFormat.parse(dateStr);
-				return outputformat.format(date);
-				
-				
-			}catch (Exception e) {
-				Log.error("Exception Occured in convert12HoursDateFormat() method, Exception - ",e);
-				return null;
-			}
+
+	// June 30 2015 1:15pm (yyyy-MM-dd hh:mm:ss)
+	public String convert12HoursDateFormat(String dateStr) {
+		try {
+
+			SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat outputformat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
+			Date date = inputFormat.parse(dateStr);
+			return outputformat.format(date);
+
+		} catch (Exception e) {
+			Log.error("Exception Occured in convert12HoursDateFormat() method, Exception - ", e);
+			return null;
 		}
-		//bellow method will return a list of seven dates of this current week[Week starts from monday and ends on sunday according the logic]
-		public static List<Date> getDatesOfCurrentWeek(){
-			try{
-				List<Date> listOfSevenDays = new ArrayList<Date>();
-				Calendar now = Calendar.getInstance();
-				int dayPosition = now.get(Calendar.DAY_OF_WEEK);
-				dayPosition--;
-				if(dayPosition==0){
-					dayPosition=7;
-				}
-				now.add(Calendar.DATE, -(dayPosition-1));
-				Date firstDate = now.getTime();
-				Date nextDate = firstDate;
-				for(int i=1;i<=7;i++){
-					now.setTime(nextDate);
-					listOfSevenDays.add(nextDate);
-					now.add(Calendar.DATE, 1);
-					nextDate = now.getTime();
-				}
-				return listOfSevenDays;
-				
-			}catch(Exception e){
-				Log.error("Exception occured in getListOfDateOfCurrentWeek() method of DateUtilService class",e);
-				return null;
+	}
+
+	// bellow method will return a list of seven dates of this current week[Week
+	// starts from monday and ends on sunday according the logic]
+	public static List<Date> getDatesOfCurrentWeek() {
+		try {
+			List<Date> listOfSevenDays = new ArrayList<Date>();
+			Calendar now = Calendar.getInstance();
+			int dayPosition = now.get(Calendar.DAY_OF_WEEK);
+			dayPosition--;
+			if (dayPosition == 0) {
+				dayPosition = 7;
 			}
-		}
-		//bellow method will return  a list of seven dates of the week after the current week. 
-		public static List<Date> getDatesOfWeekAfterCurrentWeek(){
-			try{
-				List<Date> listOfSevenDays = new ArrayList<Date>();
-				Calendar now = Calendar.getInstance();
-				int dayPosition = now.get(Calendar.DAY_OF_WEEK);
-				dayPosition--;
-				if(dayPosition==0){
-					dayPosition=7;
-				}
-				dayPosition = 8 - dayPosition;
-				now.add(Calendar.DATE, dayPosition);
-				Date firstDate = now.getTime();
-				Date nextDate = firstDate;
-				for(int i=1;i<=7;i++){
-					now.setTime(nextDate);
-					listOfSevenDays.add(nextDate);
-					now.add(Calendar.DATE, 1);
-					nextDate = now.getTime();
-				}
-				return listOfSevenDays;
-				
-			}catch(Exception e){
-				Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class",e);
-				return null;
+			now.add(Calendar.DATE, -(dayPosition - 1));
+			Date firstDate = now.getTime();
+			Date nextDate = firstDate;
+			for (int i = 1; i <= 7; i++) {
+				now.setTime(nextDate);
+				listOfSevenDays.add(nextDate);
+				now.add(Calendar.DATE, 1);
+				nextDate = now.getTime();
 			}
+			return listOfSevenDays;
+
+		} catch (Exception e) {
+			Log.error("Exception occured in getListOfDateOfCurrentWeek() method of DateUtilService class", e);
+			return null;
 		}
-		//bellow method will return a list of days of current month.
-		public static List<Date> getDatesOfCurrentMonth(){
-			try{
-				List<Date> listOfDays = new ArrayList<Date>();
-				Calendar now = Calendar.getInstance();
-				int dayPosition = now.get(Calendar.DAY_OF_MONTH);
-				dayPosition--;
-				now.add(Calendar.DATE, -dayPosition);
-				Date firstDate = now.getTime();
-				Date nextDate = firstDate;
-				int currMonth = firstDate.getMonth();
-				for(;;){
-					now.setTime(nextDate);
-					listOfDays.add(nextDate);
-					now.add(Calendar.DATE, 1);
-					nextDate = now.getTime();
-					int nextMonth = nextDate.getMonth();
-					if(currMonth!=nextMonth)
-						break;
-				}
-				return listOfDays;
-				
-			}catch(Exception e){
-				Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class",e);
-				return null;
+	}
+
+	// bellow method will return a list of seven dates of the week after the
+	// current week.
+	public static List<Date> getDatesOfWeekAfterCurrentWeek() {
+		try {
+			List<Date> listOfSevenDays = new ArrayList<Date>();
+			Calendar now = Calendar.getInstance();
+			int dayPosition = now.get(Calendar.DAY_OF_WEEK);
+			dayPosition--;
+			if (dayPosition == 0) {
+				dayPosition = 7;
 			}
-		}
-		//bellow method will return a list of days of next month.
-		public static List<Date> getDatesOfNextMonth(){
-			try{
-				List<Date> listOfDays = new ArrayList<Date>();
-				Calendar nowCal = Calendar.getInstance();
-			    int month = nowCal.get(Calendar.MONTH) + 1;
-			    int year = nowCal.get(Calendar.YEAR);
-			    Calendar cal = Calendar.getInstance();
-			    cal.clear();
-			    cal.set(Calendar.YEAR, year);
-			    cal.set(Calendar.MONTH, month);
-			    cal.set(Calendar.DAY_OF_MONTH, 1);
-			    Date firstDate = new Date(cal.getTimeInMillis());
-				Date nextDate = firstDate;
-				int currMonth = firstDate.getMonth();
-				for(;;){
-					nowCal.setTime(nextDate);
-					listOfDays.add(nextDate);
-					nowCal.add(Calendar.DATE, 1);
-					nextDate = nowCal.getTime();
-					int nextMonth = nextDate.getMonth();
-					if(currMonth!=nextMonth)
-						break;
-				}
-				return listOfDays;
-				
-			}catch(Exception e){
-				Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class",e);
-				return null;
+			dayPosition = 8 - dayPosition;
+			now.add(Calendar.DATE, dayPosition);
+			Date firstDate = now.getTime();
+			Date nextDate = firstDate;
+			for (int i = 1; i <= 7; i++) {
+				now.setTime(nextDate);
+				listOfSevenDays.add(nextDate);
+				now.add(Calendar.DATE, 1);
+				nextDate = now.getTime();
 			}
+			return listOfSevenDays;
+
+		} catch (Exception e) {
+			Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class", e);
+			return null;
 		}
-	
+	}
+
+	// bellow method will return a list of days of current month.
+	public static List<Date> getDatesOfCurrentMonth() {
+		try {
+			List<Date> listOfDays = new ArrayList<Date>();
+			Calendar now = Calendar.getInstance();
+			int dayPosition = now.get(Calendar.DAY_OF_MONTH);
+			dayPosition--;
+			now.add(Calendar.DATE, -dayPosition);
+			Date firstDate = now.getTime();
+			Date nextDate = firstDate;
+			int currMonth = firstDate.getMonth();
+			for (;;) {
+				now.setTime(nextDate);
+				listOfDays.add(nextDate);
+				now.add(Calendar.DATE, 1);
+				nextDate = now.getTime();
+				int nextMonth = nextDate.getMonth();
+				if (currMonth != nextMonth)
+					break;
+			}
+			return listOfDays;
+
+		} catch (Exception e) {
+			Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class", e);
+			return null;
+		}
+	}
+
+	// bellow method will return a list of days of next month.
+	public static List<Date> getDatesOfNextMonth() {
+		try {
+			List<Date> listOfDays = new ArrayList<Date>();
+			Calendar nowCal = Calendar.getInstance();
+			int month = nowCal.get(Calendar.MONTH) + 1;
+			int year = nowCal.get(Calendar.YEAR);
+			Calendar cal = Calendar.getInstance();
+			cal.clear();
+			cal.set(Calendar.YEAR, year);
+			cal.set(Calendar.MONTH, month);
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			Date firstDate = new Date(cal.getTimeInMillis());
+			Date nextDate = firstDate;
+			int currMonth = firstDate.getMonth();
+			for (;;) {
+				nowCal.setTime(nextDate);
+				listOfDays.add(nextDate);
+				nowCal.add(Calendar.DATE, 1);
+				nextDate = nowCal.getTime();
+				int nextMonth = nextDate.getMonth();
+				if (currMonth != nextMonth)
+					break;
+			}
+			return listOfDays;
+
+		} catch (Exception e) {
+			Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class", e);
+			return null;
+		}
+	}
+
 }

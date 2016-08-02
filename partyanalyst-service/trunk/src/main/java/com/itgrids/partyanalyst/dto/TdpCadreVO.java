@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TdpCadreVO implements java.io.Serializable
@@ -44,6 +45,10 @@ public class TdpCadreVO implements java.io.Serializable
 	private Long importantLeaderCadreId;
 	private String fromYear;
 	private String toYear;
+	private String dateOfBirth;
+	private String designation;
+	private String wished = "false";
+	
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
@@ -346,4 +351,25 @@ public class TdpCadreVO implements java.io.Serializable
 	public void setToYear(String toYear) {
 		this.toYear = toYear;
 	}
+	
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String string) {
+		this.dateOfBirth = string;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public String getWished() {
+		return wished;
+	}
+	public void setWished(String wished) {
+		this.wished = wished;
+	}
+	
+	
 }
