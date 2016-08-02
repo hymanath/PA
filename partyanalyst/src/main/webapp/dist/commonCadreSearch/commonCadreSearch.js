@@ -725,7 +725,7 @@ function showHideSearch(type)
 	  return ;
        } 
 	//Party Commitee Members	
-	if(advanceSearchType !=null && advanceSearchType == 3){
+	if(advanceSearchType !=null && advanceSearchType == "committee"){
 		$("#cadreCommitteeDiv option:selected").each(function ()
 		{		
 			var desgnaValue = $(this).attr("value");
