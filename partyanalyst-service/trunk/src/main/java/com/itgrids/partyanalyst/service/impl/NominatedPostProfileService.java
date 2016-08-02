@@ -970,7 +970,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						UserAddress UA = null;					
 						if(tc !=null){ 
 							 UA = userAddressDAO.get(tc.getAddressId());
-							 tc.setMobileNo(nominatedPostVO.getMobileNo());
+							 tc.setMobileNo(nominatedPostVO.getPhoneNumName());
 						}
 						
 						if(UA !=null){
@@ -1147,6 +1147,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		}
 	/*	nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
 		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;*/
+		nominatedPostApplication.setPostTypeId(Vo.getPostTypeId() != null ? Vo.getPostTypeId() : null);
 		nominatedPostApplication.setInsertedBy(loggerUserId);
 		nominatedPostApplication.setUpdatedBy(loggerUserId);
 		nominatedPostApplication.setInsertedTime(dateUtilService.getCurrentDateAndTime());
@@ -1351,7 +1352,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 					if(vo.getMandalId()!= null && vo.getMandalId() > 0){
 						List<Long> constituencyIds = new ArrayList<Long>(0);
+						if(vo.getConstituencyId() != null && vo.getConstituencyId().longValue() > 0l){
 						constituencyIds.add(vo.getConstituencyId());
+						}
 						List<LocationWiseBoothDetailsVO> list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
 						if(commonMethodsUtilService.isListOrSetValid(list))
 							for (LocationWiseBoothDetailsVO vo1 : list) {
@@ -1816,12 +1819,33 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
 						Vo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));//boardLevelId
 						Vo.setLevel(commonMethodsUtilService.getStringValueForObject(obj[3]));
+						if(!Vo.getLevel().equalsIgnoreCase("Central")){
+						List<Object[]> list = nominationPostCandidateDAO.getLevelName(Vo.getLevel().toString(),tdpCadreId, searchType,nominateCandId);
+						for(Object[] levl : list){
+						Vo.setLevelId(commonMethodsUtilService.getLongValueForObject(levl[0]));
+						Vo.setLevelName(commonMethodsUtilService.getStringValueForObject(levl[1]));
+						}
+						}
+						if(obj[5] != null){
+							Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+						}else{
+							Vo.setCadreName("Any Corporation/Board");
+						}
+						if(obj[7] != null){
+							Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+						}else{
+							Vo.setSubCaste("Any Department");
+						}
+						if(obj[9] != null){
+							Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						}else{
+							Vo.setVoterName("Any Position");
+						}
 						Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[4]));
-						Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
 						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
-						Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+						
 						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
-						Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						
 						subList.add(Vo);
 					}
 					else if(Vo.getNominatedPostId() == 2l){
@@ -1829,12 +1853,35 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
 						Vo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));//boardLevelId
 						Vo.setLevel(commonMethodsUtilService.getStringValueForObject(obj[3]));
+						if(!Vo.getLevel().equalsIgnoreCase("Central")){
+						List<Object[]> list = nominationPostCandidateDAO.getLevelName(Vo.getLevel().toString(),tdpCadreId, searchType,nominateCandId);
+						
+						for(Object[] levl : list){
+						Vo.setLevelId(commonMethodsUtilService.getLongValueForObject(levl[0]));
+						Vo.setLevelName(commonMethodsUtilService.getStringValueForObject(levl[1]));
+						}
+						}
+						if(obj[5] != null){
+							Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+						}else{
+							Vo.setCadreName("Any Corporation/Board");
+						}
+						if(obj[7] != null){
+							Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+						}else{
+							Vo.setSubCaste("Any Department");
+						}
+						if(obj[9] != null){
+							Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						}else{
+							Vo.setVoterName("Any Position");
+						}
 						Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[4]));
-						Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+						//Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
 						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
-						Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+						//Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
 						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
-						Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+						//Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
 						subList1.add(Vo);
 					}
 					

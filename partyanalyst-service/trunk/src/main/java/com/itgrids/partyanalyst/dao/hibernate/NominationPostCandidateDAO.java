@@ -47,9 +47,9 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 	}
 	public List<Object[]> getNotCadreDetailsById(Long nominatedCandiId){
 		StringBuilder sb=new StringBuilder();
-		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,model.voter.voterIDCardNo," +
+		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,voter.voterIDCardNo," +
 				"   model.imageurl,model.address.constituency.constituencyId,model.address.constituency.name" +
-				"   FROM   NominationPostCandidate model" +
+				"   FROM   NominationPostCandidate model left join model.voter voter " +
 				"   WHERE  model.nominationPostCandidateId = :nominatedCandiId and model.isDeleted = 'N' ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -83,6 +83,38 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		Query query = getSession().createQuery("select distinct model.casteState.casteCategoryGroup.casteCategory.casteCategoryId, model.casteState.casteCategoryGroup.casteCategory.categoryName" +
 				   " from NominationPostCandidate model");
 		return query.list();
+	}
+	
+	public List<Object[]> getLevelName(String levelType,Long tdpCadreId,String searchType,Long nominateCandId){
+		StringBuilder str=new StringBuilder();
+		 
+		if(levelType.equalsIgnoreCase("State")){
+			str.append(" SELECT model.address.state.stateId,model.address.state.stateName from NominationPostCandidate model ");
+		}else if(levelType.equalsIgnoreCase("District")){
+			str.append(" SELECT model.address.district.districtId,model.address.district.districtName from NominationPostCandidate model ");
+		}else if(levelType.equalsIgnoreCase("Assembly")){
+			str.append(" SELECT model.address.constituency.constituencyId,model.address.constituency.name from NominationPostCandidate model ");
+		}else if(levelType.equalsIgnoreCase("Mandal")){
+			str.append(" SELECT model.address.tehsil.tehsilId,model.address.tehsil.tehsilName from NominationPostCandidate model ");
+		}else if(levelType.equalsIgnoreCase("Muncipality/Corporation")){
+			str.append(" SELECT model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name from NominationPostCandidate model ");
+		}
+		
+		if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+        	str.append(" where model.tdpCadre.tdpCadreId = :tdpCadreId ");
+        }
+        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+        	str.append(" where model.nominationPostCandidateId = :nominateCandId ");
+        }
+		Query query = getSession().createQuery(str.toString());
+        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
+        	  query.setParameter("tdpCadreId", tdpCadreId);
+        }
+        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
+        	  query.setParameter("nominateCandId", nominateCandId);
+        }
+      
+        return query.list();
 	}
 	
 }
