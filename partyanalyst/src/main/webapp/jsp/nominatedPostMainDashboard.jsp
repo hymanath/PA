@@ -27,22 +27,7 @@
         <div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="row">
             	<div class="col-md-2 col-xs-12 col-sm-2 bg_ff pad_right0">
-                      <ul class="nav nav-tabs tabsCustomFinal" role="tablist">
-                        <li role="presentation" class="active"><a href="#departments1" aria-controls="departments1" role="tab" data-toggle="tab">Labour </a></li>
-                        <li role="presentation"><a href="#departments2" aria-controls="departments2" role="tab" data-toggle="tab">Health,Medical & Family Welfare</a></li>
-                        <li role="presentation"><a href="#departments3" aria-controls="messages" role="tab" data-toggle="tab">Roads & Buildings</a></li>
-                        <li role="presentation"><a href="#departments4" aria-controls="settings" role="tab" data-toggle="tab">Transport</a></li>
-                        <li role="presentation"><a href="#departments5" aria-controls="settings" role="tab" data-toggle="tab">Planning</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                        <li role="presentation"><a href="#departments6" aria-controls="settings" role="tab" data-toggle="tab">MA & UD</a></li>
-                      </ul>
+				     <div id="positonDivId"></div>
                 </div>
                 <div class="col-md-4 col-xs-12 col-sm-4">
                 	<div class="bg_ff pad_10">
@@ -50,15 +35,15 @@
                         <div class="row">
                         	<div class="col-md-12 col-xs-12 col-sm-12">
                               <ul class="nav nav-tabs navTabsSelection" role="tablist">
-                                <li role="presentation" class="active"><a href="#positions" aria-controls="positions" role="tab" data-toggle="tab">Home</a></li>
-                                <li role="presentation"><a href="#applicationsTab" aria-controls="applicationsTab" role="tab" data-toggle="tab">Profile</a></li>
+                                <li role="presentation" class="active"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="position" aria-controls="positions" role="tab" data-toggle="tab">Position</a></li>
+                                <li role="presentation"><a href="#applicationsHrfId"  class="overviewHrfCls" attr_report_type="application" attr aria-controls="applicationsTab" role="tab" data-toggle="tab">Application</a></li>
                               </ul>
                               <div class="tab-content navTabsSelectionBody">
-                                <div role="tabpanel" class="tab-pane active" id="positions">
-                                	<div id="chartdiv"></div>
+                                <div role="tabpanel" class="tab-pane active" id="positionsHrfId">
+                                	<div id="chartdiv" style="height:300px;"></div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="applicationsTab">
-                                	<div id="chartdiv1"></div>
+                                <div role="tabpanel" class="tab-pane" id="applicationsHrfId">
+                                	<div id="chartdiv1" style="height:300px;"></div>
                                 </div>
                               </div>    
                             </div>
@@ -66,76 +51,64 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-xs-12 col-sm-6">
-                	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                      <div class="panel panel-default panelDashboard">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                          <a role="button" data-toggle="collapse" class="panelDashboardIcon" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h4 class="panel-title">
-                              state
-                            </h4>
-                          </a>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                          <div class="panel-body">
-                            <div class="row">
-                            	<div class="col-md-6 col-xs-12 col-sm-6">
-                                	<div id="Positions" style="height:80px;"></div>
-                                    <ul class="positionsUl">
-                                    	<li class="total"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li class="noCandidate"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li class="shortListed"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li class="notStarted"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li class="readyForReview"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li class="finalised"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                        <li class="goIssued"><span class="statusBox"></span>Total Applications<span class="count">1200</span></li>
-                                    </ul>
-                                </div>
-                            	<div class="col-md-6 col-xs-12 col-sm-6">
-                                	<div id="applications"></div>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="panel panel-default panelDashboard">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                          <a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <h4 class="panel-title">District</h4>
-                          </a>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                          <div class="panel-body">
-                            
-                          </div>
-                        </div>
-                      </div>
-                      <div class="panel panel-default panelDashboard">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                          <a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <h4 class="panel-title">Constituency</h4>
-                          </a>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                          <div class="panel-body">
-                            
-                          </div>
-                        </div>
-                      </div>
-                      <div class="panel panel-default panelDashboard">
-                        <div class="panel-heading" role="tab" id="headingThree1">
-                          <h4 class="panel-title">
-                            <a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
-                              Mandal/Muncipality/Corporation
-                            </a>
-                          </h4>
-                        </div>
-                        <div id="collapseThree1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree1">
-                          <div class="panel-body">
-                            
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					  <div class="panel panel-default panelDashboard">
+						<div class="panel-heading" role="tab" id="headingOne">
+						  <h4 class="panel-title locationLevelcollapseCls"  attr_collapse_href_id="collapseOne" attr_level_Id="2" attr_postion_highChart_id="sttLvlPstnHghChrtId" attr_app_highChart_id="sttLvlApplctnHghChrtId"  attr_collapse_level_Id="stateLevlId">
+							<a role="button" class="panelDashboardIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							  state
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  <div class="panel-body">
+							<div class="stateBodyDivCls"></div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default panelDashboard">
+						<div class="panel-heading" role="tab" id="headingTwo" >
+						  <h4 class="panel-title locationLevelcollapseCls" attr_collapse_href_id="collapseTwo" attr_level_Id="3" attr_postion_highChart_id="distLvlPstnHghChrtId" attr_app_highChart_id="distLvlApplctnHghChrtId" attr_collapse_level_Id="districtLevelId">
+							<a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+							  district
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+						  <div class="panel-body">
+							<div class="districtBodyDivCls"></div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default panelDashboard">
+						<div class="panel-heading" role="tab" id="headingThree">
+						  <h4 class="panel-title locationLevelcollapseCls"  attr_collapse_href_id="collapseThree" attr_postion_highChart_id="conLvlPstnHghChrtId" attr_app_highChart_id="conLvlApplctnHghChrtId" attr_level_Id="4" attr_collapse_level_Id="constituencyLevelId">
+							<a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+							  constituency
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+						  <div class="panel-body">
+							<div class="constituencyBodyDivCls"></div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default panelDashboard">
+						<div class="panel-heading" role="tab" id="headingFour">
+						  <h4 class="panel-title locationLevelcollapseCls"   attr_postion_highChart_id="manLvlPstnHghChrtId" attr_app_highChart_id="manLvlApplctnHghChrtId" attr_collapse_href_id="collapseFour" attr_level_Id="5" attr_collapse_level_Id="manMunCorLevelId">
+							<a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+							 Mandal/Muncipality/Corporation
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+						  <div class="panel-body">
+							<div class="manMunCorBodyDivCls"></div>
+						  </div>
+						</div>
+					  </div>
+					</div>
                 </div>
             </div>
         </div>
@@ -489,7 +462,7 @@ $(function () {
             ]
         }]
     });
-	$('#Positions').highcharts({
+	/*  $('#Positions').highcharts({
 		color:['#FED501','#E58D45','#DD675D','#65A7E1','#7DC1C0','#5C2D25'],
         chart: {
             type: 'column'
@@ -542,8 +515,8 @@ $(function () {
             data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
 
         }]
-    });
-	$('#applications').highcharts({
+    });  */
+	/* $('#applications').highcharts({
 		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
         chart: {
             type: 'pie',
@@ -567,7 +540,7 @@ $(function () {
                 ['ST', 25]
             ]
         }]
-    });
+    }); */
 	 $('#casteWisePositions').highcharts({
         chart: {
             type: 'bar'
@@ -622,7 +595,7 @@ $(document).on("click",".changeIconClass",function(){
 	$(this).closest('tr').next('tr.showHideTr').toggle();
 	$(this).toggleClass("glyphicon-minus");
 });
-var gaugeChart = AmCharts.makeChart("chartdiv", {
+ /*   var gaugeChart = AmCharts.makeChart("chartdiv1", {
   "type": "gauge",
   "theme": "light",
   "axes": [{
@@ -697,7 +670,7 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
       "endValue": 35,
       "radius": "50%",
       "innerRadius": "45%",
-      "balloonText": "35%"
+      "balloonText": "35"
     }, {
       "color": "#fff",
       "startValue": 0,
@@ -710,8 +683,8 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
       "endValue": 92,
       "radius": "35%",
       "innerRadius": "30%",
-      "balloonText": "92%"
-    }, {
+      "balloonText": "92"
+    } , {
       "color": "#fff",
       "startValue": 0,
       "endValue": 100,
@@ -724,7 +697,7 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
       "radius": "20%",
       "innerRadius": "15%",
       "balloonText": "48%"
-    }]
+    } ]
   }],
   "allLabels": [{
     "text": "1 option",
@@ -782,11 +755,11 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "bold": true,
     "color": "#333",
     "align": "right"
-  }],
+  } ],
   "export": {
     "enabled": false
   }
-});
+}); */  
 </script>
 </body>
 </html>
