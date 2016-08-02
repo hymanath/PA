@@ -13277,7 +13277,10 @@
 			<param name="root">castePositionVO</param>
 		</result>
 	</action>
-	
-	
+	<action name="getNominatedCandidateGroupByDistAction" class="nominatedPostProfileAction" method="getNominatedCandidateGroupByDist">
+		<result type="json" name="success">
+			<param name="root">nominatedPostVOs</param>  
+		</result>
+	</action>
 </package>
-</struts>      
+</struts>
