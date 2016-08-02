@@ -13,4 +13,5 @@ public interface INominationPostCandidateDAO extends GenericDao<NominationPostCa
 	public NominationPostCandidate getUserAddressByCandidate(Long postCandidateId);
 	public List<Object[]> getNOminatedCadreList(List<Long> cadreIdsLsit);
 	public List<Object[]> getCastGroupList();
+	public List<Object[]> getLevelName(String levelType,Long tdpCadreId,String searchType,Long nominateCandId);
 }

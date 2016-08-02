@@ -417,11 +417,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
-				" model.boardLevel.boardLevelId,model.boardLevel.level,model.departments.departmentId," +
-	        " model.departments.deptName,model.board.boardId,model.board.boardName,model.position.positionId," +
-	        " model.position.positionName,model.departments.postTypeId " +
-	        " from NominatedPostApplication model " +
-	        " where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+				" model.boardLevel.boardLevelId,model.boardLevel.level,departments.departmentId," +
+	        " departments.deptName,board.boardId,board.boardName,position.positionId," +
+	        " position.positionName,model.postType.postTypeId " +
+	        " from NominatedPostApplication model left join model.position position left join model.departments departments " +
+	        " left join model.board  board  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
 	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
 	        	str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId ");
 	        }
@@ -429,7 +429,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        	str.append(" and model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId ");
 	        }
 	        
-	        str.append( " order by model.departments.postTypeId ");
+	        str.append( " order by model.postType.postTypeId ");
 	        
 	        Query query = getSession().createQuery(str.toString());
 	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){

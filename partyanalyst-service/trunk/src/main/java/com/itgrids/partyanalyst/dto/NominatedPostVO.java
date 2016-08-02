@@ -76,7 +76,15 @@ public class NominatedPostVO implements Serializable{
 	public Long addMandalsName;
 	public Long addVillageName;
 	public String addPincodeName;
+	private Long postTypeId; 
 	
+	
+	public Long getPostTypeId() {
+		return postTypeId;
+	}
+	public void setPostTypeId(Long postTypeId) {
+		this.postTypeId = postTypeId;
+	}
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
