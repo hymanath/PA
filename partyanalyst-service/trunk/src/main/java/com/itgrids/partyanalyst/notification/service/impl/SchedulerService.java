@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IPartyOfficeDAO;
 import com.itgrids.partyanalyst.dao.IReportEmailDAO;
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -112,6 +113,7 @@ public class SchedulerService implements ISchedulerService{
 	private IEmployeeDepartmentDAO employeeDepartmentDAO;
 	private IReportEmailDAO reportEmailDAO;
 	private IUserEmailDAO userEmailDAO;
+	private IPartyOfficeDAO partyOfficeDAO;
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
 		return trainingCampBatchDAO;
@@ -264,6 +266,13 @@ public class SchedulerService implements ISchedulerService{
 
 	public void setUserEmailDAO(IUserEmailDAO userEmailDAO) {
 		this.userEmailDAO = userEmailDAO;
+	}
+	public IPartyOfficeDAO getPartyOfficeDAO() {
+		return partyOfficeDAO;
+	}
+
+	public void setPartyOfficeDAO(IPartyOfficeDAO partyOfficeDAO) {
+		this.partyOfficeDAO = partyOfficeDAO;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -982,7 +991,7 @@ public class SchedulerService implements ISchedulerService{
 			String area = "dept";
 			DateUtilService dateUtilService = new DateUtilService();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date currentDateAndTime = dateUtilService.getCurrentDateAndTime();
+			Date currentDateAndTime = dateUtilService.getCurrentDateAndTime();   
 			EmailAttributesVO emailVo = new EmailAttributesVO();
 			Date fromDate = dateUtilService.getCurrentDateAndTime();
 			Date toDate = dateUtilService.getCurrentDateAndTime();
@@ -996,7 +1005,7 @@ public class SchedulerService implements ISchedulerService{
 			Set<Long> emailIdList = emailIdAndDeptIdListMap.keySet();
 			//Collection<List<Long>> listOflistOfDeptId = emailIdAndDeptIdListMap.values();
 			List<Long> deptList = null;
-			for(Long userEmailId : emailIdList){
+			for(Long userEmailId : emailIdList){    
 				emailVo.setEmailId(userEmailId);
 				deptList = emailIdAndDeptIdListMap.get(userEmailId);
 				List<Object[]> officeWiseTotalEmployeeList = employeeWorkLocationDAO.getOfficeWiseTotalEmployeeListFilter(deptList);
@@ -1010,25 +1019,99 @@ public class SchedulerService implements ISchedulerService{
 				List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(fromDate, toDate, deptList);
 				
 				List<Object[]> totalAttendedEmployeesCadreIdList = employeeWorkLocationDAO.getTotalAttendedEmployeesCadreId(fromDate,toDate);
-				List<Long> cadreIdList = new ArrayList<Long>(0);
+				List<Object[]> totalAttendedEmployeesExtraCadreIdList = partyOfficeDAO.getTotalAttendedEmployeesCadreId(fromDate,toDate);   
+				List<Long> cadreIdList = new ArrayList<Long>(0);  
 				cadreIdList.add(0l);
-				if(totalAttendedEmployeesCadreIdList != null && totalAttendedEmployeesCadreIdList.size() > 0){
-					for(Object[] totalAttendedEmployeesCadreId : totalAttendedEmployeesCadreIdList){
+				if(totalAttendedEmployeesExtraCadreIdList != null && totalAttendedEmployeesExtraCadreIdList.size() > 0){  
+					for(Object[] totalAttendedEmployeesCadreId : totalAttendedEmployeesExtraCadreIdList){
 						cadreIdList.add((Long)totalAttendedEmployeesCadreId[2]);
 					}
 				}
 				List<Object[]> officeWiseTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalNonAttendedEmployeeDetailsFilter(fromDate, toDate, cadreIdList, deptList );
 				List<Object[]> officeWiseTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList);
+				//get the details of employee those are working for other office..........
+				//first collect the cadreId...........
+				//collect cadre id those are present for own office...........
+				List<Long> ownOfficeEmployeeCadreIdList = new ArrayList<Long>();
+				for(Object[] attendedDetaisl : totalAttendedEmployeesCadreIdList){
+					ownOfficeEmployeeCadreIdList.add((Long)attendedDetaisl[2]);
+				}
+				List<Long> attendedExtraCadreidList = new ArrayList<Long>();
+				attendedExtraCadreidList.add(0l);
+ 				for(Object[] attendedExtraEmployeeDetails: totalAttendedEmployeesExtraCadreIdList){
+ 					if(!(ownOfficeEmployeeCadreIdList.contains(attendedExtraEmployeeDetails[2]))){
+ 						attendedExtraCadreidList.add((Long)attendedExtraEmployeeDetails[2]);
+ 					}
+				}
+ 				
+ 				//get Office details of these migrated employees...........
+ 				List<Object[]> officeWiseTotalMigratedAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
+ 				List<Object[]> departmenWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmenWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
+ 				List<Object[]> departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(attendedExtraCadreidList);
+ 				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList);
+ 				
+ 				//push this information into officeWiseTotalAttendedEmployee because this employees(officeWiseTotalMigratedAttendedEmployee) are detected as absent 
+ 				if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
+ 				
+ 					Long officeId = null;
+ 					Long presentCount = null;
+ 					for(Object[] officeWiseAttendedEmployeeDetails : officeWiseTotalMigratedAttendedEmployee){
+ 						officeId = (Long)officeWiseAttendedEmployeeDetails[0];
+ 						presentCount = (Long)officeWiseAttendedEmployeeDetails[2];
+ 						for(int i = 0 ; i < officeWiseTotalAttendedEmployee.size() ; i++){
+ 							if(officeWiseTotalAttendedEmployee.get(i)[0].equals(officeId)){
+ 								officeWiseTotalAttendedEmployee.get(i)[2] = (Long)officeWiseTotalAttendedEmployee.get(i)[2] + presentCount;
+ 							}
+ 						}
+ 					}
+ 				}
+ 				
+ 				//push the information into departmenWiseTotalAttendedEmployee because this employees(departmenWiseTotalMigratedAttendedEmployee) are detected as absent
+ 				if(departmenWiseTotalMigratedAttendedEmployee != null && departmenWiseTotalMigratedAttendedEmployee.size() > 0){
+ 					Long DeptId = null;
+ 					Long presentCount = null;
+ 					for(Object[] deptWiseAttendedEmployeeDetails : departmenWiseTotalMigratedAttendedEmployee){
+ 						DeptId = (Long)deptWiseAttendedEmployeeDetails[0];
+ 						presentCount = (Long)deptWiseAttendedEmployeeDetails[2];
+ 						for(int i = 0 ; i < departmenWiseTotalAttendedEmployee.size() ; i++){
+ 							if(departmenWiseTotalAttendedEmployee.get(i)[0].equals(DeptId)){
+ 								departmenWiseTotalAttendedEmployee.get(i)[2] = (Long)departmenWiseTotalAttendedEmployee.get(i)[2] + presentCount;
+ 							}
+ 						}
+ 					}
+ 				}
+ 				//push the information into departmentWiseThenOfficeWiseTotalAttendedEmployee because this employees(departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee) are detected as absent
+				if(departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee != null && departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee.size() > 0){
+					Long DeptId = null;
+					Long OfficeId = null;
+					Long presentCount = null;
+					for(Object[] deptWiseThenOfficeWiseAttendedEmployeeDetails : departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee){
+						DeptId = (Long)deptWiseThenOfficeWiseAttendedEmployeeDetails[0];
+						OfficeId = (Long)deptWiseThenOfficeWiseAttendedEmployeeDetails[2];
+						presentCount = (Long)deptWiseThenOfficeWiseAttendedEmployeeDetails[4];
+						for(int i = 0 ; i < departmentWiseThenOfficeWiseTotalAttendedEmployee.size() ; i++){
+							if(departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[0].equals(DeptId) && departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[2].equals(OfficeId)){
+								departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[4] = (Long)departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[4] + presentCount;  
+							}
+						}
+						
+					}
+				}
+				//add this(officeWiseTotalMigratedAttendedEmployeeDetailsList) list to officeWiseTotalAttendedEmployeeDetailsList
+				if(officeWiseTotalMigratedAttendedEmployeeDetailsList != null && officeWiseTotalMigratedAttendedEmployeeDetailsList.size() > 0){
+					officeWiseTotalAttendedEmployeeDetailsList.addAll(officeWiseTotalMigratedAttendedEmployeeDetailsList);
+				}
+				
 				
 				generatePdfReport(area, emailVo,	officeWiseTotalEmployeeList, 
 													officeWiseTotalAttendedEmployee, 
 													departmentWiseTotalEmployeeList, 
 													departmenWiseTotalAttendedEmployee, 
 													departmentWiseThenOfficeWiseTotalAttendedEmployee, 
-													officeWiseTotalNonAttendedEmployeeDetailsList, 
+													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
 				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
-				System.out.println("Hi");  
+				System.out.println("Hi");    
 			}
 		
 		}
@@ -1064,7 +1147,7 @@ public class SchedulerService implements ISchedulerService{
 		try{
 			String area = "office";
 			DateUtilService dateUtilService = new DateUtilService();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");   
 			Date currentDateAndTime = dateUtilService.getCurrentDateAndTime();
 			EmailAttributesVO emailVo = new EmailAttributesVO();
 			Date fromDate = dateUtilService.getCurrentDateAndTime();
@@ -1078,6 +1161,7 @@ public class SchedulerService implements ISchedulerService{
 			List<Object[]> departmenWiseTotalAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseTotalAttendedEmployee(fromDate,toDate);
 			List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployee(fromDate, toDate);
 			List<Object[]> totalAttendedEmployeesCadreIdList = employeeWorkLocationDAO.getTotalAttendedEmployeesCadreId(fromDate,toDate);
+			List<Object[]> totalAttendedEmployeesExtraCadreIdList = partyOfficeDAO.getTotalAttendedEmployeesCadreId(fromDate,toDate);   
 			List<Long> cadreIdList = new ArrayList<Long>(0);
 			cadreIdList.add(0l);
 			if(totalAttendedEmployeesCadreIdList != null && totalAttendedEmployeesCadreIdList.size() > 0){
@@ -1087,7 +1171,79 @@ public class SchedulerService implements ISchedulerService{
 			}
 			List<Object[]> officeWiseTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalNonAttendedEmployeeDetails(fromDate,toDate,cadreIdList);
 			List<Object[]> officeWiseTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalAttendedEmployeeDetails(fromDate, toDate);
+			//***********************
+			//get the details of employee those are working for other office..........
+			//first collect the cadreId...........
+			//collect cadre id those are present for own office...........
+			List<Long> ownOfficeEmployeeCadreIdList = new ArrayList<Long>();
+			for(Object[] attendedDetaisl : totalAttendedEmployeesCadreIdList){
+				ownOfficeEmployeeCadreIdList.add((Long)attendedDetaisl[2]);
+			}
+			List<Long> attendedExtraCadreidList = new ArrayList<Long>();
+				for(Object[] attendedExtraEmployeeDetails: totalAttendedEmployeesExtraCadreIdList){
+					if(!(ownOfficeEmployeeCadreIdList.contains(attendedExtraEmployeeDetails[2]))){
+						attendedExtraCadreidList.add((Long)attendedExtraEmployeeDetails[2]);
+					}
+			}
+				
+				//get Office details of these migrated employees...........
+				List<Object[]> officeWiseTotalMigratedAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
+				List<Object[]> departmenWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmenWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
+				List<Object[]> departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(attendedExtraCadreidList);
+				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList);
+				//push this information into officeWiseTotalAttendedEmployee because this employees(officeWiseTotalMigratedAttendedEmployee) are detected as absent 
+				if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
+				
+					Long officeId = null;
+					Long presentCount = null;
+					for(Object[] officeWiseAttendedEmployeeDetails : officeWiseTotalMigratedAttendedEmployee){
+						officeId = (Long)officeWiseAttendedEmployeeDetails[0];
+						presentCount = (Long)officeWiseAttendedEmployeeDetails[2];
+						for(int i = 0 ; i < officeWiseTotalAttendedEmployee.size() ; i++){
+							if(officeWiseTotalAttendedEmployee.get(i)[0].equals(officeId)){
+								officeWiseTotalAttendedEmployee.get(i)[2] = (Long)officeWiseTotalAttendedEmployee.get(i)[2] + presentCount;
+							}
+						}
+					}
+				}
+				
+				//push the information into departmenWiseTotalAttendedEmployee because this employees(departmenWiseTotalMigratedAttendedEmployee) are detected as absent
+				if(departmenWiseTotalMigratedAttendedEmployee != null && departmenWiseTotalMigratedAttendedEmployee.size() > 0){
+					Long DeptId = null;
+					Long presentCount = null;
+					for(Object[] deptWiseAttendedEmployeeDetails : departmenWiseTotalMigratedAttendedEmployee){
+						DeptId = (Long)deptWiseAttendedEmployeeDetails[0];
+						presentCount = (Long)deptWiseAttendedEmployeeDetails[2];
+						for(int i = 0 ; i < departmenWiseTotalAttendedEmployee.size() ; i++){
+							if(departmenWiseTotalAttendedEmployee.get(i)[0].equals(DeptId)){
+								departmenWiseTotalAttendedEmployee.get(i)[2] = (Long)departmenWiseTotalAttendedEmployee.get(i)[2] + presentCount;   
+							}
+						}
+					}
+				}
+				//push the information into departmentWiseThenOfficeWiseTotalAttendedEmployee because this employees(departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee) are detected as absent
+			if(departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee != null && departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee.size() > 0){
+				Long DeptId = null;
+				Long OfficeId = null;
+				Long presentCount = null;
+				for(Object[] deptWiseThenOfficeWiseAttendedEmployeeDetails : departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee){
+					DeptId = (Long)deptWiseThenOfficeWiseAttendedEmployeeDetails[0];
+					OfficeId = (Long)deptWiseThenOfficeWiseAttendedEmployeeDetails[2];
+					presentCount = (Long)deptWiseThenOfficeWiseAttendedEmployeeDetails[4];
+					for(int i = 0 ; i < departmentWiseThenOfficeWiseTotalAttendedEmployee.size() ; i++){
+						if(departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[0].equals(DeptId) && departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[2].equals(OfficeId)){
+							departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[4] = (Long)departmentWiseThenOfficeWiseTotalAttendedEmployee.get(i)[4] + presentCount;  
+						}
+					}
+					
+				}
+			}
+			//add this(officeWiseTotalMigratedAttendedEmployeeDetailsList) list to officeWiseTotalAttendedEmployeeDetailsList
+			if(officeWiseTotalMigratedAttendedEmployeeDetailsList != null && officeWiseTotalMigratedAttendedEmployeeDetailsList.size() > 0){
+				officeWiseTotalAttendedEmployeeDetailsList.addAll(officeWiseTotalMigratedAttendedEmployeeDetailsList);  
+			}
 			
+			//************************
 			generatePdfReport(area, emailVo, 	officeWiseTotalEmployeeList, 
 										officeWiseTotalAttendedEmployee, 
 										departmentWiseTotalEmployeeList, 
@@ -1586,11 +1742,11 @@ public class SchedulerService implements ISchedulerService{
 	    	
 	    	f = new Font(FontFamily.TIMES_ROMAN, 14.0f, Font.BOLD, new BaseColor(0,0,128));
 	    	if(area.equals("dept")){
-	    		c = new Chunk("DEPARTMENT WISE NON ATTENDED EMPLOYEE'S DETAILS", f);
+	    		c = new Chunk("DEPARTMENT WISE NOT ATTENDED EMPLOYEE'S DETAILS", f);
 	    	}
 	    	else if(area.equals("office"))
 	    	{
-	    		c = new Chunk("OFFICE WISE NON ATTENDED EMPLOYEE'S DETAILS", f);   
+	    		c = new Chunk("OFFICE WISE NOT ATTENDED EMPLOYEE'S DETAILS", f);   
 	    	}
 	    	//c.setBackground(BaseColor.RED);
 	        Paragraph paragraph3=new Paragraph(c);
@@ -1678,7 +1834,7 @@ public class SchedulerService implements ISchedulerService{
 				}
 			}else if(area.equalsIgnoreCase("dept")){
 				List<Object[]> emailList = userEmailDAO.getEmailList(emailAttributesVO.getEmailId());
-				for(Object[] emailArr : emailList){
+				for(Object[] emailArr : emailList){ 
 					if(emailArr[1]==null)
 						continue; 
 					message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailArr[1].toString()));  
@@ -1691,8 +1847,13 @@ public class SchedulerService implements ISchedulerService{
 			Multipart multipart = new MimeMultipart();
     		 
         	BodyPart htmlPart = new MimeBodyPart();
-        	StringBuilder msgText= new StringBuilder();
-        	msgText.append("Good Morning Sir,<br><br> Please find the attached  pdf document for Party Office Employee Attendance details for the date:"+emailAttributesVO.getDate()) ;
+        	StringBuilder msgText= new StringBuilder();    
+        	if(area.equalsIgnoreCase("office")){
+        		msgText.append("Good Morning Sir,<br><br> Please find the attached  pdf document for Party Office Employee Attendance details for the date:"+emailAttributesVO.getDate()) ;
+        	}else if(area.equalsIgnoreCase("dept")){
+        		msgText.append("Good Morning Sir,<br><br> Please find the attached  pdf document for Party Office Employee Attendance details department wise for the date:"+emailAttributesVO.getDate()) ;
+        	}
+        	
         	msgText.append("<br><br>Thanks");
         	msgText.append("<br>ITGRIDS TEAM");
         	htmlPart.setContent(msgText.toString(),"text/html");
