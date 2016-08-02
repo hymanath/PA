@@ -376,10 +376,15 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		  .addScalar("local_election_body_id",Hibernate.LONG);	  
 		  
 		  if(distrctIds !=null && distrctIds.size()>0){
-			  query.setParameterList("distrctIds", distrctIds);
+			  query.setParameterList("distrctIds", distrctIds); 
 		  }
 		  query.setParameter("Town", IConstants.TOWN_TYPE_IDS);
 		  
+		  return query.list();
+	  }
+	  public List<Object[]> getAllDistrictList(Long stateId){
+		  Query query = getSession().createQuery("select model.districtId,model.districtName from District model where model.state.stateId = :stateId order by model.districtId");
+		  query.setParameter("stateId", stateId);
 		  return query.list();
 	  }
 }

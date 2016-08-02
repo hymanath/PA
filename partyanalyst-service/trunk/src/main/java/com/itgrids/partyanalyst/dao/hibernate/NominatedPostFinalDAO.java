@@ -558,6 +558,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			    	query.setParameter("LocationLevelId", LocationLevelId);
 			    }
 	            if(positionId != null && positionId.longValue() > 0){
+	            	
 				    	query.setParameter("positionId", positionId);
 				 }
 	   return query.list();
@@ -604,29 +605,121 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   
 				   return query.list();
 	}
-	
-     public Object[] getShortListedPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
-	  
-	  StringBuilder queryStr = new StringBuilder();
-	  
-	    queryStr.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPost.nominatedPostId) from NominatedPostFinal model " +
-	    		        " where" +
-	    		        " model.isDeleted='N' and model.nominatedPost.isExpired='N' and model.nominatedPost.isDeleted='N' and model.applicationStatus.status='Shortlisted' ");
-	  
-	     if(positionId != null && positionId.longValue() > 0){
-	    	 queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
-	     }
-	     if(boardLevelId != null && boardLevelId.longValue() > 0){
-	    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId "); 
-	     }
-	    
-	     Query query = getSession().createQuery(queryStr.toString());
-	     if(positionId != null && positionId.longValue() > 0){
-	      query.setParameter("positionId", positionId);	 
-	     }
-	     if(boardLevelId != null && boardLevelId.longValue() > 0){
-	      query.setParameter("boardLevelId", boardLevelId);	 	 
-	     }
-          return (Object[]) query.uniqueResult(); 
-  }
+	 public Object[] getShortListedPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+		  
+		  StringBuilder queryStr = new StringBuilder();
+		  
+		    queryStr.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPost.nominatedPostId) from NominatedPostFinal model " +
+		    		        " where" +
+		    		        " model.isDeleted='N' and model.nominatedPost.isExpired='N' and model.nominatedPost.isDeleted='N' and model.applicationStatus.status='Shortlisted' ");
+		  
+		     if(positionId != null && positionId.longValue() > 0){
+		    	 queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
+		     }
+		     if(boardLevelId != null && boardLevelId.longValue() > 0){
+		    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId "); 
+		     }
+		    
+		     Query query = getSession().createQuery(queryStr.toString());
+		     if(positionId != null && positionId.longValue() > 0){
+		      query.setParameter("positionId", positionId);	 
+		     }
+		     if(boardLevelId != null && boardLevelId.longValue() > 0){
+		      query.setParameter("boardLevelId", boardLevelId);	 	 
+		     }
+	          return (Object[]) query.uniqueResult(); 
+	  }
+	public List<Object[]>  getNominatedCandidateGroupByDist(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+		StringBuilder strQuery = new StringBuilder();
+		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, " +
+						" count(model.nominationPostCandidate.nominationPostCandidateId) " +
+						" from " +
+						" NominatedPostFinal model " +
+						" where " +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIdList) and " +
+						" model.nominatedPostMember.boardLevel.boardLevelId in (:locationLevelIdList) and " +
+						" model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptIdList) and " +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:corporationIdList) and " +
+						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIdList) and " +
+						" model.applicationStatus.applicationStatusId in (:positionStatusIdList) and " +
+						" model.nominationPostCandidate.address.state.stateId = :stateId " +
+						" group by " +
+						" model.nominationPostCandidate.address.district.districtId " +  
+						" order by " +
+						" model.nominationPostCandidate.address.district.districtId ");
+					
+		
+		Query query = getSession().createQuery(strQuery.toString());
+		query.setParameterList("positionIdList", positionIdList);
+		query.setParameterList("locationLevelIdList", locationLevelIdList);
+		query.setParameterList("deptIdList", deptIdList);
+		query.setParameterList("corporationIdList", corporationIdList);
+		query.setParameterList("castGroupIdList", castGroupIdList);
+		query.setParameterList("positionStatusIdList", positionStatusIdList);
+		query.setParameter("stateId", stateId);
+		return query.list(); 
+	}
+	public List<Object[]>  getNominatedCandidateGroupByDistAndGender(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+		StringBuilder strQuery = new StringBuilder();
+		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, model.nominationPostCandidate.gender, " +
+						" count(model.nominationPostCandidate.nominationPostCandidateId) " +
+						" from " +
+						" NominatedPostFinal model " +
+						" where " +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIdList) and " +
+						" model.nominatedPostMember.boardLevel.boardLevelId in (:locationLevelIdList) and " +
+						" model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptIdList) and " +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:corporationIdList) and " +
+						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIdList) and " +
+						" model.applicationStatus.applicationStatusId in (:positionStatusIdList) and " +
+						" model.nominationPostCandidate.address.state.stateId = :stateId " +
+						" group by " +
+						" model.nominationPostCandidate.address.district.districtId, " +
+						" model.nominationPostCandidate.gender " +  
+						" order by " +
+						" model.nominationPostCandidate.address.district.districtId," +
+						" model.nominationPostCandidate.gender " );  
+						
+		
+		Query query = getSession().createQuery(strQuery.toString());
+		query.setParameterList("positionIdList", positionIdList);
+		query.setParameterList("locationLevelIdList", locationLevelIdList);
+		query.setParameterList("deptIdList", deptIdList);
+		query.setParameterList("corporationIdList", corporationIdList);
+		query.setParameterList("castGroupIdList", castGroupIdList);
+		query.setParameterList("positionStatusIdList", positionStatusIdList);
+		query.setParameter("stateId", stateId);
+		return query.list(); 
+	}
+	public List<Object[]>  getNominatedCandidateGroupByDistAndAgeGroup(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+		StringBuilder strQuery = new StringBuilder();
+		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, " +
+						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, count(model.nominationPostCandidate.nominationPostCandidateId) " +
+						" from " +
+						" NominatedPostFinal model " +
+						" where " +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIdList) and " +
+						" model.nominatedPostMember.boardLevel.boardLevelId in (:locationLevelIdList) and " +
+						" model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptIdList) and " +
+						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:corporationIdList) and " +
+						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIdList) and " +
+						" model.applicationStatus.applicationStatusId in (:positionStatusIdList) and " +
+						" model.nominationPostCandidate.address.state.stateId = :stateId " +
+						" group by " +
+						" model.nominationPostCandidate.address.district.districtId, " +
+						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " +  
+						" order by " +
+						" model.nominationPostCandidate.address.district.districtId," +
+						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		
+		Query query = getSession().createQuery(strQuery.toString());
+		query.setParameterList("positionIdList", positionIdList);
+		query.setParameterList("locationLevelIdList", locationLevelIdList);
+		query.setParameterList("deptIdList", deptIdList);
+		query.setParameterList("corporationIdList", corporationIdList);
+		query.setParameterList("castGroupIdList", castGroupIdList);
+		query.setParameterList("positionStatusIdList", positionStatusIdList);
+		query.setParameter("stateId", stateId);
+		return query.list(); 
+	}
 }

@@ -167,4 +167,42 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 		query.setParameterList("deptList", deptList);
 		return query.list();
 	}
+	//for migrated employee 
+	public List<Object[]> getDepartmenWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList){
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append(" select model.department.departmentId, model.department.departmentName, count(distinct model.employee.tdpCadre.tdpCadreId) " +
+						" from EmployeeDepartment model " +
+						" where " +
+						" model.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) " +
+						" group by " +
+						" model.department.departmentId " +
+						" order by " +
+						" model.department.departmentId");
+		Query query = getSession().createQuery(sqlQuery.toString());
+		query.setParameterList("attendedExtraCadreidList", attendedExtraCadreidList);
+		return query.list();
+	}
+	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(List<Long> attendedExtraCadreidList){
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, count(distinct EA.tdpCadre.tdpCadreId) " +
+						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, EventAttendee EA " +
+						" where " +
+						" ED.employee.employeeId = EWL.employee.employeeId and " +
+						" ED.employee.tdpCadreId = EA.tdpCadre.tdpCadreId and " +  
+						" ED.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) and " +  
+						//" EWL.partyOffice.event.parentEventId = 44 and " +
+						" EWL.partyOffice.event.eventId = EA.event.eventId and " +  
+						" ED.isDeleted = 'N' and " +  
+						" ED.employee.isDeleted = 'N' and " +
+						" ED.employee.isActive = 'Y' and " +
+						" EWL.partyOffice.isDeleted = 'N' " +
+						" group by " +
+						" ED.department.departmentId, EWL.partyOffice.partyOfficeId " +
+						" order by " +
+						" ED.department.departmentId, EWL.partyOffice.partyOfficeId ");
+		Query query = getSession().createQuery(sqlQuery.toString());
+		
+		query.setParameterList("attendedExtraCadreidList", attendedExtraCadreidList);
+		return query.list();
+	}
 }
