@@ -682,5 +682,6 @@
 	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
 	    <pattern>/coreDashboardAction*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>
+		<pattern>/birthDayAction.action*</pattern>
 	</decorator> 
 </decorators>
