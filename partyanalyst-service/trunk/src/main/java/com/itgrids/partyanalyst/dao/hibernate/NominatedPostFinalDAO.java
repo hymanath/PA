@@ -21,8 +21,12 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		queryStr.append(" select model.nominatedPost.nominatedPostMember.boardLevelId, count(model.nominatedPostFinalId)  from NominatedPostFinal model where  " +
 				" model.applicationStatus.status ='Shortlisted'  ");
 		
-		if(boardLevelId != null && boardLevelId.longValue()>0)
-			queryStr.append(" and  model.nominatedPost.nominatedPostMember.boardLevelId = :boardLevelId ");
+		if(boardLevelId != null && boardLevelId.longValue()>0){
+			if(boardLevelId.longValue() != 5L)
+				queryStr.append(" and  model.nominatedPost.nominatedPostMember.boardLevelId = :boardLevelId ");
+			else
+				queryStr.append(" and  model.nominatedPost.nominatedPostMember.boardLevelId in (5,6) ");
+		}
 		
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.nominatedPost.insertedTime) between :startDate and :endDate ");
@@ -31,7 +35,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(boardLevelId != null && boardLevelId.longValue()>0L)
-			query.setParameter("boardLevelId", boardLevelId);
+			if(boardLevelId.longValue() != 5L)
+				query.setParameter("boardLevelId", boardLevelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
@@ -67,7 +72,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
-					" where NPA.boardLevel.boardLevelId = :levelId ");
+					" where ");
+		if(levelId != null && levelId.longValue()>0){
+			if(levelId.longValue() != 5L)
+				sb.append(" NPA.boardLevel.boardLevelId = :levelId ");
+			else
+				sb.append(" NPA.boardLevel.boardLevelId in (5,6) ");
+		}
+		
 			if(searchLevelId != null && searchLevelId.longValue()>0L){
 				if((searchLevelId.longValue() == 1L))
 					sb.append(" and NPA.address.country.countryId  = 1 ");
@@ -99,7 +111,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" and NPA.isDeleted = 'N'");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("levelId", levelId);
+		if(levelId.longValue() != 5L)
+			query.setParameter("levelId", levelId);
 		if((searchLevelId.longValue() != 1L) && levelValue != null && levelValue.longValue() > 0l)
 				query.setParameter("levelValue", levelValue);
 		
@@ -189,7 +202,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
 					" where model.nominationPostCandidateId = model1.nominationPostCandidateId" +
-					" and model1.boardLevelId = :levelId" +
+					//" and model1.boardLevelId = :levelId" +
 					" and model1.departmentId = :departmentId" +
 					" and model1.boardId = :boardId" +
 					" and model1.positionId = :positionId" +
@@ -199,12 +212,21 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" and model.nominatedPostMember.nominatedPostPosition.positionId = :positionId" +*/
 					" and model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N'" +
 					" and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
-					" and model.nominationPostCandidate.isDeleted = 'N'");
+					" and model.nominationPostCandidate.isDeleted = 'N' ");
+		
+		if(levelId != null && levelId.longValue()>0){
+			if(levelId.longValue() != 5L)
+				sb.append("  and model.nominatedPostMember.boardLevelId = :levelId ");
+			else
+				sb.append("  and model.nominatedPostMember.boardLevelId in (5,6) ");
+		}
+		
 		if(levelValue != null && levelValue.longValue() > 0l)
 			sb.append(" and model1.locationValue = :levelValue");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("levelId", levelId);
+		if(levelId.longValue() != 5L)
+			query.setParameter("levelId", levelId);
 		if(levelValue != null && levelValue.longValue() > 0l)
 			query.setParameter("levelValue", levelValue);
 		query.setParameter("departmentId", departmentId);
@@ -221,9 +243,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
-		if(levelId != null && levelId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and ");
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId.longValue() != 5L)
+				sb.append("  model.nominatedPostMember.boardLevelId = :levelId and ");
+			else
+				sb.append("  model.nominatedPostMember.boardLevelId  in (5,6) and ");
+		}
+		
 		if(deptId != null && deptId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
@@ -240,7 +267,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(positionId != null && positionId.longValue() > 0l)
 			query.setParameter("positionId", positionId);
 		if(levelId != null && levelId.longValue() > 0l)
-			query.setParameter("levelId", levelId);
+			if(levelId.longValue() != 5L)
+				query.setParameter("levelId", levelId);
 		if(deptId != null && deptId.longValue() > 0l)
 			query.setParameter("deptId", deptId);
 		if(boardId != null && boardId.longValue() > 0l)
@@ -262,8 +290,15 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
-		if(levelId != null && levelId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId.longValue() != 5L)
+				sb.append("  model.nominatedPostMember.boardLevelId = :levelId and ");
+			else
+				sb.append("  model.nominatedPostMember.boardLevelId   in (5,6)  and");
+		}
+		
+		
 		if(deptId != null && deptId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
@@ -280,6 +315,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(positionId != null && positionId.longValue() > 0l)
 			query.setParameter("positionId", positionId);
 		if(levelId != null && levelId.longValue() > 0l)
+			if(levelId.longValue() != 5L)
 			query.setParameter("levelId", levelId);
 		if(deptId != null && deptId.longValue() > 0l)
 			query.setParameter("deptId", deptId);
@@ -304,6 +340,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
 		if(levelId != null && levelId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId.longValue() != 5L)
+				sb.append("  model.nominatedPostMember.boardLevelId = :levelId and ");
+			else
+				sb.append("   model.nominatedPostMember.boardLevelId in (5,6) and ");
+		}
+		
 		if(deptId != null && deptId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
@@ -320,6 +364,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(positionId != null && positionId.longValue() > 0l)
 			query.setParameter("positionId", positionId);
 		if(levelId != null && levelId.longValue() > 0l)
+			if(levelId.longValue() != 5L)
 			query.setParameter("levelId", levelId);
 		if(deptId != null && deptId.longValue() > 0l)
 			query.setParameter("deptId", deptId);
@@ -352,7 +397,15 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(positionId != null && positionId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
 		if(levelId != null && levelId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and ");
+		
+		if(levelId != null && levelId.longValue() > 0l){
+			if(levelId.longValue() != 5L)
+				sb.append("  model.nominatedPostMember.boardLevelId = :levelId and   ");
+			else
+				sb.append("   model.nominatedPostMember.boardLevelId in (5,6) and ");
+		}
+		
 		if(deptId != null && deptId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
@@ -484,7 +537,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		   	          	   " and model.nominatedPostStatus.status in ('Confirmed','GO Issued') ");
 		   
 				      if(LocationLevelId != null && LocationLevelId > 0){
-				   	    queryStr.append(" and model.nominatedPostMember.boardLevelId=:LocationLevelId ");
+				   	    queryStr.append("");
+							if(LocationLevelId.longValue() != 5L)
+								queryStr.append("  and model.nominatedPostMember.boardLevelId=:LocationLevelId   ");
+							else
+								queryStr.append("   and model.nominatedPostMember.boardLevelId in (5,6)  ");
 				      }
                       if(positionId != null && positionId.longValue() > 0){
                     	queryStr.append("model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId");  
@@ -497,6 +554,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		              Query query = getSession().createQuery(queryStr.toString());
 		    
 		             if(LocationLevelId != null && LocationLevelId.longValue() > 0){
+		            	 if(LocationLevelId.longValue() != 5L)
 				    	query.setParameter("LocationLevelId", LocationLevelId);
 				     }
 		             if(positionId != null && positionId.longValue() > 0){
@@ -511,7 +569,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 		"  from NominatedPost model where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted='N'");
 		 
 		   if(locationLevelId != null && locationLevelId.longValue() > 0){
-			   if(locationLevelId != 5){
+			   if(locationLevelId != 5L){
 				   queryStr.append(" and model.nominatedPostMember.boardLevelId=:locationLevelId ");   
 			   }else{
 				   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
@@ -542,7 +600,12 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	   	          	   " and model.nominatedPostStatus.status in ('Confirmed','GO Issued') ");
 	   
 			      if(LocationLevelId != null && LocationLevelId > 0){
-			   	    queryStr.append(" and model.nominatedPostMember.boardLevelId=:LocationLevelId ");
+			   	   // queryStr.append(" and model.nominatedPostMember.boardLevelId=:LocationLevelId ");
+			    	  if(LocationLevelId.longValue() != 5L){
+						   queryStr.append("  and model.nominatedPostMember.boardLevelId=:LocationLevelId  ");   
+					   }else{
+						   queryStr.append("  and model.nominatedPostMember.boardLevelId in (5,6) ");
+					   }
 			      }
                  if(positionId != null && positionId.longValue() > 0){
                	queryStr.append("model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId");  
@@ -555,7 +618,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	              Query query = getSession().createQuery(queryStr.toString());
 	    
 	             if(LocationLevelId != null && LocationLevelId.longValue() > 0){
-			    	query.setParameter("LocationLevelId", LocationLevelId);
+	            	 if(LocationLevelId != null && LocationLevelId != 5L)
+	            		 query.setParameter("LocationLevelId", LocationLevelId);
 			    }
 	            if(positionId != null && positionId.longValue() > 0){
 	            	

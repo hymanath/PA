@@ -33,16 +33,20 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' ");		
 		if(new CommonMethodsUtilService().isListOrSetValid(statusList))
 			queryStr.append(" and model.nominatedPostStatusId in (:statusList) ");			
-		if(boardLevelId != null && boardLevelId.longValue()>0)
-			queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");		
+		if(boardLevelId != null && boardLevelId.longValue()>0L)
+			if(boardLevelId.longValue() !=5L)
+				queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");
+			else
+				queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+		
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		
 		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
-				queryStr.append(" and  model2.district.districtId between 11 and 23 ");
+				queryStr.append("  and (model2.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
 			else if(stateId.longValue() ==36L)
-				queryStr.append("  and model2.district.districtId between 1 and 10 ");
+				queryStr.append(" and  ( model2.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
 		}
 		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model2.state.stateId=:stateId ");
@@ -50,7 +54,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		queryStr.append(" group by model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(boardLevelId != null && boardLevelId.longValue()>0L)
+		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() !=5L)
 			query.setParameter("boardLevelId", boardLevelId);
 			
 		if(startDate != null && endDate != null){
@@ -64,7 +68,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getTotalAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,List<Long> statusList,Long stateId){
+	public List<Object[]> getTotalAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,Long stateId,String statustype){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select '','', model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(model.nominatedPostMember.nominatedPostPosition.positionId), " +
@@ -75,17 +79,26 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		else
 			queryStr.append(" where ");
 		queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
-				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and  model.nominatedPostStatusId = 1 ");		
-			
-		if(boardLevelId != null && boardLevelId.longValue()>0L)
-			queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");		
+			//	" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and  model.nominatedPostStatusId = 1 "); // for open status	
+				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and ");	// for total 
+		if(statustype != null && !statustype.trim().isEmpty() && statustype.trim().equalsIgnoreCase("Open"))
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and  model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and  model.nominatedPostStatusId = 1 "); // for open status	
+		else if(statustype != null && !statustype.trim().isEmpty() && statustype.trim().equalsIgnoreCase("Total"))
+				queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and  model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N'  "); // for open status	
+						
+		if(boardLevelId != null && boardLevelId.longValue()>0L){
+			if(boardLevelId.longValue() != 5L)
+				queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");
+			else
+				queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+		}
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");		
 		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
-				queryStr.append("  and model2.district.districtId between 11 and 23 ");
+				queryStr.append("  and (model2.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
 			else if(stateId.longValue() ==36L)
-				queryStr.append(" and  model2.district.districtId between 1 and 10 ");
+				queryStr.append(" and  ( model2.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
 		}
 		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model2.state.stateId=:stateId ");
@@ -93,7 +106,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		queryStr.append(" group by model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(boardLevelId != null && boardLevelId.longValue()>0L)
+		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() != 5L)
 			query.setParameter("boardLevelId", boardLevelId);
 			
 		if(startDate != null && endDate != null){
@@ -128,7 +141,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				"  model.isDeleted ='N'" );
 		
 		if(boardLevelId !=null && boardLevelId>0){
-			str.append(" and model.boardLevelId =:boardLevelId ");
+			if(boardLevelId.longValue() !=5L)
+				str.append(" and model.boardLevelId =:boardLevelId ");
+			else
+				str.append(" and model.boardLevelId in (5,6) ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and model.locationValue in (:levelValue) ");
@@ -152,7 +168,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		if(boardLevelId !=null && boardLevelId>0){
+		if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
 			query.setParameter("boardLevelId", boardLevelId);
 		}
 		if(levelValue !=null && levelValue.size()>0){
@@ -191,7 +207,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" and nominatedPostPosition.isDeleted = 'N' ");
 		
 		if(boardLevelId !=null && boardLevelId>0){
-			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+			if(boardLevelId.longValue() !=5L)
+				str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+			else 
+				str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
@@ -265,7 +284,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				"  and nominatedPostPosition.isDeleted = 'N' "  );
 		
 		if(boardLevelId !=null && boardLevelId>0l){
-			str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+			if(boardLevelId.longValue() !=5L)
+				str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
+			else
+				str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
@@ -299,7 +321,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		if(boardLevelId !=null && boardLevelId>0){
+		if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
 			query.setParameter("boardLevelId", boardLevelId);
 		}
 		if(levelValue !=null && levelValue.size()>0){
@@ -323,11 +345,16 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	
 	public List<NominatedPost> getNominatedPostDetailsBySearchCriteria(Long departmentId,Long boardId,List<Long> positionIds,Long boardLevelId,List<Long> searchLevelValue){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model from NominatedPost model where model.nominatedPostMember.boardLevelId=:boardLevelId and " +
+		queryStr.append(" select distinct model from NominatedPost model where  " +
 				" model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId and  " +
 				"  model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and  " +
 				"  model.nominatedPostMember.nominatedPostPosition.positionId in  (:positionIds) ");
-		
+		if(boardLevelId != null && boardLevelId.longValue() >0L){
+			if(boardLevelId.longValue() !=5L)
+				queryStr.append(" and model.nominatedPostMember.boardLevelId=:boardLevelId ");
+			else
+				queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+		}
 		/*if(searchLevelId != null && searchLevelId.longValue()>0L){
 			if(searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L)
 				queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
@@ -352,7 +379,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		query.setParameter("departmentId", departmentId);
 		query.setParameter("boardId", boardId);
 		query.setParameterList("positionIds", positionIds);
-		query.setParameter("boardLevelId", boardLevelId);
+		if(boardLevelId.longValue() !=5L)
+			query.setParameter("boardLevelId", boardLevelId);
 		if(searchLevelValue !=null && searchLevelValue.size()>0){
 			query.setParameterList("searchLevelValue", searchLevelValue);
 		}
@@ -392,14 +420,18 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.postType.postTypeId=:postTypeId ");
 		    }
 		    if(boardLevelId != null && boardLevelId.longValue() > 0){
+		    	if(boardLevelId.longValue() !=5L)
 		    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
+		    	else
+		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+		    	
 		    }
 		    Query query = getSession().createQuery(queryStr.toString());
 		    
-		    if(postType != null && postType.longValue() > 0){
+		    if(postType != null && postType.longValue() > 0L){
 		    	query.setParameter("postTypeId", postType);
 		    }
-		    if(boardLevelId != null && boardLevelId.longValue() > 0){
+		    if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
 		    	query.setParameter("boardLevelId", boardLevelId);
 		    }
 		    return query.list();
@@ -416,13 +448,16 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId");
 		    }
 		    if(boardLevelId != null && boardLevelId.longValue() > 0){
-		    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
+		    	if(boardLevelId.longValue() !=5L)
+		    		queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
+		    	else
+		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,7)");
 		    }
 		    Query query = getSession().createQuery(queryStr.toString());
-		    if(departmentId != null && departmentId.longValue() > 0){
+		    if(departmentId != null && departmentId.longValue() > 0L){
 		    	query.setParameter("departmentId", departmentId);
 		    }
-		    if(boardLevelId != null && boardLevelId.longValue() > 0){
+		    if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
 		    	query.setParameter("boardLevelId", boardLevelId);
 		    }
 		    return query.list();
@@ -435,30 +470,33 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    		        " model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPost " +
 		    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
 		    
-		       if(departmentId != null && departmentId.longValue()> 0){
+		       if(departmentId != null && departmentId.longValue()> 0L){
 			      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deapartmentId ");	
 			    }
 	           if(boardId != null && boardId.longValue()> 0){
 			      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId =:boardId ");	
 			    }
-	           if(boardLevelId != null && boardLevelId.longValue() > 0){
-	  	    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+	           if(boardLevelId != null && boardLevelId.longValue() > 0L){
+	        	   if(boardLevelId.longValue() !=5L)
+	        		   queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+	        	   else
+	        		   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
 	  	      }
 			    Query query = getSession().createQuery(queryStr.toString());
 			    
-				 if(departmentId != null && departmentId.longValue()> 0){
+				 if(departmentId != null && departmentId.longValue()> 0L){
 						query.setParameter("deapartmentId", departmentId);
 				 }
-				 if(boardId != null && boardId.longValue()> 0){
+				 if(boardId != null && boardId.longValue()> 0L){
 						query.setParameter("boardId", boardId); 
 				 }
-				 if(boardLevelId != null && boardLevelId.longValue() > 0){
+				 if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
 				    	query.setParameter("boardLevelId", boardLevelId);
 				  }
 		    return query.list();
 	 }
 	 
-	 public List<Object[]> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> levelValue,String statusType){
+	 public List<Object[]> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> levelValue,String statusType,Long searchlevelId,Long searchLevelValue){
 		 
 		 StringBuilder str = new StringBuilder();
 		 
@@ -470,7 +508,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 					" and model.nominatedPostMember.isDeleted = 'N' " +
 					" and model.nominatedPostMember.nominatedPostPosition.isDeleted ='N'"  );
 			if(boardLevelId !=null && boardLevelId>0){
-				str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+				if(boardLevelId.longValue() !=5L)
+					str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+				else
+					str.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
 			}
 			if(levelValue !=null && levelValue.size()>0){
 				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
@@ -479,13 +520,29 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			if(statusType !=null && statusType.trim().equalsIgnoreCase("open")){
 				str.append(" and model.nominatedPostStatus.status = :open ");
 			}
-			
+			if(searchlevelId != null && searchlevelId.longValue()>0L){
+				if(searchlevelId.longValue() == 1L)
+					str.append(" and model.locationValue  = :searchLevelValue ");
+				else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.state.stateId =:searchLevelValue ");
+				
+				else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.district.districtId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.constituency.constituencyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.tehsil.tehsilId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.panchayatId =:searchLevelValue ");
+			}
 			str.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 					" model.nominatedPostMember.nominatedPostPosition.board.boardId  ");
 			str.append(" order by model.nominatedPostMember.nominatedPostPosition.departments.deptName ");
 			Query query = getSession().createQuery(str.toString());
 			
-			if(boardLevelId !=null && boardLevelId>0){
+			if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
 				query.setParameter("boardLevelId", boardLevelId);
 			}
 			if(levelValue !=null && levelValue.size()>0){
@@ -561,4 +618,61 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	  return (Long) query.uniqueResult();
   }
 	 
+  public List<Object[]> getTotalCorpAndBoardsAndPositions(Long boardLevelId, Date startDate,Date endDate,Long stateId){
+	  
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct model.departmentId),count(distinct model.boardId) , count( distinct model.positionId) ");
+		queryStr.append(" from NominatedPostApplication model   " );
+		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
+			queryStr.append(",UserAddress model2 where model.addressId = model2.userAddressId and " );
+		else
+			queryStr.append(" where ");
+		queryStr.append(" model.isDeleted='N'   ");	// for total 
+						
+		if(boardLevelId != null && boardLevelId.longValue()>0L){
+			if(boardLevelId.longValue() != 5L)
+				queryStr.append(" and model.boardLevelId = :boardLevelId ");
+			else
+				queryStr.append(" and model.boardLevelId in (5,6) ");
+		}
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");		
+		if(boardLevelId != null && boardLevelId.longValue()>2L && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append("  and (model2.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
+			else if(stateId.longValue() ==36L)
+				queryStr.append(" and  ( model2.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
+		}
+		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model2.state.stateId=:stateId ");
+		
+		queryStr.append(" order by model.boardLevelId  ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() != 5L)
+			query.setParameter("boardLevelId", boardLevelId);
+			
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
+		
+		return query.list();
+	
+		
+	  	/*StringBuilder queryStr = new StringBuilder();      
+	    queryStr.append(" select count(distinct model.departmentId) ,count(distinct model.boardId),count(distinct model.positionId) from NominatedPostApplication model where ");
+	    if(boardLevelId != null && boardLevelId.longValue() > 0)
+	    	if(boardLevelId.longValue()>5L)
+	    		queryStr.append(" model.boardLevelId =:boardLevelId and ");
+	    	else 
+	    		queryStr.append(" model.boardLevelId  in (5,6) and ");
+	    queryStr.append(" model.isDeleted='N' and  model.isDeleted='N' ");
+	    Query query = getSession().createQuery(queryStr.toString());	 
+	    if(boardLevelId != null && boardLevelId.longValue() > 0)
+			query.setParameter("boardLevelId", boardLevelId);   
+		   */
+  }
 }
