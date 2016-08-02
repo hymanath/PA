@@ -372,7 +372,7 @@
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
-										<option value="0">All</option>
+										<option value="0">Select State</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
@@ -453,7 +453,7 @@
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select  class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
-										<option value="0">All</option>
+										<option value="0">Select State</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
@@ -521,7 +521,7 @@
                         	<input type="radio" class="referenceModal" name="radio"/>Yes
                         </label>
                         <label class="radio-inline">
-                        	<input type="radio" checked="true" name="radio"/>No
+                        	<input type="radio" class="referenceModalNo" checked="true" name="radio"/>No
                         </label>
                  </div>
 					<!--<div class="m_top10 hideDivCls" id="involvedCandidatesDiv1">
@@ -541,7 +541,7 @@
 					</div>-->
 					<div class="row m_top10" id="addedRefferalsDiv" style="display:none;">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
-                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
+                        	<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
 						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
 							<div class="col-md-12">

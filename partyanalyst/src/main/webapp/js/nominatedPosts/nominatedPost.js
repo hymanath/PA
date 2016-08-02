@@ -71,7 +71,8 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatdConstId"+num+"").trigger("chosen:updated");
 			$("#nominatedMandlId"+num+"").trigger("chosen:updated");
 			$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
-			
+			if(state == 0)
+				return;
 	}
 	document.getElementById('membershipId').checked = true;
 	
@@ -684,7 +685,7 @@ function getNominatedPostApplication(startIndex)
 					str +='<li>';
 				
 				str +='<div class="img-center">';
-				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 				
 				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
 				str +='</div>';
@@ -1864,6 +1865,15 @@ $(document).on("click",".deleteFile",function() {
 	   });
 
 });
+
+$(document).on("click",".referenceModalNo",function(){
+	involvedCadreIds = [];
+	$(".referCadreIds").val("");
+    $(".membersBlock").html("");
+	$("#involvedMembers").html("");
+    $("#addedRefferalsDiv").hide();
+});
+
 $(document).on("click",".referenceModal",function(){
     $(".referenceModal").prop( "checked" ,false);
 	$( this ).prop( 'checked', true );

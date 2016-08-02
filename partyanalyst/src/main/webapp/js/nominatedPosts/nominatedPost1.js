@@ -904,7 +904,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 				}
 		  }); 
 	}
-	$(document).on("click",".closeIcon",function(){
+	/*$(document).on("click",".closeIcon",function(){
 	//$(this).parent().remove();
 	$(this).closest(".col-md-3").remove();
 	var id=$(this).attr("id");
@@ -912,7 +912,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 	$(".close"+id).prop('checked', false); 
 	involvedCadreIds.pop(id);	
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
-});
+});*/
 function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
@@ -945,7 +945,7 @@ function setDefaultImage(img){
 			str+='<div class="col-md-12"><div class="form-inline">';
 			//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
 			str+='<div class="onoffswitch" style="display:inline-block">';
-			str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox checkedReffrl" id="myonoffswitch'+cloneCount+'" checked value="'+attrId+'">';
+			//str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox checkedReffrl" id="myonoffswitch'+cloneCount+'" checked value="'+attrId+'">';
 			str+='<label class="onoffswitch-label" for="myonoffswitch'+cloneCount+'">';
             str+='<span class="onoffswitch-inner"></span>';
             str+='<span class="onoffswitch-switch"></span>';
