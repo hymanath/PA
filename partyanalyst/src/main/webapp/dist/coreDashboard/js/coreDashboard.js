@@ -156,8 +156,8 @@
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
 	   
-	   var firstMonthString = '04/2015';
-	   var secondMonthString = '04/2015';
+	   var firstMonthString = '03/2015';
+	   var secondMonthString = '05/2015';
 	   var jsObj ={ 
 				userAccessLevelId : globalUserAccessLevelId,
 				userAccessLevelValuesArray : globalUserAccessLevelValues,
@@ -840,4 +840,29 @@ function buildBasicgraphs(){
 }
 
 
+	function getUserLevelWiseDetails(){
+		
+		var jsObj ={userId:globalUserId}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getUserLevelWiseDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+	
+	$(document).on("click",".userLevelCls",function(){
+		
+		var userAccessLevelId 			= $(this).attr("attr_userAccessLevelId");
+		var userAccessLevelValuesArray 	= $(this).attr("attr_userAccessLevelValuesArray");
+		var state 						= $(this).attr("attr_state");
+		var startDateString			    = $(this).attr("attr_startDateString");
+		var endDateString			    = $(this).attr("attr_endDateString");
+			
+		
+	});
+	
 	
