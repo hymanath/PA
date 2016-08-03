@@ -2553,9 +2553,121 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				//System.out.println(finalList);
 				
 			}*/
+			Map<Long,Long> deptPosMap = new LinkedHashMap<Long, Long>();
+			Map<Long,Map<Long,Long>> deptBrdPosMap = new LinkedHashMap<Long, Map<Long,Long>>();
+			
+			List<Object[]> positionsCountsList = nominatedPostDAO.getOpenedPositionsCountByDepartment(boardLevelId, searchlevelId, searchLevelValue);
+			if(commonMethodsUtilService.isListOrSetValid(positionsCountsList)){
+				for (Object[] obj : positionsCountsList) {
+					Long depId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					deptPosMap.put(depId, count);
+				}
+			}
+			
+			List<Object[]> boardPosCountsList = nominatedPostDAO.getOpenedPositionsCountForBoardsByDepartment(boardLevelId, searchlevelId, searchLevelValue);
+			if(commonMethodsUtilService.isListOrSetValid(boardPosCountsList)){
+				for (Object[] obj : boardPosCountsList) {
+					Long deptId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long brdId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Map<Long,Long> boardMap = deptBrdPosMap.get(deptId);
+					if(boardMap == null){
+						boardMap = new LinkedHashMap<Long, Long>();
+						boardMap.put(brdId, count);
+						deptBrdPosMap.put(deptId, boardMap);
+					}
+					else{
+						boardMap.put(brdId, count);
+						deptBrdPosMap.put(deptId, boardMap);
+					}
+				}
+			}
+			
+			Map<Long,Map<Long,Long>> applTotalMap = new LinkedHashMap<Long, Map<Long,Long>>();
+			Map<Long,Map<Long,Long>> applShrtMap = new LinkedHashMap<Long, Map<Long,Long>>();
+			List<Object[]> totalList = nominatedPostApplicationDAO.getTotalApplicationCountsByBoard(boardLevelId, searchlevelId, searchLevelValue, 0l);
+			if(commonMethodsUtilService.isListOrSetValid(totalList)){
+				for (Object[] obj : totalList) {
+					Long depId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long brdId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Map<Long,Long> bdMap = applTotalMap.get(depId);
+					if(bdMap == null){
+						bdMap = new LinkedHashMap<Long, Long>();
+						bdMap.put(brdId, count);
+						applTotalMap.put(depId, bdMap);
+					}
+					else{
+						bdMap.put(brdId, count);
+						applTotalMap.put(depId, bdMap);
+					}
+				}
+			}
+			List<Object[]> shortList = nominatedPostApplicationDAO.getTotalApplicationCountsByBoard(boardLevelId, searchlevelId, searchLevelValue, 3l);
+			if(commonMethodsUtilService.isListOrSetValid(shortList)){
+				for (Object[] obj : shortList) {
+					Long depId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long brdId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Map<Long,Long> bdMap = applShrtMap.get(depId);
+					if(bdMap == null){
+						bdMap = new LinkedHashMap<Long, Long>();
+						bdMap.put(brdId, count);
+						applShrtMap.put(depId, bdMap);
+					}
+					else{
+						bdMap.put(brdId, count);
+						applShrtMap.put(depId, bdMap);
+					}
+				}
+			}
+			
 			
 			if(deptMap !=null && deptMap.size()>0){
 				finalList = new ArrayList<IdNameVO>(deptMap.values());
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (IdNameVO idNameVO : finalList) {
+					Long count = deptPosMap.get(idNameVO.getId());
+					idNameVO.setAvailableCount(count);
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (IdNameVO idNameVO : finalList) {
+					Long depId = idNameVO.getId();
+					Map<Long,Long> deMap = deptBrdPosMap.get(depId);
+					if(commonMethodsUtilService.isListOrSetValid(idNameVO.getIdnameList())){
+						List<IdNameVO> brdList = idNameVO.getIdnameList();
+						for (IdNameVO idNameVO2 : brdList) {
+							Long brdId = idNameVO2.getId();
+							Long count = deMap.get(brdId);
+							idNameVO2.setAvailableCount(idNameVO2.getAvailableCount()+count);
+						}
+					}
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (IdNameVO idNameVO : finalList) {
+					Long depId = idNameVO.getId();
+					Map<Long,Long> ttlMap = applTotalMap.get(depId);
+					Map<Long,Long> shrMap = applShrtMap.get(depId);
+					if(commonMethodsUtilService.isListOrSetValid(idNameVO.getIdnameList())){
+						List<IdNameVO> brdList = idNameVO.getIdnameList();
+						for (IdNameVO idNameVO2 : brdList) {
+							Long brdId = idNameVO2.getId();
+							Long ttlAppl = ttlMap.get(brdId);
+							Long shtAppl = shrMap.get(brdId);
+							String perc = "0.00";
+							if(ttlAppl != null && ttlAppl.longValue() > 0l && shtAppl != null && shtAppl.longValue() > 0l)
+								perc = (new BigDecimal((shtAppl * 100.0)/ttlAppl.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+							idNameVO2.setPercentage(perc);
+						}
+					}
+				}
 			}
 				
 		}catch (Exception e) {
