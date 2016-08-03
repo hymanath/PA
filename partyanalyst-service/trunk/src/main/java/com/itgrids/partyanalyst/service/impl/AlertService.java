@@ -664,7 +664,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			// alertTrackingVO.setAlertUserTypeId();
 			 alertTrackingVO.setAlertStatusId(inputVo.getStatusId());
 			 alertTrackingVO.setAlertId(alert.getAlertId());
-			 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+			 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ADDED_COMMENT);
 			 saveAlertTrackingDetails(alertTrackingVO)	;	
 		
 						}
