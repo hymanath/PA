@@ -158,12 +158,11 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 		globalNominatedCandId = "";
 		if(result.indexOf("SUCCESS") > -1){
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
-				saveFlag =true;
+				//saveFlag =true;
 			$("#notCadreSavId").html("<span style='color: green;font-size:22px;'>Not Cadre Saved Successfully</span>");
 			 setTimeout(function(){
 			$("#notCadreSavId").html("");
-			//alert(saveFlag);
-		
+			
 			//$("#addMemberModalBlock").modal('hide');
 			}, 2000); 
 			getNotCadreDetails(globalNominatedCandId);
@@ -210,9 +209,8 @@ function getNotCadreDetails(globalNominatedCandId){
 		   if(result != null)
 					{
 					buildCadreDetails(result);
-					//$("#addMemberModalBlock").modal('hide');
-					//$("#searchDivId").show();
-					clearAssignValues();
+					$("#addMemberModalBlock").modal('hide');
+					$("#searchDivId").show();
 					}
 	   });
 }
