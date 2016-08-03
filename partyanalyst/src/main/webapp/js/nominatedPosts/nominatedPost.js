@@ -422,7 +422,7 @@ function getPanchayatWardByMandal(num,id){
 		});	
 			
 	}
-	getConstituenciesForState(0);
+	getConstituenciesForState(0,'constituencyId');
      function getConstituenciesForState(state,fieldId){	
   
    $("#searchDataImgForConst").show();
