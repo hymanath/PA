@@ -10813,14 +10813,14 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	public List<ReportVO> getNominatedPostReportFiles(Long tdpCadreId){
 		 List<ReportVO> reprtVoLst=new ArrayList<ReportVO>();
 		try{
-			SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy");
+			//SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy");
 			
 			List<Object[]> reprtFiles = applicationDocumentDAO.getNominatedPostReport(tdpCadreId);
 			if(reprtFiles!=null &&  reprtFiles.size() >0 ){
 				for(Object[] reptObj : reprtFiles){
 					ReportVO reprtVo=new ReportVO();
 					reprtVo.setReportPath(reptObj[0]!=null ? reptObj[0].toString(): "");
-					reprtVo.setInsertedTime(reptObj[1]!=null ?sdf.format(reptObj[1].toString()):"");
+					reprtVo.setInsertedTime(reptObj[1]!=null ?reptObj[1].toString():"");
 					reprtVoLst.add(reprtVo);
 				}
 			
