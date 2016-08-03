@@ -38,6 +38,8 @@ function saveAlertAssignedUser ()
 			   }).done(function(result){
 				   if(result.resultCode == 0)
 				    $("#assignEroorDiv").html("assigned Successfully").css("color","green");
+				 setTimeout(function(){ $("#assignEroorDiv").html("");
+					 }, 1000);
 					$("#involvedCandidatesDiv").html('');
 					$("#apptmemberDetailsDiv").html('');
 					clearCommonFields();
@@ -229,6 +231,8 @@ function updateAlertStatus()
 					if(result="success")
 					{
 						$("#errorId").html(" Alert Updated Successfully ").css("color","green");
+						 setTimeout(function(){ $("#errorId").html("");
+					 }, 1000);
 						getAlertStatusCommentsTrackingDetails();
 					}
 					
