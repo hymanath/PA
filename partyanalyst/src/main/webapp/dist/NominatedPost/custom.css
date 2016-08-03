@@ -698,7 +698,7 @@ label
 	border-right:0px;
 	border-bottom:1px solid #ddd
 }
-.positionsUl
+.positionsUl 
 {
 	padding:0px;
 }
@@ -1127,14 +1127,35 @@ div.dataTables_wrapper div.clear
 	color:#666;
 	cursor:pointer;
 }
-.positionsUl
+.positionsUl , .positionsUlPie
 {
 	padding:0px;
 }
-.positionsUl li
+.positionsUl li 
 {
 	list-style:none;
 	padding:4px;
+}
+.positionsUlPie li
+{
+	list-style:none;
+	padding:4px;
+}
+.positionsUlPie li.received .statusBox
+{
+	background:#E58D45
+}
+.positionsUlPie li.rejected .statusBox
+{
+	background:#DD665D
+}
+.positionsUlPie li.inProgress .statusBox
+{
+	background:#65A7E1
+}
+.positionsUlPie li.completed .statusBox
+{
+	background:#FDD501
 }
 .positionsUl li.total
 {
@@ -1193,7 +1214,7 @@ div.dataTables_wrapper div.clear
 {
 	background:rgba(173, 149, 145,1)
 }
-.positionsUl li span.statusBox
+.positionsUl li span.statusBox , .positionsUlPie li span.statusBox
 {
 	height:15px;
 	width:15px;
