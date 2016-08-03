@@ -1006,7 +1006,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			{
 				for(AlertAssigned obj : list)
 				{
-					obj.setIsDeleted("N");
+					obj.setIsDeleted("Y");
 					alertAssignedDAO.save(obj);
 				}
 				rs="success";

@@ -119,7 +119,7 @@ public class AlertCandidateDAO extends
 		str.append(" left join model.tdpCadre.userAddress.state state ");
 		str.append(" left join model.tdpCadre.userAddress.ward ward ");
 	
-		str.append(" where model.alert.isDeleted ='N' and model.alert.alertId in(:alertIds) and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
+		str.append(" where model.alert.isDeleted ='N' and model.isDeleted ='N' and model.alert.alertId in(:alertIds) and model.tdpCadre.isDeleted='N' and model.tdpCadre.enrollmentYear=:enrollmentYear");
 		str.append(" group by model.alertId,model.tdpCadre.tdpCadreId");
 		Query query = getSession().createQuery(str.toString());
 		if(alertIds != null && alertIds.size() > 0)
