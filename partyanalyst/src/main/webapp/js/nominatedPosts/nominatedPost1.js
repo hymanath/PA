@@ -210,8 +210,9 @@ function getNotCadreDetails(globalNominatedCandId){
 		   if(result != null)
 					{
 					buildCadreDetails(result);
-					$("#addMemberModalBlock").modal('hide');
-					$("#searchDivId").show();
+					//$("#addMemberModalBlock").modal('hide');
+					//$("#searchDivId").show();
+					clearAssignValues();
 					}
 	   });
 }
