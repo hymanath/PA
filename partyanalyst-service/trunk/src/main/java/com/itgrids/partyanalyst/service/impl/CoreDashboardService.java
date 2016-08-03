@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -34,6 +36,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	
 	//setters
 	public void setDashboardUserAccessLevelDAO(
@@ -59,8 +63,17 @@ public class CoreDashboardService implements ICoreDashboardService{
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
+	public void setActivityMemberAccessTypeDAO(
+			IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO) {
+		this.activityMemberAccessTypeDAO = activityMemberAccessTypeDAO;
+	}
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
 	
 	//business methods.
+	
 	
 	public UserDataVO getUserBasicDetails(Long userId){
 		
@@ -68,8 +81,11 @@ public class CoreDashboardService implements ICoreDashboardService{
 		UserDataVO finalVO = new UserDataVO();
 		try{
 			
-			List<Object[]> userTypeList = dashboardUserAccessTypeDAO.getUserTypeByUserId(userId);
-			List<Object[]> userLevelsList = dashboardUserAccessLevelDAO.getUserAccessLevelAndValues(userId);
+			/*List<Object[]> userTypeList = dashboardUserAccessTypeDAO.getUserTypeByUserId(userId);
+			List<Object[]> userLevelsList = dashboardUserAccessLevelDAO.getUserAccessLevelAndValues(userId);*/
+			
+			List<Object[]> userTypeList = activityMemberAccessTypeDAO.getActivityMemberUserAccessTypeByUserId(userId);
+			List<Object[]> userLevelsList = activityMemberAccessLevelDAO.getActivityMemberUserAccessLevelAndValues(userId);
 			
 			finalVO.setUserId(userId);
 			
@@ -148,17 +164,18 @@ public class CoreDashboardService implements ICoreDashboardService{
 		     if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
 			    userAccessLevelValues = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(userAccessLevelValues);
 			 }
-		     
-			 Long completedCount = tdpCommitteeDAO.getCommitteesCumulativeBasicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,committeeId,startDate,endDate,"completed");
-			 Long StartedCount = tdpCommitteeDAO.getCommitteesCumulativeBasicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,committeeId,startDate,endDate,"started");
-			 Long yetToStartCount = tdpCommitteeDAO.getCommitteesCumulativeBasicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,committeeId,startDate,endDate,"notStarted");
-			 
-			 finalVO.setName("Main");
-			 
-			 finalVO.setStartedCount(StartedCount!= null ? StartedCount : 0l);
-			 finalVO.setCompletedCount(completedCount != null ? completedCount : 0l);
-			 finalVO.setYetToStartCount(yetToStartCount!= null ? yetToStartCount : 0l);
-			
+		     if( userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		    	 
+		    	 Long completedCount = tdpCommitteeDAO.getCommitteesCumulativeBasicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,committeeId,startDate,endDate,"completed");
+				 Long StartedCount = tdpCommitteeDAO.getCommitteesCumulativeBasicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,committeeId,startDate,endDate,"started");
+				 Long yetToStartCount = tdpCommitteeDAO.getCommitteesCumulativeBasicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,committeeId,startDate,endDate,"notStarted");
+				 
+				 finalVO.setName("Main");
+				 
+				 finalVO.setStartedCount(StartedCount!= null ? StartedCount : 0l);
+				 finalVO.setCompletedCount(completedCount != null ? completedCount : 0l);
+				 finalVO.setYetToStartCount(yetToStartCount!= null ? yetToStartCount : 0l);
+		     }
 		}catch (Exception e) {
 			LOG.error("error occurred in getCommitteesCumulativeBasicReportChart() of CoreDashboardService class",e);
 		}
@@ -629,4 +646,16 @@ public class CoreDashboardService implements ICoreDashboardService{
 		return finalList;
 	}
 	
+	public UserDataVO getUserLevelWiseDetails(Long userId){
+		
+		LOG.info(" entered in to getUserLevelWiseDetails() ");
+		UserDataVO finalVO = new UserDataVO();
+		try{
+			
+		}catch(Exception e){
+			LOG.error("error occurred in getUserLevelWiseDetails() of CoreDashboardService class",e);
+		}
+		return finalVO;
+	}
+
 }
