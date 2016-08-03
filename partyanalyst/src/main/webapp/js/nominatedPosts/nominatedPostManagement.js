@@ -273,7 +273,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='</div>';
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px">';
 			  for(var i in result){
-				  str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'">'+result[i].name+'</a></li>';
+				  str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;">'+result[i].availableCount+'</span></a></li>';
 			  }
 			  str+='</ul>';
 			str+='</div>';
@@ -291,7 +291,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
 										str+='<h4 class="panel-title text-capital">'+result[i].idnameList[j].name+'';
-										  str+='<span class="pull-right"><small class="text-danger"></small></span>';
+										  str+='<span class="text-danger" style="font-weight:bold;">'+result[i].idnameList[j].availableCount+'</span><span class="pull-right text-danger"><small>'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
 										str+='</h4>';
 									str+='</a>';
 								str+='</div>';
@@ -539,7 +539,7 @@ $(document).on("click","#readyTofinalReviewId",function(){
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
-	var stateId = globalStateId;
+	var stateId = $("#stateId").val();
 	var levelId = globalLevelId;
 	var searchLevelId = 1;
 	var deptId = $(this).attr('attr_dept_id');
@@ -547,9 +547,9 @@ $(document).on("click","#readyTofinalReviewId",function(){
 	var positionId = $(this).attr('attr_position_id');
 
 	var searchLevelValue =stateId;
-	if(stateId ==0){
+	if(stateId == 0){
 		searchLevelValue =1;
-		searchLevelId=2;
+		searchLevelId=1;
 	}		
 	if(mandalTownDivId >0){
 		searchLevelValue = mandalTownDivId;
@@ -563,7 +563,10 @@ $(document).on("click","#readyTofinalReviewId",function(){
 		searchLevelValue = districtId;
 		searchLevelId=3;
 	}
-		
+	else if(stateId > 0){
+		searchLevelValue = stateId;
+		searchLevelId=2;
+	}	
 	
 	window.open("nominatedReadyToFinalReviewAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"");
 });
@@ -733,11 +736,46 @@ function getAllDeptsAndBoardsByLevelForAll(levelId,levelValues){
 
 	$("#departmentsBuildId").html("");
 	$("#departmentsBuildSearchId").show();
+	
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId = $("#stateId").val();
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	//var deptId = $(this).attr('attr_dept_id');
+	//var boardId = $(this).attr('attr_board_id');
+	//var positionId = $(this).attr('attr_position_id');
+
+	var searchLevelValue =stateId;
+	if(stateId == 0){
+		searchLevelValue =1;
+		searchLevelId=1;
+	}		
+	if(mandalTownDivId >0){
+		searchLevelValue = mandalTownDivId;
+		searchLevelId= 5;
+	}	
+	else if(constituencyId >0){
+		searchLevelValue = constituencyId;
+		searchLevelId=4;
+	}		
+	else if(districtId >0){
+		searchLevelValue = districtId;
+		searchLevelId=3;
+	}
+	else if(stateId > 0){
+		searchLevelValue = stateId;
+		searchLevelId=2;
+	}	
+	
 	var jsObj={
 		levelId:levelId,
 		levelValues:levelValues,
 		statusType:globalStatus,
-		task:"totalOpen"
+		task:"totalOpen",
+		searchLevelId:searchLevelId,
+		searchLevelValue:searchLevelValue
 	}
 	$.ajax({
           type:'POST',
