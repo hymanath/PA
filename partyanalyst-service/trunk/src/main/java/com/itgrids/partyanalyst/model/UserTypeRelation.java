@@ -74,7 +74,7 @@ public class UserTypeRelation {
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="user_type_id", insertable=false, updatable = false)
+	@JoinColumn(name="parent_user_type_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserType getParentUserType() {

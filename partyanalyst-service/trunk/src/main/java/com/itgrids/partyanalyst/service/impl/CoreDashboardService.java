@@ -14,14 +14,18 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
+import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
+import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -38,6 +42,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
 	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+	private IActivityMemberDAO activityMemberDAO;
+	private IUserTypeRelationDAO userTypeRelationDAO;
+	private IActivityMemberRelationDAO activityMemberRelationDAO;
 	
 	//setters
 	public void setDashboardUserAccessLevelDAO(
@@ -71,9 +78,18 @@ public class CoreDashboardService implements ICoreDashboardService{
 			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
 		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
 	}
+	public void setActivityMemberDAO(IActivityMemberDAO activityMemberDAO) {
+		this.activityMemberDAO = activityMemberDAO;
+	}
+	public void setUserTypeRelationDAO(IUserTypeRelationDAO userTypeRelationDAO) {
+		this.userTypeRelationDAO = userTypeRelationDAO;
+	}
+	public void setActivityMemberRelationDAO(
+			IActivityMemberRelationDAO activityMemberRelationDAO) {
+		this.activityMemberRelationDAO = activityMemberRelationDAO;
+	}
 	
 	//business methods.
-	
 	
 	public UserDataVO getUserBasicDetails(Long userId){
 		
@@ -646,16 +662,133 @@ public class CoreDashboardService implements ICoreDashboardService{
 		return finalList;
 	}
 	
-	public UserDataVO getUserLevelWiseDetails(Long userId){
+	/**
+	  * @param  Long userId
+	  * @return UserTypeVO
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the login user related sub level details. 
+	  *  @since 04-AUGUST-2016
+	  */
+	public UserTypeVO getLoggedInUserStructure(Long userId){
 		
-		LOG.info(" entered in to getUserLevelWiseDetails() ");
-		UserDataVO finalVO = new UserDataVO();
+		LOG.info(" entered in to getLoggedInUserStructure() ");
+		UserTypeVO finalVO = null;
 		try{
-			
+			Long activityMemberId = activityMemberDAO.findActivityMemberIdByUserId(userId);
+			finalVO = getActivityMemberDetails(activityMemberId);
 		}catch(Exception e){
-			LOG.error("error occurred in getUserLevelWiseDetails() of CoreDashboardService class",e);
+			LOG.error("error occurred in getLoggedInUserStructure() of CoreDashboardService class",e);
 		}
 		return finalVO;
 	}
-
+	
+	public UserTypeVO getActivityMemberDetails(Long activityMemberId){
+		
+		UserTypeVO finalVO = new UserTypeVO();
+		try{
+			
+			  List<Object[]> details = activityMemberDAO.getActivityMemberDetails(activityMemberId);
+			  if( details!=null && details.size() > 0){
+				  for(Object[] obj : details ){
+					 finalVO.setActivityMemberId(obj[0]!= null ? (Long)obj[0] : 0l);
+					 finalVO.setTdpCadreId(obj[6]!= null ? (Long)obj[6]:0l);
+					 finalVO.setName(obj[7]!=null? obj[7].toString() : "");
+					 finalVO.setUserTypeId(obj[1]!= null ? (Long)obj[1] : 0l);
+					 finalVO.setUserType(obj[2]!= null ? obj[2].toString() : "");
+				 	 finalVO.setLocationLevelId(obj[3]!= null ? (Long)obj[3] : 0l);
+					 finalVO.setLocationLevelName(obj[4]!= null ? obj[4].toString() : "");
+					 if( finalVO.getLocationValues() == null){
+						finalVO.setLocationValues(new ArrayList<Long>());
+					 }
+					 finalVO.getLocationValues().add(obj[5]!= null ? (Long)obj[5] : 0l);
+				  }
+			  }
+			  
+			  Map<Long,List<Long>> ParentChildUserTypesMap = getParentUserTypesAndItsChildUserTypes();
+			  List<Long> childUserTypeIds = ParentChildUserTypesMap.get(finalVO.getUserTypeId());
+			  
+				if(childUserTypeIds != null && childUserTypeIds.size() > 0){
+					
+					List<Object[]> childDetails = activityMemberRelationDAO.getChildUserTypeMembers(finalVO.getActivityMemberId(), childUserTypeIds);
+					
+					if( childDetails != null && childDetails.size() > 0){
+						for( Object[] obj : childDetails){
+							
+							if( finalVO.getSubMap() == null){
+								finalVO.setSubMap(new LinkedHashMap<Long,UserTypeVO>());
+							}
+							
+							 UserTypeVO userTypeVO = null;
+							if(!finalVO.getSubMap().containsKey((Long)obj[3])){  // usertype
+								userTypeVO = new UserTypeVO();
+								userTypeVO.setUserTypeId((Long)obj[3]);
+								userTypeVO.setUserType(obj[4]!=null?obj[4].toString():"");
+								userTypeVO.setSubMap(new LinkedHashMap<Long,UserTypeVO>(0));
+								finalVO.getSubMap().put((Long)obj[3],userTypeVO);
+							}
+							userTypeVO = finalVO.getSubMap().get((Long)obj[3]);
+							
+							UserTypeVO activityMemberVO = null;
+							if(!userTypeVO.getSubMap().containsKey((Long)obj[0])){
+								activityMemberVO = new UserTypeVO();
+								activityMemberVO.setActivityMemberId((Long)obj[0]);
+								activityMemberVO.setTdpCadreId(obj[1]!=null?(Long)obj[1]:0l);
+								activityMemberVO.setName(obj[2]!=null?obj[2].toString():"");
+								activityMemberVO.setUserTypeId(obj[3]!=null?(Long)obj[3]:0l);
+								activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
+								activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
+								activityMemberVO.setLocationLevelName(obj[6]!=null?obj[6].toString():"");
+								activityMemberVO.setLocationValues( new ArrayList<Long>());
+								
+								
+								userTypeVO.getSubMap().put((Long)obj[0], getActivityMemberDetails(activityMemberVO.getActivityMemberId()));
+							}
+							activityMemberVO = userTypeVO.getSubMap().get((Long)obj[0]);
+							activityMemberVO.getLocationValues().add(obj[7]!= null ?(Long)obj[7]:0l);
+						}
+					}
+					if(finalVO.getSubMap() != null && finalVO.getSubMap().size() > 0){
+						for(Long usertypeId : finalVO.getSubMap().keySet()){
+							UserTypeVO userTypeVO = finalVO.getSubMap().get(usertypeId);
+							if( userTypeVO != null && userTypeVO.getSubMap() != null && userTypeVO.getSubMap().size()>0){
+								userTypeVO.setSubList(new ArrayList<UserTypeVO>(userTypeVO.getSubMap().values()));
+								userTypeVO.getSubMap().clear();
+							}
+						}
+						finalVO.setSubList(new ArrayList<UserTypeVO>(finalVO.getSubMap().values()));
+						finalVO.getSubMap().clear();
+					}
+				}else{
+					return finalVO;
+				}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return finalVO;
+	}
+	
+	public Map<Long,List<Long>> getParentUserTypesAndItsChildUserTypes(){
+		
+		Map<Long,List<Long>> userTypesMap = new HashMap<Long, List<Long>>();
+		
+		List<Object[]> list  = userTypeRelationDAO.getParentUserTypesAndItsChildUserTypes();
+		if( list != null && list.size() > 0){
+			for( Object[] obj : list){
+				
+				if( obj[0] != null){
+					List<Long> childUserTypeIds = null;
+					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+					if( childUserTypeIds == null){
+						childUserTypeIds = new ArrayList<Long>();
+						userTypesMap.put((Long)obj[0],childUserTypeIds);
+					}
+					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+					childUserTypeIds.add((Long)obj[2]);
+				}
+			
+			}
+		}
+		return userTypesMap;
+	}
 }

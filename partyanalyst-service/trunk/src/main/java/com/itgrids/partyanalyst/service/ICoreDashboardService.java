@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardService {
 	
@@ -13,5 +14,5 @@ public interface ICoreDashboardService {
 	public List<CommitteeVO> getCommitteesCumulaticeOverallReportCharts(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString);
 	public List<CommitteeVO> getCommitteesComparativeBascicReportChart(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String firstMonthString,String secondMonthString);
 	public List<CommitteeVO> getCommitteesComparativeOverallReportChart(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String firstMonthString,String secondMonthString);
-	public UserDataVO getUserLevelWiseDetails(Long userId);
+	public UserTypeVO getLoggedInUserStructure(Long userId);
 }
