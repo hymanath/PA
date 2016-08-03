@@ -996,7 +996,29 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		
 	}
-	
+	public String deleteAlertAssignedCandidates(Long alertId,Long tdpCadreId)
+	{
+		String rs=null;
+		try{
+			List<AlertAssigned> list = alertAssignedDAO.getDeleteAlertAssignedCandidates(alertId,tdpCadreId);
+		
+			if(list != null && list.size() > 0)
+			{
+				for(AlertAssigned obj : list)
+				{
+					obj.setIsDeleted("N");
+					alertAssignedDAO.save(obj);
+				}
+				rs="success";
+			}
+		}
+		catch (Exception e) {
+			     rs="failure";
+			e.printStackTrace();
+			LOG.error("Exception in deleteAlertAssignedCandidates()",e);	
+		}
+		return rs;
+	}	
 	
 }
 

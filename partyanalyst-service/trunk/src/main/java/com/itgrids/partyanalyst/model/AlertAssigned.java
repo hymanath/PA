@@ -33,6 +33,7 @@ public class AlertAssigned extends BaseModel implements Serializable {
 	private Date updatedTime;
 	private User user;
 	private Long createdBy;
+	private String isDeleted;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_assigned_id", unique = true, nullable = false)
@@ -107,7 +108,12 @@ public class AlertAssigned extends BaseModel implements Serializable {
 	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
-	
-	
-	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+		
 }
