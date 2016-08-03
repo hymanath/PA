@@ -467,6 +467,9 @@ $(function () {
         },
         yAxis: {
             min: 0,
+			gridLineWidth: 0,
+            minorGridLineWidth: 0,
+            min: 0,
             title: {
                 text: 'POSITIONS',
                 align: 'high'
@@ -506,19 +509,16 @@ $(function () {
     });
 });
 $(document).on("click",".changeIconClass",function(){
-	if($(".changeIconClass").hasClass("glyphicon-minus"))
-	{
-		$(".changeIconClass").removeClass("glyphicon-plus").removeClass("glyphicon-minus").addClass("glyphicon-plus")
-	}
-	$(this).closest('tr').next('tr.showHideTr').toggle();
-	$(this).toggleClass("glyphicon-minus").toggleClass("glyphicon-plus");
+	$(".changeIconClass").toggleClass("glyphicon-plus");
+	$(this).closest('tr').next('tr.tableStrOuterCls').toggle();
+	$(this).toggleClass("glyphicon-minus");
+	
 	var casteId =$(this).attr("attr_id");
 	if($(this).hasClass("glyphicon-minus")){
 		casteWisePositionsCountsByPosition(casteId,"expand");
 	}else{
 		casteWisePositionsCountsByPosition(casteId,"close");
 	}
-	
 });
  /*   var gaugeChart = AmCharts.makeChart("chartdiv1", {
   "type": "gauge",
