@@ -1098,9 +1098,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		try{
 			
 		nominatedPostApplication = new NominatedPostApplication();
-		if(position !=null && !position.isEmpty() && !position.trim().equalsIgnoreCase("0")){
-			nominatedPostApplication.setPositionId(Long.parseLong(position.trim())) ;
-		}
+		
 				
 		nominatedPostApplication.setNominationPostCandidateId(nominatedPostCandi != null ? nominatedPostCandi : null);
 		
@@ -1154,12 +1152,34 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		nominatedPostAddress.setCountry(countryDAO.get(1L));
 		nominatedPostAddress = userAddressDAO.save(nominatedPostAddress);
 		
+		boolean isMemberAvailable = false;
 		if(Vo.getDeptId() !=null && Vo.getDeptId() >0){
 			nominatedPostApplication.setDepartmentId(Vo.getDeptId());
+			 isMemberAvailable = true;
 		}
+		else
+			isMemberAvailable = false;
 		if(Vo.getDeptBoardId() !=null && Vo.getDeptBoardId()>0){
 			nominatedPostApplication.setBoardId(Vo.getDeptBoardId());
+			isMemberAvailable = true;
 		}
+		else
+			isMemberAvailable = false;
+		
+		if(position !=null && !position.isEmpty() && !position.trim().equalsIgnoreCase("0")){
+			nominatedPostApplication.setPositionId(Long.parseLong(position.trim())) ;
+			isMemberAvailable = true;
+		}
+		else
+			isMemberAvailable = false;
+		//(Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId){
+		if(isMemberAvailable){
+			Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(nominatedPostApplication.getBoardLevelId(),nominatedPostApplication.getLocationValue(),
+					nominatedPostApplication.getDepartmentId(),nominatedPostApplication.getBoardId(),nominatedPostApplication.getPositionId());
+			if(nominatedPostMemberId != null && nominatedPostMemberId.longValue()>0L)
+				nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
+		}
+		
 	/*	nominatedPostApplication.setDepartmentId(Vo.getDeptId() != null ? Vo.getDeptId() : null) ;
 		nominatedPostApplication.setBoardId(Vo.getDeptBoardId() != null ? Vo.getDeptBoardId() : null) ;*/
 		nominatedPostApplication.setPostTypeId(Vo.getPostTypeId() != null ? Vo.getPostTypeId() : null);
@@ -1589,7 +1609,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							 if(statusStr.trim().equalsIgnoreCase("2")){
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[4].trim());
 								if(vo != null){
-									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[5]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
 									
@@ -1611,7 +1631,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[5].trim());
 								if(vo != null){
 									
-									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[5]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
 									
@@ -1631,7 +1651,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							else if(statusStr.trim().equalsIgnoreCase("4")){
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[6].trim());
 								if(vo != null){
-									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[5]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
 									
