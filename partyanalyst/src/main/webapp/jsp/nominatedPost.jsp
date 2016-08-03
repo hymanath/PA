@@ -694,7 +694,7 @@
 			</div>
 			
 			<div id="searchMemberDiv">
-                    <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10">
+                    <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
                     	<label>State<span style="color:red;">*<span></label>
                         <select id="notCadreStateId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect clearSelectClss" name="addNotcadreRegistrationVO.stateId">
 							<option value="0">Select State</option>
@@ -702,24 +702,24 @@
 							<option value="36">Telangana</option>
                         </select>
                     </div>
-			         <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls">
+			         <div class="col-md-3 col-xs-12 col-sm-3 m_top10 districtShowCls">
 									<label>District<span style="color:red;">*<span></label>
 									<select class="chosenSelect clearSelectClss" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"notCadreDistId" name="addNotcadreRegistrationVO.districtId">
 								</select>
 						</div>
-					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls">
+					<div class="col-md-3 col-xs-12 col-sm-3 m_top10 constituencyShowCls">
 									<label>Constituency<span style="color:red;">*<span></label>
 									<select class="chosenSelect clearSelectClss" onchange="getMandalCorporationsByConstituency('',this.id);" id="notCadreConstId"  name="addNotcadreRegistrationVO.constituencyId">
 									</select>
 						</div>
-					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls">
+					<div class="col-md-3 col-xs-12 col-sm-3 m_top10 mandalShowCls">
 									<label>Mandal/ Muncipality / Corporation<span style="color:red;">*<span></label>
 									<select  class="chosenSelect clearSelectClss" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">
 									
 									</select>
 							</div>
-					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls">
+					<div class="col-md-3 col-xs-12 col-sm-3 m_top10 panchayatShowCls">
 									<label>Panchayat/ Ward / Division/City<span style="color:red;">*<span></label>
 									<select  class="chosenSelect clearSelectClss" id="notCadrePanchayatId" name="addNotcadreRegistrationVO.panchayatId">
 										
@@ -728,11 +728,12 @@
 					
 					
 					
-		<div class="col-md-3 col-xs-12 col-sm-3">
+		<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">pincode</label>
 				<input class="form-control clearClss" id="pincodeId" type="text" name="addNotcadreRegistrationVO.pincode"/>
 			</div>
 		</div>
+      </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
