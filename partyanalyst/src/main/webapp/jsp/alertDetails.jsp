@@ -429,6 +429,7 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 					  url: 'deleteAlertAssignedCandidateAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
+				   getAlertAssignedCandidates(alertId);
 			      //buildAlertAssignedCandidateData(result);
 				});
 }
