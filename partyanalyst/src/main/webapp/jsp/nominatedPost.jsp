@@ -381,13 +381,13 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="chosenSelect boardLvlCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments('')" attr_no="">
+									<select class="chosenSelect boardLvlCls boardLvelCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments(0);" attr_no="">
 									<option value="0">Select Post Level</option>
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
-									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
+									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');getDepartments(0);" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
 										<option value="0">Select State</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
@@ -395,30 +395,30 @@
 								</div>
 						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
 									<label>District</label>
-									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
+									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');getDepartments(0);" id=
 									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
 									<label>Constituency</label>
-									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
+									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
-									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
+									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);getDepartments(0);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
 									
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
-									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId">
+									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId" onchange="getDepartments(0);">
 										
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Department Name</label>
-									<select attr_no="" class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');" name="nominatedPostVO.nominatdList[0].deptId">
+									<select attr_no="" class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards(0);" name="nominatedPostVO.nominatdList[0].deptId">
 									<option value="0">Select Department</option>
 									</select>
 								</div>
