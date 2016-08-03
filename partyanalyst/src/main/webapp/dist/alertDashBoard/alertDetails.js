@@ -253,26 +253,26 @@ function buildAlertData(result)
 			var location ='';
 			if(result[i].regionScope == "STATE")
 			{
-				location +='<p>State:'+result[i].locationVO.state+'</p>';
+				location +='<p>S:'+result[i].locationVO.state+'</p>';
 			}
 			else if(result[i].regionScope == "DISTRICT")
 			{
-				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p>';
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p>';
 			}
 			
 			else if(result[i].regionScope == "CONSTITUENCY")
 			{
-				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p><p> Constituency :'+result[i].locationVO.constituencyName+'</p>';
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p>';
 			}
 			else if(result[i].regionScope == "MANDAL" || result[i].regionScope == "MUNICIPAL-CORP-GMC" )
 			{
 				
 					if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
 				{
-				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p><p> Constituency :'+result[i].locationVO.constituencyName+'</p><p> Town : '+result[i].locationVO.localEleBodyName+' </p>';	
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T : '+result[i].locationVO.localEleBodyName+' </p>';	
 				}
 				else{
-					location +='<p>State:'+result[i].locationVO.state+' </p><p>Dist : '+result[i].locationVO.districtName+' </p><p>Constituency :'+result[i].locationVO.constituencyName+'</p><p> Mandal : '+result[i].locationVO.tehsilName+'</p>';
+					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p>';
 				}
 			}
 			
@@ -281,10 +281,10 @@ function buildAlertData(result)
 			
 				if(result[i].locationVO.localEleBodyName != null && result[i].locationVO.localEleBodyName.length > 0)
 				{
-				location +='<p>State:'+result[i].locationVO.state+'</p><p> Dist : '+result[i].locationVO.districtName+'</p><p> Constituency :'+result[i].locationVO.constituencyName+'</p><p> Town : '+result[i].locationVO.localEleBodyName+' </p><p>Ward : '+result[i].locationVO.wardName+'</p>';	
+				location +='<p>S:'+result[i].locationVO.state+'</p><p> D : '+result[i].locationVO.districtName+'</p><p> C :'+result[i].locationVO.constituencyName+'</p><p> T : '+result[i].locationVO.localEleBodyName+' </p><p>W : '+result[i].locationVO.wardName+'</p>';	
 				}
 				else{
-					location +='<p>State:'+result[i].locationVO.state+' </p><p>Dist : '+result[i].locationVO.districtName+' </p><p>Constituency :'+result[i].locationVO.constituencyName+'</p><p> Mandal : '+result[i].locationVO.tehsilName+'</p><p> Panchayat : '+result[i].locationVO.villageName+'</p>';
+					location +='<p>S:'+result[i].locationVO.state+' </p><p>D : '+result[i].locationVO.districtName+' </p><p>C :'+result[i].locationVO.constituencyName+'</p><p> M : '+result[i].locationVO.tehsilName+'</p><p> P : '+result[i].locationVO.villageName+'</p>';
 				}
 				
 			}	
