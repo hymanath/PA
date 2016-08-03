@@ -1223,4 +1223,16 @@ public String getPositionAndApplicationDetailsCntLocationWise(){
 	}
 	return Action.SUCCESS;
 }
+
+public String validateVoterIdCardNo(){
+	try{
+		jObj = new JSONObject(getTask());
+		lId = nominatedPostProfileService.validateVoterIdCardNo(jObj.getString("voterIdCardNo"));
+		
+	}catch (Exception e) {
+		LOG.error("Entered into validateVoterIdCardNo() method of NominatedPostProfileAction Action",e);
+	}
+	return Action.SUCCESS;
+}
+
 }

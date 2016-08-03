@@ -628,7 +628,7 @@
       <div class="modal-body">
 		<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">voter Id<span style="color:red;">*<span></label>
+				<label class="text-capitalize">voter Id<span style="color:red;">* <span id="voterExtraErrId"></span><span></label>
 				<input type="text"  id="voterId" class="form-control voterCls clearClss" name="addNotcadreRegistrationVO.voterId"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
