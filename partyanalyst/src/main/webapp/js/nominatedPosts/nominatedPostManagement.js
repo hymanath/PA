@@ -215,7 +215,7 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 	}
 	var jsObj={
 		levelId:globalLevelId,
-		levelValues:levelValues,
+		levelValues:[],
 		searchlevelId:searchlevelId,
 		searchlevelValue:searchlevelValue,
 		statusType:globalStatus ,
@@ -237,7 +237,7 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
 function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,bodyId,searchId){
 	
 	$("#"+searchId).show();
-	
+	  
 	var jsObj={
 		levelId:levelId,
 		levelValues:levelValues,
@@ -379,6 +379,7 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 
 function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 	var str='';
+	
 	if(result !=null && result.length>0){
 		
 		str+='<table class="table table-bordered tableCollapse">';
@@ -464,21 +465,29 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;">'+result[i].name+'</span></label></td>';
 					}					
 				}else{
-
-					str+='<td><label>Any Post</td>';
+						str+='<td><label>Any Post</td>';
 				}
 						
 						str+='<td>'+availablePosts+'</td>';
 						str+='<td>'+result[i].receivedCount+'</td>';
-						if(rdyToShortlist>0)
-						str+='<td id="shortListPositinCls" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> <u>'+rdyToShortlist+'</u></td>';
+						if(rdyToShortlist>0){
+							if(globalStatus != "Total" && globalStatus != "Open")
+								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
+							else
+								str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" > '+rdyToShortlist+'</td>';
+						}
 						else
 							str+='<td>0</td>';
+						
 						str+='<td>'+rejected+'</td>';
 						str+='<td>'+shortListed+'</td>';
 						
-						if(readyForFinalReview>0)
-							str+='<td id="readyTofinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"><u>'+readyForFinalReview+'</u></td>';
+						if(readyForFinalReview>0){
+							if(globalStatus != "Total" && globalStatus != "Open")
+								str+='<td id="readyTofinalReviewId"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;">'+readyForFinalReview+'</td>';
+							else
+								str+='<td id=""  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >'+readyForFinalReview+'</td>';
+						}
 						else
 							str+='<td>0</td>';
 						str+='<td>'+finalized+'</td>';
@@ -513,7 +522,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 		}		
 		str+='</tbody>';
 		str+='</table>';
-		if(globalStatus !=null && globalStatus.trim().length>0 && globalStatus.trim() != "Open"){
+		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open")){
 			str+='<div class="pad_15">';
 				str+='<button class="btn btn-success moveToFinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
 				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
@@ -526,7 +535,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 }
 
 
-$(document).on("click","#readyTofinalReviewCls",function(){
+$(document).on("click","#readyTofinalReviewId",function(){
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
@@ -559,7 +568,7 @@ $(document).on("click","#readyTofinalReviewCls",function(){
 	window.open("nominatedReadyToFinalReviewAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"");
 });
 
-$(document).on("click","#shortListPositinCls",function(){
+$(document).on("click","#shortListPositinId",function(){
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
@@ -668,7 +677,8 @@ $(document).on("click",".moveToFinalReviewCls",function(){
    });
 	
 });
- setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 6000);
+ //setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 6000);
+
 $(document).on("click","#locationWiseDataId",function(){
 	var stateId = $("#stateId").val();
 	var districtId=$("#districtId").val();
