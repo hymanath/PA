@@ -693,82 +693,139 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		     }
 	          return (Object[]) query.uniqueResult(); 
 	  }
-	public List<Object[]>  getNominatedCandidateGroupByDist(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+	public List<Object[]>  getNominatedCandidateGroupByDist(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
 		StringBuilder strQuery = new StringBuilder();
 		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, " +
 						" count(model.nominationPostCandidate.nominationPostCandidateId) " +
 						" from " +
 						" NominatedPostFinal model " +
-						" where " +
-						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIdList) and " +
-						" model.nominatedPostMember.boardLevel.boardLevelId in (:locationLevelIdList) and " +
-						" model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptIdList) and " +
-						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:corporationIdList) and " +
-						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIdList) and " +
-						" model.applicationStatus.applicationStatusId in (:positionStatusIdList) and " +
-						" model.nominationPostCandidate.address.state.stateId = :stateId " +
+						" where " );
+						if(!(positionId.equals(0l)) && positionId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+						}
+						if(!(locationLevelId.equals(0l)) && locationLevelId != null){
+							strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
+						}
+						if(!(deptId.equals(0l)) && deptId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+						}
+						if(!(corporationId.equals(0l)) && corporationId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+						}
+						if(!(castGroupId.equals(0l)) && castGroupId != null){
+							strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+						}
+						if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+							strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+						}
+						strQuery.append(" model.nominationPostCandidate.address.state.stateId = :stateId " +
 						" group by " +
 						" model.nominationPostCandidate.address.district.districtId " +  
 						" order by " +
 						" model.nominationPostCandidate.address.district.districtId ");
-					
-		
-		Query query = getSession().createQuery(strQuery.toString());
-		query.setParameterList("positionIdList", positionIdList);
-		query.setParameterList("locationLevelIdList", locationLevelIdList);
-		query.setParameterList("deptIdList", deptIdList);
-		query.setParameterList("corporationIdList", corporationIdList);
-		query.setParameterList("castGroupIdList", castGroupIdList);
-		query.setParameterList("positionStatusIdList", positionStatusIdList);
+		Query query = getSession().createQuery(strQuery.toString());			
+		if(!(positionId.equals(0l)) && positionId != null){
+			query.setParameter("positionId", positionId);
+		}
+		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
+			query.setParameter("locationLevelId", locationLevelId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			query.setParameter("deptId", deptId);
+		}
+		if(!(corporationId.equals(0l)) && corporationId != null){
+			query.setParameter("corporationId", corporationId);
+		}
+		if(!(castGroupId.equals(0l)) && castGroupId != null){
+			query.setParameter("castGroupId", castGroupId);
+		}
+		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+			query.setParameter("positionStatusId", positionStatusId);
+		}
 		query.setParameter("stateId", stateId);
 		return query.list(); 
 	}
-	public List<Object[]>  getNominatedCandidateGroupByDistAndGender(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+	public List<Object[]>  getNominatedCandidateGroupByDistAndGender(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
 		StringBuilder strQuery = new StringBuilder();
 		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, model.nominationPostCandidate.gender, " +
 						" count(model.nominationPostCandidate.nominationPostCandidateId) " +
 						" from " +
 						" NominatedPostFinal model " +
-						" where " +
-						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIdList) and " +
-						" model.nominatedPostMember.boardLevel.boardLevelId in (:locationLevelIdList) and " +
-						" model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptIdList) and " +
-						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:corporationIdList) and " +
-						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIdList) and " +
-						" model.applicationStatus.applicationStatusId in (:positionStatusIdList) and " +
-						" model.nominationPostCandidate.address.state.stateId = :stateId " +
+						" where " );
+						if(!(positionId.equals(0l)) && positionId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+						}
+						if(!(locationLevelId.equals(0l)) && locationLevelId != null){
+							strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
+						}
+						if(!(deptId.equals(0l)) && deptId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+						}
+						if(!(corporationId.equals(0l)) && corporationId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+						}
+						if(!(castGroupId.equals(0l)) && castGroupId != null){
+							strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+						}
+						if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+							strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+						}
+						strQuery.append(" model.nominationPostCandidate.address.state.stateId = :stateId " +
 						" group by " +
 						" model.nominationPostCandidate.address.district.districtId, " +
 						" model.nominationPostCandidate.gender " +  
 						" order by " +
 						" model.nominationPostCandidate.address.district.districtId," +
-						" model.nominationPostCandidate.gender " );  
+						" model.nominationPostCandidate.gender " ); 
 						
-		
-		Query query = getSession().createQuery(strQuery.toString());
-		query.setParameterList("positionIdList", positionIdList);
-		query.setParameterList("locationLevelIdList", locationLevelIdList);
-		query.setParameterList("deptIdList", deptIdList);
-		query.setParameterList("corporationIdList", corporationIdList);
-		query.setParameterList("castGroupIdList", castGroupIdList);
-		query.setParameterList("positionStatusIdList", positionStatusIdList);
+		Query query = getSession().createQuery(strQuery.toString());			
+		if(!(positionId.equals(0l)) && positionId != null){
+			query.setParameter("positionId", positionId);
+		}
+		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
+			query.setParameter("locationLevelId", locationLevelId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			query.setParameter("deptId", deptId);
+		}
+		if(!(corporationId.equals(0l)) && corporationId != null){
+			query.setParameter("corporationId", corporationId);
+		}
+		if(!(castGroupId.equals(0l)) && castGroupId != null){
+			query.setParameter("castGroupId", castGroupId);
+		}
+		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+			query.setParameter("positionStatusId", positionStatusId);
+		}
 		query.setParameter("stateId", stateId);
 		return query.list(); 
 	}
-	public List<Object[]>  getNominatedCandidateGroupByDistAndAgeGroup(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+	public List<Object[]>  getNominatedCandidateGroupByDistAndAgeGroup(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
 		StringBuilder strQuery = new StringBuilder();
 		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, " +
 						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, count(model.nominationPostCandidate.nominationPostCandidateId) " +
 						" from " +
 						" NominatedPostFinal model " +
-						" where " +
-						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionIdList) and " +
-						" model.nominatedPostMember.boardLevel.boardLevelId in (:locationLevelIdList) and " +
-						" model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptIdList) and " +
-						" model.nominatedPostMember.nominatedPostPosition.position.positionId in (:corporationIdList) and " +
-						" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:castGroupIdList) and " +
-						" model.applicationStatus.applicationStatusId in (:positionStatusIdList) and " +
-						" model.nominationPostCandidate.address.state.stateId = :stateId " +
+						" where " );
+						if(!(positionId.equals(0l)) && positionId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
+						}
+						if(!(locationLevelId.equals(0l)) && locationLevelId != null){
+							strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
+						}
+						if(!(deptId.equals(0l)) && deptId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+						}
+						if(!(corporationId.equals(0l)) && corporationId != null){
+							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+						}
+						if(!(castGroupId.equals(0l)) && castGroupId != null){
+							strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+						}
+						if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+							strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+						}
+						strQuery.append(" model.nominationPostCandidate.address.state.stateId = :stateId " +
 						" group by " +
 						" model.nominationPostCandidate.address.district.districtId, " +
 						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " +  
@@ -776,13 +833,25 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 						" model.nominationPostCandidate.address.district.districtId," +
 						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
 		
-		Query query = getSession().createQuery(strQuery.toString());
-		query.setParameterList("positionIdList", positionIdList);
-		query.setParameterList("locationLevelIdList", locationLevelIdList);
-		query.setParameterList("deptIdList", deptIdList);
-		query.setParameterList("corporationIdList", corporationIdList);
-		query.setParameterList("castGroupIdList", castGroupIdList);
-		query.setParameterList("positionStatusIdList", positionStatusIdList);
+		Query query = getSession().createQuery(strQuery.toString());			
+		if(!(positionId.equals(0l)) && positionId != null){
+			query.setParameter("positionId", positionId);
+		}
+		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
+			query.setParameter("locationLevelId", locationLevelId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			query.setParameter("deptId", deptId);
+		}
+		if(!(corporationId.equals(0l)) && corporationId != null){  
+			query.setParameter("corporationId", corporationId);
+		}
+		if(!(castGroupId.equals(0l)) && castGroupId != null){
+			query.setParameter("castGroupId", castGroupId);
+		}
+		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+			query.setParameter("positionStatusId", positionStatusId);
+		}
 		query.setParameter("stateId", stateId);
 		return query.list(); 
 	}
