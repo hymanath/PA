@@ -7298,3 +7298,17 @@ $(document).on("click",".editIconCls",function(){
 		scrollTop:  $(".jqte_editor").offset().top 
 	});
 });
+
+function getNominatedPostReportFiles() {
+	var jsObj={
+		tdpCadreId:tdpCadreId
+	}
+	$.ajax({
+		type:'GET',
+		url:'getNominatedPostReportFilesAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(){
+		
+	})
+}
