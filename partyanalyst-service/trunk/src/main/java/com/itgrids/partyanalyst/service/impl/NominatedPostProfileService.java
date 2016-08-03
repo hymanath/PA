@@ -1370,7 +1370,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						if(vo.getConstituencyId() != null && vo.getConstituencyId().longValue() > 0l){
 						constituencyIds.add(vo.getConstituencyId());
 						}
-						List<LocationWiseBoothDetailsVO> list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
+						List<LocationWiseBoothDetailsVO> list = null;
+						if(constituencyIds != null && constituencyIds.size() > 0){
+						 list = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(constituencyIds);
+						}
+						
 						if(commonMethodsUtilService.isListOrSetValid(list))
 							for (LocationWiseBoothDetailsVO vo1 : list) {
 								String digit = vo1.getLocationId().toString().charAt(0)+"";
