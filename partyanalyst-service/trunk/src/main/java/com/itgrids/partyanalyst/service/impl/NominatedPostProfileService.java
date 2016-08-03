@@ -2659,8 +2659,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						List<IdNameVO> brdList = idNameVO.getIdnameList();
 						for (IdNameVO idNameVO2 : brdList) {
 							Long brdId = idNameVO2.getId();
-							Long ttlAppl = ttlMap.get(brdId);
-							Long shtAppl = shrMap.get(brdId);
+							Long ttlAppl = 0l;
+							Long shtAppl = 0l;
+							if(ttlMap != null)
+								ttlAppl = ttlMap.get(brdId);
+							if(shrMap != null)
+								shtAppl = shrMap.get(brdId);
 							String perc = "0.00";
 							if(ttlAppl != null && ttlAppl.longValue() > 0l && shtAppl != null && shtAppl.longValue() > 0l)
 								perc = (new BigDecimal((shtAppl * 100.0)/ttlAppl.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
