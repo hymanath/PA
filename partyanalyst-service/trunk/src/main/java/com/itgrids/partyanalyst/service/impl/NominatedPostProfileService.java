@@ -1219,6 +1219,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				applicationDocument.setFilePath(pathBuilder.toString());
 				applicationDocument.setNominationPostCandidateId(candId != null ? candId : null);
 				applicationDocument.setNominatedPostApplicationId(applctnId != null ? applctnId : null);
+				applicationDocument.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 				applicationDocument.setIsDeleted("N");
 				applicationDocument = applicationDocumentDAO.save(applicationDocument);
 				
