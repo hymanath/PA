@@ -510,19 +510,19 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			LOG.error("Exception Occured in setDataToVO() of NominatedPostMainDashboardService", e);
 		}
 	}
-	public List<NominatedPostVO> getNominatedCandidateGroupByDist(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId){
+	public List<NominatedPostVO> getNominatedCandidateGroupByDist(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
 		LOG.info("Entered into getNominatedCandidateGroupByDist() of NominatedPostMainDashboardService.");
 		try{
 			
 			Map<Long,NominatedPostVO> idNominatedVOMap = new HashMap<Long,NominatedPostVO>();
 			NominatedPostVO  nominatedPostVO = null;
 			List<Object[]> districtList = districtDAO.getAllDistrictList(stateId);
-			List<Object[]> nominatedCandidateGroupByDist = nominatedPostFinalDAO.getNominatedCandidateGroupByDist(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
-			List<Object[]> nominatedCandidateGroupByDistAndGender = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndGender(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
-			List<Object[]> nominatedCandidateGroupByDistAndAgeGroup = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndAgeGroup(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
+			List<Object[]> nominatedCandidateGroupByDist = nominatedPostFinalDAO.getNominatedCandidateGroupByDist(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);
+			List<Object[]> nominatedCandidateGroupByDistAndGender = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndGender(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);
+			List<Object[]> nominatedCandidateGroupByDistAndAgeGroup = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndAgeGroup(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);
 			for(Object[] distIdAndName : districtList){
 				nominatedPostVO = new NominatedPostVO();
-				nominatedPostVO.setDistrictId(distIdAndName[0] != null ? (Long)distIdAndName[0] : 0l);
+				nominatedPostVO.setDistrictId(distIdAndName[0] != null ? (Long)distIdAndName[0] : 0l);  
 				nominatedPostVO.setName(distIdAndName[1] != null ? distIdAndName[1].toString() : "");
 				idNominatedVOMap.put((Long)distIdAndName[0], nominatedPostVO);
 			}
