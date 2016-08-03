@@ -13287,5 +13287,10 @@
 			<param name="root">CadreReportVO</param>  
 		</result>
 	</action>
+	<action name="deleteAlertAssignedCandidateAction" class="createAlertAction" method="deleteAlertAssignedCandidates">
+			<result type="json" name="success">
+				<param name="root">status</param>
+		 </result>
+		 </action>
 </package>
 </struts>

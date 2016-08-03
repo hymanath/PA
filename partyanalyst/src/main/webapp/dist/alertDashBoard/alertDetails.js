@@ -316,56 +316,18 @@ function getAlertAssignedCandidates(alertId)
 			      buildAlertAssignedCandidateData(result);
 				});
 }
-function buildAlertAssignedCandidateData(result)
-{
-	
-	if(result == null || result.length == 0)
-	{
-	 $("#alertAssignedCandidateDataId").html('No Assigned Candidates..');
-	 $("#assignCandidatesCnt").html('0');
-		return;
-	}
-	var str='';
-	for(var i in result)
-				{
-	for(var j in result[i].subList)
-	{
-		str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
-		str+='<div class="media-left">';
-        str+='<img src="images/cadre_images/'+result[i].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
-       str+=' </div>';
-        str+=' <div class="media-body" >';
-		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
-        //str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
-        str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
-        str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
-		 str+=' </div>';
-		 str+=' </div>';
-	}
-	$("#assignCandidatesCnt").html(result[0].subList.length);
-	}
-	$("#alertAssignedCandidateDataId").html(str);
-	/*str+='<div  style="border:1px solid #ddd;padding:8px;margin-top:5px;" class="media">';
-	str+='<div class="media-left">';
-	str+='<img src="'+result[i].image+' "  onerror="setDefaultImage(this);" class="media-object img-center img-responsive  thumbnailSearch thumbnail" alt="Image" style="width: 60px !important; height: 60px  !important;"/>';
-	str+='</div>';
-	str+='<div class="media-body">';
-	
-	str+='<p><b>Name </b>:'+result[i].subList[j].name+' </p>';	
-	str+='<p><b>State </b>:'+result[i].subList[j].locationVO.state+' <b>District </b>: '+result[i].subList[j].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].subList[j].locationVO.constituencyName+' <b>Mandel </b>:'+result[i].subList[j].locationVO.tehsilName+' <b>Village </b>:'+result[i].subList[j].locationVO.villageName+'</p>';
-	str+='</div>';
-	str+='</div>';
-	}
-	}
-	$("#alertAssignedCandidateDataId").html(str);
-	
-	$("#assignCandidatesCnt").html(result[0].subList.length);
-	if(result[0].subList.length > 3)
-	{
-		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
-	}*/
-	
-}
+function getConfirmation(){
+               var retVal = confirm("Are you sure want to delete?");
+               if( retVal == true ){
+				   //deleteAlertAssignedCandidates(tdpCadreId);
+                  return true;
+               }
+               else{
+                  return false;
+               }
+            }
+
+
 
 
 
