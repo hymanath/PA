@@ -1093,55 +1093,16 @@ return Action.SUCCESS;
 	public String getNominatedCandidateGroupByDist(){
 		try{
 			jObj = new JSONObject(getTask());
-			//collect position id list here.............
-			List<Long> positionIdList = new ArrayList<Long>();
-			JSONArray positionIdArr = jObj.getJSONArray("positionIdList");
-			for (int i = 0; i < positionIdArr.length(); i++) {
-				Long positon = Long.valueOf(positionIdArr.get(i).toString());
-				positionIdList.add(positon);
-			}
-			//collect location level id list here.............
-			List<Long> locationLevelIdList = new ArrayList<Long>();
-			JSONArray locationLevelIdArr = jObj.getJSONArray("locationLevelIdList");
-			for (int i = 0; i < locationLevelIdArr.length(); i++) {
-				Long positon = Long.valueOf(locationLevelIdArr.get(i).toString());
-				locationLevelIdList.add(positon);
-			}
-			//collect dept id list here.............
-			List<Long> deptIdList = new ArrayList<Long>();
-			JSONArray deptIddArr = jObj.getJSONArray("deptIdList");
-			for (int i = 0; i < deptIddArr.length(); i++) {
-				Long positon = Long.valueOf(deptIddArr.get(i).toString());
-				deptIdList.add(positon);
-			}
 			
-			//collect corporation id list here.............
-			List<Long> corporationIdList = new ArrayList<Long>();
-			JSONArray corporationIdArr = jObj.getJSONArray("corporationIdList");
-			for (int i = 0; i < corporationIdArr.length(); i++) {
-				Long positon = Long.valueOf(corporationIdArr.get(i).toString());
-				corporationIdList.add(positon);
-			}
-			
-			//collect cast group id list here.............
-			List<Long> castGroupIdList = new ArrayList<Long>();
-			JSONArray castGroupIdArr = jObj.getJSONArray("castGroupIdList");
-			for (int i = 0; i < castGroupIdArr.length(); i++) {
-				Long positon = Long.valueOf(castGroupIdArr.get(i).toString());
-				castGroupIdList.add(positon);
-			}
-			
-			//collect position status id list here.............
-			List<Long> positionStatusIdList = new ArrayList<Long>();
-			JSONArray positionStatusIdArr = jObj.getJSONArray("positionStatusIdList");
-			for (int i = 0; i < positionStatusIdArr.length(); i++) {
-				Long positon = Long.valueOf(positionStatusIdArr.get(i).toString());
-				positionStatusIdList.add(positon);
-			}
-			  
+			Long positionId = jObj.getLong("positionId");
+			Long locationLevelId = jObj.getLong("locationLevelId");
+			Long deptId = jObj.getLong("deptId");
+			Long corporationId = jObj.getLong("corporationId");
+			Long castGroupId = jObj.getLong("castGroupId");
+			Long positionStatusId = jObj.getLong("positionStatusId");
 			Long stateId = jObj.getLong("stateId");
 			
-			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedCandidateGroupByDist(positionIdList, locationLevelIdList, deptIdList, corporationIdList, castGroupIdList, positionStatusIdList, stateId);
+			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedCandidateGroupByDist(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);  
 			
 		}catch(Exception e){
 			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
@@ -1183,7 +1144,7 @@ return Action.SUCCESS;
 			LOG.error("Entered into getCasteGroupWiseCountsByPosition Action",e);
 		}
 		
-		return Action.SUCCESS;
+		return Action.SUCCESS; 
 	}
 	
 	public String getCasteWiseCountsByPosition(){

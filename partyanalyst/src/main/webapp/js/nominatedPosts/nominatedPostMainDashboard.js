@@ -457,65 +457,7 @@ function buildOverAllTotalCountsByPosition(result){
 		}
 		
 	
-	function getPositionsForDistrict(divId){
-		var jsObj={
-		positionId 			: 1,
-		boardLevelId 		: 1,
-		deptId				: 1,
-		boardId				: 1,
-		castegroupId    	: 2,
-		positionStatusId 	: 3,
-		stateId				: 2,
-		districtId			: 23
-		}
-		$.ajax({
-			type:'GET',
-			url:'getPositionsForDistrictAction.action',  
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			if(result != null && result.length > 0){  
-				buildPositionsForDistrict(result,divId);  			
-			}
-		}); 
-	}
-	getPositionsForDistrict("districtPositionId");
-	function buildPositionsForDistrict(result,divId){
-		//<tr class="showHideTr">
-		var str = '';
-		if(result != null && result.length >0){
-        str+='<td colspan="9" class="pad_15">';
-        str+='<table class="table table-condensed table-striped">';
-        str+='<thead class="text-capital">';
-        str+='<th>Position</th>';
-        str+='<th>total positions</th>';
-        str+='<th>M</th>';
-        str+='<th>F</th>';
-		for(var i in result[0].ageList){
-        str+='<th id="'+result[0].ageList[i].ageRangeId+'">'+result[0].ageList[i].ageRange+'</th>';
-		}
-        str+='</thead>';
-        str+='<tbody class="text-capital">';
-		for(var j in result){
-        str+='<tr>';
-		 str+='<td id="'+result[j].statusId+'">'+result[j].statusName+'</td>';
-		 str+='<td>'+result[j].totalCnt+'</td>';
-        str+='<td>'+result[j].femaleCount+'</td>';
-        str+='<td>'+result[j].maleCount+'</td>';
-		for(var k in result[i].ageList){
-        str+='<td>'+result[i].ageList[k].ageCount+'</td>';
-		}
-        str+='</tr>';
-		}
-		str+='</tbody>';
-        str+='</table>';
-        str+='</td>';
-		}
-		
-		$("#"+divId).html(str);
-        //str+='</tr>
-                                                    
-	}
+	
 	function getCasteWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId){
 		var jsObj={
 		positionId:positionId,
@@ -695,9 +637,9 @@ function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLeve
          type:'GET',
          url:'getPositionAndApplicationDetailsCntPositionWiseAction.action',
          dataType: 'json',
-         data: {task:JSON.stringify(jsObj)}
+         data: {task:JSON.stringify(jsObj)}      
       }).done(function(result){
-		  if(result != null){
+		  if(result != null){   
 			 if(reportType=="position"){
 			  buildPostionRslt(result);  
 		    }else if(reportType=="application"){
@@ -1159,24 +1101,28 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
             name: ' ',
             data:jsonDataArr
         }]
-    });
+    });     
 }
+	/* $(document).on("click",".changeIconClass",function(){
+		$(this).closest('tr').next('tr.showHideTr').toggle();
+		$(this).toggleClass("glyphicon-minus");
+	}); */
 	getNominatedCandidateGroupByDistrict();
 	function getNominatedCandidateGroupByDistrict(){
-		var positionIdList = [1,2,3,4,5];
-		var locationLevelIdList = [1,2,3,4,5,6,7];
-		var deptIdList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];
-		var corporationIdList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
-		var castGroupIdList = [1,2,3,4];
-		var positionStatusIdList = [1,2,3,4,5];
-		var stateId = 1;
+		var positionId = 0;
+		var locationLevelId = 0;
+		var deptId = 0;
+		var corporationId = 0;
+		var castGroupId = 0;   
+		var positionStatusId = 0;
+		var stateId = 1;  
 		var jsObj={
-			positionIdList : positionIdList,
-			locationLevelIdList : locationLevelIdList,  
-			deptIdList : deptIdList,
-			corporationIdList : corporationIdList,
-			castGroupIdList : castGroupIdList,
-			positionStatusIdList : positionStatusIdList,
+			positionId : positionId,
+			locationLevelId : locationLevelId,    
+			deptId : deptId,
+			corporationId : corporationId,
+			castGroupId : castGroupId,
+			positionStatusId : positionStatusId,
 			stateId : stateId  
 		}  
 		$.ajax({
@@ -1192,18 +1138,18 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 	} 
 	function buildStatePositionCluntTable(result){
 		var str = '';
-		str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+		str+='<table class="table table-condensed" style="border:1px solid #ddd;background-color:#ECF1F5">';  
 		str+='<thead class="bg_ef text-capital">';
-			str+='<th>District</th>';
-			str+='<th>Finalised Positions Total</th>';
-			str+='<th>Male</th>';
-			str+='<th>Female</th>';
-			str+='<th>20-29 AGE</th>';
-			str+='<th>30-39 AGE</th>';
-			str+='<th>40-49 AGE</th>';
-			str+='<th>50-59 AGE</th>';
-			str+='<th>60+ AGE</th>';
-			str+='<th></th>';
+			str+='<th style="width:200px;">District</th>';
+			str+='<th style="width:200px;text-align:center">Finalised Positions Total</th>';  
+			str+='<th style="width:100px;">Male</th>';
+			str+='<th style="width:100px;">Female</th>';
+			str+='<th style="width:100px;">20-29 AGE</th>';   
+			str+='<th style="width:100px;">30-39 AGE</th>';
+			str+='<th style="width:100px;">40-49 AGE</th>';
+			str+='<th style="width:100px;">50-59 AGE</th>';
+			str+='<th style="width:100px;">60+ AGE</th>';
+			str+='<th style="width:100px;"></th>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -1217,11 +1163,78 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 				str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
 				str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
 				str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-				str+='<td><i class="glyphicon glyphicon-plus changeIconClass" id="'+i+'"></i></td>';
+				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" ></i></td>';     
 			str+='</tr>';
-			str+='<tr class="showHideTr" id="districtPositionId">';  
+			str+='<tr class="showHideTr" id="districtPositionId'+i+'">';    
 			str+='</tr>';
 		}
 		str+='</tbody>';
 		$("#statePositionId").html(str);
+	}
+	$(document).on('click','.districtCls',function(){
+		var distId = $(this).attr("attr_id");
+		getPositionsForDistrict(distId);
+		
+	});
+	
+	function getPositionsForDistrict(sectionId){
+		var jsObj={
+		positionId 			: 0,    
+		boardLevelId 		: 0,  
+		deptId				: 0,
+		boardId				: 0,
+		castegroupId    	: 0,  
+		positionStatusId 	: 0,   
+		stateId				: 0,  
+		districtId			: 19
+		}
+		$.ajax({
+			type:'GET',
+			url:'getPositionsForDistrictAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){  
+				buildPositionsForDistrict(result,sectionId);  			
+			}
+		}); 
+	}
+	
+	function buildPositionsForDistrict(result,sectionId){
+		//<tr class="showHideTr"> 
+		var str = '';
+		if(result != null && result.length >0){
+        str+='<td colspan="10" class="pad_15">';  
+        str+='<table class="table table-condensed table-striped" >';
+        str+='<thead class="text-capital" style="width:100px;">';
+        str+='<th style="width:200px;">Position</th>';  
+        str+='<th style="width:200px;">total positions</th>';  
+        str+='<th style="width:100px;">M</th>';
+        str+='<th style="width:100px;">F</th>';
+		for(var i in result[0].ageList){
+        str+='<th style="width:100px;" id="'+result[0].ageList[i].ageRangeId+'">'+result[0].ageList[i].ageRange+'</th>';
+		}
+		str+='<th style="width:100px;"></th>';
+        str+='</thead>';
+        str+='<tbody class="text-capital">';
+		for(var j in result){
+        str+='<tr style="width:100px;">';
+		str+='<td id="'+result[j].statusId+'">'+result[j].statusName+'</td>';
+		str+='<td>'+result[j].totalCnt+'</td>';
+        str+='<td>'+result[j].femaleCount+'</td>';
+        str+='<td>'+result[j].maleCount+'</td>';
+		for(var k in result[i].ageList){
+        str+='<td>'+result[i].ageList[k].ageCount+'</td>';
+		}
+		str+='<td></td>';
+        str+='</tr>';
+		}
+		str+='</tbody>';
+        str+='</table>';
+        str+='</td>';
+		}
+		
+		$("#"+sectionId).html(str);  
+        //str+='</tr>
+                                                    
 	}
