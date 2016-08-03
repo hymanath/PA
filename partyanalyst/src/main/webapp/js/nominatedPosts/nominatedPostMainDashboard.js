@@ -5,7 +5,7 @@ $(document).ready(function(){
 	getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId");
 	getCastGroupList();
 	getApplicationStatusList();
-	 getPositionList();
+	getPositionList();
 	getLocationLevelList();
 	getDepartmentList();
 	getBoardList();
@@ -1161,4 +1161,67 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         }]
     });
 }
-	
+	getNominatedCandidateGroupByDistrict();
+	function getNominatedCandidateGroupByDistrict(){
+		var positionIdList = [1,2,3,4,5];
+		var locationLevelIdList = [1,2,3,4,5,6,7];
+		var deptIdList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28];
+		var corporationIdList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
+		var castGroupIdList = [1,2,3,4];
+		var positionStatusIdList = [1,2,3,4,5];
+		var stateId = 1;
+		var jsObj={
+			positionIdList : positionIdList,
+			locationLevelIdList : locationLevelIdList,  
+			deptIdList : deptIdList,
+			corporationIdList : corporationIdList,
+			castGroupIdList : castGroupIdList,
+			positionStatusIdList : positionStatusIdList,
+			stateId : stateId  
+		}  
+		$.ajax({
+			type:'GET',
+			url:'getNominatedCandidateGroupByDistAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){  
+				buildStatePositionCluntTable(result);
+			}
+		}); 
+	} 
+	function buildStatePositionCluntTable(result){
+		var str = '';
+		str+='<table class="table table-condensed" style="border:1px solid #ddd;">';
+		str+='<thead class="bg_ef text-capital">';
+			str+='<th>District</th>';
+			str+='<th>Finalised Positions Total</th>';
+			str+='<th>Male</th>';
+			str+='<th>Female</th>';
+			str+='<th>20-29 AGE</th>';
+			str+='<th>30-39 AGE</th>';
+			str+='<th>40-49 AGE</th>';
+			str+='<th>50-59 AGE</th>';
+			str+='<th>60+ AGE</th>';
+			str+='<th></th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr class="text-capital">';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].totalPositions+'</td>';
+				str+='<td>'+result[i].maleCount+'</td>';
+				str+='<td>'+result[i].femaleCount+'</td>';
+				str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+				str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+				str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+				str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+				str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
+				str+='<td><i class="glyphicon glyphicon-plus changeIconClass" id="'+i+'"></i></td>';
+			str+='</tr>';
+			str+='<tr class="showHideTr" id="districtPositionId">';  
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		$("#statePositionId").html(str);
+	}
