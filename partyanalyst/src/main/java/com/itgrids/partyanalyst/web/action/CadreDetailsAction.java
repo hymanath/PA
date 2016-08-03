@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
@@ -99,6 +100,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
 	private List<CadreReportVO> cadreReportVOList = new ArrayList<CadreReportVO>(0);
 	private List<GrievanceReportVO> grievanceReportVOList;
+	private List<ReportVO> reportVOList;
 	
 	
 	
@@ -549,6 +551,12 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	public void setCadreReportVOList(List<CadreReportVO> cadreReportVOList) {
 		this.cadreReportVOList = cadreReportVOList;
+	}
+	public List<ReportVO> getReportVOList() {
+		return reportVOList;
+	}
+	public void setReportVOList(List<ReportVO> reportVOList) {
+		this.reportVOList = reportVOList;
 	}
 	public String execute(){
 		
@@ -1692,4 +1700,15 @@ public String updateCadreNotesInfrmationAction()
 		}
 		return Action.SUCCESS;
 	}*/
+	
+	public String getNominatedPostReportFiles(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("tdpCadreId");
+			reportVOList=cadreDetailsService.getNominatedPostReportFiles(tdpCadreId);
+		}catch(Exception e){
+		 LOG.error("Exception occured in getNominatedPostReportFilesAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

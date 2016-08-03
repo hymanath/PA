@@ -13282,5 +13282,10 @@
 			<param name="root">nominatedPostVOs</param>  
 		</result>
 	</action>
+	<action name="getNominatedPostReportFilesAction" class="cadreDetailsAction" method="getNominatedPostReportFiles">
+		<result type="json" name="success">
+			<param name="root">CadreReportVO</param>  
+		</result>
+	</action>
 </package>
 </struts>
