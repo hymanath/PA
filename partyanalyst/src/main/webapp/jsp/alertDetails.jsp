@@ -415,7 +415,80 @@ control.makeTransliteratable(['commentsId']);
 var alertId = '${alertId}';
 
 $(".dropkickClass").dropkick();
-
+function deleteAlertAssignedCandidates(tdpCadreId)
+{
+	//$("#alertAssignedCandidateDataId").html('<img src="images/search.gif" />');
+   	var jsObj =
+		     {
+			alertId  : alertId,
+			tdpCadreId: tdpCadreId,
+			task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'deleteAlertAssignedCandidateAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+			      //buildAlertAssignedCandidateData(result);
+				});
+}
+function buildAlertAssignedCandidateData(result)
+{
+	
+	if(result == null || result.length == 0)
+	{
+	 $("#alertAssignedCandidateDataId").html('No Assigned Candidates..');
+	 $("#assignCandidatesCnt").html('0');
+		return;
+	}
+	var str='';
+	for(var i in result)
+				{
+	for(var j in result[i].subList)
+	{
+		str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
+		str+='<div class="media-left">';
+        str+='<img src="'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+        str+='</div>';
+		str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">';
+        str+='<div class="media-body" style="position:relative;"><span class="closeIcon assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'" onclick="getConfirmation();"><i class="glyphicon glyphicon-trash"></i></span>';
+		str+='</c:if>';
+		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
+		//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
+        //str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
+        str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
+        str+='<p>'+result[i].subList[j].locationVO.constituencyName+'</p>';
+		 str+=' </div>';
+		 str+=' </div>';
+	}
+	$("#assignCandidatesCnt").html(result[0].subList.length);
+	}
+	$("#alertAssignedCandidateDataId").html(str);
+	/*str+='<div  style="border:1px solid #ddd;padding:8px;margin-top:5px;" class="media">';
+	str+='<div class="media-left">';
+	str+='<img src="'+result[i].image+' "  onerror="setDefaultImage(this);" class="media-object img-center img-responsive  thumbnailSearch thumbnail" alt="Image" style="width: 60px !important; height: 60px  !important;"/>';
+	str+='</div>';
+	str+='<div class="media-body">';
+	
+	str+='<p><b>Name </b>:'+result[i].subList[j].name+' </p>';	
+	str+='<p><b>State </b>:'+result[i].subList[j].locationVO.state+' <b>District </b>: '+result[i].subList[j].locationVO.districtName+'<br/><b>Constituency </b>:'+result[i].subList[j].locationVO.constituencyName+' <b>Mandel </b>:'+result[i].subList[j].locationVO.tehsilName+' <b>Village </b>:'+result[i].subList[j].locationVO.villageName+'</p>';
+	str+='</div>';
+	str+='</div>';
+	}
+	}
+	$("#alertAssignedCandidateDataId").html(str);
+	
+	$("#assignCandidatesCnt").html(result[0].subList.length);
+	if(result[0].subList.length > 3)
+	{
+		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
+	}*/
+	
+}
+$(document).on("click",".assignCandidate",function(){
+	 var tdpCadreId = $(this).attr("attr_tdpCadreId");
+	 deleteAlertAssignedCandidates(tdpCadreId);
+});
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>

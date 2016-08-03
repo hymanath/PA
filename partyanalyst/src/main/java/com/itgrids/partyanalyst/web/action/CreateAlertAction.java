@@ -408,6 +408,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	public String deleteAlertAssignedCandidates()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			status = alertService.deleteAlertAssignedCandidates(jObj.getLong("alertId"),jObj.getLong("tdpCadreId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception rised in deleteAlertAssignedCandidates",e);
+		}
+		return Action.SUCCESS;	
+	}
 	
 	
 	
