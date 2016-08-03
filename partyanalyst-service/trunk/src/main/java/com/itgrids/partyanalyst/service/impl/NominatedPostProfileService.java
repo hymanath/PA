@@ -3968,4 +3968,18 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		}
 		return returnList;
 	}
+	
+	public Long validateVoterIdCardNo(String voterIdCardNo){
+		Long finalVoterId = 0l;
+		try{
+			
+			if(voterIdCardNo !=null && voterIdCardNo.trim().length()>0 && !voterIdCardNo.trim().isEmpty()){
+				finalVoterId = voterDAO.getVoterIdByIdCardNoNew(voterIdCardNo);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalVoterId;
+	}
 }
