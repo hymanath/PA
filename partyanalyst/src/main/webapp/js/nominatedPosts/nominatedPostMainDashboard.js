@@ -550,7 +550,7 @@ function buildOverAllTotalCountsByPosition(result){
 	     $(".tableStrOuterCls").hide();
 		 if(actionType == "close"){
 			 return;
-		 }
+		  }
 		var jsObj={
 			positionId:positionId,
 			levelId :levelId,
@@ -567,7 +567,7 @@ function buildOverAllTotalCountsByPosition(result){
 				data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result!=null){ 
-			buildCasteWisePositionsCountsByPosition(result,casteId);
+				buildCasteWisePositionsCountsByPosition(result,casteId);
 			}
 		});
 	}
@@ -970,9 +970,9 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 	if(positionRslt != null && positionRslt.length > 0){
 	 var str='';
 			str+='<div class="row">';
-				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-					str+='<div id="'+postionHighChartId+'" style="height:80px;"></div>';
-					str+='<ul class="positionsUl">';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #ddd">';
+					str+='<div id="'+postionHighChartId+'" style="height:150px;"></div>';
+					str+='<ul class="positionsUl" style="margin-top:20px !imortant;">';
 						str+='<li class="total"><span class="statusBox"></span>TOTAL POSITIONS<span class="count pull-right">'+positionRslt[0].totalPositionCn+'</span></li>';
 						str+='<li class="noCandidate"><span class="statusBox"></span>NO CANDIDATE POSITIONS<span class="count pull-right">'+positionRslt[0].noCandidateCnt+'</span></li>';
 						str+='<li class="shortListed"><span class="statusBox"></span>SHORT LISTED POSITIONS<span class="count pull-right">'+positionRslt[0].shortedListedCndtCnt+'</span></li>';
@@ -983,7 +983,15 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-					str+='<div id="'+appHighChartId+'"></div>';
+					str+='<div id="'+appHighChartId+'" style="height:200px;"></div>';
+					if(applicationRslt != null && applicationRslt.length > 0){
+						str+='<ul class="positionsUlPie m_top10">';
+							str+='<li class="received"><span class="statusBox"></span>RECEIVED<span class="count pull-right">'+applicationRslt[0].totalAppReceivedCnt+'</span></li>';					
+							str+='<li class="rejected"><span class="statusBox"></span>REJECTED<span class="count pull-right">'+applicationRslt[0].rejectedCnt+'<small class="text-muted">('+applicationRslt[0].rejectedAppPer+'%)</small></span></li>';
+							str+='<li class="inProgress"><span class="statusBox"></span>IN PROGRESS<span class="count pull-right">'+applicationRslt[0].inProgressCnt+'<small class="text-muted">('+applicationRslt[0].inProgressAppPer+'%)</small></span></li>';
+							str+='<li class="completed"><span class="statusBox"></span>COMPLETED<span class="count pull-right">'+applicationRslt[0].confirmCntCnt+'<small class="text-muted">('+applicationRslt[0].completedAppPer+'%)</small></span></li>';
+						str+='</ul>';
+	               } 
 				str+='</div>';
 			str+='</div>';
 		if(locationLevelId==2){
@@ -997,9 +1005,9 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 		}	
 	  buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId);	
 	}
-	if(applicationRslt != null && applicationRslt.length > 0){
+	 if(applicationRslt != null && applicationRslt.length > 0){
 		 buildLocatinWiseApplicationHighChartsRslt(applicationRslt,appHighChartId);  
-	} 
+	}  
 }
 function buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId){
 var headingArr=[];
@@ -1029,9 +1037,13 @@ function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighCh
                 enabled: false
             },
             categories:headingArr,
-            crosshair: true
+            crosshair: true,
+			gridLineWidth: 0,
+            minorGridLineWidth: 0
         },
         yAxis: {
+			gridLineWidth: 0,
+            minorGridLineWidth: 0,
             min: 0,
             title: {
                 text: ' '
@@ -1043,7 +1055,7 @@ function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighCh
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.1f}%</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true
@@ -1068,10 +1080,10 @@ var colorArr=[];
  colorArr.push('#65A7E1');	
  colorArr.push('#7DC1C2');	
  var jsonDataArr=[];
-  jsonDataArr.push(['Received',parseFloat(applicationRslt[0].totalAppRecevidPer)]);
-  jsonDataArr.push(['Rejected',parseFloat(applicationRslt[0].rejectedAppPer)]);
-  jsonDataArr.push(['In Progress',parseFloat(applicationRslt[0].inProgressAppPer)]);
-  jsonDataArr.push(['Completed',parseFloat(applicationRslt[0].confirmCntPer)]);  
+  jsonDataArr.push(['Received',parseFloat(applicationRslt[0].totalAppReceivedCnt)]);
+  jsonDataArr.push(['Rejected',parseFloat(applicationRslt[0].rejectedCnt)]);
+  jsonDataArr.push(['In Progress',parseFloat(applicationRslt[0].inProgressCnt)]);
+  jsonDataArr.push(['Completed',parseFloat(applicationRslt[0].confirmCntCnt)]);  
   buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId);
 }
 function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
@@ -1095,7 +1107,11 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			}
 		},
 		legend: {
-                enabled: true,
+                enabled: false,
+				useHTML: true,
+				labelFormatter: function() { 
+					return '<p style="width:200px;">' + this.name + ' <span class"text-right">' + this.y + '(' + this.percentage.toFixed(1) + '%)</span></p>';
+				}
 			 },
         series: [{
             name: ' ',
@@ -1238,3 +1254,4 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         //str+='</tr>
                                                     
 	}
+
