@@ -654,7 +654,7 @@
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 			<label class="text-capitalize">date of birth<span style="color:red;">*<span></label>
 			<div class="input-group">
-				<input type="text"  id="DOBId" class="form-control clearClss" name="addNotcadreRegistrationVO.dob" />
+				<input type="text"  id="DOBId" placeholder="mm/dd/yyyy" class="form-control clearClss" name="addNotcadreRegistrationVO.dob" />
 				<span class="input-group-addon">
 					<i class="glyphicon glyphicon-calendar"></i>
 				</span>
