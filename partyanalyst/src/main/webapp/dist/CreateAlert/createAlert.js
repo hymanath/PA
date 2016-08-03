@@ -130,6 +130,7 @@ function disableByLevel(index)
 				$(".levelShowCls").show();
 				$(".advanceprclsDiv").hide();
 				$("#cadreCommitteeDiv_chosen").show();
+				$("#cadreCommitteeDiv").show();
 				$("#cadreCommitteeDiv").css("display","none");
 				$(".chosen-choices").css("display","block");
 				getCommitteeRoles();
