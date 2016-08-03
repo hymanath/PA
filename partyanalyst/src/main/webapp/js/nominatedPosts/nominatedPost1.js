@@ -166,7 +166,6 @@ function getMandalCorporationsByConstituencyForNotcadre(constituency)
 		
 			//$("#addMemberModalBlock").modal('hide');
 			}, 2000); 
-			$("#notCadreSearchId").attr("checked","true");
 			getNotCadreDetails(globalNominatedCandId);
 		}else {
 			setTimeout(function(){
