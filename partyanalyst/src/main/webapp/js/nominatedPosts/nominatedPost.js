@@ -690,9 +690,9 @@ function getNominatedPostApplication(startIndex)
 		for(var i in result)
 			{	
 				if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 )
-					str +='<li  style="background:lightgrey">';
+					str +='<li  style="background:lightgrey;height: 213px;">';
 				else
-					str +='<li>';
+					str +='<li style="height: 213px;">';
 				
 				str +='<div class="img-center">';
 				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
@@ -728,6 +728,9 @@ function getNominatedPostApplication(startIndex)
 						str +='</li>';
 					}else if(result[i].constituency != null && result[i].constituency.length > 0){
 						 str +='<p class="text-center m_0">'+result[i].constituency+'</p>';
+						str +='</li>';
+					}else{
+						str +='<p class="text-center m_0">&nbsp;</p>';
 						str +='</li>';
 					}
 				 
@@ -1077,6 +1080,7 @@ $(document).on("click","#addOneMore",function(){
   
   e.find(".boardLvlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].boardLevelId');
   e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
+  e.find(".boardLvlCls").addClass("validateCls");
   e.find(".boardLvlCls").attr("attr_no",cloneCount);
   getBoardLevels("boardLvlId"+cloneCount);
   e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');getDepartments('+cloneCount+');');
@@ -1161,14 +1165,14 @@ function savingApplication(){
 	 $('#notCadreErrMsg').html("");
 	var flag = true;
 	
-	/*  $(".cadreCheckCls").each(function(){
+	  $(".cadreCheckCls").each(function(){
 				if($(this).prop('checked')==true && $(this).val() == "Cadre"){
 					if(!searchByApplicant()){
 						 flag = false;
 					}
 				}
 				
-			}); */
+			}); 
 			if(flag){
 					if(!validatationFields()){
 						 flag = false;
@@ -1240,6 +1244,7 @@ function savingApplication(){
 				 $("#postTypeId"+num).val(postTypeId);			
 			   }
 			 });
+
 	if(flag){
 		$("#savingAjaxImg").css("display","block");	
 			YAHOO.util.Connect.setForm('submitApplication',true);
@@ -1277,7 +1282,7 @@ function savingApplication(){
 		
 		var errorMsg='';
 		var boardLvlId;
-		$(".boardLvlCls").each(function(){
+		$(".validateCls").each(function(){
 			$(".errorMsgCls").html("");
 			 var clonNo = $(this).attr("attr_no");
 			 
@@ -1287,7 +1292,7 @@ function savingApplication(){
 					flag = false;
 				}else{
 					errorMsg = '';
-						$(this).parent().find(".chosen-single").css("border","1px solid gray");
+						$(this).parent().find(".chosen-single").css("border","1px solid #ddd");
 						flag = true;
 				}
 			
@@ -1299,7 +1304,7 @@ function savingApplication(){
 								flag = false;
 							}else{
 								errorMsg = '';
-								$("#nominatedStaeId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+								$("#nominatedStaeId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 							} 
 				}
@@ -1312,7 +1317,7 @@ function savingApplication(){
 								flag = false;
 							}else{
 								errorMsg = '';
-								$("#nominatedDistId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+								$("#nominatedDistId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 								} 
 				}
@@ -1325,7 +1330,7 @@ function savingApplication(){
 								flag = false;
 							}else{
 								errorMsg = '';
-								$("#nominatdConstId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+								$("#nominatdConstId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 								} 
 				}
@@ -1337,7 +1342,7 @@ function savingApplication(){
 								flag = false;
 							}else{
 								errorMsg = '';
-								$("#nominatedMandlId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+								$("#nominatedMandlId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 								} 
 				}
@@ -1349,45 +1354,45 @@ function savingApplication(){
 								flag = false;
 							}else{
 								errorMsg = '';
-								$("#nominatedPanchayatId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+								$("#nominatedPanchayatId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 								} 
 				}
-			 	/* if($("#depmtsId"+clonNo).val() == null || $("#depmtsId"+clonNo).val() == " " || $("#depmtsId"+clonNo).val() == undefined){
+			 	 if($("#depmtsId"+clonNo).val() == null || $("#depmtsId"+clonNo).val() == " " || $("#depmtsId"+clonNo).val() == undefined){
 						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 				} 
 				if($("#deptBoardId"+clonNo).val() == null || $("#deptBoardId"+clonNo).val() == " " || $("#deptBoardId"+clonNo).val() == undefined){
 						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
-								errorMsg = "Please select hilighted";
+							errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
-				} 			
+				} 
+								
 				if($("#deptBoardPostnId"+clonNo).val() == null || $("#deptBoardPostnId"+clonNo).val() == " " || $("#deptBoardPostnId"+clonNo).val() == undefined){
-						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
+						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-single").css("border","1px solid gray");
+						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid #ddd");
 								flag = true;
-				}  */
+				}  
 				if(errorMsg != ''){
-					//alert($(this).parent().find(".errorMsgCls").html())		
-		$(this).parent().find(".errorMsgCls").html(errorMsg);
-			flag = false;
-		}
+					$(this).parent().find(".errorMsgCls").html(errorMsg);
+						flag = false;
+				}
 				
 	});
-		//alert(flag)		
+				
 		return flag;
 	} 
 $(document).on("click","#addressCheckId",function(){

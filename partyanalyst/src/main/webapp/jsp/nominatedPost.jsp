@@ -136,12 +136,12 @@
                         <label class="checkbox-inline" style="padding-left: 10px;">
                         	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName"/>Not Cadre
                         </label>
-						<div id="addMemberDivId" style="display:none;">
-						<span style="margin-left:8px;cursor:pointer" class="addMemberModal">
+						
+						<span id="addMemberDivId" style="position:relative;top:3px;margin-left:8px;cursor:pointer;display:none;" class="addMemberModal">
 							<i class="glyphicon glyphicon-plus-sign"></i>
 							Add Member
 						</span>
-						 </div>
+						
                     </div>
 					</div>
 					
@@ -381,7 +381,7 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="chosenSelect boardLvlCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments('')" attr_no="">
+									<select class="chosenSelect boardLvlCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments('')" attr_no="">
 									<option value="0">Select Post Level</option>
 									</select>
 								</div>
@@ -464,35 +464,35 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="boardLvlCls" id="boardLvlId" onchange="showHideByNominatedPost('');getDepartments('');" >
+									<select class="boardLvlCls" id="" onchange="showHideByNominatedPost('');getDepartments('');" >
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
-									<select  class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="nominatedStaeId">
+									<select  class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="">
 										<option value="0">Select State</option>
 										<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="">
 									<label>District</label>
 									<select  class="nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
-									"nominatedDistId">
+									"">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="">
 									<label>Constituency</label>
-									<select class="nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="nominatdConstId">
+									<select class="nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select  class="nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
 										
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="">
 									<label>Panchayat/ Ward / Division</label>
 									<select  class="nominatedPanchayatCls" id="nominatedPanchayatId">
 										
@@ -500,18 +500,18 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Department Name</label>
-									<select  class="depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');">
+									<select  class="depmtsCls"  id="" onchange="getDepartmentBoards('');">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
-									<select  class="deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');">
+									<select  class="deptBoardCls" id="" onchange="getDepartmentBoardPositions('');">
 										
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
-									<select  class="deptBoardPostnCls" id="deptBoardPostnId">
+									<select  class="deptBoardPostnCls" id="">
 									</select>
 								</div>
 								
@@ -908,7 +908,7 @@ $(document).on("click",".addMemberModal",function(){
 	 $(".addNewCandidateErrorCls").html(" ");
 	$("#addMemberModalBlock").modal('show');
 })
-$('.chosenSelect').chosen();
+$('.chosenSelect').chosen({width:'100%'});
 $(document).on("click",".btnClassChange",function(){
 	$(this).parent().find(".btnActive").removeClass("btnActive");
 	$(this).addClass("btnActive");
