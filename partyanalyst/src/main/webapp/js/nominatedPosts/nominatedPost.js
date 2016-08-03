@@ -695,16 +695,23 @@ function getNominatedPostApplication(startIndex)
 					str +='<li style="height: 213px;">';
 				
 				str +='<div class="img-center">';
-				str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+				
 				
 				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
-				str +='</div>';
-				
-				if(result[i].id != null && result[i].id > 0){ // no cadre search  candidate id
-					str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
-				}else{
+				//str +='</div>';
+				//console.log(result[i].id);
+				if(result[i].id != null && result[i].id >= 0){ // no cadre search  candidate id
+				console.log(result[i].id);
+					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+						str +='</div>';
+					str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" sri attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="" />';
+				}else {
+						str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+							str +='</div>';
 						// cadre search  candidate id
-						if(result[i].nominatedPostCandidateId == null){
+						str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
+						
+						/*if(result[i].nominatedPostCandidateId == null){
 							result[i].nominatedPostCandidateId = 0;
 						}
 						if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 ){
@@ -712,7 +719,7 @@ function getNominatedPostApplication(startIndex)
 						}else{
 							str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
 						}
-						
+						*/
 				}
 			   // str +='<input type="checkbox" style="margin:auto;display:block;" class="" />';
 				str +='<p class="m_0 m_top5 text-center cadreName" value='+result[i].cadreName+'><b>'+result[i].cadreName+'</b></p>';
@@ -882,11 +889,52 @@ $('.searchTypeCls').click(function(){
   function getDepartmentBoardPositions(num){
 	//$("#searchDataImgForDist").show();
    
+   
+	 var postTypeId=1;
+	 var boardLevelId = $("#boardLvlId"+num).val();
+     var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
+	   if(isActive){
+		 postTypeId = $("#nomintdPostId"+num).attr("attr_postid");  
+	   }else{
+		postTypeId = $("#partyPostId"+num).attr("attr_postid");     
+	   }
+
+	   var searchLevelValue=1;
+	   if(boardLevelId == 1){
+		   searchLevelValue = 1;
+	   }
+	   else if(boardLevelId == 2){
+			if(num >0)
+				searchLevelValue = $('#nominatedStaeId'+num).val();
+			else
+				searchLevelValue = $('#nominatedStaeId').val();	;
+	   }
+	   else if(boardLevelId == 3){
+		   if(num >0)
+				searchLevelValue = $('#nominatedDistId'+num).val();
+			else
+				searchLevelValue = $('#nominatedDistId').val();;
+	   }else if(boardLevelId == 4){
+		   if(num >0)
+				searchLevelValue = $('#nominatdConstId'+num).val();
+			else
+				searchLevelValue = $('#nominatdConstId').val();;
+	   }else if(boardLevelId == 5 || boardLevelId == 6){
+		   if(num >0)
+				searchLevelValue = $('#nominatedMandlId'+num).val();
+			else
+				searchLevelValue = $('#nominatedMandlId').val();;
+	   }else if(boardLevelId == 7){
+		  ;
+	   }
+	   if(num==0)
+		   num='';
 	var jsObj = {
 		
 		depmtId : $("#depmtsId"+num).val(),
 		boardId : $("#deptBoardId"+num).val(),
-		boardLevelId : $("#boardLvlId"+num).val()
+		boardLevelId : $("#boardLvlId"+num).val(),
+		searchLevelValue:searchLevelValue
 	}
     $.ajax({
           type:'GET',
@@ -908,9 +956,50 @@ $('.searchTypeCls').click(function(){
   
     function getDepartmentBoards(num){
 	//$("#searchDataImgForDist").show();
+
+	 var postTypeId=1;
+	 var boardLevelId = $("#boardLvlId"+num).val();
+     var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
+	   if(isActive){
+		 postTypeId = $("#nomintdPostId"+num).attr("attr_postid");  
+	   }else{
+		postTypeId = $("#partyPostId"+num).attr("attr_postid");     
+	   }
+
+	   var searchLevelValue=1;
+	   if(boardLevelId == 1){
+		   searchLevelValue = 1;
+	   }
+	   else if(boardLevelId == 2){
+			if(num >0)
+				searchLevelValue = $('#nominatedStaeId'+num).val();
+			else
+				searchLevelValue = $('#nominatedStaeId').val();	;
+	   }
+	   else if(boardLevelId == 3){
+		   if(num >0)
+				searchLevelValue = $('#nominatedDistId'+num).val();
+			else
+				searchLevelValue = $('#nominatedDistId').val();;
+	   }else if(boardLevelId == 4){
+		   if(num >0)
+				searchLevelValue = $('#nominatdConstId'+num).val();
+			else
+				searchLevelValue = $('#nominatdConstId').val();;
+	   }else if(boardLevelId == 5 || boardLevelId == 6){
+		   if(num >0)
+				searchLevelValue = $('#nominatedMandlId'+num).val();
+			else
+				searchLevelValue = $('#nominatedMandlId').val();;
+	   }else if(boardLevelId == 7){
+		  ;
+	   }
+	   if(num==0)
+		   num='';
    var jsObj = {
 		depmtId : $("#depmtsId"+num).val(),
-		boardLevelId : $("#boardLvlId"+num).val()
+		boardLevelId : $("#boardLvlId"+num).val(),
+		searchLevelValue:searchLevelValue
 	}
     $.ajax({
           type:'GET',
@@ -934,23 +1023,79 @@ $('.searchTypeCls').click(function(){
 	//$("#searchDataImgForDist").show();
 	 var postTypeId=0;
 	 var boardLevelId = $("#boardLvlId"+num).val();
+	 if(num ==0)
+		 boardLevelId = $("#boardLvlId").val();
      var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
 	   if(isActive){
 		 postTypeId = $("#nomintdPostId"+num).attr("attr_postid");  
 	   }else{
 		postTypeId = $("#partyPostId"+num).attr("attr_postid");     
 	   }
-	var jsObj = {
+	if(num ==0){
+		 isActive = $("#nomintdPostId").hasClass("btnActive");
+	   if(isActive){
+		 postTypeId = $("#nomintdPostId").attr("attr_postid");  
+	   }else{
+		postTypeId = $("#partyPostId").attr("attr_postid");     
+	   }	
+	}
+	
+	   var searchLevelValue=1;
+	   if(boardLevelId == 1){
+		   searchLevelValue = 1;
+		   buildDepartments(postTypeId,boardLevelId,searchLevelValue,num);
+	   }
+	   else if(boardLevelId == 2){
+			if(num >0)
+				searchLevelValue = $('#nominatedStaeId'+num).val();
+			else
+				searchLevelValue = $('#nominatedStaeId').val();	
+			if(searchLevelValue >0)
+				buildDepartments(postTypeId,boardLevelId,searchLevelValue,num);
+	   }
+	   else if(boardLevelId == 3){
+		   if(num >0)
+				searchLevelValue = $('#nominatedDistId'+num).val();
+			else
+				searchLevelValue = $('#nominatedDistId').val();
+			if(searchLevelValue >0)
+				buildDepartments(postTypeId,boardLevelId,searchLevelValue,num);
+	   }else if(boardLevelId == 4){
+		   if(num >0)
+				searchLevelValue = $('#nominatdConstId'+num).val();
+			else
+				searchLevelValue = $('#nominatdConstId').val();
+			if(searchLevelValue >0)
+				buildDepartments(postTypeId,boardLevelId,searchLevelValue,num);
+	   }else if(boardLevelId == 5 || boardLevelId == 6){
+		   if(num >0)
+				searchLevelValue = $('#nominatedMandlId'+num).val();
+			else
+				searchLevelValue = $('#nominatedMandlId').val();
+			if(searchLevelValue >0)
+				buildDepartments(postTypeId,boardLevelId,searchLevelValue,num);
+	   }else if(boardLevelId == 7){
+		  if(searchLevelValue >0)
+				buildDepartments(postTypeId,boardLevelId,searchLevelValue,num);
+	   }
+  }
+  
+  function buildDepartments(postTypeId,boardLevelId,searchLevelValue,num){
+
+	  var jsObj = {
 		postType:postTypeId,
-		boardLevelId:boardLevelId
+		boardLevelId:boardLevelId,
+		searchLevelValue : searchLevelValue
 		}
+		
     $.ajax({
           type:'GET',
           url: 'getDepartmentsAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  
+	  if(num == 0)
+		  num='';
 	   $("#deptBoardId"+num).html('');
 	   $("#deptBoardId"+num).trigger("chosen:updated")
 	   $("#deptBoardPostnId"+num).html('');
@@ -958,16 +1103,17 @@ $('.searchTypeCls').click(function(){
        $("#depmtsId"+num).html('');
 	   $("#depmtsId"+num).trigger("chosen:updated")
     
-   if(result != null && result.length >0){
-		$("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
-		$("#depmtsId"+num).append('<option value="0">Any</option>'); 
-     for(var i in result){
-	   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	 }
-   }
-	  $("#depmtsId"+num).trigger("chosen:updated");
+	   if(result != null && result.length >0){
+			$("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
+			$("#depmtsId"+num).append('<option value="0">Any</option>'); 
+		 for(var i in result){
+		   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		 }
+	   }
+		  $("#depmtsId"+num).trigger("chosen:updated");
    });
   }
+  
 getBoardLevels("boardLvlId"); 
 //getDepartments("",1); 
  $(document).on("click",".checkboxCls",function(){
@@ -975,7 +1121,14 @@ getBoardLevels("boardLvlId");
     $(".checkboxCls").prop( "checked" ,false);
 	$( this ).prop( 'checked', true );
 	
-}) 
+}) ;
+
+$(document).on("click",".boardLvelCls",function(){
+	alert(123);
+	var id = $(this).attr('id');
+	$('#'+id+'').val(0);
+});
+
 function showHideByNominatedPost(num)
 {
 	var selectVal = $("#boardLvlId"+num).val();
@@ -1079,6 +1232,7 @@ $(document).on("click","#addOneMore",function(){
   e.find(".postTypeCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].postTypeId');
   
   e.find(".boardLvlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].boardLevelId');
+  //e.find(".boardLvlCls").attr("class","boardLvelCls");
   e.find(".boardLvlCls").attr("id","boardLvlId"+cloneCount);
   e.find(".boardLvlCls").addClass("validateCls");
   e.find(".boardLvlCls").attr("attr_no",cloneCount);
@@ -1090,31 +1244,33 @@ $(document).on("click","#addOneMore",function(){
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
   e.find(".nominatedStaeCls").attr("attr_no",cloneCount);
   e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
-  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');');
+  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');getDepartments('+cloneCount+');');
   
   e.find(".nominatedDistCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].districtId');
   e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
   e.find(".nominatedDistCls").attr("attr_no",cloneCount);
   e.find(".districtShowCls").attr("id","districtShowDivId"+cloneCount);
-  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts(this.value,nominatedDistId'+cloneCount+','+cloneCount+');');
+  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts(this.value,nominatedDistId'+cloneCount+','+cloneCount+');;getDepartments('+cloneCount+');');
   
   e.find(".nominatdConstCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].constituencyId');
   e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
   e.find(".nominatdConstCls").attr("attr_no",cloneCount);
   e.find(".constituencyShowCls").attr("id","constituencyshowDivId"+cloneCount);
-  e.find(".nominatdConstCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatdConstId'+cloneCount+');');
+  e.find(".nominatdConstCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatdConstId'+cloneCount+');;getDepartments('+cloneCount+');');
   
   e.find(".nominatedMandlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].mandalId');
   e.find(".nominatedMandlCls").attr("id","nominatedMandlId"+cloneCount);
   e.find(".nominatedMandlCls").attr("attr_no",cloneCount);
   e.find(".mandalShowCls").attr("id","mondalShowDivId"+cloneCount);
-  e.find(".nominatedMandlCls").attr("onChange",'getPanchayatWardByMandal('+cloneCount+',nominatedMandlId'+cloneCount+');');
+  e.find(".nominatedMandlCls").attr("onChange",'getPanchayatWardByMandal('+cloneCount+',nominatedMandlId'+cloneCount+');;getDepartments('+cloneCount+');');
    
   e.find(".nominatedPanchayatCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].panchayatId');
   e.find(".nominatedPanchayatCls").attr("id","nominatedPanchayatId"+cloneCount);
    e.find(".nominatedPanchayatCls").attr("attr_no",cloneCount);
   e.find(".panchayatShowCls").attr("id","panchayatShowDivId"+cloneCount);
   
+    e.find(".nominatedPanchayatCls").attr("onChange",';getDepartments('+cloneCount+');');
+	
   e.find(".depmtsCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptId');  
   e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
   e.find(".depmtsCls").attr("attr_no",cloneCount);
@@ -1396,15 +1552,7 @@ function savingApplication(){
 				
 		return flag;
 	} 
-$(document).on("click","#addressCheckId",function(){
-	if ($(this).is(':checked')) {
-		$("#changePhoneNumberDiv").show();
-  }
-  else {
-	  $("#changePhoneNumberDiv").hide();
-  }
-	getPopulateApplicantDetailsForMember(globalCadreId);
-});
+
 function savechangeAddressForNominatedPost(){ 
 $("#errorMsg").html("");
 var mobileNo = $("#phoneNumId").val();
@@ -1469,23 +1617,30 @@ var jObj={
 			
 	  });
 }
- $( document ).on("click",".cadreCls",function(){
-	globalCadreId = $(this).attr("attr_cadreId"); 
-	var candiId = $(this).attr("attr_nominated_post_candidate_id"); 
-	globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
-	  getCandidateAppliedPostsByCadre(globalCadreId,candiId);
+
+
+$(document).on("click","#addressCheckId",function(){
+	if ($(this).is(':checked')) {
+		$("#changePhoneNumberDiv").show();
+		getPopulateApplicantDetailsForMember(globalCadreId);
+  }
+  else {
+	  $("#changePhoneNumberDiv").hide();
+  }
+	
 });
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
  var type = $("input[type='radio']:checked").val();
  var id =globalNPCandiId;
+
 		if(id > 0){
 			type="Not Cadre";
 		}else if(id !== "undefined" || id <=0){
 			id =globalCadreId;
-			type="Cadre";
+			//type="Cadre";
 		}else{
 			id =globalCadreId;
-			type="Cadre";
+			//type="Cadre";
 		}
    var jObj={
 		globalCadreId:id,
@@ -1748,11 +1903,19 @@ function populateFields(result){
 		    $("#addVillageId").trigger("chosen:updated");
    });	
   } */
-
+ $( document ).on("click",".cadreCls",function(){
+	 $("#showAndHideDivId").show();
+	globalCadreId = $(this).attr("attr_cadreId"); 
+	var candiId = $(this).attr("attr_nominated_post_candidate_id"); 
+	globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
+	  getCandidateAppliedPostsByCadre(globalCadreId,candiId);
+});
  function getCandidateAppliedPostsByCadre(globalCadreId,candiId){
+
 	 var type = $("input[type='radio']:checked").val();
+	 var cadreId = candiId>0?0:globalCadreId;
 		var jsObj={
-				globalCadreId :globalCadreId,
+				globalCadreId :cadreId,
 				searchType:type,
 				nominateCandId:candiId
 		}
@@ -1783,9 +1946,16 @@ function populateFields(result){
                                         	str+='<ul class="ulPost">';
 											for(var i in result.subList){
                                             	str+='<li>';
-                                                	str+='<span class="labelStatus shortlisted">Shortlisted</span>';
+												if(result.subList[i].applStatusId == 1)
+                                                	str+='<span class="labelStatus " style="background:orange;" > Pending </span>';
+												else if(result.subList[i].applStatusId == 2 || result.subList[i].applStatusId == 4)
+                                                	str+='<span class="labelStatus " style="background:red;"> '+result.subList[i].status+' </span>';
+												else if(result.subList[i].applStatusId == 3)
+                                                	str+='<span class="labelStatus " style="background:lightblue;" > '+result.subList[i].status+' </span>';
+												else
+                                                	str+='<span class="labelStatus " style="background:green;">'+result.subList[i].status+' </span>';
 													if(result.subList[i].levelName != null){
-                                                	str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 													}
 													else{
 														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
@@ -2078,16 +2248,13 @@ var isSameCheckBoxClicked=0;
    if($(this).is(':checked')){
 	  globalCadreId = $(this).attr("attr_cadreId"); 
 	  candidateId = $(this).attr("attr_nominated_post_candidate_id");
-	  getCandidateAppliedPostsByCadre(globalCadreId,globalNPCandiId); 
+	 // getCandidateAppliedPostsByCadre(globalCadreId,globalNPCandiId); 
 	   $(".hideDivCls").show();
         isAlreadyChecked = true;	   
    }
  });
 
- $(document).on('click','.cadreCls',function(){
-		$("#showAndHideDivId").show();
-	});
-	
+
 	$(document).on('blur','#voterId',function(){
 		validateVoterIdCardNo();
 	 });
