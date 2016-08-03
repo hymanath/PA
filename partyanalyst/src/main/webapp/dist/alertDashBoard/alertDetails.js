@@ -167,7 +167,7 @@ function buildAlertCandidateData(result)
 	str+='<li>';
 		str+='<div class="media">';
 			str+='<div class="media-left">';
-			   str+=' <img src="'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+			   str+=' <img src="images/cadre_images/'+result[i].image+'"  onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
 		   str+=' </div>';
 		   str+=' <div class="media-body">';
 			   str+=' <p class="text-capital"><b>'+result[i].name+'</b></p>';
@@ -332,7 +332,7 @@ function buildAlertAssignedCandidateData(result)
 	{
 		str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
 		str+='<div class="media-left">';
-        str+='<img src="'+result[i].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+        str+='<img src="images/cadre_images/'+result[i].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
        str+=' </div>';
         str+=' <div class="media-body" >';
 		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
