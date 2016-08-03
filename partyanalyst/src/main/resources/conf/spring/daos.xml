@@ -3156,7 +3156,22 @@
 	</bean>
 	<bean id="leaderOccasionWishDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.LeaderOccasionWishDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityMemberDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
+	<bean id="userTypeRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserTypeRelationDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="activityMemberAccessLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityMemberAccessLevelDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="activityMemberAccessTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityMemberAccessTypeDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="activityMemberRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityMemberRelationDAO" >  
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="partyOfficeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyOfficeDAO" > 
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 

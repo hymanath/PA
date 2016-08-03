@@ -960,9 +960,14 @@
 				    <value>com.itgrids.partyanalyst.model.DashboardSettingType</value>
 				    <value>com.itgrids.partyanalyst.model.DashboardSettingValue</value>
 				    <value>com.itgrids.partyanalyst.model.DashboardComponentSetting</value>
-				    <value>com.itgrids.partyanalyst.model.LeaderOccasion</value>
+				     <value>com.itgrids.partyanalyst.model.LeaderOccasion</value>
 				    <value>com.itgrids.partyanalyst.model.OccasionType</value>
 				    <value>com.itgrids.partyanalyst.model.LeaderOccasionWishDetails</value>
+				    <value>com.itgrids.partyanalyst.model.ActivityMember</value>
+				    <value>com.itgrids.partyanalyst.model.UserTypeRelation</value>
+				    <value>com.itgrids.partyanalyst.model.ActivityMemberAccessType</value>
+				    <value>com.itgrids.partyanalyst.model.ActivityMemberAccessLevel</value>
+				     <value>com.itgrids.partyanalyst.model.ActivityMemberRelation</value>
 				 </list>
 			
 		</property>
