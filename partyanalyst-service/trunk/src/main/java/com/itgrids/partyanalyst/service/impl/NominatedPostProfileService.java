@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -3719,6 +3720,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 		try {
 			Map<Long,NominatedPostDashboardVO> casteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
+			Long totalCount = 0l;
 			
 			//0.casteId,1.caste,2.ageId,3.age,4.gender,5.count.
 			List<Object[]> list = nominatedPostFinalDAO.getCasteCategoryGroupWiseCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,"casteCategory");
@@ -3771,9 +3773,22 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
 							totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
 							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
+							totalCount = totalCount+totalvo.getStatusCount();
 						}
 					}
 					ageList.add(totalvo);
+					castevo.setTotalCnt(totalvo.getStatusCount());
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(casteMap)){
+				for (Map.Entry<Long, NominatedPostDashboardVO> entry : casteMap.entrySet()){
+					NominatedPostDashboardVO vo = entry.getValue();
+					Long count = vo.getTotalCnt();
+					if(totalCount != null && totalCount.longValue() > 0l && count != null && count.longValue() > 0l){
+					String percentage = (new BigDecimal((count * 100.0)/totalCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					vo.setPercentage(percentage);
+					}
 				}
 			}
 			returnList = new ArrayList<NominatedPostDashboardVO>(casteMap.values());
@@ -3787,6 +3802,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 		try {
 			Map<Long,NominatedPostDashboardVO> casteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
+			Long totalCount = 0l;
 			
 			//0.casteId,1.caste,2.ageId,3.age,4.gender,5.count.
 			List<Object[]> list = nominatedPostFinalDAO.getCasteCategoryGroupWiseCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,"casteName");
@@ -3839,9 +3855,22 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
 							totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
 							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
+							totalCount = totalCount+totalvo.getStatusCount();
 						}
 					}
 					ageList.add(totalvo);
+					castevo.setTotalCnt(totalvo.getStatusCount());
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(casteMap)){
+				for (Map.Entry<Long, NominatedPostDashboardVO> entry : casteMap.entrySet()){
+					NominatedPostDashboardVO vo = entry.getValue();
+					Long count = vo.getTotalCnt();
+					if(totalCount != null && totalCount.longValue() > 0l && count != null && count.longValue() > 0l){
+					String percentage = (new BigDecimal((count * 100.0)/totalCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					vo.setPercentage(percentage);
+					}
 				}
 			}
 			returnList = new ArrayList<NominatedPostDashboardVO>(casteMap.values());

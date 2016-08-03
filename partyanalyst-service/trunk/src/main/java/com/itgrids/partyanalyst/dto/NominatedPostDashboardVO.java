@@ -24,8 +24,15 @@ public class NominatedPostDashboardVO {
 	private String name;
 	private Long maleCount = 0l;
 	private Long femaleCount = 0l;
+	private String percentage;
 	
 	
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
 	public Long getAgeRangeId() {
 		return ageRangeId;
 	}
