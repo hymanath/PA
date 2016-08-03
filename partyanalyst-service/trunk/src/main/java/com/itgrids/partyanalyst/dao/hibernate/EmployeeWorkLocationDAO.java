@@ -199,10 +199,12 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 		return query.list();
 	} 
 	//query for migrated emplyees started....
-	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> migratedCaderIds){
+	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> migratedCaderIds, List<Long> deptList){
 		Query query = getSession().createQuery(" select EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, count(distinct EWL.employee.tdpCadre.tdpCadreId) " +
-											   " from EmployeeWorkLocation EWL, EventAttendee EA" +
+											   " from EmployeeWorkLocation EWL, EventAttendee EA, EmployeeDepartment ED " +
 											   " where " +
+											   " EWL.employee.employeeId = ED.employee.employeeId and " +
+											   " ED.department.departmentId in (:deptList) and " +
 											   " EA.event.eventId = EWL.partyOffice.event.eventId and " +
 											   " EWL.employee.tdpCadre.tdpCadreId in (:migratedCaderIds) and " +
 											   " date(EA.attendedTime) between :fromDate and :toDate and " +
@@ -216,16 +218,19 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 		query.setParameterList("migratedCaderIds", migratedCaderIds);
+		query.setParameterList("deptList", deptList);
 		return query.list();
 		
 	}
-	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployeeDetails(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList){
+	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployeeDetails(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList, List<Long> deptList){
 		Query query = getSession().createQuery("  select distinct EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, min(EA.attendedTime), ED.department.departmentName " +
 				   " from EmployeeWorkLocation EWL, EventAttendee EA, EmployeeDepartment ED " +
 				   " where " +
 				   //" EWL.partyOffice.event.parentEventId = 44 and " +
 				   " EWL.employee.tdpCadre.tdpCadreId = EA.tdpCadre.tdpCadreId and " +
-				   " EWL.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) and " +   
+				   " EWL.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) and " +
+				   " EWL.employee.employeeId = ED.employee.employeeId and " +
+				   " ED.department.departmentId in (:deptList) and " +   
 				   " ED.employee.employeeId = EWL.employee.employeeId and " +
 				   //" EA.event.eventId = EWL.partyOffice.event.eventId and " +
 				   " date(EA.attendedTime) between :fromDate and :toDate and " +
@@ -239,6 +244,7 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 query.setDate("fromDate", fromDate);
 query.setDate("toDate", toDate);
 query.setParameterList("attendedExtraCadreidList", attendedExtraCadreidList);
+query.setParameterList("deptList", deptList);  
 return query.list();
 	}
 }

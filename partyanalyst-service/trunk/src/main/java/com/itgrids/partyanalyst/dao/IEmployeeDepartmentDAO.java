@@ -16,6 +16,6 @@ public interface IEmployeeDepartmentDAO extends GenericDao<EmployeeDepartment, L
 	public List<Object[]> getDepartmentWiseTotalEmployeeListFilter(List<Long> deptList);
 	public List<Object[]> getDepartmentWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList);
 	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList);
-	public List<Object[]> getDepartmenWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList);
-	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(List<Long> attendedExtraCadreidList);
+	public List<Object[]> getDepartmenWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList, List<Long> deptList);
+	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(List<Long> attendedExtraCadreidList, List<Long> deptList);
 }

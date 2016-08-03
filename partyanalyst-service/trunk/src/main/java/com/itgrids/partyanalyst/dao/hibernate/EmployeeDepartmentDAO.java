@@ -168,28 +168,31 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 		return query.list();
 	}
 	//for migrated employee 
-	public List<Object[]> getDepartmenWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList){
+	public List<Object[]> getDepartmenWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList, List<Long> deptList){
 		StringBuilder sqlQuery = new StringBuilder();
 		sqlQuery.append(" select model.department.departmentId, model.department.departmentName, count(distinct model.employee.tdpCadre.tdpCadreId) " +
 						" from EmployeeDepartment model " +
 						" where " +
-						" model.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) " +
+						" model.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) and " +
+						" model.department.departmentId in (:deptList) " +
 						" group by " +
 						" model.department.departmentId " +
 						" order by " +
 						" model.department.departmentId");
 		Query query = getSession().createQuery(sqlQuery.toString());
 		query.setParameterList("attendedExtraCadreidList", attendedExtraCadreidList);
+		query.setParameterList("deptList", deptList);
 		return query.list();
 	}
-	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(List<Long> attendedExtraCadreidList){
+	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(List<Long> attendedExtraCadreidList, List<Long> deptList){
 		StringBuilder sqlQuery = new StringBuilder();
 		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, count(distinct EA.tdpCadre.tdpCadreId) " +
 						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, EventAttendee EA " +
-						" where " +
+						" where " +  
 						" ED.employee.employeeId = EWL.employee.employeeId and " +
 						" ED.employee.tdpCadreId = EA.tdpCadre.tdpCadreId and " +  
-						" ED.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) and " +  
+						" ED.employee.tdpCadre.tdpCadreId in (:attendedExtraCadreidList) and " +
+						" ED.department.departmentId in (:deptList) and " +  
 						//" EWL.partyOffice.event.parentEventId = 44 and " +
 						" EWL.partyOffice.event.eventId = EA.event.eventId and " +  
 						" ED.isDeleted = 'N' and " +  
@@ -203,6 +206,7 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 		Query query = getSession().createQuery(sqlQuery.toString());
 		
 		query.setParameterList("attendedExtraCadreidList", attendedExtraCadreidList);
+		query.setParameterList("deptList", deptList);
 		return query.list();
 	}
 }
