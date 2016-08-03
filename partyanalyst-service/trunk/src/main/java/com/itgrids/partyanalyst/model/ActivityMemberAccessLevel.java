@@ -28,7 +28,8 @@ public class ActivityMemberAccessLevel {
 	private Long activityLocationValue;
 	
 	private ActivityMember activityMember;
-
+	private UserLevel userLevel;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "activity_member_access_level_id", unique = true, nullable = false)
@@ -75,6 +76,18 @@ public class ActivityMemberAccessLevel {
 
 	public void setActivityMember(ActivityMember activityMember) {
 		this.activityMember = activityMember;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="activity_member_level_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserLevel getUserLevel() {
+		return userLevel;
+	}
+
+	public void setUserLevel(UserLevel userLevel) {
+		this.userLevel = userLevel;
 	}
 	
 	
