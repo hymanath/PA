@@ -371,7 +371,7 @@
 							<div id="CamparitiveBasicBlock" style ="display:none;"></div>
 							<!--<div class="col-xs-6"><div id="committeesForCamparitive" class="" style ="display:none;width:100%;height:250px;"></div></div>
 							<div class="col-xs-6"><div id="committeesForCamparitive1" class="" style ="display:none;width:100%;height:250px;"></div></div>-->
-							
+							<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="comparitiveLoadingId"></center></div>
 							
 							</div>
 							

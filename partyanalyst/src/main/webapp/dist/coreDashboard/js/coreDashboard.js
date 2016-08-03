@@ -150,6 +150,7 @@
  	}
 	function getCommitteesComparativeBascicReportChart(){
 		
+		$("#comparitiveLoadingId").show();
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
@@ -171,6 +172,7 @@
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
+			$("#comparitiveLoadingId").hide();
  			buildGraphComparativeForBasicCommitteeBlock(result);
  		});
 	}
@@ -515,7 +517,7 @@ function buildGraphComparativeForBasicCommitteeBlock(result){
 				$('#levelWiseComparativeForCommitteesDetails'+i).css("width",getWidth+'px');	
 				
 				$('#levelWiseComparativeForCommitteesDetails'+i).highcharts({
-					colors:['#CBE7B9','#00C7F7','#D6EB59'],
+					colors:['#CBE7B9'],
 					chart: {
 						type: 'column'
 					},
