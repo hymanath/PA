@@ -358,6 +358,51 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.boardLevelId, count( model.nominatedPostMember.nominatedPostMemberId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId)  " +
+				" from NominatedPostApplication model ");
+		if(levelId != null && levelId.longValue()>1L && stateId != null)
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
+		else
+			queryStr.append(" where ");
+		//queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId =1   and model.boardLevelId =:levelId ");
+		queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId is not null   ");
+		if(levelId.longValue() != 5L)
+			queryStr.append("   and model.boardLevelId =:levelId ");
+		else
+			queryStr.append("   and model.boardLevelId in (5,6) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		queryStr.append(" and model.applicationStatusId = 1");//applied
+		
+		if(levelId != null && levelId.longValue()>2L && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append("  and (model3.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
+			else if(stateId.longValue() ==36L)
+				queryStr.append(" and  ( model3.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
+		}
+		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model3.state.stateId=:stateId ");
+		
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(levelId.longValue() != 5L)
+			query.setParameter("levelId", levelId);
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
+		
+		return query.list();
+	}
+
+	/*public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
+		
+		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.boardLevelId, count(model.nominatedPostApplicationId), " +
 				" count(distinct model.departmentId), " +
 				" count(distinct model.boardId)  " +
@@ -398,9 +443,52 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
 		
 		return query.list();
+	}*/
+	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.boardLevelId, count(model.nominatedPostMember.nominatedPostMemberId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPostApplication model " );
+		if(levelId != null && levelId.longValue()>1L && stateId != null)
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
+		else
+			queryStr.append(" where ");
+		queryStr.append(" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.RUNNING_NOMINATED_POSTS_STATUS_IDS+")  ");
+		if(levelId != null && levelId.longValue()>0L){
+			if(levelId.longValue() != 5L)
+				queryStr.append("   and model.boardLevelId =:levelId ");
+			else
+				queryStr.append("   and model.boardLevelId in (5,6) ");
+		}
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		//queryStr.append(" and model.applicationStatusId <>1  ");
+		if(levelId != null && levelId.longValue()>2L && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append("  and (model3.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
+			else if(stateId.longValue() ==36L)
+				queryStr.append(" and  ( model3.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
+		}
+		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model3.state.stateId=:stateId ");
+		
+		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(levelId != null && levelId.longValue()>0L)
+			if(levelId.longValue() != 5L)
+				query.setParameter("levelId", levelId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
+		return query.list();
 	}
 
-	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
+	/*public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.boardLevelId, count(model.nominatedPostApplicationId), " +
@@ -442,8 +530,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
 		return query.list();
-	}
-
+	}*/
 	public List<Object[]> getPendingApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate){
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -466,6 +553,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getCandidateAppliedPostsByCadre(Long tdpCadreId,String searchType,Long nominateCandId){
 		StringBuilder str = new StringBuilder();
 		
+		if(nominateCandId != null && nominateCandId.longValue()>0L)
+			searchType="Not Cadre";
 		str.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
 				" model.boardLevel.boardLevelId,model.boardLevel.level,departments.departmentId," +
 	        " departments.deptName,board.boardId,board.boardName,position.positionId," +
@@ -476,7 +565,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        	str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId = :tdpCadreId ");
 	        }
 	        else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
-	        	str.append(" and model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId and model.nominationPostCandidate.tdpCadre.tdpCadreId is null ");
+	        	str.append(" and model.nominationPostCandidate.nominationPostCandidateId = :nominateCandId ");
+	        	
+	        	if(tdpCadreId != null && tdpCadreId.longValue()>0L)
+	        		str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId is not null ");
+	        	else
+	        		str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId is null ");
 	        }
 	        
 	        str.append( " order by model.postType.postTypeId ");

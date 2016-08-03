@@ -20,8 +20,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Object[]> getAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,List<Long> statusList,Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.nominatedPostStatus.status, model.nominatedPostStatusId, " +
-				" model.nominatedPostMember.boardLevelId, count(model.nominatedPostId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostMember.nominatedPostPosition.positionId), " +
+				" model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostMember.nominatedPostMemberId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
 		queryStr.append(" from NominatedPost model   " );
 		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
@@ -71,7 +71,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Object[]> getTotalAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,Long stateId,String statustype){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select '','', model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(model.nominatedPostMember.nominatedPostPosition.positionId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
 		queryStr.append(" from NominatedPost model   " );
 		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
@@ -407,7 +407,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	}
 
 
-	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId){
+	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -415,18 +415,18 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    		       " model.nominatedPostMember.nominatedPostPosition.departments.deptName from NominatedPost " +
 		    		       " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
 		    		       " and model.nominatedPostStatus.nominatedPostStatusId=1 ");
-		    
-		    if(postType != null && postType.longValue() > 0){
+		   
+		    if(postType != null && postType.longValue() > 0)
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.postType.postTypeId=:postTypeId ");
-		    }
 		    if(boardLevelId != null && boardLevelId.longValue() > 0){
 		    	if(boardLevelId.longValue() !=5L)
-		    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
+		    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
 		    	else
 		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
-		    	
+		    	if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+				    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 		    }
-		    Query query = getSession().createQuery(queryStr.toString());
+		    Query query = getSession().createQuery(queryStr.toString() +" order by model.nominatedPostMember.nominatedPostPosition.departments.deptName asc ");
 		    
 		    if(postType != null && postType.longValue() > 0L){
 		    	query.setParameter("postTypeId", postType);
@@ -434,9 +434,12 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
 		    	query.setParameter("boardLevelId", boardLevelId);
 		    }
+		    if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+		    	query.setParameter("searchLevelValue", searchLevelValue);
+		    
 		    return query.list();
 	   }
-	 public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId){
+	 public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -452,17 +455,22 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    		queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
 		    	else
 		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,7)");
+		    	if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+				    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 		    }
-		    Query query = getSession().createQuery(queryStr.toString());
+		    Query query = getSession().createQuery(queryStr.toString()+" order by model.nominatedPostMember.nominatedPostPosition.board.boardName asc ");
 		    if(departmentId != null && departmentId.longValue() > 0L){
 		    	query.setParameter("departmentId", departmentId);
 		    }
 		    if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
 		    	query.setParameter("boardLevelId", boardLevelId);
 		    }
+		    if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+		    	query.setParameter("searchLevelValue", searchLevelValue);
+		    
 		    return query.list();
 	   }
-	 public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId){
+	 public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -481,8 +489,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	        		   queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
 	        	   else
 	        		   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+	        	   if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+					    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 	  	      }
-			    Query query = getSession().createQuery(queryStr.toString());
+			    Query query = getSession().createQuery(queryStr.toString()+" order by model.nominatedPostMember.nominatedPostPosition.position.positionName asc ");
 			    
 				 if(departmentId != null && departmentId.longValue()> 0L){
 						query.setParameter("deapartmentId", departmentId);
@@ -493,6 +503,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				 if(boardLevelId != null && boardLevelId.longValue() > 0L && boardLevelId.longValue() !=5L){
 				    	query.setParameter("boardLevelId", boardLevelId);
 				  }
+				 if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+				    	query.setParameter("searchLevelValue", searchLevelValue);
 		    return query.list();
 	 }
 	 
@@ -700,7 +712,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
   public List<Object[]> getTotalCorpAndBoardsAndPositions(Long boardLevelId, Date startDate,Date endDate,Long stateId){
 	  
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count(distinct model.departmentId),count(distinct model.boardId) , count( distinct model.positionId) ");
+		queryStr.append(" select count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) , count(model.nominatedPostMember.nominatedPostMemberId) ");
 		queryStr.append(" from NominatedPostApplication model   " );
 		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
 			queryStr.append(",UserAddress model2 where model.addressId = model2.userAddressId and " );

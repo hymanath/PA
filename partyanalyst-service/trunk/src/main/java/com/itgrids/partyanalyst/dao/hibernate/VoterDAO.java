@@ -448,12 +448,12 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 					return "";
 			}
 			
-			public Long getVoterIdByIdCardNoNew(String voterCardId){
-				Query query = getSession().createQuery("select model.voterId from Voter model where model.voterIDCardNo =:voterCardId order by model.voterId desc ");
-				query.setParameter("voterCardId", voterCardId);
+			public List<Long> getVoterIdByIdCardNoNew(String voterCardId){
+				Query query = getSession().createQuery("select model.voterId from Voter model where model.voterIDCardNo =:voterCardId ");
+				query.setParameter("voterCardId", voterCardId.trim());
 				
 				query.setMaxResults(1);
-				 return (Long)query.uniqueResult();
+				 return query.list();
 			}
 			
 			
