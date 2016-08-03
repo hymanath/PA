@@ -32,6 +32,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
+import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -243,6 +244,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ITdpCadreReportDAO tdpCadreReportDAO;
 	private IImportantLeadersLevelDAO importantLeadersLevelDAO;
 	
+	private IApplicationDocumentDAO applicationDocumentDAO;
 	
 	public IImportantLeadersLevelDAO getImportantLeadersLevelDAO() {
 		return importantLeadersLevelDAO;
@@ -924,6 +926,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 
 	public void setTdpCadreReportDAO(ITdpCadreReportDAO tdpCadreReportDAO) {
 		this.tdpCadreReportDAO = tdpCadreReportDAO;
+	}
+	
+	public IApplicationDocumentDAO getApplicationDocumentDAO() {
+		return applicationDocumentDAO;
+	}
+
+	public void setApplicationDocumentDAO(
+			IApplicationDocumentDAO applicationDocumentDAO) {
+		this.applicationDocumentDAO = applicationDocumentDAO;
 	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
@@ -10797,5 +10808,26 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 			LOG.error("Exception Occured in getComplaitnScanCopies() method, Exception - ",e);
 		}
 		
+	}
+	
+	public List<ReportVO> getNominatedPostReportFiles(Long tdpCadreId){
+		 List<ReportVO> reprtVoLst=new ArrayList<ReportVO>();
+		try{
+			SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy");
+			
+			List<Object[]> reprtFiles = applicationDocumentDAO.getNominatedPostReport(tdpCadreId);
+			if(reprtFiles!=null &&  reprtFiles.size() >0 ){
+				for(Object[] reptObj : reprtFiles){
+					ReportVO reprtVo=new ReportVO();
+					reprtVo.setReportPath(reptObj[0]!=null ? reptObj[0].toString(): "");
+					reprtVo.setInsertedTime(reptObj[1]!=null ?sdf.format(reptObj[1].toString()):"");
+					reprtVoLst.add(reprtVo);
+				}
+			
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in getNominatedPostReportFiles Service() - ",e);
+		}
+		return reprtVoLst;
 	}
 }
