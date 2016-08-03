@@ -732,7 +732,8 @@ function getNominatedPostApplication(startIndex)
 					}
 				 
 			}
-			str +='</ul>';		
+			str +='</ul>';	
+			$("#cadreSearchDtls").html(str);			
 			if(result.length>3)
 			{
 			$(".best-matched-profile").slick({
@@ -742,9 +743,10 @@ function getNominatedPostApplication(startIndex)
 			   });
 			}
 		}else{
-				str+='No Data Available';	
+				str+='No Data Available';
+			$("#cadreSearchDtls").html(str);				
 		}
-	  $("#cadreSearchDtls").html(str);  
+	    
 	}
 	function refreshExistingDetails(){ 
 		$("#searchBy").val("");
