@@ -290,7 +290,8 @@
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                 	<div class="pad_10 bg_ff">
-                    	<div class="table-responsive">
+                    	<div class="table-responsive" id="statePositionId">
+							<!--
                         	<table class="table table-condensed" style="border:1px solid #ddd;">
                             	<thead class="bg_ef text-capital">
                                 	<th>District</th>
@@ -299,7 +300,7 @@
                                     <th>Female</th>
                                     <th>20-29 AGE</th>
                                     <th>30-39 AGE</th>
-                                    <th>50-59 AGE</th>
+                                    <th>50-59 AGE</th>  
                                     <th>60+ AGE</th>
                                     <th></th>
                                 </thead>
@@ -319,6 +320,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+							-->
                         </div>
                     </div>
                 </div>
@@ -686,3 +688,6 @@ $(document).on("click",".changeIconClass",function(){
 </script>
 </body>
 </html>
+
+
+	
