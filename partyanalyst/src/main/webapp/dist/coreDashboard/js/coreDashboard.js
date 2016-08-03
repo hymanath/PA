@@ -840,13 +840,13 @@ function buildBasicgraphs(){
 }
 
 
-	function getUserLevelWiseDetails(){
+	function getLoggedInUserStructure(){
 		
 		var jsObj ={userId:globalUserId}
 		
 		$.ajax({
 			type : 'POST',
-			url : 'getUserLevelWiseDetailsAction.action',
+			url : 'getLoggedInUserStructureAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){

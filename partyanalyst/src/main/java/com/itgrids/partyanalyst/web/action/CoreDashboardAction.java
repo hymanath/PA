@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,6 +33,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<CommitteeBasicVO> committeeBasicVO;
 	private List<CommitteeVO> committeeVOList;
 	private CommitteeVO committeeVO ;
+	private UserTypeVO userTypeVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	
@@ -91,6 +93,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setCommitteeVO(CommitteeVO committeeVO) {
 		this.committeeVO = committeeVO;
+	}
+	
+	public UserTypeVO getUserTypeVO() {
+		return userTypeVO;
+	}
+
+	public void setUserTypeVO(UserTypeVO userTypeVO) {
+		this.userTypeVO = userTypeVO;
 	}
 
 	//Implementation method
@@ -255,14 +265,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	public String getUserLevelWiseDetails(){
+	public String getLoggedInUserStructure(){
 		try{
-			LOG.info("Entered into getUserLevelWiseDetails()  of CoreDashboardAction");
+			LOG.info("Entered into getLoggedInUserStructure()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
-			userDataVO = coreDashboardService.getUserLevelWiseDetails(jObj.getLong("userId"));
+			userTypeVO = coreDashboardService.getLoggedInUserStructure(jObj.getLong("userId"));
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at getUserLevelWiseDetails() method of CoreDashBoard", e);
+			LOG.error("Exception raised at getLoggedInUserStructure() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}

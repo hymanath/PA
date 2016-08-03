@@ -13298,9 +13298,9 @@
 		</result>
 	</action>
 	
-	<action name="getUserLevelWiseDetailsAction" class="coreDashboardAction" method="getUserLevelWiseDetails">
+	<action name="getLoggedInUserStructureAction" class="coreDashboardAction" method="getLoggedInUserStructure">
 		<result type="json" name="success">
-				<param name="root">userDataVO</param>
+				<param name="root">userTypeVO</param>
 		</result>
 	</action>
 </package>
