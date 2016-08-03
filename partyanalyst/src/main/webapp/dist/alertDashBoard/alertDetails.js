@@ -92,18 +92,27 @@ function getAlertStatusCommentsTrackingDetails()
 					str+='<li>';
 						str+='<div class="arrow_box_left">';
 						if(result[i].id == 1)
-							str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						{
+						str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						}
 						else
+						{
 							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0 && result[i].id != 1){
+						}
+						
+						if(result[i].id > 1)
+						{
+							if(result[i].commentsList != null && result[i].commentsList.length > 0){
+							
 								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
 							for(var j in result[i].commentsList){
 					
 								str+='<p>'+result[i].commentsList[j]+'</p>';	
+							
 							}
-						}	
-				
-						str+='</div>';
+						}
+					}
+					str+='</div>';
 					str+='</li>';	
 				}
 			str+='</ul>';
