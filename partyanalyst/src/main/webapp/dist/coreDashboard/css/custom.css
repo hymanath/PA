@@ -284,6 +284,13 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	padding-bottom:5px;
 	padding-top:5px;
 }
+.panelProfileView .panel-heading .panel-title
+{
+	display:inline-block;
+	top:-5px;
+	float:none;
+	
+}
 .panelProfileView .panel-heading:before
 {
 	border-top:1px dashed #FFCC2D;

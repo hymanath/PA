@@ -13298,5 +13298,10 @@
 		</result>
 	</action>
 	
+	<action name="getUserLevelWiseDetailsAction" class="coreDashboardAction" method="getUserLevelWiseDetails">
+		<result type="json" name="success">
+				<param name="root">userDataVO</param>
+		</result>
+	</action>
 </package>
 </struts>

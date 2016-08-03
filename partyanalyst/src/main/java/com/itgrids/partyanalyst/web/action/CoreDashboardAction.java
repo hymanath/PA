@@ -255,4 +255,16 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getUserLevelWiseDetails(){
+		try{
+			LOG.info("Entered into getUserLevelWiseDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			userDataVO = coreDashboardService.getUserLevelWiseDetails(jObj.getLong("userId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getUserLevelWiseDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

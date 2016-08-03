@@ -3337,6 +3337,8 @@
 	  <property name="tdpCommitteeLevelDAO"  ref="tdpCommitteeLevelDAO"></property>
 	  <property name="tdpBasicCommitteeDAO"  ref="tdpBasicCommitteeDAO"></property>
 	  <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+	  <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
+	  <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
