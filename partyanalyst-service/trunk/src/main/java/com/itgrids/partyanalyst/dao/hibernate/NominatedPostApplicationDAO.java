@@ -789,4 +789,42 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		   }
 	  return query.list();
  }
+ 
+	public List<Object[]> getTotalApplicationCountsByBoard(Long boardLevelId,Long searchLevelId,Long searchLevelValue,Long statusId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.departmentId," +
+					" model.boardId," +
+					" count(model.nominatedPostApplicationId)" +
+					" from NominatedPostApplication model" +
+					" where model.boardLevelId = :boardLevelId");
+		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
+			 if(searchLevelId == 1l)
+				 sb.append(" and model.address.country.countryId = 1");
+			 else if(searchLevelId == 2l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and model.address.state.stateId = :searchLevelValue");
+			 else if(searchLevelId == 3l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and model.address.district.districtId = :searchLevelValue");
+			 else if(searchLevelId == 4l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and model.address.constituency.constituencyId = :searchLevelValue");
+			 else if(searchLevelId == 5l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and model.address.tehsil.tehsilId = :searchLevelValue");
+			 else if(searchLevelId == 6l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and model.address.localElectionBody.localElectionBodyId = :searchLevelValue");
+			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and model.address.panchayat.panchayatId = :searchLevelValue");
+		 }
+		 if(statusId != null && statusId.longValue() > 0l)
+			 sb.append(" and model.applicationStatusId = :statusId");
+		 sb.append(" and model.isDeleted = 'N'" +
+		 			" group by model.departmentId,model.boardId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("boardLevelId", boardLevelId);
+		if(statusId != null && statusId.longValue() > 0l)
+			query.setParameter("statusId", statusId);
+		if(searchLevelId != 1l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			query.setParameter("searchLevelValue", searchLevelValue);
+		
+		return query.list();
+	}
 }
