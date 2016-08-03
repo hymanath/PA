@@ -424,7 +424,7 @@ function getPanchayatWardByMandal(num,id){
 	}
 	getConstituenciesForState(0,'constituencyId');
      function getConstituenciesForState(state,fieldId){	
-  
+   
    $("#searchDataImgForConst").show();
    var jsObj=
    {				
@@ -1257,10 +1257,11 @@ function savingApplication(){
 		globalNominatedCandId = "";
 		if(result.indexOf("SUCCESS") > -1){
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
-			
+			saveFlag =true;
 			//$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application received  successfully , To complete the registration ,Upload the profiles below</span>");
 			if (confirm('Application Received Successfully...')) {
-				location.reload();
+				//location.reload();
+				clearAssignValues();
 			}
 			refreshExistingDetailsInNominatedLevel();
 			refreshExistingDetails();
