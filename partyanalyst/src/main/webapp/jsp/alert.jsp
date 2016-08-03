@@ -123,6 +123,7 @@
 	{
 		margin-top:10px;
 	}
+#searchedMembersId_length,#searchedMembersId_info{display:none;}
 	</style>
 	</head>  	
 <body>
@@ -263,6 +264,7 @@
 						<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 						<div style="font-weight:bold;color:red;font-size:15px;" class="col-md-12" id="errorDiv1"></div>
 							<button type="button" class="btn btn-success btn-block btnNewCustom1" onclick="createAlert();" id="addThisalertId">CREATE ALERT</button>
+							<span class="m_top10" id="createAlertajaxImg"></span>
 						</div>
 					</div>
                 </div>
@@ -398,7 +400,7 @@
 						
 						<div class="row m_top25">
 						<div class="col-md-12" id="clearSerchDivId">
-							<div id="apptmemberDetailsDiv"></div>
+							<div id="apptmemberDetailsDiv" class="table-responsive"></div>
 						</div>
 					</div>
 						</div>
@@ -440,7 +442,9 @@ $(document).on("click",".involveBlockNew",function(){
 	 $("#advanceSearchTypeId").val(0);
 	var select = new Dropkick("#advanceSearchTypeId");
 				select.refresh();	
-		showHideBySearchType();	
+		showHideBySearchType();
+		disableByLevel(1);		
+		
 					
 })
 // Load the Google Transliterate API
@@ -706,13 +710,16 @@ function createAlert()
     $("#errorDiv1").html(" Please select description ");
         return;
   }
-
+$("#createAlertajaxImg").html('<img src="images/search.gif"/>');
 var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
+					$("#createAlertajaxImg").html('');
 					if(uploadResult.indexOf("success") !=-1)
 					{
-					 $("#errorDiv1").html(" Alert Created Successfully ").css("color","green");	
+					 $("#errorDiv1").html("Alert Created Successfully ").css("color","green");	
+					 setTimeout(function(){ $("#errorDiv1").html("");
+					 }, 1000);
 					}
 					clearFields();
 					disableByLevel(1);
@@ -751,6 +758,7 @@ function clearFields()
 		 var select = new Dropkick("#stateId1");
 				select.refresh();
 				involvedCadreIds =[];
+				$("#involvedMembers").html('(0 - Members added)');
 }
 function getAlertType(){
 		$("#alertTypeId").html('');
