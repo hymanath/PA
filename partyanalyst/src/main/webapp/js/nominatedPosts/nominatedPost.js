@@ -700,7 +700,7 @@ function getNominatedPostApplication(startIndex)
 				//str+='<img src="dist/img/profile.png" class="img-responsive img-circle" alt="Profile"/>';
 				str +='</div>';
 				
-				if(result[i].id != null){ // no cadre search  candidate id
+				if(result[i].id != null && result[i].id > 0){ // no cadre search  candidate id
 					str +='<input type="checkbox" attr_cadreId="'+result[i].id+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
 				}else{
 						// cadre search  candidate id
@@ -965,13 +965,12 @@ $('.searchTypeCls').click(function(){
   }
 getBoardLevels("boardLvlId"); 
 //getDepartments("",1); 
-/* $(document).on("click",".checkboxCls",function(){
+ $(document).on("click",".checkboxCls",function(){
 	
     $(".checkboxCls").prop( "checked" ,false);
-	//$("#uploadFlDivId").hide();
 	$( this ).prop( 'checked', true );
-	//$("#uploadFlDivId").show();
-}) */
+	
+}) 
 function showHideByNominatedPost(num)
 {
 	var selectVal = $("#boardLvlId"+num).val();
