@@ -393,8 +393,10 @@ function buildOverAllTotalCountsByPosition(result){
 		}).done(function(result){
 			if(result !=null){
 				buildCasteGroupWiseCountsByPosition(result);
+				buildCasteGroupWiseChart(result);
 			}else{
 				$("#casteAndAgeWiseId").html('<p>No Data Available</p>');
+				$('#casteGroup').html('<p>No Data Available</p>');
 			}
 			
 		});
@@ -475,8 +477,10 @@ function buildOverAllTotalCountsByPosition(result){
 		}).done(function(result){
 			if(result != null){
 				buildCasteWiseCountsByPosition(result);
+				buildCasteWiseCountsChart(result);
 			}else{
 				$("#casteNameWiseTotlaCntsId").html('<p>No Data Available</p>');
+				$('#casteWisePositions').html('<p>No Data Available</p>');
 			}
 		});
 	}
@@ -1266,4 +1270,107 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         //str+='</tr>
                                                     
 	}
+function buildCasteGroupWiseChart(result){
+	$("#casteGrpDivId").show();
+	var jsonDataArr=[];
+	for(var i in result){
+		if(result[i].percentage != 0){
+			jsonDataArr.push([''+result[i].name+'',parseFloat(result[i].percentage)]);
+		}
+	}
+	if(jsonDataArr.length >0){
+		
+$('#casteGroup').highcharts({
+		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+        plotOptions: {
+            pie: {
+                innerSize: 100,
+                depth: 45
+            }
+        },
+        series: [{
+            name: 'CASTE GROUP',
+            data: jsonDataArr
+        }]
+    });
+	}else{
+		$('#casteGroup').html('<p>No Data Available</p>')
+	}	
+}
+function buildCasteWiseCountsChart(result){
+	$("#casteGrpDivId").show();
+	var casteNamesArr=[];
+	var castePercArr=[];
+	for(var i in result){
+		if(result[i].name != null){
+		casteNamesArr.push([''+result[i].name+'']);
+		}
+		//if(result[i].percentage != null){
+			castePercArr.push([parseFloat(result[i].percentage)]);
+		//}
+	}
+	if(casteNamesArr.length >0){
+		alert(casteNamesArr)
+	 $('#casteWisePositions').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        xAxis: {
+            categories: casteNamesArr,
+            title: {
+                text: null
+            }
+        },
 
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'POSITIONS',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' CASTE'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'CASTE',
+            data: castePercArr
+        }]
+    });
+	
+	}else{
+		$('#casteWisePositions').html('<p>No Data Available</p>');
+	}
+}
+	
