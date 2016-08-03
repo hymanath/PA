@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.ReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -125,5 +126,6 @@ public interface ICadreDetailsService {
 	public List<CadreReportVO> getCadreReportDetails(Long cadreId);
 	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue);
 	public List<GrievanceReportVO> getGrievancePDFReport(String membershipId);
+	public List<ReportVO> getNominatedPostReportFiles(Long tdpCadreId);
 	//public String checkPositionExists(String position);
 }

@@ -22,4 +22,11 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 		return query.executeUpdate();
 	}
 
+	public List<Object[]> getNominatedPostReport(Long tdpCadreId){
+		Query query=getSession().createQuery(" select model.filePath,model.insertedDate from ApplicationDocument model where model.nominationPostCandidate.tdpCadreId =:tdpCadreId" +
+				                              " and model.isDeleted ='N' ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+	}
+			 
 }
