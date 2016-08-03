@@ -1045,13 +1045,29 @@ public class SchedulerService implements ISchedulerService{
 				}
  				
  				//get Office details of these migrated employees...........
- 				List<Object[]> officeWiseTotalMigratedAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
- 				List<Object[]> departmenWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmenWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
- 				List<Object[]> departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(attendedExtraCadreidList);
- 				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList);
+ 				List<Object[]> officeWiseTotalMigratedAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList,deptList);
+ 				List<Object[]> departmenWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmenWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList,deptList);
+ 				List<Object[]> departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(attendedExtraCadreidList,deptList);
+ 				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList,deptList);
  				
- 				//push this information into officeWiseTotalAttendedEmployee because this employees(officeWiseTotalMigratedAttendedEmployee) are detected as absent 
- 				/*if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
+ 				//push this information into officeWiseTotalAttendedEmployee and officeWiseTotalEmployeeList because this employees(officeWiseTotalMigratedAttendedEmployee) are detected as absent 
+ 				//to avoid -ve figure for absent
+ 				if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
+ 	 				
+ 					Long officeId = null;
+ 					Long presentCount = null;
+ 					for(Object[] officeWiseAttendedEmployeeDetails : officeWiseTotalMigratedAttendedEmployee){
+ 						officeId = (Long)officeWiseAttendedEmployeeDetails[0];
+ 						presentCount = (Long)officeWiseAttendedEmployeeDetails[2];
+ 						for(int i = 0 ; i < officeWiseTotalEmployeeList.size() ; i++){
+ 							if(officeWiseTotalEmployeeList.get(i)[0].equals(officeId)){
+ 								officeWiseTotalEmployeeList.get(i)[2] = (Long)officeWiseTotalEmployeeList.get(i)[2] + presentCount;  
+ 							}
+ 						}
+ 					}    
+ 				}
+ 				
+ 				if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
  				
  					Long officeId = null;
  					Long presentCount = null;
@@ -1064,7 +1080,7 @@ public class SchedulerService implements ISchedulerService{
  							}
  						}
  					}
- 				}*/
+ 				}  
  				
  				//push the information into departmenWiseTotalAttendedEmployee because this employees(departmenWiseTotalMigratedAttendedEmployee) are detected as absent
  				if(departmenWiseTotalMigratedAttendedEmployee != null && departmenWiseTotalMigratedAttendedEmployee.size() > 0){
@@ -1079,7 +1095,7 @@ public class SchedulerService implements ISchedulerService{
  							}
  						}
  					}
- 				}
+ 				}  
  				//push the information into departmentWiseThenOfficeWiseTotalAttendedEmployee because this employees(departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee) are detected as absent
 				if(departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee != null && departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee.size() > 0){
 					Long DeptId = null;
@@ -1111,7 +1127,7 @@ public class SchedulerService implements ISchedulerService{
 													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
 				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
-				System.out.println("Hi");     
+				System.out.println("Hi");       
 			}
 		
 		}
@@ -1187,10 +1203,10 @@ public class SchedulerService implements ISchedulerService{
 			}
 				
 				//get Office details of these migrated employees...........
-				List<Object[]> officeWiseTotalMigratedAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
-				List<Object[]> departmenWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmenWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList);
-				List<Object[]> departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(attendedExtraCadreidList);
-				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList);
+				List<Object[]> officeWiseTotalMigratedAttendedEmployee = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList, null);
+				List<Object[]> departmenWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmenWiseTotalMigratedAttendedEmployee(fromDate, toDate, attendedExtraCadreidList, null);
+				List<Object[]> departmentWiseThenOfficeWiseTotalMigratedAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalMigratedAttendedEmployee(attendedExtraCadreidList, null);
+				List<Object[]> officeWiseTotalMigratedAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalMigratedAttendedEmployeeDetails(fromDate, toDate, attendedExtraCadreidList, null);
 				//push this information into officeWiseTotalAttendedEmployee because this employees(officeWiseTotalMigratedAttendedEmployee) are detected as absent 
 				if(officeWiseTotalMigratedAttendedEmployee != null && officeWiseTotalMigratedAttendedEmployee.size() > 0){
 				
