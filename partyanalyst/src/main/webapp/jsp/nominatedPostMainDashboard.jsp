@@ -259,7 +259,7 @@
                                 <div class="table-responsive m_top20" id="casteNameWiseTotlaCntsId">
                                 </div>
                             </div>
-                            <div class="col-md-4 col-xs-12 col-sm-4">
+                            <div class="col-md-4 col-xs-12 col-sm-4" id="casteGrpDivId" style="display:none;">
                             	<div style="border:1px solid #ddd;padding:10px">
                                 	<h4 class="panel-title">CASTE GROUP</h4>
 	                            	<div id="casteGroup" style="height:220px;"></div>
@@ -350,7 +350,7 @@ $(".navTabSelectionSlick").slick({
 	  centerMode: false,
 	  variableWidth: true
 }); 
-$(function () {
+ /*$(function () {
     $('#casteGroup').highcharts({
 		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
         chart: {
@@ -375,7 +375,7 @@ $(function () {
                 ['ST', 25]
             ]
         }]
-    });
+    }); */
 	/*  $('#Positions').highcharts({
 		color:['#FED501','#E58D45','#DD675D','#65A7E1','#7DC1C0','#5C2D25'],
         chart: {
@@ -455,7 +455,7 @@ $(function () {
             ]
         }]
     }); */
-	 $('#casteWisePositions').highcharts({
+	/*  $('#casteWisePositions').highcharts({
         chart: {
             type: 'bar'
         },
@@ -506,8 +506,8 @@ $(function () {
             name: 'CASTE',
             data: [107, 31, 635, 203, 2]
         }]
-    });
-});
+    }); 
+});*/
 $(document).on("click",".changeIconClass",function(){
 	$(".changeIconClass").toggleClass("glyphicon-plus");
 	$(this).closest('tr').next('tr.tableStrOuterCls').toggle();
@@ -688,6 +688,3 @@ $(document).on("click",".changeIconClass",function(){
 </script>
 </body>
 </html>
-
-
-	
