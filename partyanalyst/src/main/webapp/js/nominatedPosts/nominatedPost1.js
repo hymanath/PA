@@ -306,6 +306,9 @@ function validateAddNewCandidateFields(){
 }); 
 $(document).on("click","#addCandidateBtnId",function(){
 	var flag = validateAddNewCandidateFields();
+	if(!$('#voterExtraErrId').is(':empty')){
+		flag=false;
+	}
 	if(flag){
 		saveNotCadreDetails();
 	}

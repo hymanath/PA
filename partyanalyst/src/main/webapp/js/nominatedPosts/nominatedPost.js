@@ -2086,3 +2086,32 @@ var isSameCheckBoxClicked=0;
  $(document).on('click','.cadreCls',function(){
 		$("#showAndHideDivId").show();
 	});
+	
+	$(document).on('blur','#voterId',function(){
+		validateVoterIdCardNo();
+	 });
+	 function validateVoterIdCardNo(){		 
+		 var voterIdCard = $(".voterCls").val();
+		 if(voterIdCard ==null || voterIdCard.length==0 || voterIdCard == undefined){
+			  $(".addNewCandidateErrorCls").html("Please Enter Voter Id.");
+				return;
+		 }
+		 var jsObj={
+				voterIdCardNo :voterIdCard
+		 }
+		 $.ajax({
+			  type:'GET',
+			  url: 'validateVoterIdCardNoAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result == null){			
+			  // $(".addNewCandidateErrorCls").html("Please Enter Valid VoterId.");
+			    $("#voterExtraErrId").html("Please Enter Valid VoterId."); 
+			    $(".addNewCandidateErrorCls").html(""); 
+		   }else{
+			   $("#voterExtraErrId").html("");
+			   
+		   }
+	   });
+	 }
