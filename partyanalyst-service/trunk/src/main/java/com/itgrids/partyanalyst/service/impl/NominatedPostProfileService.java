@@ -450,10 +450,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId){
+	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId);
+		List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -471,10 +471,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All DepartmentBoards From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId){
+	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId);
+		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -491,10 +491,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId){
+	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId);
+		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -1354,8 +1354,39 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					vo.setAddress1(commonMethodsUtilService.getStringValueForObject(obj[2]));
 					vo.setAddress2(commonMethodsUtilService.getStringValueForObject(obj[3]));
 					vo.setStateId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+					
+					UserAddress address =  (obj[21] != null ?(UserAddress) obj[21]:null);
+					if(address != null){
+						vo.setDistrictId(address.getDistrict() != null ? address.getDistrict().getDistrictId():0L);
+						if(vo.getDistrictId()!= null && vo.getDistrictId() > 0){
+							List<Object[]> distList = districtDAO.getDistrictsWithNewSplitted(address.getState() != null ? address.getState().getStateId():0L);
+							if(distList != null && distList.size() > 0){
+								for (Object[] objects : distList) {
+									IdNameVO voIn = new IdNameVO();
+									voIn.setId((Long)objects[0]);
+									voIn.setName(objects[1].toString());
+									vo.getDistList().add(voIn);
+								}
+							}
+						}
+						
+						vo.setConstituencyId(address.getConstituency() != null? address.getConstituency().getConstituencyId():0L);
+						//const
+						if(vo.getConstituencyId()!= null && vo.getConstituencyId() > 0){
+							List<Object[]> constList = constituencyDAO.getConstituenciesByDistrictId(vo.getDistrictId());
+							if(constList != null && constList.size() > 0){
+								for (Object[] objects : constList) {
+									IdNameVO voCon = new IdNameVO();
+									voCon.setId((Long)objects[0]);
+									voCon.setName(objects[1].toString());
+									vo.getConsList().add(voCon);
+								}
+							}
+						}
+					}
+					
 					//District
-					vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[5]));
+					/*vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[5]));
 					if(vo.getDistrictId()!= null && vo.getDistrictId() > 0){
 						List<Object[]> distList = districtDAO.getDistrictsWithNewSplitted(vo.getStateId());
 						if(distList != null && distList.size() > 0){
@@ -1366,8 +1397,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								vo.getDistList().add(voIn);
 							}
 						}
-					}
-					vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+					}*/
+					/*vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(obj[6]));
 					//const
 					if(vo.getConstituencyId()!= null && vo.getConstituencyId() > 0){
 						List<Object[]> constList = constituencyDAO.getConstituenciesByDistrictId(vo.getDistrictId());
@@ -1379,7 +1410,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								vo.getConsList().add(voCon);
 							}
 						}
-					}
+					}*/
 					//vo.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[7])); 
 					
 					if(obj[7] != null)//mandal
@@ -3295,11 +3326,25 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						//UA.getUserAddressId();
                         NominationPostCandidate NPC=new NominationPostCandidate();
                         
-                        Long voterId = voterDAO.getVoterIdByIdCardNoNew(notcadreRegistrationVO.getVoterId().toString());
+                        List<Long> voterIdsList = voterDAO.getVoterIdByIdCardNoNew(notcadreRegistrationVO.getVoterId().toString());
+                        Long voterId = commonMethodsUtilService.isListOrSetValid(voterIdsList)?voterIdsList.get(0):null;
                         
                         NPC.setVoterId(voterId != null ? voterId : null);
                         NPC.setCandidateName(notcadreRegistrationVO.getName()!=null?notcadreRegistrationVO.getName():null);
 	                    NPC.setAge(notcadreRegistrationVO.getAge()!=null?notcadreRegistrationVO.getAge():null);
+	                    NPC.setDob(notcadreRegistrationVO.getDob() != null? notcadreRegistrationVO.getDob():null);
+	                    List<NominatedPostAgeRange> nominatedPostAgeRanges = nominatedPostAgeRangeDAO.getAll();
+						Long nominatedPostAgeRangeId =1L;
+						Long age = NPC.getAge();
+						
+						if(commonMethodsUtilService.isListOrSetValid(nominatedPostAgeRanges)){
+							for (NominatedPostAgeRange rangevo : nominatedPostAgeRanges) 
+								if(rangevo.getMinValue().longValue()>= age && rangevo.getMaxValue().longValue() <= age.longValue()){
+									nominatedPostAgeRangeId = rangevo.getNominatedPostAgeRangeId();break;}
+						}
+						
+						NPC.setNominatedPostAgeRangeId(nominatedPostAgeRangeId);
+						
 	                    NPC.setGender(notcadreRegistrationVO.getGender()!=null?notcadreRegistrationVO.getGender():null);
 	                    NPC.setHouseno(notcadreRegistrationVO.getHouseno()!=null?notcadreRegistrationVO.getHouseno():null);
 	                    NPC.setMobileNo(notcadreRegistrationVO.getMobileno()!=null?notcadreRegistrationVO.getMobileno():null);
@@ -4119,7 +4164,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		try{
 			
 			if(voterIdCardNo !=null && voterIdCardNo.trim().length()>0 && !voterIdCardNo.trim().isEmpty()){
-				finalVoterId = voterDAO.getVoterIdByIdCardNoNew(voterIdCardNo);
+				List<Long> list = voterDAO.getVoterIdByIdCardNoNew(voterIdCardNo);
+				finalVoterId = commonMethodsUtilService.isListOrSetValid(list)?list.get(0):null;
 			}
 			
 		}catch (Exception e) {
