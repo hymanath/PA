@@ -1181,19 +1181,31 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 				str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
 				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" ></i></td>';     
 			str+='</tr>';
-			str+='<tr class="showHideTr" id="districtPositionId'+i+'">';    
+			str+='<tr class="showHideTr" style="display:none" id="districtPositionId'+i+'">';    
 			str+='</tr>';
 		}
 		str+='</tbody>';
 		$("#statePositionId").html(str);
 	}
 	$(document).on('click','.districtCls',function(){
+		$(".showHideTr").hide();
+		$(".districtCls").removeClass("glyphicon-plus").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+		$(this).closest('tr').next('tr.showHideTr').toggle();
+		$(this).toggleClass("glyphicon-minus");
 		var distId = $(this).attr("attr_id");
-		getPositionsForDistrict(distId);
+		if($(this).hasClass("glyphicon-minus"))
+		{
+			getPositionsForDistrict(distId,"expand");
+		}else{
+			getPositionsForDistrict(distId,"close");
+		}
 		
 	});
 	
-	function getPositionsForDistrict(sectionId){
+	function getPositionsForDistrict(sectionId,actionType){
+		if(actionType == "close"){
+			 return;
+		}
 		var jsObj={
 		positionId 			: 0,    
 		boardLevelId 		: 0,  
