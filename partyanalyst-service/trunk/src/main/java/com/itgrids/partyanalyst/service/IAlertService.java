@@ -24,4 +24,5 @@ public interface IAlertService {
 	public List<AlertDataVO> getAlertsData(Long alertId);
 	public List<IdNameVO> getMemberTypesList();
 	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
+	public String deleteAlertAssignedCandidates(Long alertId,Long tdpCadreId);
 }
