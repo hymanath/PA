@@ -88,16 +88,18 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 	public List<Object[]> getLevelName(String levelType,Long tdpCadreId,String searchType,Long nominateCandId){
 		StringBuilder str=new StringBuilder();
 		 
+		if(nominateCandId != null && nominateCandId.longValue()>0L)
+			searchType="Not Cadre";
 		if(levelType.equalsIgnoreCase("State")){
-			str.append(" SELECT model.address.state.stateId,model.address.state.stateName from NominationPostCandidate model ");
+			str.append(" SELECT model.address.state.stateId,model.address.state.stateName from NominatedPostApplication model ");
 		}else if(levelType.equalsIgnoreCase("District")){
-			str.append(" SELECT model.address.district.districtId,model.address.district.districtName from NominationPostCandidate model ");
+			str.append(" SELECT model.address.district.districtId,model.address.district.districtName from NominatedPostApplication model ");
 		}else if(levelType.equalsIgnoreCase("Assembly")){
-			str.append(" SELECT model.address.constituency.constituencyId,model.address.constituency.name from NominationPostCandidate model ");
+			str.append(" SELECT model.address.constituency.constituencyId,model.address.constituency.name from NominatedPostApplication model ");
 		}else if(levelType.equalsIgnoreCase("Mandal")){
-			str.append(" SELECT model.address.tehsil.tehsilId,model.address.tehsil.tehsilName from NominationPostCandidate model ");
+			str.append(" SELECT model.address.tehsil.tehsilId,model.address.tehsil.tehsilName from NominatedPostApplication model ");
 		}else if(levelType.equalsIgnoreCase("Muncipality/Corporation")){
-			str.append(" SELECT model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name from NominationPostCandidate model ");
+			str.append(" SELECT model.address.localElectionBody.localElectionBodyId,model.address.localElectionBody.name from NominatedPostApplication model ");
 		}
 		
 		if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
