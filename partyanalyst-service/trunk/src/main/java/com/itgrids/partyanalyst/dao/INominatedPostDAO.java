@@ -15,9 +15,9 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<NominatedPost> getNominatedPostDetailsBySearchCriteria(Long departmentId,Long boardId,List<Long> positionIds,Long boardLevelId,List<Long> searchLevelValue);
 	public List<Object[]> getNominatdPostStatusCntByPosition(Long positionId);
 	
-	public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId);
-	public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId);
-	public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId);
+	public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue);
+	public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue);
+	public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue);
 	public List<Object[]> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> levelValue,String statusType, Long searchlevelId,Long searchLevelValue);
 	public List<Object[]> getNominatedPostsByBoardsAndDeptsForOpen(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType);
 	public List<NominatedPost> getNominatedPostDetailsByNominatedPostMember(Long nominatedPostMemberId);
