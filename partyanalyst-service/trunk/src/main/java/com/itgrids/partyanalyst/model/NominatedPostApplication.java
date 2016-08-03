@@ -40,6 +40,7 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private Long addressId;
 	private Long postTypeId;
+	private Long nominatedPostMemberId;
 	
 	private UserAddress address;
 	private NominationPostCandidate nominationPostCandidate;
@@ -49,6 +50,7 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	private BoardLevel boardLevel;
 	private ApplicationStatus applicationStatus;
 	private PostType postType;
+	private NominatedPostMember nominatedPostMember;
 	
 	
 	@Id
@@ -255,6 +257,25 @@ public class NominatedPostApplication extends BaseModel implements Serializable{
 	}
 	public void setPostType(PostType postType) {
 		this.postType = postType;
+	}
+	
+	@Column(name="nominated_post_member_id")
+	public Long getNominatedPostMemberId() {
+		return nominatedPostMemberId;
+	}
+	public void setNominatedPostMemberId(Long nominatedPostMemberId) {
+		this.nominatedPostMemberId = nominatedPostMemberId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="nominated_post_member_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NominatedPostMember getNominatedPostMember() {
+		return nominatedPostMember;
+	}
+	public void setNominatedPostMember(NominatedPostMember nominatedPostMember) {
+		this.nominatedPostMember = nominatedPostMember;
 	}
 	
 	
