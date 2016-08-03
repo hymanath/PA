@@ -292,8 +292,7 @@
 	function onLoadCalls(){
 		getCommitteesCumulativeBasicReportChart();
 		getCommitteesCumulaticeOverallReportCharts();
-		getUserLevelWiseDetails();
-		
+		getLoggedInUserStructure();
 	}
 	
 	$(document).ready(function(){

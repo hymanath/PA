@@ -3339,6 +3339,9 @@
 	  <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
 	  <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
 	  <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
+	  <property name="activityMemberDAO"  ref="activityMemberDAO"></property>
+	  <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
+	  <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
