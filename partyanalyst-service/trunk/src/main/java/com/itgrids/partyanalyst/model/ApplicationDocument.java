@@ -30,6 +30,7 @@ public class ApplicationDocument extends BaseModel implements Serializable{
 	private String filePath;
 	private String isDeleted;
 	private Long nominatedPostApplicationId;
+	private Date insertedDate;
 	
 	private NominationPostCandidate nominationPostCandidate;
 	@Id
@@ -57,6 +58,14 @@ public class ApplicationDocument extends BaseModel implements Serializable{
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	@Column(name = "inserted_date")
+	public Date getInsertedDate() {
+		return insertedDate;
+	}
+	public void setInsertedDate(Date insertedDate) {
+		this.insertedDate = insertedDate;
+	}
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="nomination_post_candidate_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
