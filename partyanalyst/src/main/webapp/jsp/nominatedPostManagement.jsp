@@ -114,6 +114,7 @@ $(document).ready(function() {
 		$("#manTowDivMainId").hide();
 	}	
 	$(".filterSection").hide();
+	$( "#locationWiseDataId" ).trigger( "click" );
 });
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
