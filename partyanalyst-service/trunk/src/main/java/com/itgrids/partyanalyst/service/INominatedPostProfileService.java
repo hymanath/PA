@@ -15,9 +15,9 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface INominatedPostProfileService {
 	public List<IdNameVO> getBoardLevels();
-	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId);
-	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevelId);
-	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevelId);
+	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue);
+	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevelId,Long searchLevelValue);
+	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevelId,Long searchLevelValue);
 	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId);
 	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment,final Long levelId,
 			final Long levelValue,final Long deptId,final Long boardId,final Long positionId,final Long candidateId);
