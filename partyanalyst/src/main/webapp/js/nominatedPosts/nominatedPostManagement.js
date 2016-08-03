@@ -291,7 +291,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
 										str+='<h4 class="panel-title text-capital">'+result[i].idnameList[j].name+'';
-										  str+='<span class="text-danger" style="font-weight:bold;">'+result[i].idnameList[j].availableCount+'</span><span class="pull-right text-danger"><small>'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
+										  str+='<span class="text-danger" style="font-weight:bold;">'+result[i].idnameList[j].availableCount+'</span><span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
 										str+='</h4>';
 									str+='</a>';
 								str+='</div>';
