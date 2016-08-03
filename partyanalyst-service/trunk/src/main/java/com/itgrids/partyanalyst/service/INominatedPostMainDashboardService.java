@@ -20,7 +20,7 @@ public interface INominatedPostMainDashboardService {
 	 public List<IdAndNameVO> getLocationLevelList();
 	 public List<IdAndNameVO> getDepartmentList();
 	 public List<IdAndNameVO> getBoardList(); 
-	 public List<NominatedPostVO> getNominatedCandidateGroupByDist(List<Long> positionIdList, List<Long> locationLevelIdList, List<Long> deptIdList, List<Long> corporationIdList, List<Long> castGroupIdList, List<Long> positionStatusIdList, Long stateId);
+	 public List<NominatedPostVO> getNominatedCandidateGroupByDist(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
 
 	 public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId);
 	 public CastePositionVO getPositionAndApplicationDetailsCntPositionWise(Long positionId,Long boardLevelId,String reportType);
