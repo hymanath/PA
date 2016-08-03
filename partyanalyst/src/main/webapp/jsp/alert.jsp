@@ -24,6 +24,8 @@
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
+	<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
+	<script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 	<style type="text/css">
 	.onoffswitch {
         position: relative; width: 70px;
@@ -373,8 +375,8 @@
 									  </div>
 									</div> 
 									<div >
-										<div class="col-md-6">
-											<select id="cadreCommitteeDiv" multiple class="advanceCadreCommittee" style="width:250px !important;"></select>
+										<div class="col-md-6 advanceCadreCommittee">
+											<select id="cadreCommitteeDiv" multiple class="" style="width:250px !important;"></select>
 											<div id="representativesDiv"></div>
 											<div id="referRoleErrorDiv"></div>
 										</div>

@@ -13284,7 +13284,7 @@
 	</action>
 	<action name="getNominatedPostReportFilesAction" class="cadreDetailsAction" method="getNominatedPostReportFiles">
 		<result type="json" name="success">
-			<param name="root">CadreReportVO</param>  
+			<param name="root">reportVOList</param>  
 		</result>
 	</action>
 	<action name="deleteAlertAssignedCandidateAction" class="createAlertAction" method="deleteAlertAssignedCandidates">
@@ -13297,7 +13297,6 @@
 			<param name="root">lId</param>  
 		</result>
 	</action>
-	
 	
 </package>
 </struts>
