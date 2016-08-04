@@ -50,13 +50,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select NPA.nominationPostCandidate.nominationPostCandidateId," +
-					" TC.tdpCadreId," +
+					" NPA.nominationPostCandidate.tdpCadreId," +
 					" NPA.nominationPostCandidate.voterId," +
 					" NPA.nominationPostCandidate.candidateName," +
 					" NPA.nominationPostCandidate.mobileNo," +
-					" TC.firstname," +
+					" NPA.nominationPostCandidate.age," +
+					/*" TC.firstname," +
 					" TC.mobileNo," +
-					" TC.age," +
+					" TC.age," +*/
 					" CC.categoryName," +
 					" CCG.casteCategoryGroupName," +
 					" caste.casteName," +
@@ -67,8 +68,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" NPA.locationValue");
 					//" NPA.nominatedPost.nominatedPostId");
 		sb.append(" from NominatedPostApplication NPA " +
-					" left join NPA.nominationPostCandidate.tdpCadre TC" +
-					" left join TC.casteState CS" +
+					//" left join NPA.nominationPostCandidate.tdpCadre TC" +
+					" left join NPA.nominationPostCandidate.casteState CS" +
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +

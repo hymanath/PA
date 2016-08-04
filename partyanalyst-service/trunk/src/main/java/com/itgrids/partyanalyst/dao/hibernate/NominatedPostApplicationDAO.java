@@ -153,8 +153,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		StringBuilder str = new StringBuilder();
 		
 		//Query
-		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
-				" model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+				" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
 				" count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model left join model.position position " +
 				" WHERE " );
@@ -191,11 +191,11 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					str.append(" AND model.departments.departmentId = :departmentId" +
 				" AND model.board.boardId = :boardId" +
 				" AND position.positionId=:positionId " +
-				" AND position.positionId is not null" );
+				" AND position.positionId is not null " );
 				}
-				str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
+				//str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
 		
-				str.append("GROUP BY position.positionId,model.nominationPostCandidate.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+				str.append(" GROUP BY position.positionId,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
 				
 		//Query Calling
 				Query query = getSession().createQuery(str.toString());
@@ -221,7 +221,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		StringBuilder str = new StringBuilder();
 		
 		//Query
-		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.tdpCadre.age," +
+		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.age," +
 				" count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model left join model.position position " +
 				" WHERE " );
@@ -259,11 +259,11 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			str.append(" AND model.departments.departmentId = :departmentId" +
 				" AND model.board.boardId = :boardId" +
 				" AND position.positionId=:positionId " +
-				" AND position.positionId is not null" );
+				" AND position.positionId is not null " );
 		}
-		str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
+		//str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
 		
-		str.append("GROUP BY position.positionId,model.nominationPostCandidate.tdpCadre.age ");
+		str.append(" GROUP BY position.positionId,model.nominationPostCandidate.age ");
 		
 		//Query Calling
 		Query query = getSession().createQuery(str.toString());
