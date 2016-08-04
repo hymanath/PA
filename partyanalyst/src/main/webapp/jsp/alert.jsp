@@ -195,13 +195,13 @@
                         <div class="col-md-2 col-sm-2 col-xs-12 locationsFilterCls constiCls1">
                         	<label>Constituency</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="referconstituencyId1" onChange="getMandalsByConstituencyForReferPopup(1);" name="alertVO.constituencyId">
-											<option value="0">Select Assembly</option>
+							<option value="0">Select Assembly</option>
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12 locationsFilterCls mandalCls1">
                         	<label>Mandal/Muncipality/Cor</label><span class="text-danger">*</span>
                             <select class="dropkickClass" id="refermandalNameId1" onChange="getPanchayatsForReferPopup(1);" name="alertVO.tehsilId">
-												<option value="0">Select Mandal/ Municipality</option>
+								<option value="0">Select Mandal/ Municipality</option>
                             </select>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12 locationsFilterCls panchayatCls1">
@@ -327,7 +327,7 @@
 						<div class="col-md-3 stateShowCls" >
 							<label>State</label>
 							 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
-								 <option value="0">Select State</option>
+								 <option value="0">All</option>
 								 <option value="1">AP</option>
 								 <option value="36">TS</option>
 							 </select>
@@ -336,24 +336,24 @@
 						<div class="col-md-3 locationsFilterCls distCls">
 							 <label>District</label>
 							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
-							 <option value="0">Select District</option></select>
+							 <option value="0">All</option></select>
 						</div>
 						<div class="col-md-3 locationsFilterCls constiCls">
 							<label>Assembly</label>
 							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
-							<option value="0">Select Assembly</option>
+							<option value="0">All</option>
 							</select>
 						</div>
 						<div class="col-md-3 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
-							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" >
-								<option value="0">Select Mandal/ Municipality</option>
+							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
+								<option value="0">All</option>
 							 </select>
 						</div>
 						<div class="col-md-3 locationsFilterCls panchayatCls">
 							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" >
-							<option value="0">Select Panchayat/Ward</option>
+							<option value="0">All</option>
 							</select>
 						</div>
 						
