@@ -273,7 +273,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='</div>';
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px">';
 			  for(var i in result){
-				  str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;">'+result[i].availableCount+'</span></a></li>';
+				  str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;">'+result[i].availableCount+'</span></a></li>';
 			  }
 			  str+='</ul>';
 			str+='</div>';
@@ -287,11 +287,17 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 							 str+='<div class="panel panel-default">';
 								/* str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_levelId='+levelId+' attr_levelValue='+levelValues+' attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">'; */
 								
-								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_dept_name="'+result[i].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
+								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
-										str+='<h4 class="panel-title text-capital">'+result[i].idnameList[j].name+'';
-										  str+='<span class="text-danger" style="font-weight:bold;">'+result[i].idnameList[j].availableCount+'</span><span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
+										str+='<h4 class="panel-title text-capital"  style="text-transform: uppercase;">'+result[i].idnameList[j].name+'';
+										if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
+											str+='<span class="text-danger" style="font-weight:bold;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
+										else
+											str+='<span class="text-danger" style="font-weight:bold;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
+										if(result[i].idnameList[j].percentage != null)
+											str+='<span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
+										
 										str+='</h4>';
 									str+='</a>';
 								str+='</div>';
@@ -473,8 +479,8 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 						str+='<td>'+availablePosts+'</td>';
 						str+='<td>'+result[i].receivedCount+'</td>';
 						if(rdyToShortlist>0){
-							if(globalStatus != "Total" && globalStatus != "Open")
-								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
+							if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
+								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
 							else
 								str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" > '+rdyToShortlist+'</td>';
 						}
@@ -485,7 +491,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 						str+='<td>'+shortListed+'</td>';
 						
 						if(readyForFinalReview>0){
-							if(globalStatus != "Total" && globalStatus != "Open")
+							if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
 								str+='<td id="readyTofinalReviewId"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;">'+readyForFinalReview+'</td>';
 							else
 								str+='<td id=""  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >'+readyForFinalReview+'</td>';
@@ -524,7 +530,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 		}		
 		str+='</tbody>';
 		str+='</table>';
-		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open")){
+		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open" && globalStatus != "notRecieved")){
 			str+='<div class="pad_15">';
 				str+='<button class="btn btn-success moveToFinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
 				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
@@ -729,7 +735,7 @@ $(document).on("click","#locationWiseDataId",function(){
 			levelValuesArr.push(mandalTownDivId);
 		}
 	}
-	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Total"){
+	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Open"){
 		getAllDeptsAndBoardsByLevelForAll(globalLevelId,levelValuesArr);
 	}else{
 		getAllDeptsAndBoardsByLevel(globalLevelId,levelValuesArr);
