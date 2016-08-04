@@ -569,8 +569,6 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        	
 	        	if(tdpCadreId != null && tdpCadreId.longValue()>0L)
 	        		str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId is not null ");
-	        	else
-	        		str.append(" and model.nominationPostCandidate.tdpCadre.tdpCadreId is null ");
 	        }
 	        
 	        str.append( " order by model.postType.postTypeId ");
