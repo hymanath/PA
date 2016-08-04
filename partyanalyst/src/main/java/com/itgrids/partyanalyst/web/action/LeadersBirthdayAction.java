@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,10 +25,19 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 	private JSONObject jObj;
 	private BirthDayDetailsVO birthDayDetailsVO;
 	private String status;
+	private List<BirthDayDetailsVO> birthDaysList;
 
 	private IBirthDayDetailsService birthDayDetailsService;
 
 	
+	public List<BirthDayDetailsVO> getBirthDaysList() {
+		return birthDaysList;
+	}
+
+	public void setBirthDaysList(List<BirthDayDetailsVO> birthDaysList) {
+		this.birthDaysList = birthDaysList;
+	}
+
 	/**
 	 *
 	 * @return
@@ -100,32 +111,21 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 		try {
 			jObj = new JSONObject(getTask());
 			
-			if(jObj.getString("searchType").trim().equalsIgnoreCase("")){
-				birthDayDetailsVO = birthDayDetailsService.getLeaderOccasionDetails(jObj.getLong("occasionTypeId"));
-			}else{
-				birthDayDetailsVO = birthDayDetailsService.getAllLstOfDaysForBdayDtails(jObj.getString("searchType"),jObj.getLong("occastionTypeId"));
-			}
-			
-			//birthDayDetailsVO = birthDayDetailsService.getAllLstOfDaysForBdayDtails("Today",jObj.getLong("occasionTypeId"));
+		Long occasionTypeId = jObj.getLong("occasionTypeId");
+		String searchType = jObj.getString("searchType");
+		String memberTypeStr = jObj.getString("memberTypeGlobal");
+		
+		if(jObj.getString("memberTypeStr").trim().equalsIgnoreCase("0"))
+			birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,null);
+		else
+		birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,memberTypeStr);
+		
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLeadersBirthDayDetails() of LeadersBirthdayAction", e);
 		}
 		return Action.SUCCESS;
 	}
 
-	
-
-	public String getAllLstOfDaysForBdayDtails() {
-		try {
-			jObj = new JSONObject(getTask()); 
-			birthDayDetailsVO = birthDayDetailsService.getAllLstOfDaysForBdayDtails(jObj.getString("searchType"),jObj.getLong("occastionTypeId"));
-
-		} catch (Exception e) {
-			LOG.error("Exception occured in getLeadersBirthDayDetails() of LeadersBirthdayAction", e);
-		}
-		return Action.SUCCESS;
-	}
-	
 	public String getWishingDetails(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -137,7 +137,5 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 		return Action.SUCCESS;
 		
 	}
-	
-	
 	
 }
