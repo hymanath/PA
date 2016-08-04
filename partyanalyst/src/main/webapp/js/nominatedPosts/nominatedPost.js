@@ -1,6 +1,7 @@
 function getDistrictsForStates(state,id,num){
 	
 	//$(".allcls").hide();
+	hideDetails();
 	if(id == "statesDivId"){
 		$('#districtIdImg').show();
 			getConstituenciesForState(state,'constituencyId');
@@ -133,6 +134,7 @@ function getDistrictsForStates(state,id,num){
    });
   }
  function getConstituenciesForDistricts(district,id,num){
+	 hideDetails();
 	// debugger; 
 	 if(id == "districtId"){
 		 $("#constituencyIdImg").show();
@@ -249,6 +251,7 @@ function getDistrictsForStates(state,id,num){
   }
  function getMandalCorporationsByConstituency(num,id)
 	{	
+	hideDetails();
 	var constituencyId  =0;
 	if(id == "constituencyId"){
 		$("#mandalListImg").show();
@@ -346,6 +349,7 @@ function getDistrictsForStates(state,id,num){
 				});
 	}
 function getPanchayatWardByMandal(num,id){
+hideDetails();
 			var mandalId=0;
 			var constituencyId = 0; //cadreSearchDtls
 		if(id == "mandalList"){	
@@ -632,6 +636,7 @@ function getNominatedPostApplication(startIndex)
 		$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 		if(isFree){
 			 isFree =false;
+			 $("#searchDivId").show();
 		var jsObj =
 		{
 			locationLevel :locationLevel,
@@ -658,6 +663,7 @@ function getNominatedPostApplication(startIndex)
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				 isFree =true;
+				  $("#cadreSearchDtls").html('');
 			$(".paginationDivId").show();
 				 if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
@@ -683,6 +689,7 @@ function getNominatedPostApplication(startIndex)
 
 	   //$("#textId").show();
 	    $("#cadreSearchDtls").html('');
+		
 		$("#cadreSearchDtls").show();
 		$("#scrollDivId").show();
 		var str='';
@@ -712,7 +719,7 @@ function getNominatedPostApplication(startIndex)
 				//str +='</div>';
 				//console.log(result[i].id);
 				if(result[i].id != null && result[i].id >= 0){ // no cadre search  candidate id
-				console.log(result[i].id);
+				
 					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 						str +='</div>';
 					str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" sri attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="" />';
@@ -769,8 +776,9 @@ function getNominatedPostApplication(startIndex)
 		}
 	    
 	}
-	function refreshExistingDetails(){ 
-		$("#searchBy").val("");
+	function refreshExistingDetails(){ 	
+		hideDetails();
+		/*$("#searchBy").val("");
 		//$("#cadreDetailsDiv").html("");
 		$(".paginationDivId").html('');
 		//$("#cadreDetailsDiv").hide();
@@ -785,7 +793,7 @@ function getNominatedPostApplication(startIndex)
 		$("#notCadreMobilNoId").val("");
 		$("#notCadreErrMsg").html("");  
 		$("#searchById").val("");
-		$("#searchErrDiv1").html("");
+		$("#searchErrDiv1").html("");*/
 		}
 	function refreshExistingDetailsInNominatedLevel()
 	{
@@ -1128,9 +1136,17 @@ $('.searchTypeCls').click(function(){
 getBoardLevels("boardLvlId"); 
 //getDepartments("",1); 
  $(document).on("click",".checkboxCls",function(){
+/*
+	if($(this).is(":checked")){
+		$('.ramakrishnaCls').show();
+		$('#searchDivId').show();
+	}else{
+		$('.ramakrishnaCls').hide();
+		$('#searchDivId').hide();
+	}*/
+   // $(".checkboxCls").prop( "checked" ,false);
+	//$( this ).prop( 'checked', true );
 	
-    $(".checkboxCls").prop( "checked" ,false);
-	$( this ).prop( 'checked', true );
 	
 }) ;
 
@@ -1915,11 +1931,16 @@ function populateFields(result){
    });	
   } */
  $( document ).on("click",".cadreCls",function(){
-	 $("#showAndHideDivId").show();
-	globalCadreId = $(this).attr("attr_cadreId"); 
+	 //$("#showAndHideDivId").show();
+	 globalCadreId = $(this).attr("attr_cadreId"); 
 	var candiId = $(this).attr("attr_nominated_post_candidate_id"); 
 	globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
-	  getCandidateAppliedPostsByCadre(globalCadreId,candiId);
+	  if($(this).is(':checked')){
+		$(".ramakrishnaCls").show();
+		getCandidateAppliedPostsByCadre(globalCadreId,candiId);
+	  }
+	else
+		$(".ramakrishnaCls").hide();
 });
  function getCandidateAppliedPostsByCadre(globalCadreId,candiId){
 
@@ -2030,7 +2051,9 @@ function searchByApplicant()
 	$(document).on("click",".cadreCheckCls",function(){ 
 	 $("#searchData").html('');
 	 $("#searchData1").html('');
-    // $("#cadreSearchDtls").html('');	 
+    // $("#cadreSearchDtls").html('');	
+	hideDetails();	
+
   if ($("#cadreSearchId").is(":checked")) {
 		$("#searchMemberDiv").show();
 		$("#cadreById").hide();
@@ -2152,7 +2175,7 @@ function notCadresearch(){
 		isNotCadreFree = false;
 		
        $("#scrollDivId").show();
-   
+$("#searchDivId").show();
 		var jsObj =
 		        {
 		searchType : searchType,
@@ -2164,7 +2187,8 @@ function notCadresearch(){
 					  url: 'notCadresearchAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
-					isNotCadreFree =true;	   
+					isNotCadreFree =true;
+ $("#cadreSearchDtls").html('');					
 					if(result != null){
 						buildCadreDetails(result);					
 					}
@@ -2179,6 +2203,8 @@ function notCadresearch(){
 		}
  $(document).on("click","#searchbtn",function(){
 	  var value = $("input[name='checkBoxName']:checked").val();
+	  	$('.ramakrishnaCls').hide();
+		$('#searchDivId').hide();
 	  if(value == "Cadre"){
 			getNominatedPostApplication(0);
 		}
@@ -2243,6 +2269,7 @@ function notCadresearch(){
  }
  var isAlreadyChecked=false;
 var isSameCheckBoxClicked=0;
+/*
  $(document).on("click",".hideShowDivCls",function(){
    $(".hideShowDivCls").prop( "checked", false);
    $(this).prop( "checked", true);
@@ -2252,20 +2279,20 @@ var isSameCheckBoxClicked=0;
 	 }
  isSameCheckBoxClicked = currentClickTdpCadredId;
   if(isAlreadyChecked){
-	 $(".hideShowDivCls").prop( "checked", false); 
-      $(".hideDivCls").hide();	
+	 $(".hideShowDivCls").prop( "checked", false);  
+     // $(".hideDivCls").hide();	
       isAlreadyChecked = false;	  
    }
    if($(this).is(':checked')){
 	  globalCadreId = $(this).attr("attr_cadreId"); 
 	  candidateId = $(this).attr("attr_nominated_post_candidate_id");
-	 // getCandidateAppliedPostsByCadre(globalCadreId,globalNPCandiId); 
-	   $(".hideDivCls").show();
+	  getCandidateAppliedPostsByCadre(globalCadreId,globalNPCandiId); 
+	   //$(".hideDivCls").show();
         isAlreadyChecked = true;	   
    }
  });
 
-
+*/
 	$(document).on('blur','#voterId',function(){
 		validateVoterIdCardNo();
 	 });
@@ -2296,3 +2323,7 @@ var isSameCheckBoxClicked=0;
 		   }
 	   });
 	 }
+function hideDetails(){
+	$('.ramakrishnaCls').hide();
+	$('#searchDivId').hide();
+}
