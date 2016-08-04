@@ -1317,7 +1317,6 @@ function buildCasteWiseCountsChart(result){
 		//}
 	}
 	if(casteNamesArr.length >0){
-		alert(casteNamesArr)
 	 $('#casteWisePositions').highcharts({
         chart: {
             type: 'bar'
