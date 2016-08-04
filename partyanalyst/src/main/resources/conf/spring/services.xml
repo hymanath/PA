@@ -1312,7 +1312,7 @@
 	<bean name="mailsSendingService" class="com.itgrids.partyanalyst.service.impl.MailsSendingService">
 		<property name="mailService" ref="mailService"/>
 		<property name="mailsTemplateService" ref="mailsTemplateService"/>
-		<property name="userDAO" ref="userDAO"/>
+		<property name="userDAO" ref="userDAO"/>     
 	</bean>
 	
 	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
@@ -1338,7 +1338,8 @@
 		<property name="employeeDepartmentDAO" ref="employeeDepartmentDAO"/>
 		<property name="reportEmailDAO" ref="reportEmailDAO"/>
 		<property name="userEmailDAO" ref="userEmailDAO"/>
-		<property name="partyOfficeDAO" ref="partyOfficeDAO"/>     
+		<property name="partyOfficeDAO" ref="partyOfficeDAO"/>  
+		<property name="eventAttendeeDAO" ref="eventAttendeeDAO"/> 		
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1369,17 +1370,17 @@
 	
 	<bean name="cronTriggerForEveryDayJobEmployeeAttendance" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayBatchJobForEmployeeAttendance" />
-    	<property name="cronExpression" value="0 0 5  * * ?" />     
+    	<property name="cronExpression" value="0 0 5  * * ?" />          
 	</bean>
 	-->
 	<bean name="BatchJobForEmployeeAttendance" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendPdfReportOnEmployeeAttendanceOnDept" /> 
 	</bean> 
-	
+	 
 	<bean name="cronTriggerForJobEmployeeAttendanceOnDept" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="BatchJobForEmployeeAttendance" />
-    	<property name="cronExpression" value="0 0 5  * * ?" />        
+    	<property name="cronExpression" value="0 0/2 *  * * ?" />               
 	</bean>
 	<!-- swadhin -->
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
