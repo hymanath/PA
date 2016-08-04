@@ -462,8 +462,7 @@ function getAllCadreInPanchayat()
 	var isFree =true;
 function getNominatedPostApplication(startIndex)
 		{
-		if(isFree){
-			 isFree =false;
+		
 		var locationLevel = 0;
 		var locationValue = 0;
 		var searchName = '';
@@ -480,7 +479,7 @@ function getNominatedPostApplication(startIndex)
 		var membershipAndMobileNo = '';
 
 		
-			$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
+			//$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 	
 	$("#scrollDivId").show();
 	   
@@ -539,12 +538,24 @@ function getNominatedPostApplication(startIndex)
 		if(searchRadioType == 'membershipId')
 		{
 			memberShipCardNo = $('#searchBy').val().trim();
-			
+			if(searchRadioType=="membershipId"){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchBy').val().match(numericExpression)){
+						$('#searchErrDiv').html('Enter Numerics Only.');
+						return;
+					}
+			}		
 			if(searchBy.trim().length == 0 )
 			{
 				$('#searchErrDiv').html('Please enter Membership Card No.');
 				return;
 			}
+			else if(memberShipCardNo.trim().length != 8)
+			{
+				$('#searchErrDiv').html('Invalid memberShipCardNo No.');
+				return;				
+			}	
 		}			
 		if(searchRadioType == 'voterId')
 		{
@@ -579,9 +590,7 @@ function getNominatedPostApplication(startIndex)
 			{
 				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;				
-			}
-			
-			
+			}	
 			
 		}
 		if(searchRadioType == 'name')
@@ -620,7 +629,9 @@ function getNominatedPostApplication(startIndex)
 
 		if(locationValue == null)
 			locationValue =0;
-		
+		$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
+		if(isFree){
+			 isFree =false;
 		var jsObj =
 		{
 			locationLevel :locationLevel,
@@ -1124,7 +1135,6 @@ getBoardLevels("boardLvlId");
 }) ;
 
 $(document).on("click",".boardLvelCls",function(){
-	alert(123);
 	var id = $(this).attr('id');
 	$('#'+id+'').val(0);
 });
@@ -1402,6 +1412,7 @@ function savingApplication(){
 			 });
 			 
 	if(flag){
+		$( "#addressCheckId" ).prop( "checked", false );
 		$("#savingAjaxImg").css("display","block");	
 			YAHOO.util.Connect.setForm('submitApplication',true);
 			YAHOO.util.Connect.asyncRequest('POST','savingNominatedPostApplicationAction.action',uploadHandler);
@@ -1516,31 +1527,31 @@ function savingApplication(){
 								} 
 				}
 			 	 if($("#depmtsId"+clonNo).val() == null || $("#depmtsId"+clonNo).val() == " " || $("#depmtsId"+clonNo).val() == undefined){
-						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
+						//$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
+						//$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 				} 
 				if($("#deptBoardId"+clonNo).val() == null || $("#deptBoardId"+clonNo).val() == " " || $("#deptBoardId"+clonNo).val() == undefined){
-						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
+						//$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 							errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
+						//$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 				} 
 								
 				if($("#deptBoardPostnId"+clonNo).val() == null || $("#deptBoardPostnId"+clonNo).val() == " " || $("#deptBoardPostnId"+clonNo).val() == undefined){
-						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid red");
+						//$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid #ddd");
+						//$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid #ddd");
 								flag = true;
 				}  
 				if(errorMsg != ''){
@@ -2074,8 +2085,6 @@ $("#involvedCandidatesDiv").hide();
 var isNotCadreFree=true;
 function notCadresearch(){
 	
-	if(isNotCadreFree){
-		isNotCadreFree = false;
 		var cadreTypeStr=$("input[name='checkBoxName']:checked").val();
 		var searchType=$("input[name='searchBasedOn']:checked").val();
 		var searchValue=$("#searchBy").val();
@@ -2090,7 +2099,7 @@ function notCadresearch(){
 		{
 			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv').html('Please enter Membership No.');
+				$('#notCadreErrMsg').html('Please enter Membership No.');
 				return;
 			}
 		}
@@ -2098,7 +2107,7 @@ function notCadresearch(){
 		{
 			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv').html('Please enter Voter Card No.');
+				$('#notCadreErrMsg').html('Please enter Voter Card No.');
 				return;
 			}
 		}
@@ -2108,16 +2117,16 @@ function notCadresearch(){
 			var numericExpression = /^[0-9]+$/;
 			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv').html('Please enter Mobile No.');
+				$('#notCadreErrMsg').html('Please enter Mobile No.');
 				return;
 			}		
 			if(!searchValue.match(numericExpression)){
-				$('#searchErrDiv').html('Enter Numerics Only.');
+				$('#notCadreErrMsg').html('Enter Numerics Only.');
 				return;
 			}	
 			else if(searchValue.trim().length != 10)
 			{
-				$('#searchErrDiv').html('Invalid Mobile No.');
+				$('#notCadreErrMsg').html('Invalid Mobile No.');
 				return;				
 			}
 			
@@ -2126,12 +2135,12 @@ function notCadresearch(){
 		{
 			if(searchValue.length == 0 )
 			{
-				$('#searchErrDiv').html('Please enter Name.');
+				$('#notCadreErrMsg').html('Please enter Name.');
 				return;
 			}
 			else if(searchValue.length < 3)
 			{
-				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
+				$('#notCadreErrMsg').html('Please enter Minimum 3 Characters.');
 				return;
 			}
 		}
@@ -2139,7 +2148,9 @@ function notCadresearch(){
 	$("#searchData1,#searchData").html('');
 	$("#textId").hide();
 	
-	
+	if(isNotCadreFree){
+		isNotCadreFree = false;
+		
        $("#scrollDivId").show();
    
 		var jsObj =
@@ -2259,11 +2270,12 @@ var isSameCheckBoxClicked=0;
 		validateVoterIdCardNo();
 	 });
 	 function validateVoterIdCardNo(){		 
-		 var voterIdCard = $(".voterCls").val();
+		 var voterIdCard = $(".voterCls").val(); 
+		  //var mobileno = $("#mobilenoId").val();
 		 if(voterIdCard ==null || voterIdCard.length==0 || voterIdCard == undefined){
 			  $(".addNewCandidateErrorCls").html("Please Enter Voter Id.");
 				return;
-		 }
+		 }	
 		 var jsObj={
 				voterIdCardNo :voterIdCard
 		 }
@@ -2275,11 +2287,12 @@ var isSameCheckBoxClicked=0;
 	   }).done(function(result){
 		   if(result == null){			
 			  // $(".addNewCandidateErrorCls").html("Please Enter Valid VoterId.");
-			    $("#voterExtraErrId").html("Please Enter Valid VoterId."); 
+			    $("#voterExtraErrId").html("Please Enter Valid VoterId.");  
+				$("#addCandidateBtnId").hide();
 			    $(".addNewCandidateErrorCls").html(""); 
 		   }else{
 			   $("#voterExtraErrId").html("");
-			   
+			   $("#addCandidateBtnId").show();
 		   }
 	   });
 	 }

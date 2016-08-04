@@ -137,11 +137,10 @@
                         	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName"/>Not Cadre
                         </label>
 						
-						<span id="addMemberDivId" style="position:relative;top:3px;margin-left:8px;cursor:pointer;display:none;" class="addMemberModal">
-							<i class="glyphicon glyphicon-plus-sign"></i>
-							Add Member
-						</span>
-						
+						<span id="addMemberDivId" style="display:none;position: relative; margin-left: 8px; cursor: pointer; background: #ddd; padding: 4px; border-radius: 12px; top: 2px;" class="addMemberModal" onclick="clearAssignValues();">
+                           <i class="glyphicon glyphicon-plus-sign"></i>
+                           Add Member
+                          </span>		
                     </div>
 					</div>
 					
@@ -216,7 +215,6 @@
                  </div>
 				 </div>
 				 <div id="cadreById" style="display:none;">
-				 <div id="notCadreErrMsg" style="color:red;"></div>
 				 <div class="row" class="searchMemberCls">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
 					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
@@ -243,6 +241,7 @@
                                 </div>
                             </div>
                         </div>
+						<div id="notCadreErrMsg" style="color:red;"></div>
                      </div>
                  </div>
 				 </div> 
@@ -276,10 +275,10 @@
                                    	<div class="col-md-4 col-lg-4 col-sm-5 col-xs-11">
                                     	<label>CHANGE PHONE NUMBER</label>
                                     	<div class="input-group">
-                                        	<input type="text" class="form-control" id="phoneNumId" name="nominatedPostVO.phoneNumName"/>
+                                        	<input type="text" class="form-control" id="phoneNumId" name="nominatedPostVO.phoneNumName" maxLength="10"/>
                                             <span class="input-group-addon bg_ff">
-                                            	<i class="glyphicon glyphicon-plus-sign"></i>
-                                                <i class="glyphicon glyphicon-minus-sign"></i>
+                                            	<!--<i class="glyphicon glyphicon-plus-sign"></i>
+                                                <i class="glyphicon glyphicon-minus-sign"></i>-->
                                             </span>
                                         </div>
                                     </div>
@@ -336,7 +335,7 @@
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10">
                                     	<label>Pincode</label>
-                                        <input type="text" class="form-control" id="addPincodeId" name="nominatedPostVO.addPincodeName"/>
+                                        <input type="text" class="form-control" id="addPincodeId" name="nominatedPostVO.addPincodeName" maxLength="6"/>
                                     </div>
 									 <!--<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10 col-md-offset-6">
                                     	<button type="button" class="btn btn-primary btn-sm pull-right" id="updateButnId" onclick="savechangeAddressForNominatedPost()" style="margin-top:25px;">UPDATE</button>
@@ -621,7 +620,7 @@
   <div class="modal-dialog" style="width:85%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearAssignValues();"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">ADDING NEW CANDIDATE <span style="color:red;" class="addNewCandidateErrorCls"><span></h4>
       </div>
 	  <form name="saveNotCadre" id="saveNotCadre"  method="post" enctype="multipart/form-data">
@@ -636,8 +635,8 @@
 				<input type="text" id="nameId" class="form-control clearClss"  name="addNotcadreRegistrationVO.name"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">mobile no<span style="color:red;">*<span></label>
-				<input type="text" id="mobilenoId" class="form-control clearClss" name="addNotcadreRegistrationVO.mobileno"/>
+				<label class="text-capitalize">mobile no<span style="color:red;" id="mobileExtraErrId">*<span></label>
+				<input type="text" id="mobilenoId" class="form-control clearClss" maxLength="10" name="addNotcadreRegistrationVO.mobileno"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">house no</label>
@@ -720,7 +719,7 @@
 									</select>
 							</div>
 					<div class="col-md-3 col-xs-12 col-sm-3 m_top10 panchayatShowCls">
-									<label>Panchayat/ Ward / Division/City<span style="color:red;">*<span></label>
+									<label>Panchayat/ Ward / Division<span style="color:red;">*<span></label>
 									<select  class="chosenSelect clearSelectClss" id="notCadrePanchayatId" name="addNotcadreRegistrationVO.panchayatId">
 										
 									</select>
@@ -730,14 +729,14 @@
 					
 		<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">pincode</label>
-				<input class="form-control clearClss" id="pincodeId" type="text" name="addNotcadreRegistrationVO.pincode"/>
+				<input class="form-control clearClss" id="pincodeId" type="text" maxlength="6" name="addNotcadreRegistrationVO.pincode"/>
 			</div>
 		</div>
       </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="addCandidateBtnId">Add Candidate</button>
+        <button type="button" class="btn btn-primary" id="addCandidateBtnId" style="display:none;">Add Candidate</button>
 		<div id="notCadreSavId"></div>
       </div>
     </div>
@@ -946,6 +945,7 @@ function clearAssignValues()
 {
 	$(".clearClss").val('');
 	$('.clearSelectClss').val(0).trigger('chosen:updated');	
+	$("#voterExtraErrId").html('');
 	if(saveFlag==true)
 	{
 	window.location.reload();
