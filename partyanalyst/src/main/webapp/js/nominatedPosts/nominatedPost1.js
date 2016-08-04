@@ -920,7 +920,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
-	//var cloneCount=0;
+	
 	var involvedCadreIds = [];
    $(document).on("click",".apptDetailsDiv",function(){
 		
@@ -937,7 +937,7 @@ function setDefaultImage(img){
 			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
 			var str ='';
 			str+='<div class="col-md-3">';
-            str+='<div class="involveBlock">';
+            str+='<div class="involveBlock" attr_cadreId="'+attrId+'">';
 			str+='<div class="media"><div class="media-left">';
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
@@ -955,7 +955,7 @@ function setDefaultImage(img){
             str+='<span class="onoffswitch-switch"></span>';
 			str+='</label>';
 			str+='</div>';
-			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display: block;"  onclick="getConfirmation();"></i></span></div></div>';
+			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display: block;"  ></i></span></div></div>';
 			$("#duplicateCandidateBlock").html('');
 			
 			if(jQuery.inArray(attrId, involvedCadreIds) == -1)
@@ -980,15 +980,28 @@ function setDefaultImage(img){
                 }, 2000); */
 		 }
    })
-   $(document).on("click",".closeIcon",function(){
-	//$(this).parent().remove();
-	$(this).closest(".col-md-3").remove();
+   
+    $(document).on("click",".closeIcon",function(){
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
 	involvedCadreIds.pop(id);	
 	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
-});
+	var retVal = confirm("Are you sure want to remove this refer ?");
+               if( retVal == true ){
+				  $(".involveBlock").each(function(){
+					var cadreId = $(this).attr("attr_cadreId") ; 
+					if(id == cadreId)
+					{
+						$(this).remove();
+					}
+				  });
+                  return true;
+               }
+               else{
+                  return false;
+               }
+}); 
 function getDetailsBySrch()
 	{
 		//clearing the Data Div
@@ -1200,12 +1213,13 @@ function getDetailsBySrch()
        select.refresh();
            disableByLevel();
      }
-	 function getConfirmation(){
+	 /* function getConfirmation(){
                var retVal = confirm("Are you sure want to remove this refer ?");
+			   alert(retVal)
                if( retVal == true ){
-                  return true;
+				   return true;
                }
                else{
                   return false;
                }
-            }
+            } */
