@@ -275,9 +275,15 @@ function disableByLevel(index)
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		var str='';
+		if(index == "")
+		{
+			    str +='<option value="0">ALL</option>';	
+		}
+		else
 		str+='<option value="0">Select District</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
+				if(result[i].id > 0)
 				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
 		}
@@ -300,8 +306,12 @@ function disableByLevel(index)
 		}).done(function(result){
 			var constiStr='';
 			if(result != null && result.length > 0){
-			    constiStr +='<option value="0">Select Assembly</option>';
+				if(index == "")
+			    constiStr +='<option value="0">ALL</option>';
+			else
+				 constiStr +='<option value="0">Select Assembly</option>';
 				for(var i in result){
+					if(result[i].id > 0)
 					constiStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
 			 $("#referconstituencyId"+index).html(constiStr);
@@ -324,8 +334,12 @@ function disableByLevel(index)
 		}).done(function(result){
 			var mandalStr='';
 			if(result != null && result.length > 0){
+				if(index == "")
+			    mandalStr +='<option value="0">ALL</option>';
+					else
 			    mandalStr +='<option value="0">Select Mandal/ Municipality</option>';
 				for(var i in result){
+					if(result[i].id > 0)
 					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
 			 $("#refermandalNameId"+index).html(mandalStr);
@@ -337,6 +351,7 @@ function disableByLevel(index)
  }
  
  function getPanchayatsForReferPopup(index){
+	
 	 $("#referpanchayatId"+index).find('option').not(':first').remove();
 	 var mandalId = $('#refermandalNameId'+index).val();
 	 var  type = $("#refermandalNameId"+index+" option:selected").text();
@@ -359,8 +374,12 @@ function disableByLevel(index)
 					}).done(function(result){
 						var panchyatStr='';
 						if(result!=null && result.length>0){
-							panchyatStr +='<option value="0">Select Panchayat</option>';
+							if(index == "")
+			    panchyatStr +='<option value="0">ALL</option>';
+					else
+				panchyatStr +='<option value="0">Select Panchayat</option>';
 			            for(var i in result){
+							if(result[i].id > 0)
 				 panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 			 }
 			    $("#referpanchayatId"+index).html(panchyatStr);
@@ -749,24 +768,24 @@ function disableByLevel(index)
 		}
 		$('#errorDivId').html(errorStr);
 		if(levelId == 2){
-		if(stateId==0 || stateId=='select'){
+		/*if(stateId==0 || stateId=='select'){
 			
 				errorStr +="Please Select State";
-			}
+			}*/
 		}
           if(levelId == 3){
 		
 			 districtId = $("#referdistrictId").val();
 			
-			if(districtId==0 || districtId=='select'){
+			/*if(districtId==0 || districtId=='select'){
 			
 				errorStr +="Please Select District";
-			}
+			}*/
 		}
 		
-		 else if(levelId == 3){
+		 else if(levelId == 4){
 			 districtId = $("#referdistrictId").val();
-			if(districtId==0 || districtId=='select'){
+			/*if(districtId==0 || districtId=='select'){
 				
 				errorStr +="Please Select District";
 				$("#errorDivId").html(errorStr);
@@ -778,6 +797,17 @@ function disableByLevel(index)
 				errorStr +="Please Select Assembly";
 				$("#errorDivId").html(errorStr);
 				return;
+			}*/
+		}
+		
+		else if(levelId == 5 || levelId == 6){
+			 districtId = $("#referdistrictId").val();
+			if(districtId==0 || districtId=='select'){
+				
+				errorStr +="Please Select District";
+				$("#errorDivId").html(errorStr);
+				return ;
+				
 			}
 		}
 		if(errorStr.length >0)
