@@ -24,7 +24,7 @@ public class NominatedPostDashboardVO {
 	private String name;
 	private Long maleCount = 0l;
 	private Long femaleCount = 0l;
-	private String percentage;
+	private String percentage="0";
 	
 	
 	public String getPercentage() {
