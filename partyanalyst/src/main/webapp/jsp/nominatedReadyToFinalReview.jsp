@@ -23,9 +23,9 @@
 <body>
 <div class="container">
    <div class="row hideRowCls">
-         <div class="col-md-12 col-xs-12 col-sm-12">
-			<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i></button>
-		</div>
+		<div class="col-md-12 col-xs-12 col-sm-12">
+        	<h4 class="text-capital">Ready For Final <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h4>
+        </div>
 		<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -62,9 +62,7 @@
 		</div>
 	</div>
 	<div class="row">
-    	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<h3 class="text-capitalize">Ready For Final</h3>
-        </div>
+    	
 		<div class="col-md-4 col-xs-12 col-sm-4 heightSet" style="background:#DFDFDF;padding-right:0px;">
           <div class="pad_15">
 	          <h4 class="headingColor text-capital"><u>departments</u></h4>
