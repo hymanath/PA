@@ -250,7 +250,7 @@
                  <div class="row">
 				
 						
-				   <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId">
+				   <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId" style="display:none;">
                     		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
                         	<div id="searchData"></div>
                         	<div class="" id="scrollDivId" style="display:none;">
@@ -262,7 +262,7 @@
 	                </div>
 	                </div>
 	               
-				   <div class="row" style="display:none;" id="showAndHideDivId">
+				   <div class="row ramakrishnaCls" style="display:none;" id="" >
 					<div id="appliedPostForSelectedId" class="hideDivCls"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
