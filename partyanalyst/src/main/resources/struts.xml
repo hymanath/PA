@@ -13254,12 +13254,12 @@
 	</action>
 	<action name="getBirthDayDetailsAction" class="leadersBirthdayAction" method="getLeadersBirthDayDetails">
 	  <result type="json" name="success">
-			<param name="root">birthDayDetailsVO</param>
+			<param name="root">birthDaysList</param>
 		</result>
 	</action>	
 	<action name="getAllBirthdayDetailsAction" class="leadersBirthdayAction" method="getAllLstOfDaysForBdayDtails">
 	  <result type="json" name="success">
-			<param name="root">birthDayDetailsVO</param>
+			<param name="root">birthDaysList</param>
 		</result>
 	</action>
    <action name="getWishingDetailsAction" class="leadersBirthdayAction" method="getWishingDetails">

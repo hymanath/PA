@@ -67,9 +67,11 @@
 }
 .flipster__button--prev {
   left: 0;
+  opacity: 1;
 }
 .flipster__button--next {
   right: 0;
+  opacity: 1;
 }
 /* @end */
 

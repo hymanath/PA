@@ -1312,7 +1312,7 @@
 	<bean name="mailsSendingService" class="com.itgrids.partyanalyst.service.impl.MailsSendingService">
 		<property name="mailService" ref="mailService"/>
 		<property name="mailsTemplateService" ref="mailsTemplateService"/>
-		<property name="userDAO" ref="userDAO"/>     
+		<property name="userDAO" ref="userDAO"/>
 	</bean>
 	
 	<bean name="mailsTemplateService" class="com.itgrids.partyanalyst.service.impl.MailsTemplateService">
@@ -3363,6 +3363,8 @@
 	   
 		<property name="leaderOccasionDAO" ref="leaderOccasionDAO"></property>
 		<property name="leaderOccasionWishDetailsDAO" ref="leaderOccasionWishDetailsDAO"></property>
+		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
 	
 	</bean>
 </beans>		
