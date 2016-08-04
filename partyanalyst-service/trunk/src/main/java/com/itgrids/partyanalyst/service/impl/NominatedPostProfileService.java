@@ -27,6 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApplicationDocumentDAO;
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
+import com.itgrids.partyanalyst.dao.IBoardDAO;
 import com.itgrids.partyanalyst.dao.IBoardLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
@@ -128,8 +129,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private ICountryDAO countryDAO;
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
 	private IPositionDAO positionDAO;
+	private IBoardDAO boardDAO;
 	
 	
+	public IBoardDAO getBoardDAO() {
+		return boardDAO;
+	}
+
+	public void setBoardDAO(IBoardDAO boardDAO) {
+		this.boardDAO = boardDAO;
+	}
+
 	public IPositionDAO getPositionDAO() {
 		return positionDAO;
 	}
@@ -2462,7 +2472,118 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> townObj = new ArrayList<Object[]>(0);
 			List<Object[]> divObj = new ArrayList<Object[]>(0);*/
 			
-			if(task !=null && task.trim().equalsIgnoreCase("Total")){
+			if(statusType != null && statusType.equalsIgnoreCase("notRecieved"))
+			{
+				List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,searchlevelId,searchLevelValue);
+				Map<String,Long> totalPostMemeberCountMap = new HashMap<String, Long>(0);
+				if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
+					for (Object[] param : totalDeptsNCorpNDesig) {
+						Long deptId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						Long corpId = commonMethodsUtilService.getLongValueForObject(param[1]);
+						Long positionId = commonMethodsUtilService.getLongValueForObject(param[2]);
+						Long maxCount = commonMethodsUtilService.getLongValueForObject(param[3]);
+						
+						totalPostMemeberCountMap.put(""+deptId+"-"+corpId+"-"+positionId+"".trim(), maxCount);
+					}
+				}
+				
+				List<Object[]> totalAppliedDeptsNCorpNDesig = nominatedPostApplicationDAO.getTotalAppliedCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,searchlevelId,searchLevelValue);
+				Map<String,Long> appliedPostMemeberCountMap = new HashMap<String, Long>(0);
+				if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
+					for (Object[] param : totalAppliedDeptsNCorpNDesig) {
+						Long deptId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						Long corpId = commonMethodsUtilService.getLongValueForObject(param[1]);
+						Long positionId = commonMethodsUtilService.getLongValueForObject(param[2]);
+						Long count = 1L;
+						if(appliedPostMemeberCountMap.get(""+deptId+"-"+corpId+"-"+positionId+"".trim()) != null){
+							count=appliedPostMemeberCountMap.get(""+deptId+"-"+corpId+"-"+positionId+"".trim());
+							if(count != null)
+								count = count+1;
+						}
+						appliedPostMemeberCountMap.put(""+deptId+"-"+corpId+"-"+positionId+"".trim(), count);
+					}
+				}
+				
+				Map<Long, Map<Long,Map<Long,Long>>> finalNotApplnRecievedPositionsMap = new HashMap<Long, Map<Long,Map<Long,Long>>>(0);
+				List<Long> corpIdsList = new ArrayList<Long>(0);
+				if(commonMethodsUtilService.isMapValid(totalPostMemeberCountMap)){
+					for (String DCP : totalPostMemeberCountMap.keySet()) {
+						Long maxPositionsCount = totalPostMemeberCountMap.get(DCP) != null?totalPostMemeberCountMap.get(DCP):0L;
+						Long appliedCount = appliedPostMemeberCountMap.get(DCP) != null?appliedPostMemeberCountMap.get(DCP):0L;
+						
+						if(maxPositionsCount>appliedCount){
+							//finalNotApplnRecievedPositionsMap.put(DCP, maxPositionsCount-appliedCount);
+							String[] DCPArr = DCP.split("-");
+							
+							Map<Long,Long> corpPositionMap = new HashMap<Long, Long>(0);
+							corpPositionMap.put(Long.valueOf(DCPArr[2].toString()), maxPositionsCount-appliedCount);
+							
+							Map<Long,Map<Long,Long>> positionCountMap = new HashMap<Long,Map<Long,Long>>(0);
+							
+							positionCountMap.put(Long.valueOf(DCPArr[1].toString()), corpPositionMap);
+							finalNotApplnRecievedPositionsMap.put(Long.valueOf(DCPArr[0].toString()), positionCountMap);
+							
+							corpIdsList.add(Long.valueOf(DCPArr[1].toString()));
+						}
+					}
+				}
+				
+				List<Object[]> deptsList = departmentsDAO.getDepartmentByIdsList(1L,new ArrayList<Long>(finalNotApplnRecievedPositionsMap.keySet()));
+				List<Object[]> corpList = boardDAO.getBoardsByIdsList(corpIdsList);
+				
+				Map<Long,String> deptNameMap = new HashMap<Long, String>(0);
+				Map<Long,String> boardNameMap = new HashMap<Long, String>(0);
+				
+				if(commonMethodsUtilService.isListOrSetValid(deptsList)){
+					for (Object[] param : deptsList) 
+						deptNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(deptsList)){
+					for (Object[] param : corpList) 
+						boardNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+				
+				
+				if(commonMethodsUtilService.isMapValid(finalNotApplnRecievedPositionsMap)){
+					for (Long deptId : finalNotApplnRecievedPositionsMap.keySet()) {
+						
+						IdNameVO vo = new IdNameVO();
+						vo.setId(deptId);
+						vo.setName(deptNameMap.get(deptId));
+						
+						Map<Long,Map<Long,Long>> positionCountMap = finalNotApplnRecievedPositionsMap.get(deptId);
+						List<IdNameVO> corpsList = new ArrayList<IdNameVO>(0);
+						Long totalavailableCount = 0L;
+						if(commonMethodsUtilService.isMapValid(positionCountMap)){
+							for (Long corpId : positionCountMap.keySet()) {
+								Map<Long,Long> corpPositionMap = positionCountMap.get(corpId);
+								Long availableCount = 0L;
+								if(commonMethodsUtilService.isMapValid(corpPositionMap)){
+									for (Long positionId : corpPositionMap.keySet()) {
+										availableCount = availableCount+corpPositionMap.get(positionId);
+									}
+								}
+								IdNameVO vo1 = new IdNameVO();
+								vo1.setId(corpId);
+								vo1.setName(boardNameMap.get(corpId));
+								vo1.setAvailableCount(availableCount);
+								corpsList.add(vo1);
+								
+								totalavailableCount = totalavailableCount+availableCount;
+							}
+						}
+						
+						vo.setAvailableCount(totalavailableCount);
+						vo.setIdnameList(corpsList);
+						
+						finalList.add(vo);
+					}
+				}
+					
+				return finalList;
+			}
+			else if(task !=null && task.trim().equalsIgnoreCase("Total")){
 				
 				
 				if(boardLevelId.equals(5l)){
