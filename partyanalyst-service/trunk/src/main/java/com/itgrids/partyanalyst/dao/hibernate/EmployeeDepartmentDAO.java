@@ -96,14 +96,11 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 	}
 	//Swadhin Lenka[ItGrids]
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDepartmentWiseTotalEmployeeListFilter(List<Long> deptList){
+	public List<Object[]> getDepartmentWiseTotalEmployeeListFilter(List<Long> deptList ){
 		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, count(ED.department.departmentId) " +
-						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, TdpCadre TC " +
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, count(distinct ED.employee.tdpCadre.tdpCadreId) " +
+						" from EmployeeDepartment ED " +
 						" where " +
-						" ED.employee.employeeId = EWL.employee.employeeId and " +
-						" ED.employee.tdpCadreId = TC.tdpCadreId and " +
-						//" EWL.partyOffice.event.parentEventId = 44 and " +
 						" ED.isDeleted = 'N' and " +
 						" ED.employee.isDeleted = 'N' and " +
 						" ED.employee.isActive = 'Y' and " +
@@ -116,44 +113,40 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 		query.setParameterList("deptList", deptList);
 		return query.list();
 	}
-	public List<Object[]> getDepartmentWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList){
+	
+	public List<Object[]> getDepartmentWiseTotalAttendedEmployeeFilter(List<Long> deptList, List<Long> presentedCaderIdList){
 		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, count(distinct ED.employee.tdpCadreId)" +
-						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, EventAttendee EA " +
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, count(distinct ED.employee.tdpCadre.tdpCadreId)" +
+						" from EmployeeDepartment ED " +
 						" where " +
-						" ED.employee.employeeId = EWL.employee.employeeId and " +
-						" EWL.partyOffice.event.eventId = EA.event.eventId and " +
-						//" EWL.partyOffice.event.parentEventId = 44 and " +
-						" ED.employee.tdpCadreId = EA.tdpCadre.tdpCadreId and " +
-						" date(EA.attendedTime) between :fromDate and :toDate and " +
+						" ED.employee.tdpCadre.tdpCadreId in (:presentedCaderIdList) and " +
+						" ED.department.departmentId in (:deptList) and " +
 						" ED.isDeleted = 'N' and " +
 						" ED.employee.isDeleted = 'N' and " +
-						" ED.employee.isActive = 'Y' and " +
-						" ED.department.departmentId in (:deptList)" +
+						" ED.employee.isActive = 'Y' " +
 						" group by " +
 						" ED.department.departmentId " +
 						" order by " +
 						" ED.department.departmentId ");
 		Query query = getSession().createQuery(sqlQuery.toString());
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
-		query.setParameterList("deptList", deptList);
+		
+		query.setParameterList("deptList", deptList);  
+		query.setParameterList("presentedCaderIdList", presentedCaderIdList);
 		return query.list();
 	}
+	
 	//Swadhin Lenka[ItGrids]
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList){
+	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(List<Long> deptList, List<Long> presentedCaderIdList){
 		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, count(distinct EA.tdpCadre.tdpCadreId) " +
-						" from EmployeeDepartment ED, EmployeeWorkLocation EWL, EventAttendee EA " +
+		sqlQuery.append("select ED.department.departmentId, ED.department.departmentName, EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, count(distinct ED.employee.tdpCadre.tdpCadreId) " +
+						" from EmployeeDepartment ED, EmployeeWorkLocation EWL " +
 						" where " +
 						" ED.employee.employeeId = EWL.employee.employeeId and " +
-						" ED.employee.tdpCadreId = EA.tdpCadre.tdpCadreId and " +
-						//" EWL.partyOffice.event.parentEventId = 44 and " +
-						" EWL.partyOffice.event.eventId = EA.event.eventId and " +
-						" date(EA.attendedTime) between :fromDate and :toDate and " +
+						" ED.employee.tdpCadre.tdpCadreId =  EWL.employee.tdpCadre.tdpCadreId and " +
+						" EWL.employee.tdpCadre.tdpCadreId in (:presentedCaderIdList) and " +
 						" ED.isDeleted = 'N' and " +
-						" ED.employee.isDeleted = 'N' and " +
+						" ED.employee.isDeleted = 'N' and " +  
 						" ED.employee.isActive = 'Y' and " +
 						" EWL.partyOffice.isDeleted = 'N' and" +
 						" ED.department.departmentId in (:deptList)" +
@@ -162,12 +155,11 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 						" order by " +
 						" ED.department.departmentId, EWL.partyOffice.partyOfficeId ");
 		Query query = getSession().createQuery(sqlQuery.toString());
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		query.setParameterList("presentedCaderIdList", presentedCaderIdList);  
 		query.setParameterList("deptList", deptList);
 		return query.list();
 	}
-	//for migrated employee 
+	
 	public List<Object[]> getDepartmenWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList, List<Long> deptList){
 		StringBuilder sqlQuery = new StringBuilder();
 		sqlQuery.append(" select model.department.departmentId, model.department.departmentName, count(distinct model.employee.tdpCadre.tdpCadreId) " +
