@@ -64,7 +64,7 @@
 						<div class="col-md-3 stateShowCls" >
 							<label>State</label>
 							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup('');">
-							 <option value="0">Select State</option>
+							 <option value="0">ALL</option>
 							 <option value="1">AP</option>
 							 <option value="36">TS</option>
 							 </select>
@@ -73,24 +73,24 @@
 						<div class="col-md-3 locationsFilterCls distCls">
 							 <label>District</label>
 							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
-							 <option value="0">Select District</option></select>
+							 <option value="0">ALL</option></select>
 						</div>
 						<div class="col-md-3 locationsFilterCls constiCls">
 							<label>Assembly</label>
 							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
-							<option value="0">Select Assembly</option>
+							<option value="0">ALL</option>
 							</select>
 						</div>
 						<div class="col-md-3 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
-							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" >
-								<option value="0">Select Mandal/ Municipality</option>
+							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
+								<option value="0">ALL</option>
 							 </select>
 						</div>
 						<div class="col-md-3 locationsFilterCls panchayatCls">
 							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" >
-							<option value="0">Select Panchayat/Ward</option>
+							<option value="0">ALL</option>
 							</select>
 						</div>
 						<div>
@@ -132,7 +132,16 @@
 							<div id="apptmemberDetailsDiv"></div>
 						</div>
 						
-						<div class="m_top10" id="involvedCandidatesDiv" style="display:none;padding:0px 15px;">
+						
+						</div>
+						</div>
+						</div>
+						</div>
+						</div>
+				</div>
+				
+				</div>
+				<div class="m_top10" id="involvedCandidatesDiv" style="display:none;padding:0px 15px;">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
@@ -147,14 +156,6 @@
 								</div>
 							</div>
 						</div>
-						</div>
-						</div>
-						</div>
-						</div>
-						</div>
-				</div>
-				
-				</div>
 			</div>
 			</div>
 			</div>

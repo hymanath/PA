@@ -251,8 +251,11 @@ $(document).ready(function(){
         }
 	});
 	//$("#dateRangePickerId").val(moment().subtract(29, 'days').format("MM/DD/YYYY")+'-'+moment().format("MM/DD/YYYY"))
+	$(".ranges").addClass("rangesNew")
 });
-
+$(document).on("change","#dateRangePickerId",function(){
+	getLocationLevelAlertCount();
+})
 $(document).on("click","#createAlertBtn",function(){
 	$("#createAlertModal").modal('show');
 	buildLevels();
