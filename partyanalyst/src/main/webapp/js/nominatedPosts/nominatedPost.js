@@ -1369,12 +1369,12 @@ function savingApplication(){
 				}
 			
 		});  
-		var candidateId="";
-		$(".checkedReffrl").each(function(){
-						if($(this).is(":checked")){
-						if($(this).val() != null && $(this).val().length > 0)	
-						candidateId += $(this).val()+",";	
-						}
+		 var candidateId="";
+		$(".involveBlock").each(function(){
+						var cadreId = $(this).attr("attr_cadreId");
+						if(cadreId != null && cadreId.length > 0)	
+						candidateId += cadreId+",";	
+						
 		});
 	
 	var n=candidateId.lastIndexOf(",");
@@ -1400,7 +1400,7 @@ function savingApplication(){
 				 $("#postTypeId"+num).val(postTypeId);			
 			   }
 			 });
-
+			 
 	if(flag){
 		$("#savingAjaxImg").css("display","block");	
 			YAHOO.util.Connect.setForm('submitApplication',true);
