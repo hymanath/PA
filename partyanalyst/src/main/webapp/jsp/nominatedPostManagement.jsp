@@ -56,7 +56,6 @@
 										<div class="col-md-3 col-xs-12 col-sm-3" id="stateMainId" >
 											<label>State</label>
 											<select class="form-control" id="stateId">
-												<option value="">Select State</option>
 												<option value="0">All</option>
 												<option value="1">Andhara Pradesh</option>
 												<option value="36">Telangana</option>
@@ -66,21 +65,21 @@
 											<label>District</label>
 											<span id="districtIdImg"><img src="images/search.gif"/></span>
 											<select class="form-control" id="districtId">
-												<option value="">Select District</option>
+												<option value="0">Select District</option>
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
 											<label>Constituency</label>
 											<span id="constituencyIdImg"><img src="images/search.gif"/></span>
 											<select class="form-control" id="constituencyId">
-												<option value="">Select Constituency</option>
+												<option value="0">Select Constituency</option>
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
 											<label>Mandal/Town/Division</label>
 												<span id="manTowDivIdImg"><img src="images/search.gif"/></span>
 											<select class="form-control" id="manTowDivId">
-												<option value="">Select Mandal/Town/Division</option>
+												<option value="0">Select Mandal/Town/Division</option>
 											</select>
 										</div>
 										<div class="col-md-3 col-xs-12 col-sm-3">						
