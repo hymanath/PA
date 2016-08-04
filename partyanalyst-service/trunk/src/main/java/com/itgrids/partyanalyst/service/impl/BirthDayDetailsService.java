@@ -1,38 +1,64 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.TimeZone;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ILeaderOccasionDAO;
 import com.itgrids.partyanalyst.dao.ILeaderOccasionWishDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LeaderOccasionDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LeaderOccasionWishDetailsDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BirthDayDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
-import com.itgrids.partyanalyst.model.LeaderOccasion;
 import com.itgrids.partyanalyst.model.LeaderOccasionWishDetails;
 import com.itgrids.partyanalyst.service.IBirthDayDetailsService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BirthDayDetailsService implements IBirthDayDetailsService {
 	private final static Logger LOG = Logger.getLogger(BirthDayDetailsService.class);
 	private ILeaderOccasionDAO leaderOccasionDAO;
 	private ILeaderOccasionWishDetailsDAO leaderOccasionWishDetailsDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	
+	
+	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+		return tdpCommitteeMemberDAO;
+	}
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
+	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
+		return tdpCadreCandidateDAO;
+	}
+	public void setTdpCadreCandidateDAO(ITdpCadreCandidateDAO tdpCadreCandidateDAO) {
+		this.tdpCadreCandidateDAO = tdpCadreCandidateDAO;
+	}
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
 	public ILeaderOccasionWishDetailsDAO getLeaderOccasionWishDetailsDAO() {
 		return leaderOccasionWishDetailsDAO;
 	}
@@ -62,329 +88,308 @@ public class BirthDayDetailsService implements IBirthDayDetailsService {
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
-	@SuppressWarnings("null")
-	@Override
-	public BirthDayDetailsVO getLeaderOccasionDetails(Long occastionTypeId) {
-		Date fromDate = null;
-		Date toDate = null;
-		BirthDayDetailsVO birthDayDetailsVOs = new BirthDayDetailsVO();
+	
+	
+public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,String dataBuildTypeStr,String memberTypeStr){
+		 List<BirthDayDetailsVO> returnList = new LinkedList<BirthDayDetailsVO>();
 		try {
-			TdpCadreVO tdpCadreVO = null;
-			IdNameVO idNameVO = null;
-			List<TdpCadreVO> cadreVOs = new ArrayList<TdpCadreVO>(0);
-			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>(0);
-			Long betweenDatesCount = 0L;
-			String searchTypeStr = "Today";
+			Long totalCount = 0l;
+			//dataBuildTypeStr ="Today";
+			if(dataBuildTypeStr.trim().length() ==0)
+				dataBuildTypeStr="Today";
 			
+			int[] daysArr={30,7,1,0,1,7,30};
+			String searchTypeStr="previous";
 			
-			//30 days
-			fromDate = getBirthdaySearchfromDateBasedOnValue(-30);
-			toDate = getBirthdaySearchToDateBasedOnValue(-1);
-			Long totalBirthdayDetailsCountForOneMonth = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBirthdayWishedDetailsCountForOneMonth = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Last 30 Days");
-			idNameVO.setActualCount(totalBirthdayDetailsCountForOneMonth);
-			idNameVO.setCount(totalBirthdayWishedDetailsCountForOneMonth);
-			idNameVOs.add(idNameVO);
-
+			Date date = new Date(); // your date
+		    Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+		    int year = cal.get(Calendar.YEAR);
+		     
+			int i = 0;
+			for ( ;i < daysArr.length;i++) {
+				BirthDayDetailsVO dayVO = new BirthDayDetailsVO();
+				
+				if(i>3){
+					 searchTypeStr="Next";
+					 	if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
+							dayVO.setName(" Today ");
+						 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
+							dayVO.setName(" Tomorrow ");
+						 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Next")){
+							dayVO.setName(" Next "+daysArr[i]+" Days");
+						 }
+				}
+				else{
+					 if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
+						dayVO.setName(" Today ");
+					 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
+						dayVO.setName(" Yesterday ");
+					 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Previous")){
+						dayVO.setName(" Last "+daysArr[i]+" Days");
+					 }
+				}
+				List<Object[]> lederOcanDtailsThirtyList  = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(searchTypeStr,Long.valueOf(String.valueOf(daysArr[i])),occastionTypeId);
+				List<Long> prevThirtyIds = new ArrayList<Long>(0);
+				if(lederOcanDtailsThirtyList != null && lederOcanDtailsThirtyList.size() > 0){
+					for (Object[] obj : lederOcanDtailsThirtyList) {
+						prevThirtyIds.add(Long.parseLong(obj[0].toString()));
+					}
+				}
+				List<Long> wishList =  new ArrayList<Long>(0);
+				List<Long> totalTdpCadreIdsList = new ArrayList<Long>(0);
+				if(prevThirtyIds != null && prevThirtyIds.size() >0){
+					List<Object[]> wishList1  = leaderOccasionWishDetailsDAO.getTotalDaysCountsForWishedCount(prevThirtyIds, String.valueOf(year).trim());
+					if(wishList1 != null && wishList1.size() > 0){
+						
+						for (Object[] obj : wishList1) {
+							wishList.add((Long)obj[0]);
+							totalTdpCadreIdsList.add((Long)obj[1]);
+						}
+					}
+				}
+				
+				Long lederOcanDtailsCount  = Long.valueOf(String.valueOf(prevThirtyIds.size()));
+				
+				Long wishedCount  = Long.valueOf(String.valueOf(wishList.size()));
+				
+				if(dataBuildTypeStr.equalsIgnoreCase(dayVO.getName()))
+				{
+					List<BirthDayDetailsVO> memberDetailsVOLst = new ArrayList<BirthDayDetailsVO>(0);
+					if(commonMethodsUtilService.isListOrSetValid(lederOcanDtailsThirtyList)){
+						for (Object[] param : lederOcanDtailsThirtyList) {
+							Long tdpCadreId=commonMethodsUtilService.getLongValueForObject(param[0]);
+							String cadreName =commonMethodsUtilService.getStringValueForObject(param[1]);
+							String mobileNO= commonMethodsUtilService.getStringValueForObject(param[2]);
+							String imageStr= commonMethodsUtilService.getStringValueForObject(param[3]);
+							//String birthDate = commonMethodsUtilService.getStringValueForObject(param[4].toString());
+							
+							String inputDate = commonMethodsUtilService.getStringValueForObject(param[4].toString());
+						    String myFormat= "yyyy MMM dd";
+						    String finalString = "";
+						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+						    Date date1 = (Date) formatter .parse(inputDate);
+						    SimpleDateFormat newFormat = new SimpleDateFormat(myFormat);
+						    finalString= newFormat .format(date1);
+						    Long occasionId = commonMethodsUtilService.getLongValueForObject(param[5]);
+							
+							BirthDayDetailsVO cadreVO = new BirthDayDetailsVO();
+							cadreVO.setName(cadreName);
+							cadreVO.setId(tdpCadreId);
+							cadreVO.setMobileNo(mobileNO);
+							cadreVO.setImageStr(imageStr);
+							cadreVO.setbDayDate(finalString.toString().trim().substring(4));
+							cadreVO.setOccasionId(occasionId);
+							if(totalTdpCadreIdsList.contains(tdpCadreId))
+									cadreVO.setWished(true);
+							else
+								cadreVO.setWished(false);
+							memberDetailsVOLst.add(cadreVO);
+						}	
+					}
+					
+					Map<Long,String> publicRepMap = new LinkedHashMap<Long, String>(0);
+					if(prevThirtyIds != null && prevThirtyIds.size() >0){
+					List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(prevThirtyIds);
+				      if(commonMethodsUtilService.isListOrSetValid(publicRepDertails)){
+				        for(Object[] obj:publicRepDertails){
+				          Long cadrePositionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				          String positiontype = obj[2] != null ? obj[2].toString():"";
+				          String position = publicRepMap.get(cadrePositionId);
+				          if(position != null && position.trim().length() > 0l){
+				            position = position+" , "+positiontype;
+				          }
+				          else{
+				            position = positiontype;
+				            publicRepMap.put(cadrePositionId, position);
+				          }
+				        }
+				      }
+					}
+					if(publicRepMap !=null && publicRepMap.size()>0){
+						for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
+							Long id = entry.getKey();
+							String value = entry.getValue();
+							BirthDayDetailsVO Vo = getMatchedVOById(memberDetailsVOLst,id);
+							if(Vo != null){
+								 Vo.setDesignation(value);
+							}
+							
+						}
+					}
+					
+				      Map<Long,String> partyPostMap = new LinkedHashMap<Long, String>(0);
+				      if(prevThirtyIds != null && prevThirtyIds.size() >0){
+				      List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(prevThirtyIds);
+				       if(commonMethodsUtilService.isListOrSetValid(partyPositionDetails)){
+				         for (Object[] obj : partyPositionDetails) {
+				           
+				           String level = obj[0] != null ? obj[0].toString() : "" ;
+				           String role = obj[1] != null ? obj[1].toString() : "";
+				           Long cadreId = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+				           String state = commonMethodsUtilService.getStringValueForObject(obj[6]);
+				           String commiteestr = obj[2] != null ? obj[2].toString() : "";
+				           if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+				           {
+				             level = state+" "+level;
+				           }
+				           String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+				           partyPostMap.put(cadreId, partyPositionStr);
+				        }
+				      }
+				    } 
+				      if(partyPostMap !=null && partyPostMap.size()>0){
+							for (Map.Entry<Long,String> entry : partyPostMap.entrySet()){
+								Long id = entry.getKey();
+								String value = entry.getValue();
+								BirthDayDetailsVO Vo = getMatchedVOById(memberDetailsVOLst,id);
+								if(Vo != null){
+									 Vo.setPubRepDesignation(value);
+								}
+								
+							}
+						}
+				      Map<String,Long> partyTotalMap = new LinkedHashMap<String, Long>(0);
+				      if(commonMethodsUtilService.isMapValid(publicRepMap)){
+				    	  for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
+								String value = entry.getValue();
+								Long count = partyTotalMap.get(value);
+								if(count != null && count.longValue() > 0l){
+									count++;
+									totalCount = totalCount+1l;
+								}
+								else{
+									count = 1l;
+									totalCount = totalCount+1l;
+									partyTotalMap.put(value, count);
+								}
+					      }
+				      }
+				      if(commonMethodsUtilService.isMapValid(partyPostMap)){
+				    	  for (Map.Entry<Long,String> entry : partyPostMap.entrySet()){
+								String value = entry.getValue();
+								Long count = partyTotalMap.get(value);
+								if(count != null && count.longValue() > 0l){
+									count++;
+									totalCount = totalCount+1l;
+								}
+								else{
+									count = 1l;
+									totalCount = totalCount+1l;
+									partyTotalMap.put(value, count);
+								}
+					      }
+				      }
+					
+				      List<IdNameVO> positionList = new ArrayList<IdNameVO>();
+				      if(commonMethodsUtilService.isMapValid(partyTotalMap)){
+				    	  for (Map.Entry<String,Long> entry : partyTotalMap.entrySet()){
+				    		  IdNameVO vo = new IdNameVO();
+				    		  vo.setName(entry.getKey());
+				    		  vo.setCount(entry.getValue());
+				    		    positionList.add(vo);
+				    		 
+				    	  }
+				      }
+					dayVO.setSubList(memberDetailsVOLst);
+					dayVO.setIdNameVOList(positionList);
+					dayVO.setTotalPosCount(totalCount);
+				}
+				dayVO.setTotalCount(lederOcanDtailsCount);
+				dayVO.setWishCount(wishedCount);
+				returnList.add(dayVO);
+			}
+			if(returnList != null && returnList.size() > 0){
+            	Collections.sort(returnList, new Comparator<BirthDayDetailsVO>() {
+					public int compare(BirthDayDetailsVO o1, BirthDayDetailsVO o2) {
+						if(o2.getDesignation() != null && o1.getDesignation() != null)
+							return o2.getDesignation().compareTo(o1.getDesignation());
+						else
+							return 0;
+					}
+				});
 			
-			//last 7 days
-			fromDate = getBirthdaySearchfromDateBasedOnValue(-7);
-			toDate = getBirthdaySearchToDateBasedOnValue(-1);
-			Long totalBirthdayDetailsCountForOneWeek = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBirthdayWishedDetailsCountForOneWeek = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Last 7 Days");
-			idNameVO.setActualCount(totalBirthdayDetailsCountForOneWeek);
-			idNameVO.setCount(totalBirthdayWishedDetailsCountForOneWeek);
-			idNameVOs.add(idNameVO);
-
-			
-			//yesterday
-			fromDate = getBirthdaySearchfromDateBasedOnValue(-1);
-			toDate = getBirthdaySearchToDateBasedOnValue(-1);
-			Long totalBirthdayDetailsCountForYesterday = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBirthdayWishedDetailsCountForYesterday = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Yesterday");
-			idNameVO.setActualCount(totalBirthdayDetailsCountForYesterday);
-			idNameVO.setCount(totalBirthdayWishedDetailsCountForYesterday);
-			idNameVOs.add(idNameVO);
-			
-			
-			fromDate = getBirthdaySearchfromDateBasedOnValue(1);
-			toDate = getBirthdaySearchToDateBasedOnValue(1);
-			//today
-			fromDate = new Date();
-			toDate = new Date();
-			Long totalBdayDetailsCntToday = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBdayWishedDetailsCntToday = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Today");
-			idNameVO.setActualCount(totalBdayDetailsCntToday);
-			idNameVO.setCount(totalBdayWishedDetailsCntToday);
-			idNameVOs.add(idNameVO);
-			
-			//List<Object[]> leaderOccasionDetailsForTaday = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(fromDate, toDate,occastionTypeId);
-
-			List<Object[]> leaderOccasionDetailsForTaday = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(searchTypeStr,betweenDatesCount,occastionTypeId);
-			
-			if (leaderOccasionDetailsForTaday != null && leaderOccasionDetailsForTaday.size() > 0) {
-				for (Object[] result : leaderOccasionDetailsForTaday) {
-
-					tdpCadreVO = new TdpCadreVO();
-					tdpCadreVO.setImageURL(result[0] != null ? result[0].toString() : "");
-					tdpCadreVO.setName(result[1] != null ? result[1].toString() : "");
-
-					Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(result[2].toString().substring(0, 19));
-					String convertDate = new SimpleDateFormat("dd MMM").format(date);
-
-					tdpCadreVO.setDateOfBirth(convertDate);
-					tdpCadreVO.setMobileNo(result[3] != null ? result[3].toString() : "");
-					// tdpCadreVO.setWished(result[4] != null ?
-					// result[4].toString(): "");
-					tdpCadreVO.setId((Long) result[4]);
-					cadreVOs.add(tdpCadreVO);
+            }
+			List<BirthDayDetailsVO> designationList = new ArrayList<BirthDayDetailsVO>();
+			if(returnList != null && returnList.size() > 0 && dataBuildTypeStr != null && !dataBuildTypeStr.trim().isEmpty() && memberTypeStr != null && !memberTypeStr.trim().isEmpty()){
+				for (BirthDayDetailsVO bDayVo : returnList) {
+					
+					if(!memberTypeStr.equalsIgnoreCase("Total") && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
+						
+						for (BirthDayDetailsVO subVo : bDayVo.getSubList()) {
+							if(subVo.getDesignation() != null && subVo.getDesignation().equalsIgnoreCase(memberTypeStr)){
+								designationList.add(subVo);
+							}
+						}
+						bDayVo.setSubList(designationList);
+					}
 				}
 			}
-			
-			fromDate = getBirthdaySearchfromDateBasedOnValue(1);
-			toDate = getBirthdaySearchToDateBasedOnValue(1);
-			
-			
-			
-			Long totalBdayDetailsCntTommorow = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBdayWishedDetailsCntTommorow = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Tomorrow");
-			idNameVO.setActualCount(totalBdayDetailsCntTommorow);
-			idNameVO.setCount(totalBdayWishedDetailsCntTommorow);
-			idNameVOs.add(idNameVO);
-			
-			fromDate = getBirthdaySearchfromDateBasedOnValue(8);
-			toDate = getBirthdaySearchToDateBasedOnValue(8);
-			
-			
-			Long totalBdayDetailsCntNxtweek = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBdayWishedDetailsCntNxtweek = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Next 7 Days");
-			idNameVO.setActualCount(totalBdayDetailsCntNxtweek);
-			idNameVO.setCount(totalBdayWishedDetailsCntNxtweek);
-			idNameVOs.add(idNameVO);
-
-			fromDate = getBirthdaySearchfromDateBasedOnValue(31);
-			toDate = getBirthdaySearchToDateBasedOnValue(31);
-			
-			
-			
-			Long totalBdayDetailsCntNxtMonth = leaderOccasionDAO.getTotalBirthDays(fromDate,toDate);
-			Long totalBdayWishedDetailsCntNxtMonth = leaderOccasionDAO.getTotalWishedBirthDays(fromDate,toDate);
-			idNameVO = new IdNameVO();
-			idNameVO.setName("Next 30 days");
-			idNameVO.setActualCount(totalBdayDetailsCntNxtMonth);
-			idNameVO.setCount(totalBdayWishedDetailsCntNxtMonth);
-			idNameVOs.add(idNameVO);
-			birthDayDetailsVOs.setTdpCadreVOList(cadreVOs);
-			birthDayDetailsVOs.setIdNameVOList(idNameVOs);
 		} catch (Exception e) {
 			LOG.error("Exception raised in getLeaderOccasionDetails in BirthDayService service:-", e);
 		}
-		return birthDayDetailsVOs;
+		return returnList;
 	}
-	
-	
-
-	
-	/* (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.IBirthDayDetailsService#getAllLstOfDaysForBdayDtails(java.lang.String)
-	 */
-	public BirthDayDetailsVO getAllLstOfDaysForBdayDtails(String searchType,Long occastionTypeId) {
-		BirthDayDetailsVO allBDayDtlsVOs = new BirthDayDetailsVO();
-		try {
-			TdpCadreVO tdpCadreVO = null;
-			IdNameVO idNameVO = new IdNameVO();
-			List<TdpCadreVO> cadreVOs = new ArrayList<TdpCadreVO>();
-			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
-	
-			Date fromDate = new DateUtilService().getCurrentDateAndTime();
-			Date toDate = new DateUtilService().getCurrentDateAndTime();
-			
-			/*
-			//get from and to date
-			if (searchType != null && searchType.equals("Last 30 Days")) {
-
-				fromDate = getBirthdaySearchfromDateBasedOnValue(-30);
-				toDate = getBirthdaySearchToDateBasedOnValue(-1);
-			}
-			else if (searchType != null && searchType.equals("Last 7 Days")) {
-				fromDate = getBirthdaySearchfromDateBasedOnValue(-7);
-				toDate = getBirthdaySearchToDateBasedOnValue(-1);
-			}
-			else if (searchType != null && searchType.equals("Yesterday")) {
-				fromDate = getBirthdaySearchfromDateBasedOnValue(-1);
-				toDate = getBirthdaySearchToDateBasedOnValue(-1);
-			}
-			else if (searchType != null && searchType.equals("Today")) {
-				fromDate = new Date();
-				toDate = new Date();
-			}
-			
-			else if (searchType != null && searchType.equals("Tomorrow")) {
-				fromDate = getBirthdaySearchfromDateBasedOnValue(1);
-				toDate = getBirthdaySearchToDateBasedOnValue(1);
-			}
-			else if (searchType != null && searchType.equals("Next 7 days")) {
-				fromDate = getBirthdaySearchfromDateBasedOnValue(1);
-				toDate = getBirthdaySearchToDateBasedOnValue(7);
-			}
-			else if (searchType != null && searchType.equals("Next 30 days")) {
-				fromDate = getBirthdaySearchfromDateBasedOnValue(1);
-				toDate = getBirthdaySearchToDateBasedOnValue(30);
-			}
-			
-			List<Integer> months = new ArrayList<Integer>(0);
-			List<Integer> days = new ArrayList<Integer>(0);
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			months.add(Integer.parseInt(sdf.format(fromDate).split("-")[1]));
-			days.add(Integer.parseInt(sdf.format(fromDate).split("-")[2]));
-			
-			months.add(Integer.parseInt(sdf.format(toDate).split("-")[1]));
-			days.add(Integer.parseInt(sdf.format(toDate).split("-")[2]));
-			
-			
-			
-			List<Object[]> leaderOccasionDetailsForTaday = leaderOccasionDAO.getLeaderOccasionDetailsForTaday1(months, days,occastionTypeId);
-			
-			if (leaderOccasionDetailsForTaday != null && leaderOccasionDetailsForTaday.size() > 0) {
-				for (Object[] result : leaderOccasionDetailsForTaday) {
-					tdpCadreVO = new TdpCadreVO();
-					tdpCadreVO.setImageURL(result[0] != null ? result[0].toString() : "");
-					tdpCadreVO.setName(result[1] != null ? result[1].toString() : "");
-					date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(result[2].toString().substring(0, 19));
-					String convertDate = new SimpleDateFormat("dd MMMM").format(date);
-					tdpCadreVO.setDateOfBirth(convertDate);
-					tdpCadreVO.setMobileNo(result[3] != null ? result[3].toString() : "");
-					// tdpCadreVO.setWished(result[4] != null ?
-					// result[4].toString(): "");
-					tdpCadreVO.setId((Long) result[4]);
-					cadreVOs.add(tdpCadreVO);
-					allBDayDtlsVOs.setTdpCadreVOList(cadreVOs);
-					// allBDayDtlsVOs.setIdNameVOList(idNameVOs);
-
-				}
-
-			}
-			
-			*/
-			
-			List<Object[]> leaderOccasionDetailsForTaday  = null;
-			Long betweenDatesCount=1L;
-			String searchTypeStr = "Next";
-			if (searchType != null && searchType.equals("Last 30 Days")) {
-				searchTypeStr = "Previous";
-				betweenDatesCount = 30L;
-			}
-			else if (searchType != null && searchType.equals("Last 7 Days")) {
-				searchTypeStr = "Previous";
-				betweenDatesCount = 7L;	
-			} else if (searchType != null && searchType.equals("Yesterday")) {
-				searchTypeStr = "Previous";
-				betweenDatesCount = 1L;
-			}
-			else if (searchType != null && searchType.equals("Today")) {
-				betweenDatesCount = 0L;
-			}
-			else if (searchType != null && searchType.equals("Tomorrow")) {
-				betweenDatesCount = 1L;
-			}
-			else if (searchType != null && searchType.equals("Next 7 Days")) {
-				betweenDatesCount = 7L;
-			}
-			else if (searchType != null && searchType.equals("Next 30 days")) {
-				betweenDatesCount = 30L;
-			}
-			
-			leaderOccasionDetailsForTaday = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(searchTypeStr,betweenDatesCount,occastionTypeId);
-			if (leaderOccasionDetailsForTaday != null && leaderOccasionDetailsForTaday.size() > 0) {
-				for (Object[] result : leaderOccasionDetailsForTaday) {
-					tdpCadreVO = new TdpCadreVO();
-					tdpCadreVO.setImageURL(result[0] != null ? result[0].toString() : "");
-					tdpCadreVO.setName(result[1] != null ? result[1].toString() : "");
-					String convertDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(result[2].toString().substring(0, 19)).toString();
-					tdpCadreVO.setDateOfBirth(convertDate);
-					tdpCadreVO.setMobileNo(result[3] != null ? result[3].toString() : "");
-					// tdpCadreVO.setWished(result[4] != null ?
-					// result[4].toString(): "");
-					tdpCadreVO.setId((Long) result[4]);
-					cadreVOs.add(tdpCadreVO);
-					allBDayDtlsVOs.setTdpCadreVOList(cadreVOs);
-					// allBDayDtlsVOs.setIdNameVOList(idNameVOs);
-
-				}
-
-			}
-
-		} catch (Exception e) {
-			LOG.error("Exception raised in getAllLstOfDaysForBdayDtails in BirthDayService service:-", e);
+public BirthDayDetailsVO getMatchedVOById(List<BirthDayDetailsVO> memberDetailsVOLst,Long id)
+{
+	try{
+		if(memberDetailsVOLst == null || memberDetailsVOLst.size() == 0)
+			return null;
+		for(BirthDayDetailsVO vo : memberDetailsVOLst)
+		{
+			if(vo.getId().longValue()== id.longValue())
+				return vo;
 		}
-		return allBDayDtlsVOs;
-
 	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return null;
+}
 	
-	public String getWishingDetails(Long searchId) {
-		String status = null;
-		List<TdpCadreVO> cadreVOs = new ArrayList<TdpCadreVO>();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-		String year = sdf.format(new Date());
-		List<LeaderOccasionWishDetails> id=null;
-		
-         try{
-        	 //transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-     	        //protected void doInTransactionWithoutResult(TransactionStatus arg0){       	 
-        	 TdpCadreVO tdpCadreVO = new TdpCadreVO();
-    		 //id=leaderOccasionDAO.getWishingDetails(searchId,year);
-    	 if(id == null || id.size() <= 0){
-    		 LeaderOccasionWishDetails  leaderOccasionWishDetails=new LeaderOccasionWishDetails();
-    		 //leaderOccasionWishDetails.setLeaderOccasionWishDetailsId(tdpCadreVO.getId());
-    		 leaderOccasionWishDetails.setLeaderOccasionId(searchId);
-    		 leaderOccasionWishDetails.setWishTime(dateUtilService.getCurrentDateAndTime());
-    		 //leaderOccasionWishDetails.setDescription(description);
-    		 leaderOccasionWishDetails.setIsdeleted("false");
-    		 leaderOccasionWishDetails.setYear(year);
-    		 
-    		  leaderOccasionWishDetailsDAO.save(leaderOccasionWishDetails);
-    	 
-    		 
-    	 }
-    	 else
-    	 {
-    		 LeaderOccasionWishDetails model = id.get(0);
-    		if(model.getIsdeleted()=="false") 
-    		{
-    			model.setIsdeleted("true");
-    			leaderOccasionWishDetailsDAO.save(model);
-    		}
-    		else
-    		{
-    			model.setIsdeleted("false");
-    			leaderOccasionWishDetailsDAO.save(model);	
-    		}
-    	 }		
-    	 status = "success";
-     	        }
-    	 catch (Exception e) {
-    		 e.printStackTrace();
-    		 status = "failure";
-			LOG.error("Exception ocured in gettingUserDetails()"+e);
-		}
-        
-		return status;
-   
-		
+public String getWishingDetails(Long searchId) {
+	String status = null;
+	List<TdpCadreVO> cadreVOs = new ArrayList<TdpCadreVO>();
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+	String year = sdf.format(new Date());
+	Date date = new Date(); // your date
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    int calyear = cal.get(Calendar.YEAR);
+     try{
+    	 TdpCadreVO tdpCadreVO = new TdpCadreVO();
+    	 LeaderOccasionWishDetails leaderOcassion = leaderOccasionWishDetailsDAO.getLeaderOccassiobnWishngDetails(searchId,String.valueOf(calyear));
+    	 	if(leaderOcassion == null){
+	    		 LeaderOccasionWishDetails  leaderocsnWishDtls = new LeaderOccasionWishDetails();
+	    		 leaderocsnWishDtls.setLeaderOccasionId(searchId);
+	    		 leaderocsnWishDtls.setWishTime(dateUtilService.getCurrentDateAndTime());
+	    		 leaderocsnWishDtls.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+	    		 leaderocsnWishDtls.setIsdeleted("false");
+	    		 leaderocsnWishDtls.setYear(year);
+	    		 leaderOccasionWishDetailsDAO.save(leaderocsnWishDtls);	
+    	 	}
+    	 	else {
+    	 			if(leaderOcassion.getIsdeleted().equalsIgnoreCase("false")){
+    	 				leaderOcassion.setIsdeleted("true");
+    	 			}
+    	 			else
+    	 			{
+    	 				leaderOcassion.setIsdeleted("false");
+    	 			}
+    	 			leaderOccasionWishDetailsDAO.save(leaderOcassion);	
+    	 	}		
+	 status = "success";
+  }
+	 catch (Exception e) {
+		 e.printStackTrace();
+		 status = "failure";
+		LOG.error("Exception ocured in gettingUserDetails()"+e);
 	}
+    
+	return status;
+}
+	
 	/**
 	 * @param value
 	 * @return
