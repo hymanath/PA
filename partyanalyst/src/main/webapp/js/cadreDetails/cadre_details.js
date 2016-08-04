@@ -1601,13 +1601,14 @@ function getTotalComplaintsForCandidate(){
 	}
 
 	arr.push(obj);
-	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
-	
-		$.ajax({
+		//getting Dynamic Browser URL
+		var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
+	$.ajax({
 				type : "POST",
-				url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				//url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 				//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 				  data: JSON.stringify(arr),
 				 contentType: "application/json; charset=utf-8",
@@ -1633,12 +1634,10 @@ function getTotalComplaintsForCandidate(){
 				} */
 				});
 	}
-	
-	
-	var nominatedResult = [];
+var nominatedResult = [];
+var nominatedPostResult = [];
 function getPDFReportsForNominatedComplaints(){
-
-	var membershipId = $('#cadreMemberShipId').val();
+var membershipId = $('#cadreMemberShipId').val();
 	var obj = {
 		"membershipId" :membershipId
 	}
@@ -1648,17 +1647,81 @@ function getPDFReportsForNominatedComplaints(){
 	 dataType: 'json',
      data: {task:JSON.stringify(obj)}
     })
-    .done(function( result ) {
+    .done(function(result){
 		nominatedResult = result;
-		buildReport(); 
-	
-				});
+		getNominatedPostReportFiles();
+		
+		});
 	}
-	function buildTotalComplaints(result,complaintId)
+function buildNominatedReports()
 {
 	var str = '';
+	var flag = false;
+	if((nominatedResult != null && nominatedResult.length > 0)||(nominatedPostResult != null && nominatedPostResult.length > 0))
+			{
+			flag = true;
+			str +='<table id="NominatedreportTableId" class="table table-bordered">';
+			str +='<thead>';
+			str +='<th>REPORT TYPE</th>';
+			//str +='<th>PREFERABLE STATUS</th>';  
+			str +='<th>REPORT DATE</th>';
+			str +='</thead>';  
+			str +='<tbody>';
+			
+			for(var i in nominatedPostResult) //Nominated Post
+				{
+				str +='<tr>'; 
+				str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedPostResult[i].reportPath+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls2" >Nominated Post</span></td>'; 
+						/*str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >N/A</span></td>'; */
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedPostResult[i].reportPath+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls2" >'+nominatedPostResult[i].insertedTime+'</span></td>'; 
+				str +='</tr>'; 
+				}
+				if(nominatedResult != null && nominatedResult.length > 0)
+				{
+				for(var i in nominatedResult)//Grievance Nominated Post
+				{
+				str +='<tr>'; 
+				if(nominatedResult[i].scanCopyList != null && nominatedResult[i].scanCopyList.length > 0)
+				{
+						for(var j in nominatedResult[i].scanCopyList)
+						{
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
+						/*str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >N/A</span></td>'; */
+						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
+					}
+				}
+					else
+					{
+							str +='<td><span>'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
+							//str +='<td><span>N/A</span></td>'; 
+							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
+					}
+				
+			str +='</tr>';  	
+				}
+			}
+			
+		str +='</tbody>';
+	str +='</table>'; 
+			}
+	if(flag == true)
+		{
+			$("#profilesInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="nominatedreportsId" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#reportModelId"></i>');
+			$("#reportDetailsId").html(str);
+			$("#NominatedreportTableId").dataTable(); 
+		}
+		else
+		{
+			$("#profilesInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="nominatedreportsId" title="No Profiles are available" ></i>');
+		}
+}
+	function buildTotalComplaints(result,complaintId)
+	{
+		var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
+	var str = '';
 	str += '<ul class="list-inline">';
-	
 	$("#candidateTotalComplaintsDiv").html(''+result[0].count+'');
 	str += '<li style="margin-top:5px">';
 	str += '<ul class="display-style pull-right graph-list count-list">';
@@ -1699,7 +1762,7 @@ function getPDFReportsForNominatedComplaints(){
 	
 		if(result[0].voList[j].complaintId == complaintId){
 		comp += '<li style="cursor:pointer;background:'+color+';border-left:4px solid '+color+'"';
-		comp += '<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[0].voList[j].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID - '+result[0].voList[j].complaintId+'</a></p>';
+		comp += '<p class="m_0"><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[0].voList[j].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID - '+result[0].voList[j].complaintId+'</a></p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
 			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[0].voList[j].status+'</span></p>';
 			if(result[0].voList[j].raisedDate != null)
@@ -1712,7 +1775,7 @@ function getPDFReportsForNominatedComplaints(){
 		if(result[0].voList[j].complaintId != complaintId){
 		var color = getColorCodeByStatus(result[0].voList[j].status);
 			comp += '<li style="background:'+color+';border-left:4px solid '+color+'" ';
-		    comp += '<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[0].voList[j].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID - '+result[0].voList[j].complaintId+'</a></p>';
+		    comp += '<p class="m_0"><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[0].voList[j].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID - '+result[0].voList[j].complaintId+'</a></p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
 			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[0].voList[j].status+'</span></p>';
 			if(result[0].voList[j].raisedDate != null)
@@ -1729,6 +1792,9 @@ function getPDFReportsForNominatedComplaints(){
 }
 function buildInsuranceTotalComplaints(result,complaintId)
 {
+	var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	 var hosReq = 0;
 	 var deathReq=0;
 	 for(var j in result[1].voList){
@@ -1745,7 +1811,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 		 for(var j in result[1].voList){
 			 if(result[1].voList[j].issueType == 'Death'){
 					str+='<li>';
-					str+='<p class="m_0" ><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].voList[j].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].voList[j].complaintId+'</a></p>';
+					str+='<p class="m_0" ><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[1].voList[j].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].voList[j].complaintId+'</a></p>';
 					str+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 					str+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
 					str+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
@@ -1766,7 +1832,7 @@ function buildInsuranceTotalComplaints(result,complaintId)
 		 for(var j in result[1].voList){
 			 if(result[1].voList[j].issueType == 'Hospitalization'){
 				str1+='<li>';
-				str1+='<p class="m_0" ><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].voList[j].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].voList[j].complaintId+'</a></p>';
+				str1+='<p class="m_0" ><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[1].voList[j].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].voList[j].complaintId+'</a></p>';
 				str1+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
 				str1+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
 				str1+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
@@ -1791,9 +1857,14 @@ function getMemberComplaints()
   $("#familyHospitalizationInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
   $("#familyRequestAmount").html('');
   $("#familyMemberDiv").html('');
+  		//getting Dynamic Browser URL
+		//var url = "http://mytdp.com/cadreDetailsAction.action?cadreId=7637453";
+		var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	$.ajax({
 			type : "POST",
-			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			url: wurl+"/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
@@ -1817,7 +1888,11 @@ function getMemberComplaints()
 			});
 }
 function buildFamilyMemberComplaint(result,jobj){
-	 var flag = false;
+	//getting Dynamic Browser URL
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
+	var flag = false;
  try{
 	 var cnt = 0;
 	if(result!=null && result.length>0){
@@ -1885,7 +1960,7 @@ function buildFamilyMemberComplaint(result,jobj){
 			if(result[0].subList[j].membershipId == null)
 			comp += '<p class="m_0">MemberShipID- N/A</p>';
 			else
-			comp += '<p class="m_0">MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].name+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].membershipId+'"><b>'+result[0].subList[j].membershipId+'</b></p></a>';
+			comp += '<p class="m_0">MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].name+' Cadre Details " href="cadreDetailsAction.action?memberShipId='+result[0].subList[j].membershipId+'"><b>'+result[0].subList[j].membershipId+'</b></p></a>';
 			if(result[0].subList[j].familyVoter != null)
 			{
 				if(result[0].subList[j].familyRefererMembership == null)
@@ -1895,7 +1970,7 @@ function buildFamilyMemberComplaint(result,jobj){
 				else
 				{
 					
-					comp += '<p class="m_0">Cadre- '+result[0].subList[j].familyRefererName+'  MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].familyRefererName+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].familyRefererMembership+'"><b>'+result[0].subList[j].familyRefererMembership+'</b></p></a>';
+					comp += '<p class="m_0">Cadre- '+result[0].subList[j].familyRefererName+'  MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].familyRefererName+' Cadre Details " href="'+wurl+'/cadreDetailsAction.action?memberShipId='+result[0].subList[j].familyRefererMembership+'"><b>'+result[0].subList[j].familyRefererMembership+'</b></p></a>';
 					//'+result[0].subList[j].name+'
 				}
 				
@@ -1923,7 +1998,7 @@ function buildFamilyMemberComplaint(result,jobj){
 		     	var color = getColorCodeByStatus(result[0].subList[j].subList[k].status);
 				comp += '<li style="background:'+color+'"';
 				
-				comp+=' <p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[0].subList[j].subList[k].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID -'+result[0].subList[j].subList[k].complaintId+'</a></p><p class="m_0">'+result[0].subList[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[0].subList[j].subList[k].status+'</span></p><p class="m_0">'+result[0].subList[j].subList[k].raisedDate+'</p></li>';
+				comp+=' <p class="m_0"><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[0].subList[j].subList[k].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID -'+result[0].subList[j].subList[k].complaintId+'</a></p><p class="m_0">'+result[0].subList[j].subList[k].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[0].subList[j].subList[k].status+'</span></p><p class="m_0">'+result[0].subList[j].subList[k].raisedDate+'</p></li>';
 				}
 				comp+='</ul>';
 			 } 
@@ -1955,6 +2030,10 @@ function buildFamilyMemberComplaint(result,jobj){
 }
 function buildInsuranceFamilyMemberComplaint(result)
 {
+	//getting Dynamic Browser URL
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
 	    var hosReq = 0;
 		var deathReq=0;
 	for(var j in result[1].subList){
@@ -1982,7 +2061,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 				if(result[1].subList[j].subList[k].issueType == 'Death')
 				{
 					str+='<li>';
-					str+='<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].subList[j].subList[k].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].subList[j].subList[k].complaintId+'</a></p>';
+					str+='<p class="m_0"><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[1].subList[j].subList[k].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].subList[j].subList[k].complaintId+'</a></p>';
 					
 					str+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
@@ -2014,7 +2093,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 				if(result[1].subList[j].subList[k].issueType == 'Hospitalization')
 				{
 					str1+='<li>';
-					str1+='<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[1].subList[j].subList[k].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].subList[j].subList[k].complaintId+'</a></p>';
+					str1+='<p class="m_0"><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[1].subList[j].subList[k].complaintId+'&typeOfIssue=Insurance" target="_blank">C ID -'+result[1].subList[j].subList[k].complaintId+'</a></p>';
 					str1+='<p class="m_0">'+result[1].subList[j].subList[k].subject+'</p>';
 					str1+='<p class="m_0">Status - '+result[1].subList[j].subList[k].status +'</p>';
 					str1+='<p class="m_0"> '+result[1].subList[j].subList[k].raisedDate+'</p>';
@@ -2336,15 +2415,14 @@ function getCandidateAndLocationSummaryNews(){
 		locationId=locationId;
 		//locationType="district";
 		//locationId=13;
-		
 		startDate=startDate;
 		endDate=endDate;
-		
 		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf(".com")+4));
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	 $.ajax({
 		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
-		url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"/"+globalCadreId+""
+		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"/"+globalCadreId+""
 	}).then(function(result) {
 		$("#dataLoadingsImgForNewsId1").hide();
 		$("#hideShowNewsDiv").show();
@@ -3160,6 +3238,10 @@ function getComplaintTrackingDetails(complaintId,divId){
 }
 
 $(document).on("click",".statusWiseDetailsCls",function(){
+	
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
 	$("#deathHospModalBodyId").html('');
 	$("#deathHospModelDivId").modal("show");
 	$("#dataLoadingsImgForDeathHospDetails").show();
@@ -3233,7 +3315,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 					str+='<tbody style="background:#f3f3f3;font-size:13px;">'
 					for(var i in result){
 						str+='<tr>';
-							str+='<td><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Insurance" target="_blank">'+result[i].complaintId+'</a></td>';
+							str+='<td><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Insurance" target="_blank">'+result[i].complaintId+'</a></td>';
 							str+='<td>';
 							str+='<p class="m_0">N:'+result[i].firstName+'</p>';
 							str+='<p class="m_0">D:'+result[i].locationName+'</p>';
@@ -4284,8 +4366,11 @@ function getIVRDetails()
 	$("#ivrsurveyDataLoadoing").show();
 	$("#ivrSurveysMainDivId").show();	
 	var candidateId = globalCandidateId;//290951
+	var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	$.ajax({
-		url: "http://mytdp.com/Survey/WebService/getCandidateIVRResult/"+candidateId+""
+		url: wurl+"/Survey/WebService/getCandidateIVRResult/"+candidateId+""
 	}).then(function(result) {
 		$("#ivrsurveyDataLoadoing").hide();
 		if(result != null && result.length > 0){
@@ -4487,6 +4572,9 @@ function buildPublicScoreTable(myResult)
 }
 function getCategoryFeedBackAnswerForCadre(){
 $("#feedbackDivId").html("");
+var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	var jsObj ={
 		tdpCadreId:globalCadreId
 	}
@@ -4550,7 +4638,7 @@ $("#feedbackDivId").html("");
 					  str+='</div>';
 						for(var K in result[i].healthCardsPaths)
 						{
-							 str+='<div style="margin-left:25px;"> <a href="http://www.mytdp.com/'+result[i].healthCardsPaths[K].imageStr+'" target="_bank">HealthCard_File_'+(K+1)+'</a></div>';
+							 str+='<div style="margin-left:25px;"> <a href="'+wurl+'/'+result[i].healthCardsPaths[K].imageStr+'" target="_bank">HealthCard_File_'+(K+1)+'</a></div>';
 						}					
 					str+='</div>';
 					str+='</div>'; 
@@ -4567,7 +4655,7 @@ $("#feedbackDivId").html("");
 					  str+='</div>';
 						for(var K in result[i].feedbackCardsPaths)
 						{
-							  str+='<div style="margin-left:25px;"> <a href="http://www.mytdp.com/'+result[i].feedbackCardsPaths[K].imageStr+'" target="_bank"> Feedback_File_'+(K+1)+'</a></div>';
+							  str+='<div style="margin-left:25px;"> <a href="'+wurl+'/'+result[i].feedbackCardsPaths[K].imageStr+'" target="_bank"> Feedback_File_'+(K+1)+'</a></div>';
 						}					
 					str+='</div>';
 					str+='</div>'; 
@@ -5418,12 +5506,14 @@ $(document).on('click', '.ivrAnsweredCls', function(){
 function getRefferelDetailsStatusWise(){
 	//$("#referralGrievanceDetailsId").html('');
 	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
 	var cadreId = globalCadreId;
 	$("#referralGrievanceLoadingImg").show(); 
+	
 	$.ajax({
 		type:'GET',
-		url: "http://mytdp.com/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -5452,7 +5542,7 @@ function getRefferelDetailsStatusWise(){
 				}
 				$.ajax({
 					type:'POST',
-					url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 					//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 						 dataType: "json",
 						 data: JSON.stringify(obj),
@@ -5470,7 +5560,7 @@ function getRefferelDetailsStatusWise(){
 					value += '<li style="background:'+color+'">';
 					value += '<div class="row">';
 						value += '<div class="col-sm-6">';
-							value += '<p class="m_0"><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID -'+result[i].complaintId+'</a></p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
+							value += '<p class="m_0"><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">C ID -'+result[i].complaintId+'</a></p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
 						value += '</div>';
 						value += '<div class="col-sm-6">';
 							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+result[i].status+'" attr_complaintId='+result[i].complaintId+'>View More</button>';
@@ -5493,12 +5583,14 @@ function getRefferelDetailsStatusWise(){
 }
 
 $(document).on('click','.referalGrievenceCls',function(){
+	
 	$this = $(this);
 	var status = $($this).attr("attr_status");
 	var complaintId=  $($this).attr("attr_complaintId");
 
 	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
 	var obj={
 		 cadreId : globalCadreId,
 		 status :status,
@@ -5508,7 +5600,7 @@ $(document).on('click','.referalGrievenceCls',function(){
 	
 	$.ajax({
 		type:'POST',
-		url: "http://mytdp.com/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
@@ -6060,6 +6152,9 @@ var str='';
 }
 
 $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
+	var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	$("#grievanceDetailsModalBodyId").html('');
 	$("#grievanceDetailsModalDivId").modal("show");
 	$("#dataLoadingsImgForGrievanceStatusDetails").show();
@@ -6118,7 +6213,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
 				for(var i in result){
 					str+='<tr>';
-						str+='<td><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">'+result[i].complaintId+'</a></td>';
+						str+='<td><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">'+result[i].complaintId+'</a></td>';
 						str+='<td>';
 						str+='<p class="m_0">N:'+result[i].firstName+'</p>';
 						str+='<p class="m_0">D:'+result[i].locationName+'</p>';
@@ -6540,7 +6635,9 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 	$("#grievanceBenifitsDetailsModalBodyId").html('');
 	$("#grievanceBenifitsDetailsModalDivId").modal("show");
 	$("#dataLoadingsImgForGrievanceBenifitsStatusDetails").show();
-	
+	var url = window.location.href;
+		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+		wurl = wurl.replace("/PartyAnalyst","");
 	var locationId = 0;
 	var locationType = $(this).attr("attr_location_type");
 	var issueType = $(this).attr("attr_issueType");
@@ -6598,7 +6695,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
 				for(var i in result){
 					str+='<tr>';
-						str+='<td><a href="http://mytdp.com/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">'+result[i].complaintId+'</a></td>';
+						str+='<td><a href="'+wurl+'/Grievance/homeAction.action?complaintId='+result[i].complaintId+'&typeOfIssue=Grievance" target="_blank">'+result[i].complaintId+'</a></td>';
 						str+='<td>';
 						str+='<p class="m_0">N:'+result[i].firstName+'</p>';
 						str+='<p class="m_0">D:'+result[i].locationName+'</p>';
@@ -7300,15 +7397,18 @@ $(document).on("click",".editIconCls",function(){
 });
 
 function getNominatedPostReportFiles() {
+	
+	nominatedPostResult = [];
 	var jsObj={
-		tdpCadreId:tdpCadreId
+		tdpCadreId:globalCadreId
 	}
 	$.ajax({
 		type:'GET',
 		url:'getNominatedPostReportFilesAction.action',  
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
-	}).done(function(){
-		
+	}).done(function(result){
+		nominatedPostResult = result;
+		buildNominatedReports(); 
 	})
 }

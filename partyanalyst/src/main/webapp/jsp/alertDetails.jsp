@@ -129,6 +129,18 @@
 			border-width: 6px;
 			margin-top: -6px;
 		}
+		.assignCandidate {
+    background: #ccc none repeat scroll 0 0;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.assignCandidate {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+}
 	</style>
  </head>     
 
@@ -417,7 +429,7 @@ var alertId = '${alertId}';
 $(".dropkickClass").dropkick();
 function deleteAlertAssignedCandidates(tdpCadreId)
 {
-	//$("#alertAssignedCandidateDataId").html('<img src="images/search.gif" />');
+	
    	var jsObj =
 		     {
 			alertId  : alertId,
@@ -451,8 +463,9 @@ function buildAlertAssignedCandidateData(result)
 		str+='<div class="media-left">';
         str+='<img src="'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
         str+='</div>';
+		str+='<div class="media-body" style="position:relative;">';
 		str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">';
-        str+='<div class="media-body" style="position:relative;"><span class="closeIcon assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'" onclick="getConfirmation();"><i class="glyphicon glyphicon-trash"></i></span>';
+        str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash"></i></span>';
 		str+='</c:if>';
 		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
 		//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
@@ -486,10 +499,11 @@ function buildAlertAssignedCandidateData(result)
 	}*/
 	
 }
-$(document).on("click",".assignCandidate",function(){
+/*$(document).on("click",".assignCandidate",function(){
 	 var tdpCadreId = $(this).attr("attr_tdpCadreId");
-	 deleteAlertAssignedCandidates(tdpCadreId);
-});
+	 getConfirmation(tdpCadreId);
+	// deleteAlertAssignedCandidates(tdpCadreId);
+});*/
 </script>
 <script src="dist/alertDashBoard/alertDetails.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>

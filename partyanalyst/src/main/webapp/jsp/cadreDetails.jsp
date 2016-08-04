@@ -207,7 +207,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     </div>
 									<!--<img src="dist/img/profile.png" class="img-responsive img-rounded" alt="Profile Image">-->
                                 </div>
-                                <div class="media-body">
+                                <div class="media-body" style="display:inline;">
                                 	<p class="m_0"><strong>NAME</strong> : <span id="nameId"></span></p>
                                     <p class="m_0"><strong>AGE</strong> : <span id="ageId"></span></p>
                                     <p class="m_0"><strong>DOB</strong> : <span id="dobId"></span></p>
@@ -223,6 +223,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 								</c:if>
 								-->
+								&nbsp&nbsp&nbsp&nbsp<strong>Profiles</strong>: <span id="profilesInfoId"></span>
 								&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <span id="reportsInfoId"></span>
 								  		<!--<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
@@ -230,6 +231,8 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 										<c:if test="${fn:length(cadreReportVOList) eq 0}">  
 											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>
 										</c:if>-->
+										
+								
 								</p>
 								</div>
                             </div>
@@ -2479,11 +2482,11 @@ $(document).on("click",".notesClass",function(){
 </script>
 <script>
 //swadhin
+buildReport();
 function buildReport()
 {
 	var str = '';
 	var flag = false;
-
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 	flag = true;
 	str +='<table id="reportTableId" class="table table-bordered">';
@@ -2502,7 +2505,7 @@ function buildReport()
 					str +='</tr>';    
 				</c:forEach>         
 			</c:forEach>
-			if(nominatedResult != null && nominatedResult.length > 0)
+			/*if(nominatedResult != null && nominatedResult.length > 0)
 			{
 				for(var i in nominatedResult)
 				{
@@ -2525,52 +2528,12 @@ function buildReport()
 				
 			str +='</tr>';  	
 				}
-			}
+			}*/
 		str +='</tbody>';
 	str +='</table>';    
 	</c:if>
-	if(flag == false)
-	{
-		
-			if(nominatedResult != null && nominatedResult.length > 0)
-			{
-			flag = true;
-			str +='<table id="reportTableId" class="table table-bordered">';
-			str +='<thead>';
-			str +='<th>REPORT TYPE</th>';
-			str +='<th>PREFERABLE STATUS</th>';  
-			str +='<th>REPORT DATE</th>';
-			str +='</thead>';  
-			str +='<tbody>';
-				for(var i in nominatedResult)
-				{
-				str +='<tr>'; 
-				if(nominatedResult[i].scanCopyList != null && nominatedResult[i].scanCopyList.length > 0)
-				{
-						for(var j in nominatedResult[i].scanCopyList)
-						{
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >N/A</span></td>'; 
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 	
-					}
-				}
-					else
-					{
-							str +='<td><span>'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
-							str +='<td><span>N/A</span></td>'; 
-							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
-					}
-				
-			str +='</tr>';  	
-				}
-			}
-		str +='</tbody>';
-	str +='</table>'; 
-	}
-
 	if(flag == true)
 		{
-	
 			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>');
 			$("#reportDetailsId").html(str);
 			$("#reportTableId").dataTable(); 
@@ -2579,8 +2542,6 @@ function buildReport()
 		{
 			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>');
 		}
-	
-	
 }
 function openPdf(aravind){	
 	window.open(aravind);
@@ -2624,6 +2585,23 @@ $(document).on('click','.showPdfCls1',function(){
 	}
 	
 });  
+
+$(document).on('click','.showPdfCls2',function(){  
+     
+	var str = '';
+	
+	var filePath = $(this).attr("filePath");
+	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+		$("#pdfModelId").modal("hide");
+		window.open('http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+	}else{
+		$("#pdfModelId").modal("show");
+		str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+		str += '</iframe>';
+		$("#pdfReportDetailsId").html(str);
+	}
+	
+}); 
 
 </script>
 </body>

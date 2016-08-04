@@ -40,7 +40,8 @@ function saveAlertAssignedUser ()
 				    $("#assignEroorDiv").html("assigned Successfully").css("color","green");
 				 setTimeout(function(){ $("#assignEroorDiv").html("");
 					 }, 1000);
-					$("#involvedCandidatesDiv").html('');
+					$("#involvedCandidatesDiv").hide();
+					$(".membersBlock").html('');
 					$("#apptmemberDetailsDiv").html('');
 					clearCommonFields();
 					getAlertAssignedCandidates(alertId);
@@ -320,10 +321,11 @@ function getAlertAssignedCandidates(alertId)
 			      buildAlertAssignedCandidateData(result);
 				});
 }
-function getConfirmation(){
+function getConfirmation(tdpCadreId){
                var retVal = confirm("Are you sure want to delete?");
-               if( retVal == true ){
-				   //deleteAlertAssignedCandidates(tdpCadreId);
+			
+			    if(retVal == true){
+				   deleteAlertAssignedCandidates(tdpCadreId);
                   return true;
                }
                else{
