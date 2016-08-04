@@ -887,6 +887,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertAssigned.setCreatedBy(userId);
 						alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
 						alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+						alertAssigned.setIsDeleted("N");
 						alertAssignedDAO.save(alertAssigned);
 					 }
 				 }
@@ -1000,14 +1001,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	{
 		String rs=null;
 		try{
-			List<AlertAssigned> list = alertAssignedDAO.getDeleteAlertAssignedCandidates(alertId,tdpCadreId);
+			List<Long> list = alertAssignedDAO.getDeleteAlertAssignedCandidates(alertId,tdpCadreId);
 		
 			if(list != null && list.size() > 0)
 			{
-				for(AlertAssigned obj : list)
+				for(Long obj : list)
 				{
-					obj.setIsDeleted("Y");
-					alertAssignedDAO.save(obj);
+					AlertAssigned alertAssigned = alertAssignedDAO.get(obj);
+					alertAssigned.setIsDeleted("Y");
+					alertAssignedDAO.save(alertAssigned);
 				}
 				rs="success";
 			}

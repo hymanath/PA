@@ -21,14 +21,14 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 	public List<Long> checkCadreExistsForAlert(List<Long> tdpCadreIds,Long alertId)
 	{
 		Query query = getSession().createQuery("select distinct model.tdpCadre.tdpCadreId from AlertAssigned model" +
-				" where model.alert.alertId = :alertId and model.tdpCadre.tdpCadreId in(:tdpCadreIds)");
+				" where model.alert.alertId = :alertId and model.tdpCadre.tdpCadreId in(:tdpCadreIds) and model.isDeleted ='N'");
 		query.setParameter("alertId", alertId);
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
 		return query.list();
 	}
-	public List<AlertAssigned> getDeleteAlertAssignedCandidates(Long alertId,Long tdpCadreId)
+	public List<Long> getDeleteAlertAssignedCandidates(Long alertId,Long tdpCadreId)
 	{
-		Query query = getSession().createQuery("select distinct model from AlertAssigned model" +
+		Query query = getSession().createQuery("select  model.alertAssignedId from AlertAssigned model" +
 				" where model.isDeleted ='N' and  model.alert.alertId = :alertId and model.tdpCadre.tdpCadreId =:tdpCadreId ");
 		query.setParameter("alertId", alertId);
 		query.setParameter("tdpCadreId", tdpCadreId);
