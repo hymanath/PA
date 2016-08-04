@@ -24,6 +24,8 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long applicationStatusId;
 	private String applicationStatus;
 	private List<IdNameVO> subList1 = new ArrayList<IdNameVO>();
+	private Long wishCount=0l;
+	private String wish;
 	
 	@Override
 	public int compare(IdNameVO o2, IdNameVO o1) {
@@ -179,5 +181,22 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setSubList1(List<IdNameVO> subList1) {
 		this.subList1 = subList1;
 	}
+
+	public Long getWishCount() {
+		return wishCount;
+	}
+
+	public void setWishCount(Long wishCount) {
+		this.wishCount = wishCount;
+	}
+
+	public String getWish() {
+		return wish;
+	}
+
+	public void setWish(String wish) {
+		this.wish = wish;
+	}
+	
 	
 }

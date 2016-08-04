@@ -37,6 +37,8 @@ public class LeaderOccasionWishDetails extends BaseModel implements
 	private Date wishTime;
 	private String isdeleted;
 	private String description;
+	private Date insertedTime;
+	private Date updatedTime;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -105,5 +107,22 @@ public class LeaderOccasionWishDetails extends BaseModel implements
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
 
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
+	
 }
