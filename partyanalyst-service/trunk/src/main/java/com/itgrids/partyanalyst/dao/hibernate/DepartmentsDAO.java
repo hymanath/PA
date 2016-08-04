@@ -20,4 +20,12 @@ public class DepartmentsDAO extends GenericDaoHibernate<Departments, Long> imple
 		query.setParameter("postType", postType);
 		return query.list();
 	}
+	
+	public List<Object[]> getDepartmentByIdsList(Long postType,List<Long> deptIds){
+		Query query = getSession().createQuery(" select distinct model.departmentId, model.deptName from Departments model where model.postTypeId = :postType and " +
+				" model.departmentId in (:deptIds) ");
+		query.setParameter("postType", postType);
+		query.setParameterList("deptIds", deptIds);
+		return query.list();
+	}
 }
