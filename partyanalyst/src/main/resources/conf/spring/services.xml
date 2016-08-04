@@ -3329,6 +3329,7 @@
 		<property name="countryDAO" ref="countryDAO"></property>
 		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO"></property>
 		<property name="positionDAO" ref="positionDAO"></property>
+		<property name="boardDAO" ref="boardDAO"></property>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
