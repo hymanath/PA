@@ -63,7 +63,7 @@
 
 <script>
 	
-	function getNominatdPostsOverview(divId,levelId){
+	function getNominatdPostsOverview(divId,levelId,levelTxt){
 		
 		$('#'+divId+'').html('<img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		var stateId = $('input[name=stateName]:checked').val();
@@ -82,11 +82,11 @@
 				url : "getNominatdPostsOverviewAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-				buildStatusDetails(result,levelId,divId);
+				buildStatusDetails(result,levelId,divId,levelTxt);
 		});  
 	}
 	
-	function buildStatusDetails(result,levelId,divId){
+	function buildStatusDetails(result,levelId,divId,levelTxt){
 		var str="";
 		if(result != null && result.length>0){
 			str+='<ul class="panelBlockCustom">';
@@ -102,7 +102,7 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span> </h3>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span> </h3>';
 								else
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								</c:when> 
@@ -115,7 +115,7 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								else
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
 								</c:when> 
@@ -174,7 +174,7 @@
 						<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span><span class="pull-right text-muted">100.0%</span> </h3>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span><span class="pull-right text-muted">100.0%</span> </h3>';
 								else
 									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">100.0%</span> </h3>';
 								</c:when> 
@@ -213,15 +213,16 @@ $(document).on("click",".yetToStartCls",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var status = $(this).attr("attr_status");
 	var stateId = $('input[name=stateName]:checked').val();
+	var levelTxt = $(this).attr("attr_level_txt");
 	
 	if(status == "TOTAL")//totalCorpCls
-		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_blank');
+		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total&levelTxt='+levelTxt+'','_blank');
 	else if(status == "TOTAL AVAILABLE")//totalCorpCls
-		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Open','_blank');
+		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Open&levelTxt='+levelTxt+'','_blank');
 	else if(status == "YET TO START")
-		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notYet','_blank');
+		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notYet&levelTxt='+levelTxt+'','_blank');
 	else if(status == "RUNNING")
-		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running','_blank');	
+		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running&levelTxt='+levelTxt+'','_blank');	
 });
 
 $(document).on("click",".finalReviewCls",function(){
@@ -256,18 +257,18 @@ $(document).on("click",".goPassedCls",function(){
 
 $(document).on("click",".stateCls",function(){
 	
-		getNominatdPostsOverview("stateWiseOverviewId",2);
-		getNominatdPostsOverview("districtWiseOverviewId",3);
-		getNominatdPostsOverview("assemblyWiseOverviewId",4);
-		getNominatdPostsOverview("mandalORMunciWiseOverviewId",5);
+		getNominatdPostsOverview("stateWiseOverviewId",2,"state");
+		getNominatdPostsOverview("districtWiseOverviewId",3,"district");
+		getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
+		getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
 		//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 });
 $('document').ready(function(){
-	getNominatdPostsOverview("centralWiseOverviewId",1);
-	getNominatdPostsOverview("stateWiseOverviewId",2);
-	getNominatdPostsOverview("districtWiseOverviewId",3);
-	getNominatdPostsOverview("assemblyWiseOverviewId",4);
-	getNominatdPostsOverview("mandalORMunciWiseOverviewId",5);
+	getNominatdPostsOverview("centralWiseOverviewId",1,"central");
+	getNominatdPostsOverview("stateWiseOverviewId",2,"state");
+	getNominatdPostsOverview("districtWiseOverviewId",3,"district");
+	getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
+	getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
 	//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 		
 	});

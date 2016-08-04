@@ -234,7 +234,7 @@ function getAllDeptsAndBoardsByLevel(levelId,levelValues){
    });
    
 }
-function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,bodyId,searchId){
+function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,bodyId,searchId,deptName,boardName){
 	
 	$("#"+searchId).show();
 	  
@@ -254,7 +254,7 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
    }).done(function(result){
 	   $("#"+searchId).hide();
 	   if(result != null && result.length > 0){
-		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards);
+		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
 	   }
    });
 }
@@ -287,7 +287,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 							 str+='<div class="panel panel-default">';
 								/* str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_levelId='+levelId+' attr_levelValue='+levelValues+' attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">'; */
 								
-								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
+								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_dept_name="'+result[i].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
 										str+='<h4 class="panel-title text-capital">'+result[i].idnameList[j].name+'';
@@ -333,6 +333,8 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	var boardId = $(this).attr("attr_boardId");
 	var bodyId = $(this).attr("attr_id"); 
 	var searchId = $(this).attr("attr_searchId"); 
+	var deptName = $(this).attr("attr_dept_name");
+	var boardName = $(this).attr("attr_board_name");
 	
 	var levelValuesArr=[];
 	if(globalLevelId == 1){
@@ -370,14 +372,14 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	}
 	
 	if(globalStatus !=null &&  globalStatus.trim().length>0 && globalStatus == "Total"){
-		getDepartmentWiseBoardAndPositionDetailsForAll(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
+		getDepartmentWiseBoardAndPositionDetailsForAll(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId,deptName,boardName);
 	}else{
-		getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
+		getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId,deptName,boardName);
 	}
 	
 });
 
-function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
+function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName){
 	var str='';
 	
 	if(result !=null && result.length>0){
@@ -472,7 +474,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards){
 						str+='<td>'+result[i].receivedCount+'</td>';
 						if(rdyToShortlist>0){
 							if(globalStatus != "Total" && globalStatus != "Open")
-								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
+								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
 							else
 								str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" > '+rdyToShortlist+'</td>';
 						}
@@ -581,6 +583,10 @@ $(document).on("click","#shortListPositinId",function(){
 	var deptId = $(this).attr('attr_dept_id');
 	var boardId = $(this).attr('attr_board_id');
 	var positionId = $(this).attr('attr_position_id');
+	var deptName = $(this).attr("attr_dept_name");
+	var brdName = $(this).attr("attr_board_name");
+	var posName = $(this).attr("attr_position_name");
+	var levelTxt = globalLvlTxt;
 
 	var searchLevelValue = stateId;
 	if(stateId >= 0){
@@ -601,7 +607,7 @@ $(document).on("click","#shortListPositinId",function(){
 	}
 		
 	
-	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"");
+	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
 });
 
 $(document).on("click",".moveToFinalReviewCls",function(){
@@ -776,7 +782,7 @@ function getAllDeptsAndBoardsByLevelForAll(levelId,levelValues){
 	   }
    });
 }
-function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,depts,boards,bodyId,searchId){
+function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,depts,boards,bodyId,searchId,deptName,boardName){
 	
 	$("#"+searchId).show();
 	
@@ -796,7 +802,7 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
    }).done(function(result){
 	   $("#"+searchId).hide();
 	   if(result != null && result.length > 0){
-		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards);
+		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
 	   }
    });
 }

@@ -27,8 +27,8 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-        	<h4>SHORTLISTING -CHAIRMAN POST - <small>A.P BUILDING AND OTHER CONSTRUCTION WORKERS WELFARE BOARD</small></h4>
-            <h5>State Level ? Labour Department</h5>
+        	<h4>SHORTLISTING -<span id="headPosId" style="text-transform:uppercase"></span> - <small><span id="headBrdId" style="text-transform:uppercase"></span></small></h4>
+            <h5><span id="headLvlDeptId" style="text-transform:uppercase"></span></h5>
         	<div class="panel panel-default panelDepartmentHead">
             	<div class="panel-body">
                 	<div class="table-responsive" id="positionDivId">					
@@ -86,6 +86,14 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
+var globalLevelTxt = '${param.levelTxt}';
+var globalDeptName = '${param.deptName}'; 
+var headBrdId='${param.brdName}';
+var globalPosName='${param.posName}';
+
+$("#headPosId").html(globalPosName+" post");
+$("#headBrdId").html(headBrdId+" board");
+$("#headLvlDeptId").html(globalLevelTxt+" level - "+globalDeptName+" department");
 
 /*var globalDistrictArr=[];
 var globalAssmblyArr=[];
@@ -177,12 +185,17 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
 			str+='<tr>';
-			if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
+				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				str+='<td>'+result.subList[i].voterMoblie+'</td>';
+				str+='<td>'+result.subList[i].age+'</td>';
+				str+='<td>'+result.subList[i].caste+'</td>';
+				str+='<td>'+result.subList[i].casteName+'</td>';
+				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					/*str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
 					str+='<td>'+result.subList[i].cadreMobile+'</td>';
 					str+='<td>'+result.subList[i].age+'</td>';
 					str+='<td>'+result.subList[i].caste+'</td>';
-					str+='<td>'+result.subList[i].casteName+'</td>';
+					str+='<td>'+result.subList[i].casteName+'</td>';*/
 					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.trim.length > 0)
 						str+='<td>'+result.subList[i].partyPosition+'</td>';
 					else
@@ -197,16 +210,11 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 						str+=' - ';
 					str+='</td>';
 					//Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
-			}
-			else{
-				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
-					str+='<td>'+result.subList[i].voterMoblie+'</td>';
+				}
+				else{
 					str+='<td> - </td>';
 					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-					str+='<td> - </td>';
-			}
+				}
 				str+='<td style="position:relative" class="text-center">';
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'">'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
