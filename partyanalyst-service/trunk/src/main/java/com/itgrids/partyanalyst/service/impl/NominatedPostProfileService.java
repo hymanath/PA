@@ -2462,7 +2462,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> townObj = new ArrayList<Object[]>(0);
 			List<Object[]> divObj = new ArrayList<Object[]>(0);*/
 			
-			if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+			if(task !=null && task.trim().equalsIgnoreCase("Total")){
 				
 				
 				if(boardLevelId.equals(5l)){
@@ -2675,7 +2675,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						for (IdNameVO idNameVO2 : brdList) {
 							Long brdId = idNameVO2.getId();
 							Long count = deMap.get(brdId);
-							idNameVO2.setAvailableCount(idNameVO2.getAvailableCount()+count);
+							if(count !=null){
+								idNameVO2.setAvailableCount(idNameVO2.getAvailableCount()+count);
+							}							
 						}
 					}
 				}
@@ -2820,7 +2822,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 				if(mandalList !=null && mandalList.size()>0){
 					
-					if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(5l,mandalList,deptIds,boardIds,statusType);
 						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
 					}else{
@@ -2865,7 +2867,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				if(townList !=null && townList.size()>0){
 					
-					if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(6l,townList,deptIds,boardIds,statusType);
 						finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
 					}else{
@@ -2901,7 +2903,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 				}
 				if(divisonList !=null && divisonList.size()>0){
-					if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(7l,divisonList,deptIds,boardIds,statusType);
 						finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
 					}else{
@@ -2941,7 +2943,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 			}else{
 				
-				if(task !=null && task.trim().equalsIgnoreCase("totalOpen")){
+				if(task !=null && task.trim().equalsIgnoreCase("Total")){
 					List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(boardLevelId,levelValues,deptIds,boardIds,statusType);
 					finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
 				}else{

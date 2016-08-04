@@ -529,25 +529,25 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
 			}
 			
-			if(statusType !=null && statusType.trim().equalsIgnoreCase("open")){
-				str.append(" and model.nominatedPostStatus.status = :open ");
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
+				str.append(" and model.nominatedPostStatus.status = :Open ");
 			}
 			if(searchlevelId != null && searchlevelId.longValue()>0L){
 				if(searchlevelId.longValue() == 1L)
-					str.append(" and model.locationValue  = :searchLevelValue ");
+					str.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
 				else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.address.state.stateId =:searchLevelValue ");
+					str.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
 				
 				else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.address.district.districtId =:searchLevelValue ");
+					str.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.address.constituency.constituencyId =:searchLevelValue ");
+					str.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.address.tehsil.tehsilId =:searchLevelValue ");
+					str.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+					str.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.address.panchayatId =:searchLevelValue ");
+					str.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
 			}
 			str.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 					" model.nominatedPostMember.nominatedPostPosition.board.boardId  ");
@@ -560,8 +560,12 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			if(levelValue !=null && levelValue.size()>0){
 				query.setParameterList("levelValue", levelValue);
 			}
-			if(statusType !=null && statusType.trim().equalsIgnoreCase("open")){
-				query.setParameter("open",statusType);
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
+				query.setParameter("Open",statusType);
+			}
+			
+			if(searchlevelId !=null && searchLevelValue != null && searchLevelValue.longValue()>0L){
+				query.setParameter("searchLevelValue",searchLevelValue);
 			}
 			
 			return query.list();
