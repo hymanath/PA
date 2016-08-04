@@ -229,6 +229,7 @@ function validateAddNewCandidateFields(){
 	var  constituencyId = $("#notCadreConstId").val();
 	var  panWardDivisionId = $("#notCadreMandlId").val();
 	var  notCadrePanchayatId = $("#notCadrePanchayatId").val();
+	var pinCodeNo=$("#pincodeId").val();
 	 if(voterId == null || voterId.trim().length == 0){
 		 $(".addNewCandidateErrorCls").html("Please Enter Voter Id.");
 		 return false;
@@ -241,6 +242,11 @@ function validateAddNewCandidateFields(){
 		 $(".addNewCandidateErrorCls").html("Please Enter Mobile No.");
 		 return false;
 	 }
+	 if(mobileNo.trim().length != 10)
+			{
+				$('.addNewCandidateErrorCls').html('Invalid Mobile No.');
+				return false;				
+			}
 	  var mobileValidateDigits= /^\d{10}$/;
 	 if(!mobileValidateDigits.test(mobileNo)) {
 		 $(".addNewCandidateErrorCls").html("Mobile Number Must be 10 digits");  
@@ -293,6 +299,15 @@ function validateAddNewCandidateFields(){
 		$(".addNewCandidateErrorCls").html("Please Select Panchayat/ Ward / Division/City.");
 		return false;   
 	 }
+	 if(pinCodeNo == null || pinCodeNo.trim().length == 0){
+		 $(".addNewCandidateErrorCls").html("Please Enter pinCode.");
+		 return false;
+	 }
+   if(pinCodeNo.trim().length != 6)
+			{
+				$('.addNewCandidateErrorCls').html('Invalid pinCode.');
+				return false;				
+			}
 	 $(".addNewCandidateErrorCls").html(" ");
 	  return true;
 }
