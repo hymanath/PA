@@ -139,7 +139,7 @@ function buildLocationLevelAlert(result,jsObj){
 			}
 		}
 			if(totalCnt > 0)
-			str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></p>';
+			str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="0" attr-statusId="'+result[0].locationsList[i].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></p>';
 			else
 			{
 					str+='<p>'+totalCnt+'</p>';
