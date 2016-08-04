@@ -2047,4 +2047,21 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("isVisible", IConstants.IS_VISIBLE);
 		return (Long)query.uniqueResult();
 	}
+   public List<Object[]> getEventIdAndPresentedCadreIdList(Date fromDate, Date toDate){
+	   StringBuilder str = new StringBuilder();
+	   str.append(" select distinct model.eventId, date(model.attendedTime), model.tdpCadreId,po.officeName, min(model.attendedTime) " +
+	   			  " from " +
+	   			  " EventAttendee model, PartyOffice po, Employee emp" +    
+	   			  " where " +
+	   			  " date(model.attendedTime) between :fromDate and :toDate and " +
+	   			  " model.event.eventId = po.event.eventId and " +
+	   			  " model.tdpCadre.tdpCadreId = emp.tdpCadre.tdpCadreId " +
+	   			  " group by model.tdpCadre.tdpCadreId " +
+	   			  " order by model.event.eventId");
+	   Query query = getSession().createQuery(str.toString());
+	   query.setDate("fromDate", fromDate);
+	   query.setDate("toDate", toDate);
+	   return query.list();
+   }
+  
 }
