@@ -1380,7 +1380,7 @@
 	 
 	<bean name="cronTriggerForJobEmployeeAttendanceOnDept" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="BatchJobForEmployeeAttendance" />
-    	<property name="cronExpression" value="0 0/2 *  * * ?" />               
+    	<property name="cronExpression" value="0 0 5  * * ?" />               
 	</bean>
 	<!-- swadhin -->
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
