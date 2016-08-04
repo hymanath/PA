@@ -115,7 +115,7 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 		String searchType = jObj.getString("searchType");
 		String memberTypeStr = jObj.getString("memberTypeGlobal");
 		
-		if(jObj.getString("memberTypeStr").trim().equalsIgnoreCase("0"))
+		if(memberTypeStr.trim().equalsIgnoreCase("0"))
 			birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,null);
 		else
 		birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,memberTypeStr);
