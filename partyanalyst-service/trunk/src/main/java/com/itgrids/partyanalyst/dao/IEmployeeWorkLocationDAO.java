@@ -15,10 +15,10 @@ public interface IEmployeeWorkLocationDAO extends GenericDao<EmployeeWorkLocatio
 	public List<Object[]> getOfficeWiseTotalNonAttendedEmployeeDetails(Date fromDate, Date toDate, List<Long> cadreIdList);
 	public List<Object[]> getOfficeWiseTotalAttendedEmployeeDetails(Date fromDate, Date toDate);
 	
-	public List<Object[]> getOfficeWiseTotalNonAttendedEmployeeDetailsFilter(Date fromDate, Date toDate, List<Long> cadreIdList, List<Long> deptList);
-	public List<Object[]> getOfficeWiseTotalAttendedEmployeeDetailsFilter(Date fromDate, Date toDate, List<Long> deptList);
+	public List<Object[]> getOfficeWiseTotalNonAttendedEmployeeDetailsFilter(List<Long> deptList, List<Long> presentedCaderIdList);
+	public List<Object[]> getOfficeWiseTotalAttendedEmployeeDetailsFilter(Date fromDate, Date toDate, List<Long> deptList, List<Long> presentedCaderIdList);
 	public List<Object[]> getOfficeWiseTotalEmployeeListFilter(List<Long> deptList);
-	public List<Object[]> getOfficeWiseTotalAttendedEmployeeFilter(Date fromDate, Date toDate, List<Long> deptList);
+	public List<Object[]> getOfficeWiseTotalAttendedEmployeeFilter(List<Long> deptList, List<Long> presentedCaderIdList);
 	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployee(Date fromDate, Date toDate, List<Long> migratedCaderIds, List<Long> deptList);
-	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployeeDetails(Date fromDate, Date toDate, List<Long> attendedExtraCadreidList, List<Long> deptList);     
+	public List<Object[]> getOfficeWiseTotalMigratedAttendedEmployeeDetails(Date fromDate, Date toDate, List<Long> deptList, List<Long> presentedCaderIdList);     
 }
