@@ -203,8 +203,8 @@
                         </select>
                     </div>
 					
-					<div class="col-md-2 col-sm-2 col-xs-12">
-                    	<button type="button" value="getDetails" class="btn btn-success m_top10" onclick="getAllStatusDetails();">SUBMIT</button>
+					<div class="col-md-2 col-sm-2 col-xs-12">  
+                    	<button type="button" value="getDetails" class="btn btn-success m_top10" onclick="getAllStatusDetails();" id="statusDetailsId">SUBMIT</button>
 					</div>
             </div>
         </div>
