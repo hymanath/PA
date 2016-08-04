@@ -369,7 +369,7 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 		}
 	}
 	
-	if(globalStatus !=null &&  globalStatus.trim().length>0 && globalStatus == "Open"){
+	if(globalStatus !=null &&  globalStatus.trim().length>0 && globalStatus == "Total"){
 		getDepartmentWiseBoardAndPositionDetailsForAll(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
 	}else{
 		getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId);
@@ -723,7 +723,7 @@ $(document).on("click","#locationWiseDataId",function(){
 			levelValuesArr.push(mandalTownDivId);
 		}
 	}
-	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Open"){
+	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Total"){
 		getAllDeptsAndBoardsByLevelForAll(globalLevelId,levelValuesArr);
 	}else{
 		getAllDeptsAndBoardsByLevel(globalLevelId,levelValuesArr);
@@ -736,46 +736,33 @@ function getAllDeptsAndBoardsByLevelForAll(levelId,levelValues){
 
 	$("#departmentsBuildId").html("");
 	$("#departmentsBuildSearchId").show();
-	
+	var searchlevelId = parseInt('{lId}');
+	var searchlevelValue = parseInt('{stId}');
+
+	var stateId = $("#stateId").val();
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
-	var stateId = $("#stateId").val();
-	var levelId = globalLevelId;
-	var searchLevelId = 1;
-	//var deptId = $(this).attr('attr_dept_id');
-	//var boardId = $(this).attr('attr_board_id');
-	//var positionId = $(this).attr('attr_position_id');
-
-	var searchLevelValue =stateId;
-	if(stateId == 0){
-		searchLevelValue =1;
-		searchLevelId=1;
-	}		
 	if(mandalTownDivId >0){
-		searchLevelValue = mandalTownDivId;
-		searchLevelId= 5;
-	}	
-	else if(constituencyId >0){
-		searchLevelValue = constituencyId;
-		searchLevelId=4;
-	}		
-	else if(districtId >0){
-		searchLevelValue = districtId;
-		searchLevelId=3;
+		searchlevelId = 5;
+		searchlevelValue = mandalTownDivId;
+	}else if(constituencyId >0){
+		searchlevelId = 4;
+		searchlevelValue = constituencyId;
+	}else if(districtId >0){
+		searchlevelId = 3;
+		searchlevelValue = districtId;
+	}else if(stateId >=0){
+		searchlevelId = 2;
+		searchlevelValue = stateId;
 	}
-	else if(stateId > 0){
-		searchLevelValue = stateId;
-		searchLevelId=2;
-	}	
-	
 	var jsObj={
-		levelId:levelId,
-		levelValues:levelValues,
-		statusType:globalStatus,
-		task:"totalOpen",
-		searchLevelId:searchLevelId,
-		searchLevelValue:searchLevelValue
+		levelId:globalLevelId,
+		levelValues:[],
+		searchlevelId:searchlevelId,
+		searchlevelValue:searchlevelValue,
+		statusType:globalStatus ,
+		task:"Total"
 	}
 	$.ajax({
           type:'POST',
@@ -799,7 +786,7 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
 		depts:depts,
 		boards:boards,
 		statusType:globalStatus,
-		task:"totalOpen"
+		task:"Total"
 	}
 	$.ajax({
           type:'GET',
