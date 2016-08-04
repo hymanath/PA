@@ -2795,10 +2795,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						List<IdNameVO> brdList = idNameVO.getIdnameList();
 						for (IdNameVO idNameVO2 : brdList) {
 							Long brdId = idNameVO2.getId();
-							Long count = deMap.get(brdId);
-							if(count !=null){
-								idNameVO2.setAvailableCount(idNameVO2.getAvailableCount()+count);
-							}							
+							if(deMap !=null && deMap.size()>0){
+								Long count = deMap.get(brdId);
+								if(count !=null){
+									idNameVO2.setAvailableCount(idNameVO2.getAvailableCount()+count);
+								}	
+							}
+													
 						}
 					}
 				}
