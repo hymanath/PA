@@ -273,7 +273,10 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='</div>';
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px">';
 			  for(var i in result){
-				  str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;">'+result[i].availableCount+'</span></a></li>';
+				if(result[i].availableCount != null)
+					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;">'+result[i].availableCount+'</span></a></li>';
+				else
+					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;"> 0 </span></a></li>';	
 			  }
 			  str+='</ul>';
 			str+='</div>';
@@ -295,7 +298,8 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 											str+='<span class="text-danger" style="font-weight:bold;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										else
 											str+='<span class="text-danger" style="font-weight:bold;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
-										if(result[i].idnameList[j].percentage != null)
+										if(result[i].idnameList[j].percentage != null && result[i].idnameList[j].percentage !="0.00" && 
+										 result[i].idnameList[j].percentage !="0")
 											str+='<span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
 										
 										str+='</h4>';
@@ -735,7 +739,7 @@ $(document).on("click","#locationWiseDataId",function(){
 			levelValuesArr.push(mandalTownDivId);
 		}
 	}
-	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Open"){
+	if(globalStatus !=null && globalStatus.length>0 && globalStatus == "Total"){
 		getAllDeptsAndBoardsByLevelForAll(globalLevelId,levelValuesArr);
 	}else{
 		getAllDeptsAndBoardsByLevel(globalLevelId,levelValuesArr);
