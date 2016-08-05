@@ -159,6 +159,25 @@
 			</div>
 			</div>
 			</div>
+			
+			<div class="modal fade" id="myModalConformation" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="background:rgba(0,0,0,0.8);">
+		<div class="modal-body">
+			<button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<div class="media" style="color:#fff;">
+				<div class="media-left">
+					<img src="img/alert.png" class="media-object" />
+				</div>
+				<div class="media-body" id="duplicateCandidateBlock">
+					
+				</div>
+			</div>
+			<p class="text-capital" style="color:yellow;" id="memberConfirmation">already added member to this alert</p>
+		</div>
+	</div>
+  </div>
+</div>
 <script type="text/javascript">
 function buildapptmemberDetails(result){
 		var str='';
