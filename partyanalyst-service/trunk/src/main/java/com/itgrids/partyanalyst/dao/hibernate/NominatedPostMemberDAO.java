@@ -139,27 +139,36 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		return (Long) query.uniqueResult();
 	}
 
-	@Override
-	public List<Object[]> getPositionList() {
-		// TODO Auto-generated method stub
-		return null;
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getPositionList(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.position.positionId, model.nominatedPostPosition.position.positionName" +
+											   " from NominatedPostMember model");
+		return query.list();		
 	}
-
-	@Override
-	public List<Object[]> getLocationLevelList() {
-		// TODO Auto-generated method stub
-		return null;
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getLocationLevelList(){
+		Query query = getSession().createQuery("select distinct model.boardLevel.boardLevelId, model.boardLevel.level from NominatedPostMember model");
+		return query.list();
 	}
-
-	@Override
-	public List<Object[]> getDepartmentList() {
-		// TODO Auto-generated method stub
-		return null;
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getDepartmentList(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.departments.departmentId, model.nominatedPostPosition.departments.deptName " +
+											   " from NominatedPostMember model");
+		return query.list();
 	}
-
-	@Override
-	public List<Object[]> getBoardList() {
-		// TODO Auto-generated method stub
-		return null;
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getBoardList(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
+				   " from NominatedPostMember model");
+		return query.list();
 	}
+	
 }
