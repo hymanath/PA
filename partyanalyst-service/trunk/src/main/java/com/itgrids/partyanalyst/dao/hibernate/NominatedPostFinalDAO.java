@@ -339,8 +339,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
 			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
-		if(levelId != null && levelId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+		//if(levelId != null && levelId.longValue() > 0l)
+			//sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
 		
 		if(levelId != null && levelId.longValue() > 0l){
 			if(levelId.longValue() != 5L)
