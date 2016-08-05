@@ -8,6 +8,7 @@ public class UserTypeVO implements Serializable{
 	
 	private Long   id;
 	private String name;
+	private String image;
 	
 	private Long   userId;
 	private Long   tdpCadreId;
@@ -95,6 +96,12 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setSubMap(Map<Long, UserTypeVO> subMap) {
 		this.subMap = subMap;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	
