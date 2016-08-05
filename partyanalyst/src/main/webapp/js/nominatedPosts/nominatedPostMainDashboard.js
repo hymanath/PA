@@ -375,7 +375,7 @@ function buildOverAllTotalCountsByPosition(result){
 	}
 	
 	
-	function getCasteGroupWiseCountsByPosition(){
+	function getCasteGroupWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId){
 		var jsObj={
 		positionId:positionId,
 		levelId :levelId,
@@ -391,7 +391,7 @@ function buildOverAllTotalCountsByPosition(result){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result !=null){
+			if(result != null && result.length > 0){
 				buildCasteGroupWiseCountsByPosition(result);
 				buildCasteGroupWiseChart(result);
 			}else{
@@ -475,7 +475,7 @@ function buildOverAllTotalCountsByPosition(result){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null){
+			if(result != null && result.length > 0){
 				buildCasteWiseCountsByPosition(result);
 				buildCasteWiseCountsChart(result);
 			}else{
@@ -491,7 +491,7 @@ function buildOverAllTotalCountsByPosition(result){
 		str+='<thead>';
 		str+='<tr>';
 		str+='<td rowspan="2">CASTE NAME</td>';
-		if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length > 0){
+	if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length > 0){
 			for(var i in result[0].applicatnStatsList){
 				if(result[0].applicatnStatsList[i].statusName == 'Total'){
 					str+='<td colspan="3">Total</td>'
