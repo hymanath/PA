@@ -207,7 +207,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     </div>
 									<!--<img src="dist/img/profile.png" class="img-responsive img-rounded" alt="Profile Image">-->
                                 </div>
-                                <div class="media-body" style="display:inline;">
+                                <div class="media-body">
                                 	<p class="m_0"><strong>NAME</strong> : <span id="nameId"></span></p>
                                     <p class="m_0"><strong>AGE</strong> : <span id="ageId"></span></p>
                                     <p class="m_0"><strong>DOB</strong> : <span id="dobId"></span></p>
@@ -223,8 +223,8 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
 								</c:if>
 								-->
-								&nbsp&nbsp&nbsp&nbsp<strong>Profiles</strong>: <span id="profilesInfoId"></span>
-								&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <span id="reportsInfoId"></span>
+								&nbsp<strong>Profiles</strong>: <span id="profilesInfoId"></span>
+								&nbsp<strong>Reports</strong>: <span id="reportsInfoId"></span>
 								  		<!--<c:if test="${fn:length(cadreReportVOList) gt 0}">  
 											&nbsp&nbsp&nbsp&nbsp<strong>Reports</strong>: <i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="reportsId" title="Click Here To Get Reports Detail" data-toggle="modal" data-target="#reportModelId"></i>
 										</c:if>
