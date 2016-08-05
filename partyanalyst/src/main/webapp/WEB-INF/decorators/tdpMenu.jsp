@@ -279,7 +279,7 @@ footer
 										<a href="cadreVoterSearchAction.action"><i class="fa fa-magnet ico-white"></i><span>&nbsp;&nbsp;Cadre Voter Search</span></a>
 										</li>
 									</c:if>
-									<c:if test="${sessionScope.USER.isAdmin == 'true' &&							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
+									<c:if test="${sessionScope.USER.isAdmin == 'true' && fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 									<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREDASHBOARD' )}">
 									<li>
 										<a href="#"><i class="fa fa-pencil ico-white"></i><span>&nbsp;&nbsp;2014 Cadre Reports</span></a>
@@ -750,7 +750,8 @@ footer
 									</li>
 									</c:if>	
 					 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_NOMINATED_POST_ENTITLEMENT') || 
-				        fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT')}">
+				        fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT') ||
+						 fn:contains(sessionScope.USER.entitlements, 'CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP')}">
 									<li>
 										<a href="#"><i class="fa fa-pencil ico-white"></i><span>&nbsp;&nbsp;Nominated Post</span></a>
 										 <h2><i class="fa fa-pencil ico-white line_heightDiv"></i>Nominated Post</h2>

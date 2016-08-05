@@ -565,7 +565,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		List<String> entitlements = null;
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
-			
+
 			if(entitlements.contains("LEADER_OCCASIONS_ENTITLEMENT".trim())){
 				
 				birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(1L,"",null);
@@ -578,8 +578,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				else
 					session.setAttribute("birthDayCount", 0L);
 			}
-			
-			if(entitlements.contains("DEBATE_CREATE_ENTITLEMENT".trim())){
+			if(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT".trim())){
+				return "nominatedPostProfileAction";
+			}
+			else if(entitlements.contains("DEBATE_CREATE_ENTITLEMENT".trim())){
 				return "debate";
 			}
 			else if(entitlements.contains("DEBATE_REPORT_ENTITLEMENT".trim())){
