@@ -10412,6 +10412,7 @@ public ResultStatus saveCadreNotesInformationDetails(final Long tdpCadreId,final
 			tdpCadreNotes.setNotes(notes);
 			tdpCadreNotes.setInsertedBy(userId);
 			tdpCadreNotes.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			tdpCadreNotes.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			tdpCadreNotes.setIsDeleted("false");
 			tdpCadreNotesDAO.save(tdpCadreNotes);
 		}
@@ -10448,7 +10449,7 @@ public List<BasicVO> getcadreNotesInformationDetails(Long tdpCadreId,Integer sta
 List<BasicVO> finalList = new ArrayList<BasicVO>();
 try{
 	Long totalNotes = tdpCadreNotesDAO.getTotalCadreNotesInformation(tdpCadreId);
-	List<Object[]> notesInfoList = tdpCadreNotesDAO.getCadreNotesInformation(tdpCadreId, startIndex, maxIndex,userId);
+	List<Object[]> notesInfoList = tdpCadreNotesDAO.getCadreNotesInformation(tdpCadreId, startIndex, maxIndex,null);
 	if(commonMethodsUtilService.isListOrSetValid(notesInfoList)){
 		for (Object[] obj : notesInfoList) {
 			BasicVO VO = new BasicVO();
@@ -10457,6 +10458,9 @@ try{
 			VO.setCasteName(commonMethodsUtilService.getStringValueForObject(obj[2]));//userName
 			VO.setPersent(commonMethodsUtilService.getStringValueForObject(obj[3]));//insertedTime
 			VO.setAliancedWith(commonMethodsUtilService.getStringValueForObject(obj[4]));//upatedTime
+			VO.setHamletName(obj[5] != null ? obj[5].toString():null);
+			VO.setHamletId(obj[6] != null ? (Long)obj[6] : 0l);
+			
 			finalList.add(VO);
 		}
 		
