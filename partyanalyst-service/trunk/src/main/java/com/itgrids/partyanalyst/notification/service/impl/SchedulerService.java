@@ -1037,6 +1037,15 @@ public class SchedulerService implements ISchedulerService{
 				List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(deptList, presentedCaderIdList);
 				List<Object[]> officeWiseTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList);
 				List<Object[]> officeWiseTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList);
+				for(Object[] obj : officeWiseTotalAttendedEmployeeDetailsList){
+					Long cadreId = (Long)obj[6];
+					String actualLocation = employeeIdLocationMap.get(cadreId);
+					String homeLocation = obj[1].toString();
+					if(!(actualLocation.equalsIgnoreCase(homeLocation))){
+						String locName = actualLocation.substring(0, 3);
+						obj[5] = obj[5]+"["+locName+"]";        
+					}
+				}
 				generatePdfReport(area, emailVo,	officeWiseTotalEmployeeList, 
 													officeWiseTotalAttendedEmployee, 
 													departmentWiseTotalEmployeeList, 
@@ -1388,8 +1397,12 @@ public class SchedulerService implements ISchedulerService{
 				        officeNameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				        table2.addCell(officeNameCell);
 				     PdfPCell employeeDeptCell=new PdfPCell(new Phrase(officeWiseTotalAttendedEmployeeDetails[5] != null ? officeWiseTotalAttendedEmployeeDetails[5].toString() : ""));
-					     employeeDeptCell.setBorderColor(BaseColor.DARK_GRAY);
-					     employeeDeptCell.setBackgroundColor(BaseColor.WHITE);
+				     	 if(officeWiseTotalAttendedEmployeeDetails[5].toString().endsWith("]")){
+				     		employeeDeptCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+				     	 }else{
+				     		 employeeDeptCell.setBackgroundColor(BaseColor.WHITE);
+				     	 }  
+				     	 employeeDeptCell.setBorderColor(BaseColor.DARK_GRAY); 
 					     employeeDeptCell.setPaddingLeft(10);
 					     employeeDeptCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 					     employeeDeptCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
