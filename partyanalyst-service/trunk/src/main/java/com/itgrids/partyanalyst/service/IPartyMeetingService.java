@@ -30,7 +30,7 @@ public interface IPartyMeetingService {
 			 Long committeeLevelId,Long committeeLevelValue,String formDateStr,String toDateStr,String isFirst,int firstRecord,int maxResult);
 	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
 	public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType,List<String> designationsList);
-	public List<PartyMeetingVO> getLevelWiseMeetingDetails(String startDate,String endDate,Long userId);
+	public List<PartyMeetingVO> getLevelWiseMeetingDetails(String startDate,String endDate,Long userId,Long levelId);
 	public String updateConductedDetails(Long meetingId,String isConducted,String remarks,String conductedDate);
 	public String updateConductedStatus(Long meetingId,String isConducted,Long userId);
 	public String updateConductedDate(Long meetingId,String conductedDate,Long userId);

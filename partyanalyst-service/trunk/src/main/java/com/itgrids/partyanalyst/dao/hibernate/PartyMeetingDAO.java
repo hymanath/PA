@@ -912,6 +912,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		    		str.append(" and model.meetingAddress.constituency.constituencyId in (:levelValues) ");
 		    	}
 	    	}
+	    	
 	    
 	    	str.append(" group by  model.partyMeetingLevel.partyMeetingLevelId,model.isConducted " +
 	    			" order by model.partyMeetingLevel.orderNo" );

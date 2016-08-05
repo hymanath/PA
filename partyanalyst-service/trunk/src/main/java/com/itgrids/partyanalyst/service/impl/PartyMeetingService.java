@@ -3268,7 +3268,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return status;
 	}
 	
-	public List<PartyMeetingVO> getLevelWiseMeetingDetails(String fromDateStr,String toDateStr,Long userId){
+	public List<PartyMeetingVO> getLevelWiseMeetingDetails(String fromDateStr,String toDateStr,Long userId,Long stateId){
 		
 		List<PartyMeetingVO> finalList =null;
 		
@@ -3364,6 +3364,11 @@ public class PartyMeetingService implements IPartyMeetingService{
 				level=entry.getKey();
 				levelValues = entry.getValue();
 				
+			}
+			
+			if(stateId.longValue() > 0l){
+				levelValues.clear();
+				levelValues.add(stateId);
 			}
 			
 			List<Object[]> conductedObj = partyMeetingDAO.getLevelWiseMeetingDetails(startDate,endDate,level,levelValues);
