@@ -210,7 +210,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 	  *  This Service Method is used to get the committee level wise counts for the given basiccommittee ids cumulatively. 
 	  *  @since 29-JULY-2016
 	  */
-	public List<CommitteeVO> getCommitteesCumulaticeOverallReportCharts(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
+	public List<CommitteeVO> getCommitteesCumulativeOverallReportCharts(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
 		LOG.info(" entered in to getCommitteesCumulaticeOverallReportCharts() ");
 		List<CommitteeVO> finalList = null;
 		Date startDate = null;
@@ -237,9 +237,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 		    	 //instantiation.
 		    	 committeesInstantiationlogic(basicCommitteeMap,basicCommitteeIds,districtAccessRequiredLevelIds);
 		    	
-		    	 completedList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
-		    	 startedList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
-		    	 yetToStartList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
+		    	 completedList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
+		    	 startedList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
+		    	 yetToStartList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
 		     }
 		     else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
 		    	 
@@ -254,9 +254,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 		    	 //instantiation.
 		    	 committeesInstantiationlogic(basicCommitteeMap,basicCommitteeIds,ParOrConstAccessRequiredLevelIds);
 		    	 
-		    	 completedList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
-		    	 startedList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
-		    	 yetToStartList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
+		    	 completedList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
+		    	 startedList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
+		    	 yetToStartList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
 		    
 		     }
 		     else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
@@ -266,9 +266,9 @@ public class CoreDashboardService implements ICoreDashboardService{
 		    	 //instantiation.
 		    	 committeesInstantiationlogic(basicCommitteeMap,basicCommitteeIds,mandalAccessRequiredLevelIds);
 		    	 
-		    	 completedList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
-		    	 startedList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
-		    	 yetToStartList = tdpCommitteeDAO.getCommitteesCumulaticeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
+		    	 completedList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"completed");
+		    	 startedList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"started");
+		    	 yetToStartList = tdpCommitteeDAO.getCommitteesCumulativeOverallReportChartsQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,startDate,endDate,"notStarted");
 		    
 		     }
 		     
@@ -280,7 +280,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		     finalList = getRequiredList(basicCommitteeMap);
 		     
 		}catch(Exception e){
-			LOG.error("exception occurred in getCommitteesCumulaticeOverallReportCharts()", e);
+			LOG.error("exception occurred in getCommitteesCumulativeOverallReportCharts()", e);
 		}
 		return finalList;
 	}
