@@ -413,7 +413,7 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 			  }
 		 }
 		  if(type.equalsIgnoreCase("video")){
-			  filePath = "http://img.youtube.com/vi/"+filePath+"/1.jpg";
+			  filePath = "https://img.youtube.com/vi/"+filePath+"/1.jpg";
 		  }
 		 return filePath;
 	}
