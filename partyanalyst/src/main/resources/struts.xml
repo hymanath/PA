@@ -13162,7 +13162,7 @@
 				<param name="root">idNameVOList</param>
 		</result>
 	</action>
-	<action name="getCommitteesCumulaticeOverallReportChartsAction" class="coreDashboardAction" method="getCommitteesCumulaticeOverallReportCharts">
+	<action name="getCommitteesCumulativeOverallReportChartsAction" class="coreDashboardAction" method="getCommitteesCumulativeOverallReportCharts">
 		<result type="json" name="success">
 				<param name="root">committeeVOList</param>
 		</result>

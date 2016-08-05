@@ -17,16 +17,27 @@
 			}
 		});
 	}
-	
-	function getCommitteesCumulativeBasicReportChart(){
+	$(document).on("click",".userStructureClass",function(){
+		
+		var  userAccessLevelId =  $(this).attr("attr_userAccessLevelId")
+		var  userAccessLevelValuesString = $(this).attr("attr_userAccessLevelValuesString");
+		var  userAccessLevelValuesArray = [];
+		if($.trim(userAccessLevelValuesString).length > 0){
+			userAccessLevelValuesArray = userAccessLevelValuesString.split(",");
+		}
+			
+		getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValuesArray);
+		getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValuesArray);
+	});
+	function getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValues){
 		
 	    var basicCommitteeId = 1;
         var startDateString = '01/01/2015';
 	    var endDateString = '28/07/2016';
 	   
  	   var jsObj ={ 
-	                userAccessLevelId : globalUserAccessLevelId,
- 			        userAccessLevelValuesArray : globalUserAccessLevelValues,
+	                userAccessLevelId : userAccessLevelId,
+ 			        userAccessLevelValuesArray : userAccessLevelValues,
  			        state : globalState,
  			        basicCommitteeId:basicCommitteeId,
  			        startDateString : startDateString,
@@ -42,6 +53,89 @@
 			buildMainCommitteChart(results);
 		});
 	}
+	function getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValues){
+       
+       var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   
+       var startDateString = '01/01/2015';
+	   var endDateString = '28/07/2016';
+	   
+ 	   var jsObj ={ 
+	                userAccessLevelId : userAccessLevelId,
+ 			        userAccessLevelValuesArray : userAccessLevelValues,
+ 			        state : globalState,
+ 			        basicCommitteeIdsArray:basicCommitteeIdsArray,
+ 			        startDateString : startDateString,
+ 			        endDateString :   endDateString
+ 			      };
+ 	   
+ 	   $.ajax({
+ 			type : 'POST',
+ 			url : 'getCommitteesCumulativeOverallReportChartsAction.action',
+ 			dataType : 'json',
+ 			data : {task:JSON.stringify(jsObj)}
+ 		}).done(function(result){
+ 			buildCommitteesWiseLevelsBasedDetails(result);
+ 		});
+ 	}
+	function getCommitteesComparativeBascicReportChart(){
+		
+		$("#comparitiveLoadingId").show();
+	   var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   
+	   var firstMonthString = '03/2015';
+	   var secondMonthString = '05/2015';
+	   var jsObj ={ 
+				userAccessLevelId : globalUserAccessLevelId,
+				userAccessLevelValuesArray : globalUserAccessLevelValues,
+				state : globalState,
+				basicCommitteeIdsArray:basicCommitteeIdsArray,
+				firstMonthString  : firstMonthString,
+				secondMonthString :   secondMonthString
+			  };
+		 $.ajax({
+ 			type : 'POST',
+ 			url : 'getCommitteesComparativeBascicReportChartAction.action',//getBasicComparativeWiseCommitteesCountsAction
+ 			dataType : 'json',
+ 			data : {task:JSON.stringify(jsObj)}
+ 		}).done(function(result){
+			$("#comparitiveLoadingId").hide();
+ 			buildGraphComparativeForBasicCommitteeBlock(result);
+ 		});
+	}
+	
+	function getCommitteesComparativeOverallReportChart(){
+		
+		   var basicCommitteeIdsArray= [];
+	       basicCommitteeIdsArray.push(1);
+	       basicCommitteeIdsArray.push(2);
+	       basicCommitteeIdsArray.push(3);
+		   
+		   var firstMonthString = '03/2015';
+		   var secondMonthString = '05/2015';
+		   var jsObj ={ 
+					userAccessLevelId : globalUserAccessLevelId,
+					userAccessLevelValuesArray : globalUserAccessLevelValues,
+					state : globalState,
+					basicCommitteeIdsArray:basicCommitteeIdsArray,
+					firstMonthString  : firstMonthString,
+					secondMonthString :   secondMonthString
+				  };
+			 $.ajax({
+	 			type : 'POST',
+	 			url : 'getCommitteesComparativeOverallReportChartAction.action',
+	 			dataType : 'json',
+	 			data : {task:JSON.stringify(jsObj)}
+	 		}).done(function(result){
+	 			buildlevelWiseComparativeCountsByBasicCommittees(result);
+	 		});
+	 }
 	function buildMainCommitteChart(result){
 		
 		var CommCompletedArray ="";
@@ -119,92 +213,8 @@
 
 		  });
 	}
-	
-	function getCommitteesCumulaticeOverallReportCharts(){
-       
-       var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   
-       var startDateString = '01/01/2015';
-	   var endDateString = '28/07/2016';
-	   
- 	   var jsObj ={ 
-	                userAccessLevelId : globalUserAccessLevelId,
- 			        userAccessLevelValuesArray : globalUserAccessLevelValues,
- 			        state : globalState,
- 			        basicCommitteeIdsArray:basicCommitteeIdsArray,
- 			        startDateString : startDateString,
- 			        endDateString :   endDateString
- 			      };
- 	   
- 	   $.ajax({
- 			type : 'POST',
- 			url : 'getCommitteesCumulaticeOverallReportChartsAction.action',
- 			dataType : 'json',
- 			data : {task:JSON.stringify(jsObj)}
- 		}).done(function(result){
- 			buildCommitteesWiseLevelsBasedDetails(result);
- 		});
- 	}
-	function getCommitteesComparativeBascicReportChart(){
-		
-		$("#comparitiveLoadingId").show();
-	   var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   
-	   var firstMonthString = '03/2015';
-	   var secondMonthString = '05/2015';
-	   var jsObj ={ 
-				userAccessLevelId : globalUserAccessLevelId,
-				userAccessLevelValuesArray : globalUserAccessLevelValues,
-				state : globalState,
-				basicCommitteeIdsArray:basicCommitteeIdsArray,
-				firstMonthString  : firstMonthString,
-				secondMonthString :   secondMonthString
-			  };
-		 $.ajax({
- 			type : 'POST',
- 			url : 'getCommitteesComparativeBascicReportChartAction.action',//getBasicComparativeWiseCommitteesCountsAction
- 			dataType : 'json',
- 			data : {task:JSON.stringify(jsObj)}
- 		}).done(function(result){
-			$("#comparitiveLoadingId").hide();
- 			buildGraphComparativeForBasicCommitteeBlock(result);
- 		});
-	}
-	
-	function getCommitteesComparativeOverallReportChart(){
-		
-		   var basicCommitteeIdsArray= [];
-	       basicCommitteeIdsArray.push(1);
-	       basicCommitteeIdsArray.push(2);
-	       basicCommitteeIdsArray.push(3);
-		   
-		   var firstMonthString = '03/2015';
-		   var secondMonthString = '05/2015';
-		   var jsObj ={ 
-					userAccessLevelId : globalUserAccessLevelId,
-					userAccessLevelValuesArray : globalUserAccessLevelValues,
-					state : globalState,
-					basicCommitteeIdsArray:basicCommitteeIdsArray,
-					firstMonthString  : firstMonthString,
-					secondMonthString :   secondMonthString
-				  };
-			 $.ajax({
-	 			type : 'POST',
-	 			url : 'getCommitteesComparativeOverallReportChartAction.action',
-	 			dataType : 'json',
-	 			data : {task:JSON.stringify(jsObj)}
-	 		}).done(function(result){
-	 			buildlevelWiseComparativeCountsByBasicCommittees(result);
-	 		});
-	 }
-	
 	function buildCommitteesWiseLevelsBasedDetails(result){
+		$("#levelWiseComulativeForCommittees").html('');
 		if(result != null && result.length > 0){
 			var str='';
 			
@@ -854,15 +864,6 @@ function buildBasicgraphs(){
 		});
 	}
 	
-	$(document).on("click",".userLevelCls",function(){
-		
-		var userAccessLevelId 			= $(this).attr("attr_userAccessLevelId");
-		var userAccessLevelValuesArray 	= $(this).attr("attr_userAccessLevelValuesArray");
-		var state 						= $(this).attr("attr_state");
-		var startDateString			    = $(this).attr("attr_startDateString");
-		var endDateString			    = $(this).attr("attr_endDateString");
-			
-		
-	});
+	
 	
 	
