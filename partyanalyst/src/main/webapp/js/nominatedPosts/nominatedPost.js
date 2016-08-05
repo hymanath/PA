@@ -746,7 +746,7 @@ function getNominatedPostApplication(startIndex)
 				if(result[i].memberShipCardId != null && result[i].memberShipCardId != "")
 				str +='<p class="m_0 text-center cadreMembrShpNo" value="'+result[i].memberShipCardId+'"><b> MEMBERSHIP : </b> '+result[i].memberShipCardId+'</p>';
 				str +='<p class="m_0 text-center cadreMobilNo" value="'+result[i].mobileNo+'"><b>MOBILE : </b> '+result[i].mobileNo+'</p>';
-				str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'"/>';
+				str +='<input type="hidden" class="tdpCadreIdCls" value="'+result[i].tdpCadreId+'" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'"/>';
 				
 					if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 					{
@@ -1369,6 +1369,7 @@ function savingApplication(){
 			var cadreId;
 			var cadreVoterId ;
 			var cadreMobilNo;
+			var nominatedCandId;
 			
 			$(".cadreCheckCls").each(function(){
 				if($(this).is(":checked")==true && $(this).val() == "Cadre"){
@@ -1376,9 +1377,15 @@ function savingApplication(){
 						if($(this).is(":checked")){
 							cadreName = $(this).parent().find(".cadreName").text();
 							cadreId = $(this).parent().find(".tdpCadreIdCls").attr("value");
+							nominatedCandId = $(this).parent().find(".tdpCadreIdCls").attr("attr_nominated_post_candidate_id");
 							cadreVoterId = $(this).parent().find(".cadreVotrCardId").attr("value");
 							cadreMobilNo = $(this).parent().find(".cadreMobilNo").attr("value");
-							$(".tdpCadreId").val(cadreId);
+							if(nominatedCandId != null && nominatedCandId >0 ){
+								$(".nominatedCandId").val(nominatedCandId);
+							}else{
+								$(".tdpCadreId").val(cadreId);
+							}
+							
 							$(".tdpCadreName").val(cadreName);
 							$(".cadreVoterId").val(cadreVoterId);
 							$(".cadreMobileNo").val(cadreMobilNo);
