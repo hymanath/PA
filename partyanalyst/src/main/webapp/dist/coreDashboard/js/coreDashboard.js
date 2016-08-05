@@ -25,12 +25,22 @@
 		if($.trim(userAccessLevelValuesString).length > 0){
 			userAccessLevelValuesArray = userAccessLevelValuesString.split(",");
 		}
-			
-		getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValuesArray);
-		getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValuesArray);
+		if($("#cumulativeId").is(':checked')){
+			getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValuesArray);
+			getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValuesArray);
+		}
+		if($("#comparitiveId").is(':checked')){
+			getCommitteesComparativeBascicReportChart(userAccessLevelId,userAccessLevelValuesArray);
+			getCommitteesComparativeOverallReportChart(userAccessLevelId,userAccessLevelValuesArray);
+		}	
+		
+	});
+	$(document).on("click",".radioStyling li",function(){
+		$(".settingsDropDownOptionsView").hide();
 	});
 	function getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValues){
 		
+		$("#committeesForComulative").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
 	    var basicCommitteeId = 1;
         var startDateString = '01/01/2015';
 	    var endDateString = '28/07/2016';
@@ -50,11 +60,13 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(results){
+			$("#committeesForComulative").html('');
 			buildMainCommitteChart(results);
 		});
 	}
 	function getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValues){
        
+	   $("#levelWiseComulativeForCommittees").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
        var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
@@ -78,12 +90,13 @@
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
+			 $("#levelWiseComulativeForCommittees").html('');
  			buildCommitteesWiseLevelsBasedDetails(result);
  		});
  	}
-	function getCommitteesComparativeBascicReportChart(){
+	function getCommitteesComparativeBascicReportChart(userAccessLevelId,userAccessLevelValues){
 		
-		$("#comparitiveLoadingId").show();
+	   $("#CamparitiveBasicBlock").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
@@ -92,8 +105,8 @@
 	   var firstMonthString = '03/2015';
 	   var secondMonthString = '05/2015';
 	   var jsObj ={ 
-				userAccessLevelId : globalUserAccessLevelId,
-				userAccessLevelValuesArray : globalUserAccessLevelValues,
+				userAccessLevelId : userAccessLevelId,
+				userAccessLevelValuesArray : userAccessLevelValues,
 				state : globalState,
 				basicCommitteeIdsArray:basicCommitteeIdsArray,
 				firstMonthString  : firstMonthString,
@@ -105,13 +118,14 @@
  			dataType : 'json',
  			data : {task:JSON.stringify(jsObj)}
  		}).done(function(result){
-			$("#comparitiveLoadingId").hide();
+			$("#CamparitiveBasicBlock").html();
  			buildGraphComparativeForBasicCommitteeBlock(result);
  		});
 	}
 	
-	function getCommitteesComparativeOverallReportChart(){
+	function getCommitteesComparativeOverallReportChart(userAccessLevelId,userAccessLevelValues){
 		
+		  $("#levelWiseComparativeForCommittees").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
 		   var basicCommitteeIdsArray= [];
 	       basicCommitteeIdsArray.push(1);
 	       basicCommitteeIdsArray.push(2);
@@ -120,8 +134,8 @@
 		   var firstMonthString = '03/2015';
 		   var secondMonthString = '05/2015';
 		   var jsObj ={ 
-					userAccessLevelId : globalUserAccessLevelId,
-					userAccessLevelValuesArray : globalUserAccessLevelValues,
+					userAccessLevelId : userAccessLevelId,
+					userAccessLevelValuesArray : userAccessLevelValues,
 					state : globalState,
 					basicCommitteeIdsArray:basicCommitteeIdsArray,
 					firstMonthString  : firstMonthString,
@@ -133,6 +147,7 @@
 	 			dataType : 'json',
 	 			data : {task:JSON.stringify(jsObj)}
 	 		}).done(function(result){
+				$("#levelWiseComparativeForCommittees").html('');
 	 			buildlevelWiseComparativeCountsByBasicCommittees(result);
 	 		});
 	 }
@@ -219,15 +234,20 @@
 			var str='';
 			
 			for(var i in result){
+				$('#levelWiseComulativeForCommitteeslarge'+i+'').html('');
 				  str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-				str+='<div id="levelWiseComulativeForCommitteeslarge'+i+'" class="chart"></div>';
+				str+='<div id="levelWiseComulativeForCommitteeslarge'+i+'" class="chart" ></div>';
 				str+='</div>';
 			}
 			
 		}
 	$("#levelWiseComulativeForCommittees").html(str);
+	
 	if(result != null && result.length > 0){
+		
 		for(var i in result){
+			
+			
 				var pieChartDataArray=[];
 				var barChartLocLevelArray=[];
 				var barChartLocDetailsForComArray=[];
@@ -286,8 +306,6 @@
 					
 				}
 			}
-				var getWidth = $('.committeesBlock').width();
-				$('#levelWiseComulativeForCommitteeslarge'+i+'').css("width",getWidth+'px');
 					
 				 $('#levelWiseComulativeForCommitteeslarge'+i+'').highcharts({
 					 colors:['#CBE7B9','#00C7F7','#D6EB59'],
@@ -524,9 +542,6 @@ function buildGraphComparativeForBasicCommitteeBlock(result){
 						}	
 					}
 				}
-				
-				var getWidth = $('.committeesBlock').width()
-				$('#levelWiseComparativeForCommitteesDetails'+i).css("width",getWidth+'px');	
 				
 				$('#levelWiseComparativeForCommitteesDetails'+i).highcharts({
 					colors:['#CBE7B9'],

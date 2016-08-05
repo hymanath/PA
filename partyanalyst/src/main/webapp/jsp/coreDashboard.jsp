@@ -185,21 +185,14 @@
 				 <div class="panel-body">
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<div id="committeesForComulative" class="chart"></div>
+							<div id="committeesForComulative" class="chart"></div>
 							<div class="row">
 							<div id="CamparitiveBasicBlock" style ="display:none;"></div>
-							<!--<div class="col-xs-6"><div id="committeesForCamparitive" class="" style ="display:none;width:100%;height:250px;"></div></div>
-							<div class="col-xs-6"><div id="committeesForCamparitive1" class="" style ="display:none;width:100%;height:250px;"></div></div>-->
-							<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="comparitiveLoadingId"></center></div>
-							
 							</div>
-							
-                        </div>
+						</div>
+						
 						<div id="levelWiseComulativeForCommittees" style ="display:none;"></div>
 						<div id="levelWiseComparativeForCommittees" style ="display:none;"></div>
-						<!--<div class="col-md-4 col-xs-12 col-sm-4"><div id="committeesForCamparitivelarge" class="chart " style ="display:none;"></div></div>
-						<div class="col-md-4 col-xs-12 col-sm-4"><div id="committeesForCamparitivelarge1" class="chart " style ="display:none;"></div></div>
-						<div class="col-md-4 col-xs-12 col-sm-4"><div id="committeesForCamparitivelarge2" class="chart " style ="display:none;"></div></div>-->
 						
                         <div class="col-md-12 col-xs-12 col-sm-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right committeesExpandIcon " style ="cursor:pointer"></i>
@@ -291,7 +284,6 @@
 	getUserBasicDetails();
 	function onLoadCalls(){
 		getCommitteesCumulativeBasicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
-		getCommitteesCumulativeOverallReportCharts(globalUserAccessLevelId,globalUserAccessLevelValues);
 		getLoggedInUserStructure();
 	}
 	
@@ -307,17 +299,25 @@
 	
 	 
 	$(document).on("click",".committeesExpandIcon",function(){
+		var i =0;
+		i=i+1;
 		$(".committeesExpandIcon").addClass("expandIcon");
 		$(".committeesBlock").removeClass("col-md-4").addClass("col-md-12");
 		if($("#cumulativeId").is(':checked')){
 			$("#committeesForComulative").hide();
 			$("#levelWiseComulativeForCommittees").show();
+			getCommitteesCumulativeOverallReportCharts(globalUserAccessLevelId,globalUserAccessLevelValues);
 		}
 		if($("#comparitiveId").is(':checked')){
 			$("#CamparitiveBasicBlock").hide();
 			$("#levelWiseComparativeForCommittees").show();
+			getCommitteesComparativeOverallReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
 		
 		}
+		
+		var getWidth = $('.committeesBlock').width();
+		$('#levelWiseComulativeForCommitteeslarge'+i+'').css("width",getWidth+'px');
+		$('#levelWiseComparativeForCommitteesDetails'+i).css("width",getWidth+'px');
 		blockHeights();
 	});
 	$(document).on("click",".expandIcon",function(){
@@ -340,8 +340,8 @@
 		$("#CamparitiveBasicBlock").show();
 		$("#levelWiseComulativeForCommittees").hide();
 		$("#levelWiseComparativeForCommittees").hide();
-		getCommitteesComparativeBascicReportChart();
-		getCommitteesComparativeOverallReportChart();
+		getCommitteesComparativeBascicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
+		
 	}); 
     $(document).on("click","#cumulativeId",function(){
 		$(".committeesBlock").addClass("col-md-4").removeClass("col-md-12");
@@ -349,7 +349,7 @@
 		$("#CamparitiveBasicBlock").hide();
 		$("#levelWiseComparativeForCommittees").hide();
 		getCommitteesCumulativeBasicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
-		getCommitteesCumulativeOverallReportCharts(globalUserAccessLevelId,globalUserAccessLevelValues);
+		
 	}); 
 	
 	
@@ -363,7 +363,8 @@
 		$(this).toggleClass("dropdownOpen")
 	});
 	$(document).on("click",".toggleViewIcon",function(){
-		$(this).toggleClass("dropDownView")
+		$(this).toggleClass("dropDownView");
+		$(".settingsDropDownOptionsView").show();
 	});
 	$(document).on("click",".settingsDropDownOptions li,.toggleViewIcon .settingsDropDownOptionsView",function(e){
 		e.stopPropagation();
