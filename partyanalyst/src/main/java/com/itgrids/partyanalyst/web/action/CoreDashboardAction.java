@@ -160,7 +160,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	public String getCommitteesCumulaticeOverallReportCharts(){
+	public String getCommitteesCumulativeOverallReportCharts(){
 		try{
 			LOG.info("Entered into getCommitteesCumulaticeOverallReportCharts()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
@@ -187,7 +187,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String startDateString = jObj.getString("startDateString");
 			String endDateString = jObj.getString("endDateString");
 			
-			committeeVOList = coreDashboardService.getCommitteesCumulaticeOverallReportCharts(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			committeeVOList = coreDashboardService.getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteesCumulaticeOverallReportCharts() method of CoreDashBoard", e);

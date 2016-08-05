@@ -290,8 +290,8 @@
 	
 	getUserBasicDetails();
 	function onLoadCalls(){
-		getCommitteesCumulativeBasicReportChart();
-		getCommitteesCumulaticeOverallReportCharts();
+		getCommitteesCumulativeBasicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
+		getCommitteesCumulativeOverallReportCharts(globalUserAccessLevelId,globalUserAccessLevelValues);
 		getLoggedInUserStructure();
 	}
 	
@@ -348,7 +348,8 @@
 		$("#committeesForComulative").show();
 		$("#CamparitiveBasicBlock").hide();
 		$("#levelWiseComparativeForCommittees").hide();
-		
+		getCommitteesCumulativeBasicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
+		getCommitteesCumulativeOverallReportCharts(globalUserAccessLevelId,globalUserAccessLevelValues);
 	}); 
 	
 	
@@ -394,7 +395,7 @@
 									str+='<ul class="radioStyling" style="padding-left:0px;">';
 										str+='<li>';
 											str+='<input type="radio" id="mian" name="selector" >';
-											str+='<label for="mian" class="text-capital">'+result.userType+' - <i>'+result.name+'</i></label>';
+											str+='<label for="mian" class="text-capital userStructureClass" attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValues+' >'+result.userType+' - <i>'+result.name+'</i></label>';
 											str+='<div class="check"></div>';
 										str+='</li>';
 									str+='</ul>';
@@ -404,7 +405,7 @@
 									str+=' <ul class="radioStyling">';
 										str+='<li>';
 											str+='<input type="radio" id="mian" name="selector">';
-											str+=' <label for="mian">'+result.userType+' - '+result.name+'</label>';
+											str+=' <label for="mian" class="userStructureClass" attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValues+'>'+result.userType+' - '+result.name+'</label>';
 											str+='<div class="check"></div>';
 										str+='</li>';
 									str+='</ul>';
@@ -445,7 +446,7 @@
 																					str+='<ul class="radioStyling" style="float:left;">';
 																						str+=' <li>';
 																							str+='<input type="radio" id="'+i+''+j+'" name="selector">';
-																							str+=' <label for="'+i+''+j+'" class="text-capital">'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></label>';
+																							str+=' <label for="'+i+''+j+'" class="text-capital userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].locationValues+' >'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></label>';
 																							str+='<div class="check"></div>';
 																						str+='</li>';
 																					str+='</ul>';
@@ -455,7 +456,7 @@
 																				str+=' <ul class="radioStyling">';
 																					str+=' <li>';
 																					str+='<input type="radio" id="'+i+''+j+'" name="selector">';
-																					str+=' <label for="'+i+''+j+'">'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></label>';
+																					str+=' <label for="'+i+''+j+'" class="userStructureClass"  attr_userAccessLevelId='+result.subList[i].subList[j].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].locationValues+' >'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></label>';
 																					str+='<div class="check"></div>';
 																					str+='</li>';
 																				str+='</ul>';
@@ -485,7 +486,7 @@
 																																str+=' <ul class="radioStyling">';
 																																	str+='<li>';
 																																		str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
-																																		str+=' <label for="'+i+''+j+''+k+''+l+'">'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></label>';
+																																		str+=' <label for="'+i+''+j+''+k+''+l+'"  class="userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].subList[k].subList[l].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].subList[k].subList[l].locationValues+' >'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></label>';
 																																		str+='<div class="check"></div>';
 																																		str+='</li>';
 																																str+='</ul>';
@@ -494,7 +495,7 @@
 																															str+=' <ul class="radioStyling">';
 																																str+=' <li class=" dottedLine">';
 																																	str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
-																																	str+=' <label for="'+i+''+j+''+k+''+l+'">'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></label>';
+																																	str+=' <label for="'+i+''+j+''+k+''+l+'" class="userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].subList[k].subList[l].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].subList[k].subList[l].locationValues+' >'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></label>';
 																																	str+='<div class="check"></div>';
 																																str+='</li>';
 																															str+='</ul>';
