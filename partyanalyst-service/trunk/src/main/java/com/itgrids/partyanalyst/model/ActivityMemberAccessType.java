@@ -25,6 +25,7 @@ public class ActivityMemberAccessType {
 	private Long activityMemberAccessTypeId;
 	private Long activityMemberId;
 	private Long userTypeId;
+	private String isActive;
 	
 	private ActivityMember activityMember;
 	private UserType userType;
@@ -51,6 +52,15 @@ public class ActivityMemberAccessType {
 	}
 	public void setUserTypeId(Long userTypeId) {
 		this.userTypeId = userTypeId;
+	}
+	
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)

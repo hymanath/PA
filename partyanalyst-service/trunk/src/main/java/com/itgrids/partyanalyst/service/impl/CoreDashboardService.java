@@ -386,7 +386,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		LOG.info(" entered in to getCommitteesComparativeBascicReportChart() ");
 		List<CommitteeVO> finalList = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
 		
 		try{
 			 String firstSetMonthName = null;
@@ -481,7 +481,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 		LOG.info(" entered in to getCommitteesComparativeOverallReportChart() ");
 		List<CommitteeVO> finalList = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
-		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
 		
 		try{
 			
