@@ -13,7 +13,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 <title><decorator:title default="TDP Party's Election Analysis &amp; Management Platform"/></title>
-
+<link rel="icon" type="image/png" href="https://mytdp.com/dist/img/logo.png">
 <script src="dist/js/jquery-1.11.2.min.js"></script>
 <!--<link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="fullexpandcollapse/custom.css" rel="stylesheet" type="text/css">-->
@@ -87,6 +87,17 @@ footer
 	.line_heightDiv{
 		line-height:50px;
 	}
+	.birthdayCount
+	{
+		background: #ffffff none repeat scroll 0 0;
+		border-radius: 8px;
+		color: #ff0000;
+		font-size: 9px;
+		left: 22px;
+		padding: 0 2px;
+		position: absolute;
+		top: -10px;
+	}
 </style>
 <decorator:head/>
 	</head>
@@ -105,7 +116,7 @@ footer
             </div>
             <div class="col-md-1 col-xs-1 col-sm-2 span1 ntrR"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">  
             </div>
-            <div class="col-md-3 col-xs-4 col-xs-offset-2 col-sm-2 col-sm-offset-0 span3 menuR">
+            <div class="col-md-3 col-xs-5 col-xs-offset-1 col-sm-2 col-sm-offset-0 span3 menuR">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
             	<p style="margin-top:1px;margin-bottom:0px;font-size:10px;color:#333;padding:0px;">Welcome, ${sessionScope.UserName} |</p> </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
@@ -126,7 +137,10 @@ footer
 				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs fullcollapse" href="#">
 					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
                 </a>
-				
+				<a href="#" style="position:relative">
+					<span class="birthdayCount">1000</span>
+					<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;"></i>
+				</a>
             </div>
         </div>       
     </div>
@@ -719,17 +733,17 @@ footer
 				|| fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || 
 				fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ENTITLEMENT')}">
 									<li>
-										<a href="#"><i class="fa fa-pencil ico-white"></i><span>&nbsp;&nbsp;Alert</span></a>
-										 <h2><i class="fa fa-pencil ico-white line_heightDiv"></i> Alert</h2>
+										<a href="#"><i class="fa fa-bell-o ico-white"></i><span>&nbsp;&nbsp;Alert</span></a>
+										 <h2><i class="fa fa-bell-o ico-white line_heightDiv"></i> Alert</h2>
 										 <ul>
 										 	<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CREATE_ALERT_ENTITLEMENT')}">
 										  <li>
-										<a href="createAlertAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
+										<a href="createAlertAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;Create Alert</span></a>
 										</li>
 										</c:if>
 											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_ENTITLEMENT')}">
 										  <li>
-										<a href="alertDashboardAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
+										<a href="alertDashboardAction.action"><i class="fa fa-wpforms ico-white"></i><span>&nbsp;&nbsp;Alert Dashboard</span></a>
 										</li>
 				</c:if>
 										 </ul>
