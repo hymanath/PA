@@ -988,7 +988,14 @@ function showHideSearch(type)
 				$("#memberConfirmation").html("Member Added");
 				$("#myModalConformation").modal('show');
 				setTimeout(function(){ $("#myModalConformation").modal('hide');
-					 }, 1000);
+				
+				}, 1000);
+				setTimeout(function(){ $("body").addClass("modal-open");	
+				
+				}, 2000);
+				
+				
+					
 		 }
 		 else
    {
