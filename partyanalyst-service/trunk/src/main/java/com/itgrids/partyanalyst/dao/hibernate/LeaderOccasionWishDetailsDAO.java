@@ -18,7 +18,7 @@ public class LeaderOccasionWishDetailsDAO extends GenericDaoHibernate<LeaderOcca
 public List<Object[]> getTotalDaysCountsForWishedCount(List<Long> totalIds,String year) {
 		
 	Query query = getSession().createQuery( "select distinct model.leaderOccasionId,model.leaderOccasion.tdpCadreId from  LeaderOccasionWishDetails model " +
-			" where model.isdeleted='false' " +
+			" where model.isDeleted='false' " +
 			" and model.leaderOccasion.tdpCadreId in (:totalIds) and model.year=:year " );
 		
 		query.setParameterList("totalIds", totalIds);
@@ -28,7 +28,7 @@ public List<Object[]> getTotalDaysCountsForWishedCount(List<Long> totalIds,Strin
 public LeaderOccasionWishDetails getLeaderOccassiobnWishngDetails(Long searchId,String year){
 	
 	Query query = getSession().createQuery( "select model from  LeaderOccasionWishDetails model " +
-			" where model.isdeleted='false' " +
+			" where model.isDeleted='false' " +
 			" and model.leaderOccasionId=:searchId and model.year=:year " );
 		query.setParameter("searchId", searchId);
 		query.setParameter("year", year);

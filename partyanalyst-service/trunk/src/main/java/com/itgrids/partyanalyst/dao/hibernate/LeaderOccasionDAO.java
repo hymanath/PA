@@ -62,8 +62,8 @@ public class LeaderOccasionDAO extends GenericDaoHibernate<LeaderOccasion, Long>
 	}
 	public List<Object[]> getleaderOccasionWishDetails() {
 		
-		Query query = getSession().createQuery( "select distinct model.leaderOccasionId,model.isdeleted from  LeaderOccasion model " +
-				" where model.isdeleted='false'" );
+		Query query = getSession().createQuery( "select distinct model.leaderOccasionId,model.isDeleted from  LeaderOccasion model " +
+				" where model.isDeleted='false'" );
 			
 			return  query.list();
 		}
