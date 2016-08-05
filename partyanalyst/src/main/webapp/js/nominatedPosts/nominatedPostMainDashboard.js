@@ -975,6 +975,7 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 	 var str='';
 			str+='<div class="row">';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #ddd">';
+				str+='<h4 class="panel-tite"><u>Positions</u></h4>'
 					str+='<div id="'+postionHighChartId+'" style="height:150px;"></div>';
 					str+='<ul class="positionsUl" style="margin-top:20px !imortant;">';
 						str+='<li class="total"><span class="statusBox"></span>TOTAL POSITIONS<span class="count pull-right">'+positionRslt[0].totalPositionCn+'</span></li>';
@@ -987,6 +988,7 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				str+='<h4 class="panel-tite"><u>Applications</u></h4>';
 					str+='<div id="'+appHighChartId+'" style="height:200px;"></div>';
 					if(applicationRslt != null && applicationRslt.length > 0){
 						str+='<ul class="positionsUlPie m_top10">';
@@ -1007,6 +1009,9 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 		}else if(locationLevelId == 5){
 		 $(".manMunCorBodyDivCls").html(str);
 		}	
+/* 		if(collapseLevelId != null && collapseLevelId=="stateLevlId"){
+		  $("#collapseOne").collapse('show');
+		} */
 	  buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId);	
 	}
 	 if(applicationRslt != null && applicationRslt.length > 0){
