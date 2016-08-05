@@ -365,17 +365,17 @@ public String getWishingDetails(Long searchId) {
 	    		 leaderocsnWishDtls.setLeaderOccasionId(searchId);
 	    		 leaderocsnWishDtls.setWishTime(dateUtilService.getCurrentDateAndTime());
 	    		 leaderocsnWishDtls.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-	    		 leaderocsnWishDtls.setIsdeleted("false");
+	    		 leaderocsnWishDtls.setIsDeleted("false");
 	    		 leaderocsnWishDtls.setYear(year);
 	    		 leaderOccasionWishDetailsDAO.save(leaderocsnWishDtls);	
     	 	}
     	 	else {
-    	 			if(leaderOcassion.getIsdeleted().equalsIgnoreCase("false")){
-    	 				leaderOcassion.setIsdeleted("true");
+    	 			if(leaderOcassion.getIsDeleted().equalsIgnoreCase("false")){
+    	 				leaderOcassion.setIsDeleted("true");
     	 			}
     	 			else
     	 			{
-    	 				leaderOcassion.setIsdeleted("false");
+    	 				leaderOcassion.setIsDeleted("false");
     	 			}
     	 			leaderOccasionWishDetailsDAO.save(leaderOcassion);	
     	 	}		
