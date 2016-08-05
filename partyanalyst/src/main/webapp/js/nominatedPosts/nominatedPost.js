@@ -1,8 +1,9 @@
 function getDistrictsForStates(state,id,num){
 	
 	//$(".allcls").hide();
-	hideDetails();
+	
 	if(id == "statesDivId"){
+		hideDetails();
 		$('#districtIdImg').show();
 			getConstituenciesForState(state,'constituencyId');
 			$("#searchDataImgForDist").show();
@@ -134,9 +135,9 @@ function getDistrictsForStates(state,id,num){
    });
   }
  function getConstituenciesForDistricts(district,id,num){
-	 hideDetails();
 	// debugger; 
 	 if(id == "districtId"){
+		 hideDetails();
 		 $("#constituencyIdImg").show();
 			$("#searchDataImgForConst").show();
 			//refreshExistingDetails();
@@ -251,9 +252,9 @@ function getDistrictsForStates(state,id,num){
   }
  function getMandalCorporationsByConstituency(num,id)
 	{	
-	hideDetails();
 	var constituencyId  =0;
 	if(id == "constituencyId"){
+		hideDetails();
 		$("#mandalListImg").show();
 			$("#searchDataImgForMandl").show();
 			//refreshExistingDetails();
@@ -349,10 +350,10 @@ function getDistrictsForStates(state,id,num){
 				});
 	}
 function getPanchayatWardByMandal(num,id){
-hideDetails();
 			var mandalId=0;
 			var constituencyId = 0; //cadreSearchDtls
 		if(id == "mandalList"){	
+			hideDetails();
                 $("#panchaytListImg").show();		
 				$("#searchDataImgForPanc").show();
 				//refreshExistingDetails();
