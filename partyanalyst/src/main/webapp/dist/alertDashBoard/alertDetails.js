@@ -118,7 +118,7 @@ function getAlertStatusCommentsTrackingDetails()
 		$("#alertCommentsDiv").html(str);
 		if(result.length >= 3)
 		{
-			$("#alertCommentsDiv .panel-body").mCustomScrollbar({setHeight:'320px'});
+			$("#alertCommentsDiv").mCustomScrollbar({setHeight:'320px'});
 		}
 		
 		
@@ -249,6 +249,7 @@ function buildAlertData(result)
 	{
 			$("#typeId").html(''+result[i].alertType+'');
 			$("#severityId").html(''+result[i].severity+'');
+			$(".severityIdColorCls").addClass(''+result[i].severity+'');
 			$("#createdDate").html(''+result[i].date+'');
 			$("#levelId").html(''+result[i].regionScope+'');
 			var location ='';

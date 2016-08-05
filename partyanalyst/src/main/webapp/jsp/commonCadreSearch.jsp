@@ -23,7 +23,7 @@
 					<div class="col-md-12 m_top10">
 						<h3 class="panel-title text-success"></h3>
 					</div>
-					<div class="col-md-3 advanceSearchCls">
+					<div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls">
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
 							<option value="0">Select Search Type</option>
@@ -37,12 +37,12 @@
 					</div>
 					
 					
-					 <div class="col-md-3 pad_0 advanceSearchCls advanceprclsDiv">
+					 <div class="col-md-3  col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
 						<label class="advanceNameCls" id="searchNameLabel">Search By Name/Membership No*<span class="text-danger">*</span></label>
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 						
 					</div>
-					<div class="col-md-3 ">
+					<div class="col-md-3 col-xs-12 col-sm-6 ">
 						<label class="advancePRCls">Search Designation</label>
 						 <select class="advancePRCls dropkickClass"  id="advanceDesignationId" onchange="getLevelByDesignation();">
 							<option value="0">Select Designation</option>
@@ -51,7 +51,7 @@
 					</div>
 					
 						
-						<div class="col-md-3 levelShowCls" >
+						<div class="col-md-3 col-xs-12 col-sm-6 levelShowCls" >
 							<label>Level</label>
 							<select class="dropkickClass" id="commonLevelId" attr-index="0" onchange="disableByLevel('');" >
 							<option value="10">State</option>
@@ -61,7 +61,7 @@
 							 <option value="6">Village/Ward</option>
 							</select>
 						</div>
-						<div class="col-md-3 stateShowCls" >
+						<div class="col-md-3 col-xs-12 col-sm-6 stateShowCls" >
 							<label>State</label>
 							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup('');">
 							 <option value="0">ALL</option>
@@ -70,24 +70,24 @@
 							 </select>
 						</div>
 				   
-						<div class="col-md-3 locationsFilterCls distCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls distCls">
 							 <label>District</label>
 							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
 							 <option value="0">ALL</option></select>
 						</div>
-						<div class="col-md-3 locationsFilterCls constiCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls constiCls">
 							<label>Assembly</label>
 							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
 							<option value="0">ALL</option>
 							</select>
 						</div>
-						<div class="col-md-3 locationsFilterCls mandalCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
 							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
 								<option value="0">ALL</option>
 							 </select>
 						</div>
-						<div class="col-md-3 locationsFilterCls panchayatCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls panchayatCls">
 							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" >
 							<option value="0">ALL</option>
@@ -111,7 +111,7 @@
 									  </div>
 									</div> 
 									<div >
-										<div class="col-md-6">
+										<div class="col-md-6 col-xs-12 col-sm-6">
 											<select id="cadreCommitteeDiv" multiple class="advanceCadreCommittee" style="width:250px !important;"></select>
 											<div id="representativesDiv"></div>
 											<div id="referRoleErrorDiv"></div>
@@ -119,17 +119,17 @@
 									</div>
 								</div></br>
 						<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
-						<div class="col-md-2">
+						<div class="col-md-2  col-xs-12 col-sm-6">
 							<button type="button" class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();" id="searchBtnId"  style="margin-top: 25px;display:none;">Search Member</button>
 						</div>
-						<div class="col-md-1">
+						<div class="col-md-1  col-xs-12 col-sm-1">
 							<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
 						</div>
 							<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 						
 						<div class="row m_top25">
 						<div class="col-md-12 col-xs-12 col-sm-12" id="clearSerchDivId">
-							<div id="apptmemberDetailsDiv"></div>
+							<div id="apptmemberDetailsDiv" class="table-responsive"></div>
 						</div>
 						
 						
@@ -194,12 +194,12 @@ function buildapptmemberDetails(result){
 				
 				
 				str+='<td style="padding:0px !important;width:33% !important">';
-					str+='<div class="col-md-12">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
 							str+='<div class="row">';
 								
-								str+='<div class="col-md-12">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
 										 str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
@@ -254,7 +254,7 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
+								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10 col-xs-6 col-xs-offset-3" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
 							  
 								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
 									

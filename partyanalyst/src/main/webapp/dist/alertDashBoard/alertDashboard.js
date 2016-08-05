@@ -247,6 +247,7 @@ function buildAlertData(result,jsObj)
 	str+='<h4 class="text-success text-capital m_top10">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
 	else
 	str+='<h4 class="text-success text-capital m_top10">'+Level+' Wise  Alert Details</h4>';	
+	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff">';
 	str+='<thead>';
 	//str+='<th>S.NO</th>';
@@ -262,9 +263,9 @@ function buildAlertData(result,jsObj)
 	}
 	else
 	{
-		str+='<th>DISTRICT</th>';
+		str+='<th>LOCATION</th>';
 	}
-	
+	str+='<th></th>';	
 	str+='</thead>';
 	var j=0;
 	for(var i in result)
@@ -288,11 +289,13 @@ function buildAlertData(result,jsObj)
 			str+='<td>'+result[i].locationVO.districtName+'</td>';	
 			}
 	//str+='<td><button class="btn btn-success">VIEW</button></td>';
-	str+='<td><button class="btn btn-success alertModel" target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">VIEW</button></td>';
+	str+='<td><i class="glyphicon glyphicon-eye-open alertModel"  target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' "></i>';
+	//<button class="btn btn-success alertModel" target="_blank" title="Click here to View Alert Details" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+' ">VIEW</button></td>';
 	
 	str+='</tr>';	
 	}
 	str+='</table>';
+	str+='</div>';
 	$("#locationLevelDataId").html(str);
 }
 var GlobalalertId;
