@@ -694,6 +694,8 @@ function getNominatedPostApplication(startIndex)
 					if(!$('#searchBy').val().match(numericExpression)){
 						$('#searchErrDiv').html('Enter Numerics Only.');
 						return;
+					}else{
+						$('#searchErrDiv').html(' ');
 					}
 			}		
 			if(searchBy.trim().length == 0 )
@@ -705,6 +707,8 @@ function getNominatedPostApplication(startIndex)
 			{
 				$('#searchErrDiv').html('Invalid memberShipCardNo No.');
 				return;				
+			}else{
+				$('#searchErrDiv').html(' ');
 			}	
 		}			
 		if(searchRadioType == 'voterId')
@@ -715,6 +719,8 @@ function getNominatedPostApplication(startIndex)
 			{
 				$('#searchErrDiv').html('Please enter Voter Card No.');
 				return;
+			}else{
+				$('#searchErrDiv').html(' ');
 			}
 		}
 		if(searchRadioType == 'mobileNo')
@@ -728,6 +734,8 @@ function getNominatedPostApplication(startIndex)
 						$('#searchErrDiv').html('Enter Numerics Only.');
 						return;
 					}
+			}else{
+				$('#searchErrDiv').html(' ');
 			}	
 			
 			if(searchBy.trim().length == 0 )
@@ -740,6 +748,8 @@ function getNominatedPostApplication(startIndex)
 			{
 				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;				
+			}else{
+				$('#searchErrDiv').html(' ');
 			}	
 			
 		}
@@ -756,6 +766,8 @@ function getNominatedPostApplication(startIndex)
 			{
 				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
 				return;
+			}else{
+				$('#searchErrDiv').html(' ');
 			}
 		}
 		if(searchRadioType == 'trNo')
@@ -2298,16 +2310,21 @@ function notCadresearch(){
 		{
 			if(searchValue.length == 0 )
 			{
-				$('#notCadreErrMsg').html('Please enter Membership No.');
+				$('#notCadreErrMsg').html('Please Enter Membership No.');
 				return;
+			}else{
+				$('#notCadreErrMsg').html(' ');
 			}
+			
 		}
 		else if(searchType == "2")
 		{
 			if(searchValue.length == 0 )
 			{
-				$('#notCadreErrMsg').html('Please enter Voter Card No.');
+				$('#notCadreErrMsg').html('Please Enter Voter Card No.');
 				return;
+			}else{
+				$('#notCadreErrMsg').html(' ');
 			}
 		}
 		else if(searchType == "3")
@@ -2316,7 +2333,7 @@ function notCadresearch(){
 			var numericExpression = /^[0-9]+$/;
 			if(searchValue.length == 0 )
 			{
-				$('#notCadreErrMsg').html('Please enter Mobile No.');
+				$('#notCadreErrMsg').html('Please Enter Mobile No.');
 				return;
 			}		
 			if(!searchValue.match(numericExpression)){
@@ -2327,6 +2344,8 @@ function notCadresearch(){
 			{
 				$('#notCadreErrMsg').html('Invalid Mobile No.');
 				return;				
+			}else{
+				$('#notCadreErrMsg').html(' ');
 			}
 			
 		}
@@ -2334,13 +2353,16 @@ function notCadresearch(){
 		{
 			if(searchValue.length == 0 )
 			{
-				$('#notCadreErrMsg').html('Please enter Name.');
+				$('#notCadreErrMsg').html('Please Enter Name.');
 				return;
 			}
 			else if(searchValue.length < 3)
 			{
-				$('#notCadreErrMsg').html('Please enter Minimum 3 Characters.');
+				$('#notCadreErrMsg').html('Please Enter Minimum 3 Characters.');
 				return;
+			}else{
+				
+				$('#notCadreErrMsg').html(' ');
 			}
 		}
 		$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
