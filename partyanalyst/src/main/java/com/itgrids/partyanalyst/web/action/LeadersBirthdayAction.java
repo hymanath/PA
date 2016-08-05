@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BirthDayDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IBirthDayDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -19,8 +20,8 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 	 * 
 	 */
 	private static final long serialVersionUID = -5174234213925199862L;
-	private HttpServletRequest request;
-	private HttpSession session;
+	private HttpServletRequest 					request;
+	private HttpSession 						session;
 	private String task;
 	private JSONObject jObj;
 	private BirthDayDetailsVO birthDayDetailsVO;
@@ -99,6 +100,7 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 		
 
 		public void setServletRequest(HttpServletRequest request) {
+			this.request = request;
 		}
 
 		public String execute() {
@@ -109,16 +111,22 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 	
 	public String getLeadersBirthDayDetails() {
 		try {
-			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
 			
+		jObj = new JSONObject(getTask());
 		Long occasionTypeId = jObj.getLong("occasionTypeId");
 		String searchType = jObj.getString("searchType");
 		String memberTypeStr = jObj.getString("memberTypeGlobal");
+		Long userId = regVO.getRegistrationID();
 		
 		if(memberTypeStr.trim().equalsIgnoreCase("0"))
-			birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,null);
+			birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,null,userId);
 		else
-		birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,memberTypeStr);
+		birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(occasionTypeId,searchType,memberTypeStr,userId);
 		
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLeadersBirthDayDetails() of LeadersBirthdayAction", e);
@@ -128,14 +136,20 @@ public class LeadersBirthdayAction extends ActionSupport implements ServletReque
 
 	public String getWishingDetails(){
 		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
 			jObj = new JSONObject(getTask());
-			status = birthDayDetailsService.getWishingDetails(jObj.getLong("searchId"));
+			Long userId = regVO.getRegistrationID();
+			status = birthDayDetailsService.getWishingDetails(jObj.getLong("searchId"),userId);
 
 		} catch (Exception e) {
 			LOG.error("Exception occured in getWishingDetails() of LeadersBirthdayAction", e);
 		}
 		return Action.SUCCESS;
 		
-	}
-	
+	 }
+
 }
