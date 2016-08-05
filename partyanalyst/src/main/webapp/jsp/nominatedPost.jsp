@@ -17,7 +17,7 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <link href="dist/Plugins/Datatables/datatables.css" rel="stylesheet" type="text/css"/>
-<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 <link href="dist/slick/slick.css" rel="stylesheet" type="text/css"/>
@@ -886,13 +886,21 @@ var globalNPCandiId=0;
 </script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPost.js"></script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPost1.js"></script>
-<script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/Date/moment.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-
-$("#DOBId").daterangepicker({singleDatePicker:true});
+$(function() {
+    $("#DOBId").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+		parentEl:'#addMemberModalBlock'
+    }, 
+    function(start, end, label) {
+        var years = moment().diff(start, 'years');
+        alert("You are " + years + " years old.");
+    });
+});
 $("#DOBId").val(moment().format('MM/DD/YYYY'));
 $("#DOBId").val(" ");
 /*
