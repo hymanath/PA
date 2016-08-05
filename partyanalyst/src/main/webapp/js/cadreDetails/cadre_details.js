@@ -7280,18 +7280,23 @@ $("#updateNotesButtonId").show();
 }
 function buildCadreNotesDetails(result,jObj){
 	var str = '';
-if(result != null){
+if(result != null && result.length>0){
+	var loginUserId = result[0].levelId;//HamletId
 	str += '<ul class="apptStatusTracking">';
 for(var i in result)
 {
 	str += '<li id="li'+result[i].id+'">';
-	str += '<span><i class="glyphicon glyphicon-edit editIconCls" attr_id="'+result[i].id+'" attr_div="tejaid'+i+'" title="Click Here To Get Edit Notes"></i><i class="glyphicon glyphicon-remove removeIconCls" attr_notes_id='+result[i].id+' title="Click Here To Get Delete This Notes"></i></span>';
+	if(loginUserId == result[i].hamletId){
+		str += '<span><i class="glyphicon glyphicon-edit editIconCls" attr_id="'+result[i].id+'" attr_div="tejaid'+i+'" title="Click Here To Get Edit Notes"></i><i class="glyphicon glyphicon-remove removeIconCls" attr_notes_id='+result[i].id+' title="Click Here To Get Delete This Notes"></i></span>';
+	}else{
+		str += '<span></span>';
+	}
+	
 	str += '<div class="arrow_box_left">';
 	if(result[i].aliancedWith != null && result[i].aliancedWith.trim() != ""){
-		str +='<span class="m_0">Created Time:'+result[i].persent+' Latest Time:'+result[i].aliancedWith+'</span>';	
-		}
-	else{
-	str +='<span class="m_0">Created Time:'+result[i].persent+'</span>';
+		str +='<span class="m_0">Created By:<strong>'+result[i].hamletName+'</strong> At <strong>'+result[i].persent+'</strong>  Latest Time:<strong>'+result[i].aliancedWith+'</strong></span>';	
+	}else{
+		str +='<span class="m_0">Created By:<strong>'+result[i].hamletName+'</strong> At <strong>'+result[i].persent+'</strong></span>';
 	}
 	
 	str +='<div class="m_0" id="tejaid'+i+'">'+result[i].name+'</div>';

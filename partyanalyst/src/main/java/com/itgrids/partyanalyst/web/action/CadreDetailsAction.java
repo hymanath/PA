@@ -1593,7 +1593,11 @@ public String getCadreInformationDetails(){
 		Integer startIndex = jObj.getInt("startIndex");
 		Integer maxIndex = jObj.getInt("maxIndex");
 		Long userId = regVO.getRegistrationID(); 
-		basicVoList = cadreDetailsService.getcadreNotesInformationDetails(tdpCadreId,startIndex,maxIndex,userId);
+		basicVoList = cadreDetailsService.getcadreNotesInformationDetails(tdpCadreId,startIndex,maxIndex,null);
+		
+		if(basicVoList != null && basicVoList.size() > 0){
+			basicVoList.get(0).setLevelId(userId);
+		}
 	}catch(Exception e){
 		LOG.error("Exception Occured in getcadreInformationDetails() in CadreDetailsAction ",e);
 	}
