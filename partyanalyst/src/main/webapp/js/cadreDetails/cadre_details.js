@@ -533,6 +533,7 @@ var globalidentityMembershipNo = ""	;
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
 					getPDFReportsForNominatedComplaints();
+					buildReport();
 					getRefferelDetailsStatusWise();
 					getConductedPartyMeetingDetails("","","true","0");
 					getTrainingCampAttendenceInfoInCadreLocation();
@@ -1603,10 +1604,7 @@ function getTotalComplaintsForCandidate(){
 	}
 
 	arr.push(obj);
-		//getting Dynamic Browser URL
-		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
+		
 	$.ajax({
 				type : "POST",
 				//url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
@@ -1708,8 +1706,8 @@ function buildNominatedReports()
 			}
 	if(flag == true)
 		{
-			$("#profilesInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="nominatedreportsId" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#reportModelId"></i>');
-			$("#reportDetailsId").html(str);
+			$("#profilesInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:green;" id="nominatedreportsId" title="Click Here To Get Profiles Detail" data-toggle="modal" data-target="#profileModelId"></i>');
+			$("#profileDetailsId").html(str);
 			$("#NominatedreportTableId").dataTable(); 
 		}
 		else
@@ -1719,9 +1717,6 @@ function buildNominatedReports()
 }
 	function buildTotalComplaints(result,complaintId)
 	{
-		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
 	var str = '';
 	str += '<ul class="list-inline">';
 	$("#candidateTotalComplaintsDiv").html(''+result[0].count+'');
@@ -1794,9 +1789,6 @@ function buildNominatedReports()
 }
 function buildInsuranceTotalComplaints(result,complaintId)
 {
-	var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
 	 var hosReq = 0;
 	 var deathReq=0;
 	 for(var j in result[1].voList){
@@ -1859,12 +1851,7 @@ function getMemberComplaints()
   $("#familyHospitalizationInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
   $("#familyRequestAmount").html('');
   $("#familyMemberDiv").html('');
-  		//getting Dynamic Browser URL
-		//var url = "http://mytdp.com/cadreDetailsAction.action?cadreId=7637453";
-		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
-	$.ajax({
+  .ajax({
 			type : "POST",
 			url: wurl+"/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
@@ -1890,10 +1877,7 @@ function getMemberComplaints()
 			});
 }
 function buildFamilyMemberComplaint(result,jobj){
-	//getting Dynamic Browser URL
-	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
+	
 	var flag = false;
  try{
 	 var cnt = 0;
@@ -2032,10 +2016,7 @@ function buildFamilyMemberComplaint(result,jobj){
 }
 function buildInsuranceFamilyMemberComplaint(result)
 {
-	//getting Dynamic Browser URL
-	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
+	
 	    var hosReq = 0;
 		var deathReq=0;
 	for(var j in result[1].subList){
@@ -2419,9 +2400,7 @@ function getCandidateAndLocationSummaryNews(){
 		//locationId=13;
 		startDate=startDate;
 		endDate=endDate;
-		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
+		
 	 $.ajax({
 		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 		url: wurl+"/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"/"+globalCadreId+""
@@ -3241,9 +3220,7 @@ function getComplaintTrackingDetails(complaintId,divId){
 
 $(document).on("click",".statusWiseDetailsCls",function(){
 	
-	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
+	
 	$("#deathHospModalBodyId").html('');
 	$("#deathHospModelDivId").modal("show");
 	$("#dataLoadingsImgForDeathHospDetails").show();
@@ -4368,9 +4345,7 @@ function getIVRDetails()
 	$("#ivrsurveyDataLoadoing").show();
 	$("#ivrSurveysMainDivId").show();	
 	var candidateId = globalCandidateId;//290951
-	var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
+	
 	$.ajax({
 		url: wurl+"/Survey/WebService/getCandidateIVRResult/"+candidateId+""
 	}).then(function(result) {
@@ -4574,9 +4549,7 @@ function buildPublicScoreTable(myResult)
 }
 function getCategoryFeedBackAnswerForCadre(){
 $("#feedbackDivId").html("");
-var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
+
 	var jsObj ={
 		tdpCadreId:globalCadreId
 	}
@@ -5507,9 +5480,7 @@ $(document).on('click', '.ivrAnsweredCls', function(){
 
 function getRefferelDetailsStatusWise(){
 	//$("#referralGrievanceDetailsId").html('');
-	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
+	
 	var cadreId = globalCadreId;
 	$("#referralGrievanceLoadingImg").show(); 
 	
@@ -5590,9 +5561,7 @@ $(document).on('click','.referalGrievenceCls',function(){
 	var status = $($this).attr("attr_status");
 	var complaintId=  $($this).attr("attr_complaintId");
 
-	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
+	
 	var obj={
 		 cadreId : globalCadreId,
 		 status :status,
@@ -6154,9 +6123,7 @@ var str='';
 }
 
 $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
-	var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
+	
 	$("#grievanceDetailsModalBodyId").html('');
 	$("#grievanceDetailsModalDivId").modal("show");
 	$("#dataLoadingsImgForGrievanceStatusDetails").show();
@@ -6637,9 +6604,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 	$("#grievanceBenifitsDetailsModalBodyId").html('');
 	$("#grievanceBenifitsDetailsModalDivId").modal("show");
 	$("#dataLoadingsImgForGrievanceBenifitsStatusDetails").show();
-	var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
-		wurl = wurl.replace("/PartyAnalyst","");
+	
 	var locationId = 0;
 	var locationType = $(this).attr("attr_location_type");
 	var issueType = $(this).attr("attr_issueType");

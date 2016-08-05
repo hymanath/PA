@@ -225,28 +225,53 @@ function buildAlertData(result,jsObj)
 	{
 		Level = "STATE";
 	}
-	if(jsObj.levelId == 3)
+	else if(jsObj.levelId == 3)
 	{
 		Level = "DISTRICT";
 	}
-	if(jsObj.levelId == 4)
+	else if(jsObj.levelId == 4)
 	{
 		Level = "CONSTITUENCY";
 	}
-	if(jsObj.levelId == 5)
+	else if(jsObj.levelId == 5)
 	{
 		Level = "MANDAL";
 	}
-	if(jsObj.levelId == 6)
+	else if(jsObj.levelId == 6)
 	{
 		Level = "VILLAGE";
+	}
+	else
+	{
+		Level = "";
 	}
 	var str='';
 	
 	if(jsObj.statusId > 0)
-	str+='<h4 class="text-success text-capital m_top10">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
+	{
+		if(Level.length > 0)
+		{
+			str+='<h4 class="text-success text-capital m_top10">'+Level+ " Wise "+result[0].status+' Alert Details</h4>';
+		}
+		
+		else
+		{
+			str+='<h4 class="text-success text-capital m_top10"> '+result[0].status+' Alert Details</h4>';
+		}
+	}
+	
 	else
-	str+='<h4 class="text-success text-capital m_top10">'+Level+' Wise  Alert Details</h4>';	
+	{
+		if(Level.length > 0)
+		{
+			str+='<h4 class="text-success text-capital m_top10">'+Level+' Wise  Alert Details</h4>';
+		}
+		else
+		{
+			str+='<h4 class="text-success text-capital m_top10"> Alert Details</h4>';
+		}
+	}
+	
 	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered bg_ff">';
 	str+='<thead>';
@@ -255,6 +280,7 @@ function buildAlertData(result,jsObj)
 	str+='<th>Alert Type</th>';
 	str+='<th>Status</th>';
 	str+='<th>Involved No Of Candidates</th>';
+	str+='<th>Notofied Date</th>';
 	str+='<th>Information Source</th>';
 	str+='<th>Severity</th>';
 	if(jsObj.levelId == 2)
@@ -277,6 +303,7 @@ function buildAlertData(result,jsObj)
 	str+='<td>'+result[i].alertType+'</td>';
 	str+='<td>'+result[i].status+'</td>';
 	str+='<td>'+result[i].count+'</td>';
+	str+='<td>'+result[i].date+'</td>';
 	str+='<td>'+result[i].userType+'</td>';
 	str+='<td><span class="circle '+result[i].severity+'"></span>'+result[i].severity+'</td>';
 	//str+='<td><a  class="alertCandidate" style="cursor:pointer;" attr-id="'+result[i].id+'" attr-des="'+result[i].desc+'">'+result[i].count+'</a></td>';
