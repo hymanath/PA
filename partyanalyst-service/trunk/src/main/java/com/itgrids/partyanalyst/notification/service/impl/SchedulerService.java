@@ -1687,7 +1687,7 @@ public class SchedulerService implements ISchedulerService{
         	}
         	
         	msgText.append("<br><br>Thanks");
-        	msgText.append("<br>ITGRIDS TEAM");
+        	msgText.append("<br>IT TEAM");
         	htmlPart.setContent(msgText.toString(),"text/html");
         	multipart.addBodyPart(htmlPart);
         	String pdfFileName = emailAttributesVO.getFileName();
