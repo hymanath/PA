@@ -850,7 +850,7 @@ function buildBasicgraphs(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			buildUserLoginLevelDetails(result);
 		});
 	}
 	
