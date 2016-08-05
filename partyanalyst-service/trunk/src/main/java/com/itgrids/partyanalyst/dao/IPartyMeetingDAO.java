@@ -24,4 +24,5 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	 public Integer updateConductedStatus(Long meetingId,String isConducted,Long userId,Date presentDate);
 	 public Integer updateConductedDate(Long meetingId,Date conductedDate,Long userId,Date presentDate);
 	 public Integer updateConductedReason(Long meetingId,String remarks,Long userId,Date presentDate);
+	 
 }
