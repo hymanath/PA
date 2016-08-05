@@ -32,8 +32,8 @@ public class LeaderOccasion extends BaseModel implements Serializable {
 
 	private Long leaderOccasionId;
 	private Date occasionDate;
-	private String isactive;
-	private String isdeleted;
+	private String isActive;
+	private String isDeleted;
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
 	private OccasionType occasionType;
@@ -69,22 +69,21 @@ public class LeaderOccasion extends BaseModel implements Serializable {
 	}
 
 	@Column(name = "is_active")
-	public String getIsactive() {
-		return isactive;
+	public String getIsActive() {
+		return isActive;
 	}
 
-	public void setIsactive(String isactive) {
-		this.isactive = isactive;
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 
-	
 	@Column(name = "is_deleted")
-	public String getIsdeleted() {
-		return isdeleted;
+	public String getIsDeleted() {
+		return isDeleted;
 	}
 
-	public void setIsdeleted(String isdeleted) {
-		this.isdeleted = isdeleted;
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
