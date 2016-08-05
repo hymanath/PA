@@ -1544,31 +1544,31 @@ function savingApplication(){
 								} 
 				}
 			 	 if($("#depmtsId"+clonNo).val() == null || $("#depmtsId"+clonNo).val() == " " || $("#depmtsId"+clonNo).val() == undefined){
-						//$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
+						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						//$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
+						$("#depmtsId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 				} 
 				if($("#deptBoardId"+clonNo).val() == null || $("#deptBoardId"+clonNo).val() == " " || $("#deptBoardId"+clonNo).val() == undefined){
-						//$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
+						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid red");
 							errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						//$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
+						$("#deptBoardId"+clonNo).parent().find(".chosen-single").css("border","1px solid #ddd");
 								flag = true;
 				} 
 								
 				if($("#deptBoardPostnId"+clonNo).val() == null || $("#deptBoardPostnId"+clonNo).val() == " " || $("#deptBoardPostnId"+clonNo).val() == undefined){
-						//$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid red");
+						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid red");
 								errorMsg = "Please select hilighted";
 								flag = false;
 				}else{
 					errorMsg = '';
-						//$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid #ddd");
+						$("#deptBoardPostnId"+clonNo).parent().find(".chosen-choices").css("border","1px solid #ddd");
 								flag = true;
 				}  
 				if(errorMsg != ''){
