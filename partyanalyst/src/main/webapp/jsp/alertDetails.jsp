@@ -247,7 +247,8 @@ control.makeTransliteratable(['commentsId']);
 						</table>
 						 <div class="row m_top10">
 							<div class="col-md-4 col-xs-12 col-sm-4" style="border-right:1px solid #ddd;">
-								<h4 class="panel-title text-capital">involved members in this alert</h4>
+								<h4 class="panel-title text-capital">involved members in this alert
+								<span id="involvedCandidatesCnt"> - 0</span></h4>
 								<ul class="involvedMembersUl" id="alertCandidateDataId">
 									<li>
 										<div class="media">
@@ -326,7 +327,7 @@ control.makeTransliteratable(['commentsId']);
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title" id="descriptionTitleId">Assign Alert</h4>
+		<h4 class="modal-title" id="descriptionTitleId">Assign Candidate</h4>
 	  </div>
 	  <div class="modal-body">
 		<jsp:include page="commonCadreSearch.jsp" flush="true"/>
@@ -334,7 +335,7 @@ control.makeTransliteratable(['commentsId']);
 	 <div class="modal-footer">
 		<div id="assignBtnId" >
 			<div id="assignEroorDiv"></div>
-				<input type="button" value="ASSIGN ALERT" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
+				<input type="button" value="ASSIGN CANDIDATE" onclick="saveAlertAssignedUser();"  class="btn btn-primary btnNewCustom1">
 		</div>	
 	 </div>
 	</div><!-- /.modal-content -->
@@ -478,6 +479,10 @@ function buildAlertAssignedCandidateData(result)
 	$("#assignCandidatesCnt").html(result[0].subList.length);
 	}
 	$("#alertAssignedCandidateDataId").html(str);
+	if(result[0].subList.length > 3)
+	{
+		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
+	}
 	/*str+='<div  style="border:1px solid #ddd;padding:8px;margin-top:5px;" class="media">';
 	str+='<div class="media-left">';
 	str+='<img src="'+result[i].image+' "  onerror="setDefaultImage(this);" class="media-object img-center img-responsive  thumbnailSearch thumbnail" alt="Image" style="width: 60px !important; height: 60px  !important;"/>';

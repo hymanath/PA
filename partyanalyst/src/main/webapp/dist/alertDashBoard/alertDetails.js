@@ -102,19 +102,14 @@ function getAlertStatusCommentsTrackingDetails()
 						{
 							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 						}
-						
-						if(result[i].id > 1)
-						{
-							if(result[i].commentsList != null && result[i].commentsList.length > 0){
+						if(result[i].commentsList != null && result[i].commentsList.length > 0){
 							
 								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
 							for(var j in result[i].commentsList){
-					
 								str+='<p>'+result[i].commentsList[j]+'</p>';	
-							
 							}
 						}
-					}
+					
 					str+='</div>';
 					str+='</li>';	
 				}
@@ -188,6 +183,7 @@ function buildAlertCandidateData(result)
    str+=' </li>';
 
 	}
+	$("#involvedCandidatesCnt").html('-' +result.length);
 	$("#alertCandidateDataId").html(str);
 	if(result.length > 3)
 	{

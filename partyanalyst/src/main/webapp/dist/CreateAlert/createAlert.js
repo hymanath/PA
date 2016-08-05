@@ -1023,7 +1023,7 @@ function disableByLevel(index)
 				addStr+='<p>'+mobile+'</p>';
 				addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
 				$("#duplicateCandidateBlock").html(''+addStr+'');
-				$("#memberConfirmation").html("added member to this alert");
+				$("#memberConfirmation").html("Member Added");
 				
 				$("#myModalConformation").modal('show');
 				setTimeout(function(){ $("#myModalConformation").modal('hide');

@@ -578,6 +578,7 @@ function showHideSearch(type)
 		var stateId=0;
 		var advanceSearchType = $("#advanceSearchTypeId").val();
 		stateId = $("#stateId").val();
+		
 		 if(advanceSearchType==0){
 			 errorStr='Please Select Search Type';
 			 $("#errorDivId").html(errorStr);
@@ -805,10 +806,10 @@ function showHideSearch(type)
 		$("#errorDivId").html(" ");
 		
 		var searchValue=$("#advanceSearchValueId").val().trim();
-		
+	
 		var errStr=false;
 		//Validations
-		if(searchValue==0){
+		if($("#advanceSearchTypeId").val() == 0){
 			 $("#errorDivId").html("Please Select Search Type");
 			 errStr=true;
 		}
@@ -947,6 +948,7 @@ function showHideSearch(type)
 			  var image = $(this).attr("attr_img_url");
 			  var attrId = $(this).attr("attr_id");
 			  var attrConsti =  $(this).attr("attr-consti");
+			  var mobile =$(this).attr("attr_mobile");
 		 if($(this).is(':checked')){
 			 $("#involvedCandidatesDiv").show();
 			// $("#involvedCandidatesDiv1").show();
@@ -978,6 +980,15 @@ function showHideSearch(type)
                 }, 2000);*/
 				$("#assignBtnId").show();
 				commontdpCadreIds.push(attrId);
+				var addStr ='';
+				addStr+='<p class="text-capital" >'+name+'</p>';
+				addStr+='<p>'+mobile+'</p>';
+				addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+				$("#duplicateCandidateBlock").html(''+addStr+'');
+				$("#memberConfirmation").html("Member Added");
+				$("#myModalConformation").modal('show');
+				setTimeout(function(){ $("#myModalConformation").modal('hide');
+					 }, 1000);
 		 }
 		 else
    {
