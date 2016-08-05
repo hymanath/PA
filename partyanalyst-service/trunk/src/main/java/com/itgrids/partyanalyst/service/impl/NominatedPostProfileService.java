@@ -4299,4 +4299,139 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		}
 		return finalVoterId;
 	}
+	
+	public List<IdNameVO> getOpenedPositionsBoardLevels(){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+		List<Object[]> list = nominatedPostDAO.getBoardLevelsForOpenedPositions();
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			String[] setterPropertiesList = {"id","name"};
+			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getBoardLevels()", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getStatesForOpenedPositions(){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+		List<Object[]> list = nominatedPostDAO.getStatesForOpenedPositions();
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			String[] setterPropertiesList = {"id","name"};
+			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getStatesForOpenedPositions()", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+		List<Object[]> list = nominatedPostDAO.getOpenPositionDistrictsForState(stateId);
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			String[] setterPropertiesList = {"id","name"};
+			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getOpenPositionDistrictsForState()", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+		List<Object[]> list = nominatedPostDAO.getOpenPositionConstituenciesForDistrict(districtId);
+		if(commonMethodsUtilService.isListOrSetValid(list)){
+			String[] setterPropertiesList = {"id","name"};
+			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getOpenPositionConstituenciesForDistrict()", e);
+		}
+		return returnList;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId){
+		List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try{
+			List<Long> ids = new ArrayList<Long>();
+			List<Object[]> list = nominatedPostDAO.getMandalMuncilIdsForConstituency(constituencyId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					Long tehsilId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long lebId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					if(lebId != null && lebId.longValue() > 0l){
+						lebId = Long.valueOf("1"+lebId.toString());
+						ids.add(lebId);
+					}
+					tehsilId = Long.valueOf("2"+tehsilId.toString());
+					ids.add(tehsilId);
+				}
+			}
+			List<LocationWiseBoothDetailsVO> list1 = cadreCommitteeService.getMandalMunicCorpDetails1(constituencyId);
+			if(commonMethodsUtilService.isListOrSetValid(list1)){
+				for (LocationWiseBoothDetailsVO vo : list1) {
+					Long locationId = vo.getLocationId();
+					if(ids.contains(locationId))
+						returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getMandalMuncilIdsForConstituency()", e);
+		}
+		return returnList;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId){
+		List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try {
+			Long id = 0l;
+			String type = null;
+			List<Long> ids = new ArrayList<Long>();
+			
+			if((mandalId.substring(0,1)).equalsIgnoreCase("2")){
+				id = Long.valueOf(mandalId.substring(1));
+				type = "mandal";
+			}
+			if((mandalId.substring(0,1)) .equalsIgnoreCase("1")){
+				id = Long.valueOf(mandalId.substring(1));
+				type = "muncipality";
+			}
+			
+			List<Object[]> list = nominatedPostDAO.getPanchayWardIdsForMandal(id, type, constituencyId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					Long iid = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					if(type != null && type.equalsIgnoreCase("mandal"))
+						iid = Long.valueOf("1"+iid.toString());
+					else if(type != null && type.equalsIgnoreCase("muncipality"))
+						iid = Long.valueOf("2"+iid.toString());
+					ids.add(iid);
+					
+				}
+			}
+			List<LocationWiseBoothDetailsVO> list1 = cadreCommitteeService.getPanchayatWardByMandalId(mandalId, constituencyId);
+			if(commonMethodsUtilService.isListOrSetValid(list1)){
+				for (LocationWiseBoothDetailsVO vo : list1) {
+					Long locationId = vo.getLocationId();
+					if(ids.contains(locationId))
+						returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in getPanchaytWardForMandal()", e);
+		}
+		return returnList;
+	}
 }

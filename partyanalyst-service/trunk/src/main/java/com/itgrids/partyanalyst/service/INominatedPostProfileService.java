@@ -7,6 +7,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.dto.NominatedPostVO;
@@ -53,4 +54,10 @@ public interface INominatedPostProfileService {
 	public List<NominatedPostDashboardVO> getCasteWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId);
 	public List<NominatedPostDashboardVO> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId);
 	public Long validateVoterIdCardNo(String voterIdCardNo);
+	public List<IdNameVO> getOpenedPositionsBoardLevels();
+	public List<IdNameVO> getStatesForOpenedPositions();
+	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId);
+	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId);
+	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId);
+	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId);
 }
