@@ -423,7 +423,7 @@
 					
 				</div>
 			</div>
-			<p class="text-capital" style="color:yellow;">already added member to this alert</p>
+			<p class="text-capital" style="color:yellow;" id="memberConfirmation">already added member to this alert</p>
 		</div>
 	</div>
   </div>
@@ -443,8 +443,6 @@ $(document).on("click",".involveBlockNew",function(){
 	var select = new Dropkick("#advanceSearchTypeId");
 				select.refresh();	
 		showHideBySearchType();
-		disableByLevel(1);		
-		
 					
 })
 // Load the Google Transliterate API

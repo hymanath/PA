@@ -107,7 +107,7 @@ function disableByLevel(index)
 				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee,.advanceprclsDiv").hide();
-				$(".locationsFilterCls").show();
+				//$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
 				$("#cadreCommitteeDiv_chosen").hide();
 				$(".stateShowCls").show();
@@ -124,7 +124,7 @@ function disableByLevel(index)
 				$(".advancePRCls").parent().hide();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee").show();
-				$(".locationsFilterCls").show();
+				//$(".locationsFilterCls").show();
 				$(".advanceprcls").hide();
 				$(".stateShowCls").show();
 				$(".levelShowCls").show();
@@ -160,7 +160,7 @@ function disableByLevel(index)
 				$(".advanceNameCls").show();
 				$(".advancePRCls").hide();
 				$(".advanceCadreCommittee").hide();
-				$(".locationsFilterCls").show();
+				//$(".locationsFilterCls").show();
 				$("#advanceSearchValueId").val("");
 				$(".advanceprclsDiv").hide();
 				$("#advanceDesignationId").css("display","none");
@@ -176,7 +176,7 @@ function disableByLevel(index)
 				$(".advanceNameCls").show();
 				$(".advancePRCls").hide();
 				$(".advanceCadreCommittee").hide();
-				$(".locationsFilterCls").show();
+				//$(".locationsFilterCls").show();
 				$("#advanceSearchValueId").val("");
 				$(".advanceprclsDiv").show();
 				$("#searchBtnId").show();
@@ -185,6 +185,7 @@ function disableByLevel(index)
 				$("#searchNameLabel").text("Search By Mobile");
 				else
 				$("#searchNameLabel").text("Search By Name/Membership No*");
+				
 			}
 				disableByLevel('');
 				$(".stateCls").show();
@@ -192,6 +193,7 @@ function disableByLevel(index)
 				$(".constiCls").hide();
 				$(".mandalCls").hide();
 				$(".panchayatCls").hide();
+				
 	}
 	
 	 function getLevelByDesignation()
@@ -1007,7 +1009,7 @@ function disableByLevel(index)
             str+='<span class="onoffswitch-switch"></span>';
 			str+='</label>';
 			str+='</div>';
-			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew"></i></span></div></div>';
+			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
 			$("#duplicateCandidateBlock").html('');
 			
 			if(jQuery.inArray(attrId, involvedCadreIds) == -1)
@@ -1016,12 +1018,23 @@ function disableByLevel(index)
 				
 				$(".membersBlock").append(str);
 				$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+				var addStr ='';
+				addStr+='<p class="text-capital" >'+name+'</p>';
+				addStr+='<p>'+mobile+'</p>';
+				addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+				$("#duplicateCandidateBlock").html(''+addStr+'');
+				$("#memberConfirmation").html("added member to this alert");
+				
+				$("#myModalConformation").modal('show');
+				setTimeout(function(){ $("#myModalConformation").modal('hide');
+					 }, 1000);
 			}else{
 				var duplicateStr ='';
 				duplicateStr+='<p class="text-capital" >'+name+'</p>';
 				duplicateStr+='<p>'+mobile+'</p>';
 				duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
 				$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+				$("#memberConfirmation").html("already added member to this alert");
 				$("#myModalConformation").modal('show');
 			}
 			 
