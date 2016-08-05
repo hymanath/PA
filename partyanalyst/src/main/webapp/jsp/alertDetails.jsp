@@ -145,6 +145,9 @@
 .assignCandidate {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
 }
+.commentsUlCls li:before{
+	top:6px !important;
+}
 	</style>
  </head>     
 
@@ -456,7 +459,7 @@ function buildAlertAssignedCandidateData(result)
 	{
 		str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
 		str+='<div class="media-left">';
-        str+='<img src="'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
+        str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
         str+='</div>';
 		str+='<div class="media-body" style="position:relative;">';
 		str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">';

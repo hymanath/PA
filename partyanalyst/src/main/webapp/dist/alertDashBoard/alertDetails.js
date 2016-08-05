@@ -105,9 +105,11 @@ function getAlertStatusCommentsTrackingDetails()
 						if(result[i].commentsList != null && result[i].commentsList.length > 0){
 							
 								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
+								str+='<ul class="commentsUlCls">';
 							for(var j in result[i].commentsList){
-								str+='<p>'+result[i].commentsList[j]+'</p>';	
+								str+='<li>'+result[i].commentsList[j]+'</li>';	
 							}
+								str+='</ul>';
 						}
 					
 					str+='</div>';

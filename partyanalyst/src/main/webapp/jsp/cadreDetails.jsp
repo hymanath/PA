@@ -1406,6 +1406,27 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div><!— /.modal-dialog —>
 		</div><!— /.modal —>
 		<!-- Model for Report End-->  
+		
+		
+		<!-- Model for Report start swadhin-->
+		<div class="modal fade" tabindex="-1" id="profileModelId" role="dialog">
+			<div class="modal-dialog" style="width:50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+					</div>
+					<div class="modal-body" id="profileDetailsId">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!— /.modal-content —>
+			</div><!— /.modal-dialog —>
+		</div><!— /.modal —>
+		<!-- Model for Report End-->  
+		
+		
 		<!-- Model for pdf Report start swadhin-->
 		<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
 			<div class="modal-dialog" style="width:80%;">      
@@ -1485,7 +1506,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>
+	<!--<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>-->
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
 	<!--Circle js file-->
@@ -1512,6 +1533,9 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
 	
 	<script>
+	$(document).on("click","#nominatedreportsId",function(){
+		$("#profileModelId").modal('show');
+	})
 	$("#notesDescriptionId").jqte();
 	 
 	//var globalCadreId = '${cadreId}';
@@ -2479,12 +2503,10 @@ $(document).on("click",".notesClass",function(){
 	$(".jqte_editor").html('');
 	$("#updateButnId").hide();
 });
-</script>
-<script>
 //swadhin
-buildReport();
 function buildReport()
 {
+	
 	var str = '';
 	var flag = false;
 	<c:if test="${fn:length(cadreReportVOList) gt 0}">  
@@ -2505,30 +2527,6 @@ function buildReport()
 					str +='</tr>';    
 				</c:forEach>         
 			</c:forEach>
-			/*if(nominatedResult != null && nominatedResult.length > 0)
-			{
-				for(var i in nominatedResult)
-				{
-				str +='<tr>'; 
-				if(nominatedResult[i].scanCopyList != null && nominatedResult[i].scanCopyList.length > 0)
-				{
-						for(var j in nominatedResult[i].scanCopyList)
-						{
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" id="showPdfId" >N/A</span></td>'; 
-						str +='<td><span  title="Click Here To Get Reports Detail" filePath="'+nominatedResult[i].scanCopyList[j].path+'" style="cursor:pointer;" data-toggle="modal" data-target="#pdfModelId" class="showPdfCls1" >'+nominatedResult[i].date+'</span></td>'; 
-					}
-				}
-					else
-					{
-							str +='<td><span>'+nominatedResult[i].issueType+' (GRIEVANCE)</span></td>'; 
-							str +='<td><span>N/A</span></td>'; 
-							str +='<td><span>'+nominatedResult[i].date+'</span></td>'; 	
-					}
-				
-			str +='</tr>';  	
-				}
-			}*/
 		str +='</tbody>';
 	str +='</table>';    
 	</c:if>
@@ -2543,6 +2541,13 @@ function buildReport()
 			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>');
 		}
 }
+</script>
+<script>
+//getting Dynamic Browser URL
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
+wurl = wurl.replace("/PartyAnalyst","");
+
 function openPdf(aravind){	
 	window.open(aravind);
 }
@@ -2553,7 +2558,7 @@ $(document).on('click','.showPdfCls',function(){
 
 	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 		$("#pdfModelId").modal("hide");
-		window.open('http://mytdp.com/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 	
 		/*setTimeout(function(){
 		$(w.document).find('html').append('<head><title>your title</title></head>');}, 2000); */
@@ -2561,8 +2566,9 @@ $(document).on('click','.showPdfCls',function(){
 		
 
 	}else{
+		
 		$("#pdfModelId").modal("show");
-		str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+		str += '<iframe src="'+wurl+'/'+filePath+'" width="100%" height="800">';    
 		str += '</iframe>';
 		$("#pdfReportDetailsId").html(str);
 	}
@@ -2576,10 +2582,10 @@ $(document).on('click','.showPdfCls1',function(){
 	var filePath = $(this).attr("filePath");
 	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 		$("#pdfModelId").modal("hide");
-		window.open('http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		window.open(wurl+'/Grievance/complaintScannedCopy'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 	}else{
 		$("#pdfModelId").modal("show");
-		str += '<iframe src="http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
+		str += '<iframe src="'+wurl+'/Grievance/complaintScannedCopy'+filePath+'" width="100%" height="800">';    
 		str += '</iframe>';
 		$("#pdfReportDetailsId").html(str);
 	}
@@ -2593,10 +2599,10 @@ $(document).on('click','.showPdfCls2',function(){
 	var filePath = $(this).attr("filePath");
 	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
 		$("#pdfModelId").modal("hide");
-		window.open('http://mytdp.com/Grievance/complaintScannedCopy'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
 	}else{
 		$("#pdfModelId").modal("show");
-		str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+		str += '<iframe src="'+wurl+'/'+filePath+'" width="100%" height="800">';    
 		str += '</iframe>';
 		$("#pdfReportDetailsId").html(str);
 	}
