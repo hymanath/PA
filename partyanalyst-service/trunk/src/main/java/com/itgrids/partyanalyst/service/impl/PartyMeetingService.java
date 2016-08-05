@@ -2788,7 +2788,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
 						vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
 						//vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-						vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+						vo.setImgStr("https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
 						vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
 						vo.setOwnConstituency(obj[8] != null ? obj[8].toString():"");
 						
