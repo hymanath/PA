@@ -15,17 +15,25 @@ public class TdpCadreNotesDAO extends GenericDaoHibernate<TdpCadreNotes, Long> i
 		
 	}
 public List<Object[]> getCadreNotesInformation(Long tdpCadreId,Integer startIndex,Integer maxIndex,Long userId){
-		
-		Query query = getSession().createQuery(" select model.tdpCadreNotesId,model.notes,model.user.userName,model.insertedTime,model.updatedTime" +
+	
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select model.tdpCadreNotesId,model.notes,model.user.userName,model.insertedTime,model.updatedTime,model.user.lastName,model.user.userId " +
 				" from TdpCadreNotes model " +
-				" where model.tdpCadreId=:tdpCadreId and " +
-				" model.insertedBy=:userId and model.isDeleted = 'false' order by model.insertedTime desc");
+				" where model.tdpCadreId=:tdpCadreId  " );
+	if(userId != null && userId > 0l)
+		sb.append(" and model.insertedBy=:userId ");
+	sb.append(" and model.isDeleted = 'false' order by model.insertedTime desc");
+		
+		Query query = getSession().createQuery(sb.toString());
 		if(startIndex!=null) 
 		query.setFirstResult(startIndex);
 		if(maxIndex != null)
 		 query.setMaxResults(maxIndex);
-		 query.setParameter("tdpCadreId", tdpCadreId);
-		 query.setParameter("userId", userId);
+		
+		if(userId != null && userId > 0l)
+			 query.setParameter("userId", userId);
+		query.setParameter("tdpCadreId", tdpCadreId);
+		
 		return query.list();
 	} 
 
