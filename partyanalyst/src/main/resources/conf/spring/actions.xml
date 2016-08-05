@@ -1248,7 +1248,7 @@
 		<property name="constituencySearchService" ref="constituencySearchService" />
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
-		
+		<property name="birthDayDetailsService" ref="birthDayDetailsService" />
 	</bean>
 	
 	<bean id="surveyorProfileSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyorProfileSaveAction" singleton="false">
