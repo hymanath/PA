@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.ActivityMemberAccessType;
 
 public interface IActivityMemberAccessTypeDAO extends GenericDao<ActivityMemberAccessType,Long>{
 	public List<Object[]> getActivityMemberUserAccessTypeByUserId(Long userId);
+	public List<Object[]> getAllActivityMembersOfGSAndDistAndMpUserTypes(List<Long> childUserTypeIds);
 }

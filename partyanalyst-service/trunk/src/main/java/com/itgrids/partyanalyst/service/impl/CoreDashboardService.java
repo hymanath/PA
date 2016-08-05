@@ -712,7 +712,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					
 					List<Object[]> childDetails = null;
 					if( finalVO.getUserTypeId().longValue() == IConstants.COUNTRY_USER_TYPE_ID.longValue() || finalVO.getUserTypeId().longValue() == IConstants.STATE_USER_TYPE_ID.longValue()){
-						childDetails = activityMemberRelationDAO.getAllActivityMembersOfGSAndDistAndMpUserTypes(childUserTypeIds);
+						childDetails = activityMemberAccessTypeDAO.getAllActivityMembersOfGSAndDistAndMpUserTypes(childUserTypeIds);
 					}else{
 						childDetails = activityMemberRelationDAO.getChildUserTypeMembers(finalVO.getActivityMemberId(), childUserTypeIds);
 					}
