@@ -621,11 +621,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">ADDING NEW CANDIDATE <span style="color:red;" class="addNewCandidateErrorCls"><span></h4>
+        <h4 id="myModalLabel">ADDING NEW CANDIDATE <span style="color:blue;" class="addNewCandidateErrorCls"><span></h4>
       </div>
 	  <form name="saveNotCadre" id="saveNotCadre"  method="post" enctype="multipart/form-data">
       <div class="modal-body">
 		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<h4 class="panel-title"><u>PERSONAL DETAILS :<u></h4><br/>
+			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3">
 				<label class="text-capitalize">voter Id<span style="color:red;">* <span id="voterExtraErrId"></span><span></label>
 				<input type="text"  id="voterId" class="form-control voterCls clearClss" name="addNotcadreRegistrationVO.voterId"/>
@@ -634,14 +637,18 @@
 				<label class="text-capitalize">name<span style="color:red;">*<span></label>
 				<input type="text" id="nameId" class="form-control clearClss"  name="addNotcadreRegistrationVO.name"/>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">mobile no<span style="color:red;" id="mobileExtraErrId">*<span></label>
-				<input type="text" id="mobilenoId" class="form-control clearClss" maxLength="10" name="addNotcadreRegistrationVO.mobileno"/>
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+				<label class="text-capitalize">relative name</label>
+				<input type="text" id="relativenamebyId" class="form-control clearClss" name="addNotcadreRegistrationVO. relativename"/>
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
-				<label class="text-capitalize">house no</label>
-				<input type="text" id="HouseId" class="form-control clearClss" name="addNotcadreRegistrationVO.houseno"/>
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+				<label class="text-capitalize">relation type</label>
+				<select class="chosenSelect clearSelectClss" id="relativetypeId" name="addNotcadreRegistrationVO. relativetype">
+					<option></option>
+				</select>
 			</div>
+			</div>
+			<div class="row">
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">gender<span style="color:red;">*<span></label>
 				<select class="chosenSelect clearSelectClss" id="genderId" name="addNotcadreRegistrationVO.gender">
@@ -664,25 +671,33 @@
 				<input type="text"  id="ageId" class="form-control clearClss" name="addNotcadreRegistrationVO.age"/>
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
-				<label class="text-capitalize">relative name</label>
-				<input type="text" id="relativenamebyId" class="form-control clearClss" name="addNotcadreRegistrationVO. relativename"/>
-			</div>
-	<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
-				<label class="text-capitalize">relation type</label>
-				<select class="chosenSelect clearSelectClss" id="relativetypeId" name="addNotcadreRegistrationVO. relativetype">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
-				<label class="text-capitalize">image<span style="color:red;">*<span></label>
-				<input type="file" id="imageurlId" class="form-control clearClss" name="file"/>
-			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">caste<span style="color:red;">*<span></label>
 				<!--<input type="text" id="casteId" class="form-control" name="addNotcadreRegistrationVO. castestateId"/> -->
 				 <select id="casteId" class="chosenSelect clearSelectClss" name="addNotcadreRegistrationVO.castestateId">
                  </select>
 			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">mobile no<span style="color:red;" id="mobileExtraErrId">*<span></label>
+				<input type="text" id="mobilenoId" class="form-control clearClss" maxLength="10" name="addNotcadreRegistrationVO.mobileno"/>
+			</div>
+			</div>
+			<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 m_top20">
+				<h4 class="panel-title"><u>PHOTO : </u></h4>	
+			</div>
+            <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+				<label class="text-capitalize">image<span style="color:red;">*<span></label>
+				<input type="file" id="imageurlId" class="form-control clearClss" name="file"/>
+			</div>
+			</div>
+			<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 m_top20">
+				<h4 class="panel-title"><u>ADDRESS DETAILS: </u></h4><br/>		   
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-3">
+				<label class="text-capitalize">house no</label>
+				<input type="text" id="HouseId" class="form-control clearClss" name="addNotcadreRegistrationVO.houseno"/>
+			</div>			
 			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">address1</label>
 				<input type="text" id="address1Id" class="form-control clearClss" name="addNotcadreRegistrationVO.address1"/>
@@ -691,7 +706,6 @@
 				<label class="text-capitalize">address2</label>
 				<input type="text" id="address2Id" class="form-control clearClss" name="addNotcadreRegistrationVO.address2"/>
 			</div>
-			
 			<div id="searchMemberDiv">
                     <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
                     	<label>State<span style="color:red;">*<span></label>
@@ -714,20 +728,15 @@
 						</div>
 					<div class="col-md-3 col-xs-12 col-sm-3 m_top10 mandalShowCls">
 									<label>Mandal/ Muncipality / Corporation<span style="color:red;">*<span></label>
-									<select  class="chosenSelect clearSelectClss" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">
-									
+									<select  class="chosenSelect clearSelectClss" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">	
 									</select>
 							</div>
 					<div class="col-md-3 col-xs-12 col-sm-3 m_top10 panchayatShowCls">
 									<label>Panchayat/ Ward / Division<span style="color:red;">*<span></label>
 									<select  class="chosenSelect clearSelectClss" id="notCadrePanchayatId" name="addNotcadreRegistrationVO.panchayatId">
-										
 									</select>
-								</div>
-					
-					
-					
-		<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
+								</div>			
+		        <div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">pincode</label>
 				<input class="form-control clearClss" id="pincodeId" type="text" maxlength="6" name="addNotcadreRegistrationVO.pincode"/>
 			</div>
@@ -894,6 +903,9 @@ $(function() {
     $("#DOBId").daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
+		changeMonth: true,
+		minDate: new Date(1916, 10 - 1, 16),
+		maxDate: moment(),
 		parentEl:'#addMemberModalBlock'
     }, 
     function(start, end, label) {
@@ -911,6 +923,13 @@ $(document).keypress(function(e) {
 					
 				}
 		  });
+		  $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            maxDate: '@maxDate',
+            minDate: '@minDate'
+        });
 		  */
 $(document).on("click",".addMemberModal",function(){
 	 $(".addNewCandidateErrorCls").html(" ");
@@ -1003,7 +1022,8 @@ function buildapptmemberDetails(result){
 											<c:choose>
 											<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
 											if(result[i].id != null && result[i].id > 0){
-												if(result[i].candidateType=="voter"){
+							
+							if(result[i].candidateType=="voter"){
 												 str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div>';
 												}else{
 													str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
