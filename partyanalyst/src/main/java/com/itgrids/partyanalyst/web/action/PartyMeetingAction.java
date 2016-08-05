@@ -442,7 +442,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			}
 			jObj = new JSONObject(getTask());
 			
-			partyMeetingVOList = partyMeetingService.getLevelWiseMeetingDetails(jObj.getString("fromDate"),jObj.getString("toDate"),userId);
+			partyMeetingVOList = partyMeetingService.getLevelWiseMeetingDetails(jObj.getString("fromDate"),jObj.getString("toDate"),userId,jObj.getLong("stateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getLevelWiseMeetingDetails Action",e);

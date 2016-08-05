@@ -188,6 +188,20 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 				<div class="panel panel-default">
             	<div class="panel-heading">
                 	<h4 class="panel-title">PARTY MEETINGS</h4>
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+					<span class="pull-right" style="margin-top:-21px">
+						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
+							<input type="radio" checked="true" class="stateCls" style="cursor:pointer;" name="stateName" value="0" onclick="handleFunctions();"> <b>ALL</b>
+						  </span>
+						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
+							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="1" onclick="handleFunctions();"> <b>AP</b>
+						  </span> 
+						  <span class="btn btn-xs btn-success" style="border-radius:15px;">
+							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="36" onclick="handleFunctions();"> <b>TS</b>
+						  </span>
+					</span>
+					</c:if>
+					
                 </div>
                 <div class="panel-body">
                 	<div class="row">
@@ -375,24 +389,29 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 				
                 	<div class="panel panel-default" style="border:1px solid #ddd !important">
                     	<div class="panel-heading">
-                        	<h4 class="panel-title">Meetings List</h4>
+                        	<h4 class="panel-title">Search / Update Meetings Conducted Status</h4>
                         </div>
                         <div class="panel-body">
                         	<div class="row">
-								<div class="col-md-3">
+								<div class="col-md-4 col-xs-12 col-sm-3">
 									<label>Meeting Level</label>
 									<span id="meetingLocationErrorMessage" style="color: red;"></span>
 										<select class="form-control" id="meetingLocationLevel"></select>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
 								</div>	
-                            	<div class="col-md-4">
+								
+                            	<div class="col-md-4 col-xs-12 col-sm-3">
+								
 									<label>Select Meeting Name/Type Of Meeting</label>
-									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
-                                    <select class="form-control" id="typeOfMeeting">
+									<select class="form-control" id="typeOfMeeting">
 										<option> Select Meeting Type </option>
 									</select>
+									<span id="typeofMeetingErrorMessage" style="color: red;"></span>
 									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgFortypeOfMeeting" style="width:20px;height:20px;display:none;"/>
+									
                                 </div>
+								
+								
                             	<!--<div class="col-md-3">
                                 	<label>Meeting Location</label>
                                     <select class="form-control" id="meetingLocation"></select>
@@ -403,19 +422,20 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                     	<option>District level</option>
                                     </select>
                                 </div>-->
-                            	<div class="col-md-3">
+                              <!-- 	<div class="col-md-3">
+							  balu
                                 	<label >Select Date</label>
 									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc ;width:350px !important;">
 									  <i class="glyphicon glyphicon-calendar"></i><div class="caret"></div>
 									  <span style="margin-left: 25px;"></span> 
 									</div>
-                                 <!--  <div class="input-group">
+									<div class="input-group">
                                     	<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                         <input type="text" class="form-control" id="reportrange">
 										<span class="caret"></span>
 										<span></span>
-                                    </div> -->
-								</div>
+                                    </div> 
+								</div>-->
 								<!--<div class="col-md-3">
                                 	<label>Meeting End Date</label> 
 									<div class="input-group">
@@ -423,57 +443,66 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                                         <input type="text" class="form-control" id="endDate">
                                     </div>
 								</div>-->	
-								
-                            </div>
-							<div class="row m_top10" >
-							<div class="col-md-3 col-xs-12 col-sm-6" id="stateShowId" style="display:none;">
-                                	<label>State</label>
-									<span id="stateErrorMSgShow" style="color: red;"></span>
-                                    <select class="form-control" id="statesDivId">
-									<!--<option>Select State</option>-->
-									</select>
-                            </div>
-							<div class="col-md-1" style="height: 44px; width: 10px;">
-								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								<div class="col-md-4 col-xs-12 col-sm-4" id="stateShowId" style="display:none;">
+										<label>State</label>
+										<span id="stateErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="statesDivId">
+										<!--<option>Select State</option>-->
+										</select>
+								</div>
 							</div>
-							<div class="col-md-3 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
-                                	<label>District</label>
-									<span id="districtErrorMSgShow" style="color: red;"></span>
-                                    <select class="form-control" id="districtId">
-									<!--<option>Select District</option>-->
-									</select>
-                            </div>
-							<div class="col-md-1" style="height: 44px; width: 10px;">
-								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+							<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-6" id="DistrictShowId" style="display:none;">
+										<label>District</label>
+										<span id="districtErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="districtId">
+										<!--<option>Select District</option>-->
+										</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
+										<label>Constituency</label>
+										<span id="ConsErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="constituencyId" name="constBox">
+										<!--<option>Select Constituency</option>-->
+										</select>
+								</div>
+								<div class="col-md-4 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
+										<label>Mandal/Town/Division</label>
+										<span id="ManErrorMSgShow" style="color: red;"></span>
+										<select class="form-control" id="manTowDivId">
+										<option>Select Mandal/Town/Division</option>
+										</select>
+								</div>
 							</div>
-							<div class="col-md-3 col-xs-12 col-sm-6" id="ConstShowId" style="display:none;">
-                                	<label>Constituency</label>
-									<span id="ConsErrorMSgShow" style="color: red;"></span>
-                                    <select class="form-control" id="constituencyId" name="constBox">
-									<!--<option>Select Constituency</option>-->
-									</select>
-                            </div>
-							<div class="col-md-1" style="height: 44px; width: 10px;">
-								<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
-							</div>
-							<div class="col-md-3 col-xs-12 col-sm-6" id="ManTwnDivShowId" style="display:none;">
-                                	<label>Mandal/Town/Division</label>
-									<span id="ManErrorMSgShow" style="color: red;"></span>
-                                    <select class="form-control" id="manTowDivId">
-									<option>Select Mandal/Town/Division</option>
-									</select>
-                            </div>
-							
-							<div class="col-md-3 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;margin-left:30px;">
-                                	<label>Village/Ward</label>
+							<div class="row">
+								<div class="col-md-4 col-xs-12 col-sm-6" id="VillWardShowId" style="display:none;">
+									<label>Village/Ward</label>
 										<span id="VillErrorMSgShow" style="color: red;"></span>
-                                    <select class="form-control" id="villWardId">
+									<select class="form-control" id="villWardId">
 									<option>Select Village/Ward</option>
 									</select>
+								</div>
+								<div class="col-xs-12 col-md-3 col-sm-6" >
+									<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View</button>
+								</div>
+								<div class="col-md-1" style="height: 44px; width: 10px;">
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								</div>
+								<div class="col-md-1" style="height: 44px; width: 10px;">
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForcons" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								</div>
+								
+								<div class="col-md-1" style="height: 44px; width: 10px;">
+									<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForman" style="margin-left: -13px;margin-top: 30px;width:20px;height:20px;display:none;"/>
+								</div>
                             </div>
-							<div class="col-xs-12 col-md-3 col-sm-6" >
-								<button class="btn btn-success btn-sm btn-block" style="margin-top:25px;" id="viewMeetings">View</button>
-							</div>
+							<div class="row m_top10" >
+							
+							
+							
+							
+							
+							
                         </div>
 					 </div>
 					<div class="row m_top20" style="padding:10px;margin-top:35px;">
@@ -559,7 +588,7 @@ $("#datePickerBlockId").daterangepicker({
 		 }
 });
 
-$("#datePickerBlockId").val(moment().startOf('month').format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
+$("#datePickerBlockId").val(moment().subtract(29, 'days').format("MM/DD/YYYY") +'-'+ moment().format("MM/DD/YYYY"));
 
 //Adding Class To "ranges" Class
 $(document).find(".datePickerBlockCls").closest(".ranges").addClass("datePickerRangesCls");
@@ -1013,8 +1042,17 @@ getUserAccessLocationDetails();
 			$("#VillErrorMSgShow").html();
 		});
 		
-		var startDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_startDate").val();
-		var endDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_endDate").val();
+		/* var startDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_startDate").val();
+		var endDate = $(".newsSubmitBtn").closest(".range_inputs").find(".dp_endDate").val(); */
+		var dates = $("#datePickerBlockId").val();
+		var startDate = "";
+		var endDate ="";
+		if(dates !=null && dates.length>0){
+			startDate = dates.split("-")[0];
+			endDate =dates.split("-")[1];
+		}
+		
+		
 		$("#searchDataImgForResults").show();
 		var jsObj =	{
 						meetingType:meetingType,
@@ -1275,13 +1313,14 @@ getUserAccessLocationDetails();
 	   }).done(function(result){
 		   $("#searchDataImgForDist").hide();
 		    $("#districtId").append('<option value="0">ALL</option>');
+			
 			for(var i in result){
 				if(distArr.length>0){
-				   if($.inArray(result[i].id, distArr) > -1){
-						$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					if($.inArray(result[i].id, distArr) > -1){
+					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				   }
 				}else{
-					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					 $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
 			}
 			getConstituenciesForDistricts('');
@@ -1357,7 +1396,7 @@ getUserAccessLocationDetails();
 			$("#manTowDivId").val($("#manTowDivId option:first").val());
 			$("#villWardId").val($("#villWardId option:first").val());
 
-				$("#statesDivId").html("");
+				 $("#statesDivId").html("");
 				
 				//$("#statesDivId").append('<option value=""> Select State </option>');
 				$("#statesDivId").append('<option value=0> ALL </option>');
@@ -1367,9 +1406,29 @@ getUserAccessLocationDetails();
 				}
 				if($.inArray(36, stateArr) > -1){
 					$("#statesDivId").append('<option value=36> Telangana </option>');
-				}
-				
-				
+				} 
+				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+					$(".stateCls").each(function(){
+						if($(this).prop('checked')==true){
+					
+						 if($(this).val()==1){
+							$("#statesDivId").html("");
+							$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+							getDistrictsForStates($( "#statesDivId" ).val());
+						}else if($(this).val()==36){
+							$("#statesDivId").html("");
+							$("#statesDivId").append('<option value=36> Telangana </option>');
+							getDistrictsForStates($( "#statesDivId" ).val());
+						}else if($(this).val()==0){
+							$("#statesDivId").html("");
+							$("#statesDivId").append('<option value=0> All </option>');
+							$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+							$("#statesDivId").append('<option value=36> Telangana </option>');
+							getDistrictsForStates(this.value);
+							}
+						}
+					});
+				</c:if>		
 			if($("#meetingLocationLevel").val()== 2 ){
 				$("#stateShowId").show();
 				$("#DistrictShowId").show();
@@ -1637,12 +1696,17 @@ function getLevelWiseMeetingDetails(){
 			fromDate = value.split("-")[0];
 			toDate =value.split("-")[1];
 		}
-		
+		var stateId = 0;
 		$("#loadingImgForLevelId").show();
-		
+		$(".stateCls").each(function(){
+			if($(this).prop('checked')==true){
+			stateId = $(this).val();	
+			}
+		});
 		var jsObj={
 			fromDate:fromDate,
-			toDate:toDate
+			toDate	:toDate,
+			stateId : stateId
 		}
 		
 		$.ajax({
@@ -1717,8 +1781,14 @@ function getLevelWiseMeetingDetails(){
                                         	str+='<td>'+conductedPerc+'%</td>';
                                            str+=' <td>'+notConductedPerc+'%</td>';
                                         str+='</tr>';
+										var notUpdatedPerc = 0;
+										if(result[i].attendedCount >0){
+												notUpdatedPerc = ((result[i].attendedCount/plannedCount)*100).toFixed(2);
+											}
+										str+='<tr><td class="text-muted text-center" colspan="3">Not Updated : <span class="text-warning">'+result[i].attendedCount+'   ('+notUpdatedPerc+'%)</span></td></tr>';
                                     str+='</tbody>';
                                 str+='</table>';
+								//str+='<p class="text-muted text-center">demo : 9</p>';
                              str+=' </div>';
                       	 str+=' </div>';
                        str+=' </div>';
@@ -2111,6 +2181,38 @@ function getVillagesForDistrictId(){
 			   }
 		   }
    });	
+ }
+ var levelId = '';
+		$("#loadingImgForLevelId").show();
+		$(".stateCls").each(function(){
+			if($(this).prop('checked')==true){
+			levelId = $(this).val();	
+			}
+		});
+ function handleFunctions(){
+	getLevelWiseMeetingDetails(); 
+		$("#loadingImgForLevelId").show();
+		$(".stateCls").each(function(){
+			if($(this).prop('checked')==true){
+				 if($(this).val()==1){
+					$("#statesDivId").html("");
+					//$("#statesDivId").append('<option value=1> All </option>');
+					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+					getDistrictsForStates($( "#statesDivId" ).val());
+				}else if($(this).val()==36){
+					$("#statesDivId").html("");
+					//$("#statesDivId").append('<option value=36> All </option>');
+					$("#statesDivId").append('<option value=36> Telangana </option>');
+					getDistrictsForStates($( "#statesDivId" ).val());
+				}else if($(this).val()==0){
+					$("#statesDivId").html("");
+					$("#statesDivId").append('<option value=0> All </option>');
+					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
+					$("#statesDivId").append('<option value=36> Telangana </option>');
+					getDistrictsForStates($( "#statesDivId" ).val());
+				}
+			}
+		});
  }
 </script>
 
