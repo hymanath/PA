@@ -19,7 +19,8 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 	Query query = getSession().createQuery("" +
     " select  rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.tdpCadre.firstname," +//2
     "         amat.userType.userTypeId, amat.userType.type," +//4
-    "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue " +//7
+    "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//7
+    "         rel.childActivityMember.tdpCadre.image " +//8
     " from   ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
     " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
     "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
@@ -36,5 +37,19 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 		return (Long)query.uniqueResult();
 	}
 	
+	public List<Object[]> getAllActivityMembersOfGSAndDistAndMpUserTypes(List<Long> childUserTypeIds){
+		
+		Query query = getSession().createQuery("" +
+			    " select  rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.tdpCadre.firstname," +//2
+			    "         amat.userType.userTypeId, amat.userType.type," +//4
+			    "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//7
+			    "         rel.childActivityMember.tdpCadre.image " +//8
+			    " from   ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
+			    " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
+			    "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and  " +
+			    "        amat.userType.userTypeId in (:childUserTypeIds) ");
+				query.setParameterList("childUserTypeIds", childUserTypeIds);
+				return query.list();
+	}
 	
 }

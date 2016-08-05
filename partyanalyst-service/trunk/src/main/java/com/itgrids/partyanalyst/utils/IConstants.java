@@ -1127,11 +1127,15 @@ public interface IConstants {
 	public static final Long MANDAL_LEVEl_ID   = 6l; 
 	public static final Long MUNCIPALITY_LEVEl_ID  = 7l; 
 	public static final Long VILLAGE_LEVEl_ID  = 8l; 
-	public static final Long WARD_LEVEl_ID     = 9l; 
+	public static final Long WARD_LEVEl_ID     = 9l;
 	
 	public static final Long[] DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {11l ,5l,7l,9l, 6l,8l}; 
 	public static final Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+	
+	public static final Long COUNTRY_USER_TYPE_ID    = 1l;
+	public static final Long STATE_USER_TYPE_ID    = 2l;
+	
 	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5"; 
 	public static final String AP_NEW_DISTRICTS_IDS_LIST = "11,12,13,14,15,16,17,18,19,20,21,22,23,517";
 	public static final String TS_NEW_DISTRICTS_IDS_LIST = "1,2,3,4,5,6,7,8,9,10,518";

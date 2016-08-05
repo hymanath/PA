@@ -675,14 +675,15 @@ public class CoreDashboardService implements ICoreDashboardService{
 		UserTypeVO finalVO = null;
 		try{
 			Long activityMemberId = activityMemberDAO.findActivityMemberIdByUserId(userId);
-			finalVO = getActivityMemberDetails(activityMemberId);
+			Map<Long,List<Long>> ParentChildUserTypesMap = getParentUserTypesAndItsChildUserTypes();
+			finalVO = getActivityMemberDetails(activityMemberId,ParentChildUserTypesMap);
 		}catch(Exception e){
 			LOG.error("error occurred in getLoggedInUserStructure() of CoreDashboardService class",e);
 		}
 		return finalVO;
 	}
 	
-	public UserTypeVO getActivityMemberDetails(Long activityMemberId){
+	public UserTypeVO getActivityMemberDetails(Long activityMemberId,Map<Long,List<Long>> ParentChildUserTypesMap){
 		
 		UserTypeVO finalVO = new UserTypeVO();
 		try{
@@ -693,6 +694,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					 finalVO.setActivityMemberId(obj[0]!= null ? (Long)obj[0] : 0l);
 					 finalVO.setTdpCadreId(obj[6]!= null ? (Long)obj[6]:0l);
 					 finalVO.setName(obj[7]!=null? obj[7].toString() : "");
+					 finalVO.setImage(obj[8]!=null? obj[8].toString() : "");
 					 finalVO.setUserTypeId(obj[1]!= null ? (Long)obj[1] : 0l);
 					 finalVO.setUserType(obj[2]!= null ? obj[2].toString() : "");
 				 	 finalVO.setLocationLevelId(obj[3]!= null ? (Long)obj[3] : 0l);
@@ -704,12 +706,17 @@ public class CoreDashboardService implements ICoreDashboardService{
 				  }
 			  }
 			  
-			  Map<Long,List<Long>> ParentChildUserTypesMap = getParentUserTypesAndItsChildUserTypes();
 			  List<Long> childUserTypeIds = ParentChildUserTypesMap.get(finalVO.getUserTypeId());
 			  
 				if(childUserTypeIds != null && childUserTypeIds.size() > 0){
 					
-					List<Object[]> childDetails = activityMemberRelationDAO.getChildUserTypeMembers(finalVO.getActivityMemberId(), childUserTypeIds);
+					List<Object[]> childDetails = null;
+					if( finalVO.getUserTypeId().longValue() == IConstants.COUNTRY_USER_TYPE_ID.longValue() || finalVO.getUserTypeId().longValue() == IConstants.STATE_USER_TYPE_ID.longValue()){
+						childDetails = activityMemberRelationDAO.getAllActivityMembersOfGSAndDistAndMpUserTypes(childUserTypeIds);
+					}else{
+						childDetails = activityMemberRelationDAO.getChildUserTypeMembers(finalVO.getActivityMemberId(), childUserTypeIds);
+					}
+					
 					
 					if( childDetails != null && childDetails.size() > 0){
 						for( Object[] obj : childDetails){
@@ -734,6 +741,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 								activityMemberVO.setActivityMemberId((Long)obj[0]);
 								activityMemberVO.setTdpCadreId(obj[1]!=null?(Long)obj[1]:0l);
 								activityMemberVO.setName(obj[2]!=null?obj[2].toString():"");
+								activityMemberVO.setImage(obj[8]!=null?obj[8].toString():"");
 								activityMemberVO.setUserTypeId(obj[3]!=null?(Long)obj[3]:0l);
 								activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
 								activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
@@ -741,7 +749,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 								activityMemberVO.setLocationValues( new ArrayList<Long>());
 								
 								
-								userTypeVO.getSubMap().put((Long)obj[0], getActivityMemberDetails(activityMemberVO.getActivityMemberId()));
+								userTypeVO.getSubMap().put((Long)obj[0], getActivityMemberDetails(activityMemberVO.getActivityMemberId(),ParentChildUserTypesMap));
 							}
 							activityMemberVO = userTypeVO.getSubMap().get((Long)obj[0]);
 							activityMemberVO.getLocationValues().add(obj[7]!= null ?(Long)obj[7]:0l);
