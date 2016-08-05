@@ -968,6 +968,8 @@
 				    <value>com.itgrids.partyanalyst.model.ActivityMemberAccessType</value>
 				    <value>com.itgrids.partyanalyst.model.ActivityMemberAccessLevel</value>
 				     <value>com.itgrids.partyanalyst.model.ActivityMemberRelation</value>
+				    <value>com.itgrids.partyanalyst.model.VolunteersCadreDetails</value>
+				    <value>com.itgrids.partyanalyst.model.VolunteerDesgination</value>
 				 </list>
 			
 		</property>
