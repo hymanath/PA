@@ -10764,7 +10764,7 @@ class TrainingCampService implements ITrainingCampService{
 						
 						if(objects[4] !=null){
 							String image = objects[4].toString();
-							String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+							String imagePath="https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
 							simpleVO.setImageStr(imagePath);
 						}else{
 							simpleVO.setImageStr("");
