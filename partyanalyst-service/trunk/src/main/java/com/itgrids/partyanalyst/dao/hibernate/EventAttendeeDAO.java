@@ -2055,7 +2055,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	   			  " where " +
 	   			  " date(model.attendedTime) between :fromDate and :toDate and " +
 	   			  " model.event.eventId = po.event.eventId and " +
-	   			  " model.tdpCadre.tdpCadreId = emp.tdpCadre.tdpCadreId " +
+	   			  " model.tdpCadre.tdpCadreId = emp.tdpCadre.tdpCadreId and emp.isDeleted = 'N' and emp.isActive = 'Y' " +    
 	   			  " group by model.tdpCadre.tdpCadreId " +
 	   			  " order by model.event.eventId");
 	   Query query = getSession().createQuery(str.toString());
