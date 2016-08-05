@@ -259,8 +259,10 @@
 					var completedCount;
 					var startedCount;
 					var yetToStartCount;
-					
-					if(result[i].subList[j].completedCount == null || result[i].subList[j].completedCount == 0){
+					completedCount = result[i].subList[j].completedCount;
+					startedCount = result[i].subList[j].startedCount;
+					yetToStartCount = result[i].subList[j].yetToStartCount;
+					/* if(result[i].subList[j].completedCount == null || result[i].subList[j].completedCount == 0){
 						 completedCount ="";
 					}else{
 						completedCount = result[i].subList[j].completedCount;
@@ -274,7 +276,7 @@
 						 yetToStartCount = '';
 					}else{
 						yetToStartCount = result[i].subList[j].yetToStartCount;
-					}
+					} */
 					
 					
 					
@@ -284,7 +286,7 @@
 					
 				}
 			}
-				var getWidth = $('.committeesBlock').width()
+				var getWidth = $('.committeesBlock').width();
 				$('#levelWiseComulativeForCommitteeslarge'+i+'').css("width",getWidth+'px');
 					
 				 $('#levelWiseComulativeForCommitteeslarge'+i+'').highcharts({
