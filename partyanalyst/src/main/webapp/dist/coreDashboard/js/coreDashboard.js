@@ -18,7 +18,8 @@
 		});
 	}
 	$(document).on("click",".userStructureClass",function(){
-		
+		var i =0;
+		i=i+1;
 		var  userAccessLevelId =  $(this).attr("attr_userAccessLevelId")
 		var  userAccessLevelValuesString = $(this).attr("attr_userAccessLevelValuesString");
 		var  userAccessLevelValuesArray = [];
@@ -35,8 +36,8 @@
 		}	
 		
 	});
-	$(document).on("click",".radioStyling li",function(){
-		$(".settingsDropDownOptionsView").hide();
+	$(document).on("click",".hideDropDownView",function(){
+		$(".profileDropDown").removeClass("dropDownView");
 	});
 	function getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValues){
 		
@@ -600,9 +601,14 @@ function buildGraphComparativeForBasicCommitteeBlock(result){
 							groupPadding: 0.2,
 							stacking: '',
 							dataLabels: {
-							enabled: true,
-							 format: '{series.name}:{point.y}'
-						},
+								enabled: true,
+								 format: '{point.y}'
+								 /* rotation: 90,
+								 style: {
+									fontSize: '10px',
+									
+								} */
+							},
 						 	
 						}
 					}, 
@@ -868,7 +874,7 @@ function buildBasicgraphs(){
 
 
 	function getLoggedInUserStructure(){
-		
+		$("#userLevelDetailsDiv").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
 		var jsObj ={userId:globalUserId}
 		
 		$.ajax({
@@ -877,6 +883,7 @@ function buildBasicgraphs(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#userLevelDetailsDiv").html('');
 			buildUserLoginLevelDetails(result);
 		});
 	}

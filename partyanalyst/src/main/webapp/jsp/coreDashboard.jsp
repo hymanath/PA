@@ -59,7 +59,9 @@
                             	<span class="caret" style="margin-top: 9px;"></span>
                             </span>
                           </a>
-							<div id= "userLevelDetailsDiv"></div>
+						 <div class="dropdown-menu settingsDropDownOptionsView">
+								<div id= "userLevelDetailsDiv"></div>
+							</div>
                         </li>
                     </ul>
                 </div>
@@ -364,7 +366,7 @@
 	});
 	$(document).on("click",".toggleViewIcon",function(){
 		$(this).toggleClass("dropDownView");
-		$(".settingsDropDownOptionsView").show();
+		//$(".settingsDropDownOptionsView").show();
 	});
 	$(document).on("click",".settingsDropDownOptions li,.toggleViewIcon .settingsDropDownOptionsView",function(e){
 		e.stopPropagation();
@@ -375,7 +377,7 @@
 		
 		var str='';
 	
-		str+='<div class="dropdown-menu settingsDropDownOptionsView">';
+		
 			/* str+='<div class="input-group">';
 				str+='<input type="text" class="form-control"/>';
 				str+='<span class="input-group-addon">';
@@ -396,9 +398,9 @@
 									str+='<ul class="radioStyling" style="padding-left:0px;">';
 										str+='<li>';
 											str+='<input type="radio" id="mian" name="selector" >';
-											str+='<label for="mian" class="text-capital userStructureClass" attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValues+' >'+result.userType+' - <i>'+result.name+'</i>';
+											str+='<label for="mian" class="text-capital userStructureClass" attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValues+' ><span class="hideDropDownView">'+result.userType+' - <i>'+result.name+'</i></span>';
 											str+='<span class="profileImageView">';
-											str+='<img src="dist/coreDashboard/img/logo.png" />';
+											str+='<img src="http://mytdp.com/images/cadre_images/'+result.image+'" />';
 											str+='</span>';
 											str+='</label>';
 											str+='<div class="check"></div>';
@@ -410,9 +412,9 @@
 									str+=' <ul class="radioStyling">';
 										str+='<li>';
 											str+='<input type="radio" id="mian" name="selector">';
-											str+=' <label for="mian" class="userStructureClass" attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValues+'>'+result.userType+' - '+result.name+'';
+											str+=' <label for="mian" class="userStructureClass" attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValues+'><span class="hideDropDownView">'+result.userType+' - <i>'+result.name+'</i></span>';
 											str+='<span class="profileImageView">';
-											str+='<img src="dist/coreDashboard/img/logo.png" />';
+											str+='<img src="http://mytdp.com/images/cadre_images/'+result.image+'" />';
 											str+='</span>';
 											str+='</label>';
 											str+='<div class="check"></div>';
@@ -455,9 +457,9 @@
 																					str+='<ul class="radioStyling" style="float:left;">';
 																						str+=' <li>';
 																							str+='<input type="radio" id="'+i+''+j+'" name="selector">';
-																							str+=' <label for="'+i+''+j+'" class="text-capital userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].locationValues+' >'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i>';
+																							str+=' <label for="'+i+''+j+'" class="text-capital userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].locationValues+' ><span class="hideDropDownView">'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></span>';
 																							str+='<span class="profileImageView">';
-																							str+='<img src="dist/coreDashboard/img/logo.png" />';
+																							str+='<img src="http://mytdp.com/images/cadre_images/'+result.subList[i].subList[j].image+'" />';
 																							str+='</span>';
 																							str+='</label>';
 																							str+='<div class="check"></div>';
@@ -469,9 +471,9 @@
 																				str+=' <ul class="radioStyling">';
 																					str+=' <li>';
 																					str+='<input type="radio" id="'+i+''+j+'" name="selector">';
-																					str+=' <label for="'+i+''+j+'" class="userStructureClass"  attr_userAccessLevelId='+result.subList[i].subList[j].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].locationValues+' >'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i>';
+																					str+=' <label for="'+i+''+j+'" class="userStructureClass"  attr_userAccessLevelId='+result.subList[i].subList[j].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].locationValues+' ><span class="hideDropDownView">'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></span>';
 																					str+='<span class="profileImageView">';
-																					str+='<img src="dist/coreDashboard/img/logo.png" />';
+																					str+='<img src="http://mytdp.com/images/cadre_images/'+result.subList[i].subList[j].image+'" />';
 																					str+='</span>';
 																					str+='</label>';
 																					str+='<div class="check"></div>';
@@ -503,9 +505,9 @@
 																																str+=' <ul class="radioStyling">';
 																																	str+='<li>';
 																																		str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
-																																		str+=' <label for="'+i+''+j+''+k+''+l+'"  class="userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].subList[k].subList[l].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].subList[k].subList[l].locationValues+' >'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i>';
+																																		str+=' <label for="'+i+''+j+''+k+''+l+'"  class="userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].subList[k].subList[l].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].subList[k].subList[l].locationValues+' ><span class="hideDropDownView">'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></span>';
 																																		str+='<span class="profileImageView">';
-																																		str+='<img src="dist/coreDashboard/img/logo.png" />';
+																																		str+='<img src="http://mytdp.com/images/cadre_images/'+result.subList[i].subList[j].subList[k].subList[l].image+'" />';
 																																		str+='</span>';
 																																		str+='</label>';
 																																		str+='<div class="check"></div>';
@@ -516,9 +518,9 @@
 																															str+=' <ul class="radioStyling">';
 																																str+=' <li class=" dottedLine">';
 																																	str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
-																																	str+=' <label for="'+i+''+j+''+k+''+l+'" class="userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].subList[k].subList[l].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].subList[k].subList[l].locationValues+' >'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i>';
+																																	str+=' <label for="'+i+''+j+''+k+''+l+'" class="userStructureClass" attr_userAccessLevelId='+result.subList[i].subList[j].subList[k].subList[l].locationLevelId+' attr_userAccessLevelValuesString='+result.subList[i].subList[j].subList[k].subList[l].locationValues+' ><span class="hideDropDownView">'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></span>';
 																																	str+='<span class="profileImageView">';
-																																	str+='<img src="dist/coreDashboard/img/logo.png" />';
+																																	str+='<img src="http://mytdp.com/images/cadre_images/'+result.subList[i].subList[j].subList[k].subList[l].image+'" />';
 																																	str+='</span>';
 																																	str+='</label>';
 																																	str+='<div class="check"></div>';
@@ -553,7 +555,7 @@
 					str+='</div>';
 				str+='</div>';
 			}
-		str+='</div>';
+		
 	  $("#userLevelDetailsDiv").html(str);
 
 }
