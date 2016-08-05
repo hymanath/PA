@@ -567,11 +567,16 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			entitlements = user.getEntitlements();
 			
 			if(entitlements.contains("LEADER_OCCASIONS_ENTITLEMENT".trim())){
+				
 				birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(1L,"",null);
 				if(birthDaysList != null && birthDaysList.size()>0){
-					if(birthDaysList.get(3).getName().trim().equalsIgnoreCase("Today"))
-						session.setAttribute("birthDayCount", birthDaysList.get(3).getTotalCount());
+					for (BirthDayDetailsVO vo : birthDaysList) {
+						if(vo.getName() != null && vo.getName().trim().equalsIgnoreCase("Today"))
+							session.setAttribute("birthDayCount",vo.getTotalCount());
+					}
 				}
+				else
+					session.setAttribute("birthDayCount", 0L);
 			}
 			
 			if(entitlements.contains("DEBATE_CREATE_ENTITLEMENT".trim())){
