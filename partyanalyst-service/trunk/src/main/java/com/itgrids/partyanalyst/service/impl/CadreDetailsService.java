@@ -1518,7 +1518,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					cadreDetailsVO.setwName(cadreFormalDetails[44] != null ? cadreFormalDetails[44].toString() : "" );
 					if(cadreFormalDetails[15] !=null){
 						String image=cadreFormalDetails[15].toString();
-						String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+						String imagePath="https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
 						
 						cadreDetailsVO.setImagePath(imagePath);
 					}
@@ -3240,7 +3240,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 for(Object[] params : voterImages)
 					 {
 						 TdpCadreFamilyDetailsVO VO = getMatchedTdpCadreFamilyDetailsVO(resultList, params[0].toString());
-						 VO.setImagePath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(params[1] != null ? params[1].toString() : ""));
+						 VO.setImagePath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(params[1] != null ? params[1].toString() : ""));
 						 voterImagMap.put(params[0].toString(), params[1].toString());
 					 }
 				 }
@@ -3288,7 +3288,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							    	
 							    	if(params[3]!=null){
 										String image=params[3].toString();
-										String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+										String imagePath="https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
 										
 										VO.setImagePath(imagePath);
 									}
@@ -4482,7 +4482,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 								
 								if(cadreFormalDetails[15] !=null){
 									String image=cadreFormalDetails[15].toString();
-									String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
+									String imagePath="https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
 									
 									cadreDetailsVO.setImagePath(imagePath);
 								}
@@ -5227,8 +5227,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 			  //Calling Request.
 			  Client client = Client.create();
 			  //client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://mytdp.com/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
-			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
+			  WebResource webResource = client.resource("https://mytdp.com/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
+			  //WebResource webResource = client.resource("https://localhost:8080/Survey/WebService/getCandidateAndConstituencySurveyResult/"+candidateId+"/"+constituencyId+"/"+surveyId+"");
 			  
 			  //Response
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
@@ -5862,7 +5862,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							returnVO.setDistrictId(districtId);
 							returnVO.setDistrictName(districtName);
 							returnVO.setHouseNo(hNo);									
-							returnVO.setImagePath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+filePath);
+							returnVO.setImagePath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+filePath);
 							returnVO.setPanchayatId(panchayatId);
 							returnVO.setPanchayatName(panchayatName);
 							returnVO.setTehsilId(tehsilId);
@@ -10728,7 +10728,7 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 				for(Object[] params : list)
 				{
 					GrievanceReportVO vo = new GrievanceReportVO();
-					vo.setIssueType(params[0] != null ?params[0].toString() : "");
+					vo.setIssueType(params[0] != null ?params[0].toString().toUpperCase() : "");
 					vo.setStatus(params[1] != null ?params[1].toString() : "");
 					vo.setDate(params[2] != null ?params[2].toString() : "");
 					vo.setId((Long)params[3]);
@@ -10797,7 +10797,7 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 								if(complaintVO != null)
 								{
 									ComplaintScanCopyVO vo = new ComplaintScanCopyVO();
-									vo.setPath(params[0] != null ? params[0].toString() : "");
+									vo.setPath(params[0] != null ? "/old/"+params[0].toString() : "");
 									vo.setNewCopy(false);
 									complaintVO.getScanCopyList().add(vo);
 								}
