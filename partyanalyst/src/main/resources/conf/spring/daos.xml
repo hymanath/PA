@@ -3175,4 +3175,10 @@
 	<bean id="partyOfficeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyOfficeDAO" > 
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean> 
+	<bean id="volunteersCadreDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VolunteersCadreDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="volunteerDesginationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VolunteerDesginationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
