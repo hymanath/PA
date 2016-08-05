@@ -13303,5 +13303,35 @@
 				<param name="root">userTypeVO</param>
 		</result>
 	</action>
+	<action name="getOpenedPositionsBoardLevelsAction" class="nominatedPostProfileAction" method="getOpenedPositionsBoardLevels">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
+	<action name="getStatesForOpenedPositionsAction" class="nominatedPostProfileAction" method="getStatesForOpenedPositions">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
+	<action name="getOpenPositionDistrictsForStateAction" class="nominatedPostProfileAction" method="getOpenPositionDistrictsForState">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
+	<action name="getOpenPositionConstituenciesForDistrictAction" class="nominatedPostProfileAction" method="getOpenPositionConstituenciesForDistrict">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
+	<action name="getMandalMuncilIdsForConstituencyAction" class="nominatedPostProfileAction" method="getMandalMuncilIdsForConstituency">
+		<result type="json" name="success">
+   			<param name="root">locations</param>
+   		</result>
+	</action>
+	<action name="getPanchaytWardForMandalAction" class="nominatedPostProfileAction" method="getPanchaytWardForMandal">
+		<result type="json" name="success">
+   			<param name="root">locations</param>
+   		</result>
+	</action>
 </package>
 </struts>

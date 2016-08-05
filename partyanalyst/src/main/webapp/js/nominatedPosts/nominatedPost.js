@@ -1,3 +1,145 @@
+function getOpenPositionDistrictsForState(state,id,num){
+	state = $("#nominatedStaeId"+num).val();
+	//$("#nominatedDistId  option").remove();
+	$("#nominatedDistId"+num+"").empty();
+	$("#nominatdConstId"+num+"").empty();
+	$("#nominatedMandlId"+num+"").empty();
+	$("#nominatedPanchayatId"+num+"").empty();			
+	$("#nominatedDistId"+num+"").append('<option value="0">Select District</option>');		
+	$("#nominatdConstId"+num+"").append('<option value="0">Select Constituency</option>');		
+	$("#nominatedMandlId"+num+"").append('<option value="0">Select Mandal/Municipality</option>');		
+	$("#nominatedPanchayatId"+num+"").append('<option value="0">Select Panchayat</option>');
+	
+	$("#nominatedDistId"+num+"").trigger("chosen:updated");
+	$("#nominatdConstId"+num+"").trigger("chosen:updated");
+	$("#nominatedMandlId"+num+"").trigger("chosen:updated");
+	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
+	if(state == 0)
+		return;
+	
+	var jsObj=
+   {				
+		stateId:state			
+	}
+    $.ajax({
+	  type:'GET',
+	  url: 'getOpenPositionDistrictsForStateAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){   
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#nominatedDistId"+num).empty();
+	   $("#nominatedDistId"+num).append('<option value="0">Select District</option>');
+	   for(var i in result){
+			$("#nominatedDistId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+		$("#nominatedDistId"+num).trigger("chosen:updated");
+   });
+}
+
+function getOpenPositionConstituenciesForDistrict(district,id,num){
+	$("#nominatdConstId"+num+"").empty();
+	$("#nominatedMandlId"+num+"").empty();
+	$("#nominatedPanchayatId"+num+"").empty();					
+	$("#nominatdConstId"+num+"").append('<option value="0">Select Constituency</option>');		
+	$("#nominatedMandlId"+num+"").append('<option value="0">Select Mandal/Municipality</option>');		
+	$("#nominatedPanchayatId"+num+"").append('<option value="0">Select Panchayat</option>');
+	
+	$("#nominatdConstId"+num+"").trigger("chosen:updated");
+	$("#nominatedMandlId"+num+"").trigger("chosen:updated");
+	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
+	
+	var jsObj=
+   {				
+		districtId:district			
+	}
+    $.ajax({
+	  type:'GET',
+	  url: 'getOpenPositionConstituenciesForDistrictAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){   
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#nominatdConstId"+num).empty();
+	   $("#nominatdConstId"+num).append('<option value="0">Select Constituency</option>');
+	   for(var i in result){
+			$("#nominatdConstId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+		$("#nominatdConstId"+num).trigger("chosen:updated");
+   });
+}
+
+function getOpenPositionMandalsForConstituency(num,id){
+	var constituencyId  =0;
+	constituencyId = $("#nominatdConstId"+num).val();
+	$("#nominatedMandlId"+num+"  option").remove();
+	$("#nominatedMandlId"+num).append('<option value="0">Select Mandal/Municipality</option>');
+	$("#nominatedPanchayatId"+num+" option").remove();
+	$("#nominatedPanchayatId"+num).append('<option value="0">Select Panchayat</option>');
+	
+	$("#nominatedMandlId"+num+"").trigger("chosen:updated");
+	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
+	
+	var jsObj=
+   {				
+		constituencyId:constituencyId			
+	}
+    $.ajax({
+	  type:'GET',
+	  url: 'getMandalMuncilIdsForConstituencyAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){   
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#nominatedMandlId"+num).empty();
+	   $("#nominatedMandlId"+num).append('<option value="0">Select Mandal/Municipality</option>');
+	   for(var i in result){
+			$("#nominatedMandlId"+num).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+	   }
+		$("#nominatedMandlId"+num).trigger("chosen:updated");
+   });
+}
+
+function getOpenPositionVillagesForMandal(num,id){
+	var mandalId=0;
+	var constituencyId = 0; 
+	
+	mandalId=$("#nominatedMandlId"+num).val();
+	constituencyId = $("#nominatdConstId"+num).val();
+	$("#nominatedPanchayatId"+num+"  option").remove();
+	$("#nominatedPanchayatId"+num).append('<option value="0">Select Panchayat</option>');
+	
+	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
+	
+	var jsObj=
+   {			
+		mandalId	:mandalId,
+		constituencyId:constituencyId			
+	}
+    $.ajax({
+	  type:'GET',
+	  url: 'getPanchaytWardForMandalAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){   
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#nominatedPanchayatId"+num).empty();
+	   $("#nominatedPanchayatId"+num).append('<option value="0">Select Panchayat/Ward</option>');
+	   for(var i in result){
+			$("#nominatedPanchayatId"+num).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+	   }
+		$("#nominatedPanchayatId"+num).trigger("chosen:updated");
+   });
+}
+
 function getDistrictsForStates(state,id,num){
 	
 	//$(".allcls").hide();
@@ -135,6 +277,7 @@ function getDistrictsForStates(state,id,num){
    });
   }
  function getConstituenciesForDistricts(district,id,num){
+	
 	// debugger; 
 	 if(id == "districtId"){
 		 hideDetails();
@@ -252,6 +395,7 @@ function getDistrictsForStates(state,id,num){
   }
  function getMandalCorporationsByConstituency(num,id)
 	{	
+	
 	var constituencyId  =0;
 	if(id == "constituencyId"){
 		hideDetails();
@@ -350,6 +494,7 @@ function getDistrictsForStates(state,id,num){
 				});
 	}
 function getPanchayatWardByMandal(num,id){
+
 			var mandalId=0;
 			var constituencyId = 0; //cadreSearchDtls
 		if(id == "mandalList"){	
@@ -889,7 +1034,7 @@ $('.searchTypeCls').click(function(){
 	var jsObj = {}
     $.ajax({
           type:'GET',
-          url: 'getBoardLevelsAction.action',
+          url: 'getOpenedPositionsBoardLevelsAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
@@ -905,6 +1050,27 @@ $('.searchTypeCls').click(function(){
 	  $("#"+id).trigger("chosen:updated");
    });
   }
+	
+	function getOpenedPostionsStates(id){
+		
+		var jsObj = {}
+	    $.ajax({
+	          type:'GET',
+	          url: 'getStatesForOpenedPositionsAction.action',
+	          dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+	   $("#"+id).empty();
+	    
+	   if(result != null && result.length >0){
+			 $("#"+id).append('<option value="0">Select State </option>');
+	     for(var i in result){
+			 $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		 }
+	   }
+		  $("#"+id).trigger("chosen:updated");
+	   });
+	  }
   
   function getDepartmentBoardPositions(num){
 	//$("#searchDataImgForDist").show();
@@ -1135,6 +1301,7 @@ $('.searchTypeCls').click(function(){
   }
   
 getBoardLevels("boardLvlId"); 
+getOpenedPostionsStates("nominatedStaeId"); 
 //getDepartments("",1); 
  $(document).on("click",".checkboxCls",function(){
 /*
@@ -1269,27 +1436,28 @@ $(document).on("click","#addOneMore",function(){
   
   e.find(".nominatedStaeCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].stateId');
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
+  getOpenedPostionsStates("nominatedStaeId"+cloneCount);
   e.find(".nominatedStaeCls").attr("attr_no",cloneCount);
   e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
-  e.find(".nominatedStaeCls").attr("onChange",'getDistrictsForStates(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');getDepartments('+cloneCount+');');
+  e.find(".nominatedStaeCls").attr("onChange",'getOpenPositionDistrictsForState(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');getDepartments('+cloneCount+');');
   
   e.find(".nominatedDistCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].districtId');
   e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
   e.find(".nominatedDistCls").attr("attr_no",cloneCount);
   e.find(".districtShowCls").attr("id","districtShowDivId"+cloneCount);
-  e.find(".nominatedDistCls").attr("onChange",'getConstituenciesForDistricts(this.value,nominatedDistId'+cloneCount+','+cloneCount+');;getDepartments('+cloneCount+');');
+  e.find(".nominatedDistCls").attr("onChange",'getOpenPositionConstituenciesForDistrict(this.value,nominatedDistId'+cloneCount+','+cloneCount+');;getDepartments('+cloneCount+');');
   
   e.find(".nominatdConstCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].constituencyId');
   e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
   e.find(".nominatdConstCls").attr("attr_no",cloneCount);
   e.find(".constituencyShowCls").attr("id","constituencyshowDivId"+cloneCount);
-  e.find(".nominatdConstCls").attr("onChange",'getMandalCorporationsByConstituency('+cloneCount+',nominatdConstId'+cloneCount+');;getDepartments('+cloneCount+');');
+  e.find(".nominatdConstCls").attr("onChange",'getOpenPositionMandalsForConstituency('+cloneCount+',nominatdConstId'+cloneCount+');;getDepartments('+cloneCount+');');
   
   e.find(".nominatedMandlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].mandalId');
   e.find(".nominatedMandlCls").attr("id","nominatedMandlId"+cloneCount);
   e.find(".nominatedMandlCls").attr("attr_no",cloneCount);
   e.find(".mandalShowCls").attr("id","mondalShowDivId"+cloneCount);
-  e.find(".nominatedMandlCls").attr("onChange",'getPanchayatWardByMandal('+cloneCount+',nominatedMandlId'+cloneCount+');;getDepartments('+cloneCount+');');
+  e.find(".nominatedMandlCls").attr("onChange",'getOpenPositionVillagesForMandal('+cloneCount+',nominatedMandlId'+cloneCount+');;getDepartments('+cloneCount+');');
    
   e.find(".nominatedPanchayatCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].panchayatId');
   e.find(".nominatedPanchayatCls").attr("id","nominatedPanchayatId"+cloneCount);

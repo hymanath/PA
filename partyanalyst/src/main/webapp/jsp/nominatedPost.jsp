@@ -386,26 +386,26 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
-									<select class="chosenSelect nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');getDepartments(0);" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
+									<select class="chosenSelect nominatedStaeCls" onchange="getOpenPositionDistrictsForState(this.value,this.id,'');getDepartments(0);" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
 										<option value="0">Select State</option>
-										<option value="1">Andhra Pradesh</option>
-										<option value="36">Telangana</option>
+										<!--<option value="1">Andhra Pradesh</option>
+										<option value="36">Telangana</option>-->
 									</select>
 								</div>
 						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
 									<label>District</label>
-									<select class="chosenSelect nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');getDepartments(0);" id=
+									<select class="chosenSelect nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');getDepartments(0);" id=
 									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
 									<label>Constituency</label>
-									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
+									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
-									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);getDepartments(0);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
+									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);getDepartments(0);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
 									
 									</select>
 								</div>
@@ -468,26 +468,26 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
 									<label>State Name</label>
-									<select  class="nominatedStaeCls" onchange="getDistrictsForStates(this.value,this.id,'');" id="">
+									<select  class="nominatedStaeCls" onchange="getOpenPositionDistrictsForState(this.value,this.id,'');" id="">
 										<option value="0">Select State</option>
-										<option value="1">Andhra Pradesh</option>
-										<option value="36">Telangana</option>
+										<!--<option value="1">Andhra Pradesh</option>
+										<option value="36">Telangana</option>-->
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="">
 									<label>District</label>
-									<select  class="nominatedDistCls" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
+									<select  class="nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');" id=
 									"">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="">
 									<label>Constituency</label>
-									<select class="nominatdConstCls" onchange="getMandalCorporationsByConstituency('',this.id);" id="">
+									<select class="nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);" id="">
 									</select>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="">
 									<label>Mandal/ Muncipality / Corporation</label>
-									<select  class="nominatedMandlCls" onchange="getPanchayatWardByMandal('',this.id);" id="nominatedMandlId">
+									<select  class="nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);" id="nominatedMandlId">
 										
 									</select>
 								</div>
