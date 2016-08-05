@@ -292,7 +292,48 @@ function buildapptmemberDetails(result){
 					
 				str+='</td>';
 				xindex++;
-				if(result.length-1 == i){
+				var screenWidth = $(window).width();
+				
+				if(screenWidth <=500)
+				{
+					str+='</tr>';
+						xindex = 0;
+						/* if(result.length-1 == i){
+						if(xindex % 1 == 2){
+							str+='<td></td>';
+							str+='</tr>';
+						}
+						if(xindex % 1 == 1){
+							str+='<td></td>';
+							str+='<td></td>';
+							str+='</tr>';
+						}
+					}
+					 if( xindex == 3){
+						str+='</tr>';
+						xindex = 0;
+					} */
+				}
+				else if(screenWidth >500 && screenWidth <=800)
+				{
+					if(result.length-1 == i){
+					if(xindex % 2 == 2){
+						str+='<td></td>';
+						str+='</tr>';
+					}
+					if(xindex % 2 == 1){
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='</tr>';
+					}
+				}
+				 if( xindex == 2){
+					str+='</tr>';
+					xindex = 0;
+				}  
+				}
+				else{
+					if(result.length-1 == i){
 					if(xindex % 3 == 2){
 						str+='<td></td>';
 						str+='</tr>';
@@ -307,6 +348,8 @@ function buildapptmemberDetails(result){
 					str+='</tr>';
 					xindex = 0;
 				} 
+				}
+				
 			}
 			str+='</tbody>';
 			str+='</table>';
