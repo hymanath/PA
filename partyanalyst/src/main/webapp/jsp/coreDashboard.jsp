@@ -36,7 +36,7 @@
           	<li><a href="#"><i class="glyphicon glyphicon-gift"></i></a></li>
             <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
             <li class="dropdown profileDropDown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#">My Profile</a></li>
                 <li><a href="#">Change Password</a></li>
@@ -54,7 +54,7 @@
             	<div class="col-md-7 col-xs-12 col-sm-7">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
                         <li class="dropdown profileDropDown toggleViewIcon">
-                          <a href="#">ASHOK DAKAVARAM 
+                          <a style="cursor:pointer;">ASHOK DAKAVARAM 
                           	<span class="caretBackground">
                             	<span class="caret" style="margin-top: 9px;"></span>
                             </span>
@@ -368,136 +368,166 @@
 		e.stopPropagation();
 	});
 	
-	buildUserLoginLevelDetails();
-	function buildUserLoginLevelDetails(){
 	
+	function buildUserLoginLevelDetails(result){
+		
 		var str='';
-			str+='<div class="dropdown-menu settingsDropDownOptionsView">';
-                /* str+='<div class="input-group">';
-                    str+='<input type="text" class="form-control"/>';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-search"></i>';
-					str+=' </span>';
-                str+='</div>'; */
-                str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-                      str+='<div class="panel panel-default panelProfileView">';
-                         str+='<div class="panel-heading" role="tab" id="headingOne">';
-                                str+='<a role="button" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
-                                str+=' <h4 class="panel-title"> GS VIew';
-                                str+='<span class="profileImageView">';
-                                str+='<img src="dist/coreDashboard/img/logo.png" />';
-                                str+='</span>';
-                                str+=' </h4>';
-								str+=' </a>';
-                        str+='</div>';
-						//GS loop start
-                        str+='<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
-                        str+='<div class="panel-body">';
-                        str+='<div class="panel-group" id="accordionSub" role="tablist" aria-multiselectable="true">';
-						str+='<div class="panel panel-default panelProfileView">';
-						str+='<div class="panel-heading" role="tab" id="headingOneSubView2">';
-								str+=' <a role="button" style="display:inline-block;" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionSub" href="#collapseOneSubView2" aria-expanded="true" aria-controls="collapseOneSubView2">';
-								str+='<span class="profileImageView">';
-								str+='<img src="dist/coreDashboard/img/logo.png" />';
-								str+='</span>';
-								str+=' </a>';
-								str+='<h4 class="panel-title userLevelCls" attr_userAccessLevelId ="" attr_userAccessLevelValuesArray ="" attr_state="" attr_startDateString="" attr_endDateString ="" > GS - Nageshwar Rao</h4>';
+	
+		str+='<div class="dropdown-menu settingsDropDownOptionsView">';
+			/* str+='<div class="input-group">';
+				str+='<input type="text" class="form-control"/>';
+				str+='<span class="input-group-addon">';
+				str+='<i class="glyphicon glyphicon-search"></i>';
+				str+=' </span>';
+			str+='</div>'; */
+			if(result != null ){
+				str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+                    str+='<div class="panel panel-default panelProfileView">';
+					//MAIN level start
+							if(result.subList != null && result.subList.length > 0){
+								str+='<div class="panel-heading" role="tab" id="headingOne"  style="height:30px;">';
+									str+='<a role="button" style="width:30px" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+										str+='<span class="profileImageView">';
+										str+='<img src="dist/coreDashboard/img/logo.png" />';
+										str+='</span>';
+									str+=' </a>';
+									str+='<ul class="radioStyling" style="padding-left:0px;">';
+										str+='<li>';
+											str+='<input type="radio" id="mian" name="selector" >';
+											str+='<label for="mian" class="text-capital">'+result.userType+' - <i>'+result.name+'</i></label>';
+											str+='<div class="check"></div>';
+										str+='</li>';
+									str+='</ul>';
+								str+='</div>';
+							}else{
+								str+='<div class="panel-body">';
+									str+=' <ul class="radioStyling">';
+										str+='<li>';
+											str+='<input type="radio" id="mian" name="selector">';
+											str+=' <label for="mian">'+result.userType+' - '+result.name+'</label>';
+											str+='<div class="check"></div>';
+										str+='</li>';
+									str+='</ul>';
+								str+='</div>';
+							}
+							//MAIN level end
+							//GENERAL SECRETARY and DISTRICT and... VIEW Start
+							str+='<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
+								str+='<div class="panel-body">';
+									str+='<div class="panel-group" id="accordionSub" role="tablist" aria-multiselectable="true">';
+										
+										if(result.subList != null && result.subList.length > 0){
+											for(var i in result.subList){
+												str+='<div class="panel panel-default panelProfileView">';
+													str+='<div class="panel-heading" role="tab" id="headingOneSubView'+i+'">';
+															str+='<a role="button" style="width: 30px; display: inline-block;" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionSub" href="#collapseOneSubView'+i+'" aria-expanded="true" aria-controls="collapseOneSubView'+i+'">';
+																str+='<span class="profileImageView">';
+																str+='<img src="dist/coreDashboard/img/logo.png" />';
+																str+='</span>';
+															str+=' </a>';
+															str+='<h4 class="panel-title  text-capital"  >'+result.subList[i].userType+' - View</h4>';
+													str+='</div>';
+													//GENERAL SECRETARY and DISTRICT and... VIEW End
+													//GENERAL SECRETARY and DISTRICT and... Level Start
+													str+='<div id="collapseOneSubView'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneSubView'+i+'">';
+														str+='<div class="panel-body">';
+															str+=' <div class="panel-group" id="accordionGeneralSecSubView'+i+'" role="tablist" aria-multiselectable="true">';
+															if(result.subList[i].subList != null && result.subList[i].subList.length >0){
+																for(var j in result.subList[i].subList){
+																		str+='<div class="panel panel-default panelProfileView">';
+																		if(result.subList[i].subList[j].subList != null && result.subList[i].subList[j].subList.length > 0){
+																				str+='<div class="panel-heading" role="tab" id="generalSecSubView'+i+''+j+'" style="height:30px;">';
+																					str+=' <a role="button" style="width:30px" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionGeneralSecSubView'+i+''+j+'" href="#collapseGeneralSecSubView'+i+''+j+'" aria-expanded="true" aria-controls="collapseGeneralSecSubView'+i+''+j+'">';
+																						str+='<span class="profileImageView">';
+																						str+='<img src="dist/img/logo.png" />';
+																						str+='</span>';
+																					str+=' </a>';
+																					str+='<ul class="radioStyling" style="float:left;">';
+																						str+=' <li>';
+																							str+='<input type="radio" id="'+i+''+j+'" name="selector">';
+																							str+=' <label for="'+i+''+j+'" class="text-capital">'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></label>';
+																							str+='<div class="check"></div>';
+																						str+='</li>';
+																					str+='</ul>';
+																				str+='</div>';
+																			}else{
+																				str+='<div class="panel-body dottedLine" style="float:left;padding-top:0px;padding-bottom:0px;">';
+																				str+=' <ul class="radioStyling">';
+																					str+=' <li>';
+																					str+='<input type="radio" id="'+i+''+j+'" name="selector">';
+																					str+=' <label for="'+i+''+j+'">'+result.subList[i].subList[j].userType+' - <i>'+result.subList[i].subList[j].name+'</i></label>';
+																					str+='<div class="check"></div>';
+																					str+='</li>';
+																				str+='</ul>';
+																				str+='</div>';
+																			}
+																			//GENERAL SECRETARY and DISTRICT and... Level End
+																			//ORGANIZING SECRETARY and CONSTITUENCT and... Level Start
+																			str+='<div class="panel-body">';
+																				str+='<div id="collapseGeneralSecSubView'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="generalSecSubView'+i+''+j+'">';
+																					str+='<div class="panel-body">';
+																						str+=' <div class="panel-group" id="accordionoranizerSecSubView'+i+''+j+'" role="tablist" aria-multiselectable="true">';
+																							if(result.subList[i].subList[j].subList != null && result.subList[i].subList[j].subList.length > 0){
+																								for(var k in result.subList[i].subList[j].subList){
+																										if(result.subList[i].subList[j].subList[k].subList != null && result.subList[i].subList[j].subList[k].subList.length > 0){
+																											str+='<div class="panel panel-default panelProfileView">';
+																												str+='<div class="panel-body" style="padding-top:0px;padding-bottom:0px;">';
+																													for(var l in result.subList[i].subList[j].subList[k].subList){
+																														if(result.subList[i].subList[j].subList[k].subList[l].subList != null && result.subList[i].subList[j].subList[k].subList[l].subList.length > 0){
+																															str+='<div class="panel-heading" style="display:inline-block" role="tab" id="organizerSecSubView'+i+''+j+''+k+''+l+'">';
+																															str+='<a role="button" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionoranizerSecSubView'+i+''+j+''+k+''+l+'" href="#collapseOragaizerSecSubView'+i+''+j+''+k+''+l+'" aria-expanded="true" aria-controls="collapseOragaizerSecSubView'+i+''+j+''+k+''+l+'">';
+																															str+='<span class="profileImageView">';
+																															str+='<img src="dist/img/logo.png" />';
+																															str+='</span>';
+																															str+='</a>';
+																															str+='</div>';
+																															str+='<div class="panel-body" style="display:inline-block">';
+																																str+=' <ul class="radioStyling">';
+																																	str+='<li>';
+																																		str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
+																																		str+=' <label for="'+i+''+j+''+k+''+l+'">'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></label>';
+																																		str+='<div class="check"></div>';
+																																		str+='</li>';
+																																str+='</ul>';
+																															str+='</div>';
+																														}else{
+																															str+=' <ul class="radioStyling">';
+																																str+=' <li class=" dottedLine">';
+																																	str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
+																																	str+=' <label for="'+i+''+j+''+k+''+l+'">'+result.subList[i].subList[j].subList[k].subList[l].userType+' - <i>'+result.subList[i].subList[j].subList[k].subList[l].name+'</i></label>';
+																																	str+='<div class="check"></div>';
+																																str+='</li>';
+																															str+='</ul>';
+																														}
+																									
+																													}
+																												str+='</div>';
+																											str+='</div>';
+																										}
+																								}
+																							}
+																						str+='</div>';
+																				str+='</div>';
+																			str+=' </div>';	
+																		str+='</div>';
+																		//ORGANIZING SECRETARY and CONSTITUENCT and... Level End
+																	str+='</div>';
+																}
+															}
+															str+='</div>';
+														str+='</div>';
+													str+=' </div>';
+											  
+											str+='</div>';
+											}
+										}
+								str+='</div>';
+							str+='</div>';
 						str+='</div>';
-						//sec Loop start
-                        str+='<div id="collapseOneSubView2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneSubView2">';
-						str+='<div class="panel-body">';
-                        str+=' <div class="panel-group" id="accordionSubSub" role="tablist" aria-multiselectable="true">';
-						str+='<div class="panel panel-default panelProfileView">';
-						str+='<div class="panel-heading" role="tab" id="headingOneSubSubView2">';
-								str+=' <a role="button" class="collapsed profieViewCollapse" data-toggle="collapse" data-parent="#accordionSubSub" href="#collapseOneSubSubView2" aria-expanded="true" aria-controls="collapseOneSubSubView2">';
-								str+='<span class="profileImageView">';
-								str+='<img src="dist/img/logo.png" />';
-								str+='</span>';
-								str+=' </a>';
-								str+=' <h4 class="panel-title"> Sec - G Jaya Nageshwar Reddy</h4>';
-						str+='</div>';
-						str+='<div id="collapseOneSubSubView2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneSubSubView2">';
-						str+='<div class="panel-body pad_15">';
-								str+=' <ul class="radioStyling">';
-								str+=' <li>';
-								str+='<input type="radio" id="f" name="selector">';
-								str+=' <label for="f">MadakaSira - MLA</label>';
-								str+='<div class="check"></div>';
-								str+='</l	i>';
-								str+='<li>';
-								str+='<input type="radio" id="s" name="selector">';
-								str+='<label for="s">Hindupur - MLA - Nandamuri BalaKrishna</label>';
-								str+=' <div class="check"><div class="inside"></div></div>';
-								str+='</li>';
-								str+='</ul>';
-						str+=' </div>';
-						str+=' </div>';
-						str+='</div>';
-						str+='<div class="panel panel-default panelProfileView">';
-						str+='<div class="panel-heading" role="tab" id="headingTwoSubSubView1">';
-								str+='<a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordionSubSub" href="#collapseTwoSubSubView1" aria-expanded="false" aria-controls="collapseTwoSubSubView1">';
-								str+=' <span class="profileImageView">';
-								str+=' <img src="dist/coreDashboard/img/logo.png" />';
-								str+=' </span>';
-								str+=' </a>';
-								str+='<h4 class="panel-title"> Sec - B Buchaiah Chowdary</h4>';
-						str+='</div>';
-						str+='<div id="collapseTwoSubSubView1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoSubSubView1">';
-						str+='<div class="panel-body pad_15">';
-								str+=' <ul class="radioStyling">';
-								str+=' <li>';
-								str+='<input type="radio" id="f" name="selector">';
-								str+=' <label for="f">MadakaSira - MLA</label>';
-								str+='<div class="check"></div>';
-								str+='</l	i>';
-								str+='<li>';
-								str+='<input type="radio" id="s" name="selector">';
-								str+='<label for="s">Hindupur - MLA - Nandamuri BalaKrishna</label>';
-								str+=' <div class="check"><div class="inside"></div></div>';
-								str+='</li>';
-								str+='</ul>';
-						str+='</div>';
-						str+=' </div>';
-						str+='</div>';
-						str+=' <div class="panel panel-default panelProfileView">';
-						str+='<div class="panel-heading" role="tab" id="headingThreeSubSubView">';
-								str+=' <a class="collapsed profieViewCollapse" role="button" data-toggle="collapse" data-parent="#accordionSubSub" href="#collapseThreeSubSubView" aria-expanded="false" aria-controls="collapseThreeSubSubView">';
-								str+=' <span class="profileImageView">';
-								str+='<img src="dist/coreDashboard/img/logo.png" />';
-								str+=' </span>';
-								str+=' </a>';
-								str+=' <h4 class="panel-title"> Sec - B T Naidu</h4>';
-						str+='</div>';
-						str+='<div id="collapseThreeSubSubView" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThreeSubSubView">';
-						str+='<div class="panel-body pad_15">';
-								str+=' <ul class="radioStyling">';
-								str+=' <li>';
-								str+='<input type="radio" id="f" name="selector">';
-								str+=' <label for="f">MadakaSira - MLA</label>';
-								str+='<div class="check"></div>';
-								str+='</l	i>';
-								str+='<li>';
-								str+='<input type="radio" id="s" name="selector">';
-								str+='<label for="s">Hindupur - MLA - Nandamuri BalaKrishna</label>';
-								str+=' <div class="check"><div class="inside"></div></div>';
-								str+='</li>';
-								str+='</ul>';
-						str+='</div>';
-						str+='</div>';
-						str+='</div>';
-						str+='</div>';
-						str+='</div>';
-				   str+=' </div>';
-				   //sec Loop end
-				  str+='</div>';
-				 str+='</div>';
-			   str+='</div>';
-			 str+='</div>';
-			 //GS loop end
-		   str+='</div>';
-		 str+='</div>';
-	  str+='</div>';
-	  
+					str+='</div>';
+				str+='</div>';
+			}
+		str+='</div>';
 	  $("#userLevelDetailsDiv").html(str);
 
 }
