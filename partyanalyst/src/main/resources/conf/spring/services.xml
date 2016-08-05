@@ -1380,7 +1380,7 @@
 	 
 	<bean name="cronTriggerForJobEmployeeAttendanceOnDept" class="org.springframework.scheduling.quartz.CronTriggerBean">  
     	<property name="jobDetail" ref="BatchJobForEmployeeAttendance" />
-    	<property name="cronExpression" value="0 0 5  * * ?" />               
+    	<property name="cronExpression" value="0 0 5  * * ?" />
 	</bean>
 	<!-- swadhin -->
 	<bean name="insertTriggerForEveryDayMobiles" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -3363,8 +3363,6 @@
 	   
 		<property name="leaderOccasionDAO" ref="leaderOccasionDAO"></property>
 		<property name="leaderOccasionWishDetailsDAO" ref="leaderOccasionWishDetailsDAO"></property>
-		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
-		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
 	
 	</bean>
 </beans>		
