@@ -96,7 +96,7 @@ function getAlertStatusCommentsTrackingDetails()
 						str+='<div class="arrow_box_left">';
 						if(result[i].id == 1)
 						{
-						str+='<p> <span class="text-success"></span> Alert Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						str+='<p> <span class="text-success"></span> Alert '+result[i].status+' on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 						}
 						else
 						{
