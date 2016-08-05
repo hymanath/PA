@@ -73,15 +73,48 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 .tableDashboard tr td
 {
 	color:#fff;
+	vertical-align:middle !important;
 }
 .textColor_333
 {
 	color:#333;
 }
+.tableDashboard tr td
+{
+	font-size:24px;
+	vertical-align:middle !important
+}
+.tableDashboard tr td a
+{
+	font-size:24px;
+}
 .tableDashboard tr td:nth-child(1)
 {
 	background:#5277AE;
 	width:20%;
+}
+.tableDashboard tr:nth-child(1) td:nth-child(1) p:nth-child(2),
+.tableDashboard tr:nth-child(1) td:nth-child(2) p:nth-child(2) , 
+.tableDashboard tr:nth-child(1) td:nth-child(3) p:nth-child(2) ,
+.tableDashboard tr:nth-child(1) td:nth-child(4) p:nth-child(2) , 
+.tableDashboard tr:nth-child(1) td:nth-child(5) p:nth-child(2) 
+{
+	color:#333 !important;
+	font-size:18px;
+}
+
+.tableDashboard tr td:nth-child(1) p:first-child , 
+.tableDashboard tr:nth-child(1) td:nth-child(2) p:nth-child(1) , 
+.tableDashboard tr:nth-child(1) td:nth-child(3) p:nth-child(1) ,
+.tableDashboard tr:nth-child(1) td:nth-child(4) p:nth-child(1) , 
+.tableDashboard tr:nth-child(1) td:nth-child(5) p:nth-child(1) 
+{
+	font-size:22px;
+}
+.tableDashboard tr td:nth-child(1) p:nth-child(2) , .tableDashboard tr td:nth-child(2) p:nth-child(2)
+{
+	font-size:18px;
+	color:#fff !important;
 }
 .tableDashboard tr td:nth-child(2)
 {
@@ -138,10 +171,33 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	border-color:#96C22D;
 }
+.tableCategory
+{
+	border-spacing:8px;
+	border-collapse:separate;
+	background-color:#E5E5FF;
+}
+.tableCategory tr:first-child td
+{
+	border-top:0px !important;
+	border-left:0px !important;
+	border-bottom:0px !important;
+	vertical-align:middle;
+}
+.tableCategory tr:first-child td:last-child
+{
+	border-right:0px !important;
+}
+.tableCategory tr:nth-child(2) td
+{
+	border-right:0px !important;
+	border-left:0px !important;
+	border-bottom:0px !important;
+}
 .tableCategory tr td
 {
 	background-color:#E5E5FF;
-	border:1px solid #666
+	border:1px solid #ccc !important;
 }
 .involvedMembersUl
 {
@@ -237,6 +293,10 @@ p,h1,h2,h3,h4,h5,h6,ul,.table
 {
 	padding-left:20px;
 	border-left:1px solid #ddd;
+}
+#alertCommentsDiv .mCSB_container 
+{
+	padding-left:7px;
 }
 .alertStatusTracking li
 {

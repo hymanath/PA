@@ -955,7 +955,7 @@ function showHideSearch(type)
 			 $(".membersBlock").show();
 			//$(".membersBlock1").show();
 			var str ='';
-			str+='<div class="col-md-4 ">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 			str+='<div class="block">';
 			str+='<div class="media"><div class="media-left">';
 			str+='<img src="'+image+'" alt="image" style="height:30px;width:30px;" class="img-circle">';

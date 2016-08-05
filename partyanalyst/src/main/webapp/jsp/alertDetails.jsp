@@ -26,6 +26,10 @@
 	
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<style type="text/css">
+		#searchedMembersId_length , #searchedMembersId_info
+		{
+			display:none;
+		}
 		#commomCadreSearchDiv .panel .panel-body
 		{
 			background:#fff !important;
@@ -211,42 +215,37 @@ control.makeTransliteratable(['commentsId']);
 					</div>
 					<div class="panel-body">
 						<div class="table-responsive" id="alertBasicDataDiv"></div>
-						<table class="table table-bordered tableCategory">
-							<tr>
-								<td>
-									<p class="text-muted text-capital">type of alert</p>
-									<p id="typeId"></p>
-								</td>
-								<td>
-									<p class="text-muted text-capital">alert created</p>
-									<p id="createdDate"></p>
-								</td>
-								<td>
-									<p class="text-muted text-capital">status</p>
-									<p id="alertStatus"></p>
-								</td>
-								<td>
-									<p class="text-muted text-capital">alert severity</p>
-									<p><span class="circle critical"></span><span  id="severityId">Critical</span></p>
-								</td>
-								<td>
-									<p class="text-muted text-capital">alert location level</p>
-									<p class="text-capitalize" id="levelId"></p>
-								</td>
-								<td>
-									<p class="text-muted text-capital">alert location</p>
-									<p class="text-capitalize" id="LocationId"></p>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="8">
-									<p class="text-muted text-capital">alert description</p>
-									<p id="descriptionId"></p>
-								</td>
-							</tr>
-						</table>
+						<div class="table-responsive" >
+							<table class="table table-bordered tableCategory">
+								<tr>
+									<td>
+										<p class="text-capital"><span class="text-muted ">type</span> : <span  id="typeId"></span></p>
+									</td>
+									<td>
+										<p class="text-capital"><span class="text-muted ">created date</span> : <span  id="createdDate"></span></p>
+									</td>
+									<td>
+										<p class="text-capital"><span class="text-muted">status</span> : <span id="alertStatus"></span></p>
+									</td>
+									<td>
+										<p class="text-capital"><span class="text-muted">severity</span> : <span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
+									</td>
+									<td>
+										<p class="text-capital"><span class="text-muted ">location level</span> : <span  id="levelId"></span></p>
+									</td>
+									<td>
+										<p class="text-capital"><span class="text-muted ">location</span> : <span  id="LocationId"></span></p>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="8">
+										<p class="text-capital"><span class="text-muted ">description</span> : <span  id="descriptionId"></span></p>
+									</td>
+								</tr>
+							</table>
+						</div>
 						 <div class="row m_top10">
-							<div class="col-md-4 col-xs-12 col-sm-4" style="border-right:1px solid #ddd;">
+							<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
 								<h4 class="panel-title text-capital">involved members in this alert
 								<span id="involvedCandidatesCnt"> - 0</span></h4>
 								<ul class="involvedMembersUl" id="alertCandidateDataId">
@@ -255,17 +254,12 @@ control.makeTransliteratable(['commentsId']);
 											<div class="media-left">
 												<img src="dist/img/thumb.jpg" alt="Profile Image" style="width:50px;"/>
 											</div>
-											<div class="media-body">
-											   <!-- <p class="text-capital"><b>Ramesh</b></p>
-												<p>+91 99848455</p>
-												<p>Constituency Name</p>
-												<span class="label label-success">+ Ve</span>-->
-											</div>
+											<div class="media-body"></div>
 										</div>
 									</li>
 								</ul>
 							</div>
-							<div class="col-md-8 col-xs-12 col-sm-8">
+							<div class="col-md-8 col-xs-12 col-sm-6">
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
 								<div  id="alertCommentsDiv"></div>
 							</div>
@@ -274,7 +268,7 @@ control.makeTransliteratable(['commentsId']);
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="bg_cc pad_10">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-4">
+										<div class="col-md-4 col-xs-12 col-sm-6">
 											<div class="panel panel-default">
 												<div class="panel-heading bg_ff">
 													<h4 class="panel-title text-success">ASSIGNED CANDIDATES - 	
@@ -290,7 +284,7 @@ control.makeTransliteratable(['commentsId']);
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
-										<div class="col-md-8 col-xs-12 col-sm-8">
+										<div class="col-md-8 col-xs-12 col-sm-6">
 											<label>Alert Status</label>
 											<select class="dropkickClass" id="statusId">
 											<option value='0'>Select Status</option>
@@ -305,9 +299,9 @@ control.makeTransliteratable(['commentsId']);
 											<label class="radio-inline">
 												<input type="radio"  value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
 											</label>
-											<textarea class="form-control" placeholder="alert tracking comments" id="commentsId"></textarea>
+											<textarea class="form-control" placeholder="Enter Comments" id="commentsId"></textarea>
 											<div id="errorId" class="m_top10"></div>
-											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert status</button>
+											<button class="btn btn-success text-capital m_top10 updateAlertStatusCls">Update Alert</button>
 											<span id="updateAlertajaxImg" class="m_top10"></span>
 										</div>
 										</c:if>
