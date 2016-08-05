@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.INominatedPostMainDashboardService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
@@ -1235,4 +1236,98 @@ public String validateVoterIdCardNo(){
 	return Action.SUCCESS;
 }
 
+	public String getOpenedPositionsBoardLevels(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getOpenedPositionsBoardLevels();
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getOpenedPositionsBoardLevels Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getStatesForOpenedPositions(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = nominatedPostProfileService.getStatesForOpenedPositions();
+			/*if(idNameVOList != null && idNameVOList.size() > 1)
+				idNameVOList.add(0, new IdNameVO(0L,"Select District"));*/
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getStatesForOpenedPositions Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getOpenPositionDistrictsForState(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			
+			idNameVOList = nominatedPostProfileService.getOpenPositionDistrictsForState(stateId);
+			
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getOpenPositionDistrictsForState Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getOpenPositionConstituenciesForDistrict(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long districtId = jObj.getLong("districtId");
+			
+			idNameVOList = nominatedPostProfileService.getOpenPositionConstituenciesForDistrict(districtId);
+			
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getOpenPositionConstituenciesForDistrict Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getMandalMuncilIdsForConstituency(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			locations = nominatedPostProfileService.getMandalMuncilIdsForConstituency(constituencyId);
+			
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getMandalMuncilIdsForConstituency Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPanchaytWardForMandal(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			String mandalId = jObj.getString("mandalId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			locations = nominatedPostProfileService.getPanchaytWardForMandal(mandalId,constituencyId);
+			
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getPanchaytWardForMandal Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }

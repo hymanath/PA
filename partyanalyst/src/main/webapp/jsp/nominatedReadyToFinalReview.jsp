@@ -24,7 +24,7 @@
 <div class="container">
    <div class="row hideRowCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<h4 class="text-capital">Ready For Final <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h4>
+        	<h4 class="text-capital"><span id="headStsId"></span> <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h4>
         </div>
 		<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
 			<div class="panel panel-default">
@@ -277,6 +277,9 @@
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+var gblStatus = '${param.sts}';
+$("#headStsId").html(gblStatus+" Nominated Post details");
 
 function setHeight(){
 	var maxHeight = 0;
