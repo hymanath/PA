@@ -900,17 +900,8 @@ var globalNPCandiId=0;
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function() {
-    $("#DOBId").daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-		changeMonth: true,
-		minDate: new Date(1916, 10 - 1, 16),
-		maxDate: moment(),
-		parentEl:'#addMemberModalBlock'
-    }, 
-    function(start, end, label) {
-        var years = moment().diff(start, 'years');
-        alert("You are " + years + " years old.");
+    $("#DOBId").datetimepicker({
+     format:"MM/DD/YYYY"   
     });
 });
 $("#DOBId").val(moment().format('MM/DD/YYYY'));

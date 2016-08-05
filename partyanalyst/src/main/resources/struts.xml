@@ -197,7 +197,7 @@
 			<result type="redirect" name="casteAndElectionResultsComparisonAction">casteAndElectionResultsComparisonAction.action</result>
 			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
 			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
-			<result type="redirect" name="VOTER_SEARCH_AND_EDIT">votersSearchAction.action</result>
+			<result type="redirect" name="VOTER_SEARCH_AND_EDIT">votersSearchAction.action</result>  
 			<result>/jsp/loginsuccess.jsp</result>
 			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
 			<result type="redirect" name="suggestiveModelAction">suggestiveModelAction.action</result>
@@ -5664,6 +5664,7 @@
 			 <result type="redirect"  name="bloodBankDashboard" >bloodBankDashBoardAction.action</result>
 			 <result type="redirect"  name="bloodBankBleeding" >bloodBankBleadingAction.action</result>
 			 <result type="redirect"  name="debate" >debateAction.action</result>
+			 <result type="redirect" name="nominatedPostProfileAction">nominatedPostProfileAction.action</result> 
 			 <result type="redirect"  name="affiliatedUnionRegistrationPage" >affiliatedCadreSearchAction.action</result>
 		</action>
 		
@@ -12883,7 +12884,9 @@
 	</action>
 	<action name="nominatedPostProfileAction" class="nominatedPostProfileAction" method="nominatedPosts">
 		<result name="success">/jsp/nominatedPost.jsp</result>
-	</action>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=nominatedPostProfileAction</result>
+		</action>
 	<action name="getBoardLevelsAction" class="nominatedPostProfileAction" method="getBoardLevels">
 		<result type="json" name="success">
    			<param name="root">idNameVOList</param>

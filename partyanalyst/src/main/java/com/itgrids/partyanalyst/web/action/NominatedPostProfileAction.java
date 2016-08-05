@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.INominatedPostMainDashboardService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -1233,6 +1234,29 @@ public String validateVoterIdCardNo(){
 	}catch (Exception e) {
 		LOG.error("Entered into validateVoterIdCardNo() method of NominatedPostProfileAction Action",e);
 	}
+	return Action.SUCCESS;
+}
+public String execute()
+{
+	RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+	if(regVO==null){
+		return "input";
+	}
+	boolean noaccess = false;
+	List<String> entitlements = null;
+	if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		entitlements = regVO.getEntitlements();
+		if(!(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT") || entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP")
+				 || entitlements.contains("NOMINATED_POST_OVERVIEW_ENTITLEMENT"))){
+			noaccess = true ;
+		}
+	if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+		noaccess = false;
+	}
+	if(noaccess){
+		return "error";
+	}
+	}		
 	return Action.SUCCESS;
 }
 
