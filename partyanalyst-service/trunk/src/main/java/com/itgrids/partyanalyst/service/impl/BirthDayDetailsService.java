@@ -90,13 +90,13 @@ public class BirthDayDetailsService implements IBirthDayDetailsService {
 	}
 	
 	
-public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,String dataBuildTypeStr,String memberTypeStr){
+public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,String dataBuildTypeStr,String memberTypeStr,Long userId){
 		 List<BirthDayDetailsVO> returnList = new LinkedList<BirthDayDetailsVO>();
 		try {
 			Long totalCount = 0l;
 			//dataBuildTypeStr ="Today";
 			if(dataBuildTypeStr.trim().length() ==0)
-				dataBuildTypeStr="Today";
+				dataBuildTypeStr=" Today ";
 			
 			int[] daysArr={30,7,1,0,1,7,30};
 			String searchTypeStr="previous";
@@ -114,6 +114,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 					 searchTypeStr="Next";
 					 	if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
 							dayVO.setName(" Today ");
+							//searchTypeStr="";
 						 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
 							dayVO.setName(" Tomorrow ");
 						 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Next")){
@@ -123,6 +124,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 				else{
 					 if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
 						dayVO.setName(" Today ");
+						//searchTypeStr="";
 					 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
 						dayVO.setName(" Yesterday ");
 					 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Previous")){
@@ -139,7 +141,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 				List<Long> wishList =  new ArrayList<Long>(0);
 				List<Long> totalTdpCadreIdsList = new ArrayList<Long>(0);
 				if(prevThirtyIds != null && prevThirtyIds.size() >0){
-					List<Object[]> wishList1  = leaderOccasionWishDetailsDAO.getTotalDaysCountsForWishedCount(prevThirtyIds, String.valueOf(year).trim());
+					List<Object[]> wishList1  = leaderOccasionWishDetailsDAO.getTotalDaysCountsForWishedCount(prevThirtyIds, String.valueOf(year).trim(),userId);
 					if(wishList1 != null && wishList1.size() > 0){
 						
 						for (Object[] obj : wishList1) {
@@ -255,14 +257,14 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 								String value = entry.getValue();
 								Long count = partyTotalMap.get(value);
 								if(count != null && count.longValue() > 0l){
-									count++;
+									count=count+1l;
 									totalCount = totalCount+1l;
 								}
 								else{
 									count = 1l;
 									totalCount = totalCount+1l;
-									partyTotalMap.put(value, count);
 								}
+								partyTotalMap.put(value, count);
 					      }
 				      }
 				      if(commonMethodsUtilService.isMapValid(partyPostMap)){
@@ -270,14 +272,14 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 								String value = entry.getValue();
 								Long count = partyTotalMap.get(value);
 								if(count != null && count.longValue() > 0l){
-									count++;
+									count=count+1l;
 									totalCount = totalCount+1l;
 								}
 								else{
 									count = 1l;
 									totalCount = totalCount+1l;
-									partyTotalMap.put(value, count);
 								}
+								partyTotalMap.put(value, count);
 					      }
 				      }
 					
@@ -291,6 +293,14 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 				    		 
 				    	  }
 				      }
+				      if(commonMethodsUtilService.isListOrSetValid(positionList))
+				    	  Collections.sort(positionList, new Comparator<IdNameVO>() {
+					          @Override
+					          public int compare(final IdNameVO vo1, final IdNameVO vo2) {
+					              return vo1.getName().compareTo(vo2.getName());
+					          }
+					   });
+				    
 					dayVO.setSubList(memberDetailsVOLst);
 					dayVO.setIdNameVOList(positionList);
 					dayVO.setTotalPosCount(totalCount);
@@ -299,17 +309,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 				dayVO.setWishCount(wishedCount);
 				returnList.add(dayVO);
 			}
-			if(returnList != null && returnList.size() > 0){
-            	Collections.sort(returnList, new Comparator<BirthDayDetailsVO>() {
-					public int compare(BirthDayDetailsVO o1, BirthDayDetailsVO o2) {
-						if(o2.getDesignation() != null && o1.getDesignation() != null)
-							return o2.getDesignation().compareTo(o1.getDesignation());
-						else
-							return 0;
-					}
-				});
 			
-            }
 			List<BirthDayDetailsVO> designationList = new ArrayList<BirthDayDetailsVO>();
 			if(returnList != null && returnList.size() > 0 && dataBuildTypeStr != null && !dataBuildTypeStr.trim().isEmpty() && memberTypeStr != null && !memberTypeStr.trim().isEmpty()){
 				for (BirthDayDetailsVO bDayVo : returnList) {
@@ -317,7 +317,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 					if(!memberTypeStr.equalsIgnoreCase("Total") && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
 						
 						for (BirthDayDetailsVO subVo : bDayVo.getSubList()) {
-							if(subVo.getDesignation() != null && subVo.getDesignation().equalsIgnoreCase(memberTypeStr)){
+							if((subVo.getDesignation() != null && subVo.getDesignation().equalsIgnoreCase(memberTypeStr)) || (subVo.getPubRepDesignation() != null && subVo.getPubRepDesignation().equalsIgnoreCase(memberTypeStr))){
 								designationList.add(subVo);
 							}
 						}
@@ -348,7 +348,7 @@ public BirthDayDetailsVO getMatchedVOById(List<BirthDayDetailsVO> memberDetailsV
 	return null;
 }
 	
-public String getWishingDetails(Long searchId) {
+public String getWishingDetails(Long searchId,Long userId) {
 	String status = null;
 	List<TdpCadreVO> cadreVOs = new ArrayList<TdpCadreVO>();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -359,7 +359,7 @@ public String getWishingDetails(Long searchId) {
     int calyear = cal.get(Calendar.YEAR);
      try{
     	 TdpCadreVO tdpCadreVO = new TdpCadreVO();
-    	 LeaderOccasionWishDetails leaderOcassion = leaderOccasionWishDetailsDAO.getLeaderOccassiobnWishngDetails(searchId,String.valueOf(calyear));
+    	 LeaderOccasionWishDetails leaderOcassion = leaderOccasionWishDetailsDAO.getLeaderOccassiobnWishngDetails(searchId,String.valueOf(calyear),userId);
     	 	if(leaderOcassion == null){
 	    		 LeaderOccasionWishDetails  leaderocsnWishDtls = new LeaderOccasionWishDetails();
 	    		 leaderocsnWishDtls.setLeaderOccasionId(searchId);

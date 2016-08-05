@@ -22,7 +22,10 @@ public class LeaderOccasionDAO extends GenericDaoHibernate<LeaderOccasion, Long>
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("SELECT model.tdp_cadre_id,model2.first_name, model2.mobile_no,model2.image,model.occasion_date,model.leader_occasion_id FROM leader_occasion model, tdp_cadre model2 WHERE " +
 				" model.tdp_cadre_id = model2.tdp_cadre_id and model2.is_deleted='N' and model2.enrollment_year = 2014 and model.date_no  ");
-		if(searchTypeStr.trim().equalsIgnoreCase("next")){
+		if(betweenDatesCount != null && betweenDatesCount.longValue() ==0L){
+			queryStr.append(" = CAST(DATE_FORMAT(CURDATE(),'%m%d') AS UNSIGNED) ");
+		}
+		else if(searchTypeStr.trim().equalsIgnoreCase("next")){
 			queryStr.append(" BETWEEN CAST(DATE_FORMAT(CURDATE() + INTERVAL 1 DAY,'%m%d') AS UNSIGNED) AND " +
 					" CAST(DATE_FORMAT(CURDATE() + INTERVAL "+betweenDatesCount+" DAY,'%m%d') AS UNSIGNED)");
 		}
@@ -30,8 +33,6 @@ public class LeaderOccasionDAO extends GenericDaoHibernate<LeaderOccasion, Long>
 			queryStr.append("BETWEEN CAST(DATE_FORMAT(CURDATE() - INTERVAL "+betweenDatesCount+" DAY,'%m%d') AS UNSIGNED) AND " +
 					" CAST(DATE_FORMAT(CURDATE() - INTERVAL 1 DAY,'%m%d') AS UNSIGNED)");
 		}
-		else 
-			queryStr.append(" = CAST(DATE_FORMAT(CURDATE(),'%m%d') AS UNSIGNED) ");
 			
 		queryStr.append(" and model.occasion_type_id=:occastionTypeId and model.is_deleted='false' ");
 		
