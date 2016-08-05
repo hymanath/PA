@@ -35,7 +35,7 @@ public class LeaderOccasionWishDetails extends BaseModel implements
 	private Long leaderOccasionId;
 	private String year;
 	private Date wishTime;
-	private String isdeleted;
+	private String isDeleted;
 	private String description;
 	private Date insertedTime;
 	private Date updatedTime;
@@ -91,12 +91,12 @@ public class LeaderOccasionWishDetails extends BaseModel implements
 	}
 
 	@Column(name = "is_deleted")
-	public String getIsdeleted() {
-		return isdeleted;
+	public String getIsDeleted() {
+		return isDeleted;
 	}
 
-	public void setIsdeleted(String isdeleted) {
-		this.isdeleted = isdeleted;
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	@Column(name = "description")
