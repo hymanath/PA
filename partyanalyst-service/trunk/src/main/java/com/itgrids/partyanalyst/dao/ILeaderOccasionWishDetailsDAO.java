@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.LeaderOccasionWishDetails;
 import com.itgrids.partyanalyst.model.OccasionType;
 
 public interface ILeaderOccasionWishDetailsDAO extends GenericDao< LeaderOccasionWishDetails, Long>{
-	public List<Object[]> getTotalDaysCountsForWishedCount(List<Long> totalIds,String year) ;
-	public LeaderOccasionWishDetails getLeaderOccassiobnWishngDetails(Long searchId,String year);
+	public List<Object[]> getTotalDaysCountsForWishedCount(List<Long> totalIds,String year,Long userId) ;
+	public LeaderOccasionWishDetails getLeaderOccassiobnWishngDetails(Long searchId,String year,Long userId);
 
 }

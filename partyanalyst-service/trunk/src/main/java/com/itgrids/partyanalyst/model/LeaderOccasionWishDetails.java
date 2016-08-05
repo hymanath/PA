@@ -39,7 +39,8 @@ public class LeaderOccasionWishDetails extends BaseModel implements
 	private String description;
 	private Date insertedTime;
 	private Date updatedTime;
-
+	private Long wishedBy;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "leader_occasion_wish_details_id", unique = true, nullable = false)
@@ -123,6 +124,14 @@ public class LeaderOccasionWishDetails extends BaseModel implements
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	@Column(name = "wished_by")
+	public Long getWishedBy() {
+		return wishedBy;
+	}
 
+	public void setWishedBy(Long wishedBy) {
+		this.wishedBy = wishedBy;
+	}
+    
 	
 }

@@ -15,23 +15,25 @@ public class LeaderOccasionWishDetailsDAO extends GenericDaoHibernate<LeaderOcca
 		super(LeaderOccasionWishDetails.class);
 	}
 	
-public List<Object[]> getTotalDaysCountsForWishedCount(List<Long> totalIds,String year) {
+public List<Object[]> getTotalDaysCountsForWishedCount(List<Long> totalIds,String year,Long userId) {
 		
 	Query query = getSession().createQuery( "select distinct model.leaderOccasionId,model.leaderOccasion.tdpCadreId from  LeaderOccasionWishDetails model " +
 			" where model.isDeleted='false' " +
-			" and model.leaderOccasion.tdpCadreId in (:totalIds) and model.year=:year " );
+			" and model.leaderOccasion.tdpCadreId in (:totalIds) and model.year=:year and model.wishedBy=:userId " );
 		
 		query.setParameterList("totalIds", totalIds);
 		query.setParameter("year", year);
+		query.setParameter("userId", userId);
 		return  query.list();
 	}
-public LeaderOccasionWishDetails getLeaderOccassiobnWishngDetails(Long searchId,String year){
+public LeaderOccasionWishDetails getLeaderOccassiobnWishngDetails(Long searchId,String year,Long userId){
 	
 	Query query = getSession().createQuery( "select model from  LeaderOccasionWishDetails model " +
 			" where model.isDeleted='false' " +
-			" and model.leaderOccasionId=:searchId and model.year=:year " );
+			" and model.leaderOccasionId=:searchId and model.year=:year and model.wishedBy=:userId " );
 		query.setParameter("searchId", searchId);
 		query.setParameter("year", year);
+		query.setParameter("userId", userId);
 		return (LeaderOccasionWishDetails)query.uniqueResult();
 	}
 }
