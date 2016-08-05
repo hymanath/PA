@@ -1180,7 +1180,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		public StringBuffer allStatesBlock(StatesEventVO dataVO,String time){
 			
 			String stateColor = "#01AF7C";
-			String borderImagePath = "http://mytdp.com/images/borderImage.png";
+			String borderImagePath = "https://mytdp.com/images/borderImage.png";
 			//String borderImagePath = "http://localhost:8080/PartyAnalyst/images/borderImage.png";
 			
 			StringBuffer str = new StringBuffer();
