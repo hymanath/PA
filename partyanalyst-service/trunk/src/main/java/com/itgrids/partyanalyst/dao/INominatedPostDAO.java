@@ -27,4 +27,10 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public Long getNoCandiateCntPositionAndLocationWise(Long positionId,Long boardLevelId);
 	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue);
 	public List<Object[]> getTotalCorpAndBoardsAndPositions(Long boardLevelId, Date startDate,Date endDate,Long stateId);
+	public List<Object[]> getBoardLevelsForOpenedPositions();
+	public List<Object[]> getStatesForOpenedPositions();
+	public List<Object[]> getOpenPositionDistrictsForState(Long stateId);
+	public List<Object[]> getOpenPositionConstituenciesForDistrict(Long districtId);
+	public List<Object[]> getMandalMuncilIdsForConstituency(Long constituencyId);
+	public List<Object[]> getPanchayWardIdsForMandal(Long id,String type,Long constituencyId);
 }

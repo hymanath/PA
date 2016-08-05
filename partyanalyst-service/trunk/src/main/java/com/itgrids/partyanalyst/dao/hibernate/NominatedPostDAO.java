@@ -817,4 +817,90 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	
 		return query.list();
 }
+	public List<Object[]> getBoardLevelsForOpenedPositions(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostMember.boardLevel.boardLevelId," +
+										" model.nominatedPostMember.boardLevel.level" +
+										" from NominatedPost model" +
+										" where model.nominationPostCandidateId is null" +
+										" and model.nominatedPostStatus.nominatedPostStatusId = 1" +  //Only Open Position Levels
+										" and model.isDeleted = 'N' and model.isExpired = 'N'" +
+										" order by model.nominatedPostMember.boardLevel.boardLevelId");
+		return query.list();
+	}
+	
+	public List<Object[]> getStatesForOpenedPositions(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostMember.address.state.stateId," +
+											" model.nominatedPostMember.address.state.stateName" +
+											" from NominatedPost model" +
+											" where model.nominationPostCandidateId is null" +
+											" and model.nominatedPostStatus.nominatedPostStatusId = 1" +    //Only Open Position Locations.
+											" and model.isDeleted = 'N' and model.isExpired = 'N'");
+		return query.list();
+	}
+	
+	public List<Object[]> getOpenPositionDistrictsForState(Long stateId){
+		Query query = getSession().createQuery("select distinct model.nominatedPostMember.address.district.districtId," +
+											" model.nominatedPostMember.address.district.districtName" +
+											" from NominatedPost model" +
+											" where model.nominationPostCandidateId is null" +
+											" and model.nominatedPostStatus.nominatedPostStatusId = 1" +     	//Only Open Position Locations.
+											" and model.nominatedPostMember.address.state.stateId = :stateId" +   
+											" and model.isDeleted = 'N' and model.isExpired = 'N'" +
+											" order by model.nominatedPostMember.address.district.districtName");
+		query.setParameter("stateId", stateId);
+		return query.list();
+	}
+	
+	public List<Object[]> getOpenPositionConstituenciesForDistrict(Long districtId){
+		Query query = getSession().createQuery("select distinct model.nominatedPostMember.address.constituency.constituencyId," +
+											" model.nominatedPostMember.address.constituency.name" +
+											" from NominatedPost model" +
+											" where model.nominationPostCandidateId is null" +
+											" and model.nominatedPostStatus.nominatedPostStatusId = 1" +     	//Only Open Position Locations.
+											" and model.nominatedPostMember.address.district.districtId = :districtId" +   
+											" and model.isDeleted = 'N' and model.isExpired = 'N'" +
+											" order by model.nominatedPostMember.address.constituency.name");
+		query.setParameter("districtId", districtId);
+		return query.list();
+	}
+	
+	public List<Object[]> getMandalMuncilIdsForConstituency(Long constituencyId){
+		Query query = getSession().createQuery("select tehsil.tehsilId," +
+											" leb.localElectionBodyId" +
+											" from NominatedPost model" +
+											" left join model.nominatedPostMember.address.tehsil tehsil" +
+											" left join model.nominatedPostMember.address.localElectionBody leb" +
+											" where model.nominationPostCandidateId is null" +
+											" and model.nominatedPostStatus.nominatedPostStatusId = 1" +     	//Only Open Position Locations.
+											" and model.nominatedPostMember.address.constituency.constituencyId = :constituencyId" +   
+											" and model.isDeleted = 'N' and model.isExpired = 'N'");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayWardIdsForMandal(Long id,String type,Long constituencyId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select");
+		if(type != null && type.equalsIgnoreCase("mandal"))
+			sb.append(" model.nominatedPostMember.address.panchayat.panchayatId," +
+						" model.nominatedPostMember.address.panchayat.panchayatName");
+		else if(type != null && type.equalsIgnoreCase("muncipality"))
+			sb.append(" model.nominatedPostMember.address.ward.constituencyId," +
+					" model.nominatedPostMember.address.ward.name");
+		sb.append(" from NominatedPost model" +
+					" where model.nominationPostCandidateId is null" +
+					" and model.nominatedPostStatus.nominatedPostStatusId = 1" +
+					" and model.nominatedPostMember.address.constituency.constituencyId = :constituencyId" +
+					" and model.isDeleted = 'N' and model.isExpired = 'N'");
+		if(type != null && type.equalsIgnoreCase("mandal"))
+			sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId = :id");
+		else if(type != null && type.equalsIgnoreCase("muncipality"))
+			sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId = :id");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("constituencyId", constituencyId);
+		if(type != null)
+			query.setParameter("id", id);
+		return query.list();
+	}
 }
