@@ -26,6 +26,7 @@ public class ActivityMemberAccessLevel {
 	private Long activityMemberId;
 	private Long activityMemberLevelId;
 	private Long activityLocationValue;
+	private String isActive;
 	
 	private ActivityMember activityMember;
 	private UserLevel userLevel;
@@ -64,6 +65,15 @@ public class ActivityMemberAccessLevel {
 
 	public void setActivityLocationValue(Long activityLocationValue) {
 		this.activityLocationValue = activityLocationValue;
+	}
+	
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
