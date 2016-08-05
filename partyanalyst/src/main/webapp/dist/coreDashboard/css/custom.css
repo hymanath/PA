@@ -668,7 +668,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	display:none;
 	position:absolute;
-	left:-60px;
+	left:-85px;
 	top:-10px;
 	background: #fff;
 	padding:4px;
@@ -682,7 +682,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-radius:50%;
 	border:1px solid #555;
 }
-.panel-title:hover .profileImageView
+.userStructureClass:hover .profileImageView
 {
 	display:block;
 }
