@@ -4654,7 +4654,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setVoterImgPath(voterIdDetails.get(0)[6] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterIdDetails.get(0)[6] : "");
 				if(userAddress.getConstituency() != null && userAddress.getBooth() != null)
 				{
-					//String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+					//String url = "https://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 					//returnVO.setVoterImgPath(url);
 					List<String> names = voterNamesDAO.getVoterTeluguNames((Long)voterIdDetails.get(0)[4] );
 					if(names != null && names.size() > 0)
@@ -4744,7 +4744,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setRefNumber(objects[6] != null ? objects[6].toString() : "");
 					cadrePrintVO.setCardNumber(objects[7] != null ? objects[7].toString() : "");
 					cadrePrintVO.setImage(objects[8]!= null ? objects[8].toString() :  "");
-					cadrePrintVO.setVoterImgPath(objects[9] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+objects[9].toString() : "");
+					cadrePrintVO.setVoterImgPath(objects[9] != null ? "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+objects[9].toString() : "");
 					returnList.add(cadrePrintVO);
 			 }
 		 }
@@ -5292,18 +5292,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						if(cadrePrintVO.getPhotoType().equalsIgnoreCase("NEW")){
 							if(objects[8] != null){
-								String url = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
+								String url = "https://mytdp.com/images/cadre_images/"+objects[8].toString();
 								cadrePrintVO.setImage(url);
 							}
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("CADRE")){
 							if(objects[8] != null){
-								String url = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
+								String url = "https://mytdp.com/images/cadre_images/"+objects[8].toString();
 								cadrePrintVO.setImage(url);
 							}
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("VOTER")){
-								cadrePrintVO.setImage(objects[9] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+objects[9].toString() : "");
+								cadrePrintVO.setImage(objects[9] != null ? "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+objects[9].toString() : "");
 						}
 					}
 					/*else{
@@ -5528,35 +5528,35 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						if(cadrePrintVO.getPhotoType().equalsIgnoreCase("NEW")){
 					
-								//String url = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
-								cadrePrintVO.setImage((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
-								cadrePrintVO.setImgPath1((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
-								cadrePrintVO.setImgPath2("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
+								//String url = "https://mytdp.com/images/cadre_images/"+objects[8].toString();
+								cadrePrintVO.setImage((objects[8] != null  ? "https://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
+								cadrePrintVO.setImgPath1((objects[8] != null  ? "https://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
+								cadrePrintVO.setImgPath2("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("CADRE")){							
-								//String url = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
-								cadrePrintVO.setImage((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
-								cadrePrintVO.setImgPath1((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));								
-								cadrePrintVO.setImgPath2("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
+								//String url = "https://mytdp.com/images/cadre_images/"+objects[8].toString();
+								cadrePrintVO.setImage((objects[8] != null  ? "https://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
+								cadrePrintVO.setImgPath1((objects[8] != null  ? "https://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));								
+								cadrePrintVO.setImgPath2("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("VOTER")){
-								String url = "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId);
+								String url = "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId);
 								cadrePrintVO.setImage(url);								
-								cadrePrintVO.setImgPath1(objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : "");
-								cadrePrintVO.setImgPath2(objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : "");
+								cadrePrintVO.setImgPath1(objects[8] != null  ? "https://mytdp.com/images/cadre_images/"+objects[8].toString() : "");
+								cadrePrintVO.setImgPath2(objects[8] != null  ? "https://mytdp.com/images/cadre_images/"+objects[8].toString() : "");
 						}
 					}
 					/*else{
 						cadrePrintVO.setPhotoType("");
 					}*/
 				   /*if(objects[8] != null){
-						String cadreUrl = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
+						String cadreUrl = "https://mytdp.com/images/cadre_images/"+objects[8].toString();
 						cadrePrintVO.setImage(cadreUrl);
 					}
 					
 					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
 					{
-						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
+						String url = "https://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
 						//String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +""+"\\"+userAddress.getConstituency().getConstituencyId().toString().trim()+"\\"+"Part"+userAddress.getBooth().getPartNo().trim()+"\\"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 						cadrePrintVO.setVoterImgPath(url);
 					}*/
@@ -5798,18 +5798,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							String photoType = obj[10].toString();
 							if(photoType.equalsIgnoreCase("NEW"))
 							{
-								String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+								String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
 								returnVO.setVoterImgPath(url);
 							
 							}
 							else if(photoType.equalsIgnoreCase("CADRE"))
 							{							
-									String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+									String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
 									returnVO.setVoterImgPath(url);
 							}
 							else
 							{
-								returnVO.setVoterImgPath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
+								returnVO.setVoterImgPath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 							}
 						}
 						
@@ -5875,18 +5875,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							String photoType = obj[8].toString();
 							if(photoType.equalsIgnoreCase("NEW"))
 							{
-								String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+								String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
 								returnVO.setVoterImgPath(url);
 							
 							}
 							else if(photoType.equalsIgnoreCase("CADRE"))
 							{							
-									String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+									String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
 									returnVO.setVoterImgPath(url);
 							}
 							else
 							{
-								String url = "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+								String url = "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 								returnVO.setVoterImgPath(url);
 							}
 						}
@@ -6365,18 +6365,18 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						String photoType = obj[10].toString();
 						if(photoType.equalsIgnoreCase("NEW"))
 						{
-							String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+							String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
 							returnVO.setVoterImgPath(url);
 						
 						}
 						else if(photoType.equalsIgnoreCase("CADRE"))
 						{							
-								String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+								String url = "https://mytdp.com/images/cadre_images/"+obj[11].toString();
 								returnVO.setVoterImgPath(url);
 						}
 						else
 						{
-							returnVO.setVoterImgPath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId((Long)obj[4]));
+							returnVO.setVoterImgPath("https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId((Long)obj[4]));
 						}
 					}
 					}
@@ -6473,24 +6473,24 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						String photoType = obj[8].toString();
 						if(photoType.equalsIgnoreCase("NEW"))
 						{
-							String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+							String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
 							returnVO.setVoterImgPath(url);
 						
 						}
 						else if(photoType.equalsIgnoreCase("CADRE"))
 						{							
-								String url = "http://mytdp.com/images/cadre_images/"+obj[9].toString();
+								String url = "https://mytdp.com/images/cadre_images/"+obj[9].toString();
 								returnVO.setVoterImgPath(url);
 						}
 						else
 						{
-							String url = "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							String url = "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 							returnVO.setVoterImgPath(url);
 						}
 					}
 					else if(obj[8] == null && isOtherState.equalsIgnoreCase("true"))
 					{
-						returnVO.setVoterImgPath("http://mytdp.com/images/cadre_images/"+obj[9].toString());
+						returnVO.setVoterImgPath("https://mytdp.com/images/cadre_images/"+obj[9].toString());
 					}
 					}
 					catch(Exception e)
@@ -12840,7 +12840,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		            vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
 		            vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
 		            vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-		            vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+		            vo.setImgStr("https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
 		            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
 		            vo.setVoterCardNo(obj[9] != null ? obj[9].toString():"");
 		            vo.setRegThrough(obj[10] != null ? obj[10].toString():"");
@@ -12911,7 +12911,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		            vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
 		            vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
 		            vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-		            vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+		            vo.setImgStr("https://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
 		            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
 		            vo.setVoterCardNo(obj[9] != null ? obj[9].toString():"");
 		            vo.setRegThrough(obj[10] != null ? obj[10].toString():"");
@@ -13113,7 +13113,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
  		header+="<table cellspacing='0' cellpadding='0' width='100%' border='0' style='border-collapse:collapse'><tbody><tr>"+
  				"<td valign='top'><table cellspacing='0' cellpadding='0' width='100%' border='0' align='left' style='border-collapse:collapse'>"+
  				"<tbody><tr><td valign='top' style='text-align:left; padding-top:5px; padding-bottom:5px;'>"+
-                 "<img src='http://www.mytdp.com/images/mytdp_logo.png'  width='100%'/>"+
+                 "<img src='https://www.mytdp.com/images/mytdp_logo.png'  width='100%'/>"+
  				"</td></tr><tr><td valign='top' style='text-align:center;'>"+
  				"</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>";
  		
