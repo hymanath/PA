@@ -12,11 +12,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BirthDayDetailsVO;
 import com.itgrids.partyanalyst.dto.CrossVotingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IBirthDayDetailsService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -73,7 +75,26 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> publicationDatesList;
 	private boolean infoManager;
 	private List<SelectOptionVO>				selectOptionVOList;
+	private List<BirthDayDetailsVO> birthDaysList;
+	private IBirthDayDetailsService birthDayDetailsService;
+
 	
+	public IBirthDayDetailsService getBirthDayDetailsService() {
+		return birthDayDetailsService;
+	}
+
+	public void setBirthDayDetailsService(
+			IBirthDayDetailsService birthDayDetailsService) {
+		this.birthDayDetailsService = birthDayDetailsService;
+	}
+
+	public List<BirthDayDetailsVO> getBirthDaysList() {
+		return birthDaysList;
+	}
+
+	public void setBirthDaysList(List<BirthDayDetailsVO> birthDaysList) {
+		this.birthDaysList = birthDaysList;
+	}
 
 	
 	public List<SelectOptionVO> getSelectOptionVOList() {
@@ -545,6 +566,14 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			
+			if(entitlements.contains("LEADER_OCCASIONS_ENTITLEMENT".trim())){
+				birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(1L,"",null);
+				if(birthDaysList != null && birthDaysList.size()>0){
+					if(birthDaysList.get(3).getName().trim().equalsIgnoreCase("Today"))
+						session.setAttribute("birthDayCount", birthDaysList.get(3).getTotalCount());
+				}
+			}
+			
 			if(entitlements.contains("DEBATE_CREATE_ENTITLEMENT".trim())){
 				return "debate";
 			}
@@ -676,7 +705,6 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				return "affiliatedUnionRegistrationPage";
 			}
 		}
-		
 		
 		/*
 		
