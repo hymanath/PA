@@ -1845,7 +1845,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				if(address.equalsIgnoreCase("true"))
 				{
 					cadreAddressVO.setRefNo(params[10] != null ? params[10].toString() : "");
-					cadreAddressVO.setPhoto(params[11] != null ? "http://mytdp.com/cadre_images/"+params[11].toString() : "");
+					cadreAddressVO.setPhoto(params[11] != null ? "https://mytdp.com/cadre_images/"+params[11].toString() : "");
 					
 					String str = "";
 					String district =  params[5] != null ? params[5].toString()  : "";
@@ -1868,7 +1868,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				}				
 				if(address.equalsIgnoreCase("false"))
 				{
-					cadreAddressVO.setPhoto(params[5] != null ? "http://mytdp.com/cadre_images/"+params[5].toString() : "");
+					cadreAddressVO.setPhoto(params[5] != null ? "https://mytdp.com/cadre_images/"+params[5].toString() : "");
 				}
 				cadreAddressVOList.	add(cadreAddressVO);
 			}
@@ -1968,7 +1968,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
-				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "https://mytdp.com/images/cadre_images/"+params[4].toString() : "");
 				}
 				
 			}
@@ -1988,7 +1988,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
-				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "https://mytdp.com/images/cadre_images/"+params[4].toString() : "");
 			}
 		}
 		}
@@ -2023,7 +2023,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
-				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "https://mytdp.com/images/cadre_images/"+params[4].toString() : "");
 			}
 			
 		}
@@ -2619,8 +2619,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			  List<VerifierVO> resultList = null;
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
-			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
+			  WebResource webResource = client.resource("https://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
+			  //WebResource webResource = client.resource("https://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
     	 	  if (response.getStatus() != 200) {
     	 		 verifierVO =null;
@@ -3214,9 +3214,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 				Client client = Client.create();
 
-				//WebResource webResource = client.resource("http://localhost:8080/PartyAnalyst/WebService/getMobileAppAuthorizationURL");
-				//WebResource webResource = client.resource("http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/15-07-2015/15-07-2015/district/13/44");
-				WebResource webResource = client.resource("http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"");
+				//WebResource webResource = client.resource("https://localhost:8080/PartyAnalyst/WebService/getMobileAppAuthorizationURL");
+				//WebResource webResource = client.resource("https://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/15-07-2015/15-07-2015/district/13/44");
+				WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+"");
 				
 				ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 
@@ -3796,7 +3796,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				   
 				   if(latitude != null && longitude != null)
 				   {
-					   String url = "http://maps.google.com/maps?saddr=Current+Location&daddr="+latitude+","+longitude;
+					   String url = "https://maps.google.com/maps?saddr=Current+Location&daddr="+latitude+","+longitude;
 					   sb.append("Route to Polling Station\n");
 					   sb.append(url);
 				   }
