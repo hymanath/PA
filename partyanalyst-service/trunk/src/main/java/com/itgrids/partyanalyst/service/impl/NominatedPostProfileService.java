@@ -3882,7 +3882,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
 					}
 					
-					if(statusId != null && statusId.longValue() == 5l){
+					/*if(statusId != null && statusId.longValue() == 5l){
 						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
 						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
@@ -3911,7 +3911,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						nominatedPostFinal.setUpdatedBy(userId);
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
-					}
+					}*/
 					
 					NominatedPostComment nominatedPostComment = new NominatedPostComment();
 					nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
