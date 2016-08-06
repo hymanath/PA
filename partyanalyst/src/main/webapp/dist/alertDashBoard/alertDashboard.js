@@ -3,6 +3,7 @@ $(document).ready(function(){
 	getLocationLevelAlertCount();
 });
 $(document).on("click",'.applyBtn',function(){
+	$("#locationLevelDataId").html('');
 	getLocationLevelAlertCount();
 })
 function getLocationLevelAlertCount()
@@ -197,8 +198,8 @@ function getLocationLevelAlertData(levelId,statusId,fromDate,toDate)
 		     {
 			levelId  : levelId,
 			statusId :statusId,
-			fromDate :"",
-			toDate   :"",
+			fromDate :fromDate,
+			toDate   :toDate,
 			task : ""
 		      }
 			$.ajax({
@@ -280,7 +281,7 @@ function buildAlertData(result,jsObj)
 	str+='<th>Alert Type</th>';
 	str+='<th>Status</th>';
 	str+='<th>Involved No Of Candidates</th>';
-	str+='<th>Notofied Date</th>';
+	str+='<th>Notified Date</th>';
 	str+='<th>Information Source</th>';
 	str+='<th>Severity</th>';
 	if(jsObj.levelId == 2)
