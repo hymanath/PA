@@ -138,8 +138,8 @@ footer
 					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
                 </a>
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'LEADER_OCCASIONS_ENTITLEMENT' )}">
-					<a href="#" style="position:relative">
-						<span class="birthdayCount">${sessionScope.birthDayCount}</span>
+					<a href="birthDayAction.action" style="position:relative">
+						<span class="birthdayCount"> <b> ${sessionScope.birthDayCount} </b></span>
 						<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>
 					</a>
 				</c:if>
