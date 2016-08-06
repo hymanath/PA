@@ -1106,7 +1106,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
     
-    public List<Object[]> getCommitteesComparativeBascicReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,List<Long> basicCommitteeIds,int month,int year){
+    public List<Object[]> getCommitteesComparativeBascicReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,List<Long> basicCommitteeIds,Date date){
+    //public List<Object[]> getCommitteesComparativeBascicReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,String state,List<Long> basicCommitteeIds,Date date){
 		StringBuilder str = new StringBuilder();
         
 		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
@@ -1133,10 +1134,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		
 		str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
-		if( month > 0 && year > 0){
+		/*if( month > 0 && year > 0){
 			str.append( " and month(model.completedDate)= :month and year(model.completedDate) = :year" );
+		}*/
+		if(date != null){
+			str.append( " and date(model.completedDate) <= :date" );
 		}
-			
 		if(state!= null && !state.isEmpty() ){
 			str.append(" and model.state =:state ");
 		}
@@ -1149,17 +1152,21 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			query.setParameterList("committeeLevelValueIds", committeeLevelValueIds);
 		}
 		query.setParameterList("basicCommitteeIds", basicCommitteeIds);
-		if( month > 0 && year > 0){
+		/*if( month > 0 && year > 0){
 			query.setParameter("month",month);
 			query.setParameter("year",year);
+		}*/
+		if(date != null){
+			query.setDate("date",date);
 		}
 		if(state!= null && !state.isEmpty() ){
 			query.setParameter("state",state);
 		}
 		return query.list();
 	}
-    public List<Object[]> getCommitteesComparativeOverallReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,int month,int year){
-		StringBuilder str = new StringBuilder();
+    public List<Object[]> getCommitteesComparativeOverallReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,Date date){
+    //public List<Object[]> getCommitteesComparativeOverallReportChartQuery(Long userAccessLevelId ,List<Long> committeeLevelValueIds,List<Long> userAccessRequiredCommitteeLevelIds,String state,List<Long> basicCommitteeIds,int month,int year)
+    	StringBuilder str = new StringBuilder();
         
 		str.append(" select model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//1
 				"           model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name," +//3
@@ -1186,10 +1193,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		
 		str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
-		if( month > 0 && year > 0){
+		/*if( month > 0 && year > 0){
 			str.append( " and month(model.completedDate)= :month and year(model.completedDate) = :year" );
+		}*/
+		if(date != null){
+			str.append( " and date(model.completedDate) <= :date" );
 		}
-			
 		if(state!= null && !state.isEmpty() ){
 			str.append(" and model.state =:state ");
 		}
@@ -1203,9 +1212,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			query.setParameterList("committeeLevelValueIds", committeeLevelValueIds);
 		}
 		query.setParameterList("basicCommitteeIds", basicCommitteeIds);
-		if( month > 0 && year > 0){
+		/*if( month > 0 && year > 0){
 			query.setParameter("month",month);
 			query.setParameter("year",year);
+		}*/
+		if(date != null){
+			query.setParameter("date",date);
 		}
 		if(state!= null && !state.isEmpty() ){
 			query.setParameter("state",state);

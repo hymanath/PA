@@ -318,4 +318,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	 public List<Object[]> getZPTCConstituenciesForMandal(List<Long> tehsilIds);
 	 public List<Object[]> getMandalsForDistrictWiseDetails(List<Long> districtId);
 	 public List<Object[]> getVillagesForDistrictWiseDetails(List<Long> districtId);
+	 
+	 public List<Object[]> getConstituenctNamesByIds(List<Long> constituencyIds);
 }

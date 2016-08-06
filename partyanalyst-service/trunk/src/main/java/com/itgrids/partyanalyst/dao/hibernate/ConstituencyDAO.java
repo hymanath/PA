@@ -1880,7 +1880,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return query.list();
 	}
 	
-public List<Object[]> getVillagesForDistrictWiseDetails(List<Long> districtId){
+	public List<Object[]> getVillagesForDistrictWiseDetails(List<Long> districtId){
 		Query query = getSession().createSQLQuery(" select distinct  P.panchayat_id as panId,P.panchayat_name as name from constituency C,booth B " +
 				" left outer join panchayat P on B.panchayat_id=P.panchayat_id " +
 				" where B.constituency_id=C.constituency_id " +
@@ -1890,7 +1890,13 @@ public List<Object[]> getVillagesForDistrictWiseDetails(List<Long> districtId){
 		query.setParameterList("districtId", districtId);
 		return query.list();
 	}
-
+	
+	public List<Object[]> getConstituenctNamesByIds(List<Long> constituencyIds){
+		Query query = getSession().createQuery(" select model.constituencyId,model.name from Constituency model where model.constituencyId in (:constituencyIds) ");
+		query.setParameterList("constituencyIds",constituencyIds);
+		return query.list();
+	}
+	
 }
 
 

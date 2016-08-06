@@ -101,7 +101,7 @@ public interface IDistrictDAO extends GenericDao<District, Long>{
     public List<Object[]> getDistrictsList();
     public List<Long> getLocalBodiesOfDistrict(List<Long> distrctIds);
     public List<Object[]> getAllDistrictList(Long stateId);
-
+    public List<Object[]> getDistrictNamesByIds(List<Long> districtIds);
 
    
 }
