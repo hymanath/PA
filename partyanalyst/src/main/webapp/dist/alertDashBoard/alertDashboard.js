@@ -274,7 +274,7 @@ function buildAlertData(result,jsObj)
 	}
 	
 	str+='<div class="table-responsive">';
-	str+='<table class="table table-bordered bg_ff">';
+	str+='<table class="table table-bordered bg_ff" id="alertDataTableId">';
 	str+='<thead>';
 	//str+='<th>S.NO</th>';
 	//str+='<th>Desc</th>';
@@ -294,6 +294,7 @@ function buildAlertData(result,jsObj)
 	}
 	str+='<th></th>';	
 	str+='</thead>';
+	str+='</tbody>';
 	var j=0;
 	for(var i in result)
 	{
@@ -322,9 +323,11 @@ function buildAlertData(result,jsObj)
 	
 	str+='</tr>';	
 	}
+	str+='</tbody>';
 	str+='</table>';
 	str+='</div>';
 	$("#locationLevelDataId").html(str);
+	$("#alertDataTableId").dataTable(); 
 }
 var GlobalalertId;
 var globalAlertName;
