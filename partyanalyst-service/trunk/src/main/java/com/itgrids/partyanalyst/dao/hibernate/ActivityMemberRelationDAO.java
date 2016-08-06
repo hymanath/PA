@@ -20,11 +20,12 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
     " select  rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.tdpCadre.firstname," +//2
     "         amat.userType.userTypeId, amat.userType.type," +//4
     "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//7
-    "         rel.childActivityMember.tdpCadre.image " +//8
+    "         rel.childActivityMember.tdpCadre.image,amat.userType.shortName " +//9
     " from   ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
     " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
     "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
-    "        rel.parentMemberId = :parentActivityMemberId and amat.userType.userTypeId in (:childUserTypeIds) ");
+    "        rel.parentMemberId = :parentActivityMemberId and amat.userType.userTypeId in (:childUserTypeIds) and " +
+    "        rel.isActive = 'Y' ");
 	query.setParameter("parentActivityMemberId", parentActivityMemberId);
 	query.setParameterList("childUserTypeIds", childUserTypeIds);
 	return query.list();

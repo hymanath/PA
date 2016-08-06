@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +17,11 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IDashboardUserAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
@@ -45,7 +48,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 	private IActivityMemberDAO activityMemberDAO;
 	private IUserTypeRelationDAO userTypeRelationDAO;
 	private IActivityMemberRelationDAO activityMemberRelationDAO;
-	
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
 	//setters
 	public void setDashboardUserAccessLevelDAO(
 			IDashboardUserAccessLevelDAO dashboardUserAccessLevelDAO) {
@@ -88,9 +92,14 @@ public class CoreDashboardService implements ICoreDashboardService{
 			IActivityMemberRelationDAO activityMemberRelationDAO) {
 		this.activityMemberRelationDAO = activityMemberRelationDAO;
 	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
 	
 	//business methods.
-	
 	public UserDataVO getUserBasicDetails(Long userId){
 		
 		LOG.info(" entered in to getUserBasicDetails() ");
@@ -387,26 +396,30 @@ public class CoreDashboardService implements ICoreDashboardService{
 		List<CommitteeVO> finalList = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
-		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yyyy/dd");
 		try{
 			 String firstSetMonthName = null;
 			 int firstSetMonth = 0;
 			 int firstSetYear = 0;
+			 Date setFirstDate = null;
 		     if(firstMonthString != null && !firstMonthString.isEmpty()){
 		    	 firstSetMonthName = sdf1.format(sdf.parse(firstMonthString));
 		    	 String[] array = firstMonthString.split("/");
 		    	 firstSetMonth = Integer.valueOf(array[0]);
 		    	 firstSetYear  = Integer.valueOf(array[1]);
+		    	 setFirstDate = dateFormat.parse(firstMonthString+"/31");
 		     }
 		     
 		     String secondSetMonthName = null;
 		     int secondSetMonth = 0;
 			 int secondSetYear = 0;
+			 Date setSecondDate = null;
 		     if(secondMonthString != null && !secondMonthString.isEmpty()){
 		    	 secondSetMonthName = sdf1.format(sdf.parse(secondMonthString));
 		    	 String[] array = secondMonthString.split("/");
 		    	 secondSetMonth = Integer.valueOf(array[0]);
 		    	 secondSetYear  = Integer.valueOf(array[1]);
+		    	 setSecondDate =  dateFormat.parse(secondMonthString+"/31");
 		     }
 		     
 		     Map<Long,String> committeeNameMap   = getCommitteesNames();
@@ -437,8 +450,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 		    if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
 		    	userAccessLevelValues = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(userAccessLevelValues);
 		    }
-		    List<Object[]> firstSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeBascicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,firstSetMonth,firstSetYear);
-		    List<Object[]> secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeBascicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,secondSetMonth,secondSetYear);	 
+		    List<Object[]> firstSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeBascicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,setFirstDate);
+		    List<Object[]> secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeBascicReportChartQuery(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,setSecondDate);	 
 		    setComparativeDetails(firstSetCompletedList,finalMap,"set1");
 		    setComparativeDetails(secondSetCompletedList,finalMap,"set2");
 		    
@@ -482,27 +495,31 @@ public class CoreDashboardService implements ICoreDashboardService{
 		List<CommitteeVO> finalList = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
-		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yyyy/dd");
 		try{
 			
 			 String firstSetMonthName = null;
 			 int firstSetMonth = 0;
 			 int firstSetYear = 0;
+			 Date setFirstDate = null;
 		     if(firstMonthString != null && !firstMonthString.isEmpty()){
 		    	 firstSetMonthName = sdf1.format(sdf.parse(firstMonthString));
 		    	 String[] array = firstMonthString.split("/");
 		    	 firstSetMonth = Integer.valueOf(array[0]);
 		    	 firstSetYear  = Integer.valueOf(array[1]);
+		    	 setFirstDate = dateFormat.parse(firstMonthString+"/31");
 		     }
 		     
 		     String secondSetMonthName = null;
 		     int secondSetMonth = 0;
 			 int secondSetYear = 0;
+			 Date setSecondDate = null;
 		     if(secondMonthString != null && !secondMonthString.isEmpty()){
 		    	 secondSetMonthName = sdf1.format(sdf.parse(secondMonthString));
 		    	 String[] array = secondMonthString.split("/");
 		    	 secondSetMonth = Integer.valueOf(array[0]);
 		    	 secondSetYear  = Integer.valueOf(array[1]);
+		    	 setSecondDate =  dateFormat.parse(secondMonthString+"/31");
 		     }
 		     
 		     Map<Long,CommitteeVO> basicCommitteeMap = new LinkedHashMap<Long,CommitteeVO>(0);
@@ -513,8 +530,8 @@ public class CoreDashboardService implements ICoreDashboardService{
 		     if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue()){
 		    	 List<Long> districtAccessRequiredLevelIds = Arrays.asList(IConstants.DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS);
 		    	 setCommitteesComparativeInitialisationlogic(basicCommitteeMap,basicCommitteeIds,districtAccessRequiredLevelIds,firstSetMonthName,secondSetMonthName);
-		    	 firstSetCompletedList =  tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
-		    	 secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,secondSetMonth,secondSetYear);
+		    	 firstSetCompletedList =  tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,setFirstDate);
+		    	 secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,districtAccessRequiredLevelIds,state,basicCommitteeIds,setSecondDate);
 		     }
 		     else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue() || userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
 		    	 List<Long> assemblyConstIds = null;
@@ -525,15 +542,15 @@ public class CoreDashboardService implements ICoreDashboardService{
 		    		 assemblyConstIds =  userAccessLevelValues;
 		    	 }
 		    	 setCommitteesComparativeInitialisationlogic(basicCommitteeMap,basicCommitteeIds,ParOrConstAccessRequiredLevelIds,firstSetMonthName,secondSetMonthName);
-		    	 firstSetCompletedList  = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
-		    	 secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		    	 firstSetCompletedList  = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,setFirstDate);
+		    	 secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,assemblyConstIds,ParOrConstAccessRequiredLevelIds,state,basicCommitteeIds,setSecondDate);
 		    
 		     }
 		     else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
 		    	 List<Long> mandalAccessRequiredLevelIds = Arrays.asList(IConstants.MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS); 
 		    	 setCommitteesComparativeInitialisationlogic(basicCommitteeMap,basicCommitteeIds,mandalAccessRequiredLevelIds,firstSetMonthName,secondSetMonthName);
-		    	 firstSetCompletedList  = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
-		    	 secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,firstSetMonth,firstSetYear);
+		    	 firstSetCompletedList  = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,setFirstDate);
+		    	 secondSetCompletedList = tdpCommitteeDAO.getCommitteesComparativeOverallReportChartQuery(userAccessLevelId,userAccessLevelValues,mandalAccessRequiredLevelIds,state,basicCommitteeIds,setSecondDate);
 		     }
 		     
 		     setCommitteesComparativeCounts(firstSetCompletedList,basicCommitteeMap,"set1");
@@ -677,12 +694,20 @@ public class CoreDashboardService implements ICoreDashboardService{
 			Long activityMemberId = activityMemberDAO.findActivityMemberIdByUserId(userId);
 			Map<Long,List<Long>> ParentChildUserTypesMap = getParentUserTypesAndItsChildUserTypes();
 			finalVO = getActivityMemberDetails(activityMemberId,ParentChildUserTypesMap);
+			
+			Map<Long,List<Long>>  locationMap = new HashMap<Long,List<Long>>();
+			Map<String,String> locationValuesMap = new HashMap<String,String>();
+			
+			getAllLocationIds(finalVO,locationMap);
+			getLocationValues(locationMap,locationValuesMap);
+			assignLocationNames(finalVO,locationValuesMap);
+			
 		}catch(Exception e){
 			LOG.error("error occurred in getLoggedInUserStructure() of CoreDashboardService class",e);
 		}
 		return finalVO;
 	}
-	
+    
 	public UserTypeVO getActivityMemberDetails(Long activityMemberId,Map<Long,List<Long>> ParentChildUserTypesMap){
 		
 		UserTypeVO finalVO = new UserTypeVO();
@@ -697,12 +722,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 					 finalVO.setImage(obj[8]!=null? obj[8].toString() : "");
 					 finalVO.setUserTypeId(obj[1]!= null ? (Long)obj[1] : 0l);
 					 finalVO.setUserType(obj[2]!= null ? obj[2].toString() : "");
+					 finalVO.setShortName(obj[9]!= null ? obj[9].toString() : "");
 				 	 finalVO.setLocationLevelId(obj[3]!= null ? (Long)obj[3] : 0l);
 					 finalVO.setLocationLevelName(obj[4]!= null ? obj[4].toString() : "");
-					 if( finalVO.getLocationValues() == null){
-						finalVO.setLocationValues(new ArrayList<Long>());
+					 if( finalVO.getLocationValuesSet() == null){
+						finalVO.setLocationValuesSet(new HashSet<Long>());
 					 }
-					 finalVO.getLocationValues().add(obj[5]!= null ? (Long)obj[5] : 0l);
+					 finalVO.getLocationValuesSet().add(obj[5]!= null ? (Long)obj[5] : 0l);
 				  }
 			  }
 			  
@@ -717,7 +743,6 @@ public class CoreDashboardService implements ICoreDashboardService{
 						childDetails = activityMemberRelationDAO.getChildUserTypeMembers(finalVO.getActivityMemberId(), childUserTypeIds);
 					}
 					
-					
 					if( childDetails != null && childDetails.size() > 0){
 						for( Object[] obj : childDetails){
 							
@@ -730,6 +755,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 								userTypeVO = new UserTypeVO();
 								userTypeVO.setUserTypeId((Long)obj[3]);
 								userTypeVO.setUserType(obj[4]!=null?obj[4].toString():"");
+								userTypeVO.setShortName(obj[9]!=null?obj[9].toString():"");
 								userTypeVO.setSubMap(new LinkedHashMap<Long,UserTypeVO>(0));
 								finalVO.getSubMap().put((Long)obj[3],userTypeVO);
 							}
@@ -746,13 +772,13 @@ public class CoreDashboardService implements ICoreDashboardService{
 								activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
 								activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
 								activityMemberVO.setLocationLevelName(obj[6]!=null?obj[6].toString():"");
-								activityMemberVO.setLocationValues( new ArrayList<Long>());
+								activityMemberVO.setLocationValuesSet( new HashSet<Long>());
 								
 								
 								userTypeVO.getSubMap().put((Long)obj[0], getActivityMemberDetails(activityMemberVO.getActivityMemberId(),ParentChildUserTypesMap));
 							}
 							activityMemberVO = userTypeVO.getSubMap().get((Long)obj[0]);
-							activityMemberVO.getLocationValues().add(obj[7]!= null ?(Long)obj[7]:0l);
+							activityMemberVO.getLocationValuesSet().add(obj[7]!= null ?(Long)obj[7]:0l);
 						}
 					}
 					if(finalVO.getSubMap() != null && finalVO.getSubMap().size() > 0){
@@ -775,7 +801,85 @@ public class CoreDashboardService implements ICoreDashboardService{
 		}
 		return finalVO;
 	}
+	public void getAllLocationIds(UserTypeVO vo,Map<Long,List<Long>> locationMap){
+     	
+	   	   Long locationLevelId  = vo.getLocationLevelId();
+	   	   
+	   	   if(locationLevelId != null && locationLevelId > 0l){
+	   		   
+	   		   if(!locationMap.containsKey(locationLevelId)){
+	   			 List<Long> al = new ArrayList<Long>(); 
+	   			 locationMap.put(locationLevelId,al);
+	   		   }
+	   		   List<Long> al = locationMap.get(locationLevelId);
+	   		   if(vo.getLocationValuesSet()!= null && vo.getLocationValuesSet().size() > 0){
+	   			  al.addAll(vo.getLocationValuesSet());
+	   		   }
+	   	   }
+	   		
+	   	  if(vo.getSubList() != null && vo.getSubList().size() > 0){
+	   		 for( UserTypeVO usertypeVO : vo.getSubList() ){
+	   			 if( usertypeVO.getSubList() != null && usertypeVO.getSubList().size() > 0){
+	   				 for(UserTypeVO  memberVO : usertypeVO.getSubList()){
+	   					getAllLocationIds(memberVO,locationMap);
+	   				 }
+	   			 }
+	   		 }
+	   	  }
+	}
 	
+	public  void  getLocationValues( Map<Long,List<Long>> locationMap,Map<String,String> locationValuesMap){
+		
+		if(locationMap != null && locationMap.size() > 0){
+			
+			for(Long locationLevelId : locationMap.keySet()){
+				
+				List<Long> locationLevelValues = locationMap.get(locationLevelId);
+				
+				if( locationLevelValues != null && locationLevelValues.size() > 0){
+					
+					List<Object[]> values = null;
+					if(locationLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+						values = districtDAO.getDistrictNamesByIds(locationLevelValues);
+					}else if(locationLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+						values = constituencyDAO.getConstituenctNamesByIds(locationLevelValues);
+					}else if(locationLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+						values = constituencyDAO.getConstituenctNamesByIds(locationLevelValues);
+					}
+					
+					if( values != null && values.size() > 0){
+						for( Object[] obj : values){
+							locationValuesMap.put(locationLevelId+"_"+obj[0],obj[1]!=null ? obj[1].toString() : "");
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void assignLocationNames(UserTypeVO vo,Map<String,String> locationValuesMap){
+    	
+    	Long locationLevelId = vo.getLocationLevelId();
+    	if(locationLevelId != null && locationLevelId > 0l){
+    		if(locationLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID || locationLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID || locationLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID ){
+    			if( vo.getLocationValuesSet().size() == 1){
+    				vo.setLocationName( locationValuesMap.get(locationLevelId+"_"+vo.getLocationValuesSet().iterator().next().toString()) );
+    			}
+			}
+	   	 }
+    	
+    	if(vo.getSubList() != null && vo.getSubList().size() > 0){
+    		for(UserTypeVO usertypeVO : vo.getSubList()){
+    			if( usertypeVO.getSubList() != null && usertypeVO.getSubList().size() > 0){
+	   				 for(UserTypeVO  memberVO : usertypeVO.getSubList()){
+	   					assignLocationNames(memberVO,locationValuesMap);
+	   				 }
+	   			 }
+    		}
+    	}
+    	
+    }
+
 	public Map<Long,List<Long>> getParentUserTypesAndItsChildUserTypes(){
 		
 		Map<Long,List<Long>> userTypesMap = new HashMap<Long, List<Long>>();

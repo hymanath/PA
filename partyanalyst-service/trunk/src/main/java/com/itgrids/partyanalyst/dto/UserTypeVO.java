@@ -3,12 +3,14 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class UserTypeVO implements Serializable{
 	
 	private Long   id;
 	private String name;
 	private String image;
+	private String locationName;
 	
 	private Long   userId;
 	private Long   tdpCadreId;
@@ -16,9 +18,12 @@ public class UserTypeVO implements Serializable{
 	
 	private Long   userTypeId;
 	private String userType;
+	private String shortName;
+	
 	private Long   locationLevelId;
 	private String locationLevelName;
 	private List<Long> locationValues;
+	private Set<Long>  locationValuesSet;
 	
 	private Map<Long,UserTypeVO> subMap;
 	private List<UserTypeVO> subList;
@@ -103,6 +108,23 @@ public class UserTypeVO implements Serializable{
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+	public Set<Long> getLocationValuesSet() {
+		return locationValuesSet;
+	}
+	public void setLocationValuesSet(Set<Long> locationValuesSet) {
+		this.locationValuesSet = locationValuesSet;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 	
 }

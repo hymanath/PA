@@ -36,7 +36,7 @@ public class ActivityMemberDAO extends GenericDaoHibernate<ActivityMember,Long> 
 		"        model.userTypeId,model.userType.type, " +//2
 		"        model1.userLevel.userLevelId,model1.userLevel.level,model1.activityLocationValue, " +//5
 		"        model.activityMember.tdpCadreId,model.activityMember.tdpCadre.firstname," +//7
-		"        model.activityMember.tdpCadre.image " +//8
+		"        model.activityMember.tdpCadre.image,model.userType.shortName " +//9
 		" from  ActivityMemberAccessType model , ActivityMemberAccessLevel model1" +
 		" where model.activityMember.activityMemberId = model1.activityMember.activityMemberId " +
 		"       and model.activityMember.activityMemberId = :activityMemberId ");

@@ -25,7 +25,7 @@ public class ActivityMemberRelation {
 	private Long activityMemberRelationId;
 	private Long activityMemberId;
 	private Long parentMemberId;
-	
+	private String isActive;
 	
 	private ActivityMember childActivityMember;
 	private ActivityMember parentActivityMember;
@@ -77,6 +77,14 @@ public class ActivityMemberRelation {
 	public void setParentActivityMember(ActivityMember parentActivityMember) {
 		this.parentActivityMember = parentActivityMember;
 	}
+	
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
 
-
+	
 }

@@ -19,7 +19,8 @@ public class UserType extends BaseModel{
 	
 	private Long   userTypeId;
 	private String type;
-	 
+	private String shortName; 
+	
 	 public UserType() {}
 	 
 	 public UserType(Long userTypeId, String type) {
@@ -44,5 +45,14 @@ public class UserType extends BaseModel{
 	public void setType(String type) {
 		this.type = type;
 	}
-	 
+	
+	@Column(name = "short_name")
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	
 }
