@@ -3344,6 +3344,8 @@
 	  <property name="activityMemberDAO"  ref="activityMemberDAO"></property>
 	  <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
 	  <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
+	  <property name="districtDAO"  ref="districtDAO"></property>
+	  <property name="constituencyDAO"  ref="constituencyDAO"></property>
 	</bean>
 	<bean name="nominatedPostMainDashboardService"  class="com.itgrids.partyanalyst.service.impl.NominatedPostMainDashboardService">
 		<property name="positionDAO" ref="positionDAO"></property>
