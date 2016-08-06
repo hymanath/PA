@@ -18,14 +18,17 @@
 		});
 	}
 	$(document).on("click",".userStructureClass",function(){
-		var i =0;
-		i=i+1;
+	
 		var  userAccessLevelId =  $(this).attr("attr_userAccessLevelId")
 		var  userAccessLevelValuesString = $(this).attr("attr_userAccessLevelValuesString");
 		var  userAccessLevelValuesArray = [];
 		if($.trim(userAccessLevelValuesString).length > 0){
 			userAccessLevelValuesArray = userAccessLevelValuesString.split(",");
 		}
+		//MAKE SELECTED MEMBERS DATA AS GLOBAL
+		globalUserAccessLevelId = userAccessLevelId;
+		globalUserAccessLevelValues = userAccessLevelValuesArray;
+		
 		if($("#cumulativeId").is(':checked')){
 			getCommitteesCumulativeBasicReportChart(userAccessLevelId,userAccessLevelValuesArray);
 			getCommitteesCumulativeOverallReportCharts(userAccessLevelId,userAccessLevelValuesArray);
