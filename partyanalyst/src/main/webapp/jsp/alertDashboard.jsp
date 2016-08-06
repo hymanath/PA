@@ -254,6 +254,7 @@ $(document).ready(function(){
 	$(".ranges").addClass("rangesNew")
 });
 $(document).on("change","#dateRangePickerId",function(){
+	$("#locationLevelDataId").html('');
 	getLocationLevelAlertCount();
 })
 $(document).on("click","#createAlertBtn",function(){
