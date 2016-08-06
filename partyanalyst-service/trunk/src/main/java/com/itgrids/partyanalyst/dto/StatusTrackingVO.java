@@ -12,8 +12,8 @@ public class StatusTrackingVO {
 	private String uname;
 	private String date;
 	private String time;
+	private List<IdNameVO> subList;
 	private List<String> commentsList;
-	
 	private boolean current;
 	private Long fromStatusId;
 	private String fromStatus;
@@ -33,12 +33,6 @@ public class StatusTrackingVO {
 	}
 	public void setActionStatus(String actionStatus) {
 		this.actionStatus = actionStatus;
-	}
-	public List<String> getCommentsList() {
-		return commentsList;
-	}
-	public void setCommentsList(List<String> commentsList) {
-		this.commentsList = commentsList;
 	}
 	
 	public Long getFromStatusId() {
@@ -113,6 +107,20 @@ public class StatusTrackingVO {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	
+	public List<IdNameVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<IdNameVO> subList) {
+		this.subList = subList;
+	}
+	public List<String> getCommentsList() {
+		return commentsList;
+	}
+	public void setCommentsList(List<String> commentsList) {
+		this.commentsList = commentsList;
+	}
+	
 	
 	
 
