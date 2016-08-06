@@ -282,7 +282,7 @@ function buildAllMemberBdayDetails(result1,searchType){
 					if(result.subList[i].name == null || result.subList[i].name == 0){
 					 str+='<td> - </td>';
 					 }else{
-						 str+='<td><a href="cadreDetailsAction.action?cadreId='+result.subList[i].id+'" style="cursor:pointer;" title="" data-placement="top" data-toggle="tooltip" target="_blank" data-original-title="Cadre Details">'+result.subList[i].name+' - '+result.subList[i].addressVO.constituencyName+'</a></td>';
+						 str+='<td><a href="cadreDetailsAction.action?cadreId='+result.subList[i].id+'" style="cursor:pointer;" title="" data-placement="top" data-toggle="tooltip" target="_blank" data-original-title="Cadre Details">'+result.subList[i].name+' - '+result.subList[i].addressVO.constituencyName+' Constituency</a></td>';
 					 }
 					
 					 var str1='';var flag=false;
