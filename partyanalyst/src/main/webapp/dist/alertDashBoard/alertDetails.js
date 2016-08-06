@@ -96,18 +96,18 @@ function getAlertStatusCommentsTrackingDetails()
 						str+='<div class="arrow_box_left">';
 						if(result[i].id == 1)
 						{
-						str+='<p> <span class="text-success"></span> Alert '+result[i].status+' on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						str+='<p> <span class="text-success"></span> Alert <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 						}
 						else
 						{
 							str+='<p>Alert status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 						}
-						if(result[i].commentsList != null && result[i].commentsList.length > 0){
+						if(result[i].subList != null && result[i].subList.length > 0){
 							
 								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
 								str+='<ul class="commentsUlCls">';
-							for(var j in result[i].commentsList){
-								str+='<li>'+result[i].commentsList[j]+'</li>';	
+							for(var j in result[i].subList){
+								str+='<li>'+result[i].subList[j].name+' on '+result[i].subList[j].dateStr+' By <b>'+result[i].subList[j].status+'</b></li>';	
 							}
 								str+='</ul>';
 						}
