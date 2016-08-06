@@ -3363,7 +3363,8 @@
 	   
 		<property name="leaderOccasionDAO" ref="leaderOccasionDAO"></property>
 		<property name="leaderOccasionWishDetailsDAO" ref="leaderOccasionWishDetailsDAO"></property>
-	
+		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
 	</bean>
 </beans>		
 	
