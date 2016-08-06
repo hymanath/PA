@@ -353,12 +353,12 @@ public String getWishingDetails(Long searchId,Long userId) {
 	List<TdpCadreVO> cadreVOs = new ArrayList<TdpCadreVO>();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 	String year = sdf.format(new Date());
-	Date date = new Date(); // your date
+	Date date = new DateUtilService().getCurrentDateAndTime(); // your date
     Calendar cal = Calendar.getInstance();
     cal.setTime(date);
     int calyear = cal.get(Calendar.YEAR);
      try{
-    	 TdpCadreVO tdpCadreVO = new TdpCadreVO();
+    	// TdpCadreVO tdpCadreVO = new TdpCadreVO();
     	 LeaderOccasionWishDetails leaderOcassion = leaderOccasionWishDetailsDAO.getLeaderOccassiobnWishngDetails(searchId,String.valueOf(calyear),userId);
     	 	if(leaderOcassion == null){
 	    		 LeaderOccasionWishDetails  leaderocsnWishDtls = new LeaderOccasionWishDetails();
@@ -367,6 +367,7 @@ public String getWishingDetails(Long searchId,Long userId) {
 	    		 leaderocsnWishDtls.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 	    		 leaderocsnWishDtls.setIsDeleted("false");
 	    		 leaderocsnWishDtls.setYear(year);
+	    		 leaderocsnWishDtls.setWishedBy(userId);
 	    		 leaderOccasionWishDetailsDAO.save(leaderocsnWishDtls);	
     	 	}
     	 	else {
