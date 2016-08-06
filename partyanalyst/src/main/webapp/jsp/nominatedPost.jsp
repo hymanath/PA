@@ -13,7 +13,6 @@
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
-<link href="dist/Plugins/Dropzone/basic.css" rel="stylesheet" type="text/css"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <link href="dist/Plugins/Datatables/datatables.css" rel="stylesheet" type="text/css"/>
@@ -185,6 +184,7 @@
                 <div class="row" class="searchMemberCls">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
 					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
+					<div id="searchErrDiv" style="color:red;"></div>
                         <div class="searchDiv">
                             <div class="row">
                                 <div class="col-md-9 col-sm-9 col-xs-12 col-lg-9 pad_right0">
@@ -204,11 +204,11 @@
 										<input type="hidden" id="cadreSearchType" value="membershipId" />
                                     </div>
                                     <input type="text" class="form-control" id="searchBy"/>
-									<div id="searchErrDiv" style="color:red;"></div>
                                 </div>
-                                <div class="col-md-3 col-sm-3 col-xs-3 col-lg-3 pad_left0">
+                                <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 pad_left0">
                                     <button class="btn btn-success btn-block btnSearch" id="searchbtn">SEARCH</button>
                                 </div>
+								
                             </div>
                         </div>
                      </div>
@@ -255,8 +255,7 @@
                         	<div id="searchData"></div>
                         	<div class="" id="scrollDivId" style="display:none;">
 								<div  id="cadreSearchDtls" ></div>
-                                
-								<div class="" id="loadingSmblDivId"></div>
+                                <div class="" id="loadingSmblDivId"></div>
                              </div>							
                              <p class="text-muted" id="textId" style="display:none;"><small>Note: Please select matches profile</small></p>
 	                </div>
@@ -763,9 +762,9 @@
       </div>
       <div class="modal-body">
         <div class="row">
-					<div class="col-md-12">
+					<div class="col-md-12 col-xs-12 col-sm-12">
 					<div style="background:#fff">
-					<div class="col-md-3 advanceSearchCls">
+					<div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls">
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
 							<option value="0">Select Search Type</option>
@@ -779,12 +778,12 @@
 					</div>
 					
 					
-					 <div class="col-md-3 pad_0 advanceSearchCls advanceprclsDiv">
+					 <div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
 						<label class="advanceNameCls">Search By Name/Membership No*<span class="text-danger">*</span></label>
 						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 						
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-3 col-xs-12 col-sm-6">
 						<label class="advancePRCls">Search Designation</label>
 						 <select class="advancePRCls dropkickClass"  id="advanceDesignationId" onchange="getLevelByDesignation();">
 							<option value="0">Select Designation</option>
@@ -793,7 +792,7 @@
 					</div>
 					
 						
-						<div class="col-md-3 levelShowCls" >
+						<div class="col-md-3 col-xs-12 col-sm-6 levelShowCls" >
 							<label>Level</label>
 							<select class="dropkickClass" id="alertlevelId" attr-index="0" onchange="disableByLevel('');" >
 							<option value="2">State</option>
@@ -803,7 +802,7 @@
 							 <option value="6">Village/Ward</option>
 							</select>
 						</div>
-						<div class="col-md-3 stateShowCls" >
+						<div class="col-md-3 col-xs-12 col-sm-6 stateShowCls" >
 							<label>State</label>
 							 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
 								 <option value="0">Select State</option>
@@ -812,24 +811,24 @@
 							 </select>
 						</div>
 				   
-						<div class="col-md-3 locationsFilterCls distCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls distCls">
 							 <label>District</label>
 							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
 							 <option value="0">Select District</option></select>
 						</div>
-						<div class="col-md-3 locationsFilterCls constiCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls constiCls">
 							<label>Assembly</label>
 							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
 							<option value="0">Select Assembly</option>
 							</select>
 						</div>
-						<div class="col-md-3 locationsFilterCls mandalCls">
+						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
 							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" >
 								<option value="0">Select Mandal/ Municipality</option>
 							 </select>
 						</div>
-						<div class="col-md-3 locationsFilterCls panchayatCls">
+						<div class="col-md-3  col-xs-12 col-sm-6 locationsFilterCls panchayatCls">
 							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" >
 							<option value="0">Select Panchayat/Ward</option>
@@ -840,7 +839,7 @@
 						
 						<div>
 									<div class="advanceCadreCommittee" id="referCommitteeDiv">
-									 <div class="col-md-3">
+									 <div class="col-md-3 col-xs-12 col-sm-6">
 										<label>Select Committee</label>
 										<select id="referCommitteeId" class="dropkickClass" >
 											<option value="0">All</option>
@@ -856,7 +855,7 @@
 									  </div>
 									</div> 
 									<div >
-										<div class="col-md-6">
+										<div class="col-md-6 col-xs-12 col-sm-6">
 											<select id="cadreCommitteeDiv" multiple class="advanceCadreCommittee" style="width:250px !important;"></select>
 											<div id="representativesDiv"></div>
 											<div id="referRoleErrorDiv"></div>
@@ -869,16 +868,16 @@
 
 
 											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
-						<div class="col-md-2">
+						<div class="col-md-3 col-xs-12 col-sm-6">
 							<button type="button" class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();" id="searchBtnId"  style="margin-top: 25px;display:none;">Search Member</button>
 						</div>
-						<div class="col-md-1">
+						<div class="col-md-1 col-xs-12 col-sm-1">
 							<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
 						</div>
 							<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 						
 						<div class="row m_top25">
-						<div class="col-md-12" id="clearSerchDivId">
+						<div class="col-md-12 col-xs-12 col-sm-12" id="clearSerchDivId">
 							<div id="apptmemberDetailsDiv"></div>
 						</div>
 					</div>
