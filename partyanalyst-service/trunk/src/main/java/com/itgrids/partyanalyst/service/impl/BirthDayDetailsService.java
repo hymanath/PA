@@ -18,16 +18,21 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.ILeaderOccasionDAO;
 import com.itgrids.partyanalyst.dao.ILeaderOccasionWishDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BirthDayDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.model.LeaderOccasionWishDetails;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IBirthDayDetailsService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class BirthDayDetailsService implements IBirthDayDetailsService {
 	private final static Logger LOG = Logger.getLogger(BirthDayDetailsService.class);
@@ -37,8 +42,18 @@ public class BirthDayDetailsService implements IBirthDayDetailsService {
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	private ITdpCadreDAO tdpCadreDAO;
+	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 	
 	
+	
+	
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
 	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
 		return tdpCommitteeMemberDAO;
 	}
@@ -94,6 +109,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 		 List<BirthDayDetailsVO> returnList = new LinkedList<BirthDayDetailsVO>();
 		try {
 			Long totalCount = 0l;
+			List<Long> tdpCadreIdsList = new ArrayList<Long>();
 			//dataBuildTypeStr ="Today";
 			if(dataBuildTypeStr.trim().length() ==0)
 				dataBuildTypeStr=" Today ";
@@ -178,6 +194,8 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 							BirthDayDetailsVO cadreVO = new BirthDayDetailsVO();
 							cadreVO.setName(cadreName);
 							cadreVO.setId(tdpCadreId);
+							if(!tdpCadreIdsList.add(tdpCadreId));
+							tdpCadreIdsList.add(tdpCadreId);
 							cadreVO.setMobileNo(mobileNO);
 							cadreVO.setImageStr(imageStr);
 							cadreVO.setbDayDate(finalString.toString().trim().substring(4));
@@ -300,8 +318,12 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 					              return vo1.getName().compareTo(vo2.getName());
 					          }
 					   });
-				    
+				      
+				      //Add Location For Cadre
+				     if(memberDetailsVOLst != null && memberDetailsVOLst.size() > 0)
+				  	setAddressForCadre(memberDetailsVOLst,tdpCadreIdsList);
 					dayVO.setSubList(memberDetailsVOLst);
+					
 					dayVO.setIdNameVOList(positionList);
 					dayVO.setTotalPosCount(totalCount);
 				}
@@ -330,6 +352,48 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 		}
 		return returnList;
 	}
+
+public void setAddressForCadre(List<BirthDayDetailsVO> cadreList,List<Long> tdpCadreIdsList)
+{
+	
+	try{
+		
+		 List<Object[]> list = tdpCadreDAO.getUserAddressForCadre(tdpCadreIdsList);
+	
+		 for(Object[] params : list)
+		 {
+			 AddressVO vo = null;
+			 BirthDayDetailsVO cadreVO = (BirthDayDetailsVO) setterAndGetterUtilService.getMatchedVOfromList(cadreList, "id", params[0].toString());
+				if(cadreVO != null)
+				{
+					if(params[1] != null)
+						{
+						 vo = new AddressVO();
+						UserAddress userAddress = (UserAddress) params[1];
+						vo.setConstituencyId(Long.valueOf(userAddress.getConstituency() != null ? userAddress.getConstituency().getConstituencyId().toString():"0"));
+						vo.setConstituencyName(userAddress.getConstituency() != null ?userAddress.getConstituency().getName() : "");
+						vo.setDistrictId(Long.valueOf(userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictId().toString():"0"));
+						vo.setDistrictName(userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() : "");
+						vo.setMandalId(Long.valueOf(userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilId().toString():"0"));
+						vo.setMandalName(userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilName() : "");
+						vo.setPanchaytId(Long.valueOf(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatId().toString():"0"));
+						vo.setPanchayatName(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
+						vo.setLocalElectionBodyId(Long.valueOf(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getLocalElectionBodyId().toString():"0"));
+						vo.setLocalElectionBodyName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() : "");
+						vo.setWardId(Long.valueOf(userAddress.getWard() != null ? userAddress.getWard().getConstituencyId().toString():"0"));
+						vo.setWardName(userAddress.getWard() != null ? userAddress.getWard().getName() : "");
+						}
+					
+				}
+				cadreVO.setAddressVO(vo);
+		 }
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+}
 public BirthDayDetailsVO getMatchedVOById(List<BirthDayDetailsVO> memberDetailsVOLst,Long id)
 {
 	try{

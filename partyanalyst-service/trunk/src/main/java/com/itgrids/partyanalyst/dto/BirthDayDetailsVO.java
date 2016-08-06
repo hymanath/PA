@@ -24,8 +24,16 @@ public class BirthDayDetailsVO implements Serializable {
 	private Long occasionId; 
 	private Long totalPosCount;
 	private List<BirthDayDetailsVO> designationWiseList = new ArrayList<BirthDayDetailsVO>(0);
+	private AddressVO addressVO;
 	
 	
+	
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
 	public Long getTotalPosCount() {
 		return totalPosCount;
 	}
