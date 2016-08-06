@@ -1673,7 +1673,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[5].trim());
 								if(vo != null){
 									
-									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[5]));
+									vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
 									vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
 									vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
 									
