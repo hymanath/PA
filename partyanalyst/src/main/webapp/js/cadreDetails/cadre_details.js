@@ -1712,7 +1712,7 @@ function buildNominatedReports()
 		}
 		else
 		{
-			$("#profilesInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="nominatedreportsId" title="No Profiles are available" ></i>');
+			$("#profilesInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:gray;" id="" title="No Profiles are available" ></i>');
 		}
 }
 	function buildTotalComplaints(result,complaintId)

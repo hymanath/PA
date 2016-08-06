@@ -217,7 +217,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                                     <p class="m_0"><strong>REGISTERED ON</strong>: <span id="registeredOnId"></span></p>
                                     <p class="m_0"><strong>REG. THROUGH</strong>: <span id="registeredAtId"></span></p>
 
-									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="notesId" title="Click Here To Get Notes Details"></i>
+									<p class="m_0"><strong>Notes</strong>: <i class="glyphicon glyphicon-book remove-icon notesClass" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:gray;" id="notesId" title="Click Here To Get Notes Details"></i>
 								<!--
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'USER_NOTES_ENTITLEMENT' )}">
 									<p class="m_0"><strong>Notes </strong>: <i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;" id="notesId" title="Click Here To Get Notes Details"></i></p>
@@ -2538,7 +2538,7 @@ function buildReport()
 		}
 		else
 		{
-			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:red;" id="reportsId" title="No Reports are available" ></i>');
+			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:gray;" id="reportsId" title="No Reports are available" ></i>');
 		}
 }
 </script>
