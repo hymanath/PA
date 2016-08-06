@@ -3365,6 +3365,7 @@
 		<property name="leaderOccasionWishDetailsDAO" ref="leaderOccasionWishDetailsDAO"></property>
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO"></property>
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 </beans>		
 	

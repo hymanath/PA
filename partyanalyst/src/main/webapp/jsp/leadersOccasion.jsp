@@ -269,7 +269,7 @@ function buildAllMemberBdayDetails(result1,searchType){
                 str+='<thead>';
                 str+='<th>Photo</th>';
                 str+='<th>Name</th>';
-                str+='<th>Designation</th>';
+                str+='<th style="width:104px;">Designation</th>';
                 str+='<th>Date</th>';
                 str+='<th>Mobile</th>';
                 str+='<th>Wished</th>';
@@ -282,7 +282,7 @@ function buildAllMemberBdayDetails(result1,searchType){
 					if(result.subList[i].name == null || result.subList[i].name == 0){
 					 str+='<td> - </td>';
 					 }else{
-						 str+='<td>'+result.subList[i].name+'</td>';
+						 str+='<td><a href="cadreDetailsAction.action?cadreId='+result.subList[i].id+'" style="cursor:pointer;" title="" data-placement="top" data-toggle="tooltip" target="_blank" data-original-title="Cadre Details">'+result.subList[i].name+' - '+result.subList[i].addressVO.constituencyName+'</a></td>';
 					 }
 					
 					 var str1='';var flag=false;
@@ -370,6 +370,11 @@ $(document).on("click",".memberCls",function(){
 	memberTypeGlobal = $(this).attr("attr_member_name");
 	getBirthDayDetails(todayGlobal,memberTypeGlobal);
 });
+
+$(document).on("click",".cadreDetailsCls",function(){
+		var cadreId=$(this).attr("attr_cadre_id");
+		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
+	});
 </script>
 </body>
 </html>
