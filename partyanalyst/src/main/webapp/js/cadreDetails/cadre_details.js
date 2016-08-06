@@ -1851,7 +1851,7 @@ function getMemberComplaints()
   $("#familyHospitalizationInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
   $("#familyRequestAmount").html('');
   $("#familyMemberDiv").html('');
-  .ajax({
+    $.ajax({
 			type : "POST",
 			url: wurl+"/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
