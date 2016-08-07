@@ -39,7 +39,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getAllApplicationStatusList();
 	public String savingAnyPostCandidatesToPosition(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
 						final Long deptId,final Long boardId,final Long positionId,final Long statusId,final String comment);
-	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId);
+	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status);
     public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchValue);
     public ResultStatus saveNotcadreRegistrationPost(final  AddNotcadreRegistrationVO notcadreRegistrationVO,final Map<File,String> mapfiles,final Long loggerUserId);
 	public List<IdNameVO> getCastesForAP();
@@ -55,9 +55,9 @@ public interface INominatedPostProfileService {
 	public List<NominatedPostDashboardVO> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId);
 	public Long validateVoterIdCardNo(String voterIdCardNo);
 	public List<IdNameVO> getOpenedPositionsBoardLevels();
-	public List<IdNameVO> getStatesForOpenedPositions();
-	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId);
-	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId);
-	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId);
-	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId);
+	public List<IdNameVO> getStatesForOpenedPositions(Long boardLevelId);
+	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId,Long boardLevelId);
+	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId,Long boardLevelId);
+	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId,Long boardLevelId);
+	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId,Long boardLevelId);
 }
