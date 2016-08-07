@@ -722,7 +722,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		 	   }
 		       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId)");
 		       
-		       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' and model.nominatedPostStatusId = 2 ");
+		       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' and model.nominatedPostStatusId = 3 ");
 		       
 		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 		    	   if(LocationLevelId.longValue() != 5L)
