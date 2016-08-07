@@ -379,7 +379,7 @@
 								</span>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Nominated Post Level</label>
-									<select class="chosenSelect boardLvlCls boardLvelCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments(0);" attr_no="">
+									<select class="chosenSelect boardLvlCls boardLvelCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments(0);getOpenedPostionsStates('nominatedStaeId','')" attr_no="">
 									<option value="0">Select Post Level</option>
 									</select>
 								</div>

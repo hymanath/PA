@@ -104,6 +104,25 @@
     	
 	</div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="readyToFinalReviewDiv" role="dialog">  
+	<div class="modal-dialog" style="width:60%;">      
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Move postion to final review </h4>
+			</div>
+			<div class="modal-body" id="readyToFinalRevieId">
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="readyToFinalRevewBtn"> Update </button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 var globalLevelId = '${param.lId}';
 var globalStateId = '${param.stId}'; 
@@ -130,7 +149,7 @@ $(document).ready(function() {
 		$("#manTowDivMainId").hide();
 	}	
 	$(".filterSection").hide();
-	$( "#locationWiseDataId" ).trigger( "click" );
+	setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 1000);
 });
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
