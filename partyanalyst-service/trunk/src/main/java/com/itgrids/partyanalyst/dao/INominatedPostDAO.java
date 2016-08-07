@@ -21,16 +21,16 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Object[]> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> levelValue,String statusType, Long searchlevelId,Long searchLevelValue);
 	public List<Object[]> getNominatedPostsByBoardsAndDeptsForOpen(Long boardLevelId,List<Long> levelValue,List<Long> deptId,List<Long> boardId,String statusType);
 	public List<NominatedPost> getNominatedPostDetailsByNominatedPostMember(Long nominatedPostMemberId);
-	public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue);
-	public List<Object[]> getOpenedPositionsCountForBoardsByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue);
+	public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status);
+	public List<Object[]> getOpenedPositionsCountForBoardsByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status);
 	public List<Object[]> getTotalPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId);
 	public Long getNoCandiateCntPositionAndLocationWise(Long positionId,Long boardLevelId);
 	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue);
 	public List<Object[]> getTotalCorpAndBoardsAndPositions(Long boardLevelId, Date startDate,Date endDate,Long stateId);
 	public List<Object[]> getBoardLevelsForOpenedPositions();
-	public List<Object[]> getStatesForOpenedPositions();
-	public List<Object[]> getOpenPositionDistrictsForState(Long stateId);
-	public List<Object[]> getOpenPositionConstituenciesForDistrict(Long districtId);
-	public List<Object[]> getMandalMuncilIdsForConstituency(Long constituencyId);
-	public List<Object[]> getPanchayWardIdsForMandal(Long id,String type,Long constituencyId);
+	public List<Object[]> getStatesForOpenedPositions(Long boardLevelId);
+	public List<Object[]> getOpenPositionDistrictsForState(Long stateId,Long boardLevelId);
+	public List<Object[]> getOpenPositionConstituenciesForDistrict(Long districtId,Long boardLevelId);
+	public List<Object[]> getMandalMuncilIdsForConstituency(Long constituencyId,Long boardLevelId);
+	public List<Object[]> getPanchayWardIdsForMandal(Long id,String type,Long constituencyId,Long boardLevelId);
 }
