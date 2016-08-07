@@ -47,9 +47,15 @@ public class NomintedPostMemberVO {
 	private Long levelValue;
 	private Long levelId;
 	private String levelName;
+	private String imageURL;
 	
 	
-	
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
 	public Long getLevelId() {
 		return levelId;
 	}
