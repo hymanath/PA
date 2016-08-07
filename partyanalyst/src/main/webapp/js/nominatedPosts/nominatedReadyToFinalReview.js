@@ -225,7 +225,8 @@ function getFinalReviewCandidateCountLocationWise(LocationLevelId,locationLevelV
 		LocationLevelId : LocationLevelId,
 		locationLevelValueArr : locationLevelValueArr,
 		departmentId : departmentId,
-		boardId : boardId
+		boardId : boardId,
+		status : gblStatus
 	};
 	$.ajax({
 			type : "POST",
@@ -260,9 +261,9 @@ function buildCandidateReviewRslt(result){
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
-		  str+='<li role="presentation" class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="label label-primary pull-right labelCustom">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
+		  str+='<li role="presentation" class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="label label-primary pull-right labelCustom" title="Total Opened Positions">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
 		 }else{
-		 str+='<li role="presentation"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab">'+result[i].name+' <span class="label label-primary pull-right labelCustom">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
+		 str+='<li role="presentation"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab">'+result[i].name+' <span class="label label-primary pull-right labelCustom" title="Total Opened Positions">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
 		}
       }
 	  str+='</ul>';
@@ -285,7 +286,7 @@ function buildCandidateBoardRslt(result,departmentId){
 							str+='<span>'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str+='<span class="label label-primary pull-right labelCustom">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
@@ -300,7 +301,7 @@ function buildCandidateBoardRslt(result,departmentId){
 							str+='<span>'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str+='<span class="label label-primary pull-right labelCustom">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
@@ -326,7 +327,7 @@ var str = '';
                             	str+='<div class="col-md-10 col-xs-12 col-sm-10 pad_right0 ">';
                                 	str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
                                     	str+='<span>'+result[i].name+'</span>';
-                                        str+='<span class="label label-primary labelCustom pull-right">'+result[i].count+'</span>';
+                                        str+='<span class="label label-primary labelCustom pull-right" title="Total Opened Positions">'+result[i].count+'</span>';
                                     str+='</div>';
                                 str+='</div>';
                                 str+='<div class="col-md-2 col-xs-12 col-sm-2 pad_left0 ">';
@@ -403,7 +404,7 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $(this).attr("attr_filePath");
-	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+	str += '<iframe src="https://mytdp.com/'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
 }); 
@@ -431,7 +432,19 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
 			str+='<tr>';
-				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+				if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
+					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+				else
+					str+='<i class="glyphicon glyphicon-user"></i> ';				
+					str+=' '+result.subList[i].voterName+'</a>';
+				}else{
+					str +='<td><img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/> '+result.subList[i].voterName+'';
+				}
+				
+				str+=' </td>';
 				str+='<td>'+result.subList[i].voterMoblie+'</td>';
 				str+='<td>'+result.subList[i].voterGender+'</td>';
 				str+='<td>'+result.subList[i].age+'</td>';
@@ -491,7 +504,11 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='<td> - </td>';
 				str+='<td style="position:relative;width:180px">';
 					str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
-					str+='<span class="commentCount">'+result.subList[i].commentCount+'</span>';
+					if(result.subList[i].commentCount != null)
+						str+='<span class="commentCount">'+result.subList[i].commentCount+'</span>';
+					else						
+						str+='<span class="commentCount">0</span>';
+					
 					str+='<div class="commentsDiv">';
 						str+='<div class="commentDropDownArrow" id="commentsDivId'+i+'">';
 							
@@ -512,6 +529,8 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 							str+='<label class="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
+								str+='<option value="4">Rejected-Final Review</option>';
+								str+='<option value="5">Confirmed</option>';
 							str+='</select>';
 							str+='<label class="m_top10">Comments</label>';
 							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
@@ -565,7 +584,8 @@ $(document).on("click",".wishListCls",function(){
 
 $(document).on("click",".statusUpdateBntCls",function(){
 	var selectDivId = $(this).attr("attr_status_id");
-	getApplicationStatus(selectDivId);
+	$("#"+selectDivId).chosen();
+	//getApplicationStatus(selectDivId);
 });
 
 function getApplicationStatus(divId){
