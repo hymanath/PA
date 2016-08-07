@@ -274,9 +274,9 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px">';
 			  for(var i in result){
 				if(result[i].availableCount != null)
-					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;">'+result[i].availableCount+'</span></a></li>';
+					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;">'+result[i].availableCount+'</span></a></li>';
 				else
-					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" style="font-weight:bold;"> 0 </span></a></li>';	
+					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> 0 </span></a></li>';	
 			  }
 			  str+='</ul>';
 			str+='</div>';
@@ -290,14 +290,14 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 							 str+='<div class="panel panel-default">';
 								/* str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_levelId='+levelId+' attr_levelValue='+levelValues+' attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">'; */
 								
-								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
+								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
 										str+='<h4 class="panel-title text-capital"  style="text-transform: uppercase;">'+result[i].idnameList[j].name+'';
 										if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
-											str+='<span class="text-danger" style="font-weight:bold;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
+											str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										else
-											str+='<span class="text-danger" style="font-weight:bold;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
+											str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										if(result[i].idnameList[j].percentage != null && result[i].idnameList[j].percentage !="0.00" && 
 										 result[i].idnameList[j].percentage !="0")
 											str+='<span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
@@ -468,13 +468,13 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					} 
 			
 				str+='<tr>';
-				
+			
 				if(result[i].id != null){
 					if(shortListed !=null && shortListed>0){
-						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_finalReviewCls="" />'+result[i].name+'</label></td>';
+						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_finalReviewCls="" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" />'+result[i].name+'</label></td>';
 					}
 					 else{
-						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;">'+result[i].name+'</span></label></td>';
+						str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'">'+result[i].name+'</span></label></td>';
 					}					
 				}else{
 						str+='<td><label>Any Post</td>';
@@ -484,7 +484,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 						str+='<td>'+result[i].receivedCount+'</td>';
 						if(rdyToShortlist>0){
 							if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
-								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
+								str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
 							else
 								str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" > '+rdyToShortlist+'</td>';
 						}
@@ -536,7 +536,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 		str+='</table>';
 		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open" && globalStatus != "notRecieved")){
 			str+='<div class="pad_15">';
-				str+='<button class="btn btn-success moveToFinalReviewCls"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
+				str+='<button class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
 				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 			str+='</div>';
 		}
@@ -632,7 +632,31 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 	var boardId = $(this).attr('attr_board_id');
 	var positionId = 1;
 	//var searchLevelValue =stateId;
-		
+	
+	/*
+	var availableCount = 0;
+	var shortListedCount=0;
+	
+		$("#readyToFinalReviewDiv").modal('show');
+	$('.positionUpdateCls').each(function(){
+		if($(this).is(":checked")){
+			availableCount = $(this).attr('attr_available_posts');
+			shortListedCount=$(this).attr('attr_short_listedcount');
+			var str='';
+			str+='<select attr_member_class_name="moveToFinalReviewCls" id="membersSelId" class="chosenSelect" multiple attr_no="">';
+			for(var i=0;i<availableCount;i++){
+				str+='<option value="'+(i+1)+'">Member '+(i+1) +'</option>';
+			}
+			str+='</select>';
+			
+			$("#readyToFinalRevieId").html(str);		
+			$("#membersSelId").chosen();
+
+			return;			
+		}		
+	});
+	*/
+	
 	var levelValuesArr=[];
 
 	if(globalLevelId == 1){
@@ -697,6 +721,108 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 	
 });
  //setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 6000);
+
+$(document).on("click","#readyToFinalRevewBtn",function(){
+	var value =$('#membersSelId').val();
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId=$("#stateId").val();
+	//var stateId = 
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	var deptId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_board_id');
+	var positionId = 1;
+	//var searchLevelValue =stateId;
+	
+	var availableCount = 0;
+	var shortListedCount=0;
+		$("#readyToFinalReviewDiv").modal('show');
+	$('.positionUpdateCls').each(function(){
+		if($(this).is(":checked")){
+			availableCount = $(this).attr('attr_available_posts');
+			shortListedCount=$(this).attr('attr_short_listedcount');
+			var str='';
+			str+='<select attr_member_class_name="moveToFinalReviewCls" id="membersSelId" class="chosenSelect" multiple attr_no="">';
+			for(var i=0;i<availableCount;i++){
+				str+='<option value="'+(i+1)+'">Member '+(i+1) +'</option>';
+			}
+			str+='</select>';
+			
+			$("#readyToFinalRevieId").html(str);		
+			$("#membersSelId").chosen();
+
+			return;			
+		}		
+	});
+	
+	var levelValuesArr=[];
+
+	if(globalLevelId == 1){
+		levelValuesArr.push(1);
+	}
+	else if(globalLevelId == 2){
+		if(stateId == 0){
+			levelValuesArr.push(1);
+			levelValuesArr.push(36);
+		}else{
+			levelValuesArr.push(stateId);		
+		}				
+	}else if(globalLevelId == 3){
+		
+		if(districtId==0){
+			levelValuesArr = grlobalDistrictArr;
+		}else{
+			levelValuesArr.push(districtId);
+		}
+		
+	}else if(globalLevelId == 4){		
+		if(constituencyId==0){
+			levelValuesArr = globalAssmblyArr;	
+		}else{
+			levelValuesArr.push(constituencyId);
+		}		
+	}else if(globalLevelId == 5){
+		if(mandalTownDivId==0){
+			levelValuesArr = globalMandalTowDivArr;	
+		}else{
+			levelValuesArr.push(mandalTownDivId);
+		}
+	}
+	var positionArr = [];
+	$(".positionUpdateCls").each(function(){
+		var positionId = $(this).attr("id");
+		positionArr.push(positionId);
+	});
+		
+	var jsObj={		
+		deptId :deptId,
+		boardId :boardId,
+		positionArr:positionArr,
+		statusId:2,
+		levelId : globalLevelId,
+		levelValuesArr:levelValuesArr
+	}
+	
+	console.log(jsObj);
+	/*
+	$.ajax({
+          type:'POST',
+          url: 'updateNominatedPostStatusDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  console.log(result);
+	  if(result != null && result.resultCode==0){
+		  alert("Suucessfully this position Moved to Final Review...");
+	  }
+	  else if(result != null && result.resultCode==1){
+		  alert("Error Occured while moving this position to Final Review");
+	  }
+   });
+	*/
+});
 
 $(document).on("click","#locationWiseDataId",function(){
 	var stateId = $("#stateId").val();

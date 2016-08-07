@@ -19,7 +19,8 @@ function getOpenPositionDistrictsForState(state,id,num){
 	
 	var jsObj=
    {				
-		stateId:state			
+		stateId:state,
+		boardLevelId:$('#boardLvlId'+num+'').val()
 	}
     $.ajax({
 	  type:'GET',
@@ -53,7 +54,8 @@ function getOpenPositionConstituenciesForDistrict(district,id,num){
 	
 	var jsObj=
    {				
-		districtId:district			
+		districtId:district,
+		boardLevelId:$('#boardLvlId'+num+'').val()			
 	}
     $.ajax({
 	  type:'GET',
@@ -86,7 +88,8 @@ function getOpenPositionMandalsForConstituency(num,id){
 	
 	var jsObj=
    {				
-		constituencyId:constituencyId			
+		constituencyId:constituencyId,
+		boardLevelId:$('#boardLvlId'+num+'').val()			
 	}
     $.ajax({
 	  type:'GET',
@@ -120,7 +123,8 @@ function getOpenPositionVillagesForMandal(num,id){
 	var jsObj=
    {			
 		mandalId	:mandalId,
-		constituencyId:constituencyId			
+		constituencyId:constituencyId,
+		boardLevelId:$('#boardLvlId'+num+'').val()			
 	}
     $.ajax({
 	  type:'GET',
@@ -1063,24 +1067,26 @@ $('.searchTypeCls').click(function(){
    });
   }
 	
-	function getOpenedPostionsStates(id){
+	function getOpenedPostionsStates(id,num){
 		
-		var jsObj = {}
+		var jsObj = {			
+			boardLevelId:$('#boardLvlId'+num+'').val()
+		}
 	    $.ajax({
 	          type:'GET',
 	          url: 'getStatesForOpenedPositionsAction.action',
 	          dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-	   $("#"+id).empty();
+	   $("#"+id+''+num+'').empty();
 	    
 	   if(result != null && result.length >0){
-			 $("#"+id).append('<option value="0">Select State </option>');
+			 $("#"+id+''+num+'').append('<option value="0">Select State </option>');
 	     for(var i in result){
-			 $("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			 $("#"+id+''+num+'').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		 }
 	   }
-		  $("#"+id).trigger("chosen:updated");
+		  $("#"+id+''+num+'').trigger("chosen:updated");
 	   });
 	  }
   
@@ -1313,7 +1319,7 @@ $('.searchTypeCls').click(function(){
   }
   
 getBoardLevels("boardLvlId"); 
-getOpenedPostionsStates("nominatedStaeId"); 
+//getOpenedPostionsStates("nominatedStaeId"); 
 //getDepartments("",1); 
  $(document).on("click",".checkboxCls",function(){
 /*
@@ -1443,12 +1449,12 @@ $(document).on("click","#addOneMore",function(){
   e.find(".boardLvlCls").addClass("validateCls");
   e.find(".boardLvlCls").attr("attr_no",cloneCount);
   getBoardLevels("boardLvlId"+cloneCount);
-  e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');getDepartments('+cloneCount+');');
+  e.find(".boardLvlCls").attr("onChange",'showHideByNominatedPost('+cloneCount+');getDepartments('+cloneCount+');getOpenedPostionsStates(\'nominatedStaeId\','+cloneCount+')');
  // e.find(".boardLvlCls").attr("onChange",'');
   
   e.find(".nominatedStaeCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].stateId');
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
-  getOpenedPostionsStates("nominatedStaeId"+cloneCount);
+ // getOpenedPostionsStates("nominatedStaeId"+cloneCount);
   e.find(".nominatedStaeCls").attr("attr_no",cloneCount);
   e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
   e.find(".nominatedStaeCls").attr("onChange",'getOpenPositionDistrictsForState(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');getDepartments('+cloneCount+');');
