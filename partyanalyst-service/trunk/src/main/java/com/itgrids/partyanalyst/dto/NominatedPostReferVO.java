@@ -43,7 +43,14 @@ public class NominatedPostReferVO {
 	private Long commentCount = 0l;
 	private String isPrefered;
 	private Long nominatedPostApplicationId;
+	private String imageURL;
 	
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
 	public Long getId() {
 		return id;
 	}
