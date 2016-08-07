@@ -180,7 +180,7 @@ public class MailService implements IMailService{
     		link=IConstants.DEPLOYED_HOST+"/resetPasswordAction";
     	}
     	
-    	String slink="<a href='http://"+link+".action?randomNumber="+registrationVO.getRandomNumber()+"'";
+    	String slink="<a href='https://"+link+".action?randomNumber="+registrationVO.getRandomNumber()+"'";
     	
     	text = "";
     	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" 
@@ -190,7 +190,7 @@ public class MailService implements IMailService{
     	//if(registrationVO.getPassword()!= null)
     	//text += "Your Password is :" +"  <b>"+ registrationVO.getPassword()+"</b>";
     	text += "Click on the Link to Reset Your Password :<a href="+slink+"> Click Here </a>";
-    	//text += "Click on the Link to Reset Your Password :<a href='http://localhost:8080/PartyAnalyst'>Click Here</a>";
+    	//text += "Click on the Link to Reset Your Password :<a href='https://localhost:8080/PartyAnalyst'>Click Here</a>";
     	text +="</div><div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
     	quickRequestVO.setToEmailId(registrationVO.getEmail());
     	quickRequestVO.setSubject(subject);
@@ -266,7 +266,7 @@ public class MailService implements IMailService{
     	text +="<div style='margin-top: 10px;'>" +
 				"Thanks," +
 				"<br>Party Analyst Team<br>" +
-				"<a href='http://www.partyanalyst.com/homePage.action'>www.partyanalyst.com</a><br>" +
+				"<a href='https://www.partyanalyst.com/homePage.action'>www.partyanalyst.com</a><br>" +
 				"<div><p><b>PS:&nbsp;</b>Please add this email to your address book so that the emails from us don't end up in your junk folder.For suggestions and support contact us at <b><a href="+sendMail+">info@partyanalyst.com</a></p></div></div>";
     	text +="</div></div>";
     	
