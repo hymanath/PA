@@ -761,13 +761,14 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		    Long LocationLevelId = jObj.getLong("LocationLevelId");
 			Long departmentId = jObj.getLong("departmentId");
 			Long boardId = jObj.getLong("boardId");
+			String status = jObj.getString("status");
 			JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
 			    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
 			    	for(int i = 0;i<locationLevelValueArr.length();i++){
 			    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
 			    	}
 			    }
-		 idNameVOList = nominatedPostProfileService.getFinalReviewCandidateCountLocationWise(LocationLevelId,lctnLevelValueList,departmentId,boardId); 
+		 idNameVOList = nominatedPostProfileService.getFinalReviewCandidateCountLocationWise(LocationLevelId,lctnLevelValueList,departmentId,boardId,status); 
 	 }catch(Exception e) {
 		 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
 	}
@@ -1278,8 +1279,8 @@ public String execute()
 		try{
 			
 			jObj = new JSONObject(getTask());
-			
-			idNameVOList = nominatedPostProfileService.getStatesForOpenedPositions();
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			idNameVOList = nominatedPostProfileService.getStatesForOpenedPositions(boardLevelId);
 			/*if(idNameVOList != null && idNameVOList.size() > 1)
 				idNameVOList.add(0, new IdNameVO(0L,"Select District"));*/
 			
@@ -1295,8 +1296,8 @@ public String execute()
 			
 			jObj = new JSONObject(getTask());
 			Long stateId = jObj.getLong("stateId");
-			
-			idNameVOList = nominatedPostProfileService.getOpenPositionDistrictsForState(stateId);
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			idNameVOList = nominatedPostProfileService.getOpenPositionDistrictsForState(stateId,boardLevelId);
 			
 			
 		}catch (Exception e) {
@@ -1311,8 +1312,8 @@ public String execute()
 			
 			jObj = new JSONObject(getTask());
 			Long districtId = jObj.getLong("districtId");
-			
-			idNameVOList = nominatedPostProfileService.getOpenPositionConstituenciesForDistrict(districtId);
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			idNameVOList = nominatedPostProfileService.getOpenPositionConstituenciesForDistrict(districtId,boardLevelId);
 			
 			
 		}catch (Exception e) {
@@ -1322,13 +1323,13 @@ public String execute()
 		return Action.SUCCESS;
 	}
 	
-	public String getMandalMuncilIdsForConstituency(){
+	public String getMandalMuncilIdsForConstituency(Long boardLevelId){
 		try{
 			
 			jObj = new JSONObject(getTask());
 			Long constituencyId = jObj.getLong("constituencyId");
-			
-			locations = nominatedPostProfileService.getMandalMuncilIdsForConstituency(constituencyId);
+			Long boardLevlId = jObj.getLong("boardLevelId");
+			locations = nominatedPostProfileService.getMandalMuncilIdsForConstituency(constituencyId,boardLevlId);
 			
 			
 		}catch (Exception e) {
@@ -1344,8 +1345,8 @@ public String execute()
 			jObj = new JSONObject(getTask());
 			String mandalId = jObj.getString("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
-			
-			locations = nominatedPostProfileService.getPanchaytWardForMandal(mandalId,constituencyId);
+			Long boardLevlId = jObj.getLong("boardLevelId");
+			locations = nominatedPostProfileService.getPanchaytWardForMandal(mandalId,constituencyId,boardLevlId);
 			
 			
 		}catch (Exception e) {
