@@ -396,7 +396,7 @@ function buildReferenceCandidateDetails(result){
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $(this).attr("attr_filePath");
-	str += '<iframe src="http://mytdp.com/'+filePath+'" width="100%" height="800">';    
+	str += '<iframe src="https://mytdp.com/'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
 }); 
