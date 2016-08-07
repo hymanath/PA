@@ -4651,7 +4651,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 				returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
 				returnVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
-				returnVO.setVoterImgPath(voterIdDetails.get(0)[6] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterIdDetails.get(0)[6] : "");
+				returnVO.setVoterImgPath(voterIdDetails.get(0)[6] != null ? "https://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterIdDetails.get(0)[6] : "");
 				if(userAddress.getConstituency() != null && userAddress.getBooth() != null)
 				{
 					//String url = "https://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
@@ -5310,13 +5310,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						cadrePrintVO.setPhotoType("");
 					}
 				   if(objects[8] != null){
-						String cadreUrl = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
+						String cadreUrl = "https://mytdp.com/images/cadre_images/"+objects[8].toString();
 						cadrePrintVO.setCadreImgPath(cadreUrl);
 					}
 					
 					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
 					{
-						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
+						String url = "https://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
 						//String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +""+"\\"+userAddress.getConstituency().getConstituencyId().toString().trim()+"\\"+"Part"+userAddress.getBooth().getPartNo().trim()+"\\"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 						cadrePrintVO.setVoterImgPath(url);
 					}*/
