@@ -542,7 +542,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type,searchLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","age",
-							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId","boardLevelId","levelValue"};
+							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId","boardLevelId","levelValue","imageURL"};
 				subList = (List<NomintedPostMemberVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NomintedPostMemberVO");
 			}
 			
@@ -1720,7 +1720,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
 						//if(vo1 != null){
-							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
+							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
 							if(vo != null){
 								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
 								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -1750,9 +1750,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//if(vo1 != null){
 							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
 							if(vo != null){
-								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
-								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
-								vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[3]));
+								vo.setTotalPositions(vo.getTotalPositions() + commonMethodsUtilService.getLongValueForObject(param[1]));
+								vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
+								vo.setTotalCorp(vo.getTotalCorp() + commonMethodsUtilService.getLongValueForObject(param[3]));
 								
 								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
 									if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
@@ -2708,7 +2708,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			Map<Long,Long> deptPosMap = new LinkedHashMap<Long, Long>();
 			Map<Long,Map<Long,Long>> deptBrdPosMap = new LinkedHashMap<Long, Map<Long,Long>>();
 			
-			List<Object[]> positionsCountsList = nominatedPostDAO.getOpenedPositionsCountByDepartment(boardLevelId, searchlevelId, searchLevelValue);
+			List<Object[]> positionsCountsList = nominatedPostDAO.getOpenedPositionsCountByDepartment(boardLevelId, searchlevelId, searchLevelValue,statusType);
 			if(commonMethodsUtilService.isListOrSetValid(positionsCountsList)){
 				for (Object[] obj : positionsCountsList) {
 					Long depId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -2717,7 +2717,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> boardPosCountsList = nominatedPostDAO.getOpenedPositionsCountForBoardsByDepartment(boardLevelId, searchlevelId, searchLevelValue);
+			List<Object[]> boardPosCountsList = nominatedPostDAO.getOpenedPositionsCountForBoardsByDepartment(boardLevelId, searchlevelId, searchLevelValue,statusType);
 			if(commonMethodsUtilService.isListOrSetValid(boardPosCountsList)){
 				for (Object[] obj : boardPosCountsList) {
 					Long deptId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -3292,7 +3292,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { This service is used to get final Review Candidate count  }
 	 */
-	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){
+	public List<IdNameVO> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){
 		List<IdNameVO> fnlCnddtCuntLst = new ArrayList<IdNameVO>(0);
 		  try{
 			  
@@ -3320,20 +3320,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			          }
 			        }
 			        if(mandalList !=null && mandalList.size()>0){
-			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId);
+			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId,status);
 					     finalMap = setDataToMapForFinalReview(mandalObjList,finalMap);
 				    }
 			        if(townList != null && townList.size() > 0){
-			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId);
+			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId,status);
 					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap);
 					        
 			        }
 			        if(divisonList != null && divisonList.size()>0){
-			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId);
+			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId,status);
 					        finalMap = setDataToMapForFinalReview(divObjList,finalMap);
 			        }
 			  }else{
-				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId);
+				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId,status);
 				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap);
 				  
 			  }
@@ -3651,7 +3651,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","age",
-						"caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId"};
+						"caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId","imageURL"};
 			subList = (List<NominatedPostReferVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostReferVO");
 			}
 			
@@ -3874,12 +3874,24 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
 						}
+						
+						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+						nominatedPostApplication.setApplicationStatusId(statusId);
+						nominatedPostApplication.setUpdatedBy(userId);
+						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 					}
 					else{
 						nominatedPostFinal.setApplicationStatusId(statusId);
 						nominatedPostFinal.setUpdatedBy(userId);
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						
+						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+						nominatedPostApplication.setApplicationStatusId(statusId);
+						nominatedPostApplication.setUpdatedBy(userId);
+						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 					}
 					
 					/*if(statusId != null && statusId.longValue() == 5l){
@@ -4315,10 +4327,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public List<IdNameVO> getStatesForOpenedPositions(){
+	public List<IdNameVO> getStatesForOpenedPositions(Long boardLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getStatesForOpenedPositions();
+		List<Object[]> list = nominatedPostDAO.getStatesForOpenedPositions(boardLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -4330,10 +4342,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId){
+	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId,Long boardLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getOpenPositionDistrictsForState(stateId);
+		List<Object[]> list = nominatedPostDAO.getOpenPositionDistrictsForState(stateId,boardLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -4345,10 +4357,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId){
+	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId,Long boardLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getOpenPositionConstituenciesForDistrict(districtId);
+		List<Object[]> list = nominatedPostDAO.getOpenPositionConstituenciesForDistrict(districtId,boardLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -4360,11 +4372,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId){
+	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId,Long boardLevelId){
 		List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try{
 			List<Long> ids = new ArrayList<Long>();
-			List<Object[]> list = nominatedPostDAO.getMandalMuncilIdsForConstituency(constituencyId);
+			List<Object[]> list = nominatedPostDAO.getMandalMuncilIdsForConstituency(constituencyId,boardLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long tehsilId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -4392,7 +4404,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId){
+	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId,Long boardLevelId){
 		List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try {
 			Long id = 0l;
@@ -4408,7 +4420,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				type = "muncipality";
 			}
 			
-			List<Object[]> list = nominatedPostDAO.getPanchayWardIdsForMandal(id, type, constituencyId);
+			List<Object[]> list = nominatedPostDAO.getPanchayWardIdsForMandal(id, type, constituencyId,boardLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long iid = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
