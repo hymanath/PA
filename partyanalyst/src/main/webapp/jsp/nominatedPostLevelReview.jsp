@@ -91,7 +91,7 @@
 		if(result != null && result.length>0){
 			str+='<ul class="panelBlockCustom">';
 			for(var i in result){
-				if(result[i].name != "TOTAL AVAILABLE"){
+				if(result[i].name != "TOTAL AVAILABLE" && result[i].name != "YET TO START" ){
 				str+='<li style="font-size:12px">';
 					str+='<div class="panel panel-default panelCustom">';
 					str+='<div class="panel-heading">';

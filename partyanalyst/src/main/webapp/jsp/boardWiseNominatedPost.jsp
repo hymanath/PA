@@ -68,6 +68,22 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
+	<div class="modal-dialog" style="width:60%;">      
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+			</div>
+			<div class="modal-body" id="pdfReportDetailsId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="modal fade" tabindex="-1" id="referModelId" role="dialog">  
 	<div class="modal-dialog" style="width:60%;">      
 		<div class="modal-content">
@@ -185,7 +201,20 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
 			str+='<tr>';
-				str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+				if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
+					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+				else
+					str+='<i class="glyphicon glyphicon-user"></i> ';				
+					str+=' '+result.subList[i].voterName+'</a>';
+				}else{
+					str +='<td><img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/> '+result.subList[i].voterName+'';
+				}
+				
+				str+=' </td>';
+				
 				str+='<td>'+result.subList[i].voterMoblie+'</td>';
 				str+='<td>'+result.subList[i].age+'</td>';
 				str+='<td>'+result.subList[i].caste+'</td>';
@@ -216,7 +245,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='<td> - </td>';
 				}
 				str+='<td style="position:relative" class="text-center">';
-					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'">'+result.subList[i].otherDepartmentsCount+'</span>';
+					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" style="font-weight:bold;color:green;">'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
 						str+='</div>';
@@ -242,6 +271,8 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 							str+='<label>Select Status</label>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
+								str+='<option value="2">Rejected</option>';
+								str+='<option value="3">Shortlisted</option>';
 							str+='</select>';
 							str+='<label>Comments</label>';
 							str+='<textarea class="form-control" id="statusCommentId'+i+'"></textarea>';
@@ -259,6 +290,8 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 								str+='<label>Select Status</label>';
 								str+='<select class="chosenSelect" id="updatedStatusThisAnyId'+i+'">';
 									str+='<option value="0">Select Status</option>';
+									str+='<option value="2">Rejected</option>';
+									str+='<option value="3">Shortlisted</option>';
 								str+='</select>';
 								str+='<label>Comments</label>';
 								str+='<textarea class="form-control" id="statusCommentThisAnyId'+i+'"></textarea>';
@@ -292,6 +325,8 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 									str+='<label>Select Status</label>';
 									str+='<select class="chosenSelect" id="updatedStatusAnyId'+i+'">';
 										str+='<option value="0">Select Status</option>';
+										str+='<option value="2">Rejected</option>';
+										str+='<option value="3">Shortlisted</option>';
 									str+='</select>';
 								str+='</div>';
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -403,22 +438,25 @@ $(document).on('click','.showPdfCls',function(){
 
 $(document).on("click",".updateButtonCls",function(){
 	var selectDivId = $(this).attr("attr_selected_status_id");
-	getApplicationStatus(selectDivId);
+	 $("#"+selectDivId).chosen();
+	//getApplicationStatus(selectDivId);
 });
 
 $(document).on("click",".updateButtonAnyCls",function(){
 	$(".updateDropDownThisAny").hide();
 	var num = $(this).attr("attr_count");
 	getDepartments(num);
-	getApplicationStatus("updatedStatusAnyId"+num);
+	//getApplicationStatus("updatedStatusAnyId"+num);
 	$("#positionAnyId"+num).chosen();
 	$("#boardAnyId"+num).chosen();
+	$("#updatedStatusAnyId"+num).chosen();
 });
 
 $(document).on("click",".updateButtonThisAnyCls",function(){
 	$(".updateDropDownAny").hide();
 	var num = $(this).attr("attr_count");
-	getApplicationStatus("updatedStatusThisAnyId"+num);
+	 $("#updatedStatusThisAnyId"+num).chosen();
+	//getApplicationStatus("updatedStatusThisAnyId"+num);
 });
 
 function getApplicationStatus(divId){
