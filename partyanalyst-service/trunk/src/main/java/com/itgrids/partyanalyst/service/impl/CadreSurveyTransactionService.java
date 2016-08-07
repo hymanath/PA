@@ -1372,7 +1372,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							for (Object[] cadre : cadreList) 
 							{
 								
-								 Image image = Image.getInstance(new URL(cadre[3] != null ? "http://"+cadre[3].toString():""));
+								 Image image = Image.getInstance(new URL(cadre[3] != null ? "https://"+cadre[3].toString():""));
 								 image.setAbsolutePosition(0, 0);
 								 image.setAlignment(10);
 					             image.scaleToFit(50, 50);
