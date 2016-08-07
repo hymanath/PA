@@ -62,7 +62,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		}
 		*/
 		
-		str.append(" SELECT model.departments.departmentId,model.departments.deptName," +
+		str.append(" SELECT distinct model.departments.departmentId,model.departments.deptName," +
 				"  model.board.boardId,model.board.boardName " +
 				" FROM NominatedPostApplication model " +
 				" WHERE model.isDeleted = 'N'" );
@@ -79,7 +79,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" and model.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" and model.applicationStatus.status not in (:running) ");
+			str.append(" and model.applicationStatus.applicationStatusId not in (:running) ");
 		}
 		//,Long searchlevelId,Long searchLevelValue
 				
@@ -115,7 +115,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
 		}else if(statusType !=null && (statusType.trim().equalsIgnoreCase("running"))){
-			query.setParameter("running",IConstants.NOMINATED_POST_NOT_RUNNING_STATUS);
+			query.setParameter("running",Long.valueOf(IConstants.NOMINATED_POST_NOT_RUNNING_STATUS));
 		}
 		
 		return query.list();

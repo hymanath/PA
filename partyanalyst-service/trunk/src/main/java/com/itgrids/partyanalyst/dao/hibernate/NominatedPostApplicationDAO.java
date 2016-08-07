@@ -643,7 +643,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 			str.append(" AND model.applicationStatus.status = :notYet ");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" AND model.applicationStatus.status not in (:running) ");
+			str.append(" AND model.applicationStatus.applicationStatusId not in (:running) ");
 		}
 		
 		str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +
@@ -671,12 +671,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
 		}else if(statusType !=null && (statusType.trim().equalsIgnoreCase("running"))){
-			query.setParameter("running",IConstants.NOMINATED_POST_NOT_RUNNING_STATUS);
+			query.setParameter("running",Long.valueOf(IConstants.NOMINATED_POST_NOT_RUNNING_STATUS));
 		}
 		
 		return query.list();
 	}
- public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){
+ public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){
 		
 		       StringBuilder queryStr = new StringBuilder();
 		       
@@ -722,7 +722,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		 	   }
 		       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId)");
 		       
-		       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' and model.nominatedPostStatusId = 3 ");
+		       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' ");
+		       if(status != null && status.equalsIgnoreCase("finalReview"))
+		    	   queryStr.append(" and model.nominatedPostStatusId = 2 ");
+		       else if(status != null && status.equalsIgnoreCase("finaliZed"))
+		    	   queryStr.append(" and model.nominatedPostStatusId = 3 ");
+		       else if(status != null && status.equalsIgnoreCase("goPassed"))
+		    	   queryStr.append(" and model.nominatedPostStatusId = 4 ");
 		       
 		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 		    	   if(LocationLevelId.longValue() != 5L)
@@ -886,7 +892,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
  
 	public List<Object[]> getTotalApplicationCountsByBoard(Long boardLevelId,Long searchLevelId,Long searchLevelValue,Long statusId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.departmentId," +
+		sb.append("select distinct  model.departmentId," +
 					" model.boardId," +
 					" count(model.nominatedPostApplicationId)" +
 					" from NominatedPostApplication model" +
@@ -907,15 +913,15 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
 				 sb.append(" and model.address.panchayat.panchayatId = :searchLevelValue");
 		 }
-		 if(statusId != null && statusId.longValue() > 0l)
-			 sb.append(" and model.applicationStatusId = :statusId");
+		 if(statusId != null && statusId.longValue() > 0l )
+			 sb.append(" and model.applicationStatusId  in (3)");
 		 sb.append(" and model.isDeleted = 'N'" +
 		 			" group by model.departmentId,model.boardId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("boardLevelId", boardLevelId);
-		if(statusId != null && statusId.longValue() > 0l)
-			query.setParameter("statusId", statusId);
+	//	if(statusId != null && statusId.longValue() > 0l)
+		//	query.setParameter("statusId", statusId);
 		if(searchLevelId != 1l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
 			query.setParameter("searchLevelValue", searchLevelValue);
 		

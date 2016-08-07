@@ -65,8 +65,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" NPA.applicationStatus.status," +
 					" NPA.nominatedPostApplicationId," +
 					" NPA.boardLevelId," +
-					" NPA.locationValue");
-					//" NPA.nominatedPost.nominatedPostId");
+					" NPA.locationValue , " +
+					//" NPA.nominatedPost.nominatedPostId, ");
+					" NPA.nominationPostCandidate.imageurl ");
 		sb.append(" from NominatedPostApplication NPA " +
 					//" left join NPA.nominationPostCandidate.tdpCadre TC" +
 					" left join NPA.nominationPostCandidate.casteState CS" +
@@ -195,7 +196,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" model.applicationStatus.applicationStatusId," +
 					" model.applicationStatus.status," +
 					" model.isPrefered," +
-					" model1.nominatedPostApplicationId" +
+					" model1.nominatedPostApplicationId ," +
+					" model.nominationPostCandidate.imageurl "+
 					" from NominatedPostFinal model,NominatedPostApplication model1" +
 					//" left join model.nominationPostCandidate.tdpCadre TC" +
 					" left join model.nominationPostCandidate.casteState CS" +
