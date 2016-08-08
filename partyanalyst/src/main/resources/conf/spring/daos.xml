@@ -3181,4 +3181,7 @@
 	<bean id="volunteerDesginationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VolunteerDesginationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="partyEventTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyEventTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

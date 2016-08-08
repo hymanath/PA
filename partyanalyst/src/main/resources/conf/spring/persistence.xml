@@ -970,6 +970,7 @@
 				     <value>com.itgrids.partyanalyst.model.ActivityMemberRelation</value>
 				    <value>com.itgrids.partyanalyst.model.VolunteersCadreDetails</value>
 				    <value>com.itgrids.partyanalyst.model.VolunteerDesgination</value>
+				    <value>com.itgrids.partyanalyst.model.PartyEventType</value>
 				 </list>
 			
 		</property>
