@@ -1,6 +1,14 @@
 
 $(document).ready(function(){
 	getLocationLevelAlertCount();
+	 var fromDate='';
+	 var toDate='';
+	 var dateStr = $("#dateRangePickerId").val(); 
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+	getLocationLevelAlertData(0,0,fromDate,toDate);
 });
 $(document).on("click",'.applyBtn',function(){
 	$("#locationLevelDataId").html('');
@@ -122,10 +130,10 @@ function buildLocationLevelAlert(result,jsObj){
 		 totalAlerts = totalAlerts + result[i].count;
 	 }
 	 if(totalAlerts > 0)
-    str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalAlerts+'</a></p>';
+    str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;font-size: 26px;" attr-levelId="0" attr-statusId="0" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalAlerts+'</a></p>';
 	else
 	str+='<p>'+totalAlerts+'</p>';
-    str+='<p class="text-capital textColor_333">total alerts</p>';
+    str+='<h5 class="text-capital textColor_333">total alerts</h5>';
      str+='</td>';
 	for(var i in result[0].locationsList)
 	{
@@ -140,12 +148,12 @@ function buildLocationLevelAlert(result,jsObj){
 			}
 		}
 			if(totalCnt > 0)
-			str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="0" attr-statusId="'+result[0].locationsList[i].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></p>';
+			str+='<p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;font-size: 26px;" attr-levelId="0" attr-statusId="'+result[0].locationsList[i].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+totalCnt+'</a></p>';
 			else
 			{
 					str+='<p>'+totalCnt+'</p>';
 			}
-		str+='<p class="text-capital textColor_333">'+result[0].locationsList[i].name+'</p>';
+		str+='<h5 class="text-capital textColor_333">'+result[0].locationsList[i].name+'</h5>';
 		str+='</td>';
 	}
 	
@@ -168,7 +176,7 @@ function buildLocationLevelAlert(result,jsObj){
 		for(var j in returnList){
 			if(returnList[j].count > 0)
 			{
-			str+='<td><p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></p></td>';
+			str+='<td><p><a title="Click here to View Alert Details" class="locationLevelCls" style="cursor:pointer;font-size: 26px;" attr-levelId="'+result[i].id+'" attr-statusId="'+returnList[j].id+'" attr-fromDate="'+jsObj.fromDate+'" attr-toDate="'+jsObj.toDate+'">'+returnList[j].count+'</a></p></td>';
 			}
 			else{
 				str+='<td style="vertical-align:middle"><p>'+returnList[j].count+'</p></td>';
