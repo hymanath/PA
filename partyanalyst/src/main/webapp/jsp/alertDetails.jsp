@@ -294,6 +294,7 @@ control.makeTransliteratable(['commentsId']);
 											<option value='1'>Notified</option>
 											<option value='2'>Action In Progess</option>
 											<option value='3'>Completed</option>
+											<option value='4'>Unable to Resolve</option>
 											</select>
 											<label>Comments</label>
 											<label class="radio-inline">
