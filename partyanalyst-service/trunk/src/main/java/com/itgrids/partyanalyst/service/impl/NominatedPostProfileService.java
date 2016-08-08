@@ -3321,21 +3321,31 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			        }
 			        if(mandalList !=null && mandalList.size()>0){
 			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId,status);
+			        	 List<Object[]> mandalWishList = nominatedPostFinalDAO.getWishListCount(5l, mandalList, departmentId, boardId);
 					     finalMap = setDataToMapForFinalReview(mandalObjList,finalMap);
-				    }
+					     if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					    	 setWishListCountToVO(mandalWishList,finalMap);
+			        }
 			        if(townList != null && townList.size() > 0){
 			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId,status);
 					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap);
-					        
+					      List<Object[]> townWishList = nominatedPostFinalDAO.getWishListCount(6l, townList, departmentId, boardId);  
+					      if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					    	  setWishListCountToVO(townWishList,finalMap);
 			        }
 			        if(divisonList != null && divisonList.size()>0){
 			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId,status);
 					        finalMap = setDataToMapForFinalReview(divObjList,finalMap);
+					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, divisonList, departmentId, boardId); 
+					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					        	setWishListCountToVO(divWishList,finalMap);
 			        }
 			  }else{
 				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId,status);
 				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap);
-				  
+				  List<Object[]> returnWishList = nominatedPostFinalDAO.getWishListCount(LocationLevelId, lctnLevelValueList, departmentId, boardId);
+				  if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					  setWishListCountToVO(returnWishList,finalMap);
 			  }
 			  
 			  if(finalMap !=null && finalMap.size() > 0){
@@ -4445,5 +4455,22 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			LOG.error("Exception Occured in getPanchaytWardForMandal()", e);
 		}
 		return returnList;
+	}
+	public void setWishListCountToVO(List<Object[]> rtrnObjList, Map<Long,IdNameVO> finalMap){
+		try{
+			if(rtrnObjList != null && !rtrnObjList.isEmpty()){
+		    	for (Object[] obj : rtrnObjList) {
+		    		
+		    		IdNameVO vo  = finalMap.get(obj[0] !=null ? (Long)obj[0]:0l);
+		    		if(vo != null){
+		    			 vo.setWishCount(vo.getWishCount() +( obj[2] != null ? (Long)obj[2]:0l));
+		    		}
+		   		 }
+		    }
+			
+		}catch (Exception e) {
+			 LOG.error("Exceptionr riased at setWishListCountToVO in NominatedPostProfileService class", e); 
+		}
+		
 	}
 }

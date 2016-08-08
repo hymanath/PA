@@ -16,7 +16,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		super(NominatedPostFinal.class);
 	}
 
-	public List<Object[]> getFinalShortListedApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate){
+	public List getFinalShortListedApplciationStatusDtls(Long boardLevelId,Date startDate,Date endDate){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.nominatedPost.nominatedPostMember.boardLevelId, count(model.nominatedPostFinalId)  from NominatedPostFinal model where  " +
 				" model.applicationStatus.status ='Shortlisted'  ");
@@ -857,5 +857,55 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		query.setParameter("stateId", stateId);
 		return query.list(); 
+	}
+	
+	public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){
+		 StringBuilder queryStr = new StringBuilder();
+	       
+	       queryStr.append(" select ");
+	       
+	       
+	       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+	 		  queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName,");
+	 	   }
+	       queryStr.append(" count(model.nominatedPostFinalId)");
+	       
+	       queryStr.append(" from  NominatedPostFinal model where model.isDeleted = 'N' and model.isPrefered = 'Y' ");
+	       
+	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	   if(LocationLevelId.longValue() != 5L)
+	    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+	    	   else
+	    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+	       }
+	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+	    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+	       }
+	       if(departmentId != null && departmentId.longValue() > 0){
+	    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
+	    	   
+	       }
+	       if(boardId != null && boardId.longValue() > 0){
+	    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId=:boardId ");
+	       }
+	      
+	    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N' group by model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+	       
+	       
+	       Query query = getSession().createQuery(queryStr.toString());
+	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	   if(LocationLevelId.longValue() != 5L)
+	    		   query.setParameter("LocationLevelId", LocationLevelId);
+	       }
+	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+	    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
+	       }
+	       if(departmentId != null && departmentId.longValue() > 0){
+	    	   query.setParameter("departmentId", departmentId);
+	       }
+	       if(boardId != null && boardId.longValue() > 0){
+	    	   query.setParameter("boardId", boardId);
+	       }
+	    return query.list();
 	}
 }
