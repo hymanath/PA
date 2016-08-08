@@ -738,7 +738,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				String fname = params[3] != null ? params[3].toString() : "";
 				String lname = params[4] != null ? params[4].toString() : "";
 				vo.setUname(fname+" "+lname);
-				if(vo.getCommentsList() == null || vo.getCommentsList().size() > 0)
+				if(vo.getCommentsList() == null || vo.getCommentsList().size() == 0)
 				{
 					vo.setSubList(new ArrayList<IdNameVO>());
 					IdNameVO commentVO = new IdNameVO();
@@ -758,11 +758,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					  if(params[1].toString().equalsIgnoreCase(params1[1].toString()))
 					  {
 						  IdNameVO commentVO = new IdNameVO();
-							commentVO.setName(params[7] != null ? params[7].toString() : "");
-							String fname1 = params[8] != null ? params[8].toString() : "";
-							String lname1 = params[9] != null ? params[9].toString() : "";
+							commentVO.setName(params1[7] != null ? params1[7].toString() : "");
+							String fname1 = params1[8] != null ? params1[8].toString() : "";
+							String lname1 = params1[9] != null ? params1[9].toString() : "";
 							commentVO.setStatus(fname1+" "+lname1);
-							commentVO.setDateStr(params[10] != null ? params[10].toString().substring(0, 19) : "");
+							commentVO.setDateStr(params1[10] != null ? params1[10].toString().substring(0, 19) : "");
 							vo.getSubList().add(commentVO);
 						  i++;
 					  }
