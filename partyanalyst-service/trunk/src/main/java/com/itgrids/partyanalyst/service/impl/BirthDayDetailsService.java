@@ -336,7 +336,7 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 			if(returnList != null && returnList.size() > 0 && dataBuildTypeStr != null && !dataBuildTypeStr.trim().isEmpty() && memberTypeStr != null && !memberTypeStr.trim().isEmpty()){
 				for (BirthDayDetailsVO bDayVo : returnList) {
 					
-					if(!memberTypeStr.equalsIgnoreCase("Total") && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
+					if((!memberTypeStr.equalsIgnoreCase("Total")) && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
 						
 						for (BirthDayDetailsVO subVo : bDayVo.getSubList()) {
 							if((subVo.getDesignation() != null && subVo.getDesignation().equalsIgnoreCase(memberTypeStr)) || (subVo.getPubRepDesignation() != null && subVo.getPubRepDesignation().equalsIgnoreCase(memberTypeStr))){
