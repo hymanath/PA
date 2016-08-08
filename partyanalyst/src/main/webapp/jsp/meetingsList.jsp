@@ -209,8 +209,12 @@ h1,h2,h3,h4,h5,h6,p,ul,table
                         	<div class="block">
                             	<div class="row">
                                 	<div class="col-md-6 col-xs-12 col-sm-6">
-                                    	<h3 class="text-capital">total meetings - <img src='images/Loading-data.gif'  id="loadingImgForTotalId" style="width:20px;height:20px;display:none;"/><span id="totalMeetingsId">0</span></h3>
-                                        <h5>( Meetings Conducted Ratio - <span class="text-success"><span class="dataClearCls" id="tConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-up"></i></span> <span class="text-danger"><span id="tNotConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-down"></i></span>)</h5>
+                                    	<h3 class="text-capital" >total meetings - <img src='images/Loading-data.gif'  id="loadingImgForTotalId" style="width:20px;height:20px;display:none;"/><span id="totalMeetingsId">0</span></h3>
+                                       <!-- <h5>( Meetings Conducted Ratio - <span class="text-success"><span class="dataClearCls" id="tConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-up"></i></span> <span class="text-danger"><span id="tNotConductedPercId">0%</span><i class="glyphicon glyphicon-arrow-down"></i></span>)</h5>-->
+									   <div style="margin-top: 5px;"></div>
+									   <h5> Total Conducted Ratio - <span class="dataClearCls text-success" id="tConductedPercId">0%</span><br>
+									   Total Not Conducted Ratio - <span id="tNotConductedPercId" class="text-danger">0%</span><br>
+									   Toatl NotUpdated Ratio - <span id="tNotUpadtedPercId" class="text-warning">0%</span></h5>
                                     </div>
                                     <div class="col-md-2 col-xs-12 col-sm-2">
                                     	<div class="totalMeetings" style="height:80px"></div>
@@ -1721,10 +1725,12 @@ function getLevelWiseMeetingDetails(){
 				var totalConducted=0;
 				var totalNotConducted=0;
 				var noOfBlocks = result.length;
+				var totalNotUpdated = 0;
 				for(var i in result){
 					totalPlanned=totalPlanned+result[i].invitedCount+result[i].nonInviteeCount+result[i].attendedCount;
 					totalConducted= totalConducted + result[i].invitedCount;
 					totalNotConducted= totalNotConducted + result[i].nonInviteeCount;
+					totalNotUpdated= totalNotUpdated + result[i].attendedCount;
 					if(noOfBlocks == 4)
 					{
 						str+='<div class="col-md-3 col-xs-12 col-sm-6">';
@@ -1803,6 +1809,7 @@ function getLevelWiseMeetingDetails(){
 				
 				var conductPerc =0 ;
 				var notConductPerc = 0;
+				var notUpdatePerc = 0;
 				if(totalPlanned !=null && totalPlanned>0){
 					if(totalConducted >0){
 						conductPerc = ((totalConducted/totalPlanned)*100).toFixed(2);
@@ -1810,9 +1817,13 @@ function getLevelWiseMeetingDetails(){
 					if(totalNotConducted>0){
 						 notConductPerc= ((totalNotConducted/totalPlanned)*100).toFixed(2);
 					}
+					if(totalNotUpdated>0){
+						 notUpdatePerc= ((totalNotUpdated/totalPlanned)*100).toFixed(2);
+					}
 				}
-				$("#tConductedPercId").html(conductPerc);
-				$("#tNotConductedPercId").html(notConductPerc);
+				$("#tConductedPercId").html(''+conductPerc+' %');
+				$("#tNotConductedPercId").html(''+notConductPerc+' %');
+				$("#tNotUpadtedPercId").html(''+notUpdatePerc+' %');
 				
 				$("#levelBuildingId").html(str);
 				
