@@ -855,7 +855,7 @@ function buildUserLocationDetails(result,boothNo,constituency,type)
 	var map = new L.Map('map').setView(new L.LatLng(result[0].desc,result[0].name), zoomSize);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
+	var qst = new L.TileLayer('https://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="https://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
 	
 
 	map.addControl(new L.Control.Scale({width: 100, position: 'bottomleft'}));

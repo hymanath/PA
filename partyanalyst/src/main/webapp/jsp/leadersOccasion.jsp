@@ -9,8 +9,8 @@
 <title>Birthdays</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Birthdays/custom.css" rel="stylesheet" type="text/css">
-<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Birthdays/Flipster/jquery.flipster.css" rel="stylesheet" type="text/css">
 <link href="dist/Birthdays/Datatables/datatables.css" rel="stylesheet" type="text/css">
 <link href="dist/Birthdays/Datatables/buttons.dataTables.css" rel="stylesheet" type="text/css">
@@ -167,7 +167,7 @@ function buildList(result)
 			i=0;
 			for(var i in result[j].subList){ 
 				str1+='<tr>';
-					str1+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[j].subList[i].imageStr+'" class="img-responsive"/></td>';
+					str1+='<td><img src="https://www.mytdp.com/images/cadre_images/'+result[j].subList[i].imageStr+'" class="img-responsive"/></td>';
 					
 				 if(result[j].subList[i].name == null || result[j].subList[i].name == 0){
 					 str1+='<td> - </td>';
@@ -278,7 +278,7 @@ function buildAllMemberBdayDetails(result1,searchType){
 			 
 		for(var i in result.subList){	
 					str+='<tr>';
-					str+='<td><img src="http://www.mytdp.com/images/cadre_images/'+result.subList[i].imageStr+'" class="img-responsive"/></td>';
+					str+='<td><img src="https://www.mytdp.com/images/cadre_images/'+result.subList[i].imageStr+'" class="img-responsive"/></td>';
 					if(result.subList[i].name == null || result.subList[i].name == 0){
 					 str+='<td> - </td>';
 					 }else{
