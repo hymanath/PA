@@ -1029,10 +1029,10 @@ function disableByLevel(index)
 				
 				$("#myModalConformation").modal('show');
 				setTimeout(function(){ $("#myModalConformation").modal('hide');
-					 }, 1000);
+					 }, 2000);
 					 setTimeout(function(){ $("body").addClass("modal-open");	
 				
-				}, 2000);
+				}, 3000);
 			}else{
 				var duplicateStr ='';
 				duplicateStr+='<p class="text-capital" >'+name+'</p>';
