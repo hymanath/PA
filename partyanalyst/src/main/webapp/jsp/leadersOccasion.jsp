@@ -27,7 +27,7 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<h2 class="text-capitalize">Leaders Birthday</h2>
+        	<h2 class="text-capitalize">LEADERS BIRTHDAYS</h2>
         	<div id="coverflow">
             </div>
         </div>
@@ -42,6 +42,7 @@
             </div>
 			<div class="birthdaysBlock">
 				<div id="birthdaysBlockId"></div>
+				<div id="birthdaysDataId"></div>
 			</div>
         </div>
     </div>
@@ -95,6 +96,7 @@ getBirthDayDetails("",memberTypeGlobal);
 function getBirthDayDetails(searchType,memberTypeGlobal){
 	$("#birthDayDetailsImg").show();
 $("#birthDayHeadingId").html("");
+$("#birthdaysDataId").html("");
 		var jsObj ={
 			searchType:searchType,
 			occasionTypeId:1,
@@ -107,8 +109,11 @@ $("#birthDayHeadingId").html("");
 		data 		: {task:JSON.stringify(jsObj)}  
 		
 	}).done(function(result){
-		if(searchType=="")
+		if(searchType=="" && memberTypeGlobal == 0){
 			buildList(result);
+			todayGlobal = " Today ";
+		}
+			
 		
 			buildAllMemberBdayDetails(result,searchType);
 	});
@@ -116,7 +121,6 @@ $("#birthDayHeadingId").html("");
 }
 function buildList(result)
 	{
-
 		var str='';
 		var membersAvailableIndexNo = 0;
 		str+='<ul class="flip-items">';
@@ -140,17 +144,15 @@ function buildList(result)
 	var str1='';
 
 	for(var j in result){
-
 	if(parseInt(j) == parseInt(membersAvailableIndexNo)){
-
 	if(result[j].subList != null && result[j].subList.length>0)
 	{
 		//debugger;
-		$("#birthDayHeadingId").html(result[membersAvailableIndexNo].name+" BirthDays");
-		  	str+='<ul class="list-inline">';
-					str+='<li><a href="#" class="memberCls" attr_member_name="Total">ALL ('+result.totalCount+')</a></li>';
-					for(var k in result.idNameVOList){
-						str+=', <li><a href="#" class="memberCls" attr_member_name="'+result.idNameVOList[k].name+'">'+result.idNameVOList[k].name+' ('+result.idNameVOList[k].count+')</a></li>';
+		$("#birthDayHeadingId").html(result[membersAvailableIndexNo].name.toUpperCase()+" BIRTHDAYS");
+		  	str1+='<ul class="list-inline">';
+					str1+='<li><a href="#" class="memberCls" attr_member_name="Total">ALL ('+result[j].totalCount+')</a></li>';
+					for(var k in result[j].idNameVOList){
+						str1+=', <li><a href="#" class="memberCls" attr_member_name="'+result[j].idNameVOList[k].name+'">'+result[j].idNameVOList[k].name+' ('+result[j].idNameVOList[k].count+')</a></li>';
 					}
 					str+='</ul>';
              str1+='<div class=" table-responsive">';
@@ -161,7 +163,7 @@ function buildList(result)
                 str1+='<th>Designation</th>';
                 str1+='<th>Date</th>';
                 str1+='<th>Mobile</th>';
-                str1+='<th>Wished</th>';
+                str1+='<th>Status</th>';
                 str1+=' </thead>';
              str1+='<tbody>';	
 			i=0;
@@ -171,10 +173,9 @@ function buildList(result)
 					
 				 if(result[j].subList[i].name == null || result[j].subList[i].name == 0){
 					 str1+='<td> - </td>';
-				 }else{
-					 str1+='<td>'+result[j].subList[i].name+'</td>';
-				 }
-					
+				 } else{
+						 str1+='<td><a href="cadreDetailsAction.action?cadreId='+result[j].subList[i].id+'" style="cursor:pointer;" title="" data-placement="top" data-toggle="tooltip" target="_blank" data-original-title="Cadre Details">'+result[j].subList[i].name+' - '+result[j].subList[i].addressVO.constituencyName+' Constituency</a></td>';
+					 }
 				var str2='';var flag=false;
 					if(result[j].subList[i].designation != null){
 						flag=true;
@@ -202,10 +203,10 @@ function buildList(result)
 					
 					str1+='<td class="text-center">';
 				if(result[j].subList[i].wished == true){
-					str+='<button class="btn btn-success btnWished btnClick wishedCls" attr_id="'+result[j].subList[i].occasionId+'">Wished</button>';
+					str1+='<button class="btn btn-success btnWished btnClick wishedCls" attr_id="'+result[j].subList[i].occasionId+'">Wished</button>';
 				}
 				else {
-						str+='<button class="btn btn-success btnNotWished btnClick wishedCls" attr_id="'+result[j].subList[i].occasionId+'">Not Wished</button>';
+						str1+='<button class="btn btn-success btnNotWished btnClick wishedCls" attr_id="'+result[j].subList[i].occasionId+'">Not Wished</button>';
 				}
 					str1+='</td>';
 				str1+='</tr>';
@@ -214,18 +215,14 @@ function buildList(result)
 		str1+='</tbody>';
 		str1+='</table>';
 		str1+='</div>';
-		
 		$("#birthdaysBlockId").html(str1);
-		if(todayGlobal == " Tomorrow " || todayGlobal == 	" Next 7 Days" || todayGlobal == " Next 30 Days" ){
-			$(".wishedCls").hide();
-		}
-		 $(".tableBirthday").dataTable({
-			 
+	     $(".tableBirthday").dataTable({
 				"pagingType": "full_numbers"
 		 });
 	}
 	else{
-		str1+='<center>No Data Available</center>';
+		//str1+='<center>No Data Available</center>';
+		$("#birthdaysDataId").html("<center>No Data Available...</center>");
 	}
   }
 }
@@ -251,13 +248,15 @@ disableBtns();
 });
 function buildAllMemberBdayDetails(result1,searchType){
 	var str = '';
+	
 	if(result1 != null && result1.length>0){
 		for(var j in result1){
-	if(result1[j].subList != null && result1[j].subList.length>0){
+	
 		if(result1[j].name == searchType){
+			if(result1[j].subList != null && result1[j].subList.length>0){
 			var result = result1[j];
 			if(result.subList != null && result.subList.length >0){
-				$("#birthDayHeadingId").html(todayGlobal+" BirthDays");
+				$("#birthDayHeadingId").html(todayGlobal.toUpperCase()+" BIRTHDAYS");
 				str+='<ul class="list-inline">';
 					str+='<li><a href="#" class="memberCls" attr_member_name="Total">ALL ('+result.totalCount+')</a></li>';
 					for(var i in result.idNameVOList){
@@ -272,7 +271,7 @@ function buildAllMemberBdayDetails(result1,searchType){
                 str+='<th style="width:104px;">Designation</th>';
                 str+='<th>Date</th>';
                 str+='<th>Mobile</th>';
-                str+='<th>Wished</th>';
+                str+='<th>Status</th>';
                 str+=' </thead>';
              str+='<tbody>';
 			 
@@ -323,21 +322,26 @@ function buildAllMemberBdayDetails(result1,searchType){
 		str+='</div>';
 		
 		$("#birthdaysBlockId").html(str);
-		if(todayGlobal == " Tomorrow " || todayGlobal == 	" Next 7 Days" || todayGlobal == " Next 30 Days" ){
-			$(".wishedCls").hide();
+		if( todayGlobal == " Tomorrow " || todayGlobal == " Next 7 Days" || todayGlobal == " Next 30 Days" ){
+			$(".wishedCls").hide( );
 		}
 		 $(".tableBirthday").dataTable({
 			
 				"pagingType": "full_numbers"
 		 });
 	}else{
-		str+='<center>No Data Available</center>';
+		$("#birthdaysDataId").html("No Data Available...");
 		}
 	  }
-	}
+	  else{
+		$("#birthdaysDataId").html("<center>No Data Available...</center>");
+		}
+	  }
+	
   }
 }	
 $("#birthDayDetailsImg").hide();
+
 }
 $(document).on("click",".btnClick",function(){
 	$(this).toggleClass("btnNotWished").toggleClass("btnWished")
