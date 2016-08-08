@@ -2181,7 +2181,7 @@ function populateFields(result){
 												else
                                                 	str+='<span class="labelStatus " style="background:green;">'+result.subList[i].status+' </span>';
 													if(result.subList[i].levelName != null){
-														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→ Dept-'+ result.subList[i].cadreName+"→Board- "+result.subList[i].subCaste+" →Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 													}
 													else{
 														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
@@ -2206,7 +2206,7 @@ function populateFields(result){
                                                 str+='<li>';
                                                 	str+='<span class="labelStatus shortlisted">Shortlisted</span>';
                                                 	if(result.subList1[i].levelName != null){
-													str+=''+result.subList1[i].level+'-'+result.subList1[i].levelName+ '→' +result.subList1[i].subCaste+" → "+result.subList1[i].cadreName+" → "+result.subList1[i].voterName+" : "+result.subList1[i].status+"</li>";
+													str+=''+result.subList1[i].level+'-'+result.subList1[i].levelName+ '→Dept- ' + result.subList[i].cadreName+"→Board- "+result.subList1[i].subCaste+" →Position- "+result.subList1[i].voterName+" : "+result.subList1[i].status+"</li>";
 													}
 													else{
 														str+=''+result.subList1[i].level+'→' +result.subList1[i].subCaste+" → "+result.subList1[i].cadreName+" → "+result.subList1[i].voterName+" : "+result.subList1[i].status+"</li>";

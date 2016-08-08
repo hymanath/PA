@@ -159,6 +159,7 @@ getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId);
 function getBoardWiseNominatedPostMemberDetails(){
 	
 		$('#resultDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset7" src="images/search.gif">');
+	
 	var jsObj=
 	   {				
 		levelId:parseInt('${lId}'),//levelId,
@@ -269,6 +270,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
 							str+='<i class="glyphicon glyphicon-remove pull-right closeDivCls" id="updateDropDownId'+i+'" style="cursor:pointer;"></i>';
 							str+='<label>Select Status</label>';
+							str+='<span id="selectStatusIdImg"><img src="images/search.gif" style="display:none;"/></span>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
 								str+='<option value="2">Rejected</option>';
@@ -563,6 +565,24 @@ $(document).on("click",".updateStatusCls",function(){
 	
 	var status = $("#"+selectDivId).val();
 	var comment = $("#"+commentDivId).val();
+	var str=' ';
+	var flag = true;
+	if(status==0)
+	{
+		str+='Please Select Status</br>';
+		flag = false;
+	}
+	if(comment.trim().length==0)
+	{
+		str+='Comments required';
+		flag = false;
+	}
+	if(!flag)
+	{
+		$("#"+divId).html(str).css("color","red");
+		return;
+	}
+	$("#selectStatusIdImg").show();
 	var jsObj=
 	   {				
 		nominatePostApplicationId:applicationId,
@@ -581,10 +601,15 @@ $(document).on("click",".updateStatusCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-		if(result != null && result == 'success')
-			$("#"+divId).html("Successfully Updated...");
+	   $("#selectStatusIdImg").hide();
+		if(result != null && result == 'success'){
+			$("#"+divId).html("Successfully Updated...").css("color","green");
+			//window.location.reload();
+			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);
+			
+		}
 		else
-			$("#"+divId).html("Sorry,Exception Occured...Please try again...");
+			$("#"+divId).html("Sorry,Exception Occured...Please try again...").css("color","red");
    });
 });
 
@@ -815,7 +840,7 @@ function tableResponsive()
   {
     $("#resultDivId").addClass("table-responsive");
   }
-}
+} 
 </script>
 </body>
 </html>
