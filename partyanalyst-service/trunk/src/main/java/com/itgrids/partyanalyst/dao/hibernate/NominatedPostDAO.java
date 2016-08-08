@@ -584,25 +584,36 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	 
 	 public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
 		 StringBuilder sb = new StringBuilder();
-		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId," +
-		 			" count(distinct model.nominatedPostId)" +
+		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId,");
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+		 			sb.append(" count(distinct model.nominatedPostId)" +
 		 			" from NominatedPost model ");
-		 if(status != null && !status.equalsIgnoreCase("Total"))
+		 else
+			 sb.append(" count(distinct model.nominatedPostMemberId)" +
+			 			" from NominatedPostApplication model ");
+		/* if(status != null && !status.equalsIgnoreCase("Total"))
 		 	sb.append(" ,NominatedPostApplication model1 " +
 		 			" where model.nominatedPostMemberId = model1.nominatedPostMemberId and " );
-		 else
+		 else*/
 			 sb.append(" where ");
 		 sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId" +
 		 		//	" and model.nominationPostCandidateId is null" +
 		 			" ");
 		 
 		 sb.append("");
-		 if(status != null && status.equalsIgnoreCase("Total"))
+		/* if(status != null && status.equalsIgnoreCase("Total"))
 				sb.append(" ");
 		 else if(status != null && status.equalsIgnoreCase("Open"))
 			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId = 1 and model.nominationPostCandidateId is null ");
 		 else if(status != null && status.equalsIgnoreCase("running"))
-			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId not in (5) and model.nominationPostCandidateId is null");
+			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId not in (5) and model.nominationPostCandidateId is null");*/
+		 
+		 if(status != null && status.equalsIgnoreCase("Total"))
+				sb.append(" ");
+		 else if(status != null && status.equalsIgnoreCase("Open"))
+			sb.append(" and model.nominatedPostStatusId = 1");
+		 else if(status != null && status.equalsIgnoreCase("running"))
+			sb.append(" and model.applicationStatusId not in (5)");
 		 
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)
@@ -620,8 +631,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
 				 sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :searchLevelValue");
 		 }
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+			 sb.append(" and model.isExpired = 'N'");
 		 
-		 sb.append(" and model.isDeleted = 'N' and model.isExpired = 'N'" +
+		 sb.append(" and model.isDeleted = 'N'" +
 		 			" and model.nominatedPostMember.isDeleted = 'N' and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
 		 			" group by model.nominatedPostMember.nominatedPostPosition.departmentId");
 		 
@@ -637,21 +650,30 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 StringBuilder sb = new StringBuilder();
 		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId," +
 		 			" model.nominatedPostMember.nominatedPostPosition.boardId," +
-		 			" count(model.nominatedPostMemberId)" +
-		 			" from NominatedPost model ");
-		 if(status != null && !status.equalsIgnoreCase("Total"))
+		 			" count(model.nominatedPostMemberId)");
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+		 			sb.append(" from NominatedPost model ");
+		 else
+			 sb.append(" from NominatedPostApplication model");
+		/* if(status != null && !status.equalsIgnoreCase("Total"))
 			 sb.append(" ,NominatedPostApplication model1" +
 		 			" where model.nominatedPostMemberId = model1.nominatedPostMemberId and" );
-		 else
+		 else*/
 			 sb.append(" where ");
 		 sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId" );
 		 		
-		 if(status != null && status.equalsIgnoreCase("Total"))
+		 /*if(status != null && status.equalsIgnoreCase("Total"))
 				sb.append(" ");
 		 else if(status != null && status.equalsIgnoreCase("Open"))
 			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId = 1 and model.nominationPostCandidateId is null ");
 		 else if(status != null && status.equalsIgnoreCase("running"))
-			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId not in (5) and model.nominationPostCandidateId is null ");
+			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId not in (5) and model.nominationPostCandidateId is null ");*/
+		 if(status != null && status.equalsIgnoreCase("Total"))
+				sb.append(" ");
+		 else if(status != null && status.equalsIgnoreCase("Open"))
+			sb.append(" and model.nominatedPostStatusId = 1");
+		 else if(status != null && status.equalsIgnoreCase("running"))
+			sb.append(" and model.applicationStatusId not in (5)");
 		 
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)
@@ -669,8 +691,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
 				 sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :searchLevelValue");
 		 }
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+			 sb.append(" and model.isExpired = 'N'");
 		 
-		 sb.append(" and model.isDeleted = 'N' and model.isExpired = 'N'" +
+		 sb.append(" and model.isDeleted = 'N'" +
 		 			" and model.nominatedPostMember.isDeleted = 'N' and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
 		 			" group by model.nominatedPostMember.nominatedPostPosition.departmentId," +
 		 			" model.nominatedPostMember.nominatedPostPosition.boardId");
