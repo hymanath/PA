@@ -464,7 +464,7 @@ function buildAlertAssignedCandidateData(result)
         str+='</div>';
 		str+='<div class="media-body" style="position:relative;">';
 		str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">';
-        str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash"></i></span>';
+        str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash" title="Click here to Delete"></i></span>';
 		str+='</c:if>';
 		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
 		//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
