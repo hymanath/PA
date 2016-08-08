@@ -20,7 +20,7 @@ public class AlertVO {
 	private Long panchayatId;
 	private Long wardId;
 	
-	private List<IdNameVO> idNamesList;
+	private List<IdNameVO> idNamesList,assignList;
 	
 	private Long tdpCadreId;
 	private Long id;
@@ -30,6 +30,12 @@ public class AlertVO {
 	
 	
 	
+	public List<IdNameVO> getAssignList() {
+		return assignList;
+	}
+	public void setAssignList(List<IdNameVO> assignList) {
+		this.assignList = assignList;
+	}
 	public Long getStatusId() {
 		return statusId;
 	}
