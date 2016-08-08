@@ -979,6 +979,7 @@ function disableByLevel(index)
    }
 	var cloneCount=0;
 	var involvedCadreIds = [];
+	var assignCadreIds = [];
    $(document).on("click",".apptDetailsDiv",function(){
 		
 		 if($(this).is(':checked')){
@@ -998,11 +999,22 @@ function disableByLevel(index)
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
 			str+='</div>';
 			str+='<div class="media-body">';
-			str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
+			if(btnAttr == "involve")
+			{
+				str+='<input type="hidden" class="form-control memberDatacls" name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'"/>';
+			}
+			else
+			{
+				str+='<input type="hidden" class="form-control assignmemberDatacls" name="alertVO.assignList['+cloneCount+'].id" value="'+attrId+'"/>';
+			}
+			
 			str+='<div class="col-md-12"><b>'+name+'</b></div>';
 			str+='<div class="col-md-12"><b>'+mobile+'</b></div>';
 			str+='<div class="col-md-12"><label>'+attrConsti+'</label></div>';
-			str+='<div class="col-md-12"><div class="form-inline">';
+			str+='<div class="col-md-12">';
+			if(btnAttr == "involve")
+			{
+			str+='<div class="form-inline">';
 			//str+='<select class="form-control" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive</option><option value="2">Negative</option></select>';
 			str+='<div class="onoffswitch" style="display:inline-block">';
 			str+='<input type="checkbox"  name="alertVO.idNamesList['+cloneCount+'].name" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch'+cloneCount+'" checked>';
@@ -1011,43 +1023,92 @@ function disableByLevel(index)
             str+='<span class="onoffswitch-switch"></span>';
 			str+='</label>';
 			str+='</div>';
-			str+='</div></div></div></div><span class="closeIcon" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
-			$("#duplicateCandidateBlock").html('');
-			
-			if(jQuery.inArray(attrId, involvedCadreIds) == -1)
-			{
-				involvedCadreIds.push(attrId);	
-				
-				$(".membersBlock").append(str);
-				$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
-				var addStr ='';
-				addStr+='<p class="text-capital" >'+name+'</p>';
-				addStr+='<p>'+mobile+'</p>';
-				addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-				$("#duplicateCandidateBlock").html(''+addStr+'');
-				$("#memberConfirmation").html("Member Added");
-				
-				$("#myModalConformation").modal('show');
-				setTimeout(function(){ $("#myModalConformation").modal('hide');
-					 }, 2000);
-					 setTimeout(function(){ $("body").addClass("modal-open");	
-				
-				}, 3000);
-			}else{
-				var duplicateStr ='';
-				duplicateStr+='<p class="text-capital" >'+name+'</p>';
-				duplicateStr+='<p>'+mobile+'</p>';
-				duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
-				$("#duplicateCandidateBlock").html(''+duplicateStr+'');
-				$("#memberConfirmation").html("already added member to this alert");
-				$("#myModalConformation").modal('show');
+			str+='</div>';
 			}
-			 
-					 
-			  cloneCount = cloneCount+1;
-			   $('html, body').animate({
-                    scrollTop: $('.membersBlock').offset().bottom
-                }, 2000);
+			str+='</div></div></div>';
+			if(btnAttr == "involve")
+			{
+				str+='<span class="closeIcon" btn-type="involve" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
+				$("#duplicateCandidateBlock").html('');
+			}
+			else
+			{
+				str+='<span class="closeIcon" btn-type="assign" id="'+attrId+'" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove removeIconNew" style="display:block;"></i></span></div></div>';
+				$("#duplicateCandidateBlock").html('');
+				
+			}
+			if(btnAttr == "involve")
+			{
+					if(jQuery.inArray(attrId, involvedCadreIds) == -1 )
+					{
+						
+						involvedCadreIds.push(attrId);	
+						$(".membersBlock").append(str);
+						$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+						var addStr ='';
+						addStr+='<p class="text-capital" >'+name+'</p>';
+						addStr+='<p>'+mobile+'</p>';
+						addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+						$("#duplicateCandidateBlock").html(''+addStr+'');
+						$("#memberConfirmation").html("Member Added");
+						
+						$("#myModalConformation").modal('show');
+						setTimeout(function(){ $("#myModalConformation").modal('hide');
+							 }, 2000);
+							 setTimeout(function(){ $("body").addClass("modal-open");	
+						}, 3000);
+					}else{
+						var duplicateStr ='';
+						duplicateStr+='<p class="text-capital" >'+name+'</p>';
+						duplicateStr+='<p>'+mobile+'</p>';
+						duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+						$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+						$("#memberConfirmation").html("already added member to this alert");
+						$("#myModalConformation").modal('show');
+						 setTimeout(function(){ $("body").addClass("modal-open");	
+						}, 3000);
+					}	
+			}
+			else
+				
+				{
+						if(jQuery.inArray(attrId, assignCadreIds) == -1 )
+						{
+							
+							assignCadreIds.push(attrId);	
+							$(".assignedMembersBlock").append(str);
+							$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');
+							var addStr ='';
+							addStr+='<p class="text-capital" >'+name+'</p>';
+							addStr+='<p>'+mobile+'</p>';
+							addStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+							$("#duplicateCandidateBlock").html(''+addStr+'');
+							$("#memberConfirmation").html("Member Added");
+							
+							$("#myModalConformation").modal('show');
+							setTimeout(function(){ $("#myModalConformation").modal('hide');
+								 }, 2000);
+								 setTimeout(function(){ $("body").addClass("modal-open");	
+							}, 3000);
+						}else{
+							var duplicateStr ='';
+							duplicateStr+='<p class="text-capital" >'+name+'</p>';
+							duplicateStr+='<p>'+mobile+'</p>';
+							duplicateStr+='<p class="text-capitalize">'+attrConsti+'</p>';
+							$("#duplicateCandidateBlock").html(''+duplicateStr+'');
+							$("#memberConfirmation").html("already added member to this alert");
+							$("#myModalConformation").modal('show');
+							 setTimeout(function(){ $("body").addClass("modal-open");	
+							}, 3000);
+						}	
+					}
+				
+				 
+						 
+				  cloneCount = cloneCount+1;
+				   $('html, body').animate({
+						scrollTop: $('.membersBlock').offset().bottom
+					}, 2000);
 		 }
    })
    $(document).on("click",".closeIcon",function(){
@@ -1056,8 +1117,16 @@ function disableByLevel(index)
 	var id=$(this).attr("id");
 	$(".candidatecls"+id).prop('checked', false); 
 	$(".close"+id).prop('checked', false); 
+	if($(this).attr("btn-type") == "involve")
+	{
 	involvedCadreIds.pop(id);	
-	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');	
+	}
+	else{
+	assignCadreIds.pop(id);	
+	$("#assignedMembers").html('('+assignCadreIds.length+' - Members added)');	
+	}
+	
 });
 
 function getMemberTypes()

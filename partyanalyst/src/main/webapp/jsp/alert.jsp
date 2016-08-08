@@ -249,7 +249,7 @@
 						</div>
 						
                         <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
-                        	<div class="involveBlockNew">
+                        	<div class="involveBlockNew" btn-attr = "involve">
                             	<div class="media">
                                 	<div class="media-left" style="font-size:36px">
                                     	+
@@ -261,6 +261,55 @@
                             </div>
                         </div>
                     </div>
+					
+					<!-- Assign -- >
+					  <div class="row m_top10">
+                    	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
+                        	<h4 class="text-success text-capital">involve members linking to this alert<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
+                        </div>
+						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="membersBlock col-md-12" style="display:none;"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>-->
+						<!-- Assign Block Start -->
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">
+						 <div class="row m_top10">
+                    	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
+                        	<h4 class="text-success text-capital">Assign members linking to this alert<small class="text-muted" id="assignedMembers">(0 - Members added)</small></h4>
+                        </div>
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<div class="row assignedMembersBlock"></div>
+						</div>
+						
+                        <div class="col-md-3 col-xs-12 col-sm-6 m_top10">
+                        	<div class="involveBlockNew" btn-attr = "assign">
+                            	<div class="media">
+                                	<div class="media-left" style="font-size:36px">
+                                    	+
+                                    </div>
+                                    <div class="media-body">
+                                    	Click to Search Assigned Members Link to this alert
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					
+					</c:if>
+					<!-- Assign End  -->
+					
+					
+					
 					<div class="row m_top10">
 
 						<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
@@ -438,10 +487,14 @@ $(document).on("click",".modalCloseAndShow",function(){
 	$("#myModalConformation").modal('hide');
 	$("#myModal").modal('show');
 });
+var btnAttr;
 $(document).on("click",".involveBlockNew",function(){
 	$("#myModal").modal('show');
 	 $("#apptmemberDetailsDiv").html("");
 	 $("#advanceSearchTypeId").val(0);
+	 
+	 btnAttr = $(this).attr("btn-attr");
+	
 	var select = new Dropkick("#advanceSearchTypeId");
 				select.refresh();	
 		showHideBySearchType();
@@ -704,6 +757,8 @@ function createAlert()
     candidateId=candidateId.substring(0,n) ;
 	$("#candidateId").val(candidateId);
 	
+	
+	
 
    if(description.length==0 ||description=='')
   {
@@ -749,6 +804,8 @@ function clearFields()
 				select.refresh();
 	   $("#apptmemberDetailsDiv").html("");
 	   $(".membersBlock").html("");
+	    $("#assignedMembers").html("");
+	   $(".assignedMembersBlock").html("");
 	   $("#involvedCandidatesDiv").hide();
 	   $("#advanceSearchTypeId").val(0);
 		 var select = new Dropkick("#advanceSearchTypeId");
