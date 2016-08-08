@@ -332,7 +332,10 @@ var str = '';
                                 str+='</div>';
                                 str+='<div class="col-md-2 col-xs-12 col-sm-2 pad_left0 ">';
                                 	str+='<div class="positionsCls text-success">';
-									str+='<span> - </span>';
+									if(result[i].wishCount != null && result[i].wishCount > 0)
+										str+='<span><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;'+result[i].wishCount+'</span>';
+									else
+										str+='<span><img src="dist/nominatedImages/Icon7.png"/> &nbsp;&nbsp;0</span>';
                                     	//str+='<img src="dist/img/Icon1.png"/> - ';
                                     str+='</div>';
                                 str+='</div>';
