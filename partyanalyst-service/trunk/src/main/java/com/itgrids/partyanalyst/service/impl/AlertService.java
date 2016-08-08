@@ -297,6 +297,32 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 						 
 					 }
 				 }
+				if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 {
+					 /* List<Long> existCadreIds = new ArrayList<Long>();
+					  for(IdNameVO vo : inputVO.getAssignList())
+						 {
+							 if(vo != null && vo.getId()!= null && vo.getId() > 0)
+							 {
+								 existCadreIds.add(vo.getId());
+							 }
+						}
+						  existCadreIds = alertAssignedDAO.checkCadreExistsForAlert(existCadreIds,alert.getAlertId());*/
+							for(IdNameVO vo1 : inputVO.getAssignList())
+							 {
+								 if(vo1 != null && vo1.getId()!= null && vo1.getId() > 0)
+								 {
+									 				AlertAssigned alertAssigned = new AlertAssigned();
+													alertAssigned.setAlertId(alert.getAlertId());
+													alertAssigned.setTdpCadreId(vo1.getId());
+													alertAssigned.setCreatedBy(userId);
+													alertAssigned.setInsertedTime(date.getCurrentDateAndTime());
+													alertAssigned.setUpdatedTime(date.getCurrentDateAndTime());
+													alertAssigned.setIsDeleted("N");
+													alertAssignedDAO.save(alertAssigned);
+								 	}
+							 }
+				 		}
 				 rs = "success";
 				    AlertComment alertComment = new AlertComment();
 				    alertComment.setComments(inputVO.getDesc().toString());
