@@ -266,7 +266,7 @@
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
-                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId"/></h4>
+                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="true" name="nominatedPostVO.isCheckedMigrateAddressField"/></h4>
                             </div>
                             <div class="panel-body bg_ff pad_10" style="display:none;" id="changePhoneNumberDiv">
                             	<div class="row">
