@@ -3287,6 +3287,8 @@
 	<property name="alertSourceUserDAO" ref="alertSourceUserDAO"></property>
 	<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
 	<property name="memberTypeDAO" ref="memberTypeDAO"></property>
+	<property name="alertCommentAssigneeDAO" ref="alertCommentAssigneeDAO"></property>
+	
 	
 	</bean>
 	<!-- Debate End -->

@@ -25,6 +25,7 @@
 	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 	
 	<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
+	
 	<style type="text/css">
 		#searchedMembersId_length , #searchedMembersId_info
 		{
@@ -298,7 +299,7 @@ control.makeTransliteratable(['commentsId']);
 											</select>
 											
 											<label>Assigned Cadre</label>
-											 <select class="dropkickClass" id="assignedCadreId">
+											 <select class="" id="assignedCadreId"  multiple>
 												 <option value="0">Select Assign Cadre</option>
 												 
 											 </select>

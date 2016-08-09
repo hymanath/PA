@@ -108,9 +108,18 @@ function getAlertStatusCommentsTrackingDetails()
 								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
 								str+='<ul class="commentsUlCls">';
 							for(var j in result[i].subList){
-								if(result[i].subList[j].applicationStatus != null)
+								if(result[i].subList[j].subList1 != null && result[i].subList[j].subList1.length > 0)
 								{
-									str+='<li><b>Alert Owner : '+result[i].subList[j].applicationStatus+'</b> '+result[i].subList[j].name+' on '+result[i].subList[j].dateStr+' By <b>'+result[i].subList[j].status+'</b></li>';
+									str+='<u>Alert Owners</u> : ';
+									for(var k in result[i].subList[j].subList1)
+									{
+										if(k == result[i].subList[j].subList1.length -1)
+										str+='<b>'+result[i].subList[j].subList1[k].name+'</b> ';
+										else									
+										str+='<b>'+result[i].subList[j].subList1[k].name+',</b> ';
+									}
+									
+									str+='<li>'+result[i].subList[j].name+' on '+result[i].subList[j].dateStr+' By <b>'+result[i].subList[j].status+'</b></li>';
 								}
 								else
 								{
@@ -211,6 +220,7 @@ function updateAlertStatus()
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
+	 var tdpCadreIdarr =[];
 	 var tdpCadreId = $("#assignedCadreId").val();
 	if(comments.length==0||comments=='')
 	{
@@ -223,12 +233,16 @@ function updateAlertStatus()
         return;	   
 	}
 	$("#updateAlertajaxImg").html('<img src="images/search.gif"/>');
+	if(tdpCadreId == null)
+		tdpCadreIdarr = [];
+	else
+		 tdpCadreIdarr = tdpCadreId;
 	var jsObj =
 		     {
 		alertId : alertId,
 		alertStatusId :statusId,
 		comments:comments,
-		tdpCadreId:tdpCadreId,
+		tdpCadreId:tdpCadreIdarr,
 			task : ""
 		      }
 			$.ajax({
@@ -345,11 +359,13 @@ function getConfirmation(tdpCadreId){
             }
 
 
-
+// $("#assignedCadreId").multiselect({ noneSelectedText:"Select Assign Cadre"}).multiselectfilter({});
 function getAlertAssignedCandidate(alertId)
 {
 	
 	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+	   $("#assignedCadreId option").remove();
+    // $("#assignedCadreId").multiselect('refresh'); 
 	var jsObj={
     			alertId:alertId,
 				task:""
@@ -370,13 +386,14 @@ function getAlertAssignedCandidate(alertId)
 			}
 		}
 		$("#assignedCadreId").html(str);
-		$("#assignedCadreId").dropkick();
-		var select1 = new Dropkick("#assignedCadreId");
-		select1.refresh();
+		//$("#assignedCadreId").multiselect('refresh'); 
+		
+		$("#assignedCadreId").trigger("chosen:updated");
 	});
 	
 }
 
+$("#assignedCadreId").chosen();
 
 
 
