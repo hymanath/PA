@@ -134,13 +134,14 @@ footer
 				</c:if>
 				</p>
 				
-				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs fullcollapse" href="#">
+				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle btn btn-default btn-xs fullcollapse" href="#" style="margin-top:10px">
 					Menu <i class="glyphicon glyphicon-align-justify icon-align-justify"></i>
                 </a>
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'LEADER_OCCASIONS_ENTITLEMENT' )}">
 					<a href="birthDayAction.action" style="position:relative">
 						<span class="birthdayCount"> <b> ${sessionScope.birthDayCount} </b></span>
-						<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>
+						<img src="img/birthdayIcon.png" style="width: 30px; height: 25px; margin-top: 10px;margin-left:10px;"/>
+						<!--<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>-->
 					</a>
 				</c:if>
             </div>
