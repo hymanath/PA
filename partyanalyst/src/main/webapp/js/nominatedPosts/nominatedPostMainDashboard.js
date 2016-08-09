@@ -1163,6 +1163,8 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		}).done(function(result){ 
 			if(result != null && result.length > 0){  
 				buildStatePositionCluntTable(result,positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId,stateId);
+			}else{
+				$("#statePositionId").html("No Data Available");
 			}
 		}); 
 	} 
@@ -1193,7 +1195,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 				str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
 				str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
 				str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus changeIconClass districtCls" attr_id="districtPositionId'+i+'" attr_dist_id="'+result[i].districtId+'" attr_position_id="'+positionId+'" attr_locationLevel_id="'+locationLevelId+'" attr_dept_id="'+deptId+'" attr_corporation_id="'+corporationId+'" attr_castGroup_id="'+castGroupId+'" attr_positionStatus_id="'+positionStatusId+'" attr_state_id="'+stateId+'"></i></td>';     
+				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" attr_dist_id="'+result[i].districtId+'" attr_position_id="'+positionId+'" attr_locationLevel_id="'+locationLevelId+'" attr_dept_id="'+deptId+'" attr_corporation_id="'+corporationId+'" attr_castGroup_id="'+castGroupId+'" attr_positionStatus_id="'+positionStatusId+'" attr_state_id="'+stateId+'"></i></td>';     
 			str+='</tr>';
 			str+='<tr class="showHideTr" style="display:none" id="districtPositionId'+i+'">';    
 			str+='</tr>';
@@ -1202,18 +1204,10 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		$("#statePositionId").html(str);
 	}
 	$(document).on('click','.districtCls',function(){
-		$(".showHideTr").hide();
-		$(".districtCls").removeClass("glyphicon-plus").addClass("glyphicon-plus").removeClass("glyphicon-minus");
-		$(this).closest('tr').next('tr.showHideTr').toggle();
-		$(this).toggleClass("glyphicon-minus");
-		var distId = $(this).attr("attr_id");
-		if($(this).hasClass("glyphicon-minus"))
-		{
-			getPositionsForDistrict(distId,"expand");
-		}else{
-			getPositionsForDistrict(distId,"close");
-		}
-		var sectionId = $(this).attr("attr_id");
+		$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+		$(this).closest('tr').next('tr.showHideTr').toggle();    
+		
+		var sectionId = $(this).attr("attr_id");   
 		var districtId = $(this).attr("attr_dist_id");
 		var stateId = $(this).attr("attr_state_id");
 		var positionId = $(this).attr("attr_position_id");
@@ -1222,11 +1216,15 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var boardId = $(this).attr("attr_corporation_id");
 		var castegroupId = $(this).attr("attr_castGroup_id");
 		var positionStatusId = $(this).attr("attr_positionStatus_id");
-		getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId);
-		
+		if($(this).hasClass("glyphicon-minus"))
+		{
+			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,"expand");
+		}else{
+			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,"close");
+		}
 	});
 	
-	function getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId){
+	function getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,actionType){
 	
 		if(actionType == "close"){
 			 return;
