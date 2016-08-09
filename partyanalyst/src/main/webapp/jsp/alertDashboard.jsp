@@ -267,8 +267,25 @@ $(document).on("click","#createAlertBtn",function(){
 	$("#apptmemberDetailsDiv").html("");
 });
 $(".dropkickClass").dropkick();
-
-
+getAlertAssignedCandidate();
+function getAlertAssignedCandidate()
+{
+	alert(3);
+	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+	var jsObj={
+    			alertId:0,
+				task:""
+    		}
+	$.ajax({
+	  type : 'GET',
+	  url : 'getAlertAssignedCandidateAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+	  //buildAlertCommentsForTracking(result,"");
+	});
+	
+}
 </script>
 </body>
 </html>
