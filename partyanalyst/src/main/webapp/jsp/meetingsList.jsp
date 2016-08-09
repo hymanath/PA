@@ -813,7 +813,6 @@ getUserAccessLocationDetails();
 	});
 	
 	$( "#meetingLocationLevel" ).change(function() {
-		
 		//default Date
 		$('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 		
@@ -1327,8 +1326,8 @@ getUserAccessLocationDetails();
 					 $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
 			}
-			getConstituenciesForDistricts('');
-			setTimeout(
+			//getConstituenciesForDistricts('');
+			/* setTimeout(
 			function(){		
 				getMandalVillageDetails(4);
 				setTimeout(
@@ -1336,7 +1335,7 @@ getUserAccessLocationDetails();
 				getMandalVillageDetails(5);
 			}, 1000);
 			
-			}, 2000);
+			}, 2000); */
 	   });
 	}
 	function getConstituenciesForDistricts(district){
@@ -1432,70 +1431,11 @@ getUserAccessLocationDetails();
 							}
 						}
 					});
-				</c:if>		
-			if($("#meetingLocationLevel").val()== 2 ){
-				$("#stateShowId").show();
-				$("#DistrictShowId").show();
-				$("#ConstShowId").hide();
-				$("#ManTwnDivShowId").hide();
-				$("#VillWardShowId").hide();
-				
-			}else if($("#meetingLocationLevel").val()== 3){
-				
-				getConstituenciesForDistricts("");
-				
-				$("#stateShowId").show();
-				$("#DistrictShowId").show();
-				$("#ConstShowId").show();
-				$("#ManTwnDivShowId").hide();
-				$("#VillWardShowId").hide();
-				
-			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
-				
-				getConstituenciesForDistricts("");				
-				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-				setTimeout(function(){getMandalVillageDetails(4);}, 2000);
-				</c:if>
-				
-				<c:if test="${sessionScope.USER.isAdmin == 'false'}">
-				setTimeout(function(){getMandalsForDistrictId();}, 2000);
-				</c:if>
-				
-				
-				
-				$("#stateShowId").show();
-				$("#DistrictShowId").show();
-				$("#ConstShowId").show();
-				$("#ManTwnDivShowId").show();
-				$("#VillWardShowId").hide();
-				
-			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
-				
-				getConstituenciesForDistricts("");
-				/* start */
-				getMandalVillageDetails(4);
-				/* end */
-				
-				getMandalsForDistrictId();
-				getVillagesForDistrictId();
-				
-				$("#stateShowId").show();
-				$("#DistrictShowId").show();
-				$("#ConstShowId").show();
-				$("#ManTwnDivShowId").show();
-				$("#VillWardShowId").show();
-				
-			}else if($("#meetingLocationLevel").val()== 1){
-				
-					
-				$("#stateShowId").show();
-				$("#DistrictShowId").hide();
-				$("#ConstShowId").hide();
-				$("#ManTwnDivShowId").hide();
-				$("#VillWardShowId").hide();
-			}
-		});
-		
+				</c:if>	
+
+meetingLevelWiseHideShow();	
+});			
+			
 		$("#constituencyId").change(function(){
 			$("#ConsErrorMSgShow").html("");
 			getMandalVillageDetails(4);
@@ -1967,7 +1907,7 @@ function updateConductedStatus(meetingId,status){
 		url:"updateConductedStatusAction.action",
 		data:{task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		
+		getLevelWiseMeetingDetails();
 	});	
 }
 function updateConductedDate(dateValue){
@@ -2210,21 +2150,91 @@ function getVillagesForDistrictId(){
 					//$("#statesDivId").append('<option value=1> All </option>');
 					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
 					getDistrictsForStates($( "#statesDivId" ).val());
+					meetingLevelWiseHideShow();
 				}else if($(this).val()==36){
 					$("#statesDivId").html("");
 					//$("#statesDivId").append('<option value=36> All </option>');
 					$("#statesDivId").append('<option value=36> Telangana </option>');
 					getDistrictsForStates($( "#statesDivId" ).val());
+					meetingLevelWiseHideShow();
 				}else if($(this).val()==0){
 					$("#statesDivId").html("");
 					$("#statesDivId").append('<option value=0> All </option>');
 					$("#statesDivId").append('<option value=1> Andhra Pradesh </option>');
 					$("#statesDivId").append('<option value=36> Telangana </option>');
 					getDistrictsForStates($( "#statesDivId" ).val());
+					meetingLevelWiseHideShow();
 				}
 			}
 		});
  }
+ function meetingLevelWiseHideShow(){
+	 if($("#meetingLocationLevel").val()== 2 ){
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").hide();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 3){
+				
+				getConstituenciesForDistricts("");
+				
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
+				
+				getConstituenciesForDistricts("");
+					
+				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+				setTimeout(function(){getMandalVillageDetails(4);}, 2000);
+				</c:if>
+				
+				<c:if test="${sessionScope.USER.isAdmin == 'false'}">
+				setTimeout(function(){getMandalsForDistrictId();}, 2000);
+				</c:if>
+				
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").show();
+				$("#VillWardShowId").hide();
+				
+			}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
+				
+				getConstituenciesForDistricts("");
+				/* start */
+				
+				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+				getMandalVillageDetails(4);
+				</c:if>
+				/* end */
+				
+				<c:if test="${sessionScope.USER.isAdmin == 'false'}">
+				getMandalsForDistrictId();
+				getVillagesForDistrictId();
+				</c:if>
+				
+				$("#stateShowId").show();
+				$("#DistrictShowId").show();
+				$("#ConstShowId").show();
+				$("#ManTwnDivShowId").show();
+				$("#VillWardShowId").show();
+				
+			}else if($("#meetingLocationLevel").val()== 1){
+				
+				$("#stateShowId").show();
+				$("#DistrictShowId").hide();
+				$("#ConstShowId").hide();
+				$("#ManTwnDivShowId").hide();
+				$("#VillWardShowId").hide();
+			}
+		
+}
 </script>
 
 </body>
