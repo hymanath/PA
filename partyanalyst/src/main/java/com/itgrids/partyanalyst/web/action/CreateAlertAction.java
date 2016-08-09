@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
@@ -264,6 +265,30 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;	
 	}
 	
+	public String getLocationFilterAlertData()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			LocationVO inputVO = new LocationVO();
+			inputVO.setFromDate(jObj.getString("fromDate"));
+			inputVO.setToDate(jObj.getString("toDate"));
+			inputVO.setStateId(jObj.getLong("stateId"));
+			inputVO.setDistrictId(jObj.getLong("districtId"));
+			inputVO.setConstituencyId(jObj.getLong("constituencyId"));
+			inputVO.setTehsilId(jObj.getLong("mandalId"));
+			inputVO.setVillageId(jObj.getLong("panchayatId"));
+			inputVO.setLocationType(jObj.getString("mandalType"));
+			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"));
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getLocationFilterAlertData",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
 	
 	public String getAlertsData()
 	{
@@ -308,7 +333,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setId(jObj.getLong("alertId"));
 			inputVO.setDesc(jObj.getString("comments"));
 			inputVO.setStatusId(jObj.getLong("alertStatusId"));
-			
+			inputVO.setTdpCadreId(jObj.getLong("tdpCadreId"));
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			status = alertService.updateAlertStatus(regVo.getRegistrationID(),inputVO);
 		}
