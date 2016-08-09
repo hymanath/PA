@@ -42,14 +42,56 @@ public class NomintedPostMemberVO {
 	private Long deptBoardId;
 	private Long deptBoardPostnId;
 	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
+	private List<IdNameVO> nomDocsList = new ArrayList<IdNameVO>();
 	private Long referCandCount;
 	private Long boardLevelId;
 	private Long levelValue;
 	private Long levelId;
 	private String levelName;
 	private String imageURL;
+	private String cadreAge;
+	private String candCaste;
+	private String candCasteName;
+	private String gender;
+	private String cadreGen;
 	
 	
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getCadreGen() {
+		return cadreGen;
+	}
+	public void setCadreGen(String cadreGen) {
+		this.cadreGen = cadreGen;
+	}
+	public String getCadreAge() {
+		return cadreAge;
+	}
+	public void setCadreAge(String cadreAge) {
+		this.cadreAge = cadreAge;
+	}
+	public String getCandCaste() {
+		return candCaste;
+	}
+	public void setCandCaste(String candCaste) {
+		this.candCaste = candCaste;
+	}
+	public String getCandCasteName() {
+		return candCasteName;
+	}
+	public void setCandCasteName(String candCasteName) {
+		this.candCasteName = candCasteName;
+	}
+	public List<IdNameVO> getNomDocsList() {
+		return nomDocsList;
+	}
+	public void setNomDocsList(List<IdNameVO> nomDocsList) {
+		this.nomDocsList = nomDocsList;
+	}
 	public String getImageURL() {
 		return imageURL;
 	}

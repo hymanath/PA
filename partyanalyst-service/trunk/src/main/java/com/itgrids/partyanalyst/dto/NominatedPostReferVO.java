@@ -39,12 +39,41 @@ public class NominatedPostReferVO {
 	private Long shortListedDeptCount = 0l;
 	private String partyPosition;
 	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
+	private List<IdNameVO> nomDocsList = new ArrayList<IdNameVO>();
 	private Long referenceCount = 0l;
 	private Long commentCount = 0l;
 	private String isPrefered;
 	private Long nominatedPostApplicationId;
 	private String imageURL;
+	private Long cadreAge;
+	private String candCaste;
+	private String candCasteName;
 	
+	
+	public Long getCadreAge() {
+		return cadreAge;
+	}
+	public void setCadreAge(Long cadreAge) {
+		this.cadreAge = cadreAge;
+	}
+	public String getCandCaste() {
+		return candCaste;
+	}
+	public void setCandCaste(String candCaste) {
+		this.candCaste = candCaste;
+	}
+	public String getCandCasteName() {
+		return candCasteName;
+	}
+	public void setCandCasteName(String candCasteName) {
+		this.candCasteName = candCasteName;
+	}
+	public List<IdNameVO> getNomDocsList() {
+		return nomDocsList;
+	}
+	public void setNomDocsList(List<IdNameVO> nomDocsList) {
+		this.nomDocsList = nomDocsList;
+	}
 	public String getImageURL() {
 		return imageURL;
 	}
