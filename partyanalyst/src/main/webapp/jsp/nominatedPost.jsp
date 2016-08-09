@@ -539,6 +539,7 @@
                         	<input type="radio" class="referenceModalNo" checked="true" name="radio"/>No
                         </label>
                  </div>
+				 </div>
 					<!--<div class="m_top10 hideDivCls" id="involvedCandidatesDiv1">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
@@ -601,7 +602,6 @@
                     </div>
 					</div>
 				</form>
-	       </div>
       	  </div>
         </div>
     </div>
@@ -693,7 +693,7 @@
 			<div class="col-xs-12 col-sm-12 col-md-12 m_top20">
 				<h4 class="panel-title"><u>ADDRESS DETAILS: </u></h4><br/>		   
 			</div>
-			<div class="col-md-3 col-xs-12 col-sm-3">
+			<div class="col-md-3 col-xs-12 col-sm-3 m_top10">
 				<label class="text-capitalize">house no</label>
 				<input type="text" id="HouseId" class="form-control clearClss" name="addNotcadreRegistrationVO.houseno"/>
 			</div>			
