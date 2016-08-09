@@ -77,7 +77,7 @@ public class EventGenderDayInfo extends BaseModel implements Serializable {
 		}
 		
 		@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-		@JoinColumn(name = "event_gender_info_id")
+		@JoinColumn(name = "event_gender_info_id",insertable=false, updatable = false)
 		@LazyToOne(LazyToOneOption.NO_PROXY)
 		@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 		public EventGenderInfo getEventGenderInfo() {
