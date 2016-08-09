@@ -585,7 +585,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	 public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
 		 StringBuilder sb = new StringBuilder();
 		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId,");
-		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("notYet")))
 		 			sb.append(" count(distinct model.nominatedPostId)" +
 		 			" from NominatedPost model ");
 		 else
@@ -610,10 +610,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 		 if(status != null && status.equalsIgnoreCase("Total"))
 				sb.append(" ");
-		 else if(status != null && status.equalsIgnoreCase("Open"))
+		 else if(status != null && (status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("notYet")))
 			sb.append(" and model.nominatedPostStatusId = 1");
 		 else if(status != null && status.equalsIgnoreCase("running"))
-			sb.append(" and model.applicationStatusId not in (5)");
+			sb.append(" and model.applicationStatusId not in (1,5)");
 		 
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)
@@ -651,7 +651,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId," +
 		 			" model.nominatedPostMember.nominatedPostPosition.boardId," +
 		 			" count(model.nominatedPostMemberId)");
-		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("notYet")))
 		 			sb.append(" from NominatedPost model ");
 		 else
 			 sb.append(" from NominatedPostApplication model");
@@ -670,10 +670,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId not in (5) and model.nominationPostCandidateId is null ");*/
 		 if(status != null && status.equalsIgnoreCase("Total"))
 				sb.append(" ");
-		 else if(status != null && status.equalsIgnoreCase("Open"))
+		 else if(status != null && (status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("notYet")))
 			sb.append(" and model.nominatedPostStatusId = 1");
 		 else if(status != null && status.equalsIgnoreCase("running"))
-			sb.append(" and model.applicationStatusId not in (5)");
+			sb.append(" and model.applicationStatusId not in (1,5)");
 		 
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)

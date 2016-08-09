@@ -1769,7 +1769,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
 						//if(vo1 != null){
-							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[3].trim());
+							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
 							if(vo != null){
 								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
 								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
