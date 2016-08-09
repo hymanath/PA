@@ -1057,7 +1057,32 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Exception in deleteAlertAssignedCandidates()",e);	
 		}
 		return rs;
-	}	
+	}
+	
+	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId)
+	{
+		LOG.info("Entered in getAlertAssignedCandidate() method");
+		List<StatusTrackingVO> resultList = new ArrayList<StatusTrackingVO>(); ;
+		try{
+			List<Object[]> list = alertAssignedDAO.getAlertAssignedCandidate(alertId);
+			 if(list !=null && list.size()>0){
+				 
+				 for (Object[] objects : list) {
+					 StatusTrackingVO vo= new StatusTrackingVO();
+					 vo.setId(Long.valueOf(objects[0].toString()));//candidate id
+					 vo.setUname(objects[1].toString());//first name
+					 resultList.add(vo);
+				}
+			 }				
+				}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getAlertAssignedCandidate() method");
+		}
+		return resultList;
+	}
+
 	
 }
 
