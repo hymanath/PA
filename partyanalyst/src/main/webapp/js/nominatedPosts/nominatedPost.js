@@ -1163,35 +1163,36 @@ $('.searchTypeCls').click(function(){
 
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
+	 if(num =="")
+		 boardLevelId = $("#boardLvlId").val();
      var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
 	   if(isActive){
 		 postTypeId = $("#nomintdPostId"+num).attr("attr_postid");  
 	   }else{
 		postTypeId = $("#partyPostId"+num).attr("attr_postid");     
 	   }
-
 	   var searchLevelValue=1;
 	   if(boardLevelId == 1){
 		   searchLevelValue = 1;
 	   }
 	   else if(boardLevelId == 2){
-			if(num >0)
+			if(num != "" && num >0)
 				searchLevelValue = $('#nominatedStaeId'+num).val();
 			else
 				searchLevelValue = $('#nominatedStaeId').val();	;
 	   }
 	   else if(boardLevelId == 3){
-		   if(num >0)
+		   if(num != "" && num >0)
 				searchLevelValue = $('#nominatedDistId'+num).val();
-			else
-				searchLevelValue = $('#nominatedDistId').val();;
-	   }else if(boardLevelId == 4){
-		   if(num >0)
+		   else
+				searchLevelValue = $('#nominatedDistId').val();
+		}else if(boardLevelId == 4){
+		   if(num != "" && num >0)
 				searchLevelValue = $('#nominatdConstId'+num).val();
 			else
 				searchLevelValue = $('#nominatdConstId').val();;
 	   }else if(boardLevelId == 5 || boardLevelId == 6){
-		   if(num >0)
+		   if(num != "" && num >0)
 				searchLevelValue = $('#nominatedMandlId'+num).val();
 			else
 				searchLevelValue = $('#nominatedMandlId').val();;
