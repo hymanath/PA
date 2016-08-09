@@ -3666,24 +3666,33 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		 return finalList;
 	 }
 	
-	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final List<Long> positions,final Long levelId,final List<Long> searchLevelValues,final Long statusId,final Long userId){
+	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final List<Long> positions,final Long levelId,final List<Long> searchLevelValues,final Long statusId,final Long userId,final Long sizeOfMember){
 		ResultStatus status = new ResultStatus();
 		try {
 			String statusStr = (String)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					List<NominatedPost> nominatedPostsList = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,levelId,searchLevelValues);
 					if(commonMethodsUtilService.isListOrSetValid(nominatedPostsList)){
-						
+					
+						Long i=1l;
 						for(NominatedPost nominatedPostObj:nominatedPostsList){
-							nominatedPostObj.setNominatedPostStatusId(statusId);
-							nominatedPostObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostObj.setUpdatedBy(userId);
-							nominatedPostDAO.save(nominatedPostObj);
+							if(i<=sizeOfMember){
+								nominatedPostObj.setNominatedPostStatusId(statusId);
+								nominatedPostObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								nominatedPostObj.setUpdatedBy(userId);
+								nominatedPostDAO.save(nominatedPostObj);
+								i++;
+							}												
 						}
-						
-						
+						//return "success";
+					}
+					
+					int count = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
+					
+					if(count>0){
 						return "success";
 					}
+					
 					return null;
 				}
 			});
