@@ -22,11 +22,11 @@
                 <li>Nominated Post Shortlisting</li>
             </ol>
         </div>
-		<div class="col-md-12 col-xs-12 col-sm-12" >
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
         	<h4 class="headingColor">Central Level - Board/Corporation Overview</h4>
 				<div id="centralWiseOverviewId"  style="margin-top: 15px"></div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12" >
+        <div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
         	<h4 class="headingColor">State Level - Board/Corporation Overview
 				<span style="margin-right:60px" class="pull-right">
 				  <span style="border-radius:15px;" class="btn btn-xs btn-success"> 
@@ -39,15 +39,15 @@
 			</h4>
 				<div id="stateWiseOverviewId"  style="margin-top: 15px"></div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12">
+        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h4 class="headingColor">District Level - Board/Corporation Overview</h4>
 			<div id="districtWiseOverviewId"  style="margin-top: 15px"></div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12">
+        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h4 class="headingColor">Constituency Level - Board/Corporation Overview</h4>
 			<div id="assemblyWiseOverviewId"  style="margin-top: 15px"></div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12">
+        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h4 class="headingColor">Mandal/Muncipality/Corporation Level - Board/Corporation Overview</h4>
 			<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
         </div>

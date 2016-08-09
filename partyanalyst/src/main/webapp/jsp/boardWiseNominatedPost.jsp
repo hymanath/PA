@@ -26,14 +26,12 @@
 <body>
 <div class="container">
 	<div class="row">
-    	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-        	<h4>SHORTLISTING -<span id="headPosId" style="text-transform:uppercase"></span> - <small><span id="headBrdId" style="text-transform:uppercase"></span></small></h4>
-            <h5><span id="headLvlDeptId" style="text-transform:uppercase"></span></h5>
+    	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
+        	<h3 class="headingColor">SHORTLISTING -<span id="headPosId" style="text-transform:uppercase"></span> - <small><span id="headBrdId" style="text-transform:uppercase"></span></small></h4>
+            <ol class="breadcrumb text-capital" id="headLvlDeptId"></h5>
         	<div class="panel panel-default panelDepartmentHead">
-            	<div class="panel-body">
-                	<div class="table-responsive" id="positionDivId">					
-                    
-                    </div>
+            	<div class="panel-body" style="background-color:#f4f4f4;">
+                	<div class="table-responsive" id="positionDivId"></div>
                 </div>
             </div>
         </div>
@@ -42,9 +40,8 @@
             	<div class="panel-heading">
                 	<h4 class="panel-title">APPLIED THIS POST - MEMBERS DETAILS</h4>
                 </div>
-                <div class="panel-body pad_0">
+                <div class="panel-body" style="background-color:#f4f4f4;">
                 	<div class="">
-                    	
 						<div id="resultDivId"></div>
                     </div>
                 </div>
@@ -54,7 +51,7 @@
 </div>
 
 <div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
-	<div class="modal-dialog" style="width:60%;">      
+	<div class="modal-dialog" style="width:80%;">      
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -69,21 +66,6 @@
 	</div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
-	<div class="modal-dialog" style="width:60%;">      
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">CADRE REPORT DETAILS</h4>
-			</div>
-			<div class="modal-body" id="pdfReportDetailsId">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
 <div class="modal fade" tabindex="-1" id="referModelId" role="dialog">  
 	<div class="modal-dialog" style="width:60%;">      
 		<div class="modal-content">
@@ -91,7 +73,9 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">REFERENCE DETAILS</h4>
 			</div>
-			<div class="modal-body" id="referenceDetailsId"></div>
+			<div class="modal-body">
+				<div  id="referenceDetailsId" class="table-responsive"></div>
+			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
@@ -109,7 +93,7 @@ var globalPosName='${param.posName}';
 
 $("#headPosId").html(globalPosName+" post");
 $("#headBrdId").html(headBrdId+" board");
-$("#headLvlDeptId").html(globalLevelTxt+" level - "+globalDeptName+" department");
+$("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
 
 /*var globalDistrictArr=[];
 var globalAssmblyArr=[];
@@ -185,32 +169,32 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	var str='';
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
-		str+='<thead>';
+		str+='<thead style="background-color:#f8f8f8" class="text-capital">';
 			str+='<th>Name</th>';
 			str+='<th>Mobile</th>';
 			str+='<th>Age</th>';
 			str+='<th>Gender</th>';
 			str+='<th>Caste</th>';
 			str+='<th>Sub Caste</th>';
-			str+='<th>Party Designations</th>';
+			str+='<th>Designations</th>';
 			str+='<th style="width:80px">Reports</th>';
 			str+='<th>Applied Any Dep/Corp</th>';
 			str+='<th>Reference</th>';
 			str+='<th>Shortlisted in any dep/ Corp</th>';
-			str+='<th>Current Status For this post</th>';
-			str+='<th>Update Application Status</th>';
+			str+='<th>Status</th>';
+			str+='<th>Update Status</th>';
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
-			str+='<tr>';
+			str+='<tr class="bg_ff">';
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
 					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
 				if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
-					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+					str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle" alt="Profile"/></div>';
 				else
 					str+='<i class="glyphicon glyphicon-user"></i> ';				
-					str+=' '+result.subList[i].voterName+'</a>';
+					str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div></a>';
 				}else{
 					str +='<td><img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/> '+result.subList[i].voterName+'';
 				}
@@ -370,6 +354,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	str+='</table>';
 	
 	$("#resultDivId").html(str);
+	tableResponsive();
 }
 
 $(document).on('click','.closeDivCls',function(){
@@ -407,8 +392,8 @@ $(document).on('click','.referenceCls',function(){
 function buildReferenceCandidateDetails(result){
 	var str='';
 	
-	str+='<table class="table table-condensed table-bordered">';
-		str+='<thead>';
+	str+='<table class="table table-bordered">';
+		str+='<thead class="text-capital" style="background-color:#f4f4f4">';
 			str+='<th>Image</th>';
 			str+='<th>Name</th>';
 			str+='<th>Membership No</th>';
@@ -737,7 +722,7 @@ $('#positionDivId').html(' <img style="margin-left: 400px; margin-top: 20px; wid
 function buildNominatePostPositionDetails(result){
 	 var str='';
 		   if(result !=null && result.length>0){
-			   	str+='<table class="table table-bordered" id="nominatePositionDetilsId">';
+			   	str+='<table class="table table-bordered bg_ff" id="nominatePositionDetilsId">';
 					str+='<thead>';
 					str+='<tr>';
 					str+='<th rowspan="2"></th>';
@@ -820,7 +805,7 @@ function buildDepartmentDetails(result,divId){
 	
 	//str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
 	str+='<table class="table table-condensed">';
-		str+='<thead>';
+		str+='<thead style="background-color:#f4f4f4;" class="text-capital">';
 			str+='<th>Level</th>';
 			str+='<th>Location</th>';
 			str+='<th>Department</th>';
@@ -853,12 +838,13 @@ function buildDepartmentDetails(result,divId){
 	$("#"+divId).html(str);
 }
 
-tableResponsive();
+
 function tableResponsive()
 {
-  if($(window).width < 800)
+  var getWidth = $(window).width();
+  if(getWidth < 800)
   {
-    $("#resultDivId").addClass("table-responsive");
+	$("#resultDivId").addClass("table-responsive");
   }
 } 
 </script>

@@ -262,16 +262,15 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 {
 	var str='';
 	if(result !=null && result.length>0){
-		str+='<div class="row" style="border:1px solid #ddd;">';
+		str+='<div class="row" style="border:1px solid #ddd;background:#fff">';
 			str+='<div class="col-md-3 col-xs-12 col-sm-3 pad_0" style="background:#F9F9F9">';
-			
 			  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="pad_15">';
 					str+='<h4 class="headingColor text-capital"><u>departments</u></h4>';
 				str+='</div>';
 				//str+='<h4 class="headingColor text-capital">departments</h4>';
 			  str+='</div>';
-			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px">';
+			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px;min-height:400px;">';
 			  for(var i in result){
 				if(result[i].availableCount != null)
 					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;">'+result[i].availableCount+'</span></a></li>';
@@ -306,8 +305,10 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 									str+='</a>';
 								str+='</div>';
 								str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" >';
-								  str+='<div class="panel-body pad_0" id="boardDivBodyId'+i+''+j+'">';
-											str+='<center><img src="images/search.gif" id="boardDivBodySearchId'+i+''+j+'" style="display:none;width:30px;height:20px; "/></center>';
+								  str+='<div class="panel-body pad_0">';
+										str+='<div class="table-responsive"  id="boardDivBodyId'+i+''+j+'">';
+											str+='<center><img src="images/Loading-data.gif" id="boardDivBodySearchId'+i+''+j+'" style="display:none;width:50px;height:50px; "/></center>';
+										str+='</div>';
 								  str+='</div>';
 								str+='</div>';
 							  str+='</div>';

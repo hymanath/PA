@@ -40,69 +40,60 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title"  style="text-transform: uppercase"><span id="headinggId"></span><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon"></i></h4>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
-							<div class="panel panel-default">
-								<div class="panel-heading" style="background:#fff;border:0px;">
-									<h4 class="panel-title">Select Location</h4>
+			<h3 class="text-capital headingColor"><span id="headinggId"></span><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon"></i></h3>
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
+					<div class="panel panel-default">
+						<div class="panel-heading" style="background:#fff;border:0px;">
+							<h4 class="panel-title">Select Location</h4>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-3 col-xs-12 col-sm-3" id="stateMainId" >
+									<label>State</label>
+									<select class="form-control" id="stateId">
+										<option value="0">All</option>
+										<option value="1">Andhara Pradesh</option>
+										<option value="36">Telangana</option>
+									</select>
 								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-3 col-xs-12 col-sm-3" id="stateMainId" >
-											<label>State</label>
-											<select class="form-control" id="stateId">
-												<option value="0">All</option>
-												<option value="1">Andhara Pradesh</option>
-												<option value="36">Telangana</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="districtMainId">
-											<label>District</label>
-											<span id="districtIdImg"><img src="images/search.gif"/></span>
-											<select class="form-control" id="districtId">
-												<option value="0">Select District</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
-											<label>Constituency</label>
-											<span id="constituencyIdImg"><img src="images/search.gif"/></span>
-											<select class="form-control" id="constituencyId">
-												<option value="0">Select Constituency</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
-											<label>Mandal/Town/Division</label>
-												<span id="manTowDivIdImg"><img src="images/search.gif"/></span>
-											<select class="form-control" id="manTowDivId">
-												<option value="0">Select Mandal/Town/Division</option>
-											</select>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-3">						
-											<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
-										</div>
-									</div>
+								<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="districtMainId">
+									<label>District</label>
+									<span id="districtIdImg"><img src="images/search.gif"/></span>
+									<select class="form-control" id="districtId">
+										<option value="0">Select District</option>
+									</select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
+									<label>Constituency</label>
+									<span id="constituencyIdImg"><img src="images/search.gif"/></span>
+									<select class="form-control" id="constituencyId">
+										<option value="0">Select Constituency</option>
+									</select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
+									<label>Mandal/Town/Division</label>
+										<span id="manTowDivIdImg"><img src="images/search.gif"/></span>
+									<select class="form-control" id="manTowDivId">
+										<option value="0">Select Mandal/Town/Division</option>
+									</select>
+								</div>
+								<div class="col-md-3 col-xs-12 col-sm-3">						
+									<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
-						<center><img src="images/Loading-data.gif" id="departmentsBuildSearchId" style="display:none;width:50px;height:50px;margin:auto;"/></center>
-						<div id="departmentsBuildId"></div>
-					</div>
 				</div>
 			</div>
-			<!--<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i></button>-->
+			<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
+				<center><img src="images/Loading-data.gif" id="departmentsBuildSearchId" style="display:none;width:50px;height:50px;margin:auto;"/></center>
+				<div id="departmentsBuildId"></div>
+			</div>
 		</div>
+	</div>
+			<!--<button  class="btn btn-default pull-right filterBtn"><i class="glyphicon glyphicon-filter filterIcon"></i></button>-->
 		
-	</div>
-	<div class="row">
-    	
-	</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="readyToFinalReviewDiv" role="dialog">  
