@@ -456,10 +456,14 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='<td>'+result.subList[i].cadreAge+'</td>';
 					str+='<td>'+result.subList[i].caste+'</td>';
 					str+='<td>'+result.subList[i].casteName+'</td>';
-					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.trim.length > 0)
-						str+='<td>'+result.subList[i].partyPosition+'</td>';
-					else
-						str+='<td> - </td>';
+					str+='<td>';
+					if(result.subList[i].publicReprStr != null && result.subList[i].publicReprStr.length > 0)
+						str+='<p>'+result.subList[i].publicReprStr+'</p>';
+					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.length > 0)
+						str+='<p>'+result.subList[i].partyPosition+'</p>';
+					if(result.subList[i].publicReprStr == null && result.subList[i].partyPosition == null)
+						str+=' - ';
+					str+='</td>';
 					str+='<td>';
 					if(result.subList[i].idNamevoList != null && result.subList[i].idNamevoList.length > 0){
 						for(var j in result.subList[i].idNamevoList){
