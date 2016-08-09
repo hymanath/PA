@@ -13336,5 +13336,10 @@
    			<param name="root">locations</param>
    		</result>
 	</action>
+	<action name="getAlertAssignedCandidateAction" class="createAlertAction" method="getAlertAssignedCandidate">
+		<result type="json" name="success">
+			<param name="root">statusTrackingVOList</param>
+		</result>
+		</action>
 </package>
 </struts>

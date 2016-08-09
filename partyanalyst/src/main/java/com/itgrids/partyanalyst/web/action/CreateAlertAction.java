@@ -422,7 +422,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
-	
+	public String getAlertAssignedCandidate(){
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
+			statusTrackingVOList = alertService.getAlertAssignedCandidate(alertId);
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertAssignedCandidate() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 }
