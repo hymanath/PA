@@ -568,11 +568,11 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			Long userId = user.getRegistrationID();
 			if(entitlements.contains("LEADER_OCCASIONS_ENTITLEMENT".trim())){
 				
-				birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(1L,"",null,userId);
+				birthDaysList = birthDayDetailsService.getLeaderOccasionDetails(null,"",null,null);
 				if(birthDaysList != null && birthDaysList.size()>0){
 					for (BirthDayDetailsVO vo : birthDaysList) {
 						if(vo.getName() != null && vo.getName().trim().equalsIgnoreCase("Today"))
-							session.setAttribute("birthDayCount",vo.getTotalCount());break;
+							session.setAttribute("birthDayCount",vo.getTotalCount());
 					}
 				}
 				else
