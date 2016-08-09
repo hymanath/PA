@@ -25,10 +25,29 @@ public class LocationVO implements Serializable {
 	private String state;
 	private Long wardId;
 	private String wardName;
+	private String locationType;
+	private String fromDate;
+	private String toDate;
 	
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	
-	
-	
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
 	public Long getWardId() {
 		return wardId;
 	}
