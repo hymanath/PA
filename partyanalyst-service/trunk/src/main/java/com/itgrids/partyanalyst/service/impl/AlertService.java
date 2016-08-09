@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -17,6 +19,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
+import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
@@ -46,6 +49,7 @@ import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertComment;
+import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AppointmentComment;
@@ -81,8 +85,21 @@ private IAlertAssignedDAO alertAssignedDAO;
 private DateUtilService dateUtilService = new DateUtilService();
 private IMemberTypeDAO memberTypeDAO;
 private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+private IAlertCommentAssigneeDAO alertCommentAssigneeDAO;
 
 
+
+
+
+
+public IAlertCommentAssigneeDAO getAlertCommentAssigneeDAO() {
+	return alertCommentAssigneeDAO;
+}
+
+public void setAlertCommentAssigneeDAO(
+		IAlertCommentAssigneeDAO alertCommentAssigneeDAO) {
+	this.alertCommentAssigneeDAO = alertCommentAssigneeDAO;
+}
 
 public IMemberTypeDAO getMemberTypeDAO() {
 	return memberTypeDAO;
@@ -705,12 +722,26 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		   alertComment.setComments(StringEscapeUtils.unescapeJava(inputVo.getDesc().toString()));
 		    alertComment.setAlertId(inputVo.getId());
 		    alertComment.setInsertedTime(currentDateAndTime);
-		    if(inputVo.getTdpCadreId() != null && inputVo.getTdpCadreId() > 0)
-		    alertComment.setAssignTdpCadreId(inputVo.getTdpCadreId());
+		   
 		    alertComment.setIsDeleted("N");
 		    alertComment.setInsertedBy(userId);
 		    alertComment = alertCommentDAO.save(alertComment);
 		    
+		    
+		    if(inputVo.getAssignList() != null && inputVo.getAssignList().size() > 0)
+		    {
+		    	for(IdNameVO vo : inputVo.getAssignList())
+		    	{
+		    		if(vo.getId() != null && vo.getId() > 0)
+		    		{
+			    		AlertCommentAssignee alertCommentAssignee = new AlertCommentAssignee();
+			    		alertCommentAssignee.setAlertCommentId(alertComment.getAlertCommentId());
+			    		alertCommentAssignee.setAssignTdpCadreId(vo.getId());
+			    		alertCommentAssigneeDAO.save(alertCommentAssignee);
+		    		}
+		    	}
+		    }
+			   
 		    
 		     AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 			 alertTrackingVO.setUserId(userId);
@@ -741,7 +772,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				List<StatusTrackingVO> resultList = null;
 				try{
 					List<Object[]> list = alertTrackingDAO.getAlertTrackingDetails(alertId);
-					resultList = getAlertStatusCommentsList(list);
+					resultList = getAlertStatusCommentsList(list,alertId);
 							
 						}
 				catch(Exception e)
@@ -752,9 +783,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				return resultList;
 			}
 	
-	public List<StatusTrackingVO> getAlertStatusCommentsList(List<Object[]> list)
+	public List<StatusTrackingVO> getAlertStatusCommentsList(List<Object[]> list,Long alertId)
 	{
 		List<StatusTrackingVO>  resultList = new ArrayList<StatusTrackingVO>();
+		Map<Long,List<IdNameVO>> assignMap = new HashMap<Long,List<IdNameVO>>();
+		 List<Object[]> assignCadres = alertCommentAssigneeDAO.getAlertCommentAssignedCandidates(alertId);
+		 if(assignCadres != null && assignCadres.size() > 0)
+		 {
+			 for(Object[] obj :assignCadres)
+			 {
+				 List<IdNameVO> candidates = assignMap.get((Long)obj[0]);
+				 if(candidates == null || candidates.size() == 0)
+				 {
+					 candidates = new ArrayList<IdNameVO>();
+					 assignMap.put((Long)obj[0], candidates);
+				 }
+				 IdNameVO vo = new IdNameVO();
+				 vo.setId((Long)obj[1]);
+				 vo.setName(obj[2] != null ? obj[2].toString() : "");
+				 candidates.add(vo);
+			 }
+		 }
 		try{
 			for(int i=0;i<list.size();i++)
 			{
@@ -775,8 +824,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String lname1 = params[9] != null ? params[9].toString() : "";
 					commentVO.setStatus(fname1+" "+lname1);
 					commentVO.setDateStr(params[10] != null ? params[10].toString().substring(0, 19) : "");
-					commentVO.setApplicationStatus(params[11] != null ? params[11].toString() : null);//Tdpcadre
+					/*commentVO.setApplicationStatus(params[11] != null ? params[11].toString() : null);//Tdpcadre
 					commentVO.setApplicationStatusId(params[12] != null ? (Long)params[12] : null);//Tdpcadre
+*/					List<IdNameVO> candidates = assignMap.get((Long)params[6]);
+					commentVO.setSubList1(candidates);
 					vo.getSubList().add(commentVO);
 				}
 				vo.setDate(params[5] != null ? params[5].toString().substring(0, 19) : "");
@@ -792,8 +843,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							String lname1 = params1[9] != null ? params1[9].toString() : "";
 							commentVO.setStatus(fname1+" "+lname1);
 							commentVO.setDateStr(params1[10] != null ? params1[10].toString().substring(0, 19) : "");
-							commentVO.setApplicationStatus(params1[11] != null ? params1[11].toString() : null);//Tdpcadre
-							commentVO.setApplicationStatusId(params1[12] != null ? (Long)params1[12] : null);//Tdpcadre
+							/*commentVO.setApplicationStatus(params1[11] != null ? params1[11].toString() : null);//Tdpcadre
+							commentVO.setApplicationStatusId(params1[12] != null ? (Long)params1[12] : null);//Tdpcadre*/							List<IdNameVO> candidates = assignMap.get((Long)params1[6]);
+							commentVO.setSubList1(candidates);
 							vo.getSubList().add(commentVO);
 						  i++;
 					  }

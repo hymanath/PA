@@ -19,9 +19,9 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	{
 		Query query = getSession().createQuery("select model.alertStatus.alertStatusId,"
 				+ "model.alertStatus.alertStatus,model.user.userId,model.user.firstName,model.user.lastName,model.insertedTime,"
-				+ "alertComment.alertCommentId,alertComment.comments,alertComment.user.firstName,alertComment.user.lastName,alertComment.insertedTime,assignTdpCadre.firstname,assignTdpCadre.tdpCadreId"
+				+ "alertComment.alertCommentId,alertComment.comments,alertComment.user.firstName,alertComment.user.lastName,alertComment.insertedTime "
 				+ " from AlertTracking model left join model.alertComment alertComment " +
-				"  left join model.alertComment.assignTdpCadre assignTdpCadre" +
+				"  " +
 				 " where model.alertId = :alertId and alertComment.isDeleted ='N' "
 				+ " order by model.insertedTime desc");
 		query.setParameter("alertId", alertId);

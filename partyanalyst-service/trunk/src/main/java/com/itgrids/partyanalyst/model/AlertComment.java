@@ -31,9 +31,10 @@ public class AlertComment extends BaseModel implements Serializable {
 	private Date insertedTime;
 	private String isDeleted;
 	private User user;
-	private TdpCadre assignTdpCadre;
+	private Alert alert;
+/*	private TdpCadre assignTdpCadre;
 	private Long assignTdpCadreId;
-	
+	*/
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -104,6 +105,20 @@ public class AlertComment extends BaseModel implements Serializable {
 		this.user = user;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="alert_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Alert getAlert() {
+		return alert;
+	}
+
+	public void setAlert(Alert alert) {
+		this.alert = alert;
+	}
+	
+	
+	
+	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="assign_tdp_cadre_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -122,7 +137,7 @@ public class AlertComment extends BaseModel implements Serializable {
 	public void setAssignTdpCadreId(Long assignTdpCadreId) {
 		this.assignTdpCadreId = assignTdpCadreId;
 	}
-	
+	*/
 	
 	
 	
