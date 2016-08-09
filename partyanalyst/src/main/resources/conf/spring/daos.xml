@@ -3184,4 +3184,7 @@
 	<bean id="partyEventTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyEventTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="alertCommentAssigneeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCommentAssigneeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
