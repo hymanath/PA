@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPostApplication, Long> implements INominatedPostApplicationDAO{
@@ -971,4 +972,61 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		return query.list();
   }
+	
+	public int updateApplicationStatusToFinal(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues,Long userId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		DateUtilService dateUtilService = new DateUtilService();
+		
+		queryStr.append("UPDATE NominatedPostApplication model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
+				" model.updatedBy =:updatedBy," +
+				" model.updatedTime =:updatedTime" +
+				"	WHERE  model.isDeleted = 'N' " +
+				" AND model.applicationStatusId = :shortListId ");
+		
+		if(deptId !=null && deptId>0){
+			queryStr.append(" AND model.departmentId = :departmentId ");
+		}
+		if(boardId !=null && boardId>0){
+			queryStr.append(" AND model.boardId = :boardId ");
+		}
+		if(positions !=null && positions.size()>0){
+			queryStr.append(" AND model.positionId in (:positionIds) ");
+		}
+		if(levelId !=null && levelId>0 && levelId !=5l){
+			queryStr.append(" AND model.boardLevelId = :boardLevelId ");
+		}else{
+			queryStr.append(" AND model.boardLevelId in (5,6)");
+		}
+		if(searchLevelValues !=null && searchLevelValues.size()>0){
+			queryStr.append(" AND model.locationValue in (:locationValue) ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(deptId !=null && deptId>0){
+			query.setParameter("departmentId",deptId);
+		}
+
+		if(boardId !=null && boardId>0){
+			query.setParameter("boardId",boardId);
+		}
+
+		if(positions !=null && positions.size()>0){
+			query.setParameterList("positionIds",positions);
+		}
+		if(levelId !=null && levelId>0 && levelId !=5l){
+			query.setParameter("boardLevelId",levelId);
+		}
+		if(searchLevelValues !=null && searchLevelValues.size()>0){
+			query.setParameterList("locationValue",searchLevelValues);
+		}
+		
+		query.setParameter("applicationStatusId", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
+		query.setParameter("shortListId", 3L);
+		query.setParameter("updatedBy", userId);
+		query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
+		
+		
+		return query.executeUpdate();
+	}
 }
