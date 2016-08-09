@@ -23,33 +23,43 @@
             </ol>
         </div>
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
-        	<h4 class="headingColor">Central Level - Board/Corporation Overview</h4>
+			<div class="applicationsOverView">
+				<span class="headingColor">Central Level - Board/Corporation Overview</span>
 				<div id="centralWiseOverviewId"  style="margin-top: 15px"></div>
+			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
-        	<h4 class="headingColor">State Level - Board/Corporation Overview
-				<span style="margin-right:60px" class="pull-right">
-				  <span style="border-radius:15px;" class="btn btn-xs btn-success"> 
-					<input type="radio" value="1" name="stateName" style="cursor:pointer;" class="stateCls" checked="true"> <b>AP</b>
-				  </span> 
-				  <span style="border-radius:15px;" class="btn btn-xs btn-success">
-					<input type="radio" value="2" name="stateName" style="cursor:pointer;" class="stateCls"> <b>TS</b>
-				  </span>
+			<div class="applicationsOverView">
+				<span class="headingColor">State Level - Board/Corporation Overview
+					<span style="margin-right:60px" class="pull-right">
+					  <span style="border-radius:15px;" class="btn btn-xs btn-success"> 
+						<input type="radio" value="1" name="stateName" style="cursor:pointer;" class="stateCls" checked="true"> <b>AP</b>
+					  </span> 
+					  <span style="border-radius:15px;" class="btn btn-xs btn-success">
+						<input type="radio" value="2" name="stateName" style="cursor:pointer;" class="stateCls"> <b>TS</b>
+					  </span>
+					</span>
 				</span>
-			</h4>
 				<div id="stateWiseOverviewId"  style="margin-top: 15px"></div>
+			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-        	<h4 class="headingColor">District Level - Board/Corporation Overview</h4>
-			<div id="districtWiseOverviewId"  style="margin-top: 15px"></div>
+			<div class="applicationsOverView">
+				<span class="headingColor">District Level - Board/Corporation Overview</span>
+				<div id="districtWiseOverviewId"  style="margin-top: 15px"></div>
+			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-        	<h4 class="headingColor">Constituency Level - Board/Corporation Overview</h4>
-			<div id="assemblyWiseOverviewId"  style="margin-top: 15px"></div>
+			<div class="applicationsOverView">
+				<span class="headingColor">Constituency Level - Board/Corporation Overview</span>
+				<div id="assemblyWiseOverviewId"  style="margin-top: 15px"></div>
+			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-        	<h4 class="headingColor">Mandal/Muncipality/Corporation Level - Board/Corporation Overview</h4>
-			<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
+			<div class="applicationsOverView">
+				<span class="headingColor">Mandal/Muncipality/Corporation Level - Board/Corporation Overview</span>
+				<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
+			</div>
         </div>
       <!--  <div class="col-md-12 col-xs-12 col-sm-12">
         	<h4 class="headingColor">Panchayat/Ward/Division Level - Board/Corporation Overview</h4>
