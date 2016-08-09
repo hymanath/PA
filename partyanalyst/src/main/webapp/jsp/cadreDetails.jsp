@@ -290,7 +290,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 					</div>
 					<div class="panel-body"  id="identityBodyId">
 						<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
-						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
+						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;<span class="text-success" id="isFamilyId"></span></p>
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
 						<p class="m_0" id="debateMainDivId" style="display:none" >TV DEBATOR : DEBATES (<a class="pointer"><span id="debateCountId"></span></a>)</p>
@@ -1635,7 +1635,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			var surveyId = $(this).find("div.in").attr("attr_survey_id");
 			var cadreId= $(this).find("div.in").attr("attr_cadre_id");
 			var indexId=$(this).find("div.in").attr("attr_index_id");
-			getTdpCadreSurveyDetails(cadreId,surveyId,indexId,"NotAll",0,'true');
+			//getTdpCadreSurveyDetails(cadreId,surveyId,indexId,"NotAll",0,'true');
 		});
 
 	$(document).on("click",".eachParticipationListCls",function(){
