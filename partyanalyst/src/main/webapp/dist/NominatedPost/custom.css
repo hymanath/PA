@@ -553,7 +553,7 @@ label
 }
 .panelCustom
 {
-	background:#666666;
+	background:#F5BA82;
 	padding-left:8px;
 	border-radius:0px;
 }
@@ -570,12 +570,12 @@ label
 }
 .panelCustom .panel-body
 {
-	background:#4DCFEF;
+	background:#629BB8;
 	padding:5px;
 }
 .panelCustom .panel-footer
 {
-	background:#666666;
+	background:#F58181;
 	color:#fff;
 	border-radius:0px;
 	padding:5px;
@@ -648,12 +648,12 @@ label
 }
 .panelCustom .panel-body
 {
-	background:#4DCFEF;
+	background:#629BB8;
 	padding:5px;
 }
 .panelCustom .panel-footer
 {
-	background:#666666;
+	background:#F58181;
 	color:#fff;
 	border-radius:0px;
 	padding:5px;
@@ -1308,4 +1308,30 @@ div.dataTables_wrapper div.clear
 .filterIcon
 {
 	font-size:16px;
+}
+.applicationsOverView
+{
+	background-color:#fff;
+	border:2px solid #FBCA47;
+	padding:8px;
+}
+.applicationsOverView .headingColor
+{
+	background-color:#4A5863;
+	color:#fff;
+	margin-left:7px !important;
+	position:relative;
+	text-transform:uppercase;
+	font-size:16px;
+}
+.applicationsOverView .headingColor:before
+{
+	width:8px;
+	height:100%;
+	background-color:#3788B3;
+	display:block;
+	content:' ';
+	position:absolute;
+	left:-15px;
+	top:0px;
 }
