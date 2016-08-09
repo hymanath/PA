@@ -46,6 +46,7 @@ function saveAlertAssignedUser ()
 					$("#apptmemberDetailsDiv").html('');
 					clearCommonFields();
 					getAlertAssignedCandidates(alertId);
+					getAlertAssignedCandidate(alertId);
 			 })
 	}
 function getAlertData()
