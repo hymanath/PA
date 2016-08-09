@@ -177,7 +177,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 			str+='<th>Caste</th>';
 			str+='<th>Sub Caste</th>';
 			str+='<th>Designations</th>';
-			str+='<th style="width:80px">Reports</th>';
+			str+='<th style="width:90px">Reports</th>';
 			str+='<th>Applied Any Dep/Corp</th>';
 			str+='<th>Reference</th>';
 			str+='<th>Shortlisted in any dep/ Corp</th>';
