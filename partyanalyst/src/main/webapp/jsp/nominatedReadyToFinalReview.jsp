@@ -10,6 +10,7 @@
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 .filterIcon
 {
@@ -18,19 +19,20 @@
 	border-radius:50%;
 	cursor:pointer
 }
+
 </style>
 </head>
 <body>
 <div class="container">
    <div class="row hideRowCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<h4 class="text-capital"><span id="headStsId"></span> <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h4>
+        	<h3 class="text-capital headingColor"><span id="headStsId"></span> <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h3>
         </div>
-		<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
+		<div class="col-md-12 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-3 col-xs-12 col-sm-3 hideStateDivCls" id="stateMainId" >
+						<div class="col-md-3 col-xs-12 col-sm-12 hideStateDivCls" id="stateMainId" >
 							<label>State</label>
 							<select class="form-control" id="stateId">
 								<option value="0">All</option>
@@ -38,22 +40,22 @@
 								<option value="36">Telangana</option>
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3 hideDistrictDivCls">
+						<div class="col-md-3 col-xs-12 col-sm-12 hideDistrictDivCls">
 							<label>District</label>
 							<select class="form-control" id="districtId">
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3 hideConstituencyDivCls">
+						<div class="col-md-3 col-xs-12 col-sm-12 hideConstituencyDivCls">
 							<label>Constituency</label>
 							<select class="form-control" id="constituencyId">
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3 hidemanTowDivCls">
+						<div class="col-md-3 col-xs-12 col-sm-12 hidemanTowDivCls">
 							<label>Mandal/Town/Division</label>
 							<select class="form-control" id="manTowDivId">
 							</select>
 						</div>
-						<div class="col-md-3 col-xs-12 col-sm-3">						
+						<div class="col-md-3 col-xs-12 col-sm-12">						
 							<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="submitBtnId"/>
 						</div>
 					</div>
@@ -61,20 +63,20 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row m_top20">
     	
-		<div class="col-md-4 col-xs-12 col-sm-4 heightSet" style="background:#DFDFDF;padding-right:0px;">
+		<div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0  heightSet" style="background:#DFDFDF;padding-right:0px;">
           <div class="pad_15">
 	          <h4 class="headingColor text-capital"><u>departments</u></h4>
           </div>
 		   <div id="candiateReadyToFinalReviewDivId"></div>
         </div>
-        <div class="col-md-4 col-xs-12 col-sm-4 pad_0 heightSet boardCorporation" style="padding-right:0px;background:#EBEBEB;display:none;">
+        <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 pad_0 heightSet boardCorporation" style="padding-right:0px;background:#EBEBEB;display:none;">
         	<div class="tab-content">
 			 <div id="boardRsltDivId"></div>
             </div>
         </div>
-        <div class="col-md-4 col-xs-12 col-sm-4 pad_0 heightSet positionsDivCls" style="padding-right:0px;background:#F6F6F6;display:none;">
+        <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 pad_0 heightSet positionsDivCls" style="padding-right:0px;background:#F6F6F6;display:none;">
         	<div class="tab-content">
 				<div id="positionRsltDivId"></div>
             </div>
@@ -89,11 +91,11 @@
       <div class="modal-header">
         
         <div class="row">
-            <div class="col-md-10 col-xs-12 col-sm-10">
+            <div class="col-md-10 col-xs-12 col-sm-8">
                 <h3>FINALIZING - <span id="headingPostId"></span></h3>
                 <p id="totalHeadingId">State Level - Labour Department - A.P Building and Other Construction Workers Welfare Board</p>
             </div>
-            <div class="col-md-2 col-xs-12 col-sm-2">
+            <div class="col-md-2 col-xs-12 col-sm-4">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="wishList">
                 	<h1 class="textEffect"><img src="dist/nominatedImages/Icon4.png" alt="count"/><span id="wishListCountId"> 0 </span></h1>
@@ -103,139 +105,7 @@
         </div>
       </div>
       <div class="modal-body">
-	   <div id="resultDivId"></div>
-			<!--<table class="table table-bordered">
-				<thead>
-					<th>Name</th>
-					<th>Age</th>
-					<th>Caste</th>
-					<th>Sub Caste</th>
-					<th>Party Designations</th>
-					<th>Reports</th>
-					<th>Applied any Dept / Corp</th>
-					<th>Shortlisted in Dept / Corp</th>
-					<th>Current Status for this post</th>
-					<th>Comments/ Update Status/ Wishlist</th>
-				</thead>
-				<tbody>
-					<tr>
-						<td rowspan="2"><i class="glyphicon glyphicon-user"></i> Sivaji</td>
-						<td rowspan="2">35</td>
-						<td rowspan="2">SC</td>
-						<td rowspan="2">Mala</td>
-						<td rowspan="2">State Organising Secretary</td>
-						<td>Suitable <i class="glyphicon glyphicon-list-alt"></i></td>
-						<td rowspan="2">02</td>
-						<td rowspan="2">No
-							<div class="appliedPostPopup">
-								<div class="appliedPostPopupArrow">
-									<table class="table table-bordered">
-										<thead>
-											<th>Department</th>
-											<th>Corporation / Board</th>
-											<th>Position</th>
-											<th>Status</th>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Agriculture Marketing</td>
-												<td>Agriculture market committee</td>
-												<td>Chairmen</td>
-												<td>Shortlisted</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</td>
-						<td rowspan="2">Shortlisted</td>
-						<td rowspan="2" style="position:relative;">
-							<img src="dist/nominatedImages/Icon5.png" class="commentsBtn" style="height:28px;"/> 
-							<div class="commentsDiv">
-								<div class="commentDropDownArrow">
-									<p>COMMENTS <span class="pull-right">X</span></p>
-									<ul class="commentsUl">
-										<li class="shortList">
-											<div class="panel-group" id="commentsAccordion" role="tablist" aria-multiselectable="true">
-											  <div class="panel panel-default commentsPanel">
-												<div class="panel-heading" role="tab" id="CommentsCollapseHeading">
-													<a role="button" data-toggle="collapse" class="CommentsModalIcon" data-parent="#commentsAccordion" href="#CommentsCollapse" aria-expanded="true" aria-controls="CommentsCollapse">
-													  <h4>Shortlisting</h4>
-													</a>
-												</div>
-												<div id="CommentsCollapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CommentsCollapseHeading">
-												  <div class="panel-body">
-													<div class="Comment">
-														Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting
-														<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>
-														<p class="text-danger"><i>Updated By Ramesh</i></p>
-													</div>
-													<div class="Comment">
-														Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting
-														<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>
-														<p class="text-danger"><i>Updated By Ramesh</i></p>
-													</div>
-													<div class="Comment">
-														Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting
-														<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>
-														<p class="text-danger"><i>Updated By Ramesh</i></p>
-													</div>
-												  </div>
-												</div>
-											  </div>
-											</div>
-										</li>
-										<li class="finaLize">
-											<div class="panel-group" id="commentsAccordion12" role="tablist" aria-multiselectable="true">
-											  <div class="panel panel-default commentsPanel">
-												<div class="panel-heading" role="tab" id="CommentsCollapseHeading112">
-													<a class="collapsed CommentsModalIcon" role="button" data-toggle="collapse" data-parent="#commentsAccordion12" href="#CommentsCollapseHeading112" aria-expanded="false" aria-controls="CommentsCollapseHeading2">
-														<h4>Finalization</h4>
-													</a>
-												</div>
-												<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CommentsCollapseHeading112">
-												  <div class="panel-body">
-													<div class="Comment">
-														Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting
-														<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>
-														<p class="text-danger"><i>Updated By Ramesh</i></p>
-													</div>
-													<div class="Comment">
-														Shortlisting  Shortlisting Shortlisting Shortlisting Shortlisting
-														<p class="text-danger"><i>- 10 July 2016 11:30Am</i></p>
-														<p class="text-danger"><i>Updated By Ramesh</i></p>
-													</div>
-												  </div>
-												</div>
-											  </div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> 
-							<button class="btn btn-success updateBtnDrop">UPDATE</button>
-							<div class="updateDropDown">
-								<div class="updateDropDownArrow">
-									<label class="m_top10">Select Status</label>
-									<select class="form-control">
-										<option>Status</option>
-									</select>
-									<label class="m_top10">Comments</label>
-									<textarea class="form-control"></textarea>
-									<button class="btn btn-success btn-block">SUBMIT</button>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>Not Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>
-					</tr>
-				</tbody>
-			</table>-->
-			<!--<p class="pad_15">
-				Note: Click on <i class="glyphicon glyphicon-user"></i> to view complete profile
-			</p>-->
+	   <div id="resultDivId" class="table-responsive"></div>
       </div>
     </div>
   </div>
@@ -245,13 +115,13 @@
 	<div class="modal-dialog" style="width:60%;">      
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close pdfModalCloseBtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">CADRE REPORT DETAILS</h4>
 			</div>
 			<div class="modal-body" id="pdfReportDetailsId">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default pdfModalCloseBtn" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -275,6 +145,8 @@
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -347,6 +219,13 @@ function tableResponsive()
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
 });
+$(document).on("click",".pdfModalCloseBtn",function(){
+	setTimeout(function(){
+		$("#myModal").modal('show');
+		$("body").addClass('modal-open');
+	},500);
+});
+ 
 </script>
 </body>
 </html>

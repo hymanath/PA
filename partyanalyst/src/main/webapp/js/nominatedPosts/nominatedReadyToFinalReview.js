@@ -261,14 +261,17 @@ function buildCandidateReviewRslt(result){
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
-		  str+='<li role="presentation" class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab">'+result[i].name+'<span class="label label-primary pull-right labelCustom" title="Total Opened Positions">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
+		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 }else{
-		 str+='<li role="presentation"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab">'+result[i].name+' <span class="label label-primary pull-right labelCustom" title="Total Opened Positions">&nbsp&nbsp&nbsp&nbsp'+result[i].count+'</span></a></li>';
+		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details">'+result[i].name+' </span><span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		}
       }
 	  str+='</ul>';
   $("#candiateReadyToFinalReviewDivId").html(str);
-  setHeight()
+  $(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+  //setHeight()
 }
 function buildCandidateBoardRslt(result,departmentId){
 	 $("#positionRsltDivId").html(' ');
@@ -278,15 +281,15 @@ function buildCandidateBoardRslt(result,departmentId){
 	   str+='<ul class="nav nav-tabs tabsCustomFinal1" role="tablist">';
 	    for(var i in result){
 			if(i==0){
-		   str+='<li role="presentation" class="active">';	
+		   str+='<li class="active">';	
 			str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span>'+result[i].name+'</span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details">'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
@@ -298,10 +301,10 @@ function buildCandidateBoardRslt(result,departmentId){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span>'+result[i].name+'</span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details">'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
@@ -313,39 +316,45 @@ function buildCandidateBoardRslt(result,departmentId){
   str+='</div>';
   $("#boardRsltDivId").html(str);
   $(".boardCorporation").show();
-  setHeight()
+   $(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+  //setHeight()
 }
 function buildCandidatePositionRslt(result,departmentId,boardId){
 var str = '';
- str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
-                	 str+='<h4 class="headingColor text-capital"><u>positions</u></h4>';
-                     str+='<p class="text-danger pull-right">Ready for final review</p>';
-                     str+='<ul class="positionsUl">';
-					 for(var i in result){
-						str+='<li>';
-                        	str+='<div class="row">';
-                            	str+='<div class="col-md-10 col-xs-12 col-sm-10 pad_right0 ">';
-                                	str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-                                    	str+='<span>'+result[i].name+'</span>';
-                                        str+='<span class="label label-primary labelCustom pull-right" title="Total Opened Positions">'+result[i].count+'</span>';
-                                    str+='</div>';
-                                str+='</div>';
-                                str+='<div class="col-md-2 col-xs-12 col-sm-2 pad_left0 ">';
-                                	str+='<div class="positionsCls text-success">';
-									if(result[i].wishCount != null && result[i].wishCount > 0)
-										str+='<span><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;'+result[i].wishCount+'</span>';
-									else
-										str+='<span><img src="dist/nominatedImages/Icon7.png"/> &nbsp;&nbsp;0</span>';
-                                    	//str+='<img src="dist/img/Icon1.png"/> - ';
-                                    str+='</div>';
-                                str+='</div>';
-                           str+=' </div>';
-                        str+='</li>'; 
-					 }
-             str+='</ul>';
-        str+='</div>';	
+	str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
+		 str+='<h4 class="headingColor text-capital"><u>positions</u></h4>';
+		 str+='<p class="text-danger pull-right">Ready for final review</p>';
+		 str+='<ul class="positionsUl">';
+		 for(var i in result){
+			str+='<li>';
+				str+='<div class="row">';
+					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
+						str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
+							str+='<span>'+result[i].name+'</span>';
+							str+='<span class="label label-primary labelCustom pull-right" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 ">';
+						str+='<div class="positionsCls text-success">';
+						if(result[i].wishCount != null && result[i].wishCount > 0)
+							str+='<span><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;'+result[i].wishCount+'</span>';
+						else
+							str+='<span><img src="dist/nominatedImages/Icon7.png"/> &nbsp;&nbsp;0</span>';
+							//str+='<img src="dist/img/Icon1.png"/> - ';
+						str+='</div>';
+					str+='</div>';
+			   str+=' </div>';
+			str+='</li>'; 
+		 }
+		 str+='</ul>';
+    str+='</div>';	
   $("#positionRsltDivId").html(str);
   $(".positionsDivCls").show();
+  $(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
   setHeight()
 }
 
@@ -417,34 +426,34 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	totalWishListCount = 0;
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
-		str+='<thead>';
-			str+='<th>Name</th>';
-			str+='<th>Mobile</th>';
-			str+='<th>Gender</th>';
-			str+='<th>Age</th>';
-			str+='<th>Caste</th>';
-			str+='<th>Sub Caste</th>';
-			str+='<th>Party Designations</th>';
-			str+='<th style="width:80px">Reports</th>';
-			str+='<th>Applied Any Dep/Corp</th>';
-			str+='<th>Shortlisted in any dep/ Corp</th>';
-			str+='<th>Current Status For this post</th>';
-			str+='<th>Reference</th>';
-			str+='<th>Comments/ Update Status/ Wishlist</th>';
+		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
+			str+='<th style="width:150px" class="text-center">Name</th>';
+			str+='<th class="text-center">Mobile</th>';
+			str+='<th class="text-center">Gender</th>';
+			str+='<th class="text-center" style="width:24px">Age</th>';
+			str+='<th class="text-center" style="width:90px">Caste</th>';
+			str+='<th class="text-center">Sub Caste</th>';
+			str+='<th class="text-center">Party Designations</th>';
+			str+='<th class="text-center" style="width:80px">Reports</th>';
+			str+='<th  class="text-center" style="width:175px">Applied Any Dep/Corp</th>';
+			str+='<th style="width:175px" class="text-center">Shortlisted any dep/ Corp</th>';
+			str+='<th class="text-center">Status</th>';
+			str+='<th class="text-center">Reference</th>';
+			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
-			str+='<tr>';
+			str+='<tr class="text-center">';
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
-				if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
-					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
-				else
-					str+='<i class="glyphicon glyphicon-user"></i> ';				
-					str+=' '+result.subList[i].voterName+'</a>';
+					str+='<td style="width:150px;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+					if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
+						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
+					else
+						str+='<i class="glyphicon glyphicon-user"></i> ';
+						str+=' <div class="media-body">'+result.subList[i].voterName+'</div></div></a>';
 				}else{
-					str +='<td><img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/> '+result.subList[i].voterName+'';
+					str +='<td style="width:150px;"><div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
 				}
 				
 				str+=' </td>';
@@ -531,11 +540,13 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 				else
 					str+='<td> - </td>';
 				str+='<td style="position:relative;width:180px">';
-					str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
-					if(result.subList[i].commentCount != null)
+					
+					if(result.subList[i].commentCount != null){
+						str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
 						str+='<span class="commentCount">'+result.subList[i].commentCount+'</span>';
+					}
 					else						
-						str+='<span class="commentCount">0</span>';
+						str+='<img src="dist/nominatedImages/Icon8.png" style="height:28px;margin-right:10px;"/>'; 
 					
 					str+='<div class="commentsDiv">';
 						str+='<div class="commentDropDownArrow" id="commentsDivId'+i+'">';
@@ -578,6 +589,10 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
+	if(result.subList.length > 15)
+	{
+		$("#resultDivId").css("height","400px");
+	}
 }
 
 $(document).on("click",".wishListCls",function(){
