@@ -80,11 +80,18 @@ public class NominatedPostVO implements Serializable{
 	public Long addVillageName;
 	public String addPincodeName;
 	private Long postTypeId;
+	private String isCheckedMigrateAddressField;
 	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
 	
 	
+	public String getIsCheckedMigrateAddressField() {
+		return isCheckedMigrateAddressField;
+	}
+	public void setIsCheckedMigrateAddressField(String isCheckedMigrateAddressField) {
+		this.isCheckedMigrateAddressField = isCheckedMigrateAddressField;
+	}
 	public Long getPostTypeId() {
 		return postTypeId;
 	}
