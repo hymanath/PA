@@ -33,4 +33,8 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Object[]> getOpenPositionConstituenciesForDistrict(Long districtId,Long boardLevelId);
 	public List<Object[]> getMandalMuncilIdsForConstituency(Long constituencyId,Long boardLevelId);
 	public List<Object[]> getPanchayWardIdsForMandal(Long id,String type,Long constituencyId,Long boardLevelId);
+	public List<Long> getTotalDeptsCount(Long levelId);
+	public List<Long> getTotalApplicationsDeptsCount(Long levelId);
+	public List<Object[]> getTotalApplicationsCorpsIdsCount(Long levelId);
+	public List<Object[]> getTotalCorpsIdsCount(Long levelId);
 }
