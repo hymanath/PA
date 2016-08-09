@@ -27,8 +27,10 @@
 	<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
 	
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
-	
- </head>                                         							
+<script src="js/LocationHierarchy/locationHierarchyAlert.js" type="text/javascript"></script>
+<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+</head>                                         							
 <body style="position:relative;">
 <div class="container">
 	<div class="row">
@@ -83,6 +85,54 @@
                             </select>
                         </div>
                     </div>-->
+					
+					<!--location Filter-->
+					<div class="col-md-3 col-xs-12 col-sm-6" >
+							<label>Assigned Cadre</label>
+							 <select class="chosenSelect" id="assignedCadreId">
+								 <option value="0">All</option>
+								 
+							 </select>
+						</div>
+					
+					<div class="col-md-3 col-xs-12 col-sm-6  stateShowCls" >
+							<label>State</label>
+							 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
+								 <option value="0">All</option>
+								 <option value="1">AP</option>
+								 <option value="36">TS</option>
+							 </select>
+						</div>
+				   
+						<div class="col-md-3 col-xs-12 col-sm-6  locationsFilterCls distCls">
+							 <label>District</label>
+							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
+							 <option value="0">All</option></select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6  locationsFilterCls constiCls">
+							<label>Assembly</label>
+							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
+							<option value="0">All</option>
+							</select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6  locationsFilterCls mandalCls">
+							<label>Mandal/ Municipality</label>
+							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
+								<option value="0">All</option>
+							 </select>
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6  locationsFilterCls panchayatCls">
+							<label>Panchayat/Ward</label>
+							<select class="dropkickClass" id="referpanchayatId" >
+							<option value="0">All</option>
+							</select>
+						</div>
+						
+					<div class="col-md-2 col-xs-12 col-sm-4">
+							<button style="margin-top: 25px;" id="searchBtnId" onclick="getLocationFilterAlertData();" class="btn btn-block btn-success m_top20 " type="button">View</button>
+						</div>
+					<!--location Filter End-->
+					
 					<div class="row  m_top10">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="locationLevelDataId"></div>
@@ -230,6 +280,7 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+$('.chosenSelect').chosen({width:'100%'});
 function createAlert(){
 	window.open("createAlertAction.action", '_blank');
 }
@@ -267,11 +318,13 @@ $(document).on("click","#createAlertBtn",function(){
 	$("#apptmemberDetailsDiv").html("");
 });
 $(".dropkickClass").dropkick();
+
 getAlertAssignedCandidate();
 function getAlertAssignedCandidate()
 {
-	alert(3);
+
 	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+	$("#assignedCadreId option").remove();
 	var jsObj={
     			alertId:0,
 				task:""
@@ -283,6 +336,19 @@ function getAlertAssignedCandidate()
 	  data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
 	  //buildAlertCommentsForTracking(result,"");
+	  var str='';
+	   str+='<option value="0">ALL</option>';
+		if(result != null && result.length > 0){
+			for(var i in result){
+				if(result[i].id > 0)
+				str+='<option value="'+result[i].id+'">'+result[i].uname+'</option>';
+			}
+		}
+		$("#assignedCadreId").html(str);
+		/*$("#assignedCadreId").dropkick();
+		var select1 = new Dropkick("#assignedCadreId");
+		select1.refresh();*/
+		$("#assignedCadreId").trigger('chosen:updated');
 	});
 	
 }

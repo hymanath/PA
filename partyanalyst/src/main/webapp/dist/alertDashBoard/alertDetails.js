@@ -1,6 +1,7 @@
 getAlertData();
 getAlertStatusCommentsTrackingDetails();
 getAlertAssignedCandidates(alertId);
+getAlertAssignedCandidate(alertId);
 $(document).on("click",".assignModel",function(){
 	clearAssignFields();
 	$("#ModalShow").modal('show');
@@ -107,7 +108,15 @@ function getAlertStatusCommentsTrackingDetails()
 								str+='<u style="font-size:16px;margin-bottom:10px;"><b>Comments</b></u>';
 								str+='<ul class="commentsUlCls">';
 							for(var j in result[i].subList){
-								str+='<li>'+result[i].subList[j].name+' on '+result[i].subList[j].dateStr+' By <b>'+result[i].subList[j].status+'</b></li>';	
+								if(result[i].subList[j].applicationStatus != null)
+								{
+									str+='<li><b>Alert Owner : '+result[i].subList[j].applicationStatus+'</b> '+result[i].subList[j].name+' on '+result[i].subList[j].dateStr+' By <b>'+result[i].subList[j].status+'</b></li>';
+								}
+								else
+								{
+									str+='<li>'+result[i].subList[j].name+' on '+result[i].subList[j].dateStr+' By <b>'+result[i].subList[j].status+'</b></li>';
+								}
+									
 							}
 								str+='</ul>';
 						}
@@ -202,6 +211,7 @@ function updateAlertStatus()
 	var comments = $("#commentsId").val();
 	var statusId=$("#statusId").val();
 	 $('#errorId').html('');
+	 var tdpCadreId = $("#assignedCadreId").val();
 	if(comments.length==0||comments=='')
 	{
 		  $('#errorId').html(' comments required').css("color","red");
@@ -218,6 +228,7 @@ function updateAlertStatus()
 		alertId : alertId,
 		alertStatusId :statusId,
 		comments:comments,
+		tdpCadreId:tdpCadreId,
 			task : ""
 		      }
 			$.ajax({
@@ -233,6 +244,7 @@ function updateAlertStatus()
 						 setTimeout(function(){ $("#errorId").html("");
 					 }, 1000);
 						getAlertStatusCommentsTrackingDetails();
+						getAlertAssignedCandidate(alertId);
 					}
 					
 				});
@@ -334,6 +346,36 @@ function getConfirmation(tdpCadreId){
 
 
 
+function getAlertAssignedCandidate(alertId)
+{
+	
+	//$("#alertCommentsDiv").html('<img src="images/search.gif" />');
+	var jsObj={
+    			alertId:alertId,
+				task:""
+    		}
+	$.ajax({
+	  type : 'GET',
+	  url : 'getAlertAssignedCandidateAction.action',
+	  dataType : 'json',
+	  data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+	 
+	  var str='';
+	   str+='<option value="0">Select Assign Cadre</option>';
+		if(result != null && result.length > 0){
+			for(var i in result){
+				if(result[i].id > 0)
+				str+='<option value="'+result[i].id+'">'+result[i].uname+'</option>';
+			}
+		}
+		$("#assignedCadreId").html(str);
+		$("#assignedCadreId").dropkick();
+		var select1 = new Dropkick("#assignedCadreId");
+		select1.refresh();
+	});
+	
+}
 
 
 
