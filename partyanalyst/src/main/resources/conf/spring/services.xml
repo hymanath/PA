@@ -3369,5 +3369,7 @@
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"></property>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
+	<bean id="coreDashboardService1" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService1">
+	</bean>
 </beans>		
 	
