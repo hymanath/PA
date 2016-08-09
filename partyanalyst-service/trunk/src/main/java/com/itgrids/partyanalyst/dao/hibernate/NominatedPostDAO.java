@@ -823,9 +823,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue){
 		  
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.nominatedPostMember.nominatedPostPosition.departmentId, " +
-				"  model.nominatedPostMember.nominatedPostPosition.boardId , model.nominatedPostMember.nominatedPostMemberId ," +
-				" model.nominatedPostMember.maxMembers ");
+		queryStr.append(" select count( model.nominatedPostId), model.nominatedPostMember.nominatedPostMemberId ");
 		queryStr.append(" from NominatedPost model   " );
 		queryStr.append(" where ");
 		queryStr.append(" model.isDeleted='N' and  model.nominatedPostMember.isDeleted ='N' ");	// for total 
@@ -839,7 +837,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		if(searchlevelId != null && searchlevelId.longValue()>0L){
 			if(searchlevelId.longValue() == 1L)
-				queryStr.append(" and model.locationValue  = :searchLevelValue ");
+				queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
 			else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
 				queryStr.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
 			else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
@@ -853,7 +851,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
 				queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
 		}
-		
+		queryStr.append(" group by  model.nominatedPostMember.nominatedPostMemberId  ");
 		queryStr.append(" order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -964,4 +962,37 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 											" and model.isDeleted = 'N' and model.isExpired = 'N'");
 		return query.list();
 	}*/
+	
+	
+	public List<Long> getTotalDeptsCount(Long levelId){
+		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId   from NominatedPost model " +
+				" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.boardLevelId =:levelId ");
+		query.setParameter("levelId", levelId);
+		return query.list();
+	}
+	
+	public List<Long> getTotalApplicationsDeptsCount(Long levelId){
+		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId   from NominatedPostApplication model " +
+				" where  model.isDeleted = 'N' and model.nominatedPostMember.boardLevelId =:levelId ");
+		query.setParameter("levelId", levelId);
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalCorpsIdsCount(Long levelId){
+		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId, " +
+				" model.nominatedPostMember.nominatedPostPosition.boardId" +
+				"    from NominatedPost model " +
+				" where  model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.boardLevelId =:levelId ");
+		query.setParameter("levelId", levelId);
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalApplicationsCorpsIdsCount(Long levelId){
+		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId ," +
+				" model.nominatedPostMember.nominatedPostPosition.boardId  from NominatedPostApplication model " +
+				" where model.isDeleted = 'N' and model.nominatedPostMember.boardLevelId =:levelId ");
+		query.setParameter("levelId", levelId);
+		return query.list();
+	}
+	
 }

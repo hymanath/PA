@@ -932,8 +932,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getTotalAppliedCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue){
 		  
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.nominatedPostMember.nominatedPostPosition.departmentId, " +
-				"  model.nominatedPostMember.nominatedPostPosition.boardId , model.nominatedPostMember.nominatedPostMemberId ");
+		queryStr.append(" select count( model.nominatedPostApplicationId), model.nominatedPostMember.nominatedPostMemberId ");
 		queryStr.append(" from NominatedPostApplication model   " );
 		queryStr.append(" where ");
 		queryStr.append(" model.isDeleted='N'  and model.nominatedPostMember.isDeleted='N'  ");	// for total 
@@ -947,7 +946,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		if(searchlevelId != null && searchlevelId.longValue()>0L){
 			if(searchlevelId.longValue() == 1L)
-				queryStr.append(" and model.locationValue  = :searchLevelValue ");
+				queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
 			else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
 				queryStr.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
 			else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
@@ -961,7 +960,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
 				queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
 		}
-		
+		queryStr.append(" group by model.nominatedPostMember.nominatedPostMemberId  ");
 		queryStr.append(" order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
