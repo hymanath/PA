@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -10,4 +11,5 @@ public interface IApplicationDocumentDAO extends GenericDao<ApplicationDocument,
 
 	public Integer deleteNominatedUploadedFile(List<Long> applicatnDocIdList);
 	public List<Object[]> getNominatedPostReport(Long tdpCadreId);
+	public List<Object[]> getNominatedPostDocumentDetails(Set<Long> candidateIds);
 }

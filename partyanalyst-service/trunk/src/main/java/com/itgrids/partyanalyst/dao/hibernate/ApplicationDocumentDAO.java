@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -29,4 +30,13 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 		return query.list();
 	}
 			 
+	public List<Object[]> getNominatedPostDocumentDetails(Set<Long> candidateIds){
+		Query query = getSession().createQuery("select model.nominationPostCandidateId," +
+												" model.filePath" +
+												" from ApplicationDocument model" +
+												" where model.nominationPostCandidate.nominationPostCandidateId in (:candidateIds)" +
+												" and model.isDeleted = 'N'");
+		query.setParameterList("candidateIds", candidateIds);
+		return query.list();
+	}
 }

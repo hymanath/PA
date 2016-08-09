@@ -536,13 +536,15 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			Map<Long,String> deptShortListedMap = new LinkedHashMap<Long, String>();
 			Map<Long,List<IdNameVO>> reportMap = new LinkedHashMap<Long, List<IdNameVO>>();
 			Map<Long,Long> referMap = new LinkedHashMap<Long, Long>();
+			Map<Long,List<IdNameVO>> nomDocsMap = new LinkedHashMap<Long, List<IdNameVO>>();
 			
 			//0.nominationPostCandidateId,1.tdpCadreId,2.voterId,3.candidateName,4.mobileNo,5.cadreFirstname,6.cadreMobileNo,7.age,
 						//8.caste,9.subCaste,10.casteName,11.applicationStatusId,12.status,13.nominatedPostId
 			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type,searchLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","age",
-							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId","boardLevelId","levelValue","imageURL"};
+							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId","boardLevelId","levelValue","imageURL",
+									"cadreName","cadreMobile","cadreAge","candCaste","candCasteName","gender","cadreGen"};
 				subList = (List<NomintedPostMemberVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NomintedPostMemberVO");
 			}
 			
@@ -669,6 +671,35 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						 Long count = referMap.get(vo.getNominatedPostCandidateId());
 						 vo.setReferCandCount(count);
 					 }
+				 }
+				 
+				 List<Object[]> nomDocsList = applicationDocumentDAO.getNominatedPostDocumentDetails(nominatedPostCandidateIds);
+				 if(commonMethodsUtilService.isListOrSetValid(nomDocsList)){
+					 for (Object[] obj : nomDocsList) {
+						Long candId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						String filePath = obj[1] != null ? obj[1].toString():"";
+						List<IdNameVO> voList = nomDocsMap.get(candId);
+						if(voList != null && voList.size() > 0){
+							IdNameVO vo = new IdNameVO();
+							vo.setStatus("NP-Profile");
+							vo.setMobileNo(filePath);
+							voList.add(vo);
+						}
+						else{
+							voList = new ArrayList<IdNameVO>();
+							IdNameVO vo = new IdNameVO();
+							vo.setStatus("NP-Profile");
+							vo.setMobileNo(filePath);
+							voList.add(vo);
+							nomDocsMap.put(candId, voList);
+						}
+					}
+				 }
+				 if(commonMethodsUtilService.isListOrSetValid(subList)){
+					 for (NomintedPostMemberVO nomintedPostMemberVO : subList) {
+						List<IdNameVO> voList = nomDocsMap.get(nomintedPostMemberVO.getNominatedPostCandidateId());
+						nomintedPostMemberVO.setNomDocsList(voList);
+					}
 				 }
 			}
 			 
@@ -3657,11 +3688,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			Map<Long,List<IdNameVO>> reportMap = new LinkedHashMap<Long, List<IdNameVO>>();
 			Map<Long,Long> referenceMap = new LinkedHashMap<Long, Long>();
 			Map<Long,Long> commentMap = new LinkedHashMap<Long, Long>();
+			Map<Long,List<IdNameVO>> nomDocsMap = new LinkedHashMap<Long, List<IdNameVO>>();
 			
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostFinalId","nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","voterGender","age",
-						"caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId","imageURL"};
+						"caste","subCaste","casteName","applStatusId","status","isPrefered","nominatedPostApplicationId","imageURL","cadreName","cadreMobile",
+						"cadreAge","cadreGender","candCaste","candCasteName"};
 			subList = (List<NominatedPostReferVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.NominatedPostReferVO");
 			}
 			
@@ -3790,6 +3823,35 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						 Long count = referenceMap.get(vo.getNominatedPostCandidateId());
 						 vo.setReferenceCount(count);
 					 }
+				 }
+				 
+				 List<Object[]> nomDocsList = applicationDocumentDAO.getNominatedPostDocumentDetails(candidateIds);
+				 if(commonMethodsUtilService.isListOrSetValid(nomDocsList)){
+					 for (Object[] obj : nomDocsList) {
+						Long candId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						String filePath = obj[1] != null ? obj[1].toString():"";
+						List<IdNameVO> voList = nomDocsMap.get(candId);
+						if(voList != null && voList.size() > 0){
+							IdNameVO vo = new IdNameVO();
+							vo.setStatus("NP-Profile");
+							vo.setMobileNo(filePath);
+							voList.add(vo);
+						}
+						else{
+							voList = new ArrayList<IdNameVO>();
+							IdNameVO vo = new IdNameVO();
+							vo.setStatus("NP-Profile");
+							vo.setMobileNo(filePath);
+							voList.add(vo);
+							nomDocsMap.put(candId, voList);
+						}
+					}
+				 }
+				 if(commonMethodsUtilService.isListOrSetValid(subList)){
+					 for (NominatedPostReferVO vo : subList) {
+						List<IdNameVO> voList = nomDocsMap.get(vo.getNominatedPostCandidateId());
+						vo.setNomDocsList(voList);
+					}
 				 }
 			}
 			

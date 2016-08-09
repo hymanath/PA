@@ -55,9 +55,6 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" NPA.nominationPostCandidate.candidateName," +
 					" NPA.nominationPostCandidate.mobileNo," +
 					" NPA.nominationPostCandidate.age," +
-					/*" TC.firstname," +
-					" TC.mobileNo," +
-					" TC.age," +*/
 					" CC.categoryName," +
 					" CCG.casteCategoryGroupName," +
 					" caste.casteName," +
@@ -67,13 +64,24 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" NPA.boardLevelId," +
 					" NPA.locationValue , " +
 					//" NPA.nominatedPost.nominatedPostId, ");
-					" NPA.nominationPostCandidate.imageurl ");
+					" NPA.nominationPostCandidate.imageurl," +
+					" TC.firstname," +
+					" TC.mobileNo," +
+					" TC.age," +
+					" NCC.categoryName," +
+					" NC.casteName," +
+					" NPA.nominationPostCandidate.gender," +
+					" TC.gender");
 		sb.append(" from NominatedPostApplication NPA " +
-					//" left join NPA.nominationPostCandidate.tdpCadre TC" +
-					" left join NPA.nominationPostCandidate.casteState CS" +
+					" left join NPA.nominationPostCandidate.tdpCadre TC" +
+					" left join TC.casteState CS" +
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
+					" left join NPA.nominationPostCandidate.casteState NCS" +
+					" left join NCS.casteCategoryGroup NCCG" +
+					" left join NCCG.casteCategory NCC" +
+					" left join NCS.caste NC" +
 					" where ");
 		if(levelId != null && levelId.longValue()>0){
 			if(levelId.longValue() != 5L)
@@ -186,10 +194,6 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" model.nominationPostCandidate.mobileNo," +
 					" model.nominationPostCandidate.gender," +
 					" model.nominationPostCandidate.age," +
-					/*" TC.firstname," +
-					" TC.mobileNo," +
-					" TC.age," +
-					" TC.gender," +*/
 					" CC.categoryName," +
 					" CCG.casteCategoryGroupName," +
 					" caste.casteName," +
@@ -197,13 +201,23 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" model.applicationStatus.status," +
 					" model.isPrefered," +
 					" model1.nominatedPostApplicationId ," +
-					" model.nominationPostCandidate.imageurl "+
+					" model.nominationPostCandidate.imageurl," +
+					" TC.firstname," +
+					" TC.mobileNo," +
+					" TC.age," +
+					" TC.gender," +
+					" NCC.categoryName," +
+					" NC.casteName"+
 					" from NominatedPostFinal model,NominatedPostApplication model1" +
-					//" left join model.nominationPostCandidate.tdpCadre TC" +
-					" left join model.nominationPostCandidate.casteState CS" +
+					" left join model.nominationPostCandidate.tdpCadre TC" +
+					" left join TC.casteState CS" +
 					" left join CS.casteCategoryGroup CCG" +
 					" left join CCG.casteCategory CC" +
 					" left join CS.caste caste" +
+					" left join model.nominationPostCandidate.casteState NCS" +
+					" left join NCS.casteCategoryGroup NCCG" +
+					" left join NCCG.casteCategory NCC" +
+					" left join NCS.caste NC" +
 					" where model.nominationPostCandidateId = model1.nominationPostCandidateId" +
 					//" and model1.boardLevelId = :levelId" +
 					" and model1.departmentId = :departmentId" +
