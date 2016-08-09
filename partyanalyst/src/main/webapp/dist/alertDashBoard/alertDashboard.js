@@ -612,6 +612,60 @@ function getAlertStatusCommentsTrackingDetails()
 	}
 	
 	
+	function getLocationFilterAlertData()
+{
+
+	$("#locationLevelDataId").html('<img src="images/search.gif" />');
+    GlobalAlertData = [];
+	var stateId = $("#stateId").val();
+	var districtId = $("#referdistrictId").val();
+	var constituencyId = $("#referconstituencyId").val();
+	var mandalId = $("#refermandalNameId").val();
+	var panchayatId = $("#referpanchayatId").val();
+	var mandalType = $("#refermandalNameId option:selected").text();
+	
+	if(mandalType.indexOf("Mandal") == -1)
+	{
+		mandalType = "localbody";
+	}
+	else
+	{
+		mandalType = "mandal";
+	}
+	var assignedCadreId =  $("#assignedCadreId").val();
+	if(assignedCadreId.length == 0)
+		assignedCadreId =0;
+	 var fromDate='';
+	 var toDate='';
+	 var dateStr = $("#dateRangePickerId").val(); 
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+		var jsObj =
+		     {
+				stateId  : stateId,
+				districtId :districtId,
+				constituencyId :constituencyId,
+				mandalId   :mandalId,
+				panchayatId:panchayatId,
+				mandalType:mandalType,
+				fromDate:fromDate,
+				toDate:toDate,
+				assignedCadreId:assignedCadreId,
+				task : ""
+		      }
+			$.ajax({
+					  type:'GET',
+					  url: 'getLocationFilterAlertDataAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+			        GlobalAlertData = result;
+					buildAlertData(result,jsObj);
+				});
+}
+	
+	
 
 
 

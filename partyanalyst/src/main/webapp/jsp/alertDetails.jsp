@@ -296,6 +296,13 @@ control.makeTransliteratable(['commentsId']);
 											<option value='3'>Completed</option>
 											<option value='4'>Unable to Resolve</option>
 											</select>
+											
+											<label>Assigned Cadre</label>
+											 <select class="dropkickClass" id="assignedCadreId">
+												 <option value="0">Select Assign Cadre</option>
+												 
+											 </select>
+											
 											<label>Comments</label>
 											<label class="radio-inline">
 												<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
@@ -428,7 +435,7 @@ var alertId = '${alertId}';
 $(".dropkickClass").dropkick();
 function deleteAlertAssignedCandidates(tdpCadreId)
 {
-	
+	$("#deleteProcessing"+tdpCadreId).show();
    	var jsObj =
 		     {
 			alertId  : alertId,
@@ -440,7 +447,9 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 					  url: 'deleteAlertAssignedCandidateAction.action',
 					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
+				   $("#deleteProcessing"+tdpCadreId).hide();
 				   getAlertAssignedCandidates(alertId);
+				   getAlertAssignedCandidate(alertId);
 			      //buildAlertAssignedCandidateData(result);
 				});
 }
@@ -464,6 +473,7 @@ function buildAlertAssignedCandidateData(result)
         str+='</div>';
 		str+='<div class="media-body" style="position:relative;">';
 		str+='<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT')}">';
+		str+='<span id="deleteProcessing'+result[i].subList[j].id+'" style="display:none;"><img src="images/search.gif" /></span>';
         str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash" title="Click here to Delete"></i></span>';
 		str+='</c:if>';
 		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
