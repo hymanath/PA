@@ -233,6 +233,7 @@ var past = null;
 $(document).on("click",".allDaysCls",function(){
 disableBtns();
    $("#birthdaysBlockId").html('');
+   memberTypeGlobal=0;
    getBirthDayDetails($(this).attr("attr_name"),0);
    todayGlobal = $(this).attr("attr_name");
    if(past == null)
