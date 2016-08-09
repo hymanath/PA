@@ -356,10 +356,10 @@ var globalidentityMembershipNo = ""	;
 					 
 					 if(result.isFamilyVoterId =="false"){
 						// $("#isFamilyId").html('<b>Own Voter ID</b>');
-						 $("#isFamilyId").html('<b><img src="images/User_icon_BLACK-01.png"> </b>');
+						 $("#isFamilyId").html('<b><img src="images/User_icon_BLACK-01.png" title="Own Voter ID"> </b>');
 					 }else if(result.isFamilyVoterId == "true"){
 						 //$("#isFamilyId").html('<b>Family Voter ID </b>');
-						 $("#isFamilyId").html('<b><img src="images/family_icon.png">Family Voter ID</b>');
+						 $("#isFamilyId").html('<b><img src="images/family_icon.png"  title="Family Voter ID" ></b>');
 					 }
 					 }else{
 						 $("#isFamilyId").html("Not Available."); 
