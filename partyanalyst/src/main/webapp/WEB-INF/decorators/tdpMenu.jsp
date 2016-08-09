@@ -139,8 +139,8 @@ footer
                 </a>
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'LEADER_OCCASIONS_ENTITLEMENT' )}">
 					<a href="birthDayAction.action" style="position:relative">
-						<span class="birthdayCount"> <b> ${sessionScope.birthDayCount} </b></span>
-						<img src="img/birthdayIcon.png" class="birthdaysIcon" style=""/>
+						<span class="birthdayCount" > <b> ${sessionScope.birthDayCount} </b></span>
+						<img src="img/birthdayIcon.png" class="birthdaysIcon" style="width: 40px;height: 40px" title="Today BirthDay Count"/>
 						<!--<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>-->
 					</a>
 				</c:if>
@@ -767,6 +767,9 @@ footer
 											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT')}">
 										  <li>
 										<a href="nominatedPostApplicationReviewAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Nominated Posts Overview</span></a>
+										</li>
+										<li>
+										<a href="nominatedPostMainDashboardAction.action"><i class="fa fa-briefcase ico-white"></i><span>&nbsp;&nbsp;Nominated Posts Dashboard</span></a>
 										</li>
 				                           </c:if>
 										 </ul>
