@@ -3300,6 +3300,16 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedPostFinal.setIsPrefered("N");
 						
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						
+						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(applicationId);
+						
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						
+						nominatedPostApplication.setApplicationStatusId(statusId);
+						nominatedPostApplication.setUpdatedBy(userId);
+						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						
+						nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 					}
 				}
 			});
@@ -3984,6 +3994,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						}
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -3996,6 +4008,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
