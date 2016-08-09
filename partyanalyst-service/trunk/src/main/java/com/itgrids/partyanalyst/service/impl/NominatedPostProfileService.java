@@ -537,6 +537,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			Map<Long,List<IdNameVO>> reportMap = new LinkedHashMap<Long, List<IdNameVO>>();
 			Map<Long,Long> referMap = new LinkedHashMap<Long, Long>();
 			Map<Long,List<IdNameVO>> nomDocsMap = new LinkedHashMap<Long, List<IdNameVO>>();
+			Map<Long,String> publicReprMap = new LinkedHashMap<Long, String>();
 			
 			//0.nominationPostCandidateId,1.tdpCadreId,2.voterId,3.candidateName,4.mobileNo,5.cadreFirstname,6.cadreMobileNo,7.age,
 						//8.caste,9.subCaste,10.casteName,11.applicationStatusId,12.status,13.nominatedPostId
@@ -616,6 +617,23 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						 if(vo.getTdpCadreId() != null && vo.getTdpCadreId().longValue() > 0l){
 							 String postion = partyPostionMap.get(vo.getTdpCadreId());
 							 vo.setPartyPosition(postion);
+						 }
+					}
+				 }
+				 
+				 List<Object[]> cadrePublicRepresentativList = tdpCadreCandidateDAO.getPublicRepresentaativesDetailsForCadreIdsList(tdpCadreIds);
+				 if(commonMethodsUtilService.isListOrSetValid(cadrePublicRepresentativList)){
+					 for (Object[] obj : cadrePublicRepresentativList) {
+						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						String pubRep = obj[3] != null ? obj[3].toString():"";
+						publicReprMap.put(id, pubRep);
+					}
+				 }
+				 if(commonMethodsUtilService.isListOrSetValid(subList)){
+					 for (NomintedPostMemberVO vo : subList) {
+						 if(vo.getTdpCadreId() != null && vo.getTdpCadreId().longValue() > 0l){
+							 String pubReprStr = publicReprMap.get(vo.getTdpCadreId());
+							 vo.setPublicReprStr(pubReprStr);
 						 }
 					}
 				 }
@@ -3689,6 +3707,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			Map<Long,Long> referenceMap = new LinkedHashMap<Long, Long>();
 			Map<Long,Long> commentMap = new LinkedHashMap<Long, Long>();
 			Map<Long,List<IdNameVO>> nomDocsMap = new LinkedHashMap<Long, List<IdNameVO>>();
+			Map<Long,String> publicReprMap = new LinkedHashMap<Long, String>();
 			
 			List<Object[]> list = nominatedPostFinalDAO.getAllReferredMemberDetailsForPosition(levelId, levelValue, departmentId, boardId, positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
@@ -3768,6 +3787,23 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						 if(vo.getTdpCadreId() != null && vo.getTdpCadreId().longValue() > 0l){
 							 String postion = partyPositionMap.get(vo.getTdpCadreId());
 							 vo.setPartyPosition(postion);
+						 }
+					}
+				 }
+				 
+				 List<Object[]> cadrePublicRepresentativList = tdpCadreCandidateDAO.getPublicRepresentaativesDetailsForCadreIdsList(tdpCadreIds);
+				 if(commonMethodsUtilService.isListOrSetValid(cadrePublicRepresentativList)){
+					 for (Object[] obj : cadrePublicRepresentativList) {
+						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						String pubRep = obj[3] != null ? obj[3].toString():"";
+						publicReprMap.put(id, pubRep);
+					}
+				 }
+				 if(commonMethodsUtilService.isListOrSetValid(subList)){
+					 for (NominatedPostReferVO vo : subList) {
+						 if(vo.getTdpCadreId() != null && vo.getTdpCadreId().longValue() > 0l){
+							 String pubReprStr = publicReprMap.get(vo.getTdpCadreId());
+							 vo.setPublicReprStr(pubReprStr);
 						 }
 					}
 				 }

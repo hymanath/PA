@@ -54,8 +54,15 @@ public class NomintedPostMemberVO {
 	private String candCasteName;
 	private String gender;
 	private String cadreGen;
+	private String publicReprStr;
 	
 	
+	public String getPublicReprStr() {
+		return publicReprStr;
+	}
+	public void setPublicReprStr(String publicReprStr) {
+		this.publicReprStr = publicReprStr;
+	}
 	public String getGender() {
 		return gender;
 	}

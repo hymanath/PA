@@ -48,8 +48,15 @@ public class NominatedPostReferVO {
 	private Long cadreAge;
 	private String candCaste;
 	private String candCasteName;
+	private String publicReprStr;
 	
 	
+	public String getPublicReprStr() {
+		return publicReprStr;
+	}
+	public void setPublicReprStr(String publicReprStr) {
+		this.publicReprStr = publicReprStr;
+	}
 	public Long getCadreAge() {
 		return cadreAge;
 	}
