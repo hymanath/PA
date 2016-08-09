@@ -502,7 +502,7 @@ function getPanchayatWardByMandal(num,id){
 			var mandalId=0;
 			var constituencyId = 0; //cadreSearchDtls
 		if(id == "mandalList"){	
-			hideDetails();
+			//hideDetails();
                 $("#panchaytListImg").show();		
 				$("#searchDataImgForPanc").show();
 				//refreshExistingDetails();
@@ -610,7 +610,7 @@ function getAllCadreInPanchayat()
 		//document.getElementById('allId').checked = false;
 		document.getElementById('membershipId').checked = true;
 		//$(".allcls").show();
-		refreshExistingDetails();
+		//refreshExistingDetails();
 	} 
 	
 	var isFree =true;
@@ -1623,7 +1623,7 @@ function savingApplication(){
 			 });
 			 
 	if(flag){
-		$( "#addressCheckId" ).prop( "checked", false );
+		//$( "#addressCheckId" ).prop( "checked", false );
 		$("#savingAjaxImg").css("display","block");	
 			YAHOO.util.Connect.setForm('submitApplication',true);
 			YAHOO.util.Connect.asyncRequest('POST','savingNominatedPostApplicationAction.action',uploadHandler);
@@ -1843,10 +1843,12 @@ var jObj={
 
 $(document).on("click","#addressCheckId",function(){
 	if ($(this).is(':checked')) {
+		 $(this).val('true');
 		$("#changePhoneNumberDiv").show();
 		getPopulateApplicantDetailsForMember(globalCadreId);
   }
   else {
+	  $(this).val('false');
 	  $("#changePhoneNumberDiv").hide();
   }
 	
@@ -2182,7 +2184,7 @@ function populateFields(result){
 												else
                                                 	str+='<span class="labelStatus " style="background:green;">'+result.subList[i].status+' </span>';
 													if(result.subList[i].levelName != null){
-														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→ Dept-'+ result.subList[i].cadreName+"→Board- "+result.subList[i].subCaste+" →Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
+														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 													}
 													else{
 														str+=''+result.subList[i].level+'→' +result.subList[i].subCaste+" → "+result.subList[i].cadreName+" → "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
