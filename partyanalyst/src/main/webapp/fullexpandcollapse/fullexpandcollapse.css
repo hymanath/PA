@@ -16,3 +16,16 @@
 	font-size: 2em;
 	z-index: 1;
 }
+@media (min-width: 100px) and (max-width:800px)
+{
+	.birthdaysIcon
+	{
+		margin-left:0px !important;
+		width: 25px !important; 
+		height: 25px !important;
+	}
+}
+.birthdaysIcon
+{
+	width: 30px; height: 25px; margin-top: 10px;margin-left:10px;
+}

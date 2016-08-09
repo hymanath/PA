@@ -140,7 +140,7 @@ footer
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'LEADER_OCCASIONS_ENTITLEMENT' )}">
 					<a href="birthDayAction.action" style="position:relative">
 						<span class="birthdayCount"> <b> ${sessionScope.birthDayCount} </b></span>
-						<img src="img/birthdayIcon.png" style="width: 30px; height: 25px; margin-top: 10px;margin-left:10px;"/>
+						<img src="img/birthdayIcon.png" class="birthdaysIcon" style=""/>
 						<!--<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>-->
 					</a>
 				</c:if>
