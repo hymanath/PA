@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 
@@ -26,4 +27,5 @@ public interface IAlertService {
 	public List<AlertDataVO> getAlertAssignedCandidates(Long alertId);
 	public String deleteAlertAssignedCandidates(Long alertId,Long tdpCadreId);
 	public List<StatusTrackingVO> getAlertAssignedCandidate(Long alertId);
+	public List<AlertDataVO> getLocationWiseFilterAlertData(Long userId,LocationVO inputVO,Long assignedCadreId);
 }
