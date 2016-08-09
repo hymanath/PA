@@ -34,5 +34,18 @@ public class AlertAssignedDAO extends GenericDaoHibernate<AlertAssigned, Long> i
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
+	public List<Object[]> getAlertAssignedCandidate(Long alertId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCadre.tdpCadreId, model.tdpCadre.firstname"+
+				" from AlertAssignedDAO model where model.alert.isDeleted ='N' ");
+		if(alertId != null && alertId > 0)
+			str.append(" and  model.alert.alertId = :alertId");
+		Query query = getSession().createQuery(str.toString());
+		if(alertId != null && alertId > 0)
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
 
 }
+

@@ -10,5 +10,5 @@ import com.itgrids.partyanalyst.model.AlertAssigned;
 public interface IAlertAssignedDAO extends GenericDao<AlertAssigned, Long> {
 	public List<Long> checkCadreExistsForAlert(List<Long> tdpCadreIds,Long alertId);
 	public List<Long> getDeleteAlertAssignedCandidates(Long alertId,Long tdpCadreId);
-
+	public List<Object[]> getAlertAssignedCandidate(Long alertId);
 }
