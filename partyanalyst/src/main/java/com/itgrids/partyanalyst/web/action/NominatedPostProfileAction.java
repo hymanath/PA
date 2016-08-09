@@ -910,9 +910,10 @@ public String getNotCadreDetailsById(){
 					Long levelValue = Long.valueOf(levelValuesArr.get(i).toString());
 					levelValues.add(levelValue);
 				}
+				Long sizeOfMember = jObj.getLong("sizeOfMember");
 				
 				
-				resultStatus =nominatedPostProfileService.updateNominatedPostStatusDetails(deptId,boardId, positions, levelId,levelValues,statusId,regVO.getRegistrationID());
+				resultStatus =nominatedPostProfileService.updateNominatedPostStatusDetails(deptId,boardId, positions, levelId,levelValues,statusId,regVO.getRegistrationID(),sizeOfMember);
 		} catch (Exception e) {
 			LOG.error("Exception raised at updateNominatedPostStatsDetails() method of NominatedPostProfileAction", e);
 		}
