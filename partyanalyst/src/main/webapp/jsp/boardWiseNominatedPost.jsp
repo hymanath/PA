@@ -189,6 +189,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 			str+='<th>Name</th>';
 			str+='<th>Mobile</th>';
 			str+='<th>Age</th>';
+			str+='<th>Gender</th>';
 			str+='<th>Caste</th>';
 			str+='<th>Sub Caste</th>';
 			str+='<th>Party Designations</th>';
@@ -216,16 +217,13 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				
 				str+=' </td>';
 				
-				str+='<td>'+result.subList[i].voterMoblie+'</td>';
-				str+='<td>'+result.subList[i].age+'</td>';
-				str+='<td>'+result.subList[i].caste+'</td>';
-				str+='<td>'+result.subList[i].casteName+'</td>';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					/*str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
+					//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
 					str+='<td>'+result.subList[i].cadreMobile+'</td>';
-					str+='<td>'+result.subList[i].age+'</td>';
+					str+='<td>'+result.subList[i].cadreAge+'</td>';
+					str+='<td>'+result.subList[i].cadreGen+'</td>';
 					str+='<td>'+result.subList[i].caste+'</td>';
-					str+='<td>'+result.subList[i].casteName+'</td>';*/
+					str+='<td>'+result.subList[i].casteName+'</td>';
 					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.trim.length > 0)
 						str+='<td>'+result.subList[i].partyPosition+'</td>';
 					else
@@ -236,14 +234,32 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].idNamevoList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].idNamevoList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
 						}
 					}
-					else
+					if(result.subList[i].nomDocsList != null && result.subList[i].nomDocsList.length > 0){
+						for(var j in result.subList[i].nomDocsList){
+							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].nomDocsList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].nomDocsList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
+						}
+					}
+					if(result.subList[i].idNamevoList == null && result.subList[i].nomDocsList == null)
 						str+=' - ';
 					str+='</td>';
 					//Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
 				}
 				else{
+					str+='<td>'+result.subList[i].voterMoblie+'</td>';
+					str+='<td>'+result.subList[i].age+'</td>';
+					str+='<td>'+result.subList[i].gender+'</td>';
+					str+='<td>'+result.subList[i].candCaste+'</td>';
+					str+='<td>'+result.subList[i].candCasteName+'</td>';
 					str+='<td> - </td>';
-					str+='<td> - </td>';
+					str+='<td>';
+					if(result.subList[i].nomDocsList != null && result.subList[i].nomDocsList.length > 0){
+						for(var j in result.subList[i].nomDocsList){
+							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].nomDocsList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].nomDocsList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
+						}
+					}
+					else
+						str+=' - ';
+					str+='</td>';
 				}
 				str+='<td style="position:relative" class="text-center">';
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" style="font-weight:bold;color:green;">'+result.subList[i].otherDepartmentsCount+'</span>';
