@@ -4,6 +4,10 @@ body
 	background:#ECF1F5;
 	color:#333;
 }
+*
+{
+	outline:none !important;
+}
 h1,h2,h3,h4,h5,h6 ,p ,table,ul
 {
 	margin:0px !important;
@@ -305,7 +309,7 @@ label
 .appliedPostPopup
 {
 	position:absolute;
-	width:480px;
+	min-width:480px;
 	left:-145%;
 	z-index:9;
 	display:none;
@@ -377,8 +381,26 @@ label
 		padding:10px;
 		margin-top:10px;
 	}
+	.heightSet
+	{
+		min-height:150px;
+	}
+	.panelBlockCustom li
+	{
+		display:inline-block;
+		min-width:100% !important;
+	}
+	.panelBlockCustom li:nth-child(odd)
+	{
+		margin:0px !important;
+	}
+	
 }
 @media (min-width: 100px) and (max-width: 500px){
+	.panelBlockCustom li .panelCustom
+	{
+		margin-top:10px !important;
+	}
 	body
 	{
 		font-family:roboto;
@@ -417,6 +439,19 @@ label
 		padding:10px;
 		margin-top:10px;
 	}
+	.heightSet
+	{
+		min-height:150px !important;
+	}
+	.panelBlockCustom li:nth-child(odd)
+	{
+		margin:0px !important;
+	}
+	.panelBlockCustom li
+	{
+		display:inline-block;
+		min-width:100% !important;
+	}
 }
 
 @media (min-width: 500px) and (max-width: 767px){
@@ -429,17 +464,35 @@ label
 	{
 		height:auto !important;
 	}
+	.heightSet
+	{
+		min-height:200px !important;
+	}
+	.panelBlockCustom li:nth-child(odd)
+	{
+		margin:0px !important;
+	}
+	.panelBlockCustom li .panelCustom
+	{
+		margin-top:10px !important;
+	}
+	
 }
 @media (min-width: 768px) and (max-width: 991px){
 	.panelBlockCustom li
 	{
 		display:inline-block;
-		width:47% !important;
+		min-width:47% !important;
 	}
 	.panelCustom .panel-heading
 	{
 		height:auto !important;
 	}
+	.panelBlockCustom li .panelCustom
+	{
+		margin-top:10px !important;
+	}
+	
 }
 .text-capital
 {
@@ -474,13 +527,22 @@ label
 	padding:0px;
 	width:100%;
 }
+.panelBlockCustom li .panelCustom
+{
+	margin-bottom:0px !important;
+}
 .panelBlockCustom li
 {
 	list-style:none;
 	display:inline-block;
-	width:13.2%;
+	min-width:13.8%;
+	max-width:17%;
 	margin-left:5px;
 	margin-right:5px;
+}
+.panelBlockCustom li:hover
+{
+	box-shadow:0px 0px 5px 3px rgba(0,0,0,0.4)
 }
 .panelBlockCustom li:first-child
 {
@@ -536,6 +598,10 @@ label
 {
 	width:100%;
 }
+.tabsCustom li a
+{
+	color:#666
+}
 .tabsCustom > li.active > a, .tabsCustom > li.active > a:hover, .tabsCustom > li.active > a:focus
 {
 	background:#fff;
@@ -548,6 +614,10 @@ label
 	font-size:12px;
 	font-weight:400;
 	vertical-align:middle !important;
+}
+.tabCollapseIcon , .tabCollapseIcon:hover ,.tabCollapseIcon:active,.tabCollapseIcon:focus
+{
+	color:#666 !important;
 }
 .tabCollapseIcon:before {
     /* symbol for "opening" panels */
@@ -654,13 +724,15 @@ label
 	background:#EBEBEB;
 	border-radius:0px;
 	border-right:0px;
-	border-bottom:1px solid #ddd
+	border-bottom:1px solid #ddd;
 }
 .labelCustom
 {
-	background:#DFE0DF;
+	background-color:#DFE0DF;
 	color:#EA6266;
-	font-size:16px
+	font-size:16px;
+	width:60px;
+	text-align:center;
 }
 .labelCustomGo
 {
@@ -884,6 +956,7 @@ label
 	display:none;
 	width:300px;
 	right:50px;
+	z-index:1020;
 }
 .commentDropDownArrow {
 	position: relative;
@@ -1228,4 +1301,12 @@ div.dataTables_wrapper div.clear
   width: 100%;
   height: 300px;
   margin: auto;
+}
+.heightSet
+{
+	min-height:350px;
+}
+.filterIcon
+{
+	font-size:16px;
 }
