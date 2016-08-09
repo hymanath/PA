@@ -971,6 +971,7 @@
 				    <value>com.itgrids.partyanalyst.model.VolunteersCadreDetails</value>
 				    <value>com.itgrids.partyanalyst.model.VolunteerDesgination</value>
 				    <value>com.itgrids.partyanalyst.model.PartyEventType</value>
+				    <value>com.itgrids.partyanalyst.model.AlertCommentAssignee</value>
 				 </list>
 			
 		</property>
