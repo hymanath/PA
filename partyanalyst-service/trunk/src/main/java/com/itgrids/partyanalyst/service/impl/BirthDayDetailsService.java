@@ -221,8 +221,8 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 				          }
 				          else{
 				            position = positiontype;
-				            publicRepMap.put(cadrePositionId, position);
 				          }
+				          publicRepMap.put(cadrePositionId, position);
 				        }
 				      }
 					}
@@ -272,17 +272,20 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 				      Map<String,Long> partyTotalMap = new LinkedHashMap<String, Long>(0);
 				      if(commonMethodsUtilService.isMapValid(publicRepMap)){
 				    	  for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
-								String value = entry.getValue();
-								Long count = partyTotalMap.get(value);
-								if(count != null && count.longValue() > 0l){
-									count=count+1l;
-									totalCount = totalCount+1l;
+								String value[] = entry.getValue().split(",");
+								for (String string : value) {
+									Long count = partyTotalMap.get(string.trim());
+									if(count != null && count.longValue() > 0l){
+										count=count+1l;
+										totalCount = totalCount+1l;
+									}
+									else{
+										count = 1l;
+										totalCount = totalCount+1l;
+									}
+									partyTotalMap.put(string.trim(), count);
 								}
-								else{
-									count = 1l;
-									totalCount = totalCount+1l;
-								}
-								partyTotalMap.put(value, count);
+								
 					      }
 				      }
 				      if(commonMethodsUtilService.isMapValid(partyPostMap)){
@@ -339,7 +342,9 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 					if((!memberTypeStr.equalsIgnoreCase("Total")) && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
 						
 						for (BirthDayDetailsVO subVo : bDayVo.getSubList()) {
-							if((subVo.getDesignation() != null && subVo.getDesignation().equalsIgnoreCase(memberTypeStr)) || (subVo.getPubRepDesignation() != null && subVo.getPubRepDesignation().equalsIgnoreCase(memberTypeStr))){
+							if(memberTypeStr.trim().equalsIgnoreCase("Others") && subVo.getDesignation() == null && subVo.getPubRepDesignation() == null){
+									designationList.add(subVo);
+							}else if((subVo.getDesignation() != null && subVo.getDesignation().trim().contains(memberTypeStr.trim())) || (subVo.getPubRepDesignation() != null && subVo.getPubRepDesignation().trim().contains(memberTypeStr.trim()))){
 								designationList.add(subVo);
 							}
 						}
@@ -347,9 +352,34 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 					}
 				}
 			}
+			
+			//No designation candidates adding to others
+			IdNameVO othersVO = new IdNameVO();
+			othersVO.setName("Others");
+			if(returnList != null && returnList.size() > 0){
+				for (BirthDayDetailsVO birthDayDetailsVO : returnList) {
+					if(birthDayDetailsVO.getName() != null && birthDayDetailsVO.getName().trim().equalsIgnoreCase(dataBuildTypeStr.trim())){
+						if(birthDayDetailsVO.getSubList() != null && birthDayDetailsVO.getSubList().size() > 0){
+							for (BirthDayDetailsVO dbsubVo : birthDayDetailsVO.getSubList()) {
+								if((dbsubVo.getDesignation() == null || dbsubVo.getDesignation().isEmpty()) && (dbsubVo.getPubRepDesignation() == null || dbsubVo.getPubRepDesignation().isEmpty())){
+									othersVO.setCount(othersVO.getCount()+1l);
+								}
+							}
+						}
+						
+						if(othersVO.getCount() != null && othersVO.getCount() > 0l){
+							birthDayDetailsVO.getIdNameVOList().add(othersVO);
+						}
+					}
+				}
+			}
+			
+			
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getLeaderOccasionDetails in BirthDayService service:-", e);
 		}
+		
 		return returnList;
 	}
 
