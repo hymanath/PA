@@ -484,7 +484,14 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					//str+='<td> - </td>';
 			}
 				str+='<td>'+result.subList[i].appliedDeptCount+'</td>';
-				str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
+				
+				if(result.subList[i].shortListedDeptCount!=null && result.subList[i].shortListedDeptCount.length>0){
+					str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
+				}else{
+					str+='<td> - </td>'
+				}
+				
+				//str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
 				/*str+='<td style="position:relative" class="text-center">';
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'">'+result.subList[i].otherDepartmentsCount+'</span>';
 					str+='<div class="appliedPostPopup">';
@@ -529,6 +536,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='<div class="updateDropDown">';
 						str+='<div class="updateDropDownArrow">';
 						str+='<div class="text-success" id="successDivId'+i+'"></div>';
+						str+='<div id="popUpErrorId" style="color:red;"></div>';
 							str+='<label class="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
@@ -538,6 +546,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 							str+='<label class="m_top10">Comments</label>';
 							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
 							str+='<button class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
+							str+='<img src="images//icons//ajaxImg.gif" id="imgModelPopUpId" style="display:none;"></img>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -622,6 +631,29 @@ $(document).on("click",".submitBtnCls",function(){
 	var status = $("#"+statusId).val();
 	var comment = $("#"+commentId).val();
 	
+	var statsIdElemt=$("#statusSelectId0").val();
+	var statscommentId=$("#commentAreaId0").val().trim();
+	
+	if(statsIdElemt == 0){
+		$("#popUpErrorId").html('Please select status');
+		return;
+	}else{
+		$("#popUpErrorId").html(' ');
+	}
+	if(statscommentId ==0 && statscommentId.length==0){
+		$("#popUpErrorId").html('Comment is required');
+		return;
+	}else{
+		$("#popUpErrorId").html(' ');
+	}
+	
+	  var errStr='';
+       if(errStr.length>0){
+         $("#popUpErrorId").html(errStr);
+            return;
+          }
+	
+       $("#imgModelPopUpId").show();
 	var jsObj=
 	   {				
 		postFinalId:postFinalId,
@@ -636,10 +668,17 @@ $(document).on("click",".submitBtnCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   if(result != null && result == 'success')
+	   
+	   setTimeout(function() {
+			$("#imgModelPopUpId").hide();
+	      }, 750);	
+	   if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...");
-		else
-			$("#"+divId).html("Sorry,Exception Occured...Please try again...");
+	        $(".submitBtnCls").attr("disabled","disabled");
+	   }else{
+		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");
+		}
+			
    });
 });
 
