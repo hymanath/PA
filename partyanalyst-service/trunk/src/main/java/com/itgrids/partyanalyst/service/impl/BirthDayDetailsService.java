@@ -20,11 +20,8 @@ import com.itgrids.partyanalyst.dao.ILeaderOccasionWishDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
-import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BirthDayDetailsVO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.model.LeaderOccasionWishDetails;
@@ -108,173 +105,183 @@ public class BirthDayDetailsService implements IBirthDayDetailsService {
 public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,String dataBuildTypeStr,String memberTypeStr,Long userId){
 		 List<BirthDayDetailsVO> returnList = new LinkedList<BirthDayDetailsVO>();
 		try {
-			Long totalCount = 0l;
-			List<Long> tdpCadreIdsList = new ArrayList<Long>();
-			//dataBuildTypeStr ="Today";
-			if(dataBuildTypeStr.trim().length() ==0)
-				dataBuildTypeStr=" Today ";
-			
-			int[] daysArr={30,7,1,0,1,7,30};
-			String searchTypeStr="previous";
-			
-			Date date = new Date(); // your date
-		    Calendar cal = Calendar.getInstance();
-		    cal.setTime(date);
-		    int year = cal.get(Calendar.YEAR);
-		     
-			int i = 0;
-			for ( ;i < daysArr.length;i++) {
+			if(occastionTypeId == null || occastionTypeId.longValue() ==0L){
+				List<Object[]> lederOcanDtailsThirtyList  = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(" Today ",0L,1L);
 				BirthDayDetailsVO dayVO = new BirthDayDetailsVO();
+				dayVO.setName(" Today ");
+				dayVO.setTotalCount(0L);
+				if(commonMethodsUtilService.isListOrSetValid(lederOcanDtailsThirtyList)){
+					dayVO.setTotalCount(Long.valueOf(String.valueOf(lederOcanDtailsThirtyList.size())));
+				}
+				returnList.add(dayVO);
+			}
+			else if(occastionTypeId != null){
+				Long totalCount = 0l;
+				List<Long> tdpCadreIdsList = new ArrayList<Long>();
+				//dataBuildTypeStr ="Today";
+				if(dataBuildTypeStr.trim().length() ==0)
+					dataBuildTypeStr=" Today ";
 				
-				if(i>3){
-					 searchTypeStr="Next";
-					 	if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
+				int[] daysArr={30,7,1,0,1,7,30};
+				String searchTypeStr="previous";
+				
+				Date date = new Date(); // your date
+			    Calendar cal = Calendar.getInstance();
+			    cal.setTime(date);
+			    int year = cal.get(Calendar.YEAR);
+			     
+				int i = 0;
+				for ( ;i < daysArr.length;i++) {
+					BirthDayDetailsVO dayVO = new BirthDayDetailsVO();
+					
+					if(i>3){
+						 searchTypeStr="Next";
+						 	if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
+								dayVO.setName(" Today ");
+								//searchTypeStr="";
+							 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
+								dayVO.setName(" Tomorrow ");
+							 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Next")){
+								dayVO.setName(" Next "+daysArr[i]+" Days");
+							 }
+					}
+					else{
+						 if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
 							dayVO.setName(" Today ");
 							//searchTypeStr="";
 						 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
-							dayVO.setName(" Tomorrow ");
-						 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Next")){
-							dayVO.setName(" Next "+daysArr[i]+" Days");
+							dayVO.setName(" Yesterday ");
+						 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Previous")){
+							dayVO.setName(" Last "+daysArr[i]+" Days");
 						 }
-				}
-				else{
-					 if(Long.valueOf(String.valueOf(daysArr[i])) ==0L ){
-						dayVO.setName(" Today ");
-						//searchTypeStr="";
-					 }else if(Long.valueOf(String.valueOf(daysArr[i])) ==1L ){
-						dayVO.setName(" Yesterday ");
-					 }else if(Long.valueOf(String.valueOf(daysArr[i])) !=0L && searchTypeStr.equalsIgnoreCase("Previous")){
-						dayVO.setName(" Last "+daysArr[i]+" Days");
-					 }
-				}
-				List<Object[]> lederOcanDtailsThirtyList  = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(searchTypeStr,Long.valueOf(String.valueOf(daysArr[i])),occastionTypeId);
-				List<Long> prevThirtyIds = new ArrayList<Long>(0);
-				if(lederOcanDtailsThirtyList != null && lederOcanDtailsThirtyList.size() > 0){
-					for (Object[] obj : lederOcanDtailsThirtyList) {
-						prevThirtyIds.add(Long.parseLong(obj[0].toString()));
 					}
-				}
-				List<Long> wishList =  new ArrayList<Long>(0);
-				List<Long> totalTdpCadreIdsList = new ArrayList<Long>(0);
-				if(prevThirtyIds != null && prevThirtyIds.size() >0){
-					List<Object[]> wishList1  = leaderOccasionWishDetailsDAO.getTotalDaysCountsForWishedCount(prevThirtyIds, String.valueOf(year).trim(),userId);
-					if(wishList1 != null && wishList1.size() > 0){
-						
-						for (Object[] obj : wishList1) {
-							wishList.add((Long)obj[0]);
-							totalTdpCadreIdsList.add((Long)obj[1]);
+					List<Object[]> lederOcanDtailsThirtyList  = leaderOccasionDAO.getLeaderOccasionDetailsForTaday(searchTypeStr,Long.valueOf(String.valueOf(daysArr[i])),occastionTypeId);
+					List<Long> prevThirtyIds = new ArrayList<Long>(0);
+					if(lederOcanDtailsThirtyList != null && lederOcanDtailsThirtyList.size() > 0){
+						for (Object[] obj : lederOcanDtailsThirtyList) {
+							prevThirtyIds.add(Long.parseLong(obj[0].toString()));
 						}
 					}
-				}
-				
-				Long lederOcanDtailsCount  = Long.valueOf(String.valueOf(prevThirtyIds.size()));
-				
-				Long wishedCount  = Long.valueOf(String.valueOf(wishList.size()));
-				
-				if(dataBuildTypeStr.equalsIgnoreCase(dayVO.getName()))
-				{
-					List<BirthDayDetailsVO> memberDetailsVOLst = new ArrayList<BirthDayDetailsVO>(0);
-					if(commonMethodsUtilService.isListOrSetValid(lederOcanDtailsThirtyList)){
-						for (Object[] param : lederOcanDtailsThirtyList) {
-							Long tdpCadreId=commonMethodsUtilService.getLongValueForObject(param[0]);
-							String cadreName =commonMethodsUtilService.getStringValueForObject(param[1]);
-							String mobileNO= commonMethodsUtilService.getStringValueForObject(param[2]);
-							String imageStr= commonMethodsUtilService.getStringValueForObject(param[3]);
-							//String birthDate = commonMethodsUtilService.getStringValueForObject(param[4].toString());
-							
-							String inputDate = commonMethodsUtilService.getStringValueForObject(param[4].toString());
-						    String myFormat= "yyyy MMM dd";
-						    String finalString = "";
-						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-						    Date date1 = (Date) formatter .parse(inputDate);
-						    SimpleDateFormat newFormat = new SimpleDateFormat(myFormat);
-						    finalString= newFormat .format(date1);
-						    Long occasionId = commonMethodsUtilService.getLongValueForObject(param[5]);
-							
-							BirthDayDetailsVO cadreVO = new BirthDayDetailsVO();
-							cadreVO.setName(cadreName);
-							cadreVO.setId(tdpCadreId);
-							if(!tdpCadreIdsList.add(tdpCadreId));
-							tdpCadreIdsList.add(tdpCadreId);
-							cadreVO.setMobileNo(mobileNO);
-							cadreVO.setImageStr(imageStr);
-							cadreVO.setbDayDate(finalString.toString().trim().substring(4));
-							cadreVO.setOccasionId(occasionId);
-							if(totalTdpCadreIdsList.contains(tdpCadreId))
-									cadreVO.setWished(true);
-							else
-								cadreVO.setWished(false);
-							memberDetailsVOLst.add(cadreVO);
-						}	
-					}
-					
-					Map<Long,String> publicRepMap = new LinkedHashMap<Long, String>(0);
+					List<Long> wishList =  new ArrayList<Long>(0);
+					List<Long> totalTdpCadreIdsList = new ArrayList<Long>(0);
 					if(prevThirtyIds != null && prevThirtyIds.size() >0){
-					List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(prevThirtyIds);
-				      if(commonMethodsUtilService.isListOrSetValid(publicRepDertails)){
-				        for(Object[] obj:publicRepDertails){
-				          Long cadrePositionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-				          String positiontype = obj[2] != null ? obj[2].toString():"";
-				          String position = publicRepMap.get(cadrePositionId);
-				          if(position != null && position.trim().length() > 0l){
-				            position = position+" , "+positiontype;
-				          }
-				          else{
-				            position = positiontype;
-				          }
-				          publicRepMap.put(cadrePositionId, position);
-				        }
-				      }
-					}
-					if(publicRepMap !=null && publicRepMap.size()>0){
-						for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
-							Long id = entry.getKey();
-							String value = entry.getValue();
-							BirthDayDetailsVO Vo = getMatchedVOById(memberDetailsVOLst,id);
-							if(Vo != null){
-								 Vo.setDesignation(value);
-							}
+						List<Object[]> wishList1  = leaderOccasionWishDetailsDAO.getTotalDaysCountsForWishedCount(prevThirtyIds, String.valueOf(year).trim(),userId);
+						if(wishList1 != null && wishList1.size() > 0){
 							
+							for (Object[] obj : wishList1) {
+								wishList.add((Long)obj[0]);
+								totalTdpCadreIdsList.add((Long)obj[1]);
+							}
 						}
 					}
 					
-				      Map<Long,String> partyPostMap = new LinkedHashMap<Long, String>(0);
-				      if(prevThirtyIds != null && prevThirtyIds.size() >0){
-				      List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(prevThirtyIds);
-				       if(commonMethodsUtilService.isListOrSetValid(partyPositionDetails)){
-				         for (Object[] obj : partyPositionDetails) {
-				           
-				           String level = obj[0] != null ? obj[0].toString() : "" ;
-				           String role = obj[1] != null ? obj[1].toString() : "";
-				           Long cadreId = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
-				           String state = commonMethodsUtilService.getStringValueForObject(obj[6]);
-				           String commiteestr = obj[2] != null ? obj[2].toString() : "";
-				           if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
-				           {
-				             level = state+" "+level;
-				           }
-				           String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
-				           partyPostMap.put(cadreId, partyPositionStr);
-				        }
-				      }
-				    } 
-				      if(partyPostMap !=null && partyPostMap.size()>0){
-							for (Map.Entry<Long,String> entry : partyPostMap.entrySet()){
+					Long lederOcanDtailsCount  = Long.valueOf(String.valueOf(prevThirtyIds.size()));
+					
+					Long wishedCount  = Long.valueOf(String.valueOf(wishList.size()));
+					
+					if(dataBuildTypeStr.equalsIgnoreCase(dayVO.getName()))
+					{
+						List<BirthDayDetailsVO> memberDetailsVOLst = new ArrayList<BirthDayDetailsVO>(0);
+						if(commonMethodsUtilService.isListOrSetValid(lederOcanDtailsThirtyList)){
+							for (Object[] param : lederOcanDtailsThirtyList) {
+								Long tdpCadreId=commonMethodsUtilService.getLongValueForObject(param[0]);
+								String cadreName =commonMethodsUtilService.getStringValueForObject(param[1]);
+								String mobileNO= commonMethodsUtilService.getStringValueForObject(param[2]);
+								String imageStr= commonMethodsUtilService.getStringValueForObject(param[3]);
+								//String birthDate = commonMethodsUtilService.getStringValueForObject(param[4].toString());
+								
+								String inputDate = commonMethodsUtilService.getStringValueForObject(param[4].toString());
+							    String myFormat= "yyyy MMM dd";
+							    String finalString = "";
+							    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+							    Date date1 = (Date) formatter .parse(inputDate);
+							    SimpleDateFormat newFormat = new SimpleDateFormat(myFormat);
+							    finalString= newFormat .format(date1);
+							    Long occasionId = commonMethodsUtilService.getLongValueForObject(param[5]);
+								
+								BirthDayDetailsVO cadreVO = new BirthDayDetailsVO();
+								cadreVO.setName(cadreName);
+								cadreVO.setId(tdpCadreId);
+								if(!tdpCadreIdsList.add(tdpCadreId));
+								tdpCadreIdsList.add(tdpCadreId);
+								cadreVO.setMobileNo(mobileNO);
+								cadreVO.setImageStr(imageStr);
+								cadreVO.setbDayDate(finalString.toString().trim().substring(4));
+								cadreVO.setOccasionId(occasionId);
+								if(totalTdpCadreIdsList.contains(tdpCadreId))
+										cadreVO.setWished(true);
+								else
+									cadreVO.setWished(false);
+								memberDetailsVOLst.add(cadreVO);
+							}	
+						}
+						
+						Map<Long,String> publicRepMap = new LinkedHashMap<Long, String>(0);
+						if(prevThirtyIds != null && prevThirtyIds.size() >0){
+						List<Object[]> publicRepDertails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadreIds(prevThirtyIds);
+					      if(commonMethodsUtilService.isListOrSetValid(publicRepDertails)){
+					        for(Object[] obj:publicRepDertails){
+					          Long cadrePositionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					          String positiontype = obj[2] != null ? obj[2].toString():"";
+					          String position = publicRepMap.get(cadrePositionId);
+					          if(position != null && position.trim().length() > 0l){
+					            position = position+" , "+positiontype;
+					          }
+					          else{
+					            position = positiontype;
+					            publicRepMap.put(cadrePositionId, position);
+					          }
+					        }
+					      }
+						}
+						if(publicRepMap !=null && publicRepMap.size()>0){
+							for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
 								Long id = entry.getKey();
 								String value = entry.getValue();
 								BirthDayDetailsVO Vo = getMatchedVOById(memberDetailsVOLst,id);
 								if(Vo != null){
-									 Vo.setPubRepDesignation(value);
+									 Vo.setDesignation(value);
 								}
 								
 							}
 						}
-				      Map<String,Long> partyTotalMap = new LinkedHashMap<String, Long>(0);
-				      if(commonMethodsUtilService.isMapValid(publicRepMap)){
-				    	  for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
-								String value[] = entry.getValue().split(",");
-								for (String string : value) {
-									Long count = partyTotalMap.get(string.trim());
+						
+					      Map<Long,String> partyPostMap = new LinkedHashMap<Long, String>(0);
+					      if(prevThirtyIds != null && prevThirtyIds.size() >0){
+					      List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(prevThirtyIds);
+					       if(commonMethodsUtilService.isListOrSetValid(partyPositionDetails)){
+					         for (Object[] obj : partyPositionDetails) {
+					           
+					           String level = obj[0] != null ? obj[0].toString() : "" ;
+					           String role = obj[1] != null ? obj[1].toString() : "";
+					           Long cadreId = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+					           String state = commonMethodsUtilService.getStringValueForObject(obj[6]);
+					           String commiteestr = obj[2] != null ? obj[2].toString() : "";
+					           if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+					           {
+					             level = state+" "+level;
+					           }
+					           String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+					           partyPostMap.put(cadreId, partyPositionStr);
+					        }
+					      }
+					    } 
+					      if(partyPostMap !=null && partyPostMap.size()>0){
+								for (Map.Entry<Long,String> entry : partyPostMap.entrySet()){
+									Long id = entry.getKey();
+									String value = entry.getValue();
+									BirthDayDetailsVO Vo = getMatchedVOById(memberDetailsVOLst,id);
+									if(Vo != null){
+										 Vo.setPubRepDesignation(value);
+									}
+									
+								}
+							}
+					      Map<String,Long> partyTotalMap = new LinkedHashMap<String, Long>(0);
+					      if(commonMethodsUtilService.isMapValid(publicRepMap)){
+					    	  for (Map.Entry<Long,String> entry : publicRepMap.entrySet()){
+									String value = entry.getValue();
+									Long count = partyTotalMap.get(value);
 									if(count != null && count.longValue() > 0l){
 										count=count+1l;
 										totalCount = totalCount+1l;
@@ -283,72 +290,69 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 										count = 1l;
 										totalCount = totalCount+1l;
 									}
-									partyTotalMap.put(string.trim(), count);
-								}
-								
+									partyTotalMap.put(value, count);
+						      }
 					      }
-				      }
-				      if(commonMethodsUtilService.isMapValid(partyPostMap)){
-				    	  for (Map.Entry<Long,String> entry : partyPostMap.entrySet()){
-								String value = entry.getValue();
-								Long count = partyTotalMap.get(value);
-								if(count != null && count.longValue() > 0l){
-									count=count+1l;
-									totalCount = totalCount+1l;
-								}
-								else{
-									count = 1l;
-									totalCount = totalCount+1l;
-								}
-								partyTotalMap.put(value, count);
+					      if(commonMethodsUtilService.isMapValid(partyPostMap)){
+					    	  for (Map.Entry<Long,String> entry : partyPostMap.entrySet()){
+									String value = entry.getValue();
+									Long count = partyTotalMap.get(value);
+									if(count != null && count.longValue() > 0l){
+										count=count+1l;
+										totalCount = totalCount+1l;
+									}
+									else{
+										count = 1l;
+										totalCount = totalCount+1l;
+									}
+									partyTotalMap.put(value, count);
+						      }
 					      }
-				      }
-					
-				      List<IdNameVO> positionList = new ArrayList<IdNameVO>();
-				      if(commonMethodsUtilService.isMapValid(partyTotalMap)){
-				    	  for (Map.Entry<String,Long> entry : partyTotalMap.entrySet()){
-				    		  IdNameVO vo = new IdNameVO();
-				    		  vo.setName(entry.getKey());
-				    		  vo.setCount(entry.getValue());
-				    		    positionList.add(vo);
-				    		 
-				    	  }
-				      }
-				      if(commonMethodsUtilService.isListOrSetValid(positionList))
-				    	  Collections.sort(positionList, new Comparator<IdNameVO>() {
-					          @Override
-					          public int compare(final IdNameVO vo1, final IdNameVO vo2) {
-					              return vo1.getName().compareTo(vo2.getName());
-					          }
-					   });
-				      
-				      //Add Location For Cadre
-				     if(memberDetailsVOLst != null && memberDetailsVOLst.size() > 0)
-				  	setAddressForCadre(memberDetailsVOLst,tdpCadreIdsList);
-					dayVO.setSubList(memberDetailsVOLst);
-					
-					dayVO.setIdNameVOList(positionList);
-					dayVO.setTotalPosCount(totalCount);
-				}
-				dayVO.setTotalCount(lederOcanDtailsCount);
-				dayVO.setWishCount(wishedCount);
-				returnList.add(dayVO);
-			}
-			
-			List<BirthDayDetailsVO> designationList = new ArrayList<BirthDayDetailsVO>();
-			if(returnList != null && returnList.size() > 0 && dataBuildTypeStr != null && !dataBuildTypeStr.trim().isEmpty() && memberTypeStr != null && !memberTypeStr.trim().isEmpty()){
-				for (BirthDayDetailsVO bDayVo : returnList) {
-					
-					if((!memberTypeStr.equalsIgnoreCase("Total")) && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
 						
-						for (BirthDayDetailsVO subVo : bDayVo.getSubList()) {
-							if(memberTypeStr.trim().equalsIgnoreCase("Others") && subVo.getDesignation() == null && subVo.getPubRepDesignation() == null){
+					      List<IdNameVO> positionList = new ArrayList<IdNameVO>();
+					      if(commonMethodsUtilService.isMapValid(partyTotalMap)){
+					    	  for (Map.Entry<String,Long> entry : partyTotalMap.entrySet()){
+					    		  IdNameVO vo = new IdNameVO();
+					    		  vo.setName(entry.getKey());
+					    		  vo.setCount(entry.getValue());
+					    		    positionList.add(vo);
+					    		 
+					    	  }
+					      }
+					      if(commonMethodsUtilService.isListOrSetValid(positionList))
+					    	  Collections.sort(positionList, new Comparator<IdNameVO>() {
+						          @Override
+						          public int compare(final IdNameVO vo1, final IdNameVO vo2) {
+						              return vo1.getName().compareTo(vo2.getName());
+						          }
+						   });
+					      
+					      //Add Location For Cadre
+					     if(memberDetailsVOLst != null && memberDetailsVOLst.size() > 0)
+					  	setAddressForCadre(memberDetailsVOLst,tdpCadreIdsList);
+						dayVO.setSubList(memberDetailsVOLst);
+						
+						dayVO.setIdNameVOList(positionList);
+						dayVO.setTotalPosCount(totalCount);
+					}
+					dayVO.setTotalCount(lederOcanDtailsCount);
+					dayVO.setWishCount(wishedCount);
+					returnList.add(dayVO);
+				}
+				
+				List<BirthDayDetailsVO> designationList = new ArrayList<BirthDayDetailsVO>();
+				if(returnList != null && returnList.size() > 0 && dataBuildTypeStr != null && !dataBuildTypeStr.trim().isEmpty() && memberTypeStr != null && !memberTypeStr.trim().isEmpty()){
+					for (BirthDayDetailsVO bDayVo : returnList) {
+						
+						if((!memberTypeStr.equalsIgnoreCase("Total")) && bDayVo.getName().equalsIgnoreCase(dataBuildTypeStr)){
+							
+							for (BirthDayDetailsVO subVo : bDayVo.getSubList()) {
+								if((subVo.getDesignation() != null && subVo.getDesignation().equalsIgnoreCase(memberTypeStr)) || (subVo.getPubRepDesignation() != null && subVo.getPubRepDesignation().equalsIgnoreCase(memberTypeStr))){
 									designationList.add(subVo);
-							}else if((subVo.getDesignation() != null && subVo.getDesignation().trim().contains(memberTypeStr.trim())) || (subVo.getPubRepDesignation() != null && subVo.getPubRepDesignation().trim().contains(memberTypeStr.trim()))){
-								designationList.add(subVo);
+								}
 							}
+							bDayVo.setSubList(designationList);
 						}
-						bDayVo.setSubList(designationList);
 					}
 				}
 			}
@@ -376,12 +380,12 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 			
 			
 			
-		} catch (Exception e) {
-			LOG.error("Exception raised in getLeaderOccasionDetails in BirthDayService service:-", e);
+			} catch (Exception e) {
+				LOG.error("Exception raised in getLeaderOccasionDetails in BirthDayService service:-", e);
+			}
+			return returnList;
 		}
 		
-		return returnList;
-	}
 
 public void setAddressForCadre(List<BirthDayDetailsVO> cadreList,List<Long> tdpCadreIdsList)
 {
