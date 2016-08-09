@@ -333,7 +333,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setId(jObj.getLong("alertId"));
 			inputVO.setDesc(jObj.getString("comments"));
 			inputVO.setStatusId(jObj.getLong("alertStatusId"));
-			inputVO.setTdpCadreId(jObj.getLong("tdpCadreId"));
+			
+			JSONArray arr = jObj.getJSONArray("tdpCadreId");
+			
+			List<IdNameVO>  assignCadreIds = new ArrayList<IdNameVO>();
+			for(int i=0;i<arr.length();i++)
+			{
+				IdNameVO vo = new IdNameVO();
+				vo.setId((Long.parseLong(arr.getString(i))));
+				assignCadreIds.add(vo);
+			}
+			inputVO.setAssignList(assignCadreIds);
+			//inputVO.setTdpCadreId(jObj.getLong("tdpCadreId"));
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			status = alertService.updateAlertStatus(regVo.getRegistrationID(),inputVO);
 		}
