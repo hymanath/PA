@@ -93,14 +93,14 @@ $(".dateRange").daterangepicker({
 });
 
 getBirthDayDetails("",memberTypeGlobal);
-function getBirthDayDetails(searchType,memberTypeGlobal){
+function getBirthDayDetails(searchType,memberTypeStr){
 	$("#birthDayDetailsImg").show();
 $("#birthDayHeadingId").html("");
 $("#birthdaysDataId").html("");
 		var jsObj ={
 			searchType:searchType,
 			occasionTypeId:1,
-			memberTypeGlobal:memberTypeGlobal
+			memberTypeGlobal:memberTypeStr
 		}
 		$.ajax({
 		type 		: 'GET',
@@ -109,7 +109,7 @@ $("#birthdaysDataId").html("");
 		data 		: {task:JSON.stringify(jsObj)}  
 		
 	}).done(function(result){
-		if(searchType=="" && memberTypeGlobal == 0){
+		if(searchType=="" && memberTypeStr == 0){
 			buildList(result);
 			todayGlobal = " Today ";
 		}
@@ -203,10 +203,10 @@ function buildList(result)
 					
 					str1+='<td class="text-center">';
 				if(result[j].subList[i].wished == true){
-					str1+='<button class="btn btn-success btnWished btnClick wishedCls" attr_id="'+result[j].subList[i].occasionId+'">Wished</button>';
+					str1+='<button class="btn btn-success btnWished btnClick wishedCls" id="btn'+result[j].subList[i].occasionId+'" attr_id="'+result[j].subList[i].occasionId+'">Wished</button>';
 				}
 				else {
-						str1+='<button class="btn btn-success btnNotWished btnClick wishedCls" attr_id="'+result[j].subList[i].occasionId+'">Not Wished</button>';
+					str1+='<button class="btn btn-success btnNotWished btnClick wishedCls" id="btn'+result[j].subList[i].occasionId+'" attr_id="'+result[j].subList[i].occasionId+'">Not Wished</button>';
 				}
 					str1+='</td>';
 				str1+='</tr>';
@@ -233,7 +233,7 @@ var past = null;
 $(document).on("click",".allDaysCls",function(){
 disableBtns();
    $("#birthdaysBlockId").html('');
-   getBirthDayDetails($(this).attr("attr_name"),memberTypeGlobal);
+   getBirthDayDetails($(this).attr("attr_name"),0);
    todayGlobal = $(this).attr("attr_name");
    if(past == null)
    {
@@ -308,10 +308,10 @@ function buildAllMemberBdayDetails(result1,searchType){
 					 }
 					str+='<td class="text-center">';
 					if(result.subList[i].wished == true){
-						str+='<button class="btn btn-success btnWished btnClick wishedCls" attr_id="'+result.subList[i].occasionId+'">Wished</button>';
+						str+='<button class="btn btn-success btnWished btnClick wishedCls" id="btn'+result.subList[i].occasionId+'" attr_id="'+result.subList[i].occasionId+'">Wished</button>';
 					}
 					else {
-						str+='<button class="btn btn-success btnNotWished btnClick wishedCls" attr_id="'+result.subList[i].occasionId+'">Not Wished</button>';
+						str+='<button class="btn btn-success btnNotWished btnClick wishedCls" id="btn'+result.subList[i].occasionId+'" attr_id="'+result.subList[i].occasionId+'">Not Wished</button>';
 					}
 					str+='</td>';
 				str+='</tr>';
@@ -344,14 +344,10 @@ $("#birthDayDetailsImg").hide();
 
 }
 $(document).on("click",".btnClick",function(){
-	$(this).toggleClass("btnNotWished").toggleClass("btnWished")
+	
+	var id = $(this).attr("id");
 	var btnText = $(this).html();
-	if(btnText == 'Not Wished')
-	{
-		$(this).html("Wished")
-	}else{
-		$(this).html("Not Wished")
-	}
+	
 	var searchId = $(this).attr("attr_id"); 
 	var jsObj={
 			 searchId:searchId
@@ -363,10 +359,19 @@ $(document).on("click",".btnClick",function(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result=="success"){
-				str+='<center>Wished successfully....</center>';
+				$("#"+id).toggleClass("btnNotWished").toggleClass("btnWished");
+				if(btnText == 'Not Wished'){
+					$("#"+id).html("Wished");
+					alert("Wished successfully....");
+				}else{
+					$("#"+id).html("Not Wished");
+					alert("Updated successfully....");
+				}
+				
+				
 			}
 			else{
-				str+='<center>Error Occured Try Again....</center>';
+				alert("Error Occured Try Again....");
 			}
    });	
 });
