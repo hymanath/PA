@@ -564,8 +564,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_status_id="statusSelectId'+i+'">UPDATE</button>';
 					str+='<div class="updateDropDown">';
 						str+='<div class="updateDropDownArrow">';
-						str+='<div class="text-success" id="successDivId'+i+'"></div>';
-						str+='<div id="popUpErrorId" style="color:red;"></div>';
+						str+='<div class="text-success updtCmmntErrrCls'+i+'" id="successDivId'+i+'"></div>';
 							str+='<label class="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
@@ -574,8 +573,8 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 							str+='</select>';
 							str+='<label class="m_top10">Comments</label>';
 							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
-							str+='<button class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
-							str+='<img src="images//icons//ajaxImg.gif" id="imgModelPopUpId" style="display:none;"></img>';
+							str+='<button id="commentStatusSubmitBtnId'+i+'" attr_current_position_id='+i+' class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
+							str+='<img src="images//icons//ajaxImg.gif" id="processingImgId'+i+'" style="display:none;"></img>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -654,6 +653,8 @@ function getApplicationStatus(divId){
 }
 
 $(document).on("click",".submitBtnCls",function(){
+    var btnId=$(this).attr('id');   
+	var position = $(this).attr("attr_current_position_id");
 	var postFinalId = $(this).attr("attr_final_id");
 	var statusId = $(this).attr("attr_status_id");
 	var commentId = $(this).attr("attr_comment_id");
@@ -664,29 +665,21 @@ $(document).on("click",".submitBtnCls",function(){
 	var status = $("#"+statusId).val();
 	var comment = $("#"+commentId).val();
 	
-	var statsIdElemt=$("#statusSelectId0").val();
-	var statscommentId=$("#commentAreaId0").val().trim();
-	
-	if(statsIdElemt == 0){
-		$("#popUpErrorId").html('Please select status');
+
+	 if(status == 0){
+		$(".updtCmmntErrrCls"+position).html('<span style="color:red">Please select status</span>');
 		return;
 	}else{
-		$("#popUpErrorId").html(' ');
+		$(".updtCmmntErrrCls"+position).html(' ');
 	}
-	if(statscommentId ==0 && statscommentId.length==0){
-		$("#popUpErrorId").html('Comment is required');
+	if(comment ==0 || comment.trim().length==0){
+		$(".updtCmmntErrrCls"+position).html('<span style="color:red">Comment is required</span>');
 		return;
 	}else{
-		$("#popUpErrorId").html(' ');
+		$(".updtCmmntErrrCls"+position).html(' ');
 	}
-	
-	  var errStr='';
-       if(errStr.length>0){
-         $("#popUpErrorId").html(errStr);
-            return;
-          }
-	
-       $("#imgModelPopUpId").show();
+     $("#processingImgId"+position).show();
+	 
 	var jsObj=
 	   {				
 		postFinalId:postFinalId,
@@ -701,17 +694,16 @@ $(document).on("click",".submitBtnCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   
-	   setTimeout(function() {
-			$("#imgModelPopUpId").hide();
-	      }, 750);	
+	    
+	     setTimeout(function() {
+			$("#processingImgId"+position).hide();
+	      }, 1000);	 
 	   if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...");
-	        $(".submitBtnCls").attr("disabled","disabled");
+	        $("#"+btnId).attr("disabled","disabled");
 	   }else{
 		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");
-		}
-			
+		}	
    });
 });
 
