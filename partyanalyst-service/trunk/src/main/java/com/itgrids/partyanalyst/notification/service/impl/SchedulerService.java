@@ -1069,6 +1069,7 @@ public class SchedulerService implements ISchedulerService{
 	public void prepareEmailIdAndDeptIdListMap(List<Object[]> listOfDeptPerEmailId, Map<Long,List<Long>> emailIdAndDeptIdListMap){
 		if(listOfDeptPerEmailId.size() > 0){
 			List<Long> deptIdList = null;
+			@SuppressWarnings("unused")
 			List<Long> tempDeptIdList = new ArrayList<Long>(0);
 			for(Object[] emailIdAndDeptId : listOfDeptPerEmailId){
 				Long emailId = (Long)emailIdAndDeptId[1];
@@ -1107,10 +1108,13 @@ public class SchedulerService implements ISchedulerService{
 			String dt = sdf1.format(new Date());  
 			//String dt1 = sdf2.format(new Date());
 			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			@SuppressWarnings("unused")
 			String folderCreation = commonMethodsUtilService.createFolder(staticPath);
 			staticPath = staticPath + "reports";
+			@SuppressWarnings("unused")
 			String folderCreation1 = commonMethodsUtilService.createFolder(staticPath);
 			staticPath = staticPath + "\\" + emailVo.getDate();
+			@SuppressWarnings("unused")
 			String folderCreation2 = commonMethodsUtilService.createFolder(staticPath);
 			
 			Date currentDate = dateUtilService.getCurrentDateAndTime();
@@ -1278,7 +1282,8 @@ public class SchedulerService implements ISchedulerService{
 		        totalMemberCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        totalMemberCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		        tbl.addCell(totalMemberCell);
-			 	int count = 0;
+			 	@SuppressWarnings("unused")
+				int count = 0;
 			 	for(Object[] deptmenWiseTotalAttendedEmployee : departmenWiseTotalAttendedEmployee){
 			 		count++;
 					if(((Long)departmentWiseTotalEmployee[0]).equals((Long)deptmenWiseTotalAttendedEmployee[0])){
