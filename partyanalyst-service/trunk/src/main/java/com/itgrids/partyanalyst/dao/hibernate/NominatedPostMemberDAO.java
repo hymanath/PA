@@ -183,4 +183,11 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		return query.list();
 	}
 	
+	public List<Object[]> getTotalBoardsAndCorpIdsByMembrIdsList (List<Long> memberIdsList){
+		Query query = getSession().createQuery("select distinct model.nominatedPostMemberId, model.nominatedPostPosition.departments.departmentId, " +
+				" model.nominatedPostPosition.departments.deptName,  model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
+				   " from NominatedPostMember model where model.isDeleted='N' and model.nominatedPostMemberId in (:memberIdsList)");
+		query.setParameterList("memberIdsList", memberIdsList);
+		return query.list();
+	}
 }
