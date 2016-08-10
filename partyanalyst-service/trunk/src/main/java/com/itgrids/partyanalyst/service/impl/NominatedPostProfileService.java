@@ -4706,7 +4706,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		    vo.setId(0l);
 		    vo.setName("Any Post");
 		    vo.setTotalApplicationReceivedCnt(0l);
-		    positionMap.put(Long.valueOf(String.valueOf(positionMap.size())), vo);
+		    positionMap.put(0L, vo);
 		  
 		 List<Object[]> rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
 		  if(rtrnObjLst != null && !rtrnObjLst.isEmpty() ){
