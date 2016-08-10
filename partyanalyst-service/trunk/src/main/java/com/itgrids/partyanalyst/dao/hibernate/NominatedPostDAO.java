@@ -963,8 +963,6 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 											" and model.isDeleted = 'N' and model.isExpired = 'N'");
 		return query.list();
 	}*/
-	
-	
 	public List<Long> getTotalDeptsCount(Long levelId){
 		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId   from NominatedPost model " +
 				" where model.isDeleted = 'N' and model.isExpired = 'N' and model.nominatedPostMember.boardLevelId =:levelId ");
@@ -996,4 +994,18 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		return query.list();
 	}
 	
+   public List<Object[]> getPositionByLevelId(Long boardLevelId){
+	    StringBuilder queryStr = new StringBuilder();
+	    queryStr.append("select distinct model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+		    		        " model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPost " +
+		    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");
+	    if(boardLevelId != null && boardLevelId.longValue()>0){
+	    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
+	    }
+	   Query query = getSession().createQuery(queryStr.toString());
+	   if(boardLevelId != null && boardLevelId.longValue()>0){
+		   query.setParameter("boardLevelId", boardLevelId);
+	   }
+	return query.list();   
+   }
 }

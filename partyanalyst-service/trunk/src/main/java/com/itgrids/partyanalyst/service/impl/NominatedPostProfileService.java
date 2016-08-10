@@ -4679,4 +4679,75 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		}
 		
 	}
+	 public List<NominatedPostVO> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+		      Long locationValue,Long searchLevelId){
+	  
+	   List<NominatedPostVO> resultList = new ArrayList<NominatedPostVO>(0);
+	   Map<Long,NominatedPostVO> positionMap = new HashMap<Long, NominatedPostVO>(0);
+	   try{
+		  List<Object[]> rtrnPstnObjLst = nominatedPostDAO.getPositionByLevelId(boardLevelId);
+		  if(rtrnPstnObjLst != null && !rtrnPstnObjLst.isEmpty()){
+			  for (Object[] param: rtrnPstnObjLst) {
+				NominatedPostVO vo = new NominatedPostVO();
+				Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
+				vo.setId(id);
+				vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				vo.setTotalApplicationReceivedCnt(0l);
+				vo.setPositionLinkedCnt(0l);
+				vo.setReadyToShortListedCnt(0l);
+				vo.setPstnLnkedAndRjctdCnt(0l);
+				vo.setPstnLnkedAndShrtLstdCnt(0l);
+				positionMap.put(id, vo);
+			}
+		  }
+		    NominatedPostVO vo = new NominatedPostVO();
+		    vo.setId(0l);
+		    vo.setName("Any Post");
+		    vo.setTotalApplicationReceivedCnt(0l);
+		    positionMap.put(0l, vo);
+		  
+		 List<Object[]> rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
+		  if(rtrnObjLst != null && !rtrnObjLst.isEmpty() ){
+			  for (Object[] param : rtrnObjLst) {
+				Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				Long count = commonMethodsUtilService.getLongValueForObject(param[1]);
+				if(pstnId == null){
+					NominatedPostVO anyPostVO = positionMap.get(0l);
+					anyPostVO.setTotalApplicationReceivedCnt(count);
+				}else{
+					  NominatedPostVO nominatedPostVO = positionMap.get(pstnId);	
+					 if(nominatedPostVO != null){
+						 nominatedPostVO.setTotalApplicationReceivedCnt(count);
+					 }
+				}
+			}
+		  }
+		  List<Object[]> rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
+		  if(rtrnLst != null && !rtrnLst.isEmpty()){
+			   for (Object[] param : rtrnLst) {
+					Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long statusId = commonMethodsUtilService.getLongValueForObject(param[1]);
+					Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 NominatedPostVO nominatedPostVO = positionMap.get(pstnId);	
+					 if(nominatedPostVO != null){
+						 nominatedPostVO.setPositionLinkedCnt(nominatedPostVO.getPositionLinkedCnt()+count);
+						 if(statusId != null && statusId.longValue()==1l){
+						  nominatedPostVO.setReadyToShortListedCnt(count); 
+						 }else if(statusId != null && statusId.longValue()==2l){
+						  nominatedPostVO.setPstnLnkedAndRjctdCnt(count);	 
+						 }else if(statusId != null && statusId.longValue()==3l){
+						  nominatedPostVO.setPstnLnkedAndShrtLstdCnt(count); 
+						 }
+					 }
+			}
+		   }
+		 if(positionMap != null && !positionMap.isEmpty()){
+			 resultList.addAll(positionMap.values());
+			 positionMap.clear();
+		 }
+	  }catch(Exception e){
+		  LOG.error("Exceptionr riased at getAnyDeptApplicationOverviewCountLocationWise in NominatedPostProfileService class", e); 
+	  }
+	  return resultList;
+  }
 }

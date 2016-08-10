@@ -60,4 +60,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getOpenPositionConstituenciesForDistrict(Long districtId,Long boardLevelId);
 	public List<LocationWiseBoothDetailsVO> getMandalMuncilIdsForConstituency(Long constituencyId,Long boardLevelId);
 	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId,Long boardLevelId);
+	
+	 public List<NominatedPostVO> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
+		      Long locationValue,Long searchLevelId);
 }
