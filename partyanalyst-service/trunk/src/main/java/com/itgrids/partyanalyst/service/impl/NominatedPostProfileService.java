@@ -4700,18 +4700,20 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				positionMap.put(id, vo);
 			}
 		  }
+		  
+		  //Default Any Post adding statically 
 		    NominatedPostVO vo = new NominatedPostVO();
 		    vo.setId(0l);
 		    vo.setName("Any Post");
 		    vo.setTotalApplicationReceivedCnt(0l);
-		    positionMap.put(0l, vo);
+		    positionMap.put(Long.valueOf(String.valueOf(positionMap.size())), vo);
 		  
 		 List<Object[]> rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
 		  if(rtrnObjLst != null && !rtrnObjLst.isEmpty() ){
 			  for (Object[] param : rtrnObjLst) {
 				Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				Long count = commonMethodsUtilService.getLongValueForObject(param[1]);
-				if(pstnId == null){
+				if(pstnId == null){ // any post
 					NominatedPostVO anyPostVO = positionMap.get(0l);
 					anyPostVO.setTotalApplicationReceivedCnt(count);
 				}else{
@@ -4722,10 +4724,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				}
 			}
 		  }
+		  
 		  List<Object[]> rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
 		  if(rtrnLst != null && !rtrnLst.isEmpty()){
 			   for (Object[] param : rtrnLst) {
-					Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);// memberid
 					Long statusId = commonMethodsUtilService.getLongValueForObject(param[1]);
 					Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
 					 NominatedPostVO nominatedPostVO = positionMap.get(pstnId);	

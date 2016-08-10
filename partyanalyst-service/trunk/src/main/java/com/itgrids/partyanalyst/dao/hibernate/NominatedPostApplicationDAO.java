@@ -1035,7 +1035,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		    str.append(" ,model.applicationStatus.applicationStatusId ");	
 		    }
 		    str.append(",count(distinct model.nominatedPostApplicationId) " +
-		        " FROM NominatedPostApplication model  left join model.position position " +
+		        " FROM NominatedPostApplication model  " +
+		        " left join model.position position " +
 		        " WHERE model.isDeleted='N' ");
 		    if(status!= null && status.equalsIgnoreCase("nominatedPostMemeber")){
 		    	str.append(" and model.nominatedPostMemberId is not null ");
@@ -1071,10 +1072,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		     }else{
 		    	 str.append(" or model.boardId is null "); 
 		     }
+		     
 		    str.append(" GROUP BY position.positionId ");
 		    
 		    if(status!= null && status.equalsIgnoreCase("nominatedPostMemeber")){
-          str.append(",model.applicationStatus.applicationStatusId");	
+          str.append(", model.applicationStatus.applicationStatusId");	
 		    }
 		    Query query = getSession().createQuery(str.toString());
 		    
