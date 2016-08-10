@@ -3372,6 +3372,8 @@
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 	<bean id="coreDashboardService1" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService1">
+	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+	    <property name="tdpCommitteeDAO"  ref="tdpCommitteeDAO"></property>
 	</bean>
 </beans>		
 	
