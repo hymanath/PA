@@ -1,13 +1,14 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class CommitteeDataVO implements Serializable{
 	
 	private Long completedCount = 0l;
 	private Long startedCount = 0l;
+	private Long notStartedCount =0l;
 	private Long totalCount = 0l;
 	
 	private Long id;
@@ -17,11 +18,12 @@ public class CommitteeDataVO implements Serializable{
 	private CommitteeDataVO affliatedVO; 
 	
 	private List<CommitteeDataVO> subList;
-	
+	private Map<Long,CommitteeDataVO> subMap;
 	
 	
 	private Double startedPerc = 0.0;
 	private Double completedPerc = 0.0;
+	private Double notStartedPerc = 0.0;
 	
 	public Long getCompletedCount() {
 		return completedCount;
@@ -82,6 +84,24 @@ public class CommitteeDataVO implements Serializable{
 	}
 	public void setCompletedPerc(Double completedPerc) {
 		this.completedPerc = completedPerc;
+	}
+	public Map<Long, CommitteeDataVO> getSubMap() {
+		return subMap;
+	}
+	public void setSubMap(Map<Long, CommitteeDataVO> subMap) {
+		this.subMap = subMap;
+	}
+	public Long getNotStartedCount() {
+		return notStartedCount;
+	}
+	public void setNotStartedCount(Long notStartedCount) {
+		this.notStartedCount = notStartedCount;
+	}
+	public Double getNotStartedPerc() {
+		return notStartedPerc;
+	}
+	public void setNotStartedPerc(Double notStartedPerc) {
+		this.notStartedPerc = notStartedPerc;
 	}
 	
 }

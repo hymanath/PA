@@ -1316,4 +1316,96 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
     
+    public List<Object[]> levelWiseBasicCommitteesCount(CommitteeInputVO committeeBO,String status){
+		StringBuilder str = new StringBuilder();
+        
+		str.append(" select model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel," +//1
+				   "        model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name," +//3
+				   "        model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpBasicCommittee.tdpCommitteeType.committeeType," +//5
+				   "        count(distinct model.tdpCommitteeId)" +//6
+				   " from   TdpCommittee model " +
+				  "  where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:tdpCommitteeLevelIds)  " );
+				
+		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size()>0){
+			str.append(" and model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+		}
+		
+		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+			if(committeeBO.getStateIds().contains(1l) && committeeBO.getStateIds().contains(36l)){
+				str.append(" and model.state in ('AP','TS') ");
+			}else if(committeeBO.getStateIds().contains(1l)){
+				str.append(" and model.state = 'AP' ");
+			}else if(committeeBO.getStateIds().contains(36l)){
+				str.append(" and model.state = 'TS' ");
+			}
+		}
+		
+		if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			str.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			str.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			str.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
+		}
+		
+		if( status != null && !status.isEmpty()){
+			
+			if(status.equalsIgnoreCase("started")){
+				str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' ");
+				if( committeeBO.getStartDate()!=null){
+					str.append( " and date(model.startedDate)>=:startDate " );
+				}
+				if(committeeBO.getEndDate()!=null){
+					str.append( " and date(model.startedDate)<=:endDate " );
+				}
+			}
+			else if(status.equalsIgnoreCase("completed")){
+				str.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+				if( committeeBO.getStartDate()!=null){
+					str.append( " and date(model.completedDate)>=:startDate " );
+				}
+				if(committeeBO.getEndDate()!=null){
+					str.append( " and date(model.completedDate)<=:endDate " );
+				}
+			}else if(status.equalsIgnoreCase("notStarted")){
+				str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			}
+		}
+		
+			
+		if(committeeBO.getState()!= null && !committeeBO.getState().isEmpty() ){
+			str.append(" and model.state =:state ");
+		}
+		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpBasicCommittee.tdpBasicCommitteeId " +
+				   " order by model.tdpBasicCommittee.tdpBasicCommitteeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size()>0){
+			query.setParameterList("basicCommitteeIds", committeeBO.getBasicCommitteeIds());
+		}
+		query.setParameterList("tdpCommitteeLevelIds",committeeBO.getTdpCommitteeLevelIds()); 
+		
+		if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getDistrictIds());
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getAssemblyConstIds());
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getTehsilIds());
+		}
+		
+		if(status != null && !status.isEmpty() && (status.equalsIgnoreCase("started") || status.equalsIgnoreCase("completed")) ){
+			if(committeeBO.getStartDate()!=null){
+				query.setDate("startDate",committeeBO.getStartDate());
+			}
+			if(committeeBO.getEndDate()!=null){
+				query.setDate("endDate",committeeBO.getEndDate());
+			}
+		}
+		if(committeeBO.getState()!= null && !committeeBO.getState().isEmpty() ){
+			query.setParameter("state",committeeBO.getState());
+		}
+		return query.list();
+	}
+    
 }
