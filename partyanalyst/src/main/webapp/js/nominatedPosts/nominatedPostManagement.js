@@ -537,7 +537,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 		str+='</table>';
 		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open" && globalStatus != "notRecieved")){
 			str+='<div class="pad_15">';
-				str+='<button class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >Ready For Final Review</button>';
+				str+='<button class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" disabled>Ready For Final Review</button>';
 				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 			str+='</div>';
 		}
@@ -643,6 +643,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 		$("#readyToFinalReviewDiv").modal('show');
 		
 		$("#modelErrId").html("");
+		$("#modelSuccessId").html("");
 		
 		$('.positionUpdateCls').each(function(){
 		if($(this).is(":checked")){
@@ -827,7 +828,7 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 		  }, 2000);
 	  }
 	  else if(result != null && result.resultCode==1){
-		  $("#modelSuccessId").html("Error Occured while moving this position to Final Review");
+		  $("#modelErrId").html("Error Occured while moving this position to Final Review");
 	  }
    });
 	
@@ -953,4 +954,9 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
 		var status = $(this).is(":checked");//get current status
 		$(".positionUpdateCls").prop("checked", false);//uncheck all
 		$(this).prop("checked", status);//change staus for clicked one
+		if($(".positionUpdateCls").is(":checked")){
+			$(".moveToFinalReviewCls").prop('disabled',false);
+		}else{
+			$(".moveToFinalReviewCls").prop('disabled',true);
+		}
 	});
