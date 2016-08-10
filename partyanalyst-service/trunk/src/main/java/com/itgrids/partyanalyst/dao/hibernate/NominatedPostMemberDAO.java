@@ -143,15 +143,21 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	 * Swadhin
 	 */
 	public List<Object[]> getPositionList(){
-		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.position.positionId, model.nominatedPostPosition.position.positionName" +
-											   " from NominatedPostMember model");
+		Query query = getSession().createQuery(" select distinct model.nominatedPostPosition.position.positionId, model.nominatedPostPosition.position.positionName" +
+											   " from NominatedPostMember model" +
+											   " where " +
+											   " model.isDeleted = 'N' and " +
+											   " model.nominatedPostPosition.isDeleted = 'N' ");  
 		return query.list();		
 	}
 	/*
 	 * Swadhin
 	 */
 	public List<Object[]> getLocationLevelList(){
-		Query query = getSession().createQuery("select distinct model.boardLevel.boardLevelId, model.boardLevel.level from NominatedPostMember model");
+		Query query = getSession().createQuery("select distinct model.boardLevel.boardLevelId, model.boardLevel.level " +
+											   " from NominatedPostMember model " +
+											   " where " +
+											   " model.isDeleted = 'N' ");
 		return query.list();
 	}
 	/*
@@ -159,7 +165,10 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	 */
 	public List<Object[]> getDepartmentList(){
 		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.departments.departmentId, model.nominatedPostPosition.departments.deptName " +
-											   " from NominatedPostMember model");
+											   " from NominatedPostMember model " +
+											   " where " +
+											   " model.isDeleted = 'N' and " +
+											   " model.nominatedPostPosition.isDeleted = 'N' ");
 		return query.list();
 	}
 	/*
@@ -167,7 +176,10 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	 */
 	public List<Object[]> getBoardList(){
 		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
-				   " from NominatedPostMember model");
+				   							   " from NominatedPostMember model " +
+				   							   " where " +
+				   							   " model.isDeleted = 'N' and " +
+				   							   " model.nominatedPostPosition.isDeleted = 'N' ");
 		return query.list();
 	}
 	

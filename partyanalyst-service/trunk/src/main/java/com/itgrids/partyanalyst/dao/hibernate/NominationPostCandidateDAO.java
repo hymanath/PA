@@ -81,7 +81,9 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 	 */
 	public List<Object[]> getCastGroupList(){
 		Query query = getSession().createQuery("select distinct model.casteState.casteCategoryGroup.casteCategory.casteCategoryId, model.casteState.casteCategoryGroup.casteCategory.categoryName" +
-				   " from NominationPostCandidate model");
+				   							   " from NominationPostCandidate model " +
+				   							   " where " +
+				   							   " model.isDeleted = 'N' ");
 		return query.list();
 	}
 	

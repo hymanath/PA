@@ -641,13 +641,19 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	            if(positionId != null && positionId.longValue() > 0){
 	            	
 				    	query.setParameter("positionId", positionId);
-				 }
+				 }  
 	   return query.list();
 	 
-}
+  }
+  	/*
+	 * Swadhin
+	 */
 	public List<Object[]> getApplicationStatusList(){
-		Query query = getSession().createQuery("select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status from NominatedPostFinal model");  
-		return query.list();
+		Query query = getSession().createQuery(" select distinct model.applicationStatus.applicationStatusId, model.applicationStatus.status " +
+											   " from NominatedPostFinal model" +
+											   " where " +
+											   " model.isDeleted = 'N' ");  
+		return query.list(); 
 	}
 	public List<Object[]> getPositionCountForGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId,String type){
 		 StringBuilder queryStr = new StringBuilder();
