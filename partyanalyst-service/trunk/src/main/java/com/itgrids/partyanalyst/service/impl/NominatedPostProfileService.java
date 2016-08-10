@@ -563,7 +563,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(nominatedPostCandidateIds)){
-				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(nominatedPostCandidateIds);
+				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(nominatedPostCandidateIds,departmentId,boardId);
 				if(commonMethodsUtilService.isListOrSetValid(totalDepartments)){
 					for (Object[] obj : totalDepartments) {
 						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -580,7 +580,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(nominatedPostCandidateIds)){
-				List<Long> otherDeptShortListed = nominatedPostFinalDAO.getAnyShortlistedDepartmentsForCandidateList(nominatedPostCandidateIds);
+				List<Long> otherDeptShortListed = nominatedPostFinalDAO.getAnyShortlistedDepartmentsForCandidateList(nominatedPostCandidateIds,departmentId,boardId);
 				if(commonMethodsUtilService.isListOrSetValid(otherDeptShortListed)){
 					for (Long id : otherDeptShortListed) {
 						deptShortListedMap.put(id, "YES");
@@ -3789,7 +3789,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(candidateIds)){
-				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(candidateIds);
+				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(candidateIds,departmentId,boardId);
 				if(commonMethodsUtilService.isListOrSetValid(totalDepartments)){
 					for (Object[] obj : totalDepartments) {
 						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -3806,7 +3806,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(candidateIds)){
-				List<Object[]> totalDepartments = nominatedPostFinalDAO.getShortlistedDepartmentsCountForCandidateList(candidateIds);
+				List<Object[]> totalDepartments = nominatedPostFinalDAO.getShortlistedDepartmentsCountForCandidateList(candidateIds,departmentId,boardId);
 				if(commonMethodsUtilService.isListOrSetValid(totalDepartments)){
 					for (Object[] obj : totalDepartments) {
 						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");

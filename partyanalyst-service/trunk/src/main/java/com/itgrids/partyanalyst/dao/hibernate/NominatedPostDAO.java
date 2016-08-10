@@ -71,7 +71,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Object[]> getTotalAvaiablePostDetails(Long boardLevelId,Date startDate,Date endDate,Long stateId,String statustype){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select '','', model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostMember.nominatedPostMemberId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
 		queryStr.append(" from NominatedPost model   " );
 		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
@@ -81,11 +81,12 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and " +
 			//	" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and  model.nominatedPostStatusId = 1 "); // for open status	
 				" model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and ");	// for total 
-		if(statustype != null && !statustype.trim().isEmpty() && statustype.trim().equalsIgnoreCase("Open"))
-			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and  model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N' and  model.nominatedPostStatusId = 1 "); // for open status	
-		else if(statustype != null && !statustype.trim().isEmpty() && statustype.trim().equalsIgnoreCase("Total"))
+		if(statustype != null && !statustype.trim().isEmpty() && statustype.trim().equalsIgnoreCase("Open")){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and  model.nominatedPostMember.isDeleted ='N' and " +
+					" model.isDeleted='N' and  model.nominatedPostStatusId = 1 "); // for open status	
+		}else if(statustype != null && !statustype.trim().isEmpty() && statustype.trim().equalsIgnoreCase("Total")){
 				queryStr.append(" model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and  model.nominatedPostMember.isDeleted ='N' and model.isDeleted='N'  "); // for open status	
-						
+		}
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() != 5L)
 				queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");
