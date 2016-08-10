@@ -2918,11 +2918,32 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
+			
+			Collections.sort(finalList,sortByName);
+			
+			//Any Board Scenario Of A department
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				for (IdNameVO obj : finalList) {					
+					List<IdNameVO> subList = obj.getIdnameList();											
+					IdNameVO VO = new IdNameVO();
+					VO.setId(null);
+					VO.setName("ANY CORPORATION / BOARD ");						
+					List<IdNameVO> list = new ArrayList<IdNameVO>();					
+					list.add(VO);
+					if(subList !=null){
+						list.addAll(subList);
+					}					
+					subList.clear();
+					subList.addAll(list);				
+				}
+			}
+			
 				
 		}catch (Exception e) {
 			LOG.error("Exceptionr riased at getAllDeptsAndBoardsByLevel", e);
 		}
-		Collections.sort(finalList,sortByName);
+		
 		return finalList;
 		}
 	public static Comparator<IdNameVO> sortByName = new Comparator<IdNameVO>()
@@ -3733,12 +3754,12 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						
 						
 						if(mandalList !=null && mandalList.size()>0){
-							List<NominatedPost> nominatedPostsList1 = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,5l,searchLevelValues);
+							List<NominatedPost> nominatedPostsList1 = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,5l,mandalList);
 							
 							nominatedPostsList.addAll(nominatedPostsList1); 
 							
 						}if(townList !=null && townList.size()>0){
-							List<NominatedPost> nominatedPostsList2 = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,6l,searchLevelValues);
+							List<NominatedPost> nominatedPostsList2 = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,6l,townList);
 							nominatedPostsList.addAll(nominatedPostsList2);
 						}
 						
@@ -3764,11 +3785,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					int count =0;
 					if(levelId.equals(5l)){
 						if(mandalList !=null && mandalList.size()>0){
-							int count1 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,5l,searchLevelValues,userId);
+							int count1 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,5l,mandalList,userId);
 							count = count+count1;
 						}
 						if(townList !=null && townList.size()>0){
-							int count2 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,6l,searchLevelValues,userId);
+							int count2 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,6l,townList,userId);
 							count=count+count2;
 						}
 					}else{
@@ -4680,7 +4701,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		
 	}
 	 public List<NominatedPostVO> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-		      Long locationValue,Long searchLevelId){
+		      List<Long> locationValue,Long searchLevelId){
 	  
 	   List<NominatedPostVO> resultList = new ArrayList<NominatedPostVO>(0);
 	   Map<Long,NominatedPostVO> positionMap = new HashMap<Long, NominatedPostVO>(0);
@@ -4708,7 +4729,53 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		    vo.setTotalApplicationReceivedCnt(0l);
 		    positionMap.put(0L, vo);
 		  
-		 List<Object[]> rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
+		    List<Object[]> rtrnObjLst = new ArrayList<Object[]>(0);
+		    
+		    //If Dept is Not NUll
+		    		    
+		    List<Long> mandalList = new ArrayList<Long>(0);
+	    	List<Long> townList = new ArrayList<Long>(0);
+	    	
+		    if(departmentId !=null && departmentId>0l){
+		    	
+		    	if(boardLevelId.equals(5l)){
+					
+					if(locationValue !=null && locationValue.size()>0){
+						for (Long manTowDivId : locationValue) {
+							
+							String mtdId = manTowDivId.toString();
+							char temp = mtdId.charAt(0);								
+							if(temp==4l){
+								mandalList.add(Long.parseLong(mtdId.substring(1)));									
+							}else if(temp==5l){
+								townList.add(Long.parseLong(mtdId.substring(1)));									
+							}					
+						}
+					}
+		    	
+		    	
+					if(commonMethodsUtilService.isListOrSetValid(mandalList)){
+						 List<Object[]> rtrnObjLst1 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 5l, mandalList, searchLevelId,"");
+						 if(commonMethodsUtilService.isListOrSetValid(rtrnObjLst1)){
+							 rtrnObjLst.addAll(rtrnObjLst1);
+						 }
+					}
+					if(commonMethodsUtilService.isListOrSetValid(townList)){
+						 List<Object[]> rtrnObjLst2 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 6l, townList, searchLevelId,"");
+						 if(commonMethodsUtilService.isListOrSetValid(rtrnObjLst2)){
+							 rtrnObjLst.addAll(rtrnObjLst2);
+						 }
+					}
+					
+		    	
+		    	}else{
+		    		rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
+		    	}
+		    	
+		    }else{
+		    	rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
+		    }
+		    			
 		  if(rtrnObjLst != null && !rtrnObjLst.isEmpty() ){
 			  for (Object[] param : rtrnObjLst) {
 				Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -4725,7 +4792,31 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			}
 		  }
 		  
-		  List<Object[]> rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
+		  
+		  
+		  
+		  List<Object[]> rtrnLst = new ArrayList<Object[]>(0);
+		  
+		  if(departmentId !=null && departmentId>0l){
+		    	
+		    	if(boardLevelId.equals(5l)){		    		
+		    		
+		    		if(commonMethodsUtilService.isListOrSetValid(mandalList)){
+		    			List<Object[]>	rtrnLst1 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 5l, mandalList, searchLevelId,"nominatedPostMemeber");
+		    			rtrnLst.addAll(rtrnLst1);
+		    		}		    		
+		    		if(commonMethodsUtilService.isListOrSetValid(townList)){		    			
+		    			List<Object[]> rtrnLst2 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 6l, townList, searchLevelId,"nominatedPostMemeber");
+		    			rtrnLst.addAll(rtrnLst2);
+		    		}
+		    	}else{
+		    		rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
+		    	}
+		    	
+		  }else{
+			  rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
+		  }
+ 
 		  if(rtrnLst != null && !rtrnLst.isEmpty()){
 			   for (Object[] param : rtrnLst) {
 					Long pstnId = commonMethodsUtilService.getLongValueForObject(param[0]);// memberid

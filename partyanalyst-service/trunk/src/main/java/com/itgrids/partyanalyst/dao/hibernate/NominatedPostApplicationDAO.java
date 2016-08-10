@@ -1027,7 +1027,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		return query.executeUpdate();
 	}
 	public List<Object[]> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-		      Long locationValue,Long searchLevelId,String status){
+		      List<Long> locationValue,Long searchLevelId,String status){
 		    
 		    StringBuilder str = new StringBuilder();
 		    str.append("SELECT position.positionId ");
@@ -1041,27 +1041,42 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		    if(status!= null && status.equalsIgnoreCase("nominatedPostMemeber")){
 		    	str.append(" and model.nominatedPostMemberId is not null ");
 		    }
-		    if(boardLevelId.longValue() !=5L)
-		      str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
-		    else 
-		      str.append(" and model.boardLevel.boardLevelId  in (5,6) ");
 		    
-		      if(searchLevelId != null && searchLevelId.longValue()>0L){
-		        if((searchLevelId.longValue() == 1L))
-		          str.append(" and model.address.country.countryId  = 1 ");
-		        else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.longValue()>0L)
-		          str.append(" and model.address.state.stateId  = :locationValue ");
-		        else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.longValue()>0L)
-		          str.append(" and model.address.district.districtId =:locationValue ");
-		        else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.longValue()>0L)
-		          str.append(" and model.address.constituency.constituencyId =:locationValue ");
-		        else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.longValue()>0L)
-		          str.append(" and model.address.tehsil.tehsilId =:locationValue ");
-		        else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.longValue()>0L)
-		          str.append(" and model.address.localElectionBody.localElectionBodyId =:locationValue ");
-		        else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.longValue()>0L)
-		          str.append(" and model.address.panchayatId =:locationValue ");
-		      }
+		    
+		    if(searchLevelId ==null || searchLevelId==0l){
+		    	
+		    	if(boardLevelId.longValue() >0)
+				      str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
+		    	
+		    	if(locationValue !=null && locationValue.size()>0){
+		    		str.append(" and model.locationValue in (:locationValue) ");
+		    	}		    	
+		    	
+		    }else{
+		    	
+		    	if(boardLevelId.longValue() !=5L)
+				      str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
+				    else 
+				      str.append(" and model.boardLevel.boardLevelId  in (5,6) ");
+		    	
+		    	if(searchLevelId != null && searchLevelId.longValue()>0L){
+			        if((searchLevelId.longValue() == 1L))
+			          str.append(" and model.address.country.countryId  = 1 ");
+			        else if((searchLevelId.longValue() == 2L) && locationValue != null && locationValue.size()>0)
+			          str.append(" and model.address.state.stateId  in (:locationValue) ");
+			        else if(searchLevelId.longValue() ==3L && locationValue != null && locationValue.size()>0)
+			          str.append(" and model.address.district.districtId in (:locationValue) ");
+			        else if(searchLevelId.longValue() ==4L  && locationValue != null && locationValue.size()>0)
+			          str.append(" and model.address.constituency.constituencyId in (:locationValue) ");
+			        else if(searchLevelId.longValue() ==5L  && locationValue != null && locationValue.size()>0)
+			          str.append(" and model.address.tehsil.tehsilId in (:locationValue) ");
+			        else if(searchLevelId.longValue() ==6L  && locationValue != null && locationValue.size()>0)
+			          str.append(" and model.address.localElectionBody.localElectionBodyId in (:locationValue) ");
+			        else if(searchLevelId.longValue() ==7L  && locationValue != null && locationValue.size()>0)
+			          str.append(" and model.address.panchayatId =:locationValue ");
+			      }
+		    }
+		    
 		     if(departmentId != null && departmentId.longValue() > 0L){
 		    	 str.append(" and model.departments.departmentId=:departmentId");
 		     }else{
@@ -1076,7 +1091,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		    str.append(" GROUP BY position.positionId ");
 		    
 		    if(status!= null && status.equalsIgnoreCase("nominatedPostMemeber")){
-          str.append(", model.applicationStatus.applicationStatusId");	
+		    	str.append(", model.applicationStatus.applicationStatusId");	
 		    }
 		    Query query = getSession().createQuery(str.toString());
 		    
@@ -1087,13 +1102,23 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
           if(boardId != null && boardId.longValue() > 0){
           	 query.setParameter("boardId", boardId);
 		    }
-		    if(boardLevelId.longValue() !=5L)
-		      query.setParameter("boardLevelId", boardLevelId);
-		    
-		    if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
-		      query.setParameter("locationValue", locationValue);
-		    
+          
+          if(searchLevelId ==null || searchLevelId==0l){
+        	  
+        	  if(boardLevelId !=null && boardLevelId>0l){
+        		  query.setParameter("boardLevelId", boardLevelId);
+        	  }
+        	  if(locationValue != null && locationValue.size() > 0){
+        		  query.setParameterList("locationValue", locationValue);
+        	  }
+        	  
+          }else{
+        	  if(boardLevelId.longValue() !=5L)
+    		      query.setParameter("boardLevelId", boardLevelId);
+        	  if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.size() > 0)
+    		      query.setParameterList("locationValue", locationValue);
+          }
+		   
 		    return query.list();
 		  }
-
 }
