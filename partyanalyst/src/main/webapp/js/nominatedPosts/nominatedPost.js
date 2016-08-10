@@ -1624,6 +1624,11 @@ function savingApplication(){
 			 
 	if(flag){
 		//$( "#addressCheckId" ).prop( "checked", false );
+		if($("#addressCheckId").is(":checked")){
+			$("#addressCheckId1").val(true);
+		}else{
+			$("#addressCheckId1").val(false);
+		}
 		$("#savingAjaxImg").css("display","block");	
 			YAHOO.util.Connect.setForm('submitApplication',true);
 			YAHOO.util.Connect.asyncRequest('POST','savingNominatedPostApplicationAction.action',uploadHandler);
