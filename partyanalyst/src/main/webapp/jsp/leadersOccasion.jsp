@@ -130,7 +130,15 @@ function buildList(result)
 				str+='<div class="abs">';
 					str+='<div>';
 						str+='<h3>'+result[i].name+'</h3>';
-						str+='<h1>'+result[i].wishCount+'/'+result[i].totalCount+'</h1>';
+						var idName = "";
+						if(result[i].name.trim() == "Last 7 Days"){
+							idName="l7DaysCntId"
+						}else if(result[i].name.trim() == "Last 30 Days"){
+							idName="l30DaysCntId"
+						}else{
+							idName=result[i].name.trim()+"CntId";
+						}
+						str+='<h1><span id="'+idName+'">'+result[i].wishCount+'</span>/'+result[i].totalCount+'</h1>';
 					str+='</div>';
 				str+='</div>';
 			str+='</li>';
@@ -201,12 +209,22 @@ function buildList(result)
 					 str1+='<td>'+result[j].subList[i].mobileNo+'</td>';
 				 }
 					
-					str1+='<td class="text-center">';
+				str1+='<td class="text-center">';
+				
+				var idName = "";
+				if(result[membersAvailableIndexNo].name.trim() == "Last 7 Days"){
+					idName="l7DaysCntId"
+				}else if(result[membersAvailableIndexNo].name.trim() == "Last 30 Days"){
+					idName="l30DaysCntId"
+				}else{
+					idName=result[membersAvailableIndexNo].name.trim()+"CntId";
+				}
+				
 				if(result[j].subList[i].wished == true){
-					str1+='<button class="btn btn-success btnWished btnClick wishedCls" id="btn'+result[j].subList[i].occasionId+'" attr_id="'+result[j].subList[i].occasionId+'">Wished</button>';
+					str1+='<button class="btn btn-success btnWished btnClick wishedCls" attr_upId="'+idName+'" id="btn'+result[j].subList[i].occasionId+'" attr_id="'+result[j].subList[i].occasionId+'">Wished</button>';
 				}
 				else {
-					str1+='<button class="btn btn-success btnNotWished btnClick wishedCls" id="btn'+result[j].subList[i].occasionId+'" attr_id="'+result[j].subList[i].occasionId+'">Not Wished</button>';
+					str1+='<button class="btn btn-success btnNotWished btnClick wishedCls" attr_upId="'+idName+'" id="btn'+result[j].subList[i].occasionId+'" attr_id="'+result[j].subList[i].occasionId+'">Not Wished</button>';
 				}
 					str1+='</td>';
 				str1+='</tr>';
@@ -234,7 +252,7 @@ $(document).on("click",".allDaysCls",function(){
 disableBtns();
    $("#birthdaysBlockId").html('');
    memberTypeGlobal=0;
-   getBirthDayDetails($(this).attr("attr_name"),0);
+   getBirthDayDetails($(this).attr("attr_name"),memberTypeGlobal);
    todayGlobal = $(this).attr("attr_name");
    if(past == null)
    {
@@ -250,10 +268,20 @@ disableBtns();
 function buildAllMemberBdayDetails(result1,searchType){
 	var str = '';
 	
+	var idName = "";
+	if(searchType.trim() == "Last 7 Days"){
+		idName="l7DaysCntId"
+	}else if(searchType.trim() == "Last 30 Days"){
+		idName="l30DaysCntId"
+	}else{
+		idName=searchType.trim()+"CntId";
+	}
+	
 	if(result1 != null && result1.length>0){
 		for(var j in result1){
 	
 		if(result1[j].name == searchType){
+			$("#"+idName).html(result1[j].wishCount);
 			if(result1[j].subList != null && result1[j].subList.length>0){
 			var result = result1[j];
 			if(result.subList != null && result.subList.length >0){
@@ -308,11 +336,12 @@ function buildAllMemberBdayDetails(result1,searchType){
 						 str+='<td>'+result.subList[i].mobileNo+'</td>';
 					 }
 					str+='<td class="text-center">';
+					
 					if(result.subList[i].wished == true){
-						str+='<button class="btn btn-success btnWished btnClick wishedCls" id="btn'+result.subList[i].occasionId+'" attr_id="'+result.subList[i].occasionId+'">Wished</button>';
+						str+='<button class="btn btn-success btnWished btnClick wishedCls" attr_upId="'+idName+'" id="btn'+result.subList[i].occasionId+'" attr_id="'+result.subList[i].occasionId+'">Wished</button>';
 					}
 					else {
-						str+='<button class="btn btn-success btnNotWished btnClick wishedCls" id="btn'+result.subList[i].occasionId+'" attr_id="'+result.subList[i].occasionId+'">Not Wished</button>';
+						str+='<button class="btn btn-success btnNotWished btnClick wishedCls" attr_upId="'+idName+'" id="btn'+result.subList[i].occasionId+'" attr_id="'+result.subList[i].occasionId+'">Not Wished</button>';
 					}
 					str+='</td>';
 				str+='</tr>';
@@ -348,8 +377,9 @@ $(document).on("click",".btnClick",function(){
 	
 	var id = $(this).attr("id");
 	var btnText = $(this).html();
-	
+	var upId = $(this).attr("attr_upId");
 	var searchId = $(this).attr("attr_id"); 
+	
 	var jsObj={
 			 searchId:searchId
 		}
@@ -363,9 +393,15 @@ $(document).on("click",".btnClick",function(){
 				$("#"+id).toggleClass("btnNotWished").toggleClass("btnWished");
 				if(btnText == 'Not Wished'){
 					$("#"+id).html("Wished");
+					var presentCount = parseInt($("#"+upId).html());
+					$("#"+upId).html(presentCount+1);
 					alert("Wished successfully....");
 				}else{
 					$("#"+id).html("Not Wished");
+					var presentCount = parseInt($("#"+upId).html());
+					if(presentCount > 0){
+						$("#"+upId).html(presentCount-1);
+					}
 					alert("Updated successfully....");
 				}
 				
