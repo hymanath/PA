@@ -745,7 +745,13 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			depts.add(dept);
 			boards.add(board);
 			
-			nominatePostList = nominatedPostProfileService.getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,statusType,task);
+			if(board !=null && board>0l){
+				nominatePostList = nominatedPostProfileService.getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,statusType,task);
+			}else{
+				nominatePostList = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(dept,0l,0l,levelId,levelValues,null);
+			}
+			
+			
 	}catch (Exception e) {
 		LOG.error("Exception Occured in getDepartmentWiseBoardAndPositionDetails() in NominatedPostProfileAction ",e);
 	}
@@ -1365,7 +1371,10 @@ public String execute()
 			Long boardLevlId = jObj.getLong("boardLevelId");
 			Long locationValue = jObj.getLong("locationValue");
 			Long searchLevelId = jObj.getLong("searchLevelId");
-              nominatedPostVOs = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(departmentId,boardId,positionId,boardLevlId,locationValue,searchLevelId);			
+			List<Long> locationValues= new ArrayList<Long>(0);
+			  locationValues.add(locationValue);
+			
+              nominatedPostVOs = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(departmentId,boardId,positionId,boardLevlId,locationValues,searchLevelId);			
 		}catch(Exception e){
 			LOG.error("Entered into getAnyDeptApplicationOverviewCountLocationWise Action",e);
 		}

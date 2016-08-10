@@ -254,7 +254,11 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
    }).done(function(result){
 	   $("#"+searchId).hide();
 	   if(result != null && result.length > 0){
-		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
+		   if(boards !=null && boards>0){
+			   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
+		   }else{
+			   buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId);
+		   }
 	   }
    });
 }
@@ -296,7 +300,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 										if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
 											str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										else
-											str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
+											//str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										if(result[i].idnameList[j].percentage != null && result[i].idnameList[j].percentage !="0.00" && 
 										 result[i].idnameList[j].percentage !="0")
 											str+='<span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
@@ -341,7 +345,15 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 	//var levelId = $(this).attr("attr_levelId");
 	//var levelValue = $(this).attr("attr_levelValue");
 	var deptId = $(this).attr("attr_deptId");
-	var boardId = $(this).attr("attr_boardId");
+	
+	var boardId=0;
+	var board = $(this).attr("attr_boardId");	
+	if(board == "null" || board == undefined || board ==""){
+		boardId = 0;
+	}else{
+		boardId = board;
+	}
+	
 	var bodyId = $(this).attr("attr_id"); 
 	var searchId = $(this).attr("attr_searchId"); 
 	var deptName = $(this).attr("attr_dept_name");
@@ -951,8 +963,13 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
    }).done(function(result){
 	   $("#"+searchId).hide();
 	   if(result != null && result.length > 0){
-		   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
+		   if(boards !=null && boards>0){
+			   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
+		   }else{
+			   buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId);
+		   }
 	   }
+	   
    });
 }
 	$(document).on("click",".positionUpdateCls",function(){
@@ -982,9 +999,12 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	}else if(districtId >0){
 		searchlevelId = 3;
 		searchlevelValue = districtId;
-	}else if(stateId >=0){
+	}else if(stateId >0){
 		searchlevelId = 2;
 		searchlevelValue = stateId;
+	}else if(stateId ==0){
+		searchlevelId = 1;
+		searchlevelValue = 1;
 	}
 		var jsObj={
 		departmentId:0,
@@ -1037,6 +1057,33 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	    str+='</tbody>';	 
 		str+='</table>';
 		$("#anyDeptCorTblId").html(str);
+}
+function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
+	var str='';
+	 str+='<table class="table table-bordered">';
+		  str+='<thead class="text-capital" style="background-color:#eee;">';// class="text-capital"
+		  str+='<th>Posts</th>';
+		  str+='<th>Total Applications Received</th>';
+		 // str+='<th>Reports Pending</th>';
+		  str+='<th>Position Linked</th>';
+		  str+='<th>Ready To Shortlist</th>';
+		  str+='<th>Position Linked & Rejected</th>';
+		  str+='<th>Position Linkedn & Shortlisted</th>';
+	      str+='</thead>';		  
+	  str+='<tbody>';
+		for(var i in result){
+				str+='<tr class="bg_ff">';
+				str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+				str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
+				str+='<td>'+result[i].positionLinkedCnt+'</td>';
+				str+='<td>'+result[i].readyToShortListedCnt+'</td>';
+				str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
+				str+='<td>'+result[i].pstnLnkedAndShrtLstdCnt+'</td>';
+				str+='</tr>';
+			 }
+	    str+='</tbody>';	 
+		str+='</table>';
+		$("#"+bodyId).html(str);
 }
 
 $(document).on("click",".anyDeptBrdCls",function(){
