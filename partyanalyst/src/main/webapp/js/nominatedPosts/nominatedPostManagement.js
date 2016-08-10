@@ -1024,7 +1024,10 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		for(var i in result){
 				str+='<tr class="bg_ff">';
 				str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
-				str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
+				if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0)
+					str+='<td class="anyDeptBrdCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" style="color:green;font-weight:bold;cursor:pointer;">'+result[i].totalApplicationReceivedCnt+'</td>';
+				else
+					str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
 				str+='<td>'+result[i].positionLinkedCnt+'</td>';
 				str+='<td>'+result[i].readyToShortListedCnt+'</td>';
 				str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
@@ -1035,3 +1038,43 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		str+='</table>';
 		$("#anyDeptCorTblId").html(str);
 }
+
+$(document).on("click",".anyDeptBrdCls",function(){
+	
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId = $("#stateId").val();;
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	var deptId = 0;
+	var boardId = 0;
+	var positionId = $(this).attr('attr_position_id');
+	var deptName ="";
+	var brdName = "";
+	var posName = $(this).attr("attr_position_name");
+	var levelTxt = globalLvlTxt;
+	
+	if(positionId == "null")
+		positionId = 0;
+	
+	var searchLevelValue = stateId;
+	if(stateId >= 0){
+		searchLevelValue = stateId;
+		searchLevelId=2;
+	}		
+	if(mandalTownDivId >0){
+		searchLevelValue = mandalTownDivId;
+		searchLevelId= 5;
+	}	
+	else if(constituencyId >0){
+		searchLevelValue = constituencyId;
+		searchLevelId=4;
+	}		
+	else if(districtId >0){
+		searchLevelValue = districtId;
+		searchLevelId=3;
+	}
+		
+	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
+});
