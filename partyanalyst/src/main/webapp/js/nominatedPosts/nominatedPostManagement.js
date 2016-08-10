@@ -878,7 +878,7 @@ $(document).on("click","#locationWiseDataId",function(){
 	}else{
 		getAllDeptsAndBoardsByLevel(globalLevelId,levelValuesArr);
 	}
-	
+	getAnyDeptApplicationOverviewCountLocationWise();
 	
 });
 
@@ -888,7 +888,6 @@ function getAllDeptsAndBoardsByLevelForAll(levelId,levelValues){
 	$("#departmentsBuildSearchId").show();
 	var searchlevelId = parseInt('{lId}');
 	var searchlevelValue = parseInt('{stId}');
-
 	var stateId = $("#stateId").val();
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
@@ -960,3 +959,73 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
 			$(".moveToFinalReviewCls").prop('disabled',true);
 		}
 	});
+function getAnyDeptApplicationOverviewCountLocationWise(){
+	$("#anyDeptCorTblId").html(" ");
+	var searchlevelId = parseInt('{lId}');
+	var searchlevelValue = parseInt('{stId}');
+	var stateId = $("#stateId").val();
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	if(mandalTownDivId >0){
+		searchlevelId = 5;
+		searchlevelValue = mandalTownDivId;
+	}else if(constituencyId >0){
+		searchlevelId = 4;
+		searchlevelValue = constituencyId;
+	}else if(districtId >0){
+		searchlevelId = 3;
+		searchlevelValue = districtId;
+	}else if(stateId >=0){
+		searchlevelId = 2;
+		searchlevelValue = stateId;
+	}
+		var jsObj={
+		departmentId:0,
+		boardId:0,
+		positionId:0,
+		boardLevelId:globalLevelId,
+		searchLevelId:searchlevelId,
+		locationValue:searchlevelValue
+	
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getAnyDeptApplicationOverviewCountLocationWiseAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	  if(result != null && result.length > 0){
+		  buildAnyPostPositionRslt(result);
+	  }else{
+		$("#anyDeptCorTblId").html("NO DATA AVAILABLE");  
+	  }
+   });  
+}
+   function buildAnyPostPositionRslt(result){
+	var str='';
+	 str+='<table class="table table-bordered">';
+		  str+='<thead class="text-capital" style="background-color:#eee;">';// class="text-capital"
+		  str+='<th>Posts</th>';
+		  str+='<th>Total Applications Received</th>';
+		 // str+='<th>Reports Pending</th>';
+		  str+='<th>Position Linked</th>';
+		  str+='<th>Ready To Shortlist</th>';
+		  str+='<th>Position Linked & Rejected</th>';
+		  str+='<th>Position Linkedn & Shortlisted</th>';
+	      str+='</thead>';		  
+	  str+='<tbody>';
+		for(var i in result){
+				str+='<tr class="bg_ff">';
+				str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+				str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
+				str+='<td>'+result[i].positionLinkedCnt+'</td>';
+				str+='<td>'+result[i].readyToShortListedCnt+'</td>';
+				str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
+				str+='<td>'+result[i].pstnLnkedAndShrtLstdCnt+'</td>';
+				str+='</tr>';
+			 }
+	    str+='</tbody>';	 
+		str+='</table>';
+		$("#anyDeptCorTblId").html(str);
+}

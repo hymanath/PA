@@ -38,54 +38,62 @@
 </head>
 <body>
 <div class="container">
-	<div class="row">
-		<div class="col-md-12 col-xs-12 col-sm-12">
-			<h3 class="text-capital headingColor"><span id="headinggId"></span><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon"></i></h3>
-			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
-					<div class="panel panel-default">
-						<div class="panel-heading" style="background:#fff;border:0px;">
-							<h4 class="panel-title">Select Location</h4>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-3 col-xs-12 col-sm-3" id="stateMainId" >
-									<label>State</label>
-									<select class="form-control" id="stateId">
-										<option value="0">All</option>
-										<option value="1">Andhara Pradesh</option>
-										<option value="36">Telangana</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="districtMainId">
-									<label>District</label>
-									<span id="districtIdImg"><img src="images/search.gif"/></span>
-									<select class="form-control" id="districtId">
-										<option value="0">Select District</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
-									<label>Constituency</label>
-									<span id="constituencyIdImg"><img src="images/search.gif"/></span>
-									<select class="form-control" id="constituencyId">
-										<option value="0">Select Constituency</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
-									<label>Mandal/Town/Division</label>
-										<span id="manTowDivIdImg"><img src="images/search.gif"/></span>
-									<select class="form-control" id="manTowDivId">
-										<option value="0">Select Mandal/Town/Division</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-xs-12 col-sm-3">						
-									<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
-								</div>
+    <div class="row">
+	 
+	  <div class="col-md-12 col-xs-12 col-sm-12">
+		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon"></i></h3>
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="background:#fff;border:0px;">
+						<h4 class="panel-title">Select Location</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-3 col-xs-12 col-sm-3" id="stateMainId" >
+								<label>State</label>
+								<select class="form-control" id="stateId">
+									<option value="0">All</option>
+									<option value="1">Andhara Pradesh</option>
+									<option value="36">Telangana</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="districtMainId">
+								<label>District</label>
+								<span id="districtIdImg"><img src="images/search.gif"/></span>
+								<select class="form-control" id="districtId">
+									<option value="0">Select District</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="constituencyMainId">
+								<label>Constituency</label>
+								<span id="constituencyIdImg"><img src="images/search.gif"/></span>
+								<select class="form-control" id="constituencyId">
+									<option value="0">Select Constituency</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="manTowDivMainId">
+								<label>Mandal/Town/Division</label>
+									<span id="manTowDivIdImg"><img src="images/search.gif"/></span>
+								<select class="form-control" id="manTowDivId">
+									<option value="0">Select Mandal/Town/Division</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3">						
+								<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<h3 class="text-capital headingColor"><span id="anyDeptHeadingId"></span></h3>
+		<div id="anyDeptCorTblId"></div>
+	  </div>
+	</div>
+	<div class="row m_top20">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<h3 class="text-capital headingColor"><span id="headinggId"></span></h3>
 			<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
 				<center><img src="images/Loading-data.gif" id="departmentsBuildSearchId" style="display:none;width:50px;height:50px;margin:auto;"/></center>
 				<div id="departmentsBuildId"></div>
@@ -145,6 +153,18 @@ $(document).ready(function() {
 	}	
 	$(".filterSection").hide();
 	setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 1000);
+	if(globalLevelId ==1){
+	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Central Level)");	
+	}else if(globalLevelId == 2){
+	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(State Level)");	
+	}else if(globalLevelId == 3){
+	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(District Level)");	
+	}else if(globalLevelId == 4){
+	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Assembly Level)");	
+	}else {
+	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Mandal/Muncipality/Corporation Level)");	
+	}
+	getAnyDeptApplicationOverviewCountLocationWise();
 });
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");

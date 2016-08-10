@@ -1356,4 +1356,19 @@ public String execute()
 		
 		return Action.SUCCESS;
 	}
+	public String getAnyDeptApplicationOverviewCountLocationWise(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("departmentId");
+			Long boardId = jObj.getLong("boardId");
+			Long positionId = jObj.getLong("positionId");
+			Long boardLevlId = jObj.getLong("boardLevelId");
+			Long locationValue = jObj.getLong("locationValue");
+			Long searchLevelId = jObj.getLong("searchLevelId");
+              nominatedPostVOs = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(departmentId,boardId,positionId,boardLevlId,locationValue,searchLevelId);			
+		}catch(Exception e){
+			LOG.error("Entered into getAnyDeptApplicationOverviewCountLocationWise Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
