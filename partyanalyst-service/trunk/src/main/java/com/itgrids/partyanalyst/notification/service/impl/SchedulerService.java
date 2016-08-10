@@ -1053,6 +1053,7 @@ public class SchedulerService implements ISchedulerService{
 													departmentWiseThenOfficeWiseTotalAttendedEmployee, 
 													officeWiseTotalNonAttendedEmployeeDetailsList,   
 													officeWiseTotalAttendedEmployeeDetailsList );
+				@SuppressWarnings("unused")
 				ResultStatus resultStatus = sendEmailWithPdfAttachment(area, emailVo);      
 				System.out.println("Hi");       
 			}
