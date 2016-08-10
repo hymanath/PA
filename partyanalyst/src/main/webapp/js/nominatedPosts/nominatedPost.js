@@ -1217,10 +1217,14 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
 		   $("#deptBoardId"+num).append('<option value="0">Any</option>');
-		for(var i in result){
-			$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		   if(searchLevelValue > 0 )
+				for(var i in result){
+					$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	  }
    }
+   else{
+		$("#deptBoardId"+num).append('<option value=" ">  </option>'); 
+	}
 	  $("#deptBoardId"+num).trigger("chosen:updated");
    });
   }  
@@ -1314,6 +1318,8 @@ $('.searchTypeCls').click(function(){
 		 for(var i in result){
 		   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		 }
+	   }else{
+		   $("#depmtsId"+num).append('<option value=" ">  </option>'); 
 	   }
 		  $("#depmtsId"+num).trigger("chosen:updated");
    });
