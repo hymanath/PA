@@ -19,7 +19,7 @@
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<ol class="breadcrumb">
             	<li><i class="glyphicon glyphicon-home"></i></li>
-                <li>Nominated Post Shortlisting</li>
+                <li>Nominated Posts Overview Details  </li>
             </ol>
         </div>
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
@@ -175,7 +175,21 @@
 							</c:choose>
 						}
 						else{
-							str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+							
+							<!--str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';-->
+							
+							<c:choose>
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
+								if(result[i].totalPositions > 0)
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:green;font-weight:bold;"><u>'+result[i].totalPositions+'</u></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+								else
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+								</c:when>
+								<c:otherwise>
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3>';
+								</c:otherwise>
+							</c:choose>
+							
 						}
 					}
 					else{
@@ -233,6 +247,8 @@ $(document).on("click",".yetToStartCls",function(){
 		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notYet&levelTxt='+levelTxt+'','_blank');
 	else if(status == "RUNNING")
 		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running&levelTxt='+levelTxt+'','_blank');	
+	else if(status == "APPLICATIONS NOT RECIEVED")
+		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notRecieved&levelTxt='+levelTxt+'','_blank');	
 });
 
 $(document).on("click",".finalReviewCls",function(){
@@ -274,7 +290,7 @@ $(document).on("click",".stateCls",function(){
 		//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 });
 $('document').ready(function(){
-	getNominatdPostsOverview("centralWiseOverviewId",1,"central");
+	//getNominatdPostsOverview("centralWiseOverviewId",1,"central");
 	getNominatdPostsOverview("stateWiseOverviewId",2,"state");
 	getNominatdPostsOverview("districtWiseOverviewId",3,"district");
 	getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
