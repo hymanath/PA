@@ -1129,6 +1129,7 @@ public interface IConstants {
 	public static final Long VILLAGE_LEVEl_ID  = 8l; 
 	public static final Long WARD_LEVEl_ID     = 9l;
 	
+	public static final Long[] STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {10l,11l ,5l,7l,9l, 6l,8l};
 	public static final Long[] DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {11l ,5l,7l,9l, 6l,8l}; 
 	public static final Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
 	public static final Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
