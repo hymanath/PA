@@ -3710,7 +3710,42 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		try {
 			String statusStr = (String)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
-					List<NominatedPost> nominatedPostsList = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,levelId,searchLevelValues);
+					
+					List<Long> mandalList = new ArrayList<Long>();
+					List<Long> townList = new ArrayList<Long>();
+					
+					List<NominatedPost> nominatedPostsList = new ArrayList<NominatedPost>(0);
+					
+					if(levelId.equals(5l)){
+						
+						if(searchLevelValues !=null && searchLevelValues.size()>0){
+							for (Long manTowDivId : searchLevelValues) {
+								
+								String mtdId = manTowDivId.toString();
+								char temp = mtdId.charAt(0);								
+								if(temp==4l){
+									mandalList.add(Long.parseLong(mtdId.substring(1)));									
+								}else if(temp==5l){
+									townList.add(Long.parseLong(mtdId.substring(1)));									
+								}					
+							}
+						}
+						
+						
+						if(mandalList !=null && mandalList.size()>0){
+							List<NominatedPost> nominatedPostsList1 = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,5l,searchLevelValues);
+							
+							nominatedPostsList.addAll(nominatedPostsList1); 
+							
+						}if(townList !=null && townList.size()>0){
+							List<NominatedPost> nominatedPostsList2 = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,6l,searchLevelValues);
+							nominatedPostsList.addAll(nominatedPostsList2);
+						}
+						
+					}else{
+						 nominatedPostsList = nominatedPostDAO.getNominatedPostDetailsBySearchCriteria(deptId,boardId,positions,levelId,searchLevelValues);
+					}
+										
 					if(commonMethodsUtilService.isListOrSetValid(nominatedPostsList)){
 					
 						Long i=1l;
@@ -3726,8 +3761,19 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						//return "success";
 					}
 					
-					int count = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
-					
+					int count =0;
+					if(levelId.equals(5l)){
+						if(mandalList !=null && mandalList.size()>0){
+							int count1 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,5l,searchLevelValues,userId);
+							count = count+count1;
+						}
+						if(townList !=null && townList.size()>0){
+							int count2 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,6l,searchLevelValues,userId);
+							count=count+count2;
+						}
+					}else{
+						count = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
+					}
 					if(count>0){
 						return "success";
 					}
