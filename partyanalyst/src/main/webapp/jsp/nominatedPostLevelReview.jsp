@@ -290,7 +290,7 @@ $(document).on("click",".stateCls",function(){
 		//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 });
 $('document').ready(function(){
-	//getNominatdPostsOverview("centralWiseOverviewId",1,"central");
+	getNominatdPostsOverview("centralWiseOverviewId",1,"central");
 	getNominatdPostsOverview("stateWiseOverviewId",2,"state");
 	getNominatdPostsOverview("districtWiseOverviewId",3,"district");
 	getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
