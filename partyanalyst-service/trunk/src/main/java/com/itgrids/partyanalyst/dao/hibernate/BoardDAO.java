@@ -16,7 +16,8 @@ public class BoardDAO extends GenericDaoHibernate<Board, Long> implements IBoard
 	}
 
 	public List<Object[]> getBoardsByIdsList(List<Long> boadsIds){
-		Query query = getSession().createQuery(" select distinct model.boardId, model.boardName from Board model where  model.boardId in (:boadsIds) ");
+		Query query = getSession().createQuery(" select distinct model.boardId, model.boardName from Board model where  model.boardId in (:boadsIds) " +
+				" order by model.boardName ");
 		query.setParameterList("boadsIds", boadsIds);
 		return query.list();
 	}
