@@ -148,38 +148,64 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds){
-		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId," +
-												" count(distinct model.departments.departmentId)" +
-												" from NominatedPostApplication model" +
-												" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
-												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
-												" group by model.nominationPostCandidate.nominationPostCandidateId");
+	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.nominationPostCandidateId," +
+					" count(distinct model.departments.departmentId)" +
+					" from NominatedPostApplication model" +
+					" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
+					" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
+		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");
+		sb.append(" group by model.nominationPostCandidate.nominationPostCandidateId");
+		
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+			query.setParameter("deptId", deptId);
+			query.setParameter("boardId", boardId);
+		}
 		
 		return query.list();
 	}
 	
-	public List<Long> getAnyShortlistedDepartmentsForCandidateList(Set<Long> nominatedPostCandidateIds){
-		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId" +
-												" from NominatedPostApplication model" +
-												" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
-												" and model.applicationStatus.applicationStatusId = 3" +
-												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
+	public List<Long> getAnyShortlistedDepartmentsForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.nominationPostCandidateId" +
+						" from NominatedPostApplication model" +
+						" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
+						" and model.applicationStatus.applicationStatusId = 3" +
+						" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
+		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");
+		
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+			query.setParameter("deptId", deptId);
+			query.setParameter("boardId", boardId);
+		}
 		
 		return query.list();
 	}
 	
-	public List<Object[]> getShortlistedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds){
-		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId," +
-												" count(distinct model.departments.departmentId)" +
-												" from NominatedPostApplication model" +
-												" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
-												" and model.applicationStatus.applicationStatusId = 3" +
-												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
-												" group by model.nominationPostCandidate.nominationPostCandidateId");
+	public List<Object[]> getShortlistedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.nominationPostCandidate.nominationPostCandidateId," +
+						" count(distinct model.departments.departmentId)" +
+						" from NominatedPostApplication model" +
+						" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
+						" and model.applicationStatus.applicationStatusId = 3" +
+						" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
+		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");
+		sb.append(" group by model.nominationPostCandidate.nominationPostCandidateId");
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
+		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+			query.setParameter("deptId", deptId);
+			query.setParameter("boardId", boardId);
+		}
 		
 		return query.list();
 	}
