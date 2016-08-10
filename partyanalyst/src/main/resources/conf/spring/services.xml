@@ -3375,6 +3375,7 @@
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
 	    <property name="tdpCommitteeDAO"  ref="tdpCommitteeDAO"></property>
 	    <property name="tdpCommitteeLevelDAO"  ref="tdpCommitteeLevelDAO"></property>
+	    <property name="tdpBasicCommitteeDAO"  ref="tdpBasicCommitteeDAO"></property>
 	</bean>
 </beans>		
 	
