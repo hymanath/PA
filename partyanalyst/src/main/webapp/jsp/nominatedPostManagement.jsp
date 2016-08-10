@@ -107,6 +107,10 @@
 			
 			</div>
 			<div class="modal-footer">
+				<span class="pull-left" style="color:red;" id="modelErrId"></span>
+				<span class="pull-left" style="color:green;" id="modelSuccessId"></span>
+			
+				<span id="updateSearchId" style="display:none"><img src="images/search.gif"/></span>
 				<button type="button" class="btn btn-primary" id="readyToFinalRevewBtn"> Update </button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
