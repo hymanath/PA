@@ -55,48 +55,38 @@
 	</script>
 	
 <style class="text/css">
-.levelHolderClass h2
-{
-	margin-top:0px
-}
-header.eventsheader 
-{
-    background-image:url("dist/img/header-footer.png");
-	background-color:#fed501;
-	background-size:100% auto;
-	background-position:center bottom;
-	background-repeat: no-repeat;
-    background-origin: border-box;
-    background-repeat: no-repeat;
-    height: 71px;
-}
-footer
-{
-	position:relative;
-	left:0;
-	right:0;
-	bottom:0
-}
-
-#menu_multilevelpushmenu {
+	.levelHolderClass h2
+	{
+		margin-top:0px
+	}
+	header.eventsheader 
+	{
+		background-image:url("dist/img/header-footer.png");
+		background-color:#fed501;
+		background-size:100% auto;
+		background-position:center bottom;
+		background-repeat: no-repeat;
+		background-origin: border-box;
+		background-repeat: no-repeat;
+		height: 71px;
+	}
+	footer
+	{
+		position:relative;
+		left:0;
+		right:0;
+		bottom:0
+	}
+	#menu_multilevelpushmenu 
+	{	
      
       background-color: transparent;
       box-shadow: 0 0 10px #000;
 	  
     }
-	.line_heightDiv{
-		line-height:50px;
-	}
-	.birthdayCount
+	.line_heightDiv
 	{
-		background: #ffffff none repeat scroll 0 0;
-		border-radius: 8px;
-		color: #ff0000;
-		font-size: 9px;
-		left: 22px;
-		padding: 0 2px;
-		position: absolute;
-		top: -10px;
+		line-height:50px;
 	}
 </style>
 <decorator:head/>
@@ -140,7 +130,7 @@ footer
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'LEADER_OCCASIONS_ENTITLEMENT' )}">
 					<a href="birthDayAction.action" style="position:relative">
 						<span class="birthdayCount" > <b> ${sessionScope.birthDayCount} </b></span>
-						<img src="img/birthdayIcon.png" class="birthdaysIcon" style="width: 40px;height: 40px" title="Today BirthDay Count"/>
+						<img src="img/birthdayIcon.png" class="birthdaysIcon" title="Today BirthDay Count"/>
 						<!--<i class="fa fa-birthday-cake text-danger" style="font-size: 18px; margin-top: 10px;margin-left:10px;" title="Today Birthdays"></i>-->
 					</a>
 				</c:if>
