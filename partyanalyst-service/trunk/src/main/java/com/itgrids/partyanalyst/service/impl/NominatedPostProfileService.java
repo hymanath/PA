@@ -883,6 +883,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
 						
+						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -3365,6 +3366,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
 						
+						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
