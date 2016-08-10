@@ -992,10 +992,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(positions !=null && positions.size()>0){
 			queryStr.append(" AND model.positionId in (:positionIds) ");
 		}
-		if(levelId !=null && levelId>0 && levelId !=5l){
+		if(levelId !=null && levelId>0){
 			queryStr.append(" AND model.boardLevelId = :boardLevelId ");
-		}else{
-			queryStr.append(" AND model.boardLevelId in (5,6)");
 		}
 		if(searchLevelValues !=null && searchLevelValues.size()>0){
 			queryStr.append(" AND model.locationValue in (:locationValue) ");
@@ -1013,7 +1011,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(positions !=null && positions.size()>0){
 			query.setParameterList("positionIds",positions);
 		}
-		if(levelId !=null && levelId>0 && levelId !=5l){
+		if(levelId !=null && levelId>0){
 			query.setParameter("boardLevelId",levelId);
 		}
 		if(searchLevelValues !=null && searchLevelValues.size()>0){

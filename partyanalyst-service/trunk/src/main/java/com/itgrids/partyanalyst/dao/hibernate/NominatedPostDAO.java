@@ -351,10 +351,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				"  model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and  " +
 				"  model.nominatedPostMember.nominatedPostPosition.positionId in  (:positionIds) ");
 		if(boardLevelId != null && boardLevelId.longValue() >0L){
-			if(boardLevelId.longValue() !=5L)
+			//if(boardLevelId.longValue() !=5L)
 				queryStr.append(" and model.nominatedPostMember.boardLevelId=:boardLevelId ");
-			else
-				queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+			//else
+			//	queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
 		}
 		/*if(searchLevelId != null && searchLevelId.longValue()>0L){
 			if(searchLevelId.longValue() == 1L || searchLevelId.longValue() == 2L)
@@ -380,7 +380,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		query.setParameter("departmentId", departmentId);
 		query.setParameter("boardId", boardId);
 		query.setParameterList("positionIds", positionIds);
-		if(boardLevelId.longValue() !=5L)
+		if(boardLevelId != null && boardLevelId.longValue() >0L)
 			query.setParameter("boardLevelId", boardLevelId);
 		if(searchLevelValue !=null && searchLevelValue.size()>0){
 			query.setParameterList("searchLevelValue", searchLevelValue);
