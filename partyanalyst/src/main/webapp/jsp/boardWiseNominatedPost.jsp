@@ -199,7 +199,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
 					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
 				if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
-					str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle" alt="Profile"/></div>';
+					str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
 				else
 					str+='<i class="glyphicon glyphicon-user"></i> ';				
 					str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div></a>';
@@ -368,6 +368,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 	tableResponsive();
 }
 
+function setDefaultImage(img){
+    img.src = "images/User.png";
+}
+   
 $(document).on('click','.closeDivCls',function(){
 	var divId = $(this).attr("id");
 	$("#"+divId).hide();
@@ -414,9 +418,12 @@ function buildReferenceCandidateDetails(result){
 		str+='<tbody>';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td><i class="glyphicon glyphicon-user"></i></td>';
+				//str+='<td><i class="glyphicon glyphicon-user"> </i></td>';
+				str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].id+'" >';
+				str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result[i].status+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
+				str+='</a></td>';
 				if(result[i].name != null)
-					str+='<td>'+result[i].name+'</td>';
+					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].id+'" >'+result[i].name+'</a></td>';
 				else
 					str+='<td> - </td>';
 				if(result[i].percentage != null)
@@ -431,12 +438,12 @@ function buildReferenceCandidateDetails(result){
 				if(result[i].publicRepr != null )
 					str+='<p>'+result[i].publicRepr+'</p>';
 				else
-					str+='<p> - </p>';
+					str+='<p>  </p>';
 				
 				if(result[i].partyPos != null)
 					str+='<p>'+result[i].partyPos+'</p>';
 				else
-					str+='<p> - </p>';
+					str+='<p>  </p>';
 				str+='</td>';
 			str+='</tr>';
 		}
