@@ -598,7 +598,13 @@ $(document).on("click","#shortListPositinId",function(){
 	var brdName = $(this).attr("attr_board_name");
 	var posName = $(this).attr("attr_position_name");
 	var levelTxt = globalLvlTxt;
-
+	if(deptId == "null")
+		deptId = 0;
+	if(boardId == "null")
+		boardId = 0;
+	if(positionId == "null")
+		positionId = 0;
+	
 	var searchLevelValue = stateId;
 	if(stateId >= 0){
 		searchLevelValue = stateId;
