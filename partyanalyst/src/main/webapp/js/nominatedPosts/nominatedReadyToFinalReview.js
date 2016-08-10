@@ -510,12 +510,15 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 					//str+='<td> - </td>';
 					//str+='<td> - </td>';
 			}
-				str+='<td>'+result.subList[i].appliedDeptCount+'</td>';
+				if(result.subList[i].appliedDeptCount != null && result.subList[i].appliedDeptCount > 0)
+					str+='<td>'+result.subList[i].appliedDeptCount+'</td>';
+				else
+					str+='<td> NO </td>';
 				
-				if(result.subList[i].shortListedDeptCount!=null && result.subList[i].shortListedDeptCount.length>0){
+				if(result.subList[i].shortListedDeptCount!=null && result.subList[i].shortListedDeptCount > 0){
 					str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
 				}else{
-					str+='<td> - </td>'
+					str+='<td> NO </td>'
 				}
 				
 				//str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';

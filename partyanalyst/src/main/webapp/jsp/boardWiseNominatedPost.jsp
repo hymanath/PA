@@ -250,7 +250,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='</td>';
 				}
 				str+='<td style="position:relative" class="text-center">';
+				if(result.subList[i].otherDepartmentsCount != null && result.subList[i].otherDepartmentsCount > 0)
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" style="font-weight:bold;color:green;">'+result.subList[i].otherDepartmentsCount+'</span>';
+				else
+					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
 						str+='</div>';
