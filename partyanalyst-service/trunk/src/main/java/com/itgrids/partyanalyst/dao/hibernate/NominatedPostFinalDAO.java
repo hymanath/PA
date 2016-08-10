@@ -113,9 +113,24 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 						" and NPA.position.positionId = :positionId");
 		}
 		else if(type.equalsIgnoreCase("any")){
-			sb.append(" and (NPA.departments.departmentId is null" +
+			sb.append(" and");
+			if(departmentId != null && departmentId.longValue() > 0l)
+				sb.append(" NPA.departments.departmentId = :departmentId");
+			else
+				sb.append(" NPA.departments.departmentId is null");
+			sb.append(" and");
+			if(boardId != null && boardId.longValue() > 0l)
+				sb.append(" NPA.boardId = :boardId");
+			else
+				sb.append(" NPA.boardId is null");
+			sb.append(" and");
+			if(positionId != null && positionId.longValue() > 0l)
+				sb.append(" NPA.positionId = :positionId");
+			else
+				sb.append(" NPA.positionId is null");
+			/*sb.append(" and (NPA.departments.departmentId is null" +
 						" or NPA.boardId is null" +
-						" or NPA.positionId is null)");
+						" or NPA.positionId is null)");*/
 		}
 		sb.append(" and NPA.nominationPostCandidate.isDeleted = 'N'" +
 					" and NPA.isDeleted = 'N'");
@@ -126,11 +141,17 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if((searchLevelId.longValue() != 1L) && levelValue != null && levelValue.longValue() > 0l)
 				query.setParameter("levelValue", levelValue);
 		
-		if(type.equalsIgnoreCase("this")){
+		if(departmentId != null && departmentId.longValue() > 0l)
+			query.setParameter("departmentId", departmentId);
+		if(boardId != null && boardId.longValue() > 0l)
+			query.setParameter("boardId", boardId);
+		if(positionId != null && positionId.longValue() > 0l)
+			query.setParameter("positionId", positionId);
+		/*if(type.equalsIgnoreCase("this")){
 			query.setParameter("departmentId", departmentId);
 			query.setParameter("boardId", boardId);
 			query.setParameter("positionId", positionId);
-		}
+		}*/
 		
 		return query.list();
 	}
