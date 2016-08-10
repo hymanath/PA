@@ -139,11 +139,19 @@ $(document).on("click",".appliedCount",function(e){
 	var divId = $(this).attr("attr_divId");
 getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId);
 });
-
+var gblDeptId = '${deptId}';
+var gblBoardId = '${boardId}';
+var gblPositionId = '${positionId}';
 function getBoardWiseNominatedPostMemberDetails(){
 	
 		$('#resultDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset7" src="images/search.gif">');
-	
+		var type = 'this';
+		if(gblDeptId == 0)
+			type = 'any'
+		if(gblPositionId == 0)
+			type = 'any';
+	if(gblPositionId == 0)
+		type = 'any'
 	var jsObj=
 	   {				
 		levelId:parseInt('${lId}'),//levelId,
@@ -152,7 +160,7 @@ function getBoardWiseNominatedPostMemberDetails(){
 		departmentId:parseInt('${deptId}'),//departmentId,
 		boardId:parseInt('${boardId}'),//boardId,
 		positionId:parseInt('${positionId}'),//positionId,
-		type:"this"//type
+		type:type//type
 		}
     $.ajax({
           type:'GET',
