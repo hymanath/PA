@@ -81,6 +81,12 @@ public class NominatedPostVO implements Serializable{
 	public String addPincodeName;
 	private Long postTypeId;
 	private String isCheckedMigrateAddressField;
+	private Long totalApplicationReceivedCnt=0l;
+	private Long positionLinkedCnt=0l;
+	private Long readyToShortListedCnt=0l;
+	private Long pstnLnkedAndRjctdCnt = 0l;
+	private Long pstnLnkedAndShrtLstdCnt =0l;
+	
 	
 	public NominatedPostVO(){}
 	public NominatedPostVO(Long id, String name){this.id = id; this.name = name;}
@@ -451,8 +457,35 @@ public class NominatedPostVO implements Serializable{
 	public void setContains(String contains) {
 		this.contains = contains;
 	}
-	
-	
-	
+	public Long getTotalApplicationReceivedCnt() {
+		return totalApplicationReceivedCnt;
+	}
+	public void setTotalApplicationReceivedCnt(Long totalApplicationReceivedCnt) {
+		this.totalApplicationReceivedCnt = totalApplicationReceivedCnt;
+	}
+	public Long getPositionLinkedCnt() {
+		return positionLinkedCnt;
+	}
+	public void setPositionLinkedCnt(Long positionLinkedCnt) {
+		this.positionLinkedCnt = positionLinkedCnt;
+	}
+	public Long getReadyToShortListedCnt() {
+		return readyToShortListedCnt;
+	}
+	public void setReadyToShortListedCnt(Long readyToShortListedCnt) {
+		this.readyToShortListedCnt = readyToShortListedCnt;
+	}
+	public Long getPstnLnkedAndRjctdCnt() {
+		return pstnLnkedAndRjctdCnt;
+	}
+	public void setPstnLnkedAndRjctdCnt(Long pstnLnkedAndRjctdCnt) {
+		this.pstnLnkedAndRjctdCnt = pstnLnkedAndRjctdCnt;
+	}
+	public Long getPstnLnkedAndShrtLstdCnt() {
+		return pstnLnkedAndShrtLstdCnt;
+	}
+	public void setPstnLnkedAndShrtLstdCnt(Long pstnLnkedAndShrtLstdCnt) {
+		this.pstnLnkedAndShrtLstdCnt = pstnLnkedAndShrtLstdCnt;
+	}
 	
 }

@@ -37,4 +37,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Long> getTotalApplicationsDeptsCount(Long levelId);
 	public List<Object[]> getTotalApplicationsCorpsIdsCount(Long levelId);
 	public List<Object[]> getTotalCorpsIdsCount(Long levelId);
+	public List<Object[]> getPositionByLevelId(Long boardLevelId);
 }
