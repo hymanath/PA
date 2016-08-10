@@ -1038,7 +1038,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					
 					//Address Change Scenario
 					
-					if(nominatedCandiPostId !=null && nominatedCandiPostId.longValue()>0l && nominatedPostVO.getIsCheckedMigrateAddressField().equalsIgnoreCase("true")){						
+					if(nominatedCandiPostId !=null && nominatedCandiPostId.longValue()>0l && nominatedPostVO.getIsCheckedMigrateAddressField() != null && nominatedPostVO.getIsCheckedMigrateAddressField().equalsIgnoreCase("true")){						
 						NominationPostCandidate tc = nominationPostCandidateDAO.getUserAddressByCandidate(nominatedCandiPostId);//tdpCadreId						
 						//UserAddress UA = new UserAddress();					
 						UserAddress UA = null;					
