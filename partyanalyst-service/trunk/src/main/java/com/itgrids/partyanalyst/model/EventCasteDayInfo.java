@@ -81,7 +81,7 @@ public class EventCasteDayInfo extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_caste_info_id")
+	@JoinColumn(name = "event_caste_info_id",insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public EventCasteInfo getEventCasteInfo() {
