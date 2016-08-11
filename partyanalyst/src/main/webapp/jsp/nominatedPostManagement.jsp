@@ -41,7 +41,7 @@
     <div class="row">
 	 
 	  <div class="col-md-12 col-xs-12 col-sm-12">
-		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon"></i></h3>
+		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon" title="Select Locations" ></i></h3>
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
 				<div class="panel panel-default">
@@ -87,16 +87,33 @@
 				</div>
 			</div>
 		</div>
-		<h3 class="text-capital headingColor"><span id="anyDeptHeadingId"></span></h3>
-		<div id="anyDeptCorTblId"></div>
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="text-capital headingColor filterBtnCls">
+							<span id="anyDeptHeadingId"></span>
+							<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;"></i>
+						</h4>
+					</div>
+					<div class="panel-body">
+						<div id="anyDeptCorTblId" class=" filterSectionIconCls"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	  </div>
 	</div>
 	<div class="row m_top20">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-			<h3 class="text-capital headingColor"><span id="headinggId"></span></h3>
-			<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
-				<center><img src="images/Loading-data.gif" id="departmentsBuildSearchId" style="display:none;width:50px;height:50px;margin:auto;"/></center>
-				<div id="departmentsBuildId"></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title text-capital headingColor"><span id="headinggId"></span></h4>
+				</div>
+				<div class="panel-body">
+					<center><img src="images/Loading-data.gif" id="departmentsBuildSearchId" style="display:none;width:50px;height:50px;margin:auto;"/></center>
+				<div id="departmentsBuildId" class="col-md-12 col-xs-12 col-sm-12"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -152,6 +169,7 @@ $(document).ready(function() {
 		$("#manTowDivMainId").hide();
 	}	
 	$(".filterSection").hide();
+	$(".filterSectionIconCls").hide();
 	setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 1000);
 	if(globalLevelId ==1){
 	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Central Level)");	
@@ -168,8 +186,13 @@ $(document).ready(function() {
 });
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
+	$(".filterSectionIconCls").toggle("slow");
+	$(".filterSectionIconCls").hide();
 });
-
+$(document).on("click",".filterBtnCls",function(){
+	$(".filterSectionIconCls").toggle();
+	$(this).find("i").toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+});
 </script>
 </body>
 </html>
