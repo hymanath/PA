@@ -13351,5 +13351,10 @@
    			<param name="root">nominatedPostVOs</param>
    		</result>
 	</action>
+	<action name="getDistrictWiseCommitteesCountReportAction" class="coreDashboardAction" method="getDistrictWiseCommitteesCountReport">
+		<result type="json" name="success">
+   			<param name="root">CommitteeDataVOList</param>
+   		</result>
+	</action>
 </package>
 </struts>

@@ -287,6 +287,7 @@
 	function onLoadCalls(){
 		getCommitteesCumulativeBasicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
 		getLoggedInUserStructure();
+		getDistrictWiseCommitteesCountReport();
 	}
 	
 	$(document).ready(function(){
