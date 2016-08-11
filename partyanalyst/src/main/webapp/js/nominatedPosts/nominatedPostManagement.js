@@ -415,7 +415,14 @@ $(document).on("click","#headingOne00",function(){
 	//var levelId = $(this).attr("attr_levelId");
 	//var levelValue = $(this).attr("attr_levelValue");
 	var deptId = $(this).attr("attr_deptId");
-	var boardId = $(this).attr("attr_boardId");
+	
+	var boardId=0;
+	var board = $(this).attr("attr_boardId");	
+	if(board == "null" || board == undefined || board ==""){
+		boardId = 0;
+	}else{
+		boardId = board;
+	}	
 	var bodyId = $(this).attr("attr_id"); 
 	var searchId = $(this).attr("attr_searchId"); 
 	var deptName = $(this).attr("attr_dept_name");
