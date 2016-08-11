@@ -22,8 +22,11 @@ public class AlertDataVO {
 	private Long impactId;
 	private String mobileNo;
 	private List<AlertDataVO> subList = new ArrayList<AlertDataVO>();
-	
-	
+	private Long voterId;
+	private String committeeLocation;
+	private String committeePosition;
+	private String committeeName;
+	private String electionType;
 	
 	public String getMobileNo() {
 		return mobileNo;
@@ -132,6 +135,36 @@ public class AlertDataVO {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	public String getCommitteeLocation() {
+		return committeeLocation;
+	}
+	public void setCommitteeLocation(String committeeLocation) {
+		this.committeeLocation = committeeLocation;
+	}
+	public String getCommitteePosition() {
+		return committeePosition;
+	}
+	public void setCommitteePosition(String committeePosition) {
+		this.committeePosition = committeePosition;
+	}
+	public String getCommitteeName() {
+		return committeeName;
+	}
+	public void setCommitteeName(String committeeName) {
+		this.committeeName = committeeName;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
 	}
 	
 	

@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -57,6 +59,7 @@ import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -86,11 +89,31 @@ private DateUtilService dateUtilService = new DateUtilService();
 private IMemberTypeDAO memberTypeDAO;
 private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 private IAlertCommentAssigneeDAO alertCommentAssigneeDAO;
+private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+private ICadreCommitteeService cadreCommitteeService;
 
 
 
 
 
+
+public ICadreCommitteeService getCadreCommitteeService() {
+	return cadreCommitteeService;
+}
+
+public void setCadreCommitteeService(
+		ICadreCommitteeService cadreCommitteeService) {
+	this.cadreCommitteeService = cadreCommitteeService;
+}
+
+public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+	return tdpCommitteeMemberDAO;
+}
+
+public void setTdpCommitteeMemberDAO(
+		ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+	this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+}
 
 public IAlertCommentAssigneeDAO getAlertCommentAssigneeDAO() {
 	return alertCommentAssigneeDAO;
@@ -586,6 +609,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 List<Object[]> alertCandidates = alertCandidateDAO.getAlertCandidatesData(alertIds);
 					 setAlertCandidateData(alertCandidates,returnList);
 				 }
+				 
+				 
 			 }
 		}
 		catch(Exception e)
@@ -931,7 +956,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public void setAlertCandidateData(List<Object[]> list,List<AlertDataVO> dataList)
 
 	{
-		
+		List<Long> tdpCadreIdsList = new ArrayList<Long>();
 		if(dataList == null)
 			dataList = new ArrayList<AlertDataVO>();
 		if(list != null && list.size() > 0)
@@ -951,6 +976,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					candidateVO = new AlertDataVO();
 					alertVo.getSubList().add(candidateVO);
 				}
+				if(!tdpCadreIdsList.contains((Long)params[1]))
+					tdpCadreIdsList.add((Long)params[1]);
 				candidateVO.setId((Long)params[1]);
 				candidateVO.setName(params[2] != null ? params[2].toString() : "");
 				 LocationVO locationVO = new LocationVO();
@@ -975,8 +1002,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 candidateVO.setImpact(params[19] != null ? params[19].toString() : "");
 				 candidateVO.setImage(params[20] != null ? params[20].toString() : "");
 				 candidateVO.setMobileNo(params[21] != null ? params[21].toString() : "");
-				
+				 if(dataList != null && dataList.size() > 0)
+				 setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
 			}
+			
 		}
 		
 	}
@@ -1069,7 +1098,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	public void setAlertAssignedCandidateData(List<Object[]> list,List<AlertDataVO> dataList)
 
 	{
-		
+		List<Long> tdpCadreIdsList = new ArrayList<Long>();
 		if(dataList == null)
 			dataList = new ArrayList<AlertDataVO>();
 		if(list != null && list.size() > 0)
@@ -1089,6 +1118,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					candidateVO = new AlertDataVO();
 					alertVo.getSubList().add(candidateVO);
 				}
+				if(!tdpCadreIdsList.add((Long)params[1]));
+				tdpCadreIdsList.add((Long)params[1]);
 				candidateVO.setId((Long)params[1]);
 				candidateVO.setName(params[2] != null ? params[2].toString() : "");
 				 LocationVO locationVO = new LocationVO();
@@ -1114,6 +1145,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 candidateVO.setImage(params[18] != null ? params[18].toString() : "");
 				candidateVO.setMobileNo(params[19] != null ? params[19].toString() : "");
 			}
+			 if(dataList != null && dataList.size() > 0)
+			setCurrentDesignationForCadre(dataList.get(0).getSubList(), tdpCadreIdsList);
 		}
 		
 	}
@@ -1166,6 +1199,45 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return resultList;
 	}
 
+	
+	public void setCurrentDesignationForCadre(List<AlertDataVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
+		List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
+		
+		if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
+		{
+			for (Object[] tdpCadre : tdpCommitteeMemberList) 
+			{
+				Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
+				String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
+				String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
+				Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
+				Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
+				Long roleId = tdpCadre[5] != null ? Long.valueOf(String.valueOf(tdpCadre[5]).trim()):0L ;
+				AlertDataVO cadreVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(cadreCommitteeList,"id",id.toString());
+				if(cadreVO != null)
+				{
+					String location = null;
+					if(locationValue.longValue() > 0L){
+						//System.out.println("tdpCadreId :"+id+"  \t positionName  :"+positionName);
+						location = cadreCommitteeService.getLocationName(LocationTypeId,locationValue);
+						cadreVO.setCommitteeLocation(location);
+					    cadreVO.setCommitteePosition(positionName);
+					    cadreVO.setCommitteeName(committeeName);
+					    cadreVO.setElectionType(tdpCadre[6] != null ? tdpCadre[6].toString():"");
+					    if(cadreVO.getElectionType().trim().equalsIgnoreCase("Panchayat"))
+					    {
+					    	 cadreVO.setElectionType("Village/Ward ");
+					    }
+					    else if(cadreVO.getElectionType().trim().equalsIgnoreCase("Mandal"))
+					    {
+					    	 cadreVO.setElectionType("Mandal/Division/Town");
+					    }
+					    cadreVO.setVoterId(roleId);
+				    }
+			   }
+		    }
+		}
+	}
 	
 }
 
