@@ -556,6 +556,9 @@ label
 	background:#F5BA82;
 	padding-left:8px;
 	border-radius:0px;
+	border-top-color:#62B9A9;
+	border-right-color:#62B9A9;
+	border-bottom-color:#62B9A9
 }
 .panelCustom .panel-heading
 {
@@ -1321,11 +1324,34 @@ div.dataTables_wrapper div.clear
 	color:#fff;
 	margin-left:7px !important;
 	position:relative;
-	text-transform:uppercase;
 	font-size:16px;
 }
-.applicationsOverView .headingColor:before
+.applicationsOverView .stateColor:before
 {
+	width:8px;
+	height:100%;
+	background-color:#62B9A9;
+	display:block;
+	content:' ';
+	position:absolute;
+	left:-15px;
+	top:0px;
+}
+.applicationsOverView .districtColor:before
+{
+	
+	width:8px;
+	height:100%;
+	background-color:#C391CE;
+	display:block;
+	content:' ';
+	position:absolute;
+	left:-15px;
+	top:0px;
+}
+.applicationsOverView .consColor:before
+{
+	
 	width:8px;
 	height:100%;
 	background-color:#3788B3;
@@ -1335,3 +1361,26 @@ div.dataTables_wrapper div.clear
 	left:-15px;
 	top:0px;
 }
+.applicationsOverView .mandalColor:before
+{
+	width:8px;
+	height:100%;
+	background-color:#330099;
+	display:block;
+	content:' ';
+	position:absolute;
+	left:-15px;
+	top:0px;
+}
+.applicationsOverView .centralColor:before
+{
+	width:8px;
+	height:100%;
+	background-color:#4C657B;
+	display:block;
+	content:' ';
+	position:absolute;
+	left:-15px;
+	top:0px;
+}
+
