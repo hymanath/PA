@@ -172,15 +172,15 @@ $(document).ready(function() {
 	$(".filterSectionIconCls").hide();
 	setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 1000);
 	if(globalLevelId ==1){
-	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Central Level)");	
+	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (Central Level) </u> ");	
 	}else if(globalLevelId == 2){
-	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(State Level)");	
+	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (State Level) </u>");	
 	}else if(globalLevelId == 3){
-	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(District Level)");	
+	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (District Level) </u>");	
 	}else if(globalLevelId == 4){
-	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Assembly Level)");	
+	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (Assembly Level) </u>");	
 	}else {
-	$("#anyDeptHeadingId").html("Any Department - Any Corporation/Board(Mandal/Muncipality/Corporation Level)");	
+	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (Mandal/Muncipality/Corporation Level) </u>");	
 	}
 	getAnyDeptApplicationOverviewCountLocationWise();
 });
