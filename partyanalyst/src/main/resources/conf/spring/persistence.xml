@@ -940,6 +940,7 @@
 				    <value>com.itgrids.partyanalyst.model.NominatedPostFinal</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPostReferDetails</value>
 				    <value>com.itgrids.partyanalyst.model.GovtOrder</value>
+				    <value>com.itgrids.partyanalyst.model.GovtOrderDocuments</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPostGovtOrder</value>
 				    <value>com.itgrids.partyanalyst.model.NominatedPostStatus</value>
 				    <value>com.itgrids.partyanalyst.model.TdpCadreReportStatus</value>
