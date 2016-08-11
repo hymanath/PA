@@ -86,6 +86,8 @@ public class NominatedPostVO implements Serializable{
 	private Long readyToShortListedCnt=0l;
 	private Long pstnLnkedAndRjctdCnt = 0l;
 	private Long pstnLnkedAndShrtLstdCnt =0l;
+	private Long pstnLnkedAndFinalized =0l;
+	private Long pstnLnkedAndFinalReview =0l;
 	
 	
 	public NominatedPostVO(){}
@@ -486,6 +488,18 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setPstnLnkedAndShrtLstdCnt(Long pstnLnkedAndShrtLstdCnt) {
 		this.pstnLnkedAndShrtLstdCnt = pstnLnkedAndShrtLstdCnt;
+	}
+	public Long getPstnLnkedAndFinalized() {
+		return pstnLnkedAndFinalized;
+	}
+	public void setPstnLnkedAndFinalized(Long pstnLnkedAndFinalized) {
+		this.pstnLnkedAndFinalized = pstnLnkedAndFinalized;
+	}
+	public Long getPstnLnkedAndFinalReview() {
+		return pstnLnkedAndFinalReview;
+	}
+	public void setPstnLnkedAndFinalReview(Long pstnLnkedAndFinalReview) {
+		this.pstnLnkedAndFinalReview = pstnLnkedAndFinalReview;
 	}
 	
 }

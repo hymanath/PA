@@ -142,10 +142,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				"  model.isDeleted ='N'" );
 		
 		if(boardLevelId !=null && boardLevelId>0){
-			if(boardLevelId.longValue() !=5L)
+			//if(boardLevelId.longValue() !=5L)
 				str.append(" and model.boardLevelId =:boardLevelId ");
-			else
-				str.append(" and model.boardLevelId in (5,6) ");
+			//else
+				//str.append(" and model.boardLevelId in (5,6) ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and model.locationValue in (:levelValue) ");
@@ -169,7 +169,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
+		if(boardLevelId !=null && boardLevelId>0){
 			query.setParameter("boardLevelId", boardLevelId);
 		}
 		if(levelValue !=null && levelValue.size()>0){
@@ -208,10 +208,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" and nominatedPostPosition.isDeleted = 'N' ");
 		
 		if(boardLevelId !=null && boardLevelId>0){
-			if(boardLevelId.longValue() !=5L)
+			//if(boardLevelId.longValue() !=5L)
 				str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
-			else 
-				str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
+			//else 
+			//	str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
@@ -285,30 +285,28 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				"  and nominatedPostPosition.isDeleted = 'N' "  );
 		
 		if(boardLevelId !=null && boardLevelId>0l){
-			if(boardLevelId.longValue() !=5L)
+			//if(boardLevelId.longValue() !=5L)
 				str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
-			else
-				str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
+			//else
+			//	str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
 		}
 		
+		if(deptId !=null && deptId.size() >0){
+			str.append(" and nominatedPostPosition.departments.departmentId in (:deptId) ");
+		}
+		if(boardId !=null && boardId.size()>0){
+			str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
+		}
+		
 		// Any Dept && Board && post Scenarios Consideration && non Consideration
-		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
-			if(deptId !=null && deptId.size() >0){
-				str.append(" and nominatedPostPosition.departments.departmentId in (:deptId) ");
-			}
-			if(boardId !=null && boardId.size()>0){
-				str.append(" and nominatedPostPosition.board.boardId in (:boardId) ");
-			}
-			
+		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){						
 			str.append(" and  nominatedPostPosition.positionId is not null ");
 			
 		}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
-			str.append(" and (nominatedPostPosition.departmentId is null " +
-					" or nominatedPostPosition.boardId is null " +
-					" or  nominatedPostPosition.positionId is null) ");
+			str.append(" and  nominatedPostPosition.positionId is null) ");
 		}
 		
 		
@@ -322,19 +320,18 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
+		//if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
+		if(boardLevelId !=null && boardLevelId>0){
 			query.setParameter("boardLevelId", boardLevelId);
 		}
 		if(levelValue !=null && levelValue.size()>0){
 			query.setParameterList("levelValue", levelValue);
 		}
-		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
-			if(deptId !=null && deptId.size() >0){
-				query.setParameterList("deptId", deptId);
-			}
-			if(boardId !=null && boardId.size()>0){
-				query.setParameterList("boardId", boardId);
-			}
+		if(deptId !=null && deptId.size() >0){
+			query.setParameterList("deptId", deptId);
+		}
+		if(boardId !=null && boardId.size()>0){
+			query.setParameterList("boardId", boardId);
 		}
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
@@ -524,10 +521,15 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 					" and model.nominatedPostMember.isDeleted = 'N' " +
 					" and model.nominatedPostMember.nominatedPostPosition.isDeleted ='N'"  );
 			if(boardLevelId !=null && boardLevelId>0){
-				if(boardLevelId.longValue() !=5L)
+				if(levelValue == null){
+					if(boardLevelId.longValue() !=5L)
+						str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+					else
+						str.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+				}else{
 					str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
-				else
-					str.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+				}
+				
 			}
 			if(levelValue !=null && levelValue.size()>0){
 				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
@@ -558,8 +560,14 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			str.append(" order by model.nominatedPostMember.nominatedPostPosition.departments.deptName ");
 			Query query = getSession().createQuery(str.toString());
 			
-			if(boardLevelId !=null && boardLevelId>0 && boardLevelId.longValue() !=5L){
-				query.setParameter("boardLevelId", boardLevelId);
+			if(boardLevelId !=null && boardLevelId>0){
+				if(levelValue == null){
+					if(boardLevelId.longValue() !=5L){
+						query.setParameter("boardLevelId", boardLevelId);
+					}						
+				}else{
+						query.setParameter("boardLevelId", boardLevelId);
+				}
 			}
 			if(levelValue !=null && levelValue.size()>0){
 				query.setParameterList("levelValue", levelValue);

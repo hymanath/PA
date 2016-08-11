@@ -3169,6 +3169,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 				if(mandalList !=null && mandalList.size()>0){
 					
+				//getting status wise total positions
 					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(5l,mandalList,deptIds,boardIds,statusType);
 						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
@@ -3178,37 +3179,34 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 					
 					
-					//postionId,position,nomiatedPostStatusId,status,count
-					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(5l,mandalList,deptIds,boardIds,statusType,"post");
+				//Nomination Post Status Wise  details For Post and Any Post Related
 					
-					if(deptsObj !=null && deptsObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
-					}
+						//postionId,position,nomiatedPostStatusId,status,count
+						List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(5l,mandalList,deptIds,boardIds,statusType,"post");
+						
+						if(deptsObj !=null && deptsObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+						}
+													
+						List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(5l,mandalList,deptIds,boardIds,statusType,"anyPost");					
+						if(deptsAnyObj !=null && deptsAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
+						}
 					
-					//Any Positions Type
+				//Application Status Wise  details For Post and Any Post Related
 					
-					List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(5l,mandalList,deptIds,boardIds,statusType,"anyPost");
-					
-					if(deptsAnyObj !=null && deptsAnyObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
-					}
-					
-					
-					
-					
-					
-					//postionId,position,applicationStatusId,status,count
-					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(5l,mandalList,deptIds,boardIds,statusType,"post");
-					
-					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
-					}
-					
-					List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(5l,mandalList,deptIds,boardIds,statusType,"anyPost");
-					
-					if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
-					}
+						//postionId,position,applicationStatusId,status,count
+						List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(5l,mandalList,deptIds,boardIds,statusType,"post");
+						
+						if(applicationSttusObj !=null && applicationSttusObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
+						}
+						
+						List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(5l,mandalList,deptIds,boardIds,statusType,"anyPost");
+						
+						if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
+						}
 					
 					
 				}
@@ -4946,6 +4944,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						  nominatedPostVO.setPstnLnkedAndRjctdCnt(count);	 
 						 }else if(statusId != null && statusId.longValue()==3l){
 						  nominatedPostVO.setPstnLnkedAndShrtLstdCnt(count); 
+						 }else if(statusId != null && statusId.longValue()==5l){
+							  nominatedPostVO.setPstnLnkedAndFinalized(count); 
+						 }else if(statusId != null && statusId.longValue()==6l){
+							  nominatedPostVO.setPstnLnkedAndFinalReview(count); 
 						 }
 					 }
 			}
