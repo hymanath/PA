@@ -874,6 +874,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							nominatedPostFinal.setUpdatedBy(userId);
 							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							nominatedPostFinal.setIsDeleted("N");
+							
+							List<NominatedPost> nominatedPostObjList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
+							if(commonMethodsUtilService.isListOrSetValid(nominatedPostObjList))
+								nominatedPostFinal.setNominatedPostId(nominatedPostObjList.get(0).getNominatedPostId());
+							
 							nominatedPostFinal.setIsPrefered("N");
 							
 							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
