@@ -14935,7 +14935,8 @@ return mandalList;
 						returnList.add(vo);
 					}
 				}
-			 Collections.sort(returnList,new IdNameVO());
+			 if(returnList !=null)
+				 Collections.sort(returnList,new IdNameVO());
 		} catch (Exception e) {
 			LOG.error("Exception rised in getPartyEventGroups() while closing write operation",e);
 		}
