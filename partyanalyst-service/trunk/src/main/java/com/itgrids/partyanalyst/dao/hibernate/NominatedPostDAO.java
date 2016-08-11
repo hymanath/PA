@@ -134,39 +134,73 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" and nominatedPostPosition.isDeleted = 'N' " +
 				" and model1.isDeleted = 'N'" +
 				" and model1.nominationPostCandidate.isDeleted = 'N' " );*/
-		
-		str.append("SELECT model.position.positionId," +
-				" model.position.positionName " +
-				"	FROM NominatedPostApplication model" +
-				"   WHERE " +
-				"  model.isDeleted ='N'" );
-		
-		if(boardLevelId !=null && boardLevelId>0){
-			//if(boardLevelId.longValue() !=5L)
-				str.append(" and model.boardLevelId =:boardLevelId ");
-			//else
-				//str.append(" and model.boardLevelId in (5,6) ");
+		if(statusType != null && statusType.equalsIgnoreCase("notRecieved")){
+			str.append("SELECT model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+					" model.nominatedPostMember.nominatedPostPosition.position.positionName " +
+					"	, count(model.nominatedPostId) FROM NominatedPost model" +
+					"   WHERE " +
+					"  model.isDeleted ='N'" );
+			
+			if(boardLevelId !=null && boardLevelId>0){
+				//if(boardLevelId.longValue() !=5L)
+					str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+				//else
+					//str.append(" and model.boardLevelId in (5,6) ");
+			}
+			if(levelValue !=null && levelValue.size()>0){
+				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
+			}
+			if(deptId !=null && deptId.size() >0){
+				str.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptId) ");
+			}
+			if(boardId !=null && boardId.size()>0){
+				str.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId in (:boardId) ");
+			}
+			
+			str.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId is not null ");
+			str.append(" and model.nominatedPostStatusId = 1 ");
+			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId" +
+					"  ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+			
+		}else{
+			str.append("SELECT model.position.positionId," +
+					" model.position.positionName " +
+					"	FROM NominatedPostApplication model" +
+					"   WHERE " +
+					"  model.isDeleted ='N'" );
+			
+			if(boardLevelId !=null && boardLevelId>0){
+				//if(boardLevelId.longValue() !=5L)
+					str.append(" and model.boardLevelId =:boardLevelId ");
+				//else
+					//str.append(" and model.boardLevelId in (5,6) ");
+			}
+			if(levelValue !=null && levelValue.size()>0){
+				str.append(" and model.locationValue in (:levelValue) ");
+			}
+			if(deptId !=null && deptId.size() >0){
+				str.append(" and model.departments.departmentId in (:deptId) ");
+			}
+			if(boardId !=null && boardId.size()>0){
+				str.append(" and model.board.boardId in (:boardId) ");
+			}
+			
+			str.append(" and  model.positionId is not null ");
+			
+			/*if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+				str.append(" and model.applicationStatus.status = :notYet ");
+			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+				str.append(" and model.applicationStatus.applicationStatusId not in (:running) ");
+			}*/
+			
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+				str.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
+			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+				str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+			}
+			
+			str.append(" GROUP BY model.position.positionId ORDER BY model.position.positionId ");
 		}
-		if(levelValue !=null && levelValue.size()>0){
-			str.append(" and model.locationValue in (:levelValue) ");
-		}
-		if(deptId !=null && deptId.size() >0){
-			str.append(" and model.departments.departmentId in (:deptId) ");
-		}
-		if(boardId !=null && boardId.size()>0){
-			str.append(" and model.board.boardId in (:boardId) ");
-		}
-		
-		str.append(" and  model.positionId is not null ");
-		
-		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
-			str.append(" and model.applicationStatus.status = :notYet ");
-		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-			str.append(" and model.applicationStatus.applicationStatusId not in (:running) ");
-		}
-		
-		str.append(" GROUP BY model.position.positionId ORDER BY model.position.positionId ");
-		
 		Query query = getSession().createQuery(str.toString());
 		
 		if(boardLevelId !=null && boardLevelId>0){
@@ -182,12 +216,12 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			query.setParameterList("boardId", boardId);
 		}
 		
-		if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
+		/*if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
 		}else if(statusType !=null && (statusType.trim().equalsIgnoreCase("running"))){
-			query.setParameter("running",Long.valueOf(IConstants.NOMINATED_POST_NOT_RUNNING_STATUS));
+			query.setParameter("running",IConstants.NOMINATED_POST_NOT_RUNNING_STATUS);
 		}
-
+*/
 		return query.list();
 		
 	}
@@ -406,7 +440,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	}
 
 
-	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue){
+	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -418,13 +452,34 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    if(postType != null && postType.longValue() > 0)
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.postType.postTypeId=:postTypeId ");
 		    if(boardLevelId != null && boardLevelId.longValue() > 0){
+		    	
 		    	if(boardLevelId.longValue() !=5L)
 		    	 queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
 		    	else
 		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
-		    	if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
-				    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+		    	//if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+				//    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 		    }
+		    
+		    if(searchlevelId != null && searchlevelId.longValue()>0L){
+				if(searchlevelId.longValue() == 1L)
+					queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
+				else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+			}
+		    else
+		    	 queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+		    
 		    Query query = getSession().createQuery(queryStr.toString() +" order by model.nominatedPostMember.nominatedPostPosition.departments.deptName asc ");
 		    
 		    if(postType != null && postType.longValue() > 0L){
@@ -438,7 +493,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    
 		    return query.list();
 	   }
-	 public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue){
+	 public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue,Long searchlevelId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -455,9 +510,32 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    		queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
 		    	else
 		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,7)");
-		    	if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
-				    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+		    	//if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+				//    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 		    }
+		    
+		    if(searchlevelId != null && searchlevelId.longValue()>0L){
+				if(searchlevelId.longValue() == 1L)
+					queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
+				else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+				else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+			}
+		    else
+		    	 queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+		    
+		    
+		    
+		    
 		    Query query = getSession().createQuery(queryStr.toString()+" order by model.nominatedPostMember.nominatedPostPosition.board.boardName asc ");
 		    if(departmentId != null && departmentId.longValue() > 0L){
 		    	query.setParameter("departmentId", departmentId);
@@ -470,7 +548,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    
 		    return query.list();
 	   }
-	 public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue){
+	 public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long searchlevelId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -490,9 +568,31 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	        		   queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
 	        	   else
 	        		   queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
-	        	   if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
-					    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+	        	   //if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
+					//   queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 	  	      }
+	           
+	           if(searchlevelId != null && searchlevelId.longValue()>0L){
+					if(searchlevelId.longValue() == 1L)
+						queryStr.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
+					else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+						queryStr.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
+					else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+						queryStr.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+					else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+						queryStr.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+					else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+						queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+					else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+						queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+					else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+						queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+				}
+			    else
+			    	 queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
+	           
+	           
+	           
 			    Query query = getSession().createQuery(queryStr.toString()+" order by model.nominatedPostMember.nominatedPostPosition.position.positionName asc ");
 			    
 				 if(departmentId != null && departmentId.longValue()> 0L){

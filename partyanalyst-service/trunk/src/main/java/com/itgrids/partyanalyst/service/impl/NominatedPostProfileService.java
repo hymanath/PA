@@ -460,10 +460,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue){
+	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue,Long seachLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue);
+		List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue,seachLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -481,10 +481,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All DepartmentBoards From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue){
+	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue,Long seachLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue);
+		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue,seachLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -501,10 +501,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue){
+	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue,Long seachLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue);
+		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId);
 		if(commonMethodsUtilService.isListOrSetValid(list)){
 			String[] setterPropertiesList = {"id","name"};
 			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -3139,7 +3139,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> anyTypeListObj = new ArrayList<Object[]>();
 			anyTypeListObj.add(anyObj);
 			
-			finalMap = setDataToPostWiseDetailsMap(anyTypeListObj,finalMap);
+			finalMap = setDataToPostWiseDetailsMap(anyTypeListObj,finalMap,null);
 			
 			
 			List<Long> mandalList = new ArrayList<Long>(0);
@@ -3177,13 +3177,21 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				//getting status wise total positions
 					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(5l,mandalList,deptIds,boardIds,statusType);
-						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
+						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap,null);
 					}else{
 						List<Object[]> mandalObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(5l,mandalList,deptIds,boardIds,statusType);
-						finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap);
+						
+						if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
+							finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap,null);
+						}else{
+							finalMap = setDataToPostWiseDetailsMap(mandalObj,finalMap,"notRecieved");
+						}
+						
 					}
 					
 					
+					
+					if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
 				//Nomination Post Status Wise  details For Post and Any Post Related
 					
 						//postionId,position,nomiatedPostStatusId,status,count
@@ -3212,121 +3220,146 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
 							finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
 						}
-					
+					}
 					
 				}
 				if(townList !=null && townList.size()>0){
 					
 					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(6l,townList,deptIds,boardIds,statusType);
-						finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
+						finalMap = setDataToPostWiseDetailsMap(townObj,finalMap,null);
 					}else{
 						List<Object[]> townObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(6l,townList,deptIds,boardIds,statusType);
-						finalMap = setDataToPostWiseDetailsMap(townObj,finalMap);
+						
+						if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
+							finalMap = setDataToPostWiseDetailsMap(townObj,finalMap,null);
+						}else{
+							finalMap = setDataToPostWiseDetailsMap(townObj,finalMap,"notRecieved");
+						}
+						
+						
 					}
 					
-					//postionId,position,nomiatedPostStatusId,status,count
-					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds,statusType,"post");
-					
-					if(deptsObj !=null && deptsObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+					if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
+						//postionId,position,nomiatedPostStatusId,status,count
+						List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds,statusType,"post");
+						
+						if(deptsObj !=null && deptsObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+						}
+						
+						List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds,statusType,"anyPost");
+						
+						if(deptsAnyObj !=null && deptsAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
+						}
+						
+						//postionId,position,applicationStatusId,status,count
+						List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(6l,townList,deptIds,boardIds,statusType,"post");
+						
+						if(applicationSttusObj !=null && applicationSttusObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
+						}
+						
+						List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(6l,townList,deptIds,boardIds,statusType,"anyPost");
+						
+						if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
+						}
 					}
-					
-					List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(6l,townList,deptIds,boardIds,statusType,"anyPost");
-					
-					if(deptsAnyObj !=null && deptsAnyObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
-					}
-					
-					//postionId,position,applicationStatusId,status,count
-					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(6l,townList,deptIds,boardIds,statusType,"post");
-					
-					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
-					}
-					
-					List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(6l,townList,deptIds,boardIds,statusType,"anyPost");
-					
-					if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
-					}
-					
 				}
 				if(divisonList !=null && divisonList.size()>0){
 					if(task !=null && task.trim().equalsIgnoreCase("Total")){
 						List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(7l,divisonList,deptIds,boardIds,statusType);
-						finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
+						finalMap = setDataToPostWiseDetailsMap(divObj,finalMap,null);
 					}else{
 						List<Object[]> divObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(7l,divisonList,deptIds,boardIds,statusType);
-						finalMap = setDataToPostWiseDetailsMap(divObj,finalMap);
+						
+						if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
+							finalMap = setDataToPostWiseDetailsMap(divObj,finalMap,null);
+						}else{
+							finalMap = setDataToPostWiseDetailsMap(divObj,finalMap,"notRecieved");
+						}
+						
+						
 					}
 					
-					//postionId,position,nomiatedPostStatusId,status,count
-					List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds,statusType,"post");
-					
-					if(deptsObj !=null && deptsObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+					if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
+						//postionId,position,nomiatedPostStatusId,status,count
+						List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds,statusType,"post");
+						
+						if(deptsObj !=null && deptsObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+						}
+						
+						List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds,statusType,"anyPost");
+						
+						if(deptsAnyObj !=null && deptsAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
+						}
+						
+						
+						//postionId,position,applicationStatusId,status,count
+						List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(7l,divisonList,deptIds,boardIds,statusType,"post");
+						
+						if(applicationSttusObj !=null && applicationSttusObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
+						}
+						
+						
+						List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(7l,divisonList,deptIds,boardIds,statusType,"anyPost");
+						
+						if(applicationSttusObj !=null && applicationSttusObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
+						}
 					}
-					
-					List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(7l,divisonList,deptIds,boardIds,statusType,"anyPost");
-					
-					if(deptsAnyObj !=null && deptsAnyObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
-					}
-					
-					
-					//postionId,position,applicationStatusId,status,count
-					List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(7l,divisonList,deptIds,boardIds,statusType,"post");
-					
-					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
-					}
-					
-					
-					List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(7l,divisonList,deptIds,boardIds,statusType,"anyPost");
-					
-					if(applicationSttusObj !=null && applicationSttusObj.size()>0){
-						finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
-					}
-					
 				}
 				
 			}else{
 				
 				if(task !=null && task.trim().equalsIgnoreCase("Total")){
 					List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDeptsForOpen(boardLevelId,levelValues,deptIds,boardIds,statusType);
-					finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
+					finalMap = setDataToPostWiseDetailsMap(postObj,finalMap,null);
 				}else{
 					List<Object[]> postObj = nominatedPostDAO.getNominatedPostsByBoardsAndDepts(boardLevelId,levelValues,deptIds,boardIds,statusType);
-					finalMap = setDataToPostWiseDetailsMap(postObj,finalMap);
+					
+					if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
+						finalMap = setDataToPostWiseDetailsMap(postObj,finalMap,null);
+					}else{
+						finalMap = setDataToPostWiseDetailsMap(postObj,finalMap,"notRecieved");
+					}
+					
+					
 				}
 				
+				if(statusType != null && !statusType.equalsIgnoreCase("notRecieved")){
 				
-				//postionId,position,nomiatedPostStatusId,status,count
-				List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds,statusType,"post");
-				
-				if(deptsObj !=null && deptsObj.size()>0){
-					finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
-				}
-				
-				
-				List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds,statusType,"anyPost");
-				
-				if(deptsAnyObj !=null && deptsAnyObj.size()>0){
-					finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
-				}
-				
-				//postionId,position,applicationStatusId,status,count
-				List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"post");
-				
-				if(applicationSttusObj !=null && applicationSttusObj.size()>0){
-					finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
-				}
-				
-				List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"anyPost");
-				
-				if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
-					finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
+						//postionId,position,nomiatedPostStatusId,status,count
+						List<Object[]> deptsObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds,statusType,"post");
+						
+						if(deptsObj !=null && deptsObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsObj,"nominatedStatus");
+						}
+						
+						
+						List<Object[]> deptsAnyObj  = nominatedPostDAO.getDepartmentWiseBoardAndPositionDetails(boardLevelId,levelValues,deptIds,boardIds,statusType,"anyPost");
+						
+						if(deptsAnyObj !=null && deptsAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,deptsAnyObj,"nominatedStatus");
+						}
+						
+						//postionId,position,applicationStatusId,status,count
+						List<Object[]> applicationSttusObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"post");
+						
+						if(applicationSttusObj !=null && applicationSttusObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusObj,"applicationStatus");
+						}
+						
+						List<Object[]> applicationSttusAnyObj = nominatedPostApplicationDAO.getPositionDetaislOfEveryApplicationStatus(boardLevelId,levelValues,deptIds,boardIds,statusType,"anyPost");
+						
+						if(applicationSttusAnyObj !=null && applicationSttusAnyObj.size()>0){
+							finalMap = setDataToFinalMap(finalMap,applicationSttusAnyObj,"applicationStatus");
+						}
 				}
 				
 			}
@@ -3500,7 +3533,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return status;
 	}
 	
-	public Map<Long,NominatedPostVO> setDataToPostWiseDetailsMap(List<Object[]> postObj,Map<Long,NominatedPostVO> finalMap){
+	public Map<Long,NominatedPostVO> setDataToPostWiseDetailsMap(List<Object[]> postObj,Map<Long,NominatedPostVO> finalMap,String status){
 		try{
 			//total Positions Available to the Requested inputs
 			if(postObj !=null && postObj.size()>0){
@@ -3514,6 +3547,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					VO.setName(obj[1] !=null ? obj[1].toString():"");//positionName					
 					VO.setIdNameVoList(getAllNominatedStatusList());//statusList
 					VO.setDistList(getAllApplicationStatusList());
+					if(status != null && status.equalsIgnoreCase("notRecieved"))
+						VO.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					
 					finalMap.put(VO.getId(), VO);
 				}
