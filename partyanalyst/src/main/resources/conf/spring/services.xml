@@ -3377,6 +3377,9 @@
 	    <property name="tdpCommitteeDAO"  ref="tdpCommitteeDAO"></property>
 	    <property name="tdpCommitteeLevelDAO"  ref="tdpCommitteeLevelDAO"></property>
 	    <property name="tdpBasicCommitteeDAO"  ref="tdpBasicCommitteeDAO"></property>
+	    <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
+	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
+	    <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
 	</bean>
 </beans>		
 	
