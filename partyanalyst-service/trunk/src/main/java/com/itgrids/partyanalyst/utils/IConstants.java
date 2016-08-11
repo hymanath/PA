@@ -1137,7 +1137,7 @@ public interface IConstants {
 	public static final Long COUNTRY_USER_TYPE_ID    = 1l;
 	public static final Long STATE_USER_TYPE_ID    = 2l;
 	
-	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5"; 
+	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5,6"; 
 	public static final String AP_NEW_DISTRICTS_IDS_LIST = "11,12,13,14,15,16,17,18,19,20,21,22,23,517";
 	public static final String TS_NEW_DISTRICTS_IDS_LIST = "1,2,3,4,5,6,7,8,9,10,518";
 	public static final Long NOMINATED_APPLICATION_FINAL_REVIEW=6L;
