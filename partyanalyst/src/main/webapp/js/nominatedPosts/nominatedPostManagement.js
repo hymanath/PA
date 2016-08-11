@@ -277,9 +277,9 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px;min-height:400px;">';
 			  for(var i in result){
 				if(result[i].availableCount != null)
-					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;">'+result[i].availableCount+'</span></a></li>';
+					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><u>'+result[i].name+'</u><span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;">'+result[i].availableCount+'</span></a></li>';
 				else
-					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> 0 </span></a></li>';	
+					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><u>'+result[i].name+'</u><span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> 0 </span></a></li>';	
 			  }
 			  str+='</ul>';
 			str+='</div>';
@@ -1109,7 +1109,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 				if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0)
 					str+='<td class="anyDeptBrdCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" style="color:green;font-weight:bold;cursor:pointer;">'+result[i].totalApplicationReceivedCnt+'</td>';
 				else
-					str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
+				str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
 				str+='<td>'+result[i].positionLinkedCnt+'</td>';
 				str+='<td>'+result[i].readyToShortListedCnt+'</td>';
 				str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
@@ -1123,7 +1123,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
 	var str='';
 	 str+='<table class="table table-bordered">';
-		  str+='<thead class="text-capital" style="background-color:#eee;">';// class="text-capital"
+		  str+='<thead class="text-capital" style="background-color:#eee;">';
 		  str+='<th>Posts</th>';
 		  str+='<th>Total Applications Received</th>';
 		 // str+='<th>Reports Pending</th>';
