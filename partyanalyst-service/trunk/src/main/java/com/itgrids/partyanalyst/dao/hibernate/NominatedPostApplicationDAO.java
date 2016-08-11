@@ -455,7 +455,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
 		else
 			queryStr.append(" where ");
-		queryStr.append(" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.RUNNING_NOMINATED_POSTS_STATUS_IDS+",5)  ");
+		queryStr.append(" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+")  ");
 		if(levelId != null && levelId.longValue()>0L){
 			if(levelId.longValue() != 5L)
 				queryStr.append("   and model.boardLevelId =:levelId ");
