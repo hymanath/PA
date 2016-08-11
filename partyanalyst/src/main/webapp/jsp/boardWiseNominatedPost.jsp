@@ -196,17 +196,34 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 		for(var i in result.subList){
 			str+='<tr class="bg_ff">';
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
-				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
-				if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
-					str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
-				else
-					str+='<i class="glyphicon glyphicon-user"></i> ';				
-					str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div></a>';
-				}else{
-					str +='<td><img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/> '+result.subList[i].voterName+'';
-				}
-				
+				//TDP_CADRE_DETAILS
+				str+='<td>';				
+				<c:choose>
+					<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
+						if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+							str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+						if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0){
+							str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
+						}else
+							str+='<i class="glyphicon glyphicon-user"></i> ';
+							str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div></a>';
+						}else{
+							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
+						}
+					</c:when> 
+					<c:otherwise>
+						if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+							str+='';
+						if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0){
+							str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
+						}else
+							str+='<i class="glyphicon glyphicon-user"></i> ';
+							str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div>';
+						}else{
+							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
+						}
+					</c:otherwise>
+				</c:choose>				
 				str+=' </td>';
 				
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
@@ -280,11 +297,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				if(type == "this"){
 					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'">UPDATE</button>';
 					str+='<div class="updateDropDown" id="updateDropDownId'+i+'">';
-						str+='<div class="updateDropDownArrow">';
-						str+='<div class="text-success" id="successDivId'+i+'"></div>';
+						str+='<div class="updateDropDownArrow">';						
 						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
 							str+='<i class="glyphicon glyphicon-remove pull-right closeDivCls" id="updateDropDownId'+i+'" style="cursor:pointer;"></i>';
-							str+='<label>Select Status</label>';
+							str+='<label>Select Status <span class="text-success" id="successDivId'+i+'"></span></label>';
 							str+='<span id="selectStatusIdImg"><img src="images/search.gif" style="display:none;"/></span>';
 							str+='<select class="chosenSelect" id="updatedStatusSelectId'+i+'">';
 								str+='<option value="0">Select Status</option>';
@@ -597,7 +613,7 @@ $(document).on("click",".updateStatusCls",function(){
 	}
 	if(comment.trim().length==0)
 	{
-		str+='Comments required';
+		str+='Comment is required';
 		flag = false;
 	}
 	if(!flag)
@@ -606,6 +622,8 @@ $(document).on("click",".updateStatusCls",function(){
 		return;
 	}
 	$("#selectStatusIdImg").show();
+	$("#"+divId).html('<img id="searchMemberAjax" src="images/icons/loading.gif" style="width:15px;"/>');
+	$(this).hide();
 	var jsObj=
 	   {				
 		nominatePostApplicationId:applicationId,
@@ -625,11 +643,11 @@ $(document).on("click",".updateStatusCls",function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   $("#selectStatusIdImg").hide();
+	   $(this).show();
 		if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...").css("color","green");
 			//window.location.reload();
-			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);
-			
+				setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);			
 		}
 		else
 			$("#"+divId).html("Sorry,Exception Occured...Please try again...").css("color","red");
