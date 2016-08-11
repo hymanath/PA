@@ -65,5 +65,6 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
     //CORE DASHBOARD NEW
 	public List<Object[]> getCommitteesTotalOrStartedOrCompletedCount(CommitteeInputVO committeeBO,String status);
 	public List<Object[]> levelWiseBasicCommitteesCount(CommitteeInputVO committeeBO,String status);
+	public Long getCountsForCommittees(CommitteeInputVO committeeBO,String status);
 	 public List<Object[]> districtWiseCommitteesCount(CommitteeInputVO committeeBO,String status);
 }

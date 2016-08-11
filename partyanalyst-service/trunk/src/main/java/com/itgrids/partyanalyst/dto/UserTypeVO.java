@@ -28,6 +28,9 @@ public class UserTypeVO implements Serializable{
 	private Map<Long,UserTypeVO> subMap;
 	private List<UserTypeVO> subList;
 	
+	private Long totalCount = 0l;
+	private Long completedCount = 0l;
+	private Double completedPerc = 0.0;
 	
 	public Long getId() {
 		return id;
@@ -125,6 +128,24 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getCompletedCount() {
+		return completedCount;
+	}
+	public void setCompletedCount(Long completedCount) {
+		this.completedCount = completedCount;
+	}
+	public Double getCompletedPerc() {
+		return completedPerc;
+	}
+	public void setCompletedPerc(Double completedPerc) {
+		this.completedPerc = completedPerc;
 	}
 	
 }

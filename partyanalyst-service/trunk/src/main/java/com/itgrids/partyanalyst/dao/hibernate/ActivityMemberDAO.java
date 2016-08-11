@@ -51,5 +51,4 @@ public class ActivityMemberDAO extends GenericDaoHibernate<ActivityMember,Long> 
 		return (Long)query.uniqueResult();
 	}
 	
-	
 }

@@ -17,7 +17,7 @@ public class ActivityMemberAccessTypeDAO extends GenericDaoHibernate<ActivityMem
 	public List<Object[]> getActivityMemberUserAccessTypeByUserId(Long userId){
 		
 		Query query = getSession().createQuery("select model.userTypeId,model.userType.type from ActivityMemberAccessType model " +
-											  "where  model.activityMember.userId = :userId");
+											  " where  model.activityMember.userId = :userId and model.isActive = 'Y' ");
 		query.setParameter("userId",userId);
 		return query.list();
 	}
@@ -31,9 +31,18 @@ public class ActivityMemberAccessTypeDAO extends GenericDaoHibernate<ActivityMem
 			    "         amat.activityMember.tdpCadre.image,amat.userType.shortName " +//9
 			    " from    ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
 			    " where   amal.activityMember.activityMemberId = amat.activityMember.activityMemberId and " +
-			     "        amat.userType.userTypeId in (:childUserTypeIds) ");
+			     "        amat.userType.userTypeId in (:childUserTypeIds) and " +
+			     "        amat.isActive='Y' and amal.isActive='Y' ");
 				query.setParameterList("childUserTypeIds", childUserTypeIds);
 				return query.list();
 	}
 	
+	public Object[] getUserAccessTypeAndActivityMemberIdByUserId(Long userId){
+		Query query = getSession().createQuery("select model.activityMember.activityMemberId,model.userTypeId,model.userType.type " +
+				                               "from ActivityMemberAccessType model " +
+											  " where  model.activityMember.userId = :userId and " +
+											  "        model.isActive = 'Y' ");
+		query.setParameter("userId",userId);
+		return (Object[])query.uniqueResult();
+	}
 }

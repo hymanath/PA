@@ -25,17 +25,20 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
     " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
     "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
     "        rel.parentMemberId = :parentActivityMemberId and amat.userType.userTypeId in (:childUserTypeIds) and " +
-    "        rel.isActive = 'Y' ");
+    "        rel.isActive = 'Y' and amat.isActive = 'Y' and amal.isActive = 'Y' ");
 	query.setParameter("parentActivityMemberId", parentActivityMemberId);
 	query.setParameterList("childUserTypeIds", childUserTypeIds);
 	return query.list();
 	}
 	
-	public Long checkChildActivityMembersByParents(List<Long> parentActivityMemberIds){
+	public List<Object[]> checkChildActivityMembersByParents(List<Long> parentActivityMemberIds){
 		
-		Query query = getSession().createQuery(" select count(model.activityMemberRelationId) from ActivityMemberRelation model where model.parentMemberId in (:parentActivityMemberIds) ");
+		Query query = getSession().createQuery("" +
+		" select count(model.activityMemberRelationId) " +
+		" from   ActivityMemberRelation model" +
+		" where  model.parentMemberId in (:parentActivityMemberIds) and model.isActive ='Y' ");
 		query.setParameterList("parentActivityMemberIds",parentActivityMemberIds);
-		return (Long)query.uniqueResult();
+		return query.list();
 	}
 	
 	

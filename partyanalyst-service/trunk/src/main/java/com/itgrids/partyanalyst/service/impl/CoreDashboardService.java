@@ -698,6 +698,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 			Map<Long,List<Long>>  locationMap = new HashMap<Long,List<Long>>();
 			Map<String,String> locationValuesMap = new HashMap<String,String>();
 			
+			//setting Location Names.
 			getAllLocationIds(finalVO,locationMap);
 			getLocationValues(locationMap,locationValuesMap);
 			assignLocationNames(finalVO,locationValuesMap);
