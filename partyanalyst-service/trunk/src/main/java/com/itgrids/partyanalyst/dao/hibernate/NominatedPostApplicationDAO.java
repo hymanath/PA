@@ -616,10 +616,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				" model.isDeleted = 'N' " );
 		
 		if(boardLevelId !=null && boardLevelId>0){
-			if(boardLevelId.longValue() != 5L)
+			//if(boardLevelId.longValue() != 5L)
 				str.append(" AND model.boardLevel.boardLevelId=:boardLevelId");		
-			else
-				str.append(" AND model.boardLevel.boardLevelId in (5,6) ");		
+			//else
+			//	str.append(" AND model.boardLevel.boardLevelId in (5,6) ");		
 		}
 		if(locationValues !=null && locationValues.size()>0){
 			str.append(" AND model.locationValue in (:locationValues)");
@@ -653,8 +653,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		Query query = getSession().createQuery(str.toString());
 		
-		if(boardLevelId !=null && boardLevelId>0){
-			if(boardLevelId.longValue() != 5L)
+		if(boardLevelId !=null && boardLevelId>0){			
 				query.setParameter("boardLevelId", boardLevelId);		
 		}
 		if(locationValues !=null && locationValues.size()>0){
@@ -1083,9 +1082,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		    	 str.append(" and model.departmentId is null ");
 		     }
 		     if(boardId != null && boardId.longValue() > 0L){
-		    	 str.append(" or model.board.boardId=:boardId");
+		    	 str.append(" and model.board.boardId=:boardId");
 		     }else{
-		    	 str.append(" or model.boardId is null "); 
+		    	 str.append(" and model.boardId is null "); 
 		     }
 		     
 		    str.append(" GROUP BY position.positionId ");

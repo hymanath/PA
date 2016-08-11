@@ -67,10 +67,10 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 				" FROM NominatedPostApplication model " +
 				" WHERE model.isDeleted = 'N'" );
 		if(boardLevelId !=null && boardLevelId.longValue()>0L){
-			if(boardLevelId.longValue()!=5L)
+			//if(boardLevelId.longValue()!=5L)
 				str.append(" and model.boardLevel.boardLevelId =:boardLevelId ");
-			else
-				str.append(" and model.boardLevel.boardLevelId in (5,6) ");
+			//else
+			//	str.append(" and model.boardLevel.boardLevelId in (5,6) ");
 		}
 		/*if(levelValue !=null && levelValue.size()>0){
 			str.append(" and model.locationValue in (:levelValue) ");
