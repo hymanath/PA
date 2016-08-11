@@ -478,6 +478,8 @@ function buildAlertAssignedCandidateData(result)
         str+='<span class=" assignCandidate" attr_tdpCadreId="'+result[i].subList[j].id+'"  onclick="getConfirmation(\''+result[i].subList[j].id+'\');"><i class="glyphicon glyphicon-trash" title="Click here to Delete"></i></span>';
 		str+='</c:if>';
 		str+='<p class="text-capital"><b>'+result[i].subList[j].name+'</b></p>';
+		if(result[i].subList[j].committeePosition != null && result[i].subList[j].committeePosition.length > 0)
+		str+='<p class="text-capital"><b>'+result[i].subList[j].committeeName+' Committee '+result[i].subList[j].committeePosition+'</b></p>';
 		//str+='<input type="button" class="btn btn-primary assignModel pull-right btn-xs" value="ASSIGN">';
         //str+=' <p class="text-capital"><i><b>-Constituency Incharge</b></i></p>';
         str+=' <p>'+result[i].subList[j].mobileNo+'</p>';
