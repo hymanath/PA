@@ -296,7 +296,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
-										str+='<h4 class="panel-title text-capital"  style="text-transform: uppercase;">'+result[i].idnameList[j].name+'';
+										str+='<h4 class="panel-title text-capital"  style="text-transform: uppercase;">'+result[i].idnameList[j].name+' ';
 										if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
 											str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										else
@@ -308,7 +308,12 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 										str+='</h4>';
 									str+='</a>';
 								str+='</div>';
-								str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" >';
+
+								if(i==0 && j==0){
+									str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" aria-expanded="true" >';
+								}
+								else
+									str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" >';
 								  str+='<div class="panel-body pad_0">';
 										str+='<div class="table-responsive"  id="boardDivBodyId'+i+''+j+'">';
 											str+='<center><img src="images/Loading-data.gif" id="boardDivBodySearchId'+i+''+j+'" style="display:none;width:50px;height:50px; "/></center>';
@@ -322,6 +327,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 						
 						str+='</div>';
 					str+='</div>';
+
 					 }
 						
 				str+='</div>';
@@ -329,7 +335,8 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 		str+='</div>';
 		
 		$("#departmentsBuildId").html(str);
-		$(".deptsUlCls li:first-child a").trigger("click")
+		$(".deptsUlCls li:first-child a").trigger("click");
+		$('#headingOne00').trigger('click');
 	}else{
 		$("#departmentsBuildId").html("<div>No Data Available</div>");
 	}		
@@ -354,6 +361,61 @@ $(document).on("click",".boardWiseDetailsCls",function(){
 		boardId = board;
 	}
 	
+	var bodyId = $(this).attr("attr_id"); 
+	var searchId = $(this).attr("attr_searchId"); 
+	var deptName = $(this).attr("attr_dept_name");
+	var boardName = $(this).attr("attr_board_name");
+	
+	var levelValuesArr=[];
+	if(globalLevelId == 1){
+		levelValuesArr.push(1);
+	}
+	else if(globalLevelId == 2){
+		
+		levelValuesArr.push(globalStateId);
+		
+	}else if(globalLevelId == 3){
+		var districtId=$("#districtId").val();
+		
+		if(districtId==0){
+			levelValuesArr = grlobalDistrictArr;
+		}else{
+			levelValuesArr.push(districtId);
+		}
+		
+	}else if(globalLevelId == 4){	
+	
+		var constituencyId=$("#constituencyId").val();
+		
+		if(constituencyId==0){
+			levelValuesArr = globalAssmblyArr;	
+		}else{
+			levelValuesArr.push(constituencyId);
+		}		
+	}else if(globalLevelId == 5){
+		var mandalTownDivId=$("#manTowDivId").val();
+		if(mandalTownDivId==0){
+			levelValuesArr = globalMandalTowDivArr;	
+		}else{
+			levelValuesArr.push(mandalTownDivId);
+		}
+	}
+	
+	if(globalStatus !=null &&  globalStatus.trim().length>0 && globalStatus == "Total"){
+		getDepartmentWiseBoardAndPositionDetailsForAll(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId,deptName,boardName);
+	}else{
+		getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,searchId,deptName,boardName);
+	}
+	
+});
+
+
+$(document).on("click","#headingOne00",function(){
+
+	//var levelId = $(this).attr("attr_levelId");
+	//var levelValue = $(this).attr("attr_levelValue");
+	var deptId = $(this).attr("attr_deptId");
+	var boardId = $(this).attr("attr_boardId");
 	var bodyId = $(this).attr("attr_id"); 
 	var searchId = $(this).attr("attr_searchId"); 
 	var deptName = $(this).attr("attr_dept_name");
