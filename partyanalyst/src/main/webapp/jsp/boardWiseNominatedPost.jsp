@@ -150,8 +150,8 @@ function getBoardWiseNominatedPostMemberDetails(){
 			type = 'any'
 		if(gblPositionId == 0)
 			type = 'any';
-	if(gblPositionId == 0)
-		type = 'any'
+		if(gblPositionId == 0)
+			type = 'any'
 	var jsObj=
 	   {				
 		levelId:parseInt('${lId}'),//levelId,
@@ -169,7 +169,7 @@ function getBoardWiseNominatedPostMemberDetails(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null)
-		   buildNominatedPostMemberDetails(result,"this",parseInt('${deptId}'),parseInt('${boardId}'),parseInt('${positionId}'));
+		   buildNominatedPostMemberDetails(result,type,parseInt('${deptId}'),parseInt('${boardId}'),parseInt('${positionId}'));
    });
 }
 
