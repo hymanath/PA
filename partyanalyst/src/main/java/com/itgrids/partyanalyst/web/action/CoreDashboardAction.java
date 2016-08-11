@@ -12,11 +12,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
+import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
+import com.itgrids.partyanalyst.service.ICoreDashboardService1;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -34,12 +36,18 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<CommitteeVO> committeeVOList;
 	private CommitteeVO committeeVO ;
 	private UserTypeVO userTypeVO;
+	private List<CommitteeDataVO> CommitteeDataVOList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
+	private ICoreDashboardService1 coreDashboardService1;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
 		this.coreDashboardService = coreDashboardService;
+	}
+	
+	public void setCoreDashboardService1(ICoreDashboardService1 coreDashboardService1) {
+		this.coreDashboardService1 = coreDashboardService1;
 	}
 	
 	public String getTask() {
@@ -101,6 +109,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setUserTypeVO(UserTypeVO userTypeVO) {
 		this.userTypeVO = userTypeVO;
+	}
+
+	
+	public List<CommitteeDataVO> getCommitteeDataVOList() {
+		return CommitteeDataVOList;
+	}
+
+	public void setCommitteeDataVOList(List<CommitteeDataVO> committeeDataVOList) {
+		CommitteeDataVOList = committeeDataVOList;
 	}
 
 	//Implementation method
@@ -273,6 +290,31 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getLoggedInUserStructure() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDistrictWiseCommitteesCountReport(){
+		try{
+			LOG.info("Entered into getDistrictWiseCommitteesCountReport()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			
+			CommitteeDataVOList = coreDashboardService1.getDistrictWiseCommitteesCountReport(state,basicCommitteeIds,startDateString,endDateString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getDistrictWiseCommitteesCountReport() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
