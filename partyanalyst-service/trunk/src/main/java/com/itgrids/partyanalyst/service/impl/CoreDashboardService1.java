@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -419,5 +420,119 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 				}
 			}
 		}
-	
+	    public List<Date> getDates(String startDateString,String endDateString,SimpleDateFormat sdf) throws ParseException{
+	    	List<Date> datesList = new ArrayList<Date>();
+	    	Date startDate = null;
+	    	Date endDate = null;
+	    	if(startDateString != null && !startDateString.isEmpty()){
+		    	 startDate = sdf.parse(startDateString);
+		    }
+		    if(endDateString != null && !endDateString.isEmpty()){
+		    	 endDate = sdf.parse(endDateString);
+		    }
+		    datesList.add(0,startDate);
+		    datesList.add(1,endDate);
+		    return datesList;
+	    }
+	    
+	    /**
+		  * @param  String state
+		  * @param  List<Long> basicCommitteeIds
+		  * @param  String startDateString
+		  * @param  String endDateString
+		  * @return List<CommitteeDataVO>
+		  * @author <a href="mailto:aravind.itgrids.hyd@gmail.com">Aravind</a>
+		  *  This Service Method is used to get District Wise Committees Count Report. 
+		  *  @since 11-AUGUST-2016
+		  */
+		public List<CommitteeDataVO> getDistrictWiseCommitteesCountReport(String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
+			
+			LOG.info(" entered in to getDistrictWiseCommitteesCountReport() ");
+			List<CommitteeDataVO> finalList = null;
+			try{
+			     List<Date> datesList = getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
+			     
+			     //Making BO.
+			     CommitteeInputVO committeeBO = new CommitteeInputVO();
+			     //getRequiredCommitteeLevelIds(userAccessLevelId,committeeBO,userAccessLevelValues);
+			     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
+			     committeeBO.setStartDate(datesList.get(0));
+			     committeeBO.setEndDate(datesList.get(1));
+			     committeeBO.setState(state);
+			     
+			     Map<Long,CommitteeDataVO> finalMap = new LinkedHashMap<Long,CommitteeDataVO>(0);
+			     //setCommitteeLevelstoMap(committeeLevelMap,committeeBO.getTdpCommitteeLevelIds(),basicCommitteeIds);
+			  
+			     List<Object[]> totalCommitteesList      =  tdpCommitteeDAO.districtWiseCommitteesCount(committeeBO,null);
+			     List<Object[]> completedCommitteesList  =  tdpCommitteeDAO.districtWiseCommitteesCount(committeeBO,"completed");
+			     List<Object[]> startedCommitteesList    =  tdpCommitteeDAO.districtWiseCommitteesCount(committeeBO,"started");
+			     List<Object[]> notStartedCommitteesList =  tdpCommitteeDAO.districtWiseCommitteesCount(committeeBO,"notStarted");
+			     
+			     setDistrictWiseCommiteesCount(totalCommitteesList,finalMap,null);
+			     setDistrictWiseCommiteesCount(completedCommitteesList,finalMap,"completed");
+			     setDistrictWiseCommiteesCount(startedCommitteesList,finalMap,"started");
+			     setDistrictWiseCommiteesCount(notStartedCommitteesList,finalMap,"notStarted");
+			     
+			     if(finalMap != null && finalMap.size() > 0){
+			    	 for(Long basicCommitteeId : finalMap.keySet()){
+			    		 Map<Long,CommitteeDataVO> LocationMap = finalMap.get(basicCommitteeId).getSubMap();
+			    		 if(LocationMap != null){
+			    			 finalMap.get(basicCommitteeId).setSubList(new ArrayList<CommitteeDataVO>(LocationMap.values()));
+			    			 LocationMap.clear();
+			    		 }
+			    	 finalList = new ArrayList<CommitteeDataVO>(finalMap.values());
+			    	 getBasicCommitteesPercantage(finalList);
+			    		 
+			    	 }
+			    }
+			     
+			}catch(Exception e){
+				LOG.error("exception occurred in getDistrictWiseCommitteesCountReport()", e);
+				e.printStackTrace();
+			}
+			return finalList;
+		}
+		
+		public void setDistrictWiseCommiteesCount(List<Object[]> list,Map<Long,CommitteeDataVO> finalMap,String status){
+			
+			if(list !=null && list.size() >0){
+				for(Object[] obj : list){
+					
+					Long tdpbasicCommitteeId = obj[0] != null ? (Long)obj[0] : 0l;
+					CommitteeDataVO basicCommitteeVO = null;
+					basicCommitteeVO = finalMap.get(tdpbasicCommitteeId);
+				    if( basicCommitteeVO == null){
+				    	basicCommitteeVO = new CommitteeDataVO();
+				    	basicCommitteeVO.setId(tdpbasicCommitteeId);
+				    	basicCommitteeVO.setName(obj[1]!=null ? obj[1].toString() : "");
+				    	basicCommitteeVO.setSubMap(new LinkedHashMap<Long, CommitteeDataVO>(0));
+				    	finalMap.put(tdpbasicCommitteeId,basicCommitteeVO);
+				    }
+				    basicCommitteeVO = finalMap.get(tdpbasicCommitteeId);
+				    CommitteeDataVO locationVO = null;
+				    locationVO = basicCommitteeVO.getSubMap().get((Long)obj[2]);
+					if(locationVO==null){
+						locationVO = new CommitteeDataVO();
+						locationVO.setId((Long)obj[2]);
+						locationVO.setName(obj[3]!=null ? obj[3].toString() : "");
+						basicCommitteeVO.getSubMap().put(locationVO.getId(),locationVO);
+					}
+					locationVO = basicCommitteeVO.getSubMap().get((Long)obj[2]);
+					Long count = obj[4]!=null?(Long)obj[4]:0l;
+					if(status != null && !status.isEmpty())
+					{
+						if(status.equalsIgnoreCase("completed")){
+							locationVO.setCompletedCount(basicCommitteeVO.getCompletedCount() +count );
+						}else if(status.equalsIgnoreCase("started")){
+							locationVO.setStartedCount(basicCommitteeVO.getStartedCount() + count);
+						}else if(status.equalsIgnoreCase("notStarted")){
+							locationVO.setNotStartedCount(basicCommitteeVO.getNotStartedCount()+count);
+						}
+					}else{
+						locationVO.setTotalCount(basicCommitteeVO.getTotalCount()+count);
+					}
+					
+				}
+			}
+		}
 }

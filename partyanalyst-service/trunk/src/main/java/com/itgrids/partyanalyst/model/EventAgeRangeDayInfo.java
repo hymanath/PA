@@ -78,7 +78,7 @@ public class EventAgeRangeDayInfo extends BaseModel implements Serializable {
 		this.dayStr = dayStr;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "event_age_range_info_id")
+	@JoinColumn(name = "event_age_range_info_id",insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public EventAgeRangeInfo getEventAgeRangeInfo() {
