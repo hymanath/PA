@@ -1115,7 +1115,7 @@ public interface IConstants {
 	public static final String RUNNING_NOMINATED_POSTS_STATUS_IDS ="1";
 	public static final String NOMINATED_POST_DOCUMENTS ="nominated_post_documents";
 	
-	public static final String NOMINATED_APPLIED_STATUS ="Applied";
+	public static final String NOMINATED_APPLIED_STATUS ="'Applied'";
 	public static final String NOT_CADRE_IMAGES = "not_cadre_images";
 	
     //core dashboard

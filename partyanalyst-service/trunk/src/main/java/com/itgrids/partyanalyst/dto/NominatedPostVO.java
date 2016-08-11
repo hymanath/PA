@@ -23,6 +23,7 @@ public class NominatedPostVO implements Serializable{
 	private String perc="0.0";
 	private String perc1="0.0";
 	
+	private Long count =0L;
 	private Long stateId;
 	private Long districtId;
 	private Long constituencyId;
@@ -500,6 +501,12 @@ public class NominatedPostVO implements Serializable{
 	}
 	public void setPstnLnkedAndFinalReview(Long pstnLnkedAndFinalReview) {
 		this.pstnLnkedAndFinalReview = pstnLnkedAndFinalReview;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 }
