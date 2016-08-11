@@ -23,6 +23,7 @@ public class GovtOrder extends BaseModel implements Serializable{
 	private String orderCode;
 	private Date fromDate;
 	private Date toDate;
+	private String remarks;
 	private Long insertedBy;
 	private Date insertedTime;
 	private Long updatedBy;
@@ -69,6 +70,14 @@ public class GovtOrder extends BaseModel implements Serializable{
 	}
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
+	}
+	
+	@Column(name="remarks")
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
 	@Column(name="inserted_by")
