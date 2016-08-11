@@ -277,6 +277,25 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public String nominatedPosts()
 	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT") || entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP")
+					 || entitlements.contains("NOMINATED_POST_OVERVIEW_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		}		
 		return Action.SUCCESS;
 	}
 	public List<IdAndNameVO> getIdAndNameVOList() {
@@ -583,7 +602,26 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public String getNominatedPostApplicationReviewDetails()
 	{
-	 return Action.SUCCESS;
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT") || entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP")
+					 || entitlements.contains("NOMINATED_POST_OVERVIEW_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		}		
+		return Action.SUCCESS;
 	}
 	public String getNominatedPostPostionDetails(){
 		try{
@@ -758,7 +796,26 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	return Action.SUCCESS;
 	}
   public String getNominatedReadyToFinalReview(){
-	  return Action.SUCCESS;
+	  RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT") || entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP")
+					 || entitlements.contains("NOMINATED_POST_OVERVIEW_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		}		
+		return Action.SUCCESS;
   }
  public String getFinalReviewCandidateCountLocationWise(){
 	 try{
@@ -814,6 +871,25 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public String nominatedPostManagement(){
 		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT") || entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP")
+					 || entitlements.contains("NOMINATED_POST_OVERVIEW_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		}		
 		return Action.SUCCESS;
 	}
 	
@@ -927,6 +1003,25 @@ public String getNotCadreDetailsById(){
 	return Action.SUCCESS;
 	}
 	public String getNominatedPostMainDashboard(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT") || entitlements.contains("CREATE_NOMINATED_POST_ENTITLEMENT_ADMIN_GROUP")
+					 || entitlements.contains("NOMINATED_POST_OVERVIEW_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		}		
 		return Action.SUCCESS;
 	}
 	public String getLocationWiseCastePositionCount(){
