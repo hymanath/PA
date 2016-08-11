@@ -108,7 +108,7 @@ public class GovtOrderDocuments extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="govt_order_id")
+	@JoinColumn(name="govt_order_id",insertable=false, updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public GovtOrder getGovtOrder() {
@@ -119,7 +119,7 @@ public class GovtOrderDocuments extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="inserted_by")
+	@JoinColumn(name="inserted_by",insertable=false, updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getInsertedUser() {
@@ -130,7 +130,7 @@ public class GovtOrderDocuments extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="updated_by")
+	@JoinColumn(name="updated_by",insertable=false, updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUpdatedUser() {
