@@ -1139,7 +1139,8 @@ $('.searchTypeCls').click(function(){
 		depmtId : $("#depmtsId"+num).val(),
 		boardId :boardId,
 		boardLevelId : $("#boardLvlId"+num).val(),
-		searchLevelValue:searchLevelValue
+		searchLevelValue:searchLevelValue,
+		searchLevelId:0
 	}
     $.ajax({
           type:'GET',
@@ -1151,7 +1152,7 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 	  $("#deptBoardPostnId"+num).append('<option value=" ">Select Board Position</option>');
 	   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
-	   if(boardId>0)
+		if(boardId>0)
 			for(var i in result){
 				$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				
@@ -1208,7 +1209,8 @@ $('.searchTypeCls').click(function(){
    var jsObj = {
 		depmtId : depmtId,
 		boardLevelId : $("#boardLvlId"+num).val(),
-		searchLevelValue:searchLevelValue
+		searchLevelValue:searchLevelValue,
+		searchLevelId:0
 	}
     $.ajax({
           type:'GET',
@@ -1298,7 +1300,8 @@ $('.searchTypeCls').click(function(){
 	  var jsObj = {
 		postType:postTypeId,
 		boardLevelId:boardLevelId,
-		searchLevelValue : searchLevelValue
+		searchLevelValue : searchLevelValue,
+		searchLevelId:0
 		}
 		
     $.ajax({
@@ -1870,6 +1873,7 @@ $(document).on("click","#addressCheckId",function(){
 });
 function getPopulateApplicantDetailsForMember(globalCadreId){ 
  var type = $("input[type='radio']:checked").val();
+ $("#addPrcssngImgId").show();
  var id =globalNPCandiId;
 
 		if(id > 0){
@@ -1892,6 +1896,7 @@ function getPopulateApplicantDetailsForMember(globalCadreId){
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jObj)},
 	  }).done(function(result){
+		  $("#addPrcssngImgId").hide();
 		  if(result != null && result.length>0){
 				populateFields(result);  
 			}
@@ -2149,10 +2154,16 @@ function populateFields(result){
 	globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
 	  if($(this).is(':checked')){
 		$(".ramakrishnaCls").show();
+		$("#uploadFlDivId").show();
+		$("#submitBtnId").show();
 		getCandidateAppliedPostsByCadre(globalCadreId,candiId);
 	  }
-	else
+	else{
 		$(".ramakrishnaCls").hide();
+		$("#uploadFlDivId").hide();
+		$("#submitBtnId").hide();
+	}
+		
 });
  function getCandidateAppliedPostsByCadre(globalCadreId,candiId){
 
@@ -2396,7 +2407,7 @@ function notCadresearch(){
 	if(isNotCadreFree){
 		isNotCadreFree = false;
 		
-       $("#scrollDivId").show();
+ $("#scrollDivId").show();
 $("#searchDivId").show();
 		var jsObj =
 		        {
@@ -2427,6 +2438,8 @@ $("#searchDivId").show();
 	  var value = $("input[name='checkBoxName']:checked").val();
 	  	$('.ramakrishnaCls').hide();
 		$('#searchDivId').hide();
+		$("#uploadFlDivId").hide();
+		$("#submitBtnId").hide();
 	  if(value == "Cadre"){
 			getNominatedPostApplication(0);
 		}
@@ -2548,4 +2561,6 @@ var isSameCheckBoxClicked=0;
 function hideDetails(){
 	$('.ramakrishnaCls').hide();
 	$('#searchDivId').hide();
+	$("#uploadFlDivId").hide();
+	$("#submitBtnId").hide();
 }
