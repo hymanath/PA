@@ -91,6 +91,10 @@ var globalDeptName = '${param.deptName}';
 var headBrdId='${param.brdName}';
 var globalPosName='${param.posName}';
 
+var globalPositionId = parseInt('${param.positionId}');
+var globalDeptId = parseInt('${param.deptId}');
+var globalBoardId = parseInt('${param.boardId}');
+
 $("#headPosId").html(globalPosName+" post");
 $("#headBrdId").html(headBrdId+" board");
 $("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
@@ -223,7 +227,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
 						}
 					</c:otherwise>
-				</c:choose>				
+				</c:choose>
 				str+=' </td>';
 				
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
@@ -522,9 +526,24 @@ function getApplicationStatus(divId){
 
 function getDepartments(num){
 	$("#departmentAnyId"+num+" option").remove();
-	
+		$("#statusCommentAnyId"+num).html('');
+	   $("#updatedStatusAnyId"+num).val(0);
+	   $("#boardAnyId"+num).html('');
+	   $("#boardAnyId"+num).trigger("chosen:updated")
+	   $("#boardAnyId"+num).trigger("chosen:updated")
+	   $("#positionAnyId"+num).html('');
+	   $("#positionAnyId"+num).trigger("chosen:updated")
+       $("#departmentAnyId"+num).html('');
+	   $("#departmentAnyId"+num).trigger("chosen:updated")
+	   $("#updatedStatusAnyId"+num).trigger("chosen:updated");
+	   
+	   
+
 	var jsObj={
-		postType : 1
+		postType:1,
+		boardLevelId:parseInt('${param.lId}'),
+		searchLevelId:parseInt('${param.searchLevelId}'),
+		searchLevelValue : parseInt('${param.searchLevelValue}')
 	}
 	$.ajax({
           type:'GET',
@@ -535,9 +554,14 @@ function getDepartments(num){
 	    if(result != null && result.length > 0){
 		   $("#departmentAnyId"+num).append('<option value="0">Select Department</option>');
 		   for(var i in result){
-			   $("#departmentAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   if(globalDeptId > 0){
+					if(globalDeptId == parseInt(result[i].id))
+						$("#departmentAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }else
+					$("#departmentAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		   }
 		   $("#departmentAnyId"+num).chosen();
+		   
 	   }
    });
 }
@@ -545,9 +569,14 @@ function getDepartments(num){
 function getBoardsForDepartments(num){
 	$("#boardAnyId"+num+" option").remove();
 	var depmtId = $("#departmentAnyId"+num).val();
-	
+	$("#statusCommentAnyId"+num).html('');
+	 $("#updatedStatusAnyId"+num).val(0);
+	  $("#updatedStatusAnyId"+num).trigger("chosen:updated");
 	var jsObj={
-		depmtId : depmtId
+		depmtId : depmtId,
+		boardLevelId:parseInt('${param.lId}'),
+		searchLevelValue : parseInt('${param.searchLevelValue}'),
+		searchLevelId : parseInt('${param.searchLevelId}')
 	}
 	$.ajax({
           type:'GET',
@@ -558,7 +587,13 @@ function getBoardsForDepartments(num){
 	    if(result != null && result.length > 0){
 			$("#boardAnyId"+num).append('<option value="0">Select Corporation/Board</option>');
 		   for(var i in result){
-			   $("#boardAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   if(globalBoardId>0){
+				   if(globalBoardId == parseInt(result[i].id))
+						$("#boardAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+			   else{
+				   $("#boardAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
 		   }
 		   $("#boardAnyId"+num).trigger('chosen:updated');
 	   }
@@ -567,12 +602,18 @@ function getBoardsForDepartments(num){
 
 function getPositionsForBoard(num){
 	$("#positionAnyId"+num+" option").remove();
+	 $("#updatedStatusAnyId"+num).val(0);
+	 $("#statusCommentAnyId"+num).html('');
 	var depmtId = $("#departmentAnyId"+num).val();
 	var boardId = $("#boardAnyId"+num).val();
 	
+	 $("#updatedStatusAnyId"+num).trigger("chosen:updated");
 	var jsObj={
 		depmtId : depmtId,
-		boardId : boardId
+		boardId : boardId,
+		boardLevelId:parseInt('${param.lId}'),
+		searchLevelValue : parseInt('${param.searchLevelValue}'),
+		searchLevelId : parseInt('${param.searchLevelId}')
 	}
 	$.ajax({
           type:'GET',
@@ -583,7 +624,13 @@ function getPositionsForBoard(num){
 	    if(result != null && result.length > 0){
 		   $("#positionAnyId"+num).append('<option value="0">Select Position</option>');
 		   for(var i in result){
-			   $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   if(globalPositionId>0){
+				   if( globalPositionId == parseInt(result[i].id)){
+					   $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				   }
+				}else{
+					$("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
 		   }
 		   $("#positionAnyId"+num).trigger('chosen:updated');
 	   }
@@ -647,7 +694,8 @@ $(document).on("click",".updateStatusCls",function(){
 		if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...").css("color","green");
 			//window.location.reload();
-				setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);			
+			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);
+			
 		}
 		else
 			$("#"+divId).html("Sorry,Exception Occured...Please try again...").css("color","red");
@@ -666,7 +714,6 @@ $(document).on("click",".updateStatusThisAnyCls",function(){
 	
 	var statusId = $("#updatedStatusThisAnyId"+num).val();
 	var comment = $("#statusCommentThisAnyId"+num).val();
-	
 	var jsObj=
 	   {	
 		applicationId : applicationId,
@@ -693,6 +740,7 @@ $(document).on("click",".updateStatusThisAnyCls",function(){
 });
 
 $(document).on("click",".updateStatusAnyCls",function(){
+
 	var applicationId = $(this).attr("attr_application_id");
 	var candidateId = $(this).attr("attr_candidate_id");
 	var num = $(this).attr("attr_count");
@@ -704,7 +752,7 @@ $(document).on("click",".updateStatusAnyCls",function(){
 	var positionId = $("#positionAnyId"+num).val();
 	var statusId = $("#updatedStatusAnyId"+num).val();
 	var comment = $("#statusCommentAnyId"+num).val();
-	
+
 	var jsObj=
 	   {	
 		applicationId : applicationId,
