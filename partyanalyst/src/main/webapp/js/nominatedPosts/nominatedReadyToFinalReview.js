@@ -261,9 +261,9 @@ function buildCandidateReviewRslt(result){
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
-		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 }else{
-		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details">'+result[i].name+' </span><span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		}
       }
 	  str+='</ul>';
@@ -286,10 +286,10 @@ function buildCandidateBoardRslt(result,departmentId){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details">'+result[i].name+'</span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
@@ -301,10 +301,10 @@ function buildCandidateBoardRslt(result,departmentId){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details">'+result[i].name+'</span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
@@ -332,8 +332,8 @@ var str = '';
 				str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
 						str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-							str+='<span>'+result[i].name+'</span>';
-							str+='<span class="label label-primary labelCustom pull-right" title="Total Opened Positions" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
+							str+='<span style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span class="label label-primary labelCustom pull-right" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 ">';

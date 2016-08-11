@@ -261,12 +261,12 @@
 	                </div>
 	                </div>
 	               
-				   <div class="row ramakrishnaCls" style="display:none;" id="" >
+				<div class="row ramakrishnaCls" style="display:none;" id="">
 					<div id="appliedPostForSelectedId" class="hideDivCls"></div>
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
-                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /></h4>
+                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 100px; margin-top: 35px; width: 100px; height: 50px;display:none;" id="addPrcssngImgId" class="offset7" src="images/Loading-data.gif"></h4>
 								<input type="hidden" name="nominatedPostVO.isCheckedMigrateAddressField" id="addressCheckId1"/>
                             </div>
                             <div class="panel-body bg_ff pad_10" style="display:none;" id="changePhoneNumberDiv">
@@ -540,7 +540,7 @@
                         	<input type="radio" class="referenceModalNo" checked="true" name="radio"/>No
                         </label>
                  </div>
-				 </div>
+				</div>
 					<!--<div class="m_top10 hideDivCls" id="involvedCandidatesDiv1">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default">
@@ -588,13 +588,13 @@
                             </div>
                         </div>-->
                     </div>
-					<div class="row hideDivCls" id="uploadFlDivId">
+					<div class="row hideDivCls" id="uploadFlDivId" style="display:none;"> 
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p>UPLOAD SCAN COPY</p>
 								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
                         </div>
                     </div>
-                    <div class="row hideDivCls">
+                    <div class="row hideDivCls" id="submitBtnId" style="display:none;">
                     	<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12 col-lg-4 col-lg-offset-4 m_top20">
                         	<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
                         </div>
