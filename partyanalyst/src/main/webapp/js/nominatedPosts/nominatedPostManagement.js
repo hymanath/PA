@@ -744,7 +744,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 			availableCount = $(this).attr('attr_available_posts');
 			shortListedCount=$(this).attr('attr_short_listedcount');
 			positionName=$(this).attr('attr_position_name');
-			var str='';
+			var str=' Select Position Member : ';
 			str+='<select attr_member_class_name="moveToFinalReviewCls" id="membersSelId" class="chosenSelect" multiple attr_no="">';
 			for(var i=0;i<availableCount;i++){
 				str+='<option value="'+(i+1)+'">Member '+(i+1) +'</option>';
