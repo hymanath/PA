@@ -34,13 +34,17 @@
 	cursor:pointer;
 	top:-3px
 }
+.font_17{font-size:16px;}
+.tableFontSize thead th {font-size:12px; !important;font-weight:normal !important}
+.tableFontSize tr td{font-size:12px; !important;font-weight:normal !important}
 </style>
 </head>
-<body>
+<body >
 <div class="container">
     <div class="row">
 	 
 	  <div class="col-md-12 col-xs-12 col-sm-12">
+	  <h3 class="text-capital" id="headinggId" style="color:#5C2D25"></h3>
 		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon" title="Select Locations" ></i></h3>
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
@@ -90,11 +94,11 @@
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="text-capital headingColor filterBtnCls">
-							<span id="anyDeptHeadingId"></span>
+					<div class="" style="padding: 12px;">
+						<p class="text-capital headingColor filterBtnCls font_17" style="cursor:pointer;">
+							<b><span id="anyDeptHeadingId"></span></b>
 							<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;"></i>
-						</h4>
+						</p>
 					</div>
 					<div class="panel-body">
 						<div id="anyDeptCorTblId" class=" filterSectionIconCls"></div>
@@ -107,9 +111,9 @@
 	<div class="row m_top20">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
-				<div class="panel-heading">
+				<!--<div class="panel-heading">
 					<h4 class="panel-title text-capital headingColor"><span id="headinggId"></span></h4>
-				</div>
+				</div>-->
 				<div class="panel-body">
 					<center><img src="images/Loading-data.gif" id="departmentsBuildSearchId" style="display:none;width:50px;height:50px;margin:auto;"/></center>
 				<div id="departmentsBuildId" class="col-md-12 col-xs-12 col-sm-12"></div>
@@ -158,9 +162,9 @@ var globalAssmblyArr=[];
 var globalMandalTowDivArr=[];
 $(document).ready(function() {
 	if(globalStatus == "notYet")
-		$("#headinggId").html("yet to start nominated post details");
+		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
 	else
-		$("#headinggId").html(globalStatus+" nominated post details");
+		$("#headinggId").html(globalStatus+" - "+globalLvlTxt+" level - board/corporation");
 	if(globalLevelId !=null && globalLevelId !="" && globalLevelId !=1 && globalLevelId !=2){
 		getDistrictsForStates(globalStateId);
 	}else{
@@ -169,18 +173,18 @@ $(document).ready(function() {
 		$("#manTowDivMainId").hide();
 	}	
 	$(".filterSection").hide();
-	$(".filterSectionIconCls").hide();
+	//$(".filterSectionIconCls").hide();
 	setTimeout(function(){ $( "#locationWiseDataId" ).trigger( "click" ); }, 1000);
 	if(globalLevelId ==1){
-	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (Central Level) </u> ");	
+	$("#anyDeptHeadingId").html(" <u style='text-decoration: none;'> Any Department - Any Corporation/Board <small style='color:#76514C;'>(Central Level)</small> </u> ");	
 	}else if(globalLevelId == 2){
-	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (State Level) </u>");	
+	$("#anyDeptHeadingId").html(" <u style='text-decoration: none;'> Any Department - Any Corporation/Board  <small style='color:#76514C;'>(State Level)</small> </u>");	
 	}else if(globalLevelId == 3){
-	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (District Level) </u>");	
+	$("#anyDeptHeadingId").html(" <u style='text-decoration: none;'> Any Department - Any Corporation/Board  <small style='color:#76514C;'>(District Level)</small> </u>");	
 	}else if(globalLevelId == 4){
-	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (Assembly Level) </u>");	
+	$("#anyDeptHeadingId").html(" <u style='text-decoration: none;'> Any Department - Any Corporation/Board  <small style='color:#76514C;'>(Assembly Level)</small> </u>");	
 	}else {
-	$("#anyDeptHeadingId").html(" <u> Any Department - Any Corporation/Board (Mandal/Muncipality/Corporation Level) </u>");	
+	$("#anyDeptHeadingId").html(" <u style='text-decoration: none;'> Any Department - Any Corporation/Board <small style='color:#76514C;'>(Mandal/Muncipality/Corporation Level)</small> </u>");	
 	}
 	getAnyDeptApplicationOverviewCountLocationWise();
 });
