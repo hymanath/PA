@@ -288,6 +288,8 @@
 		getCommitteesCumulativeBasicReportChart(globalUserAccessLevelId,globalUserAccessLevelValues);
 		getLoggedInUserStructure();
 		getDistrictWiseCommitteesCountReport();
+		getCommitteesBasicCountReport();
+		getLevelWiseBasicCommitteesCountReport();
 	}
 	
 	$(document).ready(function(){

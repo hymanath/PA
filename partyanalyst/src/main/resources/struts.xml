@@ -13356,5 +13356,15 @@
    			<param name="root">CommitteeDataVOList</param>
    		</result>
 	</action>
+	<action name="getCommitteesBasicCountReportAction" class="coreDashboardAction" method="getCommitteesBasicCountReport">
+		<result type="json" name="success">
+   			<param name="root">committeeDataVO</param>
+   		</result>
+	</action>
+	<action name="getLevelWiseBasicCommitteesCountReportAction" class="coreDashboardAction" method="getLevelWiseBasicCommitteesCountReport">
+		<result type="json" name="success">
+   			<param name="root">CommitteeDataVOList</param>
+   		</result>
+	</action>
 </package>
 </struts>

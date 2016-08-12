@@ -921,4 +921,64 @@ function buildBasicgraphs(){
 		});
 	}
 	
+	function getCommitteesBasicCountReport(){
+		
+		var state ='AP';
+		var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+      
+	   
+       var startDateString = '01/01/2014';
+	   var endDateString = '11/08/2016';
+		
+		var jsObj ={userAccessLevelId:globalUserAccessLevelId,
+					userAccessLevelValuesArray:globalUserAccessLevelValues,
+					state:state,
+					basicCommitteeIdsArray : basicCommitteeIdsArray,
+					startDateString : startDateString,
+ 			        endDateString :   endDateString
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getCommitteesBasicCountReportAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			
+		});
+	}
 	
+	function getLevelWiseBasicCommitteesCountReport(){
+		
+		var state ='AP';
+		var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+      
+	   
+       var startDateString = '01/01/2014';
+	   var endDateString = '11/08/2016';
+		
+		var jsObj ={userAccessLevelId:globalUserAccessLevelId,
+					userAccessLevelValuesArray:globalUserAccessLevelValues,
+					state:state,
+					basicCommitteeIdsArray : basicCommitteeIdsArray,
+					startDateString : startDateString,
+ 			        endDateString :   endDateString
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getLevelWiseBasicCommitteesCountReportAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			
+		});
+	}
