@@ -922,7 +922,9 @@ function getNominatedPostApplication(startIndex)
 				 
 			}
 			str +='</ul>';	
-			$("#cadreSearchDtls").html(str);			
+			$("#cadreSearchDtls").html(str);
+			var length = $("#cadreSearchDtls").find("li").length;
+			$("#membersCountId").html("<p>Seatch Results <span class='font_weight'>"+length+"</span> Members</p>")
 			if(result.length>3)
 			{
 			$(".best-matched-profile").slick({
@@ -930,6 +932,8 @@ function getNominatedPostApplication(startIndex)
 				slidesToShow: 4,
 			   infinite: false
 			   });
+			   $(".slick-next").css("margin-right","10px;")
+			   $(".slick-prev").css("margin-left","10px;")
 			}
 		}else{
 				str+='No Data Available';
@@ -2190,8 +2194,8 @@ function populateFields(result){
 	 var str = '';
 	 if(result.subList != null && result.subList.length > 0){
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">';
-                    str+='<div class="bg_ff pad_10">';
-                        	str+='<h4 class="panel-title">APPLIED POSTS FOR THE SELECTED PROFILE</h4>';
+                    str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);">';
+                        	str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE</h4>';
                            str+='<div class="row">';
                             str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
                                 	str+='<div class="panel panel-default panelPost">';
@@ -2441,6 +2445,7 @@ $("#searchDivId").show();
 		$('#searchDivId').hide();
 		$("#uploadFlDivId").hide();
 		$("#submitBtnId").hide();
+		$("#membersCountId").html('');
 	  if(value == "Cadre"){
 			getNominatedPostApplication(0);
 		}

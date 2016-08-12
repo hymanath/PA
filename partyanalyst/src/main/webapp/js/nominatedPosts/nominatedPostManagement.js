@@ -1282,8 +1282,8 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	}
 	
 	if(isDataAvaialable){
-	 str+='<table class="table table-bordered">';
-		  str+='<thead class="text-capital" style="background-color:#eee;">';// class="text-capital"
+	 str+='<table class="table table-bordered tableFontSize">';
+		  str+='<thead class="text-capital" style="background-color:#EFF3F4;">';// class="text-capital"
 		  str+='<th>Posts</th>';
 		  str+='<th>Total Applications Received</th>';
 		 // str+='<th>Reports Pending</th>';

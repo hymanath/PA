@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NOMINATED POST PROFILE CREATION</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/NominatedPost/custom1.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
@@ -114,27 +114,29 @@
 	{
 		color:#333 !important;
 	}
+	.font_weight{font-weight: bold;}
+	.font_16{font-size:16px;}
 </style>
 </head>
-<body>
+<body class="bodycolr">
 <div class="container">
 	<div class="row">
     	<div class="col-md-12">
        	  <div class="panel panel-default">
-        	  <div class="panel-heading">
-        	    <h3 class="panel-title">NOMINATED POST PROFILE CREATION</h3>
+        	  <div class="panel-heading" style="background:#CCCCCC">
+        	    <h3 class="panel-title" class="font_weight">NOMINATED POST PROFILE CREATION</h3>
 	      	  </div>
         	  <div class="panel-body bg_ef">
               	<div class="row">
-                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">
-                    	<p class="text-success">SEARCH APPLICANT</p>
+                	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 ">
+                    	<p class="text-success font_weight font_16" >SEARCH APPLICANT</p>
                     </div>
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10">
-                    	<label class="checkbox-inline">
-                        	<input value="Cadre" type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" />Cadre
+                    	<label class="radio-inline">
+                        	<input value="Cadre" type="radio" class="cadreCheckCls" name="checkBoxName" id="cadreSearchId" checked="true" onclick="refreshExistingDetails();" style="margin-top: 3px;"/><span>Cadre</span>
                         </label>
-                        <label class="checkbox-inline" style="padding-left: 10px;">
-                        	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName"/>Not Cadre
+                        <label class="radio-inline" >
+                        	<input value="Not Cadre" type="radio" class="cadreCheckCls" id="notCadreSearchId" name="checkBoxName" style="margin-top: 3px;"/><span>Not Cadre</span>
                         </label>
 						
 						<span id="addMemberDivId" style="display:none;position: relative; margin-left: 8px; cursor: pointer; background: #ddd; padding: 4px; border-radius: 12px; top: 2px;" class="addMemberModal" onclick="clearAssignValues();">
@@ -144,7 +146,7 @@
                     </div>
 					</div>
 					
-          <div id="searchMemberDiv">
+          <div id="searchMemberDiv" class="row">
                     <div class="col-md-2 col-xs-12 col-sm-6 col-lg-2 m_top10" id="statedisplaydivid">
                     	<label>State</label>
 						<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
@@ -182,7 +184,7 @@
                         </select>
                     </div>
                 
-                <div class="row" class="searchMemberCls">
+                <div  class="searchMemberCls m_top10">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
 					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
 					<div id="searchErrDiv" style="color:red;"></div>
@@ -216,7 +218,7 @@
                  </div>
 				 </div>
 				 <div id="cadreById" style="display:none;">
-				 <div class="row" class="searchMemberCls">
+				 <div  class="row searchMemberCls m_top10">
                 	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
 					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
                         <div class="searchDiv">
@@ -252,7 +254,8 @@
 				
 						
 				   <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId" style="display:none;">
-                    		<!--<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS</h4>-->
+                    		<div class="m_top10"><p class="m_0 text-success font_weight font_16">APPLICANT PROFILE DETAILS</p></div>
+							<div id="membersCountId"></div>
                         	<div id="searchData"></div>
                         	<div class="" id="scrollDivId" style="display:none;">
 								<div  id="cadreSearchDtls" ></div>
@@ -267,7 +270,7 @@
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
-                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 100px; margin-top: 35px; width: 100px; height: 50px;display:none;" id="addPrcssngImgId" class="offset7" src="images/Loading-data.gif"></h4>
+                            	<h4 class="panel-title font_weight">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 100px; margin-top: 35px; width: 100px; height: 50px;display:none;" id="addPrcssngImgId" class="offset7" src="images/Loading-data.gif"></h4>
 								<input type="hidden" name="nominatedPostVO.isCheckedMigrateAddressField" id="addressCheckId1"/>
                             </div>
                             <div class="panel-body bg_ff pad_10" style="display:none;" id="changePhoneNumberDiv">
@@ -352,22 +355,22 @@
                         </div>-->
                     </div>
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
-                    	<h4 class="m_0 text-success">NOMINATED LEVEL AND LOCATION 
+                    	<p class="m_0 text-success font_16 font_weight">NOMINATED LEVEL AND LOCATION 
 							<!--<span class="pull-right f_14" style="cursor:pointer" >
 								Add One More 
 								<i class="glyphicon glyphicon-plus-sign"></i>
 							</span>-->
-						</h4>
+						</p>
                     </div>
 					<!-- ss -->
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 hideDivCls">
 						<div class="addBlockNew cloneBlockDiv">
 							<div class="row">
                             	<div class="col-md-4 col-sm-4 col-xs-12 m_top10 col-lg-4">
-                                	<h4 class="panel-title">PLEASE SELECT APPLYING POST TYPE</h4>
+                                	<h4 class="panel-title font_weight">PLEASE SELECT APPLYING POST TYPE</h4>
                                 </div>
                                 <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
-                                	<div class="btn-group">
+                                	<div class="btn-group" style="border: 1px solid rgb(204, 204, 204);">
                                       <button  type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" attr_postId="1">Nominated Post</button>
                                       <button  type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" attr_postId="2">Party Post</button>
 										<input attr_no='' type="hidden" class="postTypeCls" id="postTypeId" name="nominatedPostVO.nominatdList[0].postTypeId">
@@ -447,10 +450,10 @@
 						<div class="addBlockNew cloneBlockDiv" id="cloneDivBlock" style="display:none;">
 							<div class="row">
                             	<div class="col-md-4 col-sm-4 col-xs-12 m_top10 col-lg-4">
-                                	<h4 class="panel-title">PLEASE SELECT APPLYING POST TYPE</h4>
+                                	<h4 class="panel-title font_weight">PLEASE SELECT APPLYING POST TYPE</h4>
                                 </div>
                                 <div class="col-md-5 col-sm-5 col-xs-12 col-lg-5">
-                                	<div class="btn-group">
+                                	<div class="btn-group" style="border: 1px solid rgb(204, 204, 204);">
                                       <button type="button" id="nomintdPostId" class="btn btnClassChange btnNewCustom btnActive btn-xs nominatdPostSelCls" attr_postId="1">Nominated Post</button>
                                       <button type="button" id="partyPostId" class="btn btnClassChange btnNewCustom btn-xs partyPostSelCls" attr_postId="2">Party Post</button>
 									  <input type="hidden" class="postTypeCls" id="postTypeId">
@@ -531,7 +534,7 @@
 					
                
                 <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top10 hideDivCls">
-                        <h4 class="panel-title text-success">REFERRAL</h4>
+                      <p class="m_0 text-success font_16 font_weight">REFERRAL </p>
                         <label>Do you have reference</label><br/>
 						
                         <label class="radio-inline">
@@ -579,7 +582,7 @@
                     </div>
 					<div class="row hideDivCls" id="uploadFlDivId" style="display:none;"> 
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                        	<p>UPLOAD SCAN COPY</p>
+                        	<p class="m_0 text-success font_16 font_weight">UPLOAD SCAN COPY</p>
 								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
                         </div>
                     </div>
@@ -744,16 +747,17 @@
 </div>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" style="width:90%" role="document">
+  <div class="modal-dialog" style="width:80%" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background: rgb(204, 204, 204) none repeat scroll 0% 0%;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Search Members</h4>
+        <h4 class="modal-title">Select Referral Details</h4>
       </div>
       <div class="modal-body">
         <div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 					<div style="background:#fff">
+					<div style="background:#EEEEEE !important;">
 					<div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls">
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
@@ -851,13 +855,13 @@
 											<div id="referRoleErrorDiv"></div>
 										</div>
 									</div>
+								</div>
 								</div></br>
-								
 								
 				
 
 
-											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
+						<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
 						<div class="col-md-3 col-xs-12 col-sm-6">
 							<button type="button" class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();" id="searchBtnId"  style="margin-top: 25px;display:none;">Search Member</button>
 						</div>

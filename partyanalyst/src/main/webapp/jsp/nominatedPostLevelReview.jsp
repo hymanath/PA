@@ -13,6 +13,11 @@
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 </head>
+<style>
+.font_15{font-size:18px;}
+.font_24{font-size: 20px;}
+.bar_view{padding: 6px; float: left; height: 32px; width: 12px;  margin-left: -9px;}
+</style>
 <body>
 <div class="container">
     <div class="row">
@@ -22,15 +27,19 @@
                 <li>Nominated Posts Overview Details  </li>
             </ol>
         </div>
-		<div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
+		<div class="col-md-12 col-xs-12 col-sm-12" >
 			<div class="applicationsOverView">
-				<span class="headingColor">Central Level - Board/Corporation Overview</span>
+			<div class="m_top10">
+				<span class="bar_view" style="background-color: rgb(245, 129, 129);"></span>
+				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">CENTRAL LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
 				<div id="centralWiseOverviewId"  style="margin-top: 15px"></div>
+			</div>
 			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20" >
 			<div class="applicationsOverView">
-				<span class="headingColor">State Level - Board/Corporation Overview
+			<span class="bar_view" style="background-color: #62B9A9;"></span>
+				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">State LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
 					<span style="margin-right:60px" class="pull-right">
 					  <span style="border-radius:15px;" class="btn btn-xs btn-success"> 
 						<input type="radio" value="1" name="stateName" style="cursor:pointer;" class="stateCls" checked="true"> <b>AP</b>
@@ -45,19 +54,22 @@
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 			<div class="applicationsOverView">
-				<span class="headingColor">District Level - Board/Corporation Overview</span>
+			<span class="bar_view" style="background-color: #C391CE;"></span>
+				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">District LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
 				<div id="districtWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 			<div class="applicationsOverView">
-				<span class="headingColor">Constituency Level - Board/Corporation Overview</span>
+			<span class="bar_view" style="background-color: #3788B3;"></span>
+				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Constituency LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
 				<div id="assemblyWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 			<div class="applicationsOverView">
-				<span class="headingColor">Mandal/Muncipality/Corporation Level - Board/Corporation Overview</span>
+			<span class="bar_view" style="background-color: #330099;"></span>
+				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Mandal/Muncipality/Corporation Level LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
 				<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
@@ -103,7 +115,7 @@
 			for(var i in result){
 				if(result[i].name != "TOTAL AVAILABLE"){
 				str+='<li style="font-size:12px">';
-					str+='<div class="panel panel-default panelCustom">';
+					str+='<div class="panel panel-default panelCustom ">';
 					str+='<div class="panel-heading">';
 					if(i>0){
 					
