@@ -13,7 +13,7 @@
 <!--<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">-->
 <!--<link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">-->
 <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
@@ -569,7 +569,7 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js"></script>
@@ -1232,7 +1232,7 @@ getUserAccessLocationDetails();
 			"iDisplayLength": 10,
 				"aLengthMenu": [[10,50,100, 200, 500, -1], [10,50,100, 200, 500, "ALL"]]			
 			});
-			$('#meetingTableId').removeClass("dataTable");
+			//$('#meetingTableId').removeClass("dataTable");
 			$('#meetingTableId_wrapper').css("margin-top","20px");
 			
 			 $('[data-toggle="tooltip"]').tooltip();
