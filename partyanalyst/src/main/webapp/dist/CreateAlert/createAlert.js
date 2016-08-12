@@ -726,7 +726,7 @@ function disableByLevel(index)
 		if(levelId == 5)
 		{
 			level = "mandal";
-			alertLevelId = 6;
+			alertLevelId = 5;
 		}
 			
 		if(levelId == 6)
