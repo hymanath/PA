@@ -37,6 +37,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private CommitteeVO committeeVO ;
 	private UserTypeVO userTypeVO;
 	private List<CommitteeDataVO> CommitteeDataVOList;
+	private CommitteeDataVO committeeDataVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -118,6 +119,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setCommitteeDataVOList(List<CommitteeDataVO> committeeDataVOList) {
 		CommitteeDataVOList = committeeDataVOList;
+	}
+
+	
+	public CommitteeDataVO getCommitteeDataVO() {
+		return committeeDataVO;
+	}
+
+	public void setCommitteeDataVO(CommitteeDataVO committeeDataVO) {
+		this.committeeDataVO = committeeDataVO;
 	}
 
 	//Implementation method
@@ -315,6 +325,76 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getDistrictWiseCommitteesCountReport() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCommitteesBasicCountReport(){
+		
+		try{
+			LOG.info("Entered into getCommitteesBasicCountReport()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			
+			committeeDataVO = coreDashboardService1.getCommitteesBasicCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getCommitteesBasicCountReport() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLevelWiseBasicCommitteesCountReport(){
+		
+		try{
+			LOG.info("Entered into getLevelWiseBasicCommitteesCountReport()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			
+			CommitteeDataVOList = coreDashboardService1.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getLevelWiseBasicCommitteesCountReport() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
