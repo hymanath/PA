@@ -15,7 +15,7 @@
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
-<link href="dist/Plugins/Datatables/datatables.css" rel="stylesheet" type="text/css"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
@@ -24,16 +24,17 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="dist/Plugins/Datatables/datatables.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominatedPost.js?v=1.0.5"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script src="dist/slick/slick.js" type="text/javascript"></script>
 <style type="text/css">
-#searchedMembersId_length , #searchedMembersId_filter , #searchedMembersId_info , #searchedMembersId_paginate , #searchedMembersId thead th
+/*#searchedMembersId_length , #searchedMembersId_filter , #searchedMembersId_info , #searchedMembersId_paginate , #searchedMembersId thead th
 {
 	display:none;
-}
+}*/
+#searchedMembersId_length,#searchedMembersId_info{display:none;}
 .panelPost .panel-body
 {
 	height:250px;
@@ -529,7 +530,7 @@
 					</div>
 					
                
-                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 hideDivCls">
+                <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top10 hideDivCls">
                         <h4 class="panel-title text-success">REFERRAL</h4>
                         <label>Do you have reference</label><br/>
 						
@@ -539,7 +540,7 @@
                         <label class="radio-inline">
                         	<input type="radio" class="referenceModalNo" checked="true" name="radio"/>No
                         </label>
-                 </div>
+                 </div>-->
 				</div>
 					<!--<div class="m_top10 hideDivCls" id="involvedCandidatesDiv1">
 						<div class="col-md-12 col-xs-12 col-sm-12">
@@ -560,33 +561,21 @@
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
                         	<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
-						<!--<div class="row m_top10" id="involvedCandidatesDiv" style="display:none;">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">ADD INVOVLED CANDIDATES TO THIS ALERT</h4>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="membersBlock col-md-12" style="display:none;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>-->
-						<div class="membersBlock"></div>
-                        <!--<div class="col-md-3">
-                        	<div class="involveBlockNew">
+						
+						<div class="membersBlock">
+						</div>
+						<div class="col-md-3 col-xs-12 col-sm-6 m_top10">
+                        	<div class="involveBlockNew" btn-attr = "involve">
                             	<div class="media">
                                 	<div class="media-left" style="font-size:36px">
                                     	+
                                     </div>
                                     <div class="media-body">
-                                    	Click to Search Involved Members Link to this alert
+                                    	Click to Search Referral Details to this Candidate
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
 					<div class="row hideDivCls" id="uploadFlDivId" style="display:none;"> 
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -806,7 +795,7 @@
 						<div class="col-md-3 col-xs-12 col-sm-6 stateShowCls" >
 							<label>State</label>
 							 <select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup('');">
-								 <option value="0">Select State</option>
+								 <option value="0">All</option>
 								 <option value="1">AP</option>
 								 <option value="36">TS</option>
 							 </select>
@@ -815,24 +804,24 @@
 						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls distCls">
 							 <label>District</label>
 							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup('');" >
-							 <option value="0">Select District</option></select>
+							 <option value="0">All</option></select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls constiCls">
 							<label>Assembly</label>
 							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup('');" >
-							<option value="0">Select Assembly</option>
+							<option value="0">All</option>
 							</select>
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
 							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" >
-								<option value="0">Select Mandal/ Municipality</option>
+								<option value="0">All</option>
 							 </select>
 						</div>
 						<div class="col-md-3  col-xs-12 col-sm-6 locationsFilterCls panchayatCls">
 							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" >
-							<option value="0">Select Panchayat/Ward</option>
+							<option value="0">All</option>
 							</select>
 						</div>
 						
@@ -971,7 +960,7 @@ function clearAssignValues()
 	}
 	
 }
-$(document).on("click",".referenceModal",function(){
+$(document).on("click",".involveBlockNew",function(){
 	$("#myModal").modal('show')
 	commontdpCadreIds = [];;
 	 $("#apptmemberDetailsDiv").html("");
@@ -980,7 +969,9 @@ $(document).on("click",".referenceModal",function(){
 				select.refresh();	
 		showHideBySearchType();	
 					disableByLevel(1);
+					
 })
+
 function buildapptmemberDetails(result){
 		var str='';
 		if(result !=null && result.length>0){
@@ -1118,13 +1109,17 @@ function buildapptmemberDetails(result){
 		$("#apptmemberDetailsDiv").html(str);
 		$('[data-toggle="tooltip"]').tooltip()
 		$('.check').tooltip()
-		
-		applyPagination();
+		$('#searchedMembersId').DataTable({
+			
+		});
+		//applyPagination();
 	}
 	function cadreReloadFun()
 	{
 		$("#cadreSearchId").prop('checked', true);
 	}
+	$("#apptmemberDetailsDiv").html("");
+	
 </script>
 </body>
 </html>
