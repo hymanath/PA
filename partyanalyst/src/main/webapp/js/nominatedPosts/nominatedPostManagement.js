@@ -475,7 +475,8 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 	var str='';
 	
 	if(result !=null && result.length>0){
-		if(globalStatus !=null && globalStatus.length>0 &&  globalStatus != "notRecieved"){
+		if(globalStatus !=null && globalStatus.length>0 &&
+		(globalStatus != "notRecieved" && globalStatus != "Total")){
 				str+='<table class="table table-bordered tableCollapse">';
 					str+='<thead>';
 							str+='<th>Posts</th>';					
@@ -567,10 +568,24 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 						}else{
 								str+='<td><label>Any Post</td>';
 						}
+								if(totalPositions >0){
+									str+='<td>'+totalPositions+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
 								
-								str+='<td>'+totalPositions+'</td>';
-								str+='<td>'+availablePosts+'</td>';
-								str+='<td>'+result[i].receivedCount+'</td>';
+								if(availablePosts >0){
+									str+='<td>'+availablePosts+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].receivedCount >0){
+									str+='<td>'+result[i].receivedCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
 								if(rdyToShortlist>0){
 									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
 										str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
@@ -578,10 +593,20 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 										str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" > '+rdyToShortlist+'</td>';
 								}
 								else
-									str+='<td>0</td>';
+									str+='<td> - </td>';
 								
-								str+='<td>'+rejected+'</td>';
-								str+='<td>'+shortListed+'</td>';
+								if(rejected >0){
+									str+='<td>'+rejected+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(shortListed >0){
+									str+='<td>'+shortListed+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
 								
 								if(readyForFinalReview>0){
 									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
@@ -590,41 +615,26 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 										str+='<td id=""  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >'+readyForFinalReview+'</td>';
 								}
 								else
-									str+='<td>0</td>';
-								str+='<td>'+finalized+'</td>';
-								str+='<td>'+goPassed+'</td>';
-								
-								
-								
-								/* if(result[i].distList !=null && result[i].distList.length>0){
-									for(var j in result[i].distList){	
-											if(result[i].idNameVoList[j].name !="Applied"){
-												str+='<td>'+result[i].distList[j].count+'</td>';
-											}
-									}
+									str+='<td> - </td>';
+								if(finalized >0){
+									str+='<td>'+finalized+'</td>';
 								}else{
-									str+='<td>-</td>';
-									str+='<td>-</td>';
-								} */
+									str+='<td> - </td>';
+								}
 								
-								/* if(result[i].idNameVoList !=null && result[i].idNameVoList.length>0){
-									for(var j in result[i].idNameVoList){
-											if(result[i].idNameVoList[j].name !="Open"){
-												str+='<td>'+result[i].idNameVoList[j].count+'</td>';
-											}
-									}
+								if(goPassed >0){
+									str+='<td>'+goPassed+'</td>';
 								}else{
-									str+='<td>-</td>';
-									str+='<td>-</td>';
-									str+='<td>-</td>';
-								} */
+									str+='<td> - </td>';
+								}
 								
 						str+='</tr>';
 				}		
 				str+='</tbody>';
 				str+='</table>';
 		}
-		else{
+		else if(globalStatus !=null && globalStatus.length>0 &&
+		(globalStatus == "notRecieved")){
 			
 				str+='<table class="table table-bordered tableCollapse">';
 					str+='<thead>';
@@ -638,9 +648,144 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					if(result[i].id !=null){
 						str+='<tr>';
 							str+='<td>'+result[i].name+'</td>';
-							str+='<td>'+result[i].count+'</td>';
+							if(result[i].count>0){
+								str+='<td>'+result[i].count+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
 						str+='</tr>';
 					}						
+				}		
+				str+='</tbody>';
+				str+='</table>';
+			
+		}else{
+			str+='<table class="table table-bordered tableCollapse">';
+					str+='<thead>';
+							str+='<th>Posts</th>';					
+							str+='<th>Total Positions</th>';					
+							str+='<th>Total Positions Available</th>';//Open Status					
+							str+='<th>Total Applications Received</th>';					
+							str+='<th>Ready to Shortlist</th>';
+							str+='<th>Rejected</th>';					
+							str+='<th>Shortlisted</th>';					
+						
+							str+='<th>Final Review</th>';
+							str+='<th>Finalized</th>';
+							str+='<th>G/O Passed/ Position Completed</th>';
+							
+					str+='</thead>';
+					
+				str+='<tbody>';
+				for(var i in result){
+					
+					var availablePosts = 0;
+					var readyForFinalReview= 0;
+					var finalized = 0;
+					var goPassed = 0;
+					var totalPositions=0;
+							if(result[i].idNameVoList !=null && result[i].idNameVoList.length>0){
+								
+								for(var j in result[i].idNameVoList){
+										if(result[i].idNameVoList[j].name =="Open"){
+											availablePosts = result[i].idNameVoList[j].count;
+										}else if(result[i].idNameVoList[j].name =="Final Review"){
+											readyForFinalReview = result[i].idNameVoList[j].count;
+										}else if(result[i].idNameVoList[j].name =="Confirmed"){
+											finalized = result[i].idNameVoList[j].count;
+										}else if(result[i].idNameVoList[j].name =="GO Issued"){
+											goPassed = result[i].idNameVoList[j].count;
+										}
+										
+										totalPositions = totalPositions + result[i].idNameVoList[j].count;
+										
+								}
+							}
+					var rdyToShortlist = 0;
+					var shortListed = 0;
+					var rejected =0;
+					
+						if(result[i].distList !=null && result[i].distList.length>0){
+								for(var j in result[i].distList){
+										if(result[i].distList[j].name =="Applied"){
+											rdyToShortlist = result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Rejected"){
+											rejected  = result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Shortlisted"){
+											shortListed = result[i].distList[j].count;
+										}
+								}
+							} 
+					
+						
+					
+						if(result[i].id != null){
+							str+='<tr>';							
+								str+='<td><label><span style="cursor:default;">'+result[i].name+'</span></label></td>';								
+								if(totalPositions >0){
+									str+='<td>'+totalPositions+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(availablePosts >0){
+									str+='<td>'+availablePosts+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(result[i].receivedCount >0){
+									str+='<td>'+result[i].receivedCount+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(rdyToShortlist>0){
+									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
+										str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+rdyToShortlist+'</td>';
+									else
+										str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" > '+rdyToShortlist+'</td>';
+								}
+								else
+									str+='<td> - </td>';
+								
+								if(rejected >0){
+									str+='<td>'+rejected+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(shortListed >0){
+									str+='<td>'+shortListed+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								
+								if(readyForFinalReview>0){
+									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
+										str+='<td id="readyTofinalReviewId"  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;">'+readyForFinalReview+'</td>';
+									else
+										str+='<td id=""  attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >'+readyForFinalReview+'</td>';
+								}
+								else
+									str+='<td> - </td>';
+								if(finalized >0){
+									str+='<td>'+finalized+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(goPassed >0){
+									str+='<td>'+goPassed+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+							str+='</tr>';								
+						}	
+						
 				}		
 				str+='</tbody>';
 				str+='</table>';
