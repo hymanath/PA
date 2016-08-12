@@ -707,11 +707,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 				 return; 
 			 }
 		}
-		else if(advanceSearchType == "mobileno" || advanceSearchType == "mebershipno" || advanceSearchType == "votercardno")
-		{
-			getDetailsBySrch();
-			return;
-		}
+		
 		
 		else if(advanceSearchType == 2)
 		{
@@ -734,7 +730,11 @@ $(document).on("click","#addCandidateBtnId",function(){
 			});
 			 referCommitteeId = $("#referCommitteeId").val();
 		}
-		
+		else 
+		{
+			getDetailsBySrch();
+			return;
+		}
 		 districtId = $("#referdistrictId").val();
 		 constituencyId = $("#referconstituencyId").val();
 		var tehsilName =  $("#refermandalNameId selected:option").text();
@@ -825,24 +825,24 @@ $(document).on("click","#addCandidateBtnId",function(){
 		}
 		$('#errorDivId').html(errorStr);
 		if(levelId == 2){
-		if(stateId==0 || stateId=='select'){
+		/*if(stateId==0 || stateId=='select'){
 			
 				errorStr +="Please Select State";
-			}
+			}*/
 		}
           if(levelId == 3){
 		
 			 districtId = $("#referdistrictId").val();
 			
-			if(districtId==0 || districtId=='select'){
+			/*if(districtId==0 || districtId=='select'){
 			
 				errorStr +="Please Select District";
-			}
+			}*/
 		}
 		
-		 else if(levelId == 3){
+		 else if(levelId == 4){
 			 districtId = $("#referdistrictId").val();
-			if(districtId==0 || districtId=='select'){
+			/*if(districtId==0 || districtId=='select'){
 				
 				errorStr +="Please Select District";
 				$("#errorDivId").html(errorStr);
@@ -854,6 +854,17 @@ $(document).on("click","#addCandidateBtnId",function(){
 				errorStr +="Please Select Assembly";
 				$("#errorDivId").html(errorStr);
 				return;
+			}*/
+		}
+		
+		else if(levelId == 5 || levelId == 6){
+			 districtId = $("#referdistrictId").val();
+			if(districtId==0 || districtId=='select'){
+				
+				errorStr +="Please Select District";
+				$("#errorDivId").html(errorStr);
+				return ;
+				
 			}
 		}
 		if(errorStr.length >0)
@@ -997,25 +1008,28 @@ function setDefaultImage(img){
    })
    
     $(document).on("click",".closeIcon",function(){
-	var id=$(this).attr("id");
-	$(".candidatecls"+id).prop('checked', false); 
-	$(".close"+id).prop('checked', false); 
-	involvedCadreIds.pop(id);	
-	$("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+	//var id=$(this).attr("id");
+	var id =0;
 	var retVal = confirm("Are you sure want to remove this refer ?");
                if( retVal == true ){
-				  $(".involveBlock").each(function(){
-					var cadreId = $(this).attr("attr_cadreId") ; 
-					if(id == cadreId)
-					{
-						$(this).remove();
-					}
-				  });
-                  return true;
+				    id=$(this).attr("id");
+					  $(".involveBlock").each(function(){
+						var cadreId = $(this).attr("attr_cadreId") ; 
+							if(id == cadreId)
+							{
+								$(this).remove();
+							}
+					  });
+				  $(".candidatecls"+id).prop('checked', false); 
+				  $(".close"+id).prop('checked', false); 
+				  involvedCadreIds.pop(id);	
+				  $("#involvedMembers").html('('+involvedCadreIds.length+' - Members added)');
+				return true;
                }
                else{
                   return false;
                }
+			   
 }); 
 function getDetailsBySrch()
 	{
@@ -1094,7 +1108,9 @@ function getDetailsBySrch()
 	 }
 	 
 	function applyPagination(){
-		$('#searchedMembersId').DataTable();
+		$('#searchedMembersId').DataTable({
+			
+		});
 	}
 	function getConstituenciesBydistrictForReferPopup(index){
 	 var districtId = $("#referdistrictId"+index).val();
@@ -1180,10 +1196,10 @@ function getDetailsBySrch()
  {
   
     $("#alertlevelId").find('option').remove();
-     var stateGrpIds = ["6","23","7","12","16","22"];
-   var distGrpIds = ["1","9","11"];
-   var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
-   var constiGrpIds =["2","8","10",];
+     var stateGrpIds = ["7","12","16"];
+   var distGrpIds = ["6","14","15","23","19","20"];
+   var mandalGrpIds =["3","25"];
+   var constiGrpIds =["2","4","5","8","10","1","9","11","13","17","18","22","21"];
    var designationId =$("#advanceDesignationId").val();
   
    var str ='';
@@ -1219,14 +1235,14 @@ function getDetailsBySrch()
       str+='<option value="2">State</option>';
       str+='<option value="3">District</option>';
        str+='<option value="4">Constituency</option>';
-      str+='<option value="5">Mandal/Muncipality</option>';
-      str+='<option value="6">Village/Ward</option>';
+      //str+='<option value="5">Mandal/Muncipality</option>';
+      //str+='<option value="6">Village/Ward</option>';
       $("#alertlevelId").append(str);
    }
      $("#alertlevelId").dropkick();
        var select = new Dropkick("#alertlevelId");
        select.refresh();
-           disableByLevel();
+           disableByLevel('');
      }
 	 /* function getConfirmation(){
                var retVal = confirm("Are you sure want to remove this refer ?");

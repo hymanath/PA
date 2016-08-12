@@ -848,7 +848,6 @@ function getNominatedPostApplication(startIndex)
 	}
 	
    function buildCadreDetails(result){ 
-
 	   //$("#textId").show();
 	    $("#cadreSearchDtls").html('');
 		
@@ -1152,6 +1151,7 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 	  $("#deptBoardPostnId"+num).append('<option value=" ">Select Board Position</option>');
 	   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+		if(boardId>0)
 			for(var i in result){
 				$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				
@@ -2153,12 +2153,14 @@ function populateFields(result){
 	globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
 	  if($(this).is(':checked')){
 		$(".ramakrishnaCls").show();
+		$("#addedRefferalsDiv").show();
 		$("#uploadFlDivId").show();
 		$("#submitBtnId").show();
 		getCandidateAppliedPostsByCadre(globalCadreId,candiId);
 	  }
 	else{
 		$(".ramakrishnaCls").hide();
+		$("#addedRefferalsDiv").hide();
 		$("#uploadFlDivId").hide();
 		$("#submitBtnId").hide();
 	}
@@ -2446,7 +2448,7 @@ $("#searchDivId").show();
 			notCadresearch();
 		}
  });
- 
+  
  function subLevelForConstituency(locationLevel){
 	 var distArrTemp=[];
 	 var assmblyArrTemp=[];
@@ -2563,3 +2565,22 @@ function hideDetails(){
 	$("#uploadFlDivId").hide();
 	$("#submitBtnId").hide();
 }
+$(document).keypress(function(e) {
+				if(e.keyCode==13){
+					if($("#myModal").is(':visible') == false){
+					 var value = $("input[name='checkBoxName']:checked").val();
+					$('.ramakrishnaCls').hide();
+					$('#searchDivId').hide();
+					$("#uploadFlDivId").hide();
+					$("#submitBtnId").hide();
+				  if(value == "Cadre"){
+						getNominatedPostApplication(0);
+					}
+					else if(value == "Not Cadre"){
+						notCadresearch();
+					}
+				}else{
+					getAdvancedSearchDetails();
+				}
+				}
+		  });
