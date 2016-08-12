@@ -7,7 +7,7 @@
 <title>Core DashBoard</title>
 <link href="dist/coreDashboard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/coreDashboard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 
 

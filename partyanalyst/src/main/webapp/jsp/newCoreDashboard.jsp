@@ -7,7 +7,7 @@
 <title>New Core DashBoard</title>
 <link href="newCoreDashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
