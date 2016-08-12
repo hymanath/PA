@@ -1315,7 +1315,7 @@ defaultOptions = {
 	global: {
 		useUTC: true,
 		//timezoneOffset: 0,
-		canvasToolsURL: 'http://code.highcharts.com/4.0.1/modules/canvas-tools.js',
+		canvasToolsURL: 'https://code.highcharts.com/4.0.1/modules/canvas-tools.js',
 		VMLRadialGradientURL: 'http://code.highcharts.com/4.0.1/gfx/vml-radial-gradient.png'
 	},
 	chart: {
