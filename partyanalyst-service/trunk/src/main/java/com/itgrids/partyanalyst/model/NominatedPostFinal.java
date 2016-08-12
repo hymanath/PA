@@ -36,11 +36,13 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	private String isDeleted;
 	private String isPrefered;
 	private Long nominatedPostId;
+	private Long nominatedPostApplicationId;
 	
 	private NominatedPostMember nominatedPostMember;
 	private NominationPostCandidate nominationPostCandidate;
 	private ApplicationStatus applicationStatus;
 	private NominatedPost nominatedPost;
+	private NominatedPostApplication nominatedPostApplication;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -176,4 +178,23 @@ public class NominatedPostFinal extends BaseModel implements Serializable{
 	public void setNominatedPost(NominatedPost nominatedPost) {
 		this.nominatedPost = nominatedPost;
 	}
+	@Column(name="nominated_post_application_id")
+	public Long getNominatedPostApplicationId() {
+		return nominatedPostApplicationId;
+	}
+	public void setNominatedPostApplicationId(Long nominatedPostApplicationId) {
+		this.nominatedPostApplicationId = nominatedPostApplicationId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="nominated_post_application_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NominatedPostApplication getNominatedPostApplication() {
+		return nominatedPostApplication;
+	}
+	public void setNominatedPostApplication(
+			NominatedPostApplication nominatedPostApplication) {
+		this.nominatedPostApplication = nominatedPostApplication;
+	}
+	
 }
