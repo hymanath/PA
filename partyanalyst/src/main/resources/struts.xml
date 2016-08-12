@@ -13142,6 +13142,10 @@
 		<result name="success">/jsp/coreDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="coreDashboardAction1" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
+		<result name="success">/jsp/newCoreDashboard.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
 	<action name="nominatedPostMainDashboardAction" class="nominatedPostProfileAction" method="getNominatedPostMainDashboard">
 		<result name="success">/jsp/nominatedPostMainDashboard.jsp</result>
 	</action>
@@ -13364,6 +13368,11 @@
 	<action name="getLevelWiseBasicCommitteesCountReportAction" class="coreDashboardAction" method="getLevelWiseBasicCommitteesCountReport">
 		<result type="json" name="success">
    			<param name="root">CommitteeDataVOList</param>
+   		</result>
+	</action>
+	<action name="getUserTypeWiseCommitteesCompletedCountsAction" class="coreDashboardAction" method="getUserTypeWiseCommitteesCompletedCounts">
+		<result type="json" name="success">
+   			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
 </package>
