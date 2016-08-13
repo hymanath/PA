@@ -620,6 +620,7 @@ label
 .tabCollapseIcon , .tabCollapseIcon:hover ,.tabCollapseIcon:active,.tabCollapseIcon:focus
 {
 	color:#666 !important;
+	text-decoration:none !important;
 }
 .tabCollapseIcon:before {
     /* symbol for "opening" panels */
@@ -1402,3 +1403,17 @@ div.dataTables_wrapper div.clear
 	padding:13px 2px !important;
 	text-align:center;
 }
+
+.panel_heading_color{background-color:#EFF3F4 !important}
+.depcount{
+	cursor: pointer; 
+	background-color: rgb(221, 221, 221);
+	padding: 2px; 
+	text-align: center; 
+	color: rgb(232, 106, 109); 
+	font-weight: bold; 
+	border-radius: 3px;
+	width:40px;
+ }
+
+.font_13{font-size:13px;}
