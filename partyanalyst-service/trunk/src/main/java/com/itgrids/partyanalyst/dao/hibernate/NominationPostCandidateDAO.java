@@ -87,10 +87,10 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 		return query.list();
 	}
 	
-	public List<Object[]> getLevelName(String levelType,Long tdpCadreId,String searchType,Long nominateCandId){
+	public List<Object[]> getLevelName(String levelType,Long tdpCadreId,String searchType,Long applicationId){
 		StringBuilder str=new StringBuilder();
 		 
-		if(nominateCandId != null && nominateCandId.longValue()>0L)
+		if(applicationId != null && applicationId.longValue()>0L)
 			searchType="Not Cadre";
 		if(levelType.equalsIgnoreCase("State")){
 			str.append(" SELECT model.address.state.stateId,model.address.state.stateName from NominatedPostApplication model ");
@@ -108,14 +108,15 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
         	str.append(" where model.tdpCadre.tdpCadreId = :tdpCadreId ");
         }
         else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
-        	str.append(" where model.nominationPostCandidateId = :nominateCandId ");
+        	//str.append(" where model.nominationPostCandidateId = :nominateCandId ");
+        	str.append(" where model.nominatedPostApplicationId = :applicationId ");
         }
 		Query query = getSession().createQuery(str.toString());
         if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
         	  query.setParameter("tdpCadreId", tdpCadreId);
         }
         else if(searchType !=null && searchType.equalsIgnoreCase("Not Cadre")){
-        	  query.setParameter("nominateCandId", nominateCandId);
+        	  query.setParameter("applicationId", applicationId);
         }
       
         return query.list();
