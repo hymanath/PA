@@ -37,6 +37,8 @@ public class CastePositionVO {
 	private String completedAppPer="0";
 	private String openPostCntPer="0";
 	private String totalAppRecevidPer="0";
+	private Long totalOpendPositionCnt=0l;
+	private String totalOpendPositionCntPer="0";
 	
 	
 	public String getOpenPostCntPer() {
@@ -233,5 +235,16 @@ public class CastePositionVO {
 	public void setTotalAppRecevidPer(String totalAppRecevidPer) {
 		this.totalAppRecevidPer = totalAppRecevidPer;
 	}
-	
+	public Long getTotalOpendPositionCnt() {
+		return totalOpendPositionCnt;
+	}
+	public void setTotalOpendPositionCnt(Long totalOpendPositionCnt) {
+		this.totalOpendPositionCnt = totalOpendPositionCnt;
+	}
+	public String getTotalOpendPositionCntPer() {
+		return totalOpendPositionCntPer;
+	}
+	public void setTotalOpendPositionCntPer(String totalOpendPositionCntPer) {
+		this.totalOpendPositionCntPer = totalOpendPositionCntPer;
+	}
 }

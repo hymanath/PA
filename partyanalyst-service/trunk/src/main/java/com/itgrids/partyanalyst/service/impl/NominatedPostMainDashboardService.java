@@ -142,23 +142,23 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		try{
 			List<Object[]> casteList = nominatedPostFinalDAO.getCandidateCasteList(LocationLevelId);
 			List<Object[]> positionList = positionDAO.getAllPositions();
-			if(positionList != null && positionList.size() > 0)
+			if(casteList != null && casteList.size() > 0)
 			{
 				CastePositionVO castePositionVO = null;
-				for(Object[] params : positionList)
+				for(Object[] params : casteList)
 				{
 					castePositionVO = new CastePositionVO();
-					castePositionVO.setPositionId((Long)params[0]);
-					castePositionVO.setPositionName(params[1].toString());
-					castePositionVO.setCasteList(getDefaultCastList(casteList));
+					castePositionVO.setCasteId(commonMethodsUtilService.getLongValueForObject(params[0]));
+					castePositionVO.setCasteName(commonMethodsUtilService.getStringValueForObject(params[1]));
+					castePositionVO.setPositionList(getDefaultPositionList(positionList));
 					resultList.add(castePositionVO);
 				}
 			}
 			if(LocationLevelId.longValue()==5){
-				List<Object[]> rtrnMandalList = nominatedPostFinalDAO.getLocationWiseCastePositionCount(5l,positionId);
+				List<Object[]> rtrnMandalList = nominatedPostFinalDAO.getLocationWiseCastePositionCount(5l,positionId);//For Mandal and Muncipality/Corporation
 				pushMatchCastePositionCntToVO(rtrnMandalList,resultList);
-				List<Object[]> rtrnMncpaltyCrprtnList = nominatedPostFinalDAO.getLocationWiseCastePositionCount(6l,positionId);
-				pushMatchCastePositionCntToVO(rtrnMncpaltyCrprtnList,resultList);
+				//List<Object[]> rtrnMncpaltyCrprtnList = nominatedPostFinalDAO.getLocationWiseCastePositionCount(6l,positionId);
+				//pushMatchCastePositionCntToVO(rtrnMncpaltyCrprtnList,resultList);
 			}else{
 				List<Object[]> rtrnObjList = nominatedPostFinalDAO.getLocationWiseCastePositionCount(LocationLevelId,positionId);
 				pushMatchCastePositionCntToVO(rtrnObjList,resultList);
@@ -179,9 +179,9 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 					Long casteStateId = (Long)params[0];
 					Long count = params[4] !=null ? (Long)params[4]:0l;
 					
-					for(CastePositionVO vo : getMatchedVO(resultList,positionId).getCasteList())
+					for(CastePositionVO vo : getCasteMatchedVO(resultList,casteStateId).getPositionList())
 					{
-						if(vo.getCasteId().equals(casteStateId.longValue())){
+						if(vo.getPositionId().equals(positionId.longValue())){
 							vo.setCount(vo.getCount()+count);
 						}
 					}
@@ -191,11 +191,11 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		 LOG.error("Error occured at pushMatchCastePositionCntToVO() in NominatedPostMainDashboardService class ",e); 
 	 }
 	}
-	public CastePositionVO getMatchedVO(List<CastePositionVO> list,Long positionId)
+	public CastePositionVO getCasteMatchedVO(List<CastePositionVO> list,Long casteStateId)
 	{
 		try{
 			for(CastePositionVO vo : list)
-				if(vo.getPositionId().equals(positionId)){
+				if(vo.getCasteId().equals(casteStateId)){
 					return vo;
 				}
 		}catch (Exception e) {
@@ -203,21 +203,21 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 		return null;
 	}
-	public List<CastePositionVO> getDefaultCastList(List<Object[]> casteList){
-		List<CastePositionVO> casteDefaultList = new ArrayList<CastePositionVO>(0);
+	public List<CastePositionVO> getDefaultPositionList(List<Object[]> positionList){
+		List<CastePositionVO> positionDefaultList = new ArrayList<CastePositionVO>(0);
 		
-		if(casteList != null && casteList.size() > 0)
+		if(positionList != null && positionList.size() > 0)
 		{
-			CastePositionVO castePositionVO = null;
-			for(Object[] params : casteList)
+			CastePositionVO postionVO = null;
+			for(Object[] params : positionList)
 			{
-				castePositionVO = new CastePositionVO();
-				castePositionVO.setCasteId((Long)params[0]);
-				castePositionVO.setCasteName(params[1].toString());
-				casteDefaultList.add(castePositionVO);
+				postionVO = new CastePositionVO();
+				postionVO.setPositionId(commonMethodsUtilService.getLongValueForObject(params[0]));
+				postionVO.setPositionName(commonMethodsUtilService.getStringValueForObject(params[1]));
+				positionDefaultList.add(postionVO);
 			}
 		}
-		return casteDefaultList;
+		return positionDefaultList;
 		
 	}
 	/**
@@ -245,13 +245,13 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 				}
 			}
 			 if(LocationLevelId.longValue()==5){
-					List<Object[]> rtrnMandalList = nominatedPostFinalDAO.getLocationWiseCasteGroupPositionCount(5l,positionId);
-					pushMatchCastePositionCntToVO(rtrnMandalList,resultList);
-					List<Object[]> rtrnMncpaltyCrprtnList = nominatedPostFinalDAO.getLocationWiseCasteGroupPositionCount(6l,positionId);
-					pushMatchCastePositionCntToVO(rtrnMncpaltyCrprtnList,resultList);
+					List<Object[]> rtrnMandalList = nominatedPostFinalDAO.getLocationWiseCasteGroupPositionCount(5l,positionId); //For Mandal and Muncipality/Corporation
+					pushMatchCasteGroupPositionCntToVO(rtrnMandalList,resultList);
+				//	List<Object[]> rtrnMncpaltyCrprtnList = nominatedPostFinalDAO.getLocationWiseCasteGroupPositionCount(6l,positionId);
+				//	pushMatchCastePositionCntToVO(rtrnMncpaltyCrprtnList,resultList);
 				}else{
 					List<Object[]> rtrnObjList = nominatedPostFinalDAO.getLocationWiseCasteGroupPositionCount(LocationLevelId,positionId);
-					pushMatchCastePositionCntToVO(rtrnObjList,resultList);
+					pushMatchCasteGroupPositionCntToVO(rtrnObjList,resultList);
 				}
 		 }catch(Exception e) {
 			 LOG.info("Error occured at getLocationWiseCasteGroupPositionCount() in NominatedPostMainDashboardService class ",e);
@@ -261,6 +261,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
  public List<CastePositionVO> getdefaultCasteGroupList(List<Object[]> rtrnObjCsteGrupList){
 	 List<CastePositionVO> defaultCasteGroupList = new ArrayList<CastePositionVO>();
 	   try{
+		   
 		   if(rtrnObjCsteGrupList != null && rtrnObjCsteGrupList.size() > 0){
 			   for (Object[] obj : rtrnObjCsteGrupList) {
 				CastePositionVO vo = new CastePositionVO();
@@ -274,6 +275,41 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	   }
 	return defaultCasteGroupList;
  }
+ public void pushMatchCasteGroupPositionCntToVO(List<Object[]> rtrnObjList,List<CastePositionVO> resultList){
+	 
+	 try{
+		 if(rtrnObjList != null && rtrnObjList.size() > 0)
+			{
+				for(Object[] params : rtrnObjList)
+				{
+					Long positionId = (Long)params[2];
+					Long casteStateId = (Long)params[0];
+					Long count = params[4] !=null ? (Long)params[4]:0l;
+					
+					for(CastePositionVO vo : getCasteGroupMatchedVO(resultList,positionId).getCasteList())
+					{
+						if(vo.getCasteId().equals(casteStateId.longValue())){
+							vo.setCount(vo.getCount()+count);
+						}
+					}
+				}
+			}
+	 }catch(Exception e){
+		 LOG.error("Error occured at pushMatchCastePositionCntToVO() in NominatedPostMainDashboardService class ",e); 
+	 }
+	}
+	public CastePositionVO getCasteGroupMatchedVO(List<CastePositionVO> list,Long positionId)
+	{
+		try{
+			for(CastePositionVO vo : list)
+				if(vo.getPositionId().equals(positionId)){
+					return vo;
+				}
+		}catch (Exception e) {
+			LOG.error("Exception occured in getCasteGroupMatchedVO ",e);
+		}
+		return null;
+	}
    public List<CastePositionVO> setPositionDataToVO(List<Object[]> rtrnObjList){
 	   List<CastePositionVO> finalList = new ArrayList<CastePositionVO>(0);
 	   
@@ -674,6 +710,7 @@ public CastePositionVO getPositionAndApplicationDetailsCntLocationWise(Long boar
 	  CastePositionVO resultVO = new CastePositionVO();
 	  try{
 	 	 CastePositionVO positionVO  = poulateCommonData(positionId,boardLevelId,"Position");
+	 	  positionVO.setTotalOpendPositionCnt(positionVO.getTotalPositionCn()-positionVO.getGoIssuedCnt());//total opened position
 	 	 if(positionVO != null){
 	 		 calculatePositionPercentage(positionVO); //calculating position percentage
 	 	 }
@@ -692,19 +729,37 @@ public void calculatePositionPercentage(CastePositionVO resultVO){
 	try{
            Long totalPositionCnt = resultVO.getTotalPositionCn();
 		   Double totalPositionPer = (totalPositionCnt *100.00)/totalPositionCnt;
-		   resultVO.setTotalPositionCntPer(decimalFormat.format(totalPositionPer));
+		   if(!(totalPositionPer.isNaN())){
+			   resultVO.setTotalPositionCntPer(decimalFormat.format(totalPositionPer));  
+		   }
 		   Double openCntPer = (resultVO.getOpenPostCnt()*100.00)/totalPositionCnt;
-		   resultVO.setOpenPostCntPer(decimalFormat.format(openCntPer));
+		   if(!(openCntPer.isNaN())){
+			   resultVO.setOpenPostCntPer(decimalFormat.format(openCntPer)); 
+		   }
 		   Double noCandidatePer = (resultVO.getNoCandidateCnt()*100.00)/totalPositionCnt;
-		   resultVO.setNoCandidateCntPer(decimalFormat.format(noCandidatePer));
+		   if(!(noCandidatePer.isNaN())){
+			   resultVO.setNoCandidateCntPer(decimalFormat.format(noCandidatePer));
+		   }
 		   Double shortListedPer = (resultVO.getShortedListedCndtCnt()*100.00)/totalPositionCnt;
-		   resultVO.setShortListedCntper(decimalFormat.format(shortListedPer));
+		   if(!(shortListedPer.isNaN())){
+			   resultVO.setShortListedCntper(decimalFormat.format(shortListedPer));   
+		   }
 		   Double finalReviewPer = (resultVO.getFinalReviewCantCnt()*100.00)/totalPositionCnt;
-		   resultVO.setFinalReviewPer(decimalFormat.format(finalReviewPer));
+		   if(!(finalReviewPer.isNaN())){
+			   resultVO.setFinalReviewPer(decimalFormat.format(finalReviewPer));  
+		   }
 		   Double finalizedPer = (resultVO.getConfirmCntCnt()*100.00)/totalPositionCnt;
-		   resultVO.setConfirmCntPer(decimalFormat.format(finalizedPer));
+		   if(!(finalizedPer.isNaN())){
+			   resultVO.setConfirmCntPer(decimalFormat.format(finalizedPer));  
+		   }
 		   Double goIssuedPer = (resultVO.getGoIssuedCnt()*100.00)/totalPositionCnt;
-		   resultVO.setGoIssuedPer(decimalFormat.format(goIssuedPer));
+		   if(!(goIssuedPer.isNaN())){
+			   resultVO.setGoIssuedPer(decimalFormat.format(goIssuedPer));  
+		   }
+		   Double ttlOpenPositionPer = (resultVO.getTotalOpendPositionCnt()*100.00)/totalPositionCnt;
+		   if(!ttlOpenPositionPer.isNaN()){
+			  resultVO.setTotalOpendPositionCntPer(decimalFormat.format(ttlOpenPositionPer)); 
+		   }
 	}catch(Exception e){
 		 LOG.error("Exception Occured in calculatePositionPercentage() of NominatedPostMainDashboardService", e);
 	}
@@ -713,13 +768,21 @@ public void calculateApplicationPercentage(CastePositionVO resultVO){
 	    try{
 	    	 Long ttlApplicationRcvedCnt  = resultVO.getTotalAppReceivedCnt();
 		     Double totalAppRecper = (resultVO.getTotalAppReceivedCnt()*100.00)/ttlApplicationRcvedCnt;
-		     resultVO.setTotalAppRecevidPer(decimalFormat.format(totalAppRecper));
-			 Double rejectedCntper = (resultVO.getRejectedCnt()*100.00)/ttlApplicationRcvedCnt;
-			 resultVO.setRejectedAppPer(decimalFormat.format(rejectedCntper));
-			 Double completedAppPer = (resultVO.getConfirmCntCnt()*100.00)/ttlApplicationRcvedCnt;
-			 resultVO.setCompletedAppPer(decimalFormat.format(completedAppPer));
-			 Double inProgreeAppCntPer = (resultVO.getInProgressCnt()*100.00)/ttlApplicationRcvedCnt;
-			 resultVO.setInProgressAppPer(decimalFormat.format(inProgreeAppCntPer));
+		     if(!(totalAppRecper.isNaN())){
+		    	 resultVO.setTotalAppRecevidPer(decimalFormat.format(totalAppRecper)); 
+		     }
+		     Double rejectedCntper = (resultVO.getRejectedCnt()*100.00)/ttlApplicationRcvedCnt;
+		     if(!(rejectedCntper.isNaN())){
+		    	 resultVO.setRejectedAppPer(decimalFormat.format(rejectedCntper));
+		     }
+		     Double completedAppPer = (resultVO.getConfirmCntCnt()*100.00)/ttlApplicationRcvedCnt;
+		     if(!(completedAppPer.isNaN())){
+		    	 resultVO.setCompletedAppPer(decimalFormat.format(completedAppPer));	 
+		     }
+		     Double inProgreeAppCntPer = (resultVO.getInProgressCnt()*100.00)/ttlApplicationRcvedCnt;
+		     if(!(inProgreeAppCntPer.isNaN())){
+		    	 resultVO.setInProgressAppPer(decimalFormat.format(inProgreeAppCntPer)); 
+		     }
 	    }catch(Exception e){
 	    	 LOG.error("Exception Occured in calculateApplicationPercentage() of NominatedPostMainDashboardService", e);	
 	 }
@@ -731,27 +794,30 @@ public CastePositionVO poulateCommonData(Long positionId,Long boardLevelId,Strin
 		   if(reportType != null && reportType.equalsIgnoreCase("Position")){
 			
 		   if(boardLevelId != null && boardLevelId.longValue()==5){
+			   Long mandalLevelttlPstnCnt = nominatedPostDAO.getAllPositionCntPositionAndLocationWise(positionId, 5l);
 			   List<Object[]> rtrnManDalRsltList = nominatedPostDAO.getTotalPositionCntPositionAndLocationWise(positionId, 5l);
 			   Object[] rtrnMandalShortListedCnt = nominatedPostFinalDAO.getShortListedPositionCntPositionAndLocationWise(positionId, 5l);
 			   Long  notCandidateMandalCnt = nominatedPostDAO.getNoCandiateCntPositionAndLocationWise(positionId, 5l);  
-			   setPositionCntDataToVO(rtrnManDalRsltList,rtrnMandalShortListedCnt,notCandidateMandalCnt,resultVO);
+			   setPositionCntDataToVO(mandalLevelttlPstnCnt,rtrnManDalRsltList,rtrnMandalShortListedCnt,notCandidateMandalCnt,resultVO);
+			   Long corpLevelttlPstnCnt = nominatedPostDAO.getAllPositionCntPositionAndLocationWise(positionId, 6l);
 			   List<Object[]> rtrnMncpltyPositionCntList = nominatedPostDAO.getTotalPositionCntPositionAndLocationWise(positionId, 6l);
 			   Object[] rtrnMncpltyShortListedCnt = nominatedPostFinalDAO.getShortListedPositionCntPositionAndLocationWise(positionId, 6l);
 			   Long  notMncpltyCandidateCnt = nominatedPostDAO.getNoCandiateCntPositionAndLocationWise(positionId, 6l);  
-			   setPositionCntDataToVO(rtrnMncpltyPositionCntList,rtrnMncpltyShortListedCnt,notMncpltyCandidateCnt,resultVO);
+			   setPositionCntDataToVO(corpLevelttlPstnCnt,rtrnMncpltyPositionCntList,rtrnMncpltyShortListedCnt,notMncpltyCandidateCnt,resultVO);
 		   }else{
+			   Long ttlPositionCnt = nominatedPostDAO.getAllPositionCntPositionAndLocationWise(positionId, boardLevelId);
 			   List<Object[]> rtrnPositionCntList = nominatedPostDAO.getTotalPositionCntPositionAndLocationWise(positionId, boardLevelId);
 			   Object[] rtrnShortListedCnt = nominatedPostFinalDAO.getShortListedPositionCntPositionAndLocationWise(positionId, boardLevelId);
 			   Long  notCandidateCnt = nominatedPostDAO.getNoCandiateCntPositionAndLocationWise(positionId, boardLevelId);  
-			   setPositionCntDataToVO(rtrnPositionCntList,rtrnShortListedCnt,notCandidateCnt,resultVO);
+			   setPositionCntDataToVO(ttlPositionCnt,rtrnPositionCntList,rtrnShortListedCnt,notCandidateCnt,resultVO);
 		   }
 		 }else if(reportType != null && reportType.equalsIgnoreCase("application")){
 			
 			   if(boardLevelId != null && boardLevelId.longValue()==5){
-				   List<Object[]> rtrnMandalApplicationDtlsCnt = nominatedPostApplicationDAO.getApplicationDetailsCntPositionAndLocationWise(positionId, 5l);  
-				   setApplicationCntDataToVO(rtrnMandalApplicationDtlsCnt,resultVO);
-				   List<Object[]> rtrnMncpltyApplicationDtlsCnt = nominatedPostApplicationDAO.getApplicationDetailsCntPositionAndLocationWise(positionId, 6l);  
-				   setApplicationCntDataToVO(rtrnMncpltyApplicationDtlsCnt,resultVO);
+				  List<Object[]> rtrnMandalApplicationDtlsCnt = nominatedPostApplicationDAO.getApplicationDetailsCntPositionAndLocationWise(positionId, 5l);  
+				  setApplicationCntDataToVO(rtrnMandalApplicationDtlsCnt,resultVO); //For Mandal and Muncipality/Corporation
+				  // List<Object[]> rtrnMncpltyApplicationDtlsCnt = nominatedPostApplicationDAO.getApplicationDetailsCntPositionAndLocationWise(positionId, 6l);  
+				   //setApplicationCntDataToVO(rtrnMncpltyApplicationDtlsCnt,resultVO);
 			   }else{
 				   List<Object[]> rtrnApplicationDtlsCnt = nominatedPostApplicationDAO.getApplicationDetailsCntPositionAndLocationWise(positionId, boardLevelId);  
 				   setApplicationCntDataToVO(rtrnApplicationDtlsCnt,resultVO);
@@ -762,15 +828,15 @@ public CastePositionVO poulateCommonData(Long positionId,Long boardLevelId,Strin
 	   }
 	return resultVO;
 }
-public CastePositionVO setPositionCntDataToVO(List<Object[]> rtrnPositionCntList,Object[] rtrnShortListedCnt,Long notCandidateRlstCnt,CastePositionVO resultVO){
+public CastePositionVO setPositionCntDataToVO(Long totalPositionCnt,List<Object[]> rtrnPositionCntList,Object[] rtrnShortListedCnt,Long notCandidateRlstCnt,CastePositionVO resultVO){
 	  
-	   Long ttlPositionCnt =0l;
+	  // Long ttlPositionCnt =0l;
 	  try{
 		if(rtrnPositionCntList != null && rtrnPositionCntList.size() > 0){
 			for (Object[] param : rtrnPositionCntList) {
 				String status = commonMethodsUtilService.getStringValueForObject(param[1]);
 				Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
-				ttlPositionCnt =ttlPositionCnt+count;
+				//ttlPositionCnt =ttlPositionCnt+count;
 				if(status != null && status.equalsIgnoreCase("Open")){
 					resultVO.setOpenPostCnt(resultVO.getOpenPostCnt()+count);
 				}else if(status != null && status.equalsIgnoreCase("Final Review")){
@@ -784,14 +850,12 @@ public CastePositionVO setPositionCntDataToVO(List<Object[]> rtrnPositionCntList
 		}
 		if(rtrnShortListedCnt != null && rtrnShortListedCnt.length > 0){
 			Long shortListedCnt = commonMethodsUtilService.getLongValueForObject(rtrnShortListedCnt[2]);
-			 ttlPositionCnt = ttlPositionCnt+shortListedCnt;
 			 resultVO.setShortedListedCndtCnt(resultVO.getShortedListedCndtCnt()+shortListedCnt);
 		 }
 		 if(notCandidateRlstCnt != null ){
-			   ttlPositionCnt=ttlPositionCnt+notCandidateRlstCnt;
 			  resultVO.setNoCandidateCnt(resultVO.getNoCandidateCnt()+notCandidateRlstCnt);
 		   }
-		 resultVO.setTotalPositionCn(resultVO.getTotalPositionCn()+ttlPositionCnt);
+		 resultVO.setTotalPositionCn(resultVO.getTotalPositionCn()+totalPositionCnt);
 	}catch(Exception e){
 		 LOG.error("Exception Occured in setPositionCntDataToVO() of NominatedPostMainDashboardService", e);
 	}
@@ -807,11 +871,11 @@ public CastePositionVO setApplicationCntDataToVO(List<Object[]> rtrnApplicationD
 				String status = commonMethodsUtilService.getStringValueForObject(param[1]);
 				Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
 				ttlApplicationRcvedCnt =ttlApplicationRcvedCnt+count;
-				if(status != null && status.equalsIgnoreCase("Rejected")){
+				if(status != null && status.equalsIgnoreCase("Rejected") || status.equalsIgnoreCase("Rejected-Final Review")){
 					resultVO.setRejectedCnt(resultVO.getRejectedCnt()+count);
-				}else if(status != null && status.equalsIgnoreCase("Confirmed")){
+				}else if(status != null && status.equalsIgnoreCase("GO Passed")){
 				   resultVO.setConfirmCntCnt(resultVO.getConfirmCntCnt()+count);	
-				}else if(status != null && status.equalsIgnoreCase("Shortlisted") || status.equalsIgnoreCase("Rejected-Final Review")){
+				}else if(status != null && !status.equalsIgnoreCase("Rejected") && !status.equalsIgnoreCase("Rejected-Final Review") && !status.equalsIgnoreCase("GO Passed") ){
 					ttlInProgressCnt = ttlInProgressCnt+count;
 				}
 			}
