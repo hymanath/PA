@@ -795,7 +795,7 @@ function getNominatedPostApplication(startIndex)
 
 		if(locationValue == null)
 			locationValue =0;
-		$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
+		$('#cadreSearchDtls').html(' <img style="height: 150px;" id="" class="col-md-4 col-md-offset-2 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3" src="images/icons/cadreSearch.gif">');
 		if(isFree){
 			 isFree =false;
 			 $("#searchDivId").show();
@@ -2206,13 +2206,13 @@ function populateFields(result){
 											for(var i in result.subList){
                                             	str+='<li>';
 												if(result.subList[i].applStatusId == 1)
-                                                	str+='<span class="labelStatus " style="background:orange;" > Pending </span>';
+                                                	str+='<p class="labelStatus " style="background:orange;" > Pending </p>';
 												else if(result.subList[i].applStatusId == 2 || result.subList[i].applStatusId == 4)
-                                                	str+='<span class="labelStatus " style="background:red;"> '+result.subList[i].status+' </span>';
+                                                	str+='<p class="labelStatus " style="background:red;"> '+result.subList[i].status+' </p>';
 												else if(result.subList[i].applStatusId == 3)
-                                                	str+='<span class="labelStatus " style="background:lightblue;" > '+result.subList[i].status+' </span>';
+                                                	str+='<p class="labelStatus " style="background:lightblue;" > '+result.subList[i].status+' </p>';
 												else
-                                                	str+='<span class="labelStatus " style="background:green;">'+result.subList[i].status+' </span>';
+                                                	str+='<p class="labelStatus " style="background:green;">'+result.subList[i].status+' </p>';
 													if(result.subList[i].levelName != null){
 														str+=''+result.subList[i].level+'-'+result.subList[i].levelName+'→  Dept-'+ result.subList[i].cadreName+"→  Board- "+result.subList[i].subCaste+" →  Position- "+result.subList[i].voterName+" : "+result.subList[i].status+"</li>";
 													}
@@ -2246,6 +2246,17 @@ function populateFields(result){
 													}
 											}
                                           str+='</ul>';
+                                       str+=' </div>';
+                                    str+='</div>';
+                               str+=' </div>';
+							}else{
+								str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
+                                	str+='<div class="panel panel-default panelPost">';
+                                    	str+='<div class="panel-heading">';
+                                        	str+='<h4 class="panel-title">Party Post</h4>';
+                                        str+='</div>';
+                                        str+='<div class="panel-body">';
+                                        	str+='<h4 style="height:100%;width:100%" class="text-center">NO DATA AVAILABLE</h4>';
                                        str+=' </div>';
                                     str+='</div>';
                                str+=' </div>';

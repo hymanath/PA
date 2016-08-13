@@ -261,9 +261,9 @@ function buildCandidateReviewRslt(result){
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
-		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 }else{
-		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		}
       }
 	  str+='</ul>';
@@ -278,7 +278,7 @@ function buildCandidateBoardRslt(result,departmentId){
 	var str='';
 	str+='<div role="tabpanel" class="tab-pane active pad_15" id="departments'+departmentId+'" style="padding-right:0px;padding-bottom:0px;">';
 	   str+='<h4 class="headingColor text-capital"><u>board / corporation</u></h4>';
-	   str+='<ul class="nav nav-tabs tabsCustomFinal1" role="tablist">';
+	   str+='<ul class="nav nav-tabs tabsCustomFinal1" style="margin-top:10px !important" role="tablist">';
 	    for(var i in result){
 			if(i==0){
 		   str+='<li class="active">';	
@@ -286,7 +286,7 @@ function buildCandidateBoardRslt(result,departmentId){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
@@ -301,7 +301,7 @@ function buildCandidateBoardRslt(result,departmentId){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
@@ -332,11 +332,11 @@ var str = '';
 				str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
 						str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-							str+='<span style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 							str+='<span class="label label-primary labelCustom pull-right" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 ">';
+					str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 pad_right0">';
 						str+='<div class="positionsCls text-success">';
 						if(result[i].wishCount != null && result[i].wishCount > 0)
 							str+='<span><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;'+result[i].wishCount+'</span>';
@@ -545,8 +545,8 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 				str+='<td style="position:relative;width:180px">';
 					
 					if(result.subList[i].commentCount != null){
-						str+='<img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
-						str+='<span class="commentCount">'+result.subList[i].commentCount+'</span>';
+						str+='<span style="position:relative"><img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
+						str+='<span class="commentCount" style="left:15px;top:-11px">'+result.subList[i].commentCount+'</span></span>';
 					}
 					else						
 						str+='<img src="dist/nominatedImages/Icon8.png" style="height:28px;margin-right:10px;"/>'; 
