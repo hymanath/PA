@@ -22,12 +22,10 @@
 <div class="container">
     <div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<ol class="breadcrumb">
-            	<li><i class="glyphicon glyphicon-home"></i></li>
-                <li>Nominated Posts Overview Details  </li>
-            </ol>
+		 <h3 class="text-capital"  style="color:#5C2D25;">Nominated Posts Overview Details</h3>
+        	
         </div>
-		<div class="col-md-12 col-xs-12 col-sm-12" >
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 			<div class="applicationsOverView">
 			<div class="m_top10">
 				<span class="bar_view" style="background-color: rgb(245, 129, 129);"></span>

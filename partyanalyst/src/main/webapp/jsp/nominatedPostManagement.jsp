@@ -37,14 +37,22 @@
 .font_17{font-size:16px;}
 .tableFontSize thead th {font-size:12px; !important;font-weight:normal !important}
 .tableFontSize tr td{font-size:12px; !important;font-weight:normal !important}
+.font_weight{font-weight:bold}
+.text-center{text-align:center};
 </style>
 </head>
 <body >
 <div class="container">
     <div class="row">
-	 
-	  <div class="col-md-12 col-xs-12 col-sm-12">
-	  <h3 class="text-capital" id="headinggId" style="color:#5C2D25"></h3>
+	 <div class="col-md-12 col-xs-12 col-sm-12">
+		<ul class="geoGrpahicBreadCrumb">
+				<li style="text-transform: uppercase; font-weight: bold;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
+				<li id="flowHeading" style="text-transform: uppercase; font-weight: bold;"></li>
+		</ul>
+        	
+        </div>
+	  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+	  <h3 class="text-capital" id="headinggId" style="color:#5C2D25;display:none"></h3>
 		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon" title="Select Locations" ></i></h3>
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12 filterSection">
@@ -161,10 +169,16 @@ var grlobalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTowDivArr=[];
 $(document).ready(function() {
-	if(globalStatus == "notYet")
+	if(globalStatus == "notYet"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
-	else
-		$("#headinggId").html(globalStatus+" - "+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation - Yet to start");
+	}
+		
+	else{
+		$("#headinggId").html(globalStatus+"  - "+globalLvlTxt+" level  - board/corporation");
+		$("#flowHeading").html(globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation <span>-</span> "+globalStatus.substr(0,1).toUpperCase()+globalStatus.substr(1)+"");
+	}
+		
 	if(globalLevelId !=null && globalLevelId !="" && globalLevelId !=1 && globalLevelId !=2){
 		getDistrictsForStates(globalStateId);
 	}else{
@@ -191,7 +205,7 @@ $(document).ready(function() {
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
 	$(".filterSectionIconCls").toggle("slow");
-	$(".filterSectionIconCls").hide();
+	//$(".filterSectionIconCls").hide();
 });
 $(document).on("click",".filterBtnCls",function(){
 	$(".filterSectionIconCls").toggle();

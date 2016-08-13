@@ -267,38 +267,49 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 	var str='';
 	if(result !=null && result.length>0){
 		str+='<div class="row" style="border:1px solid #ddd;background:#fff">';
-			str+='<div class="col-md-3 col-xs-12 col-sm-3 pad_0" style="background:#F9F9F9">';
+			str+='<div class="col-md-4 col-xs-12 col-sm-4 pad_0" style="background:#F9F9F9">';
 			  str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="pad_15">';
-					str+='<h4 class="headingColor text-capital"><u>departments</u></h4>';
+					str+='<h4 class="headingColor text-capital font_weight font_17">departments</h4>';
 				str+='</div>';
 				//str+='<h4 class="headingColor text-capital">departments</h4>';
 			  str+='</div>';
-			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px;min-height:400px;">';
+			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px;min-height:400px;border:1px solid #ddd;">';
 			  for(var i in result){
-				if(result[i].availableCount != null)
-					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><u>'+result[i].name+'</u><span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;">'+result[i].availableCount+'</span></a></li>';
-				else
-					str+='<li role="presentation"><a class="tabShowCls" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><u>'+result[i].name+'</u><span class="pull-right text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> 0 </span></a></li>';	
+				if(result[i].availableCount != null){
+					
+					if(result[i].name!=null && result[i].name.length>35){
+						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><span style="text-transform: uppercase;cursor:pointer" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,35)+'...</span><span class="pull-right text-danger depcount" title="Total Opened Positions" >'+result[i].availableCount+'</span></a></li>';
+					}else{
+						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="Total Opened Positions" >'+result[i].availableCount+'</span></a></li>';
+					}
+					
+				}
+				else{
+					str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="Total Opened Positions" > 0 </span></a></li>';	
+				}
+					
 			  }
 			  str+='</ul>';
 			str+='</div>';
-			str+='<div class="col-md-9 col-xs-12 col-sm-9 pad_0 bg_ff">';
+			str+='<div class="col-md-8 col-xs-12 col-sm-8 pad_0 bg_ff">';
 				str+='<div class="tab-content">';
+				
 				 for(var i in result){
-					 str+='<div role="tabpanel" class="tab-pane tabShowClsActive  pad_15" id="home'+i+'">';
-						str+='<div class="panel-group" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
+					 str+='<div role="tabpanel" class="tab-pane tabShowClsActive  pad_15 " id="home'+i+'">';
+					 str+='<h4 class="headingColor text-capital font_weight font_17">'+result[i].name+' department - corporation wise running positions</h4>';
+						str+='<div class="panel-group m_top20" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
 						if(result[i].idnameList !=null && result[i].idnameList.length>0){
 							for(var j in result[i].idnameList){
 							 str+='<div class="panel panel-default">';
 								/* str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_levelId='+levelId+' attr_levelValue='+levelValues+' attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">'; */
 								
-								str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
+								str+='<div class="panel-heading boardWiseDetailsCls panel_heading_color" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
-									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon" data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
+									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon " data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
 										str+='<h4 class="panel-title text-capital"  style="text-transform: uppercase;">'+result[i].idnameList[j].name+' ';
 										if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
-											str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
+											str+='<span class="text-danger pull-right" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										else
 											//str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
 										if(result[i].idnameList[j].percentage != null && result[i].idnameList[j].percentage !="0.00" && 
@@ -335,10 +346,11 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 		str+='</div>';
 		
 		$("#departmentsBuildId").html(str);
+		$('[data-toggle="tooltip"]').tooltip();
 		$(".deptsUlCls li:first-child a").trigger("click");
 		//$('#headingOne00').trigger('click');
 	}else{
-		$("#departmentsBuildId").html("<div>No Data Available</div>");
+		$("#departmentsBuildId").html("<div class='text-center'>No Data Available</div>");
 	}		
 	
 }
@@ -1268,7 +1280,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	  if(result != null && result.length > 0){
 		  buildAnyPostPositionRslt(result);
 	  }else{
-		$("#anyDeptCorTblId").html("NO DATA AVAILABLE");  
+		$("#anyDeptCorTblId").html("<center>NO DATA AVAILABLE</center>");  
 	  }
    });  
 }
@@ -1317,7 +1329,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		str+='</table>';
 		$("#anyDeptCorTblId").html(str);
 	}else{
-		$("#anyDeptCorTblId").html("No Data Available...");
+		$("#anyDeptCorTblId").html("<center>No Data Available</center>");
 	}
 }
 function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
@@ -1359,7 +1371,7 @@ function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
 		str+='</table>';
 		$("#"+bodyId).html(str);
 	}else{
-		$("#"+bodyId).html("No Data Available..");
+		$("#"+bodyId).html("<center>No Data Available</center>");
 	}
 }
 
