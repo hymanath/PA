@@ -559,7 +559,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		str.append(" select model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
 				" model.boardLevel.boardLevelId,model.boardLevel.level,departments.departmentId," +
 	        " departments.deptName,board.boardId,board.boardName,position.positionId," +
-	        " position.positionName,model.postType.postTypeId " +
+	        " position.positionName,model.postType.postTypeId,model.nominatedPostApplicationId " +
 	        " from NominatedPostApplication model left join model.position position left join model.departments departments " +
 	        " left join model.board  board  where model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
 	        if(searchType !=null && searchType.equalsIgnoreCase("Cadre")){
