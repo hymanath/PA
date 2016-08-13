@@ -1096,13 +1096,13 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 	   $("#updateSearchId").hide();
 	   
 	  if(result != null && result.resultCode==0){
-		  $("#modelSuccessId").html("Suucessfully this position Moved to Final Review...");
+		  $("#modelSuccessId").html("Successfully this position Moved to Final Review.");
 		  setTimeout(function(){ 
 			$("#readyToFinalReviewDiv").modal('hide');
 		  }, 2000);
 	  }
 	  else if(result != null && result.resultCode==1){
-		  $("#modelErrId").html("Error Occured while moving this position to Final Review");
+		  $("#modelErrId").html("Error Occured while moving this position to Final Review.");
 	  }
    });
 	
