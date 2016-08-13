@@ -653,7 +653,7 @@ function buildPositionTabMenu(result){
 	$("#positonDivId").html(str);
 }	
 function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLevelId,reportType){
-   $("#chartdiv").html(' ');
+  
   var jsObj={
         locationLevelId : locationLevelId,
 		positionId : positionId,
@@ -665,9 +665,9 @@ function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLeve
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}      
       }).done(function(result){
-		  if(result != null){   
+		     if(result != null){   
 			 if(reportType=="position"){
-			  buildPostionRslt(result);  
+			  buildPostionRslt(result); 
 		    }else if(reportType=="application"){
 			   buildApplicationOverviewRslt(result);   
 		    }  
@@ -677,6 +677,7 @@ function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLeve
 var postionId=0;
 $(document).on("click",".postionliCls",function(){
 	 postionId= $(this).attr("attr_id");
+	 $( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
 	 getPositionAndApplicationDetailsCntPositionWise(postionId,0,"position");
      getPositionAndApplicationDetailsCntLocationWise(postionId,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId");
 });
@@ -686,23 +687,71 @@ $(document).on("click",".overviewHrfCls",function(){
 	getPositionAndApplicationDetailsCntPositionWise(postionId,0,reportType);
 });
 function buildPostionRslt(result){
-	var totalPostionCnt = result.totalPositionCn;
-	var totalPositionCntPer=result.totalPositionCntPer;
-	var noCandidateCnt = result.noCandidateCnt;
-	var noCandidateCntPer= result.noCandidateCntPer;
-	var shortedListedCndtCnt = result.shortedListedCndtCnt;
-	var shortListedCntper = result.shortListedCntper;
-	var finalReviewCantCnt = result.finalReviewCantCnt;
-	var finalReviewPer = result.finalReviewPer;
-	var confirmCntCnt = result.confirmCntCnt;
-	var confirmCntPern = result.confirmCntPer;
-	var goIssuedCnt= result.goIssuedCnt;
-	var goIssuedPer = result.goIssuedPer;
-	buildPostionGaugeHighChart(totalPostionCnt,noCandidateCnt,shortedListedCndtCnt,
-	finalReviewCantCnt,confirmCntCnt,goIssuedCnt,totalPositionCntPer,noCandidateCntPer,shortListedCntper,finalReviewPer,confirmCntPern,goIssuedPer);
+	var positionCntArr =[];
+	var positionCntPerArr =[];
+	var LevelArr=[];
+	var circleColorArr=[];
+	if(result.totalPositionCn>0){
+		positionCntArr.push(result.totalPositionCn);
+		positionCntPerArr.push(result.totalPositionCntPer);
+		LevelArr.push("TOTAL POSITIONS");
+		circleColorArr.push("#fff2b3");
+	}
+	if(result.shortedListedCndtCnt>0){
+		positionCntArr.push(result.shortedListedCndtCnt);
+		positionCntPerArr.push(result.shortListedCntper);
+		LevelArr.push("SHORT LISTED");
+		circleColorArr.push("#eeb3af");
+	}
+	if(result.finalReviewCantCnt>0){
+		positionCntArr.push(result.finalReviewCantCnt);
+		positionCntPerArr.push(result.finalReviewPer);
+		LevelArr.push("READY FOR FINAL REVIEW");
+		circleColorArr.push("#D7D5EA");
+	}
+	if(result.confirmCntCnt>0){
+		positionCntArr.push(result.confirmCntCnt);
+		positionCntPerArr.push(result.confirmCntPer);
+		LevelArr.push("FINALIZED");
+		circleColorArr.push("#bee0e1");
+	}
+	if(result.goIssuedCnt>0){
+		positionCntArr.push(result.goIssuedCnt);
+		positionCntPerArr.push(result.goIssuedPer);
+		LevelArr.push("G.O ISSUED");
+		circleColorArr.push("#ad9591");
+	}
+	var radiusArrForBackBround=[];
+	var innerRadiusArrForBackBround=[];
+	var radiusArrForValue=[];
+	var innerRadiusArrForValue=[];
+	var yAxisArrForLevel=[];
+	var radiusForBackground = 100;
+	var radiusForValue = 100;
+	var y = 5;
+	var i = 0;
+	for (i = 0; i < positionCntArr.length; ++i) {
+		radiusArrForBackBround.push(radiusForBackground);
+        innerRadiusArrForBackBround.push(radiusForBackground);
+        radiusArrForValue.push(radiusForValue);
+        innerRadiusArrForValue.push(radiusForValue-5);
+        yAxisArrForLevel.push(y);
+		radiusForBackground=radiusForBackground-12;
+		radiusForValue = radiusForValue-12;
+        y=y+5;		
+	}
+   	var josnDataArr=[];
+	var jsonLevelArr=[];
+	var j=0;
+	for (j = 0; j < positionCntArr.length; ++j) {
+		josnDataArr.push({"color":"#fff","startValue":0,"endValue":100,"radius":radiusArrForBackBround[j]+"%","innerRadius":innerRadiusArrForBackBround[j]+"%"});
+		josnDataArr.push({"color":circleColorArr[j],"startValue":0,"endValue":positionCntPerArr[j],"radius":radiusArrForValue[j]+"%","innerRadius":innerRadiusArrForValue[j]+"%","balloonText":positionCntArr[j]});
+		jsonLevelArr.push({"text":LevelArr[j],"x": "49%","y":yAxisArrForLevel[j]+"%","size": 10,"bold": true,"color": "#333","align": "right"});
+	}
+	 $("#chartdiv").html(' ');
+	buildPostionGaugeHighChart(josnDataArr,jsonLevelArr);
 }
-function buildPostionGaugeHighChart(totalPostionCnt,noCandidateCnt,shortedListedCndtCnt,finalReviewCantCnt,confirmCntCnt,goIssuedCnt,totalPositionCntPer,
-noCandidateCntPer,shortListedCntper,finalReviewPer,confirmCntPern,goIssuedPer){
+function buildPostionGaugeHighChart(josnDataArr,jsonLevelArr){
 var gaugeChart = AmCharts.makeChart("chartdiv", {
   "type": "gauge",
   "theme": "light",
@@ -714,153 +763,75 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "endValue": 100,
     "startAngle": 0,
     "endAngle": 270,
-    "bands": [ {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "100%",
-      "innerRadius": "85%"
-    }, {
-      "color": "#fff2b3",
-      "startValue": 0,
-      "endValue": totalPositionCntPer,
-      "radius": "100%",
-      "innerRadius": "95%",
-      "balloonText": totalPostionCnt
-    } , {
-     "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "88%",
-      "innerRadius": "88%"
-    }, {
-      "color": "#eeb3af",
-      "startValue": 0,
-      "endValue": shortListedCntper,
-      "radius": "88%",
-      "innerRadius": "83%",
-      "balloonText": shortedListedCndtCnt
-    }, {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "75%",
-      "innerRadius": "75%"
-    }, {
-      "color": "#D7D5EA",
-      "startValue": 0,
-      "endValue": finalReviewPer,
-      "radius": "75%",
-      "innerRadius": "70%",
-      "balloonText": finalReviewCantCnt
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "65%",
-      "innerRadius": "65%"
-    }, {
-      "color": "#bee0e1",
-      "startValue": 0,
-      "endValue":confirmCntPern ,
-      "radius": "65%",
-      "innerRadius": "60%",
-      "balloonText":confirmCntCnt
-    }, {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "50%",
-      "innerRadius": "50%"
-    } , {
-      "color": "#ad9591",
-      "startValue": 0,
-      "endValue": goIssuedPer,
-      "radius": "50%",
-      "innerRadius": "45%",
-      "balloonText": goIssuedCnt
-    }, {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "35%",
-      "innerRadius": "35%"
-    }/*, {
-      "color": "#7DC0C2",
-      "startValue": 0,
-      "endValue": goIssuedPer,
-      "radius": "35%",
-      "innerRadius": "30%",
-      "balloonText": goIssuedCnt
-    } */]
+    "bands":josnDataArr 
   }],
-  "allLabels": [ {
-    "text": "TOTAL POSITIONS",
-    "x": "49%",
-    "y": "5%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "SHORT LISTED",
-    "x": "49%",
-    "y": "10%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  },  {
-    "text": "READY FOR FINAL REVIEW",
-    "x": "49%",
-    "y": "15%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "FINALIZED",
-    "x": "49%",
-    "y": "20%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "G.O ISSUED",
-    "x": "49%",
-    "y": "26%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }/*, {
-    "text": "G.O.Issued",
-    "x": "49%",
-    "y": "33%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  } */],
+  "allLabels":jsonLevelArr,
   "export": {
     "enabled": false
   }
 });
 }
-
 function buildApplicationOverviewRslt(result){
-	var totalAppReceivedCnt = result.totalAppReceivedCnt;
-	var totalAppRecevidPer = result.totalAppRecevidPer;
-	var rejectedCnt = result.rejectedCnt;
-	var rejectedAppPer = result.rejectedAppPer;
-	var inProgressCnt = result.inProgressCnt;
-	var inProgressAppPer = result.inProgressAppPer;
-	var confirmCntCnt = result.confirmCntCnt;
-	var confirmCntPer = result.completedAppPer;
-	buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejectedCnt,rejectedAppPer,inProgressCnt,inProgressAppPer,confirmCntCnt,confirmCntPer);
+	var applicationCntArr =[];
+	var applicationCntPerArr =[];
+	var LevelArr=[];
+	var circleColorArr=[];
+	if(result.totalAppReceivedCnt>0){
+		applicationCntArr.push(result.totalAppReceivedCnt);
+		applicationCntPerArr.push(result.totalAppRecevidPer);
+		LevelArr.push("Received");
+		circleColorArr.push("#E58D45");
+	}
+	if(result.rejectedCnt>0){
+		applicationCntArr.push(result.rejectedCnt);
+		applicationCntPerArr.push(result.rejectedAppPer);
+		LevelArr.push("Rejected");
+		circleColorArr.push("#DD665D");
+	}
+	if(result.inProgressCnt>0){
+		applicationCntArr.push(result.inProgressCnt);
+		applicationCntPerArr.push(result.inProgressAppPer);
+		LevelArr.push("In Progress");
+		circleColorArr.push("#65A7E1");
+	}
+	if(result.confirmCntCnt>0){
+		applicationCntArr.push(result.confirmCntCnt);
+		applicationCntPerArr.push(result.completedAppPer);
+		LevelArr.push("Completed");
+		circleColorArr.push("#FDD501");
+	}
+	var radiusArrForBackBround=[];
+	var innerRadiusArrForBackBround=[];
+	var radiusArrForValue=[];
+	var innerRadiusArrForValue=[];
+	var yAxisArrForLevel=[];
+	var radiusForBackground = 100;
+	var radiusForValue = 100;
+	var y = 5;
+	var i = 0;
+	for (i = 0; i < applicationCntArr.length; ++i) {
+		radiusArrForBackBround.push(radiusForBackground);
+        innerRadiusArrForBackBround.push(radiusForBackground);
+        radiusArrForValue.push(radiusForValue);
+        innerRadiusArrForValue.push(radiusForValue-5);
+        yAxisArrForLevel.push(y);
+		radiusForBackground=radiusForBackground-12;
+		radiusForValue = radiusForValue-12;
+        y=y+5;		
+	}
+   	var josnDataArr=[];
+	var jsonLevelArr=[];
+	var j=0;
+	for (j = 0; j < applicationCntArr.length; ++j) {
+		josnDataArr.push({"color":"#fff","startValue":0,"endValue":100,"radius":radiusArrForBackBround[j]+"%","innerRadius":innerRadiusArrForBackBround[j]+"%"});
+		josnDataArr.push({"color":circleColorArr[j],"startValue":0,"endValue":applicationCntPerArr[j],"radius":radiusArrForValue[j]+"%","innerRadius":innerRadiusArrForValue[j]+"%","balloonText":applicationCntArr[j]});
+		jsonLevelArr.push({"text":LevelArr[j],"x": "49%","y":yAxisArrForLevel[j]+"%","size": 10,"bold": true,"color": "#333","align": "right"});
+	}
+	$("#chartdiv1").html(" ");
+	buildAppOverviewHighCharts(josnDataArr,jsonLevelArr);
+
 }
-function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejectedCnt,rejectedAppPer,inProgressCnt,inProgressAppPer,confirmCntCnt,confirmCntPer){
+function buildAppOverviewHighCharts(josnDataArr,jsonLevelArr){
 	var gaugeChart = AmCharts.makeChart("chartdiv1", {
   "type": "gauge",
   "theme": "light",
@@ -872,93 +843,9 @@ function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejec
     "endValue": 100,
     "startAngle": 0,
     "endAngle": 270,
-    "bands": [{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "100%",
-      "innerRadius": "85%"
-    }, {
-      "color": "#E58D45",
-      "startValue": 0,
-      "endValue": totalAppRecevidPer,
-      "radius": "100%",
-      "innerRadius": "95%",
-      "balloonText": totalAppReceivedCnt
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "88%",
-      "innerRadius": "88%"
-    }, {
-      "color": "#DD665D",
-      "startValue": 0,
-      "endValue": rejectedAppPer,
-      "radius": "88%",
-      "innerRadius": "83%",
-      "balloonText": rejectedCnt
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "75%",
-      "innerRadius": "75%"
-    }, {
-      "color": "#65A7E1",
-      "startValue": 0,
-      "endValue": inProgressAppPer,
-      "radius": "75%",
-      "innerRadius": "70%",
-      "balloonText": inProgressCnt
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "65%",
-      "innerRadius": "65%"
-    }, {
-      "color": "#FDD501",
-      "startValue": 0,
-      "endValue": confirmCntPer,
-      "radius": "65%",
-      "innerRadius": "60%",
-      "balloonText":confirmCntCnt
-    }]
+    "bands": josnDataArr
   }],
-  "allLabels": [{
-    "text": "Received",
-    "x": "49%",
-    "y": "5%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "Rejected",
-    "x": "49%",
-    "y": "10%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "In Progress",
-    "x": "49%",
-    "y": "15%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "Completed",
-    "x": "49%",
-    "y": "20%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }],
+  "allLabels":jsonLevelArr,
   "export": {
     "enabled": false
   }
