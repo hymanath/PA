@@ -3932,7 +3932,6 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								i++;
 							}												
 						}
-						//return "success";
 					}
 					
 					int count =0;
@@ -3948,7 +3947,43 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					}else{
 						count = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
 					}
-					if(count>0){
+					
+					/*if(count>0){
+						return "success";
+					}*/
+					
+					int finalCount =0;
+					if(levelId.equals(5l)){
+						if(mandalList !=null && mandalList.size()>0){
+							
+							
+							List<Long> finalIds =  nominatedPostFinalDAO.getApplicationFinalModels(deptId,boardId,positions,5l,mandalList);
+							
+							if(finalIds !=null){
+								int count1 = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);
+								finalCount = count+count1;
+							}
+							
+						}
+						if(townList !=null && townList.size()>0){
+							
+							List<Long> finalIds =  nominatedPostFinalDAO.getApplicationFinalModels(deptId,boardId,positions,6l,townList);
+							if(finalIds !=null){
+								int count2 = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);
+								finalCount=count+count2;
+							}
+						}
+					}else{
+						
+						List<Long> finalIds =  nominatedPostFinalDAO.getApplicationFinalModels(deptId,boardId,positions,levelId,searchLevelValues);
+						
+						if(finalIds !=null){
+							finalCount = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);							
+						}
+						
+						
+					}
+					if(finalCount>0){
 						return "success";
 					}
 					

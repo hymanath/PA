@@ -9,6 +9,8 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFinal, Long> implements INominatedPostFinalDAO{
 
@@ -455,9 +457,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
 					" model.nominationPostCandidate.gender," +
-					" count(model.nominatedPos" +
-					"" +
-					"tFinalId)");
+					" count(model.nominatedPostFinalId)");
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
@@ -976,4 +976,81 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	       }
 	    return query.list();
 	}
+	
+	public List<Long> getApplicationFinalModels(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.nominatedPostFinalId from NominatedPostFinal model " +
+				" WHERE  model.isDeleted = 'N' " +
+				" AND model.nominatedPostMember.isDeleted = 'N' " +
+					" AND model.applicationStatusId = :shortListId ");
+				
+				if(deptId !=null && deptId>0){
+					queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId ");
+				}
+				if(boardId !=null && boardId>0){
+					queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.boardId = :boardId ");
+				}
+				if(positions !=null && positions.size()>0){
+					queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.positionId in (:positionIds) ");
+				}
+				if(levelId !=null && levelId>0){
+					queryStr.append(" AND model.nominatedPostMember.boardLevelId = :boardLevelId ");
+				}
+				if(searchLevelValues !=null && searchLevelValues.size()>0){
+					queryStr.append(" AND model.nominatedPostMember.locationValue in (:locationValue) ");
+				}
+				Query query = getSession().createQuery(queryStr.toString());
+				
+				if(deptId !=null && deptId>0){
+					query.setParameter("departmentId",deptId);
+				}
+		
+				if(boardId !=null && boardId>0){
+					query.setParameter("boardId",boardId);
+				}
+		
+				if(positions !=null && positions.size()>0){
+					query.setParameterList("positionIds",positions);
+				}
+				if(levelId !=null && levelId>0){
+					query.setParameter("boardLevelId",levelId);
+				}
+				if(searchLevelValues !=null && searchLevelValues.size()>0){
+					query.setParameterList("locationValue",searchLevelValues);
+				}
+				
+				query.setParameter("shortListId", 3L);
+				
+				return query.list();
+				
+	}
+	
+		public int updateApplicationStatusToFinalReview(Long userId,List<Long> finalIds){
+			
+			StringBuilder queryStr = new StringBuilder();
+			DateUtilService dateUtilService = new DateUtilService();
+			
+			queryStr.append(" UPDATE  NominatedPostFinal model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
+					" model.updatedBy =:updatedBy," +
+					" model.updatedTime =:updatedTime" +
+					"	WHERE model.isDeleted ='N' " );
+			
+			if(finalIds !=null && finalIds.size()>0){
+				queryStr.append("  and model.nominatedPostFinalId in (:finalIds)  ");
+			}
+					
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			query.setParameter("applicationStatusId", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);		
+			query.setParameter("updatedBy", userId);
+			query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
+			
+			if(finalIds !=null && finalIds.size()>0){
+				query.setParameterList("finalIds", finalIds);
+			}
+			
+			return query.executeUpdate();
+		}	
 }
