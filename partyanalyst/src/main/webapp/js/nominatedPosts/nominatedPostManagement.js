@@ -336,7 +336,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 		
 		$("#departmentsBuildId").html(str);
 		$(".deptsUlCls li:first-child a").trigger("click");
-		$('#headingOne00').trigger('click');
+		//$('#headingOne00').trigger('click');
 	}else{
 		$("#departmentsBuildId").html("<div>No Data Available</div>");
 	}		
