@@ -1026,7 +1026,25 @@ public class SchedulerService implements ISchedulerService{
 			//System.out.println(emailIdAndDeptIdListMap);
 			Set<Long> emailIdList = emailIdAndDeptIdListMap.keySet();
 			//Collection<List<Long>> listOflistOfDeptId = emailIdAndDeptIdListMap.values();
-			List<Long> deptList = null;
+			List<Long> deptList = emailIdAndDeptIdListMap.get(1l);    
+			Long officeId = 1l;
+			List<Object[]> specificOfficeTotalEmployeeList = employeeWorkLocationDAO.getSpecificOfficeTotalEmployeeListFilter(deptList,officeId);
+			List<Object[]> specificOfficeTotalAttendedEmployee = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeFilter(deptList, presentedCaderIdList, officeId);
+			List<Object[]> departmentWiseTotalEmployeeList1 = employeeDepartmentDAO.getDepartmentWiseTotalEmployeeListFilterForOffice(deptList, officeId);
+			List<Object[]> departmenWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
+			List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee1 = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilterForOffice(deptList, presentedCaderIdList, officeId);
+			List<Object[]> specificOfficeTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getspecificOfficeTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList, officeId);
+			List<Object[]> specificOfficeTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList, officeId);
+			
+			generatePdfReport(area, emailVo,	specificOfficeTotalEmployeeList, 
+												specificOfficeTotalAttendedEmployee, 
+												departmentWiseTotalEmployeeList1, 
+												departmenWiseTotalAttendedEmployee1, 
+												departmentWiseThenOfficeWiseTotalAttendedEmployee1, 
+												specificOfficeTotalNonAttendedEmployeeDetailsList,   
+												specificOfficeTotalAttendedEmployeeDetailsList );  
+			@SuppressWarnings("unused")
+			ResultStatus resultStatus1 = sendEmailWithPdfAttachment("office", emailVo);        
 			for(Long userEmailId : emailIdList){    
 				emailVo.setEmailId(userEmailId);
 				deptList = emailIdAndDeptIdListMap.get(userEmailId);  
@@ -1037,13 +1055,16 @@ public class SchedulerService implements ISchedulerService{
 				List<Object[]> departmentWiseThenOfficeWiseTotalAttendedEmployee = employeeDepartmentDAO.getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilter(deptList, presentedCaderIdList);
 				List<Object[]> officeWiseTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList);
 				List<Object[]> officeWiseTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getOfficeWiseTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList);
-				for(Object[] obj : officeWiseTotalAttendedEmployeeDetailsList){
-					Long cadreId = (Long)obj[6];
-					String actualLocation = employeeIdLocationMap.get(cadreId);
-					String homeLocation = obj[1].toString();
-					if(!(actualLocation.equalsIgnoreCase(homeLocation))){
-						String locName = actualLocation.substring(0, 3);
-						obj[5] = obj[5]+"["+locName+"]";        
+				
+				if(officeWiseTotalAttendedEmployeeDetailsList != null && officeWiseTotalAttendedEmployeeDetailsList.size() > 0){  
+					for(Object[] obj : officeWiseTotalAttendedEmployeeDetailsList){  
+						Long cadreId = (Long)obj[6];
+						String actualLocation = employeeIdLocationMap.get(cadreId);  
+						String homeLocation = obj[1].toString();
+						if(!(actualLocation.equalsIgnoreCase(homeLocation))){
+							String locName = actualLocation.substring(0, 3);
+							obj[5] = obj[5]+"["+locName+"]";        
+						}
 					}
 				}
 				generatePdfReport(area, emailVo,	officeWiseTotalEmployeeList, 
@@ -1664,12 +1685,15 @@ public class SchedulerService implements ISchedulerService{
 			
 			message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));  
 			if(area.equalsIgnoreCase("office")){
-				List<Object[]> emailList = reportEmailDAO.getEmailList(1l);
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org"));  
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));   
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));   
+				/*List<Object[]> emailList = reportEmailDAO.getEmailList(1l);
 				for(Object[] emailArr : emailList){
 					if(emailArr[1]==null)
-						continue;
-					message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailArr[1].toString()));  
-				}
+						continue;//accounts@telugudesam.org//a.dakavaram@itgrids.com
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailArr[1].toString()));  */
+				
 			}else if(area.equalsIgnoreCase("dept")){
 				List<Object[]> emailList = userEmailDAO.getEmailList(emailAttributesVO.getEmailId());
 				for(Object[] emailArr : emailList){ 
