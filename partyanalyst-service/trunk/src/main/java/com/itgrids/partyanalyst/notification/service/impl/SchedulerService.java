@@ -1036,7 +1036,7 @@ public class SchedulerService implements ISchedulerService{
 			List<Object[]> specificOfficeTotalNonAttendedEmployeeDetailsList = employeeWorkLocationDAO.getspecificOfficeTotalNonAttendedEmployeeDetailsFilter(deptList, presentedCaderIdList, officeId);
 			List<Object[]> specificOfficeTotalAttendedEmployeeDetailsList = employeeWorkLocationDAO.getSpecificOfficeTotalAttendedEmployeeDetailsFilter(fromDate, toDate, deptList, presentedCaderIdList, officeId);
 			
-			generatePdfReport(area, emailVo,	specificOfficeTotalEmployeeList, 
+			generatePdfReport("office", emailVo,	specificOfficeTotalEmployeeList, 
 												specificOfficeTotalAttendedEmployee, 
 												departmentWiseTotalEmployeeList1, 
 												departmenWiseTotalAttendedEmployee1, 
