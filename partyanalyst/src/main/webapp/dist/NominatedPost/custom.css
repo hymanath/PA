@@ -134,7 +134,7 @@ h1,h2,h3,h4,h5,h6 ,p ,table,ul
 }
 .bg_ef
 {
-	background-color:#eff3f4
+	background-color:#eff3f4 !important
 }
 .bg_ff
 {
@@ -1177,15 +1177,15 @@ div.dataTables_wrapper div.clear
 }
 .bg_F1
 {
-	background:F1F6BE
+	background:#F1F6BE !important
 }
 .bg_D4
 {
-	background:#D4E2FC
+	background:#D4E2FC !important
 }
 .bg_CB
 {
-	background:#CBE8BA
+	background:#CBE8BA !important
 }
 .tablePadding tr td
 {
@@ -1202,6 +1202,11 @@ div.dataTables_wrapper div.clear
 	color:#666;
 	cursor:pointer;
 }
+.positionsUl
+{
+	border:1px solid #ddd;
+	padding:5px !important;
+}
 .positionsUl , .positionsUlPie
 {
 	padding:0px;
@@ -1210,6 +1215,15 @@ div.dataTables_wrapper div.clear
 {
 	list-style:none;
 	padding:4px;
+}
+/*.positionsUl li:nth-child(4) , .positionsUl li:nth-child(5) , .positionsUl li:nth-child(6) , .positionsUl li:nth-child(7)
+{
+	padding-left:24px;	
+	font-size:12px;
+}*/
+.subPositions
+{
+	margin-top:10px !important;
 }
 .positionsUlPie li
 {
@@ -1383,4 +1397,8 @@ div.dataTables_wrapper div.clear
 	left:-15px;
 	top:0px;
 }
-
+.tableNew1 tr td , .tableNew1 thead th
+{
+	padding:13px 2px !important;
+	text-align:center;
+}
