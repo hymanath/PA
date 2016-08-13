@@ -625,7 +625,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			str.append(" AND model.locationValue in (:locationValues)");
 		}
 	// Any Dept && Board && post Scenarios Consideration && non Consideration
-	if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+		
 		if(deptsIds !=null && deptsIds.size()>0){
 			str.append(" AND model.departments.departmentId in (:deptsIds) ");
 		}
@@ -633,12 +633,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			str.append(" AND model.board.boardId in (:boardIds) ");
 		}
 		
+		
+	if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+		
 		str.append(" and  model.positionId is not null ");
 		
 	}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
-		str.append(" AND (model.departmentId is null " +
-				" or model.boardId is null " +
-				" or model.positionId is null ) ");
+		str.append(" and model.positionId is null ) ");
 	}
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
@@ -659,13 +660,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		if(locationValues !=null && locationValues.size()>0){
 			query.setParameterList("locationValues",locationValues);
 		}
-		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
-			if(deptsIds !=null && deptsIds.size()>0){
-				query.setParameterList("deptsIds",deptsIds);
-			}
-			if(boardIds !=null && boardIds.size()>0){
-				query.setParameterList("boardIds",boardIds);
-			}
+		if(deptsIds !=null && deptsIds.size()>0){
+			query.setParameterList("deptsIds",deptsIds);
+		}
+		if(boardIds !=null && boardIds.size()>0){
+			query.setParameterList("boardIds",boardIds);
 		}
 		
 		/*if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
