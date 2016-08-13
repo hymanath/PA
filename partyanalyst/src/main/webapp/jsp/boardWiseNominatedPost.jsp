@@ -27,9 +27,10 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
-        	<h3 class="headingColor">SHORTLISTING -<span id="headPosId" style="text-transform:uppercase"></span> - <small><span id="headBrdId" style="text-transform:uppercase"></span></small></h4>
-            <ol class="breadcrumb text-capital" id="headLvlDeptId"></h5>
-        	<div class="panel panel-default panelDepartmentHead">
+		 <ol class="breadcrumb text-capital" id="headLvlDeptId" style="margin-bottom: -10px;margin-left: -13px;"></ol>
+        	<h3 class="headingColor"><small><span id="headBrdId" style="text-transform:uppercase;margin-bottom: 10px;"></span></small> - <span id="headPosId" style="text-transform:uppercase"></span> </h3>
+           
+        	<div class="panel panel-default panelDepartmentHead" style="margin-top: 10px;">
             	<div class="panel-body" style="background-color:#f4f4f4;">
                 	<div class="table-responsive" id="positionDivId"></div>
                 </div>
@@ -38,7 +39,7 @@
         <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
         	<div class="panel panel-default panelDepartmentHead">
             	<div class="panel-heading">
-                	<h4 class="panel-title">APPLIED THIS POST - MEMBERS DETAILS</h4>
+                	<h4 class="panel-title"  id="postMembersId">APPLIED THIS POST - MEMBERS DETAILS</h4>
                 </div>
                 <div class="panel-body" style="background-color:#f4f4f4;">
                 	<div class="">
@@ -90,13 +91,22 @@ var globalLevelTxt = '${param.levelTxt}';
 var globalDeptName = '${param.deptName}'; 
 var headBrdId='${param.brdName}';
 var globalPosName='${param.posName}';
+var globalStats='${param.sts}';
 
 var globalPositionId = parseInt('${param.positionId}');
 var globalDeptId = parseInt('${param.deptId}');
 var globalBoardId = parseInt('${param.boardId}');
 
-$("#headPosId").html(globalPosName+" post");
+if(globalPositionId == 0)
+	globalStats =" <b class='text-success'  style='text-transform:uppercase;' >  ANY </b> POST   "+globalPosName+" ";
+else if(globalStats == "readyToShortList")
+	globalStats =" SHORTLISTING  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
+
+
+
+$("#headPosId").html(globalStats+" ");
 $("#headBrdId").html(headBrdId+" board");
+
 $("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
 
 /*var globalDistrictArr=[];
@@ -318,7 +328,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='</div>';
 				}
 				else if(type == "any"){
-					str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">ASSIGN THIS POSITION</button>';
+					
+					if(globalPositionId>0)
+						str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">ASSIGN THIS POSITION</button>';
+					
 					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'">ASSIGN A POSITION</button>';
 					str+='<div class="updateDropDownThisAny" id="updateDropDownThisAny'+i+'">';
 						str+='<div class="updateDropDownArrow">';
@@ -383,6 +396,11 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 		}
 	}
 	str+='</table>';
+	
+	if(globalPositionId == 0)
+		$("#postMembersId").html(" APPLIED <b class='text-success'  style='text-transform:uppercase;' > ANY POST </b> - APPLIED MEMBERS DETAILS ");
+	else 
+		$("#postMembersId").html(" APPLIED <b class='text-success' style='text-transform:uppercase;'>  "+globalPosName+" POST </b>  - APPLIED  MEMBERS DETAILS ");
 	
 	$("#resultDivId").html(str);
 	tableResponsive();
@@ -741,6 +759,8 @@ $(document).on("click",".updateStatusThisAnyCls",function(){
 
 $(document).on("click",".updateStatusAnyCls",function(){
 
+
+	
 	var applicationId = $(this).attr("attr_application_id");
 	var candidateId = $(this).attr("attr_candidate_id");
 	var num = $(this).attr("attr_count");
@@ -753,6 +773,28 @@ $(document).on("click",".updateStatusAnyCls",function(){
 	var statusId = $("#updatedStatusAnyId"+num).val();
 	var comment = $("#statusCommentAnyId"+num).val();
 
+	if(deptId == 0){
+			$("#successDivAnyId"+num).html(" <b style='color: red;' >Please select department.</b>");
+			return;
+	}
+	if(boardId == 0){
+			$("#successDivAnyId"+num).html("  <b style='color: red;' >Please select Corporation/Board.</b>");
+			return;
+	}
+	if(positionId == 0){
+			$("#successDivAnyId"+num).html(" <b style='color: red;' > Please select Position.</b>");
+			return;
+	}
+	if(statusId == 0){
+			$("#successDivAnyId"+num).html(" <b style='color: red;' > Please select status.</b>");
+			return;
+	}
+	if(comment =='' || comment.trim().length == 0){
+			$("#successDivAnyId"+num).html("  <b style='color: red;' > Comment is required.</b>");
+			return;
+	}
+	
+	$("#successDivAnyId"+num).html('<img id="" src="images/icons/loading.gif" style="width:15px;"/>');
 	var jsObj=
 	   {	
 		applicationId : applicationId,
@@ -771,10 +813,11 @@ $(document).on("click",".updateStatusAnyCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#successDivAnyId"+num).html('');
 		if(result != null && result == 'success')
-			$("#successDivAnyId"+num).html("Successfully Updated...");
+			$("#successDivAnyId"+num).html(" <b>Successfully Updated... </b>");
 		else
-			$("#successDivAnyId"+num).html("Sorry,Exception Occured...Please try again...");
+			$("#successDivAnyId"+num).html(" <b>Sorry,Exception Occured...Please try again...</b>");
    });
 });
 
@@ -829,6 +872,7 @@ function buildNominatePostPositionDetails(result){
 					str+='</thead>';
 					str+='<tbody>';
 			   //console.log(result);
+
 			   for(var i in result){
 					if(result[i].id != null && result[i].id > 0){
 						str+='<tr>';
@@ -846,9 +890,9 @@ function buildNominatePostPositionDetails(result){
 						str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
 						str+='</tr>';
 					}
-					else{
+					else {
 						str+='<tr>';
-						str+='<td><p>ANY POST</p><small>Requested for any post members shortlisted for this</small></td>';
+						str+='<td><p>ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
 						//str+='<td>02</td>';
 						str+='<td>'+result[i].receivedCount+'</td>';
 						str+='<td>'+result[i].shortListedCount+'</td>';
