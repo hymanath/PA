@@ -1127,4 +1127,28 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   }
 	return query.list();   
    }
+   public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+		 
+	   StringBuilder queryStr = new StringBuilder();
+	          
+	    queryStr.append("select count(model.nominatedPostId) from NominatedPost model " +
+	    		       " where " +
+	    		       " model.isExpired='N' and model.isDeleted='N' ");
+	    
+       if(positionId != null && positionId.longValue() > 0){
+    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
+       }
+       if(boardLevelId != null && boardLevelId.longValue() > 0){
+    	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
+       }
+	  Query query = getSession().createQuery(queryStr.toString());
+	  
+	  if(positionId != null && positionId.longValue() > 0){
+	   query.setParameter("positionId", positionId);
+	   }  
+	   if(boardLevelId != null && boardLevelId.longValue() > 0){
+		query.setParameter("boardLevelId", boardLevelId);   
+	   }
+        return (Long) query.uniqueResult();
+ }
 }

@@ -4359,10 +4359,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	
 	public NominatedPostDashboardVO getOverAllTotalCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
 		NominatedPostDashboardVO returnvo = new NominatedPostDashboardVO();
+		Map<Long,NominatedPostDashboardVO> casteGroupMap = new HashMap<Long, NominatedPostDashboardVO>();
+		Map<Long,NominatedPostDashboardVO> ageRangeMap = new HashMap<Long, NominatedPostDashboardVO>();
+		
 		try {
 			List<NominatedPostDashboardVO> genderList = new ArrayList<NominatedPostDashboardVO>();
-			List<NominatedPostDashboardVO> casteList = new ArrayList<NominatedPostDashboardVO>();
-			List<NominatedPostDashboardVO> ageList = new ArrayList<NominatedPostDashboardVO>();
+			//List<NominatedPostDashboardVO> casteList = new ArrayList<NominatedPostDashboardVO>();
+			//List<NominatedPostDashboardVO> ageList = new ArrayList<NominatedPostDashboardVO>();
 			
 			List<Object[]> genList = nominatedPostFinalDAO.getGenderWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
 			if(commonMethodsUtilService.isListOrSetValid(genList)){
@@ -4373,32 +4376,52 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					genderList.add(vo);
 				}
 			}
-			
+			List<Object[]> casteGropList = casteCategoryDAO.getCasteCategoryDetails();
+			if(commonMethodsUtilService.isListOrSetValid(casteGropList)){ //preparing template for caste group
+				for (Object[] obj : casteGropList) {
+					NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
+					  Long csteGroupId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					  vo.setStatusId(csteGroupId);
+					  vo.setStatusName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					  casteGroupMap.put(csteGroupId, vo);
+				}
+			}
 			List<Object[]> casList = nominatedPostFinalDAO.getCasteWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
 			if(commonMethodsUtilService.isListOrSetValid(casList)){
 				for (Object[] obj : casList) {
-					NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
-					vo.setStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setStatusName(obj[1] != null ? obj[1].toString():"");
-					vo.setStatusCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
-					casteList.add(vo);
-				}
+					NominatedPostDashboardVO vo = casteGroupMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					 if(vo != null){
+					  vo.setStatusCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					 }
+					}
 			}
-			
+			List<Object[]> ageRangeList = nominatedPostAgeRangeDAO.getAllAgeRanges();
+		    if(commonMethodsUtilService.isListOrSetValid(ageRangeList)){ // preparing template for age range group
+		    	for (Object[] obj : ageRangeList) {
+					NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
+					Long ageRangeId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					vo.setStatusId(ageRangeId);
+					vo.setStatusName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					ageRangeMap.put(ageRangeId, vo);
+				}
+		    }
 			List<Object[]> list = nominatedPostFinalDAO.getAgeGroupWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
-					NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
-					vo.setStatusId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setStatusName(obj[1] != null ? obj[1].toString():"");
-					vo.setStatusCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
-					ageList.add(vo);
+					NominatedPostDashboardVO vo = ageRangeMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					if(vo!= null){
+						vo.setStatusCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					}
 				}
 			}
 			
 			returnvo.setApplicatnStatsList(genderList);
-			returnvo.setNominatedStatusList(casteList);
-			returnvo.setPositinsList(ageList);
+			if(casteGroupMap != null && !casteGroupMap.isEmpty()){
+				returnvo.getNominatedStatusList().addAll(casteGroupMap.values());
+			}
+			if(ageRangeMap != null && !ageRangeMap.isEmpty()){
+				returnvo.getPositinsList().addAll(ageRangeMap.values());
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getOverAllTotalCountsByPosition() method of NominatedPostProfileService", e);
 		}
@@ -4429,9 +4452,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(ageList, ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M"))
+						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F"))
+						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 						
 						castevo.setApplicatnStatsList(ageList);
@@ -4441,9 +4464,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(castevo.getApplicatnStatsList(), ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M"))
+						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F"))
+						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 					}
 				}
@@ -4511,9 +4534,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(ageList, ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M"))
+						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F"))
+						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 						
 						castevo.setApplicatnStatsList(ageList);
@@ -4523,9 +4546,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(castevo.getApplicatnStatsList(), ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M"))
+						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male") )
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F"))
+						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 					}
 				}
