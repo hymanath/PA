@@ -114,7 +114,7 @@
         </div>
         <div class="col-md-12 col-sm-12 col-xs-12 m_top20">
         	<div class="row">
-            	<div class="col-md-8 col-xs-12 col-sm-8">
+            	<div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
                     	<div class="panel-heading bg_ff">
                         	<h4 class="panel-title text-capital">caste wise position overview</h4>
@@ -122,7 +122,7 @@
                         <div class="panel-body pad_0">
                         	<div>
                               <!-- Nav tabs -->
-                              <ul class="nav nav-tabs navTabsSelection" role="tablist">
+                              <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab" role="tablist">
                                 <li role="presentation" class="active"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="0" class="castePositionCls" role="tab" data-toggle="tab">Overall</a></li>
                                 <li role="presentation"><a href="#state" aria-controls="state" attr_href_id="state" role="tab" attr_level_value="2" class="castePositionCls" data-toggle="tab">State</a></li>
                                 <li role="presentation"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab">district</a></li>
@@ -137,7 +137,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-xs-12 col-sm-4">
+                <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
                     	<div class="panel-heading bg_ff">
                         	<h4 class="panel-title text-capital">caste group wise position overview</h4>
@@ -226,7 +226,7 @@
                 	<div class="pad_15 bg_ff">
                     	<div class="row">
                         	<div class="col-md-2 col-xs-12 col-sm-2" id="totalMaleAndFemaleId">
-                            	<table class="table table-bordered table-condensed bg_F1">
+                            	<table class="table table-bordered table-condensed bg_F1" style="font-size:13px !important;">
                                 	<tr>
                                     	<td rowspan="2" style="vertical-align:middle">
                                         	<p class="text-capital">total</p>
@@ -245,9 +245,9 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-5 col-xs-12 col-sm-5" id="totalCasteId">
+                            <div class="col-md-4 col-xs-12 col-sm-5" id="totalCasteId">
                             </div>
-                            <div class="col-md-5 col-xs-12 col-sm-5" id="totalAgeWiseId">
+                            <div class="col-md-6 col-xs-12 col-sm-5" id="totalAgeWiseId">
                             </div>
                         </div>
                         <div class="row m_top20">
@@ -537,7 +537,7 @@ $(document).on("click",".changeIconClass",function(){
       "endValue": 100,
       "radius": "100%",
       "innerRadius": "85%"
-    }, {
+    }, {['100%','100%','88%','88%','75%','75%','65%','65%','50%','50%','35%','35%','20%','20%']
       "color": "#FDD401",
       "startValue": 0,
       "endValue": 80,

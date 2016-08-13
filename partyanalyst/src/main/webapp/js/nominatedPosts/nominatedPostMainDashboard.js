@@ -9,6 +9,10 @@ $(document).ready(function(){
 	getLocationLevelList();
 	getDepartmentList();
 	getBoardList();
+	getNominatedCandidateGroupByDistrict(0,0,0,0,0,0);
+    getOverAllTotalCountsByPosition(0,0,0,0,0,0);
+	getCasteGroupWiseCountsByPosition(0,0,0,0,0,0);
+	getCasteWiseCountsByPosition(0,0,0,0,0,0);
 });
 $(document).on("click",".castePositionCls",function(){
 	var hrefId = $(this).attr("attr_href_id");
@@ -43,11 +47,11 @@ $(document).on("click",".casteGroupCls",function(){
  function buildCasteWisePositionRslt(result,hrefId){
 	 
 	 	var str='';
-	    if(result[0].casteList.length==0){
+	   /*  if(result[0].casteList.length==0){
 			str+='No DATA AVAILABLE'; 
 			$("#castePostionDivId").html(str);
 			return;
-		 }
+		 } */
 	
 /* 	     str+='<div role="tabpanel" class="tab-pane active pad_10 pad_right0" id="'+hrefId+'">'
          str+='<div class="row">';
@@ -66,22 +70,22 @@ $(document).on("click",".casteGroupCls",function(){
 		 str+='<div class="col-md-12 pad_left0">';
          str+='<div class="table-responsive">';
         str+='<table class="table table-bordered dataTableCaste" style="margin:0px !important">';
-		if(result[0].casteList != null && result[0].casteList.length > 0){
-		  str+='<thead class="text-capital">';
+		if(result[0].positionList != null && result[0].positionList.length > 0){
+		  str+='<thead class="text-capital" style="font-size:12px;">';
 		  str+='<th></th>';
-		  for(var i in result[0].casteList){
-			  str+='<th id="'+result[0].casteList[i].casteId+'">'+result[0].casteList[i].casteName+'</th>';
+		  for(var i in result[0].positionList){
+			  str+='<th id="'+result[0].positionList[i].positionId+'">'+result[0].positionList[i].positionName+'</th>';
 		  }	
           str+='</thead>';		  
 		}
 		str+='<tbody>';
 		for(var i in result){
-			var casteList = result[i].casteList;
-			 if(casteList != null && casteList.length > 0){
+			var positionList = result[i].positionList;
+			 if(positionList != null && positionList.length > 0){
 				str+='<tr>';
-				str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
-				 for(var j in result[i].casteList){
-					str+='<td>'+casteList[j].count+'</td>'; 
+				str+='<td id="'+result[i].casteId+'">'+result[i].casteName+'</td>';
+				 for(var j in result[i].positionList){
+					str+='<td>'+positionList[j].count+'</td>'; 
 				 }
 				str+='</tr>';
 			 }
@@ -92,10 +96,14 @@ $(document).on("click",".casteGroupCls",function(){
         str+='</div>';
         //str+='</div>';
         //str+='</div>';  
-       $("#castePostionDivId").html(str);
-        $(".dataTableCaste").dataTable({
-	      "sDom": '<"top">rt<"bottom"><"clear"iflp>'
-         });	   
+	   $("#castePostionDivId").html(str);
+         $(".dataTableCaste").dataTable({
+	      "sDom": '<"top">rt<"bottom"><"clear"iflp>',
+			"scrollY":        "320px",
+			"scrollX":        "200px",
+			"scrollCollapse": true,
+			"paging":         false
+        });  
       
  }
 
@@ -156,9 +164,18 @@ $(document).on("click",".casteGroupCls",function(){
 		str+='</div>';
 		str+='</div>';
 		$("#casteGroupPostionDivId").html(str);	
-		 $(".dataTableCasteGroup").dataTable({
-	     "sDom": '<"top">rt<"bottom"><"clear"iflp>'
-        });
+		if(result.length > 10)
+		{ 
+			$(".dataTableCasteGroup").dataTable({
+			 "sDom": '<"top">rt<"bottom"><"clear"iflp>',
+			 "scrollY": "380px"
+			});	
+		}else{
+		  $(".dataTableCasteGroup").dataTable({
+			 "sDom": '<"top">rt<"bottom"><"clear"iflp>'
+			});		
+		}
+		 
  }
  function getAllPositions(){
 	var jsObj={}
@@ -319,22 +336,25 @@ $(document).on("click",".casteGroupCls",function(){
 	
 function buildOverAllTotalCountsByPosition(result){
 	var totalMFCount=0;
+	var totalmaleCnt = 0;
+	var totalFemaleCnt = 0;
 	 for (var i in result.applicatnStatsList){
-		if(result.applicatnStatsList[i].statusName =='Female'){		
+		if(result.applicatnStatsList[i].statusName =='Female' || result.applicatnStatsList[i].statusName == 'F'){		
 			totalMFCount=totalMFCount+result.applicatnStatsList[i].statusCount;
-			$("#totalFemaleId").html('<p>'+result.applicatnStatsList[i].statusCount+'</p>');
+			totalFemaleCnt = totalFemaleCnt+result.applicatnStatsList[i].statusCount;
 		}
-			
-		if(result.applicatnStatsList[i].statusName == 'Male'){
+		if(result.applicatnStatsList[i].statusName == 'Male' || result.applicatnStatsList[i].statusName == 'M'){
 					totalMFCount=totalMFCount+result.applicatnStatsList[i].statusCount;
-					$("#totalMaleId").html('<p>'+result.applicatnStatsList[i].statusCount+'</p>');
+					totalmaleCnt = totalmaleCnt + result.applicatnStatsList[i].statusCount;
 		}			
 		}
-	   $("#totalMaleFemaleId").html('<p>'+totalMFCount+'</p>');
+		$("#totalFemaleId").html('<p>'+totalFemaleCnt+'</p>');
+		$("#totalMaleId").html('<p>'+totalmaleCnt+'</p>');
+	    $("#totalMaleFemaleId").html('<p>'+totalMFCount+'</p>');
 	   
 	   
 		var str='';
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered bg_D4 tableNew1">';
 		str+='<thead>';
 		for(var i in result.nominatedStatusList) {
 		str+='<th>'+result.nominatedStatusList[i].statusName+'</th>';
@@ -353,8 +373,8 @@ function buildOverAllTotalCountsByPosition(result){
 		
 		
 		var str1='';
-		str1+='<table class="table table-bordered">';
-		str1+='<thead>';
+		str1+='<table class="table table-bordered bg_CB tableNew1">';
+		str1+='<thead style="font-size:12px;">';
 		for(var i in result.positinsList){
 		str1+='<th>'+result.positinsList[i].statusName+' Age</th>';
 		}
@@ -406,7 +426,7 @@ function buildOverAllTotalCountsByPosition(result){
 	function buildCasteGroupWiseCountsByPosition(result){
 		var str='';
 		str+='<table>';
-		str+='<thead>';
+		str+='<thead class="bg_ef">';
 		str+='<tr>'
 		str+='<td rowspan="2">Caste Group</td>';
 		if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length > 0){
@@ -488,36 +508,38 @@ function buildOverAllTotalCountsByPosition(result){
 	function buildCasteWiseCountsByPosition(result){
 		var str='';
 		str+='<table class="table table-bordered">';
-		str+='<thead>';
+		str+='<thead class="bg_ef">';
 		str+='<tr>';
-		str+='<td rowspan="2">CASTE NAME</td>';
+		str+='<th rowspan="2">CASTE NAME</th>';
 	if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length > 0){
 			for(var i in result[0].applicatnStatsList){
 				if(result[0].applicatnStatsList[i].statusName == 'Total'){
-					str+='<td colspan="3">Total</td>'
+					str+='<th colspan="3">Total</th>'
 				}else{
-					str+='<td colspan="2">'+result[0].applicatnStatsList[i].statusName+'</td>'
+					str+='<th colspan="2">'+result[0].applicatnStatsList[i].statusName+'</th>'
 			}
 		}
 	}
-		str+='</td>';
+		str+='</th>';
+		str+='<th></th>';
 		str+='</tr>';
 		str+='<tr>';
 		if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length>0){
 			for(var i in result[0].applicatnStatsList){
 				if(result[0].applicatnStatsList[i].statusName == 'Total'){
-					str+='<td> T </td>';
-					str+='<td> M </td>';
-					str+='<td> F </td>';
+					str+='<th> T </th>';
+					str+='<th> M </th>';
+					str+='<th> F </th>';
 				}else{
-					str+='<td> M </td>';
-					str+='<td> F </td>';
+					str+='<th> M </th>';
+					str+='<th> F </th>';
 				}
 			}
 		}
+		str+='<th></th>';
 		str+='</tr>';
 		str+='</thead>';
-		str+='<tbody>';
+		str+='<tbody class="bg_ef">';
 		for(var i in result){
 			str+='<tr>';
 			str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
@@ -692,45 +714,45 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "endValue": 100,
     "startAngle": 0,
     "endAngle": 270,
-    "bands": [{
+    "bands": [ {
       "color": "#fff",
       "startValue": 0,
       "endValue": 100,
       "radius": "100%",
       "innerRadius": "85%"
     }, {
-      "color": "#FDD401",
+      "color": "#fff2b3",
       "startValue": 0,
       "endValue": totalPositionCntPer,
       "radius": "100%",
       "innerRadius": "95%",
       "balloonText": totalPostionCnt
-    },{
-      "color": "#fff",
+    } , {
+     "color": "#fff",
       "startValue": 0,
       "endValue": 100,
       "radius": "88%",
       "innerRadius": "88%"
     }, {
-      "color": "#E48D45",
+      "color": "#eeb3af",
       "startValue": 0,
-      "endValue": noCandidateCntPer,
+      "endValue": shortListedCntper,
       "radius": "88%",
       "innerRadius": "83%",
-      "balloonText": noCandidateCnt
-    },{
+      "balloonText": shortedListedCndtCnt
+    }, {
       "color": "#fff",
       "startValue": 0,
       "endValue": 100,
       "radius": "75%",
       "innerRadius": "75%"
     }, {
-      "color": "#DE675D",
+      "color": "#D7D5EA",
       "startValue": 0,
-      "endValue": shortListedCntper,
+      "endValue": finalReviewPer,
       "radius": "75%",
       "innerRadius": "70%",
-      "balloonText": shortedListedCndtCnt
+      "balloonText": finalReviewCantCnt
     },{
       "color": "#fff",
       "startValue": 0,
@@ -738,42 +760,42 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
       "radius": "65%",
       "innerRadius": "65%"
     }, {
-      "color": "#65A6E2",
+      "color": "#bee0e1",
       "startValue": 0,
-      "endValue": finalReviewPer,
+      "endValue":confirmCntPern ,
       "radius": "65%",
       "innerRadius": "60%",
-      "balloonText":finalReviewCantCnt
+      "balloonText":confirmCntCnt
     }, {
       "color": "#fff",
       "startValue": 0,
       "endValue": 100,
       "radius": "50%",
       "innerRadius": "50%"
-    }, {
-      "color": "#867CC0",
+    } , {
+      "color": "#ad9591",
       "startValue": 0,
-      "endValue": confirmCntPern,
+      "endValue": goIssuedPer,
       "radius": "50%",
       "innerRadius": "45%",
-      "balloonText": confirmCntCnt
+      "balloonText": goIssuedCnt
     }, {
       "color": "#fff",
       "startValue": 0,
       "endValue": 100,
       "radius": "35%",
       "innerRadius": "35%"
-    }, {
+    }/*, {
       "color": "#7DC0C2",
       "startValue": 0,
       "endValue": goIssuedPer,
       "radius": "35%",
       "innerRadius": "30%",
       "balloonText": goIssuedCnt
-    }]
+    } */]
   }],
-  "allLabels": [{
-    "text": "Total",
+  "allLabels": [ {
+    "text": "TOTAL POSITIONS",
     "x": "49%",
     "y": "5%",
     "size": 10,
@@ -781,15 +803,15 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "color": "#333",
     "align": "right"
   }, {
-    "text": "No Candidate ",
+    "text": "SHORT LISTED",
     "x": "49%",
     "y": "10%",
     "size": 10,
     "bold": true,
     "color": "#333",
     "align": "right"
-  }, {
-    "text": "Short Listed",
+  },  {
+    "text": "READY FOR FINAL REVIEW",
     "x": "49%",
     "y": "15%",
     "size": 10,
@@ -797,7 +819,7 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "color": "#333",
     "align": "right"
   }, {
-    "text": "Ready For Review",
+    "text": "FINALIZED",
     "x": "49%",
     "y": "20%",
     "size": 10,
@@ -805,14 +827,14 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "color": "#333",
     "align": "right"
   }, {
-    "text": "Finalized",
+    "text": "G.O ISSUED",
     "x": "49%",
     "y": "26%",
     "size": 10,
     "bold": true,
     "color": "#333",
     "align": "right"
-  }, {
+  }/*, {
     "text": "G.O.Issued",
     "x": "49%",
     "y": "33%",
@@ -820,7 +842,7 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
     "bold": true,
     "color": "#333",
     "align": "right"
-  }],
+  } */],
   "export": {
     "enabled": false
   }
@@ -857,7 +879,7 @@ function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejec
       "radius": "100%",
       "innerRadius": "85%"
     }, {
-      "color": "#FDD401",
+      "color": "#E58D45",
       "startValue": 0,
       "endValue": totalAppRecevidPer,
       "radius": "100%",
@@ -870,7 +892,7 @@ function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejec
       "radius": "88%",
       "innerRadius": "88%"
     }, {
-      "color": "#E48D45",
+      "color": "#DD665D",
       "startValue": 0,
       "endValue": rejectedAppPer,
       "radius": "88%",
@@ -883,7 +905,7 @@ function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejec
       "radius": "75%",
       "innerRadius": "75%"
     }, {
-      "color": "#DE675D",
+      "color": "#65A7E1",
       "startValue": 0,
       "endValue": inProgressAppPer,
       "radius": "75%",
@@ -896,7 +918,7 @@ function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejec
       "radius": "65%",
       "innerRadius": "65%"
     }, {
-      "color": "#65A6E2",
+      "color": "#FDD501",
       "startValue": 0,
       "endValue": confirmCntPer,
       "radius": "65%",
@@ -943,6 +965,11 @@ function buildAppOverviewHighCharts(totalAppReceivedCnt,totalAppRecevidPer,rejec
 });
 }
 $(document).on("click",".locationLevelcollapseCls",function(){
+	     $("#collapseOne").collapse('hide');
+		  $("#collapseTwo").collapse('hide');
+		  $("#collapseThree").collapse('hide');
+		  $("#collapseFour").collapse('hide');
+		  $(this).collapse('show');
 	var  collapseLevelId = $(this).attr("attr_collapse_level_Id");
 	var collapseHrefId = $(this).attr("attr_collapse_href_id");
 	var locationLevelId = $(this).attr("attr_level_Id");
@@ -979,12 +1006,15 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 					str+='<div id="'+postionHighChartId+'" style="height:150px;"></div>';
 					str+='<ul class="positionsUl" style="margin-top:20px !imortant;">';
 						str+='<li class="total"><span class="statusBox"></span>TOTAL POSITIONS<span class="count pull-right">'+positionRslt[0].totalPositionCn+'</span></li>';
-						str+='<li class="noCandidate"><span class="statusBox"></span>NO CANDIDATE POSITIONS<span class="count pull-right">'+positionRslt[0].noCandidateCnt+'</span></li>';
-						str+='<li class="shortListed"><span class="statusBox"></span>SHORT LISTED POSITIONS<span class="count pull-right">'+positionRslt[0].shortedListedCndtCnt+'</span></li>';
+						str+='<li class="totalOpendPositioned"><span class="statusBox"></span>TOTAL OPEN POSITIONS<span class="count pull-right">'+positionRslt[0].totalOpendPositionCnt+'</span></li>';
+					  	/*str+='<li class="noCandidate"><span class="statusBox"></span>APPLICATION NOT RECEIVED FOR POSITION<span class="count pull-right">'+positionRslt[0].noCandidateCnt+'</span></li>'; */
+					str+='</ul>';
+					str+='<ul class="positionsUl subPositions" style="margin-top:20px !imortant;">';
+						str+='<li class="shortListed"><span class="statusBox"></span>SHORT LISTED<span class="count pull-right">'+positionRslt[0].shortedListedCndtCnt+'</span></li>';
 					   // str+='<li class="notStarted"><span class="statusBox"></span>Not Started<span class="count">1200</span></li>';
-						str+='<li class="readyForReview"><span class="statusBox"></span>READY FOR REVIEW POSITIONS<span class="count pull-right">'+positionRslt[0].finalReviewCantCnt+'</span></li>';
-						str+='<li class="finalised"><span class="statusBox"></span>FINALIZED POSITIONS<span class="count pull-right">'+positionRslt[0].confirmCntCnt+'</span></li>';
-						str+='<li class="goIssued"><span class="statusBox"></span>GO ISSUED POSITIONS<span class="count pull-right">'+positionRslt[0].goIssuedCnt+'</span></li>';
+						str+='<li class="readyForReview"><span class="statusBox"></span>READY FOR FINAL REVIEW<span class="count pull-right">'+positionRslt[0].finalReviewCantCnt+'</span></li>';
+						str+='<li class="finalised"><span class="statusBox"></span>FINALIZED<span class="count pull-right">'+positionRslt[0].confirmCntCnt+'</span></li>';
+						str+='<li class="goIssued"><span class="statusBox"></span>G.O ISSUED<span class="count pull-right">'+positionRslt[0].goIssuedCnt+'</span></li>';
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
@@ -1008,10 +1038,13 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 		 $(".constituencyBodyDivCls").html(str);
 		}else if(locationLevelId == 5){
 		 $(".manMunCorBodyDivCls").html(str);
-		}	
-/* 		if(collapseLevelId != null && collapseLevelId=="stateLevlId"){
+		}
+		if(collapseLevelId != null && collapseLevelId=="stateLevlId"){
 		  $("#collapseOne").collapse('show');
-		} */
+		  $("#collapseTwo").collapse('hide');
+		  $("#collapseThree").collapse('hide');
+		  $("#collapseFour").collapse('hide');
+		} 
 	  buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId);	
 	}
 	 if(applicationRslt != null && applicationRslt.length > 0){
@@ -1021,14 +1054,14 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 function buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId){
 var headingArr=[];
  headingArr.push('TOTAL POSITIONS');
- headingArr.push('NO CANDIDATE POSITIONS');
- headingArr.push('SHORT LISTED POSITIONS');
- headingArr.push('READY FOR REVIEW POSITIONS');
- headingArr.push('FINALIZED POSITIONS');
- headingArr.push('GO ISSUED POSITIONS');
+ headingArr.push('TOTAL OPEN POSITIONS');
+ headingArr.push('SHORT LISTED');
+ headingArr.push('READY FOR FINAL REVIEW');
+ headingArr.push('FINALIZED');
+ headingArr.push('G.O ISSUED');
 var jsonDataArr=[];
 	jsonDataArr.push({y:parseFloat(positionRslt[0].totalPositionCntPer),color:'#fff2b3'})
-    jsonDataArr.push({y:parseFloat(positionRslt[0].noCandidateCntPer),color:'#f1c5a1'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].totalOpendPositionCntPer),color:'#D7D5EA'})
     jsonDataArr.push({y:parseFloat(positionRslt[0].shortListedCntper),color:'#eeb3af'})
     jsonDataArr.push({y:parseFloat(positionRslt[0].finalReviewPer),color:'#c2bedf'})
     jsonDataArr.push({y:parseFloat(positionRslt[0].confirmCntPer),color:'#bee0e1'})
@@ -1084,12 +1117,12 @@ function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighCh
 }
 function buildLocatinWiseApplicationHighChartsRslt(applicationRslt,appHighChartId){
 var colorArr=[];
- colorArr.push('#E58D45');	
- colorArr.push('#867DC0');	
+ //colorArr.push('#E58D45');	
+ colorArr.push('#DD665D');	
  colorArr.push('#65A7E1');	
- colorArr.push('#7DC1C2');	
+ colorArr.push('#FDD501');	 
  var jsonDataArr=[];
-  jsonDataArr.push(['Received',parseFloat(applicationRslt[0].totalAppReceivedCnt)]);
+  //jsonDataArr.push(['Received',parseFloat(applicationRslt[0].totalAppReceivedCnt)]);
   jsonDataArr.push(['Rejected',parseFloat(applicationRslt[0].rejectedCnt)]);
   jsonDataArr.push(['In Progress',parseFloat(applicationRslt[0].inProgressCnt)]);
   jsonDataArr.push(['Completed',parseFloat(applicationRslt[0].confirmCntCnt)]);  
@@ -1136,6 +1169,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var castGroupId = $("#casteGroupId").val();
 		var positionStatusId = $("#positionStatusId").val(); 
 		getNominatedCandidateGroupByDistrict(positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId);
+		
 	});
 	
 	function getNominatedCandidateGroupByDistrict(positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId){
@@ -1299,7 +1333,7 @@ function buildCasteGroupWiseChart(result){
 	}
 	if(jsonDataArr.length >0){
 		
-$('#casteGroup').highcharts({
+      $('#casteGroup').highcharts({
 		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
         chart: {
             type: 'pie',
