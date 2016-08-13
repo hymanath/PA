@@ -34,7 +34,7 @@
                     	<h4 class="text-capital panel-title">all levels overview</h4>
                         <div class="row">
                         	<div class="col-md-12 col-xs-12 col-sm-12">
-                              <ul class="nav nav-tabs navTabsSelection" role="tablist">
+                              <ul class="nav nav-tabs navTabsSelection overviewUlCls" role="tablist">
                                 <li role="presentation" class="active"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="position" aria-controls="positions" role="tab" data-toggle="tab">Position</a></li>
                                 <li role="presentation"><a href="#applicationsHrfId"  class="overviewHrfCls" attr_report_type="application" attr aria-controls="applicationsTab" role="tab" data-toggle="tab">Application</a></li>
                               </ul>
