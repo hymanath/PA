@@ -171,12 +171,12 @@ var globalMandalTowDivArr=[];
 $(document).ready(function() {
 	if(globalStatus == "notYet"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
-		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation - Yet to start");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; Yet to start");
 	}
 		
 	else{
 		$("#headinggId").html(globalStatus+"  - "+globalLvlTxt+" level  - board/corporation");
-		$("#flowHeading").html(globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation <span>-</span> "+globalStatus.substr(0,1).toUpperCase()+globalStatus.substr(1)+"");
+		$("#flowHeading").html(globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation <span>	&mdash;</span> "+globalStatus.substr(0,1).toUpperCase()+globalStatus.substr(1)+"");
 	}
 		
 	if(globalLevelId !=null && globalLevelId !="" && globalLevelId !=1 && globalLevelId !=2){

@@ -962,7 +962,7 @@ function setDefaultImage(img){
 			   var mobile = $(this).attr("attr_mobile");
 			/* $(".membersBlock").append('<div class="block"><input type="hidden" class="form-control candidatecls"  name="alertVO.idNamesList['+cloneCount+'].id" value="'+attrId+'" /><div id="memberDiv'+attrId+'" class="row m_top10"><div class="col-md-3 col-md-offset-1"><p>Name : '+name+'</p></div>  <div class="col-md-3"><p>Constituency : '+attrConsti+' </p></div><span class="closeIcon" clone_block_count="'+cloneCount+'"><i class="glyphicon glyphicon-remove"></i></span></span><div class="col-md-3"><label>Alert Impact</label><select class="form-control"  id="alertImpactId" name="alertVO.idNamesList['+cloneCount+'].orderId"><option value="1">Positive </option>	<option value="2">Negative </option></select></div></div></div>');*/
 			var str ='';
-			str+='<div class="col-md-3">';
+			str+='<div class="col-md-3 col-xs-12 col-sm-6 m_top10">';
             str+='<div class="involveBlock" attr_cadreId="'+attrId+'">';
 			str+='<div class="media"><div class="media-left">';
 			str+='<img src="'+image+'" onerror="setDefaultImage(this);" alt="image" style="height:30px;width:30px;" class="img-circle">';
