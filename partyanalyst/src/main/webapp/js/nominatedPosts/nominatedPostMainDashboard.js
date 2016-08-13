@@ -748,10 +748,10 @@ function buildPostionRslt(result){
 		josnDataArr.push({"color":circleColorArr[j],"startValue":0,"endValue":positionCntPerArr[j],"radius":radiusArrForValue[j]+"%","innerRadius":innerRadiusArrForValue[j]+"%","balloonText":positionCntArr[j]});
 		jsonLevelArr.push({"text":LevelArr[j],"x": "49%","y":yAxisArrForLevel[j]+"%","size": 10,"bold": true,"color": "#333","align": "right"});
 	}
-	 $("#chartdiv").html(' ');
 	buildPostionGaugeHighChart(josnDataArr,jsonLevelArr);
 }
 function buildPostionGaugeHighChart(josnDataArr,jsonLevelArr){
+	$("#chartdiv").html("");
 var gaugeChart = AmCharts.makeChart("chartdiv", {
   "type": "gauge",
   "theme": "light",
@@ -768,7 +768,7 @@ var gaugeChart = AmCharts.makeChart("chartdiv", {
   "allLabels":jsonLevelArr,
   "export": {
     "enabled": false
-  }
+  } 
 });
 }
 function buildApplicationOverviewRslt(result){
@@ -827,12 +827,12 @@ function buildApplicationOverviewRslt(result){
 		josnDataArr.push({"color":circleColorArr[j],"startValue":0,"endValue":applicationCntPerArr[j],"radius":radiusArrForValue[j]+"%","innerRadius":innerRadiusArrForValue[j]+"%","balloonText":applicationCntArr[j]});
 		jsonLevelArr.push({"text":LevelArr[j],"x": "49%","y":yAxisArrForLevel[j]+"%","size": 10,"bold": true,"color": "#333","align": "right"});
 	}
-	$("#chartdiv1").html(" ");
 	buildAppOverviewHighCharts(josnDataArr,jsonLevelArr);
 
 }
 function buildAppOverviewHighCharts(josnDataArr,jsonLevelArr){
-	var gaugeChart = AmCharts.makeChart("chartdiv1", {
+	$("#chartdiv").html("");
+	var gaugeChart = AmCharts.makeChart("chartdiv", {
   "type": "gauge",
   "theme": "light",
   "axes": [{

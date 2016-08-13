@@ -36,15 +36,15 @@
                         	<div class="col-md-12 col-xs-12 col-sm-12">
                               <ul class="nav nav-tabs navTabsSelection overviewUlCls" role="tablist">
                                 <li role="presentation" class="active"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="position" aria-controls="positions" role="tab" data-toggle="tab">Position</a></li>
-                                <li role="presentation"><a href="#applicationsHrfId"  class="overviewHrfCls" attr_report_type="application" attr aria-controls="applicationsTab" role="tab" data-toggle="tab">Application</a></li>
+                                <li role="presentation"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="application" attr aria-controls="applicationsTab" role="tab" data-toggle="tab">Application</a></li>
                               </ul>
                               <div class="tab-content navTabsSelectionBody">
-                                <div role="tabpanel" class="tab-pane active" id="positionsHrfId">
+                                <div role="tabpanel" class="tab-pane active positionDivCls" id="positionsHrfId">
                                 	<div id="chartdiv" style="height:300px;"></div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="applicationsHrfId">
+                               <!-- <div role="tabpanel" class="tab-pane" id="applicationsHrfId">
                                 	<div id="chartdiv1" style="height:300px;"></div>
-                                </div>
+                                </div>-->
                               </div>    
                             </div>
                         </div>
