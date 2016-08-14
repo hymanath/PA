@@ -276,19 +276,21 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='</div>';
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px;min-height:400px;border:1px solid #ddd;">';
 			  for(var i in result){
-				if(result[i].availableCount != null){
-					
-					if(result[i].name!=null && result[i].name.length>35){
-						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><span style="text-transform: uppercase;cursor:pointer" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,35)+'...</span><span class="pull-right text-danger depcount" title="Total Opened Positions" >'+result[i].availableCount+'</span></a></li>';
-					}else{
-						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="Total Opened Positions" >'+result[i].availableCount+'</span></a></li>';
+				  if(result[i].id !=null && result[i].id>0){
+					  if(result[i].availableCount != null){
+						
+						if(result[i].name!=null && result[i].name.length>35){
+							str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;"><span style="text-transform: uppercase;cursor:pointer" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,35)+'...</span><span class="pull-right text-danger depcount" title="Total Opened Positions" >'+result[i].availableCount+'</span></a></li>';
+						}else{
+							str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="Total Opened Positions" >'+result[i].availableCount+'</span></a></li>';
+						}
+						
 					}
-					
-				}
-				else{
-					str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="Total Opened Positions" > 0 </span></a></li>';	
-				}
-					
+					else{
+						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="Total Opened Positions" > 0 </span></a></li>';	
+					}
+					  
+				  }
 			  }
 			  str+='</ul>';
 			str+='</div>';
@@ -1312,8 +1314,8 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		positionId:0,
 		boardLevelId:globalLevelId,
 		searchLevelId:searchlevelId,
-		locationValue:searchlevelValue
-	
+		locationValue:searchlevelValue,
+		statuss:globalStatus		
 	}
 	$.ajax({
           type:'GET',
@@ -1399,20 +1401,45 @@ function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,bo
 	      str+='</thead>';		  
 	  str+='<tbody>';
 		for(var i in result){
-				str+='<tr class="bg_ff">';
-				str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
-				if(result[i].totalApplicationReceivedCnt > 0)
-					str+='<td id="positionLinkCls" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+result[i].totalApplicationReceivedCnt+'  </td>';
-				else
-					str+='<td> - </td>';
-				str+='<td>'+result[i].positionLinkedCnt+'</td>';
-				str+='<td>'+result[i].readyToShortListedCnt+'</td>';
-				str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
-				str+='<td>'+result[i].pstnLnkedAndShrtLstdCnt+'</td>';
-				str+='<td>'+result[i].pstnLnkedAndFinalReview+'</td>';
-				str+='<td>'+result[i].pstnLnkedAndFinalized+'</td>';
-				
-				str+='</tr>';
+				if(result[i].totalApplicationReceivedCnt){
+					str+='<tr class="bg_ff">';
+					str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+					if(result[i].totalApplicationReceivedCnt > 0)
+						str+='<td id="positionLinkCls" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+result[i].totalApplicationReceivedCnt+'  </td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].positionLinkedCnt >0)
+						str+='<td>'+result[i].positionLinkedCnt+'</td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result[i].readyToShortListedCnt >0)
+						str+='<td>'+result[i].readyToShortListedCnt+'</td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result[i].pstnLnkedAndRjctdCnt >0)
+						str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result[i].pstnLnkedAndShrtLstdCnt >0)
+						str+='<td>'+result[i].pstnLnkedAndShrtLstdCnt+'</td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result[i].pstnLnkedAndFinalReview >0)
+						str+='<td>'+result[i].pstnLnkedAndFinalReview+'</td>';
+					else
+						str+='<td> - </td>';
+					
+					if(result[i].pstnLnkedAndFinalized >0)
+						str+='<td>'+result[i].pstnLnkedAndFinalized+'</td>';
+					else
+						str+='<td> - </td>';
+					
+					str+='</tr>';
+				}				
 			 }
 	    str+='</tbody>';	 
 		str+='</table>';
