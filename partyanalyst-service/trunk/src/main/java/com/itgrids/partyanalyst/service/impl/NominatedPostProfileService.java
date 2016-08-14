@@ -862,30 +862,41 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				public void doInTransactionWithoutResult(TransactionStatus status) {	
 					//Long nominatedPostFinalId = nominatedPostFinalDAO.getNominatedPostFinalDetails(nominatedPostId, nominatedPostCandidateId);
 					//if(nominatedPostFinalId != null && nominatedPostFinalId.longValue() > 0l){
-					Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
-					if(nominatedPostMemberId != null && nominatedPostMemberId.longValue() > 0l){
-							NominatedPostFinal nominatedPostFinal = new NominatedPostFinal();
-							
-							nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
-							nominatedPostFinal.setNominationPostCandidateId(candidateId);
-							nominatedPostFinal.setApplicationStatusId(statusId);
-							nominatedPostFinal.setInsertedBy(userId);
-							nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal.setUpdatedBy(userId);
-							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal.setIsDeleted("N");
-							
+					List<NominatedPostFinal> nomianationPostFinalList = nominatedPostFinalDAO.getNominatedPostApplicationDetailsByApplciationId(nominatePostApplicationId);
+					NominatedPostFinal nominatedPostFinal = null;
+					Long nominatedPostMemberId = 0L;
+					if(commonMethodsUtilService.isListOrSetValid(nomianationPostFinalList)){
+						nominatedPostFinal = nomianationPostFinalList.get(0);
+						nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
+					}
+					
+					if(nominatedPostFinal == null){
+						nominatedPostFinal = new NominatedPostFinal();
+						nominatedPostFinal.setNominationPostCandidateId(candidateId);
+						nominatedPostFinal.setInsertedBy(userId);
+						nominatedPostFinal.setNominatedPostApplicationId(nominatePostApplicationId);
+						nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						
+						nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
+						if(nominatedPostFinal != null && nominatedPostMemberId.longValue() > 0l){
 							List<NominatedPost> nominatedPostObjList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 							if(commonMethodsUtilService.isListOrSetValid(nominatedPostObjList))
 								nominatedPostFinal.setNominatedPostId(nominatedPostObjList.get(0).getNominatedPostId());
-							
-							nominatedPostFinal.setIsPrefered("N");
-							
-							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+							nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
 						}
+					}
 					
-						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(nominatePostApplicationId);
+						nominatedPostFinal.setApplicationStatusId(statusId);
+						nominatedPostFinal.setUpdatedBy(userId);
+						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						nominatedPostFinal.setIsDeleted("N");
 						
+						nominatedPostFinal.setIsPrefered("N");
+						
+						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						
+						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(nominatePostApplicationId);
+						 
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
 						
 						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
@@ -1775,7 +1786,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//Long postLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 						//NominatedPostVO vo1 = levelwiseNominatedPostsMap.get(postLevelId);
 						//if(vo1 != null){
-							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());
+							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());//"YET TO START"
 							if(vo != null){
 								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
 								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
