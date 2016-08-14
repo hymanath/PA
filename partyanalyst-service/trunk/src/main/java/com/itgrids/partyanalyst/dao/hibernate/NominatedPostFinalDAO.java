@@ -1053,4 +1053,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			
 			return query.executeUpdate();
 		}	
+		
+		public List<NominatedPostFinal> getNominatedPostApplicationDetailsByApplciationId(Long nominatedPostApplicationId){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select distinct model  from NominatedPostFinal model where  model.nominatedPostApplicationId =:nominatedPostApplicationId ");
+			queryStr.append(" and  model.isDeleted='N'  and model.nominatedPostApplication.isDeleted='N' ");
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("nominatedPostApplicationId", nominatedPostApplicationId);
+			return query.list();
+		}
+		
 }
