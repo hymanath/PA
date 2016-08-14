@@ -11,7 +11,7 @@
 <title>NOMINATED POST PROFILE CREATION</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
@@ -280,13 +280,7 @@
 									<div id="errorMsg" style="color: red;margin-left:25px;"></div>
                                    	<div class="col-md-4 col-lg-4 col-sm-5 col-xs-11">
                                     	<label>CHANGE PHONE NUMBER</label>
-                                    	<div class="input-group">
-                                        	<input type="text" class="form-control" id="phoneNumId" name="nominatedPostVO.phoneNumName" maxLength="10"/>
-                                            <span class="input-group-addon bg_ff">
-                                            	<!--<i class="glyphicon glyphicon-plus-sign"></i>
-                                                <i class="glyphicon glyphicon-minus-sign"></i>-->
-                                            </span>
-                                        </div>
+                                       	<input type="text" class="form-control" id="phoneNumId" name="nominatedPostVO.phoneNumName" maxLength="10"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -996,12 +990,12 @@ function buildapptmemberDetails(result){
 				
 				
 				str+='<td style="padding:0px !important;">';
-					str+='<div class="col-md-12">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
 							str+='<div class="row">';
 								
-								str+='<div class="col-md-12">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
 											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
@@ -1024,7 +1018,7 @@ function buildapptmemberDetails(result){
 											str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
 											</c:when>
 											<c:otherwise>
-											str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
+											str+='<div style="color:#34A7C1;"><span>'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
 											</c:otherwise>
 											</c:choose>
 											
@@ -1057,7 +1051,7 @@ function buildapptmemberDetails(result){
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
+								str+='<div class="btn btn-success btn-sm col-md-4 col-md-offset-4 m_top10 col-xs-6 col-xs-offset-3" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv candidatecls close'+result[i].id+'"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Select Candidate" attr-consti="'+result[i].constituency+'"> &nbsp;SELECT</label></div>';	
 							  
 								/*if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
 									

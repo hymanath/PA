@@ -258,6 +258,7 @@ function buildCandidateReviewRslt(result){
  $("#boardRsltDivId").html(' ');
  $("#positionRsltDivId").html(' ');
  var str='';
+	str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
@@ -278,6 +279,7 @@ function buildCandidateBoardRslt(result,departmentId){
 	var str='';
 	str+='<div role="tabpanel" class="tab-pane active pad_15" id="departments'+departmentId+'" style="padding-right:0px;padding-bottom:0px;">';
 	   str+='<h4 class="headingColor text-capital"><u>board / corporation</u></h4>';
+	   str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
 	   str+='<ul class="nav nav-tabs tabsCustomFinal1" style="margin-top:10px !important" role="tablist">';
 	    for(var i in result){
 			if(i==0){
@@ -325,10 +327,10 @@ function buildCandidatePositionRslt(result,departmentId,boardId){
 var str = '';
 	str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
 		 str+='<h4 class="headingColor text-capital"><u>positions</u></h4>';
-		 str+='<p class="text-danger pull-right">Ready for final review</p>';
+		 str+='<p class="text-danger font13 col-md-6 pull-right"><small>Ready for final review</small></p>';
 		 str+='<ul class="positionsUl">';
 		 for(var i in result){
-			str+='<li>';
+			str+='<li style="padding:0px">';
 				str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
 						str+='<div class="positionsCls modalViewBtn referenceCls" style="cursor:pointer;" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';

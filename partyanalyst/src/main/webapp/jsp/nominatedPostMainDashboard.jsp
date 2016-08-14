@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NOMINATED POST PROFILE CREATION</title>
+<title>NOMINATED POST DASHBOARD</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Datatables/datatables.css" rel="stylesheet" type="text/css"/>
 <link href="dist/NominatedPost/Slick/slick.css" rel="stylesheet" type="text/css"/>
@@ -16,15 +16,21 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<ol class="breadcrumb">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<ul class="geoGrpahicBreadCrumb">
+					<li style="text-transform: uppercase; font-weight: 500;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
+					<li class="text-capital">Nominated Post Main Dashboard</li>
+				</ul>
+			</div>
+        	<!--<ol class="breadcrumb">
             	<li><i class="glyphicon glyphicon-home"></i></li>
                 <li>Nominated Post Main Dashboard</li>
-            </ol>
+            </ol>-->
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12">
-        	<h3 class="headingColor">Overview</h3>
+        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+        	<h3 class="headingColor">Overview<span class="pull-right plusIconCircle overViewCls"><i class="glyphicon glyphicon-minus"></i></span></h3>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12">
+        <div class="col-md-12 col-xs-12 col-sm-12 m_top10 overViewHideShow">
         	<div class="row">
             	<div class="col-md-2 col-xs-12 col-sm-2 bg_ff pad_right0">
 				     <div id="positonDivId"></div>
@@ -112,7 +118,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-sm-12 col-xs-12 m_top20">
+        <div class="col-md-12 col-sm-12 col-xs-12 m_top20 overViewHideShow">
         	<div class="row">
             	<div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
@@ -163,7 +169,7 @@
                 </div>
             </div>
         </div>
-    	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="col-md-12 col-sm-12 col-xs-12 overViewHideShow">
         	<div class="bg_ff pad_10">
             	<div class="row">
                 	<div class="col-md-2 col-sm-4 col-xs-12">
@@ -208,12 +214,13 @@
 					</div>
             </div>
         </div>
+       </div>
         <div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="row m_top10">
             	<div class="col-md-12 col-xs-12 col-sm-12">
-                	<h4>Demographics Positions Overview</h4>
-                    <h4 class="showingResult">showing results</h4>
-                    <ul class="geoGrpahicBreadCrumb">
+                	<h3 class="headingColor text-capitalize">Demographics Positions Overview<span class="pull-right plusIconCircle demoGraphicsCls"><i class="glyphicon glyphicon-minus"></i></span></h3>
+                    <h4 class="showingResult demoGraphicsHideShow m_top10">showing results</h4>
+                    <ul class="geoGrpahicBreadCrumb demoGraphicsHideShow">
                         <li><span>All</span> Positions</li>
                         <li><span>All</span> locaion level</li>
                         <li><span>All</span> department</li>
@@ -222,7 +229,7 @@
                         <li><span>G.O Issued</span></li>
                     </ul>
                 </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+                <div class="col-md-12 col-xs-12 col-sm-12 m_top10 demoGraphicsHideShow">
                 	<div class="pad_15 bg_ff">
                     	<div class="row">
                         	<div class="col-md-2 col-xs-12 col-sm-2" id="totalMaleAndFemaleId">
@@ -277,9 +284,9 @@
         <div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="row m_top10">
             	<div class="col-md-12 col-xs-12 col-sm-12">
-                	<h4>Grographic Positions Overview</h4>
-                    <h4 class="showingResult">showing results</h4>
-                    <ul class="geoGrpahicBreadCrumb">
+                	<h3 class="headingColor text-capitalize">Grographic Positions Overview<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
+                    <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4>
+                    <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow">
                         <li><span>All</span> Positions</li>
                         <li><span>All</span> locaion level</li>
                         <li><span>All</span> department</li>
@@ -288,40 +295,9 @@
                         <li><span>G.O Issued</span></li>
                     </ul>
                 </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+                <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff">
-                    	<div class="table-responsive" id="statePositionId">
-							<!--
-                        	<table class="table table-condensed" style="border:1px solid #ddd;">
-                            	<thead class="bg_ef text-capital">
-                                	<th>District</th>
-                                    <th>Finalised Positions Total</th>
-                                    <th>Male</th>
-                                    <th>Female</th>
-                                    <th>20-29 AGE</th>
-                                    <th>30-39 AGE</th>
-                                    <th>50-59 AGE</th>  
-                                    <th>60+ AGE</th>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                	<tr class="text-capital">
-                                    	<td>east godavari</td>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td><i class="glyphicon glyphicon-plus changeIconClass"></i></td>
-                                    </tr>
-                                    <tr class="showHideTr" id="districtPositionId">
-                                    </tr>
-                                </tbody>
-                            </table>
-							-->
-                        </div>
+                    	<div class="table-responsive" id="statePositionId"></div>
                     </div>
                 </div>
             </div>
@@ -350,164 +326,18 @@ $(".navTabSelectionSlick").slick({
 	  centerMode: false,
 	  variableWidth: true
 }); 
- /*$(function () {
-    $('#casteGroup').highcharts({
-		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45
-            }
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 100,
-                depth: 45
-            }
-        },
-        series: [{
-            name: 'CASTE GROUP',
-            data: [
-                ['OC', 25],
-                ['BC', 25],
-                ['SC', 25],
-                ['ST', 25]
-            ]
-        }]
-    }); */
-	/*  $('#Positions').highcharts({
-		color:['#FED501','#E58D45','#DD675D','#65A7E1','#7DC1C0','#5C2D25'],
-        chart: {
-            type: 'column'
-        },
-        xAxis: {
-			labels: {
-                enabled: false
-            },
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ],
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: ' '
-            },
-			labels: {
-                enabled: false
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-        }]
-    });  */
-	/* $('#applications').highcharts({
-		colors:['#E58D45','#867DC0','#65A7E1','#7DC1C2'],
-        chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45
-            }
-        },
-        plotOptions: {
-            pie: {
-                innerSize: 100,
-                depth: 45
-            }
-        },
-        series: [{
-            name: 'CASTE GROUP',
-            data: [
-                ['OC', 25],
-                ['BC', 25],
-                ['SC', 25],
-                ['ST', 25]
-            ]
-        }]
-    }); */
-	/*  $('#casteWisePositions').highcharts({
-        chart: {
-            type: 'bar'
-        },
-        xAxis: {
-            categories: ['Reddy', 'Kappu', 'Valma', 'Nayudu', 'Madiga'],
-            title: {
-                text: null
-            }
-        },
-        yAxis: {
-            min: 0,
-			gridLineWidth: 0,
-            minorGridLineWidth: 0,
-            min: 0,
-            title: {
-                text: 'POSITIONS',
-                align: 'high'
-            },
-            labels: {
-                overflow: 'justify'
-            }
-        },
-        tooltip: {
-            valueSuffix: ' CASTE'
-        },
-        plotOptions: {
-            bar: {
-                dataLabels: {
-                    enabled: true
-                }
-            }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -40,
-            y: 80,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-            shadow: true
-        },
-        credits: {
-            enabled: false
-        },
-        series: [{
-            name: 'CASTE',
-            data: [107, 31, 635, 203, 2]
-        }]
-    }); 
-});*/
+$(document).on("click",".overViewCls",function(){
+	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+	$(".overViewHideShow").toggle();
+});
+$(document).on("click",".demoGraphicsCls",function(){
+	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+	$(".demoGraphicsHideShow").toggle();
+});
+$(document).on("click",".geoGraphicOver",function(){
+	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+	$(".geoGraphicOverHideShow").toggle();
+});
 $(document).on("click",".changeIconClass",function(){
 	$(".changeIconClass").toggleClass("glyphicon-plus");
 	$(this).closest('tr').next('tr.tableStrOuterCls').toggle();
@@ -520,171 +350,7 @@ $(document).on("click",".changeIconClass",function(){
 		casteWisePositionsCountsByPosition(casteId,"close");
 	}
 });
- /*   var gaugeChart = AmCharts.makeChart("chartdiv1", {
-  "type": "gauge",
-  "theme": "light",
-  "axes": [{
-    "axisAlpha": 0,
-    "tickAlpha": 0,
-    "labelsEnabled": false,
-    "startValue": 0,
-    "endValue": 100,
-    "startAngle": 0,
-    "endAngle": 270,
-    "bands": [{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "100%",
-      "innerRadius": "85%"
-    }, {['100%','100%','88%','88%','75%','75%','65%','65%','50%','50%','35%','35%','20%','20%']
-      "color": "#FDD401",
-      "startValue": 0,
-      "endValue": 80,
-      "radius": "100%",
-      "innerRadius": "95%",
-      "balloonText": "90%"
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "88%",
-      "innerRadius": "88%"
-    }, {
-      "color": "#E48D45",
-      "startValue": 0,
-      "endValue": 80,
-      "radius": "88%",
-      "innerRadius": "83%",
-      "balloonText": "90%"
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "75%",
-      "innerRadius": "75%"
-    }, {
-      "color": "#DE675D",
-      "startValue": 0,
-      "endValue": 80,
-      "radius": "75%",
-      "innerRadius": "70%",
-      "balloonText": "90%"
-    },{
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "65%",
-      "innerRadius": "65%"
-    }, {
-      "color": "#65A6E2",
-      "startValue": 0,
-      "endValue": 80,
-      "radius": "65%",
-      "innerRadius": "60%",
-      "balloonText": "90%"
-    }, {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "50%",
-      "innerRadius": "50%"
-    }, {
-      "color": "#867CC0",
-      "startValue": 0,
-      "endValue": 35,
-      "radius": "50%",
-      "innerRadius": "45%",
-      "balloonText": "35"
-    }, {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "35%",
-      "innerRadius": "35%"
-    }, {
-      "color": "#7DC0C2",
-      "startValue": 0,
-      "endValue": 92,
-      "radius": "35%",
-      "innerRadius": "30%",
-      "balloonText": "92"
-    } , {
-      "color": "#fff",
-      "startValue": 0,
-      "endValue": 100,
-      "radius": "20%",
-      "innerRadius": "0%"
-    }, {
-      "color": "#61342D",
-      "startValue": 0,
-      "endValue": 48,
-      "radius": "20%",
-      "innerRadius": "15%",
-      "balloonText": "48%"
-    } ]
-  }],
-  "allLabels": [{
-    "text": "1 option",
-    "x": "49%",
-    "y": "5%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "2 option",
-    "x": "49%",
-    "y": "10%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "3 option",
-    "x": "49%",
-    "y": "15%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "4 option",
-    "x": "49%",
-    "y": "20%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "5 option",
-    "x": "49%",
-    "y": "26%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "6 option",
-    "x": "49%",
-    "y": "33%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  }, {
-    "text": "7 option",
-    "x": "49%",
-    "y": "40%",
-    "size": 10,
-    "bold": true,
-    "color": "#333",
-    "align": "right"
-  } ],
-  "export": {
-    "enabled": false
-  }
-}); */  
+
 </script>
 </body>
 </html>

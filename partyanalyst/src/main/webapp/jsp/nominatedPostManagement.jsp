@@ -8,10 +8,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NOMINATED POST PROFILE CREATION</title>
+<title>NOMINATED POST Management</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -49,7 +49,6 @@
 				<li style="text-transform: uppercase; font-weight: bold;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
 				<li id="flowHeading" style="text-transform: uppercase; font-weight: bold;"></li>
 		</ul>
-        	
         </div>
 	  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 	  <h3 class="text-capital" id="headinggId" style="color:#5C2D25;display:none"></h3>
@@ -160,6 +159,7 @@ var globalLevelId = '${param.lId}';
 var globalStateId = '${param.stId}'; 
 var globalStatus='${param.sts}';
 var globalLvlTxt='${param.levelTxt}';
+$(document).prop('title', globalStatus+" Nominated Post details");
 /* var globalLevelId = 2;
 var globalStateId = 1; */
 
