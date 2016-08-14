@@ -62,9 +62,11 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 		}
 		*/
 		
-		str.append(" SELECT distinct model.departments.departmentId,model.departments.deptName," +
-				"  model.board.boardId,model.board.boardName " +
+		str.append(" SELECT distinct departments.departmentId,departments.deptName," +
+				"  board.boardId,board.boardName " +
 				" FROM NominatedPostApplication model " +
+				" left join model.board board " +
+				" left join model.departments departments " +
 				" WHERE model.isDeleted = 'N'" );
 		if(boardLevelId !=null && boardLevelId.longValue()>0L){
 			//if(boardLevelId.longValue()!=5L)
@@ -100,8 +102,8 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 				str.append(" and model.address.panchayatId =:searchLevelValue ");
 		}
 		
-		str.append(" group by model.departments.departmentId,model.board.boardId  ");
-		str.append(" order by model.departments.deptName");
+		str.append(" group by departments.departmentId,board.boardId  ");
+		str.append(" order by departments.deptName");
 		Query query = getSession().createQuery(str.toString());
 		
 		if(boardLevelId !=null && boardLevelId>0){

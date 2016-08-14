@@ -3052,7 +3052,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			Collections.sort(finalList,sortByName);
 			
 			//Any Board Scenario Of A department
-			
+		/*	
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (IdNameVO obj : finalList) {					
 					List<IdNameVO> subList = obj.getIdnameList();											
@@ -3069,7 +3069,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-				
+				*/
 		}catch (Exception e) {
 			LOG.error("Exceptionr riased at getAllDeptsAndBoardsByLevel", e);
 		}
@@ -3124,7 +3124,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 									}
 								}
 							}
-						}									
+						}else{
+							IdNameVO inneVo = new IdNameVO();
+							inneVo.setId(null);
+							inneVo.setName(obj[3] !=null ? obj[3].toString():"ANY CORPORATION / BOARD ");
+							boardList.add(inneVo);
+						}
 				}				
 			}
 			

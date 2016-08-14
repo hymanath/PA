@@ -25,6 +25,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		//Query
 		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
 				" FROM NominatedPostApplication model  left join model.position position " +
+				" left join model.departments department " +
+				" left join model.board board  " +
 				" WHERE ");
 				//" AND model.locationValue = :locationValue ");
 		if(boardLevelId.longValue() !=5L)
@@ -50,27 +52,81 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			}
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
-			str.append(" AND (model.departments.departmentId is null" +
-				" OR model.board.boardId is null" +
-				" OR position.positionId is null) ");
-		}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-			str.append(" AND model.departments.departmentId = :departmentId" +
-				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " +
-				" AND position.positionId is not null" );
+			/*str.append(" AND (model.departments.departmentId is null" +
+				" OR model.board.boardId is null " +
+				" OR position.positionId is null) ");*/
+			str.append(" AND ( ");
+			 if(departmentId != null && departmentId.longValue() > 0L)
+				 str.append(" department.departmentId =:departmentId ");
+			 else 
+				 str.append(" department.departmentId is null ");
+			 
+			 if(boardId != null && boardId.longValue() > 0L)
+				 str.append(" OR  board.boardId =:boardId ");
+			 else 
+				 str.append("  OR  board.boardId is null ");
+			 
+			 if(positionId != null && positionId.longValue() > 0L)
+				 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
+			 else 
+				 str.append("  OR position.positionId is null ");
+			 
+			 str.append(" )");
+			 
+		}else{			
+			if(departmentId != null && departmentId.longValue() > 0l){
+				str.append(" AND department.departmentId = :departmentId" );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
+			else if(boardId != null && boardId.longValue() > 0l){
+					if(departmentId != null && departmentId.longValue() > 0l)
+						str.append(" AND department.departmentId = :departmentId" );
+					else
+						str.append(" AND department.departmentId is null " );
+					if(boardId != null && boardId.longValue() > 0l)
+						str.append("  AND board.boardId = :boardId " );
+					else
+						str.append("  AND board.boardId is null " );
+					if(positionId != null && positionId.longValue() > 0l)
+						str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					else
+						str.append("  AND position.positionId is  null " );
+					
+			}
+			else if(positionId != null && positionId.longValue() > 0l){
+				if(departmentId != null && departmentId.longValue() > 0l)
+					str.append(" AND department.departmentId = :departmentId" );
+				else
+					str.append(" AND department.departmentId is null " );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
 		}
-		
 		str.append(" GROUP BY position.positionId ");
 		
 		//Query Calling
 		Query query = getSession().createQuery(str.toString());
 		
-		//Parameters Setting(max 6)
-		if(type ==null && departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-			query.setParameter("departmentId", departmentId);
-			query.setParameter("boardId", boardId);
-			query.setParameter("positionId", positionId);
-		}
+		 if(departmentId != null && departmentId.longValue() > 0L)
+				query.setParameter("departmentId", departmentId);
+		 if(boardId != null && boardId.longValue() > 0L)
+			 query.setParameter("boardId", boardId);
+		 if(positionId != null && positionId.longValue() > 0L)
+			 query.setParameter("positionId", positionId);
+		 
 		if(boardLevelId.longValue() !=5L)
 			query.setParameter("boardLevelId", boardLevelId);
 		
@@ -88,7 +144,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		
 		//Query
 		str.append(" SELECT position.positionId,position.positionName,count(distinct model.nominatedPostApplicationId) " +
-				" FROM NominatedPostFinal model1,NominatedPostApplication model left join model.position position  " +
+				" FROM NominatedPostFinal model1,NominatedPostApplication model left join model.position position " +
+				" left join model.departments department left join model.board board  " +
 				" WHERE " +
 				" model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
 				" " +
@@ -117,14 +174,68 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		}
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
-			str.append(" AND (model.departments.departmentId is null" +
+			/*str.append(" AND (model.departments.departmentId is null" +
 				" OR model.board.boardId is null" +
-				" OR position.positionId is null) ");
-		}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-			str.append(" AND model.departments.departmentId = :departmentId" +
-				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId" +
-				" AND position.positionId is not null " );
+				" OR position.positionId is null) ");*/
+			str.append(" AND ( ");
+			 if(departmentId != null && departmentId.longValue() > 0L)
+				 str.append(" model.departments.departmentId =:departmentId ");
+			 else 
+				 str.append(" model.departments.departmentId is null ");
+			 
+			 if(boardId != null && boardId.longValue() > 0L)
+				 str.append(" OR  model.board.boardId =:boardId ");
+			 else 
+				 str.append("  OR  model.board.boardId is null ");
+			 
+			 if(positionId != null && positionId.longValue() > 0L)
+				 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
+			 else 
+				 str.append("  OR position.positionId is null ");
+			 
+			 str.append(" )");
+			 
+		}else {
+			if(departmentId != null && departmentId.longValue() > 0l){
+				str.append(" AND department.departmentId = :departmentId" );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
+			else if(boardId != null && boardId.longValue() > 0l){
+					if(departmentId != null && departmentId.longValue() > 0l)
+						str.append(" AND department.departmentId = :departmentId" );
+					else
+						str.append(" AND department.departmentId is null " );
+					if(boardId != null && boardId.longValue() > 0l)
+						str.append("  AND board.boardId = :boardId " );
+					else
+						str.append("  AND board.boardId is null " );
+					if(positionId != null && positionId.longValue() > 0l)
+						str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					else
+						str.append("  AND position.positionId is  null " );
+					
+			}
+			else if(positionId != null && positionId.longValue() > 0l){
+				if(departmentId != null && departmentId.longValue() > 0l)
+					str.append(" AND department.departmentId = :departmentId" );
+				else
+					str.append(" AND department.departmentId is null " );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
 		}
 		
 		str.append("GROUP BY position.positionId ");
@@ -133,11 +244,15 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		Query query = getSession().createQuery(str.toString());
 		
 		//Parameters Setting(max 6)
-		if(type ==null && departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-			query.setParameter("departmentId", departmentId);
-			query.setParameter("boardId", boardId);
-			query.setParameter("positionId", positionId);
-		}
+
+		 if(departmentId != null && departmentId.longValue() > 0L)
+				query.setParameter("departmentId", departmentId);
+		 if(boardId != null && boardId.longValue() > 0L)
+			 query.setParameter("boardId", boardId);
+		 if(positionId != null && positionId.longValue() > 0L)
+			 query.setParameter("positionId", positionId);
+		 
+		 
 		if(boardLevelId.longValue() !=5L)
 			query.setParameter("boardLevelId", boardLevelId);
 		
@@ -157,7 +272,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 				" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
 				" count(distinct model.nominatedPostApplicationId) " +
-				" FROM NominatedPostApplication model left join model.position position " +
+				" FROM NominatedPostApplication model left join model.position position  left join model.departments department left join model.board board   " +
 				" WHERE " );
 				//" AND model.locationValue = :locationValue" );
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
@@ -185,15 +300,69 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				}
 		
 				if(type !=null && type.equalsIgnoreCase("Any")){
-					str.append(" AND (model.departments.departmentId is null" +
+				/*	str.append(" AND (model.departments.departmentId is null" +
 				" OR model.board.boardId is null" +
-				" OR position.positionId is null) ");
-				}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-					str.append(" AND model.departments.departmentId = :departmentId" +
-				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " +
-				" AND position.positionId is not null " );
-				}
+				" OR position.positionId is null) ");*/
+					str.append(" AND ( ");
+					 if(departmentId != null && departmentId.longValue() > 0L)
+						 str.append(" model.departments.departmentId =:departmentId ");
+					 else 
+						 str.append(" model.departments.departmentId is null ");
+					 
+					 if(boardId != null && boardId.longValue() > 0L)
+						 str.append(" OR  model.board.boardId =:boardId ");
+					 else 
+						 str.append("  OR  model.board.boardId is null ");
+					 
+					 if(positionId != null && positionId.longValue() > 0L)
+						 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
+					 else 
+						 str.append("  OR position.positionId is null ");
+					 
+					 str.append(" )");
+					 
+				}else {
+					if(departmentId != null && departmentId.longValue() > 0l){
+						str.append(" AND department.departmentId = :departmentId" );
+						if(boardId != null && boardId.longValue() > 0l)
+							str.append("  AND board.boardId = :boardId " );
+						else
+							str.append("  AND board.boardId is null " );
+						if(positionId != null && positionId.longValue() > 0l)
+							str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+						else
+							str.append("  AND position.positionId is  null " );
+					}
+					else if(boardId != null && boardId.longValue() > 0l){
+							if(departmentId != null && departmentId.longValue() > 0l)
+								str.append(" AND department.departmentId = :departmentId" );
+							else
+								str.append(" AND department.departmentId is null " );
+							if(boardId != null && boardId.longValue() > 0l)
+								str.append("  AND board.boardId = :boardId " );
+							else
+								str.append("  AND board.boardId is null " );
+							if(positionId != null && positionId.longValue() > 0l)
+								str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+							else
+								str.append("  AND position.positionId is  null " );
+							
+					}
+					else if(positionId != null && positionId.longValue() > 0l){
+						if(departmentId != null && departmentId.longValue() > 0l)
+							str.append(" AND department.departmentId = :departmentId" );
+						else
+							str.append(" AND department.departmentId is null " );
+						if(boardId != null && boardId.longValue() > 0l)
+							str.append("  AND board.boardId = :boardId " );
+						else
+							str.append("  AND board.boardId is null " );
+						if(positionId != null && positionId.longValue() > 0l)
+							str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+						else
+							str.append("  AND position.positionId is  null " );
+					}
+			}
 				//str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
 		
 				str.append(" GROUP BY position.positionId,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
@@ -202,11 +371,15 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				Query query = getSession().createQuery(str.toString());
 				
 				//Parameters Setting(max 5)
-				if(type ==null && departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-					query.setParameter("departmentId", departmentId);
-					query.setParameter("boardId", boardId);
-					query.setParameter("positionId", positionId);
-				}
+
+				 if(departmentId != null && departmentId.longValue() > 0L)
+						query.setParameter("departmentId", departmentId);
+				 if(boardId != null && boardId.longValue() > 0L)
+					 query.setParameter("boardId", boardId);
+				 if(positionId != null && positionId.longValue() > 0L)
+					 query.setParameter("positionId", positionId);
+				 
+				 
 				if(boardLevelId.longValue() !=5L)
 					query.setParameter("boardLevelId", boardLevelId);
 				if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
@@ -222,9 +395,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		StringBuilder str = new StringBuilder();
 		
 		//Query
-		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.age," +
-				" count(distinct model.nominatedPostApplicationId) " +
-				" FROM NominatedPostApplication model left join model.position position " +
+		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.age, count(distinct model.nominatedPostApplicationId) " +
+				" FROM NominatedPostApplication model left join model.position position left join model.departments department left join model.board board   " +
 				" WHERE " );
 				if(boardLevelId != null && boardLevelId.longValue()>0L){
 					if(boardLevelId.longValue() !=5L)
@@ -253,14 +425,67 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
-			str.append(" AND (model.departments.departmentId is null" +
+			/*str.append(" AND (model.departments.departmentId is null" +
 				" OR model.board.boardId is null" +
-				" OR position.positionId is null) ");
-		}else if(departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-			str.append(" AND model.departments.departmentId = :departmentId" +
-				" AND model.board.boardId = :boardId" +
-				" AND position.positionId=:positionId " +
-				" AND position.positionId is not null " );
+				" OR position.positionId is null) ");*/
+			str.append(" AND ( ");
+			 if(departmentId != null && departmentId.longValue() > 0L)
+				 str.append(" model.departments.departmentId =:departmentId ");
+			 else 
+				 str.append(" model.departments.departmentId is null ");
+			 
+			 if(boardId != null && boardId.longValue() > 0L)
+				 str.append(" OR  model.board.boardId =:boardId ");
+			 else 
+				 str.append("  OR  model.board.boardId is null ");
+			 
+			 if(positionId != null && positionId.longValue() > 0L)
+				 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
+			 else 
+				 str.append("  OR position.positionId is null ");
+			 
+			 str.append(" )");
+		}else{
+			if(departmentId != null && departmentId.longValue() > 0l){
+				str.append(" AND department.departmentId = :departmentId" );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
+			else if(boardId != null && boardId.longValue() > 0l){
+					if(departmentId != null && departmentId.longValue() > 0l)
+						str.append(" AND department.departmentId = :departmentId" );
+					else
+						str.append(" AND department.departmentId is null " );
+					if(boardId != null && boardId.longValue() > 0l)
+						str.append("  AND board.boardId = :boardId " );
+					else
+						str.append("  AND board.boardId is null " );
+					if(positionId != null && positionId.longValue() > 0l)
+						str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					else
+						str.append("  AND position.positionId is  null " );
+					
+			}
+			else if(positionId != null && positionId.longValue() > 0l){
+				if(departmentId != null && departmentId.longValue() > 0l)
+					str.append(" AND department.departmentId = :departmentId" );
+				else
+					str.append(" AND department.departmentId is null " );
+				if(boardId != null && boardId.longValue() > 0l)
+					str.append("  AND board.boardId = :boardId " );
+				else
+					str.append("  AND board.boardId is null " );
+				if(positionId != null && positionId.longValue() > 0l)
+					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				else
+					str.append("  AND position.positionId is  null " );
+			}
 		}
 		//str.append(" AND model.nominationPostCandidate.tdpCadreId is not null ");
 		
@@ -270,11 +495,15 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		Query query = getSession().createQuery(str.toString());
 		
 		//Parameters Setting(max 5)
-		if(type ==null && departmentId != null && departmentId > 0 && boardId != null && boardId > 0 && positionId !=null && positionId>0){
-			query.setParameter("departmentId", departmentId);
-			query.setParameter("boardId", boardId);
-			query.setParameter("positionId", positionId);
-		}
+
+		 if(departmentId != null && departmentId.longValue() > 0L)
+				query.setParameter("departmentId", departmentId);
+		 if(boardId != null && boardId.longValue() > 0L)
+			 query.setParameter("boardId", boardId);
+		 if(positionId != null && positionId.longValue() > 0L)
+			 query.setParameter("positionId", positionId);
+		 
+		 
 		if(boardLevelId.longValue() !=5L)
 			query.setParameter("boardLevelId", boardLevelId);
 		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
@@ -923,10 +1152,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
  
 	public List<Object[]> getTotalApplicationCountsByBoard(Long boardLevelId,Long searchLevelId,Long searchLevelValue,Long statusId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct  model.departmentId," +
-					" model.boardId," +
+		sb.append("select distinct  department.departmentId," +
+					" board.boardId," +
 					" count(model.nominatedPostApplicationId)" +
-					" from NominatedPostApplication model" +
+					" from NominatedPostApplication model " +
+					" left join model.departments department " +
+					" left join model.board board " +
+					
 					" where model.boardLevelId = :boardLevelId");
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)
@@ -947,7 +1179,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		 if(statusId != null && statusId.longValue() > 0l )
 			 sb.append(" and model.applicationStatusId  in (3)");
 		 sb.append(" and model.isDeleted = 'N'" +
-		 			" group by model.departmentId,model.boardId");
+		 			" group by department.departmentId,board.boardId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("boardLevelId", boardLevelId);

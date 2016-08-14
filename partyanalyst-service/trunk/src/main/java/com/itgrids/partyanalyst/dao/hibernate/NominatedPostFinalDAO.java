@@ -110,9 +110,13 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			}
 		
 		if(type.equalsIgnoreCase("this")){
-			sb.append(" and NPA.departments.departmentId = :departmentId" +
-						" and NPA.board.boardId = :boardId" +
-						" and NPA.position.positionId = :positionId");
+			
+			if(departmentId != null && departmentId.longValue() > 0l)
+				sb.append(" and NPA.departments.departmentId = :departmentId" );
+			if(boardId != null && boardId.longValue() > 0l)
+				sb.append("  and NPA.board.boardId = :boardId " );
+			if(positionId != null && positionId.longValue() > 0l)
+				sb.append(" and NPA.position.positionId = :positionId " );
 		}
 		else if(type.equalsIgnoreCase("any")){
 			sb.append(" and");
