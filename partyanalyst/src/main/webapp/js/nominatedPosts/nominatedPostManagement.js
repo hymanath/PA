@@ -257,7 +257,7 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
 		   if(boards !=null && boards>0){
 			   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
 		   }else{
-			   buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId);
+			   buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,boards,deptName,boardName);
 		   }
 	   }
    });
@@ -494,7 +494,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Posts</th>';					
 							str+='<th>Total Positions</th>';					
 							str+='<th>Total Positions Available</th>';//Open Status					
-							str+='<th>Total Applications Received</th>';					
+							str+='<th>Total Applications Received </th>';					
 							str+='<th>Ready to Shortlist</th>';
 							str+='<th>Rejected</th>';					
 							str+='<th>Shortlisted</th>';					
@@ -678,7 +678,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Posts</th>';					
 							str+='<th>Total Positions</th>';					
 							str+='<th>Total Positions Available</th>';//Open Status					
-							str+='<th>Total Applications Received</th>';					
+							str+='<th>Total Applications Received </th>';					
 							str+='<th>Ready to Shortlist</th>';
 							str+='<th>Rejected</th>';					
 							str+='<th>Shortlisted</th>';					
@@ -893,6 +893,50 @@ $(document).on("click","#shortListPositinId",function(){
 		
 	
 	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
+});
+
+
+$(document).on("click","#positionLinkCls",function(){
+	var districtId=$("#districtId").val();
+	var constituencyId=$("#constituencyId").val();
+	var mandalTownDivId=$("#manTowDivId").val();
+	var stateId = $("#stateId").val();;
+	var levelId = globalLevelId;
+	var searchLevelId = 1;
+	var deptId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_board_id');
+	var positionId = $(this).attr('attr_position_id');
+	var deptName = $(this).attr("attr_dept_name");
+	var brdName = $(this).attr("attr_board_name");
+	var posName = $(this).attr("attr_position_name");
+	var levelTxt = globalLvlTxt;
+	if(deptId == "null")
+		deptId = 0;
+	if(boardId == "null")
+		boardId = 0;
+	if(positionId == "null")
+		positionId = 0;
+	
+	var searchLevelValue = stateId;
+	if(stateId >= 0){
+		searchLevelValue = stateId;
+		searchLevelId=2;
+	}		
+	if(mandalTownDivId >0){
+		searchLevelValue = mandalTownDivId;
+		searchLevelId= 5;
+	}	
+	else if(constituencyId >0){
+		searchLevelValue = constituencyId;
+		searchLevelId=4;
+	}		
+	else if(districtId >0){
+		searchLevelValue = districtId;
+		searchLevelId=3;
+	}
+		
+	
+	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=positionLink&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
 });
 
 var globalReadyDeptId=0;
@@ -1222,7 +1266,7 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
 		   if(boards !=null && boards>0){
 			   buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,deptName,boardName);
 		   }else{
-			   buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId);
+			   buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,boards,deptName,boardName);
 		   }
 	   }
 	   
@@ -1297,7 +1341,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	 str+='<table class="table table-bordered tableFontSize">';
 		  str+='<thead class="text-capital" style="background-color:#EFF3F4;">';// class="text-capital"
 		  str+='<th>Posts</th>';
-		  str+='<th>Total Applications Received</th>';
+		  str+='<th>Total Applications Received </th>';
 		 // str+='<th>Reports Pending</th>';
 		  str+='<th>Position Linked</th>';
 		  str+='<th>Ready To Shortlist</th>';
@@ -1332,7 +1376,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		$("#anyDeptCorTblId").html("<center>No Data Available</center>");
 	}
 }
-function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
+function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,boards,deptName,boardName){
 	var str='';
 	var isDataAvaialable=false;
 	for(var i in result){
@@ -1344,7 +1388,7 @@ function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
 	 str+='<table class="table table-bordered">';
 		  str+='<thead class="text-capital" style="background-color:#eee;">';
 		  str+='<th>Posts</th>';
-		  str+='<th>Total Applications Received</th>';
+		  str+='<th>Total Applications Received </th>';
 		 // str+='<th>Reports Pending</th>';
 		  str+='<th>Position Linked</th>';
 		  str+='<th>Ready To Shortlist</th>';
@@ -1357,7 +1401,10 @@ function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId){
 		for(var i in result){
 				str+='<tr class="bg_ff">';
 				str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
-				str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
+				if(result[i].totalApplicationReceivedCnt > 0)
+					str+='<td id="positionLinkCls" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> '+result[i].totalApplicationReceivedCnt+'  </td>';
+				else
+					str+='<td> - </td>';
 				str+='<td>'+result[i].positionLinkedCnt+'</td>';
 				str+='<td>'+result[i].readyToShortListedCnt+'</td>';
 				str+='<td>'+result[i].pstnLnkedAndRjctdCnt+'</td>';
