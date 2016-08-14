@@ -4928,7 +4928,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		
 	}
 	 public List<NominatedPostVO> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-		      List<Long> locationValue,Long searchLevelId){
+		      List<Long> locationValue,Long searchLevelId,String statusStr){
 	  
 	   List<NominatedPostVO> resultList = new ArrayList<NominatedPostVO>(0);
 	   Map<Long,NominatedPostVO> positionMap = new HashMap<Long, NominatedPostVO>(0);
@@ -4982,13 +4982,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		    	
 		    	
 					if(commonMethodsUtilService.isListOrSetValid(mandalList)){
-						 List<Object[]> rtrnObjLst1 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 5l, mandalList, searchLevelId,"");
+						 List<Object[]> rtrnObjLst1 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 5l, mandalList, searchLevelId,"",statusStr);
 						 if(commonMethodsUtilService.isListOrSetValid(rtrnObjLst1)){
 							 rtrnObjLst.addAll(rtrnObjLst1);
 						 }
 					}
 					if(commonMethodsUtilService.isListOrSetValid(townList)){
-						 List<Object[]> rtrnObjLst2 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 6l, townList, searchLevelId,"");
+						 List<Object[]> rtrnObjLst2 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 6l, townList, searchLevelId,"",statusStr);
 						 if(commonMethodsUtilService.isListOrSetValid(rtrnObjLst2)){
 							 rtrnObjLst.addAll(rtrnObjLst2);
 						 }
@@ -4996,11 +4996,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					
 		    	
 		    	}else{
-		    		rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
+		    		rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"",statusStr);
 		    	}
 		    	
 		    }else{
-		    	rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"");
+		    	rtrnObjLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"",statusStr);
 		    }
 		    			
 		  if(rtrnObjLst != null && !rtrnObjLst.isEmpty() ){
@@ -5029,19 +5029,19 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		    	if(boardLevelId.equals(5l)){		    		
 		    		
 		    		if(commonMethodsUtilService.isListOrSetValid(mandalList)){
-		    			List<Object[]>	rtrnLst1 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 5l, mandalList, searchLevelId,"nominatedPostMemeber");
+		    			List<Object[]>	rtrnLst1 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 5l, mandalList, searchLevelId,"nominatedPostMemeber",statusStr);
 		    			rtrnLst.addAll(rtrnLst1);
 		    		}		    		
 		    		if(commonMethodsUtilService.isListOrSetValid(townList)){		    			
-		    			List<Object[]> rtrnLst2 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 6l, townList, searchLevelId,"nominatedPostMemeber");
+		    			List<Object[]> rtrnLst2 = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, 6l, townList, searchLevelId,"nominatedPostMemeber",statusStr);
 		    			rtrnLst.addAll(rtrnLst2);
 		    		}
 		    	}else{
-		    		rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
+		    		rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber",statusStr);
 		    	}
 		    	
 		  }else{
-			  rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber");
+			  rtrnLst = nominatedPostApplicationDAO.getAnyDeptApplicationOverviewCountLocationWise(departmentId, boardId, positionId, boardLevelId, locationValue, searchLevelId,"nominatedPostMemeber",statusStr);
 		  }
  
 		  if(rtrnLst != null && !rtrnLst.isEmpty()){
