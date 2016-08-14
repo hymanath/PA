@@ -613,26 +613,29 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 		 StringBuilder str = new StringBuilder();
 		 
-		 str.append(" SELECT distinct model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
-		 		"	model.nominatedPostMember.nominatedPostPosition.departments.deptName," +
-					" model.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPostMember.nominatedPostPosition.board.boardName " +
+		 str.append(" SELECT distinct department.departmentId,department.deptName,board.boardId,board.boardName " +
 					" FROM NominatedPost model " +
+					" left join model.nominatedPostMember nominatedPostMember " +
+					" left join model.nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+					" left join model.nominatedPostMember.nominatedPostPosition.departments department " +
+					" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+					" left model.nominatedPostMember.address address " +
 					" WHERE model.isDeleted = 'N'" +
-					" and model.nominatedPostMember.isDeleted = 'N' " +
-					" and model.nominatedPostMember.nominatedPostPosition.isDeleted ='N'"  );
+					" and nominatedPostMember.isDeleted = 'N' " +
+					" and nominatedPostPosition.isDeleted ='N'"  );
 			if(boardLevelId !=null && boardLevelId>0){
 				if(levelValue == null){
 					if(boardLevelId.longValue() !=5L)
-						str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+						str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
 					else
-						str.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+						str.append(" and nominatedPostMember.boardLevelId in (5,6) ");
 				}else{
-					str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+					str.append(" and nominatedPostMember.boardLevelId =:boardLevelId ");
 				}
 				
 			}
 			if(levelValue !=null && levelValue.size()>0){
-				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
+				str.append(" and nominatedPostMember.locationValue in (:levelValue) ");
 			}
 			
 			if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
@@ -642,22 +645,22 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				if(searchlevelId.longValue() == 1L)
 					str.append(" and model.nominatedPostMember.locationValue  = :searchLevelValue ");
 				else if(searchlevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
+					str.append(" and address.state.stateId =:searchLevelValue ");
 				
 				else if(searchlevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+					str.append(" and address.district.districtId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+					str.append(" and address.constituency.constituencyId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+					str.append(" and address.tehsil.tehsilId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+					str.append(" and address.localElectionBody.localElectionBodyId =:searchLevelValue ");
 				else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-					str.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+					str.append(" and address.panchayatId =:searchLevelValue ");
 			}
 			//str.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 			//		" model.nominatedPostMember.nominatedPostPosition.board.boardId  ");
-			str.append(" order by model.nominatedPostMember.nominatedPostPosition.departments.deptName ");
+			str.append(" order by department.deptName ");
 			Query query = getSession().createQuery(str.toString());
 			
 			if(boardLevelId !=null && boardLevelId>0){
@@ -694,21 +697,94 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 return query.list();
 	 }
 	 
-	 public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
+	 public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status)
+	 {
+		 
 		 StringBuilder sb = new StringBuilder();
-		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId,");
+		 sb.append("select distinct departments.departmentId ");
+		 			
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open"))){
+			 		sb.append("  ,count(nominatedPostMember.nominatedPostMemberId)");
+		 			sb.append(" from NominatedPost model "+
+				 			" left join model.nominatedPostMember  nominatedPostMember "+
+						 	" left join model.nominatedPostMember.nominatedPostPosition  nominatedPostPosition " + 
+						 	" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+						 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+						 	" left join model.nominatedPostMember.address address ");
+		 }else{
+				sb.append(" , count(model.nominatedPostApplicationId) ");
+			 sb.append(" from NominatedPostApplication model"+
+					 	" left join model.departments departments " +
+					 	" left join model.board board " +
+					 	" left join model.boardLevel boardLevel " +
+					 	" left join model.address address ");
+		 }
+
+
+	 sb.append(" where ");
+	 sb.append(" boardLevel.boardLevelId = :boardLevelId" );
+
+	 
+	 if(status != null && status.equalsIgnoreCase("Total"))
+			sb.append(" ");
+	 else if(status != null && (status.equalsIgnoreCase("Open")))
+			 sb.append(" and model.nominatedPostStatusId = 1");
+	 else if(status != null && status.equalsIgnoreCase("notYet"))
+		 	 sb.append(" and model.applicationStatusId = 1 ");
+	 else if(status != null && status.equalsIgnoreCase("running"))
+		sb.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+")");
+	 
+	 if(searchLevelId != null && searchLevelId.longValue() > 0l){
+		 if(searchLevelId == 1l)
+			 sb.append(" and address.country.countryId = 1");
+		 else if(searchLevelId == 2l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 sb.append(" and address.state.stateId = :searchLevelValue");
+		 else if(searchLevelId == 3l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 sb.append(" and address.district.districtId = :searchLevelValue");
+		 else if(searchLevelId == 4l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 sb.append(" and address.constituency.constituencyId = :searchLevelValue");
+		 else if(searchLevelId == 5l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 sb.append(" and address.tehsil.tehsilId = :searchLevelValue");
+		 else if(searchLevelId == 6l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 sb.append(" and address.localElectionBody.localElectionBodyId = :searchLevelValue");
+		 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 sb.append(" and address.panchayat.panchayatId = :searchLevelValue");
+	 }
+	 
+	 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+		 sb.append(" and model.isExpired = 'N'");
+	 
+	 sb.append(" and model.isDeleted = 'N' " +
+	 			" group by departments.departmentId, board.boardId");
+	 
+	 Query query = getSession().createQuery(sb.toString());
+	 query.setParameter("boardLevelId", boardLevelId);
+	 if(searchLevelId != 1l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+		 query.setParameter("searchLevelValue", searchLevelValue);
+	 
+	 return query.list();
+	 }
+	 
+	 public List<Object[]> getOpenedPositionsCountByDepartment111(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
+		 StringBuilder sb = new StringBuilder(); 
+		 sb.append("select distinct nominatedPostPosition.departmentId,");
 		 if(status != null && (status.equalsIgnoreCase("Total") ))
 		 			sb.append(" count(distinct model.nominatedPostId)" +
-		 			" from NominatedPost model ");
+		 			" from NominatedPost model "+
+		 			" left join model.nominatedPostMember  nominatedPostMember "+
+					" left join nominatedPostMember.nominatedPostPosition  nominatedPostPosition ");
 		 else
 			 sb.append(" count(distinct model.nominatedPostMemberId)" +
-			 			" from NominatedPostApplication model ");
+			 			" from NominatedPostApplication model " +
+			 			" left join model.nominatedPostMember  nominatedPostMember "+
+					 	" left join nominatedPostMember.nominatedPostPosition  nominatedPostPosition ");
 		/* if(status != null && !status.equalsIgnoreCase("Total"))
 		 	sb.append(" ,NominatedPostApplication model1 " +
 		 			" where model.nominatedPostMemberId = model1.nominatedPostMemberId and " );
 		 else*/
 			 sb.append(" where ");
-		 sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId" +
+		 sb.append("  nominatedPostMember.boardLevel.boardLevelId = :boardLevelId" +
 		 		//	" and model.nominationPostCandidateId is null" +
 		 			" ");
 		 
@@ -731,26 +807,26 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)
-				 sb.append(" and model.nominatedPostMember.address.country.countryId = 1");
+				 sb.append(" and nominatedPostMember.address.country.countryId = 1");
 			 else if(searchLevelId == 2l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.state.stateId = :searchLevelValue");
+				 sb.append(" and nominatedPostMember.address.state.stateId = :searchLevelValue");
 			 else if(searchLevelId == 3l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.district.districtId = :searchLevelValue");
+				 sb.append(" and nominatedPostMember.address.district.districtId = :searchLevelValue");
 			 else if(searchLevelId == 4l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.constituency.constituencyId = :searchLevelValue");
+				 sb.append(" and nominatedPostMember.address.constituency.constituencyId = :searchLevelValue");
 			 else if(searchLevelId == 5l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId = :searchLevelValue");
+				 sb.append(" and nominatedPostMember.address.tehsil.tehsilId = :searchLevelValue");
 			 else if(searchLevelId == 6l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId = :searchLevelValue");
+				 sb.append(" and nominatedPostMember.address.localElectionBody.localElectionBodyId = :searchLevelValue");
 			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :searchLevelValue");
+				 sb.append(" and nominatedPostMember.address.panchayat.panchayatId = :searchLevelValue");
 		 }
 		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
 			 sb.append(" and model.isExpired = 'N'");
 		 
 		 sb.append(" and model.isDeleted = 'N'" +
-		 			" and model.nominatedPostMember.isDeleted = 'N' and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
-		 			" group by model.nominatedPostMember.nominatedPostPosition.departmentId");
+		 			" and nominatedPostMember.isDeleted = 'N' and nominatedPostPosition.isDeleted = 'N'" +
+		 			" group by nominatedPostPosition.departmentId");
 		 
 		 Query query = getSession().createQuery(sb.toString());
 		 query.setParameter("boardLevelId", boardLevelId);
@@ -762,19 +838,32 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	 
 	 public List<Object[]> getOpenedPositionsCountForBoardsByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
 		 StringBuilder sb = new StringBuilder();
-		 sb.append("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId," +
-		 			" model.nominatedPostMember.nominatedPostPosition.boardId," +
-		 			" count(model.nominatedPostMemberId)");
-		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
-		 			sb.append(" from NominatedPost model ");
-		 else
-			 sb.append(" from NominatedPostApplication model");
+		 sb.append("select distinct departments.departmentId," +
+		 			" board.boardId,");
+		 			
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open"))){
+			 		sb.append("  count(nominatedPostMember.nominatedPostMemberId),board.boardName");
+		 			sb.append(" from NominatedPost model "+
+				 			" left join model.nominatedPostMember  nominatedPostMember "+
+						 	" left join model.nominatedPostMember.nominatedPostPosition  nominatedPostPosition " +
+						 	" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+						 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+						 	" left join model.nominatedPostMember.address address ");
+	 } else{
+				sb.append("  count(model.nominatedPostApplicationId),board.boardName");
+			 sb.append(" from NominatedPostApplication model"+
+					 	" left join model.departments departments " +
+					 	" left join model.board board " +
+					 	" left join model.boardLevel boardLevel " +
+					 	" left join model.address address ");
+		 }
 		/* if(status != null && !status.equalsIgnoreCase("Total"))
 			 sb.append(" ,NominatedPostApplication model1" +
 		 			" where model.nominatedPostMemberId = model1.nominatedPostMemberId and" );
 		 else*/
 			 sb.append(" where ");
-		 sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId" );
+		 sb.append(" boardLevel.boardLevelId = :boardLevelId" );
 		 		
 		 /*if(status != null && status.equalsIgnoreCase("Total"))
 				sb.append(" ");
@@ -793,27 +882,25 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
 			 if(searchLevelId == 1l)
-				 sb.append(" and model.nominatedPostMember.address.country.countryId = 1");
+				 sb.append(" and address.country.countryId = 1");
 			 else if(searchLevelId == 2l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.state.stateId = :searchLevelValue");
+				 sb.append(" and address.state.stateId = :searchLevelValue");
 			 else if(searchLevelId == 3l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.district.districtId = :searchLevelValue");
+				 sb.append(" and address.district.districtId = :searchLevelValue");
 			 else if(searchLevelId == 4l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.constituency.constituencyId = :searchLevelValue");
+				 sb.append(" and address.constituency.constituencyId = :searchLevelValue");
 			 else if(searchLevelId == 5l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.tehsil.tehsilId = :searchLevelValue");
+				 sb.append(" and address.tehsil.tehsilId = :searchLevelValue");
 			 else if(searchLevelId == 6l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId = :searchLevelValue");
+				 sb.append(" and address.localElectionBody.localElectionBodyId = :searchLevelValue");
 			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
-				 sb.append(" and model.nominatedPostMember.address.panchayat.panchayatId = :searchLevelValue");
+				 sb.append(" and address.panchayat.panchayatId = :searchLevelValue");
 		 }
 		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
 			 sb.append(" and model.isExpired = 'N'");
 		 
-		 sb.append(" and model.isDeleted = 'N'" +
-		 			" and model.nominatedPostMember.isDeleted = 'N' and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
-		 			" group by model.nominatedPostMember.nominatedPostPosition.departmentId," +
-		 			" model.nominatedPostMember.nominatedPostPosition.boardId");
+		 sb.append(" and model.isDeleted = 'N' " +
+		 			" group by departments.departmentId, board.boardId");
 		 
 		 Query query = getSession().createQuery(sb.toString());
 		 query.setParameter("boardLevelId", boardLevelId);
@@ -1121,6 +1208,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	    if(boardLevelId != null && boardLevelId.longValue()>0){
 	    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
 	    }
+	    queryStr.append(" order by model.nominatedPostMember.nominatedPostPosition.position.positionName ");
 	   Query query = getSession().createQuery(queryStr.toString());
 	   if(boardLevelId != null && boardLevelId.longValue()>0){
 		   query.setParameter("boardLevelId", boardLevelId);
