@@ -101,6 +101,8 @@ if(globalPositionId == 0)
 	globalStats =" <b class='text-success'  style='text-transform:uppercase;' >  ANY </b> POST   "+globalPosName+" ";
 else if(globalStats == "readyToShortList")
 	globalStats =" SHORTLISTING  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
+else if(globalStats == "positionLink")
+	globalStats =" Linking  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
 
 
 
@@ -162,9 +164,9 @@ function getBoardWiseNominatedPostMemberDetails(){
 		var type = 'this';
 		if(gblDeptId == 0)
 			type = 'any'
-		if(gblPositionId == 0)
+		else if(gblPositionId == 0)
 			type = 'any';
-		if(gblPositionId == 0)
+		else if(gblBoardId == 0)
 			type = 'any'
 	var jsObj=
 	   {				
@@ -189,7 +191,6 @@ function getBoardWiseNominatedPostMemberDetails(){
 
 function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positionId){
 	var str='';
-	
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead style="background-color:#f8f8f8" class="text-capital">';
 			str+='<th>Name</th>';
@@ -666,7 +667,6 @@ $(document).on("click",".updateStatusCls",function(){
 	var boardId = $(this).attr("attr_boardId");
 	var positionId = $(this).attr("attr_positionId");
 	var candidateId = $(this).attr("attr_candidate_id");
-	
 	var status = $("#"+selectDivId).val();
 	var comment = $("#"+commentDivId).val();
 	var str=' ';
