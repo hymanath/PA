@@ -359,14 +359,20 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.boardLevelId, count( model.nominatedPostMember.nominatedPostMemberId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId)  " +
+		queryStr.append(" select distinct model.boardLevelId, count( model.nominatedPostApplicationId), " +
+				" count(distinct nominatedPostPosition.departmentId), " +
+				" count(distinct nominatedPostPosition.boardId)  " +
 				" from NominatedPostApplication model ");
-		if(levelId != null && levelId.longValue()>1L && stateId != null)
+		if(levelId != null && levelId.longValue()>1L && stateId != null){
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
 			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
-		else
+		}
+		else{
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
 			queryStr.append(" where ");
+		}
 		//queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId =1   and model.boardLevelId =:levelId ");
 		queryStr.append("   model.isDeleted='N'  and  model.applicationStatusId is not null   ");
 		if(levelId.longValue() != 5L)
@@ -447,14 +453,29 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	}*/
 	public List<Object[]> getNominatedPostsRunningAppliedApplicationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
-		StringBuilder queryStr = new StringBuilder();
+		/*StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.boardLevelId, count(model.nominatedPostMember.nominatedPostMemberId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), " +  
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) from NominatedPostApplication model " );
 		if(levelId != null && levelId.longValue()>1L && stateId != null)
 			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
 		else
-			queryStr.append(" where ");
+			queryStr.append(" where "); */
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.boardLevelId, count( model.nominatedPostApplicationId), " +
+				" count(distinct nominatedPostPosition.departmentId), " +
+				" count(distinct nominatedPostPosition.boardId)  " +
+				" from NominatedPostApplication model ");
+		if(levelId != null && levelId.longValue()>1L && stateId != null){
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and " );
+		}
+		else{
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
+		}
 		queryStr.append(" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+")  ");
 		if(levelId != null && levelId.longValue()>0L){
 			if(levelId.longValue() != 5L)
