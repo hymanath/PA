@@ -8,7 +8,7 @@
 <title>Ready To Final Review</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
@@ -26,8 +26,14 @@
 <div class="container">
    <div class="row hideRowCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
-        	<h3 class="text-capital headingColor"><span id="headStsId"></span> <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h3>
-        </div>
+			<ul class="geoGrpahicBreadCrumb">
+				<li style="text-transform: uppercase; font-weight: 500;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
+				<li id="flowHeading" style="text-transform: uppercase; font-weight: 500;"></li>
+			</ul>
+		</div>
+		<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+        	<h3 class="text-capitalize headingColor" style="font-weight:300"><span id="headStsId"></span> <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h3>
+        </div>-->
 		<div class="col-md-12 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -65,18 +71,18 @@
 	</div>
 	<div class="row m_top20">
     	
-		<div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0  heightSet" style="background:#DFDFDF;padding-right:0px;">
+		<div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0  heightSet" style="background:#DFDFDF;padding-right:0px;border:1px solid #CCC;">
           <div class="pad_15">
 	          <h4 class="headingColor text-capital"><u>departments</u></h4>
           </div>
 		   <div id="candiateReadyToFinalReviewDivId"></div>
         </div>
-        <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 pad_0 heightSet boardCorporation" style="padding-right:0px;background:#EBEBEB;display:none;">
+        <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 pad_0 heightSet boardCorporation" style="padding-right:0px;background:#EBEBEB;display:none;border-top:1px solid #CCC;border-bottom:1px solid #CCC;border-right:1px solid #CCC;">
         	<div class="tab-content">
 			 <div id="boardRsltDivId"></div>
             </div>
         </div>
-        <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 pad_0 heightSet positionsDivCls" style="padding-right:0px;background:#F6F6F6;display:none;">
+        <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 pad_0 heightSet positionsDivCls" style="padding-right:0px;background:#F6F6F6;display:none;border-top:1px solid #CCC;border-bottom:1px solid #CCC;border-right:1px solid #CCC;">
         	<div class="tab-content">
 				<div id="positionRsltDivId"></div>
             </div>
@@ -98,7 +104,7 @@
             <div class="col-md-2 col-xs-12 col-sm-4">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="wishList">
-                	<h1 class="textEffect"><img src="dist/nominatedImages/Icon4.png" alt="count"/><span id="wishListCountId"> 0 </span></h1>
+                	<h1 class="textEffect"><img src="dist/nominatedImages/Icon4.png" alt="count"/><span id="wishListCountId" class="textEffect"> 0 </span></h1>
                 	<p class="text-success">Added to wishlist</p>
                 </div>
             </div>
@@ -152,6 +158,7 @@
 
 var gblStatus = '${param.sts}';
 $("#headStsId").html(gblStatus+" Nominated Post details");
+$(document).prop('title', gblStatus+" Nominated Post details");
 
 function setHeight(){
 	var maxHeight = 0;
@@ -183,9 +190,31 @@ $(document).on("click",".updateDropDown,.commentsDiv",function(e){
 });
 
 var boardLevelId = '${param.lId}';
+var globalLvlTxt='';
+if(boardLevelId ==1){
+	globalLvlTxt = "central";
+}else if(boardLevelId ==2){
+	globalLvlTxt = "State";
+}else if(boardLevelId ==3){
+	globalLvlTxt = "district";
+}else if(boardLevelId ==4){
+	globalLvlTxt = "constituency";
+}else if(boardLevelId ==5){
+	globalLvlTxt = "Mandal/Muncipality/Corporation";
+}
+
 var stateId = '${param.stId}';
 $("#stateId").val(stateId);
 $(document).ready(function(){
+	if(gblStatus == "finaliZed"){
+		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; finaliZed");
+	}
+		
+	else{
+		$("#headinggId").html(gblStatus+"  - "+globalLvlTxt+" level  - board/corporation");
+		$("#flowHeading").html(globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation <span>	&mdash;</span> "+gblStatus.substr(0,1).toUpperCase()+gblStatus.substr(1)+"");
+	}
 if(boardLevelId == 1){
  $(".hideRowCls").hide();	
 }

@@ -368,6 +368,10 @@ label
 }
 @media (max-width: 767px)
 {
+	.headingColor span
+	{
+		font-size:13px;
+	}
 	.best-matched-profile li
 	{
 		width:50% !important;
@@ -738,13 +742,17 @@ label
 {
 	color:#666;
 	right:-2px;
+	font-weight:400;
 }
 .tabsCustomFinal > li.active > a, .tabsCustomFinal > li.active > a:hover, .tabsCustomFinal > li.active > a:focus
 {
 	background:#EBEBEB;
 	border-radius:0px;
 	border-right:0px;
-	border-bottom:1px solid #ddd;
+	border-bottom:1px solid #CCC;
+	border-top:1px solid #CCC;
+	border-left:1px solid #CCC;
+	right:-3px
 }
 .labelCustom
 {
@@ -788,7 +796,10 @@ label
 	background:#F6F6F6;
 	border-radius:0px;
 	border-right:0px;
-	border-bottom:1px solid #ddd
+	border-top:1px solid #CCC;
+	border-bottom:1px solid #CCC;
+	border-left:1px solid #CCC;
+	right:-3px;
 }
 .positionsUl 
 {
@@ -803,7 +814,7 @@ label
 	background:#ECF1F5;
 	border:1px solid #ddd;
 	margin:1px;
-	padding:5px;
+	padding:8px;
 	text-transform:uppercase
 }
 .positionsCls img
@@ -866,9 +877,10 @@ label
 .textEffect
 {
 	 -webkit-text-stroke-width: 1px;
-	 -webkit-text-stroke-color: green;
+	 -webkit-text-stroke-color: #53A953;
 	 color:#fff;
 	 font-weight:bold;
+	 text-shadow: 2px 2px 0 #53A953, -2px -2px 0 #53A953, 2px -2px 0 #53A953
 }
 .textEffect img
 {
@@ -1124,7 +1136,8 @@ div.dataTables_wrapper div.clear
 	position:relative;
 	top:-6px;
 	font-size:16px;
-	text-transform:uppercase
+	text-transform:uppercase;
+	font-weight:400 !important;
 }
 .geoGrpahicBreadCrumb { 
 	list-style: none; 
@@ -1433,3 +1446,13 @@ div.dataTables_wrapper div.clear
  }
 
 .font_13{font-size:13px;}
+.plusIconCircle
+{
+	background-color:#CBCCCC;
+	color:#69433E;
+	padding:2px 5px 5px 5px;
+	font-size:12px;
+	border-radius:4px;
+	font-weight:400 !important;
+	cursor:pointer;
+}
