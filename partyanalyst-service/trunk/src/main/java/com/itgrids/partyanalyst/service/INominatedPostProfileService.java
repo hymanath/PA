@@ -62,5 +62,5 @@ public interface INominatedPostProfileService {
 	public List<LocationWiseBoothDetailsVO> getPanchaytWardForMandal(String mandalId,Long constituencyId,Long boardLevelId);
 	
 	 public List<NominatedPostVO> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-		      List<Long> locationValue,Long searchLevelId);
+		      List<Long> locationValue,Long searchLevelId,String statusType);
 }

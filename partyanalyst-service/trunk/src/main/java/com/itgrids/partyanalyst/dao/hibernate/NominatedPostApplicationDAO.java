@@ -900,7 +900,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		str.append(" and  model.positionId is not null ");
 		
 	}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
-		str.append(" and model.positionId is null ) ");
+		str.append(" and model.positionId is null ");
 	}
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
@@ -1289,7 +1289,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		return query.executeUpdate();
 	}
 	public List<Object[]> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
-		      List<Long> locationValue,Long searchLevelId,String status){
+		      List<Long> locationValue,Long searchLevelId,String status,String statusType){
 		    
 		    StringBuilder str = new StringBuilder();
 		    str.append("SELECT position.positionId ");
@@ -1350,11 +1350,19 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		    	 str.append(" and model.boardId is null "); 
 		     }
 		     
+		     if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+					str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
+				}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+					str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+				}
+		     
 		    str.append(" GROUP BY position.positionId ");
 		    
 		    if(status!= null && status.equalsIgnoreCase("nominatedPostMemeber")){
 		    	str.append(", model.applicationStatus.applicationStatusId");	
 		    }
+		    
+		    
 		    Query query = getSession().createQuery(str.toString());
 		    
 		    

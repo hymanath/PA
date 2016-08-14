@@ -340,13 +340,15 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			str.append(" and  nominatedPostPosition.positionId is not null ");
 			
 		}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
-			str.append(" and  nominatedPostPosition.positionId is null) ");
+			str.append(" and  nominatedPostPosition.positionId is null ");
 		}
 		
 		
 		if(statusType !=null && statusType.trim().equalsIgnoreCase("Open")){
 				str.append(" and model.nominatedPostStatus.status = :open ");
 		}
+		
+		str.append(" and model.nominatedPostStatus.nominatedPostStatusId is not null ");
 		
 		
 		str.append("GROUP BY position.positionId,model.nominatedPostStatus.nominatedPostStatusId " +
@@ -756,7 +758,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 sb.append(" and model.isExpired = 'N'");
 	 
 	 sb.append(" and model.isDeleted = 'N' " +
-	 			" group by departments.departmentId, board.boardId");
+	 			" group by departments.departmentId ");
 	 
 	 Query query = getSession().createQuery(sb.toString());
 	 query.setParameter("boardLevelId", boardLevelId);
