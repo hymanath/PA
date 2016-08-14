@@ -412,7 +412,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 						jObj.getLong("levelId"),jObj.getLong("levelVal"),jObj.getLong("deptId"),jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getLong("candidateId"));
 			
 		}catch (Exception e) {
-			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
+			LOG.error("Entered into updateApplicationStatusDetails Action",e);
 		}
 		
 		return Action.SUCCESS;
@@ -789,7 +789,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			if(board !=null && board>0l){
 				nominatePostList = nominatedPostProfileService.getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boards,statusType,task);
 			}else{
-				nominatePostList = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(dept,0l,0l,levelId,levelValues,null);
+				nominatePostList = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(dept,0l,0l,levelId,levelValues,null,statusType);
 			}
 			
 			
@@ -1469,10 +1469,12 @@ public String execute()
 			Long boardLevlId = jObj.getLong("boardLevelId");
 			Long locationValue = jObj.getLong("locationValue");
 			Long searchLevelId = jObj.getLong("searchLevelId");
+			String status = jObj.getString("statuss");
+			
 			List<Long> locationValues= new ArrayList<Long>(0);
 			  locationValues.add(locationValue);
 			
-              nominatedPostVOs = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(departmentId,boardId,positionId,boardLevlId,locationValues,searchLevelId);			
+              nominatedPostVOs = nominatedPostProfileService.getAnyDeptApplicationOverviewCountLocationWise(departmentId,boardId,positionId,boardLevlId,locationValues,searchLevelId,status);			
 		}catch(Exception e){
 			LOG.error("Entered into getAnyDeptApplicationOverviewCountLocationWise Action",e);
 		}
