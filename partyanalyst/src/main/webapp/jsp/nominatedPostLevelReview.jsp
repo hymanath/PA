@@ -250,7 +250,7 @@ $(document).on("click",".yetToStartCls",function(){
 	var levelTxt = $(this).attr("attr_level_txt");
 	
 	if(status == "TOTAL")//totalCorpCls
-		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total&levelTxt='+levelTxt+'','_blank');
+		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_blank');
 	else if(status == "TOTAL AVAILABLE")//totalCorpCls
 		var redirectWindow=window.open('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Open&levelTxt='+levelTxt+'','_blank');
 	else if(status == "YET TO START")
