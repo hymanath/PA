@@ -756,7 +756,6 @@
         <div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 					<div style="background:#fff">
-					<div style="background:#EEEEEE !important;">
 					<div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls">
 						<label>Search Type</label>
 						<select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
@@ -772,8 +771,8 @@
 					
 					
 					 <div class="col-md-3 col-xs-12 col-sm-6 advanceSearchCls advanceprclsDiv">
-						<label class="advanceNameCls">Search By Name/Membership No*<span class="text-danger">*</span></label>
-						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
+						<label class="advanceNameCls" id="searchNameLabel">Name/Membership No*<span class="text-danger">*</span></label>
+						<input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId" placeholder="Search By Name/Membership No">
 						
 					</div>
 					<div class="col-md-3 col-xs-12 col-sm-6">
@@ -817,7 +816,7 @@
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
-							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" >
+							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup('');" >
 								<option value="0">All</option>
 							 </select>
 						</div>
@@ -847,30 +846,25 @@
 										</select>
 									  </div>
 									</div> 
-									<div >
-										<div class="col-md-6 col-xs-12 col-sm-6">
-											<select id="cadreCommitteeDiv" multiple class="advanceCadreCommittee" style="width:250px !important;"></select>
+									<div>
+										<div class="col-md-6 col-xs-12 col-sm-6  advanceCadreCommittee">
+											<select id="cadreCommitteeDiv" multiple class="" style="width:250px !important;"></select>
 											<div id="representativesDiv"></div>
 											<div id="referRoleErrorDiv"></div>
 										</div>
 									</div>
-								</div>
-								</div></br>
-								
-				
-
-
-						<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
-						<div class="col-md-3 col-xs-12 col-sm-6">
+							</div></br>
+							<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
+						<div class="col-md-2 col-xs-12 col-sm-4">
 							<button type="button" class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();" id="searchBtnId"  style="margin-top: 25px;display:none;">Search Member</button>
 						</div>
-						<div class="col-md-1 col-xs-12 col-sm-1">
+						<div class="col-md-1 col-xs-12 col-sm-12">
 							<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
 						</div>
 							<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 						
 						<div class="row m_top25">
-						<div class="col-md-12 col-xs-12 col-sm-12" id="clearSerchDivId">
+						<div class="col-md-12 col-sm-12 col-xs-12" id="clearSerchDivId">
 							<div id="apptmemberDetailsDiv" class="table-responsive"></div>
 						</div>
 					</div>
