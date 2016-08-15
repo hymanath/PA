@@ -980,7 +980,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
 		 		  queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName,");
 		 	   }
-		       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId)");
+		       if(status.equalsIgnoreCase("Total")  && LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+		       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(distinct model.nominatedPostMember.nominatedPostPosition.board.boardId)");
+		       }else{
+		    	   queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId)"); 
+		       }
 		       
 		       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' ");
 		       if(status != null && status.equalsIgnoreCase("finalReview"))
