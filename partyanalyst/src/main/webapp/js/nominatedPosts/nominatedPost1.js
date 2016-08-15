@@ -610,7 +610,7 @@ $(document).on("click","#addCandidateBtnId",function(){
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		var str='';
-		str+='<option value="0">Select District</option>';
+		str+='<option value="0">All</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
 				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
