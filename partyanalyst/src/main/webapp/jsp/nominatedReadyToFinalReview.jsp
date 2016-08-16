@@ -9,8 +9,11 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
+<link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
 .filterIcon
 {
@@ -19,7 +22,10 @@
 	border-radius:50%;
 	cursor:pointer
 }
-
+.jFiler-input-dragDrop
+{
+	width:100%;
+}
 </style>
 </head>
 <body>
@@ -148,12 +154,32 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade bs-example-modal-lg"  id="goAssignPopup" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document" style="width:90%;">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close pdfModalCloseBtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">G.O APPROVED</h4>
+		</div>
+		<div class="modal-body">
+			<div id="goAssignPopupInDivId"></div>
+		</div>
+    </div>
+  </div>
+</div>
+
+
+
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/Date/moment.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/Date/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript">
 
 var gblStatus = '${param.sts}';

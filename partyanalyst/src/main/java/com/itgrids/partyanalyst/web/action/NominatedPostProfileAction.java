@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
+import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -31,11 +32,9 @@ import com.itgrids.partyanalyst.dto.NominatedPostVO;
 import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.INominatedPostMainDashboardService;
 import com.itgrids.partyanalyst.service.INominatedPostProfileService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -76,9 +75,15 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<NominatedPostDashboardVO> nominatedPostDashboardvoList;
 	private List<NominatedPostVO> nominatedPostVOs;
 	private CastePositionVO castePositionVO;
+	private GovtOrderVO govtOrderVO;
 	
 	
-	
+	public GovtOrderVO getGovtOrderVO() {
+		return govtOrderVO;
+	}
+	public void setGovtOrderVO(GovtOrderVO govtOrderVO) {
+		this.govtOrderVO = govtOrderVO;
+	}
 	public List<NominatedPostDashboardVO> getNominatedPostDashboardvoList() {
 		return nominatedPostDashboardvoList;
 	}
@@ -1482,6 +1487,77 @@ public String execute()
 		}catch(Exception e){
 			LOG.error("Entered into getAnyDeptApplicationOverviewCountLocationWise Action",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPositionsForABoard(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			JSONArray arr = jObj.getJSONArray("locationLevelValueArr");
+			List<Long> locationLevelValueList = new ArrayList<Long>(0);
+			if(arr != null && arr.length() > 0){
+				for(int i=0;i<arr.length();i++){
+					locationLevelValueList.add(Long.parseLong(arr.getString(i)));
+				}
+			}
+			
+			
+			idNameVOList = nominatedPostProfileService.getPositionsForABoard(jObj.getLong("locationLevelId"),locationLevelValueList,jObj.getLong("departmentId"),jObj.getLong("boardId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPositionsForABoard", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String confirmGOForNominatedPosts(){
+		try {
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}else{
+				//govtOrderVO
+				
+				final HttpSession session = request.getSession();
+				final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null || user.getRegistrationID() == null){
+					return ERROR;
+				}
+				
+				Map<File,String> mapfiles = new HashMap<File,String>(0);
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			       String fileUrl = "" ;
+			       List<String> filePaths = null;
+			   		while(fileParams.hasMoreElements())
+			   		{
+			   			String key = fileParams.nextElement();
+			   			
+					   			File[] files = multiPartRequestWrapper.getFiles(key);
+					   			filePaths = new ArrayList<String>();
+					   			if(files != null && files.length > 0)
+					   			for(File f : files)
+					   			{
+					   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+					   	            String ext = "";
+					   	            if(extension.length > 1){
+					   	            	ext = extension[extension.length-1];
+					   	            	mapfiles.put(f,ext);
+					   	            }
+					   	        
+					   			}
+			   		}
+			   		
+				resultStatus = nominatedPostProfileService.confirmGOForNominatedPosts(govtOrderVO,regVO.getRegistrationID(),mapfiles);
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at confirmGO", e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
