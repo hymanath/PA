@@ -26,6 +26,13 @@
 <body>
 <div class="container">
 	<div class="row">
+	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
+		<ul class="geoGrpahicBreadCrumb">
+				<li style="text-transform: uppercase; font-weight: bold;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
+				<li  style="text-transform: uppercase; font-weight: bold;cursor:pointer" class="redirectPageCls" id="flowHeading" data-placement="bottom" data-toggle="tooltip" title="Click here to go Nominated Post Management Page"></li>
+				<li  style="text-transform: uppercase; font-weight: bold;">SHORTLISTING</li>
+		</ul>
+	</div>
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
 		 <ol class="breadcrumb text-capital" id="headLvlDeptId" style="margin-bottom: -10px;margin-left: -13px;"></ol>
         	<h3 class="headingColor"><small><span id="headBrdId" style="text-transform:uppercase;margin-bottom: 10px;"></span></small> - <span id="headPosId" style="text-transform:uppercase"></span> </h3>
@@ -97,6 +104,20 @@ var globalPositionId = parseInt('${param.positionId}');
 var globalDeptId = parseInt('${param.deptId}');
 var globalBoardId = parseInt('${param.boardId}');
 
+var globalStatusMainName = '${param.stN}';
+var globalLevelId = parseInt('${param.lId}');
+var globalStatusId = parseInt('${param.stId}');
+var globalSearchLevelId = parseInt('${param.searchLevelId}');
+var globalSearchLevelValue = parseInt('${param.searchLevelValue}');
+
+
+	if(globalStatusMainName == "notYet"){
+		$("#flowHeading").html(""+globalLevelTxt.substr(0,1).toUpperCase()+globalLevelTxt.substr(1)+" Level - Board/Corporation &mdash; Yet to start");
+	}
+	else{
+		$("#flowHeading").html(globalLevelTxt.substr(0,1).toUpperCase()+globalLevelTxt.substr(1)+" Level - Board/Corporation <span>	&mdash;</span> "+globalStatusMainName.substr(0,1).toUpperCase()+globalStatusMainName.substr(1)+"");
+	}
+	
 if(globalPositionId == 0)
 	globalStats =" <b class='text-success'  style='text-transform:uppercase;' >  ANY </b> POST   "+globalPosName+" ";
 else if(globalStats == "readyToShortList")
@@ -104,13 +125,11 @@ else if(globalStats == "readyToShortList")
 else if(globalStats == "positionLink")
 	globalStats =" Linking  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
 
-
-
 $("#headPosId").html(globalStats+" ");
 $("#headBrdId").html(headBrdId+" board");
 
 $("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
-
+$('[data-toggle="tooltip"]').tooltip();
 /*var globalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTownDivArr=[];
@@ -966,7 +985,6 @@ function buildDepartmentDetails(result,divId){
 	$("#"+divId).html(str);
 }
 
-
 function tableResponsive()
 {
   var getWidth = $(window).width();
@@ -975,6 +993,10 @@ function tableResponsive()
 	$("#resultDivId").addClass("table-responsive");
   }
 } 
+	$(document).on("click",".redirectPageCls",function(){
+		
+		window.location.replace("nominatedPostManagementAction.action?lId="+globalLevelId+"&stId="+globalStatusId+"&sts="+globalStatusMainName+"&levelTxt="+globalLevelTxt+"");
+	});
 </script>
 </body>
 </html>
