@@ -1178,9 +1178,11 @@ return Action.SUCCESS;
 		
 		return Action.SUCCESS;
 	}
-	public String getDepartmentList(){
+	public String getDepartmentList(){ 
 		try{
-			idAndNameVOList = nominatedPostMainDashboardService.getDepartmentList();  
+			jObj =new JSONObject(getTask());
+			Long boardLevelId = jObj.getLong("boardLevelId");
+			idAndNameVOList = nominatedPostMainDashboardService.getDepartmentList(boardLevelId);  
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getDepartmentList method of NominatedPostProfileAction Action",e);
@@ -1190,7 +1192,9 @@ return Action.SUCCESS;
 	}
 	public String getBoardList(){
 		try{
-			idAndNameVOList = nominatedPostMainDashboardService.getBoardList();    
+			jObj =new JSONObject(getTask());
+			Long deptId = jObj.getLong("deptId");
+			idAndNameVOList = nominatedPostMainDashboardService.getBoardList(deptId);      
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
