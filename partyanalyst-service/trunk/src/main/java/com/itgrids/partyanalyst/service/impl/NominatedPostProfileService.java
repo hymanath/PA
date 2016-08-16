@@ -4516,13 +4516,18 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
 						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
-							vo.setMaleCount(count);
+							vo.setMaleCount(vo.getMaleCount()+count);
 						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
-							vo.setFemaleCount(count);
+							vo.setFemaleCount(vo.getFemaleCount()+count);
 					}
 				}
 			}
-			
+			Long twentyTo29AgeRangeCount=0l;
+			Long thirtyTo39AgeRangeCount=0l;
+			Long fourtyTo49AgeRangeCount=0l;
+			Long fiftyTo59AgeRangeCount=0l;
+			Long sixtyAvoveAgeRangeCount=0l;
+			Long overAllCount=0l;
 			if(commonMethodsUtilService.isMapValid(casteMap)){
 				for (Map.Entry<Long, NominatedPostDashboardVO> entry : casteMap.entrySet()){
 					NominatedPostDashboardVO castevo = entry.getValue();
@@ -4537,9 +4542,21 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
 							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
 							totalCount = totalCount+totalvo.getStatusCount();
+							overAllCount = overAllCount + vo.getMaleCount()+vo.getFemaleCount();
+							if(vo.getStatusId().longValue()==1l){
+								twentyTo29AgeRangeCount = twentyTo29AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+							}else if(vo.getStatusId().longValue()==2l){
+								thirtyTo39AgeRangeCount = thirtyTo39AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+							}else if(vo.getStatusId().longValue()==3l){
+								fourtyTo49AgeRangeCount = fourtyTo49AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+							}else if(vo.getStatusId().longValue()==4l){
+								fiftyTo59AgeRangeCount = fiftyTo59AgeRangeCount +vo.getMaleCount()+vo.getFemaleCount();
+							}else{
+								sixtyAvoveAgeRangeCount = sixtyAvoveAgeRangeCount +	vo.getMaleCount()+vo.getFemaleCount();
+							}
 						}
 					}
-					ageList.add(totalvo);
+					ageList.add(0, totalvo);
 					castevo.setTotalCnt(totalvo.getStatusCount());
 				}
 			}
@@ -4555,6 +4572,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				}
 			}
 			returnList = new ArrayList<NominatedPostDashboardVO>(casteMap.values());
+			NominatedPostDashboardVO vo = returnList.get(0);
+			  vo.setTwentyTo29AgeRangeCount(twentyTo29AgeRangeCount);
+			  vo.setThirtyTo39AgeRangeCount(thirtyTo39AgeRangeCount);
+			  vo.setFourtyTo49AgeRangeCount(fourtyTo49AgeRangeCount);
+			  vo.setFiftyTo59AgeRangeCount(fiftyTo59AgeRangeCount);
+			  vo.setSixtyAvoveAgeRangeCount(sixtyAvoveAgeRangeCount);
+			  vo.setOverAllCount(overAllCount);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteGroupWiseCountsByPosition() method of NominatedPostProfileService", e);
 		}
@@ -4598,9 +4622,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
 						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male") )
-							vo.setMaleCount(count);
+							vo.setMaleCount(vo.getMaleCount()+count);
 						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
-							vo.setFemaleCount(count);
+							vo.setFemaleCount(vo.getFemaleCount()+count);
 					}
 				}
 			}
@@ -4649,7 +4673,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			if(commonMethodsUtilService.isListOrSetValid(voList)){
 				for (NominatedPostDashboardVO nominatedPostDashboardVO : voList) {
 					if(nominatedPostDashboardVO.getStatusId().longValue() == id.longValue()){
-						return returnvo;
+						return nominatedPostDashboardVO;
 					}
 				}
 			}
