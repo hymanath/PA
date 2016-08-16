@@ -13375,10 +13375,24 @@
    			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
+	
 	<action name="getUserTypeWiseCommitteesCompletedCountsAction1" class="coreDashboardAction" method="getUserTypeWiseCommitteesCompletedCounts1">
 		<result type="json" name="success">
    			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
+	
+	<action name="getPositionsForABoardAction" class="nominatedPostProfileAction" method="getPositionsForABoard">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
+	
+	<action name="confirmGOForNominatedPostsAction" class="nominatedPostProfileAction" method="confirmGOForNominatedPosts">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action>
+	
 </package>
 </struts>

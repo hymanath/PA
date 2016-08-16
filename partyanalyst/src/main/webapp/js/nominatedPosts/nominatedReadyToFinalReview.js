@@ -309,10 +309,13 @@ function buildCandidateBoardRslt(result,departmentId,status){
 						}else{
 							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
+							
 						str+='</div>';
 					str+='</div>';
 				str+='</section>';
 			str+='</a>';
+			//if(gblStatus=="finaliZed")
+				//str+='<button class="btn btn-xs assignGOBtnCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" id="assignGOBtnId'+result[i].id+'">click</button>';
 		   str+='</li>'; 
 		}else{
 			 str+='<li role="presentation">';	
@@ -332,6 +335,8 @@ function buildCandidateBoardRslt(result,departmentId,status){
 					str+='</div>';
 				str+='</section>';
 			str+='</a>';
+			//if(gblStatus=="finaliZed")
+				//str+='<button class="btn btn-xs assignGOBtnCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" id="assignGOBtnId'+result[i].id+'">click</button>';
 		   str+='</li>'; 	
 			}
 		}
@@ -894,3 +899,259 @@ $(document).on("click",".boardHrfCls",function(){
 	globalBoardName = boardName;
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,boardId,"board");
 });
+	
+	$(document).on("click",".assignGOBtnCls",function(){
+		var departmentId = $(this).attr("attr_department_id");
+		var boardId = $(this).attr("attr_board_id");
+		var jsObj={				
+				locationLevelId : globalLocationLevelId,
+				locationLevelValueArr : globalLocationLevelValueArr,
+				departmentId : departmentId,
+				boardId : boardId
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getPositionsForABoardAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   var str='';
+				str+='<form name="goSubmitApplication" id="goSubmitApplication"  method="post" enctype="multipart/form-data">';
+				str+='<div class="row">';
+					str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+						str+='<label>Select Positions</label>';
+						str+='<select class="chosenSelect" multiple id="positionsMulSelId">';
+						if(result != null && result.length > 0){
+							for(var i in result){
+								str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+							}
+						}
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+						str+='<label>G.O Name</label>';
+						str+='<input type="text" id="goNameTxtId" name="govtOrderVO.goName" class="form-control"/>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+						str+='<label>G.O Code</label>';
+						str+='<input type="text" id="goCodeTxtId" name="govtOrderVO.goCode" class="form-control"/>';
+					str+='</div>';
+					str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+						str+='<label>Duration</label>';
+						str+='<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span><input type="text" class="form-control dateR"/></div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-8 m_top20">';
+						str+='<label>Remarks/Comments</label>';
+						str+='<textarea id="goRemarksTextId" class="form-control" name="govtOrderVO.remarks" name="comment" placeholder="Enter Comments Here..."></textarea>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-8 m_top20">';
+						str+='<input type="file" name="inout" class="inputFiler" id="filer_input"/>';
+					str+='</div>';
+					
+				str+='</div>';
+				
+				str+='<input type="hidden" id="positionIdsHidden" name="govtOrderVO.positionIdsString"/>';
+				str+='<input type="hidden" id="fromDateHidden" name="govtOrderVO.fromDate"/>';
+				str+='<input type="hidden" id="toDateHidden" name="govtOrderVO.toDate"/>';
+				str+='<input type="hidden" id="locationLevelIdHidden" name="govtOrderVO.locationLevelId"/>';
+				str+='<input type="hidden" id="locationLevelValuesHidden" name="govtOrderVO.locationLevelValuesStr"/>';
+				str+='<input type="hidden" id="departmentIdHidden" name="govtOrderVO.departmentId"/>';
+				str+='<input type="hidden" id="boardIdHidden" name="govtOrderVO.boardId"/>';
+
+				str+='</form>';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<button id="confirmGOBtnId" class="btn btn-success m_top20" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'">Confirm</button>';
+				str+='</div>';
+				$("#goAssignPopupInDivId").html(str);
+				$("#goAssignPopup").modal("show");
+				$(".chosenSelect").chosen();
+				$(".dateR").daterangepicker({
+					opens:'left'
+				});
+				$('#filer_input').filer({
+					changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
+					showThumbs: true,
+					theme: "dragdropbox",
+					templates: {
+						box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
+						item: '<li class="jFiler-item">\
+									<div class="jFiler-item-container">\
+										<div class="jFiler-item-inner">\
+											<div class="jFiler-item-thumb">\
+												<div class="jFiler-item-status"></div>\
+												<div class="jFiler-item-info">\
+													<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+													<span class="jFiler-item-others">{{fi-size2}}</span>\
+												</div>\
+												{{fi-image}}\
+											</div>\
+											<div class="jFiler-item-assets jFiler-row">\
+												<ul class="list-inline pull-left">\
+													<li>{{fi-progressBar}}</li>\
+												</ul>\
+												<ul class="list-inline pull-right">\
+													<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+												</ul>\
+											</div>\
+										</div>\
+									</div>\
+								</li>',
+						itemAppend: '<li class="jFiler-item">\
+							<div class="jFiler-item-container">\
+								<div class="jFiler-item-inner">\
+									<div class="jFiler-item-thumb">\
+										<div class="jFiler-item-status"></div>\
+										<div class="jFiler-item-info">\
+											<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+											<span class="jFiler-item-others">{{fi-size2}}</span>\
+										</div>\
+										{{fi-image}}\
+									</div>\
+									<div class="jFiler-item-assets jFiler-row">\
+										<ul class="list-inline pull-left">\
+											<li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
+										</ul>\
+										<ul class="list-inline pull-right">\
+											<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+										</ul>\
+									</div>\
+								</div>\
+							</div>\
+						</li>',
+						progressBar: '<div class="bar"></div>',
+						itemAppendToEnd: true,
+							removeConfirmation: true,
+							_selectors: {
+								list: '.jFiler-items-list',
+								item: '.jFiler-item',
+								progressBar: '.bar',
+								remove: '.jFiler-item-trash-action'
+							}
+						},
+						dragDrop: {
+							dragEnter: null,
+							dragLeave: null,
+							drop: null,
+						},
+					  /*  uploadFile: {
+						  
+							url: "nominatedPostUploadFormAction.action",
+							//autoProcessQueue: false,
+							data: {"nominatedCandId":globalNominatedCandId},
+							type: 'POST',
+							
+						   enctype: 'multipart/form-data',
+							beforeSend: function(){},
+							success: function(data, el){
+								if(data.resultCode==0){
+									$("#savingStatusDivId").html("");
+									var parent = el.find(".jFiler-jProgressBar").parent();
+									el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+										$("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");    
+									});
+								}else{
+									var parent = el.find(".jFiler-jProgressBar").parent();
+									el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+										$("<div class=\"jFiler-item-others text-error\"><i class=\"icon-jfi-minus-circle\"></i> Error</div>").hide().appendTo(parent).fadeIn("slow");    
+									});
+								}
+								
+								//window.location.href="eventFieUploadAction.action";
+							},
+							error: function(el){
+								var parent = el.find(".jFiler-jProgressBar").parent();
+								el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+									$("<div class=\"jFiler-item-others text-error\"><i class=\"icon-jfi-minus-circle\"></i> Error</div>").hide().appendTo(parent).fadeIn("slow");    
+								});
+							},
+							statusCode: null,
+							onProgress: null,
+							onComplete: null
+						},
+						  */
+						
+						files: null,
+						addMore: true,
+						clipBoardPaste: true,
+						excludeName: null,
+						beforeRender: null,
+						afterRender: null,
+						beforeShow: null,
+						beforeSelect: null,
+						onSelect: null,
+						afterShow: null,
+					   
+						onEmpty: null,
+						options: null,
+						captions: {
+							button: "Choose Files",
+							feedback: "Choose files To Upload",
+							feedback2: "files were chosen",
+							drop: "Drop file here to Upload",
+							removeConfirmation: "Are you sure you want to remove this file?",
+							errors: {
+								filesLimit: "Only {{fi-limit}} files are allowed to be uploaded.",
+								filesType: "Only Images are allowed to be uploaded.",
+								filesSize: "{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",
+								filesSizeAll: "Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."
+							}
+						}
+						
+				});
+	   });
+		
+	});
+	
+	$(document).on("click","#confirmGOBtnId",function(){
+		
+		var positionIds = "";
+		
+		$('#positionsMulSelId option:selected').each(function(){
+			positionIds=positionIds+","+$(this).val();			
+		});
+		
+		$("#positionIdsHidden").val(positionIds);
+		
+		var startDate = $('input:text[name=daterangepicker_start]').val();
+		var endDate = $('input:text[name=daterangepicker_end]').val();
+		
+		$("#fromDateHidden").val(startDate);
+		$("#toDateHidden").val(endDate);
+		
+		$("#locationLevelIdHidden").val(globalLocationLevelId);
+		
+		$("#departmentIdHidden").val($(this).attr("attr_department_id"));
+		$("#boardIdHidden").val($(this).attr("attr_board_id"));
+		
+		var str="";
+		if(globalLocationLevelValueArr != null && globalLocationLevelValueArr.length > 0){
+			for(var i in globalLocationLevelValueArr){
+				str=str+','+globalLocationLevelValueArr[i];
+			}
+		}
+		$("#locationLevelValuesHidden").val(str);
+		
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				showSbmitStatus(uploadResult);
+			}
+		};
+		
+		YAHOO.util.Connect.setForm('goSubmitApplication',true);
+		YAHOO.util.Connect.asyncRequest('POST','confirmGOForNominatedPostsAction.action',uploadHandler);
+		
+	});
+	
+	function showSbmitStatus(result){
+		if(result.indexOf("SUCCESS") > -1){
+			saveFlag =true;
+			if (confirm('Application Received Successfully...')) {
+				$("#goAssignPopup").modal("hide");
+			}
+		}else {
+			alert("Something goes wrong, Please try again....");
+		}
+	}
