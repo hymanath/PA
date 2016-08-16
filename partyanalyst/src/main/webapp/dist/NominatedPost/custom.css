@@ -1242,7 +1242,7 @@ div.dataTables_wrapper div.clear
 	padding:15px  6px !important;
 	border:1px solid #ccc !important;
 }
-.changeIconClass, .districtCls  
+.changeIconClass,.districtCls,.casteCls 
 {
 	border:1px solid #ddd;
 	padding:3px;

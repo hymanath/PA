@@ -11,6 +11,7 @@
 <link href="dist/Plugins/Datatables/datatables.css" rel="stylesheet" type="text/css"/>
 <link href="dist/NominatedPost/Slick/slick.css" rel="stylesheet" type="text/css"/>
 <link href="dist/NominatedPost/Slick/slick-theme.css" rel="stylesheet" type="text/css"/>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="container">
@@ -123,7 +124,7 @@
             	<div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
                     	<div class="panel-heading bg_ff">
-                        	<h4 class="panel-title text-capital">caste wise position overview</h4>
+                        	<h4 class="panel-title text-capital">caste wise position overview(finalized/g.o.issued)</h4>
                         </div>
                         <div class="panel-body pad_0">
                         	<div>
@@ -146,7 +147,7 @@
                 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
                     	<div class="panel-heading bg_ff">
-                        	<h4 class="panel-title text-capital">caste group wise position overview</h4>
+                        	<h4 class="panel-title text-capital">caste group wise position overview(finalized/g.o.issued)</h4>
                         </div>
                         <div class="panel-body pad_0">
                         	<div>
@@ -172,14 +173,8 @@
     	<div class="col-md-12 col-sm-12 col-xs-12 overViewHideShow">
         	<div class="bg_ff pad_10">
             	<div class="row">
-                	<div class="col-md-2 col-sm-4 col-xs-12">
-                    	<label>Position</label>
-                        <select class="chosenSelect" id="positionId">
-                        	<option value="0">ALL</option>
-                        </select>
-                    </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
-                    	<label>Location Level</label>
+                    	<label>Post Level</label>
                         <select class="chosenSelect" id="locationLevelId">
                         	
                         </select>
@@ -196,6 +191,12 @@
                         	<option value="0">ALL</option>
                         </select>
                     </div>
+					<div class="col-md-2 col-sm-4 col-xs-12">
+                    	<label>Position</label>
+                        <select class="chosenSelect" id="positionId">
+                        	<option value="0">ALL</option>
+                        </select>
+                    </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Caste Group</label>
                         <select class="chosenSelect" id="casteGroupId">
@@ -206,10 +207,10 @@
                     	<label>Position Status</label>
                         <select class="chosenSelect" id="positionStatusId">
                         	<option value="0">ALL</option>  
-							<option value="1">Short Listed</option>
-							<option value="2">Ready To Final Review</option>
-							<option value="3">Finalised</option>
-							<option value="4">G.O Issued</option>  
+							<option value="1">SHORT LISTED</option>
+							<option value="2">READY TO FINAL REVIEW</option>
+							<option value="3">FINALIZED</option>
+							<option value="4">G.O ISSUED</option>  
                         </select>
                     </div>
 					
@@ -225,12 +226,12 @@
                 	<h3 class="headingColor text-capitalize">Demographics Positions Overview<span class="pull-right plusIconCircle demoGraphicsCls"><i class="glyphicon glyphicon-minus"></i></span></h3>
                     <h4 class="showingResult demoGraphicsHideShow m_top10">showing results</h4>
                     <ul class="geoGrpahicBreadCrumb demoGraphicsHideShow">
-                        <li><span>All</span> Positions</li>
-                        <li><span>All</span> locaion level</li>
-                        <li><span>All</span> department</li>
-                        <li><span>All</span> corporation</li>
-                        <li><span>All</span> caste groups</li>
-                        <li><span>G.O Issued</span></li>
+                        <li><span class="positionCls">All Positions</span></li>
+                        <li><span class="locationCls">State</span> </li>
+                        <li><span class="departmentCls">All department</span></li>
+                        <li><span class="corporationCls">All corporation</span></li>
+                        <li><span class="casteGroupsCls">All caste groups</span></li>
+                        <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 demoGraphicsHideShow">
@@ -276,8 +277,8 @@
 	                            	<div id="casteGroup" style="height:220px;"></div>
                                 </div>
                                 <div style="border:1px solid #ddd;padding:10px" class="m_top20">
-                                	<h4 class="panel-title">CASTE GROUP</h4>
-	                                <div id="casteWisePositions"></div>
+                                	<h4 class="panel-title">CASTE</h4>
+	                                <div id="casteWisePositions" style="height:500px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -291,12 +292,12 @@
                 	<h3 class="headingColor text-capitalize">Grographic Positions Overview<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
                     <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4>
                     <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow">
-                        <li><span>All</span> Positions</li>
-                        <li><span>All</span> locaion level</li>
-                        <li><span>All</span> department</li>
-                        <li><span>All</span> corporation</li>
-                        <li><span>All</span> caste groups</li>
-                        <li><span>G.O Issued</span></li>
+                        <li><span class="positionCls">All Positions</span></li>
+                        <li><span class="locationCls">State</span> </li>
+                        <li><span class="departmentCls">All department</span></li>
+                        <li><span class="corporationCls">All corporation</span></li>
+                        <li><span class="casteGroupsCls">All caste groups</span></li>
+                        <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
@@ -314,6 +315,8 @@
 <script src="dist/Plugins/Datatables/datatables.js" type="text/javascript"></script>
 <script src="dist/NominatedPost/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+<script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="dist/NominatedPost/Amcharts/amcharts.js"></script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPostMainDashboard.js"></script>
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
@@ -354,7 +357,6 @@ $(document).on("click",".changeIconClass",function(){
 		casteWisePositionsCountsByPosition(casteId,"close");
 	}
 });
-
 </script>
 </body>
 </html>
