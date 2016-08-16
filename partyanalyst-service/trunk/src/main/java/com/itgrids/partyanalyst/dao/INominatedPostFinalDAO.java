@@ -36,4 +36,6 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public int updateApplicationStatusToFinalReview(Long userId,List<Long> finalIds);
 	 public List<Long> getApplicationFinalModels(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues);
 	 public  List<NominatedPostFinal>  getNominatedPostApplicationDetailsByApplciationId(Long nominatedPostApplicationId);
+	 public List<Long> getNominatedPostFinalIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
+	 public Integer updateGoIssuedStatusInNominatedPostFinal(List<Long> nominatedPostFinalIds,Date date);
 }

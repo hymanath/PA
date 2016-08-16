@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.NominatedPost;
 
 public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
@@ -39,6 +40,8 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Object[]> getTotalCorpsIdsCount(Long levelId);
 	public List<Object[]> getPositionByLevelId(Long boardLevelId);
 	
-	 public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId);
-	
+	public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId);
+	public List<Object[]> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId);
+	public List<Long> getNominatedPostIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
+	public Integer updateGoIssuedStatusInNominatedPost(List<Long> nominatedPostIds,Date date);
 }
