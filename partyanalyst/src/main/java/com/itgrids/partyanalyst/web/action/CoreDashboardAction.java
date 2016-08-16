@@ -453,5 +453,34 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getUserTypeWiseCommitteesCompletedCounts1(){
+		
+		try{
+			LOG.info("Entered into getUserTypeWiseCommitteesCompletedCounts1()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			Long userId = jObj.getLong("userId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long userTypeId = jObj.getLong("userTypeId");
+			
+			String state = jObj.getString("state");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			
+			userTypeVOList = coreDashboardService1.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 }
