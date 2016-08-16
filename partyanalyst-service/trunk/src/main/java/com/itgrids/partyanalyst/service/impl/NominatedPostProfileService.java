@@ -37,6 +37,8 @@ import com.itgrids.partyanalyst.dao.IDepartmentBoardDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentBoardPositionDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IGovtOrderDAO;
+import com.itgrids.partyanalyst.dao.IGovtOrderDocumentsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
@@ -60,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
@@ -69,6 +72,8 @@ import com.itgrids.partyanalyst.dto.NomintedPostMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ApplicationDocument;
+import com.itgrids.partyanalyst.model.GovtOrder;
+import com.itgrids.partyanalyst.model.GovtOrderDocuments;
 import com.itgrids.partyanalyst.model.NominatedPost;
 import com.itgrids.partyanalyst.model.NominatedPostAgeRange;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
@@ -130,8 +135,28 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
 	private IPositionDAO positionDAO;
 	private IBoardDAO boardDAO;
+	private IGovtOrderDAO govtOrderDAO;
+	private IGovtOrderDocumentsDAO govtOrderDocumentsDAO; 
 	
 	
+	
+	public IGovtOrderDocumentsDAO getGovtOrderDocumentsDAO() {
+		return govtOrderDocumentsDAO;
+	}
+
+	public void setGovtOrderDocumentsDAO(
+			IGovtOrderDocumentsDAO govtOrderDocumentsDAO) {
+		this.govtOrderDocumentsDAO = govtOrderDocumentsDAO;
+	}
+
+	public IGovtOrderDAO getGovtOrderDAO() {
+		return govtOrderDAO;
+	}
+
+	public void setGovtOrderDAO(IGovtOrderDAO govtOrderDAO) {
+		this.govtOrderDAO = govtOrderDAO;
+	}
+
 	public IBoardDAO getBoardDAO() {
 		return boardDAO;
 	}
@@ -5099,4 +5124,230 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	  }
 	  return resultList;
   }
+	 
+	 public List<IdNameVO> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId){
+		 List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+		 try {
+			List<Object[]> positionsObj = nominatedPostDAO.getPositionsForABoard(locationLevelId,locationLevelValueList,departmentId,boardId);
+			if(positionsObj != null && positionsObj.size() > 0){
+				for (Object[] objects : positionsObj) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception riased at getPositionsForABoard",e);
+		}
+		 return voList;
+	 }
+	 
+	 public ResultStatus confirmGOForNominatedPosts(final GovtOrderVO govtOrderVO,final Long userId,final Map<File,String> mapfiles){
+		 final ResultStatus rs = new ResultStatus();
+		 try {
+			 
+			 final List<Long> positionsList = new ArrayList<Long>(0);
+			 if(govtOrderVO.getPositionIdsString() != null && !govtOrderVO.getPositionIdsString().isEmpty()){
+				 String posiString[] = govtOrderVO.getPositionIdsString().split(",");
+				 if(posiString != null && posiString.length > 0){
+					for (int i = 0; i < posiString.length; i++) {
+						if(!posiString[i].isEmpty() && Long.parseLong(posiString[i])>0l)
+								positionsList.add(Long.parseLong(posiString[i]));
+					}
+				}
+			 }
+			 
+			 final List<Long> locationLevelValueList = new ArrayList<Long>(0);
+			if(govtOrderVO.getLocationLevelValuesStr() != null && !govtOrderVO.getLocationLevelValuesStr().isEmpty()){
+				String str[] = govtOrderVO.getLocationLevelValuesStr().split(",");
+				if(str != null && str.length > 0){
+					for (int i = 0; i < str.length; i++) {
+						if(!str[i].isEmpty() && Long.parseLong(str[i])>0l)
+							locationLevelValueList.add(Long.parseLong(str[i]));
+					}
+				}
+			}
+			
+			
+				
+			final Date date = dateUtilService.getCurrentDateAndTime();
+			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			final SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					//update status in nominated post
+					List<Long> nominatedPostIds = nominatedPostDAO.getNominatedPostIds(govtOrderVO.getLocationLevelId(),locationLevelValueList,govtOrderVO.getDepartmentId(),govtOrderVO.getBoardId(),positionsList);
+					if(nominatedPostIds != null && nominatedPostIds.size() > 0)
+						nominatedPostDAO.updateGoIssuedStatusInNominatedPost(nominatedPostIds,date);
+					 
+					//update status in nominated post final
+					List<Long> nominatedPostFinalIds = nominatedPostFinalDAO.getNominatedPostFinalIds(govtOrderVO.getLocationLevelId(),locationLevelValueList,govtOrderVO.getDepartmentId(),govtOrderVO.getBoardId(),positionsList);
+					if(nominatedPostFinalIds != null && nominatedPostFinalIds.size() > 0)
+						nominatedPostFinalDAO.updateGoIssuedStatusInNominatedPostFinal(nominatedPostFinalIds,date);
+					
+					//move old record to history
+					List<Object[]> objList = nominatedPostApplicationDAO.getRecord(govtOrderVO.getLocationLevelId(),locationLevelValueList,govtOrderVO.getDepartmentId(),govtOrderVO.getBoardId(),positionsList);
+					List<Long> nominatedPostApplicationIds = new ArrayList<Long>(0);
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							NominatedPostApplicationHistory npah = new NominatedPostApplicationHistory();
+							
+							npah.setTrackedTime(date);
+							npah.setNominatedPostApplicationId((Long)objects[0]);
+							nominatedPostApplicationIds.add((Long)objects[0]);
+							npah.setNominationPostCandidateId((Long)objects[1]);
+							npah.setDepartmentId((Long)objects[2]);
+							npah.setBoardId((Long)objects[3]);
+							npah.setPositionId((Long)objects[4]);
+							npah.setBoardLevelId((Long)objects[5]);
+							npah.setLocationValue((Long)objects[6]);
+							npah.setApplicationStatusId((Long)objects[7]);
+							npah.setInsertedBy((Long)objects[8]);
+							try {
+								npah.setInsertedTime(sdf.parse(objects[9].toString()));
+								npah.setUpdatedTime(sdf.parse(objects[11].toString()));
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							npah.setUpdatedBy((Long)objects[10]);
+							npah.setIsDeleted(objects[11].toString());
+							
+							nominatedPostApplicationHistoryDAO.save(npah);
+							
+						}
+					}
+					
+					if(nominatedPostApplicationIds != null && nominatedPostApplicationIds.size() > 0)
+						nominatedPostApplicationDAO.updateApplicationStatusForGO(nominatedPostApplicationIds,date);
+					
+					GovtOrder go = new GovtOrder();
+					go.setOrderName(govtOrderVO.getGoName());
+					go.setOrderCode(govtOrderVO.getGoCode());
+					try {
+						if(govtOrderVO.getFromDate() != null && govtOrderVO.getToDate() != null){
+							go.setFromDate(sdf1.parse(govtOrderVO.getFromDate()));
+							go.setToDate(sdf1.parse(govtOrderVO.getToDate()));
+						}
+						
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+					go.setBoardId(govtOrderVO.getBoardId());
+					go.setRemarks(govtOrderVO.getRemarks());
+					go.setInsertedBy(userId);
+					go.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					go.setUpdatedBy(userId);
+					go.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					go.setIsDeleted("N");
+					
+					go = govtOrderDAO.save(go);
+					
+					if(mapfiles.size() > 0){
+						String status1 = saveGODocuments(go.getGovtOrderId(),mapfiles,userId);
+						rs.setExceptionMsg("success");
+					}
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Exception raised at confirmGOForNominatedPosts", e);
+			rs.setExceptionMsg("failure");
+		}
+		 return rs;
+	 }
+	 
+	 public String saveGODocuments(Long GOId,Map<File, String> mapfiles,Long userId){
+			String status = null;
+			try{
+			String folderName = folderCreationForGODocuments();
+			GovtOrderDocuments god = null;
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			 //int day = calendar.get(Calendar.DAY_OF_MONTH);
+			 int temp = month+1;
+			 String monthText = getMonthForInt(temp);
+			
+			 StringBuilder pathBuilder = null;
+			 StringBuilder str ;
+			 
+				
+			 for (Map.Entry<File, String> entry : mapfiles.entrySet())
+			 {
+				 pathBuilder = new StringBuilder();
+				 str = new StringBuilder();
+				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+					
+				 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
+				 .append(entry.getValue());
+				 str.append(randomNumber).append(".").append(entry.getValue());
+				 activityService = new ActivityService();
+				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+				 
+					if(fileCpyStts.equalsIgnoreCase("error")){
+						//status.setResultCode(ResultCodeMapper.FAILURE);
+						LOG.error(" Exception Raise in copying file");
+						throw new ArithmeticException();
+					}
+					
+					god = new GovtOrderDocuments();
+					god.setGovtOrderId(GOId);
+					god.setPath(pathBuilder.toString());
+					god.setIsDeleted("N");
+					god.setInsertedBy(userId);
+					god.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					god.setUpdatedBy(userId);
+					god.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					
+					govtOrderDocumentsDAO.save(god);
+					
+			 }
+			 
+			 status = "success";
+			}catch(Exception e){
+				LOG.error("Exception Occured in saveNominatedPostApplication()", e);
+				status = "failure";
+			}
+			return status;
+		}
+	 
+	 public static String folderCreationForGODocuments(){
+	  	 try {
+	  		 LOG.debug(" in FolderForArticle ");
+	  		
+	  		Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			
+			String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+			 String nominatedPostDir = ActivityService.createFolder(staticPath+"/"+IConstants.GO_DOCUMENTS);
+			 
+			 String yr = String.valueOf(year); // YEAR YYYY
+			
+			 StringBuilder str = new StringBuilder();
+			 int temp = month+1;
+			 String monthText = getMonthForInt(temp);
+			 str.append(monthText).append("-").append(yr);
+			 
+			 
+			 String mnthYr = str.toString();
+			 String mnthYrDir = staticPath+"/"+IConstants.GO_DOCUMENTS+"/"+mnthYr;
+			 String mnthDirSts = ActivityService.createFolder(mnthYrDir);
+			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"/"+IConstants.GO_DOCUMENTS+"/"+mnthYr;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create");
+			return "FAILED";
+		}
+	}
 }
