@@ -349,7 +349,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				}
 				else if(type == "any"){
 					
-					if(globalPositionId>0)
+					if(globalPositionId>0 && globalDeptId >0 && globalBoardId>0)
 						str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">ASSIGN THIS POSITION</button>';
 					
 					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'">ASSIGN A POSITION</button>';
@@ -402,7 +402,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<label>Comments</label>';
 									str+='<textarea class="form-control" id="statusCommentAnyId'+i+'"></textarea>';
-									str+='<button class="btn btn-success btn-block m_top10 updateStatusAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+result.subList[i].boardLevelId+'" attr_level_value="'+result.subList[i].levelValue+'">SUBMIT</button>';
+									str+='<button id="updateStatusAnyId" class="btn btn-success btn-block m_top10 updateStatusAnyCls" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_count="'+i+'" attr_levelId="'+result.subList[i].boardLevelId+'" attr_level_value="'+result.subList[i].levelValue+'">SUBMIT</button>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -785,6 +785,7 @@ $(document).on("click",".updateStatusAnyCls",function(){
 	var num = $(this).attr("attr_count");
 	var levelId= $(this).attr("attr_levelId");
 	var levelVal = $(this).attr("attr_level_value");
+	var butonId = $(this).attr("id");
 	
 	var deptId = $("#departmentAnyId"+num).val();
 	var boardId = $("#boardAnyId"+num).val();
@@ -814,6 +815,7 @@ $(document).on("click",".updateStatusAnyCls",function(){
 	}
 	
 	$("#successDivAnyId"+num).html('<img id="" src="images/icons/loading.gif" style="width:15px;"/>');
+	$('#'+butonId+'').hide();
 	var jsObj=
 	   {	
 		applicationId : applicationId,
@@ -833,10 +835,14 @@ $(document).on("click",".updateStatusAnyCls",function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   $("#successDivAnyId"+num).html('');
+	  // $('#'+butonId+'').show();
 		if(result != null && result == 'success')
 			$("#successDivAnyId"+num).html(" <b>Successfully Updated... </b>");
 		else
 			$("#successDivAnyId"+num).html(" <b>Sorry,Exception Occured...Please try again...</b>");
+		
+		  // window.location.reload();
+		   setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);
    });
 });
 
