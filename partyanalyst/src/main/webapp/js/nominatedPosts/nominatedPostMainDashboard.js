@@ -4,11 +4,11 @@ $(document).ready(function(){
 	getPositionAndApplicationDetailsCntPositionWise(0,0,"position");
 	getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId");
 	getCastGroupList();
-	getApplicationStatusList();
+	//getApplicationStatusList();
 	getPositionList();
 	getLocationLevelList();
-	getDepartmentList();
-	getBoardList();
+	getDepartmentList(2);   
+	getBoardList(0);
 	getNominatedCandidateGroupByDistrict(0,0,0,0,0,0);
     getOverAllTotalCountsByPosition(0,0,0,0,0,0);
 	getCasteGroupWiseCountsByPosition(0,0,0,0,0,0);
@@ -177,6 +177,7 @@ $(document).on("click",".casteGroupCls",function(){
 		}
 		 
  }
+ 
  function getAllPositions(){
 	var jsObj={}
       $.ajax({
@@ -198,6 +199,14 @@ $(document).on("click",".casteGroupCls",function(){
 	 }
 	 $("#positionsDiv").html(str);
  }
+ 	$(document).on('change','#locationLevelId',function(){
+		var boardLevelId = $("#locationLevelId").val();  
+		getDepartmentList(boardLevelId);
+	});
+	$(document).on('change','#departmentId',function(){
+		var departmentId = $("#departmentId").val();  
+		getBoardList(departmentId);
+	});
 	function getCastGroupList(){
 		var jsObj={}
 		$.ajax({   
@@ -214,7 +223,7 @@ $(document).on("click",".casteGroupCls",function(){
 			}
 		});
 	}
-	function getApplicationStatusList(){
+	/*function getApplicationStatusList(){
 		var jsObj={}
 		$.ajax({
 			type:'GET',
@@ -229,8 +238,7 @@ $(document).on("click",".casteGroupCls",function(){
 				$('#positionStatusId').trigger("chosen:updated");      
 			}
 		});     
-	}
-	//getPositionList();
+	}*/
 	function getPositionList(){
 		var jsObj={}
 		$.ajax({
@@ -264,14 +272,17 @@ $(document).on("click",".casteGroupCls",function(){
 			}
 		});
 	}
-	function getDepartmentList(){
-		var jsObj={}
+	function getDepartmentList(boardLevelId){
+		var jsObj={
+			boardLevelId : boardLevelId  
+		}  
 		$.ajax({
 			type:'GET',
 			url:'getDepartmentListAction.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$('#departmentId').html('<option value="0">ALL</option>');
 			if(result != null && result.length > 0){
 				for(var i in result){
 					$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
@@ -280,17 +291,20 @@ $(document).on("click",".casteGroupCls",function(){
 			}
 		});
 	}  
-	function getBoardList(){
-		var jsObj={}
+	function getBoardList(deptId){  
+		var jsObj={
+			deptId : deptId
+		}
 		$.ajax({
 			type:'GET',
 			url:'getBoardListAction.action',  
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$('#corporationId').html('<option value="0">ALL</option>');
 			if(result != null && result.length > 0){  
 				for(var i in result){
-					$('#corporationId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					$('#corporationId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');  
 				}
 				$("#corporationId").trigger("chosen:updated");	  			
 			}
