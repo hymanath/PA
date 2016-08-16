@@ -13375,5 +13375,10 @@
    			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
+	<action name="getUserTypeWiseCommitteesCompletedCountsAction1" class="coreDashboardAction" method="getUserTypeWiseCommitteesCompletedCounts1">
+		<result type="json" name="success">
+   			<param name="root">userTypeVOList</param>
+   		</result>
+	</action>
 </package>
 </struts>
