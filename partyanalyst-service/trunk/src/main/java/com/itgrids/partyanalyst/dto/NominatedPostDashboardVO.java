@@ -25,6 +25,12 @@ public class NominatedPostDashboardVO {
 	private Long maleCount = 0l;
 	private Long femaleCount = 0l;
 	private String percentage="0";
+	private Long twentyTo29AgeRangeCount=0l;
+	private Long thirtyTo39AgeRangeCount=0l;
+	private Long fourtyTo49AgeRangeCount=0l;
+	private Long fiftyTo59AgeRangeCount=0l;
+	private Long sixtyAvoveAgeRangeCount=0l;
+	private Long overAllCount=0l;
 	
 	
 	public String getPercentage() {
@@ -125,6 +131,40 @@ public class NominatedPostDashboardVO {
 	public void setStatusCount(Long statusCount) {
 		this.statusCount = statusCount;
 	}
-	
-	
+	public Long getTwentyTo29AgeRangeCount() {
+		return twentyTo29AgeRangeCount;
+	}
+	public void setTwentyTo29AgeRangeCount(Long twentyTo29AgeRangeCount) {
+		this.twentyTo29AgeRangeCount = twentyTo29AgeRangeCount;
+	}
+	public Long getThirtyTo39AgeRangeCount() {
+		return thirtyTo39AgeRangeCount;
+	}
+	public void setThirtyTo39AgeRangeCount(Long thirtyTo39AgeRangeCount) {
+		this.thirtyTo39AgeRangeCount = thirtyTo39AgeRangeCount;
+	}
+	public Long getFourtyTo49AgeRangeCount() {
+		return fourtyTo49AgeRangeCount;
+	}
+	public void setFourtyTo49AgeRangeCount(Long fourtyTo49AgeRangeCount) {
+		this.fourtyTo49AgeRangeCount = fourtyTo49AgeRangeCount;
+	}
+	public Long getFiftyTo59AgeRangeCount() {
+		return fiftyTo59AgeRangeCount;
+	}
+	public void setFiftyTo59AgeRangeCount(Long fiftyTo59AgeRangeCount) {
+		this.fiftyTo59AgeRangeCount = fiftyTo59AgeRangeCount;
+	}
+	public Long getSixtyAvoveAgeRangeCount() {
+		return sixtyAvoveAgeRangeCount;
+	}
+	public void setSixtyAvoveAgeRangeCount(Long sixtyAvoveAgeRangeCount) {
+		this.sixtyAvoveAgeRangeCount = sixtyAvoveAgeRangeCount;
+	}
+	public Long getOverAllCount() {
+		return overAllCount;
+	}
+	public void setOverAllCount(Long overAllCount) {
+		this.overAllCount = overAllCount;
+	}
 }
