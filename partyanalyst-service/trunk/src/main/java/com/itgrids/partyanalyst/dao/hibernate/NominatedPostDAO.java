@@ -1217,6 +1217,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   }
 	return query.list();   
    }
+   
    public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
 		 
 	   StringBuilder queryStr = new StringBuilder();
@@ -1241,4 +1242,57 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   }
         return (Long) query.uniqueResult();
  }
+   
+   public List<Object[]> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId){
+	   StringBuilder sb = new StringBuilder();
+	   
+	   sb.append(" select distinct model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName " +
+	   		" from NominatedPost model " +
+	   		" where model.nominatedPostMember.boardLevelId=:locationLevelId " +
+	   		" and model.nominatedPostMember.locationValue in (:locationLevelValueList) " +
+	   		" and model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId " +
+	   		" and model.nominatedPostMember.nominatedPostPosition.boardId=:boardId " +
+	   		" and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
+	   		" and model.nominatedPostStatusId=3 ");
+	   
+	   Query query = getSession().createQuery(sb.toString());
+	   
+	   query.setParameter("locationLevelId", locationLevelId);
+	   query.setParameterList("locationLevelValueList", locationLevelValueList);
+	   query.setParameter("departmentId", departmentId);
+	   query.setParameter("boardId", boardId);
+	   
+	   return query.list();
+   }
+   
+   public List<Long> getNominatedPostIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList){
+	   Query query = getSession().createQuery(" select model.nominatedPostId from NominatedPost model " +
+		   		" where model.nominatedPostMember.boardLevelId=:locationLevelId " +
+		   		" and model.nominatedPostMember.locationValue in (:locationLevelValueList) " +
+		   		" and model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId " +
+		   		" and model.nominatedPostMember.nominatedPostPosition.boardId=:boardId " +
+		   		" and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
+		   		" and model.nominatedPostStatusId=:oldStatus " +
+		   		" and model.nominatedPostMember.nominatedPostPosition.positionId in (:positionsList) ");
+		   
+		   	query.setParameter("locationLevelId", locationLevelId);
+		   	query.setParameterList("locationLevelValueList", locationLevelValueList);
+		   	query.setParameter("departmentId", departmentId);
+		   	query.setParameter("boardId", boardId);
+		   	query.setParameterList("positionsList", positionsList);
+		   	query.setParameter("oldStatus", 3l);
+		   	
+		   	return query.list();
+   }
+   
+   public Integer updateGoIssuedStatusInNominatedPost(List<Long> nominatedPostIds,Date date){
+	   Query query = getSession().createQuery(" update NominatedPost model set model.nominatedPostStatusId=:nominatedPostStatusId,model.updatedTime=:date " +
+	   		" where model.nominatedPostId in (:nominatedPostIds) ");
+	   
+	   	query.setParameter("nominatedPostStatusId", 4l);
+	   	query.setParameterList("nominatedPostIds", nominatedPostIds);
+	   	query.setDate("date", date);
+	   	
+	   	return query.executeUpdate();
+   }
 }

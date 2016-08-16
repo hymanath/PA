@@ -1394,5 +1394,39 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
           }
 		   
 		    return query.list();
-		  }
+	}
+	
+	public List<Object[]> getRecord(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList){
+		Query query = getSession().createQuery(" select model.nominatedPostApplicationId,model.nominationPostCandidateId,model.departmentId,model.boardId," +
+				" model.positionId,model.boardLevelId,model.locationValue,model.applicationStatusId,model.insertedBy,date(model.insertedTime),model.updatedBy," +
+				" date(model.updatedTime),model.isDeleted " +
+				" from NominatedPostApplication model " +
+				" where model.nominatedPostMember.boardLevelId=:locationLevelId " +
+				" and model.nominatedPostMember.locationValue in (:locationLevelValueList) " +
+				" and model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId " +
+				" and model.nominatedPostMember.nominatedPostPosition.boardId=:boardId " +
+				" and model.nominatedPostMember.nominatedPostPosition.positionId in (:positionsList) " +
+				" and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
+				" and model.applicationStatusId=:oldStatus ");
+		
+		query.setParameter("locationLevelId", locationLevelId);
+		query.setParameterList("locationLevelValueList", locationLevelValueList);
+		query.setParameter("departmentId", departmentId);
+		query.setParameter("boardId", boardId);
+		query.setParameterList("positionsList", positionsList);
+		query.setParameter("oldStatus", 5l);
+		
+		return query.list();
+	}
+	
+	public Integer updateApplicationStatusForGO(List<Long> nominatedPostApplicationIds,Date date){
+		Query query = getSession().createQuery(" update NominatedPostApplication model set model.applicationStatusId=:statusId, model.updatedTime=:date" +
+				" where model.nominatedPostApplicationId in (:nominatedPostApplicationIds) ");
+		
+		query.setDate("date", date);
+		query.setParameter("statusId", 7l);
+		query.setParameterList("nominatedPostApplicationIds", nominatedPostApplicationIds);
+		
+		return query.executeUpdate();
+	}
 }
