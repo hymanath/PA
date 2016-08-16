@@ -115,7 +115,12 @@
 			str+='<ul class="panelBlockCustom">';
 			for(var i in result){
 				if(result[i].name != "TOTAL AVAILABLE"){
-				str+='<li style="font-size:12px">';
+					if(result[i].name == "YET TO START" )
+						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
+					else if(result[i].totalPositions >0)
+						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
+					else 
+						str+='<li style="font-size:12px;cursor:pointer;">';
 					str+='<div class="panel panel-default panelCustom ">';
 					str+='<div class="panel-heading">';
 					if(i>0){
@@ -246,7 +251,7 @@
 </script>
 <script>
 
-$(document).on("click",".yetToStartCls",function(){
+$(document).on("click",".newWindowCls",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var status = $(this).attr("attr_status");
 	var stateId = $('input[name=stateName]:checked').val();
@@ -262,9 +267,34 @@ $(document).on("click",".yetToStartCls",function(){
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running&levelTxt='+levelTxt+'','_self');	
 	else if(status == "APPLICATIONS NOT RECIEVED")
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notRecieved&levelTxt='+levelTxt+'','_self');	
+	else if(status == "READY FOR FINAL REVIEW")
+		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finalReview','_blank');
+	else if(status == "FINALYZED")
+		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finaliZed','_blank');
+	else if(status == "GO PASSED / COMPLETED")
+		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=goPassed','_blank');
+	
+});
+$(document).on("click",".yetToStartCls11",function(){
+	var levelId = $(this).attr("attr_level_id");
+	var status = $(this).attr("attr_status");
+	var stateId = $('input[name=stateName]:checked').val();
+	var levelTxt = $(this).attr("attr_level_txt");
+	
+	if(status == "TOTAL")//totalCorpCls
+		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_self');
+	else if(status == "TOTAL AVAILABLE")//totalCorpCls
+		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Open&levelTxt='+levelTxt+'','_self');
+	else if(status == "YET TO START")
+		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notYet&levelTxt='+levelTxt+'','_self');
+	else if(status == "RUNNING")
+		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running&levelTxt='+levelTxt+'','_self');	
+	else if(status == "APPLICATIONS NOT RECIEVED")
+		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notRecieved&levelTxt='+levelTxt+'','_self');	
+
 });
 
-$(document).on("click",".finalReviewCls",function(){
+$(document).on("click",".finalReviewCls11",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var status = $(this).attr("attr_status");
 	var stateId = $('input[name=stateName]:checked').val();
