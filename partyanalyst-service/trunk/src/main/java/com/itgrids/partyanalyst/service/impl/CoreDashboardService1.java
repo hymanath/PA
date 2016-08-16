@@ -801,4 +801,296 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 		         return perc1.compareTo(perc2);
 		    }
 	    }; 
+	    
+	    /**
+		  * @param  Long userId
+		  * @param  Long activityMemberId
+		  * @param  Long userTypeId
+		  * @param  String state
+		  * @param  List<Long> basicCommitteeIds
+		  * @param  String startDateString
+		  * @param  String endDateString
+		  * @return List<List<UserTypeVO>>
+		  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+		  *  This Service Method is used to get top5 strong or top5 poor usertype committees count. 
+		  *  @since 10-AUGUST-2016
+		  */
+	    @SuppressWarnings("unused")
+		public List<List<UserTypeVO>> getUserTypeWiseCommitteesCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
+			List<List<UserTypeVO>> userTypesList = null;
+			try{ 
+			     List<Date> datesList = getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
+			     
+			     //Making BO.
+			     CommitteeInputVO committeeBO = new CommitteeInputVO();
+			     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
+			     committeeBO.setStartDate(datesList.get(0));
+			     committeeBO.setEndDate(datesList.get(1));
+			     if(state.equalsIgnoreCase("ap")){
+			    	 committeeBO.setStateId(1l);	 
+			     }else if(state.equalsIgnoreCase("ts")){
+			    	 committeeBO.setStateId(36l);	 
+			     }
+			     
+			     
+			     //get activitymemberid and usertypeid if not there.
+			     if( activityMemberId == null || activityMemberId <= 0l){
+				    Object[] activityMemberIdAndAccessType= activityMemberAccessTypeDAO.getUserAccessTypeAndActivityMemberIdByUserId(userId);
+				    if( activityMemberIdAndAccessType != null && activityMemberIdAndAccessType.length>0){
+					   activityMemberId = activityMemberIdAndAccessType[0] != null ? (Long)activityMemberIdAndAccessType[0] : 0l;
+					   userTypeId = activityMemberIdAndAccessType[1] != null ? (Long)activityMemberIdAndAccessType[1] : 0l;
+				    }
+			     }
+		   
+			     Map<Long,List<Long>> ParentChildUserTypesMap = getParentUserTypesAndItsChildUserTypes();
+		         
+		         Map<Long,Map<Long,UserTypeVO>> userTypesMap = new LinkedHashMap<Long, Map<Long,UserTypeVO>>(0);
+		         
+		         Map<Long,Set<Long>> locationLevelIdsMap = new HashMap<Long, Set<Long>>(); 
+		         
+		         
+			     setBasicDataToMap(userTypesMap,activityMemberId,userTypeId,ParentChildUserTypesMap,locationLevelIdsMap);
+			     
+			   //get assembly constituencies for parliament constituencies.
+			     Set<Long> parliamentConstituencyIds = locationLevelIdsMap.get(IConstants.PARLIAMENT_LEVEl_ACCESS_ID);
+			     Map<Long,List<Long>> assemblyListByPcMap =  new HashMap<Long, List<Long>>();
+			     Set<Long> assemblyConstituencyIdsByParliamentIds = new HashSet<Long>();
+			     if(parliamentConstituencyIds != null && parliamentConstituencyIds.size()>0){
+		               	 List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.getAcConstituenciesByPcList(new ArrayList<Long>(parliamentConstituencyIds));
+		               	 if(list!=null && list.size()>0){
+		               		 for(Object[] obj : list){
+		               			 List<Long> acList = null;
+		               			 acList = assemblyListByPcMap.get((Long)obj[0]);
+		               			 if(acList == null){
+		               				 acList = new ArrayList<Long>();
+		               				 assemblyListByPcMap.put((Long)obj[0],acList);
+		               			 }
+		               			 acList = assemblyListByPcMap.get((Long)obj[0]);
+		               			 acList.add(obj[1]!=null?(Long)obj[1]:0l);
+		               			 assemblyConstituencyIdsByParliamentIds.add(obj[1]!=null?(Long)obj[1]:0l);
+		               		 }
+		               	 }
+		         }
+			     
+			     //add parliamnet level access level values to assembly access level values.
+			     if(parliamentConstituencyIds != null && parliamentConstituencyIds.size()>0){
+			    	 Set<Long> assemblyConstituencyIds = locationLevelIdsMap.get(IConstants.ASSEMBLY_LEVEl_ACCESS_ID);
+			    	 if(assemblyConstituencyIds == null){
+			    		 assemblyConstituencyIds = new HashSet<Long>();
+			    		 assemblyConstituencyIds.addAll(assemblyConstituencyIdsByParliamentIds);
+			    		 locationLevelIdsMap.put(IConstants.ASSEMBLY_LEVEl_ACCESS_ID, assemblyConstituencyIds);
+			    	 }else{
+			    		 assemblyConstituencyIds.addAll(assemblyConstituencyIdsByParliamentIds);
+			    	 }
+			    	 
+			     }
+			     
+			     
+			     //get commitees count based on location level id and location level values.
+			     Map<String,UserTypeVO> locationLevelCountsMap = new HashMap<String, UserTypeVO>(0);
+			     if(locationLevelIdsMap != null && locationLevelIdsMap.size()>0){
+			    	 for(Long accessLevelId : locationLevelIdsMap.keySet()){
+			    		 
+			    		 getCommitteeLevelIdsByUserAccessLevelId(accessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(accessLevelId)),committeeBO);
+			    		 committeeBO.setStatus(null);
+			    		 List<Object[]> totalCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
+			    		 committeeBO.setStatus("completed");
+			    		 List<Object[]> completedCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
+		                 setCountsToALocation("total",totalCountList,locationLevelCountsMap,accessLevelId);
+		                 setCountsToALocation("completed",completedCountList,locationLevelCountsMap,accessLevelId);
+			    	 }    
+			     }
+			     
+			     userTypesList = getMemberRelatedCountsOrPercantage(userTypesMap,"counts",locationLevelCountsMap,assemblyListByPcMap);
+			     getMemberRelatedCountsOrPercantage(userTypesMap,"percanatge",null,null);
+			   
+			  //sorting
+			   if(userTypesList != null && userTypesList.size()>0)
+			   {
+				   for(List<UserTypeVO> membersList : userTypesList)
+				   {
+					   if(membersList != null)
+					   {  
+						  Collections.sort(membersList,ActivityMemberCompletedCountPercDesc);
+						 
+					   }
+				   }
+			   }
+			   
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		    return userTypesList;
+		}
+
+		public void setBasicDataToMap( Map<Long,Map<Long,UserTypeVO>> userTypesMap , Long activityMemberId ,Long userTypeId, Map<Long,List<Long>> ParentChildUserTypesRelationMap,Map<Long,Set<Long>> locationLevelIdsMap){
+			try{
+				
+				List<Long> childUserTypeIds = ParentChildUserTypesRelationMap.get(userTypeId);
+				
+				if(childUserTypeIds != null){
+					
+					List<Object[]> childMembers = null;
+					if( userTypeId.longValue() == IConstants.COUNTRY_USER_TYPE_ID.longValue() || userTypeId.longValue() == IConstants.STATE_USER_TYPE_ID.longValue()){
+						childMembers = activityMemberAccessTypeDAO.getAllActivityMembersOfGSAndDistAndMpUserTypes(childUserTypeIds);
+					}else{
+						childMembers = activityMemberRelationDAO.getChildUserTypeMembers(activityMemberId, childUserTypeIds);
+					}
+					
+					if(childMembers != null && childMembers.size() > 0)
+					{
+						for(Object[] obj : childMembers)
+						{
+							 UserTypeVO userTypeVO = null;
+							 Long userTypeid = (Long)obj[3];
+							 if(!userTypesMap.containsKey(userTypeid)){ 
+								 userTypesMap.put(userTypeid, new LinkedHashMap<Long,UserTypeVO>());
+							 }
+							 Map<Long,UserTypeVO> membersMap = userTypesMap.get(userTypeid);
+							 UserTypeVO activityMemberVO = null;
+							 Long memberid = (Long)obj[0];
+							 if(!membersMap.containsKey(memberid)){
+								 
+								 activityMemberVO = new UserTypeVO();
+								 activityMemberVO.setActivityMemberId((Long)obj[0]);
+								 activityMemberVO.setTdpCadreId(obj[1]!=null?(Long)obj[1]:0l);
+								 activityMemberVO.setName(obj[2]!=null?obj[2].toString():"");
+								 activityMemberVO.setImage(obj[8]!=null?obj[8].toString():"");
+								 activityMemberVO.setUserTypeId(obj[3]!=null?(Long)obj[3]:0l);
+								 activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
+								 activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
+								 activityMemberVO.setLocationLevelName(obj[6]!=null?obj[6].toString():"");
+								 activityMemberVO.setLocationValuesSet( new HashSet<Long>());
+								 
+								 membersMap.put(memberid,activityMemberVO);
+								 
+								 //its child data.
+								 setBasicDataToMap(userTypesMap,activityMemberVO.getActivityMemberId(),activityMemberVO.getUserTypeId(),ParentChildUserTypesRelationMap,locationLevelIdsMap);
+								 
+							 }
+							 activityMemberVO = membersMap.get(memberid);
+							 activityMemberVO.getLocationValuesSet().add(obj[7]!= null ?(Long)obj[7]:0l);
+							 
+							 //get locationlevelId and its corresponding locationValues.
+							 Set<Long> locationLevelValues = null;
+							 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
+							 if(locationLevelValues == null){
+								 locationLevelValues = new HashSet<Long>();
+								 locationLevelIdsMap.put(activityMemberVO.getLocationLevelId(), locationLevelValues);
+							 }
+							 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
+							 if(obj[7]!=null){
+								 locationLevelValues.add((Long)obj[7]); 
+							 }
+							 
+						}
+					}
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		public List<List<UserTypeVO>> getMemberRelatedCountsOrPercantage(Map<Long,Map<Long,UserTypeVO>> userTypesMap,String type,Map<String,UserTypeVO> locationLevelCountsMap,Map<Long,List<Long>> assemblyListByPcMap){
+			
+	    	//get member related counts or percanatges
+			List<List<UserTypeVO>> userTypesList = null;
+			
+			   if( userTypesMap != null && userTypesMap.size() > 0)
+			   {
+				   userTypesList = new ArrayList<List<UserTypeVO>>();
+				   
+				   for(Long userType:userTypesMap.keySet())
+				   {   
+					   Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
+					   
+					   if( membersMap != null && membersMap.size()>0)
+					   {  
+						   for(Long memberid : membersMap.keySet())
+						   {  
+							   UserTypeVO memberVO = membersMap.get(memberid);
+							   
+							   if(type.equalsIgnoreCase("counts")){
+								   
+								   if(memberVO.getLocationValuesSet() != null && memberVO.getLocationValuesSet().size()>0){
+									   for(Long locationValue : memberVO.getLocationValuesSet()){
+										   if(memberVO.getLocationLevelId().longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+											   List<Long> assemblyIds = assemblyListByPcMap.get(locationValue);
+											   if(assemblyIds!=null && assemblyIds.size()>0){
+												   for(Long assemblyId : assemblyIds){
+													   String key = IConstants.ASSEMBLY_LEVEl_ACCESS_ID+"_"+assemblyId;
+													   UserTypeVO countVO = locationLevelCountsMap.get(key);
+													   if(countVO != null){
+														   memberVO.setTotalCount(memberVO.getTotalCount() + countVO.getTotalCount());
+														   memberVO.setCompletedCount(memberVO.getCompletedCount()+countVO.getCompletedCount());
+													   }
+												   }
+											   }
+										   }else{
+											   String key = memberVO.getLocationLevelId()+"_"+locationValue;
+											   UserTypeVO countVO = locationLevelCountsMap.get(key);
+											   if(countVO != null){
+												   memberVO.setTotalCount(memberVO.getTotalCount() + countVO.getTotalCount());
+												   memberVO.setCompletedCount(memberVO.getCompletedCount()+countVO.getCompletedCount());
+											   }
+										   }
+									   }
+								   } 
+							   }else if(type.equalsIgnoreCase("percanatge")){
+								   if(memberVO.getTotalCount()!=null && memberVO.getTotalCount() > 0l){
+									   memberVO.setCompletedPerc( caclPercantage(memberVO.getCompletedCount(),memberVO.getTotalCount()) );
+								   }
+							   }
+						   }
+					   }
+					   userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
+				   }
+			   }
+			   return userTypesList;
+	     }
+		public void setCountsToALocation(String status,List<Object[]> list,Map<String,UserTypeVO> locationLevelCountsMap,Long accessLevelId){
+			
+	   	 if(list!=null && list.size()>0){
+				 for(Object[] obj : list){
+					 String key = accessLevelId+"_"+(Long)obj[1]; 
+					 UserTypeVO countsVO = locationLevelCountsMap.get(key);
+					 if(countsVO == null){
+						 countsVO = new UserTypeVO();
+						 locationLevelCountsMap.put(key, countsVO);
+					 }
+					 countsVO = locationLevelCountsMap.get(key);
+					 if(status.equalsIgnoreCase("total")){
+						 countsVO.setTotalCount(obj[0]!=null?(Long)obj[0]:0l); 
+					 }else if(status.equalsIgnoreCase("completed")){
+						 countsVO.setCompletedCount(obj[0]!=null?(Long)obj[0]:0l); 
+					 }
+				 }
+			 }
+	    }
+		public void getCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
+			
+			if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));	
+				inputVO.setStateIds(userAccessLevelValues);
+				
+			}else if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				inputVO.setDistrictIds(userAccessLevelValues);
+				
+			}else if(userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				inputVO.setAssemblyConstIds(userAccessLevelValues);
+				
+		    }else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				inputVO.setTehsilIds(userAccessLevelValues);
+			}
+			
+		}
+		
+		
 }
