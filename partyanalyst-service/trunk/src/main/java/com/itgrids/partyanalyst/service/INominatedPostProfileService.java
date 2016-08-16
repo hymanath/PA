@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostReferVO;
@@ -63,4 +64,7 @@ public interface INominatedPostProfileService {
 	
 	 public List<NominatedPostVO> getAnyDeptApplicationOverviewCountLocationWise(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 		      List<Long> locationValue,Long searchLevelId,String statusType);
+	 public List<IdNameVO> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId);
+	 public ResultStatus confirmGOForNominatedPosts(GovtOrderVO goVO,Long userId,Map<File,String> mapfiles);
+	 
 }
