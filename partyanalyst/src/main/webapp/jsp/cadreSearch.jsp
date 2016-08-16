@@ -134,13 +134,13 @@
 						  </select>
 						  </c:if>
 						
-				     </div>
+				     
 					 </c:if>
-				
+				</div>
 					<!--<img style="float: right; margin-right: 308px; display: none;" alt="Processing Image" src="./images/icons/search.gif" id="constiImge">-->
 						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForDist" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
 					
-					<div class="col-md-8 col-md-offset-2 col-sm-1 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="districtDiv">
+					<div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" id="districtDiv">
 							<label>District</label>
 							<select class="form-control " id="districtId" class="form-control" onchange="getConstituenciesForDistricts(this.value)">
 							</select>
@@ -166,7 +166,7 @@
 				
 						<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForPanc" style="margin-top: 30px;width:20px;height:20px;display:none;"/>
 					
-					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
+					<div class="col-md-8 col-md-offset-2 col-sm-11 col-sm-offset-0 col-xs-11 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
 							<label>Panchayat</label>
 							<select class="form-control " id="panchaytList" class="form-control" onchange="getAllCadreInPanchayat()">
 							<option value="0"> Select Panchayat </option>
@@ -174,7 +174,7 @@
 					</div>
 			</div>
 			
-			<div class="col-md-6 col-md-offset-3  text-center" id="removeCadreCheckBoxId" style="margin-top:10px;">
+			<div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-12  text-center" id="removeCadreCheckBoxId" style="margin-top:10px;">
   
 			  <span class=" btn btn-primary btn-xs form-inline ">
 					<label class="radio"><input type="checkbox" style="vertical-align: text-bottom;" id="onlyCandidatesId"/> Click here to search only removed cadre details. </label>
@@ -310,7 +310,7 @@
 				<div class="row">
 	
 			
-			<img src='images/icons/cadreSearch.gif' class="offset7"  id="searchDataImg" style=" margin-left: 400px;margin-top: 20px;width:250px;height:200px;display:none;"/>
+			<img src='images/icons/cadreSearch.gif' class="col-md-3 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-3 col-sm-offset-3"  id="searchDataImg" style=" margin-left: 400px;margin-top: 20px;width:250px;height:200px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
 				<div id="topPaginationDivId" class="paginationDivId"></div>
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
