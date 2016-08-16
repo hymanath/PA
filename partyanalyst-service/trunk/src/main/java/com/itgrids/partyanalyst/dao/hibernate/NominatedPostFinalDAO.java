@@ -1117,4 +1117,34 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			return query.list();
 		}
 		
+	public List<Long> getNominatedPostFinalIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList){
+		Query query = getSession().createQuery(" select model.nominatedPostFinalId from NominatedPostFinal model " +
+		   		" where model.nominatedPostMember.boardLevelId=:locationLevelId " +
+		   		" and model.nominatedPostMember.locationValue in (:locationLevelValueList) " +
+		   		" and model.nominatedPostMember.nominatedPostPosition.departmentId=:departmentId " +
+		   		" and model.nominatedPostMember.nominatedPostPosition.boardId=:boardId " +
+		   		" and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
+		   		" and model.applicationStatusId=:oldStatus " +
+		   		" and model.nominatedPostMember.nominatedPostPosition.positionId in (:positionsList) ");
+		   
+		   	query.setParameter("locationLevelId", locationLevelId);
+		   	query.setParameterList("locationLevelValueList", locationLevelValueList);
+		   	query.setParameter("departmentId", departmentId);
+		   	query.setParameter("boardId", boardId);
+		   	query.setParameterList("positionsList", positionsList);
+		   	query.setParameter("oldStatus", 5l);
+		   	
+		   return query.list();
+	}
+	
+	public Integer updateGoIssuedStatusInNominatedPostFinal(List<Long> nominatedPostFinalIds,Date date){
+		Query query = getSession().createQuery(" update NominatedPostFinal model set model.applicationStatusId=:nominatedPostStatusId,model.updatedTime=:date " +
+		   		" where model.nominatedPostFinalId in (:nominatedPostFinalIds) ");
+		   
+		   	query.setParameter("nominatedPostStatusId", 7l);
+		   	query.setDate("date", date);
+		   	query.setParameterList("nominatedPostFinalIds",nominatedPostFinalIds);
+		   	
+		   	return query.executeUpdate();
+	}
 }
