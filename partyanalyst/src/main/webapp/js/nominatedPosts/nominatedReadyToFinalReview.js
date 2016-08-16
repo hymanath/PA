@@ -265,15 +265,15 @@ function buildCandidateReviewRslt(result,status){
 	  for(var i in result){
 	   if(i==0){
 		   if(status != "Total"){
-		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top"><u>'+result[i].count+'</u></span></a></li>';
+		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }else{
-			   str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top"><u>'+result[i].count+'</u></span></a></li>';
+			   str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }
 		 }else{
 			 if(status != "Total"){
-		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top"><u>'+result[i].count+'</u></span></a></li>';
+		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 }else{
-		  str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top"><u>'+result[i].count+'</u></span></a></li>';
+		  str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 
 		 }
 		}
@@ -289,7 +289,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 	 $("#positionRsltDivId").html(' ');
 	var str='';
 	str+='<div role="tabpanel" class="tab-pane active pad_15" id="departments'+departmentId+'" style="padding-right:0px;padding-bottom:0px;">';
-	   str+='<h4 class="headingColor text-capital"><u>board / corporation</u></h4>';
+	   str+='<h4 class="headingColor text-capital">board / corporation</h4>';
 	   if(status != "Total"){
 	   str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
 	   }
@@ -301,13 +301,13 @@ function buildCandidateBoardRslt(result,departmentId,status){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}else{
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
 						str+='</div>';
 					str+='</div>';
@@ -320,13 +320,13 @@ function buildCandidateBoardRslt(result,departmentId,status){
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}else{
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
 						str+='</div>';
 					str+='</div>';
@@ -347,7 +347,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 function buildCandidatePositionRslt(result,departmentId,boardId,status){
 var str = '';
 	str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
-		 str+='<h4 class="headingColor text-capital"><u>positions</u></h4>';
+		 str+='<h4 class="headingColor text-capital">positions</h4>';
 		 if(status != "Total"){
 		 str+='<p class="text-danger font13 col-md-6 pull-right"><small>Ready for final review</small></p>';
 		 }
@@ -358,8 +358,8 @@ var str = '';
 					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
 					if(status != "Total"){
 						str+='<div class="positionsCls modalViewBtn referenceCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-							str+='<span style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
-							str+='<span class="label label-primary labelCustom pull-right" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
+							str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+							str+='<span class="label label-primary labelCustom pull-right" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 							}else{
 								str+='<div class="positionsCls"  attr_position_name="'+result[i].name+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
 							str+='<span style="font-weight:bold;">'+result[i].name+'</span>';
