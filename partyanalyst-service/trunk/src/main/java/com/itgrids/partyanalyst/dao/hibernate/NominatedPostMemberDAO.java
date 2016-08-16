@@ -61,7 +61,7 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 			query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
 		}
 		*/
-		
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 		str.append(" SELECT distinct departments.departmentId,departments.deptName," +
 				"  board.boardId,board.boardName " +
 				" FROM NominatedPostApplication model " +
@@ -69,11 +69,22 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 				" left join model.departments departments " +
 				" WHERE model.isDeleted = 'N'" );
 		if(boardLevelId !=null && boardLevelId.longValue()>0L){
-			//if(boardLevelId.longValue()!=5L)
-				str.append(" and model.boardLevel.boardLevelId =:boardLevelId ");
-			//else
-			//	str.append(" and model.boardLevel.boardLevelId in (5,6) ");
+			str.append(" and model.boardLevel.boardLevelId =:boardLevelId ");
+	}
 		}
+		else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+			str.append(" SELECT distinct departments.departmentId,departments.deptName," +
+					"  board.boardId,board.boardName " +
+					" FROM NominatedPostFinal model " +
+					" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+					" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+					" WHERE model.isDeleted = 'N'" );
+			if(boardLevelId !=null && boardLevelId.longValue()>0L){
+				str.append(" and model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId ");
+		}
+			}
+		
+		
 		/*if(levelValue !=null && levelValue.size()>0){
 			str.append(" and model.locationValue in (:levelValue) ");
 		}*/
@@ -84,24 +95,43 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 			str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
 		}
 		//,Long searchlevelId,Long searchLevelValue
-				
-		if(searchLevelId != null && searchLevelId.longValue()>0L){
-			if(searchLevelId.longValue() == 1L)
-				str.append(" and model.locationValue  = :searchLevelValue ");
-			else if(searchLevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
-				str.append(" and model.address.state.stateId =:searchLevelValue ");
-			else if(searchLevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
-				str.append(" and model.address.district.districtId =:searchLevelValue ");
-			else if(searchLevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-				str.append(" and model.address.constituency.constituencyId =:searchLevelValue ");
-			else if(searchLevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-				str.append(" and model.address.tehsil.tehsilId =:searchLevelValue ");
-			else if(searchLevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-				str.append(" and model.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
-			else if(searchLevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
-				str.append(" and model.address.panchayatId =:searchLevelValue ");
+			
+		if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+			if(searchLevelId != null && searchLevelId.longValue()>0L){
+				if(searchLevelId.longValue() == 1L)
+					str.append(" and model.locationValue  = :searchLevelValue ");
+				else if(searchLevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.state.stateId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.district.districtId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.constituency.constituencyId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.tehsil.tehsilId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.address.panchayatId =:searchLevelValue ");
+			}
 		}
-		
+		else 	if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+			if(searchLevelId != null && searchLevelId.longValue()>0L){
+				if(searchLevelId.longValue() == 1L)
+					str.append(" and model.locationValue  = :searchLevelValue ");
+				else if(searchLevelId.longValue() ==2L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.nominatedPostMember.address.state.stateId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==3L && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.nominatedPostMember.address.district.districtId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==4L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.nominatedPostMember.address.constituency.constituencyId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==5L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.nominatedPostMember.address.tehsil.tehsilId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==6L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:searchLevelValue ");
+				else if(searchLevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
+					str.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
+			}
+		}
 		str.append(" group by departments.departmentId,board.boardId  ");
 		str.append(" order by departments.deptName");
 		Query query = getSession().createQuery(str.toString());
@@ -162,6 +192,30 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 											   " model.isDeleted = 'N' ");
 		return query.list();
 	}
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getDepartmentList(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.departments.departmentId, model.nominatedPostPosition.departments.deptName " +
+											   " from NominatedPostMember model " +
+											   " where " +
+											   " model.isDeleted = 'N' and " +
+											   " model.nominatedPostPosition.isDeleted = 'N' ");
+		return query.list();
+	}
+	/*
+	 * Swadhin
+	 */
+	public List<Object[]> getBoardList(){
+		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
+				   							   " from NominatedPostMember model " +
+				   							   " where " +
+				   							   " model.isDeleted = 'N' and " +
+				   							   " model.nominatedPostPosition.isDeleted = 'N' ");
+		return query.list();
+	}
+	
+
 	/*
 	 * Swadhin
 	 */ 

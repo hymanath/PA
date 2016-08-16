@@ -162,7 +162,50 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId" +
 					"  ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId ");
 			
-		}else{
+		}
+		else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+
+			str.append("SELECT model.nominatedPostMember.nominatedPostPosition.position.positionId," +
+					" model.nominatedPostMember.nominatedPostPosition.position.positionName " +
+					"	FROM NominatedPostFinal model" +
+					"   WHERE " +
+					"  model.isDeleted ='N'" );
+			
+			if(boardLevelId !=null && boardLevelId>0){
+				//if(boardLevelId.longValue() !=5L)
+					str.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
+				//else
+					//str.append(" and model.boardLevelId in (5,6) ");
+			}
+			if(levelValue !=null && levelValue.size()>0){
+				str.append(" and model.nominatedPostMember.locationValue in (:levelValue) ");
+			}
+			if(deptId !=null && deptId.size() >0){
+				str.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptId) ");
+			}
+			if(boardId !=null && boardId.size()>0){
+				str.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId in (:boardId) ");
+			}
+			
+			str.append(" and  model.nominatedPostMember.nominatedPostPosition.positionId is not null ");
+			
+			/*if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+				str.append(" and model.applicationStatus.status = :notYet ");
+			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+				str.append(" and model.applicationStatus.applicationStatusId not in (:running) ");
+			}*/
+			
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+				str.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
+			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+				str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+			}
+			
+			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		
+		}
+			else{
+		
 			str.append("SELECT model.position.positionId," +
 					" model.position.positionName " +
 					"	FROM NominatedPostApplication model" +
@@ -442,7 +485,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	}
 
 
-	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId){
+	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -495,7 +538,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    
 		    return query.list();
 	   }
-	 public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue,Long searchlevelId){
+	 public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -550,7 +593,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    
 		    return query.list();
 	   }
-	 public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long searchlevelId){
+	 public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -714,13 +757,21 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 						 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
 						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
 						 	" left join model.nominatedPostMember.address address ");
-		 }else{
-				sb.append(" , count(model.nominatedPostApplicationId) ");
+		 }else  if(status != null && status.equalsIgnoreCase("notYet") ){
+			 sb.append(" , count(model.nominatedPostApplicationId) ");
 			 sb.append(" from NominatedPostApplication model"+
 					 	" left join model.departments departments " +
 					 	" left join model.board board " +
 					 	" left join model.boardLevel boardLevel " +
 					 	" left join model.address address ");
+		 }
+		 else{
+				sb.append(" , count(model.nominatedPostApplicationId) ");
+				sb.append(" from NominatedPostFinal model "+
+						" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+						" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+					 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+					 	" left join model.nominatedPostMember.address address ");
 		 }
 
 
@@ -841,10 +892,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	 public List<Object[]> getOpenedPositionsCountForBoardsByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
 		 StringBuilder sb = new StringBuilder();
 		 sb.append("select distinct departments.departmentId," +
-		 			" board.boardId,");
+		 			" board.boardId");
 		 			
 		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open"))){
-			 		sb.append("  count(nominatedPostMember.nominatedPostMemberId),board.boardName");
+			 		sb.append(" , count(nominatedPostMember.nominatedPostMemberId),board.boardName");
 		 			sb.append(" from NominatedPost model "+
 				 			" left join model.nominatedPostMember  nominatedPostMember "+
 						 	" left join model.nominatedPostMember.nominatedPostPosition  nominatedPostPosition " +
@@ -852,13 +903,20 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 						 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
 						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
 						 	" left join model.nominatedPostMember.address address ");
-	 } else{
-				sb.append("  count(model.nominatedPostApplicationId),board.boardName");
-			 sb.append(" from NominatedPostApplication model"+
-					 	" left join model.departments departments " +
-					 	" left join model.board board " +
-					 	" left join model.boardLevel boardLevel " +
-					 	" left join model.address address ");
+	 } else  if(status != null && status.equalsIgnoreCase("notYet") ){
+		 sb.append(" , count(model.nominatedPostApplicationId) ");
+		 sb.append(" from NominatedPostApplication model"+
+				 	" left join model.departments departments " +
+				 	" left join model.board board " +
+				 	" left join model.boardLevel boardLevel " +
+				 	" left join model.address address ");
+	 }else{
+				sb.append(" , count(model.nominatedPostApplicationId),board.boardName");
+				 sb.append(" from NominatedPostFinal model "+
+							" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+							" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+						 	" left join model.nominatedPostMember.address address ");
 		 }
 		/* if(status != null && !status.equalsIgnoreCase("Total"))
 			 sb.append(" ,NominatedPostApplication model1" +
