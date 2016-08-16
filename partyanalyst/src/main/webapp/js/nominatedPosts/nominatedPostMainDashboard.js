@@ -266,7 +266,12 @@ $(document).on("click",".casteGroupCls",function(){
 		}).done(function(result){
 			if(result != null && result.length > 0){
 				for(var i in result){
-					$('#locationLevelId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					if(result[i].id == "2"){  
+						$('#locationLevelId').append('<option value="'+result[i].id+'" selected>'+result[i].name+'</option>');  
+					}else{
+						$('#locationLevelId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>'); 
+					}
+					
 				}
 				$("#locationLevelId").trigger("chosen:updated");
 			}
