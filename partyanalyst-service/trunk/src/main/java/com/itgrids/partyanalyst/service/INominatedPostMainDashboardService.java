@@ -18,8 +18,8 @@ public interface INominatedPostMainDashboardService {
 	 public List<IdAndNameVO> getApplicationStatusList();
 	 public List<IdAndNameVO> getPositionList();
 	 public List<IdAndNameVO> getLocationLevelList();
-	 public List<IdAndNameVO> getDepartmentList();
-	 public List<IdAndNameVO> getBoardList(); 
+	 public List<IdAndNameVO> getDepartmentList(Long boardLevelId);
+	 public List<IdAndNameVO> getBoardList(Long deptId); 
 	 public List<NominatedPostVO> getNominatedCandidateGroupByDist(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
 
 	 public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId);
