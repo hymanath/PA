@@ -442,13 +442,13 @@ function buildOverAllTotalCountsByPosition(result){
 		str+='<table>';
 		str+='<thead class="bg_ef">';
 		str+='<tr>'
-		str+='<td rowspan="2">Caste Group</td>';
+		str+='<th rowspan="2">Caste Group</th>';
 		if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length > 0){
 			for(var i in result[0].applicatnStatsList){
 				if(result[0].applicatnStatsList[i].statusName == 'Total')
-					str+='<td colspan="3"> Total </td>'
+					str+='<th colspan="3"> Total </th>'
 				else
-					str+='<td colspan="2">'+result[0].applicatnStatsList[i].statusName+'</td>'
+					str+='<th colspan="2">'+result[0].applicatnStatsList[i].statusName+'</th>'
 			}
 		}
 		str+='</tr>';
@@ -456,13 +456,13 @@ function buildOverAllTotalCountsByPosition(result){
 		if(result[0].applicatnStatsList != null && result[0].applicatnStatsList.length > 0){
 			for(var i in result[0].applicatnStatsList){
 				if(result[0].applicatnStatsList[i].statusName == 'Total'){
-					str+='<td> T </td>'
-					str+='<td> M </td>'
-					str+='<td> F </td>'
+					str+='<th> T </th>'
+					str+='<th> M </th>'
+					str+='<th> F </th>'
 				}
 				else{
-					str+='<td> M </td>'
-					str+='<td> F </td>'
+					str+='<th> M </th>'
+					str+='<th> F </th>'
 				}
 			}
 		}
@@ -487,6 +487,15 @@ function buildOverAllTotalCountsByPosition(result){
 				}
 			str+='</tr>';
 		}
+		str+='<tr>';
+		 str+='<td >TOTAL</td>';
+		  str+='<td colspan="3">'+result[0].overAllCount+'</td>';
+		  str+='<td colspan="2">'+result[0].twentyTo29AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].thirtyTo39AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].fourtyTo49AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].fiftyTo59AgeRangeCount+'</td>';
+		  str+='<td colspan="2">'+result[0].sixtyAvoveAgeRangeCount+'</td>';
+		str+='</tr>';
 		str+='</tbody>';
 		str+='</table>';
 		$("#casteAndAgeWiseId").html(str);
