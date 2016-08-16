@@ -4484,8 +4484,6 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		
 		try {
 			List<NominatedPostDashboardVO> genderList = new ArrayList<NominatedPostDashboardVO>();
-			//List<NominatedPostDashboardVO> casteList = new ArrayList<NominatedPostDashboardVO>();
-			//List<NominatedPostDashboardVO> ageList = new ArrayList<NominatedPostDashboardVO>();
 			
 			List<Object[]> genList = nominatedPostFinalDAO.getGenderWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
 			if(commonMethodsUtilService.isListOrSetValid(genList)){
@@ -4635,19 +4633,21 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					NominatedPostDashboardVO vo = entry.getValue();
 					Long count = vo.getTotalCnt();
 					if(totalCount != null && totalCount.longValue() > 0l && count != null && count.longValue() > 0l){
-					String percentage = (new BigDecimal((count * 100.0)/totalCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					String percentage = (new BigDecimal((count * 100.0)/overAllCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 					vo.setPercentage(percentage);
 					}
 				}
 			}
 			returnList = new ArrayList<NominatedPostDashboardVO>(casteMap.values());
-			NominatedPostDashboardVO vo = returnList.get(0);
-			  vo.setTwentyTo29AgeRangeCount(twentyTo29AgeRangeCount);
-			  vo.setThirtyTo39AgeRangeCount(thirtyTo39AgeRangeCount);
-			  vo.setFourtyTo49AgeRangeCount(fourtyTo49AgeRangeCount);
-			  vo.setFiftyTo59AgeRangeCount(fiftyTo59AgeRangeCount);
-			  vo.setSixtyAvoveAgeRangeCount(sixtyAvoveAgeRangeCount);
-			  vo.setOverAllCount(overAllCount);
+			if(returnList !=null && returnList.size() > 0){
+				NominatedPostDashboardVO vo = returnList.get(0);
+				  vo.setTwentyTo29AgeRangeCount(twentyTo29AgeRangeCount);
+				  vo.setThirtyTo39AgeRangeCount(thirtyTo39AgeRangeCount);
+				  vo.setFourtyTo49AgeRangeCount(fourtyTo49AgeRangeCount);
+				  vo.setFiftyTo59AgeRangeCount(fiftyTo59AgeRangeCount);
+				  vo.setSixtyAvoveAgeRangeCount(sixtyAvoveAgeRangeCount);
+				  vo.setOverAllCount(overAllCount);
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteGroupWiseCountsByPosition() method of NominatedPostProfileService", e);
 		}
@@ -4697,7 +4697,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					}
 				}
 			}
-			
+			Long overAllCount=0l;
 			if(commonMethodsUtilService.isMapValid(casteMap)){
 				for (Map.Entry<Long, NominatedPostDashboardVO> entry : casteMap.entrySet()){
 					NominatedPostDashboardVO castevo = entry.getValue();
@@ -4708,13 +4708,14 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					totalvo.setStatusName("Total");
 					if(commonMethodsUtilService.isListOrSetValid(ageList)){
 						for (NominatedPostDashboardVO vo : ageList) {
+							overAllCount = overAllCount +vo.getMaleCount()+vo.getFemaleCount();
 							totalvo.setMaleCount(totalvo.getMaleCount()+vo.getMaleCount());
 							totalvo.setFemaleCount(totalvo.getFemaleCount()+vo.getFemaleCount());
 							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
 							totalCount = totalCount+totalvo.getStatusCount();
 						}
 					}
-					ageList.add(totalvo);
+					ageList.add(0, totalvo);
 					castevo.setTotalCnt(totalvo.getStatusCount());
 				}
 			}
@@ -4724,12 +4725,15 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					NominatedPostDashboardVO vo = entry.getValue();
 					Long count = vo.getTotalCnt();
 					if(totalCount != null && totalCount.longValue() > 0l && count != null && count.longValue() > 0l){
-					String percentage = (new BigDecimal((count * 100.0)/totalCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+					String percentage = (new BigDecimal((count * 100.0)/overAllCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 					vo.setPercentage(percentage);
 					}
 				}
 			}
 			returnList = new ArrayList<NominatedPostDashboardVO>(casteMap.values());
+			if(returnList !=null && returnList.size() > 0){
+				returnList.get(0).setOverAllCount(overAllCount);	
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteGroupWiseCountsByPosition() method of NominatedPostProfileService", e);
 		}
@@ -4806,9 +4810,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(ageList, ageId);
 						vo.setId(id);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M"))
+						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F"))
+						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 						vo.setStatusCount(vo.getStatusCount()+count);
 						
@@ -4819,10 +4823,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(positionvo.getApplicatnStatsList(), ageId);
 						vo.setId(id);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M"))
-							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F"))
-							vo.setFemaleCount(count);
+						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+							vo.setMaleCount(vo.getMaleCount()+count);
+						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+							vo.setFemaleCount(vo.getFemaleCount()+count);
 						vo.setStatusCount(vo.getStatusCount()+count);
 					}
 				}
@@ -4843,10 +4847,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							totalvo.setStatusCount(totalvo.getStatusCount()+vo.getMaleCount()+vo.getFemaleCount());
 						}
 					}
-					ageList.add(totalvo);
+					ageList.add(0,totalvo);
 				}
 			}
-			
 			returnList = new ArrayList<NominatedPostDashboardVO>(positionMap.values());
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteWisePositionsCountsByPosition() method of NominatedPostProfileService", e);
