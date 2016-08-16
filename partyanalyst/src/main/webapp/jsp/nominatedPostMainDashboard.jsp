@@ -181,7 +181,7 @@
                     <div class="col-md-2 col-sm-4 col-xs-12">
                     	<label>Location Level</label>
                         <select class="chosenSelect" id="locationLevelId">
-                        	<option value="0">ALL</option>  
+                        	
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">    
@@ -206,6 +206,10 @@
                     	<label>Position Status</label>
                         <select class="chosenSelect" id="positionStatusId">
                         	<option value="0">ALL</option>  
+							<option value="1">Short Listed</option>
+							<option value="2">Ready To Final Review</option>
+							<option value="3">Finalised</option>
+							<option value="4">G.O Issued</option>  
                         </select>
                     </div>
 					
