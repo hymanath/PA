@@ -98,7 +98,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="anyPostDivId" style="display:none;"> 
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
 					<div class="" style="padding: 12px;">
@@ -200,7 +200,7 @@ $(document).ready(function() {
 	}else {
 	$("#anyDeptHeadingId").html(" <u style='text-decoration: none;'> Any Department - Any Corporation/Board <small style='color:#76514C;'>(Mandal/Muncipality/Corporation Level)</small> </u>");	
 	}
-	getAnyDeptApplicationOverviewCountLocationWise();
+	//getAnyDeptApplicationOverviewCountLocationWise();
 });
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
