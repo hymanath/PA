@@ -164,25 +164,41 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	}
 	/*
 	 * Swadhin
-	 */
-	public List<Object[]> getDepartmentList(){
-		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.departments.departmentId, model.nominatedPostPosition.departments.deptName " +
-											   " from NominatedPostMember model " +
-											   " where " +
-											   " model.isDeleted = 'N' and " +
-											   " model.nominatedPostPosition.isDeleted = 'N' ");
-		return query.list();
+	 */ 
+	public List<Object[]> getDepartmentList(Long boardLevelId){ 
+		StringBuilder str = new StringBuilder(); 
+		str.append(" select distinct model.nominatedPostPosition.departments.departmentId, model.nominatedPostPosition.departments.deptName " +
+				   " from NominatedPostMember model " +
+				   " where " );
+		if(boardLevelId > 0l){
+			str.append(" model.boardLevel.boardLevelId = :boardLevelId and ");
+		}
+		str.append("  model.isDeleted = 'N' and " +
+				   " model.nominatedPostPosition.isDeleted = 'N'");
+		Query query = getSession().createQuery(str.toString());
+		if(boardLevelId > 0l){
+			query.setParameter("boardLevelId", boardLevelId);   
+		}
+		return query.list();  
 	}
-	/*
+	/* 
 	 * Swadhin
 	 */
-	public List<Object[]> getBoardList(){
-		Query query = getSession().createQuery("select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
-				   							   " from NominatedPostMember model " +
-				   							   " where " +
-				   							   " model.isDeleted = 'N' and " +
-				   							   " model.nominatedPostPosition.isDeleted = 'N' ");
-		return query.list();
+	public List<Object[]> getBoardList(Long deptId){
+		StringBuilder str = new StringBuilder(); 
+		str.append(" select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
+				   " from NominatedPostMember model " +
+				   " where " );
+		if(deptId > 0l){
+			str.append(" model.nominatedPostPosition.departments.departmentId = :deptId and ");
+		}
+		str.append(" model.isDeleted = 'N' and " +
+				   " model.nominatedPostPosition.isDeleted = 'N' ");  
+		Query query = getSession().createQuery(str.toString());
+		if(deptId > 0l){
+			query.setParameter("deptId", deptId);   
+		}		  
+		return query.list();  
 	}
 	
 	public List<Object[]> getTotalBoardsAndCorpIdsByMembrIdsList (List<Long> memberIdsList){

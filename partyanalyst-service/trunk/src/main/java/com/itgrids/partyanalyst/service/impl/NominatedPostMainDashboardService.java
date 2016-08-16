@@ -499,11 +499,11 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 		return null;
 	}
-	public List<IdAndNameVO> getDepartmentList(){
+	public List<IdAndNameVO> getDepartmentList(Long boardLevelId){
 		LOG.info("Entered into getDepartmentList() of NominatedPostMainDashboardService.");
 		try{
 			List<IdAndNameVO> deptList = new ArrayList<IdAndNameVO>();
-			List<Object[]> departmentList = nominatedPostMemberDAO.getDepartmentList();
+			List<Object[]> departmentList = nominatedPostMemberDAO.getDepartmentList(boardLevelId);  
 			if(departmentList != null && departmentList.size() > 0){
 				setDataToVO(departmentList, deptList);
 			}
@@ -515,11 +515,11 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 		return null;
 	}
-	public List<IdAndNameVO> getBoardList(){
+	public List<IdAndNameVO> getBoardList(Long deptId){
 		LOG.info("Entered into getboardList() of NominatedPostMainDashboardService.");
 		try{
 			List<IdAndNameVO> brdList = new ArrayList<IdAndNameVO>();
-			List<Object[]> boardList = nominatedPostMemberDAO.getBoardList();
+			List<Object[]> boardList = nominatedPostMemberDAO.getBoardList(deptId);
 			if(boardList != null && boardList.size() > 0){
 				setDataToVO(boardList, brdList);
 			}
@@ -572,7 +572,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			for(Object[] candidateGroupByDistAndGender : nominatedCandidateGroupByDistAndGender){
 				distId = (Long)candidateGroupByDistAndGender[0];
 				nominatedPostVO = idNominatedVOMap.get(distId);
-				if(candidateGroupByDistAndGender[2].toString().equalsIgnoreCase("male")){
+				if(candidateGroupByDistAndGender[2].toString().equalsIgnoreCase("male") || candidateGroupByDistAndGender[2].toString().equalsIgnoreCase("M")){
 					nominatedPostVO.setMaleCount((Long)candidateGroupByDistAndGender[3]);
 				}else{
 					nominatedPostVO.setFemaleCount((Long)candidateGroupByDistAndGender[3]);
