@@ -894,7 +894,7 @@ $(document).on("click","#shortListPositinId",function(){
 	}
 		
 	
-	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
+	window.location.replace("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"&stN="+globalStatus+"");
 });
 
 
@@ -938,7 +938,7 @@ $(document).on("click","#positionLinkCls",function(){
 	}
 		
 	
-	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=positionLink&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
+	window.location.replace("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=positionLink&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"&stN="+globalStatus+"");
 });
 
 var globalReadyDeptId=0;
@@ -1485,6 +1485,6 @@ $(document).on("click",".anyDeptBrdCls",function(){
 		searchLevelValue = districtId;
 		searchLevelId=3;
 	}
-		
-	window.open("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"");
+	
+	window.location.replace("boardWiseNominatedPostAction.action?lId="+levelId+"&stId="+stateId+"&sts=readyToShortList&deptId="+deptId+"&boardId="+boardId+"&positionId="+positionId+"&searchLevelId="+searchLevelId+"&searchLevelValue="+searchLevelValue+"&deptName="+deptName+"&brdName="+brdName+"&posName="+posName+"&levelTxt="+levelTxt+"&stN="+globalStatus+"");
 });
