@@ -12,6 +12,7 @@ public class CommitteeInputVO implements Serializable{
 	private List<Long> stateIds;
 	
 	private String     state;
+	private Long  stateId;
 	private List<Long> basicCommitteeIds;
 	private List<Long> tdpCommitteeLevelIds;
 	private Date startDate;
@@ -77,6 +78,12 @@ public class CommitteeInputVO implements Serializable{
 	}
 	public void setTdpCommitteeLevelIds(List<Long> tdpCommitteeLevelIds) {
 		this.tdpCommitteeLevelIds = tdpCommitteeLevelIds;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 	
 }
