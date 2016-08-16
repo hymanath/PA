@@ -779,7 +779,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(locationLevelName.equalsIgnoreCase("Assembly")){
 			strQuery.append(" select model.nominatedPostMember.address.constituency.constituencyId, model.nominatedPostMember.address.constituency.name, ");
 		}
-		if(locationLevelName.equalsIgnoreCase("Assembly"))
+		if(locationLevelName.equalsIgnoreCase("Assembly")){
+			
+		}
 		
 		strQuery.append(" select model.nominatedPostMember.address.state.stateId, model.nominatedPostMember.address.state.stateName, count(model.nominatedPostApplicationId) " +
 				        " from " +
