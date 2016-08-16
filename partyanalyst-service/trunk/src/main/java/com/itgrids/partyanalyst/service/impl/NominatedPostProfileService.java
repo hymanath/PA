@@ -488,11 +488,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue,Long seachLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue,seachLevelId);
-		if(commonMethodsUtilService.isListOrSetValid(list)){
-			String[] setterPropertiesList = {"id","name"};
-			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
-		}
+			Long applicationId =0L;
+			List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue,seachLevelId,applicationId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				String[] setterPropertiesList = {"id","name"};
+				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in getDepartments()", e);
@@ -509,11 +510,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue,Long seachLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue,seachLevelId);
-		if(commonMethodsUtilService.isListOrSetValid(list)){
-			String[] setterPropertiesList = {"id","name"};
-			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
-		}
+			Long applicationId =0L;
+			List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				String[] setterPropertiesList = {"id","name"};
+				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in getDepartmentBoard()", e);
@@ -529,11 +531,12 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue,Long seachLevelId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-		List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId);
-		if(commonMethodsUtilService.isListOrSetValid(list)){
-			String[] setterPropertiesList = {"id","name"};
-			returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
-		}
+			Long applicationId =0L;
+			List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				String[] setterPropertiesList = {"id","name"};
+				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in getDepartmentBoardPositions()", e);
@@ -3070,6 +3073,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								perc = (new BigDecimal((shtAppl * 100.0)/ttlAppl.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 							idNameVO2.setPercentage(perc);
 						}
+						Collections.sort(brdList,sortByName);
 					}
 				}
 			}
@@ -3140,7 +3144,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								boardList.add(inneVo);
 							}else if(boardList.size()>0){
 								for (IdNameVO idNameVO : boardList) {
-									if(!(idNameVO.getId().equals((Long)obj[2]))){
+									if(idNameVO.getId() != null && !(idNameVO.getId().equals((	Long)obj[2]))){
+										IdNameVO inneVo = new IdNameVO();
+										inneVo.setId(obj[2] !=null ? (Long)obj[2]:0l);
+										inneVo.setName(obj[3] !=null ? obj[3].toString():"");
+										boardList.add(inneVo);
+										break;
+									}else{
 										IdNameVO inneVo = new IdNameVO();
 										inneVo.setId(obj[2] !=null ? (Long)obj[2]:0l);
 										inneVo.setName(obj[3] !=null ? obj[3].toString():"");
@@ -3525,26 +3535,46 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 													final Long deptId,final Long boardId,final Long positionId,final Long statusId,final String comment){
 		String status = null;
 		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {
-					Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
-					if(nominatedPostMemberId.longValue() > 0l){
-						NominatedPostComment nominatedPostComment = new NominatedPostComment();
-						
-						nominatedPostComment.setNominatedPostApplicationId(applicationId);
-						nominatedPostComment.setRemarks(comment);
-						nominatedPostComment.setInsertedBy(userId);
-						nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						
-						nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
-						
-						NominatedPostFinal nominatedPostFinal = new NominatedPostFinal();
-						
-						nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
+			Long memeberId = (Long) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					List<NominatedPostFinal> nomianationPostFinalList = nominatedPostFinalDAO.getNominatedPostApplicationDetailsByApplciationId(applicationId);
+					NominatedPostFinal nominatedPostFinal = null;
+					Long nominatedPostMemberId = 0L;
+					if(commonMethodsUtilService.isListOrSetValid(nomianationPostFinalList)){
+						nominatedPostFinal = nomianationPostFinalList.get(0);
+						nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
+					}
+					
+					if(nominatedPostFinal == null){
+						nominatedPostFinal = new NominatedPostFinal();
 						nominatedPostFinal.setNominationPostCandidateId(candidateId);
-						nominatedPostFinal.setApplicationStatusId(statusId);
 						nominatedPostFinal.setInsertedBy(userId);
+						nominatedPostFinal.setNominatedPostApplicationId(applicationId);
 						nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						
+						nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
+						
+						if(nominatedPostMemberId != null && nominatedPostFinal != null && nominatedPostMemberId.longValue() > 0l){
+							List<NominatedPost> nominatedPostObjList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
+							if(commonMethodsUtilService.isListOrSetValid(nominatedPostObjList))
+								nominatedPostFinal.setNominatedPostId(nominatedPostObjList.get(0).getNominatedPostId());
+							nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
+						}
+					}
+					
+					
+					//Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
+					if(nominatedPostMemberId != null && nominatedPostMemberId.longValue() > 0l){
+						
+						
+						//NominatedPostFinal nominatedPostFinal = new NominatedPostFinal();
+						  
+						//nominatedPostFinal.setNominatedPostMemberId(nominatedPostMemberId);
+						//nominatedPostFinal.setNominationPostCandidateId(candidateId);
+						nominatedPostFinal.setApplicationStatusId(statusId);
+						//nominatedPostFinal.setInsertedBy(userId);
+						//nominatedPostFinal.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal.setUpdatedBy(userId);
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal.setIsDeleted("N");
@@ -3562,10 +3592,24 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						
 						nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
+						
+						NominatedPostComment nominatedPostComment = new NominatedPostComment();
+						
+						nominatedPostComment.setNominatedPostApplicationId(applicationId);
+						nominatedPostComment.setRemarks(comment);  
+						nominatedPostComment.setInsertedBy(userId);
+						nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						
+						nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
+						
 					}
+					return nominatedPostMemberId;
 				}
 			});
-			status = "success";
+			if(memeberId == null)
+				status="failure";
+			else
+				status = "success";
 		} catch (Exception e) {
 			status = "failure";
 			e.printStackTrace();
@@ -5100,17 +5144,20 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
 					 NominatedPostVO nominatedPostVO = positionMap.get(pstnId);	
 					 if(nominatedPostVO != null){
-						 nominatedPostVO.setPositionLinkedCnt(nominatedPostVO.getPositionLinkedCnt()+count);
+						// nominatedPostVO.setPositionLinkedCnt(nominatedPostVO.getPositionLinkedCnt()+count);
 						 if(statusId != null && statusId.longValue()==1l){
 						  nominatedPostVO.setReadyToShortListedCnt(count); 
 						 }else if(statusId != null && statusId.longValue()==2l){
 						  nominatedPostVO.setPstnLnkedAndRjctdCnt(count);	 
 						 }else if(statusId != null && statusId.longValue()==3l){
 						  nominatedPostVO.setPstnLnkedAndShrtLstdCnt(count); 
+						  nominatedPostVO.setPositionLinkedCnt(nominatedPostVO.getPositionLinkedCnt()+count);
 						 }else if(statusId != null && statusId.longValue()==5l){
 							  nominatedPostVO.setPstnLnkedAndFinalized(count); 
+							  nominatedPostVO.setPositionLinkedCnt(nominatedPostVO.getPositionLinkedCnt()+count);
 						 }else if(statusId != null && statusId.longValue()==6l){
 							  nominatedPostVO.setPstnLnkedAndFinalReview(count); 
+							  nominatedPostVO.setPositionLinkedCnt(nominatedPostVO.getPositionLinkedCnt()+count);
 						 }
 					 }
 			}
