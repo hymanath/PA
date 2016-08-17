@@ -31,6 +31,7 @@ public class NominatedPostDashboardVO {
 	private Long fiftyTo59AgeRangeCount=0l;
 	private Long sixtyAvoveAgeRangeCount=0l;
 	private Long overAllCount=0l;
+	private Long totalApplicationCount=0l;
 	
 	
 	public String getPercentage() {
@@ -166,5 +167,11 @@ public class NominatedPostDashboardVO {
 	}
 	public void setOverAllCount(Long overAllCount) {
 		this.overAllCount = overAllCount;
+	}
+	public Long getTotalApplicationCount() {
+		return totalApplicationCount;
+	}
+	public void setTotalApplicationCount(Long totalApplicationCount) {
+		this.totalApplicationCount = totalApplicationCount;
 	}
 }

@@ -4508,7 +4508,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return status;
 	}
 	
-	public NominatedPostDashboardVO getOverAllTotalCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+	public NominatedPostDashboardVO getOverAllTotalCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId){
 		NominatedPostDashboardVO returnvo = new NominatedPostDashboardVO();
 		Map<Long,NominatedPostDashboardVO> casteGroupMap = new HashMap<Long, NominatedPostDashboardVO>();
 		Map<Long,NominatedPostDashboardVO> ageRangeMap = new HashMap<Long, NominatedPostDashboardVO>();
@@ -4516,7 +4516,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		try {
 			List<NominatedPostDashboardVO> genderList = new ArrayList<NominatedPostDashboardVO>();
 			
-			List<Object[]> genList = nominatedPostFinalDAO.getGenderWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
+			List<Object[]> genList = nominatedPostFinalDAO.getGenderWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(genList)){
 				for (Object[] obj : genList) {
 					NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
@@ -4524,6 +4524,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					vo.setStatusCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
 					genderList.add(vo);
 				}
+			}
+			Long totalApplicationCount=nominatedPostFinalDAO.getTotalApplicationsByLocation(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
+			if(genderList != null && genderList.size() > 0 && totalApplicationCount != null ){
+				genderList.get(0).setTotalApplicationCount(totalApplicationCount);
 			}
 			List<Object[]> casteGropList = casteCategoryDAO.getCasteCategoryDetails();
 			if(commonMethodsUtilService.isListOrSetValid(casteGropList)){ //preparing template for caste group
@@ -4535,7 +4539,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					  casteGroupMap.put(csteGroupId, vo);
 				}
 			}
-			List<Object[]> casList = nominatedPostFinalDAO.getCasteWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
+			List<Object[]> casList = nominatedPostFinalDAO.getCasteWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(casList)){
 				for (Object[] obj : casList) {
 					NominatedPostDashboardVO vo = casteGroupMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
@@ -4554,7 +4558,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					ageRangeMap.put(ageRangeId, vo);
 				}
 		    }
-			List<Object[]> list = nominatedPostFinalDAO.getAgeGroupWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId);
+			List<Object[]> list = nominatedPostFinalDAO.getAgeGroupWiseTotalCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					NominatedPostDashboardVO vo = ageRangeMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
@@ -4577,14 +4581,14 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnvo;
 	}
 	
-	public List<NominatedPostDashboardVO> getCasteGroupWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+	public List<NominatedPostDashboardVO> getCasteGroupWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId){
 		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 		try {
 			Map<Long,NominatedPostDashboardVO> casteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
 			Long totalCount = 0l;
 			
 			//0.casteId,1.caste,2.ageId,3.age,4.gender,5.count.
-			List<Object[]> list = nominatedPostFinalDAO.getCasteCategoryGroupWiseCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,"casteCategory");
+			List<Object[]> list = nominatedPostFinalDAO.getCasteCategoryGroupWiseCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,"casteCategory",stateId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long casteId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -4685,14 +4689,14 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public List<NominatedPostDashboardVO> getCasteWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
+	public List<NominatedPostDashboardVO> getCasteWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId){
 		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 		try {
 			Map<Long,NominatedPostDashboardVO> casteMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
 			Long totalCount = 0l;
 			
 			//0.casteId,1.caste,2.ageId,3.age,4.gender,5.count.
-			List<Object[]> list = nominatedPostFinalDAO.getCasteCategoryGroupWiseCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,"casteName");
+			List<Object[]> list = nominatedPostFinalDAO.getCasteCategoryGroupWiseCountsForPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,"casteName",stateId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long casteId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -4805,7 +4809,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return voList;
 	}
 	
-	public List<NominatedPostDashboardVO> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId){
+	public List<NominatedPostDashboardVO> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId,Long stateId){
 		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 		try {
 			Map<Long,NominatedPostDashboardVO> positionMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
@@ -4824,7 +4828,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			}
 			
 			//0.positionId,1.position,2.ageId,3.age,4.gender,5.count.
-			List<Object[]> list = nominatedPostFinalDAO.getCasteWisePositionsCountsByPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId, casteId);
+			List<Object[]> list = nominatedPostFinalDAO.getCasteWisePositionsCountsByPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId, casteId,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");

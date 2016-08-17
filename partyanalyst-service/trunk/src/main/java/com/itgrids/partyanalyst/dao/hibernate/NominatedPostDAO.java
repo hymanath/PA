@@ -972,7 +972,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 return query.list();
 	 }
 	 
-	public List<Object[]> getTotalPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+	public List<Object[]> getTotalPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId){
 		 
 		   StringBuilder queryStr = new StringBuilder();
 		          
@@ -986,6 +986,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
            if(boardLevelId != null && boardLevelId.longValue() > 0){
         	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
            }
+           if(stateId != null && stateId.longValue() > 0){
+ 			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
+ 		  }
+		   
 		  queryStr.append(" group by model.nominatedPostStatus.nominatedPostStatusId ");
 		  
 		  Query query = getSession().createQuery(queryStr.toString());
@@ -996,6 +1000,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		   if(boardLevelId != null && boardLevelId.longValue() > 0){
 			query.setParameter("boardLevelId", boardLevelId);   
 		   }
+		   if(stateId != null && stateId.longValue() > 0){
+  			  query.setParameter("stateId", stateId); 
+  		    }
             return query.list();
 	 }
   public Long getNoCandiateCntPositionAndLocationWise(Long positionId,Long boardLevelId){
@@ -1278,7 +1285,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	return query.list();   
    }
    
-   public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+   public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId){
 		 
 	   StringBuilder queryStr = new StringBuilder();
 	          
@@ -1292,14 +1299,20 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
        if(boardLevelId != null && boardLevelId.longValue() > 0){
     	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId ");
        }
+       if(stateId != null && stateId.longValue() > 0){
+			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
+		  }
 	  Query query = getSession().createQuery(queryStr.toString());
 	  
 	  if(positionId != null && positionId.longValue() > 0){
-	   query.setParameter("positionId", positionId);
+	    query.setParameter("positionId", positionId);
 	   }  
 	   if(boardLevelId != null && boardLevelId.longValue() > 0){
-		query.setParameter("boardLevelId", boardLevelId);   
+		 query.setParameter("boardLevelId", boardLevelId);   
 	   }
+	   if(stateId != null && stateId.longValue() > 0){
+			  query.setParameter("stateId", stateId); 
+	  }
         return (Long) query.uniqueResult();
  }
    
@@ -1355,4 +1368,5 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   	
 	   	return query.executeUpdate();
    }
+
 }

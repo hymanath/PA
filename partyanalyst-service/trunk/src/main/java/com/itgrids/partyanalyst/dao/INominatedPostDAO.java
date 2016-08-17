@@ -23,7 +23,7 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<NominatedPost> getNominatedPostDetailsByNominatedPostMember(Long nominatedPostMemberId);
 	public List<Object[]> getOpenedPositionsCountByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status);
 	public List<Object[]> getOpenedPositionsCountForBoardsByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status);
-	public List<Object[]> getTotalPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId);
+	public List<Object[]> getTotalPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId);
 	public Long getNoCandiateCntPositionAndLocationWise(Long positionId,Long boardLevelId);
 	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue);
 	public List<Object[]> getTotalCorpAndBoardsAndPositions(Long boardLevelId, Date startDate,Date endDate,Long stateId);
@@ -39,7 +39,7 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Object[]> getTotalCorpsIdsCount(Long levelId);
 	public List<Object[]> getPositionByLevelId(Long boardLevelId);
 	
-	public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId);
+	public Long getAllPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId);
 	public List<Object[]> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId);
 	public List<Long> getNominatedPostIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
 	public Integer updateGoIssuedStatusInNominatedPost(List<Long> nominatedPostIds,Date date);
