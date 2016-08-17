@@ -2956,10 +2956,41 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			List<Object[]> positionsCountsList = nominatedPostDAO.getOpenedPositionsCountByDepartment(boardLevelId, searchlevelId, searchLevelValue,statusType);
 			if(commonMethodsUtilService.isListOrSetValid(positionsCountsList)){
+				Map<Long,Map<String,Long>> deptBoardPosotionMap = new HashMap<Long, Map<String,Long>>(0);
 				for (Object[] obj : positionsCountsList) {
 					Long depId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					deptPosMap.put(depId, count);
+					
+					if(statusType != null && statusType.equalsIgnoreCase("notYet"))
+					{
+						Long postionId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						Long boardId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Long> positionCountMap = new HashMap<String, Long>(0);
+						if(deptBoardPosotionMap.get(depId) != null){
+							positionCountMap = deptBoardPosotionMap.get(depId);
+							if(commonMethodsUtilService.isMapValid(positionCountMap) && positionCountMap.get(postionId+""+boardId+"-"+postionId) != null){
+								count = count+positionCountMap.get(postionId+""+boardId+"-"+postionId);
+							}
+						}
+						positionCountMap.put(postionId+""+boardId+"-"+postionId, count);
+						deptBoardPosotionMap.put(depId, positionCountMap);
+					}
+					else
+						deptPosMap.put(depId, count);
+				}
+				if(statusType != null && statusType.equalsIgnoreCase("notYet") && commonMethodsUtilService.isMapValid(deptBoardPosotionMap)){
+					for (Long deptId : deptBoardPosotionMap.keySet()) {
+						Map<String,Long> positionCountMap =  deptBoardPosotionMap.get(deptId);
+						Long count=0L;
+						if(commonMethodsUtilService.isMapValid(positionCountMap)){
+							for (String positionId : positionCountMap.keySet()) {
+								if(positionId != null && !positionId.toString().substring(0,1).equalsIgnoreCase("0"))
+									count = count+positionCountMap.get(positionId);
+							}
+						}
+						deptPosMap.put(deptId, count);
+					}
 				}
 			}
 			
@@ -3028,7 +3059,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (IdNameVO idNameVO : finalList) {
-					Long count = deptPosMap.get(idNameVO.getId());
+					Long count = deptPosMap.get(idNameVO.getId() != null?idNameVO.getId():0L);
 					idNameVO.setAvailableCount(count);
 				}
 			}
@@ -3036,13 +3067,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (IdNameVO idNameVO : finalList) {
 					Long depId = idNameVO.getId();
-					Map<Long,Long> deMap = deptBrdPosMap.get(depId);
+					Map<Long,Long> deMap = deptBrdPosMap.get(depId != null ? depId:0L);
 					if(commonMethodsUtilService.isListOrSetValid(idNameVO.getIdnameList())){
 						List<IdNameVO> brdList = idNameVO.getIdnameList();
 						for (IdNameVO idNameVO2 : brdList) {
 							Long brdId = idNameVO2.getId();
 							if(deMap !=null && deMap.size()>0){
-								Long count = deMap.get(brdId);
+								Long count = deMap.get(brdId != null ?brdId:0L);
 								if(count !=null){
 									idNameVO2.setAvailableCount(idNameVO2.getAvailableCount()+count);
 								}	
@@ -3065,9 +3096,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							Long ttlAppl = 0l;
 							Long shtAppl = 0l;
 							if(ttlMap != null)
-								ttlAppl = ttlMap.get(brdId);
+								ttlAppl = ttlMap.get(brdId != null?brdId:0L);
 							if(shrMap != null)
-								shtAppl = shrMap.get(brdId);
+								shtAppl = shrMap.get(brdId != null?brdId:0L);
 							String perc = "0.00";
 							if(ttlAppl != null && ttlAppl.longValue() > 0l && shtAppl != null && shtAppl.longValue() > 0l)
 								perc = (new BigDecimal((shtAppl * 100.0)/ttlAppl.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
@@ -5109,7 +5140,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				}else{
 					  NominatedPostVO nominatedPostVO = positionMap.get(pstnId);	
 					 if(nominatedPostVO != null){
-						 nominatedPostVO.setTotalApplicationReceivedCnt(count);
+						 Long existingCount = nominatedPostVO.getTotalApplicationReceivedCnt() != null ? nominatedPostVO.getTotalApplicationReceivedCnt():0L;
+						 nominatedPostVO.setTotalApplicationReceivedCnt(existingCount+ count);
 					 }
 				}
 			}
