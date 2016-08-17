@@ -677,7 +677,261 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 }
 		return query.list();
 	}
-	
+	//aaaaa
+	public List<Object[]> getNominatedCandidatePositionDetails(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, count(model.nominatedPostApplication.nominatedPostApplicationId) ");
+		queryStr.append(" from  NominatedPostFinal model " +
+				   		" where " );
+		if(!(positionId.equals(0l)) && positionId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and "); 
+		}
+		if(!(boardLevelId.equals(0l)) && boardLevelId != null){
+			queryStr.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and ");
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+		}
+		if(!(boardId.equals(0l)) && boardId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and ");
+		}
+		if(!(castegroupId.equals(0l)) && castegroupId != null){
+			queryStr.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castegroupId and ");
+		}
+		
+		if(positionStatusId.equals(0l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and " +
+							" model.applicationStatus.applicationStatusId not in (2,4) and ");
+		}
+		else if(positionStatusId.equals(1l)){
+			queryStr.append(" model.applicationStatus.applicationStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(2l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 2 and ");
+		}
+		else if(positionStatusId.equals(3l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(4l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 4 and ");
+		} 
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			queryStr.append(" model.nominatedPostMember.address.state.stateId = :locationId  and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			queryStr.append(" model.nominatedPostMember.address.district.districtId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			queryStr.append(" model.nominatedPostMember.address.constituency.constituencyId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			queryStr.append(" model.nominatedPostMember.address.tehsil.tehsilId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			queryStr.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
+		}
+		queryStr.append(" model.nominatedPostMember.address.state.stateId = :stateId ");
+		queryStr.append(" group by " +
+				        " model.nominatedPostMember.nominatedPostPosition.position.positionId " +
+				        " order by " +
+				        " model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		
+		if(!(positionId.equals(0l)) && positionId != null){
+			query.setParameter("positionId", positionId);  
+		}
+		if(!(boardLevelId.equals(0l)) && boardLevelId != null){
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			query.setParameter("deptId", deptId);
+		}
+		if(!(boardId.equals(0l)) && boardId != null){
+			query.setParameter("boardId", boardId);
+		}
+		if(!(castegroupId.equals(0l)) && castegroupId != null){
+			query.setParameter("castegroupId", castegroupId);
+		}
+		query.setParameter("locationId", locationId);   
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
+	}
+	//bbbbb
+	public List<Object[]> getNominatedCandidateGroupByPositionAndGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, model.nominationPostCandidate.gender,count(model.nominatedPostApplication.nominatedPostApplicationId) ");
+		queryStr.append(" from  NominatedPostFinal model " +
+				   		" where " );
+		if(!(positionId.equals(0l)) && positionId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and "); 
+		}
+		if(!(boardLevelId.equals(0l)) && boardLevelId != null){
+			queryStr.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and ");
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+		}
+		if(!(boardId.equals(0l)) && boardId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and ");
+		}
+		if(!(castegroupId.equals(0l)) && castegroupId != null){
+			queryStr.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castegroupId and ");
+		}
+		
+		if(positionStatusId.equals(0l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and " +
+							" model.applicationStatus.applicationStatusId not in (2,4) and ");
+		}
+		else if(positionStatusId.equals(1l)){
+			queryStr.append(" model.applicationStatus.applicationStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(2l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 2 and ");
+		}
+		else if(positionStatusId.equals(3l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(4l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 4 and ");
+		} 
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			queryStr.append(" model.nominatedPostMember.address.state.stateId = :locationId  and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			queryStr.append(" model.nominatedPostMember.address.district.districtId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			queryStr.append(" model.nominatedPostMember.address.constituency.constituencyId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			queryStr.append(" model.nominatedPostMember.address.tehsil.tehsilId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			queryStr.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
+		}
+		queryStr.append(" model.nominatedPostMember.address.state.stateId = :stateId ");
+		queryStr.append(" group by " +
+				        " model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominationPostCandidate.gender " +
+				        " order by " +
+				        " model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominationPostCandidate.gender ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		
+		if(!(positionId.equals(0l)) && positionId != null){
+			query.setParameter("positionId", positionId);  
+		}
+		if(!(boardLevelId.equals(0l)) && boardLevelId != null){
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			query.setParameter("deptId", deptId);
+		}
+		if(!(boardId.equals(0l)) && boardId != null){
+			query.setParameter("boardId", boardId);
+		}
+		if(!(castegroupId.equals(0l)) && castegroupId != null){
+			query.setParameter("castegroupId", castegroupId);
+		}
+		query.setParameter("locationId", locationId);   
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
+	}
+	//cccccc
+	public List<Object[]> getNominatedCandidateGroupByPositionAndAgeGroup(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMember.nominatedPostPosition.position.positionName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId,count(model.nominatedPostApplication.nominatedPostApplicationId) ");
+		queryStr.append(" from  NominatedPostFinal model " +
+				   		" where " );
+		if(!(positionId.equals(0l)) && positionId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and "); 
+		}
+		if(!(boardLevelId.equals(0l)) && boardLevelId != null){
+			queryStr.append("  model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and ");
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+		}
+		if(!(boardId.equals(0l)) && boardId != null){
+			queryStr.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and ");
+		}
+		if(!(castegroupId.equals(0l)) && castegroupId != null){
+			queryStr.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castegroupId and ");
+		}
+		
+		if(positionStatusId.equals(0l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and " +
+							" model.applicationStatus.applicationStatusId not in (2,4) and ");
+		}
+		else if(positionStatusId.equals(1l)){
+			queryStr.append(" model.applicationStatus.applicationStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(2l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 2 and ");
+		}
+		else if(positionStatusId.equals(3l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(4l)){
+			queryStr.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 4 and ");
+		} 
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			queryStr.append(" model.nominatedPostMember.address.state.stateId = :locationId  and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			queryStr.append(" model.nominatedPostMember.address.district.districtId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			queryStr.append(" model.nominatedPostMember.address.constituency.constituencyId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			queryStr.append(" model.nominatedPostMember.address.tehsil.tehsilId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			queryStr.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId =:locationId and ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
+		}
+		queryStr.append(" model.nominatedPostMember.address.state.stateId = :stateId ");
+		queryStr.append(" group by " +
+				        " model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " +
+				        " order by " +
+				        " model.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		Query query = getSession().createQuery(queryStr.toString());  
+		
+		
+		if(!(positionId.equals(0l)) && positionId != null){
+			query.setParameter("positionId", positionId);  
+		}
+		if(!(boardLevelId.equals(0l)) && boardLevelId != null){
+			query.setParameter("boardLevelId", boardLevelId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){
+			query.setParameter("deptId", deptId);
+		}
+		if(!(boardId.equals(0l)) && boardId != null){
+			query.setParameter("boardId", boardId);
+		}
+		if(!(castegroupId.equals(0l)) && castegroupId != null){
+			query.setParameter("castegroupId", castegroupId);
+		}
+		query.setParameter("locationId", locationId);   
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
+	}
 	 public List<Object[]> getCandidateCasteList(Long locationLevelId,Long stateId){
 		 
 		 StringBuilder queryStr = new StringBuilder();
@@ -908,58 +1162,53 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
     		 }
 	          return (Object[]) query.uniqueResult(); 
 	  }
-	public List<Object[]>  getNominatedCandidatePositionDetails(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName){
+	public List<Object[]>  getNominatedCandidateLocationDetails(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName){
 		StringBuilder strQuery = new StringBuilder();
 		if(locationLevelName.equalsIgnoreCase("state")){
 			strQuery.append(" select model.nominatedPostMember.address.state.stateId, model.nominatedPostMember.address.state.stateName, ");
 		}
-		if(locationLevelName.equalsIgnoreCase("District")){
+		else if(locationLevelName.equalsIgnoreCase("District")){
 			strQuery.append(" select model.nominatedPostMember.address.district.districtId, model.nominatedPostMember.address.district.districtName, ");
 		}
-		if(locationLevelName.equalsIgnoreCase("Assembly")){
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
 			strQuery.append(" select model.nominatedPostMember.address.constituency.constituencyId, model.nominatedPostMember.address.constituency.name, ");
 		}
-		if(locationLevelName.equalsIgnoreCase("Assembly")){
-			
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" select model.nominatedPostMember.address.tehsil.tehsilId, model.nominatedPostMember.address.tehsil.tehsilName, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" select model.nominatedPostMember.address.localElectionBody.localElectionBodyId, model.nominatedPostMember.address.localElectionBody.name, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, ");
 		}
 		
-		strQuery.append(" select model.nominatedPostMember.address.state.stateId, model.nominatedPostMember.address.state.stateName, count(model.nominatedPostApplicationId) " +
+		strQuery.append(" count(model.nominatedPostApplication.nominatedPostApplicationId) " +
 				        " from " +
 				        " NominatedPostFinal model " +
-				        " where " +
-				        " model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) " +
-				        " and model.applicationStatus.applicationStatusId not in (2,4) and " +
-				        " model.nominatedPostMember.address.state.stateId = :stateId " +
-				        " group by model.nominatedPostMember.address.state.stateId");
-		return null;
-	}
-	public List<Object[]>  getNominatedCandidateGroupByDist(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId/*, String addressId*/){
-		String addressId = "";
-		StringBuilder strQuery = new StringBuilder();
-		strQuery.append(" ");
-		if(addressId.equalsIgnoreCase("not null")){
-			strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, " +
-							" count(model.nominationPostCandidate.nominationPostCandidateId) " +
-							" from " +
-							" NominatedPostFinal model " +
-							" where " +
-							" model.nominationPostCandidate.address.addressId != 'NULL' and " );	
+				        " where ");
+		
+		
+		if(positionStatusId.equals(0l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and " +
+							" model.applicationStatus.applicationStatusId not in (2,4) and ");
 		}
-		if(addressId.equalsIgnoreCase("null")){
-			strQuery.append(" select model.nominationPostCandidate.tdpCadre.userAddress.district.districtId, model.nominationPostCandidate.tdpCadre.userAddress.district.districtName, " +
-							" count(model.nominationPostCandidate.nominationPostCandidateId) " +
-							" from " +
-							" NominatedPostFinal model " +
-							" where " +
-							" model.nominationPostCandidate.address.addressId == 'NULL' and " );  	
-			
+		else if(positionStatusId.equals(1l)){
+			strQuery.append(" model.applicationStatus.applicationStatusId = 3 and ");
 		}
+		else if(positionStatusId.equals(2l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 2 and ");
+		}
+		else if(positionStatusId.equals(3l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(4l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 4 and ");
+		}    
+			  
 		
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
-		}
-		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
-			strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
 			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
@@ -973,27 +1222,52 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}
-		if(addressId.equalsIgnoreCase("not null")){
-			strQuery.append(" model.nominationPostCandidate.address.state.stateId = :stateId " +
-							" group by " +
-							" model.nominationPostCandidate.address.district.districtId " +  
-							" order by " +
-							" model.nominationPostCandidate.address.district.districtId ");
+		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  ");
+		
+		strQuery.append(" group by " );
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" model.nominatedPostMember.address.state.stateId ");
 		}
-		if(addressId.equalsIgnoreCase("null")){
-			strQuery.append(" model.nominationPostCandidate.tdpCadre.userAddress.state.stateId = :stateId " +
-							" group by " +
-							" model.nominationPostCandidate.tdpCadre.userAddress.district.districtId " +  
-							" order by " +
-							" model.nominationPostCandidate.tdpCadre.userAddress.district.districtId ");  
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" model.nominatedPostMember.address.district.districtId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" model.nominatedPostMember.address.constituency.constituencyId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ");
+		}
+		strQuery.append(" order by ");
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" model.nominatedPostMember.address.state.stateId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" model.nominatedPostMember.address.district.districtId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" model.nominatedPostMember.address.constituency.constituencyId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ");
 		}
 		
-		Query query = getSession().createQuery(strQuery.toString());  	  		
-		if(!(positionId.equals(0l)) && positionId != null){
+		Query query = getSession().createQuery(strQuery.toString());  
+		
+		if(!(positionId.equals(0l)) && positionId != null){  
 			query.setParameter("positionId", positionId);
-		}
-		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
-			query.setParameter("locationLevelId", locationLevelId);
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
 			query.setParameter("deptId", deptId);
@@ -1008,49 +1282,117 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			query.setParameter("positionStatusId", positionStatusId);
 		}
 		query.setParameter("stateId", stateId);  
-		return query.list(); 
+		return query.list();
 	}
-	public List<Object[]>  getNominatedCandidateGroupByDistAndGender(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
+	
+	public List<Object[]>  getNominatedCandidateGroupByLocationAndGender(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName){
 		StringBuilder strQuery = new StringBuilder();
-		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, model.nominationPostCandidate.gender, " +
-						" count(model.nominationPostCandidate.nominationPostCandidateId) " +
-						" from " +
-						" NominatedPostFinal model " +
-						" where " );
-						if(!(positionId.equals(0l)) && positionId != null){
-							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
-						}
-						if(!(locationLevelId.equals(0l)) && locationLevelId != null){
-							strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
-						}
-						if(!(deptId.equals(0l)) && deptId != null){
-							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
-						}
-						if(!(corporationId.equals(0l)) && corporationId != null){
-							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
-						}
-						if(!(castGroupId.equals(0l)) && castGroupId != null){
-							strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
-						}
-						if(!(positionStatusId.equals(0l)) && positionStatusId != null){
-							strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
-						}
-						strQuery.append(" model.nominationPostCandidate.address.state.stateId = :stateId " +
-						" group by " +
-						" model.nominationPostCandidate.address.district.districtId, " +
-						" model.nominationPostCandidate.gender " +  
-						" order by " +
-						" model.nominationPostCandidate.address.district.districtId," +
-						" model.nominationPostCandidate.gender " ); 
-						
-		Query query = getSession().createQuery(strQuery.toString());			
-		if(!(positionId.equals(0l)) && positionId != null){
-			query.setParameter("positionId", positionId);
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" select model.nominatedPostMember.address.state.stateId, model.nominatedPostMember.address.state.stateName, model.nominationPostCandidate.gender, ");
 		}
-		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
-			query.setParameter("locationLevelId", locationLevelId);
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" select model.nominatedPostMember.address.district.districtId, model.nominatedPostMember.address.district.districtName, model.nominationPostCandidate.gender, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" select model.nominatedPostMember.address.constituency.constituencyId, model.nominatedPostMember.address.constituency.name, model.nominationPostCandidate.gender, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" select model.nominatedPostMember.address.tehsil.tehsilId, model.nominatedPostMember.address.tehsil.tehsilName, model.nominationPostCandidate.gender, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" select model.nominatedPostMember.address.localElectionBody.localElectionBodyId, model.nominatedPostMember.address.localElectionBody.name, model.nominationPostCandidate.gender, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, model.nominationPostCandidate.gender, ");
+		}
+		
+		strQuery.append(" count(model.nominatedPostApplication.nominatedPostApplicationId) " +
+				        " from " +
+				        " NominatedPostFinal model " +
+				        " where ");
+		  
+		if(positionStatusId.equals(0l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and " +
+							" model.applicationStatus.applicationStatusId not in (2,4) and ");
+		}
+		else if(positionStatusId.equals(1l)){
+			strQuery.append(" model.applicationStatus.applicationStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(2l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 2 and ");
+		}
+		else if(positionStatusId.equals(3l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 3 and ");
+		}  
+		else if(positionStatusId.equals(4l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 4 and ");
+		}    
+			  
+		
+		if(!(positionId.equals(0l)) && positionId != null){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+		}
+		if(!(corporationId.equals(0l)) && corporationId != null){
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+		}
+		if(!(castGroupId.equals(0l)) && castGroupId != null){
+			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+		}
+		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+		}
+		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  ");
+		
+		strQuery.append(" group by " );
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" model.nominatedPostMember.address.state.stateId, model.nominationPostCandidate.gender ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" model.nominatedPostMember.address.district.districtId ,model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" model.nominatedPostMember.address.constituency.constituencyId ,model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId , model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.gender");
+		}
+		strQuery.append(" order by ");
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" model.nominatedPostMember.address.state.stateId, model.nominationPostCandidate.gender ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" model.nominatedPostMember.address.district.districtId ,model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" model.nominatedPostMember.address.constituency.constituencyId ,model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId , model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.gender");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.gender");
+		}
+		
+		Query query = getSession().createQuery(strQuery.toString());  
+		
+		if(!(positionId.equals(0l)) && positionId != null){  
+			query.setParameter("positionId", positionId);
+		}
+		if(!(deptId.equals(0l)) && deptId != null){ 
 			query.setParameter("deptId", deptId);
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
@@ -1062,53 +1404,121 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
 			query.setParameter("positionStatusId", positionStatusId);
 		}
-		query.setParameter("stateId", stateId);
-		return query.list(); 
-	}
-	public List<Object[]>  getNominatedCandidateGroupByDistAndAgeGroup(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
-		StringBuilder strQuery = new StringBuilder();
-		strQuery.append(" select model.nominationPostCandidate.address.district.districtId, model.nominationPostCandidate.address.district.districtName, " +
-						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, count(model.nominationPostCandidate.nominationPostCandidateId) " +
-						" from " +
-						" NominatedPostFinal model " +
-						" where " );
-						if(!(positionId.equals(0l)) && positionId != null){
-							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
-						}
-						if(!(locationLevelId.equals(0l)) && locationLevelId != null){
-							strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
-						}
-						if(!(deptId.equals(0l)) && deptId != null){
-							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
-						}
-						if(!(corporationId.equals(0l)) && corporationId != null){
-							strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
-						}
-						if(!(castGroupId.equals(0l)) && castGroupId != null){
-							strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
-						}
-						if(!(positionStatusId.equals(0l)) && positionStatusId != null){
-							strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
-						}
-						strQuery.append(" model.nominationPostCandidate.address.state.stateId = :stateId " +
-						" group by " +
-						" model.nominationPostCandidate.address.district.districtId, " +
-						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId " +  
-						" order by " +
-						" model.nominationPostCandidate.address.district.districtId," +
-						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		query.setParameter("stateId", stateId);       
+		return query.list();
 		
-		Query query = getSession().createQuery(strQuery.toString());			
-		if(!(positionId.equals(0l)) && positionId != null){
-			query.setParameter("positionId", positionId);
+	}
+	public List<Object[]>  getNominatedCandidateGroupByLocationAndAgeGroup(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName){
+		StringBuilder strQuery = new StringBuilder();
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" select model.nominatedPostMember.address.state.stateId, model.nominatedPostMember.address.state.stateName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
 		}
-		if(!(locationLevelId.equals(0l)) && locationLevelId != null){
-			query.setParameter("locationLevelId", locationLevelId);
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" select model.nominatedPostMember.address.district.districtId, model.nominatedPostMember.address.district.districtName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId,  ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" select model.nominatedPostMember.address.constituency.constituencyId, model.nominatedPostMember.address.constituency.name, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" select model.nominatedPostMember.address.tehsil.tehsilId, model.nominatedPostMember.address.tehsil.tehsilName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" select model.nominatedPostMember.address.localElectionBody.localElectionBodyId, model.nominatedPostMember.address.localElectionBody.name, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
+		}
+		
+		strQuery.append(" count(model.nominatedPostApplication.nominatedPostApplicationId) " +
+				        " from " +
+				        " NominatedPostFinal model " +
+				        " where ");
+		  
+		if(positionStatusId.equals(0l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and " +
+							" model.applicationStatus.applicationStatusId not in (2,4) and ");
+		}
+		else if(positionStatusId.equals(1l)){
+			strQuery.append(" model.applicationStatus.applicationStatusId = 3 and ");
+		}
+		else if(positionStatusId.equals(2l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 2 and ");
+		}
+		else if(positionStatusId.equals(3l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 3 and ");
+		}  
+		else if(positionStatusId.equals(4l)){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = 4 and ");
+		}    
+			  
+		
+		if(!(positionId.equals(0l)) && positionId != null){
+			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
+		}
+		if(!(corporationId.equals(0l)) && corporationId != null){
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+		}
+		if(!(castGroupId.equals(0l)) && castGroupId != null){
+			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
+		}
+		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
+			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
+		}
+		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  ");
+		
+		strQuery.append(" group by " );
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" model.nominatedPostMember.address.state.stateId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" model.nominatedPostMember.address.district.districtId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" model.nominatedPostMember.address.constituency.constituencyId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+		}
+		strQuery.append(" order by ");
+		
+		if(locationLevelName.equalsIgnoreCase("state")){
+			strQuery.append(" model.nominatedPostMember.address.state.stateId, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+		}
+		else if(locationLevelName.equalsIgnoreCase("District")){
+			strQuery.append(" model.nominatedPostMember.address.district.districtId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Assembly")){
+			strQuery.append(" model.nominatedPostMember.address.constituency.constituencyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Mandal")){
+			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId , model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+		}
+		else if(locationLevelName.equalsIgnoreCase("Village")){
+			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+		}
+		
+		Query query = getSession().createQuery(strQuery.toString());  
+		
+		if(!(positionId.equals(0l)) && positionId != null){  
+			query.setParameter("positionId", positionId);
+		}  
+		if(!(deptId.equals(0l)) && deptId != null){ 
 			query.setParameter("deptId", deptId);
 		}
-		if(!(corporationId.equals(0l)) && corporationId != null){  
+		if(!(corporationId.equals(0l)) && corporationId != null){
 			query.setParameter("corporationId", corporationId);
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
@@ -1117,8 +1527,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(!(positionStatusId.equals(0l)) && positionStatusId != null){
 			query.setParameter("positionStatusId", positionStatusId);
 		}
-		query.setParameter("stateId", stateId);
-		return query.list(); 
+		query.setParameter("stateId", stateId);       
+		return query.list();
 	}
 	
 	public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){

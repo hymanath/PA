@@ -27,9 +27,18 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	public List<Object[]> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId,Long stateId);
 	public List<Object[]> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId,Long stateId);
 	public List<Object[]> getPositionCountForGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId,String type);
-	public List<Object[]>  getNominatedCandidateGroupByDist(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
-	public List<Object[]>  getNominatedCandidateGroupByDistAndGender(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
-	public List<Object[]>  getNominatedCandidateGroupByDistAndAgeGroup(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
+	
+	//public List<Object[]>  getNominatedCandidateGroupByDist(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
+	//public List<Object[]>  getNominatedCandidateGroupByDistAndGender(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
+	//public List<Object[]>  getNominatedCandidateGroupByDistAndAgeGroup(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
+
+	public List<Object[]> getNominatedCandidateLocationDetails(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName);
+	public List<Object[]>  getNominatedCandidateGroupByLocationAndGender(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName);
+	public List<Object[]>  getNominatedCandidateGroupByLocationAndAgeGroup(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName);
+
+	public List<Object[]> getNominatedCandidatePositionDetails(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName);
+	public List<Object[]> getNominatedCandidateGroupByPositionAndGender(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName);
+	public List<Object[]> getNominatedCandidateGroupByPositionAndAgeGroup(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName);
 
 	 public Object[] getShortListedPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId);
 	 public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId);

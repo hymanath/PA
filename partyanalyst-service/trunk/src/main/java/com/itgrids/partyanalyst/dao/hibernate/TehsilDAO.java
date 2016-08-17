@@ -257,5 +257,14 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	public List<Object[]> getAllTehsilList( Long stateId) {
+
+		Query query = getSession().createQuery(" select distinct model.tehsilId , model.tehsilName from Tehsil model where " +
+				" model.district.state.stateId =:stateId ");
+		
+		query.setParameter("stateId", stateId);
+		return query.list();
+	}
+
 	
 }
