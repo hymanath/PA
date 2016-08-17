@@ -749,7 +749,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 sb.append("select distinct departments.departmentId ");
 		 			
 		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open"))){
-			 		sb.append("  ,count(nominatedPostMember.nominatedPostMemberId)");
+			 		sb.append("  ,count(nominatedPostMember.nominatedPostMemberId),0,0");
 		 			sb.append(" from NominatedPost model "+
 				 			" left join model.nominatedPostMember  nominatedPostMember "+
 						 	" left join model.nominatedPostMember.nominatedPostPosition  nominatedPostPosition " + 
@@ -758,10 +758,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
 						 	" left join model.nominatedPostMember.address address ");
 		 }else  if(status != null && status.equalsIgnoreCase("notYet") ){
-			 sb.append(" , count(model.nominatedPostApplicationId) ");
+			 sb.append(" , count(distinct position.positionId), position.positionId,board.boardId ");
 			 sb.append(" from NominatedPostApplication model"+
 					 	" left join model.departments departments " +
 					 	" left join model.board board " +
+					 	" left join model.position position " +
 					 	" left join model.boardLevel boardLevel " +
 					 	" left join model.address address ");
 		 }
@@ -808,9 +809,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
 		 sb.append(" and model.isExpired = 'N'");
 	 
-	 sb.append(" and model.isDeleted = 'N' " +
-	 			" group by departments.departmentId ");
-	 
+	 sb.append(" and model.isDeleted = 'N'  group by departments.departmentId ");
+	 if(status != null && status.equalsIgnoreCase("notYet") )
+		 sb.append(" , board.boardId ,position.positionId");
+		 
 	 Query query = getSession().createQuery(sb.toString());
 	 query.setParameter("boardLevelId", boardLevelId);
 	 if(searchLevelId != 1l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
@@ -819,7 +821,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	 return query.list();
 	 }
 	 
-	 public List<Object[]> getOpenedPositionsCountByDepartment111(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
+	 public List<Object[]> getOpenedPositionsCountByDepartmennt111(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
 		 StringBuilder sb = new StringBuilder(); 
 		 sb.append("select distinct nominatedPostPosition.departmentId,");
 		 if(status != null && (status.equalsIgnoreCase("Total") ))
