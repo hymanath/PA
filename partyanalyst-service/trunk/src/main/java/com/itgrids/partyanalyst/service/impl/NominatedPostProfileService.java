@@ -5436,4 +5436,27 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			return "FAILED";
 		}
 	}
+	 
+	 /**
+		 * @Author  HYMAVATHI
+		 * @Version NominatedPostProfileService.java  Aug 17, 2016 02:00:00 PM 
+		 * @return ResultStatus
+		 * description  { In This Method Checking Whether this position Available Or Not For Shortlisting }
+		 */
+	 public ResultStatus checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId){
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 List<Long> list = nominatedPostDAO.checkPositionAvailableOrNot(departmentId,boardId,positionId,boardLevlId,searchLevelValue,searchLevelId);
+			if(list != null && list.size() >0){
+				resultStatus.setMessage("AVAILABLE");
+			}else{
+				resultStatus.setMessage("NOT AVAILABLE");
+			}
+		} catch (Exception e) {
+			resultStatus.setMessage("FAIL");
+			e.printStackTrace();
+			LOG.error("Exception riased at checkPositionAvailableOrNot",e);
+		}
+		 return resultStatus;
+	 }
 }
