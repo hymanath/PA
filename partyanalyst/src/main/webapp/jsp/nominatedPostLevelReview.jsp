@@ -17,6 +17,39 @@
 .font_15{font-size:18px;}
 .font_24{font-size: 20px;}
 .bar_view{padding: 6px; float: left; height: 32px; width: 12px;  margin-left: -9px;}
+.filterIcon{background-color:#4A5863;color:#fff;padding:5px;border-radius:50%;cursor:pointer;}
+.list-inline li
+{
+	position:relative;
+}
+.list-inline li:hover .filterIconDiv
+{
+	display:block;
+	transition:1s ease-in linear;
+}
+.filterIconDiv
+{
+	display:none;
+	transition:1s ease-in linear;
+}
+.filterIconDiv
+{
+	position:absolute;
+	right:0px;
+	background-color:#fff;
+	z-index:99;
+	padding:5px;
+}
+.updateDropDownArrow::after, .updateDropDownArrow::before
+{
+	right:10px;
+}
+.filterIconDiv li
+{
+	list-style:none;
+	padding:2px;
+	margin-top:2px;
+}
 </style>
 <body>
 <div class="container">
@@ -34,14 +67,28 @@
 			</div>
         </div>
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+			<ul class="list-inline pull-right">
+				<li>
+					<i class="glyphicon glyphicon-filter filterIcon"></i>
+					<ul style="margin-right:60px" class="pull-right filterIconDiv updateDropDownArrow">
+					  <li> 
+						<div  style="border-radius:15px;" class="btn btn-xs btn-success">
+							<input type="radio" value="1" name="stateName" style="cursor:pointer;" class="stateCls" checked="true"/> <b>AP</b>
+						</div>
+					  </li> 
+					  <li>
+						<div style="border-radius:15px;" class="btn btn-xs btn-success">
+							<input type="radio" value="2" name="stateName" style="cursor:pointer;" class="stateCls"/> <b>TS</b>
+						</div>
+					  </li>
+					</ul>
+				</li>
+			</ul>
 			<span style="margin-right:60px" class="pull-right">
-			  <span style="border-radius:15px;" class="btn btn-xs btn-success"> 
-				<input type="radio" value="1" name="stateName" style="cursor:pointer;" class="stateCls" checked="true"> <b>AP</b>
-			  </span> 
-			  <span style="border-radius:15px;" class="btn btn-xs btn-success">
-				<input type="radio" value="2" name="stateName" style="cursor:pointer;" class="stateCls"> <b>TS</b>
-			  </span>
+				
+				
 			</span>
+			
 		</div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 			<div class="applicationsOverView">
