@@ -3364,6 +3364,11 @@
 		<property name="nominatedPostMemberDAO" ref="nominatedPostMemberDAO"></property>  
 		<property name="nominatedPostAgeRangeDAO" ref="nominatedPostAgeRangeDAO"></property> 
 		<property name="districtDAO" ref="districtDAO"></property> 
+		<property name="stateDAO" ref="stateDAO"></property>
+		<property name="constituencyDAO" ref="constituencyDAO"></property>
+		<property name="tehsilDAO" ref="tehsilDAO"></property>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
 	</bean>
 
 	<bean name="birthDayDetailsService"  class="com.itgrids.partyanalyst.service.impl.BirthDayDetailsService">

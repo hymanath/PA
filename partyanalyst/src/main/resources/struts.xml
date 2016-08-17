@@ -13252,9 +13252,9 @@
 			<param name="root">nominatedPostDashboardvoList</param>
 		</result>
 	</action>
-	<action name="getPositionsForDistrictAction" class="nominatedPostProfileAction" method="getPositionsForDistrict">
+	<action name="getPositionsForDistrictAction" class="nominatedPostProfileAction" method="getNominatedPostCandidatePositionWiseDetails">
 		<result type="json" name="success">
-			<param name="root">nominatedPostDashboardvoList</param>
+			<param name="root">nominatedPostVOs</param>
 		</result>
 	</action>
 	<action name="birthDayAction" class="leadersBirthdayAction">

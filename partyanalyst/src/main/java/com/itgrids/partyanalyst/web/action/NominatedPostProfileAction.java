@@ -1218,8 +1218,8 @@ return Action.SUCCESS;
 			Long castGroupId = jObj.getLong("castGroupId");
 			Long positionStatusId = jObj.getLong("positionStatusId");
 			Long stateId = jObj.getLong("stateId");
-			
-			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedCandidateGroupByDist(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);  
+			String locationLevelName = jObj.getString("locationLevelName");     
+			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedPostCandidateLocationWiseDetails(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId, locationLevelName);  
 			
 		}catch(Exception e){
 			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);
@@ -1300,7 +1300,7 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
-public String getPositionsForDistrict(){
+public String getNominatedPostCandidatePositionWiseDetails(){ 
 		
 		try {
 			jObj = new JSONObject(getTask());
@@ -1309,13 +1309,14 @@ public String getPositionsForDistrict(){
 			Long deptId = jObj.getLong("deptId");
 			Long boardId = jObj.getLong("boardId");
 			Long castegroupId = jObj.getLong("castegroupId");
-			Long positionStatusId = jObj.getLong("positionStatusId");
+			Long positionStatusId = jObj.getLong("positionStatusId"); 
 			Long stateId = jObj.getLong("stateId");
-			Long districtId = jObj.getLong("districtId");
+			Long locationId = jObj.getLong("locationId");  
+			String locationLevelName = jObj.getString("locationLevelName");
 			
-			nominatedPostDashboardvoList =nominatedPostMainDashboardService.getPositionsForDistrict(positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId);
+			nominatedPostVOs = nominatedPostMainDashboardService.getNominatedPostCandidatePositionWiseDetails(positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,locationId,locationLevelName);
 		} catch (Exception e) {
-			LOG.error("Exception raised at getNotCadreDetailsById() method of NominatedPostProfileAction", e);
+			LOG.error("Exception raised at getNotCadreDetailsById() method of NominatedPostProfileAction", e); 
 		}
 	
 	return Action.SUCCESS;

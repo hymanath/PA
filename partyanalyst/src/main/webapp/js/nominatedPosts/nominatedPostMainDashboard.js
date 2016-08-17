@@ -17,7 +17,7 @@ $(document).ready(function(){
 	getLocationLevelList();
 	getDepartmentList(2);   
 	getBoardList(0);
-	getNominatedCandidateGroupByDistrict(0,0,0,0,0,0);
+	getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
     getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
 	getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
 	getCasteWiseCountsByPosition(0,0,0,2,0,0,globalStateId);
@@ -47,7 +47,7 @@ $(document).on("click",".casteGroupCls",function(){
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
 		  if(result != null && result.length > 0){
-			  buildCasteWisePositionRslt(result,hrefId);
+			  buildCasteWisePositionRslt(result,hrefId);   
 		  }else{
 			 $("#castePostionDivId").html("NO DATA AVAILABLE"); 
 		  }
@@ -1138,6 +1138,9 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var corporationName = $("#corporationId option:selected").text();
 		var castGroupId = $("#casteGroupId").val();
 		var casteGroup = $("#casteGroupId option:selected").text();
+		var positionStatusId = $("#positionStatusId").val();   
+		var locationLevelName = $("#locationLevelId option:selected").text();  
+		getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName);
 		var positionStatusId = $("#positionStatusId").val(); 
 		var postionStatus =$("#positionStatusId option:selected").text();
 		if(positionId==0){
@@ -1172,15 +1175,16 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		}
 		getNominatedCandidateGroupByDistrict(positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId);
 		
-	});
+	});  
 	
-	function getNominatedCandidateGroupByDistrict(positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId){
+	function getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName){
 		var positionId = positionId;
 		var locationLevelId = locationLevelId;
 		var deptId = deptId;
 		var corporationId = corporationId;
 		var castGroupId = castGroupId;   
-		var positionStatusId = positionStatusId;   
+		var positionStatusId = positionStatusId;
+		var locationLevelName = locationLevelName;  
 		var stateId = 1;  
 		var jsObj={
 			positionId : positionId,
@@ -1189,22 +1193,24 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			corporationId : corporationId,
 			castGroupId : castGroupId,
 			positionStatusId : positionStatusId,
-			stateId : stateId  
+			locationLevelName : locationLevelName,
+			stateId : stateId   
 		} 
+		console.log(jsObj);    
 		$.ajax({
 			type:'GET',
 			url:'getNominatedCandidateGroupByDistAction.action',  
 			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}
+			data: {task:JSON.stringify(jsObj)}    
 		}).done(function(result){ 
 			if(result != null && result.length > 0){  
-				buildStatePositionCluntTable(result,positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId,stateId);
+				buildStatePositionCluntTable(result,positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId,stateId,locationLevelName);
 			}else{
 				$("#statePositionId").html("No Data Available");
 			}
 		}); 
 	} 
-	function buildStatePositionCluntTable(result,positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId,stateId){
+	function buildStatePositionCluntTable(result,positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId,stateId,locationLevelName){
 		var str = '';
 		str+='<table class="table table-condensed" style="border:1px solid #ddd;background-color:#ECF1F5">';  
 		str+='<thead class="bg_ef text-capital">';
@@ -1212,7 +1218,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			str+='<th style="width:200px;text-align:center">Finalised Positions Total</th>';  
 			str+='<th style="width:100px;">Male</th>';
 			str+='<th style="width:100px;">Female</th>';
-			str+='<th style="width:100px;">20-29 AGE</th>';   
+			str+='<th style="width:100px;">18-29 AGE</th>';        
 			str+='<th style="width:100px;">30-39 AGE</th>';
 			str+='<th style="width:100px;">40-49 AGE</th>';
 			str+='<th style="width:100px;">50-59 AGE</th>';
@@ -1231,7 +1237,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 				str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
 				str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
 				str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" attr_dist_id="'+result[i].districtId+'" attr_position_id="'+positionId+'" attr_locationLevel_id="'+locationLevelId+'" attr_dept_id="'+deptId+'" attr_corporation_id="'+corporationId+'" attr_castGroup_id="'+castGroupId+'" attr_positionStatus_id="'+positionStatusId+'" attr_state_id="'+stateId+'"></i></td>';     
+				str+='<td style="text-align:right;"><i class="glyphicon glyphicon-plus districtCls" attr_id="districtPositionId'+i+'" attr_dist_id="'+result[i].districtId+'" attr_position_id="'+positionId+'" attr_locationLevel_id="'+locationLevelId+'" attr_dept_id="'+deptId+'" attr_corporation_id="'+corporationId+'" attr_castGroup_id="'+castGroupId+'" attr_positionStatus_id="'+positionStatusId+'" attr_state_id="'+stateId+'" attr_location_level_name="'+locationLevelName+'"></i></td>';       
 			str+='</tr>';
 			str+='<tr class="showHideTr" style="display:none" id="districtPositionId'+i+'">';    
 			str+='</tr>';
@@ -1251,29 +1257,31 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var deptId = $(this).attr("attr_dept_id");
 		var boardId = $(this).attr("attr_corporation_id");
 		var castegroupId = $(this).attr("attr_castGroup_id");
-		var positionStatusId = $(this).attr("attr_positionStatus_id");
+		var positionStatusId = $(this).attr("attr_positionStatus_id");  
+		var locationLevelName = $(this).attr("attr_location_level_name");  
 		if($(this).hasClass("glyphicon-minus"))
 		{
-			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,"expand");
+			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"expand");    
 		}else{
-			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,"close");
+			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"close");
 		}
 	});
 	
-	function getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,actionType){
-	
+	function getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,actionType){
+	  
 		if(actionType == "close"){
 			 return;
 		}
 		var jsObj={
-		positionId 			: positionId,    
+		positionId 			: positionId,      
 		boardLevelId 		: boardLevelId,  
 		deptId				: deptId,
 		boardId				: boardId,
 		castegroupId    	: castegroupId,      
 		positionStatusId 	: positionStatusId,   
 		stateId				: stateId,    
-		districtId			: districtId
+		locationId			: districtId,  
+		locationLevelName 	: locationLevelName 
 		}
 		$.ajax({
 			type:'GET',
@@ -1298,21 +1306,26 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         str+='<th style="width:200px;">total positions</th>';    
         str+='<th style="width:100px;">M</th>';
         str+='<th style="width:100px;">F</th>';
-		for(var i in result[0].ageList){
-        str+='<th style="width:100px;" id="'+result[0].ageList[i].ageRangeId+'">'+result[0].ageList[i].ageRange+'</th>';
-		}
+		str+='<th style="width:100px;">18-29</th>';
+		str+='<th style="width:100px;">30-39</th>';
+		str+='<th style="width:100px;">40-49</th>';
+		str+='<th style="width:100px;">50-59</th>';
+		str+='<th style="width:100px;">60+</th>';
+		
 		str+='<th style="width:100px;"></th>';
         str+='</thead>';
         str+='<tbody class="text-capital">';
-		for(var j in result){
+		for(var i in result){
         str+='<tr style="width:100px;">';
-		str+='<td id="'+result[j].statusId+'">'+result[j].statusName+'</td>';
-		str+='<td>'+result[j].totalCnt+'</td>';
-        str+='<td>'+result[j].femaleCount+'</td>';
-        str+='<td>'+result[j].maleCount+'</td>';
-		for(var k in result[i].ageList){
-        str+='<td>'+result[i].ageList[k].ageCount+'</td>';
-		}
+		str+='<td >'+result[i].name+'</td>';
+		str+='<td>'+result[i].totalPositions+'</td>';
+        str+='<td>'+result[i].maleCount+'</td>';
+        str+='<td>'+result[i].femaleCount+'</td>';
+		str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+		str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+		str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+		str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+		str+='<td>'+result[i].fifthAgeGroupCount+'</td>';    
 		str+='<td></td>';
         str+='</tr>';
 		}
@@ -1417,7 +1430,7 @@ function buildCasteWiseCountsChart(result){
         legend: {
             layout: 'vertical',
             align: 'right',
-            verticalAlign: 'top',
+            verticalAlign: 'top',  
             x: -40,
             y: 80,
             floating: true,
