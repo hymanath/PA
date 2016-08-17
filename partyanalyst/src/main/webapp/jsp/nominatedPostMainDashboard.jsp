@@ -334,7 +334,7 @@
                                 </div>
                                 <div style="border:1px solid #ddd;padding:10px" class="m_top20">
                                 	<h4 class="panel-title">CASTE</h4>
-	                                <div id="casteWisePositions" style="height:500px;"></div>
+	                                <div id="casteWisePositions"></div>
                                 </div>
                             </div>
                         </div>
