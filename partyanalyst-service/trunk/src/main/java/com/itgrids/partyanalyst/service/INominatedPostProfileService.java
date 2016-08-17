@@ -66,5 +66,6 @@ public interface INominatedPostProfileService {
 		      List<Long> locationValue,Long searchLevelId,String statusType);
 	 public List<IdNameVO> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId);
 	 public ResultStatus confirmGOForNominatedPosts(GovtOrderVO goVO,Long userId,Map<File,String> mapfiles);
+	 public ResultStatus checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId);
 	 
 }
