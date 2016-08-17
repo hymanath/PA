@@ -309,7 +309,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	public List<Object[]> getGenderWiseTotalCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.gender," +
-					" count(distinct model.nominatedPostFinalId)");
+					" count(distinct model.nominatedPostApplication.nominatedPostApplicationId)");
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
@@ -360,7 +360,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 					" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
-					" count(model.nominatedPostFinalId)");
+					" count(distinct model.nominatedPostApplication.nominatedPostApplicationId)");
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
@@ -411,7 +411,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
-					" count(model.nominatedPostFinalId)");
+					" count(distinct model.nominatedPostApplication.nominatedPostApplicationId)");
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
@@ -474,7 +474,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 					" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
 					" model.nominationPostCandidate.gender," +
-					" count(model.nominatedPostFinalId)");
+					" count(distinct model.nominatedPostApplication.nominatedPostApplicationId)");
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
@@ -549,7 +549,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 						" model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId," +
 						" model.nominationPostCandidate.nominatedPostAgeRange.ageRange," +
 						" model.nominationPostCandidate.gender," +
-						" count(model.nominatedPostFinalId)");
+						" count(distinct model.nominatedPostApplication.nominatedPostApplicationId)");
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
