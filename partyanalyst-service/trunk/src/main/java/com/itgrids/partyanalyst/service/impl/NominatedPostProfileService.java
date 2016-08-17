@@ -2167,23 +2167,26 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);
 		
 		try{
-			/*Long departmentId = 1l;
-			Long boardId = 36l;
-			Long positionId = 1l;
-			Long boardLevelId = 5l;
-			Long locationValue = 835l;*/
+			/*Long departmentId = 0l;
+			Long boardId = 0l;
+			Long positionId = 0l;
+			Long boardLevelId = 2l;
+			Long locationValue = 1l;			
+			Long searchLevelId = 2l;*/
 			
 			Map<Long,NominatedPostVO> finalMap = new HashMap<Long, NominatedPostVO>();
 			
-			NominatedPostVO VO = new NominatedPostVO();				
-			VO.setId(positionId);		
-			VO.setIdNameVoList(getCasteCategoryDetails());
-							
+			if(positionId !=null && positionId>0){
+				NominatedPostVO VO = new NominatedPostVO();				
+				VO.setId(positionId);		
+				VO.setIdNameVoList(getCasteCategoryDetails());
+				finalMap.put(positionId, VO);
+			}
+			
 			NominatedPostVO anyVO = new NominatedPostVO();
 			anyVO.setId(null);
-			anyVO.setIdNameVoList(getCasteCategoryDetails());
+			anyVO.setIdNameVoList(getCasteCategoryDetails());			
 			
-			finalMap.put(positionId, VO);
 			finalMap.put(null, anyVO);
 			
 			List<Object[]> receivedObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
@@ -2206,28 +2209,31 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> receivedAnyObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
-					null,boardLevelId,locationValue,"Any",searchLevelId);
 			
-			if(receivedAnyObj !=null && receivedAnyObj.size()>0){
-				for(Object[] obj : receivedAnyObj){
-					NominatedPostVO mainVo =null;
-					if(obj[0] ==null){
-						 mainVo =	finalMap.get(null);
-					}else{
-						 mainVo = finalMap.get((Long)obj[0]);
+			if(positionId !=null && positionId>0l){
+				List<Object[]> receivedAnyObj = nominatedPostApplicationDAO.getAppliationsReceievedStatus(departmentId,boardId,
+						null,boardLevelId,locationValue,"Any",searchLevelId);
+				
+				if(receivedAnyObj !=null && receivedAnyObj.size()>0){
+					for(Object[] obj : receivedAnyObj){
+						NominatedPostVO mainVo =null;
+						if(obj[0] ==null){
+							 mainVo =	finalMap.get(null);
+						}else{
+							 mainVo = finalMap.get((Long)obj[0]);
+						}
+						
+						if(mainVo != null){
+							mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+							mainVo.setReceivedCount(obj[2] !=null ? (Long)obj[2]:0l);						
+						}					
 					}
-					
-					if(mainVo != null){
-						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-						mainVo.setReceivedCount(obj[2] !=null ? (Long)obj[2]:0l);						
-					}					
 				}
 			}
 			
 			//Short Listed Candidates
 			
-			List<Object[]> shrtObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
+			List<Object[]> shrtObj = nominatedPostFinalDAO.getShortlistedCandidatesStatus(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
 			
 					if(shrtObj !=null && shrtObj.size()>0){
 						for(Object[] obj : shrtObj){
@@ -2246,24 +2252,29 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 					} 
 					
-				List<Object[]> shrtAnyObj = nominatedPostApplicationDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
-					
-					if(shrtAnyObj !=null && shrtAnyObj.size()>0){
-						for(Object[] obj : shrtAnyObj){
-							
-							NominatedPostVO mainVo =null;
-							if(obj[0] ==null){
-								 mainVo =	finalMap.get(null);
-							}else{
-								 mainVo = finalMap.get((Long)obj[0]);
-							}
-							
-							if(mainVo != null){
-								mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-								mainVo.setShortListedCount(obj[2] !=null ? (Long)obj[2]:0l);						
-							}						
-						}
-					} 
+				if(positionId !=null && positionId>0l){
+					List<Object[]> shrtAnyObj = nominatedPostFinalDAO.getShortlistedCandidatesStatus(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
+										
+										if(shrtAnyObj !=null && shrtAnyObj.size()>0){
+											for(Object[] obj : shrtAnyObj){
+												
+												NominatedPostVO mainVo =null;
+												if(obj[0] ==null){
+													 mainVo =	finalMap.get(null);
+												}else{
+													 mainVo = finalMap.get((Long)obj[0]);
+												}
+												
+												if(mainVo != null){
+													mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+													mainVo.setShortListedCount(obj[2] !=null ? (Long)obj[2]:0l);						
+												}						
+											}
+										}
+				}
+				
+				
+				
 			
 			List<Object[]> casteObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, positionId, boardLevelId, locationValue, null,searchLevelId);
 			if(casteObj !=null && casteObj.size()>0){
@@ -2291,25 +2302,27 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> casteAnyObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
-			
-			if(casteAnyObj !=null && casteAnyObj.size()>0){
-				for(Object[] obj : casteAnyObj){
-					NominatedPostVO mainVo =null;
-					if(obj[0] ==null){
-						 mainVo =	finalMap.get(null);
-					}else{
-						 mainVo = finalMap.get((Long)obj[0]);
-					}						
-					if(mainVo !=null){
-						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-						
-						List<IdNameVO> lst = mainVo.getIdNameVoList();
- 						if(lst !=null && lst.size()>0){
-							for (IdNameVO idNameVO : lst) {
-								String idStr = obj[2].toString();
-				                if(idNameVO.getId().toString().equalsIgnoreCase(idStr)){
-									idNameVO.setCount(obj[4] !=null ? (Long)obj[4]:0l);
+			if(positionId !=null && positionId>0l){
+				List<Object[]> casteAnyObj = nominatedPostApplicationDAO.getCasteWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
+				
+				if(casteAnyObj !=null && casteAnyObj.size()>0){
+					for(Object[] obj : casteAnyObj){
+						NominatedPostVO mainVo =null;
+						if(obj[0] ==null){
+							 mainVo =	finalMap.get(null);
+						}else{
+							 mainVo = finalMap.get((Long)obj[0]);
+						}						
+						if(mainVo !=null){
+							mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+							
+							List<IdNameVO> lst = mainVo.getIdNameVoList();
+	 						if(lst !=null && lst.size()>0){
+								for (IdNameVO idNameVO : lst) {
+									String idStr = obj[2].toString();
+					                if(idNameVO.getId().toString().equalsIgnoreCase(idStr)){
+										idNameVO.setCount(obj[4] !=null ? (Long)obj[4]:0l);
+									}
 								}
 							}
 						}
@@ -2350,32 +2363,34 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			List<Object[]> ageAnyObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
-			if(ageAnyObj !=null && ageAnyObj.size()>0){
-				for(Object[] obj : ageAnyObj){
-					NominatedPostVO mainVo =null;
-					if(obj[0] ==null){
-						 mainVo =	finalMap.get(null);
-					}else{
-						 mainVo = finalMap.get((Long)obj[0]);
-					}
-					if(mainVo !=null){
-						mainVo.setName(obj[1] !=null ? obj[1].toString():"");
-						
-						if(obj[2] !=null){
-							if((Long)obj[2]>=20l && (Long)obj[2]<=29l){
-								mainVo.setFirstAgeGroupCount(mainVo.getFirstAgeGroupCount() + (obj[3] !=null ? (Long)obj[3]:0l));
-							}else if((Long)obj[2]>=30l && (Long)obj[2]<=39l){
-								mainVo.setSecondAgeGroupCount(mainVo.getSecondAgeGroupCount() + ( obj[3] !=null ? (Long)obj[3]:0l));
-							}else if((Long)obj[2]>=40l && (Long)obj[2]<=49l){
-								mainVo.setThirdAgeGroupCount(mainVo.getThirdAgeGroupCount() + ( obj[3] !=null ? (Long)obj[3]:0l));
-							}else if((Long)obj[2]>=50l && (Long)obj[2]<=59l){
-								mainVo.setFourthAgeGroupCount(mainVo.getFourthAgeGroupCount() +( obj[3] !=null ? (Long)obj[3]:0l));
-							}else{
-								mainVo.setFifthAgeGroupCount(mainVo.getFifthAgeGroupCount() +( obj[3] !=null ? (Long)obj[3]:0l));
-							}
-						} 
-													
+			if(positionId !=null && positionId>0l){
+				List<Object[]> ageAnyObj = nominatedPostApplicationDAO.getAgeRangeWiseApplications(departmentId, boardId, null, boardLevelId, locationValue, "Any",searchLevelId);
+				if(ageAnyObj !=null && ageAnyObj.size()>0){
+					for(Object[] obj : ageAnyObj){
+						NominatedPostVO mainVo =null;
+						if(obj[0] ==null){
+							 mainVo =	finalMap.get(null);
+						}else{
+							 mainVo = finalMap.get((Long)obj[0]);
+						}
+						if(mainVo !=null){
+							mainVo.setName(obj[1] !=null ? obj[1].toString():"");
+							
+							if(obj[2] !=null){
+								if((Long)obj[2]>=20l && (Long)obj[2]<=29l){
+									mainVo.setFirstAgeGroupCount(mainVo.getFirstAgeGroupCount() + (obj[3] !=null ? (Long)obj[3]:0l));
+								}else if((Long)obj[2]>=30l && (Long)obj[2]<=39l){
+									mainVo.setSecondAgeGroupCount(mainVo.getSecondAgeGroupCount() + ( obj[3] !=null ? (Long)obj[3]:0l));
+								}else if((Long)obj[2]>=40l && (Long)obj[2]<=49l){
+									mainVo.setThirdAgeGroupCount(mainVo.getThirdAgeGroupCount() + ( obj[3] !=null ? (Long)obj[3]:0l));
+								}else if((Long)obj[2]>=50l && (Long)obj[2]<=59l){
+									mainVo.setFourthAgeGroupCount(mainVo.getFourthAgeGroupCount() +( obj[3] !=null ? (Long)obj[3]:0l));
+								}else{
+									mainVo.setFifthAgeGroupCount(mainVo.getFifthAgeGroupCount() +( obj[3] !=null ? (Long)obj[3]:0l));
+								}
+							} 
+														
+						}
 					}
 				}
 			}

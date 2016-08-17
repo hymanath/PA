@@ -52,9 +52,6 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			}
 		
 		if(type !=null && type.equalsIgnoreCase("Any")){
-			/*str.append(" AND (model.departments.departmentId is null" +
-				" OR model.board.boardId is null " +
-				" OR position.positionId is null) ");*/
 			str.append(" AND ( ");
 			 if(departmentId != null && departmentId.longValue() > 0L)
 				 str.append(" department.departmentId =:departmentId ");
@@ -66,12 +63,13 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			 else 
 				 str.append("  OR  board.boardId is null ");
 			 
-			 if(positionId != null && positionId.longValue() > 0L)
+			 /*if(positionId != null && positionId.longValue() > 0L)
 				 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
-			 else 
-				 str.append("  OR position.positionId is null ");
-			 
+			 else */
+				
 			 str.append(" )");
+			 
+			 str.append("  AND position.positionId is null ");
 			 
 		}else{			
 			if(departmentId != null && departmentId.longValue() > 0l){
@@ -81,7 +79,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				else
 					str.append("  AND board.boardId is null " );
 				if(positionId != null && positionId.longValue() > 0l)
-					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					//str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					str.append("  AND position.positionId=:positionId" );
 				else
 					str.append("  AND position.positionId is  null " );
 			}
@@ -95,7 +94,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					else
 						str.append("  AND board.boardId is null " );
 					if(positionId != null && positionId.longValue() > 0l)
-						str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+						//str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+						str.append("  AND position.positionId=:positionId " );
 					else
 						str.append("  AND position.positionId is  null " );
 					
@@ -110,7 +110,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				else
 					str.append("  AND board.boardId is null " );
 				if(positionId != null && positionId.longValue() > 0l)
-					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					//str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					str.append("  AND position.positionId=:positionId" );
 				else
 					str.append("  AND position.positionId is  null " );
 			}
@@ -135,7 +136,6 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		
 		return query.list();
 	}
-	
 	
 	public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 			Long locationValue,String type,Long searchLevelId){
@@ -272,7 +272,9 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		str.append(" SELECT position.positionId,position.positionName,model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
 				" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.categoryName," +
 				" count(distinct model.nominatedPostApplicationId) " +
-				" FROM NominatedPostApplication model left join model.position position  left join model.departments department left join model.board board   " +
+				" FROM NominatedPostApplication model left join model.position position " +
+				" left join model.departments department " +
+				" left join model.board board   " +
 				" WHERE " );
 				//" AND model.locationValue = :locationValue" );
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
@@ -305,21 +307,23 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" OR position.positionId is null) ");*/
 					str.append(" AND ( ");
 					 if(departmentId != null && departmentId.longValue() > 0L)
-						 str.append(" model.departments.departmentId =:departmentId ");
+						 str.append(" department.departmentId =:departmentId ");
 					 else 
-						 str.append(" model.departments.departmentId is null ");
+						 str.append(" department.departmentId is null ");
 					 
 					 if(boardId != null && boardId.longValue() > 0L)
-						 str.append(" OR  model.board.boardId =:boardId ");
+						 str.append(" OR  board.boardId =:boardId ");
 					 else 
-						 str.append("  OR  model.board.boardId is null ");
+						 str.append("  OR  board.boardId is null ");
 					 
-					 if(positionId != null && positionId.longValue() > 0L)
+				/*	 if(positionId != null && positionId.longValue() > 0L)
 						 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
-					 else 
-						 str.append("  OR position.positionId is null ");
+					 else */
+						// str.append("  OR position.positionId is null ");
 					 
 					 str.append(" )");
+					 
+					 str.append("  AND position.positionId is null ");
 					 
 				}else {
 					if(departmentId != null && departmentId.longValue() > 0l){
@@ -329,7 +333,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 						else
 							str.append("  AND board.boardId is null " );
 						if(positionId != null && positionId.longValue() > 0l)
-							str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+							// str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+							str.append("  AND position.positionId=:positionId  " );
 						else
 							str.append("  AND position.positionId is  null " );
 					}
@@ -343,7 +348,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 							else
 								str.append("  AND board.boardId is null " );
 							if(positionId != null && positionId.longValue() > 0l)
-								str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+								//str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+								str.append("  AND position.positionId=:positionId " );
 							else
 								str.append("  AND position.positionId is  null " );
 							
@@ -358,7 +364,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 						else
 							str.append("  AND board.boardId is null " );
 						if(positionId != null && positionId.longValue() > 0l)
-							str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+							//str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+							str.append("  AND position.positionId=:positionId " );
 						else
 							str.append("  AND position.positionId is  null " );
 					}
@@ -430,21 +437,24 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" OR position.positionId is null) ");*/
 			str.append(" AND ( ");
 			 if(departmentId != null && departmentId.longValue() > 0L)
-				 str.append(" model.departments.departmentId =:departmentId ");
+				 str.append(" department.departmentId =:departmentId ");
 			 else 
-				 str.append(" model.departments.departmentId is null ");
+				 str.append(" department.departmentId is null ");
 			 
 			 if(boardId != null && boardId.longValue() > 0L)
-				 str.append(" OR  model.board.boardId =:boardId ");
+				 str.append(" OR  board.boardId =:boardId ");
 			 else 
-				 str.append("  OR  model.board.boardId is null ");
+				 str.append("  OR  board.boardId is null ");
 			 
-			 if(positionId != null && positionId.longValue() > 0L)
+			/* if(positionId != null && positionId.longValue() > 0L)
 				 str.append(" OR  (position.positionId =:positionId AND position.positionId is not null )");
-			 else 
-				 str.append("  OR position.positionId is null ");
+			 else */
+				 
 			 
 			 str.append(" )");
+			 
+			 str.append("  AND position.positionId is null ");
+			 
 		}else{
 			if(departmentId != null && departmentId.longValue() > 0l){
 				str.append(" AND department.departmentId = :departmentId" );
@@ -453,7 +463,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				else
 					str.append("  AND board.boardId is null " );
 				if(positionId != null && positionId.longValue() > 0l)
-					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+				//	str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					str.append("  AND position.positionId=:positionId " );
 				else
 					str.append("  AND position.positionId is  null " );
 			}
@@ -467,7 +478,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					else
 						str.append("  AND board.boardId is null " );
 					if(positionId != null && positionId.longValue() > 0l)
-						str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+						// str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+						str.append("  AND position.positionId=:positionId  " );
 					else
 						str.append("  AND position.positionId is  null " );
 					
@@ -482,7 +494,8 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				else
 					str.append("  AND board.boardId is null " );
 				if(positionId != null && positionId.longValue() > 0l)
-					str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					//str.append("  AND position.positionId=:positionId   AND position.positionId is not null " );
+					str.append("  AND position.positionId=:positionId  " );
 				else
 					str.append("  AND position.positionId is  null " );
 			}
