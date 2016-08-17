@@ -1161,11 +1161,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	 }
 	 return query.list();
  }
- public List<Object[]> getApplicationDetailsCntPositionAndLocationWise(Long positionId,Long boardLevelId){
+ public List<Object[]> getApplicationDetailsCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId){
 	 
 	 StringBuilder queryStr = new StringBuilder();
 	 
-	   queryStr.append("select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(model.nominatedPostApplicationId) from NominatedPostApplication model " +
+	   queryStr.append("select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPostApplicationId) from NominatedPostApplication model " +
 	 		" where" +
 	 		" model.isDeleted='N' ");
 	   
@@ -1178,7 +1178,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			   else
 				   queryStr.append(" and model.boardLevel.boardLevelId in (5,6) ");
 		   }
-	   
+		   if(stateId != null && stateId.longValue() > 0){
+ 			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
+ 		  }
 	       queryStr.append(" group by model.applicationStatus.applicationStatusId ");
 	   
 	      Query query = getSession().createQuery(queryStr.toString());
@@ -1189,6 +1191,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		   if(boardLevelId != null && boardLevelId.longValue() > 0 && boardLevelId.longValue() != 5L){
 			query.setParameter("boardLevelId", boardLevelId);   
 		   }
+		   if(stateId != null && stateId.longValue() > 0){
+	  			  query.setParameter("stateId", stateId); 
+	  	  }
 	  return query.list();
  }
  

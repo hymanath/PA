@@ -10,8 +10,8 @@ import com.itgrids.partyanalyst.dto.NominatedPostVO;
 
 public interface INominatedPostMainDashboardService {
 
-	 public List<CastePositionVO> getLocationWiseCastePositionCount(Long LocationLevelId,Long positionId);
-	 public List<CastePositionVO> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId);
+	 public List<CastePositionVO> getLocationWiseCastePositionCount(Long LocationLevelId,Long positionId,Long stateId);
+	 public List<CastePositionVO> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId,Long stateId);
 	 public List<IdNameVO> getPositions();
 	 public NominatedPostDashboardVO getAllPositionWiseStatus(Long positionId);
 	 public List<IdAndNameVO> getCastGroupList();
@@ -23,6 +23,6 @@ public interface INominatedPostMainDashboardService {
 	 public List<NominatedPostVO> getNominatedCandidateGroupByDist(Long positionIdList, Long locationLevelIdList, Long deptIdList, Long corporationIdList, Long castGroupIdList, Long positionStatusIdList, Long stateId);
 
 	 public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId);
-	 public CastePositionVO getPositionAndApplicationDetailsCntPositionWise(Long positionId,Long boardLevelId,String reportType);
-	 public CastePositionVO getPositionAndApplicationDetailsCntLocationWise(Long positionId,Long boardLevelId,String reportType);
+	 public CastePositionVO getPositionAndApplicationDetailsCntPositionWise(Long positionId,Long boardLevelId,String reportType,Long stateId);
+	 public CastePositionVO getPositionAndApplicationDetailsCntLocationWise(Long positionId,Long boardLevelId,String reportType,Long stateId);
 }
