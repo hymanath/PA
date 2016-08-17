@@ -1364,7 +1364,7 @@ function buildCasteGroupWiseChart(result){
 }
 function buildCasteWiseCountsChart(result){
 	if(result!= null && result.length > 10){
-	var highChartDivHight = result.length*10;
+	var highChartDivHight = result.length*15;
 	$("#casteWisePositions").height(highChartDivHight);	
 	}
 	$("#casteGrpDivId").show();
