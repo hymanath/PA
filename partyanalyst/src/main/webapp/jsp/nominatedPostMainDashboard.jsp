@@ -12,21 +12,73 @@
 <link href="dist/NominatedPost/Slick/slick.css" rel="stylesheet" type="text/css"/>
 <link href="dist/NominatedPost/Slick/slick-theme.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+    .onoffswitch {
+        position: relative; width: 69px;
+        -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    }
+    .onoffswitch-checkbox {
+        display: none;
+    }
+    .onoffswitch-label {
+        display: block; overflow: hidden; cursor: pointer;
+        border-radius: 20px;
+    }
+    .onoffswitch-inner {
+        display: block; width: 200%; margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+    .onoffswitch-inner:before, .onoffswitch-inner:after {
+        display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+        font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+        box-sizing: border-box;
+    }
+    .onoffswitch-inner:before {
+        content: "AP";
+        padding-left: 10px;
+        background-color: #846663; color: #FFFFFF;
+    }
+    .onoffswitch-inner:after {
+        content: "TS";
+        padding-right: 10px;
+        background-color: #846663; color: #fff;
+        text-align: right;
+    }
+    .onoffswitch-switch {
+        display: block; width: 18px; margin: 6px;
+        background: #FFFFFF;
+        position: absolute; top: 0; bottom: 0;
+        right: 35px;
+        border-radius: 20px;
+        transition: all 0.3s ease-in 0s; 
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 0px; 
+    }
+</style>
 </head>
 <body>
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="col-md-10 col-xs-12 col-sm-10">
 				<ul class="geoGrpahicBreadCrumb">
 					<li style="text-transform: uppercase; font-weight: 500;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
 					<li class="text-capital">Nominated Post Main Dashboard</li>
 				</ul>
 			</div>
-        	<!--<ol class="breadcrumb">
-            	<li><i class="glyphicon glyphicon-home"></i></li>
-                <li>Nominated Post Main Dashboard</li>
-            </ol>-->
+			<div class="col-md-2 col-xs-12 col-sm-2">
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox checkedSwitch" id="myonoffswitch" checked>
+					<label class="onoffswitch-label stateCls" for="myonoffswitch">
+						<span class="onoffswitch-inner"></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
+				</div>
+			</div>
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h3 class="headingColor">Overview<span class="pull-right plusIconCircle overViewCls"><i class="glyphicon glyphicon-minus"></i></span></h3>
@@ -237,16 +289,20 @@
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 demoGraphicsHideShow">
                 	<div class="pad_15 bg_ff">
                     	<div class="row">
-                        	<div class="col-md-2 col-xs-12 col-sm-2" id="totalMaleAndFemaleId">
-                            	<table class="table table-bordered table-condensed bg_F1" style="font-size:13px !important;">
+                        	<div class="col-md-3 col-xs-12 col-sm-3" id="totalMaleAndFemaleId">
+                            	<table class="table table-bordered table-condensed bg_F1 text-center" style="font-size:13px !important;">
                                 	<tr>
                                     	<td rowspan="2" style="vertical-align:middle">
-                                        	<p class="text-capital">total</p>
+                                        	<p class="text-capital">total candidates</p>
                                             <p id="totalMaleFemaleId"></p>
                                         </td>
                                         <td>
                                         	<p class="text-capital">male</p>
                                             <p id="totalMaleId"></p>
+                                        </td>
+										<td rowspan="2" style="vertical-align:right">
+                                        	<p class="text-capital">total Applied Posts</p>
+                                            <p id="totalApplicationId"></p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -255,11 +311,11 @@
                                             <p id="totalFemaleId"></p>
                                         </td>
                                     </tr>
-                                </table>
+							    </table>
                             </div>
-                            <div class="col-md-4 col-xs-12 col-sm-5" id="totalCasteId">
+                            <div class="col-md-4 col-xs-12 col-sm-4" id="totalCasteId">
                             </div>
-                            <div class="col-md-6 col-xs-12 col-sm-5" id="totalAgeWiseId">
+                            <div class="col-md-5 col-xs-12 col-sm-5" id="totalAgeWiseId">
                             </div>
                         </div>
                         <div class="row m_top20">
