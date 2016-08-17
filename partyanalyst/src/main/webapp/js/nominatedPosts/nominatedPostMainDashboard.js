@@ -385,6 +385,8 @@ function buildOverAllTotalCountsByPosition(result){
 	    $("#totalMaleFemaleId").html(totalMFCount);
 	    if(result.applicatnStatsList.length > 0){
 		$("#totalApplicationId").html(result.applicatnStatsList[0].totalApplicationCount);	
+		}else{
+		$("#totalApplicationId").html(0);		
 		}
 	  
 		var str='';
@@ -1376,8 +1378,6 @@ function buildCasteWiseCountsChart(result){
 			castePercArr.push([parseFloat(result[i].percentage)]);
 		//}
 	}
-	//console.log(casteNamesArr);
-	//console.log(castePercArr);
 	if(casteNamesArr.length >0){
 	 $('#casteWisePositions').highcharts({
         chart: {
@@ -1433,7 +1433,6 @@ function buildCasteWiseCountsChart(result){
             data: castePercArr
         }]
     });
-	
 	}else{
 		$('#casteWisePositions').html('<p>No Data Available</p>');
 	}
