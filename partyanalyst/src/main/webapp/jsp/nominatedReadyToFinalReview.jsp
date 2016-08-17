@@ -15,6 +15,20 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css" type="text/css" rel="stylesheet" />
 <style type="text/css">
+.updateDropDownArrowModal::after, .updateDropDownArrowModal::before
+{
+	right:0px;
+	left:35px;
+}
+.updateDropDown
+{
+	width:400px;
+	text-align:left;
+}
+#resultDivId
+{
+	min-height:400px;
+}
 .filterIcon
 {
 	background:#ddd;
@@ -117,7 +131,7 @@
         </div>
       </div>
       <div class="modal-body">
-	   <div id="resultDivId" class="table-responsive"></div>
+	   <div id="resultDivId"></div>
       </div>
     </div>
   </div>
@@ -203,11 +217,28 @@ $(document).on("click",".commentsBtn",function(e){
 	e.stopPropagation()
 });
 $(document).on("click",".updateBtnDrop",function(e){
-	$(".updateDropDown").hide();
-	$(this).closest('tr').find(".updateDropDown").show();
-	e.stopPropagation()
+	$(".updateDropDown").hide().html(' ');
+	$(this).closest('tr').find(".updateDropDown").show().html(strglob);
+	var t = $(this).attr("attr_nominatedpostcandidateid");
+	$(document).find(".saveGoForCandidateCls").attr("attr_nominatedpostcandidateid",t);
+	e.stopPropagation();
+	$(".chosenSelect").chosen();
+	$(".dateR").daterangepicker({
+		opens:'left'
+	});
 });
-
+$(document).on("click",".btnUpdateAll",function(e){
+	$(".updateDropDown").hide().html(' ');
+	$(".updateAllShowPopup").show().html(strglob);	
+	$(document).find(".saveGoForCandidateCls").attr("attr_nominatedpostcandidateid","0");
+	$(".updateAllShowPopup").find(".updateDropDownArrow").addClass("updateDropDownArrowModal");
+	$(".updateAllShowPopup").css("position","relative");
+	e.stopPropagation();
+	$(".chosenSelect").chosen();
+	$(".dateR").daterangepicker({
+		opens:'left'
+	});
+});
 $(document).on("click",function(){
 	$(".commentsDiv,.updateDropDown").hide();
 });
