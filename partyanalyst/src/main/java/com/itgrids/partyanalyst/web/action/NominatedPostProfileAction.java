@@ -1036,7 +1036,7 @@ public String getNotCadreDetailsById(){
 			
 			try {
 				jObj = new JSONObject(getTask());
-				castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"),jObj.getLong("positionId"));
+				castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCastePositionCount(jObj.getLong("LocationLevelId"),jObj.getLong("positionId"),jObj.getLong("stateId"));
 			} catch (Exception e) {
 				LOG.error("Exception raised at getLocationWiseCastePositionCount() method of NominatedPostProfileAction", e);
 			}
@@ -1047,7 +1047,7 @@ public String getNotCadreDetailsById(){
 		
 		try {
 			jObj = new JSONObject(getTask());
-			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"),jObj.getLong("positionId"));
+			castePositionVOList =nominatedPostMainDashboardService.getLocationWiseCasteGroupPositionCount(jObj.getLong("LocationLevelId"),jObj.getLong("positionId"),jObj.getLong("stateId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationWiseCasteGroupPositionCount() method of NominatedPostProfileAction", e);
 		}
@@ -1237,7 +1237,7 @@ return Action.SUCCESS;
 			Long userId = regVO.getRegistrationID();*/
 			jObj = new JSONObject(getTask());
 			
-			nominatedPostDashboardVO = nominatedPostProfileService.getOverAllTotalCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"));
+			nominatedPostDashboardVO = nominatedPostProfileService.getOverAllTotalCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"),jObj.getLong("stateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getOverAllTotalCountsByPosition Action",e);
@@ -1255,7 +1255,7 @@ return Action.SUCCESS;
 			Long userId = regVO.getRegistrationID();*/
 			jObj = new JSONObject(getTask());
 			
-			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteGroupWiseCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"));
+			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteGroupWiseCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"),jObj.getLong("stateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getCasteGroupWiseCountsByPosition Action",e);
@@ -1273,7 +1273,7 @@ return Action.SUCCESS;
 			Long userId = regVO.getRegistrationID();*/
 			jObj = new JSONObject(getTask());
 			
-			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteWiseCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"));
+			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteWiseCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"),jObj.getLong("stateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getCasteWiseCountsByPosition Action",e);
@@ -1291,7 +1291,7 @@ return Action.SUCCESS;
 			Long userId = regVO.getRegistrationID();*/
 			jObj = new JSONObject(getTask());
 			
-			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteWisePositionsCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"),jObj.getLong("casteId"));
+			nominatedPostDashboardvoList = nominatedPostProfileService.getCasteWisePositionsCountsByPosition(jObj.getLong("positionId"), jObj.getLong("levelId"), jObj.getLong("deptId"), jObj.getLong("boardId"), jObj.getLong("casteGroupId"), jObj.getLong("applStatusId"),jObj.getLong("casteId"),jObj.getLong("stateId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getCasteWisePositionsCountsByPosition Action",e);
@@ -1323,8 +1323,7 @@ public String getPositionsForDistrict(){
 public String getPositionAndApplicationDetailsCntPositionWise(){
 	try{
 		jObj = new JSONObject(getTask());
-		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntPositionWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"));
-		
+		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntPositionWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"),jObj.getLong("stateId"));
 	 }catch(Exception e) {
 		 LOG.error("Entered into getPositionAndApplicationDetailsCntPositionWise() method of NominatedPostProfileAction Action",e);
 	}
@@ -1334,7 +1333,7 @@ public String getPositionAndApplicationDetailsCntLocationWise(){
 	
 	try{
 		jObj = new JSONObject(getTask());
-		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntLocationWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"));
+		castePositionVO = nominatedPostMainDashboardService.getPositionAndApplicationDetailsCntLocationWise(jObj.getLong("locationLevelId"),jObj.getLong("positionId"),jObj.getString("reportType"),jObj.getLong("stateId"));
 	 }catch(Exception e) {
 		 LOG.error("Entered into getPositionAndApplicationDetailsCntLocationWise() method of NominatedPostProfileAction Action",e);
 	}
