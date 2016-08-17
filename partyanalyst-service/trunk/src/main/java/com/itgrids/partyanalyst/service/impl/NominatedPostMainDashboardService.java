@@ -11,7 +11,9 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IApplicationStatusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
@@ -19,7 +21,10 @@ import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPositionDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -30,7 +35,7 @@ import com.itgrids.partyanalyst.service.INominatedPostMainDashboardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
-public class NominatedPostMainDashboardService implements INominatedPostMainDashboardService {
+public class NominatedPostMainDashboardService implements INominatedPostMainDashboardService { 
 
 	private final static Logger LOG =  Logger.getLogger(NominatedPostProfileService.class);
 	private INominatedPostApplicationDAO nominatedPostApplicationDAO;
@@ -44,7 +49,14 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	private INominationPostCandidateDAO nominationPostCandidateDAO;
 	private INominatedPostMemberDAO nominatedPostMemberDAO;
 	private INominatedPostAgeRangeDAO nominatedPostAgeRangeDAO;
+	
+	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IPanchayatDAO panchayatDAO;
+	private 
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
 	
@@ -128,6 +140,36 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	}
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
 	}
 	/**
 	 * @Author  Santosh
@@ -528,7 +570,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in getBoardList()", e);
-		}
+		} 
 		return null;
 	}
 	public void setDataToVO(List<Object[]> objectArrayList, List<IdAndNameVO> voList){
@@ -546,59 +588,83 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			LOG.error("Exception Occured in setDataToVO() of NominatedPostMainDashboardService", e);
 		}
 	}
-	public List<NominatedPostVO> getNominatedCandidateGroupByDist(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId){
-		LOG.info("Entered into getNominatedCandidateGroupByDist() of NominatedPostMainDashboardService.");
+	//getNominatedCandidateGroupByDist    
+	public List<NominatedPostVO> getNominatedPostCandidateLocationWiseDetails(Long positionId, Long locationLevelId, Long deptId, Long corporationId, Long castGroupId, Long positionStatusId, Long stateId, String locationLevelName){
+		LOG.info("Entered into getNominatedPostCandidateLocationWiseDetails() of NominatedPostMainDashboardService.");
 		try{
 			
 			Map<Long,NominatedPostVO> idNominatedVOMap = new HashMap<Long,NominatedPostVO>();
 			NominatedPostVO  nominatedPostVO = null;
-			List<Object[]> districtList = districtDAO.getAllDistrictList(stateId);
-			List<Object[]> nominatedCandidateGroupByDist = nominatedPostFinalDAO.getNominatedCandidateGroupByDist(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);
-			List<Object[]> nominatedCandidateGroupByDistAndGender = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndGender(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);
-			List<Object[]> nominatedCandidateGroupByDistAndAgeGroup = nominatedPostFinalDAO.getNominatedCandidateGroupByDistAndAgeGroup(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId);
-			for(Object[] distIdAndName : districtList){
+			List<Object[]> locationList = new ArrayList<Object[]>(0);
+			if(locationLevelName.equalsIgnoreCase("state")){
+				locationList = stateDAO.getState(stateId);
+			}
+			else if(locationLevelName.equalsIgnoreCase("District")){
+				locationList = districtDAO.getAllDistrictList(stateId);   
+			}
+			else if(locationLevelName.equalsIgnoreCase("Assembly")){
+				locationList = constituencyDAO.getAllConstituencyList(stateId);   
+			}
+			else if(locationLevelName.equalsIgnoreCase("Mandal")){
+				locationList = tehsilDAO.getAllTehsilList(stateId);   
+			}
+			else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
+				locationList = localElectionBodyDAO.getAllLocalElectionBodyList(stateId);
+			}
+			else if(locationLevelName.equalsIgnoreCase("Village")){
+				locationList = panchayatDAO.getAllPanchayatList(stateId);   
+			}  
+			
+			List<Object[]> nominatedCandidateLocationDetails = nominatedPostFinalDAO.getNominatedCandidateLocationDetails(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId, locationLevelName);
+			List<Object[]> nominatedCandidateGroupByLocationAndGender = nominatedPostFinalDAO.getNominatedCandidateGroupByLocationAndGender(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId, locationLevelName);
+			List<Object[]> nominatedCandidateGroupByLocationAndAgeGroup = nominatedPostFinalDAO.getNominatedCandidateGroupByLocationAndAgeGroup(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, stateId, locationLevelName);
+			for(Object[] locationIdAndName : locationList){
 				nominatedPostVO = new NominatedPostVO();
-				nominatedPostVO.setDistrictId(distIdAndName[0] != null ? (Long)distIdAndName[0] : 0l);  
-				nominatedPostVO.setName(distIdAndName[1] != null ? distIdAndName[1].toString() : "");
-				idNominatedVOMap.put((Long)distIdAndName[0], nominatedPostVO);
+				nominatedPostVO.setDistrictId(locationIdAndName[0] != null ? (Long)locationIdAndName[0] : 0l);   
+				nominatedPostVO.setName(locationIdAndName[1] != null ? locationIdAndName[1].toString() : "");
+				idNominatedVOMap.put((Long)locationIdAndName[0], nominatedPostVO);     
 			}
-			Long distId = 0l;
-			for(Object[] candidateGroupByDist : nominatedCandidateGroupByDist){
-				distId = (Long)candidateGroupByDist[0];
-				nominatedPostVO = idNominatedVOMap.get(distId);
-				nominatedPostVO.setTotalPositions((Long)candidateGroupByDist[2]);
-				nominatedPostVO.setContains("true");  
+			Long locationId = 0l;
+			for(Object[] candidateGroupByLocation : nominatedCandidateLocationDetails){
+				locationId = (Long)candidateGroupByLocation[0]; 
+				nominatedPostVO = idNominatedVOMap.get(locationId);
+				nominatedPostVO.setTotalPositions((Long)candidateGroupByLocation[2]);
+				nominatedPostVO.setContains("true");    
 			}
-			for(Object[] candidateGroupByDistAndGender : nominatedCandidateGroupByDistAndGender){
-				distId = (Long)candidateGroupByDistAndGender[0];
-				nominatedPostVO = idNominatedVOMap.get(distId);
-				if(candidateGroupByDistAndGender[2].toString().equalsIgnoreCase("male") || candidateGroupByDistAndGender[2].toString().equalsIgnoreCase("M")){
-					nominatedPostVO.setMaleCount((Long)candidateGroupByDistAndGender[3]);
-				}else{
-					nominatedPostVO.setFemaleCount((Long)candidateGroupByDistAndGender[3]);
-				}
-			}
-			for(Object[] candidateGroupByDistAndAgeGroup : nominatedCandidateGroupByDistAndAgeGroup){
-				if(candidateGroupByDistAndAgeGroup[0] != null){
-					distId = (Long)candidateGroupByDistAndAgeGroup[0];
-				}
-				distId = (Long)candidateGroupByDistAndAgeGroup[0];
-				nominatedPostVO = idNominatedVOMap.get(distId);
-				Long count = (Long)candidateGroupByDistAndAgeGroup[2];
-				if(count != null){
-					if(count.equals(1l)){
-						nominatedPostVO.setFirstAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
-					}else if(count.equals(2l)){
-						nominatedPostVO.setSecondAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
-					}else if(count.equals(3l)){
-						nominatedPostVO.setThirdAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
-					}else if(count.equals(4l)){
-						nominatedPostVO.setFourthAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
-					}else if(count.equals(5l)){
-						nominatedPostVO.setFifthAgeGroupCount((Long)candidateGroupByDistAndAgeGroup[3]);
+			for(Object[] candidateGroupByLocationAndGender : nominatedCandidateGroupByLocationAndGender){
+				locationId = (Long)candidateGroupByLocationAndGender[0];
+				nominatedPostVO = idNominatedVOMap.get(locationId);
+				if(candidateGroupByLocationAndGender[2] != null){
+					if(candidateGroupByLocationAndGender[2].toString().equalsIgnoreCase("male") || candidateGroupByLocationAndGender[2].toString().equalsIgnoreCase("M")){
+						nominatedPostVO.setMaleCount((Long)candidateGroupByLocationAndGender[3]);
+					}else{
+						nominatedPostVO.setFemaleCount((Long)candidateGroupByLocationAndGender[3]);  
 					}
 				}
 				
+			} 
+			for(Object[] candidateGroupByLocationAndAgeGroup : nominatedCandidateGroupByLocationAndAgeGroup){
+				if(candidateGroupByLocationAndAgeGroup[0] != null){
+					locationId = (Long)candidateGroupByLocationAndAgeGroup[0];  
+				}
+				locationId = (Long)candidateGroupByLocationAndAgeGroup[0];
+				nominatedPostVO = idNominatedVOMap.get(locationId);
+				if(candidateGroupByLocationAndAgeGroup[2] != null){
+					Long count = (Long)candidateGroupByLocationAndAgeGroup[2];
+					if(count != null){
+						if(count.equals(1l)){
+							nominatedPostVO.setFirstAgeGroupCount((Long)candidateGroupByLocationAndAgeGroup[3]);
+						}else if(count.equals(2l)){
+							nominatedPostVO.setSecondAgeGroupCount((Long)candidateGroupByLocationAndAgeGroup[3]);
+						}else if(count.equals(3l)){
+							nominatedPostVO.setThirdAgeGroupCount((Long)candidateGroupByLocationAndAgeGroup[3]);
+						}else if(count.equals(4l)){
+							nominatedPostVO.setFourthAgeGroupCount((Long)candidateGroupByLocationAndAgeGroup[3]);
+						}else if(count.equals(5l)){
+							nominatedPostVO.setFifthAgeGroupCount((Long)candidateGroupByLocationAndAgeGroup[3]);
+						}
+					}
+				}
 			}
 			Collection<NominatedPostVO> nominatedPostVOList = idNominatedVOMap.values();
 			List<NominatedPostVO> nominatedPostVOFinalList = new ArrayList<NominatedPostVO>(0);
@@ -607,10 +673,83 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 					nominatedPostVOFinalList.add(nominatedPostVOTemp);
 				}
 			}  
-		return nominatedPostVOFinalList;
+		return nominatedPostVOFinalList;  
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Exception Occured in getNominatedCandidateGroupByDist() of NominatedPostMainDashboardService", e);
+			LOG.error("Exception Occured in getNominatedPostCandidateLocationWiseDetails() of NominatedPostMainDashboardService", e);
+		}
+		return null;
+	}
+	public List<NominatedPostVO> getNominatedPostCandidatePositionWiseDetails(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName){
+		LOG.info("Entered into getNominatedPostCandidatePositionWiseDetails() of NominatedPostMainDashboardService.");
+		try{ 
+			Map<Long,NominatedPostVO> idNominatedVOMap = new HashMap<Long,NominatedPostVO>();
+			NominatedPostVO  nominatedPostVO = null;
+			// Preparing Template For Positions  
+			List<Object[]> positionsList = positionDAO.getAllPositions();  
+			List<Object[]> nominatedCandidatePositionDetails = nominatedPostFinalDAO.getNominatedCandidatePositionDetails(positionId, boardLevelId, deptId, boardId, castegroupId, positionStatusId, stateId, locationId,  locationLevelName);
+			List<Object[]> nominatedCandidateGroupByPositionAndGender = nominatedPostFinalDAO.getNominatedCandidateGroupByPositionAndGender(positionId, boardLevelId, deptId, boardId, castegroupId, positionStatusId, stateId, locationId,  locationLevelName);
+			List<Object[]> nominatedCandidateGroupByPositionAndAgeGroup = nominatedPostFinalDAO.getNominatedCandidateGroupByPositionAndAgeGroup(positionId, boardLevelId, deptId, boardId, castegroupId, positionStatusId, stateId, locationId,  locationLevelName);
+ 
+			for(Object[] positionIdAndName : positionsList){  
+				nominatedPostVO = new NominatedPostVO();
+				nominatedPostVO.setDistrictId(positionIdAndName[0] != null ? (Long)positionIdAndName[0] : 0l);   
+				nominatedPostVO.setName(positionIdAndName[1] != null ? positionIdAndName[1].toString() : "");
+				idNominatedVOMap.put((Long)positionIdAndName[0], nominatedPostVO);     
+			}
+			
+			Long pstnId = 0l;
+			for(Object[] candidateGroupByPosition : nominatedCandidatePositionDetails){
+				pstnId = (Long)candidateGroupByPosition[0]; 
+				nominatedPostVO = idNominatedVOMap.get(pstnId);
+				nominatedPostVO.setTotalPositions((Long)candidateGroupByPosition[2]);
+				nominatedPostVO.setContains("true");    
+			}
+			for(Object[] candidateGroupByPositionAndGender : nominatedCandidateGroupByPositionAndGender){
+				pstnId = (Long)candidateGroupByPositionAndGender[0];
+				nominatedPostVO = idNominatedVOMap.get(pstnId);
+				if(candidateGroupByPositionAndGender[2] != null){
+					if(candidateGroupByPositionAndGender[2].toString().equalsIgnoreCase("male") || candidateGroupByPositionAndGender[2].toString().equalsIgnoreCase("M")){
+						nominatedPostVO.setMaleCount((Long)candidateGroupByPositionAndGender[3]);
+					}else{
+						nominatedPostVO.setFemaleCount((Long)candidateGroupByPositionAndGender[3]);  
+					}
+				}
+				
+			} 
+			for(Object[] candidateGroupByPositionAndAgeGroup : nominatedCandidateGroupByPositionAndAgeGroup){
+				if(candidateGroupByPositionAndAgeGroup[0] != null){
+					pstnId = (Long)candidateGroupByPositionAndAgeGroup[0];  
+				}
+				nominatedPostVO = idNominatedVOMap.get(pstnId);
+				if(candidateGroupByPositionAndAgeGroup[2] != null){
+					Long count = (Long)candidateGroupByPositionAndAgeGroup[2];
+					if(count != null){
+						if(count.equals(1l)){
+							nominatedPostVO.setFirstAgeGroupCount((Long)candidateGroupByPositionAndAgeGroup[3]);
+						}else if(count.equals(2l)){
+							nominatedPostVO.setSecondAgeGroupCount((Long)candidateGroupByPositionAndAgeGroup[3]);
+						}else if(count.equals(3l)){
+							nominatedPostVO.setThirdAgeGroupCount((Long)candidateGroupByPositionAndAgeGroup[3]);
+						}else if(count.equals(4l)){
+							nominatedPostVO.setFourthAgeGroupCount((Long)candidateGroupByPositionAndAgeGroup[3]);
+						}else if(count.equals(5l)){
+							nominatedPostVO.setFifthAgeGroupCount((Long)candidateGroupByPositionAndAgeGroup[3]);
+						}
+					}
+				}
+			}
+			Collection<NominatedPostVO> nominatedPostVOList = idNominatedVOMap.values();
+			List<NominatedPostVO> nominatedPostVOFinalList = new ArrayList<NominatedPostVO>(0);
+			for(NominatedPostVO nominatedPostVOTemp : nominatedPostVOList){
+				if(nominatedPostVOTemp.getContains().equalsIgnoreCase("true")){
+					nominatedPostVOFinalList.add(nominatedPostVOTemp);
+				}
+			}   
+			return nominatedPostVOFinalList;  	
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getNominatedPostCandidatePositionWiseDetails() of NominatedPostMainDashboardService", e);
 		}
 		return null;
 	}
@@ -620,8 +759,8 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	 * @Version NominatedPostMainDashboardService.java  July 28, 2016 05:30:00 PM 
 	 * @return List<NominatedPostDashboardVO>
 	 * description  { Getting All Position Count For District From Database }
-	 */
-	public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId){
+	 *//*
+	public List<NominatedPostDashboardVO> getPositionsForDistrict(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long districtId, String locationLevelName){
 		
 		List<NominatedPostDashboardVO> returnList = new ArrayList<NominatedPostDashboardVO>();
 		try{
@@ -676,7 +815,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 			LOG.error("Exception Occured in getPositionsForDistrict() of NominatedPostMainDashboardService", e);
 		}
 		return returnList;
-	}
+	}*/
 	/**
 	 * @Author  Santosh
 	 * @Version NominatedPostMainDashboardService.java  Aug 2, 2016 06:50:00 PM 
