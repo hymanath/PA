@@ -387,9 +387,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 								str+='</div>';
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 									str+='<label>Position</label>';
-									str+='<select class="chosenSelect" id="positionAnyId'+i+'">';
+									str+='<select class="chosenSelect" id="positionAnyId'+i+'" onchange="checkPositionAvailableOrNot('+i+')">';
 										str+='<option value="0">Select Position</option>';
 									str+='</select>';
+									str+='<b><span id="errorMsg'+i+'" style="color:red"></span></b>';
 								str+='</div>';
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 									str+='<label>Select Status</label>';
@@ -990,7 +991,32 @@ function buildDepartmentDetails(result,divId){
 	str+='</table>';
 	$("#"+divId).html(str);
 }
-
+function checkPositionAvailableOrNot(num){
+		var positionName = $("#positionAnyId"+num).find(":selected").text();
+	 
+	 var jsObj={
+		departmentId:$("#departmentAnyId"+num).val(),
+		boardId     : $("#boardAnyId"+num).val(),
+		positionId  : 5,
+		boardLevelId:parseInt('${param.lId}'),
+		searchLevelId:parseInt('${param.searchLevelId}'),
+		searchLevelValue : parseInt('${param.searchLevelValue}')
+	}
+	
+	$.ajax({
+          type:'GET',
+          url: 'checkPositionAvailableOrNotAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    if(result.message != null && result.message == "NOT AVAILABLE"){
+		  $("#updateStatusAnyId").hide();
+		  $("#errorMsg"+num).html("This&nbsp;&nbsp;"   +positionName+  "&nbsp;&nbsp;posts are already filled out.");
+	   }else if(result.message != null && result.message == "AVAILABLE"){
+		  $("#updateStatusAnyId").show(); 
+	   }
+   });
+}
 function tableResponsive()
 {
   var getWidth = $(window).width();
@@ -1003,6 +1029,7 @@ function tableResponsive()
 		
 		window.location.replace("nominatedPostManagementAction.action?lId="+globalLevelId+"&stId="+globalStatusId+"&sts="+globalStatusMainName+"&levelTxt="+globalLevelTxt+"");
 	});
+	
 </script>
 </body>
 </html>
