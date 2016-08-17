@@ -100,6 +100,16 @@ var headBrdId='${param.brdName}';
 var globalPosName='${param.posName}';
 var globalStats='${param.sts}';
 
+if(globalDeptName ==null || globalDeptName.trim().length==0){
+	globalDeptName  = "ANY";
+}
+if(headBrdId ==null || headBrdId.trim().length==0){
+	headBrdId = "ANY";
+}
+if(globalPosName == null || globalPosName.trim().length==0){
+	globalPosName = "ANY";
+}
+
 var globalPositionId = parseInt('${param.positionId}');
 var globalDeptId = parseInt('${param.deptId}');
 var globalBoardId = parseInt('${param.boardId}');
@@ -119,8 +129,8 @@ var globalSearchLevelValue = parseInt('${param.searchLevelValue}');
 	}
 	
 if(globalPositionId == 0)
-	globalStats =" <b class='text-success'  style='text-transform:uppercase;' >  ANY </b> POST   "+globalPosName+" ";
-else if(globalStats == "readyToShortList")
+	globalStats =" <b class='text-success'  style='text-transform:uppercase;' >  ANY </b> POST ";
+if(globalStats == "readyToShortList")
 	globalStats =" SHORTLISTING  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
 else if(globalStats == "positionLink")
 	globalStats =" Linking  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
@@ -128,7 +138,12 @@ else if(globalStats == "positionLink")
 $("#headPosId").html(globalStats+" ");
 $("#headBrdId").html(headBrdId+" board");
 
-$("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
+if(globalDeptName !=null && globalDeptName.length>0){
+	$("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
+}else{
+	$("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+ANY+" department</li>");
+}
+
 $('[data-toggle="tooltip"]').tooltip();
 /*var globalDistrictArr=[];
 var globalAssmblyArr=[];
@@ -851,6 +866,8 @@ getNominatedPostPostionDetails();
 getBoardWiseNominatedPostMemberDetails();
 function getNominatedPostPostionDetails(){
 $('#positionDivId').html(' <img style="margin-left: 400px; margin-top: 20px; width: 20px; height: 20px;" id="" class="offset7" src="images/search.gif">');
+
+var positionId=parseInt('${positionId}');
 	var jsObj=
 	   {	
 			depmtId:parseInt('${deptId}'),
@@ -868,11 +885,11 @@ $('#positionDivId').html(' <img style="margin-left: 400px; margin-top: 20px; wid
 	   }).done(function(result){
 		  // getBoardWiseNominatedPostMemberDetails();
 		  if(result != null){
-			  buildNominatePostPositionDetails(result);
+			  buildNominatePostPositionDetails(result,positionId);
 		  }
 	   });  
 }
-function buildNominatePostPositionDetails(result){
+function buildNominatePostPositionDetails(result,positionId){
 	 var str='';
 		   if(result !=null && result.length>0){
 			   	str+='<table class="table table-bordered bg_ff" id="nominatePositionDetilsId">';
@@ -900,38 +917,65 @@ function buildNominatePostPositionDetails(result){
 			   //console.log(result);
 
 			   for(var i in result){
-					if(result[i].id != null && result[i].id > 0){
-						str+='<tr>';
-						str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
-						//str+='<td>02</td>';
-						str+='<td>'+result[i].receivedCount+'</td>';
-						str+='<td>'+result[i].shortListedCount+'</td>';
-						for(var j in result[i].idNameVoList){
-						str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+				   
+				   //alert(i);
+				   
+				   if(positionId !=null && positionId>0){
+						if(result[i].id != null && result[i].id > 0){
+							str+='<tr>';
+							str+='<td><p>THIS POST</p><small>Requested for this post members shortlisted</small></td>';
+							//str+='<td>02</td>';
+							str+='<td>'+result[i].receivedCount+'</td>';
+							str+='<td>'+result[i].shortListedCount+'</td>';
+							for(var j in result[i].idNameVoList){
+							str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+							}
+							str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+							str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+							str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+							str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+							str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
+							str+='</tr>';
 						}
-						str+='<td>'+result[i].firstAgeGroupCount+'</td>';
-						str+='<td>'+result[i].secondAgeGroupCount+'</td>';
-						str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
-						str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
-						str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-						str+='</tr>';
-					}
-					else {
-						str+='<tr>';
-						str+='<td><p>ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
-						//str+='<td>02</td>';
-						str+='<td>'+result[i].receivedCount+'</td>';
-						str+='<td>'+result[i].shortListedCount+'</td>';
-						for(var j in result[i].idNameVoList){
-						str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+						else {
+							str+='<tr>';
+							str+='<td><p>ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
+							//str+='<td>02</td>';
+							str+='<td>'+result[i].receivedCount+'</td>';
+							str+='<td>'+result[i].shortListedCount+'</td>';
+							for(var j in result[i].idNameVoList){
+							str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+							}
+							str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+							str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+							str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+							str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+							str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
+							str+='</tr>';
 						}
-						str+='<td>'+result[i].firstAgeGroupCount+'</td>';
-						str+='<td>'+result[i].secondAgeGroupCount+'</td>';
-						str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
-						str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
-						str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
-						str+='</tr>';
-					}
+				   }else{
+					   
+					   //alert(i+"22");
+					   
+					   if(result[i].id == null || result[i].id ==0){
+						   //alert(i+"22"+i); 
+						   str+='<tr>';
+								str+='<td><p>ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
+								//str+='<td>02</td>';
+								str+='<td>'+result[i].receivedCount+'</td>';
+								str+='<td>'+result[i].shortListedCount+'</td>';
+								for(var j in result[i].idNameVoList){
+								str+='<td>'+result[i].idNameVoList[j].count+'</td>';
+								}
+								str+='<td>'+result[i].firstAgeGroupCount+'</td>';
+								str+='<td>'+result[i].secondAgeGroupCount+'</td>';
+								str+='<td>'+result[i].thirdAgeGroupCount+'</td>';
+								str+='<td>'+result[i].fourthAgeGroupCount+'</td>';
+								str+='<td>'+result[i].fifthAgeGroupCount+'</td>';
+							str+='</tr>';
+					   }
+							
+				   }
 				}
 			   
 			   $("#positionDivId").html(str);
