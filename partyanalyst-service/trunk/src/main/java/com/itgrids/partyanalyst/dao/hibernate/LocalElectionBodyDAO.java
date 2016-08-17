@@ -255,4 +255,9 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		return getHibernateTemplate().find("select model.localElectionBodyId, model.name,model.electionType.electionType from " +
 				"LocalElectionBody model where model.electionType.electionTypeId = 7 and model.district.districtId = ?", districtId);
 	}
+  public List<Object[]> getAllLocalElectionBodyList(Long stateId){
+		Query query = getSession().createQuery("select distinct model.localElectionBodyId, model.name from LocalElectionBody model where model.district.state.stateId =:stateId "); 
+		query.setParameter("stateId", stateId);
+		return query.list();  
+	}
 }

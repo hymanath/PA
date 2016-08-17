@@ -1896,6 +1896,11 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameterList("constituencyIds",constituencyIds);
 		return query.list();
 	}
+	public List<Object[]> getAllConstituencyList(Long stateId){
+		Query query = getSession().createQuery(" select distinct model.constituencyId,model.name from Constituency model where model.state.stateId =:stateId ");
+		query.setParameter("stateId",stateId);
+		return query.list();
+	}
 	
 }
 
