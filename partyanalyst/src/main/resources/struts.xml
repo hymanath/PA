@@ -13394,6 +13394,10 @@
    			<param name="root">resultStatus</param>
    		</result>
 	</action>
-	
+	<action name="checkPositionAvailableOrNotAction" class="nominatedPostProfileAction" method="checkPositionAvailableOrNot">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action>
 </package>
 </struts>

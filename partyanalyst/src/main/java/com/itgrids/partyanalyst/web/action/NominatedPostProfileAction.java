@@ -1559,4 +1559,22 @@ public String execute()
 		
 		return Action.SUCCESS;
 	}
+	
+	public String checkPositionAvailableOrNot(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("departmentId");
+			Long boardId = jObj.getLong("boardId");
+			Long positionId = jObj.getLong("positionId");
+			Long boardLevlId = jObj.getLong("boardLevelId");
+			Long searchLevelValue = jObj.getLong("searchLevelValue");
+			Long searchLevelId = jObj.getLong("searchLevelId");
+			//String status = jObj.getString("statuss");
+			
+			  resultStatus = nominatedPostProfileService.checkPositionAvailableOrNot(departmentId,boardId,positionId,boardLevlId,searchLevelValue,searchLevelId);			
+		}catch(Exception e){
+			LOG.error("Entered into checkPositionAvailableOrNot Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
