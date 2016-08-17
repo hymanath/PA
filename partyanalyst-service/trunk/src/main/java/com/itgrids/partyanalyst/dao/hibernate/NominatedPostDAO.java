@@ -554,7 +554,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    	if(boardLevelId.longValue() !=5L)
 		    		queryStr.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId");
 		    	else
-		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,7)");
+		    		 queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6)");
 		    	//if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
 				//    queryStr.append(" and model.nominatedPostMember.locationValue =:searchLevelValue ");
 		    }
