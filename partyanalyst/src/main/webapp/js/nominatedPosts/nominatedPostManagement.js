@@ -330,6 +330,8 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 							 str+='<div class="panel panel-default">';
 								/* str+='<div class="panel-heading boardWiseDetailsCls" role="tab" id="headingOne'+i+''+j+'" attr_levelId='+levelId+' attr_levelValue='+levelValues+' attr_deptId='+result[i].id+' attr_boardId='+result[i].idnameList[j].id+' attr_id="boardDivBodyId'+i+''+j+'">'; */
 								
+								//str+='<div class="panel-heading boardWiseDetailsCls panel_heading_color" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
+								
 								str+='<div class="panel-heading boardWiseDetailsCls panel_heading_color" role="tab" id="headingOne'+i+''+j+'" attr_deptId='+result[i].id+' attr_dept_name="'+result[i].name+'" attr_boardId='+result[i].idnameList[j].id+' attr_board_name="'+result[i].idnameList[j].name+'" attr_id="boardDivBodyId'+i+''+j+'" attr_searchId="boardDivBodySearchId'+i+''+j+'">';
 								
 									str+='<a role="button" data-toggle="collapse" class="tabCollapseIcon " data-parent="#accordion'+i+''+i+'" href="#collapseOne'+i+''+j+'" aria-expanded="true" aria-controls="collapseOne">';
@@ -515,9 +517,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 	if(result !=null && result.length>0){
 		if(globalStatus !=null && globalStatus.length>0 &&
 		(globalStatus != "notRecieved" && globalStatus != "Total")){
-				str+='<table class="table table-bordered tableCollapse">';
+				str+='<table class="table table-bordered tableCollapse text-capital">';
 					str+='<thead>';
-							str+='<th>Posts</th>';					
+							str+='<th>Position</th>';					
 							str+='<th>Total Positions</th>';					
 							str+='<th>Total Positions Available</th>';//Open Status					
 							str+='<th>Total Applications Received </th>';					
@@ -535,7 +537,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							
 							str+='<th>Final Review</th>';
 							str+='<th>Finalized</th>';
-							str+='<th>G/O Passed/ Position Completed</th>';
+							str+='<th>G.O  Passed</th>';
 							
 							
 							/* if(result!=null &&result[0].idNameVoList !=null && result[0].idNameVoList.length>0){
@@ -548,7 +550,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							}else{
 								str+='<th>Final Review</th>';
 								str+='<th>Finalized</th>';
-								str+='<th>G/O Passed/ Position Completed</th>';
+								str+='<th>G.O  Passed/ Position Completed</th>';
 							} */
 							
 					str+='</thead>';
@@ -556,6 +558,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 				str+='<tbody>';
 				for(var i in result){
 					
+					if(result[i].receivedCount > 0){
 					var availablePosts = 0;
 					var readyForFinalReview= 0;
 					var finalized = 0;
@@ -604,7 +607,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
 							}					
 						}else{
-								str+='<td><label>Any Post</td>';
+								str+='<td><label>Any Position</td>';
 						}
 								if(totalPositions >0){
 									str+='<td>'+totalPositions+'</td>';
@@ -667,6 +670,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}
 								
 						str+='</tr>';
+					}
 				}		
 				str+='</tbody>';
 				str+='</table>';
@@ -676,7 +680,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 			
 				str+='<table class="table table-bordered tableCollapse">';
 					str+='<thead>';
-							str+='<th>Posts</th>';					
+							str+='<th>Position</th>';					
 							str+='<th>Total Positions</th>';					
 							
 					str+='</thead>';
@@ -699,9 +703,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 				str+='</table>';
 			
 		}else{
-			str+='<table class="table table-bordered tableCollapse">';
+			str+='<table class="table table-bordered tableCollapse text-capital">';
 					str+='<thead>';
-							str+='<th>Posts</th>';					
+							str+='<th>Position</th>';					
 							str+='<th>Total Positions</th>';					
 							str+='<th>Total Positions Available</th>';//Open Status					
 							str+='<th>Total Applications Received </th>';					
@@ -710,7 +714,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Shortlisted</th>';
 							str+='<th>Final Review</th>';
 							str+='<th>Finalized</th>';
-							str+='<th>G/O Passed/ Position Completed</th>';							
+							str+='<th>G.O  Passed</th>';							
 					str+='</thead>';
 					
 				str+='<tbody>';
@@ -1385,9 +1389,9 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	}
 	
 	if(isDataAvaialable){
-	 str+='<table class="table table-bordered tableFontSize">';
+	 str+='<table class="table table-bordered tableFontSize text-capital">';
 		  str+='<thead class="text-capital" style="background-color:#EFF3F4;">';// class="text-capital"
-		  str+='<th>Post Name </th>';
+		  str+='<th>Position  </th>';
 		  str+='<th>Total Applications Received </th>';
 		 // str+='<th>Reports Pending</th>';
 		  str+='<th>Position Linked</th>';
@@ -1398,6 +1402,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		  str+='<th>Position Linked & Finalized</th>';
 	      str+='</thead>';		  
 	  str+='<tbody>';
+	 
 		for(var i in result){
 			var readyToShortListedCnt = 0;
 			var pstnLnkedAndRjctdCnt = 0;
@@ -1432,10 +1437,13 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 					else
 						pstnLnkedAndFinalized = result[i].pstnLnkedAndFinalized;
 								
-					readyToShortListedCnt = readyToShortListedCnt - (pstnLnkedAndFinalized+pstnLnkedAndFinalReview+pstnLnkedAndShrtLstdCnt+pstnLnkedAndRjctdCnt);
+					readyToShortListedCnt = result[i].totalApplicationReceivedCnt - (pstnLnkedAndFinalized+pstnLnkedAndFinalReview+pstnLnkedAndShrtLstdCnt+pstnLnkedAndRjctdCnt);
 					
 					str+='<tr class="bg_ff">';
-					str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
+					if(result[i].name == "Any Post" )
+						str+='<td id="'+result[i].id+'"> Any Position  </td>';
+					else
+						str+='<td id="'+result[i].id+'">'+result[i].name+' </td>';
 					/*if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0)
 						str+='<td class="anyDeptBrdCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" style="color:green;font-weight:bold;cursor:pointer;">'+result[i].totalApplicationReceivedCnt+'</td>';
 					else*/
@@ -1469,20 +1477,81 @@ function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,bo
 		}
 	}
 	if(isDataAvaialable){
-	 str+='<table class="table table-bordered">';
-		  str+='<thead class="text-capital" style="background-color:#eee;">';
-		  str+='<th>Posts</th>';
-		  str+='<th>Total Applications Received </th>';
-		 // str+='<th>Reports Pending</th>';
-		  str+='<th>Position Linked</th>';
-		  str+='<th>Ready To Shortlist</th>';
-		  str+='<th>Position Linked & Rejected</th>';
-		  str+='<th>Position Linked & Shortlisted</th>';
-		  str+='<th>Position Linked & FinalReview</th>';
-		  str+='<th>Position Linked & Finalized</th>';
+	 str+='<table class="table table-bordered text-capital">';
+		  str+='<thead class="text-capital" style="background-color:#eee;font-size:11px">';
+		  str+='<td>Position</td>';
+		  str+='<td>Total Applications Received </td>';
+		 // str+='<td>Reports Pending</td>';
+		  str+='<td>Position Linked</td>';
+		  str+='<td>Ready To Shortlist</td>';
+		  str+='<td>Position Linked & Rejected</td>';
+		  str+='<td>Position Linked & Shortlisted</td>';
+		  str+='<td>Position Linked & FinalReview</td>';
+		  str+='<td>Position Linked & Finalized</td>';
 	      str+='</thead>';		  
 	  str+='<tbody>';
+	  
 		for(var i in result){
+			
+			
+			var readyToShortListedCnt = 0;
+			var pstnLnkedAndRjctdCnt = 0;
+			var pstnLnkedAndShrtLstdCnt = 0;
+			var pstnLnkedAndFinalReview = 0;
+			var pstnLnkedAndFinalized = 0;
+			
+				if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0){
+					
+					if(result[i].readyToShortListedCnt == 0)
+						readyToShortListedCnt = result[i].totalApplicationReceivedCnt;
+					else
+						readyToShortListedCnt = result[i].readyToShortListedCnt;
+					
+					if(pstnLnkedAndRjctdCnt>0)
+						pstnLnkedAndRjctdCnt = (readyToShortListedCnt - pstnLnkedAndRjctdCnt);
+					else
+						pstnLnkedAndRjctdCnt = result[i].pstnLnkedAndRjctdCnt;
+					
+					if(pstnLnkedAndShrtLstdCnt>0)
+						pstnLnkedAndShrtLstdCnt = (readyToShortListedCnt - pstnLnkedAndShrtLstdCnt);
+					else
+						pstnLnkedAndShrtLstdCnt = result[i].pstnLnkedAndShrtLstdCnt;
+					
+					if(pstnLnkedAndFinalReview>0)
+						pstnLnkedAndFinalReview = (readyToShortListedCnt - pstnLnkedAndFinalReview);
+					else
+						pstnLnkedAndFinalReview = result[i].pstnLnkedAndFinalReview;
+					
+					if(pstnLnkedAndFinalized>0)
+						pstnLnkedAndFinalized = (readyToShortListedCnt - pstnLnkedAndFinalized);
+					else
+						pstnLnkedAndFinalized = result[i].pstnLnkedAndFinalized;
+								
+					readyToShortListedCnt = result[i].totalApplicationReceivedCnt - (pstnLnkedAndFinalized+pstnLnkedAndFinalReview+pstnLnkedAndShrtLstdCnt+pstnLnkedAndRjctdCnt);
+					
+					str+='<tr class="bg_ff">';
+					if(result[i].name == "Any Post" )
+						str+='<td id="'+result[i].id+'"> Any Position  </td>';
+					else
+						str+='<td id="'+result[i].id+'">'+result[i].name+' </td>';
+					/*if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0)
+						str+='<td class="anyDeptBrdCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" style="color:green;font-weight:bold;cursor:pointer;">'+result[i].totalApplicationReceivedCnt+'</td>';
+					else*/
+					str+='<td>'+result[i].totalApplicationReceivedCnt+'</td>';
+					str+='<td>'+result[i].positionLinkedCnt+'</td>';
+					
+					if(readyToShortListedCnt >0)
+						str+='<td class="anyDeptBrdCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" style="color:green;font-weight:bold;cursor:pointer;"> <u><b>'+readyToShortListedCnt+'</b></u></td>';
+					else
+						str+='<td>'+readyToShortListedCnt+'</td>';
+						str+='<td>'+pstnLnkedAndRjctdCnt+'</td>';					
+						str+='<td>'+pstnLnkedAndShrtLstdCnt+'</td>';
+						str+='<td>'+pstnLnkedAndFinalReview+'</td>';
+						str+='<td>'+pstnLnkedAndFinalized+'</td>';
+					str+='</tr>';
+				}
+			 
+			/*
 				if(result[i].totalApplicationReceivedCnt){
 					str+='<tr class="bg_ff">';
 					str+='<td id="'+result[i].id+'">'+result[i].name+'</td>';
@@ -1521,7 +1590,7 @@ function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,bo
 						str+='<td> - </td>';
 					
 					str+='</tr>';
-				}				
+				}	*/			
 			 }
 	    str+='</tbody>';	 
 		str+='</table>';
