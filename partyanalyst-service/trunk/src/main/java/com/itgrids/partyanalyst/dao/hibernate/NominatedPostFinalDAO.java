@@ -323,15 +323,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and ");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId not in (2,4) and ");
-			sb.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and ");
+			sb.append(" model.applicationStatus.applicationStatusId  in (3,5,6,7) and ");
 		}else{
-			if(applStatusId != null && applStatusId.longValue()==1l){ //shortListed Application
-				sb.append(" model.applicationStatus.applicationStatusId=3 and ");
-			}else{
-			   sb.append("  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId=:postStatusId and");
-			}
+			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
+		
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
 		}
@@ -377,14 +373,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and ");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId not in (2,4) and ");
-			sb.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and ");
+			sb.append(" model.applicationStatus.applicationStatusId  in (3,5,6,7) and ");
 		}else{
-			if(applStatusId != null && applStatusId.longValue()==1l){ //shortListed Application
-				sb.append(" model.applicationStatus.applicationStatusId=3 and ");
-			}else{
-			   sb.append("  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId=:postStatusId and");
-			}
+			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
 		 if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
@@ -433,14 +424,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId not in (2,4) and ");
-			sb.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and ");
+			sb.append(" model.applicationStatus.applicationStatusId  in (3,5,6,7) and ");
 		}else{
-			if(applStatusId != null && applStatusId.longValue()==1l){ //shortListed Application
-				sb.append(" model.applicationStatus.applicationStatusId=3 and ");
-			}else{
-			   sb.append("  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId=:postStatusId and");
-			}
+			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
@@ -490,14 +476,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId not in (2,4) and ");
-			sb.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and ");
+			sb.append(" model.applicationStatus.applicationStatusId  in (3,5,6,7) and ");
 		}else{
-			if(applStatusId != null && applStatusId.longValue()==1l){ //shortListed Application
-				sb.append(" model.applicationStatus.applicationStatusId=3 and ");
-			}else{
-			   sb.append("  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId=:postStatusId and");
-			}
+			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
@@ -562,14 +543,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId not in (2,4) and ");
-			sb.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and ");
+			sb.append(" model.applicationStatus.applicationStatusId  in (3,5,6,7) and ");
 		}else{
-			if(applStatusId != null && applStatusId.longValue()==1l){ //shortListed Application
-				sb.append(" model.applicationStatus.applicationStatusId=3 and ");
-			}else{
-			   sb.append("  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId=:postStatusId and");
-			}
+			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
@@ -634,15 +610,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId not in (2,4) and ");
-			sb.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId in (2,3,4) and ");
+			sb.append(" model.applicationStatus.applicationStatusId  in (3,5,6,7) and ");
 		}else{
-			if(applStatusId != null && applStatusId.longValue()==1l){ //shortListed Application
-				sb.append(" model.applicationStatus.applicationStatusId=3 and ");
-			}else{
-			   sb.append("  model.nominatedPost.nominatedPostStatus.nominatedPostStatusId=:postStatusId and");
-			}
+			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
+		
 		if(stateId != null && stateId.longValue() > 0){
 			 sb.append("  model.nominatedPostMember.address.state.stateId=:stateId and ");
 		}
