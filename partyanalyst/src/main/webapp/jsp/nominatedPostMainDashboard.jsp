@@ -259,10 +259,10 @@
                     	<label>Position Status</label>
                         <select class="chosenSelect" id="positionStatusId">
                         	<option value="0">ALL</option>  
-							<option value="1">SHORT LISTED</option>
-							<option value="2">READY TO FINAL REVIEW</option>
-							<option value="3">FINALIZED</option>
-							<option value="4">G.O ISSUED</option>  
+							<option value="3">SHORT LISTED</option>
+							<option value="6">READY TO FINAL REVIEW</option>
+							<option value="5">FINALIZED</option>
+							<option value="7">G.O ISSUED</option>  
                         </select>
                     </div>
 					
