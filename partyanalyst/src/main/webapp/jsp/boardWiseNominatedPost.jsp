@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>BOARD WISE NOMINATED POSTS</title>
+<title>Board wise nominated posts</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
