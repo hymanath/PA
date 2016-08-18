@@ -33,7 +33,7 @@ public interface INominatedPostProfileService {
 	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue,Long searchLevelId);
 	public ResultStatus saveNominatedPostUploadFiles(Map<File,String> mapfiles,Long nomiPostCandiId);
 	public ResultStatus deleteNominatedUploadedFile(String acitivityInfoDocId);
-	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
+	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId,String type);
 	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId);
 	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValue,String statusType,String task,Long searchlevelId,Long searchLevelValue);
 	public List<NominatedPostVO> getDepartmentWiseBoardAndPositionDetails(Long boardLevelId,List<Long> levelValues,List<Long> deptIds,List<Long> boardIds,String statusType,String task);

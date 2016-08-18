@@ -56,6 +56,9 @@ public class NomintedPostMemberVO {
 	private String cadreGen;
 	private String publicReprStr;
 	
+	private Long appliedCount=0l;
+	private Long shortListedCount=0l;
+	
 	
 	public String getPublicReprStr() {
 		return publicReprStr;
@@ -298,4 +301,18 @@ public class NomintedPostMemberVO {
 	public void setReferCandCount(Long referCandCount) {
 		this.referCandCount = referCandCount;
 	}
+	public Long getAppliedCount() {
+		return appliedCount;
+	}
+	public void setAppliedCount(Long appliedCount) {
+		this.appliedCount = appliedCount;
+	}
+	public Long getShortListedCount() {
+		return shortListedCount;
+	}
+	public void setShortListedCount(Long shortListedCount) {
+		this.shortListedCount = shortListedCount;
+	}
+	
+	
 }

@@ -50,4 +50,6 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public Long getTotalApplicationsByLocation(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId);
 	 public List<Object[]> getShortlistedCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 				Long locationValue,String type,Long searchLevelId);
+	 public List<Object[]> getShortlistedApplicationDetailsOfCandidate(Set<Long> candidateIds);
+	 public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 }
