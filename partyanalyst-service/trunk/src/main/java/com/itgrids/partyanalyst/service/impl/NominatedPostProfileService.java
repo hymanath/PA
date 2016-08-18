@@ -4885,6 +4885,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			if(commonMethodsUtilService.isMapValid(positionMap)){
 				for (Map.Entry<Long, NominatedPostDashboardVO> entry : positionMap.entrySet()){
 					NominatedPostDashboardVO posvo = entry.getValue();
+					if(posvo != null){
 					List<NominatedPostDashboardVO> ageList = posvo.getApplicatnStatsList();
 					NominatedPostDashboardVO totalvo = new NominatedPostDashboardVO();
 					totalvo.setId(posvo.getId());
@@ -4898,6 +4899,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						}
 					}
 					ageList.add(0,totalvo);
+					}
 				}
 			}
 			returnList = new ArrayList<NominatedPostDashboardVO>(positionMap.values());
