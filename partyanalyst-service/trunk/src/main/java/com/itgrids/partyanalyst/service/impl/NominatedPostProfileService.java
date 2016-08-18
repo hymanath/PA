@@ -4840,18 +4840,18 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		try {
 			Map<Long,NominatedPostDashboardVO> positionMap = new LinkedHashMap<Long, NominatedPostDashboardVO>();
 			
-			if(positionId != null && positionId.longValue() > 0l){
+		/*	if(positionId != null && positionId.longValue() > 0l){
 				List<Object[]> list = positionDAO.getAllPositions();
 				if(commonMethodsUtilService.isListOrSetValid(list)){
 					for (Object[] obj : list) {
 						//NominatedPostDashboardVO vo = new NominatedPostDashboardVO();
 						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-						/*vo.setId(id);
-						vo.setName(obj[1] != null ? obj[1].toString():"");*/
+						vo.setId(id);
+						vo.setName(obj[1] != null ? obj[1].toString():"");
 						positionMap.put(id, null);
 					}
 				}
-			}
+			}*/
 			
 			//0.positionId,1.position,2.ageId,3.age,4.gender,5.count.
 			List<Object[]> list = nominatedPostFinalDAO.getCasteWisePositionsCountsByPosition(positionId, levelId, deptId, boardId, casteGroupId, applStatusId, casteId,stateId);
