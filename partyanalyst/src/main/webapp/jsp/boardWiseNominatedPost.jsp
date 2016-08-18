@@ -655,6 +655,9 @@ function getBoardsForDepartments(num){
 }
 
 function getPositionsForBoard(num){
+	
+	$("#errorMsg"+num).html('');
+	
 	$("#positionAnyId"+num+" option").remove();
 	 $("#updatedStatusAnyId"+num).val(0);
 	 $("#statusCommentAnyId"+num).html('');
@@ -1036,12 +1039,13 @@ function buildDepartmentDetails(result,divId){
 	$("#"+divId).html(str);
 }
 function checkPositionAvailableOrNot(num){
-		var positionName = $("#positionAnyId"+num).find(":selected").text();
-	 
+	
+	var positionName = $("#positionAnyId"+num).find(":selected").text();
+		 
 	 var jsObj={
 		departmentId:$("#departmentAnyId"+num).val(),
 		boardId     : $("#boardAnyId"+num).val(),
-		positionId  : 5,
+		positionId  : $("#positionAnyId"+num).val(),
 		boardLevelId:parseInt('${param.lId}'),
 		searchLevelId:parseInt('${param.searchLevelId}'),
 		searchLevelValue : parseInt('${param.searchLevelValue}')
