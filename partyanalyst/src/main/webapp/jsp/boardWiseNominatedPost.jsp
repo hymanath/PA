@@ -12,6 +12,7 @@
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 .tableShort thead th:nth-child(1)
 {
@@ -93,6 +94,8 @@
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript">
 var globalLevelTxt = '${param.levelTxt}';
 var globalDeptName = '${param.deptName}'; 
@@ -183,11 +186,13 @@ $(document).on("click",".closeIcon",function(e){
 });
 $(document).on("click",".appliedCount",function(e){
 	$(".appliedPostPopup").hide();
-	$(this).closest('tr').find(".appliedPostPopup").show();
+	$(this).closest('td').find(".appliedPostPopup").show();
+	$(this).closest('td').find(".appliedPostPopupArrow").html(' ');
 	e.stopPropagation();
 	var candidateId = $(this).attr("attr_cand_id");
 	var divId = $(this).attr("attr_divId");
-getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId);
+	var searchType = $(this).attr("attr_type");
+	getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType);
 });
 var gblDeptId = '${deptId}';
 var gblBoardId = '${boardId}';
@@ -235,7 +240,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 			str+='<th>Sub Caste</th>';
 			str+='<th>Designations</th>';
 			str+='<th style="width:90px">Reports</th>';
-			str+='<th>Applied Any Dep/Corp</th>';
+			str+='<th>Applied in Any Dep/Corp</th>';
 			str+='<th>Reference</th>';
 			str+='<th>Shortlisted in any dep/ Corp</th>';
 			str+='<th>Status</th>';
@@ -324,8 +329,8 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='</td>';
 				}
 				str+='<td style="position:relative" class="text-center">';
-				if(result.subList[i].otherDepartmentsCount != null && result.subList[i].otherDepartmentsCount > 0)
-					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" style="font-weight:bold;color:green;">'+result.subList[i].otherDepartmentsCount+'</span>';
+				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
+					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
 				else
 					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
@@ -337,10 +342,19 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" style="font-weight:bold;color:green;cursor:pointer;" >'+result.subList[i].referCandCount+'</a></td>';
 				else
 					str+='<td> - </td>';
-				if(result.subList[i].otherDeptShortListed != null && result.subList[i].otherDeptShortListed == 'YES')
-					str+='<td>'+result.subList[i].otherDeptShortListed+'</td>';
-				else
-					str+='<td> NO </td>';
+				str+='<td style="position:relative" class="text-center">';
+					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
+						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
+					
+						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
+					else
+						str+='<span> NO </span>';
+						str+='<div class="appliedPostPopup">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'">';
+							str+='</div>';
+						str+='</div>';
+					
+				str+='</td>';
 				str+='<td>'+result.subList[i].status+'</td>';
 				str+='<td style="position:relative;">';
 				if(type == "this"){
@@ -365,9 +379,9 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				else if(type == "any"){
 					
 					if(globalPositionId>0 && globalDeptId >0 && globalBoardId>0)
-						str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">ASSIGN THIS POSITION</button>';
+						str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">UPDATE</button>';
 					
-					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'" attr_applctnId="'+result.subList[i].nominatePostApplicationId+'">ASSIGN A POSITION</button>';
+					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'" attr_applctnId="'+result.subList[i].nominatePostApplicationId+'">UPDATE</button>';
 					str+='<div class="updateDropDownThisAny" id="updateDropDownThisAny'+i+'">';
 						str+='<div class="updateDropDownArrow">';
 						str+='<div class="text-success" id="successDivThisAnyId'+i+'"></div>';
@@ -988,11 +1002,13 @@ function buildNominatePostPositionDetails(result,positionId){
 			   $("#positionDivId").html(str);
 		   }
 }
-function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId){
+function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType){
+	
 	var jsObj=
-	   {				
-		candidateId:candidateId
-		}
+	{				
+		candidateId:candidateId,
+		searchType:searchType
+	}
     $.ajax({
           type:'GET',
           url: 'getBrdWisNominPstAppliedDepOrCorpDetailsAction.action',
@@ -1009,6 +1025,7 @@ function buildDepartmentDetails(result,divId){
 	var str='';
 	
 	//str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
+	str+='<div id="tableScrollId">';
 	str+='<table class="table table-condensed">';
 		str+='<thead style="background-color:#f4f4f4;" class="text-capital">';
 			str+='<th>Level</th>';
@@ -1040,7 +1057,12 @@ function buildDepartmentDetails(result,divId){
 		}
 		str+='</tbody>';
 	str+='</table>';
+	str+='</div>';
 	$("#"+divId).html(str);
+	if(result.length > 5)
+	{
+		$("#tableScrollId").mCustomScrollbar({setHeight: '200px'})
+	}
 }
 function checkPositionAvailableOrNot(num){
 	
