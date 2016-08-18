@@ -1807,5 +1807,41 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	
+	public List<Object[]> getShortlistedApplicationDetailsOfCandidate(Set<Long> candidateIds){
+		
+		Query query = getSession().createQuery(" select model.nominationPostCandidateId,count(distinct model.nominatedPostApplicationId)" +
+				" from  NominatedPostApplication model " +
+				" where model.nominationPostCandidateId in (:candidateIds) " +
+				" and model.isDeleted ='N'" +
+				" and model.applicationStatus.status=:shortlisted" +
+				" group by model.nominationPostCandidateId ");
+		
+		query.setParameterList("candidateIds", candidateIds);
+		query.setParameter("shortlisted", IConstants.SHORTLISTED_STATUS);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
+	    
+	    Query query = getSession().createQuery( " select model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
+	    		"model.nominatedPostApplication.boardLevel.boardLevelId," +
+	    		"model.nominatedPostApplication.boardLevel.level,dept.departmentId," +
+	        " dept.deptName," +
+	        " board.boardId,board.boardName," +
+	        " position.positionId,position.positionName, " +
+	        " model.nominatedPostApplication.locationValue " +
+	        " from NominatedPostFinal model" +
+	        " left join model.nominatedPostApplication.departments dept" +
+	        " left join model.nominatedPostApplication.board board" +
+	        " left join model.nominatedPostApplication.position position " +
+	        " where model.nominationPostCandidateId = :candidateId " +
+	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
+	        " and model.applicationStatus.status =:shortListed ");
+	        
+	        query.setParameter("candidateId", candidateId);
+	        query.setParameter("shortListed",IConstants.SHORTLISTED_STATUS);
+	        return query.list();
+	  }
 	
 }

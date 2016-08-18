@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -873,9 +874,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        " left join model.board board" +
 	        " left join model.position position " +
 	        " where model.nominationPostCandidateId = :candidateId " +
-	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" );
+	      //  " and model.applicationStatus.status =:applied ");
 	        
 	        query.setParameter("candidateId", candidateId);
+	    
+	      //  query.setParameter("applied",IConstants.NOMINATED_APPLIED_STATUS);
 	        return query.list();
 	  }
 	public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType){
@@ -1514,10 +1518,26 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		return query.executeUpdate();
 	}
+	
 	public Object[] getBoardLevel(Long applicationId){
 		Query query = getSession().createQuery(" select model.boardLevel.boardLevelId,model.locationValue from NominatedPostApplication model where model.nominatedPostApplicationId = :applicationId and model.isDeleted='N' ");	
 	
 		query.setParameter("applicationId", applicationId);
 		return (Object[])query.uniqueResult();
+	}
+	
+	public List<Object[]> getApplicationDetailsOfCandidate(Set<Long> candidateIds){
+		
+		Query query = getSession().createQuery(" select model.nominationPostCandidateId,count(distinct model.nominatedPostApplicationId)" +
+				" from  NominatedPostApplication model " +
+				" where model.nominationPostCandidateId in (:candidateIds) " +
+				" and model.isDeleted ='N'" +
+				//" and model.applicationStatus.status=:applied" +
+				" group by model.nominationPostCandidateId ");
+		
+		query.setParameterList("candidateIds", candidateIds);
+		//query.setParameter("applied", IConstants.NOMINATED_APPLIED_STATUS);
+		
+		return query.list();
 	}
 }

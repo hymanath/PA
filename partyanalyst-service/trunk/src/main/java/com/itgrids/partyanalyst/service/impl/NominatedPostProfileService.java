@@ -759,13 +759,58 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				 }
 			}
-			 
-			 returnvo.setSubList(subList);
+			
+			
+			
+			//Applied And ShortlistedCounts Of candidate
+			if(commonMethodsUtilService.isListOrSetValid(nominatedPostCandidateIds)){				
+				Map<Long,Long> appliedCandidates = new HashMap<Long, Long>();
+				Map<Long,Long> shortListedCandidates = new HashMap<Long, Long>();
+				
+				List<Object[]> appliedCountOfCandidate = nominatedPostApplicationDAO.getApplicationDetailsOfCandidate(nominatedPostCandidateIds);	
+				
+				setStatusWiseCountsMap(appliedCountOfCandidate,appliedCandidates);
+				
+				List<Object[]> shortlistedCountCandidate= nominatedPostFinalDAO.getShortlistedApplicationDetailsOfCandidate(nominatedPostCandidateIds);
+				setStatusWiseCountsMap(shortlistedCountCandidate,shortListedCandidates);
+				
+				if(commonMethodsUtilService.isListOrSetValid(subList)){
+					for (NomintedPostMemberVO obj : subList) {						
+						if(obj.getNominatedPostCandidateId() !=null){							
+							if(commonMethodsUtilService.isMapValid(appliedCandidates)){								
+								obj.setAppliedCount(appliedCandidates.get(obj.getNominatedPostCandidateId()) !=null ? appliedCandidates.get(obj.getNominatedPostCandidateId()).longValue():0l);
+							}
+							if(commonMethodsUtilService.isMapValid(shortListedCandidates)){
+								obj.setShortListedCount(shortListedCandidates.get(obj.getNominatedPostCandidateId()) !=null ? shortListedCandidates.get(obj.getNominatedPostCandidateId()).longValue():0l);
+							}
+						}						
+					}
+				}				
+			}
+			
+			
+			returnvo.setSubList(subList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Exception Occured in getNominatedPostMemberDetails()", e);
 		}
 		return returnvo;
+	}
+	
+	public Map<Long,Long> setStatusWiseCountsMap(List<Object[]> appliedCountOfCandidate,Map<Long,Long> appliedCandidates){
+		
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(appliedCountOfCandidate)){					
+				for (Object[] obj : appliedCountOfCandidate) {
+					if(obj[0] !=null){
+						appliedCandidates.put((Long)obj[0], (Long)obj[1]);
+					}						
+				}					
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Occured in setStatusWiseCountsMap()", e);
+		}
+		return appliedCandidates;
 	}
 	
 	public List<IdNameVO> getReferCadreDetailsForCandidate(Long candidateId){
@@ -2561,13 +2606,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			return resultStatus;
 		}
-	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId){
+	public List<NominatedPostVO> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId,String type){
 		List<NominatedPostVO> returnVoList = new ArrayList<NominatedPostVO>();
 		try {
+			
+			List<Object[]> depOCorpList = new ArrayList<Object[]>(0);
 			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName
-			List<Object[]> DepOCorpList = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
-			if(DepOCorpList != null && DepOCorpList.size() > 0){
-				for (Object[] obj : DepOCorpList) {
+			if(type !=null && type.trim().equalsIgnoreCase("applied")){
+				depOCorpList = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
+			}else if(type !=null && type.trim().equalsIgnoreCase("shortlisted")){
+				depOCorpList = nominatedPostFinalDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
+			}
+			
+			if(depOCorpList != null && depOCorpList.size() > 0){
+				for (Object[] obj : depOCorpList) {
 					NominatedPostVO VO = new NominatedPostVO();	
 					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					VO.setLocationVal(commonMethodsUtilService.getLongValueForObject(obj[10]));

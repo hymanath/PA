@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -39,4 +40,5 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getRecord(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
 	public Integer updateApplicationStatusForGO(List<Long> nominatedPostApplicationIds,Date date);
 	public Object[] getBoardLevel(Long applicationId);
+	public List<Object[]> getApplicationDetailsOfCandidate(Set<Long> candidateIds);
 }
