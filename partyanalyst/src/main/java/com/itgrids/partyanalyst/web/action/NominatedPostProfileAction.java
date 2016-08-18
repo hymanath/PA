@@ -702,7 +702,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		try{
 			jObj = new JSONObject(getTask());
 			
-			nominatePostList = nominatedPostProfileService.getBrdWisNominPstAppliedDepOrCorpDetails(jObj.getLong("candidateId"));
+			nominatePostList = nominatedPostProfileService.getBrdWisNominPstAppliedDepOrCorpDetails(jObj.getLong("candidateId"),jObj.getString("searchType"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getBrdWisNominPstAppliedDepOrCorpDetails Action",e);
