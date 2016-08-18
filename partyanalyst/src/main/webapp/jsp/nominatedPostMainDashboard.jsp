@@ -182,7 +182,7 @@
                         	<div>
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab" role="tablist">
-                                <li role="presentation" class="active"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="0" class="castePositionCls" role="tab" data-toggle="tab">Overall</a></li>
+                                <li role="presentation" class="active"><a href="#overall" attr_href_id="overall" aria-controls="overall" attr_level_value="2" class="castePositionCls" role="tab" data-toggle="tab">Overall</a></li>
                                 <li role="presentation"><a href="#state" aria-controls="state" attr_href_id="state" role="tab" attr_level_value="2" class="castePositionCls" data-toggle="tab">State</a></li>
                                 <li role="presentation"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab">district</a></li>
                                 <li role="presentation"><a href="#constituency" aria-controls="constituency" attr_href_id="constituency" attr_level_value="4" class="castePositionCls" role="tab" data-toggle="tab">constituency</a></li>
@@ -206,7 +206,7 @@
 
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs navTabsSelection navTabSelectionSlick selectionTab" role="tablist">
-                                <li role="presentation" class="active"><a href="#overallCasteGroup" attr_href_id="overallCasteGroup" aria-controls="overallCasteGroup" attr_level_value="0" class="casteGroupCls" role="tab" data-toggle="tab">Overall</a></li>
+                                <li role="presentation" class="active"><a href="#overallCasteGroup" attr_href_id="overallCasteGroup" aria-controls="overallCasteGroup" attr_level_value="2" class="casteGroupCls" role="tab" data-toggle="tab">Overall</a></li>
                                 <li role="presentation"><a href="#stateCasteGroup" aria-controls="stateCasteGroup" attr_href_id="stateCasteGroup" role="tab" attr_level_value="2" class="casteGroupCls" data-toggle="tab">State</a></li>
                                 <li role="presentation"><a href="#districtCasteGroup" aria-controls="districtCasteGroup" attr_href_id="districtCasteGroup" attr_level_value="3" class="casteGroupCls" role="tab" data-toggle="tab">district</a></li>
                                 <li role="presentation"><a href="#constituencyCasteGroup" aria-controls="constituencyCasteGroup" attr_href_id="constituencyCasteGroup" attr_level_value="4" class="casteGroupCls" role="tab" data-toggle="tab">constituency</a></li>
