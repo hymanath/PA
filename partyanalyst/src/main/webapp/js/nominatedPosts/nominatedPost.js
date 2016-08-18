@@ -1212,7 +1212,8 @@ $('.searchTypeCls').click(function(){
 		depmtId : depmtId,
 		boardLevelId : $("#boardLvlId"+num).val(),
 		searchLevelValue:searchLevelValue,
-		searchLevelId:0
+		searchLevelId:0,
+		applicationId:0
 	}
     $.ajax({
           type:'GET',
