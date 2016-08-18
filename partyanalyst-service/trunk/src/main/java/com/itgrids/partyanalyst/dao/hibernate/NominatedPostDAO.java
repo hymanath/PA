@@ -978,7 +978,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		          
 		    queryStr.append("select model.nominatedPostStatus.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId) from NominatedPost model " +
 		    		       " where " +
-		    		       " model.isExpired='N' and model.isDeleted='N' ");
+		    		       " model.isExpired='N' and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' ");
 		    
            if(positionId != null && positionId.longValue() > 0){
         	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
@@ -1291,7 +1291,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	          
 	    queryStr.append("select count(model.nominatedPostId) from NominatedPost model " +
 	    		       " where " +
-	    		       " model.isExpired='N' and model.isDeleted='N' ");
+	    		       " model.isExpired='N' and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' ");
 	    
        if(positionId != null && positionId.longValue() > 0){
     	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");

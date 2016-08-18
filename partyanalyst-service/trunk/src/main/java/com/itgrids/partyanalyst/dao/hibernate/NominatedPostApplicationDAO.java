@@ -1184,7 +1184,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	 
 	   queryStr.append("select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPostApplicationId) from NominatedPostApplication model " +
 	 		" where" +
-	 		" model.isDeleted='N' ");
+	 		" model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' ");
 	   
 		   if(positionId != null && positionId.longValue() > 0){
 			   queryStr.append(" and model.position.positionId = :positionId");
