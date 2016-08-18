@@ -434,6 +434,7 @@ function buildOverAllTotalCountsByPosition(result){
 	function getCasteGroupWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId,stateId){
 		$("#casteAndAgeWiseId").html(" ");
 		$("#casteGroup").html(" ");
+		$("#casteGrpDivId").hide();
 		var jsObj={
 		positionId:positionId,
 		levelId :levelId,
@@ -531,6 +532,8 @@ function buildOverAllTotalCountsByPosition(result){
 	function getCasteWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId,stateId){
 		$("#casteNameWiseTotlaCntsId").html(" ");
 		$("#casteWisePositions").html(" ");
+		$("#casteGrpDivId").hide();
+		$("#casteNameWiseTotlaCntsId").hide();
 		var jsObj={
 		positionId:positionId,
 		levelId :levelId,
@@ -547,6 +550,7 @@ function buildOverAllTotalCountsByPosition(result){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
+				$("#casteNameWiseTotlaCntsId").show();
 				buildCasteWiseCountsByPosition(result,positionId,levelId,deptId,boardId,casteGroupId,applStatusId);
 				buildCasteWiseCountsChart(result);
 			}else{
@@ -666,7 +670,7 @@ function casteWisePositionsCountsByPosition(innerTableId,positionId,levelId,dept
 				dataType: 'json',
 				data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result!=null){ 
+			if(result != null && result.length > 0){ 
 				buildCasteWisePositionsCountsByPosition(result,innerTableId);
 			}
 		});
