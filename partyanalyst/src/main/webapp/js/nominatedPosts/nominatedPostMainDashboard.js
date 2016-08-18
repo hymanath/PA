@@ -778,13 +778,13 @@ var postionId=0;
 $(document).on("click",".postionliCls",function(){
 	 postionId= $(this).attr("attr_id");
 	  $( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
-	 getPositionAndApplicationDetailsCntPositionWise(postionId,0,"position",globalStateId);
+	 getPositionAndApplicationDetailsCntPositionWise(postionId,2,"position",globalStateId);
      getPositionAndApplicationDetailsCntLocationWise(postionId,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
 });
 
 $(document).on("click",".overviewHrfCls",function(){
 	var reportType = $(this).attr("attr_report_type");
-	getPositionAndApplicationDetailsCntPositionWise(postionId,0,reportType,globalStateId);
+	getPositionAndApplicationDetailsCntPositionWise(postionId,2,reportType,globalStateId);
 });
 function buildPostionRslt(result){
 	var positionCntArr =[];
