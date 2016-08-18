@@ -44,4 +44,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Long> getNominatedPostIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
 	public Integer updateGoIssuedStatusInNominatedPost(List<Long> nominatedPostIds,Date date);
 	public List<Long> checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId);
+	public List<Object[]> getApllicationDepmtBoards(Long boardLevelId,Long boardLevel);
 }

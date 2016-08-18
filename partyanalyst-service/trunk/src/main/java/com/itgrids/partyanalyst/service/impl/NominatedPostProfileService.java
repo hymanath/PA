@@ -507,11 +507,22 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All DepartmentBoards From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue,Long seachLevelId){
+	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue,Long seachLevelId,Long applicationId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-			Long applicationId =0L;
-			List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			//Long applicationId =0L;
+			List<Object[]> list = null;
+			Object[] obj = null;
+			if(applicationId == 0l){
+			 list = nominatedPostDAO.getLevelWiseDepartmentsBoard(depmtId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			}else{
+				obj = nominatedPostApplicationDAO.getBoardLevel(applicationId);
+			}
+			
+			if(obj != null){
+				list = nominatedPostDAO.getApllicationDepmtBoards((Long)obj[0],(Long)obj[1]);
+			}
+			
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"id","name"};
 				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");

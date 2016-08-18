@@ -1514,4 +1514,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		return query.executeUpdate();
 	}
+	public Object[] getBoardLevel(Long applicationId){
+		Query query = getSession().createQuery(" select model.boardLevel.boardLevelId,model.locationValue from NominatedPostApplication model where model.nominatedPostApplicationId = :applicationId and model.isDeleted='N' ");	
+	
+		query.setParameter("applicationId", applicationId);
+		return (Object[])query.uniqueResult();
+	}
 }
