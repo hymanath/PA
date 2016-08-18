@@ -1195,7 +1195,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		}else{
 		$(".gOssuedCls").html(postionStatus);		
 		}
-		getNominatedCandidateGroupByDistrict(positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId);
+		
 		
 	});  
 	
@@ -1207,7 +1207,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var castGroupId = castGroupId;   
 		var positionStatusId = positionStatusId;
 		var locationLevelName = locationLevelName;  
-		var stateId = 1;  
+		var stateId = globalStateId;
 		var jsObj={
 			positionId : positionId,
 			locationLevelId : locationLevelId,    
@@ -1266,6 +1266,9 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		}
 		str+='</tbody>';
 		$("#statePositionId").html(str);
+		if(result.length > 20){
+			$("#tableschrollId").mCustomScrollbar({setHeight: '440px'});  
+		}
 	}
 	$(document).on('click','.districtCls',function(){
 		$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");

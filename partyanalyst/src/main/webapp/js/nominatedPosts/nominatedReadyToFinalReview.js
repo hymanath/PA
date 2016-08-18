@@ -1028,7 +1028,38 @@ $(document).on("click",".deptHrfCls",function(){
 	 globalDepartmentId = deptId;
 	 globalDepartmentName = deptName;
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,"department");
+	 var status = gblStatus;
+	 getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,status);
 });
+function getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalLocationLevelValueArr,deptId,boardId,status){     
+	//alert(globalLocationLevelId+":"+globalLocationLevelValueArr+":"+deptId+":"+boardId+":"+status) ; 
+	var jsObj =
+	{
+		LocationLevelId : globalLocationLevelId,
+		locationLevelValueArr : globalLocationLevelValueArr,
+		departmentId : deptId,
+		boardId : boardId,
+		status : status
+	};
+	$.ajax({
+			type : "POST",
+			url : "getFinalReviewCandidateCountLocationWiseAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if( result.length > 0){  
+			var boardIdArray = [];
+			for(var i in result){
+				boardIdArray.push(result[i].id);  
+			}
+			
+			//getGoPassedCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr,deptId,boardIdArray,3);
+			console.log(boardIdArray);
+			alert(globalLocationLevelId+":"+globalLocationLevelValueArr+":"+deptId+":"+boardIdArray) ;     
+		}
+		
+	});	
+}  
+  
 $(document).on("click",".boardHrfCls",function(){
 	var boardId = $(this).attr("attr_board_id");
 	var boardName = $(this).attr("attr_board_name");
