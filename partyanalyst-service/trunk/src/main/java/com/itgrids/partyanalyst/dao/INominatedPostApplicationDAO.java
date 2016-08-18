@@ -38,4 +38,5 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 		      List<Long> locationValue,Long searchLevelId,String status,String statusType);
 	public List<Object[]> getRecord(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
 	public Integer updateApplicationStatusForGO(List<Long> nominatedPostApplicationIds,Date date);
+	public Object[] getBoardLevel(Long applicationId);
 }
