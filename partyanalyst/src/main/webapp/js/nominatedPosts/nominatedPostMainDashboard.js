@@ -1381,8 +1381,10 @@ function buildCasteGroupWiseChart(result){
 }
 function buildCasteWiseCountsChart(result){
 	if(result!= null && result.length > 10){
-	var highChartDivHight = result.length*15;
+	var highChartDivHight = result.length*20;
 	$("#casteWisePositions").height(highChartDivHight);	
+	}else{
+	$("#casteWisePositions").height(220);		
 	}
 	$("#casteGrpDivId").show();
 	var casteNamesArr=[];
