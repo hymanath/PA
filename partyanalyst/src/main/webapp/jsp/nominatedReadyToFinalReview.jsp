@@ -198,7 +198,12 @@
 
 var gblStatus = '${param.sts}';
 $("#headStsId").html(gblStatus+" Nominated Post details");
-$(document).prop('title', gblStatus+" Nominated Post details");
+if(gblStatus !=null && gblStatus.trim().length>0){
+	$(document).prop('title', capitalizeFirstLetter(gblStatus.toLowerCase())+" nominated post details");
+}
+function capitalizeFirstLetter(stringStr){
+	return stringStr.charAt(0).toUpperCase() + stringStr.slice(1);
+}
 
 function setHeight(){
 	var maxHeight = 0;

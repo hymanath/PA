@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NOMINATED POST Management</title>
+<title>Nominated post management</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/NominatedPost/custom.css" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,400italic,500italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
@@ -159,7 +159,19 @@ var globalLevelId = '${param.lId}';
 var globalStateId = '${param.stId}'; 
 var globalStatus='${param.sts}';
 var globalLvlTxt='${param.levelTxt}';
-$(document).prop('title', globalStatus+" Nominated Post details");
+
+if(globalStatus !=null && globalStatus.trim().length>0){	
+	$(document).prop('title', capitalizeFirstLetter(globalStatus.toLowerCase())+" nominated post management");
+}
+function capitalizeFirstLetter(stringStr){
+	var returnStmt = stringStr.charAt(0).toUpperCase() + stringStr.slice(1);
+	if(returnStmt=="Notyet"){
+		returnStmt = "Yet to Start";
+	}
+	return returnStmt;	
+}
+
+//$(document).prop('title', globalStatus+" Nominated Post Management");
 /* var globalLevelId = 2;
 var globalStateId = 1; */
 
