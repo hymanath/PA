@@ -2,8 +2,26 @@
    $(document).on("click","#myonoffswitch",function(){
 		if($(this).prop('checked')){
 		globalStateId =1;
+		getLocationWiseCastePositionCount("overall",2,globalStateId);
+		getLocationWiseCasteGroupPositionCount("overallCasteGroup",2,globalStateId);
+		getPositionAndApplicationDetailsCntPositionWise(0,2,"position",globalStateId);
+		getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
+		getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
+        getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
+	    getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
+	    getCasteWiseCountsByPosition(0,0,0,2,0,0,globalStateId);
+		$( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
 		}else{
 		globalStateId = 36;
+		getLocationWiseCastePositionCount("overall",2,globalStateId);
+		getLocationWiseCasteGroupPositionCount("overallCasteGroup",2,globalStateId);
+		getPositionAndApplicationDetailsCntPositionWise(0,2,"position",globalStateId);
+		getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
+		getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
+        getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
+	    getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
+	    getCasteWiseCountsByPosition(0,0,0,2,0,0,globalStateId);
+		$( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
 		}
 	});
 $(document).ready(function(){

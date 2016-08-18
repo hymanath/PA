@@ -64,13 +64,13 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-			<div class="col-md-10 col-xs-12 col-sm-10">
+			<div class="col-md-11 col-xs-12 col-sm-11">
 				<ul class="geoGrpahicBreadCrumb">
 					<li style="text-transform: uppercase; font-weight: 500;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
 					<li class="text-capital">Nominated Post Main Dashboard</li>
 				</ul>
 			</div>
-			<div class="col-md-2 col-xs-12 col-sm-2">
+			<div class="col-md-1 col-xs-12 col-sm-1">
 				<div class="onoffswitch">
 					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox checkedSwitch" id="myonoffswitch" checked>
 					<label class="onoffswitch-label stateCls" for="myonoffswitch">
