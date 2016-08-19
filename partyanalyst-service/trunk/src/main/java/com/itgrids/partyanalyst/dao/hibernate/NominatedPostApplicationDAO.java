@@ -1525,7 +1525,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		query.setParameter("applicationId", applicationId);
 		return (Object[])query.uniqueResult();
 	}
-	
+
 	public List<Object[]> getApplicationDetailsOfCandidate(Set<Long> candidateIds){
 		
 		Query query = getSession().createQuery(" select model.nominationPostCandidateId,count(distinct model.nominatedPostApplicationId)" +
@@ -1539,5 +1539,37 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		//query.setParameter("applied", IConstants.NOMINATED_APPLIED_STATUS);
 		
 		return query.list();
+	}
+	public List<Long> getAppliedPositionsForCandidate(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId){
+		StringBuilder queryStr = new StringBuilder();
+		   
+	    queryStr.append(" select distinct position.positionId from NominatedPostApplication model left join model.position position " +
+				" where model.boardLevel.boardLevelId=:boardLevelId " +
+				" and model.locationValue =:searchLevelValue and model.applicationStatus.applicationStatusId not in (2,4,8) " );
+	    if(departmentId != null && departmentId.longValue() > 0l){
+	    	queryStr.append(" and model.departments.departmentId=:departmentId " );
+	    }else{
+	    	queryStr.append(" and model.departments.departmentId is null " );
+	    }
+	    
+	    if(boardId != null && boardId.longValue() > 0l){
+	    	queryStr.append(" and model.board.boardId=:boardId " );
+	    }else{
+	    	queryStr.append(" and model.board.boardId is null " );
+	    }
+				
+	    queryStr.append(" and model.isDeleted='N' and model.nominationPostCandidate.nominationPostCandidateId =:nominatedPostCandId and model.nominationPostCandidate.isDeleted ='N' ");
+	    
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("boardLevelId", boardLevelId);
+		query.setParameter("searchLevelValue", searchLevelValue);
+		 if(departmentId != null && departmentId.longValue() > 0l){
+		query.setParameter("departmentId", departmentId);
+		 }
+		 if(boardId != null && boardId.longValue() > 0l){
+		query.setParameter("boardId", boardId);
+		 }
+		query.setParameter("nominatedPostCandId", nominatedPostCandId);
+	    return query.list(); 
 	}
 }

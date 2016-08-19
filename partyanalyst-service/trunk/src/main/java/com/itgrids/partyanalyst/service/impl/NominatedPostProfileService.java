@@ -539,21 +539,54 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue,Long seachLevelId){
+	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue,Long seachLevelId,Long nominatedPostCandId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 			Long applicationId =0L;
-			List<Object[]> list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			List<Long> appliedPositions =null;
+			List<Long> duplicatePositnIds = null;
+			if(nominatedPostCandId != null && nominatedPostCandId.longValue() > 0l){
+				appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
+			}
+				
+			List<Object[]>  list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
+			List<Object[]> nonAppliedPostns = new ArrayList<Object[]>();
+			if(commonMethodsUtilService.isListOrSetValid(list) && commonMethodsUtilService.isListOrSetValid(appliedPositions)){
+				for(Object[] obj : list){
+					if(!appliedPositions.contains((Long)obj[0])){
+						
+						nonAppliedPostns.add(obj);
+						
+					}
+				}
+			}
+			if(nonAppliedPostns != null && nonAppliedPostns.size() > 0){
+				list.clear();
+				list.addAll(nonAppliedPostns);
+			}
+			String positnAnyAppld = "NotApplied";
+			if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
+				for(Long position : appliedPositions){
+					if(position == null){
+						positnAnyAppld = "Applied";
+					}
+				}
+			}
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"id","name"};
 				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
 			}
+			if(returnList !=  null && returnList.size()  >0){
+			returnList.get(0).setStatus(positnAnyAppld);
+			}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception Occured in getDepartmentBoardPositions()", e);
 		}
 		return returnList;
 	}
+	
 	
 	
 
