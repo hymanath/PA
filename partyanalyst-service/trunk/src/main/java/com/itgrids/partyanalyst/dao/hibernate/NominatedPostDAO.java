@@ -758,7 +758,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
 						 	" left join model.nominatedPostMember.address address ");
 		 }else  if(status != null && status.equalsIgnoreCase("notYet") ){
-			 sb.append(" , count(distinct position.positionId), position.positionId,board.boardId ");
+			 sb.append(" , count( position.positionId), position.positionId,board.boardId ");
 			 sb.append(" from NominatedPostApplication model"+
 					 	" left join model.departments departments " +
 					 	" left join model.board board " +
@@ -906,12 +906,12 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
 						 	" left join model.nominatedPostMember.address address ");
 	 } else  if(status != null && status.equalsIgnoreCase("notYet") ){
-		 sb.append(" , count(model.nominatedPostApplicationId) ");
-		 sb.append(" from NominatedPostApplication model"+
-				 	" left join model.departments departments " +
-				 	" left join model.board board " +
-				 	" left join model.boardLevel boardLevel " +
-				 	" left join model.address address ");
+		 sb.append(" , count(model.nominatedPostId) ");
+		 sb.append(" from NominatedPost model"+
+				 	" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+				 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+				 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+				 	" left join model.nominatedPostMember.address address ");
 	 }else{
 				sb.append(" , count(model.nominatedPostApplicationId),board.boardName");
 				 sb.append(" from NominatedPostFinal model "+
@@ -938,7 +938,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 else if(status != null && (status.equalsIgnoreCase("Open")))
 				 sb.append(" and model.nominatedPostStatusId = 1");
 		 else if(status != null && status.equalsIgnoreCase("notYet"))
-			 	 sb.append(" and model.applicationStatusId = 1 ");
+			 	 sb.append(" and model.nominatedPostStatusId in (1,2) ");
 		 else if(status != null && status.equalsIgnoreCase("running"))
 			sb.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+")");
 		 
@@ -958,11 +958,92 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
 				 sb.append(" and address.panchayat.panchayatId = :searchLevelValue");
 		 }
-		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open")))
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("notYet") ))
 			 sb.append(" and model.isExpired = 'N'");
 		 
 		 sb.append(" and model.isDeleted = 'N' " +
 		 			" group by departments.departmentId, board.boardId");
+		 
+		 Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("boardLevelId", boardLevelId);
+		 if(searchLevelId != 1l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+			 query.setParameter("searchLevelValue", searchLevelValue);
+		 
+		 return query.list();
+	 }
+	 
+	 public List<Object[]> getOpenedPositionWiseCountForBoardsByDepartment(Long boardLevelId,Long searchLevelId,Long searchLevelValue,String status){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select distinct departments.departmentId," +
+		 			" board.boardId");
+		 			
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open"))){
+			 		sb.append(" , count(nominatedPostMember.nominatedPostMemberId),board.boardName");
+		 			sb.append(" from NominatedPost model "+
+				 			" left join model.nominatedPostMember  nominatedPostMember "+
+						 	" left join model.nominatedPostMember.nominatedPostPosition  nominatedPostPosition " +
+						 	" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+						 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+						 	" left join model.nominatedPostMember.address address ");
+	 } else  if(status != null && status.equalsIgnoreCase("notYet") ){
+		 sb.append(" , count(model.nominatedPostId),model.nominatedPostMember.nominatedPostPosition.positionId ");
+		 sb.append(" from NominatedPost model"+
+				 	" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+				 	" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+				 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+				 	" left join model.nominatedPostMember.address address ");
+	 }else{
+				sb.append(" , count(model.nominatedPostApplicationId),board.boardName");
+				 sb.append(" from NominatedPostFinal model "+
+							" left join model.nominatedPostMember.nominatedPostPosition.board board " +
+							" left join model.nominatedPostMember.nominatedPostPosition.departments departments " +
+						 	" left join model.nominatedPostMember.boardLevel boardLevel " +
+						 	" left join model.nominatedPostMember.address address ");
+		 }
+		/* if(status != null && !status.equalsIgnoreCase("Total"))
+			 sb.append(" ,NominatedPostApplication model1" +
+		 			" where model.nominatedPostMemberId = model1.nominatedPostMemberId and" );
+		 else*/
+			 sb.append(" where ");
+		 sb.append(" boardLevel.boardLevelId = :boardLevelId" );
+		 		
+		 /*if(status != null && status.equalsIgnoreCase("Total"))
+				sb.append(" ");
+		 else if(status != null && status.equalsIgnoreCase("Open"))
+			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId = 1 and model.nominationPostCandidateId is null ");
+		 else if(status != null && status.equalsIgnoreCase("running"))
+			sb.append(" and model.nominatedPostStatusId = 1 and model1.applicationStatusId not in (5) and model.nominationPostCandidateId is null ");*/
+		 if(status != null && status.equalsIgnoreCase("Total"))
+				sb.append(" ");
+		 else if(status != null && (status.equalsIgnoreCase("Open")))
+				 sb.append(" and model.nominatedPostStatusId = 1");
+		 else if(status != null && status.equalsIgnoreCase("notYet"))
+			 	 sb.append(" and model.nominatedPostStatusId in (1) ");
+		 else if(status != null && status.equalsIgnoreCase("running"))
+			sb.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+")");
+		 
+		 if(searchLevelId != null && searchLevelId.longValue() > 0l){
+			 if(searchLevelId == 1l)
+				 sb.append(" and address.country.countryId = 1");
+			 else if(searchLevelId == 2l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and address.state.stateId = :searchLevelValue");
+			 else if(searchLevelId == 3l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and address.district.districtId = :searchLevelValue");
+			 else if(searchLevelId == 4l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and address.constituency.constituencyId = :searchLevelValue");
+			 else if(searchLevelId == 5l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and address.tehsil.tehsilId = :searchLevelValue");
+			 else if(searchLevelId == 6l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and address.localElectionBody.localElectionBodyId = :searchLevelValue");
+			 else if(searchLevelId == 7l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
+				 sb.append(" and address.panchayat.panchayatId = :searchLevelValue");
+		 }
+		 if(status != null && (status.equalsIgnoreCase("Total") || status.equalsIgnoreCase("Open") || status.equalsIgnoreCase("notYet") ))
+			 sb.append(" and model.isExpired = 'N'");
+		 
+		 sb.append(" and model.isDeleted = 'N' " +
+		 			" group by departments.departmentId, board.boardId,model.nominatedPostMember.nominatedPostPosition.positionId ");
 		 
 		 Query query = getSession().createQuery(sb.toString());
 		 query.setParameter("boardLevelId", boardLevelId);
