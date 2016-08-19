@@ -1017,7 +1017,7 @@ function getDistricts(){
   } 
 $('.searchTypeCls').click(function(){
 			var id = $(this).attr('id');
-				
+			$("#searchBy").val("");	
 			$('#advancedSearchDiv').hide();			
 			$('#basicSearchDiv').show();
 			$('#committeLocationsDiv').hide();
@@ -1143,7 +1143,8 @@ $('.searchTypeCls').click(function(){
 		boardId :boardId,
 		boardLevelId : $("#boardLvlId"+num).val(),
 		searchLevelValue:searchLevelValue,
-		searchLevelId:0
+		searchLevelId:0,
+		nominatedPostCandId:globalNPCandiId
 	}
     $.ajax({
           type:'GET',
@@ -1154,7 +1155,10 @@ $('.searchTypeCls').click(function(){
     $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
 	  $("#deptBoardPostnId"+num).append('<option value=" ">Select Board Position</option>');
-	   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+	  if(result[0].status != "Applied"){
+		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+	  }
+	  
 			for(var i in result){
 				$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				
@@ -2580,6 +2584,7 @@ function hideDetails(){
 	$('#searchDivId').hide();
 	$("#uploadFlDivId").hide();
 	$("#submitBtnId").hide();
+	$("#addedRefferalsDiv").hide();
 }
 $(document).keypress(function(e) {
 				if(e.keyCode==13){
