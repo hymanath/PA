@@ -951,33 +951,44 @@ $(document).on('click','.referenceDetailsCls',function(){
 function buildReferenceCandidateDetails(result){
 	var str='';
 	
-	str+='<table class="table table-condensed table-bordered">';
-		str+='<thead>';
+	str+='<table class="table table-bordered">';
+		str+='<thead class="text-capital" style="background-color:#f4f4f4">';
 			str+='<th>Image</th>';
 			str+='<th>Name</th>';
 			str+='<th>Membership No</th>';
 			str+='<th>Mobile No</th>';
 			str+='<th>Position</th>';
-			str+='<th>Total Refered</th>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td><i class="glyphicon glyphicon-user"></i></td>';
-				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].percentage+'</td>';
-				str+='<td>'+result[i].mobileNo+'</td>';
-				if(result[i].publicRepr == null && result[i].partyPos == null)
+				//str+='<td><i class="glyphicon glyphicon-user"> </i></td>';
+				str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].id+'" >';
+				str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result[i].status+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
+				str+='</a></td>';
+				if(result[i].name != null)
+					str+='<td> <a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].id+'" >'+result[i].name+'</a></td>';
+				else
 					str+='<td> - </td>';
-				else{
-					str+='<td>';
-					if(result[i].publicRepr != null)
-						str+='<p>'+result[i].publicRepr+'</p>';
-					if(result[i].partyPos != null)
-						str+='<p>'+result[i].partyPos+'</p>';
-					str+='<td>';
-				}
-				str+='<td>'+result[i].count+'</td>';
+				if(result[i].percentage != null)
+					str+='<td>'+result[i].percentage+'</td>';
+				else
+					str+='<td> - </td>';
+				if(result[i].mobileNo != null)
+					str+='<td>'+result[i].mobileNo+'</td>';
+				else
+					str+='<td> - </td>';
+				str+='<td>';
+				if(result[i].publicRepr != null )
+					str+='<p>'+result[i].publicRepr+'</p>';
+				else
+					str+='<p>  </p>';
+				
+				if(result[i].partyPos != null)
+					str+='<p>'+result[i].partyPos+'</p>';
+				else
+					str+='<p>  </p>';
+				str+='</td>';
 			str+='</tr>';
 		}
 		str+='</tbody>';
