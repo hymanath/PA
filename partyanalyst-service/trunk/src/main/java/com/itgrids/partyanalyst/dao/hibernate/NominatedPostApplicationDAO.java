@@ -1274,14 +1274,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		 }
 		}
 		 if(statusId != null && statusId.longValue() > 0l )
-			 sb.append(" and model.applicationStatusId  in (3)");
+			 sb.append(" and model.applicationStatusId  in (:statusId)");
 		 sb.append(" and model.isDeleted = 'N'" +
 		 			" group by department.departmentId,board.boardId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("boardLevelId", boardLevelId);
-	//	if(statusId != null && statusId.longValue() > 0l)
-		//	query.setParameter("statusId", statusId);
+		if(statusId != null && statusId.longValue() > 0l)
+			query.setParameter("statusId", statusId);
 		if(searchLevelId != 1l && searchLevelValue != null && searchLevelValue.longValue() > 0l)
 			query.setParameter("searchLevelValue", searchLevelValue);
 		
