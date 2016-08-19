@@ -19,6 +19,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		
 	}
 	
+	
 	public List<Object[]> getAppliationsReceievedStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 			Long locationValue,String type,Long searchLevelId){
 		
