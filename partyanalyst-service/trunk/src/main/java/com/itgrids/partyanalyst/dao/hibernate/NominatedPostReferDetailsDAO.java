@@ -16,18 +16,18 @@ public class NominatedPostReferDetailsDAO extends GenericDaoHibernate<NominatedP
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<Object[]> getReferedCountForCandidateList(Set<Long> candidateIds){
-		Query query = getSession().createQuery("select model.nominationPostCandidate.nominationPostCandidateId," +
+	public List<Object[]> getReferedCountForCandidateList(Set<Long> applicationIds){
+		Query query = getSession().createQuery("select model.nominatedPostApplicationId," +
 												" count(distinct model.referCadreId)" +
 												" from NominatedPostReferDetails model" +
-												" where model.nominationPostCandidate.nominationPostCandidateId in (:candidateIds)" +
-												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
-												" group by model.nominationPostCandidate.nominationPostCandidateId");
-		query.setParameterList("candidateIds", candidateIds);
+												" where model.nominatedPostApplicationId in (:applicationIds)" +
+												" and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N'" +
+												" group by model.nominatedPostApplicationId");
+		query.setParameterList("applicationIds", applicationIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getReferedCadreDetailsForCandidate(Long candidateId){
+	public List<Object[]> getReferedCadreDetailsForCandidate(Long applicationId){
 		Query query = getSession().createQuery("select model1.tdpCadreId," +
 												" model1.firstname," +
 												" model1.memberShipNo," +
@@ -35,9 +35,9 @@ public class NominatedPostReferDetailsDAO extends GenericDaoHibernate<NominatedP
 												" model1.image" +
 												" from NominatedPostReferDetails model,TdpCadre model1" +
 												" where model.referCadre.tdpCadreId = model1.tdpCadreId" +
-												" and model.nominationPostCandidate.nominationPostCandidateId = :candidateId" +
-												" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
-		query.setParameter("candidateId", candidateId);
+												" and model.nominatedPostApplication.nominatedPostApplicationId = :applicationId" +
+												" and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N'");
+		query.setParameter("applicationId", applicationId);
 		return query.list();
 	}
 	

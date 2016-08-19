@@ -30,13 +30,14 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 		return query.list();
 	}
 			 
-	public List<Object[]> getNominatedPostDocumentDetails(Set<Long> candidateIds){
+	public List<Object[]> getNominatedPostDocumentDetails(Set<Long> applicationIds){
 		Query query = getSession().createQuery("select model.nominationPostCandidateId," +
 												" model.filePath, model.nominatedPostApplicationId" +
 												" from ApplicationDocument model" +
-												" where model.nominationPostCandidate.nominationPostCandidateId in (:candidateIds)" +
-												" and model.isDeleted = 'N'");
-		query.setParameterList("candidateIds", candidateIds);
+												" where model.nominatedPostApplicationId in (:applicationIds)" +												
+												" and model.isDeleted = 'N'" +
+												" and model.nominatedPostApplication.isDeleted='N'" );
+		query.setParameterList("applicationIds", applicationIds);
 		return query.list();
 	}
 }

@@ -1144,4 +1144,5 @@ public interface IConstants {
 	public static final Long NOMINATED_APPLICATION_FINAL_REVIEW=6L;
 	public static final String NOMINATED_OPEN_POSTS_STATUS_IDS ="1,2";
 	public static final Long rejectedInFinalized = 8l;
+	public static final Long[] NOMINATED_SHORTLISTED_STATUS_IDS ={3l,5l,6l,7l};
 }

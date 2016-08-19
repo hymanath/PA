@@ -252,7 +252,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	//dddddd
-	public List<Object[]> getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId){
+	public List<Object[]> getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,Long statusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominatedPostFinalId," +
 					" model.nominationPostCandidate.nominationPostCandidateId," +
@@ -268,7 +268,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" model.applicationStatus.applicationStatusId," +
 					" model.applicationStatus.status," +
 					" model.isPrefered," +
-					" model1.nominatedPostApplicationId ," +
+					" model.nominatedPostApplicationId ," +
 					" model.nominationPostCandidate.imageurl," +
 					" TC.firstname," +
 					" TC.mobileNo," +
@@ -276,7 +276,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" TC.gender," +
 					" NCC.categoryName," +
 					" NC.casteName"+
-					" from NominatedPostFinal model,NominatedPostApplication model1" +
+					" from NominatedPostFinal model" +
 					" left join model.nominationPostCandidate.tdpCadre TC" +
 					" left join TC.casteState CS" +
 					" left join CS.casteCategoryGroup CCG" +
@@ -286,17 +286,18 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" left join NCS.casteCategoryGroup NCCG" +
 					" left join NCCG.casteCategory NCC" +
 					" left join NCS.caste NC" +
-					" where model.nominationPostCandidateId = model1.nominationPostCandidateId" +
+					" where " +
 					//" and model1.boardLevelId = :levelId" +
-					" and model1.departmentId = :departmentId" +
-					" and model1.boardId = :boardId" +
-					" and model1.positionId = :positionId" +
+					" model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId" +
+					" and model.nominatedPostMember.nominatedPostPosition.boardId = :boardId" +
+					" and model.nominatedPostMember.nominatedPostPosition.positionId = :positionId" +
 					/*" and model.nominatedPostMember.boardLevelId = :levelId" +
 					" and model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId" +
 					" and model.nominatedPostMember.nominatedPostPosition.boardId = :boardId" +
 					" and model.nominatedPostMember.nominatedPostPosition.positionId = :positionId" +*/
 					" and model.isDeleted = 'N' and model.nominatedPostMember.isDeleted = 'N'" +
 					" and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'" +
+					" and model.nominatedPostApplication.isDeleted = 'N'" +
 					" and model.nominationPostCandidate.isDeleted = 'N' ");
 		
 		if(levelId != null && levelId.longValue()>0){
@@ -309,6 +310,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		if(levelValue != null && levelValue.longValue() > 0l)
 			sb.append(" and model1.locationValue = :levelValue");
 		
+		if(statusId !=null && statusId.longValue()>0l){
+			sb.append(" and model.applicationStatusId = :statusId");
+		}
+		
+		
 		Query query = getSession().createQuery(sb.toString());
 		if(levelId.longValue() != 5L)
 			query.setParameter("levelId", levelId);
@@ -317,6 +323,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		query.setParameter("departmentId", departmentId);
 		query.setParameter("boardId", boardId);
 		query.setParameter("positionId", positionId);
+		if(statusId !=null && statusId.longValue()>0l){
+			query.setParameter("statusId",statusId );
+		}
 		
 		return query.list();
 	}
@@ -1787,11 +1796,11 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				" from  NominatedPostApplication model " +
 				" where model.nominationPostCandidateId in (:candidateIds) " +
 				" and model.isDeleted ='N'" +
-				" and model.applicationStatus.status=:shortlisted" +
+				" and model.applicationStatus.applicationStatusId in (:shortlisted)" +
 				" group by model.nominationPostCandidateId ");
 		
 		query.setParameterList("candidateIds", candidateIds);
-		query.setParameter("shortlisted", IConstants.SHORTLISTED_STATUS);
+		query.setParameterList("shortlisted", IConstants.NOMINATED_SHORTLISTED_STATUS_IDS);
 		
 		return query.list();
 	}
@@ -1811,10 +1820,10 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	        " left join model.nominatedPostApplication.position position " +
 	        " where model.nominationPostCandidateId = :candidateId " +
 	        " and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'" +
-	        " and model.applicationStatus.status =:shortListed ");
+	        " and model.applicationStatus.applicationStatusId in (:shortListed) ");
 	        
 	        query.setParameter("candidateId", candidateId);
-	        query.setParameter("shortListed",IConstants.SHORTLISTED_STATUS);
+	        query.setParameterList("shortListed",IConstants.NOMINATED_SHORTLISTED_STATUS_IDS);
 	        return query.list();
 	  }
 	

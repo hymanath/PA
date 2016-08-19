@@ -50,6 +50,8 @@ public class NominatedPostReferVO {
 	private String candCasteName;
 	private String publicReprStr;
 	
+	private Long appliedCount=0l;
+	private Long shortListedCount=0l;
 	
 	public String getPublicReprStr() {
 		return publicReprStr;
@@ -249,4 +251,17 @@ public class NominatedPostReferVO {
 	public void setNominatedPostApplicationId(Long nominatedPostApplicationId) {
 		this.nominatedPostApplicationId = nominatedPostApplicationId;
 	}
+	public Long getAppliedCount() {
+		return appliedCount;
+	}
+	public void setAppliedCount(Long appliedCount) {
+		this.appliedCount = appliedCount;
+	}
+	public Long getShortListedCount() {
+		return shortListedCount;
+	}
+	public void setShortListedCount(Long shortListedCount) {
+		this.shortListedCount = shortListedCount;
+	}
+	
 }

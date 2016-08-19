@@ -16,14 +16,14 @@ public class NominatedPostCommentDAO extends GenericDaoHibernate<NominatedPostCo
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<Object[]> getCommentsCountForCandidateIds(Set<Long> candidateIds){
-		Query query = getSession().createQuery("select model.nominatedPostApplication.nominationPostCandidate.nominationPostCandidateId," +
+	public List<Object[]> getCommentsCountForCandidateIds(Set<Long> applicationIds){
+		Query query = getSession().createQuery("select model.nominatedPostApplication.nominatedPostApplicationId," +
 											" count(model.nominatedPostCommentId)" +
 											" from NominatedPostComment model" +
-											" where model.nominatedPostApplication.nominationPostCandidate.nominationPostCandidateId in (:candidateIds)" +
-											" and model.nominatedPostApplication.nominationPostCandidate.isDeleted = 'N'" +
-											" group by model.nominatedPostApplication.nominationPostCandidate.nominationPostCandidateId");
-		query.setParameterList("candidateIds", candidateIds);
+											" where model.nominatedPostApplication.nominatedPostApplicationId in (:applicationIds)" +
+											" and model.nominatedPostApplication.isDeleted = 'N'" +
+											" group by model.nominatedPostApplication.nominatedPostApplicationId");
+		query.setParameterList("applicationIds", applicationIds);
 		return query.list();
 	}
 	
