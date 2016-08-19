@@ -215,7 +215,8 @@ function getBoardWiseNominatedPostMemberDetails(){
 		departmentId:parseInt('${deptId}'),//departmentId,
 		boardId:parseInt('${boardId}'),//boardId,
 		positionId:parseInt('${positionId}'),//positionId,
-		type:type//type
+		type:type,//type
+		statusId:1
 		}
     $.ajax({
           type:'GET',
@@ -240,10 +241,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 			str+='<th>Sub Caste</th>';
 			str+='<th>Designations</th>';
 			str+='<th style="width:90px">Reports</th>';
-			str+='<th>Applied in Any Dep/Corp</th>';
-			str+='<th>Reference</th>';
+			str+='<th>Applied in Any Dep/Corp</th>';			
 			str+='<th>Shortlisted in any dep/ Corp</th>';
-			str+='<th>Status</th>';
+			str+='<th>Reference</th>';
+			str+='<th>Current Status</th>';
 			str+='<th>Update Status</th>';
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){
@@ -260,7 +261,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 							str +='<div class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class=" img-circle"  onerror="setDefaultImage(this);" alt="Profile"/></div>';
 						}else
 							str+='<i class="glyphicon glyphicon-user"></i> ';
-							str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div></a>';
+							str+='<div class="media-body"> '+result.subList[i].cadreName+'</div></div></a>';
 						}else{
 							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
 						}
@@ -338,10 +339,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
-				if(result.subList[i].referCandCount != null)
-					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" style="font-weight:bold;color:green;cursor:pointer;" >'+result.subList[i].referCandCount+'</a></td>';
-				else
-					str+='<td> - </td>';
+				
 				str+='<td style="position:relative" class="text-center">';
 					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
@@ -355,6 +353,12 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 						str+='</div>';
 					
 				str+='</td>';
+				
+				if(result.subList[i].referCandCount != null)
+					str+='<td><a class="referenceCls" data-toggle="modal" data-target="#referModelId" attr_application_id="'+result.subList[i].nominatePostApplicationId+'" style="font-weight:bold;color:green;cursor:pointer;" >'+result.subList[i].referCandCount+'</a></td>';
+				else
+					str+='<td> - </td>';
+				
 				str+='<td>'+result.subList[i].status+'</td>';
 				str+='<td style="position:relative;">';
 				if(type == "this"){
@@ -474,11 +478,11 @@ $(document).on('click','.closeDivAnyCls',function(){
 });
 
 $(document).on('click','.referenceCls',function(){
-	var candidateId = $(this).attr("attr_candidate_id");
+	var applicationId = $(this).attr("attr_application_id");
 	
 	var jsObj=
 	   {				
-		candidateId:candidateId
+		applicationId:applicationId
 		}
     $.ajax({
           type:'GET',
