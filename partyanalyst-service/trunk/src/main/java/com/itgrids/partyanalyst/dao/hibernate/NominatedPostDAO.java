@@ -1139,7 +1139,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 										" model.nominatedPostMember.boardLevel.level" +
 										" from NominatedPost model" +
 										" where model.nominationPostCandidateId is null" +
-										" and model.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_APPLICATED_POST_OPEN_POSTS_STATUS_IDS+" ) " +  //Only Open Position Levels
+										" and model.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_OPEN_POSTS_STATUS_IDS+" ) " +  //Only Open Position Levels
 										" and model.isDeleted = 'N' and model.isExpired = 'N'" +
 										" order by model.nominatedPostMember.boardLevel.boardLevelId");
 		return query.list();
