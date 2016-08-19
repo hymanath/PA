@@ -278,10 +278,10 @@
                 	<h3 class="headingColor text-capitalize">Demographics Positions Overview<span class="pull-right plusIconCircle demoGraphicsCls"><i class="glyphicon glyphicon-minus"></i></span></h3>
                     <h4 class="showingResult demoGraphicsHideShow m_top10">showing results</h4>
                     <ul class="geoGrpahicBreadCrumb demoGraphicsHideShow">
-                        <li><span class="positionCls">All Positions</span></li>
                         <li><span class="locationCls">State</span> </li>
                         <li><span class="departmentCls">All department</span></li>
                         <li><span class="corporationCls">All corporation</span></li>
+                        <li><span class="positionCls">All Positions</span></li>
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>
@@ -348,10 +348,10 @@
                 	<h3 class="headingColor text-capitalize">Grographic Positions Overview<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
                     <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4>
                     <ul class="geoGrpahicBreadCrumb geoGraphicOverHideShow">
-                        <li><span class="positionCls">All Positions</span></li>
                         <li><span class="locationCls">State</span> </li>
                         <li><span class="departmentCls">All department</span></li>
                         <li><span class="corporationCls">All corporation</span></li>
+                        <li><span class="positionCls">All Positions</span></li>
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>
