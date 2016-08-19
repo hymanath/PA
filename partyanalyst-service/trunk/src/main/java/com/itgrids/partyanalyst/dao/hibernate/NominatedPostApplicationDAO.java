@@ -1050,12 +1050,15 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       else if(status != null && status.equalsIgnoreCase("goPassed"))
 		    	   queryStr.append(" and model.nominatedPostStatusId = 4 ");
 		       
-		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+		        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	 	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+	    	    }
+		      /* if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 		    	   if(LocationLevelId.longValue() != 5L)
 		    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
 		    	   else
 		    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
-		       }
+		       }*/
 		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 		    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
 		       }
@@ -1076,7 +1079,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       
 		       Query query = getSession().createQuery(queryStr.toString());
 		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-		    	   if(LocationLevelId.longValue() != 5L)
+		    	  // if(LocationLevelId.longValue() != 5L)
 		    		   query.setParameter("LocationLevelId", LocationLevelId);
 		       }
 		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
