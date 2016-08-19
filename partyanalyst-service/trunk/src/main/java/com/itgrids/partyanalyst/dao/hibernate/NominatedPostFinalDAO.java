@@ -308,7 +308,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		
 		if(levelValue != null && levelValue.longValue() > 0l)
-			sb.append(" and model1.locationValue = :levelValue");
+			sb.append(" and model.locationValue = :levelValue");
 		
 		if(statusId !=null && statusId.longValue()>0l){
 			sb.append(" and model.applicationStatusId = :statusId");
