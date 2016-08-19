@@ -360,13 +360,12 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 								  str+='</div>';
 								str+='</div>';
 							  str+='</div>';
-							
+							 
 							}
 						}
 						
 						str+='</div>';
 					str+='</div>';
-
 					 }
 						
 				str+='</div>';
@@ -1389,6 +1388,16 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	}
 	
 	if(isDataAvaialable){
+	    str+='<div class="row" id="anyPostDivId" style="display:none;"> ';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="panel panel-default">';
+		str+='<div class="" style="padding: 12px;">';
+		str+='<p class="text-capital headingColor filterBtnCls font_17" style="cursor:pointer;">';
+		str+='<b><span id="anyDeptHeadingId"></span></b>';
+		str+='<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;"></i>';
+		str+='</p>';
+		str+='</div>';
+		str+='<div class="panel-body">';
 	 str+='<table class="table table-bordered tableFontSize text-capital">';
 		  str+='<thead class="text-capital" style="background-color:#EFF3F4;">';// class="text-capital"
 		  str+='<th>Position  </th>';
@@ -1463,10 +1472,14 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 			 }
 	    str+='</tbody>';	 
 		str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
 		$("#anyDeptCorTblId").html(str);
-	}else{
+	}/* else{
 		$("#anyDeptCorTblId").html("<center>No Data Available</center>");
-	}
+	} */
 }
 function buildDepartmentWiseBoardAndPositionDetailsForAny(result,bodyId,depts,boards,deptName,boardName){
 	var str='';

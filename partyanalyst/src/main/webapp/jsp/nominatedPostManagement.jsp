@@ -98,7 +98,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" id="anyPostDivId" style="display:none;"> 
+		<div id="anyDeptCorTblId" class=" filterSectionIconCls"></div>
+		<!--<div class="row" id="anyPostDivId" style="display:none;"> 
 			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="panel panel-default">
 					<div class="" style="padding: 12px;">
@@ -112,7 +113,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 	  </div>
 	</div>
 	<div class="row m_top20">
@@ -184,8 +185,10 @@ $(document).ready(function() {
 	if(globalStatus == "notYet"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; Yet to start");
-	}
-		
+	}else if(globalStatus == "notRecieved "){
+		$("#headinggId").html("Not Received "+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; NOT RECEIVED");
+	}	
 	else{
 		$("#headinggId").html(globalStatus+"  - "+globalLvlTxt+" level  - board/corporation");
 		$("#flowHeading").html(globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation <span>	&mdash;</span> "+globalStatus.substr(0,1).toUpperCase()+globalStatus.substr(1)+"");

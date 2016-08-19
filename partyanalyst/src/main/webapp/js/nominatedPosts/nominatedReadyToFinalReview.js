@@ -1354,7 +1354,7 @@ $(document).on("click",".boardHrfCls",function(){
 				strglob+='<input type="file" name="inout" class="inputFiler" id="filer_input"/>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-5 col-xs-12 col-sm-6">';
-				strglob+='<button class="form-control m_top20 saveGoForCandidateCls">SUBMIT</button>';
+				strglob+='<button class="btn btn-success m_top20 saveGoForCandidateCls">SUBMIT</button>';
 			strglob+='</div>';
 		strglob+='</div>';
 	strglob+='</div>';

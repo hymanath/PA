@@ -229,7 +229,8 @@ $(document).on("click",".updateBtnDrop",function(e){
 	e.stopPropagation();
 	$(".chosenSelect").chosen();
 	$(".dateR").daterangepicker({
-		opens:'left'
+		opens:'left',
+		parentEl:'.updateDropDownArrow'
 	});
 });
 $(document).on("click",".btnUpdateAll",function(e){
@@ -247,7 +248,7 @@ $(document).on("click",".btnUpdateAll",function(e){
 $(document).on("click",function(){
 	$(".commentsDiv,.updateDropDown").hide();
 });
-$(document).on("click",".updateDropDown,.commentsDiv",function(e){
+$(document).on("click",".updateDropDown,.commentsDiv,.dateR,.table-condensed tr td,.prev,.next",function(e){
 	e.stopPropagation()
 });
 
@@ -271,6 +272,12 @@ $(document).ready(function(){
 	if(gblStatus == "finaliZed"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; finaliZed");
+	}else if(gblStatus == "finalReview"){
+		$("#headinggId").html("Final Review "+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; FINAL REVIEW");
+	}else if(gblStatus == "goPassed"){
+		$("#headinggId").html("G O Passed"+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; G.O PASSED");
 	}
 		
 	else{
