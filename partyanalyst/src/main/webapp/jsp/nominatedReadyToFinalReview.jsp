@@ -222,36 +222,238 @@ $(document).on("click",".commentsBtn",function(e){
 	e.stopPropagation()
 });
 $(document).on("click",".updateBtnDrop",function(e){
-	$(".updateDropDown").hide().html(' ');
-	$(this).closest('tr').find(".updateDropDown").show().html(strglob);
-	var t = $(this).attr("attr_nominatedpostcandidateid");
-	$(document).find(".saveGoForCandidateCls").attr("attr_nominatedpostcandidateid",t);
-	e.stopPropagation();
-	$(".chosenSelect").chosen();
-	$(".dateR").daterangepicker({
-		opens:'left',
-		parentEl:'.updateDropDownArrow'
-	});
+	$(this).closest('tr').find(".updateDropDown").show();
+	if(gblStatus=="finaliZed"){
+		$(".updateDropDown").hide().html(' ');
+		$(this).closest('tr').find(".updateDropDown").show().html(strglob);
+		var t = $(this).attr("attr_nominatedPostApplicationId");
+		var d = $(this).attr("attr_department_id"); 
+		var b = $(this).attr("attr_doard_id"); 
+		var p = $(this).attr("attr_position_id"); 
+		
+		$(document).find(".saveGoForCandidateCls").attr("attr_nominatedPostApplicationId",t);
+		$(document).find(".saveGoForCandidateCls").attr("attr_department_id",d);
+		$(document).find(".saveGoForCandidateCls").attr("attr_doard_id",b);
+		$(document).find(".saveGoForCandidateCls").attr("attr_position_id",p);
+		
+		e.stopPropagation();
+		$(".chosenSelect").chosen();
+		$(".dateR").daterangepicker({
+			opens:'left'
+		});
+		$('#filer_input').filer({
+			changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
+			showThumbs: true,
+			theme: "dragdropbox",
+			templates: {
+				box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
+				item: '<li class="jFiler-item">\
+							<div class="jFiler-item-container">\
+								<div class="jFiler-item-inner">\
+									<div class="jFiler-item-thumb">\
+										<div class="jFiler-item-status"></div>\
+										<div class="jFiler-item-info">\
+											<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+											<span class="jFiler-item-others">{{fi-size2}}</span>\
+										</div>\
+										{{fi-image}}\
+									</div>\
+									<div class="jFiler-item-assets jFiler-row">\
+										<ul class="list-inline pull-left">\
+											<li>{{fi-progressBar}}</li>\
+										</ul>\
+										<ul class="list-inline pull-right">\
+											<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+										</ul>\
+									</div>\
+								</div>\
+							</div>\
+						</li>',
+				itemAppend: '<li class="jFiler-item">\
+					<div class="jFiler-item-container">\
+						<div class="jFiler-item-inner">\
+							<div class="jFiler-item-thumb">\
+								<div class="jFiler-item-status"></div>\
+								<div class="jFiler-item-info">\
+									<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+									<span class="jFiler-item-others">{{fi-size2}}</span>\
+								</div>\
+								{{fi-image}}\
+							</div>\
+							<div class="jFiler-item-assets jFiler-row">\
+								<ul class="list-inline pull-left">\
+									<li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
+								</ul>\
+								<ul class="list-inline pull-right">\
+									<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+								</ul>\
+							</div>\
+						</div>\
+					</div>\
+				</li>',
+				progressBar: '<div class="bar"></div>',
+				itemAppendToEnd: true,
+					removeConfirmation: true,
+					_selectors: {
+						list: '.jFiler-items-list',
+						item: '.jFiler-item',
+						progressBar: '.bar',
+						remove: '.jFiler-item-trash-action'
+					}
+				},
+				dragDrop: {
+					dragEnter: null,
+					dragLeave: null,
+					drop: null,
+				},
+				
+				files: null,
+				addMore: true,
+				clipBoardPaste: true,
+				excludeName: null,
+				beforeRender: null,
+				afterRender: null,
+				beforeShow: null,
+				beforeSelect: null,
+				onSelect: null,
+				afterShow: null,
+			   
+				onEmpty: null,
+				options: null,
+				captions: {
+					button: "Choose Files",
+					feedback: "Choose files To Upload",
+					feedback2: "files were chosen",
+					drop: "Drop file here to Upload",
+					removeConfirmation: "Are you sure you want to remove this file?",
+					errors: {
+						filesLimit: "Only {{fi-limit}} files are allowed to be uploaded.",
+						filesType: "Only Images are allowed to be uploaded.",
+						filesSize: "{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",
+						filesSizeAll: "Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."
+					}
+				}
+				
+		});
+	}
+	
 });
 $(document).on("click",".btnUpdateAll",function(e){
-	$(".updateDropDown").hide().html(' ');
-	$(".updateAllShowPopup").show().html(strglob);	
-	$(document).find(".saveGoForCandidateCls").attr("attr_nominatedpostcandidateid","0");
-	$(".updateAllShowPopup").find(".updateDropDownArrow").addClass("updateDropDownArrowModal");
-	$(".updateAllShowPopup").css("position","relative");
-	e.stopPropagation();
-	$(".chosenSelect").chosen();
-	$(".dateR").daterangepicker({
-		opens:'left'
-	});
+	if(gblStatus=="finaliZed"){
+		$(".updateDropDown").hide().html(' ');
+		$(".updateAllShowPopup").show().html(strglob);	
+		$(document).find(".saveGoForCandidateCls").attr("attr_nominatedPostApplicationId","0");
+		$(document).find(".saveGoForCandidateCls").attr("attr_position_id","0");
+		$(".updateAllShowPopup").find(".updateDropDownArrow").addClass("updateDropDownArrowModal");
+		$(".updateAllShowPopup").css("position","relative");
+		e.stopPropagation();
+		$(".chosenSelect").chosen();
+		$(".dateR").daterangepicker({
+			opens:'left'
+		});
+		$('#filer_input').filer({
+			changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
+			showThumbs: true,
+			theme: "dragdropbox",
+			templates: {
+				box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
+				item: '<li class="jFiler-item">\
+							<div class="jFiler-item-container">\
+								<div class="jFiler-item-inner">\
+									<div class="jFiler-item-thumb">\
+										<div class="jFiler-item-status"></div>\
+										<div class="jFiler-item-info">\
+											<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+											<span class="jFiler-item-others">{{fi-size2}}</span>\
+										</div>\
+										{{fi-image}}\
+									</div>\
+									<div class="jFiler-item-assets jFiler-row">\
+										<ul class="list-inline pull-left">\
+											<li>{{fi-progressBar}}</li>\
+										</ul>\
+										<ul class="list-inline pull-right">\
+											<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+										</ul>\
+									</div>\
+								</div>\
+							</div>\
+						</li>',
+				itemAppend: '<li class="jFiler-item">\
+					<div class="jFiler-item-container">\
+						<div class="jFiler-item-inner">\
+							<div class="jFiler-item-thumb">\
+								<div class="jFiler-item-status"></div>\
+								<div class="jFiler-item-info">\
+									<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+									<span class="jFiler-item-others">{{fi-size2}}</span>\
+								</div>\
+								{{fi-image}}\
+							</div>\
+							<div class="jFiler-item-assets jFiler-row">\
+								<ul class="list-inline pull-left">\
+									<li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
+								</ul>\
+								<ul class="list-inline pull-right">\
+									<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+								</ul>\
+							</div>\
+						</div>\
+					</div>\
+				</li>',
+				progressBar: '<div class="bar"></div>',
+				itemAppendToEnd: true,
+					removeConfirmation: true,
+					_selectors: {
+						list: '.jFiler-items-list',
+						item: '.jFiler-item',
+						progressBar: '.bar',
+						remove: '.jFiler-item-trash-action'
+					}
+				},
+				dragDrop: {
+					dragEnter: null,
+					dragLeave: null,
+					drop: null,
+				},
+				
+				files: null,
+				addMore: true,
+				clipBoardPaste: true,
+				excludeName: null,
+				beforeRender: null,
+				afterRender: null,
+				beforeShow: null,
+				beforeSelect: null,
+				onSelect: null,
+				afterShow: null,
+			   
+				onEmpty: null,
+				options: null,
+				captions: {
+					button: "Choose Files",
+					feedback: "Choose files To Upload",
+					feedback2: "files were chosen",
+					drop: "Drop file here to Upload",
+					removeConfirmation: "Are you sure you want to remove this file?",
+					errors: {
+						filesLimit: "Only {{fi-limit}} files are allowed to be uploaded.",
+						filesType: "Only Images are allowed to be uploaded.",
+						filesSize: "{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",
+						filesSizeAll: "Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."
+					}
+				}
+				
+		});
+	}
+	
 });
 $(document).on("click",function(){
 	$(".commentsDiv,.updateDropDown").hide();
 });
-$(document).on("click",".updateDropDown,.commentsDiv,.dateR,.table-condensed tr td,.prev,.next",function(e){
-	e.stopPropagation()
+$(document).on("click",".updateDropDown,.commentsDiv,.dateR,.table-condensed tr td,.prev,.next,.applyBtn,.cancelBtn",function(e){
+  e.stopPropagation()
 });
-
 var boardLevelId = '${param.lId}';
 var globalLvlTxt='';
 if(boardLevelId ==1){

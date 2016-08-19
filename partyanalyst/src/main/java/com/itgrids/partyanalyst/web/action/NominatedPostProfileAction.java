@@ -1560,7 +1560,7 @@ public String execute()
 		
 		return Action.SUCCESS;
 	}
-	
+
 	public String checkPositionAvailableOrNot(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -1575,6 +1575,54 @@ public String execute()
 			  resultStatus = nominatedPostProfileService.checkPositionAvailableOrNot(departmentId,boardId,positionId,boardLevlId,searchLevelValue,searchLevelId);			
 		}catch(Exception e){
 			LOG.error("Entered into checkPositionAvailableOrNot Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String assginGOToNominationPostCandidate(){
+		try {
+			LOG.info("Entered into assginGOToNominationPostCandidate");
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}else{
+				
+				final HttpSession session = request.getSession();
+				final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				if(user == null || user.getRegistrationID() == null){
+					return ERROR;
+				}
+				
+				Map<File,String> mapfiles = new HashMap<File,String>(0);
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			       String fileUrl = "" ;
+			       List<String> filePaths = null;
+			   		while(fileParams.hasMoreElements())
+			   		{
+			   			String key = fileParams.nextElement();
+			   			
+					   			File[] files = multiPartRequestWrapper.getFiles(key);
+					   			filePaths = new ArrayList<String>();
+					   			if(files != null && files.length > 0)
+					   			for(File f : files)
+					   			{
+					   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+					   	            String ext = "";
+					   	            if(extension.length > 1){
+					   	            	ext = extension[extension.length-1];
+					   	            	mapfiles.put(f,ext);
+					   	            }
+					   	        
+					   			}
+			   		}
+			   		
+				resultStatus = nominatedPostProfileService.assginGOToNominationPostCandidate(govtOrderVO,regVO.getRegistrationID(),mapfiles);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at assginGOToNominationPostCandidate", e);
 		}
 		return Action.SUCCESS;
 	}
