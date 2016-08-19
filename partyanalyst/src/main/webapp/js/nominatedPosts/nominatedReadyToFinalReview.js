@@ -435,7 +435,8 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 		levelValue : levelVal,
 		departmentId : deptId,
 		boardId : boardId,
-		positionId : positionId
+		positionId : positionId,
+		statusId:6
 	}
 	$.ajax({
 		  type:'GET',
@@ -475,9 +476,9 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 			str+='<th class="text-center">Party Designations</th>';
 			str+='<th class="text-center" style="width:80px">Reports</th>';
 			str+='<th  class="text-center" style="width:175px">Applied Any Dep/Corp</th>';
-			str+='<th style="width:175px" class="text-center">Shortlisted any dep/ Corp</th>';
-			str+='<th class="text-center">Status</th>';
+			str+='<th style="width:175px" class="text-center">Shortlisted any dep/ Corp</th>';			
 			str+='<th class="text-center">Reference</th>';
+			str+='<th class="text-center">Current Status</th>';
 			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){
@@ -493,7 +494,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
 					else
 						str+='<i class="glyphicon glyphicon-user"></i> ';
-						str+=' <div class="media-body">'+result.subList[i].voterName+'</div></div></a>';
+						str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
 				}else{
 					str +='<td style="width:150px;"><div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
 				}
@@ -548,16 +549,45 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 						str+=' - ';
 					str+='</td>';
 			}
-				if(result.subList[i].appliedDeptCount != null && result.subList[i].appliedDeptCount > 0)
-					str+='<td>'+result.subList[i].appliedDeptCount+'</td>';
+				/* if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
+					str+='<td>'+result.subList[i].appliedCount+'</td>';
 				else
 					str+='<td> NO </td>';
 				
-				if(result.subList[i].shortListedDeptCount!=null && result.subList[i].shortListedDeptCount > 0){
-					str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
+				if(result.subList[i].shortListedCount!=null && result.subList[i].shortListedCount > 0){
+					str+='<td>'+result.subList[i].shortListedCount+'</td>';
 				}else{
 					str+='<td> NO </td>'
-				}
+				} */
+				
+				
+				
+				str+='<td style="position:relative" class="text-center">';
+				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
+					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
+				else
+					str+='<span> NO </span>';
+					str+='<div class="appliedPostPopup">';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
+						str+='</div>';
+					str+='</div>';
+				str+='</td>';
+				
+				str+='<td style="position:relative" class="text-center">';
+					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
+						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
+					
+						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
+					else
+						str+='<span> NO </span>';
+						str+='<div class="appliedPostPopup">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'">';
+							str+='</div>';
+						str+='</div>';
+					
+				str+='</td>';
+				
+				
 				
 				//str+='<td>'+result.subList[i].shortListedDeptCount+'</td>';
 				/*str+='<td style="position:relative" class="text-center">';
@@ -574,14 +604,13 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				/*if(result.subList[i].otherDeptShortListed != null && result.subList[i].otherDeptShortListed == 'YES')
 					str+='<td>'+result.subList[i].otherDeptShortListed+'</td>';
 				else
-					str+='<td> NO </td>';*/
-				str+='<td>'+result.subList[i].status+'</td>';
-				if(result.subList[i].referenceCount != null)
-					str+='<td><a class="referenceDetailsCls" style="cursor:pointer;" data-toggle="modal" data-target="#referModelId" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'">'+result.subList[i].referenceCount+'</a></td>';
+					str+='<td> NO </td>';*/				
+				if(result.subList[i].referenceCount != null && result.subList[i].referenceCount>0)
+					str+='<td><a class="referenceDetailsCls" style="cursor:pointer;" data-toggle="modal" data-target="#referModelId" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'">'+result.subList[i].referenceCount+'</a></td>';
 				else
 					str+='<td> - </td>';
+				str+='<td>'+result.subList[i].status+'</td>';
 				str+='<td style="position:relative;width:180px">';
-					
 					if(result.subList[i].commentCount != null){
 						str+='<span style="position:relative"><img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
 						str+='<span class="commentCount" style="left:15px;top:-11px">'+result.subList[i].commentCount+'</span></span>';
@@ -775,7 +804,6 @@ $(document).on("click",".submitBtnCls",function(){
 	
 	var status = $("#"+statusId).val();
 	var comment = $("#"+commentId).val();
-	alert(comment);return;
 
 	 if(status == 0){
 		$(".updtCmmntErrrCls"+position).html('<span style="color:red">Please select status</span>');
@@ -902,11 +930,11 @@ function buildOverAllComments(result,divId){
 }
 
 $(document).on('click','.referenceDetailsCls',function(){
-	var candidateId = $(this).attr("attr_candidate_id");
+	var applicationId = $(this).attr("attr_application_id");
 	
 	var jsObj=
 	   {				
-		candidateId:candidateId
+		applicationId:applicationId
 		}
     $.ajax({
           type:'GET',
@@ -989,8 +1017,8 @@ function getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalL
 			}
 			
 			//getGoPassedCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr,deptId,boardIdArray,3);
-			console.log(boardIdArray);
-			alert(globalLocationLevelId+":"+globalLocationLevelValueArr+":"+deptId+":"+boardIdArray) ;     
+			/*console.log(boardIdArray);
+			alert(globalLocationLevelId+":"+globalLocationLevelValueArr+":"+deptId+":"+boardIdArray) ;     */
 		}
 		
 	});	
@@ -1305,4 +1333,93 @@ $(document).on("click",".boardHrfCls",function(){
 			strglob+='</div>';
 		strglob+='</div>';
 	strglob+='</div>';
+	
+	
+	
+	
+$(document).on("click",".appliedCount",function(e){
+	$(".appliedPostPopup").hide();
+	$(this).closest('td').find(".appliedPostPopup").show();
+	$(this).closest('td').find(".appliedPostPopupArrow").html(' ');
+	e.stopPropagation();
+	var candidateId = $(this).attr("attr_cand_id");
+	var divId = $(this).attr("attr_divId");
+	var searchType = $(this).attr("attr_type");
+	getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType);
+});
+	
+	
+function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType){
+	
+	var jsObj=
+	{				
+		candidateId:candidateId,
+		searchType:searchType
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getBrdWisNominPstAppliedDepOrCorpDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result != null && result.length > 0){
+		   buildDepartmentDetails(result,divId);
+	   }
+   });
+}
+
+function buildDepartmentDetails(result,divId){
+	var str='';
+	
+	//str+='<i class="glyphicon glyphicon-remove pull-right"></i>';
+	str+='<div id="tableScrollId">';
+	str+='<table class="table table-condensed">';
+		str+='<thead style="background-color:#f4f4f4;" class="text-capital">';
+			str+='<th>Level</th>';
+			str+='<th>Location</th>';
+			str+='<th>Department</th>';
+			str+='<th>Corporation</th>';
+			str+='<th>Position</th>';
+			str+='<th>Status</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].hno+'</td>';
+				str+='<td>'+result[i].name+'</td>';
+				if(result[i].mobileNo != null && result[i].mobileNo != "")
+					str+='<td>'+result[i].mobileNo+'</td>';
+				else
+					str+='<td> Any </td>';
+				if(result[i].pincode != null && result[i].pincode != "")
+					str+='<td>'+result[i].pincode+'</td>';
+				else
+					str+='<td> Any </td>';
+				if(result[i].voterCardNo != null && result[i].voterCardNo != "")
+					str+='<td>'+result[i].voterCardNo+'</td>';
+				else
+					str+='<td> Any </td>';
+				str+='<td>'+result[i].perc+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	$("#"+divId).html(str);
+	if(result.length > 5)
+	{
+		$("#tableScrollId").mCustomScrollbar({setHeight: '200px'})
+	}
+}
+
+$(document).on("click",function(){
+	$(".updateDropDown").hide();
+	$(".appliedPostPopup").hide();
+});
+$(document).on("click",".updateDropDown,.appliedPostPopup",function(e){
+	e.stopPropagation()
+});
+$(document).on("click",".closeIcon",function(e){
+	$(this).closest(".updateDropDown").hide();
+});
 	

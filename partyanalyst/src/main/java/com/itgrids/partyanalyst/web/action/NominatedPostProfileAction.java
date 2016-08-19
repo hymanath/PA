@@ -391,7 +391,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			jObj = new JSONObject(getTask());
 			
 			nomintedPostMemberVO = nominatedPostProfileService.getNominatedPostMemberDetails(jObj.getLong("levelId"),jObj.getLong("levelValue"),jObj.getLong("departmentId"),
-															jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getString("type"),jObj.getLong("searchLevelId"));
+															jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getString("type"),jObj.getLong("searchLevelId"),jObj.getLong("statusId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getNominatedPostMemberDetails Action",e);
@@ -714,7 +714,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		try{
 			jObj = new JSONObject(getTask());
 			
-			idNameVOList = nominatedPostProfileService.getReferCadreDetailsForCandidate(jObj.getLong("candidateId"));
+			idNameVOList = nominatedPostProfileService.getReferCadreDetailsForCandidate(jObj.getLong("applicationId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getReferCadreDetailsForCandidate Action",e);
@@ -1085,7 +1085,7 @@ return Action.SUCCESS;
 			jObj = new JSONObject(getTask());
 			
 			nominatedPostReferVO = nominatedPostProfileService.getAllReferredMemberDetailsForPosition(jObj.getLong("levelId"),jObj.getLong("levelValue"),
-							jObj.getLong("departmentId"),jObj.getLong("boardId"),jObj.getLong("positionId"));
+							jObj.getLong("departmentId"),jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getLong("statusId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getAllReferredMemberDetailsForPosition Action",e);
