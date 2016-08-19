@@ -308,7 +308,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		
 		if(levelValue != null && levelValue.longValue() > 0l)
-			sb.append(" and model.locationValue = :levelValue");
+			sb.append(" and model.nominatedPostMember.locationValue = :levelValue");
 		
 		if(statusId !=null && statusId.longValue()>0l){
 			sb.append(" and model.applicationStatusId = :statusId");
@@ -1838,7 +1838,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	}
 	
 	public Integer updateStatusToGOPassed(List<Long> applicationIds,Date date,Long statusId){
-		Query query = getSession().createQuery(" update NominatedPostFinal model set model.applicationStatusId=:statusId and model.updatedTime=:date " +
+		Query query = getSession().createQuery(" update NominatedPostFinal model set model.applicationStatusId=:statusId, model.updatedTime=:date " +
 				" where model.nominatedPostApplicationId in (:applicationIds) and model.isDeleted='N' ");
 		
 		query.setParameter("statusId", statusId);
