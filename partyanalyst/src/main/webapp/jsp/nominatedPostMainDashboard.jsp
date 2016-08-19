@@ -357,7 +357,7 @@
                     </ul>
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
-                	<div class="pad_10 bg_ff">
+                	<div class="pad_10 bg_ff" id="tableschrollId">
                     	<div class="table-responsive" id="statePositionId"></div>
                     </div>
                 </div>

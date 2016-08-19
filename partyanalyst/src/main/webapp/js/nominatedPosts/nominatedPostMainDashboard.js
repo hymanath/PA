@@ -1236,7 +1236,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var str = '';
 		str+='<table class="table table-condensed" style="border:1px solid #ddd;background-color:#ECF1F5">';  
 		str+='<thead class="bg_ef text-capital">';
-			str+='<th style="width:200px;">District</th>';
+			str+='<th style="width:200px;" id="locationHeadingId"></th>';
 			str+='<th style="width:200px;text-align:center">Finalised Positions Total</th>';  
 			str+='<th style="width:100px;">Male</th>';
 			str+='<th style="width:100px;">Female</th>';
@@ -1266,12 +1266,13 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		}
 		str+='</tbody>';
 		$("#statePositionId").html(str);
+		$("#locationHeadingId").html($("#locationLevelId option:selected").text());    
 		if(result.length > 20){
 			$("#tableschrollId").mCustomScrollbar({setHeight: '440px'});  
 		}
 	}
 	$(document).on('click','.districtCls',function(){
-		$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
+		$(this).toggleClass("glyphicon-plus").toggleClass("glyphicon-minus"); 
 		$(this).closest('tr').next('tr.showHideTr').toggle();    
 		
 		var sectionId = $(this).attr("attr_id");   
@@ -1327,7 +1328,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         str+='<td colspan="10" class="pad_15">';  
         str+='<table class="table table-condensed table-striped" >';
         str+='<thead class="text-capital" style="width:100px;">';
-        str+='<th style="width:200px;">Position</th>';  
+        str+='<th style="width:200px;">&nbsp&nbsp&nbspPosition</th>';  
         str+='<th style="width:200px;">total positions</th>';    
         str+='<th style="width:100px;">M</th>';
         str+='<th style="width:100px;">F</th>';
@@ -1342,7 +1343,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
         str+='<tbody class="text-capital">';
 		for(var i in result){
         str+='<tr style="width:100px;">';
-		str+='<td >'+result[i].name+'</td>';
+		str+='<td >&nbsp&nbsp&nbsp'+result[i].name+'</td>';     
 		str+='<td>'+result[i].totalPositions+'</td>';
         str+='<td>'+result[i].maleCount+'</td>';
         str+='<td>'+result[i].femaleCount+'</td>';
