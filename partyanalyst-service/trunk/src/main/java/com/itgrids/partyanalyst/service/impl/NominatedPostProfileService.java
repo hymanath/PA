@@ -4691,10 +4691,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					genderList.add(vo);
 				}
 			}
-			Long totalApplicationCount=nominatedPostFinalDAO.getTotalApplicationsByLocation(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
+	/*		Long totalApplicationCount=nominatedPostFinalDAO.getTotalApplicationsByLocation(positionId, levelId, deptId, boardId, casteGroupId, applStatusId,stateId);
 			if(genderList != null && genderList.size() > 0 && totalApplicationCount != null ){
 				genderList.get(0).setTotalApplicationCount(totalApplicationCount);
-			}
+			}*/
 			List<Object[]> casteGropList = casteCategoryDAO.getCasteCategoryDetails();
 			if(commonMethodsUtilService.isListOrSetValid(casteGropList)){ //preparing template for caste group
 				for (Object[] obj : casteGropList) {

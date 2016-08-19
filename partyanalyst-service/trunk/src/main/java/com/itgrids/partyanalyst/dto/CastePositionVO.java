@@ -39,6 +39,10 @@ public class CastePositionVO {
 	private String totalAppRecevidPer="0";
 	private Long totalOpendPositionCnt=0l;
 	private String totalOpendPositionCntPer="0";
+	private Long readyForFinalReviewCnt=0l;
+	private String readyForFinalReviewCntPer="0";
+	private Long totalPostsCnt=0l;
+	private String totalPostsCntPer="0";
 	
 	
 	public String getOpenPostCntPer() {
@@ -246,5 +250,29 @@ public class CastePositionVO {
 	}
 	public void setTotalOpendPositionCntPer(String totalOpendPositionCntPer) {
 		this.totalOpendPositionCntPer = totalOpendPositionCntPer;
+	}
+	public Long getReadyForFinalReviewCnt() {
+		return readyForFinalReviewCnt;
+	}
+	public void setReadyForFinalReviewCnt(Long readyForFinalReviewCnt) {
+		this.readyForFinalReviewCnt = readyForFinalReviewCnt;
+	}
+	public String getReadyForFinalReviewCntPer() {
+		return readyForFinalReviewCntPer;
+	}
+	public void setReadyForFinalReviewCntPer(String readyForFinalReviewCntPer) {
+		this.readyForFinalReviewCntPer = readyForFinalReviewCntPer;
+	}
+	public Long getTotalPostsCnt() {
+		return totalPostsCnt;
+	}
+	public void setTotalPostsCnt(Long totalPostsCnt) {
+		this.totalPostsCnt = totalPostsCnt;
+	}
+	public String getTotalPostsCntPer() {
+		return totalPostsCntPer;
+	}
+	public void setTotalPostsCntPer(String totalPostsCntPer) {
+		this.totalPostsCntPer = totalPostsCntPer;
 	}
 }
