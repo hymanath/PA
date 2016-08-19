@@ -20,7 +20,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue,Long searchLevelId);
 	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevelId,Long searchLevelValue,Long searchLevelId,Long applicationId);
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevelId,Long searchLevelValue,Long searchLevelId,Long nominatedPostCandId);
-	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId);
+	public NomintedPostMemberVO getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId,Long statusId);
 	public String updateApplicationStatusDetails(final Long userId,final Long nominatePostApplicationId,final Long statusId,final String comment,final Long levelId,
 			final Long levelValue,final Long deptId,final Long boardId,final Long positionId,final Long candidateId);
 	public ResultStatus savingNominatedPostProfileApplication(NominatedPostVO nominatedPostVO,final Long loggedUserId,final Map<File,String> mapfiles);
@@ -46,7 +46,7 @@ public interface INominatedPostProfileService {
 	public List<IdNameVO> getCastesForAP();
 	public  List<CadreCommitteeVO> getNotCadreDetailsById(Long nominatedPostCandiId);
 	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final List<Long> positions,final Long levelId,final List<Long> searchLevelValues,final Long statusId,final Long userId,final Long sizeOfMember);
-	public NominatedPostReferVO getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId);
+	public NominatedPostReferVO getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,Long statusId);
 	public IdNameVO getOverAllCommentsForCandidate(Long candidateId);
 	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId,final Long candidateId);
 	public String updateWishListForCandidate(final Long postFinalId,final String remark,final Long userId);
