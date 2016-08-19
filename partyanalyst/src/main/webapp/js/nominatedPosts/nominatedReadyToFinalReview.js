@@ -444,7 +444,7 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   if(result != null){
-		   buildNominatedPostMemberDetails(result,levelId,levelVal,deptId,boardId,positionId)
+		   buildNominatedPostMemberDetails(result,levelId,levelVal,deptId,boardId,positionId);
 	   }
    });
 }
@@ -457,13 +457,15 @@ $(document).on('click','.showPdfCls',function(){
 	$("#pdfReportDetailsId").html(str);
 }); 
 var totalWishListCount = 0;
-function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departmentId,boardId,positionId){
+function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,boardId,positionId){
 	var str='';
 	totalWishListCount = 0;
 	
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
+		if(gblStatus=="finaliZed"){
 			str+='<th style="" class="text-center"></th>';
+		}
 			str+='<th style="width:150px" class="text-center">Name</th>';
 			str+='<th class="text-center">Mobile</th>';
 			str+='<th class="text-center">Gender</th>';
@@ -481,7 +483,9 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
 			str+='<tr class="text-center">';
-				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostCandidateId="'+result.subList[i].nominatedPostCandidateId+'"></td>';
+			if(gblStatus=="finaliZed"){
+				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostCandidateId+'"></td>';
+			}
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
 					str+='<td style="width:150px;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
@@ -598,29 +602,23 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
-					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostCandidateId="'+result.subList[i].nominatedPostCandidateId+'">UPDATE</button>';
+					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostCandidateId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
 					str+='<div class="updateDropDown">';
-						str+='<div>anbs</div>';
-						/*str+='<div class="updateDropDownArrow">';
-							str+='<label class="m_top10">Select Status</label>';
+						if(gblStatus!="finaliZed"){
+							str+='<div class="updateDropDownArrow">';
+							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
+							str+='<label calss="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
-								str+='<option value="0">Select Status</option>';
-								str+='<option value="4">Rejected-Final Review</option>';
-								str+='<option value="5">Confirmed</option>';
+							str+='<option value="0">Select Status</option>';
+							str+='<option value="4">Rejected-Final Review</option>';
+							str+='<option value="5">Confirmed</option>';
 							str+='</select>';
-							str+='<label class="m_top10">G.O Number</label>';
-							str+='<input type="text" class="form-control"/>';
-							str+='<label class="m_top10">G.O Code</label>';
-							str+='<input type="text" class="form-control"/>';
-							str+='<label class="m_top10">Position Duration</label>';
-							str+='<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span><input type="text" class="form-control dateR"/></div>';
-							str+='<label>Remarks/Comments</label>';
-							str+='<textarea id="goRemarksTextId" class="form-control" name="govtOrderVO.remarks" name="comment" placeholder="Enter Comments Here..."></textarea>';
-							str+='<label class="m_top10">Upload G.O</label>';
-							
+							str+='<label class="m_top10">Comments</label>';
+							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
 							str+='<button id="commentStatusSubmitBtnId'+i+'" attr_current_position_id='+i+' class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
 							str+='<img src="images//icons//ajaxImg.gif" id="processingImgId'+i+'" style="display:none;"></img>';
-						str+='</div>';*/
+							str+='</div>';
+						}
 					str+='</div>';
 				str+='</td>';
 			str+='</tr>';
@@ -629,9 +627,10 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 	str+='</table>';
 	str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<button class="btn btn-success btnUpdateAll m_top20">UPDATE</button>';
+		if(gblStatus=="finaliZed"){
+			str+='<button class="btn btn-success btnUpdateAll m_top20" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
+		}
 			str+='<div class="updateDropDown updateAllShowPopup">';
-				str+='<div>anbs</div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
@@ -650,100 +649,7 @@ function buildNominatedPostMemberDetails(result,type,levelId,levelValue,departme
 				$(".dateR").daterangepicker({
 					opens:'left'
 				});
-				$('#filer_input').filer({
-					changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-folder"></i></div><div class="jFiler-input-text"><h3>Click on this box</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',
-					showThumbs: true,
-					theme: "dragdropbox",
-					templates: {
-						box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
-						item: '<li class="jFiler-item">\
-									<div class="jFiler-item-container">\
-										<div class="jFiler-item-inner">\
-											<div class="jFiler-item-thumb">\
-												<div class="jFiler-item-status"></div>\
-												<div class="jFiler-item-info">\
-													<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
-													<span class="jFiler-item-others">{{fi-size2}}</span>\
-												</div>\
-												{{fi-image}}\
-											</div>\
-											<div class="jFiler-item-assets jFiler-row">\
-												<ul class="list-inline pull-left">\
-													<li>{{fi-progressBar}}</li>\
-												</ul>\
-												<ul class="list-inline pull-right">\
-													<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
-												</ul>\
-											</div>\
-										</div>\
-									</div>\
-								</li>',
-						itemAppend: '<li class="jFiler-item">\
-							<div class="jFiler-item-container">\
-								<div class="jFiler-item-inner">\
-									<div class="jFiler-item-thumb">\
-										<div class="jFiler-item-status"></div>\
-										<div class="jFiler-item-info">\
-											<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
-											<span class="jFiler-item-others">{{fi-size2}}</span>\
-										</div>\
-										{{fi-image}}\
-									</div>\
-									<div class="jFiler-item-assets jFiler-row">\
-										<ul class="list-inline pull-left">\
-											<li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
-										</ul>\
-										<ul class="list-inline pull-right">\
-											<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
-										</ul>\
-									</div>\
-								</div>\
-							</div>\
-						</li>',
-						progressBar: '<div class="bar"></div>',
-						itemAppendToEnd: true,
-							removeConfirmation: true,
-							_selectors: {
-								list: '.jFiler-items-list',
-								item: '.jFiler-item',
-								progressBar: '.bar',
-								remove: '.jFiler-item-trash-action'
-							}
-						},
-						dragDrop: {
-							dragEnter: null,
-							dragLeave: null,
-							drop: null,
-						},
-						
-						files: null,
-						addMore: true,
-						clipBoardPaste: true,
-						excludeName: null,
-						beforeRender: null,
-						afterRender: null,
-						beforeShow: null,
-						beforeSelect: null,
-						onSelect: null,
-						afterShow: null,
-					   
-						onEmpty: null,
-						options: null,
-						captions: {
-							button: "Choose Files",
-							feedback: "Choose files To Upload",
-							feedback2: "files were chosen",
-							drop: "Drop file here to Upload",
-							removeConfirmation: "Are you sure you want to remove this file?",
-							errors: {
-								filesLimit: "Only {{fi-limit}} files are allowed to be uploaded.",
-								filesType: "Only Images are allowed to be uploaded.",
-								filesSize: "{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",
-								filesSizeAll: "Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."
-							}
-						}
-						
-				});
+				
 }
 
 $(document).on("click",".wishListCls",function(){
@@ -778,34 +684,64 @@ $(document).on("click",".wishListCls",function(){
 	});
 });
 
-//saveGoForCandidateCls
-$(document).on("click",".statusUpdateBntCls",function(){
-	var nominatedPostCandidateId = $(this).attr("attr_nominatedpostcandidateid");
-	var candiIds = [];
-	candiIds.push(nominatedPostCandidateId);
+$(document).on("click",".saveGoForCandidateCls",function(){
 	
-	assignGOTONominatedPostCandidates(candiIds);
-});
-
-$(document).on("click",".btnUpdateAll",function(){
-	var candiIds = [];
-	
-	$(".candiCheckBoxCls").each(function(){
-		if($(this).is(":checked")){
-			candiIds.push($(this).attr("attr_nominatedpostcandidateid"));
-		}
-	});
-	
-	if(candiIds.length = 0){
-		alert("Please Select Candiadtes To Assign GO");
-	}else{
-		assignGOTONominatedPostCandidates(candiIds);
+	if($("#goStatusSelId").val() == 0){
+		alert("Please Select Status.");
+		return;
 	}
+		
+	var startDate = $('input:text[name=daterangepicker_start]').val();
+	var endDate = $('input:text[name=daterangepicker_end]').val();
+		
+	$("#fromDateHidden").val(startDate);
+	$("#toDateHidden").val(endDate);
+		
+	$("#locationLevelIdHidden").val(globalLocationLevelId);
+	
+	$("#departmentIdHidden").val($(this).attr("attr_department_id"));
+	$("#boardIdHidden").val($(this).attr("attr_doard_id"));
+	$("#positionIdsHidden").val($(this).attr("attr_position_id"));
+	
+	var str="";
+	if(globalLocationLevelValueArr != null && globalLocationLevelValueArr.length > 0){
+		for(var i in globalLocationLevelValueArr){
+			str=str+','+globalLocationLevelValueArr[i];
+		}
+	}
+	$("#locationLevelValuesHidden").val(str);
+	
+	var nominatedPostCandidateId = $(this).attr("attr_nominatedPostApplicationId");
+	var applicationIds = "";
+	if(nominatedPostCandidateId == 0){
+		$(".candiCheckBoxCls").each(function(){
+			if($(this).is(":checked")){alert($(this).attr("attr_nominatedPostApplicationId"));
+				applicationIds = applicationIds+","+$(this).attr("attr_nominatedPostApplicationId");
+			}
+		});
+	}else{
+		applicationIds = nominatedPostCandidateId;
+	}
+	if(typeof applicationIds == "undefined" || applicationIds.trim() == ""){
+		alert("Please Select Atleast One candidate To Assign GO.");
+		return;
+	}
+	
+	$("#applicationIdsHidden").val(applicationIds);
+	
+	
+	var uploadHandler = {
+		upload: function(o) {
+			uploadResult = o.responseText;
+			showSbmitStatus(uploadResult);
+		}
+	};
+		
+	YAHOO.util.Connect.setForm('goSubmitApplicationForCandi',true);
+	YAHOO.util.Connect.asyncRequest('POST','assginGOToNominationPostCandidateAction.action',uploadHandler);
+	   
 });
 
-function assignGOTONominatedPostCandidates(candiIds){
-	
-}
 
 function getApplicationStatus(divId){
 	$("#"+divId+" option").remove();
@@ -839,7 +775,7 @@ $(document).on("click",".submitBtnCls",function(){
 	
 	var status = $("#"+statusId).val();
 	var comment = $("#"+commentId).val();
-	
+	alert(comment);return;
 
 	 if(status == 0){
 		$(".updtCmmntErrrCls"+position).html('<span style="color:red">Please select status</span>');
@@ -1325,21 +1261,22 @@ $(document).on("click",".boardHrfCls",function(){
 	var strglob = ' '
 	strglob+='<div class="updateDropDownArrow ">';
 		strglob+='<div class="row ">';
+		strglob+='<form name="goSubmitApplicationForCandi" id="goSubmitApplicationForCandi"  method="post" enctype="multipart/form-data">';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>Select Status</label>';
-				strglob+='<select class="chosenSelect">';
+				strglob+='<select class="chosenSelect" id="goStatusSelId" name="govtOrderVO.status">';
 					strglob+='<option value="0">Select Status</option>';
-					strglob+='<option value="4">Rejected-Final Review</option>';
-					strglob+='<option value="5">Confirmed</option>';
+					strglob+='<option value="1">G.O Issue</option>';
+					strglob+='<option value="2">Reject</option>';
 				strglob+='</select>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>G.O Name</label>';
-				strglob+='<input type="text" class="form-control"/>';
+				strglob+='<input type="text" name="govtOrderVO.goName" class="form-control"/>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
-				strglob+='<label>G.O Number</label>';
-				strglob+='<input type="text" class="form-control"/>';
+				strglob+='<label>G.O Code</label>';
+				strglob+='<input type="text" name="govtOrderVO.goCode" class="form-control"/>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
 				strglob+='<label>Positions Duration</label>';
@@ -1353,6 +1290,16 @@ $(document).on("click",".boardHrfCls",function(){
 				strglob+='<label>Upload G.O</label>';
 				strglob+='<input type="file" name="inout" class="inputFiler" id="filer_input"/>';
 			strglob+='</div>';
+				strglob+='<input type="hidden" id="positionIdsHidden" name="govtOrderVO.positionIdsString"/>';
+				strglob+='<input type="hidden" id="fromDateHidden" name="govtOrderVO.fromDate"/>';
+				strglob+='<input type="hidden" id="toDateHidden" name="govtOrderVO.toDate"/>';
+				strglob+='<input type="hidden" id="locationLevelIdHidden" name="govtOrderVO.locationLevelId"/>';
+				strglob+='<input type="hidden" id="locationLevelValuesHidden" name="govtOrderVO.locationLevelValuesStr"/>';
+				strglob+='<input type="hidden" id="departmentIdHidden" name="govtOrderVO.departmentId"/>';
+				strglob+='<input type="hidden" id="boardIdHidden" name="govtOrderVO.boardId"/>';
+				strglob+='<input type="hidden" id="applicationIdsHidden" name="govtOrderVO.applicationIds"/>';
+				
+			strglob+='</form>';
 			strglob+='<div class="col-md-5 col-xs-12 col-sm-6">';
 				strglob+='<button class="btn btn-success m_top20 saveGoForCandidateCls">SUBMIT</button>';
 			strglob+='</div>';
