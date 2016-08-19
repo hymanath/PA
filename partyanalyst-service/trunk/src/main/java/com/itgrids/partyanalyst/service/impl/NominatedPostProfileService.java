@@ -5703,7 +5703,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							
 							if(mapfiles.size() > 0){
 								String status1 = saveGODocuments(govtOrder.getGovtOrderId(),mapfiles,userId);
-								rs.setExceptionMsg("GO Issued Succesfully.");
+								//rs.setExceptionMsg("GO Issued Succesfully.");
+								rs.setExceptionMsg("SUCCESS");
 							}
 							
 						}else if(goVO.getStatus() != null && goVO.getStatus() == 2l){//go reject
@@ -5721,14 +5722,16 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									nominatedPostApplicationDAO.save(nominatedPostApplication);
 								}
-								rs.setExceptionMsg("GO Rejected Succesfully.");
+								//rs.setExceptionMsg("GO Rejected.");
+								rs.setExceptionMsg("SUCCESS");
 							}
 						}
 					}
 			 });
 		} catch (Exception e) {
 			LOG.error("Exception raised at assginGOToNominationPostCandidate", e);
-			rs.setExceptionMsg("Error Occured Please Try Agail.");
+			//rs.setExceptionMsg("Error Occured Please Try Again.");
+			rs.setExceptionMsg("Failure");
 		}
 		 
 		 return rs;
