@@ -2844,118 +2844,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 				
-				/*
-				List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,searchlevelId,searchLevelValue);
-				Map<String,Long> totalPostMemeberCountMap = new HashMap<String, Long>(0);
-				if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
-					for (Object[] param : totalDeptsNCorpNDesig) {
-						Long deptId = commonMethodsUtilService.getLongValueForObject(param[0]);
-						Long corpId = commonMethodsUtilService.getLongValueForObject(param[1]);
-						Long positionId = commonMethodsUtilService.getLongValueForObject(param[2]);
-						Long maxCount = commonMethodsUtilService.getLongValueForObject(param[3]);
-						
-						totalPostMemeberCountMap.put(""+deptId+"-"+corpId+"-"+positionId+"".trim(), maxCount);
-					}
-				}
-				
-				List<Object[]> totalAppliedDeptsNCorpNDesig = nominatedPostApplicationDAO.getTotalAppliedCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,searchlevelId,searchLevelValue);
-				Map<String,Long> appliedPostMemeberCountMap = new HashMap<String, Long>(0);
-				if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
-					for (Object[] param : totalAppliedDeptsNCorpNDesig) {
-						Long deptId = commonMethodsUtilService.getLongValueForObject(param[0]);
-						Long corpId = commonMethodsUtilService.getLongValueForObject(param[1]);
-						Long positionId = commonMethodsUtilService.getLongValueForObject(param[2]);
-						Long count = 1L;
-						if(appliedPostMemeberCountMap.get(""+deptId+"-"+corpId+"-"+positionId+"".trim()) != null){
-							count=appliedPostMemeberCountMap.get(""+deptId+"-"+corpId+"-"+positionId+"".trim());
-							if(count != null)
-								count = count+1;
-						}
-						appliedPostMemeberCountMap.put(""+deptId+"-"+corpId+"-"+positionId+"".trim(), count);
-					}
-				}
-				
-				Map<Long, Map<Long,Map<Long,Long>>> finalNotApplnRecievedPositionsMap = new HashMap<Long, Map<Long,Map<Long,Long>>>(0);
-				List<Long> corpIdsList = new ArrayList<Long>(0);
-				if(commonMethodsUtilService.isMapValid(totalPostMemeberCountMap)){
-					for (String DCP : totalPostMemeberCountMap.keySet()) {
-						Long maxPositionsCount = totalPostMemeberCountMap.get(DCP) != null?totalPostMemeberCountMap.get(DCP):0L;
-						Long appliedCount = appliedPostMemeberCountMap.get(DCP) != null?appliedPostMemeberCountMap.get(DCP):0L;
-						
-						if(maxPositionsCount>appliedCount){
-							//finalNotApplnRecievedPositionsMap.put(DCP, maxPositionsCount-appliedCount);
-							String[] DCPArr = DCP.split("-");
-							
-							Map<Long,Long> corpPositionMap = new HashMap<Long, Long>(0);
-							corpPositionMap.put(Long.valueOf(DCPArr[2].toString()), maxPositionsCount-appliedCount);
-							
-							Map<Long,Map<Long,Long>> positionCountMap = new HashMap<Long,Map<Long,Long>>(0);
-							
-							positionCountMap.put(Long.valueOf(DCPArr[1].toString()), corpPositionMap);
-							finalNotApplnRecievedPositionsMap.put(Long.valueOf(DCPArr[0].toString()), positionCountMap);
-							
-							corpIdsList.add(Long.valueOf(DCPArr[1].toString()));
-						}
-					}
-				}
-				
-				List<Object[]> deptsList = departmentsDAO.getDepartmentByIdsList(1L,new ArrayList<Long>(finalNotApplnRecievedPositionsMap.keySet()));
-				List<Object[]> corpList = boardDAO.getBoardsByIdsList(corpIdsList);
-				
-				Map<Long,String> deptNameMap = new HashMap<Long, String>(0);
-				Map<Long,String> boardNameMap = new HashMap<Long, String>(0);
-				
-				if(commonMethodsUtilService.isListOrSetValid(deptsList)){
-					for (Object[] param : deptsList) 
-						deptNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-				}
-				
-				if(commonMethodsUtilService.isListOrSetValid(deptsList)){
-					for (Object[] param : corpList) 
-						boardNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-				}
-				
-				
-				if(commonMethodsUtilService.isMapValid(finalNotApplnRecievedPositionsMap)){
-					for (Long deptId : finalNotApplnRecievedPositionsMap.keySet()) {
-						
-						IdNameVO vo = new IdNameVO();
-						vo.setId(deptId);
-						vo.setName(deptNameMap.get(deptId));
-						
-						Map<Long,Map<Long,Long>> positionCountMap = finalNotApplnRecievedPositionsMap.get(deptId);
-						List<IdNameVO> corpsList = new ArrayList<IdNameVO>(0);
-						Long totalavailableCount = 0L;
-						if(commonMethodsUtilService.isMapValid(positionCountMap)){
-							for (Long corpId : positionCountMap.keySet()) {
-								Map<Long,Long> corpPositionMap = positionCountMap.get(corpId);
-								Long availableCount = 0L;
-								if(commonMethodsUtilService.isMapValid(corpPositionMap)){
-									for (Long positionId : corpPositionMap.keySet()) {
-										availableCount = availableCount+corpPositionMap.get(positionId);
-									}
-								}
-								IdNameVO vo1 = new IdNameVO();
-								vo1.setId(corpId);
-								vo1.setName(boardNameMap.get(corpId));
-								vo1.setAvailableCount(availableCount);
-								corpsList.add(vo1);
-								
-								totalavailableCount = totalavailableCount+availableCount;
-							}
-						}
-						
-						vo.setAvailableCount(totalavailableCount);
-						vo.setIdnameList(corpsList);
-						
-						finalList.add(vo);
-					}
-				}*/
-					
 				return finalList;
 			}
 			else if(task !=null && task.trim().equalsIgnoreCase("Total")){
-				
 				
 				if(boardLevelId.equals(5l)){
 					if(locationValues !=null && locationValues.size()>0){
@@ -3077,7 +2968,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 			}*/
 			Map<Long,Long> deptPosMap = new LinkedHashMap<Long, Long>();
+			Map<Long,List<Long>> deptAvailableBoardsMap = new LinkedHashMap<Long, List<Long>>();
 			Map<Long,Map<Long,Long>> deptBrdPosMap = new LinkedHashMap<Long, Map<Long,Long>>();
+			Map<Long,List<Long>> deptBrdApplMap = new LinkedHashMap<Long,List<Long>>();
 			
 			List<Object[]> positionsCountsList = nominatedPostDAO.getOpenedPositionsCountByDepartment(boardLevelId, searchlevelId, searchLevelValue,statusType);
 			if(commonMethodsUtilService.isListOrSetValid(positionsCountsList)){
@@ -3092,14 +2985,26 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						Long boardId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 						
 						Map<String,Long> positionCountMap = new HashMap<String, Long>(0);
+						List<Long> boardIdsList  = new ArrayList<Long>(0);
 						if(deptBoardPosotionMap.get(depId) != null){
 							positionCountMap = deptBoardPosotionMap.get(depId);
 							if(commonMethodsUtilService.isMapValid(positionCountMap) && positionCountMap.get(postionId+""+boardId+"-"+postionId) != null){
 								count = count+positionCountMap.get(postionId+""+boardId+"-"+postionId);
 							}
+							boardIdsList = deptAvailableBoardsMap.get(depId);
 						}
+						
+						List<Long> bordPositionsList = new ArrayList<Long>(0);
+						if(deptBrdApplMap.get(postionId) != null)
+							bordPositionsList = deptBrdApplMap.get(postionId);
+						
+						bordPositionsList.add(postionId);
+						deptBrdApplMap.put(boardId, bordPositionsList);
+						
 						positionCountMap.put(postionId+""+boardId+"-"+postionId, count);
 						deptBoardPosotionMap.put(depId, positionCountMap);
+						boardIdsList.add(boardId);
+						deptAvailableBoardsMap.put(depId, boardIdsList);
 					}
 					else
 						deptPosMap.put(depId, count);
@@ -3138,6 +3043,26 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
+			if(commonMethodsUtilService.isMapValid(deptPosMap)){
+				for (Long deptId : deptPosMap.keySet()) {
+					if(deptPosMap.get(deptId) != null){
+						Map<Long,Long> boardMap = deptBrdPosMap.get(deptId);
+						Long availableCount = 0L;
+						List<Long> boardIdsList  = deptAvailableBoardsMap.get(deptId);
+						if(commonMethodsUtilService.isMapValid(boardMap) && commonMethodsUtilService.isListOrSetValid(boardIdsList)){
+							for (Long batchId : boardMap.keySet()) {
+								if(boardIdsList.contains(batchId))
+									availableCount = availableCount+(boardMap.get(batchId) != null?boardMap.get(batchId):0L);
+							}
+						}
+						Long appliedPostsCount = deptPosMap.get(deptId);
+						if(availableCount >0L && appliedPostsCount>availableCount){
+							deptPosMap.put(deptId,availableCount);
+						}
+					}
+				}
+			}
+			
 			Map<Long,Map<Long,Long>> applTotalMap = new LinkedHashMap<Long, Map<Long,Long>>();
 			Map<Long,Map<Long,Long>> applShrtMap = new LinkedHashMap<Long, Map<Long,Long>>();
 			List<Object[]> totalList = nominatedPostApplicationDAO.getTotalApplicationCountsByBoard(boardLevelId, searchlevelId, searchLevelValue, 0l);
@@ -3158,6 +3083,27 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
+			
+			Map<Long,Map<Long,Long>> applYetTosStartTotalMap = new LinkedHashMap<Long, Map<Long,Long>>();
+			List<Object[]> applYetTosStartTotalList = nominatedPostApplicationDAO.getTotalApplicationCountsByBoard(boardLevelId, searchlevelId, searchLevelValue, 1l);
+			if(commonMethodsUtilService.isListOrSetValid(applYetTosStartTotalList)){
+				for (Object[] obj : applYetTosStartTotalList) {
+					Long depId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long brdId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					Map<Long,Long> bdMap = applYetTosStartTotalMap.get(depId);
+					if(bdMap == null){
+						bdMap = new LinkedHashMap<Long, Long>();
+						bdMap.put(brdId, count);
+						applYetTosStartTotalMap.put(depId, bdMap);
+					}
+					else{
+						bdMap.put(brdId, count);
+						applYetTosStartTotalMap.put(depId, bdMap);
+					}
+				}
+			}
+			
 			List<Object[]> shortList = nominatedPostApplicationDAO.getTotalApplicationCountsByBoard(boardLevelId, searchlevelId, searchLevelValue, 3l);
 			if(commonMethodsUtilService.isListOrSetValid(shortList)){
 				for (Object[] obj : shortList) {
@@ -3185,7 +3131,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (IdNameVO idNameVO : finalList) {
 					Long count = deptPosMap.get(idNameVO.getId() != null?idNameVO.getId():0L);
-					idNameVO.setAvailableCount(count);
+					//idNameVO.setAvailableCount(count);
 				}
 			}
 			
@@ -3214,21 +3160,37 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					Long depId = idNameVO.getId();
 					Map<Long,Long> ttlMap = applTotalMap.get(depId);
 					Map<Long,Long> shrMap = applShrtMap.get(depId);
+					Map<Long,Long> applnyettoStartBrdMap = applYetTosStartTotalMap.get(depId);
 					if(commonMethodsUtilService.isListOrSetValid(idNameVO.getIdnameList())){
 						List<IdNameVO> brdList = idNameVO.getIdnameList();
+						Long deptOpenPostsCount =0L;
 						for (IdNameVO idNameVO2 : brdList) {
+							Map<Long,Long> boardAvailablePostsCountMap= deptBrdPosMap.get(idNameVO.getId());
+							if(idNameVO2.getAvailableCount() != null){
+								deptOpenPostsCount = deptOpenPostsCount+idNameVO2.getAvailableCount();
+							}
+							
+							if(commonMethodsUtilService.isMapValid(boardAvailablePostsCountMap)){
+								idNameVO2.setCount(boardAvailablePostsCountMap.get(idNameVO2.getId()));
+							}
+							
 							Long brdId = idNameVO2.getId();
-							Long ttlAppl = 0l;
+							Long ttlAppl = 0l;//
 							Long shtAppl = 0l;
+							Long yetToStart=0L;
 							if(ttlMap != null)
 								ttlAppl = ttlMap.get(brdId != null?brdId:0L);
 							if(shrMap != null)
 								shtAppl = shrMap.get(brdId != null?brdId:0L);
+							if(applnyettoStartBrdMap != null && applnyettoStartBrdMap.get(brdId) != null)
+								yetToStart = applnyettoStartBrdMap.get(brdId);
 							String perc = "0.00";
 							if(ttlAppl != null && ttlAppl.longValue() > 0l && shtAppl != null && shtAppl.longValue() > 0l)
 								perc = (new BigDecimal((shtAppl * 100.0)/ttlAppl.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 							idNameVO2.setPercentage(perc);
+							idNameVO2.setApplicationsCount(yetToStart);
 						}
+						idNameVO.setAvailableCount(deptOpenPostsCount);
 						Collections.sort(brdList,sortByName);
 					}
 				}
