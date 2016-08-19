@@ -48,7 +48,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	
-	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId){
+	public List<Object[]> getNominatedPostMemberDetails(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,String type,Long searchLevelId,Long applicationStatusId){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select NPA.nominationPostCandidate.nominationPostCandidateId," +
@@ -140,7 +140,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		sb.append(" and NPA.nominationPostCandidate.isDeleted = 'N'" +
 					" and NPA.isDeleted = 'N'");
-		
+		if(applicationStatusId != null && applicationStatusId.longValue() > 0l)
+		sb.append(" and NPA.applicationStatusId = :applicationStatusId ");
 		Query query = getSession().createQuery(sb.toString());
 		if(levelId.longValue() != 5L)
 			query.setParameter("levelId", levelId);
@@ -153,6 +154,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			query.setParameter("boardId", boardId);
 		if(positionId != null && positionId.longValue() > 0l)
 			query.setParameter("positionId", positionId);
+		if(applicationStatusId != null && applicationStatusId.longValue() > 0l)
+			query.setParameter("applicationStatusId", applicationStatusId);
 		/*if(type.equalsIgnoreCase("this")){
 			query.setParameter("departmentId", departmentId);
 			query.setParameter("boardId", boardId);
@@ -175,57 +178,69 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId){
+	public List<Object[]> getAnyAppliedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId,Long applicationStatusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.nominationPostCandidateId," +
-					" count(distinct model.departments.departmentId)" +
-					" from NominatedPostApplication model" +
+					" count(distinct departments.departmentId)" +
+					" from NominatedPostApplication model " +
+					" left join model.departments departments" +
+					" left join model.board board  " +
 					" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
 					" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
-		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
-			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");
+		/*if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+			sb.append(" and (departments.departmentId != :deptId or (model.departments = :deptId and board.boardId != :boardId))");*/
+		
+		if(deptId != null && deptId.longValue() > 0l )
+			sb.append(" and departments.departmentId != :deptId");
+		
+		if(applicationStatusId != null && applicationStatusId.longValue() > 0l)
+			sb.append(" and  model.applicationStatusId = :applicationStatusId ");
 		sb.append(" group by model.nominationPostCandidate.nominationPostCandidateId");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
-		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+		if(deptId != null && deptId.longValue() > 0l){
 			query.setParameter("deptId", deptId);
-			query.setParameter("boardId", boardId);
+			//query.setParameter("boardId", boardId);
 		}
-		
+		if(applicationStatusId != null && applicationStatusId.longValue() > 0l)
+			query.setParameter("applicationStatusId", applicationStatusId);
 		return query.list();
 	}
 	
-	public List<Long> getAnyShortlistedDepartmentsForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId){
+	public List<Long> getAnyShortlistedDepartmentsForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId,Long applicationStatusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.nominationPostCandidateId" +
 						" from NominatedPostApplication model" +
 						" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
 						" and model.applicationStatus.applicationStatusId = 3" +
 						" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
-		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
-			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");
-		
+		/*if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");*/
+		if(deptId != null && deptId.longValue() > 0l )
+			sb.append(" and model.departmentId != :deptId ");
+
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
-		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+		if(deptId != null && deptId.longValue() > 0l){
 			query.setParameter("deptId", deptId);
-			query.setParameter("boardId", boardId);
+			//query.setParameter("boardId", boardId);
 		}
-		
 		return query.list();
 	}
 	
 	public List<Object[]> getShortlistedDepartmentsCountForCandidateList(Set<Long> nominatedPostCandidateIds,Long deptId,Long boardId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.nominationPostCandidateId," +
-						" count(distinct model.departments.departmentId)" +
-						" from NominatedPostApplication model" +
+						" count(distinct departments.departmentId)" +
+						" from NominatedPostApplication model " +
+						" left join model.departments departments" +
+						" left join model.board board  " +
 						" where model.nominationPostCandidate.nominationPostCandidateId in (:nominatedPostCandidateIds)" +
 						" and model.applicationStatus.applicationStatusId = 3" +
 						" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N'");
 		if(deptId != null && deptId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
-			sb.append(" and (model.departmentId != :deptId or (model.departmentId = :deptId and model.boardId != :boardId))");
+			sb.append(" and (departments.departmentId != :deptId or (departments.departmentId = :deptId and board.boardId != :boardId))");
 		sb.append(" group by model.nominationPostCandidate.nominationPostCandidateId");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("nominatedPostCandidateIds", nominatedPostCandidateIds);
@@ -990,8 +1005,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			  query.setParameter("locationLevelId", locationLevelId);
 		 }
 		 if(stateId != null && stateId.longValue() > 0){
-   			  query.setParameter("stateId", stateId); 
-   		 }
+  			  query.setParameter("stateId", stateId); 
+  		 }
 		 return query.list();
 	 
   }
@@ -1105,8 +1120,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId "); 
 		     }
 		     if(stateId != null && stateId.longValue() > 0){
-   			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
-   		    }
+  			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
+  		    }
 		   
 		     Query query = getSession().createQuery(queryStr.toString());
 		     if(positionId != null && positionId.longValue() > 0){
@@ -1116,8 +1131,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		      query.setParameter("boardLevelId", boardLevelId);	 	 
 		     }
 		     if(stateId != null && stateId.longValue() > 0){
-    			  query.setParameter("stateId", stateId); 
-    		 }
+   			  query.setParameter("stateId", stateId); 
+		     }
 		     query.setParameter("shortListed",IConstants.SHORTLISTED_STATUS);
 	          return (Object[]) query.uniqueResult(); 
 	  }
