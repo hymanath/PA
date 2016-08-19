@@ -32,7 +32,7 @@ public class ApplicationDocumentDAO extends GenericDaoHibernate<ApplicationDocum
 			 
 	public List<Object[]> getNominatedPostDocumentDetails(Set<Long> candidateIds){
 		Query query = getSession().createQuery("select model.nominationPostCandidateId," +
-												" model.filePath" +
+												" model.filePath, model.nominatedPostApplicationId" +
 												" from ApplicationDocument model" +
 												" where model.nominationPostCandidate.nominationPostCandidateId in (:candidateIds)" +
 												" and model.isDeleted = 'N'");
