@@ -67,5 +67,6 @@ public interface INominatedPostProfileService {
 	 public List<IdNameVO> getPositionsForABoard(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId);
 	 public ResultStatus confirmGOForNominatedPosts(GovtOrderVO goVO,Long userId,Map<File,String> mapfiles);
 	 public ResultStatus checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId);
+	 public ResultStatus assginGOToNominationPostCandidate(GovtOrderVO goVO,Long userId,Map<File,String> mapfiles);
 	 
 }

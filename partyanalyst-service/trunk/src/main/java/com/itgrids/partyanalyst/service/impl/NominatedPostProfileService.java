@@ -12,10 +12,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -80,6 +82,7 @@ import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostApplicationHistory;
 import com.itgrids.partyanalyst.model.NominatedPostComment;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
+import com.itgrids.partyanalyst.model.NominatedPostGovtOrder;
 import com.itgrids.partyanalyst.model.NominatedPostReferDetails;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -5574,5 +5577,111 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			LOG.error("Exception riased at checkPositionAvailableOrNot",e);
 		}
 		 return resultStatus;
+	 } 
+	 
+	 public ResultStatus assginGOToNominationPostCandidate(final GovtOrderVO goVO,final Long userId,final Map<File,String> mapfiles){
+		 final ResultStatus rs = new ResultStatus();
+		 try {
+			 
+			 final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			 
+			 final List<Long> applicationIds = new ArrayList<Long>(0);
+			 if(goVO.getApplicationIds() != null && goVO.getApplicationIds().trim() != ""){
+				 String[] idsStr = goVO.getApplicationIds().split(",");
+				 for (int i = 0; i < idsStr.length; i++) {
+					if(!idsStr[i].trim().isEmpty()){
+						applicationIds.add(Long.parseLong(idsStr[i]));
+					}
+				}
+			 }
+			 
+			 
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						if(goVO.getStatus() != null && goVO.getStatus() == 1l){//go issue
+							
+							GovtOrder govtOrder = new GovtOrder();
+							govtOrder.setOrderName(goVO.getGoName());
+							govtOrder.setOrderCode(goVO.getGoCode());
+							
+							try {
+								govtOrder.setFromDate(sdf.parse(goVO.getFromDate()));
+								govtOrder.setToDate(sdf.parse(goVO.getToDate()));
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							
+							govtOrder.setRemarks(goVO.getRemarks());
+							govtOrder.setInsertedBy(userId);
+							govtOrder.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							govtOrder.setUpdatedBy(userId);
+							govtOrder.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							govtOrder.setIsDeleted("N");
+							
+							govtOrder = govtOrderDAO.save(govtOrder);
+							
+							if(applicationIds != null && applicationIds.size() > 0){
+								
+								//update status to go-passed
+								nominatedPostFinalDAO.updateStatusToGOPassed(applicationIds,dateUtilService.getCurrentDateAndTime(),7l);
+								
+								//get nominated postids for applications
+								List<Object[]> objList = nominatedPostFinalDAO.getNPCAndNpForApplication(applicationIds);//NPID,NPCID
+								
+								Map<Long,Long> map = new HashMap<Long, Long>(0);//NPID,NPCID
+								if(objList != null && objList.size() > 0){
+									for (Object[] obj : objList) {
+										map.put((Long)obj[0], (Long)obj[1]);
+									}
+								}
+								
+								for(Long long1 : applicationIds){
+									NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
+									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+									
+									nominatedPostApplication.setApplicationStatusId(7l);
+									nominatedPostApplication.setUpdatedBy(userId);
+									nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPostApplicationDAO.save(nominatedPostApplication);
+								}
+								
+								//update NPCID in NP
+								for (Entry<Long, Long> entry : map.entrySet()) {
+									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);
+								}
+								
+							}
+							
+							if(mapfiles.size() > 0){
+								String status1 = saveGODocuments(govtOrder.getGovtOrderId(),mapfiles,userId);
+								rs.setExceptionMsg("GO Issued Succesfully.");
+							}
+							
+						}else if(goVO.getStatus() != null && goVO.getStatus() == 2l){//go reject
+							if(applicationIds != null && applicationIds.size() > 0){
+								
+								//update status to go-passed
+								nominatedPostFinalDAO.updateStatusToGOPassed(applicationIds,dateUtilService.getCurrentDateAndTime(),IConstants.rejectedInFinalized);
+								
+								for(Long long1 : applicationIds){
+									NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
+									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+									
+									nominatedPostApplication.setApplicationStatusId(IConstants.rejectedInFinalized);
+									nominatedPostApplication.setUpdatedBy(userId);
+									nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPostApplicationDAO.save(nominatedPostApplication);
+								}
+								rs.setExceptionMsg("GO Rejected Succesfully.");
+							}
+						}
+					}
+			 });
+		} catch (Exception e) {
+			LOG.error("Exception raised at assginGOToNominationPostCandidate", e);
+			rs.setExceptionMsg("Error Occured Please Try Agail.");
+		}
+		 
+		 return rs;
 	 }
 }

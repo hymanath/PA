@@ -21,8 +21,24 @@ public class GovtOrderVO{
 	private String locationLevelValuesStr="";
 	private Long departmentId;
 	private Long boardId;
+	private Long status;
+	private String applicationIds;
 	
 	
+	
+	
+	public String getApplicationIds() {
+		return applicationIds;
+	}
+	public void setApplicationIds(String applicationIds) {
+		this.applicationIds = applicationIds;
+	}
+	public Long getStatus() {
+		return status;
+	}
+	public void setStatus(Long status) {
+		this.status = status;
+	}
 	public Long getDepartmentId() {
 		return departmentId;
 	}

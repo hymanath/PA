@@ -1818,4 +1818,24 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	        return query.list();
 	  }
 	
+	public List<Object[]> getNPCAndNpForApplication(List<Long> applicationIds){
+		Query query = getSession().createQuery(" select model.nominatedPostId,model.nominationPostCandidateId " +
+				" from NominatedPostFinal model " +
+				" where model.nominatedPostApplicationId in (:applicationIds) and model.isDeleted='N' ");
+		
+		query.setParameterList("applicationIds", applicationIds);
+		
+		return query.list();
+	}
+	
+	public Integer updateStatusToGOPassed(List<Long> applicationIds,Date date,Long statusId){
+		Query query = getSession().createQuery(" update NominatedPostFinal model set model.applicationStatusId=:statusId and model.updatedTime=:date " +
+				" where model.nominatedPostApplicationId in (:applicationIds) and model.isDeleted='N' ");
+		
+		query.setParameter("statusId", statusId);
+		query.setParameter("date", date);
+		query.setParameterList("applicationIds", applicationIds);
+		
+		return query.executeUpdate();
+	}
 }
