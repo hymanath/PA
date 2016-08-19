@@ -429,6 +429,10 @@ $(document).on("click",".referenceCls",function(){
 });
 //111
 function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId){
+	var statusId = 6;
+	if(gblStatus=="finaliZed"){
+		statusId = 5;
+	}
  var jsObj=
 	{				
 		levelId : levelId,				
@@ -436,7 +440,7 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 		departmentId : deptId,
 		boardId : boardId,
 		positionId : positionId,
-		statusId:6
+		statusId: statusId
 	}
 	$.ajax({
 		  type:'GET',
@@ -485,7 +489,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 		for(var i in result.subList){
 			str+='<tr class="text-center">';
 			if(gblStatus=="finaliZed"){
-				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostCandidateId+'"></td>';
+				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'"></td>';
 			}
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
