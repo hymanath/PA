@@ -1423,4 +1423,18 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   
 	   return query.list();
    }
+   
+   public Integer updateNominatedPost(Long nominatedPostId,Long nominatedPostCandidateId,Date date,Long userId){
+	   Query query = getSession().createQuery(" update NominatedPost model set model.nominationPostCandidateId=:nominatedPostCandidateId, " +
+	   		" model.nominatedPostStatusId=:statusId, model.updatedTime=:date and model.updatedBy=:userId where model.nominatedPostId=:nominatedPostId ");
+	   
+	   query.setParameter("nominatedPostCandidateId", nominatedPostCandidateId);
+	   query.setParameter("statusId", 4);
+	   query.setParameter("date", date);
+	   query.setParameter("userId", userId);
+	   query.setParameter("nominatedPostId", nominatedPostId);
+	   
+	   return query.executeUpdate();
+	   
+   }
 }
