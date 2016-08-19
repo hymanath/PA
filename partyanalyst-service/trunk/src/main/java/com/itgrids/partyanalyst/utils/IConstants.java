@@ -1142,5 +1142,5 @@ public interface IConstants {
 	public static final String AP_NEW_DISTRICTS_IDS_LIST = "11,12,13,14,15,16,17,18,19,20,21,22,23,517";
 	public static final String TS_NEW_DISTRICTS_IDS_LIST = "1,2,3,4,5,6,7,8,9,10,518";
 	public static final Long NOMINATED_APPLICATION_FINAL_REVIEW=6L;
-	public static final String NOMINATED_APPLICATED_POST_OPEN_POSTS_STATUS_IDS ="1,2";
+	public static final String NOMINATED_OPEN_POSTS_STATUS_IDS ="1,2";
 }
