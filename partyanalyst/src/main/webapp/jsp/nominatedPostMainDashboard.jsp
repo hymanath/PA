@@ -94,8 +94,8 @@
                         <div class="row">
                         	<div class="col-md-12 col-xs-12 col-sm-12">
                               <ul class="nav nav-tabs navTabsSelection overviewUlCls" role="tablist">
-                                <li role="presentation" class="active"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="position" aria-controls="positions" role="tab" data-toggle="tab">Position</a></li>
-                                <li role="presentation"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="application" attr aria-controls="applicationsTab" role="tab" data-toggle="tab">Application</a></li>
+                                <li role="presentation" class="active"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="position" aria-controls="positions" role="tab" data-toggle="tab">Posts</a></li>
+                                <li role="presentation"><a href="#positionsHrfId"  class="overviewHrfCls" attr_report_type="application" attr aria-controls="applicationsTab" role="tab" data-toggle="tab">Applications</a></li>
                               </ul>
                               <div class="tab-content navTabsSelectionBody">
                                 <div role="tabpanel" class="tab-pane active positionDivCls" id="positionsHrfId">
@@ -176,7 +176,7 @@
             	<div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
                     	<div class="panel-heading bg_ff">
-                        	<h4 class="panel-title text-capital">caste wise position overview(finalized/g.o.issued)</h4>
+                        	<h4 class="panel-title text-capital">caste wise position overview - finalized/g.o.issued</h4>
                         </div>
                         <div class="panel-body pad_0">
                         	<div>
@@ -199,7 +199,7 @@
                 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
                 	<div class="panel panel-default">
                     	<div class="panel-heading bg_ff">
-                        	<h4 class="panel-title text-capital">caste group wise position overview(finalized/g.o.issued)</h4>
+                        	<h4 class="panel-title text-capital">caste group wise position overview - finalized/g.o.issued</h4>
                         </div>
                         <div class="panel-body pad_0">
                         	<div>
@@ -256,13 +256,13 @@
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-4 col-xs-12">
-                    	<label>Position Status</label>
+                    	<label>Application Status</label>
                         <select class="chosenSelect" id="positionStatusId">
                         	<option value="0">ALL</option>  
-							<option value="3">SHORT LISTED</option>
-							<option value="6">READY TO FINAL REVIEW</option>
-							<option value="5">FINALIZED</option>
-							<option value="7">G.O ISSUED</option>  
+							<option value="2">Shortlisted</option>
+							<option value="4">Ready For Final Review</option>
+							<option value="5">Finalized</option>
+							<option value="7">G.O Issued</option>  
                         </select>
                     </div>
 					
@@ -293,18 +293,14 @@
                             	<table class="table table-bordered table-condensed bg_F1 text-center" style="font-size:13px !important;">
                                 	<tr>
                                     	<td rowspan="2" style="vertical-align:middle">
-                                        	<p class="text-capital">total candidates</p>
+                                        	<p class="text-capital">total</p>
                                             <p id="totalMaleFemaleId"></p>
                                         </td>
                                         <td>
                                         	<p class="text-capital">male</p>
                                             <p id="totalMaleId"></p>
                                         </td>
-										<td rowspan="2" style="vertical-align:right">
-                                        	<p class="text-capital">total Applied Posts</p>
-                                            <p id="totalApplicationId"></p>
-                                        </td>
-                                    </tr>
+								    </tr>
                                     <tr>
                                     	<td>
                                         	<p class="text-capital">Female</p>

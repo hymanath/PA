@@ -55,8 +55,8 @@ $(document).on("click",".casteGroupCls",function(){
    $("#castePostionDivId").html(' ');
   var jsObj={
         LocationLevelId : levelId,
-		positionId : 0,
-		stateId :stateId
+		positionId      : 0,
+		stateId         : stateId
       }
       $.ajax({
          type:'GET',
@@ -74,27 +74,7 @@ $(document).on("click",".casteGroupCls",function(){
  function buildCasteWisePositionRslt(result,hrefId){
 	 
 	 	var str='';
-	   /*  if(result[0].casteList.length==0){
-			str+='No DATA AVAILABLE'; 
-			$("#castePostionDivId").html(str);
-			return;
-		 } */
-	
-/* 	     str+='<div role="tabpanel" class="tab-pane active pad_10 pad_right0" id="'+hrefId+'">'
-         str+='<div class="row">';
-	     str+='<div class="col-md-2 pad_right0" style="-webkit-box-shadow: 10px 0 5px -2px #888; box-shadow: 10px 0 5px -2px #888;">';
-         str+='<table class="table table-bordered">';
-		 str+='<tr>';
-         str+='	<td>&nbsp;</td>';                                     
-         str+='</tr>'
-		 for(var i in result){
-			 str+='<tr>';
-			   str+='<td id="'+result[i].positionId+'">'+result[i].positionName+'</td>';
-			 str+='</tr>';
-		 }
-		 str+='</table>';
-		 str+='</div>'; */
-		 str+='<div class="col-md-12 pad_left0">';
+	   str+='<div class="col-md-12 pad_left0">';
          str+='<div class="table-responsive">';
         str+='<table class="table table-bordered dataTableCaste" style="margin:0px !important">';
 		if(result[0].positionList != null && result[0].positionList.length > 0){
@@ -121,9 +101,7 @@ $(document).on("click",".casteGroupCls",function(){
 		str+='</table>';
         str+='</div>';
         str+='</div>';
-        //str+='</div>';
-        //str+='</div>';  
-	   $("#castePostionDivId").html(str);
+       $("#castePostionDivId").html(str);
          $(".dataTableCaste").dataTable({
 	      "sDom": '<"top">rt<"bottom"><"clear"iflp>',
 			"scrollY":        "320px",
@@ -131,7 +109,6 @@ $(document).on("click",".casteGroupCls",function(){
 			"scrollCollapse": true,
 			"paging":         false
         });  
-      
  }
 
  function getLocationWiseCasteGroupPositionCount(hrefId,LocationLevelId,stateId){
@@ -139,8 +116,8 @@ $(document).on("click",".casteGroupCls",function(){
 	 $("#casteGroupPostionDivId").html(' ');
   var jsObj={
         LocationLevelId : LocationLevelId,
-		positionId : 0,
-		stateId :stateId
+		positionId      : 0,
+		stateId         : stateId
       }
       $.ajax({
          type:'GET',
@@ -203,7 +180,6 @@ $(document).on("click",".casteGroupCls",function(){
 			 "sDom": '<"top">rt<"bottom"><"clear"iflp>'
 			});		
 		}
-		 
  }
  
  function getAllPositions(){
@@ -299,7 +275,6 @@ $(document).on("click",".casteGroupCls",function(){
           }else{
             $('#locationLevelId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>'); 
           }
-          
         }
         $("#locationLevelId").trigger("chosen:updated");
       }
@@ -360,13 +335,13 @@ $(document).on("click",".casteGroupCls",function(){
 		$("#totalCasteId").html(" ");
 		$("#totalAgeWiseId").html(" ");
 		var jsObj={
-		positionId:positionId,
-		levelId :levelId,
-		deptId :deptId,
-		boardId :boardId,
-		casteGroupId:casteGroupId,
-		applStatusId:applStatusId,
-		stateId : stateId
+		positionId  : positionId,
+		levelId     : levelId,
+		deptId      : deptId,
+		boardId     : boardId,
+		casteGroupId: casteGroupId,
+		applStatusId: applStatusId,
+		stateId     : stateId
 		}
 		$.ajax({
 			type:'GET',
@@ -380,7 +355,6 @@ $(document).on("click",".casteGroupCls",function(){
 				$("#totalCasteId").html('<p>No Data Available</p>');
 				$("#totalAgeWiseId").html('<p>No Data Available</p>');
 			}
-			
 		});
 	}
 	
@@ -401,11 +375,6 @@ function buildOverAllTotalCountsByPosition(result){
 		$("#totalFemaleId").html(totalFemaleCnt);
 		$("#totalMaleId").html(totalmaleCnt);
 	    $("#totalMaleFemaleId").html(totalMFCount);
-	    if(result.applicatnStatsList.length > 0){
-		$("#totalApplicationId").html(result.applicatnStatsList[0].totalApplicationCount);	
-		}else{
-		$("#totalApplicationId").html(0);		
-		}
 	  
 		var str='';
 		str+='<table class="table table-bordered bg_D4 tableNew1">';
@@ -454,13 +423,13 @@ function buildOverAllTotalCountsByPosition(result){
 		$("#casteGroup").html(" ");
 		$("#casteGrpDivId").hide();
 		var jsObj={
-		positionId:positionId,
-		levelId :levelId,
-		deptId :deptId,
-		boardId :boardId,
-		casteGroupId:casteGroupId,
-		applStatusId:applStatusId,
-		stateId : stateId
+		positionId  : positionId,
+		levelId     : levelId,
+		deptId      : deptId,
+		boardId     : boardId,
+		casteGroupId: casteGroupId,
+		applStatusId: applStatusId,
+		stateId     : stateId
 		}
 		
 		$.ajax({
@@ -476,9 +445,7 @@ function buildOverAllTotalCountsByPosition(result){
 				$("#casteAndAgeWiseId").html('<p>No Data Available</p>');
 				$('#casteGroup').html('<p>No Data Available</p>');
 			}
-			
 		});
-	
 	}
 	
 	function buildCasteGroupWiseCountsByPosition(result){
@@ -545,21 +512,19 @@ function buildOverAllTotalCountsByPosition(result){
 		$("#casteAndAgeWiseId").html(str);
 		}
 		
-	
-	
 	function getCasteWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId,stateId){
 		$("#casteNameWiseTotlaCntsId").html(" ");
 		$("#casteWisePositions").html(" ");
 		$("#casteGrpDivId").hide();
 		$("#casteNameWiseTotlaCntsId").hide();
 		var jsObj={
-		positionId:positionId,
-		levelId :levelId,
-		deptId :deptId,
-		boardId :boardId,
-		casteGroupId:casteGroupId,
-		applStatusId:applStatusId,
-		stateId : stateId
+		positionId  : positionId,
+		levelId     : levelId,
+		deptId      : deptId,
+		boardId     : boardId,
+		casteGroupId: casteGroupId,
+		applStatusId: applStatusId,
+		stateId     : stateId
 		}
 		$.ajax({
 			type:'GET',
@@ -673,14 +638,14 @@ function casteWisePositionsCountsByPosition(innerTableId,positionId,levelId,dept
 			 return;
 		  }
 		var jsObj={
-			positionId:positionId,
-			levelId :levelId,
-			deptId :deptId,
-			boardId :boardId,
-			casteGroupId:castegroupId,
-			applStatusId:positionStatusId,
-			casteId:casteId,
-			stateId : stateId
+			positionId  : positionId,
+			levelId     : levelId,
+			deptId      : deptId,
+			boardId     : boardId,
+			casteGroupId: castegroupId,
+			applStatusId: positionStatusId,
+			casteId     : casteId,
+			stateId     : stateId
 		}
 		$.ajax({
 			type:'GET',
@@ -734,7 +699,6 @@ function casteWisePositionsCountsByPosition(innerTableId,positionId,levelId,dept
 					}
 			}
 			str+='</tr>';
-			
 		}
 		str+='</tbody>';
 		str+='</table>';
@@ -755,9 +719,9 @@ function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLeve
   
   var jsObj={
         locationLevelId : locationLevelId,
-		positionId : positionId,
-		reportType : reportType,
-		stateId : stateId
+		positionId      : positionId,
+		reportType      : reportType,
+		stateId         : stateId
       }
       $.ajax({
          type:'GET',
@@ -791,35 +755,29 @@ function buildPostionRslt(result){
 	var positionCntPerArr =[];
 	var LevelArr=[];
 	var circleColorArr=[];
-	if(result.totalPositionCn>0){
-		positionCntArr.push(result.totalPositionCn);
-		positionCntPerArr.push(result.totalPositionCntPer);
-		LevelArr.push("TOTAL POSITIONS");
-		circleColorArr.push("#fff2b3");
+	if(result.totalPostsCnt>0){
+		positionCntArr.push(result.totalPostsCnt);
+		positionCntPerArr.push(result.totalPostsCntPer);
+		LevelArr.push("TOTAL POSTS");
+		circleColorArr.push("#FED403");
 	}
-	if(result.shortedListedCndtCnt>0){
-		positionCntArr.push(result.shortedListedCndtCnt);
-		positionCntPerArr.push(result.shortListedCntper);
-		LevelArr.push("SHORT LISTED");
-		circleColorArr.push("#eeb3af");
-	}
-	if(result.finalReviewCantCnt>0){
-		positionCntArr.push(result.finalReviewCantCnt);
-		positionCntPerArr.push(result.finalReviewPer);
-		LevelArr.push("READY FOR FINAL REVIEW");
-		circleColorArr.push("#D7D5EA");
+	if(result.openPostCnt>0){
+		positionCntArr.push(result.openPostCnt);
+		positionCntPerArr.push(result.openPostCntPer);
+		LevelArr.push("OPEN POSTS");
+		circleColorArr.push("#E58D45");
 	}
 	if(result.confirmCntCnt>0){
 		positionCntArr.push(result.confirmCntCnt);
 		positionCntPerArr.push(result.confirmCntPer);
-		LevelArr.push("FINALIZED");
-		circleColorArr.push("#bee0e1");
+		LevelArr.push("FINALIZED POSTS");
+		circleColorArr.push("#DE685E");
 	}
 	if(result.goIssuedCnt>0){
 		positionCntArr.push(result.goIssuedCnt);
 		positionCntPerArr.push(result.goIssuedPer);
 		LevelArr.push("G.O ISSUED");
-		circleColorArr.push("#ad9591");
+		circleColorArr.push("#65A7E1");
 	}
 	var radiusArrForBackBround=[];
 	var innerRadiusArrForBackBround=[];
@@ -879,26 +837,32 @@ function buildApplicationOverviewRslt(result){
 	if(result.totalAppReceivedCnt>0){
 		applicationCntArr.push(result.totalAppReceivedCnt);
 		applicationCntPerArr.push(result.totalAppRecevidPer);
-		LevelArr.push("Received");
-		circleColorArr.push("#E58D45");
+		LevelArr.push("RECEIVED");
+		circleColorArr.push("#FFD200");
 	}
 	if(result.rejectedCnt>0){
 		applicationCntArr.push(result.rejectedCnt);
 		applicationCntPerArr.push(result.rejectedAppPer);
-		LevelArr.push("Rejected");
-		circleColorArr.push("#DD665D");
+		LevelArr.push("REJECTED");
+		circleColorArr.push("#E78C45");
 	}
-	if(result.inProgressCnt>0){
-		applicationCntArr.push(result.inProgressCnt);
-		applicationCntPerArr.push(result.inProgressAppPer);
-		LevelArr.push("In Progress");
-		circleColorArr.push("#65A7E1");
+	if(result.shortedListedCndtCnt>0){
+		applicationCntArr.push(result.shortedListedCndtCnt);
+		applicationCntPerArr.push(result.shortListedCntper);
+		LevelArr.push("SHORTLISTED");
+		circleColorArr.push("#DC675D");
+	}
+	if(result.readyForFinalReviewCnt>0){
+	    applicationCntArr.push(result.readyForFinalReviewCnt);
+		applicationCntPerArr.push(result.readyForFinalReviewCntPer);
+		LevelArr.push("READY FOR FINAL REVIEW");
+		circleColorArr.push("#66A6E3");	
 	}
 	if(result.confirmCntCnt>0){
 		applicationCntArr.push(result.confirmCntCnt);
 		applicationCntPerArr.push(result.completedAppPer);
-		LevelArr.push("Completed");
-		circleColorArr.push("#FDD501");
+		LevelArr.push("COMPLETED");
+		circleColorArr.push("#5C2D25");
 	}
 	var radiusArrForBackBround=[];
 	var innerRadiusArrForBackBround=[];
@@ -962,15 +926,15 @@ $(document).on("click",".locationLevelcollapseCls",function(){
 	var locationLevelId = $(this).attr("attr_level_Id");
 	var postionHighChartId = $(this).attr("attr_postion_highChart_id");
 	var appHighChartId = $(this).attr("attr_app_highChart_id");
-	 getPositionAndApplicationDetailsCntLocationWise(postionId,locationLevelId," ",collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,1);
+	 getPositionAndApplicationDetailsCntLocationWise(postionId,locationLevelId," ",collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,globalStateId);
 	
 });
 function getPositionAndApplicationDetailsCntLocationWise(positionId,locationLevelId,reportType,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,stateId){
   var jsObj={
         locationLevelId : locationLevelId,
-		positionId : positionId,
-		reportType : reportType,
-		stateId : stateId
+		positionId      : positionId,
+		reportType      : reportType,
+		stateId         : stateId
       }
       $.ajax({
          type:'GET',
@@ -990,18 +954,12 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 	 var str='';
 			str+='<div class="row">';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6" style="border-right:1px solid #ddd">';
-				str+='<h4 class="panel-tite"><u>Positions</u></h4>'
-					str+='<div id="'+postionHighChartId+'" style="height:150px;margin-bottom: 20px;"></div>';
+				str+='<h4 class="panel-tite"><u>Posts</u></h4>'
+					str+='<div id="'+postionHighChartId+'" style="height:180px;margin-bottom: 20px;"></div>';
 					str+='<ul class="positionsUl" style="margin-top:20px !imortant;">';
-						str+='<li class="total"><span class="statusBox"></span>TOTAL POSITIONS<span class="count pull-right">'+positionRslt[0].totalPositionCn+'</span></li>';
-						str+='<li class="totalOpendPositioned"><span class="statusBox"></span>TOTAL OPEN POSITIONS<span class="count pull-right">'+positionRslt[0].totalOpendPositionCnt+'</span></li>';
-					  	/*str+='<li class="noCandidate"><span class="statusBox"></span>APPLICATION NOT RECEIVED FOR POSITION<span class="count pull-right">'+positionRslt[0].noCandidateCnt+'</span></li>'; */
-					str+='</ul>';
-					str+='<ul class="positionsUl subPositions" style="margin-top:20px !imortant;">';
-						str+='<li class="shortListed"><span class="statusBox"></span>SHORT LISTED<span class="count pull-right">'+positionRslt[0].shortedListedCndtCnt+'</span></li>';
-					   // str+='<li class="notStarted"><span class="statusBox"></span>Not Started<span class="count">1200</span></li>';
-						str+='<li class="readyForReview"><span class="statusBox"></span>READY FOR FINAL REVIEW<span class="count pull-right">'+positionRslt[0].finalReviewCantCnt+'</span></li>';
-						str+='<li class="finalised"><span class="statusBox"></span>FINALIZED<span class="count pull-right">'+positionRslt[0].confirmCntCnt+'</span></li>';
+						str+='<li class="total"><span class="statusBox"></span>TOTAL POSTS<span class="count pull-right">'+positionRslt[0].totalPostsCnt+'</span></li>';
+						str+='<li class="openPosts"><span class="statusBox"></span>OPEN POSTS<span class="count pull-right">'+positionRslt[0].openPostCnt+'</span></li>';
+						str+='<li class="finalized"><span class="statusBox"></span>FINALIZED POSTS<span class="count pull-right">'+positionRslt[0].confirmCntCnt+'</span></li>';
 						str+='<li class="goIssued"><span class="statusBox"></span>G.O ISSUED<span class="count pull-right">'+positionRslt[0].goIssuedCnt+'</span></li>';
 					str+='</ul>';
 				str+='</div>';
@@ -1012,7 +970,8 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 						str+='<ul class="positionsUlPie m_top10">';
 							str+='<li class="received"><span class="statusBox"></span>RECEIVED<span class="count pull-right">'+applicationRslt[0].totalAppReceivedCnt+'</span></li>';					
 							str+='<li class="rejected"><span class="statusBox"></span>REJECTED<span class="count pull-right">'+applicationRslt[0].rejectedCnt+'<small class="text-muted">('+applicationRslt[0].rejectedAppPer+'%)</small></span></li>';
-							str+='<li class="inProgress"><span class="statusBox"></span>IN PROGRESS<span class="count pull-right">'+applicationRslt[0].inProgressCnt+'<small class="text-muted">('+applicationRslt[0].inProgressAppPer+'%)</small></span></li>';
+							str+='<li class="shortedListed"><span class="statusBox"></span>SHORTLISTED<span class="count pull-right">'+applicationRslt[0].shortedListedCndtCnt+'<small class="text-muted">('+applicationRslt[0].shortListedCntper+'%)</small></span></li>';
+							str+='<li class="readyForFinalReview"><span class="statusBox"></span>READY FOR FINAL REVIEW<span class="count pull-right">'+applicationRslt[0].readyForFinalReviewCnt+'<small class="text-muted">('+applicationRslt[0].readyForFinalReviewCntPer+'%)</small></span></li>';
 							str+='<li class="completed"><span class="statusBox"></span>COMPLETED<span class="count pull-right">'+applicationRslt[0].confirmCntCnt+'<small class="text-muted">('+applicationRslt[0].completedAppPer+'%)</small></span></li>';
 						str+='</ul>';
 	               } 
@@ -1041,25 +1000,20 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 }
 function buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId){
 var headingArr=[];
- headingArr.push('TOTAL POSITIONS');
- headingArr.push('TOTAL OPEN POSITIONS');
- headingArr.push('SHORT LISTED');
- headingArr.push('READY FOR FINAL REVIEW');
- headingArr.push('FINALIZED');
+ headingArr.push('TOTAL POSTS');
+ headingArr.push('OPEN POSTS');
+ headingArr.push('FINALIZED POSTS');
  headingArr.push('G.O ISSUED');
 var jsonDataArr=[];
-	jsonDataArr.push({y:parseFloat(positionRslt[0].totalPositionCntPer),color:'#fff2b3'})
-    jsonDataArr.push({y:parseFloat(positionRslt[0].totalOpendPositionCntPer),color:'#D7D5EA'})
-    jsonDataArr.push({y:parseFloat(positionRslt[0].shortListedCntper),color:'#eeb3af'})
-    jsonDataArr.push({y:parseFloat(positionRslt[0].finalReviewPer),color:'#c2bedf'})
-    jsonDataArr.push({y:parseFloat(positionRslt[0].confirmCntPer),color:'#bee0e1'})
-    jsonDataArr.push({y:parseFloat(positionRslt[0].goIssuedPer),color:'#ad9591'})
+	jsonDataArr.push({y:parseFloat(positionRslt[0].totalPostsCntPer),color:'#FED501'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].openPostCntPer),color:'#E58D45'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].confirmCntPer),color:'#DD675D'})
+    jsonDataArr.push({y:parseFloat(positionRslt[0].goIssuedPer),color:'#65A7E1'})
 	buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighChartId)
 }
 function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighChartId){
 	$("#"+postionHighChartId).highcharts({
-		//colors:['#fff2b3','#f1c5a1','#eeb3af','#c2bedf','#bee0e1','#ad9591'],
-        chart: {
+	    chart: {
             type: 'column'
         },
         xAxis: {
@@ -1093,8 +1047,8 @@ function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighCh
         plotOptions: {
             column: {
                 pointPadding: 0.2,
-                borderWidth: 0
-            }
+                borderWidth: 0,
+	        }
         },
         series: [{
             name: ' ',
@@ -1105,15 +1059,17 @@ function buildPositionHighchartLocationWise(headingArr,jsonDataArr,postionHighCh
 }
 function buildLocatinWiseApplicationHighChartsRslt(applicationRslt,appHighChartId){
 var colorArr=[];
- //colorArr.push('#E58D45');	
+ colorArr.push('#E58D42');	
+ colorArr.push('#E58D45');	
  colorArr.push('#DD665D');	
  colorArr.push('#65A7E1');	
  colorArr.push('#FDD501');	 
  var jsonDataArr=[];
-  //jsonDataArr.push(['Received',parseFloat(applicationRslt[0].totalAppReceivedCnt)]);
-  jsonDataArr.push(['Rejected',parseFloat(applicationRslt[0].rejectedCnt)]);
-  jsonDataArr.push(['In Progress',parseFloat(applicationRslt[0].inProgressCnt)]);
-  jsonDataArr.push(['Completed',parseFloat(applicationRslt[0].confirmCntCnt)]);  
+  jsonDataArr.push(['RECEIVED',parseFloat(applicationRslt[0].totalAppReceivedCnt)]);
+  jsonDataArr.push(['REJECTED',parseFloat(applicationRslt[0].rejectedCnt)]);
+  jsonDataArr.push(['SHORTLISTED',parseFloat(applicationRslt[0].shortedListedCndtCnt)]);
+  jsonDataArr.push(['READY FOR FINAL REVIEW',parseFloat(applicationRslt[0].readyForFinalReviewCnt)]);  
+  jsonDataArr.push(['COMPLETED',parseFloat(applicationRslt[0].confirmCntCnt)]);  
   buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId);
 }
 function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
@@ -1195,8 +1151,6 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		}else{
 		$(".gOssuedCls").html(postionStatus);		
 		}
-		
-		
 	});  
 	
 	function getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName){
