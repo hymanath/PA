@@ -577,10 +577,10 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			Map<Long,Long> referMap = new LinkedHashMap<Long, Long>();
 			Map<Long,List<IdNameVO>> nomDocsMap = new LinkedHashMap<Long, List<IdNameVO>>();
 			Map<Long,String> publicReprMap = new LinkedHashMap<Long, String>();
-			
+			Long applicationStatusId=0L;
 			//0.nominationPostCandidateId,1.tdpCadreId,2.voterId,3.candidateName,4.mobileNo,5.cadreFirstname,6.cadreMobileNo,7.age,
 						//8.caste,9.subCaste,10.casteName,11.applicationStatusId,12.status,13.nominatedPostId
-			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type,searchLevelId);
+			List<Object[]> list = nominatedPostFinalDAO.getNominatedPostMemberDetails(levelId, levelValue, departmentId, boardId, positionId, type,searchLevelId,applicationStatusId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"nominatedPostCandidateId","tdpCadreId","voterId","voterName","voterMoblie","age",
 							"caste","subCaste","casteName","applStatusId","status","nominatePostApplicationId","boardLevelId","levelValue","imageURL",
@@ -602,7 +602,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(nominatedPostCandidateIds)){
-				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(nominatedPostCandidateIds,departmentId,boardId);
+				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(nominatedPostCandidateIds,departmentId,boardId,applicationStatusId);
 				if(commonMethodsUtilService.isListOrSetValid(totalDepartments)){
 					for (Object[] obj : totalDepartments) {
 						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -619,10 +619,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(nominatedPostCandidateIds)){
-				List<Long> otherDeptShortListed = nominatedPostFinalDAO.getAnyShortlistedDepartmentsForCandidateList(nominatedPostCandidateIds,departmentId,boardId);
+				List<Long> otherDeptShortListed = nominatedPostFinalDAO.getAnyShortlistedDepartmentsForCandidateList(nominatedPostCandidateIds,departmentId,boardId,applicationStatusId);
 				if(commonMethodsUtilService.isListOrSetValid(otherDeptShortListed)){
 					for (Long id : otherDeptShortListed) {
-						deptShortListedMap.put(id, "YES");
+						//deptShortListedMap.put(id, "YES");
+						deptShortListedMap.put(id, String.valueOf(otherDeptShortListed.size()));
 					}
 				}
 				if(commonMethodsUtilService.isListOrSetValid(subList)){
@@ -735,7 +736,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					 for (Object[] obj : nomDocsList) {
 						Long candId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 						String filePath = obj[1] != null ? obj[1].toString():"";
-						List<IdNameVO> voList = nomDocsMap.get(candId);
+						Long applciationId = commonMethodsUtilService.getLongValueForObject(obj[2]);
+								
+						List<IdNameVO> voList = nomDocsMap.get(applciationId);
 						if(voList != null && voList.size() > 0){
 							IdNameVO vo = new IdNameVO();
 							vo.setStatus("NP-Profile");
@@ -748,13 +751,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							vo.setStatus("NP-Profile");
 							vo.setMobileNo(filePath);
 							voList.add(vo);
-							nomDocsMap.put(candId, voList);
+							nomDocsMap.put(applciationId, voList);
 						}
 					}
 				 }
 				 if(commonMethodsUtilService.isListOrSetValid(subList)){
 					 for (NomintedPostMemberVO nomintedPostMemberVO : subList) {
-						List<IdNameVO> voList = nomDocsMap.get(nomintedPostMemberVO.getNominatedPostCandidateId());
+						List<IdNameVO> voList = nomDocsMap.get(nomintedPostMemberVO.getNominatePostApplicationId());
 						nomintedPostMemberVO.setNomDocsList(voList);
 					}
 				 }
@@ -4238,7 +4241,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(candidateIds)){
-				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(candidateIds,departmentId,boardId);
+				List<Object[]> totalDepartments = nominatedPostFinalDAO.getAnyAppliedDepartmentsCountForCandidateList(candidateIds,departmentId,boardId,0L);
 				if(commonMethodsUtilService.isListOrSetValid(totalDepartments)){
 					for (Object[] obj : totalDepartments) {
 						Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
