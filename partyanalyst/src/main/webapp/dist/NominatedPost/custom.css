@@ -1278,14 +1278,23 @@ div.dataTables_wrapper div.clear
 {
 	list-style:none;
 	padding:4px;
+	text-transform:uppercase !important;
 }
 .positionsUlPie li.received .statusBox
 {
-	background:#E58D45
+	background:#FED501
 }
 .positionsUlPie li.rejected .statusBox
 {
-	background:#DD665D
+	background:#E68E46
+}
+.positionsUlPie li.shortedListed .statusBox
+{
+	background:#DD675D
+}
+.positionsUlPie li.readyForFinalReview .statusBox
+{
+	background:#65A7E1
 }
 .positionsUlPie li.inProgress .statusBox
 {
@@ -1293,15 +1302,31 @@ div.dataTables_wrapper div.clear
 }
 .positionsUlPie li.completed .statusBox
 {
-	background:#FDD501
+	background:#5C2D25
 }
 .positionsUl li.total
 {
-	background:rgba(255, 242, 179,0.4)
+	background:rgba(254, 213, 1,0.4)
 }
 .positionsUl li.total .statusBox
 {
-	background:rgba(255, 242, 179,1)
+	background:rgba(254, 213, 1,1)
+}
+.positionsUl li.openPosts
+{
+	background:rgba(229, 141, 69,0.4)
+}
+.positionsUl li.openPosts .statusBox
+{
+	background:rgba(229, 141, 69,1)
+}
+.positionsUl li.finalized
+{
+	background:rgba(221, 103, 93,0.4)
+}
+.positionsUl li.finalized .statusBox
+{
+	background:rgba(221, 103, 93,1)
 }
 .positionsUl li.noCandidate
 {
@@ -1346,11 +1371,11 @@ div.dataTables_wrapper div.clear
 }
 .positionsUl li.goIssued 
 {
-	background:rgba(173, 149, 145,0.4)
+	background:rgba(101, 167, 225,0.4)
 }
 .positionsUl li.goIssued  .statusBox
 {
-	background:rgba(173, 149, 145,1)
+	background:rgba(101, 167, 225,1)
 }
 .positionsUl li span.statusBox , .positionsUlPie li span.statusBox
 {
