@@ -1114,6 +1114,7 @@ function buildapptmemberDetails(result){
 	function cadreReloadFun()
 	{
 		$("#cadreSearchId").prop('checked', true);
+		$("#searchBy").val("");
 	}
 	$("#apptmemberDetailsDiv").html("");
 	
