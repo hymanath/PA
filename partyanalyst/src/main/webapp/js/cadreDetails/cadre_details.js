@@ -7557,7 +7557,7 @@ function getNominatedPostReportFiles() {
 				  for(var j in result[i].subList){
 					   //planned count
 					   if(result[i].subList[j].plannedCount != null && result[i].subList[j].plannedCount > 0){
-							str+='<td attr_level_name="'+result[i].subList[j].name+'" attr_year_id="'+result[i].year+'" attr_month_id="'+result[i].month+'" class="summaryCls" style="cursor:pointer;color:blue;">'+result[i].subList[j].plannedCount+'</td>'; 
+							str+='<td data-toggle="modal" data-target="#partyMeetingsModalId" attr_level_name="'+result[i].subList[j].name+'" attr_year_id="'+result[i].year+'" attr_month_id="'+result[i].month+'" class="summaryCls" style="cursor:pointer;color:blue;">'+result[i].subList[j].plannedCount+'</td>';   
 					   }else{
 							str+='<td>  </td>';
 						}
@@ -7640,14 +7640,27 @@ function getNominatedPostReportFiles() {
 		
 		var monthId = monthJsonObj[month];
 	
-		var levelNameJsonObj = {"VILLAGE":7,"MANDAL":4,"CONSTITUENCY":3,"DISTRICT":2}
+		//var levelNameJsonObj = {"VILLAGE":7,"MANDAL":4,"CONSTITUENCY":3,"DISTRICT":2}
 		var levelName = $(this).attr("attr_level_name");
-		var levelNameId = levelNameJsonObj[levelName]; 
+		var partyMeetingLevelIds=[];
+		if(levelName=="DISTRICT"){
+			partyMeetingLevelIds.push(2);
+		}else if(levelName=="CONSTITUENCY"){
+			partyMeetingLevelIds.push(3);
+		}else if(levelName=="MANDAL"){
+			partyMeetingLevelIds.push(4);
+			partyMeetingLevelIds.push(5);
+			partyMeetingLevelIds.push(6);
+		}else if(levelName=="VILLAGE"){
+			partyMeetingLevelIds.push(7);
+			partyMeetingLevelIds.push(8);
+		}
+		
 		
 		var jsObj = {
 			locationType : locationType, 
 			locationValue : locationValue,      
-			partyMeetingLevelId : levelNameId,
+			partyMeetingLevelIds : partyMeetingLevelIds,
 			month : monthId,
 			year : year
 		}
@@ -7657,8 +7670,62 @@ function getNominatedPostReportFiles() {
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		if(result != null){ 
+		if(result != null && result.length > 0){ 
+			buildSummary(result);
 		}
 		});
 	});
-  //party meetings location wise end.
+	
+	function buildSummary(result){
+		var conducted = 0;
+		var notConducted = 0;
+		var mayBe = 0;
+		var totalCount = 0;
+		var str = '';
+		str+='<table class="table table-bordered">';
+			str+='<thead style="background-color:#ECECEC">';
+				str+='<th>Location</th>';
+				str+='<th>Party Meeting Name</th>';
+				str+='<th>Date </th>';
+				str+='<th>Meeting Status</th>';
+			str+='</thead>';
+			for(var i in result){
+				totalCount+=1;
+				if(result[i].meetingStatus == 'Maybe'){
+					mayBe+=1;
+				}if(result[i].meetingStatus == 'N'){
+					notConducted+=1;
+				}if(result[i].meetingStatus == 'Y'){
+					conducted+=1;
+				}
+				str+='<tr>';
+					str+='<td>'+result[i].location+'</td>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].dateString+'</td>';
+					str+='<td>'+result[i].meetingStatus+'</td>';
+				str+='</tr>';
+			}
+		str+='</table>';
+		buildFinalSummary(str,conducted,notConducted,mayBe,totalCount); 
+	}
+	function buildFinalSummary(str,conducted,notConducted,mayBe,totalCount){
+		var str1 = '';
+		str1+='<table class="table table-bordered">';
+				str1+='<thead style="background-color:#ECECEC">';
+					str1+='<th>Total Meetings</th>';
+					str1+='<th>Conducted</th>';
+					str1+='<th>Not Conducted</th>';
+					str1+='<th>May Be</th>';
+				str1+='</thead>';
+				str1+='<tr>';
+					str1+='<td>'+totalCount+'</td>';
+					str1+='<td>'+conducted+'</td>';
+					str1+='<td>'+notConducted+'</td>';
+					str1+='<td>'+mayBe+'</td>';
+				str1+='</tr>';
+			str1+='</table>';
+			$("#detailsId").html(str1);
+			$("#summaryDivId").html(str);
+			$("#partyMeetingsModalId").modal("show");  
+	}
+ 
