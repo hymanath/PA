@@ -3874,7 +3874,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 				else if( partyMeetingVO.getPartyMeetinglevelId() == 3l){
 					
-					String location = obj[8].toString()+" district" +" - " + obj[6].toString() + " Constituency";
+					String location = obj[8].toString()+" District" +" - " + obj[6].toString() + " Constituency";
 					partyMeetingVO.setDistrict(obj[8]!=null?obj[8].toString():"");
 					partyMeetingVO.setConstituency(obj[6]!=null?obj[6].toString():"");
 					partyMeetingVO.setLocation(location);
@@ -3916,8 +3916,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 							    location = location + partyMeetingVO.getWard();
 							}
 						    else{
-						    	location = partyMeetingVO.getLocalElectionBody() + " - "+partyMeetingVO.getElectionType();
-						    	location = location + partyMeetingVO.getWard();
+						    	location = partyMeetingVO.getLocalElectionBody() + " "+partyMeetingVO.getElectionType();
+						    	location = location +" - "+partyMeetingVO.getWard();
 						    } 	
 						}
 					}

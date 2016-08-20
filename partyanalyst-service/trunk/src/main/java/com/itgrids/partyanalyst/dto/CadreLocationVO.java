@@ -17,6 +17,8 @@ public class CadreLocationVO implements Serializable{
 	private String  villageName;
 	private Long    localElectionBodyId;
 	private String  localElectionBody;
+	private Long    electionTypeId;
+	private String  electionType;
 	private Long    wardId;
 	private String  wardName;
 	private boolean isCandidate;
@@ -117,6 +119,18 @@ public class CadreLocationVO implements Serializable{
 	}
 	public void setCandidate(boolean isCandidate) {
 		this.isCandidate = isCandidate;
+	}
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
 	}
 	
 	

@@ -218,7 +218,8 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		"        constituency.constituencyId,constituency.name," +//4
 		"        tehsil.tehsilId,tehsil.tehsilName,panchayat.panchayatId,panchayat.panchayatName," +//8
 		"        localElectionBody.localElectionBodyId,localElectionBody.name,ward.constituencyId,ward.name," +//12
-		"        constituency.areaType" +//13
+		"        constituency.areaType," +//13
+		"        electionType.electionTypeId,electionType.electionType" +//15
 		" from   PublicRepresentative pr,TdpCadreCandidate tcc  " +
 		"        join pr.userAddress  ua " +
 		"        left join ua.district district" +
@@ -227,6 +228,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		"        left join ua.panchayat panchayat " +
 		"        left join ua.localElectionBody localElectionBody " +
 		"        left join ua.ward ward " +
+		"        left join localElectionBody.electionType electionType " +
 		" where  pr.candidate.candidateId =tcc.candidate.candidateId and " +
 		"        tcc.tdpCadre.isDeleted='N' and tcc.tdpCadre.enrollmentYear=:enrollmentYear and tcc.tdpCadre.tdpCadreId=:tdpCadreId");
 		query.setParameter("tdpCadreId",tdpCadreId);
