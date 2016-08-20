@@ -3819,7 +3819,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	  *  This Service Method is used to get partyMeeting details when we clicked on counts in candidate page.  
 	  *  @since 20-AUGUST-2016
 	  */
-	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year){
+	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,List<Long> partyMeetingLevelIds,int month,int year){
 		List<PartyMeetingStatusVO> finalList = null;
 		try{
 			  
@@ -3833,8 +3833,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			 
 			  StringBuilder sb = gePartyMeetingtLocationWiseQueryPart(locationType);
 			  
-			  List<Object[]> totalmeetingsList = partyMeetingDAO.getMeetingDetailsForALevelByLocationId(month,year,partyMeetingLevelId,locationValueList,sb);
-			  List<Object[]> meetingsIvrList = partyMeetingDAO.getMeetingDetailsForALevelByLocationIdByIVR(month,year,partyMeetingLevelId,locationValueList,sb);
+			  List<Object[]> totalmeetingsList = partyMeetingDAO.getMeetingDetailsForALevelByLocationId(month,year,partyMeetingLevelIds,locationValueList,sb);
+			  List<Object[]> meetingsIvrList = partyMeetingDAO.getMeetingDetailsForALevelByLocationIdByIVR(month,year,partyMeetingLevelIds,locationValueList,sb);
 			  
 			  Map<Long,PartyMeetingStatusVO> finalMap = new LinkedHashMap<Long,PartyMeetingStatusVO>();
 			  
@@ -3879,13 +3879,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 					partyMeetingVO.setConstituency(obj[6]!=null?obj[6].toString():"");
 					partyMeetingVO.setLocation(location);
 					
-				}else if( partyMeetingVO.getPartyMeetinglevelId() == 4l){
+				}else if( partyMeetingVO.getPartyMeetinglevelId() == 4l || partyMeetingVO.getPartyMeetinglevelId() == 5l || partyMeetingVO.getPartyMeetinglevelId()==6l){
 					
 					String location = "";
 					partyMeetingVO.setConstituency(obj[12]!=null?obj[12].toString():"");
 					location = partyMeetingVO.getConstituency()+" Constituency";
 					if(obj[5]!=null){
-						partyMeetingVO.setTehsil(obj[5].toString());
+						partyMeetingVO.setTehsil(obj[6].toString());
 						location = location + " - " + partyMeetingVO.getTehsil() + " Mandal";
 					}else if(obj[7]!=null){
 						partyMeetingVO.setLocalElectionBody(obj[8].toString());
@@ -3899,13 +3899,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 					partyMeetingVO.setLocation(location);
 					
-				}else if( partyMeetingVO.getPartyMeetinglevelId() == 7l){
+				}else if( partyMeetingVO.getPartyMeetinglevelId() == 7l || partyMeetingVO.getPartyMeetinglevelId() == 8l){
 					
 					String location = "";
 					if(obj[5]!=null && obj[7]!=null){
 						partyMeetingVO.setTehsil(obj[6] != null ?obj[6].toString():"");
 						partyMeetingVO.setPanchayat(obj[8].toString());
-						location = partyMeetingVO.getTehsil() + " Mandal" + partyMeetingVO.getPanchayat() +" Village";
+						location = partyMeetingVO.getTehsil() + " Mandal" +" - " +partyMeetingVO.getPanchayat() +" Village";
 					}else if(obj[9]!=null && obj[11]!=null){
 						partyMeetingVO.setWard(obj[10]!=null?obj[10].toString():"");
 						partyMeetingVO.setLocalElectionBody(obj[12] != null ? obj[12].toString() : "");
@@ -3916,7 +3916,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 							    location = location + partyMeetingVO.getWard();
 							}
 						    else{
-						    	location = partyMeetingVO.getLocalElectionBody() + " "+partyMeetingVO.getElectionType();
+						    	location = partyMeetingVO.getLocalElectionBody() + " - "+partyMeetingVO.getElectionType();
 						    	location = location + partyMeetingVO.getWard();
 						    } 	
 						}

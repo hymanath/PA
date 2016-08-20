@@ -1150,7 +1150,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	return query.list();
         }
         
-        public List<Object[]> getMeetingDetailsForALevelByLocationId(int month,int year,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
+        public List<Object[]> getMeetingDetailsForALevelByLocationId(int month,int year,List<Long> partyMeetingLevelIds,List<Long> locationIds,StringBuilder locationsPart){
         
         	StringBuilder sbS = new StringBuilder();
         	StringBuilder sbM = new StringBuilder();
@@ -1161,20 +1161,20 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	"       model.isConducted ") ;//4
         	sbM.append(" from   PartyMeeting model ");
         	
-        	if(partyMeetingLevelId == 2){//district
+        	if(partyMeetingLevelIds.contains(2l)){//district
         		
         		sbS.append(" ,district.districtId,district.districtName ");//6
         		
         		sbM.append(" left join model.meetingAddress.district district  ");
         		
-        	}else if(partyMeetingLevelId == 3){//constituency
+        	}else if(partyMeetingLevelIds.contains(3l)){//constituency
         		
         		sbS.append(" ,constituency.constituencyId,constituency.name," +//6
         		           " district.districtId,district.districtName ");//8
         		sbM.append(" left join model.meetingAddress.constituency constituency" +
         				   " left join model.meetingAddress.district district ");
         		
-        	}else if(partyMeetingLevelId == 4){//mandal/town/division level.
+        	}else if(partyMeetingLevelIds.contains(4l) || partyMeetingLevelIds.contains(5l) || partyMeetingLevelIds.contains(6l)){//mandal/town/division level.
         		
         		sbS.append(" ,tehsil.tehsilId,tehsil.tehsilName," +//6
         				   " leb.localElectionBodyId,leb.name," +//8
@@ -1185,7 +1185,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	    	 	   " left join leb.electionType electionType" +
         	    	 	   " left join model.meetingAddress.constituency constituency");
         	    
-        	}else if(partyMeetingLevelId == 7){//village/ward
+        	}else if(partyMeetingLevelIds.contains(7l) || partyMeetingLevelIds.contains(8l)){//village/ward
         		
         		sbS.append(",panchayat.panchayatId,panchayat.panchayatName, " +//6
         				   " tehsil.tehsilId,tehsil.tehsilName," +//8
@@ -1199,7 +1199,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
      	    	 	       " left join leb.electionType electionType ");
         	}
         	
-        	sbM.append(" where  model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId " +
+        	sbM.append(" where  model.partyMeetingLevel.partyMeetingLevelId in (:partyMeetingLevelIds) " +
         	           "        and model.isActive = 'Y' ");
         	
         	sbM.append(locationsPart);
@@ -1208,28 +1208,28 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	StringBuilder sbf = new StringBuilder();
         	sbf.append(sbS.toString()).append(sbM.toString());
         	Query query = getSession().createQuery(sbf.toString());
-        	query.setParameter("partyMeetingLevelId",partyMeetingLevelId);
+        	query.setParameterList("partyMeetingLevelIds",partyMeetingLevelIds);
         	query.setParameter("year", year);
         	query.setParameter("month", month);
         	query.setParameterList("locationIds",locationIds);
         	
         	return query.list();
         }
-        public List<Object[]> getMeetingDetailsForALevelByLocationIdByIVR(int month,int year,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
+        public List<Object[]> getMeetingDetailsForALevelByLocationIdByIVR(int month,int year,List<Long> partyMeetingLevelIds,List<Long> locationIds,StringBuilder locationsPart){
         
       	StringBuilder sb = new StringBuilder();
       	sb.append(" " +
       	"select model.partyMeetingId,model1.isConductedByIvr" +
         " from  PartyMeeting model,PartyMeetingIvrStatus model1 "+
       	" where model.partyMeetingId = model1.partyMeetingId and " +
-      	"       model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId and" +
+      	"       model.partyMeetingLevel.partyMeetingLevelId in (:partyMeetingLevelIds) and" +
       	"       model.isActive = 'Y' ");
       
       	sb.append(locationsPart);
       	sb.append(" and year(model.startDate) =:year and month(model.startDate)=:month ");
       
       	Query query = getSession().createQuery(sb.toString());
-      	query.setParameter("partyMeetingLevelId",partyMeetingLevelId);
+      	query.setParameterList("partyMeetingLevelIds",partyMeetingLevelIds);
       	query.setParameter("year", year);
       	query.setParameter("month", month);
       	query.setParameterList("locationIds",locationIds);
