@@ -377,7 +377,6 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 }
 		return (Long)query.uniqueResult();
 	}
-	
 	public List<Object[]> getGenderWiseTotalCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.nominationPostCandidate.gender," +
@@ -385,14 +384,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and ");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
 		if(levelId != null && levelId.longValue() > 0l){
-			sb.append("  model.nominatedPostMember.boardLevelId = :levelId and ");
+			sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :levelId and ");
 		}
 		if(deptId != null && deptId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and");
 		if(casteGroupId != null && casteGroupId.longValue() > 0l)
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and ");
 		
@@ -435,15 +434,15 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and");
 		
 		if(levelId != null && levelId.longValue() > 0l){
-			sb.append("  model.nominatedPostMember.boardLevelId = :levelId and ");
+			sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :levelId and ");
 		}
 		if(deptId != null && deptId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and");
 		if(casteGroupId != null && casteGroupId.longValue() > 0l)
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
@@ -486,16 +485,15 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and");
 		
 		if(levelId != null && levelId.longValue() > 0l){
-			sb.append("  model.nominatedPostMember.boardLevelId = :levelId and ");
+			sb.append("  model.nominatedPostMember.boardLevel.boardLevelId = :levelId and ");
 		}
-		
 		if(deptId != null && deptId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and");
 		if(casteGroupId != null && casteGroupId.longValue() > 0l)
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
@@ -548,21 +546,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and");
 		if(levelId != null && levelId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and ");
+			sb.append(" model.nominatedPostMember.boardLevel.boardLevelId = :levelId and ");
 		
-		/*if(levelId != null && levelId.longValue() > 0l){
-			if(levelId.longValue() != 5L)
-				sb.append("  model.nominatedPostMember.boardLevelId = :levelId and   ");
-			else
-				sb.append("   model.nominatedPostMember.boardLevelId in (5,6) and ");
-		}
-		*/
 		if(deptId != null && deptId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and");
 		if(casteGroupId != null && casteGroupId.longValue() > 0l)
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
@@ -623,13 +614,13 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		sb.append(" from NominatedPostFinal model" +
 					" where");
 		if(positionId != null && positionId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.positionId = :positionId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and");
 		if(levelId != null && levelId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.boardLevelId = :levelId and");
+			sb.append(" model.nominatedPostMember.boardLevel.boardLevelId = :levelId and");
 		if(deptId != null && deptId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.departmentId = :deptId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and");
 		if(boardId != null && boardId.longValue() > 0l)
-			sb.append(" model.nominatedPostMember.nominatedPostPosition.boardId = :boardId and");
+			sb.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId and");
 		if(casteGroupId != null && casteGroupId.longValue() > 0l)
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
@@ -697,9 +688,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		if(positionStatusId.equals(0l)){
 			queryStr.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
-		}
-		else
-		{
+		}else{
 			queryStr.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}   
 		
@@ -778,9 +767,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		if(positionStatusId.equals(0l)){
 			queryStr.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
-		}
-		else
-		{
+		}else{
 			queryStr.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}   
 		
@@ -858,12 +845,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		if(positionStatusId.equals(0l)){
 			queryStr.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
-		}
-		else
-		{
+		}else{
 			queryStr.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}   
-		
 		if(locationLevelName.equalsIgnoreCase("state")){
 			queryStr.append(" model.nominatedPostMember.address.state.stateId = :locationId  and ");
 		}
@@ -1174,25 +1158,21 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		if(positionStatusId.equals(0l)){
 			strQuery.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
-		}
-		else
-		{
+		}else{
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
-		
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = :positionId and ");
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
 			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
 			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
 		}
-		
 		strQuery.append(" model.nominatedPostMember.boardLevel.boardLevelId = :locationLevelId and ");
 		strQuery.append(" model.nominatedPostMember.address.state.stateId = :stateId  and model.isDeleted = 'N' and " +
 						" model.nominatedPostApplication.isDeleted = 'N' ");
@@ -1294,13 +1274,13 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}  
 		
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = :positionId and ");
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
 			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
 			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
@@ -1399,21 +1379,17 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		  
 		if(positionStatusId.equals(0l)){
 			strQuery.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
-		}
-		else
-		{
+		}else{
 			strQuery.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}  
-			  
-		
 		if(!(positionId.equals(0l)) && positionId != null){
-			strQuery.append(" model.nominatedPost.nominatedPostStatus.nominatedPostStatusId = :positionId and ");
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId and ");
 		}
 		if(!(deptId.equals(0l)) && deptId != null){
 			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId and ");
 		}
 		if(!(corporationId.equals(0l)) && corporationId != null){
-			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId = :corporationId and ");
+			strQuery.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId = :corporationId and ");
 		}
 		if(!(castGroupId.equals(0l)) && castGroupId != null){
 			strQuery.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :castGroupId and ");
