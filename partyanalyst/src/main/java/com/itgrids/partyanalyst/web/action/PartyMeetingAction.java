@@ -565,10 +565,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			jObj = new JSONObject(getTask());
 			String locationType = jObj.getString("locationType");
 			Long   locationValue = jObj.getLong("locationValue");
-			Long   partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");   
+			
+			JSONArray partyMeetingLevelIdsArr = jObj.getJSONArray("partyMeetingLevelIds");
+			List<Long> partyMeetingLevelIds = new ArrayList<Long>(0);
+			if(partyMeetingLevelIdsArr != null && partyMeetingLevelIdsArr.length()>0){
+				for (int i=0;i<partyMeetingLevelIdsArr.length();i++) {
+					partyMeetingLevelIds.add(Long.parseLong(partyMeetingLevelIdsArr.get(i).toString()));
+				}
+			}
+			
 			int   month = jObj.getInt("month");
 			int   year = jObj.getInt("year");
-			meetingStatusVOs = partyMeetingService.getMeetingDetailsForALevelByLocationId(locationType, locationValue, partyMeetingLevelId, month, year);  
+			meetingStatusVOs = partyMeetingService.getMeetingDetailsForALevelByLocationId(locationType, locationValue, partyMeetingLevelIds, month, year);  
 		}catch (Exception e) {  
 			LOG.error("Entered into updateConductedDetails Action",e);
 		}
