@@ -346,5 +346,76 @@ public class DateUtilService {
 			return null;
 		}
 	}
+	
+	/*
+	 * Santosh
+	 */
+	public  String getDayMonthAndYearsBetweenTwoDates(Date formDate,Date toDate){
+        String returnDate = "";
+        Long year=0l;
+        Long month=0l;
+        Long day=0l;
+        Long remenderValue=0l;
+        String noOfYear="";
+        String noOfMonth="";
+        String noOfDay="";
+    long millisSecond = ((toDate.getTime())-(formDate.getTime()))/86400000;
+      if(millisSecond <= 0l){
+        returnDate="All Ready Expired";
+      }else{
+        System.out.println(millisSecond);
+        if(millisSecond > 365){
+          year = millisSecond /365l;
+          remenderValue = millisSecond %365l;
+          if(remenderValue > 30){
+             month = remenderValue/30;
+             day = remenderValue%30;
+           }else {
+             day=remenderValue;
+           }
+          if(year>1){
+            noOfYear="Years";  
+          }else{
+            noOfYear="Year";    
+          }
+          if(month >1){
+            noOfMonth="Months";
+          }else{
+            noOfMonth="Month";
+          }
+          if(day > 1 ){
+            noOfDay="Days";
+          }else{
+            noOfDay="Day";
+          }
+          returnDate = year.toString()+" "+noOfYear+" "+month.toString()+" "+noOfMonth+" "+day.toString()+" "+noOfDay;
+        }else if(millisSecond > 30){
+          month = millisSecond /30;
+          remenderValue = millisSecond%30;
+          day = remenderValue;
+          if(month >1){
+            noOfMonth="Months";
+          }else{
+            noOfMonth="Month";
+          }
+          if(day > 1 ){
+            noOfDay="Days";
+          }else{
+            noOfDay="Day";
+          }
+           returnDate =month.toString()+" "+noOfMonth+" "+day.toString()+" "+noOfDay;
+            
+        }else{
+          day = millisSecond;
+          if(day > 1 ){
+            noOfDay="Days";
+          }else{
+            noOfDay="Day";
+          }
+          returnDate =day.toString()+" "+noOfDay;
+        }
+      }
+    return returnDate;
+  }
 
 }

@@ -41,7 +41,7 @@ public class NomintedPostMemberVO {
 	private Long deptId;
 	private Long deptBoardId;
 	private Long deptBoardPostnId;
-	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();
+	private List<IdNameVO> idNamevoList = new ArrayList<IdNameVO>();  
 	private List<IdNameVO> nomDocsList = new ArrayList<IdNameVO>();
 	private Long referCandCount;
 	private Long boardLevelId;
@@ -55,11 +55,23 @@ public class NomintedPostMemberVO {
 	private String gender;
 	private String cadreGen;
 	private String publicReprStr;
+	private Long nominatedPostStatusId;
+	private String nominatedPostStatusName;
+	private String membershipNO;
+	private String boardName;
+	private String positionName;
+	private Long castId;
+	private Long castCategoryId;
+	private String castCategoryName;
+	private Long govtOrderId;
+	private String govtOrderName;
+	private String fromDate;
+	private String toDate;
+	private String deptName;
+	private String expireDate;
 	
 	private Long appliedCount=0l;
 	private Long shortListedCount=0l;
-	
-	
 	public String getPublicReprStr() {
 		return publicReprStr;
 	}
@@ -313,6 +325,89 @@ public class NomintedPostMemberVO {
 	public void setShortListedCount(Long shortListedCount) {
 		this.shortListedCount = shortListedCount;
 	}
-	
+	public Long getNominatedPostStatusId() {
+		return nominatedPostStatusId;
+	}
+	public void setNominatedPostStatusId(Long nominatedPostStatusId) {
+		this.nominatedPostStatusId = nominatedPostStatusId;
+	}
+	public String getNominatedPostStatusName() {
+		return nominatedPostStatusName;
+	}
+	public void setNominatedPostStatusName(String nominatedPostStatusName) {
+		this.nominatedPostStatusName = nominatedPostStatusName;
+	}
+	public String getMembershipNO() {
+		return membershipNO;
+	}
+	public void setMembershipNO(String membershipNO) {
+		this.membershipNO = membershipNO;
+	}
+	public String getBoardName() {
+		return boardName;
+	}
+	public void setBoardName(String boardName) {
+		this.boardName = boardName;
+	}
+	public String getPositionName() {
+		return positionName;
+	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+	public Long getCastId() {
+		return castId;
+	}
+	public void setCastId(Long castId) {
+		this.castId = castId;
+	}
+	public Long getCastCategoryId() {
+		return castCategoryId;
+	}
+	public void setCastCategoryId(Long castCategoryId) {
+		this.castCategoryId = castCategoryId;
+	}
+	public String getCastCategoryName() {
+		return castCategoryName;
+	}
+	public void setCastCategoryName(String castCategoryName) {
+		this.castCategoryName = castCategoryName;
+	}
+	public Long getGovtOrderId() {
+		return govtOrderId;
+	}
+	public void setGovtOrderId(Long govtOrderId) {
+		this.govtOrderId = govtOrderId;
+	}
+	public String getGovtOrderName() {
+		return govtOrderName;
+	}
+	public void setGovtOrderName(String govtOrderName) {
+		this.govtOrderName = govtOrderName;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getExpireDate() {
+		return expireDate;
+	}
+	public void setExpireDate(String expireDate) {
+		this.expireDate = expireDate;
+	}
 	
 }
