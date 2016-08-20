@@ -1163,35 +1163,40 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	
         	if(partyMeetingLevelId == 2){//district
         		
-        		sbS.append(" ,district.districtId,district.districtName ");
+        		sbS.append(" ,district.districtId,district.districtName ");//6
+        		
         		sbM.append(" left join model.meetingAddress.district district  ");
         		
         	}else if(partyMeetingLevelId == 3){//constituency
         		
-        		sbS.append(" ,constituency.constituencyId,constituency.name," +
-        		           " district.districtId,district.districtName ");
+        		sbS.append(" ,constituency.constituencyId,constituency.name," +//6
+        		           " district.districtId,district.districtName ");//8
         		sbM.append(" left join model.meetingAddress.constituency constituency" +
         				   " left join model.meetingAddress.district district ");
         		
-        	}else if(partyMeetingLevelId == 4 || partyMeetingLevelId == 5){//mandal/muncipality level.
+        	}else if(partyMeetingLevelId == 4){//mandal/town/division level.
         		
-        		sbS.append(" ,tehsil.tehsilId,tehsil.tehsilName," +
-        				   " leb.localElectionBodyId,leb.name" +
-        			 	   " constituency.constituencyId,constituency.name " );
+        		sbS.append(" ,tehsil.tehsilId,tehsil.tehsilName," +//6
+        				   " leb.localElectionBodyId,leb.name," +//8
+        				   " electionType.electionTypeId,electionType.electionType" +//10
+        			 	   " constituency.constituencyId,constituency.name " );//12
         	    sbM.append(" left join model.meetingAddress.tehsil tehsil" +
         	    	 	   " left join model.meetingAddress.localElectionBody leb " +
+        	    	 	   " left join leb.electionType electionType" +
         	    	 	   " left join model.meetingAddress.constituency constituency");
         	    
-        	}else if(partyMeetingLevelId == 6){//village/ward
+        	}else if(partyMeetingLevelId == 7){//village/ward
         		
-        		sbS.append(",panchayat.panchayatId,panchayat.panchayatName, " +
-        				   " tehsil.tehsilId,tehsil.tehsilName," +
-        				   " ward.constituencyId,ward.name," +
-     				       " leb.localElectionBodyId,leb.name");
+        		sbS.append(",panchayat.panchayatId,panchayat.panchayatName, " +//6
+        				   " tehsil.tehsilId,tehsil.tehsilName," +//8
+        				   " ward.constituencyId,ward.name," +//10
+     				       " leb.localElectionBodyId,leb.name," +//12
+     				       " electionType.electionTypeId,electionType.electionType ");//14
         		sbM.append(" left join model.meetingAddress.panchayat panchayat  " +
      	    	 	       " left join model.meetingAddress.tehsil tehsil " +
      	    	 	       " left join model.meetingAddress.ward ward  " +
-     	    	 	       " left join model.meetingAddress.localElectionBody leb");
+     	    	 	       " left join model.meetingAddress.localElectionBody leb " +
+     	    	 	       " left join leb.electionType electionType ");
         	}
         	
         	sbM.append(" where  model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId " +
@@ -1220,8 +1225,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         
       	StringBuilder sb = new StringBuilder();
       	sb.append(" " +
-      	"select model.partyMeetingId,model.meetingName,model.partyMeetingLevel.partyMeetingLevelId," +
-        "       model1.isConductedByIvr " +
+      	"select model.partyMeetingId,model1.isConductedByIvr" +
         " from  PartyMeeting model,PartyMeetingIvrStatus model1 "+
       	" where model.partyMeetingId = model1.partyMeetingId and " +
       	"       model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId and" +

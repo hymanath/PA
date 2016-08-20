@@ -3529,7 +3529,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	  * @param  String endDateString
 	  * @return List<PartyMeetingsVO>
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-	  *  This Service Method is used to get top5 strong or top5 poor usertype committees count. 
+	  *  This Service Method is used to get party meetings counts location wise for the tdpCadre in candidate page. 
 	  *  @since 17-AUGUST-2016
 	  */
 	public List<PartyMeetingsVO>  getLocationWisePartyMeetings(String locationType,Long locationValue,String startDateString,String endDateString){
@@ -3807,7 +3807,20 @@ public class PartyMeetingService implements IPartyMeetingService{
 		monthsMap.put(12,"Dec");
 		return monthsMap;
 	}
-	///
+	
+	 /**
+	  * @param  String locationType
+	  * @param  Long locationValue
+	  * @param  Long partyMeetingLevelId
+	  * @param  int  year
+	  * @param  int month
+	  * @param  String endDateString
+	  * @param  String endDateString
+	  * @return List<PartyMeetingStatusVO>
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get partyMeeting details when we clicked on counts in candidate page.  
+	  *  @since 20-AUGUST-2016
+	  */
 	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year,String startDateString,String endDateString){
 		List<PartyMeetingStatusVO> finalList = null;
 		try{
@@ -3827,10 +3840,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 			  List<Object[]> meetingsIvrList = partyMeetingDAO.getMeetingDetailsForALevelByLocationIdByIVR(month,year,datesList.get(0),datesList.get(1),partyMeetingLevelId,locationValueList,sb);
 			  
 			  Map<Long,PartyMeetingStatusVO> finalMap = new LinkedHashMap<Long,PartyMeetingStatusVO>();
-			  setPartyMeetingStatus(totalmeetingsList,finalMap);
+			  
+			  setPartyMeetingBascicDetails(totalmeetingsList,finalMap);
+			  setIvrMeetingDetails(meetingsIvrList,finalMap);
 			  
 			  if(finalMap != null && finalMap.size()>0){
 				  finalList = new ArrayList<PartyMeetingStatusVO>(finalMap.values());
+				  //get Meeting Status
+				  for(PartyMeetingStatusVO partyMeetingVO : finalList){
+					  String meetingStatus = getMeetingStatusByIvrStatusAndDpoStatus(partyMeetingVO.getDpoStatus(),partyMeetingVO.getIvrStatus());
+					  partyMeetingVO.setMeetingStatus(meetingStatus);
+				  }
 			  }
 		}catch(Exception e){
 			e.printStackTrace();
@@ -3838,11 +3858,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return finalList;
 	}
 	
-	public void setPartyMeetingStatus(List<Object[]> list,Map<Long,PartyMeetingStatusVO> finalMap){
+	public void setPartyMeetingBascicDetails(List<Object[]> list,Map<Long,PartyMeetingStatusVO> finalMap){
 	
 		if(list != null && list.size()>0){
 			for(Object[] obj : list){
-				//PartyMeetingStatusVO partyMeetingVO = finalMap.get((Long)obj[0]);
 					
 				PartyMeetingStatusVO partyMeetingVO = new PartyMeetingStatusVO();
 				partyMeetingVO.setId((Long)obj[0]);
@@ -3850,12 +3869,80 @@ public class PartyMeetingService implements IPartyMeetingService{
 				partyMeetingVO.setPartyMeetinglevelId(obj[2]!=null?(Long)obj[2]:0l);
 				partyMeetingVO.setDateString(obj[3]!=null?obj[3].toString():"");
 				partyMeetingVO.setDpoStatus(obj[4]!=null?obj[4].toString():null);
-				//location is pending
+				
+				//location wise
+				if( partyMeetingVO.getPartyMeetinglevelId() == 2l){
+					partyMeetingVO.setDistrict(obj[6]!=null?obj[6].toString()+" District" : "");
+					partyMeetingVO.setLocation(obj[6]!=null?obj[6].toString()+" District" : "");
+				}
+				else if( partyMeetingVO.getPartyMeetinglevelId() == 3l){
+					
+					String location = obj[8].toString()+" district" +" - " + obj[6].toString() + " Constituency";
+					partyMeetingVO.setDistrict(obj[8]!=null?obj[8].toString():"");
+					partyMeetingVO.setConstituency(obj[6]!=null?obj[6].toString():"");
+					partyMeetingVO.setLocation(location);
+					
+				}else if( partyMeetingVO.getPartyMeetinglevelId() == 4l){
+					
+					String location = "";
+					partyMeetingVO.setConstituency(obj[12]!=null?obj[12].toString():"");
+					location = partyMeetingVO.getConstituency()+" Constituency";
+					if(obj[5]!=null){
+						partyMeetingVO.setTehsil(obj[5].toString());
+						location = location + " - " + partyMeetingVO.getTehsil() + " Mandal";
+					}else if(obj[7]!=null){
+						partyMeetingVO.setLocalElectionBody(obj[8].toString());
+						partyMeetingVO.setElectionType(obj[10]!=null?obj[10].toString():"");
+						if(obj[9]!=null){
+							if((Long)obj[9] == 7l)
+								location = location + " - " +partyMeetingVO.getLocalElectionBody();
+						    else 
+						    	location = location + " - " +partyMeetingVO.getLocalElectionBody() + " "+partyMeetingVO.getElectionType();
+						}
+					}
+					partyMeetingVO.setLocation(location);
+					
+				}else if( partyMeetingVO.getPartyMeetinglevelId() == 7l){
+					
+					String location = "";
+					if(obj[5]!=null && obj[7]!=null){
+						partyMeetingVO.setTehsil(obj[6] != null ?obj[6].toString():"");
+						partyMeetingVO.setPanchayat(obj[8].toString());
+						location = partyMeetingVO.getTehsil() + " Mandal" + partyMeetingVO.getPanchayat() +" Village";
+					}else if(obj[9]!=null && obj[11]!=null){
+						partyMeetingVO.setWard(obj[10]!=null?obj[10].toString():"");
+						partyMeetingVO.setLocalElectionBody(obj[12] != null ? obj[12].toString() : "");
+						partyMeetingVO.setElectionType(obj[14]!=null?obj[14].toString():"");
+						if(obj[13]!=null){
+							if((Long)obj[13] == 7l){
+								location = partyMeetingVO.getLocalElectionBody();
+							    location = location + partyMeetingVO.getWard();
+							}
+						    else{
+						    	location = partyMeetingVO.getLocalElectionBody() + " "+partyMeetingVO.getElectionType();
+						    	location = location + partyMeetingVO.getWard();
+						    } 	
+						}
+					}
+					partyMeetingVO.setLocation(location);
+				}
+				
 				finalMap.put((Long)obj[0],partyMeetingVO);
 			}
 		}
 	}
 	
+	public void setIvrMeetingDetails(List<Object[]> list,Map<Long,PartyMeetingStatusVO> finalMap){
+		
+		if(list != null && list.size() > 0){
+			for(Object[] obj : list){
+				PartyMeetingStatusVO partyMeetingVO = finalMap.get((Long)obj[0]);
+				if(partyMeetingVO != null){
+					partyMeetingVO.setIvrStatus(obj[1]!=null?obj[1].toString():null);
+				}
+			}
+		}
+	}
 	
 	public String getMeetingStatusByIvrStatusAndDpoStatus( String dpoStatus,String ivrStatus){
 		
