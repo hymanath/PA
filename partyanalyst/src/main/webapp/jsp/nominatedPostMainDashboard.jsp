@@ -333,7 +333,7 @@
 	                                <div id="casteWisePositions"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div>   
                     </div>
                 </div>
             </div>

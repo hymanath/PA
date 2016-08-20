@@ -76,6 +76,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<NominatedPostVO> nominatedPostVOs;
 	private CastePositionVO castePositionVO;
 	private GovtOrderVO govtOrderVO;
+	private List<NomintedPostMemberVO> nominatedPostMemberVOs; 
 	
 	
 	public GovtOrderVO getGovtOrderVO() {
@@ -279,6 +280,14 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
+	}
+	
+	public List<NomintedPostMemberVO> getNominatedPostMemberVOs() {
+		return nominatedPostMemberVOs;
+	}
+	public void setNominatedPostMemberVOs(
+			List<NomintedPostMemberVO> nominatedPostMemberVOs) {
+		this.nominatedPostMemberVOs = nominatedPostMemberVOs;
 	}
 	public String nominatedPosts()
 	{
@@ -1578,6 +1587,26 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	public String getFinalReviewCandidateCountForLocation(){
+		 try{
+			    jObj = new JSONObject(getTask());
+			    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 
+			    Long LocationLevelId = jObj.getLong("LocationLevelId");
+				Long departmentId = jObj.getLong("departmentId");
+				Long boardId = jObj.getLong("boardId");
+				String status = jObj.getString("status");
+				JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
+				    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
+				    	for(int i = 0;i<locationLevelValueArr.length();i++){
+				    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
+				    	}
+				    }
+				    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, status);
+		 }catch(Exception e) {
+			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+		}
+	   return Action.SUCCESS;	
+	 }
 	
 	public String assginGOToNominationPostCandidate(){
 		try {
