@@ -111,6 +111,18 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="postDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">   
+  <div class="modal-dialog" style="width:85%;" role="document">
+    <div class="modal-content chairmenFinaliseModal">
+      <div class="modal-header">
+        
+      </div>
+      <div class="modal-body">
+	   <div id="postDetailsResultDivId"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" style="width:85%;" role="document">
     <div class="modal-content chairmenFinaliseModal">
@@ -529,3 +541,4 @@ $(document).on("click",".pdfModalCloseBtn",function(){
 </script>
 </body>
 </html>
+

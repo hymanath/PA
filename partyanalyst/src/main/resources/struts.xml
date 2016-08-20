@@ -13399,13 +13399,16 @@
    			<param name="root">resultStatus</param>
    		</result>
 	</action>
+	<action name="getFinalReviewCandidateCountForLocationAction" class="nominatedPostProfileAction" method="getFinalReviewCandidateCountForLocation">
+		<result type="json" name="success">
+   			<param name="root">nominatedPostMemberVOs</param>
+   		</result>
+	</action>
 	<action name="getLocationWisePartyMeetingsAction" class="partyMeetingAction" method="getLocationWisePartyMeetings">
 		<result type="json" name="success">
    			<param name="root">partyMeetingVOsList</param>
    		</result>
 	</action>
-	
-	
 	<action name="assginGOToNominationPostCandidateAction" class="nominatedPostProfileAction" method="assginGOToNominationPostCandidate">
 		<result type="json" name="success">
    			<param name="root">resultStatus</param>

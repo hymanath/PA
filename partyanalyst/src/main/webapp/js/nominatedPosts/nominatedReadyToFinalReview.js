@@ -264,15 +264,15 @@ function buildCandidateReviewRslt(result,status){
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
-		   if(status != "Total"){
-		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		   if(status != "Total"){  
+		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }else{
-			   str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+			   str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom"  title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }
 		 }else{
 			 if(status != "Total"){
-		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
-		 }else{
+		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
+		 }else{  
 		  str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 
 		 }
@@ -755,12 +755,14 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 			}
 		});
 	}else{
+		assignGOTONominatedPostCandidates(candiIds);   
 		applicationIds = nominatedPostCandidateId;
 	}
 	if(typeof applicationIds == "undefined" || applicationIds.trim() == ""){
 		alert("Please Select Atleast One candidate To Assign GO.");
 		return;
 	}
+	
 	
 	$("#applicationIdsHidden").val(applicationIds);
 	
@@ -1440,4 +1442,105 @@ $(document).on("click",".updateDropDown,.appliedPostPopup",function(e){
 $(document).on("click",".closeIcon",function(e){
 	$(this).closest(".updateDropDown").hide();
 });
+	$(document).on('click','.deptDtlsCls',function(){
+		var deptId = $(this).attr("attr_dept_id");
+		//globalLocationLevelId,
+		//globalLocationLevelValueArr
+		var boardId = 0;
+		var status = "goPassed";
+		var jsObj = {
+			LocationLevelId : globalLocationLevelId, 
+			locationLevelValueArr : globalLocationLevelValueArr,      
+			departmentId : deptId,
+			boardId : boardId,
+			status : status
+		}  
+		$.ajax({
+		  type:'GET',
+		  url: 'getFinalReviewCandidateCountForLocationAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		if(result != null){
+		   console.log(result); 
+		   buildModel(result);
+		}
+		});
+		
+	});
 	
+	function buildModel(result){  
+	var str = '';
+	str+='<div class="container">';
+	str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="panel panel-default">';
+				str+='<div class="panel-heading" style="background-color:#CCC">';
+					str+='<h3 class="text-capital">G.O.issued / completed</h3>';
+					str+='<p>State Level - Labout Department</p>';
+				str+='</div>';
+				str+='<div class="panel-body">';
+					str+='<div class="row">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+							str+='<div class="pad_15" style="background-color:#F5F5F5">';
+								str+='<div class="row">';
+									str+='<div class="col-md-3 col-sm-6 col-xs-12">';
+										str+='<div class="selectBox active">labour Department</div>';
+									str+='</div>';
+									str+='<div class="col-md-3 col-sm-6 col-xs-12">';
+										str+='<div class="selectBox">All Boards/Corporations</div>';
+									str+='</div>';
+									str+='<div class="col-md-3 col-sm-6 col-xs-12">';
+										str+='<div class="selectBox">All Positions</div>';
+									str+='</div>';
+									str+='<div class="col-md-3 col-sm-6 col-xs-12">';
+										str+='<div class="selectBox">Expire in 3 months</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="row m_top10">';
+					for(var i in result){
+						str+='<div class="col-md-4 col-sm-6 col-xs-12">';
+							str+='<div class="panel panel-default panelGO">';
+								str+='<div class="panel-heading">';
+									str+='<div class="media">';
+										str+='<div class="media-left">';
+											str+='<img src="dist/img/profile.png" class="media-object"/>';
+										str+='</div>';
+										str+='<div class="media-body">';
+											str+='<p>'+result[i].name+'</p>';
+											str+='<p>Ph: '+result[i].cadreMobile+'</p>';
+											str+='<p>M.ID: '+result[i].membershipNO+'</p>';
+										str+='</div>';
+									str+='</div>';
+									str+='<p>';
+										str+='<span>Male '+result[i].age+' years Old</span>';
+										str+='<span class="pull-right">'+result[i].castCategoryName+' - '+result[i].casteName+'</span>';
+									str+='</p>';
+								str+='</div>';
+								str+='<div class="panel-body text-capitalize">';
+									str+='<b>';
+										str+='<p>'+result[i].boardName+'</p>';
+										str+='<p> - '+result[i].positionName+'</p>';           
+									str+='</b>';
+								str+='</div>';
+								str+='<div class="panel-footer text-capitalize">';
+									str+='<p><b>'+result[i].govtOrderName+'</b></p>';
+									str+='<p class="text-muted">Dated : '+result[i].fromDate.substring(0,10)+' to '+result[i].toDate.substring(0,10)+'</p>';
+									str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	$("#postDetailsResultDivId").html(str);   
+	$("#postDetails").modal("show");
+	
+	}
