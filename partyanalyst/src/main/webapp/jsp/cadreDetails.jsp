@@ -1573,17 +1573,16 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
     <div class="modal-content">
       <div class="modal-header" style="background-color:#CCC;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">PARTY MEETINGS COUNT</h4>
+        <h4 class="modal-title" id="partyMeetingSummaryHeadingId"></h4>
       </div>
       <div class="modal-body">
-		<h4 class="panel-title">SUMMARY</h4>
-		<div class="table-responsive" >
-			<div id="detailsId"></div>
-			
+		<h4 class="panel-title">MEETINGS SUMMARY </h4>
+		<div class="table-responsive">
+			<div id="summaryDivId"></div>
 		</div>
-		<h4 class="panel-title m_top20">TABLE HEADING</h4>
+		<!--<h4 class="panel-title m_top20">TABLE HEADING</h4>-->
         <div class="table-responsive" >
-			<div id="summaryDivId"></div>  
+			<div id="detailsId"></div>  
 		</div>
       </div>
     </div>
@@ -1658,13 +1657,21 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	
 	//GETTING THE TDP CADRE LOCATION DETAILS BY USER ADDRESS TABLE.
 	var tdpCadreDistrictId = '${cadreLocationVO.districtId}';
+	var tdpCadreDistrictName = '${cadreLocationVO.districtName}';
 	var tdpCadreParliamentConstituencyId = '${cadreLocationVO.parliamentId}';
+	var tdpCadreParliamentName = '${cadreLocationVO.parliamentName}';
 	var tdpCadreAssemblyConstituencyId = '${cadreLocationVO.constituencyId}';
+	var tdpCadreAssemblyConstituencyName = '${cadreLocationVO.constituencyName}';
 	var tdpCadreLocalElectionBodyId ='${cadreLocationVO.localElectionBodyId}'; 
+	var tdpCadreLocalElectionBodyName='${cadreLocationVO.localElectionBody}'; 
 	var tdpCadreTehsilId ='${cadreLocationVO.tehsilId}'; 
+	var tdpCadreTehsilName ='${cadreLocationVO.tehsilName}'; 
 	var tdpCadreWardId = '${cadreLocationVO.wardId}';
+	var tdpCadreWardName = '${cadreLocationVO.wardName}';
 	var tdpCadreVillageId = '${cadreLocationVO.villageId}';
-	
+	var tdpCadreVillageName = '${cadreLocationVO.villageName}';
+	var tdpCadreElectionTypeId = '${cadreLocationVO.electionTypeId}';
+	var tdpCadreElectionType = '${cadreLocationVO.electionType}';
 	partyMeetingsDatePickerInstantiation();
 	
 	function callFunForMembership()
