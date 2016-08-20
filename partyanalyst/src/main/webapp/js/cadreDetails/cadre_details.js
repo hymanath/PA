@@ -7432,6 +7432,8 @@ function getNominatedPostReportFiles() {
 	   
 	   $('#partyMeetingsLocWiseDiv').html('<center><img src="images/icons/loading.gif" style="width: 50px; height: 50px; margin-top: 10px;"></center>'); 
 	  
+	  
+	  
 	   var dates = $("#partyMeetingDateId").val();
 	   var startDateString = "";
 	   var endDateString = "";
@@ -7440,46 +7442,16 @@ function getNominatedPostReportFiles() {
 		   startDateString = dates[0].trim();
 		   endDateString = dates[1].trim();
 		}
-		var locationType ="";
-		var locationValue=0;
-		
-		var radioType = $("input[name='partyMetingsLocation']:checked").val();
-		
-		if(radioType == "district"){
-		   locationType = radioType;
-		   locationValue = tdpCadreDistrictId;
-		}else if(radioType == "parliamentConstituency"){
-		   locationType = radioType;
-		   locationValue = tdpCadreParliamentConstituencyId;
-		}else if(radioType == "assemblyConstituency"){
-		  locationType = radioType;
-		  locationValue = tdpCadreAssemblyConstituencyId;
-		}else if(radioType == "mandal"){
-		   if(tdpCadreLocalElectionBodyId !=null && tdpCadreLocalElectionBodyId > 0){
-			 locationType = "muncipality";
-			 locationValue = tdpCadreLocalElectionBodyId;
-		   }else if(tdpCadreTehsilId != null && tdpCadreTehsilId > 0){
-			 locationType = "tehsil";
-			 locationValue = tdpCadreTehsilId;
-		   } 
-		}else if(radioType == "village"){
-		   if( tdpCadreWardId !=null && tdpCadreWardId > 0){
-			 locationType = "ward";
-			 locationValue = tdpCadreWardId;
-		   }else if(tdpCadreVillageId != null && tdpCadreVillageId > 0){
-			 locationType = "village";
-			 locationValue = tdpCadreVillageId;
-		   } 
-		}
-		
-		if(locationValue == 0){
+
+		var locationDetailsObj = getLocationTypeAndValue();
+		if(locationDetailsObj["locationValue"] == 0){
 			$('#partyMeetingsLocWiseDiv').html("<center><b>NO DATA AVAILABLE..</b></center>");
 			return;
 		}
-		
+		 
 		var jsObj={
-				locationType:locationType,
-				locationValue:locationValue,
+				locationType:locationDetailsObj["locationType"],
+				locationValue:locationDetailsObj["locationValue"],
 				startDateString:startDateString,
 				endDateString:endDateString
 			}
@@ -7557,7 +7529,7 @@ function getNominatedPostReportFiles() {
 				  for(var j in result[i].subList){
 					   //planned count
 					   if(result[i].subList[j].plannedCount != null && result[i].subList[j].plannedCount > 0){
-							str+='<td data-toggle="modal" data-target="#partyMeetingsModalId" attr_level_name="'+result[i].subList[j].name+'" attr_year_id="'+result[i].year+'" attr_month_id="'+result[i].month+'" class="summaryCls" style="cursor:pointer;color:blue;">'+result[i].subList[j].plannedCount+'</td>';   
+							str+='<td data-toggle="modal" data-target="#partyMeetingsModalId" attr_level_name="'+result[i].subList[j].name+'" attr_year_id="'+result[i].year+'" attr_month_id="'+result[i].month+'" class="summaryCls" style="cursor:pointer;color: #337ab7;">'+result[i].subList[j].plannedCount+'</td>';   
 					   }else{
 							str+='<td>  </td>';
 						}
@@ -7605,61 +7577,96 @@ function getNominatedPostReportFiles() {
 	 });
      $('.tablePartyMeetings').removeClass("dataTable");
   }
-	$(document).on('click','.summaryCls',function(){
-		var radioType = $("input[name='partyMetingsLocation']:checked").val();
-		
-		if(radioType == "district"){
+  
+  function getLocationTypeAndValue(){
+	  var locationDetailsObj = {"locationType":"","locationValue":0,"headingName":""}
+	  
+	  var headingName = "";
+	  var locationType ="";
+	  var locationValue=0;
+	  
+	  var radioType = $("input[name='partyMetingsLocation']:checked").val();
+	  	if(radioType == "district"){
 		   locationType = radioType;
 		   locationValue = tdpCadreDistrictId;
+		   headingName = tdpCadreDistrictName + " District";
 		}else if(radioType == "parliamentConstituency"){
 		   locationType = radioType;
 		   locationValue = tdpCadreParliamentConstituencyId;
+		   headingName = tdpCadreParliamentName + " Parliament ";
 		}else if(radioType == "assemblyConstituency"){
 		  locationType = radioType;
 		  locationValue = tdpCadreAssemblyConstituencyId;
+		  headingName = tdpCadreAssemblyConstituencyName + " Parliament ";
 		}else if(radioType == "mandal"){
 		   if(tdpCadreLocalElectionBodyId !=null && tdpCadreLocalElectionBodyId > 0){
 			 locationType = "muncipality";
 			 locationValue = tdpCadreLocalElectionBodyId;
+			 if(tdpCadreElectionTypeId != 7){
+				 headingName = tdpCadreLocalElectionBodyName;
+			 }else{
+				headingName =  tdpCadreLocalElectionBodyName +" "+tdpCadreElectionType;
+			 }
 		   }else if(tdpCadreTehsilId != null && tdpCadreTehsilId > 0){
 			 locationType = "tehsil";
 			 locationValue = tdpCadreTehsilId;
+			 headingName =  tdpCadreVillageName +" Mandal ";
 		   } 
 		}else if(radioType == "village"){
 		   if( tdpCadreWardId !=null && tdpCadreWardId > 0){
 			 locationType = "ward";
 			 locationValue = tdpCadreWardId;
+			 headingName =   tdpCadreWardName ;
 		   }else if(tdpCadreVillageId != null && tdpCadreVillageId > 0){
 			 locationType = "village";
 			 locationValue = tdpCadreVillageId;
+			 headingName =   tdpCadreVillageName +" Village";
 		   } 
 		}
+		
+		locationDetailsObj["locationType"] = locationType;
+		locationDetailsObj["locationValue"] = locationValue;
+		locationDetailsObj["headingName"] = headingName;
+		return locationDetailsObj;
+  }
+  
+	$(document).on('click','.summaryCls',function(){
+		
+		var locationDetailsObj = getLocationTypeAndValue();
+	    var headingName = locationDetailsObj["headingName"];
+		
 		var year = $(this).attr("attr_year_id");
 		var month = $(this).attr("attr_month_id");
-		var monthJsonObj = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,"Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12};     
-		
+		var monthJsonObj = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,"Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12};
 		var monthId = monthJsonObj[month];
-	
-		//var levelNameJsonObj = {"VILLAGE":7,"MANDAL":4,"CONSTITUENCY":3,"DISTRICT":2}
+		
 		var levelName = $(this).attr("attr_level_name");
 		var partyMeetingLevelIds=[];
 		if(levelName=="DISTRICT"){
 			partyMeetingLevelIds.push(2);
+			headingName = headingName + " -  DISTRICT LEVEL PARTY MEETINGS DETAILS";
 		}else if(levelName=="CONSTITUENCY"){
 			partyMeetingLevelIds.push(3);
+			headingName = headingName + " - CONSTITUENCY LEVEL PARTY MEETINGS DETAILS";
 		}else if(levelName=="MANDAL"){
 			partyMeetingLevelIds.push(4);
 			partyMeetingLevelIds.push(5);
 			partyMeetingLevelIds.push(6);
+			headingName = headingName + " - MANDAL / MUNCIPALITY LEVEL PARTY MEETINGS DETAILS";
 		}else if(levelName=="VILLAGE"){
 			partyMeetingLevelIds.push(7);
 			partyMeetingLevelIds.push(8);
+			headingName = headingName + " - VILLAGE / WARD LEVEL PARTY MEETINGS DETAILS";
 		}
 		
-		
+		//popup
+		$("#partyMeetingSummaryHeadingId").html(headingName.toUpperCase());
+		$('#summaryDivId').html('<center><img src="images/icons/loading.gif" style="width: 50px; height: 50px; margin-top: 10px;"></center>'); 
+		$("#detailsId").html("");
+			
 		var jsObj = {
-			locationType : locationType, 
-			locationValue : locationValue,      
+			locationType : locationDetailsObj["locationType"], 
+			locationValue : locationDetailsObj["locationValue"],      
 			partyMeetingLevelIds : partyMeetingLevelIds,
 			month : monthId,
 			year : year
@@ -7682,11 +7689,13 @@ function getNominatedPostReportFiles() {
 		var mayBe = 0;
 		var totalCount = 0;
 		var str = '';
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered" id="partyMeetingDetailsTableId">';
 			str+='<thead style="background-color:#ECECEC">';
 				str+='<th>Location</th>';
 				str+='<th>Party Meeting Name</th>';
-				str+='<th>Date </th>';
+				str+='<th>Conducted Date </th>';
+				str+='<th>Party Office Status</th>';
+				str+='<th>IVR Status</th>';
 				str+='<th>Meeting Status</th>';
 			str+='</thead>';
 			for(var i in result){
@@ -7701,21 +7710,42 @@ function getNominatedPostReportFiles() {
 				str+='<tr>';
 					str+='<td>'+result[i].location+'</td>';
 					str+='<td>'+result[i].name+'</td>';
-					str+='<td>'+result[i].dateString+'</td>';
-					str+='<td>'+result[i].meetingStatus+'</td>';
+					 if(result[i].dateString != null && $.trim(result[i].dateString).length > 0){
+						str+='<td>'+result[i].dateString.split(" ")[0]+'</td>';
+					}else{
+						str+='<td> - </td>';
+					}
+                    str+='<td>'+getRequiredStatus(result[i].dpoStatus)+'</td>';
+ 				    str+='<td>'+getRequiredStatus(result[i].ivrStatus)+'</td>';	
+					str+='<td>'+getRequiredStatus(result[i].meetingStatus)+'</td>';	
+					
 				str+='</tr>';
 			}
 		str+='</table>';
 		buildFinalSummary(str,conducted,notConducted,mayBe,totalCount); 
+	}
+	
+	function getRequiredStatus(statusType){
+		var requiredType = "";
+		if(statusType == "Y"){
+			requiredType = "Conducted"
+		}else if(statusType == "N"){
+			requiredType = "Not Conducted"
+		}else if(statusType == "Maybe"){
+			requiredType = "May Be"
+		}else if(statusType == null){
+			requiredType = "-"
+		}
+		return requiredType;
 	}
 	function buildFinalSummary(str,conducted,notConducted,mayBe,totalCount){
 		var str1 = '';
 		str1+='<table class="table table-bordered">';
 				str1+='<thead style="background-color:#ECECEC">';
 					str1+='<th>Total Meetings</th>';
-					str1+='<th>Conducted</th>';
-					str1+='<th>Not Conducted</th>';
-					str1+='<th>May Be</th>';
+					str1+='<th>Conducted Count</th>';
+					str1+='<th>Not Conducted Count</th>';
+					str1+='<th>May Be Count</th>';
 				str1+='</thead>';
 				str1+='<tr>';
 					str1+='<td>'+totalCount+'</td>';
@@ -7724,8 +7754,15 @@ function getNominatedPostReportFiles() {
 					str1+='<td>'+mayBe+'</td>';
 				str1+='</tr>';
 			str1+='</table>';
-			$("#detailsId").html(str1);
-			$("#summaryDivId").html(str);
+			$("#summaryDivId").html(str1);
+			$("#detailsId").html(str);
+			
+			$('#partyMeetingDetailsTableId').dataTable({
+			    "iDisplayLength": 25,
+			    "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]]
+		     });
+		    $('#partyMeetingDetailsTableId').removeClass("dataTable");
+			
 			$("#partyMeetingsModalId").modal("show");  
 	}
  
