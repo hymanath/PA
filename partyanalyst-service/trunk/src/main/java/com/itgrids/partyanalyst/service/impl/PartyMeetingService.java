@@ -3814,17 +3814,14 @@ public class PartyMeetingService implements IPartyMeetingService{
 	  * @param  Long partyMeetingLevelId
 	  * @param  int  year
 	  * @param  int month
-	  * @param  String endDateString
-	  * @param  String endDateString
 	  * @return List<PartyMeetingStatusVO>
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	  *  This Service Method is used to get partyMeeting details when we clicked on counts in candidate page.  
 	  *  @since 20-AUGUST-2016
 	  */
-	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year,String startDateString,String endDateString){
+	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year){
 		List<PartyMeetingStatusVO> finalList = null;
 		try{
-			  List<Date> datesList = getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
 			  
 			  List<Long> locationValueList = new ArrayList<Long>();
 			  if(locationType.equalsIgnoreCase("parliamentConstituency")){
@@ -3836,8 +3833,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			 
 			  StringBuilder sb = gePartyMeetingtLocationWiseQueryPart(locationType);
 			  
-			  List<Object[]> totalmeetingsList = partyMeetingDAO.getMeetingDetailsForALevelByLocationId(month,year,datesList.get(0),datesList.get(1),partyMeetingLevelId,locationValueList,sb);
-			  List<Object[]> meetingsIvrList = partyMeetingDAO.getMeetingDetailsForALevelByLocationIdByIVR(month,year,datesList.get(0),datesList.get(1),partyMeetingLevelId,locationValueList,sb);
+			  List<Object[]> totalmeetingsList = partyMeetingDAO.getMeetingDetailsForALevelByLocationId(month,year,partyMeetingLevelId,locationValueList,sb);
+			  List<Object[]> meetingsIvrList = partyMeetingDAO.getMeetingDetailsForALevelByLocationIdByIVR(month,year,partyMeetingLevelId,locationValueList,sb);
 			  
 			  Map<Long,PartyMeetingStatusVO> finalMap = new LinkedHashMap<Long,PartyMeetingStatusVO>();
 			  
