@@ -384,7 +384,7 @@
 									<option value="0">Select Post Level</option>
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select class="chosenSelect nominatedStaeCls" onchange="getOpenPositionDistrictsForState(this.value,this.id,'');getDepartments(0);" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
 										<option value="0">Select State</option>
@@ -392,24 +392,24 @@
 										<option value="36">Telangana</option>-->
 									</select>
 								</div>
-						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="districtShowDivId">
+						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="districtShowDivId">
 									<label>District</label>
 									<select class="chosenSelect nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');getDepartments(0);" id=
 									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="constituencyshowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="constituencyshowDivId">
 									<label>Constituency</label>
 									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="mondalShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);getDepartments(0);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
 									
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="panchayatShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
 									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId" onchange="getDepartments(0);">
 										
@@ -466,7 +466,7 @@
 									<select class="boardLvlCls" id="" onchange="showHideByNominatedPost('');getDepartments('');" >
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowCls" id="statesShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
 									<label>State Name</label>
 									<select  class="nominatedStaeCls" onchange="getOpenPositionDistrictsForState(this.value,this.id,'');" id="">
 										<option value="0">Select State</option>
@@ -967,7 +967,7 @@ $(document).on("click",".involveBlockNew",function(){
 		showHideBySearchType();	
 					disableByLevel(1);
 					
-})
+});
 
 function buildapptmemberDetails(result){
 		var str='';

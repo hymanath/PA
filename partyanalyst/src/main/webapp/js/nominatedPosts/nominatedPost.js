@@ -1477,31 +1477,31 @@ $(document).on("click","#addOneMore",function(){
   e.find(".nominatedStaeCls").attr("id","nominatedStaeId"+cloneCount);
  // getOpenedPostionsStates("nominatedStaeId"+cloneCount);
   e.find(".nominatedStaeCls").attr("attr_no",cloneCount);
-  e.find(".stateShowCls").attr("id","statesShowDivId"+cloneCount);
+  e.find(".stateShowsCls").attr("id","statesShowDivId"+cloneCount);
   e.find(".nominatedStaeCls").attr("onChange",'getOpenPositionDistrictsForState(this.value,nominatedStaeId'+cloneCount+','+cloneCount+');getDepartments('+cloneCount+');');
   
   e.find(".nominatedDistCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].districtId');
   e.find(".nominatedDistCls").attr("id","nominatedDistId"+cloneCount);
   e.find(".nominatedDistCls").attr("attr_no",cloneCount);
-  e.find(".districtShowCls").attr("id","districtShowDivId"+cloneCount);
+  e.find(".districtShowsCls").attr("id","districtShowDivId"+cloneCount);
   e.find(".nominatedDistCls").attr("onChange",'getOpenPositionConstituenciesForDistrict(this.value,nominatedDistId'+cloneCount+','+cloneCount+');;getDepartments('+cloneCount+');');
   
   e.find(".nominatdConstCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].constituencyId');
   e.find(".nominatdConstCls").attr("id","nominatdConstId"+cloneCount);
   e.find(".nominatdConstCls").attr("attr_no",cloneCount);
-  e.find(".constituencyShowCls").attr("id","constituencyshowDivId"+cloneCount);
+  e.find(".constituencyShowsCls").attr("id","constituencyshowDivId"+cloneCount);
   e.find(".nominatdConstCls").attr("onChange",'getOpenPositionMandalsForConstituency('+cloneCount+',nominatdConstId'+cloneCount+');;getDepartments('+cloneCount+');');
   
   e.find(".nominatedMandlCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].mandalId');
   e.find(".nominatedMandlCls").attr("id","nominatedMandlId"+cloneCount);
   e.find(".nominatedMandlCls").attr("attr_no",cloneCount);
-  e.find(".mandalShowCls").attr("id","mondalShowDivId"+cloneCount);
+  e.find(".mandalShowsCls").attr("id","mondalShowDivId"+cloneCount);
   e.find(".nominatedMandlCls").attr("onChange",'getOpenPositionVillagesForMandal('+cloneCount+',nominatedMandlId'+cloneCount+');;getDepartments('+cloneCount+');');
    
   e.find(".nominatedPanchayatCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].panchayatId');
   e.find(".nominatedPanchayatCls").attr("id","nominatedPanchayatId"+cloneCount);
    e.find(".nominatedPanchayatCls").attr("attr_no",cloneCount);
-  e.find(".panchayatShowCls").attr("id","panchayatShowDivId"+cloneCount);
+  e.find(".panchayatShowsCls").attr("id","panchayatShowDivId"+cloneCount);
   
     e.find(".nominatedPanchayatCls").attr("onChange",';getDepartments('+cloneCount+');');
 	
