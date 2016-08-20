@@ -98,4 +98,6 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	
 	public List<Long> getAssemblyConstituenciesByParliamentList(List<Long> parliamentConstituencyIds) ;
 	public List<Object[]> getAcConstituenciesByPcList(List<Long> parliamentConstituencyIds);
+	public List<Long> getAssemblyConstituenciesByParliamentId(Long parliamentId);
+	public List<Object[]> getPcIdDetailsByAcId(Long constituencyId);
 }

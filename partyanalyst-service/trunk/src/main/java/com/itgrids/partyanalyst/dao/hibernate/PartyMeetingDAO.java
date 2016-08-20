@@ -1029,4 +1029,220 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	return c; 	    
 	    }
 	    
+	    //candidate page
+        public List<Object[]> getTotalPlannedPartyMeetings(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart){
+        	
+        	StringBuilder sb = new StringBuilder();
+        	
+        	sb.append(" " +
+        	"select year(model.startDate),month(model.startDate)," +//1
+            "       model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level," +//3
+            "       count(model.partyMeetingId)" +//4
+        	"from   PartyMeeting model " +
+            "where  model.isActive ='Y' and model.startDate is not null ");
+        	
+        	if(startDate != null && endDate != null){
+        		sb.append(" and model.startDate between :startDate and :endDate ");
+        	}
+        	sb.append(locationsPart);
+        	
+        	sb.append(" group by year(model.startDate),month(model.startDate),model.partyMeetingLevel.partyMeetingLevelId ");
+        	
+        	Query query = getSession().createQuery(sb.toString());
+        	
+        	if(startDate != null && endDate != null){
+        		query.setDate("startDate",startDate);
+        		query.setDate("endDate",endDate);
+        	}
+        	query.setParameterList("locationIds",locationIds);
+        	
+        	return query.list();
+        }
+        
+        public List<Object[]> getConductedNotConductedPartyMeetingsByDPO(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart){
+        	
+        
+        	StringBuilder sb = new StringBuilder();
+        	
+        	sb.append(" " +
+        	"select year(model.startDate),month(model.startDate)," +//1
+            "       model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level," +//3
+            "       model.isConducted,count(model.partyMeetingId)" +//5
+        	"from   PartyMeeting model " +
+            "where  model.isActive ='Y' ");
+        	
+        	if(startDate != null && endDate != null){
+        		sb.append(" and model.startDate between :startDate and :endDate ");
+        	}
+        	sb.append(locationsPart);
+        	
+        	sb.append(" group by year(model.startDate),month(model.startDate),model.partyMeetingLevel.partyMeetingLevelId,model.isConducted");
+        	
+        	Query query = getSession().createQuery(sb.toString());
+        	
+        	if(startDate != null && endDate != null){
+        		query.setDate("startDate",startDate);
+        		query.setDate("endDate",endDate);
+        	}
+        	query.setParameterList("locationIds",locationIds);
+        	
+        	return query.list();
+        }
+        
+        public List<Object[]> getConductedNotConductedPartyMeetingsByIVR(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart){
+        	
+        
+        	StringBuilder sb = new StringBuilder();
+        	
+        	sb.append(" " +
+        	"select year(model.startDate),month(model.startDate)," +//1
+            "       model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level," +//3
+            "       model1.isConductedByIvr,count(distinct model.partyMeetingId)" +//5
+        	"from   PartyMeeting model,PartyMeetingIvrStatus model1 " +
+            "where  model.partyMeetingId = model1.partyMeetingId and " +
+            "       model.isActive ='Y' ");
+        	
+        	if(startDate != null && endDate != null){
+        		sb.append(" and model.startDate between :startDate and :endDate ");
+        	}
+        	sb.append(locationsPart);
+        	
+        	sb.append(" group by year(model.startDate),month(model.startDate),model.partyMeetingLevel.partyMeetingLevelId,model1.isConductedByIvr");
+        	
+        	Query query = getSession().createQuery(sb.toString());
+        	
+        	if(startDate != null && endDate != null){
+        		query.setDate("startDate",startDate);
+        		query.setDate("endDate",endDate);
+        	}
+        	query.setParameterList("locationIds",locationIds);
+        	
+        	return query.list();
+        }
+        
+        public List<Object[]> getConductedPartyMeetingsByAttendance(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart){
+        	
+        	StringBuilder sb = new StringBuilder();
+        	
+        	sb.append(" " +
+        	"select year(model.startDate),month(model.startDate)," +//1
+            "       model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level," +//3
+            "       count(distinct model.partyMeetingId)" +//4
+        	"from   PartyMeeting model,PartyMeetingAttendance model1 " +
+            "where  model.partyMeetingId = model1.partyMeetingId  and" +
+            "       model.isActive ='Y' ");
+        	
+        	if(startDate != null && endDate != null){
+        		sb.append(" and model.startDate between :startDate and :endDate ");
+        	}
+        	sb.append(locationsPart);
+        	
+        	sb.append(" group by year(model.startDate),month(model.startDate),model.partyMeetingLevel.partyMeetingLevelId");
+        	
+        	Query query = getSession().createQuery(sb.toString());
+        	
+        	if(startDate != null && endDate != null){
+        		query.setDate("startDate",startDate);
+        		query.setDate("endDate",endDate);
+        	}
+        	query.setParameterList("locationIds",locationIds);
+        	
+        	return query.list();
+        }
+        
+        public List<Object[]> getMeetingDetailsForALevelByLocationId(int month,int year,Date startDate,Date endDate,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
+        
+        	StringBuilder sbS = new StringBuilder();
+        	StringBuilder sbM = new StringBuilder();
+        	
+        	sbS.append(" " +
+        	"select model.partyMeetingId,model.meetingName," +//1
+        	"       model.partyMeetingLevel.partyMeetingLevelId,model.startDate," +//3
+        	"       model.isConducted ") ;//4
+        	sbM.append(" from   PartyMeeting model ");
+        	
+        	if(partyMeetingLevelId == 2){//district
+        		
+        		sbS.append(" ,district.districtId,district.districtName ");
+        		sbM.append(" left join model.meetingAddress.district district  ");
+        		
+        	}else if(partyMeetingLevelId == 3){//constituency
+        		
+        		sbS.append(" ,constituency.constituencyId,constituency.name," +
+        		           " district.districtId,district.districtName ");
+        		sbM.append(" left join model.meetingAddress.constituency constituency" +
+        				   " left join model.meetingAddress.district district ");
+        		
+        	}else if(partyMeetingLevelId == 4 || partyMeetingLevelId == 5){//mandal/muncipality level.
+        		
+        		sbS.append(" ,tehsil.tehsilId,tehsil.tehsilName," +
+        				   " leb.localElectionBodyId,leb.name" +
+        			 	   " constituency.constituencyId,constituency.name " );
+        	    sbM.append(" left join model.meetingAddress.tehsil tehsil" +
+        	    	 	   " left join model.meetingAddress.localElectionBody leb " +
+        	    	 	   " left join model.meetingAddress.constituency constituency");
+        	    
+        	}else if(partyMeetingLevelId == 6){//village/ward
+        		
+        		sbS.append(",panchayat.panchayatId,panchayat.panchayatName, " +
+        				   " tehsil.tehsilId,tehsil.tehsilName," +
+        				   " ward.constituencyId,ward.name," +
+     				       " leb.localElectionBodyId,leb.name");
+        		sbM.append(" left join model.meetingAddress.panchayat panchayat  " +
+     	    	 	       " left join model.meetingAddress.tehsil tehsil " +
+     	    	 	       " left join model.meetingAddress.ward ward  " +
+     	    	 	       " left join model.meetingAddress.localElectionBody leb");
+        	}
+        	
+        	sbM.append(" where  model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId " +
+        	           "        and model.isActive = 'Y' ");
+        	
+        	if(startDate != null && endDate != null){
+        		sbM.append(" and model.startDate between :startDate and :endDate ");
+        	}
+        	sbM.append(locationsPart);
+        	sbM.append(" and year(model.startDate) =:year and month(model.startDate)=:month ");
+        	
+        	StringBuilder sbf = new StringBuilder();
+        	sbf.append(sbS.toString()).append(sbM.toString());
+        	Query query = getSession().createQuery(sbf.toString());
+        	query.setParameter("partyMeetingLevelId",partyMeetingLevelId);
+        	query.setParameter("year", year);
+        	query.setParameter("month", month);
+        	query.setParameterList("locationIds",locationIds);
+        	if(startDate != null && endDate != null){
+        		query.setDate("startDate",startDate);
+        		query.setDate("endDate",endDate);
+        	}
+        	return query.list();
+        }
+        public List<Object[]> getMeetingDetailsForALevelByLocationIdByIVR(int month,int year,Date startDate,Date endDate,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
+        
+      	StringBuilder sb = new StringBuilder();
+      	sb.append(" " +
+      	"select model.partyMeetingId,model.meetingName,model.partyMeetingLevel.partyMeetingLevelId," +
+        "       model1.isConductedByIvr " +
+        " from  PartyMeeting model,PartyMeetingIvrStatus model1 "+
+      	" where model.partyMeetingId = model1.partyMeetingId and " +
+      	"       model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId and" +
+      	"       model.isActive = 'Y' ");
+      	
+      	if(startDate != null && endDate != null){
+      		sb.append(" and model.startDate between :startDate and :endDate ");
+      	}
+      	sb.append(locationsPart);
+      	sb.append(" and year(model.startDate) =:year and month(model.startDate)=:month ");
+      
+      	Query query = getSession().createQuery(sb.toString());
+      	query.setParameter("partyMeetingLevelId",partyMeetingLevelId);
+      	query.setParameter("year", year);
+      	query.setParameter("month", month);
+      	query.setParameterList("locationIds",locationIds);
+      	if(startDate != null && endDate != null){
+      		query.setDate("startDate",startDate);
+      		query.setDate("endDate",endDate);
+      	}
+      	return query.list();
+      }
+        
 }

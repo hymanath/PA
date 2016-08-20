@@ -25,4 +25,11 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	 public Integer updateConductedDate(Long meetingId,Date conductedDate,Long userId,Date presentDate);
 	 public Integer updateConductedReason(Long meetingId,String remarks,Long userId,Date presentDate);
 	 
+	public List<Object[]> getTotalPlannedPartyMeetings(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart);
+	public List<Object[]> getConductedNotConductedPartyMeetingsByDPO(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart);
+	public List<Object[]> getConductedNotConductedPartyMeetingsByIVR(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart);
+	public List<Object[]> getConductedPartyMeetingsByAttendance(Date startDate,Date endDate,List<Long> locationIds,StringBuilder locationsPart);
+	
+	public List<Object[]> getMeetingDetailsForALevelByLocationId(int month,int year,Date startDate,Date endDate,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart);
+	public List<Object[]> getMeetingDetailsForALevelByLocationIdByIVR(int month,int year,Date startDate,Date endDate,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart);
 }

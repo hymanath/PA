@@ -448,4 +448,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getPublicationDateId(Long tdpCadreId);
 	  public Long getVoterIdByTdpCadreId(Long tdpCadreId);
 	  public List<Object[]> getApplicationMemberDetails(Long tdpCadreId,String searchType);
+	
+	  public List<Object[]> getCadreBasicLocationDetails(Long tdpCadreId);
 } 
