@@ -10878,6 +10878,8 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 				  
 				  locationVO.setLocalElectionBodyId(location[9]!=null?(Long)location[9]:0l);
 				  locationVO.setLocalElectionBody(location[10]!=null?location[10].toString():"");
+				  locationVO.setElectionTypeId(location[14]!=null?(Long)location[14]:0l);
+				  locationVO.setElectionType(location[15]!=null?location[15].toString():"");
 				  locationVO.setWardId(location[11]!=null?(Long)location[11]:0l);
 				  locationVO.setWardName(location[12]!=null?location[12].toString():"");
 			  }

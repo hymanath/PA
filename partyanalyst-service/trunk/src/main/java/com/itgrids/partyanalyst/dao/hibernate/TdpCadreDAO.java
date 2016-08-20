@@ -7090,7 +7090,8 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		  "        constituency.constituencyId,constituency.name," +//4
 		  "        tehsil.tehsilId,tehsil.tehsilName,panchayat.panchayatId,panchayat.panchayatName,"+//8
 		  "        localElectionBody.localElectionBodyId,localElectionBody.name,ward.constituencyId,ward.name," +//12
-	      "        constituency.areaType" +//13
+	      "        constituency.areaType," +//13
+	      "        electionType.electionTypeId,electionType.electionType" +//15
 		  " from   TdpCadre  tc join tc.userAddress ua " +
 		  "        left join ua.district district" +
 		  "        left join ua.constituency constituency" +
@@ -7098,6 +7099,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		  "        left join ua.panchayat panchayat" +
 		  "        left join ua.localElectionBody localElectionBody " +
 		  "        left join ua.ward ward " +
+		  "        left join localElectionBody.electionType electionType " +
 		  " where  tc.isDeleted='N' and tc.enrollmentYear=:enrollmentYear and tc.tdpCadreId=:tdpCadreId " );
 		  query.setParameter("tdpCadreId", tdpCadreId);
 		  query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);

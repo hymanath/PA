@@ -1157,7 +1157,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	
         	sbS.append(" " +
         	"select model.partyMeetingId,model.meetingName," +//1
-        	"       model.partyMeetingLevel.partyMeetingLevelId,model.startDate," +//3
+        	"       model.partyMeetingLevel.partyMeetingLevelId,model.conductedDate," +//3
         	"       model.isConducted ") ;//4
         	sbM.append(" from   PartyMeeting model ");
         	
