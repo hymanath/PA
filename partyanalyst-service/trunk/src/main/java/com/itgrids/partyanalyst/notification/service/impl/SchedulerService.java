@@ -1685,9 +1685,9 @@ public class SchedulerService implements ISchedulerService{
 			
 			message.setFrom(new InternetAddress(IConstants.EMAIL_USERNAME));  
 			if(area.equalsIgnoreCase("office")){
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org"));  
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));   
-				message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));   
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress("accounts@telugudesam.org")); 
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress("a.dakavaram@itgrids.com"));  
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress("swadhin.lenka@itgrids.com"));    
 				/*List<Object[]> emailList = reportEmailDAO.getEmailList(1l);
 				for(Object[] emailArr : emailList){
 					if(emailArr[1]==null)

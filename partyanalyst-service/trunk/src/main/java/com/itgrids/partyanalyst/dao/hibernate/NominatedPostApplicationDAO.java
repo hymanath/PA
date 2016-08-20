@@ -997,38 +997,6 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		       StringBuilder queryStr = new StringBuilder();
 		       
 		       queryStr.append(" select ");
-		          
-		      /* if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
-		    	   queryStr.append(" model.departments.departmentId,model.departments.deptName,");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
-		      	   queryStr.append(" model.board.boardId,model.board.boardName,");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
-		 		  queryStr.append(" model.position.positionId,model.position.positionName,");
-		 	   }
-		       queryStr.append(" model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(model.nominatedPostApplicationId)");
-		       queryStr.append(" from  NominatedPostApplication model where model.isDeleted = 'N' and model.applicationStatus.applicationStatusId = 3 ");
-		       
-		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-		    	    queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
-		       }
-		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
-		    	   queryStr.append(" and model.locationValue in (:lctnLevelValueList)");
-		       }
-		       if(departmentId != null && departmentId.longValue() > 0){
-		    	   queryStr.append(" and model.departments.departmentId=:departmentId ");
-		    	   
-		       }
-		       if(boardId != null && boardId.longValue() > 0){
-		    	   queryStr.append(" and model.board.boardId=:boardId ");
-		       }
-		       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
-		    	   queryStr.append(" group by model.departments.departmentId order by model.departments.departmentId ");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
-		     	   queryStr.append(" group by model.board.boardId order by model.board.boardId ");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
-		    	   queryStr.append(" group by model.position.positionId order by  model.position.positionId ");
-		       }*/
-	 
 		       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
 		    	   queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId,model.nominatedPostMember.nominatedPostPosition.departments.deptName,");
 		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
@@ -1607,4 +1575,115 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		return query.list();
 	
 	}
+	public List<Object[]> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){
+		
+	       StringBuilder queryStr = new StringBuilder(); 
+	       
+	       queryStr.append(" select ");
+	       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() ==  0l){
+	    	   queryStr.append(" D.departmentId,D.deptName,");  
+	       }
+	       
+	       
+	       queryStr.append(" NPS.nominatedPostStatusId, " +
+	       				   " NPS.status, " +
+	       				   " model.nominatedPostId, " +
+	       				   " NPC.candidateName, " + 
+	       				   " TC.firstname, " +
+	       				   " NPC.mobileNo, " +
+	       				   " TC.mobileNo, " +
+	       				   " TC.memberShipNo, " +
+	       				   " NPC.age, " +
+	       				   " TC.age, " +
+	       				   " B.boardId, " +
+	       				   " B.boardName, " +
+	       				   " P.positionId, " +
+	       				   " P.positionName, " +  
+	       				   " C.casteId, " +
+	       				   " C.casteName, " +
+	       				   " CC.casteCategoryId, " +
+	       				   " CC.categoryName, " +
+	       				   " GO.govtOrderId, " +
+	       				   " GO.orderName, " +
+	       				   " GO.fromDate, " +
+	       				   " GO.toDate ");   
+	  
+	       
+	       queryStr.append(" from  " +  
+	       				   " NominatedPost model, " +
+	       				   " NominatedPostGovtOrder NPGO " +
+	       				   " left join model.nominationPostCandidate NPC " +   
+	       				   " left join model.nominatedPostStatus NPS" +
+	       				   " left join NPC.tdpCadre TC " +
+	       				   " left join model.nominatedPostMember NPM " +  
+	       				   " left join NPM.nominatedPostPosition NPP " +
+	       				   " left join NPM.boardLevel BL " +
+	       				   " left join NPP.board B " +
+	       				   " left join NPP.position P " +
+	       				   " left join NPP.departments D" +
+	       				   " left join NPC.casteState CS " +
+	       				   " left join CS.caste C " +
+	       				   " left join CS.casteCategoryGroup CCG " +
+	       				   " left join CCG.casteCategory CC " +
+	       				   " left join NPGO.govtOrder GO " +
+	       				   " left join NPGO.nominatedPost NPOST " +  
+	       		           " where " +
+	       		           " model.isDeleted = 'N' " +  
+	       		           " and NPGO.isDeleted = 'N' " +
+	       		           " and NPGO.govtOrder.isDeleted = 'N'");    
+	       
+	       if(status != null && status.equalsIgnoreCase("finalReview"))
+	    	   queryStr.append(" and NPS.nominatedPostStatusId = 2 ");
+	       else if(status != null && status.equalsIgnoreCase("finaliZed"))
+	    	   queryStr.append(" and NPS.nominatedPostStatusId = 3 ");
+	       else if(status != null && status.equalsIgnoreCase("goPassed"))      
+	    	   queryStr.append(" and NPS.nominatedPostStatusId = 4 ");
+	       
+	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	   if(LocationLevelId.longValue() != 5L)
+	    		   queryStr.append(" and BL.boardLevelId=:LocationLevelId ");  
+	    	   else
+	    		   queryStr.append(" and BL.boardLevelId in (5,6) ");
+	       }
+	       
+	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+	    	   queryStr.append(" and NPM.locationValue in (:lctnLevelValueList)");  
+	       }
+	       
+	       if(departmentId != null && departmentId.longValue() > 0){
+	    	   queryStr.append(" and D.departmentId=:departmentId ");        
+	    	   
+	       }
+	       queryStr.append(" and model.nominatedPostId = NPOST.nominatedPostId " +   
+	       		           " and NPC.isDeleted = 'N' " +
+	       		           //" and TC.isDeleted = 'N' " +
+	       		           " and NPM.isDeleted = 'N' " + 
+	       		           " and NPP.isDeleted = 'N' " +  
+	       		           " ");
+	       if(boardId != null && boardId.longValue() > 0){
+	    	   queryStr.append(" and B.boardId=:boardId ");
+	       }
+	      
+	       
+	       /*if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() ==  0l){
+	    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
+	       }*/
+	       queryStr.append(" order by model.nominatedPostId, B.boardId, P.positionId");    
+	       Query query = getSession().createQuery(queryStr.toString());
+	       
+	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	   if(LocationLevelId.longValue() != 5L)
+	    		   query.setParameter("LocationLevelId", LocationLevelId);
+	       }
+	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+	    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
+	       }
+	       if(departmentId != null && departmentId.longValue() > 0){
+	    	   query.setParameter("departmentId", departmentId);  
+	       }
+	       if(boardId != null && boardId.longValue() > 0){
+	    	   query.setParameter("boardId", boardId);  
+	       }
+	    return query.list();  
+}
 }
