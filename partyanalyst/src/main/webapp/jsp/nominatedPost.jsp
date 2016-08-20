@@ -474,24 +474,24 @@
 										<option value="36">Telangana</option>-->
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="">
 									<label>District</label>
 									<select  class="nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');" id=
 									"">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="">
 									<label>Constituency</label>
 									<select class="nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);" id="">
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select  class="nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);" id="nominatedMandlId">
 										
 									</select>
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="">
 									<label>Panchayat/ Ward / Division</label>
 									<select  class="nominatedPanchayatCls" id="nominatedPanchayatId">
 										
@@ -703,23 +703,23 @@
 							<option value="36">Telangana</option>
                         </select>
                     </div>
-			         <div class="col-md-3 col-xs-12 col-sm-6 m_top10 districtShowCls">
+			         <div class="col-md-3 col-xs-12 col-sm-6 m_top10 districtShowsCls">
 									<label>District<span style="color:red;">*<span></label>
 									<select class="chosenSelect clearSelectClss" onchange="getConstituenciesForDistricts(this.value,this.id,'');" id=
 									"notCadreDistId" name="addNotcadreRegistrationVO.districtId">
 								</select>
 						</div>
-					<div class="col-md-3 col-xs-12 col-sm-6 m_top10 constituencyShowCls">
+					<div class="col-md-3 col-xs-12 col-sm-6 m_top10 constituencyShowsCls">
 									<label>Constituency<span style="color:red;">*<span></label>
 									<select class="chosenSelect clearSelectClss" onchange="getMandalCorporationsByConstituency('',this.id);" id="notCadreConstId"  name="addNotcadreRegistrationVO.constituencyId">
 									</select>
 						</div>
-					<div class="col-md-3 col-xs-12 col-sm-6 m_top10 mandalShowCls">
+					<div class="col-md-3 col-xs-12 col-sm-6 m_top10 mandalShowsCls">
 									<label>Mandal/ Muncipality / Corporation<span style="color:red;">*<span></label>
 									<select  class="chosenSelect clearSelectClss" onchange="getPanchayatWardByMandal('',this.id);" id="notCadreMandlId" name="addNotcadreRegistrationVO.mandalId">	
 									</select>
 							</div>
-					<div class="col-md-3 col-xs-12 col-sm-6 m_top10 panchayatShowCls">
+					<div class="col-md-3 col-xs-12 col-sm-6 m_top10 panchayatShowsCls">
 									<label>Panchayat/ Ward / Division<span style="color:red;">*<span></label>
 									<select  class="chosenSelect clearSelectClss" id="notCadrePanchayatId" name="addNotcadreRegistrationVO.panchayatId">
 									</select>
