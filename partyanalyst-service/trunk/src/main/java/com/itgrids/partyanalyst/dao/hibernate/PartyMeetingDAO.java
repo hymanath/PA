@@ -1150,7 +1150,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	return query.list();
         }
         
-        public List<Object[]> getMeetingDetailsForALevelByLocationId(int month,int year,Date startDate,Date endDate,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
+        public List<Object[]> getMeetingDetailsForALevelByLocationId(int month,int year,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
         
         	StringBuilder sbS = new StringBuilder();
         	StringBuilder sbM = new StringBuilder();
@@ -1178,7 +1178,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         		
         		sbS.append(" ,tehsil.tehsilId,tehsil.tehsilName," +//6
         				   " leb.localElectionBodyId,leb.name," +//8
-        				   " electionType.electionTypeId,electionType.electionType" +//10
+        				   " electionType.electionTypeId,electionType.electionType," +//10
         			 	   " constituency.constituencyId,constituency.name " );//12
         	    sbM.append(" left join model.meetingAddress.tehsil tehsil" +
         	    	 	   " left join model.meetingAddress.localElectionBody leb " +
@@ -1202,9 +1202,6 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	sbM.append(" where  model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId " +
         	           "        and model.isActive = 'Y' ");
         	
-        	if(startDate != null && endDate != null){
-        		sbM.append(" and model.startDate between :startDate and :endDate ");
-        	}
         	sbM.append(locationsPart);
         	sbM.append(" and year(model.startDate) =:year and month(model.startDate)=:month ");
         	
@@ -1215,13 +1212,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
         	query.setParameter("year", year);
         	query.setParameter("month", month);
         	query.setParameterList("locationIds",locationIds);
-        	if(startDate != null && endDate != null){
-        		query.setDate("startDate",startDate);
-        		query.setDate("endDate",endDate);
-        	}
+        	
         	return query.list();
         }
-        public List<Object[]> getMeetingDetailsForALevelByLocationIdByIVR(int month,int year,Date startDate,Date endDate,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
+        public List<Object[]> getMeetingDetailsForALevelByLocationIdByIVR(int month,int year,Long partyMeetingLevelId,List<Long> locationIds,StringBuilder locationsPart){
         
       	StringBuilder sb = new StringBuilder();
       	sb.append(" " +
@@ -1230,10 +1224,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
       	" where model.partyMeetingId = model1.partyMeetingId and " +
       	"       model.partyMeetingLevel.partyMeetingLevelId = :partyMeetingLevelId and" +
       	"       model.isActive = 'Y' ");
-      	
-      	if(startDate != null && endDate != null){
-      		sb.append(" and model.startDate between :startDate and :endDate ");
-      	}
+      
       	sb.append(locationsPart);
       	sb.append(" and year(model.startDate) =:year and month(model.startDate)=:month ");
       
@@ -1242,10 +1233,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
       	query.setParameter("year", year);
       	query.setParameter("month", month);
       	query.setParameterList("locationIds",locationIds);
-      	if(startDate != null && endDate != null){
-      		query.setDate("startDate",startDate);
-      		query.setDate("endDate",endDate);
-      	}
+      	
       	return query.list();
       }
         
