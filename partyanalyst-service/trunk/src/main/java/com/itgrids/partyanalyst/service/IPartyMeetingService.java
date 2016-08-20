@@ -38,6 +38,6 @@ public interface IPartyMeetingService {
 	public String updateConductedDate(Long meetingId,String conductedDate,Long userId);
 	public String updateConductedReason(Long meetingId,String remarks,Long userId);
 	public List<PartyMeetingsVO>  getLocationWisePartyMeetings(String locationType,Long locationValue,String startDateString,String endDateString);
-	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year);
+	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,List<Long> partyMeetingLevelId,int month,int year);
 	
 }
