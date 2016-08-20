@@ -342,7 +342,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 											str+='<span class="text-danger " title=" Ready to Shortlist" style="font-weight:bold;cursor:pointer;font-size: 12px;"> <b style="color:orange;">  YET TO START :</b> '+result[i].idnameList[j].applicationsCount+' </span>';
 										}
 										else{
-											if(result[i].idnameList[j].applicationsCount != null && result[i].idnameList[j].applicationsCount >0)
+											//if(result[i].idnameList[j].applicationsCount != null && result[i].idnameList[j].applicationsCount >0)
 												//str+=' - <span class="text-danger " title=" Ready to Shortlist" style="font-weight:bold;cursor:pointer;font-size: 12px;"> <b style="color:green;">  FINAL REVIEW :</b> '+result[i].idnameList[j].availableCount+' </span>';
 										}
 											//str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
@@ -1394,13 +1394,12 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 	var str='';
 	var isDataAvaialable=false;
 	for(var i in result){
-		if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0){
+		if(!isDataAvaialable && result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt > 0){
 			isDataAvaialable=true;
 		}
 	}
-	
 	if(isDataAvaialable){
-	    str+='<div class="row" id="anyPostDivId" style="display:none;"> ';
+	    str+='<div class="row" id="anyPostDivId" > ';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		str+='<div class="panel panel-default">';
 		str+='<div class="" style="padding: 12px;">';

@@ -432,6 +432,8 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 	var statusId = 6;
 	if(gblStatus=="finaliZed"){
 		statusId = 5;
+	}else if(gblStatus=="goPassed"){
+		statusId = 7;
 	}
  var jsObj=
 	{				
@@ -635,7 +637,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
-					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostCandidateId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
+					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
 					str+='<div class="updateDropDown">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
