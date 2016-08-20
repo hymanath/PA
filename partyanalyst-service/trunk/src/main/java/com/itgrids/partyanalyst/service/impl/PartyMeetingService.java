@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IActivityAttendanceAcceptanceDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -49,9 +52,11 @@ import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance;
 import com.itgrids.partyanalyst.model.PartyMeeting;
@@ -105,7 +110,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
 	private IPartyMeetingUserAccessLevelDAO partyMeetingUserAccessLevelDAO;
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
-	
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	
 	public void setPartyMeetingUserAccessLevelDAO(
@@ -312,6 +317,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 		this.partyMeetingMinuteDAO = partyMeetingMinuteDAO;
 	}
 	
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
 	{
 		PartyMeetingVO returnVO = new PartyMeetingVO();
@@ -3510,6 +3519,369 @@ public class PartyMeetingService implements IPartyMeetingService{
 			LOG.error("Exception Occured in updateConductedReason() method, Exception - ",e);
 		}
 		return returnStr;
+	}
+	
+	
+	 /**
+	  * @param  String locationType
+	  * @param  Long locationValue
+	  * @param  String startDateString
+	  * @param  String endDateString
+	  * @return List<PartyMeetingsVO>
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get top5 strong or top5 poor usertype committees count. 
+	  *  @since 17-AUGUST-2016
+	  */
+	public List<PartyMeetingsVO>  getLocationWisePartyMeetings(String locationType,Long locationValue,String startDateString,String endDateString){
+		
+		List<PartyMeetingsVO> finalList = null;
+		try{
+			
+			 List<Date> datesList = getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
+			
+			 List<Long> locationValueList = new ArrayList<Long>();
+			 if(locationType.equalsIgnoreCase("parliamentConstituency")){
+				 locationType = "assemblyConstituency";
+				 locationValueList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(locationValue);
+			 }else{
+				 locationValueList.add(locationValue);
+			 }
+			 
+			 List<Long> partyMeetingLevelIds = getRequiredPartyMeetingLocatonLevelIds(locationType);
+			 StringBuilder sb = gePartyMeetingtLocationWiseQueryPart(locationType);
+			 Map<Integer,String> monthsMap = getMonthsMap();
+			 
+			 List<Object[]> totalPlannedCountsList = partyMeetingDAO.getTotalPlannedPartyMeetings(datesList.get(0),datesList.get(1),locationValueList,sb);
+			 
+			 Map<String,PartyMeetingsVO> finalMap = new LinkedHashMap<String,PartyMeetingsVO>();
+			 setBasicData(totalPlannedCountsList,partyMeetingLevelIds,finalMap);
+			 
+			 List<Object[]> conductedNotConductedListByDPO = partyMeetingDAO.getConductedNotConductedPartyMeetingsByDPO(datesList.get(0),datesList.get(1),locationValueList,sb);
+			 List<Object[]> conductedNotConductedListByIVR = partyMeetingDAO.getConductedNotConductedPartyMeetingsByIVR(datesList.get(0),datesList.get(1),locationValueList,sb);
+			 List<Object[]> conductedListByAttendance = partyMeetingDAO.getConductedPartyMeetingsByAttendance(datesList.get(0),datesList.get(1),locationValueList,sb);
+			 
+			 setConductedNotConductedData(conductedNotConductedListByDPO,"District Party Office",finalMap);
+			 setConductedNotConductedData(conductedNotConductedListByIVR,"Ivr",finalMap);
+			 setConductedNotConductedData(conductedListByAttendance,"Attendance",finalMap);
+			 
+			 if(finalMap!=null && finalMap.size()>0)
+			 {
+				 finalList = new ArrayList<PartyMeetingsVO>(0);
+				 for(Map.Entry<String, PartyMeetingsVO> dateEntry : finalMap.entrySet())
+				 { 
+					 PartyMeetingsVO dateVO = dateEntry.getValue();
+					 if(dateVO != null && dateVO.getSubMap()!=null && dateVO.getSubMap().size()>0)
+					 {
+						 for(Map.Entry<Long, PartyMeetingsVO> partyMeetingLevelEntry : dateVO.getSubMap().entrySet())
+						 {
+							 PartyMeetingsVO partyMeetingLevelVO = partyMeetingLevelEntry.getValue();
+							 if(partyMeetingLevelVO!=null && partyMeetingLevelVO.getSubMap1()!=null && partyMeetingLevelVO.getSubMap1().size()>0)
+							 {
+								 partyMeetingLevelVO.setSubList(new ArrayList<PartyMeetingsVO>(partyMeetingLevelVO.getSubMap1().values()));
+								 partyMeetingLevelVO.getSubMap1().clear();
+							 }
+						 }
+						 dateVO.setSubList(new ArrayList<PartyMeetingsVO>(dateVO.getSubMap().values()));
+						 dateVO.getSubMap().clear();
+					 }
+				 }
+				 finalList.addAll(finalMap.values()); 
+			 }
+			 
+			 
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return finalList;
+	}
+	
+	
+	public void setBasicData(List<Object[]> totalPlannedCountsList,List<Long> partyMeetingLevelIds,Map<String,PartyMeetingsVO> finalMap){
+		
+		Map<Long,String> partyMeetingLevelNameMap = getPartyMeetingLevelNamesMap();
+		Map<Integer,String> monthsMap = getMonthsMap();
+		
+		if(totalPlannedCountsList != null && totalPlannedCountsList.size()>0){
+			for(Object[] obj : totalPlannedCountsList){
+				
+				Integer year = obj[0]!=null?(Integer)obj[0]:0;
+				Integer month = obj[1]!=null?(Integer)obj[1]:0;
+				String  key = year+"_"+month;
+				
+				PartyMeetingsVO  dateVO = null;
+				if(!finalMap.containsKey(key)){
+					dateVO = new PartyMeetingsVO();
+					dateVO.setYear(year);
+					dateVO.setMonth(monthsMap.get(month));
+					dateVO.setSubMap(getRequiredPartyMeetingLevelsMap(partyMeetingLevelIds,partyMeetingLevelNameMap));
+					finalMap.put(key, dateVO);
+				}
+				dateVO = finalMap.get(key);
+				
+				Long partyMeetingLevelId = (Long)obj[2];
+				PartyMeetingsVO partyMeetingLevelVO = null;
+				if(partyMeetingLevelId.longValue() == 5 || partyMeetingLevelId.longValue() == 6){//Town/Division
+					partyMeetingLevelVO = dateVO.getSubMap().get(4l);
+				}else if(partyMeetingLevelId.longValue() == 8){//WARD
+					partyMeetingLevelVO = dateVO.getSubMap().get(7l);
+				}else{
+					partyMeetingLevelVO = dateVO.getSubMap().get(partyMeetingLevelId);
+				}
+				
+				if(partyMeetingLevelVO !=null ){
+					partyMeetingLevelVO.setPlannedCount(partyMeetingLevelVO.getPlannedCount() + (obj[4]!=null?(Long)obj[4]:0l));
+				}
+			}
+		}
+	}
+	
+	public Map<Long,PartyMeetingsVO> getRequiredPartyMeetingLevelsMap(List<Long> partyMeetingLevelIds,Map<Long,String> partyMeetingLevelNameMap){
+		
+		Map<Long,PartyMeetingsVO> meetingLevelsMap = new LinkedHashMap<Long, PartyMeetingsVO>();
+		
+		if(partyMeetingLevelIds != null && partyMeetingLevelIds.size()>0){
+			for(Long partyMeetingLevelId : partyMeetingLevelIds){
+				
+				if( partyMeetingLevelId.longValue() != 5 && partyMeetingLevelId.longValue()!=6 && partyMeetingLevelId.longValue()!=8){//town,division,ward
+					
+					PartyMeetingsVO partyMeetingLevelVO = new PartyMeetingsVO();
+					partyMeetingLevelVO.setName(partyMeetingLevelNameMap.get(partyMeetingLevelId));
+					
+					//updated type map.
+					if(partyMeetingLevelVO.getSubMap1() == null){
+						partyMeetingLevelVO.setSubMap1(new LinkedHashMap<String, PartyMeetingsVO>(0));
+					}
+					PartyMeetingsVO districtPartyOfficeVO = new PartyMeetingsVO();
+					districtPartyOfficeVO.setName("District Party Office");
+					PartyMeetingsVO ivrVO = new PartyMeetingsVO();
+					ivrVO.setName("Ivr");
+					PartyMeetingsVO attendanceVO = new PartyMeetingsVO();
+					attendanceVO.setName("Attendance");
+					partyMeetingLevelVO.getSubMap1().put("District Party Office", districtPartyOfficeVO);
+					partyMeetingLevelVO.getSubMap1().put("Ivr", ivrVO);
+					partyMeetingLevelVO.getSubMap1().put("Attendance", attendanceVO);
+					
+					meetingLevelsMap.put(partyMeetingLevelId,partyMeetingLevelVO);
+				}
+				
+			}
+		}
+		return meetingLevelsMap;
+	}
+	public void setConductedNotConductedData(List<Object[]> dataList,String updatedType,Map<String,PartyMeetingsVO> finalMap){
+		
+		if(dataList != null && dataList.size()>0){
+			for(Object[] obj : dataList){
+				
+				Integer year = obj[0]!=null?(Integer)obj[0]:0;
+				Integer month = obj[1]!=null?(Integer)obj[1]:0;
+				String  key = year+"_"+month;
+				
+				//get dateVO
+				PartyMeetingsVO dateVO = finalMap.get(key);
+				if(dateVO!=null){
+					
+					Long partyMeetingLevelId = (Long)obj[2];
+					
+					//get PartyMeetingLevelVO
+					PartyMeetingsVO partyMeetingLevelVO = null;
+					if(partyMeetingLevelId.longValue() == 5 || partyMeetingLevelId.longValue() == 6){//Town/Division
+						partyMeetingLevelVO = dateVO.getSubMap().get(4l);
+					}else if(partyMeetingLevelId.longValue() == 8){//WARD
+						partyMeetingLevelVO = dateVO.getSubMap().get(7l);
+					}else{
+						partyMeetingLevelVO = dateVO.getSubMap().get(partyMeetingLevelId);
+					}
+					
+					if(partyMeetingLevelVO !=null){
+						//get UpdatedTypeVO
+						PartyMeetingsVO  updatedTypeVO = partyMeetingLevelVO.getSubMap1().get(updatedType);
+						
+						if(updatedTypeVO!=null){
+							if(updatedType.equalsIgnoreCase("District Party Office") || updatedType.equalsIgnoreCase("Ivr")){
+								String conductedOrNotConductedType = obj[4]!=null?obj[4].toString():null;
+								Long count = obj[5]!=null?(Long)obj[5]:0l;
+								if(conductedOrNotConductedType != null){
+									if(conductedOrNotConductedType.equalsIgnoreCase("Y")){
+										updatedTypeVO.setConductedCount(updatedTypeVO.getConductedCount() + count);
+									}else if(conductedOrNotConductedType.equalsIgnoreCase("N")){
+										updatedTypeVO.setNotConductedCount(updatedTypeVO.getNotConductedCount()+count);
+									}
+								}
+							}else if(updatedType.equalsIgnoreCase("Attendance")){
+								Long count = obj[4]!=null?(Long)obj[4]:0l;
+								updatedTypeVO.setConductedCount(updatedTypeVO.getConductedCount() + count);
+								//updatedTypeVO.setNotConductedCount(partyMeetingLevelVO.getPlannedCount() - updatedTypeVO.getConductedCount());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	public Map<Long,String> getPartyMeetingLevelNamesMap(){
+		Map<Long,String> partyMeetingLevelNameMap = new HashMap<Long,String>();
+		List<Object[]> levels = partyMeetingLevelDAO.getPartyMeetingLevels();
+		if(levels!=null && levels.size()>0){
+			for(Object[] obj : levels){
+				partyMeetingLevelNameMap.put((Long)obj[0],obj[1].toString());
+			}
+		}
+		return partyMeetingLevelNameMap;
+	}
+	
+	public List<Long> getRequiredPartyMeetingLocatonLevelIds(String locationType){
+		
+		List<Long> partyMeetingLocationLevelIds = new ArrayList<Long>();
+		
+		if(locationType.equalsIgnoreCase("district")){
+			Long[] REQUIED_COMMITTEE_LEVEl_IDS = {2l,3l ,4l,5l,6l, 7l,8l};
+			partyMeetingLocationLevelIds.addAll(Arrays.asList(REQUIED_COMMITTEE_LEVEl_IDS));
+      	}
+      	else if(locationType.equalsIgnoreCase("assemblyConstituency") || locationType.equalsIgnoreCase("parliamentConstituency")){
+      		Long[] REQUIED_COMMITTEE_LEVEl_IDS = {3l ,4l,5l,6l, 7l,8l};
+      		partyMeetingLocationLevelIds.addAll(Arrays.asList(REQUIED_COMMITTEE_LEVEl_IDS));
+      	}
+      	else if(locationType.equalsIgnoreCase("tehsil") || locationType.equalsIgnoreCase("muncipality")){
+      		Long[] REQUIED_COMMITTEE_LEVEl_IDS = {4l,5l,6l, 7l,8l};
+      		partyMeetingLocationLevelIds.addAll(Arrays.asList(REQUIED_COMMITTEE_LEVEl_IDS));
+      	}
+      	else if(locationType.equalsIgnoreCase("village") || locationType.equalsIgnoreCase("ward")){
+      		Long[] REQUIED_COMMITTEE_LEVEl_IDS = {7l,8l};
+      		partyMeetingLocationLevelIds.addAll(Arrays.asList(REQUIED_COMMITTEE_LEVEl_IDS));
+      	}
+		return partyMeetingLocationLevelIds;
+	}
+	
+	public StringBuilder gePartyMeetingtLocationWiseQueryPart(String locationType){
+		
+		StringBuilder sb = new StringBuilder();
+		if(locationType.equalsIgnoreCase("district")){
+      	  sb.append(" and model.meetingAddress.district.districtId in (:locationIds) ");	
+      	}
+      	else if(locationType.equalsIgnoreCase("assemblyConstituency")){
+      		sb.append(" and model.meetingAddress.constituency.constituencyId in (:locationIds) ");
+      	}
+      	else if(locationType.equalsIgnoreCase("tehsil")){
+      		sb.append(" and model.meetingAddress.tehsil.tehsilId in (:locationIds) ");
+      	}
+      	else if(locationType.equalsIgnoreCase("muncipality")){
+      		sb.append(" and model.meetingAddress.localElectionBody.localElectionBodyId in (:locationIds) ");
+      	}
+      	else if(locationType.equalsIgnoreCase("village")){
+      		sb.append(" and model.meetingAddress.panchayat.panchayatId in (:locationIds) ");
+      	}
+      	else if(locationType.equalsIgnoreCase("ward")){
+      		sb.append(" and model.meetingAddress.ward.constituencyId in (:locationIds) ");
+      	}
+		return sb;
+	}
+	public List<Date> getDates(String startDateString,String endDateString,SimpleDateFormat sdf) throws ParseException{
+		
+    	List<Date> datesList = new ArrayList<Date>();
+    	Date startDate = null;
+    	Date endDate = null;
+    	if(startDateString != null && !startDateString.isEmpty()){
+	    	 startDate = sdf.parse(startDateString);
+	    }
+	    if(endDateString != null && !endDateString.isEmpty()){
+	    	 endDate = sdf.parse(endDateString);
+	    }
+	    datesList.add(0,startDate);
+	    datesList.add(1,endDate);
+	    return datesList;
+    } 
+	public Map<Integer,String> getMonthsMap(){
+		Map<Integer,String> monthsMap = new HashMap<Integer,String>();
+		monthsMap.put(1,"Jan");
+		monthsMap.put(2,"Feb");
+		monthsMap.put(3,"Mar");
+		monthsMap.put(4,"Apr");
+		monthsMap.put(5,"May");
+		monthsMap.put(6,"Jun");
+		monthsMap.put(7,"Jul");
+		monthsMap.put(8,"Aug");
+		monthsMap.put(9,"Sep");
+		monthsMap.put(10,"Oct");
+		monthsMap.put(11,"Nov");
+		monthsMap.put(12,"Dec");
+		return monthsMap;
+	}
+	///
+	public List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year,String startDateString,String endDateString){
+		List<PartyMeetingStatusVO> finalList = null;
+		try{
+			  List<Date> datesList = getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
+			  
+			  List<Long> locationValueList = new ArrayList<Long>();
+			  if(locationType.equalsIgnoreCase("parliamentConstituency")){
+				  locationType = "assemblyConstituency";
+				  locationValueList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(locationValue);
+			  }else{
+				  locationValueList.add(locationValue);
+			  }
+			 
+			  StringBuilder sb = gePartyMeetingtLocationWiseQueryPart(locationType);
+			  
+			  List<Object[]> totalmeetingsList = partyMeetingDAO.getMeetingDetailsForALevelByLocationId(month,year,datesList.get(0),datesList.get(1),partyMeetingLevelId,locationValueList,sb);
+			  List<Object[]> meetingsIvrList = partyMeetingDAO.getMeetingDetailsForALevelByLocationIdByIVR(month,year,datesList.get(0),datesList.get(1),partyMeetingLevelId,locationValueList,sb);
+			  
+			  Map<Long,PartyMeetingStatusVO> finalMap = new LinkedHashMap<Long,PartyMeetingStatusVO>();
+			  setPartyMeetingStatus(totalmeetingsList,finalMap);
+			  
+			  if(finalMap != null && finalMap.size()>0){
+				  finalList = new ArrayList<PartyMeetingStatusVO>(finalMap.values());
+			  }
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return finalList;
+	}
+	
+	public void setPartyMeetingStatus(List<Object[]> list,Map<Long,PartyMeetingStatusVO> finalMap){
+	
+		if(list != null && list.size()>0){
+			for(Object[] obj : list){
+				//PartyMeetingStatusVO partyMeetingVO = finalMap.get((Long)obj[0]);
+					
+				PartyMeetingStatusVO partyMeetingVO = new PartyMeetingStatusVO();
+				partyMeetingVO.setId((Long)obj[0]);
+				partyMeetingVO.setName(obj[1]!=null?obj[1].toString():"");
+				partyMeetingVO.setPartyMeetinglevelId(obj[2]!=null?(Long)obj[2]:0l);
+				partyMeetingVO.setDateString(obj[3]!=null?obj[3].toString():"");
+				partyMeetingVO.setDpoStatus(obj[4]!=null?obj[4].toString():null);
+				//location is pending
+				finalMap.put((Long)obj[0],partyMeetingVO);
+			}
+		}
+	}
+	
+	
+	public String getMeetingStatusByIvrStatusAndDpoStatus( String dpoStatus,String ivrStatus){
+		
+		String requiredStatus = null;
+		
+		if(dpoStatus != null && ivrStatus != null){ //two status exists
+			
+			if(dpoStatus.equalsIgnoreCase(ivrStatus)){
+				requiredStatus = dpoStatus;
+			}else{
+				requiredStatus = "Maybe";
+			}
+			
+		}else if( (dpoStatus != null && ivrStatus == null) || (dpoStatus == null && ivrStatus != null) ){//only one status is there.
+			
+			if(dpoStatus != null){
+				requiredStatus = dpoStatus;
+			}else if(ivrStatus != null){
+				requiredStatus = ivrStatus;
+			}
+			
+		}else if(dpoStatus == null && ivrStatus == null){ // both are null
+			requiredStatus = null;
+		}
+		
+		return requiredStatus;
 	}
 	
 }

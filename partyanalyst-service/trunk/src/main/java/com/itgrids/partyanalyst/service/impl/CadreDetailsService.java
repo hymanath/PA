@@ -103,6 +103,7 @@ import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -10834,4 +10835,57 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 		}
 		return reprtVoLst;
 	}
+	
+	public CadreLocationVO getCadreBasicLocationDetails(Long tdpCadreId){
+		
+		CadreLocationVO locationVO = new CadreLocationVO();
+		try{
+			Object[] location = null;
+			
+			List<Object[]> cadreCandidateLocationDetails = publicRepresentativeDAO.getPublicRepresentativeLocationDetails(tdpCadreId);
+			if(cadreCandidateLocationDetails != null && cadreCandidateLocationDetails.size() > 0){
+				location = cadreCandidateLocationDetails.get(0);
+				locationVO.setCandidate(true);
+			}else{
+				List<Object[]> cadreLocationdetails =  tdpCadreDAO.getCadreBasicLocationDetails(tdpCadreId);
+				if(cadreLocationdetails != null && cadreLocationdetails.size()>0){
+					location = cadreLocationdetails.get(0);
+				}
+			}
+				
+			  if(location != null && location.length>0){
+				  locationVO.setTdpCadreId(location[0]!=null?(Long)location[0]:0l);
+				  locationVO.setDistrictId(location[1]!=null?(Long)location[1]:0l);
+				  locationVO.setDistrictName(location[2]!=null?location[2].toString():"");
+				  locationVO.setConstituencyId(location[3]!=null?(Long)location[3]:0l);
+				  locationVO.setConstituencyName(location[4]!=null?location[4].toString():"");
+				  
+				  if(locationVO.getConstituencyId()!=null && locationVO.getConstituencyId()>0l){
+					  List<Object[]> parliamentDetails = delimitationConstituencyAssemblyDetailsDAO.getPcIdDetailsByAcId(locationVO.getConstituencyId());
+					  if(parliamentDetails != null && parliamentDetails.size()>0){
+						  Object[] parObj = parliamentDetails.get(0);
+						  if(parObj!=null && parObj.length>0){
+							  locationVO.setParliamentId(parObj[0]!=null?(Long)parObj[0]:0l);
+							  locationVO.setParliamentName(parObj[1]!=null?parObj[1].toString():"");
+						  }
+					  }
+				  }
+				  
+				  locationVO.setTehsilId(location[5]!=null?(Long)location[5]:0l);
+				  locationVO.setTehsilName(location[6]!=null?location[6].toString():"");
+				  locationVO.setVillageId(location[7]!=null?(Long)location[7]:0l);
+				  locationVO.setVillageName(location[8]!=null?location[8].toString():"");
+				  
+				  locationVO.setLocalElectionBodyId(location[9]!=null?(Long)location[9]:0l);
+				  locationVO.setLocalElectionBody(location[10]!=null?location[10].toString():"");
+				  locationVO.setWardId(location[11]!=null?(Long)location[11]:0l);
+				  locationVO.setWardName(location[12]!=null?location[12].toString():"");
+			  }
+			 
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCadreBasicLocationDetails Service() - ",e);
+		}
+		return locationVO;
+	}
+	
 }

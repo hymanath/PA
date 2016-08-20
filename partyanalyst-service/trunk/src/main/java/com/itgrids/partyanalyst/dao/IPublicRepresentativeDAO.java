@@ -15,4 +15,5 @@ public interface IPublicRepresentativeDAO extends GenericDao<PublicRepresentativ
 	public List<UserAddress> getUserAddressForCadre(Long tdpCadreId);
 	public List<Object[]> getUserAddressForCadre1(List<Long> tdpCadreIds);
 	public List<Object[]> getPulicRepresentativeInfoByLocation(Long locationId,String searchType);
+	public List<Object[]> getPublicRepresentativeLocationDetails(Long tdpCadreId);
 }

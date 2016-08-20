@@ -209,4 +209,30 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		query.setParameter("locationId", locationId);
 		return query.list();
 	}
+	
+	public List<Object[]> getPublicRepresentativeLocationDetails(Long tdpCadreId){
+		
+		Query query = getSession().createQuery("" +
+		" select tcc.tdpCadre.tdpCadreId," +//0
+		"        district.districtId,district.districtName, " +//2
+		"        constituency.constituencyId,constituency.name," +//4
+		"        tehsil.tehsilId,tehsil.tehsilName,panchayat.panchayatId,panchayat.panchayatName," +//8
+		"        localElectionBody.localElectionBodyId,localElectionBody.name,ward.constituencyId,ward.name," +//12
+		"        constituency.areaType" +//13
+		" from   PublicRepresentative pr,TdpCadreCandidate tcc  " +
+		"        join pr.userAddress  ua " +
+		"        left join ua.district district" +
+		"        left join ua.constituency constituency  " +
+		"        left join ua.tehsil tehsil " +
+		"        left join ua.panchayat panchayat " +
+		"        left join ua.localElectionBody localElectionBody " +
+		"        left join ua.ward ward " +
+		" where  pr.candidate.candidateId =tcc.candidate.candidateId and " +
+		"        tcc.tdpCadre.isDeleted='N' and tcc.tdpCadre.enrollmentYear=:enrollmentYear and tcc.tdpCadre.tdpCadreId=:tdpCadreId");
+		query.setParameter("tdpCadreId",tdpCadreId);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		return query.list();
+	}
+	
+	
  }

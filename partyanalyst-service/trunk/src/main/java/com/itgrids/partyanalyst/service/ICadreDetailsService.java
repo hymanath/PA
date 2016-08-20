@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -128,4 +129,5 @@ public interface ICadreDetailsService {
 	public List<GrievanceReportVO> getGrievancePDFReport(String membershipId);
 	public List<ReportVO> getNominatedPostReportFiles(Long tdpCadreId);
 	//public String checkPositionExists(String position);
+	public CadreLocationVO getCadreBasicLocationDetails(Long tdpCadreId);
 }
