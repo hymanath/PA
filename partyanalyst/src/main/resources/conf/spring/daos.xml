@@ -3191,4 +3191,7 @@
 	<bean id="govtOrderDocumentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtOrderDocumentsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="dashboardCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardCommentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
