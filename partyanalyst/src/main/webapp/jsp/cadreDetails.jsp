@@ -1577,49 +1577,13 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
       </div>
       <div class="modal-body">
 		<h4 class="panel-title">SUMMARY</h4>
-		<div class="table-responsive">
-			<table class="table table-bordered">
-				<thead style="background-color:#ECECEC">
-					<th></th>
-					<th></th>
-				</thead>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+		<div class="table-responsive" >
+			<div id="detailsId"></div>
+			
 		</div>
 		<h4 class="panel-title m_top20">TABLE HEADING</h4>
-        <div class="table-responsive">
-			<table class="table table-bordered">
-				<thead style="background-color:#ECECEC">
-					<th>Location</th>
-					<th>Name</th>
-					<th>IVR</th>
-					<th>Dist Party Office</th>
-					<th>Conducted</th>
-					<th>Not Conducted</th>
-					<th>May Be</th>
-				</thead>
-				<tr>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-				</tr>
-			</table>
+        <div class="table-responsive" >
+			<div id="summaryDivId"></div>  
 		</div>
       </div>
     </div>
