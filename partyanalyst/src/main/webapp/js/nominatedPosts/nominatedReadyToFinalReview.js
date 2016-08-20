@@ -422,7 +422,7 @@ $(document).on("click",".referenceCls",function(){
 		levelValue = $("#manTowDivId").val();
 		level = "Mandal";
 	}
-	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId)
+	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId);
 	$("#myModal").modal("show");
 	$("#headingPostId").html(positionName+" POST");
 	$("#totalHeadingId").html(level+" Level - "+globalDepartmentName+" Department - "+globalBoardName+" Board");
@@ -825,6 +825,7 @@ $(document).on("click",".submitBtnCls",function(){
 	}
      $("#processingImgId"+position).show();
 	 
+	 $('#'+btnId+'').hide();
 	var jsObj=
 	   {				
 		postFinalId:postFinalId,
@@ -839,7 +840,7 @@ $(document).on("click",".submitBtnCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	    
+	     $('#'+btnId+'').show();
 	     setTimeout(function() {
 			$("#processingImgId"+position).hide();
 	      }, 1000);	 
@@ -1296,8 +1297,8 @@ $(document).on("click",".boardHrfCls",function(){
 	function showSbmitStatus(result){
 		if(result.indexOf("SUCCESS") > -1){
 			saveFlag =true;
-			if (confirm('Application Received Successfully...')) {
-				$("#goAssignPopup").modal("hide");
+			if (confirm('G.O Details Updated Successfully...')) {
+				$("#goAssignPopup").modal("hide");				
 			}
 		}else {
 			alert("Something goes wrong, Please try again....");
