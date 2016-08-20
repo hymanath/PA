@@ -2982,8 +2982,8 @@
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
 		<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
 		<property name="partyMeetingUserAccessLevelDAO" ref="partyMeetingUserAccessLevelDAO" />
-		<property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />		
-		
+		<property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />	
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">

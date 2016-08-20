@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.opensymphony.xwork2.Action;
@@ -34,7 +35,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private PartyMeetingSummaryVO partyMeetingsSummary; 
 	private MeetingTrackingVO meetingTrackingVO;
 	private PartyMeetingWSVO partyMeetingWSVO;
-	
+	private List<PartyMeetingsVO> partyMeetingVOsList;
 	private List<PartyMeetingVO> partyMeetingVOList;
 	
 	
@@ -130,6 +131,14 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 
 	public void setPartyMeetingsSummary(PartyMeetingSummaryVO partyMeetingsSummary) {
 		this.partyMeetingsSummary = partyMeetingsSummary;
+	}
+	
+	public List<PartyMeetingsVO> getPartyMeetingVOsList() {
+		return partyMeetingVOsList;
+	}
+
+	public void setPartyMeetingVOsList(List<PartyMeetingsVO> partyMeetingVOsList) {
+		this.partyMeetingVOsList = partyMeetingVOsList;
 	}
 
 	public String execute(){
@@ -519,6 +528,21 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			
 			status = partyMeetingService.updateConductedReason(jObj.getLong("meetingId"),remarks,loggedUser);
 			
+		}catch (Exception e) {
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getLocationWisePartyMeetings(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			String locationType = jObj.getString("locationType");
+			Long   locationValue = jObj.getLong("locationValue");
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			partyMeetingVOsList = partyMeetingService.getLocationWisePartyMeetings(locationType,locationValue,startDateString,endDateString);
 		}catch (Exception e) {
 			LOG.error("Entered into updateConductedDetails Action",e);
 		}

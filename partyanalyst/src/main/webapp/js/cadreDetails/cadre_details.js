@@ -136,6 +136,8 @@ setcolorsForStatus();
 	); */
   });
   $('#MeetingDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
+  
+  getLocationWisePartyMeetings();
 });
 
 function getParticipatedConstituencyId(cadreId){
@@ -2817,6 +2819,7 @@ function buildCategroyInfo(result)
 }
 
 function getCadreIdByMemberShipId(){
+	
 	$.ajax({
 		type : "POST",
 		url  : "getCadreIdByMembershipIdAction.action",
@@ -2839,6 +2842,7 @@ function getCadreIdByMemberShipId(){
 				getLocationwiseCommitteesCount();
 				getPartyMeetingsOverViewForCadre();
 				getEventsOverviewFortdpCadre(); */
+				
 			}
 			else{
 				getCategoryWiseStatusCount();
@@ -2853,6 +2857,7 @@ function getCadreIdByMemberShipId(){
 				getPartyMeetingsOverViewForCadre();
 				getEventsOverviewFortdpCadre();
 				getActivityDetails();
+				
 			}
 			
 		}
@@ -7384,3 +7389,220 @@ function getNominatedPostReportFiles() {
 		buildNominatedReports(); 
 	})
 }
+//party meetings location wise start.
+	function partyMeetingsDatePickerInstantiation(){
+		$(".datePartyMeetings").daterangepicker({
+			startDate: moment().startOf('year'),
+			endDate: moment(),
+			maxDate:moment(),
+			parentEl:'.partyMeetingsCollapseBody',
+			opens:'left',
+			format: 'DD/MM/YYYY',
+			applyClass: 'partyMeetingsApplyBtnCls',
+			ranges: {
+			   'Last 1 Year': [moment().subtract(1, 'year').startOf('month'), moment()],
+			   'Last 6 Months': [moment().subtract(6, 'months').startOf('month'), moment()],
+			   'Last 3 Months': [moment().subtract(3, 'months').startOf('month'), moment()],
+			   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			   'This Month': [moment().startOf('month'), moment()],
+			   'This Year': [moment().startOf('year'), moment()],
+			},
+		});
+		$(".datePartyMeetings").val(moment().startOf('year').format("DD/MM/YYYY") + ' - '+ moment().format("DD/MM/YYYY"));
+		$(".partyMeetingsCollapseBody").find(".ranges").addClass("partyMeetingsDateCls");
+	}
+	//Modal Party Meetings 
+	$(document).on("click",".partyMeetingsModalId",function(){
+		$("#partyMeetingsModalId").modal("open");
+	});
+	$('.partyMeetingsLocCls').click(function(){
+       getLocationWisePartyMeetings();
+    });
+	
+	$(document).on("click",".partyMeetingsDateCls li",function(){
+		if($(this).html() != "Custom Range"){
+			getLocationWisePartyMeetings();
+		}
+    });
+    $(document).on("click",".partyMeetingsApplyBtnCls",function(){
+       getLocationWisePartyMeetings();
+    });
+	
+	function getLocationWisePartyMeetings(){
+	   
+	   $('#partyMeetingsLocWiseDiv').html('<center><img src="images/icons/loading.gif" style="width: 50px; height: 50px; margin-top: 10px;"></center>'); 
+	  
+	   var dates = $("#partyMeetingDateId").val();
+	   var startDateString = "";
+	   var endDateString = "";
+		if($.trim(dates).length > 0){
+		   var dates = dates.split("-");
+		   startDateString = dates[0].trim();
+		   endDateString = dates[1].trim();
+		}
+		var locationType ="";
+		var locationValue=0;
+		
+		var radioType = $("input[name='partyMetingsLocation']:checked").val();
+		
+		if(radioType == "district"){
+		   locationType = radioType;
+		   locationValue = tdpCadreDistrictId;
+		}else if(radioType == "parliamentConstituency"){
+		   locationType = radioType;
+		   locationValue = tdpCadreParliamentConstituencyId;
+		}else if(radioType == "assemblyConstituency"){
+		  locationType = radioType;
+		  locationValue = tdpCadreAssemblyConstituencyId;
+		}else if(radioType == "mandal"){
+		   if(tdpCadreLocalElectionBodyId !=null && tdpCadreLocalElectionBodyId > 0){
+			 locationType = "muncipality";
+			 locationValue = tdpCadreLocalElectionBodyId;
+		   }else if(tdpCadreTehsilId != null && tdpCadreTehsilId > 0){
+			 locationType = "tehsil";
+			 locationValue = tdpCadreTehsilId;
+		   } 
+		}else if(radioType == "village"){
+		   if( tdpCadreWardId !=null && tdpCadreWardId > 0){
+			 locationType = "ward";
+			 locationValue = tdpCadreWardId;
+		   }else if(tdpCadreVillageId != null && tdpCadreVillageId > 0){
+			 locationType = "village";
+			 locationValue = tdpCadreVillageId;
+		   } 
+		}
+		
+		if(locationValue == 0){
+			$('#partyMeetingsLocWiseDiv').html("<center><b>NO DATA AVAILABLE..</b></center>");
+			return;
+		}
+		
+		var jsObj={
+				locationType:locationType,
+				locationValue:locationValue,
+				startDateString:startDateString,
+				endDateString:endDateString
+			}
+			
+			$.ajax({
+					type:'GET',
+					 url: 'getLocationWisePartyMeetingsAction.action',
+					 data : {task:JSON.stringify(jsObj)} ,
+					}).done(function(result){
+						//$("#partyMeetingsModalId").modal('show');
+						if(result !=null && result.length > 0){
+							buildPartyMeetingsLocationWiseCountsTable(result);
+						}else{
+							$('#partyMeetingsLocWiseDiv').html("<center><b>NO DATA AVAILABLE..</b></center>")
+						}
+				});
+	  }
+	  
+	function buildPartyMeetingsLocationWiseCountsTable(result){
+    
+	 var str='';
+	 str+='<div class="m_0-responsive table-responsive m_top10">';
+		str+='<table class="table table-bordered tablePartyMeetings">';
+		
+		str+='<thead class="text-capital">';
+		
+		str+='<tr>';
+			str+='<th rowspan="3">year</th>';
+			str+='<th rowspan="3">Month</th>';
+			if(result[0]!=null && result[0].subList!=null && result[0].subList.length > 0){
+			  for(var i in result[0].subList){
+				  if(result[0].subList[i].name == "VILLAGE"){
+					  str+='<th colspan="7"> VILLAGE / WARD</th>';
+				  }else if(result[0].subList[i].name == "MANDAL"){
+					   str+='<th colspan="7"> MANDAL / MUNCIPALITY</th>';
+				  }else{
+					  str+='<th colspan="7">'+result[0].subList[i].name+'</th>';
+				  }
+			  }
+			}	
+		str+='</tr>';
+		
+		str+='<tr>';
+			if(result[0].subList!=null && result[0].subList.length>0){
+				var locationsCount = result[0].subList.length;
+				for(var i=0;i<locationsCount;i++){
+				   str+='<th rowspan="2">Total</th>';
+				   if(result[0].subList[0].subList != null && result[0].subList[0].subList.length>0){
+					   for(var j in result[0].subList[0].subList){
+						  str+='<th colspan="2">'+result[0].subList[0].subList[j].name+'</th>';
+					   }
+				   }
+				}
+			}
+		str+='</tr>';
+		
+		str+='<tr>';
+			var count = result[0].subList.length * 3;
+			for( var i =0; i<count;i++){
+				str+='<th>C</th>';
+				str+='<th>NC</th>';
+			}
+		str+='</tr>';
+		
+		str+='</thead>';
+		
+		str+='<tbody>';
+		
+		if(result!=null && result.length>0){
+			for(var i in result){
+				str+='<tr>';
+				str+='<td>'+result[i].year+'</td>';
+				str+='<td>'+result[i].month+'</td>';
+				if(result[i].subList != null && result[i].subList.length>0){
+				  for(var j in result[i].subList){
+					   //planned count
+					   if(result[i].subList[j].plannedCount != null && result[i].subList[j].plannedCount > 0){
+							str+='<td>'+result[i].subList[j].plannedCount+'</td>';
+					   }else{
+							str+='<td>  </td>';
+						}
+					   //conducted not conducted counts.
+					   if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
+						   for(var k in result[i].subList[j].subList){
+							   //conducted count.
+						      if(result[i].subList[j].subList[k].conductedCount != null && result[i].subList[j].subList[k].conductedCount > 0){
+								str+='<td>'+result[i].subList[j].subList[k].conductedCount+'</td>';
+							  }else{
+							    str+='<td> - </td>';
+							  }
+							  //not conducted count.
+							  if(result[i].subList[j].subList[k].name == 'Attendance'){
+								  var plannedCount = result[i].subList[j].plannedCount;
+								  var conductedCount = result[i].subList[j].subList[k].conductedCount; 
+								  var notConductedCount = plannedCount - conductedCount;
+								  if(notConductedCount > 0){
+									  str+='<td>'+notConductedCount+'</td>';
+								  }else{
+									  str+='<td> - </td>';
+								  }
+							  }else{
+								  if(result[i].subList[j].subList[k].notConductedCount != null && result[i].subList[j].subList[k].notConductedCount>0){
+									str+='<td>'+result[i].subList[j].subList[k].notConductedCount+'</td>';
+								  }else{
+							        str+='<td> - </td>';
+							      }
+							  }
+							  
+						   }
+					   }
+				   }
+				}
+				str+='</tr>';
+			}
+		}
+		str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+     $('#partyMeetingsLocWiseDiv').html(str);
+     $('.tablePartyMeetings').dataTable({
+		"iDisplayLength": 15,
+		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+	 });
+     $('.tablePartyMeetings').removeClass("dataTable");
+  }
+  //party meetings location wise end.

@@ -36,6 +36,11 @@
 	
 						<!-- End -->
 <style type="text/css">
+
+.partyMeetingsCollapseBody
+{
+	position:relative;
+}
 .mouse-over1
     {
         
@@ -82,6 +87,19 @@
 }
 .unselectable{
 	min-height:24px !important;
+}
+.tablePartyMeetings thead th
+{
+	background-color:#ECECEC;
+	vertical-align:middle !important;
+	text-transform:uppercase;
+	text-align:center;
+	font-size:12px !important;
+}
+.tablePartyMeetings thead th , .tablePartyMeetings tr td
+{	
+	padding:3px !important;
+	
 }
 </style>
 <script>
@@ -930,12 +948,58 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                             	<input type="radio" name="committeeLocation" class="committeeLocCls" value="district" checked>District
                             </label>
                         </div>
-                        <div class="table m_0-responsive m_top10 table-responsive" id="committeesCountDiv">
-                        </div>
+                        <div class="table m_0-responsive m_top10 table-responsive" id="committeesCountDiv"></div>
+						
                     </div>
                 </div>
             </div>
         </div>
+		<!-- Party Meetings -->
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading partyMeetingsCollapse">
+						<h4 class="panel-title text-bold pointer"><i class="fa fa-user-secret "></i>&nbsp;&nbsp;&nbsp;PARTY MEETINGS
+							<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
+					</div>
+					<div class="panel-body partyMeetingsCollapseBody" style="display:none">
+						<div class="row">
+							<div class="col-md-9 col-xs-12">
+								<label class="radio-inline">
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="village">Village/Ward
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="mandal">Mandal/Muncipality
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="assemblyConstituency">Assembly Constituency
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="parliamentConstituency">Parliament Constituency
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="district" checked>District
+								</label>
+							</div>
+							<div class="col-md-3 col-xs-12">
+								<div class="input-group">
+									<input type="text" class="form-control datePartyMeetings" id="partyMeetingDateId">
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div id="partyMeetingsLocWiseDiv">
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Party Meetings End-->
 		<!--<div class="col-md-12 m_top10 pad_10 block" id="surveyDetailsMainDivId">
 				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
 					
@@ -1504,6 +1568,64 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			  </div>
 </div>
 
+<div class="modal fade" id="partyMeetingsModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:90%">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#CCC;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">PARTY MEETINGS COUNT</h4>
+      </div>
+      <div class="modal-body">
+		<h4 class="panel-title">SUMMARY</h4>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead style="background-color:#ECECEC">
+					<th></th>
+					<th></th>
+				</thead>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<h4 class="panel-title m_top20">TABLE HEADING</h4>
+        <div class="table-responsive">
+			<table class="table table-bordered">
+				<thead style="background-color:#ECECEC">
+					<th>Location</th>
+					<th>Name</th>
+					<th>IVR</th>
+					<th>Dist Party Office</th>
+					<th>Conducted</th>
+					<th>Not Conducted</th>
+					<th>May Be</th>
+				</thead>
+				<tr>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+				</tr>
+			</table>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<!--<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>-->
@@ -1569,6 +1691,18 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	
 	var membershipId = '${memberShipId}';
 	var constituencyId = '${constituencyId}';
+	
+	//GETTING THE TDP CADRE LOCATION DETAILS BY USER ADDRESS TABLE.
+	var tdpCadreDistrictId = '${cadreLocationVO.districtId}';
+	var tdpCadreParliamentConstituencyId = '${cadreLocationVO.parliamentId}';
+	var tdpCadreAssemblyConstituencyId = '${cadreLocationVO.constituencyId}';
+	var tdpCadreLocalElectionBodyId ='${cadreLocationVO.localElectionBodyId}'; 
+	var tdpCadreTehsilId ='${cadreLocationVO.tehsilId}'; 
+	var tdpCadreWardId = '${cadreLocationVO.wardId}';
+	var tdpCadreVillageId = '${cadreLocationVO.villageId}';
+	
+	partyMeetingsDatePickerInstantiation();
+	
 	function callFunForMembership()
 	{
 		if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
@@ -2608,6 +2742,12 @@ $(document).on('click','.showPdfCls2',function(){
 	}
 	
 }); 
+
+//party meetings.
+$(document).on("click",".partyMeetingsCollapse",function(){
+	$(".partyMeetingsCollapseBody").toggle();
+	$(this).find('.glyphicon').toggleClass('glyphicon-chevron-down').toggleClass('glyphicon-chevron-up');
+});
 
 </script>
 </body>

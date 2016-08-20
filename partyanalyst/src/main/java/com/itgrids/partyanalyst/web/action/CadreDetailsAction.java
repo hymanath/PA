@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
@@ -101,7 +101,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<CadreReportVO> cadreReportVOList = new ArrayList<CadreReportVO>(0);
 	private List<GrievanceReportVO> grievanceReportVOList;
 	private List<ReportVO> reportVOList;
-	
+	private CadreLocationVO cadreLocationVO;
 	
 	
 	
@@ -558,6 +558,13 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setReportVOList(List<ReportVO> reportVOList) {
 		this.reportVOList = reportVOList;
 	}
+	
+	public CadreLocationVO getCadreLocationVO() {
+		return cadreLocationVO;
+	}
+	public void setCadreLocationVO(CadreLocationVO cadreLocationVO) {
+		this.cadreLocationVO = cadreLocationVO;
+	}
 	public String execute(){
 		
 		try{
@@ -574,6 +581,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			
 			if(cadreId != null && cadreId.longValue()>0L){
 				basicVo = cadreDetailsService.getParticipatedConstituency(cadreId);
+				cadreLocationVO = cadreDetailsService.getCadreBasicLocationDetails(cadreId);
 			}
 			
 			List<String> entitlements = null;
