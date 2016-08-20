@@ -2625,7 +2625,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	        DateFormatSymbols dfs = new DateFormatSymbols();
 	        String[] months = dfs.getMonths();
 	        if (num >= 0 && num <= 11 ) {
-	            month = months[num];
+	            month = months[num-1];
 	        }
 	        return month;
 	    }
@@ -5547,7 +5547,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	 
 	 public static String folderCreationForGODocuments(){
 	  	 try {
-	  		 LOG.debug(" in FolderForArticle ");
+	  		 LOG.debug(" in folderCreationForGODocuments ");
 	  		
 	  		Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
