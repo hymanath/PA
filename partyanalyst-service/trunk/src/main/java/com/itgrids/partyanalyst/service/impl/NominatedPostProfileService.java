@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.INominatedPostApplicationHistoryDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostCommentDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostGovtOrderDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostReferDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
@@ -140,10 +141,20 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IPositionDAO positionDAO;
 	private IBoardDAO boardDAO;
 	private IGovtOrderDAO govtOrderDAO;
-	private IGovtOrderDocumentsDAO govtOrderDocumentsDAO; 
+	private IGovtOrderDocumentsDAO govtOrderDocumentsDAO;
+	private INominatedPostGovtOrderDAO nominatedPostGovtOrderDAO;
 	
 	
 	
+	public INominatedPostGovtOrderDAO getNominatedPostGovtOrderDAO() {
+		return nominatedPostGovtOrderDAO;
+	}
+
+	public void setNominatedPostGovtOrderDAO(
+			INominatedPostGovtOrderDAO nominatedPostGovtOrderDAO) {
+		this.nominatedPostGovtOrderDAO = nominatedPostGovtOrderDAO;
+	}
+
 	public IGovtOrderDocumentsDAO getGovtOrderDocumentsDAO() {
 		return govtOrderDocumentsDAO;
 	}
@@ -5671,6 +5682,16 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 								//update NPCID in NP
 								for (Entry<Long, Long> entry : map.entrySet()) {
+									NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
+									nogo.setNominatedPostId(entry.getKey());
+									nogo.setGovtOrderId(govtOrder.getGovtOrderId());
+									nogo.setInsertedBy(userId);
+									nogo.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									nogo.setUpdatedBy(userId);
+									nogo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nogo.setIsDeleted("N");
+									nominatedPostGovtOrderDAO.save(nogo);
+									
 									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);
 								}
 								
