@@ -346,9 +346,8 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 												//str+=' - <span class="text-danger " title=" Ready to Shortlist" style="font-weight:bold;cursor:pointer;font-size: 12px;"> <b style="color:green;">  FINAL REVIEW :</b> '+result[i].idnameList[j].availableCount+' </span>';
 										}
 											//str+='<span class="text-danger" title="Total Opened Positions" style="font-weight:bold;cursor:pointer;"> ( '+result[i].idnameList[j].availableCount+' )</span>';
-										if(result[i].idnameList[j].percentage != null && result[i].idnameList[j].percentage !="0.00" && 
-										 result[i].idnameList[j].percentage !="0")
-											str+='<span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
+										//if(result[i].idnameList[j].percentage != null && result[i].idnameList[j].percentage !="0.00" && result[i].idnameList[j].percentage !="0")
+											//str+='<span class="pull-right"><small class="text-danger">'+result[i].idnameList[j].percentage+'% Ready For Review</small></span>';
 										
 										str+='</h4>';
 									str+='</a>';
