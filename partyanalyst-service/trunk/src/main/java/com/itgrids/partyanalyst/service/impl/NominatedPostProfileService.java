@@ -4140,15 +4140,28 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					int count =0;
 					if(levelId.equals(5l)){
 						if(mandalList !=null && mandalList.size()>0){
-							int count1 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,5l,mandalList,userId);
-							count = count+count1;
+							List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,5l,mandalList,userId);   //updateApplicationStatusToFinal();
+							
+							if(finalIds !=null && finalIds.size()>0){
+								int count1=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);
+								count = count+count1;
+							}
+							
 						}
 						if(townList !=null && townList.size()>0){
-							int count2 = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,6l,townList,userId);
-							count=count+count2;
+							List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,6l,townList,userId); //updateApplicationStatusToFinal(deptId,boardId,positions,6l,townList,userId);
+							
+							if(finalIds !=null && finalIds.size()>0){
+								int count2=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);
+								count = count+count2;
+							}						
 						}
 					}else{
-						count = nominatedPostApplicationDAO.updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
+						List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,levelId,searchLevelValues,userId); //updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
+						
+						if(finalIds !=null && finalIds.size()>0){
+							count=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);							
+						}
 					}
 					
 					/*if(count>0){
