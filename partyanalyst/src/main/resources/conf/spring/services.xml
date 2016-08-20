@@ -3336,6 +3336,7 @@
 		<property name="boardDAO" ref="boardDAO"></property>
 		<property name="govtOrderDAO" ref="govtOrderDAO"></property>
 		<property name="govtOrderDocumentsDAO" ref="govtOrderDocumentsDAO"></property>
+		<property name="nominatedPostGovtOrderDAO" ref="nominatedPostGovtOrderDAO"></property>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
