@@ -13414,6 +13414,10 @@
    			<param name="root">resultStatus</param>
    		</result>
 	</action>
-	
+	<action name="getMeetingDetailsForALevelByLocationAction" class="partyMeetingAction" method="getMeetingDetailsForALevelByLocationId">
+		<result type="json" name="success">
+   			<param name="root">meetingStatusVOs</param>    
+   		</result>
+	</action>
 </package>
 </struts>
