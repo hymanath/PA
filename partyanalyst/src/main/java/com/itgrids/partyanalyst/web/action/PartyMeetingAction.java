@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -37,7 +38,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private PartyMeetingWSVO partyMeetingWSVO;
 	private List<PartyMeetingsVO> partyMeetingVOsList;
 	private List<PartyMeetingVO> partyMeetingVOList;
-	
+	private List<PartyMeetingStatusVO> meetingStatusVOs;
 	
 	public List<PartyMeetingVO> getPartyMeetingVOList() {
 		return partyMeetingVOList;
@@ -145,6 +146,14 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public List<PartyMeetingStatusVO> getMeetingStatusVOs() {
+		return meetingStatusVOs;
+	}
+
+	public void setMeetingStatusVOs(List<PartyMeetingStatusVO> meetingStatusVOs) {
+		this.meetingStatusVOs = meetingStatusVOs;
+	}
+
 	public String getPartyMeetingsOverViewForCadre()
 	{
 		try {
@@ -544,6 +553,23 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			String endDateString = jObj.getString("endDateString");
 			partyMeetingVOsList = partyMeetingService.getLocationWisePartyMeetings(locationType,locationValue,startDateString,endDateString);
 		}catch (Exception e) {
+			LOG.error("Entered into updateConductedDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	//List<PartyMeetingStatusVO> getMeetingDetailsForALevelByLocationId(String locationType,Long locationValue,Long partyMeetingLevelId,int month,int year,String startDateString,String endDateString)
+	public String getMeetingDetailsForALevelByLocationId(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			String locationType = jObj.getString("locationType");
+			Long   locationValue = jObj.getLong("locationValue");
+			Long   partyMeetingLevelId = jObj.getLong("partyMeetingLevelId");   
+			int   month = jObj.getInt("month");
+			int   year = jObj.getInt("year");
+			meetingStatusVOs = partyMeetingService.getMeetingDetailsForALevelByLocationId(locationType, locationValue, partyMeetingLevelId, month, year);  
+		}catch (Exception e) {  
 			LOG.error("Entered into updateConductedDetails Action",e);
 		}
 		

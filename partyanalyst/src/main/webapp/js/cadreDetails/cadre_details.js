@@ -7512,11 +7512,11 @@ function getNominatedPostReportFiles() {
 			if(result[0]!=null && result[0].subList!=null && result[0].subList.length > 0){
 			  for(var i in result[0].subList){
 				  if(result[0].subList[i].name == "VILLAGE"){
-					  str+='<th colspan="7"> VILLAGE / WARD</th>';
+					  str+='<th colspan="7" > VILLAGE / WARD</th>';
 				  }else if(result[0].subList[i].name == "MANDAL"){
-					   str+='<th colspan="7"> MANDAL / MUNCIPALITY</th>';
+					   str+='<th colspan="7"> MANDAL / MUNCIPALITY</th>';  
 				  }else{
-					  str+='<th colspan="7">'+result[0].subList[i].name+'</th>';
+					  str+='<th colspan="7">'+result[0].subList[i].name+'</th>';    
 				  }
 			  }
 			}	
@@ -7557,7 +7557,7 @@ function getNominatedPostReportFiles() {
 				  for(var j in result[i].subList){
 					   //planned count
 					   if(result[i].subList[j].plannedCount != null && result[i].subList[j].plannedCount > 0){
-							str+='<td>'+result[i].subList[j].plannedCount+'</td>';
+							str+='<td attr_level_name="'+result[i].subList[j].name+'" attr_year_id="'+result[i].year+'" attr_month_id="'+result[i].month+'" class="summaryCls" style="cursor:pointer;color:blue;">'+result[i].subList[j].plannedCount+'</td>'; 
 					   }else{
 							str+='<td>  </td>';
 						}
@@ -7605,4 +7605,60 @@ function getNominatedPostReportFiles() {
 	 });
      $('.tablePartyMeetings').removeClass("dataTable");
   }
+	$(document).on('click','.summaryCls',function(){
+		var radioType = $("input[name='partyMetingsLocation']:checked").val();
+		
+		if(radioType == "district"){
+		   locationType = radioType;
+		   locationValue = tdpCadreDistrictId;
+		}else if(radioType == "parliamentConstituency"){
+		   locationType = radioType;
+		   locationValue = tdpCadreParliamentConstituencyId;
+		}else if(radioType == "assemblyConstituency"){
+		  locationType = radioType;
+		  locationValue = tdpCadreAssemblyConstituencyId;
+		}else if(radioType == "mandal"){
+		   if(tdpCadreLocalElectionBodyId !=null && tdpCadreLocalElectionBodyId > 0){
+			 locationType = "muncipality";
+			 locationValue = tdpCadreLocalElectionBodyId;
+		   }else if(tdpCadreTehsilId != null && tdpCadreTehsilId > 0){
+			 locationType = "tehsil";
+			 locationValue = tdpCadreTehsilId;
+		   } 
+		}else if(radioType == "village"){
+		   if( tdpCadreWardId !=null && tdpCadreWardId > 0){
+			 locationType = "ward";
+			 locationValue = tdpCadreWardId;
+		   }else if(tdpCadreVillageId != null && tdpCadreVillageId > 0){
+			 locationType = "village";
+			 locationValue = tdpCadreVillageId;
+		   } 
+		}
+		var year = $(this).attr("attr_year_id");
+		var month = $(this).attr("attr_month_id");
+		var monthJsonObj = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,"Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12};     
+		
+		var monthId = monthJsonObj[month];
+	
+		var levelNameJsonObj = {"VILLAGE":7,"MANDAL":4,"CONSTITUENCY":3,"DISTRICT":2}
+		var levelName = $(this).attr("attr_level_name");
+		var levelNameId = levelNameJsonObj[levelName]; 
+		
+		var jsObj = {
+			locationType : locationType, 
+			locationValue : locationValue,      
+			partyMeetingLevelId : levelNameId,
+			month : monthId,
+			year : year
+		}
+		$.ajax({
+		  type:'POST',
+		  url: 'getMeetingDetailsForALevelByLocationAction.action',      
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		if(result != null){ 
+		}
+		});
+	});
   //party meetings location wise end.
