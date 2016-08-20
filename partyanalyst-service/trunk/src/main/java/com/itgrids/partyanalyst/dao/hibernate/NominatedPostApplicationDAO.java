@@ -1331,7 +1331,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		return query.list();
   }
 	
-	public int updateApplicationStatusToFinal(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues,Long userId){
+	public int updateApplicationStatusToFinal(List<Long> finalIds,Long userId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		DateUtilService dateUtilService = new DateUtilService();
@@ -1339,46 +1339,19 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append("UPDATE NominatedPostApplication model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
 				" model.updatedBy =:updatedBy," +
 				" model.updatedTime =:updatedTime" +
-				"	WHERE  model.isDeleted = 'N' " +
-				" AND model.applicationStatusId = :shortListId ");
+				"	WHERE  model.isDeleted = 'N'" );
 		
-		if(deptId !=null && deptId>0){
-			queryStr.append(" AND model.departmentId = :departmentId ");
+		if(finalIds !=null && finalIds.size()>0){
+			queryStr.append("  and model.nominatedPostApplicationId in (:finalIds)  ");
 		}
-		if(boardId !=null && boardId>0){
-			queryStr.append(" AND model.boardId = :boardId ");
-		}
-		if(positions !=null && positions.size()>0){
-			queryStr.append(" AND model.positionId in (:positionIds) ");
-		}
-		if(levelId !=null && levelId>0){
-			queryStr.append(" AND model.boardLevelId = :boardLevelId ");
-		}
-		if(searchLevelValues !=null && searchLevelValues.size()>0){
-			queryStr.append(" AND model.locationValue in (:locationValue) ");
-		}
+		
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		if(deptId !=null && deptId>0){
-			query.setParameter("departmentId",deptId);
-		}
-
-		if(boardId !=null && boardId>0){
-			query.setParameter("boardId",boardId);
-		}
-
-		if(positions !=null && positions.size()>0){
-			query.setParameterList("positionIds",positions);
-		}
-		if(levelId !=null && levelId>0){
-			query.setParameter("boardLevelId",levelId);
-		}
-		if(searchLevelValues !=null && searchLevelValues.size()>0){
-			query.setParameterList("locationValue",searchLevelValues);
+		if(finalIds !=null && finalIds.size()>0){
+			query.setParameterList("finalIds",finalIds);
 		}
 		
 		query.setParameter("applicationStatusId", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
-		query.setParameter("shortListId", 3L);
 		query.setParameter("updatedBy", userId);
 		query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
 		
@@ -1575,5 +1548,63 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		 }
 		query.setParameter("nominatedPostCandId", nominatedPostCandId);
 	    return query.list(); 
+	}
+	
+	public List<Long> getApplicationIds(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues,Long userId){
+
+		
+		StringBuilder queryStr = new StringBuilder();
+		DateUtilService dateUtilService = new DateUtilService();
+		
+		queryStr.append("SELECT model.nominatedPostApplicationId" +
+				" FROM NominatedPostApplication model " +
+				"	WHERE  model.isDeleted = 'N'" +
+				"	AND model.nominatedPostMember.isDeleted ='N' " +
+				" AND model.nominatedPostMember.nominatedPostPosition.isDeleted ='N' " +
+				" AND model.applicationStatusId = :shortListId ");
+		
+		if(deptId !=null && deptId>0){
+			queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId ");
+		}
+		if(boardId !=null && boardId>0){
+			queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.boardId = :boardId ");
+		}
+		if(positions !=null && positions.size()>0){
+			queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.positionId in (:positionIds) ");
+		}
+		if(levelId !=null && levelId>0){
+			queryStr.append(" AND model.nominatedPostMember.boardLevelId = :boardLevelId ");
+		}
+		if(searchLevelValues !=null && searchLevelValues.size()>0){
+			queryStr.append(" AND model.nominatedPostMember.locationValue in (:locationValue) ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(deptId !=null && deptId>0){
+			query.setParameter("departmentId",deptId);
+		}
+
+		if(boardId !=null && boardId>0){
+			query.setParameter("boardId",boardId);
+		}
+
+		if(positions !=null && positions.size()>0){
+			query.setParameterList("positionIds",positions);
+		}
+		if(levelId !=null && levelId>0){
+			query.setParameter("boardLevelId",levelId);
+		}
+		if(searchLevelValues !=null && searchLevelValues.size()>0){
+			query.setParameterList("locationValue",searchLevelValues);
+		}
+		
+		//query.setParameter("applicationStatusId", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
+		query.setParameter("shortListId", 3L);
+	//	query.setParameter("updatedBy", userId);
+	//	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
+		
+		
+		return query.list();
+	
 	}
 }
