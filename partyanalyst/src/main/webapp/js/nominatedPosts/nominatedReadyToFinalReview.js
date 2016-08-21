@@ -233,9 +233,10 @@ function getFinalReviewCandidateCountLocationWise(LocationLevelId,locationLevelV
 			url : "getFinalReviewCandidateCountLocationWiseAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
+		
 		if(result != null && result.length > 0){
 			 if(locationType == "department"){
-				buildCandidateBoardRslt(result,departmentId,gblStatus); 
+				buildCandidateBoardRslt(result,departmentId,gblStatus); //2222
 			 }else if(locationType == "board"){
 				buildCandidatePositionRslt(result,departmentId,boardId,gblStatus); 
 			 }else{
@@ -258,28 +259,33 @@ function buildCandidateReviewRslt(result,status){
  $("#boardRsltDivId").html(' ');
  $("#positionRsltDivId").html(' ');
  var str='';
+ var titleStr="Ready For Final Review";
+ if(gblStatus=="finaliZed")
+	 titleStr="Ready to Finalyze Posts";
+ 
  if(status != "Total"){
-	str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
+	//str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
  }
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
 	  for(var i in result){
 	   if(i==0){
 		   if(status != "Total"){  
-		  str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		  str+='<li class="active"><a  id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }else{
-			   str+='<li class="active"><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom"  title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+			   str+='<li class="active"><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom"  title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }
 		 }else{
 			 if(status != "Total"){
-		 str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
+		 str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
 		 }else{  
-		  str+='<li><a href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		  str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Boards" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 
 		 }
 		}
       }
 	  str+='</ul>';
   $("#candiateReadyToFinalReviewDivId").html(str);
+  $('#departMntId0').trigger('click');
   $(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
@@ -290,24 +296,28 @@ function buildCandidateBoardRslt(result,departmentId,status){
 	var str='';
 	str+='<div role="tabpanel" class="tab-pane active pad_15" id="departments'+departmentId+'" style="padding-right:0px;padding-bottom:0px;">';
 	   str+='<h4 class="headingColor text-capital">board / corporation</h4>';
+	    var titleStr="Ready For Final Review";
+		if(gblStatus=="finaliZed")
+		titleStr="Ready to Finalyze Posts";
+ 
 	   if(status != "Total"){
-	   str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
+	   //str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
 	   }
 	   str+='<ul class="nav nav-tabs tabsCustomFinal1" style="margin-top:10px !important" role="tablist">';
 	    for(var i in result){
 			if(i==0){
 		   str+='<li class="active">';	
-			str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
+			str+='<a id="board'+i+'" href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 						}else{
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 						}
 							
 						str+='</div>';
@@ -319,17 +329,17 @@ function buildCandidateBoardRslt(result,departmentId,status){
 		   str+='</li>'; 
 		}else{
 			 str+='<li role="presentation">';	
-			  str+='<a href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
+			  str+='<a  id="board'+i+'" href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'" role="tab" data-toggle="tab">';
 				str+='<section>';
 					str+='<div class="row">';
 						str+='<div class="col-md-10 col-xs-12 col-sm-10">';
-							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+							str+='<span data-toggle="tooltip" data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 						}else{
-							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom" title="Total Positions" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 						}
 						str+='</div>';
 					str+='</div>';
@@ -344,6 +354,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
   str+='</div>';
   $("#boardRsltDivId").html(str);
   $(".boardCorporation").show();
+  $('#board0').trigger('click');
    $(function () {
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
@@ -351,24 +362,27 @@ function buildCandidateBoardRslt(result,departmentId,status){
 }
 function buildCandidatePositionRslt(result,departmentId,boardId,status){
 var str = '';
+ var titleStr="Ready For Final Review";
+		if(gblStatus=="finaliZed")
+		titleStr="Ready to Finalyze Posts";
 	str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
 		 str+='<h4 class="headingColor text-capital">positions</h4>';
 		 if(status != "Total"){
-		 str+='<p class="text-danger font13 col-md-6 pull-right"><small>Ready for final review</small></p>';
+		 //str+='<p class="text-danger font13 col-md-6 pull-right"><small>Ready for final review</small></p>';
 		 }
 		 str+='<ul class="positionsUl">';
 		 for(var i in result){
 			str+='<li style="padding:0px">';
 				str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
-					if(status != "Total"){
+					if(status != "Total"){  
 						str+='<div class="positionsCls modalViewBtn referenceCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-							str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
-							str+='<span class="label label-primary labelCustom pull-right" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+							str+='<span class="label label-primary labelCustom pull-right" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 							}else{
 								str+='<div class="positionsCls"  attr_position_name="'+result[i].name+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-							str+='<span style="font-weight:bold;">'+result[i].name+'</span>';
-								str+='<span class="label label-primary labelCustom pull-right" title="Members Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span>';
+							str+='<span style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
+								str+='<span class="label label-primary labelCustom pull-right" title="Members Count" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 							}
 						str+='</div>';
 					str+='</div>';
@@ -394,21 +408,30 @@ var str = '';
   setHeight()
 }
 
+var glFinalyeDeptId=0;
+var glFinalyeboardId=0;
+var glFinalyePositionId=0;
+
 $(document).on("click",".referenceCls",function(){
 	var departmentId = $(this).attr("attr_department_id");
 	var boardId = $(this).attr("attr_board_id");
 	var positionId = $(this).attr("attr_position_id");
 	var positionName = $(this).attr("attr_position_name");
 	
+	
+	glFinalyeDeptId = departmentId;
+	glFinalyeboardId = boardId;
+	glFinalyePositionId = positionId;
+	
 	var levelId = boardLevelId;
 	var levelValue = 1;
-	var level = "central";
+	var level = "Central";
 	/*if(levelId == 1){
 		levelValue = $("#stateId").val();	
 	}*/
 	if(levelId == 2){
 		levelValue = $("#stateId").val();	
-		level = "state";
+		level = "State";
 	}
 	else if(levelId == 3){	
 		levelValue = $("#districtId").val();
@@ -424,8 +447,14 @@ $(document).on("click",".referenceCls",function(){
 	}
 	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId);
 	$("#myModal").modal("show");
+	if(gblStatus == 'finaliZed' )
+		$("#actionId").html("G.O Issuing ");
+	else
+		$("#actionId").html("Finalyzing ");
+	
 	$("#headingPostId").html(positionName+" POST");
 	$("#totalHeadingId").html(level+" Level - "+globalDepartmentName+" Department - "+globalBoardName+" Board");
+	
 });
 //111
 function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId){
@@ -435,6 +464,7 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 	}else if(gblStatus=="goPassed"){
 		statusId = 7;
 	}
+	$('#resultDivId').html('<center><img src="images/Loading-data.gif" style="width:50px;height:50px; "/></center>');
  var jsObj=
 	{				
 		levelId : levelId,				
@@ -450,8 +480,12 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   if(result != null){
+	   if(result != null && result.subList != null && result.subList.length >0){
 		   buildNominatedPostMemberDetails(result,levelId,levelVal,deptId,boardId,positionId);
+	   }
+	   else{
+		   $('.wishList').hide();
+		   $('#resultDivId').html('<center> No Members are available for Finalyzing...</center>');
 	   }
    });
 }
@@ -646,7 +680,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
 							str+='<option value="0">Select Status</option>';
 							str+='<option value="4">Rejected-Final Review</option>';
-							str+='<option value="5">Confirmed</option>';
+							str+='<option value="5">Finalize</option>';
 							str+='</select>';
 							str+='<label class="m_top10">Comments</label>';
 							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
@@ -849,6 +883,9 @@ $(document).on("click",".submitBtnCls",function(){
 	   if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...");
 	        $("#"+btnId).attr("disabled","disabled");
+			
+			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr,glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId);
+			
 	   }else{
 		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");
 		}	
@@ -1013,7 +1050,7 @@ $(document).on("click",".deptHrfCls",function(){
 	 globalDepartmentName = deptName;
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,"department");
 	 var status = gblStatus;
-	 getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,status);
+	// getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,status);
 });
 function getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalLocationLevelValueArr,deptId,boardId,status){     
 	//alert(globalLocationLevelId+":"+globalLocationLevelValueArr+":"+deptId+":"+boardId+":"+status) ; 
@@ -1315,7 +1352,7 @@ $(document).on("click",".boardHrfCls",function(){
 				strglob+='<select class="chosenSelect" id="goStatusSelId" name="govtOrderVO.status">';
 					strglob+='<option value="0">Select Status</option>';
 					strglob+='<option value="1">G.O Issue</option>';
-					strglob+='<option value="2">Reject</option>';
+					strglob+='<option value="2">Rejected</option>';
 				strglob+='</select>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
