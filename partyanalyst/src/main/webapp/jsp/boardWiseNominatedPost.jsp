@@ -231,7 +231,9 @@ function getBoardWiseNominatedPostMemberDetails(){
 
 function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positionId){
 	var str='';
-	str+='<table class="table table-bordered table-condensed tableShort">';
+	
+	if(result.subList != null && result.subList.length > 0){
+		str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead style="background-color:#f8f8f8" class="text-capital">';
 			str+='<th>Name</th>';
 			str+='<th>Mobile</th>';
@@ -247,7 +249,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 			str+='<th>Current Status</th>';
 			str+='<th>Update Status</th>';
 		str+='</thead>';
-	if(result.subList != null && result.subList.length > 0){
+		
 		for(var i in result.subList){
 			str+='<tr class="bg_ff">';
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
@@ -448,8 +450,11 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				str+='<td>Preferable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
 			str+='</tr>';*/
 		}
+		str+='</table>';
 	}
-	str+='</table>';
+	else{
+			str+='No Membres are available for shortlisting...';
+	}
 	
 	if(globalPositionId == 0)
 		$("#postMembersId").html(" APPLIED <b class='text-success'  style='text-transform:uppercase;' > ANY POST </b> - APPLIED MEMBERS DETAILS ");
@@ -641,6 +646,7 @@ function getDepartments(num){
 function getBoardsForDepartments(num){
 	
 	$("#boardAnyId"+num+" option").remove();
+	  $("#boardAnyId"+num).trigger('chosen:updated');
 	var depmtId = $("#departmentAnyId"+num).val();
 	$("#statusCommentAnyId"+num).html('');
 	 $("#updatedStatusAnyId"+num).val(0);
@@ -680,6 +686,7 @@ function getPositionsForBoard(num){
 	$("#errorMsg"+num).html('');
 	
 	$("#positionAnyId"+num+" option").remove();
+	 $("#positionAnyId"+num).trigger('chosen:updated');
 	 $("#updatedStatusAnyId"+num).val(0);
 	 $("#statusCommentAnyId"+num).html('');
 	var depmtId = $("#departmentAnyId"+num).val();
@@ -883,7 +890,7 @@ $(document).on("click",".updateStatusAnyCls",function(){
 			$("#successDivAnyId"+num).html(" <b>Sorry,Exception Occured...Please try again...</b>");
 		
 		  // window.location.reload();
-		   setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);
+		   setTimeout(function(){getBoardWiseNominatedPostMemberDetails();getNominatedPostPostionDetails();}, 1000);
    });
 });
 
@@ -985,7 +992,7 @@ function buildNominatePostPositionDetails(result,positionId){
 					   if(result[i].id == null || result[i].id ==0){
 						   //alert(i+"22"+i); 
 						   str+='<tr>';
-								str+='<td><p>ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
+								str+='<td><p> ANY POST  </p><small>Requested for any post members shortlisted for this</small></td>';
 								//str+='<td>02</td>';
 								str+='<td>'+result[i].receivedCount+'</td>';
 								str+='<td>'+result[i].shortListedCount+'</td>';
@@ -1001,8 +1008,7 @@ function buildNominatePostPositionDetails(result,positionId){
 					   }
 							
 				   }
-				}
-			   
+				}			   
 			   $("#positionDivId").html(str);
 		   }
 }
