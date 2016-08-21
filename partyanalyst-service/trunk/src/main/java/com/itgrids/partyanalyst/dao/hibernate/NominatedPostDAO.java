@@ -1495,12 +1495,15 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
    
    }
    
-   public List<Object[]> getApllicationDepmtBoards(Long boardLevelId,Long levelValue){
-	   Query query = getSession().createQuery(" select distinct model.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPostMember.nominatedPostPosition.board.boardName from NominatedPost model where model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId and " +
-	   		" model.nominatedPostMember.locationValue = :levelValue and model.nominatedPostMember.isDeleted = 'N' ");
+   public List<Object[]> getApllicationDepmtBoards(Long departmentId,Long boardLevelId,Long levelValue){
+	   Query query = getSession().createQuery(" select distinct model.nominatedPostMember.nominatedPostPosition.board.boardId, " +
+	   		" model.nominatedPostMember.nominatedPostPosition.board.boardName from NominatedPost model where " +
+	   		" model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId and model.nominatedPostMember.nominatedPostPosition.departmentId =:departmentId" +
+	   		" and model.nominatedPostMember.locationValue = :levelValue and model.nominatedPostMember.isDeleted = 'N' and model.isExpired='N' and  model.nominationPostCandidateId is null ");
 	   
 	   query.setParameter("boardLevelId", boardLevelId);
 	   query.setParameter("levelValue", levelValue);
+	   query.setParameter("departmentId", departmentId);
 	   
 	   return query.list();
    }
