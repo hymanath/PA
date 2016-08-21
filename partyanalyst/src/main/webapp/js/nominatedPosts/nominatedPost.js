@@ -646,14 +646,28 @@ function getNominatedPostApplication(startIndex)
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		//$("#cadreSearchDtls").show();
+		
+		var cadreSearchTypeStr =$('.cadreCheckCls:checked').val();
+		
+		
 		var searchBy = $('#searchBy').val().trim();
-		var searchRadioType =$('#cadreSearchType').val();
+		var searchRadioType =$('.searchTypeCls:checked').val();
 		var parentLocation = 0;
 		var panchayatId = $("#panchaytList").val();
 		var mandalId = $("#mandalList").val();
 		var constituencyId = $("#constituencyId").val();
 		var districtId = $("#districtId").val();
-		
+		if(searchRadioType ==1)
+				searchRadioType ="membershipId";
+		else if(searchRadioType ==2)
+				searchRadioType ="voterId";
+		else if(searchRadioType ==3)
+				searchRadioType ="mobileNo";
+		else if(searchRadioType ==4)
+				searchRadioType ="name";
+			
+			//alert(searchRadioType);
+			
 		if(panchayatId !=0)
 		{
 			if(panchayatId.substr(0,1) == 1){
@@ -692,20 +706,20 @@ function getNominatedPostApplication(startIndex)
 		if(searchRadioType == 'membershipId')
 		{
 			memberShipCardNo = $('#searchBy').val().trim();
-			if(searchRadioType=="membershipId"){
-					
-					var numericExpression = /^[0-9]+$/;
-					if(!$('#searchBy').val().match(numericExpression)){
-						$('#searchErrDiv').html('Enter Numerics Only.');
-						return;
-					}else{
-						$('#searchErrDiv').html(' ');
-					}
-			}		
 			if(searchBy.trim().length == 0 )
 			{
 				$('#searchErrDiv').html('Please enter Membership Card No.');
 				return;
+			}
+			else if(searchRadioType=="membershipId"){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchBy').val().match(numericExpression)){
+						$('#searchErrDiv').html('Enter  Number Digits Only.');
+						return;
+					}else{
+						$('#searchErrDiv').html(' ');
+					}
 			}
 			else if(memberShipCardNo.trim().length != 8)
 			{
@@ -730,24 +744,19 @@ function getNominatedPostApplication(startIndex)
 		if(searchRadioType == 'mobileNo')
 		{	
 			mobileNo = $('#searchBy').val().trim();
-			
-			if(searchRadioType=="mobileNo"){
-					
-					var numericExpression = /^[0-9]+$/;
-					if(!$('#searchBy').val().match(numericExpression)){
-						$('#searchErrDiv').html('Enter Numerics Only.');
-						return;
-					}
-			}else{
-				$('#searchErrDiv').html(' ');
-			}	
-			
 			if(searchBy.trim().length == 0 )
 			{
 				$('#searchErrDiv').html('Please enter Mobile No.');
 				return;
 			}
-			
+			else if(searchRadioType=="mobileNo"){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchBy').val().match(numericExpression)){
+						$('#searchErrDiv').html('Enter Number Digits Only.');
+						return;
+					}
+			}
 			else if(mobileNo.trim().length != 10)
 			{
 				$('#searchErrDiv').html('Invalid Mobile No.');
@@ -1163,6 +1172,8 @@ $('.searchTypeCls').click(function(){
 				$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				
 	  }
+   }else{
+	   $("#errdeptBoardPostnId"+num).html('<b style="color:red;"> All Positions are filled out.</b>');
    }
 	  $("#deptBoardPostnId"+num).trigger("chosen:updated");
    });
@@ -1236,6 +1247,7 @@ $('.searchTypeCls').click(function(){
 	  }
    }
    else{
+	   $("#errdeptBoardId"+num).html('<b style="color:red;"> All Boards are filled out.</b>');
 		$("#deptBoardId"+num).append('<option value=" ">  </option>'); 
 	}
 	  $("#deptBoardId"+num).trigger("chosen:updated");
@@ -1333,7 +1345,8 @@ $('.searchTypeCls').click(function(){
 		   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		 }
 	   }else{
-		   $("#depmtsId"+num).append('<option value=" ">  </option>'); 
+		   $("#errdepmtsId"+num).html('<b style="color:red;"> All Departments are filled out.</b>');
+		   $("#depmtsId"+num).append('<option value=" "> No Departmets Available </option>'); 
 	   }
 		  $("#depmtsId"+num).trigger("chosen:updated");
    });
@@ -1506,20 +1519,28 @@ $(document).on("click","#addOneMore",function(){
     e.find(".nominatedPanchayatCls").attr("onChange",';getDepartments('+cloneCount+');');
 	
   e.find(".depmtsCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptId');  
-  e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
+  e.find(".depmtsCls").attr("id","depmtsId"+errdepmtsId);
   e.find(".depmtsCls").attr("attr_no",cloneCount);
   //getDepartments(cloneCount,1);
   e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+',1);');
+  
+  e.find(".errdepmtscls").attr("id","errdepmtsId"+errdepmtsId);
   
   e.find(".deptBoardCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptBoardId');
   e.find(".deptBoardCls").attr("id","deptBoardId"+cloneCount);
   e.find(".deptBoardCls").attr("attr_no",cloneCount);
   e.find(".deptBoardCls").attr("onChange",'getDepartmentBoardPositions('+cloneCount+');');
   
+  e.find(".errdeptBoardCls").attr("id","errdepmtsId"+errdepmtsId);
+
+  
   e.find(".deptBoardPostnCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].positions');
   e.find(".deptBoardPostnCls").attr("id","deptBoardPostnId"+cloneCount);
   e.find(".deptBoardPostnCls").attr("multiple","multiple");
   e.find(".deptBoardPostnCls").attr("attr_no",cloneCount);
+  
+    e.find(".errdeptBoardPostnCls").attr("id","errdeptBoardPostnId"+errdepmtsId);
+	
   $("#addOneMoreBlock").append(e);
   
   var boardlvl= "boardLvlId"+cloneCount;
@@ -1650,8 +1671,10 @@ function savingApplication(){
 			$("#addressCheckId1").val(false);
 		}
 		$("#savingAjaxImg").css("display","block");	
+		
 			YAHOO.util.Connect.setForm('submitApplication',true);
 			YAHOO.util.Connect.asyncRequest('POST','savingNominatedPostApplicationAction.action',uploadHandler);
+			
 	}
 		
 	}
@@ -2359,7 +2382,7 @@ function notCadresearch(){
 			searchType=$("input[name='radioGroup']:checked").val();
 			searchValue=$("#searchById").val();
 		}
-		
+		 
 		
 		if(searchType == "1")
 		{
@@ -2369,8 +2392,7 @@ function notCadresearch(){
 				return;
 			}else{
 				$('#notCadreErrMsg').html(' ');
-			}
-			
+			}			
 		}
 		else if(searchType == "2")
 		{
@@ -2392,7 +2414,7 @@ function notCadresearch(){
 				return;
 			}		
 			if(!searchValue.match(numericExpression)){
-				$('#notCadreErrMsg').html('Enter Numerics Only.');
+				$('#notCadreErrMsg').html('Enter Number Digits Only.');
 				return;
 			}	
 			else if(searchValue.trim().length != 10)
@@ -2605,3 +2627,41 @@ $(document).keypress(function(e) {
 				}
 				}
 		  });
+		  
+function refreshOnLoadFields(){
+	
+	$('.chosenSelect').val(0);
+	
+	$('#searchBy').val('');
+	$("#membershipId").prop("checked", true)
+	$("#cadreSearchId").prop("checked", true)
+	
+	$('#phoneNumId').val('');
+	$('#addressLane1Id').val('');
+	$('#addressLane2Id').val('');
+	$('#changestateId').val(0);
+	$('#changedistrictId').val(0);
+	$('#changeConstiId').val(0);
+	$('#changeMandalId').val(0);
+	$('#changePanchyatId').val(0);
+	$('#addPincodeId').val('');
+	
+	$('.boardLvlCls').val(0);
+	$('.nominatedStaeCls').val(0);
+	$('.nominatedDistCls').val(0);
+	$('.nominatdConstCls').val(0);
+	$('.nominatedMandlCls').val(0);
+	$('.nominatedPanchayatCls').val(0);
+	$('.depmtsCls').val(0);
+	$('.deptBoardCls').val(0);
+	$('.deptBoardPostnCls').empty();	
+	
+	$('.tdpCadreId').val('');
+	$('.tdpCadreName').val('');
+	$('.cadreVoterId').val('');
+	$('.cadreMobileNo').val('');
+	$('.referCadreIds').val('');
+	$('.nominatedCandId').val('');
+	$('#candidateTypeId').val('');
+	
+}
