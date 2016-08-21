@@ -283,6 +283,7 @@ function getDepartmentWiseBoardAndPositionDetails(levelId,levelValues,depts,boar
 }
 function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 {
+
 	var str='';
 	if(result !=null && result.length>0){
 		str+='<div class="row" style="border:1px solid #ddd;background:#fff">';
@@ -353,10 +354,10 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 									str+='</a>';
 								str+='</div>';
 
-								/*if(i==0 && j==0){
+								if(globalStatus == "running" && i==0 && j==0){
 									str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse in " role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" aria-expanded="true" >';
 								}
-								else*/
+								else
 									str+='<div id="collapseOne'+i+''+j+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+''+j+'" >';
 								  str+='<div class="panel-body pad_0">';
 										str+='<div class="table-responsive"  id="boardDivBodyId'+i+''+j+'">';
@@ -380,7 +381,8 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 		$("#departmentsBuildId").html(str);
 		$('[data-toggle="tooltip"]').tooltip();
 		$(".deptsUlCls li:first-child a").trigger("click");
-		//$('#headingOne00').trigger('click');
+		 if(globalStatus == "running")
+			$('#headingOne00').trigger('click');
 	}else{
 		$("#departmentsBuildId").html("<div class='text-center'> No departments data available ... </div>");
 	}		
@@ -519,7 +521,14 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 	var str='';
 	
 	if(result !=null && result.length>0){
-		if(globalStatus !=null && globalStatus.length>0 &&
+		var isDataAvailable ="false";
+		for(var i in result){					
+			if(result[i].receivedCount > 0){
+			isDataAvailable = "true";
+			break;
+			}
+		}
+		if(isDataAvailable == "true" && globalStatus !=null && globalStatus.length>0 &&
 		(globalStatus != "notRecieved" && globalStatus != "Total")){
 				str+='<table class="table table-bordered tableCollapse text-capital">';
 					str+='<thead>';
@@ -530,32 +539,10 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Ready to Shortlist</th>';
 							str+='<th>Rejected</th>';					
 							str+='<th>Shortlisted</th>';					
-							
-							/* if(result[0].distList !=null && result[0].distList.length>0){
-									for(var j in result[0].distList){	
-											if(result[0].idNameVoList[j].name !="Applied"){
-												str+='<td>'+result[0].distList[j].name+'</td>';
-											}
-									}
-							} */
-							
 							str+='<th>Final Review</th>';
 							str+='<th>Finalized</th>';
 							str+='<th>G.O  Passed</th>';
-							
-							
-							/* if(result!=null &&result[0].idNameVoList !=null && result[0].idNameVoList.length>0){
-								for(var j in result[0].idNameVoList){
-									if(result[0].idNameVoList[j].name !="Open"){
-										str+='<th>'+result[0].idNameVoList[j].name+'</th>';
-									}	
-								}
-														
-							}else{
-								str+='<th>Final Review</th>';
-								str+='<th>Finalized</th>';
-								str+='<th>G.O  Passed/ Position Completed</th>';
-							} */
+
 							
 					str+='</thead>';
 					
@@ -608,10 +595,11 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					
 						if(result[i].id != null){
 							if(shortListed !=null && shortListed>0){
-								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_finalReviewCls="" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name ="'+result[i].name+'"/>'+result[i].name+'</label></td>';
+								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_btn_id="readytoFinalReviewBtnId'+boards+'" attr_finalReviewCls="" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name ="'+result[i].name+'"/>'+result[i].name+'</label></td>';
 							}
 							 else{
-								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
+								//str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
+								str+='<td> - </td>';
 							}					
 						}else{
 								str+='<td><label>Any Position</td>';
@@ -843,7 +831,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 
 		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open" && globalStatus != "notRecieved" && globalStatus != "notYet" )){
 			str+='<div class="pad_15">';
-				str+='<button class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" disabled>Ready For Final Review</button>';
+				str+='<button id="readytoFinalReviewBtnId'+boards+'" class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_body_id="'+bodyId+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" disabled>Ready For Final Review</button>';
 				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 			str+='</div>';
 		}
@@ -979,6 +967,7 @@ $(document).on("click","#positionLinkCls",function(){
 
 var globalReadyDeptId=0;
 var globalReadyBoardId=0;
+var globalReadyBodyId='';
 $(document).on("click",".moveToFinalReviewCls",function(){
 	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
@@ -989,6 +978,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 	var searchLevelId = 1;
 	globalReadyDeptId = $(this).attr('attr_dept_id');
 	globalReadyBoardId = $(this).attr('attr_board_id');
+	globalReadyBodyId = $(this).attr('attr_body_id');
 	//var searchLevelValue =stateId;
 	
 	
@@ -1099,7 +1089,8 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 		if($(this).is(":checked")){
 			availableCount = $(this).attr('attr_available_posts');
 			shortListedCount=$(this).attr('attr_short_listedcount');
-			positionName=$(this).attr('attr_position_name');			
+			positionName=$(this).attr('attr_position_name');	
+				
 		}		
 	});
 	
@@ -1168,7 +1159,7 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 		levelValuesArr:levelValuesArr,
 		sizeOfMember:sizeOfMember
 	}
-	
+	  
 	$.ajax({
           type:'POST',
           url: 'updateNominatedPostStatusDetailsAction.action',
@@ -1179,9 +1170,12 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 	   
 	  if(result != null && result.resultCode==0){
 		  $("#modelSuccessId").html("Successfully this position Moved to Final Review.");
-		  setTimeout(function(){ 
-			$("#readyToFinalReviewDiv").modal('hide');
-		  }, 2000);
+			  setTimeout(function(){ 
+				$("#readyToFinalReviewDiv").modal('hide');
+				//globalReadyBodyId
+				getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,globalReadyDeptId,globalReadyBoardId,globalReadyBodyId,'','','');
+			  }, 2000);
+			  
 	  }
 	  else if(result != null && result.resultCode==1){
 		  $("#modelErrId").html("Error Occured while moving this position to Final Review.");
@@ -1337,9 +1331,10 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
 		$(".positionUpdateCls").prop("checked", false);//uncheck all
 		$(this).prop("checked", status);//change staus for clicked one
 		if($(".positionUpdateCls").is(":checked")){
-			$(".moveToFinalReviewCls").prop('disabled',false);
+			var btnId = $(this).attr('attr_btn_id');
+			$("#"+btnId+'').prop('disabled',false);
 		}else{
-			$(".moveToFinalReviewCls").prop('disabled',true);
+			$("#"+btnId+'').prop('disabled',true);
 		}
 	});
 function getAnyDeptApplicationOverviewCountLocationWise(){
