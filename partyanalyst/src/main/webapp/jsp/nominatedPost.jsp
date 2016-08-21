@@ -154,7 +154,7 @@
 						<span id="statesDivIdImg"><img src="images/search.gif" style="display:none;"/></span>
                         <select id="statesDivId"  onchange="getDistrictsForStates(this.value,this.id,'');" class="chosenSelect">
                         	<option value="0">All</option>
-							<option value="1">AndhraPradesh</option>
+							<option value="1">Andhra Pradesh</option>
 							<option value="36">Telangana</option>
                         </select>
                     </div>
@@ -272,7 +272,7 @@
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
-                            	<h4 class="panel-title font_weight">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 100px; margin-top: 35px; width: 100px; height: 50px;display:none;" id="addPrcssngImgId" class="offset7" src="images/Loading-data.gif"></h4>
+                            	<h4 class="panel-title font_weight">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 10px; margin-top: 35px; width: 20px; height: 20px;display:none;" id="addPrcssngImgId" class="offset7" src="images/icons/loading.gif"></h4>
 								<input type="hidden" name="nominatedPostVO.isCheckedMigrateAddressField" id="addressCheckId1"/>
                             </div>
                             <div class="panel-body bg_ff pad_10" style="display:none;" id="changePhoneNumberDiv">
@@ -303,7 +303,7 @@
                                     	<label>State</label>
                                         <select class="chosenSelect" attr_id="addStateId" id="changestateId" onchange="getDistrictsForStates(this.value,this.id,'');"  name="nominatedPostVO.addStateName">
 										<option value="0">Select State</option>
-                                        	<option value="1">AndhraPradesh</option>
+                                        	<option value="1">Andhra Pradesh</option>
 											<option value="36">Telangana</option>
                                         </select>
                                     </div>
@@ -946,6 +946,7 @@ $(document).on("change","#addMandalsId",function(){
 //$(".changHeading").html("SELECT REFER DETAILS<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>")
 
 $(document).ready(function(){
+	//$('.chosenSelect').empty();
 	refreshOnLoadFields();
 });
 
@@ -975,23 +976,30 @@ $(document).on("click",".involveBlockNew",function(){
 
 function buildapptmemberDetails(result){
 		var str='';
+		var selectedProfileCadreId = 0;
+		$(".cadreCls").each(function(){
+			 if ($(this).is(":checked")){
+			  selectedProfileCadreId = $(this).attr('attr_cadreid');
+			}			
+		});
+		
 		if(result !=null && result.length>0){
 			str+='<table id="searchedMembersId">';
 			str+='<thead><th></th><th></th><th></th></thead>';
 			str+='<tbody>';
 			var xindex =0;
 			for(var i in result){
-				if( xindex == 0)
-			{
-				str+='<tr>';
-			}
-				
-				
+				if(selectedProfileCadreId !=result[i].id)
+				{
+					if( xindex == 0)
+					{
+						str+='<tr>';
+					}
 				str+='<td style="padding:0px !important;">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
-							str+='<div class="row">';
+							str+='<div class="row">'; 
 								
 								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 									str+='<div class="media">';
@@ -1102,6 +1110,7 @@ function buildapptmemberDetails(result){
 					str+='</tr>';
 					xindex = 0;
 				} 
+			  }
 			}
 			str+='</tbody>';
 			str+='</table>';
