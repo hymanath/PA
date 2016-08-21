@@ -130,8 +130,8 @@
         
         <div class="row">
             <div class="col-md-10 col-xs-12 col-sm-8">
-                <h3>FINALIZING - <span id="headingPostId"></span></h3>
-                <p id="totalHeadingId">State Level - Labour Department - A.P Building and Other Construction Workers Welfare Board</p>
+                <h3> <span id="actionId" > </span>- <span id="headingPostId"></span></h3>
+                <p id="totalHeadingId"></p>
             </div>
             <div class="col-md-2 col-xs-12 col-sm-4">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -485,7 +485,7 @@ $("#stateId").val(stateId);
 $(document).ready(function(){
 	if(gblStatus == "finaliZed"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
-		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; finaliZed");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; finalyzed");
 	}else if(gblStatus == "finalReview"){
 		$("#headinggId").html("Final Review "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; FINAL REVIEW");
