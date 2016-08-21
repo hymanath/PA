@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.HashSet;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -535,7 +533,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			if(obj != null){
-				list = nominatedPostDAO.getApllicationDepmtBoards((Long)obj[0],(Long)obj[1]);
+				list = nominatedPostDAO.getApllicationDepmtBoards(depmtId,(Long)obj[0],(Long)obj[1]);
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(list)){
