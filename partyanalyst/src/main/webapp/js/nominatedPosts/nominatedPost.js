@@ -1173,7 +1173,7 @@ $('.searchTypeCls').click(function(){
 				
 	  }
    }else{
-	   $("#errdeptBoardPostnId"+num).html('<b style="color:red;"> All Positions are filled out.</b>');
+	   //$("#errdeptBoardPostnId"+num).html('<b style="color:red;"> All Positions are filled out.</b>');
    }
 	  $("#deptBoardPostnId"+num).trigger("chosen:updated");
    });
@@ -1247,7 +1247,7 @@ $('.searchTypeCls').click(function(){
 	  }
    }
    else{
-	   $("#errdeptBoardId"+num).html('<b style="color:red;"> All Boards are filled out.</b>');
+	   //$("#errdeptBoardId"+num).html('<b style="color:red;"> All Boards are filled out.</b>');
 		$("#deptBoardId"+num).append('<option value=" ">  </option>'); 
 	}
 	  $("#deptBoardId"+num).trigger("chosen:updated");
@@ -1337,7 +1337,7 @@ $('.searchTypeCls').click(function(){
 	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
        $("#depmtsId"+num).html('');
 	   $("#depmtsId"+num).trigger("chosen:updated")
-    
+     
 	   if(result != null && result.length >0){
 			$("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
 			$("#depmtsId"+num).append('<option value="0">Any</option>'); 
@@ -1345,7 +1345,7 @@ $('.searchTypeCls').click(function(){
 		   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		 }
 	   }else{
-		   $("#errdepmtsId"+num).html('<b style="color:red;"> All Departments are filled out.</b>');
+		  // $("#errdepmtsId"+num).html('<b style="color:red;"> All Departments are filled out.</b>');
 		   $("#depmtsId"+num).append('<option value=" "> No Departmets Available </option>'); 
 	   }
 		  $("#depmtsId"+num).trigger("chosen:updated");
@@ -1519,7 +1519,7 @@ $(document).on("click","#addOneMore",function(){
     e.find(".nominatedPanchayatCls").attr("onChange",';getDepartments('+cloneCount+');');
 	
   e.find(".depmtsCls").attr("name",'nominatedPostVO.nominatdList['+cloneCount+'].deptId');  
-  e.find(".depmtsCls").attr("id","depmtsId"+errdepmtsId);
+  e.find(".depmtsCls").attr("id","depmtsId"+cloneCount);
   e.find(".depmtsCls").attr("attr_no",cloneCount);
   //getDepartments(cloneCount,1);
   e.find(".depmtsCls").attr("onChange",'getDepartmentBoards('+cloneCount+',1);');
@@ -1890,8 +1890,20 @@ var jObj={
 
 
 $(document).on("click","#addressCheckId",function(){
+	
+	$('#phoneNumId').val('');
+	$('#addressLane1Id').val('');
+	$('#houseNumberId').val('');
+	$('#addressLane2Id').val('');
+	$('#changestateId').val(0);
+	$('#changedistrictId').val(0);
+	$('#changeConstiId').val(0);
+	$('#changeMandalId').val(0);
+	$('#changePanchyatId').val(0);
+	$('#addPincodeId').val('');
+	
 	if ($(this).is(':checked')) {
-		 $(this).val('true');
+		 $(this).val('true');		
 		$("#changePhoneNumberDiv").show();
 		getPopulateApplicantDetailsForMember(globalCadreId);
   }
@@ -2178,24 +2190,63 @@ function populateFields(result){
    });	
   } */
  $( document ).on("click",".cadreCls",function(){
-	 //$("#showAndHideDivId").show();
-	 globalCadreId = $(this).attr("attr_cadreId"); 
-	var candiId = $(this).attr("attr_nominated_post_candidate_id"); 
-	globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
-	  if($(this).is(':checked')){
-		$(".ramakrishnaCls").show();
-		$("#addedRefferalsDiv").show();
-		$("#uploadFlDivId").show();
-		$("#submitBtnId").show();
-		getCandidateAppliedPostsByCadre(globalCadreId,candiId);
-	  }
-	else{
-		$(".ramakrishnaCls").hide();
-		$("#addedRefferalsDiv").hide();
-		$("#uploadFlDivId").hide();
-		$("#submitBtnId").hide();
-	}
+	 
+	 
+		$('#phoneNumId').val('');
+		$('#houseNumberId').val('');
+		$('#addressLane1Id').val('');
+		$('#addressLane2Id').val('');
+		$('#changestateId').val(0);
+		$('#changedistrictId').val(0);
+		$('#changeConstiId').val(0);
+		$('#changeMandalId').val(0);
+		$('#changePanchyatId').val(0);
+		$('#addPincodeId').val('');
 		
+		$('.membersBlock').html('');
+		$('.jFiler-row').html('');
+		
+		$('.boardLvlCls').val(0);
+		$('.nominatedStaeCls,.nominatedDistCls.nominatdConstCls,.nominatedMandlCls.nominatedPanchayatCls,.depmtsCls,.deptBoardCls,.deptBoardPostnCls').each(function(){
+			$(this).empty();
+			$(this).trigger("chosen:updated");
+		});
+		
+		$('.tdpCadreId').val('');
+		$('.tdpCadreName').val('');
+		$('.cadreVoterId').val('');
+		$('.cadreMobileNo').val('');
+		$('.referCadreIds').val('');
+		$('.nominatedCandId').val('');
+		$('#candidateTypeId').val('');
+		
+		$('.chosenSelect').val(0);
+		$(".chosenSelect").trigger("chosen:updated");
+		if($("#addressCheckId").is(':checked')){ 
+			$("#addressCheckId").trigger("click");
+		}
+		
+	if($(this).is(':checked')){ 
+	   $(".cadreCls").prop("checked" ,false);
+	   $(this).prop( "checked" ,true);
+	 //$("#showAndHideDivId").show();
+		 globalCadreId = $(this).attr("attr_cadreId"); 
+		var candiId = $(this).attr("attr_nominated_post_candidate_id"); 
+		globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
+		  if($(this).is(':checked')){
+			$(".ramakrishnaCls").show();
+			$("#addedRefferalsDiv").show();
+			$("#uploadFlDivId").show();
+			$("#submitBtnId").show();
+			getCandidateAppliedPostsByCadre(globalCadreId,candiId);
+		  }
+		
+	}else{
+			$(".ramakrishnaCls").hide();
+			$("#addedRefferalsDiv").hide();
+			$("#uploadFlDivId").hide();
+			$("#submitBtnId").hide();
+		}
 });
  function getCandidateAppliedPostsByCadre(globalCadreId,candiId){
 
@@ -2283,8 +2334,8 @@ function populateFields(result){
                                     	str+='<div class="panel-heading">';
                                         	str+='<h4 class="panel-title">Party Post</h4>';
                                         str+='</div>';
-                                        str+='<div class="panel-body">';
-                                        	str+='<h4 style="height:100%;width:100%" class="text-center">NO DATA AVAILABLE</h4>';
+                                        str+='<div class="" style="padding: 10px;;text-transform: uppercase;">';
+                                        	str+='<h4 style="height:100%;width:100%" class="text-center">No Existing Applied Posts are Available...</h4>';
                                        str+=' </div>';
                                     str+='</div>';
                                str+=' </div>';
@@ -2365,6 +2416,7 @@ function clearAssignFields()
 commontdpCadreIds = [];
 $("#involvedCandidatesDiv").hide();
  $(".membersBlock").html('');
+ $(".jFiler-row").html('');
  $("#apptmemberDetailsDiv").html('');
   $("#advanceSearchTypeId").val(0);
     var select = new Dropkick("#advanceSearchTypeId");
@@ -2629,14 +2681,13 @@ $(document).keypress(function(e) {
 		  });
 		  
 function refreshOnLoadFields(){
+	$('#searchBy').val('');
+	$("#membershipId").prop("checked", true);
+	$("#cadreSearchId").prop("checked", true);
 	
 	$('.chosenSelect').val(0);
-	
-	$('#searchBy').val('');
-	$("#membershipId").prop("checked", true)
-	$("#cadreSearchId").prop("checked", true)
-	
 	$('#phoneNumId').val('');
+	$('#houseNumberId').val('');
 	$('#addressLane1Id').val('');
 	$('#addressLane2Id').val('');
 	$('#changestateId').val(0);
@@ -2645,6 +2696,9 @@ function refreshOnLoadFields(){
 	$('#changeMandalId').val(0);
 	$('#changePanchyatId').val(0);
 	$('#addPincodeId').val('');
+	
+	$('#membersBlock').html(''); 
+	$('.jFiler-row').html(''); 
 	
 	$('.boardLvlCls').val(0);
 	$('.nominatedStaeCls').val(0);
