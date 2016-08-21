@@ -420,18 +420,22 @@
 									<select attr_no="" class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards(0);" name="nominatedPostVO.nominatdList[0].deptId">
 									<option value="0">Select Department</option>
 									</select>
+									<br>
+									<span id="errdepmtsId" class="errdepmtscls"></span>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
 									<select attr_no="" class="chosenSelect deptBoardCls" id="deptBoardId" onchange="getDepartmentBoardPositions('');" name="nominatedPostVO.nominatdList[0].deptBoardId">
 									<option value="0">Select Department Board</option>	
-									</select>
+									</select><br>
+									<span id="errdeptBoardId" class="errdeptBoardCls"></span>
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
 									<select attr_no="" multiple class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].positions">
 									<option value="0">Select Board Position</option>
-									</select>
+									</select><br>
+									<span id="errdeptBoardPostnId" class="errdeptBoardPostnCls"></span>
 								</div>
 								<input type="hidden" class="tdpCadreId" name="nominatedPostVO.id">
 								<input type="hidden" class="tdpCadreName" name="nominatedPostVO.name">
@@ -940,11 +944,11 @@ $(document).on("change","#addMandalsId",function(){
  // getPanchayatsForMandal(5);
 });
 //$(".changHeading").html("SELECT REFER DETAILS<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>")
-/*
+
 $(document).ready(function(){
-	$(".hideDivCls").hide();
+	refreshOnLoadFields();
 });
-*/
+
 function clearAssignValues() 
 {
 	$(".clearClss").val('');
