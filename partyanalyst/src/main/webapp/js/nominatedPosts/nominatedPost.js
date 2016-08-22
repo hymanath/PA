@@ -2342,6 +2342,7 @@ function populateFields(result){
 							}
                            str+='</div>';
                        str+='</div>';
+					   str+='<p class="text-muted">Note: Do you want to apply for more posts select below options</p>';
                    str+='</div>';
 	 
 	 $("#appliedPostForSelectedId").html(str);

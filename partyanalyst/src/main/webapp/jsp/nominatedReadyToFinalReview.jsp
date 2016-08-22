@@ -525,6 +525,9 @@ $(document).ready(function(){
 	}else if(gblStatus == "goPassed"){
 		$("#headinggId").html("G O Passed"+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; G.O PASSED");
+	}else if(gblStatus == "notRecieved"){
+		$("#headinggId").html("G O Passed"+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; NOT RECEIVED");
 	}
 		
 	else{
