@@ -46,8 +46,8 @@
     <div class="row">
 	 <div class="col-md-12 col-xs-12 col-sm-12">
 		<ul class="geoGrpahicBreadCrumb">
-				<li style="text-transform: uppercase; font-weight: bold;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
-				<li id="flowHeading" style="text-transform: uppercase; font-weight: bold;"></li>
+				<li style="text-transform: uppercase; font-weight: 500;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
+				<li id="flowHeading" style="text-transform: uppercase; font-weight: 500;"></li>
 		</ul>
         </div>
 	  <div class="col-md-12 col-xs-12 col-sm-12 m_top10">
