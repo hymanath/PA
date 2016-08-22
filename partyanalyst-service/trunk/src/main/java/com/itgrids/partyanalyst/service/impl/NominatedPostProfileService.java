@@ -5755,13 +5755,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		   " GO.fromDate, " +//22
 		   " GO.toDate ");   //23
 		   //commonMethodsUtilService.getLongValueForObject
-*/	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){ 
+*/	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId, Long positionId, String status){ 
 		 try{
 			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			 DateUtilService dateUtilService = new DateUtilService();
 			 List<NomintedPostMemberVO> nominatedPostMemberVOs = new ArrayList<NomintedPostMemberVO>(0);
 			 NomintedPostMemberVO nominatedPostMemberVO = null;
-			 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, status);
+			 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, positionId, status);
 			 if(candidateList != null && candidateList.size() > 0){
 				 for(Object[] candidate : candidateList){
 					 nominatedPostMemberVO = new NomintedPostMemberVO();

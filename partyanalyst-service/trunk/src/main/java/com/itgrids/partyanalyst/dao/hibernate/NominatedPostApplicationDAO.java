@@ -12,7 +12,7 @@ import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPostApplication, Long> implements INominatedPostApplicationDAO{
+public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPostApplication, Long> implements INominatedPostApplicationDAO{ 
 
 	public NominatedPostApplicationDAO() {
 		super(NominatedPostApplication.class);
@@ -1574,12 +1574,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		return query.list();
 	
 	}
-	public List<Object[]> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){
+	public List<Object[]> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId, Long positionId, String status){
 		
 	       StringBuilder queryStr = new StringBuilder(); 
 	       
 	       queryStr.append(" select ");
-	       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() ==  0l){
+	       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l){
 	    	   queryStr.append(" D.departmentId,D.deptName,");  
 	       }
 	       
@@ -1662,8 +1662,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       if(boardId != null && boardId.longValue() > 0){
 	    	   queryStr.append(" and B.boardId=:boardId ");
 	       }
-	      
-	       
+	       if(positionId != null && positionId.longValue() > 0){
+	    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
+	       }
 	       /*if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() ==  0l){
 	    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
 	       }*/
@@ -1682,6 +1683,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       }
 	       if(boardId != null && boardId.longValue() > 0){
 	    	   query.setParameter("boardId", boardId);  
+	       }
+	       if(positionId != null && positionId.longValue() > 0){  
+	    	   query.setParameter("positionId", positionId); 
 	       }
 	    return query.list();  
 }
