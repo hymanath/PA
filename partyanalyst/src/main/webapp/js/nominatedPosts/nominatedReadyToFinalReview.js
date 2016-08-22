@@ -459,10 +459,6 @@ $(document).on("click",".referenceCls",function(){
 	glFinalyeDeptId = departmentId;
 	glFinalyeboardId = boardId;
 	glFinalyePositionId = positionId;
-	
-	
-	
-
 	var levelId = boardLevelId;
 	var levelValue = 1;
 	var level = "Central";
