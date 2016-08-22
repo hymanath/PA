@@ -22,6 +22,22 @@
 {
 	width:7% !important
 }
+.headingUlForShort
+{
+	padding:0px;
+}
+.headingUlForShort li
+{
+	font-size:22px;
+	background-color:#B7B7B7;
+	border-radius:8px;
+	margin-top:2px;
+	list-style:none;
+	text-transform:uppercase;
+	padding:3px 6px;
+	text-align:left;
+	font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -29,32 +45,59 @@
 	<div class="row">
 	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
 		<ul class="geoGrpahicBreadCrumb">
-				<li style="text-transform: uppercase; font-weight: bold;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
-				<li  style="text-transform: uppercase; font-weight: bold;cursor:pointer" class="redirectPageCls" id="flowHeading" data-placement="bottom" data-toggle="tooltip" title="Click here to go Nominated Post Management Page"></li>
-				<li  style="text-transform: uppercase; font-weight: bold;">SHORTLISTING</li>
+				<li style="text-transform: uppercase; font-weight: 500;" data-placement="bottom" data-toggle="tooltip" title="Nominated Posts Overview Details"><a href="nominatedPostApplicationReviewAction.action"><i class="glyphicon glyphicon-home" style="color:#fff;"></i></a></li>
+				<li  style="text-transform: uppercase; font-weight: 500;cursor:pointer" class="redirectPageCls" id="flowHeading" data-placement="bottom" data-toggle="tooltip" title="Click here to go Nominated Post Management Page"></li>
+				<li  style="text-transform: uppercase; font-weight: 500;">SHORTLISTING</li>
 		</ul>
 	</div>
     	<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 m_top20">
-		 <ol class="breadcrumb text-capital" id="headLvlDeptId" style="margin-bottom: -10px;margin-left: -13px;"></ol>
-        	<h3 class="headingColor"><small><span id="headBrdId" style="text-transform:uppercase;margin-bottom: 10px;"></span></small> - <span id="headPosId" style="text-transform:uppercase"></span> </h3>
+		 <!--<ol class="breadcrumb text-capital" id="headLvlDeptId" style="margin-bottom: -10px;margin-left: -13px;"></ol>-->
+			<div class="panel panel-default">
+				<div class="panel-heading bg_cc">
+					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-4">
+							<ul class="headingUlForShort">
+								<li style="color:#249E24">SHORTLISTING</li>
+								<li class="headingColor"><span  id="headPosId"></span></li>
+							</ul>
+						</div>
+						<div class="col-md-2 col-xs-4 col-sm-2 m_top20 pad_right0">
+							<h4 class="text-right"><b>Level - </b></h4>
+							<h4 class="text-right"><b>Department - </b></h4>
+							<h4 class="text-right"><b>Board/Corporation - </b></h4>
+						</div>
+						<div class="col-md-7 col-xs-8 col-sm-6 m_top20" style="padding-left:12px">
+							<h4 class="text-left">State - Andhra Pradesh</h4>
+							<h4 class="text-left">Labour Department</h4>
+							<h4 class="text-left">A.P.Building and Other Construction Workers Welfare Board</h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="panel panel-default panelDepartmentHead" style="margin-top: 10px;">
+						<div style="background-color:#f4f4f4;">
+							<div class="table-responsive" id="positionDivId"></div>
+						</div>
+					</div>
+					<div class="panel panel-default panelDepartmentHead">
+						<div class="panel-heading">
+							<h4 class="panel-title"  id="postMembersId">APPLIED THIS POST - MEMBERS DETAILS</h4>
+						</div>
+						<div class="panel-body" style="background-color:#f4f4f4;">
+							<div class="">
+								<div id="resultDivId"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--<h3 class="headingColor"><small><span id="headBrdId" style="text-transform:uppercase;margin-bottom: 10px;"></span></small> - <span id="headPosId" style="text-transform:uppercase"></span> </h3>-->
+			</div>
+        	
            
-        	<div class="panel panel-default panelDepartmentHead" style="margin-top: 10px;">
-            	<div class="panel-body" style="background-color:#f4f4f4;">
-                	<div class="table-responsive" id="positionDivId"></div>
-                </div>
-            </div>
+        	
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
-        	<div class="panel panel-default panelDepartmentHead">
-            	<div class="panel-heading">
-                	<h4 class="panel-title"  id="postMembersId">APPLIED THIS POST - MEMBERS DETAILS</h4>
-                </div>
-                <div class="panel-body" style="background-color:#f4f4f4;">
-                	<div class="">
-						<div id="resultDivId"></div>
-                    </div>
-                </div>
-            </div>
+        	
         </div>
     </div>
 </div>
@@ -101,6 +144,7 @@ var globalLevelTxt = '${param.levelTxt}';
 var globalDeptName = '${param.deptName}'; 
 var headBrdId='${param.brdName}';
 var globalPosName='${param.posName}';
+var globalPostId='${param.positionId}';
 var globalStats='${param.sts}';
 
 if(globalDeptName ==null || globalDeptName.trim().length==0){
@@ -132,11 +176,11 @@ var globalSearchLevelValue = parseInt('${param.searchLevelValue}');
 	}
 	
 if(globalPositionId == 0)
-	globalStats =" <b class='text-success'  style='text-transform:uppercase;' >  ANY </b> POST ";
+	globalStats =" <b class='headingColor'  style='text-transform:uppercase;' >ANY POST</b>  ";
 if(globalStats == "readyToShortList")
-	globalStats =" SHORTLISTING  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
+	globalStats =" <b class='headingColor'  style='text-transform:uppercase;' >"+globalPosName+" POST</b>";
 else if(globalStats == "positionLink")
-	globalStats =" Linking  <b class='text-success'  style='text-transform:uppercase;' >  "+globalPosName+"  POST </b>";
+	globalStats =" Linking  <b class='headingColor'  style='text-transform:uppercase;' >"+globalPosName+" POST</b>";
 
 $("#headPosId").html(globalStats+" ");
 $("#headBrdId").html(headBrdId+" board");
@@ -924,7 +968,7 @@ var positionId=parseInt('${positionId}');
 function buildNominatePostPositionDetails(result,positionId){
 	 var str='';
 		   if(result !=null && result.length>0){
-			   	str+='<table class="table table-bordered bg_ff" id="nominatePositionDetilsId">';
+			   	str+='<table class="table table-bordered" id="nominatePositionDetilsId" style="background-color:#EFF3F4">';
 					str+='<thead>';
 					str+='<tr>';
 					str+='<th rowspan="2"></th>';
@@ -1008,8 +1052,14 @@ function buildNominatePostPositionDetails(result,positionId){
 					   }
 							
 				   }
-				}			   
-			   $("#positionDivId").html(str);
+				}	
+				if(globalPostId>0)  
+				{
+					$("#positionDivId").html(str);
+				}else{
+					$("#positionDivId").closest(".panelDepartmentHead").remove();
+				}
+			   
 		   }
 }
 function getBrdWisNominPstAppliedDepOrCorpDetails(candidateId,divId,searchType){

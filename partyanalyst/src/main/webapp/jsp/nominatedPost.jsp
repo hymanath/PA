@@ -131,7 +131,7 @@
         	  <div class="panel-body bg_ef">
               	<div class="row">
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 ">
-                    	<p class="text-success font_weight font_16" >SEARCH APPLICANT</p>
+                    	<p class="text-success font_16" >SEARCH APPLICANT</p>
                     </div>
 					<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top10">
                     	<label class="radio-inline">
@@ -186,8 +186,8 @@
                         </select>
                     </div>
                 
-                <div  class="searchMemberCls m_top10">
-                	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12">
+                <div  class="searchMemberCls">
+                	<div class="col-md-8 col-xs-12 col-sm-12 col-lg-12 m_top10">
 					<label class="text-capitalize">Search member by voter id/membership no/mobile number/Name</label>
 					<div id="searchErrDiv" style="color:red;"></div>
                         <div class="searchDiv">
@@ -255,7 +255,7 @@
                  <div class="row">
 				
 						
-				   <div class="col-md-12 col-xs-12 col-sm-12" id="searchDivId" style="display:none;">
+				   <div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="searchDivId" style="display:none;">
                     		<div class="m_top10"><p class="m_0 text-success font_weight font_16">APPLICANT PROFILE DETAILS</p></div>
 							<div id="membersCountId"></div>
                         	<div id="searchData"></div>
@@ -268,11 +268,12 @@
 	                </div>
 	               
 				<div class="row ramakrishnaCls" style="display:none;" id="">
-					<div id="appliedPostForSelectedId" class="hideDivCls"></div>
+					<div id="appliedPostForSelectedId" style="min-height:240px" class="hideDivCls"></div>
+					
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">
                         	<div class="panel-heading">
-                            	<h4 class="panel-title font_weight">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 10px; margin-top: 35px; width: 20px; height: 20px;display:none;" id="addPrcssngImgId" class="offset7" src="images/icons/loading.gif"></h4>
+                            	<h4 class="panel-title">DO YOU WANT TO CHANGE YOUR ADDRESS OR PHONE NUMBER <input type="checkbox" id="addressCheckId" value="flase" /><img style="margin-left: 10px; margin-top: 35px; width: 20px; height: 20px;display:none;" id="addPrcssngImgId" class="offset7" src="images/icons/loading.gif"></h4>
 								<input type="hidden" name="nominatedPostVO.isCheckedMigrateAddressField" id="addressCheckId1"/>
                             </div>
                             <div class="panel-body bg_ff pad_10" style="display:none;" id="changePhoneNumberDiv">
@@ -337,9 +338,9 @@
                                     	<label>Pincode</label>
                                         <input type="text" class="form-control" id="addPincodeId" name="nominatedPostVO.addPincodeName" maxLength="6"/>
                                     </div>
-									 <!--<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10 col-md-offset-6">
+									<div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 m_top10 col-md-offset-6">
                                     	<button type="button" class="btn btn-primary btn-sm pull-right" id="updateButnId" onclick="savechangeAddressForNominatedPost()" style="margin-top:25px;">UPDATE</button>
-                                    </div>-->
+                                    </div>
 								</div>
                             </div>
                         </div>
@@ -351,7 +352,7 @@
                         </div>-->
                     </div>
                 	<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
-                    	<p class="m_0 text-success font_16 font_weight">NOMINATED LEVEL AND LOCATION 
+                    	<p class="m_0 text-success font_16 font_weight">NOMINATED LEVEL & LOCATION 
 							<!--<span class="pull-right f_14" style="cursor:pointer" >
 								Add One More 
 								<i class="glyphicon glyphicon-plus-sign"></i>
@@ -562,7 +563,7 @@
 					</div>-->
 					<div class="row m_top10" id="addedRefferalsDiv" style="display:none;">
                     	<div class="col-md-12 col-sm-12 col-xs-12 m_top10">
-                        	<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted" id="involvedMembers">(0 - Members added)</small></h4>
+                        	<h4 class="text-success text-capital">refered members to this candidate<small class="text-muted text-capitalize" id="involvedMembers">(0 - Members added)</small></h4>
                         </div>
 						
 						<div class="membersBlock">
@@ -583,12 +584,12 @@
 					<div class="row hideDivCls" id="uploadFlDivId" style="display:none;"> 
                      	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                         	<p class="m_0 text-success font_16 font_weight">UPLOAD SCAN COPY</p>
-								<input type="file" id="filer_input3" multiple="multiple"  name="fileImage"/>
+							<input type="file" id="filer_input3" multiple="multiple"  name="fileImage" class="m_top20"/>
                         </div>
                     </div>
                     <div class="row hideDivCls" id="submitBtnId" style="display:none;">
                     	<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12 col-lg-4 col-lg-offset-4 m_top20">
-                        	<button class="btn btn-success btn-block" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
+                        	<button class="btn btn-success btn-block btn-lg" onclick="savingApplication();" type="button">SUBMIT APPLICATION</button>
                         </div>
 						<div style="margin-top:12px;"><img id="savingAjaxImg" src="images/icons/loading.gif" style="display:none;"/></div>
 						<div class="col-md-6 m_top25" id="savingStatusDivId"></div>
