@@ -521,7 +521,7 @@ label
 }
 .bg_cc
 {
-	background:#ccc;
+	background:#ccc !important;
 }
 .positionSelect
 {
@@ -596,12 +596,14 @@ label
 	background:#F5BA82;
 	padding-left:8px;
 	border-radius:0px;
-	border-top-color:#62B9A9;
+	border-top-width:0px !important;
+	border-bottom-width:0px !important;
 	border-right-color:#62B9A9;
 	border-bottom-color:#62B9A9;
 }
 .panelCustom .panel-heading
 {
+	border-top:1px solid #62B9A9;
 	background:#fff;
 	border-radius:0px;
 	height:80px;
@@ -622,6 +624,7 @@ label
 	color:#fff;
 	border-radius:0px;
 	padding:5px;
+	border-bottom:1px solid #62B9A9;
 }
 .panelCustom .panel-footer p
 {
@@ -683,12 +686,16 @@ label
 {
 	background:#fff;
 	border-radius:0px;
-	height:80px;
+	height:60px;
 	padding:5px;
+	position:relative;
 }
 .panelCustom .panel-heading .pull-right
 {
 	font-size:12px;
+	position:absolute;
+	top:4px;
+	right:4px;
 }
 .panelCustom .panel-body
 {
@@ -1569,4 +1576,16 @@ div.dataTables_wrapper div.clear
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+.headingPanel
+{
+	height:40px;
+	background-color:#F5BA82;
+	padding:3px 7px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+   .geoGrpahicBreadCrumb li:first-child
+     {
+	 padding-bottom:6px;  
+   }
 }
