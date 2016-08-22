@@ -68,7 +68,7 @@ function buildPage(){
 	boardId : boardId,
 	positionId : positionId,  
 	status : status
-	}  
+	}
 	$.ajax({
 	  type:'GET',
 	  url: 'getFinalReviewCandidateCountForLocationAction.action',    

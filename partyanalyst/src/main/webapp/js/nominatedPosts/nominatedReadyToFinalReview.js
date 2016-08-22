@@ -267,16 +267,16 @@ function buildCandidateReviewRslt(result,status){
 	//str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
  }
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
-	  for(var i in result){
+	  for(var i in result){    
 	   if(i==0){
 		   if(status != "Total"){  
-		  str+='<li class="active"><a  id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'"  title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		  str+='<li class="active"><a  id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }else{
 			   str+='<li class="active"><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom"  title="Total Open Posts" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }
 		 }else{
 			 if(status != "Total"){
-		 str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="#postDetails" attr_dept_id="'+result[i].id+'" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
+		 str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
 		 }else{  
 		  str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Open Posts" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 
@@ -314,7 +314,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom deptDtlsCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}else{
 							str+='<span class="label label-primary pull-right labelCustom" title="Total Open Posts" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
@@ -336,7 +336,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
 						if(status != "Total"){
-							str+='<span class="label label-primary pull-right labelCustom" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
+							str+='<span class="label label-primary pull-right labelCustom deptDtlsCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}else{
 							str+='<span class="label label-primary pull-right labelCustom" title="Total Open Posts" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 						}
@@ -389,7 +389,7 @@ var str = '';
 							str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 								str+='<span class="label label-primary labelCustom pull-right" style="color:#333" title="Total Open Posts" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;">'+result[i].count+'</span>';
 							}
-						str+='</div>';
+						str+='</div>';  
 					str+='</div>';
 						if(gblStatus != "Total")
 						{
@@ -1521,7 +1521,7 @@ $(document).on("click",".closeIcon",function(e){
 		var positionId = $(this).attr("attr_position_id");      
 		var status = gblStatus;    
 		if(status == "goPassed"){ 
-			var redirectWindow=window.open('govtOrderIssuedAction.action?LocationLevelId='+globalLocationLevelId+'&locationLevelValueArr='+globalLocationLevelValueArr+'&deptId='+deptId+'&boardId='+boardId+'&positionId='+positionId+'&status='+status+'','_blank');
+			var redirectWindow=window.open('govtOrderIssuedAction.action?LocationLevelId='+globalLocationLevelId+'&locationLevelValueArr='+globalLocationLevelValueArr+'&deptId='+deptId+'&boardId='+boardId+'&positionId='+positionId+'&status='+status+'','_blank');  
 		}
 	});       
 	
