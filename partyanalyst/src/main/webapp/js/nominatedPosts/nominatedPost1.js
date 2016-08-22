@@ -1026,7 +1026,7 @@ function setDefaultImage(img){
 						var cadreId = $(this).attr("attr_cadreId") ; 
 							if(id == cadreId)
 							{
-								$(this).remove();
+								$("#involveBlockParent"+id).remove();
 							}
 					  });
 				  $(".candidatecls"+id).prop('checked', false); 
