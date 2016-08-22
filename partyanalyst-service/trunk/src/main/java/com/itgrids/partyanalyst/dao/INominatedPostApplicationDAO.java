@@ -41,7 +41,7 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public Integer updateApplicationStatusForGO(List<Long> nominatedPostApplicationIds,Date date);
 	public Object[] getBoardLevel(Long applicationId);
 	public List<Object[]> getApplicationDetailsOfCandidate(Set<Long> candidateIds);
-	public List<Object[]> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status);
+	public List<Object[]> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId, Long positionId, String status);
 	public List<Long> getAppliedPositionsForCandidate(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);
 	public List<Long> getApplicationIds(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues,Long userId);
 }
