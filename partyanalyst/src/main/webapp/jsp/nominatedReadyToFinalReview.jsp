@@ -40,6 +40,37 @@
 {
 	width:100%;
 }
+.panelGO
+{
+	border:2px solid #CCC;
+}
+.panelGO .panel-heading , .panelGO .panel-body , .panelGO .panel-heading , .panelGO .panel-footer
+{
+	background-color:#EFF3F4
+}
+.selectBox
+{
+	padding:8px 12px;
+	border:2px solid #DDD;
+	background-color:#fff;
+	position:relative;
+	text-transform:capitalize;
+	cursor:pointer;
+}
+.selectBox.active:after
+{
+	font-family: 'Glyphicons Halflings';
+	content:'\e014';
+	display:block;
+	position:absolute;
+	right:10px;
+	font-size:10px;
+	background-color:#535353;
+	color:#fff;
+	padding:2px 4px;
+	border-radius:50%;
+	top:10px;
+} 
 </style>
 </head>
 <body>
@@ -118,7 +149,7 @@
         
       </div>
       <div class="modal-body">
-	   <div id="postDetailsResultDivId"></div>
+	   <div id="postDetailsResultDivId"></div>        
       </div>
     </div>
   </div>
@@ -208,7 +239,7 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript">
 
-var gblStatus = '${param.sts}';
+var gblStatus = '${param.sts}'; 
 $("#headStsId").html(gblStatus+" Nominated Post details");
 if(gblStatus !=null && gblStatus.trim().length>0){
 	$(document).prop('title', capitalizeFirstLetter(gblStatus.toLowerCase())+" nominated post details");
@@ -225,8 +256,10 @@ function setHeight(){
 	});
 	$(".heightSet").height(maxHeight);
 }
-$(document).on("click",".modalViewBtn",function(){
-	$("#myModal").modal('show');
+$(document).on("click",".modalViewBtn",function(){  
+	if(gblStatus != "goPassed"){
+		$("#myModal").modal('show');
+	}
 });
 $(document).on("click",".commentsBtn",function(e){
 	$(".commentsDiv").hide();
@@ -525,7 +558,7 @@ function tableResponsive()
 {
 	if($(window).width < 800)
 	{
-		$("#resultDivId").addClass("table-responsive");
+		$("#resultDivId").addClass("table-responsive");   
 	}
 }
 $(document).on("click",".filterBtn",function(){

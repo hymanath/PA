@@ -1594,6 +1594,7 @@ public String execute()
 			    Long LocationLevelId = jObj.getLong("LocationLevelId");
 				Long departmentId = jObj.getLong("departmentId");
 				Long boardId = jObj.getLong("boardId");
+				Long positionId = jObj.getLong("positionId");
 				String status = jObj.getString("status");
 				JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
 				    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
@@ -1601,7 +1602,7 @@ public String execute()
 				    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
 				    	}
 				    }
-				    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, status);
+				    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocation(LocationLevelId, lctnLevelValueList, departmentId, boardId, positionId, status);
 		 }catch(Exception e) {
 			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
 		}
@@ -1655,4 +1656,13 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
+	public String getGovtOrderIssued(){
+		 try{  
+			 return Action.SUCCESS;	
+		 }catch(Exception e) {
+			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+		}
+	   return Action.SUCCESS;	
+	 }  
+	
 }
