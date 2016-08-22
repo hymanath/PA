@@ -5814,11 +5814,15 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					 nominatedPostMemberVO.setFromDate(commonMethodsUtilService.getStringValueForObject(candidate[22]));
 					 nominatedPostMemberVO.setToDate(commonMethodsUtilService.getStringValueForObject(candidate[23])); 
 					 Date today = new Date();
-					 String toDate = commonMethodsUtilService.getStringValueForObject(candidate[23]);  
-					 toDate = toDate.substring(0, 10);
-					 Date lastDate = sdf.parse(toDate);
-					 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
-					 nominatedPostMemberVO.setExpireDate(expairStr);
+					 String toDate = commonMethodsUtilService.getStringValueForObject(candidate[23]); 
+					 if(toDate.length() > 10){
+						 toDate = toDate.substring(0, 10);
+						 Date lastDate = sdf.parse(toDate);
+						 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
+						 nominatedPostMemberVO.setExpireDate(expairStr);
+					 }
+					 
+					
 					 nominatedPostMemberVOs.add(nominatedPostMemberVO);
 				 }
 			 }
