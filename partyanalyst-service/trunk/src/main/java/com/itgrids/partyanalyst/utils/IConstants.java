@@ -1109,7 +1109,7 @@ public interface IConstants {
 	public static final String EMAIL_USERNAME = "info@itgrids.com";
 	public static final String EMAIL_PASSWORD = "itgrids$678";
 	public static final String[] NOMINATED_POST_APPLICATION_STATUSES = {"TOTAL AVAILABLE","APPLICATIONS NOT RECIEVED",
-		 "YET TO START","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO PASSED / COMPLETED","TOTAL"};
+		 "READY TO SHORT LIST","RUNNING","READY FOR FINAL REVIEW","FINALIZED","GO ISSUED / COMPLETED","TOTAL"};
 	
 	public static final String SHORTLISTED_STATUS ="Shortlisted";
 	public static final String RUNNING_NOMINATED_POSTS_STATUS_IDS ="1";
