@@ -376,7 +376,7 @@ var str = '';
 				str+='<div class="row">';
 					str+='<div class="col-md-10 col-xs-12 col-sm-9 pad_right0 ">';
 					if(status != "Total"){  
-						str+='<div class="positionsCls modalViewBtn referenceCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
+						str+='<div class="positionsCls modalViewBtn referenceCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'" attr_status="finalReview">';
 							str+='<span style="font-weight:bold;cursor:pointer;"><u>'+result[i].name+'</u></span>';
 							str+='<span class="label label-primary labelCustom pull-right" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"><u>'+result[i].count+'</u></span>';
 							}else{
@@ -389,7 +389,7 @@ var str = '';
 					str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 pad_right0">';
 						str+='<div class="positionsCls text-success">';
 						if(result[i].wishCount != null && result[i].wishCount > 0)
-							str+='<span><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;'+result[i].wishCount+'</span>';
+							str+='<span style="cursor:pointer;" title="WishList Details" class="modalViewBtn referenceCls" data-toggle="tooltip" data-placement="top" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="#myModal" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'" attr_status="wishList"><img src="dist/nominatedImages/Icon4.png"/> &nbsp;&nbsp;<u>'+result[i].wishCount+'</u></span>';
 						else
 							str+='<span><img src="dist/nominatedImages/Icon7.png"/> &nbsp;&nbsp;0</span>';
 							//str+='<img src="dist/img/Icon1.png"/> - ';
@@ -417,7 +417,7 @@ $(document).on("click",".referenceCls",function(){
 	var boardId = $(this).attr("attr_board_id");
 	var positionId = $(this).attr("attr_position_id");
 	var positionName = $(this).attr("attr_position_name");
-	
+	var modalStatus= $(this).attr("attr_status");
 	
 	glFinalyeDeptId = departmentId;
 	glFinalyeboardId = boardId;
@@ -445,7 +445,7 @@ $(document).on("click",".referenceCls",function(){
 		levelValue = $("#manTowDivId").val();
 		level = "Mandal";
 	}
-	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId);
+	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId,modalStatus);
 	$("#myModal").modal("show");
 	if(gblStatus == 'finaliZed' )
 		$("#actionId").html("G.O Issuing ");
@@ -457,7 +457,7 @@ $(document).on("click",".referenceCls",function(){
 	
 });
 //111
-function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId){
+function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId,modalStatus){
 	var statusId = 6;
 	if(gblStatus=="finaliZed"){
 		statusId = 5;
@@ -480,8 +480,10 @@ function getReferralCandidateDetails(levelId,levelVal,deptId,boardId,positionId)
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   if(result != null && result.subList != null && result.subList.length >0){
+	   if(result != null && result.subList != null && result.subList.length >0 && modalStatus=="finalReview" || modalStatus == null){
 		   buildNominatedPostMemberDetails(result,levelId,levelVal,deptId,boardId,positionId);
+	   }else if(result != null && result.subList != null && result.subList.length >0 && modalStatus=="wishList" && modalStatus!= null){
+		  buildWishListDetails(result,levelId,levelVal,deptId,boardId,positionId); 
 	   }
 	   else{
 		   $('.wishList').hide();
@@ -884,7 +886,7 @@ $(document).on("click",".submitBtnCls",function(){
 			$("#"+divId).html("Successfully Updated...");
 	        $("#"+btnId).attr("disabled","disabled");
 			
-			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr,glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId);
+			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr,glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId,"finalReview");
 			
 	   }else{
 		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");
@@ -1581,3 +1583,197 @@ $(document).on("click",".closeIcon",function(e){
 	$("#postDetails").modal("show");
 	
 	}
+	function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,positionId){
+	var str='';
+	totalWishListCount = 0;
+	
+	str+='<table class="table table-bordered table-condensed tableShort">';
+		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
+		if(gblStatus=="finaliZed"){
+			str+='<th style="" class="text-center"></th>';
+		}
+			str+='<th style="width:150px" class="text-center">Name</th>';
+			str+='<th class="text-center">Mobile</th>';
+			str+='<th class="text-center">Gender</th>';
+			str+='<th class="text-center" style="width:24px">Age</th>';
+			str+='<th class="text-center" style="width:90px">Caste</th>';
+			str+='<th class="text-center">Sub Caste</th>';
+			str+='<th class="text-center">Party Designations</th>';
+			str+='<th class="text-center" style="width:80px">Reports</th>';
+			str+='<th  class="text-center" style="width:175px">Applied Any Dep/Corp</th>';
+			str+='<th style="width:175px" class="text-center">Shortlisted any dep/ Corp</th>';			
+			str+='<th class="text-center">Reference</th>';
+			str+='<th class="text-center">Current Status</th>';
+			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';
+		str+='</thead>';
+	if(result.subList != null && result.subList.length > 0){
+		for(var i in result.subList){
+			if(result.subList[i].isPrefered == "Y"){
+			str+='<tr class="text-center">';
+			if(gblStatus=="finaliZed"){
+				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'"></td>';
+			}
+				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					str+='<td style="width:150px;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+					if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
+						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
+					else
+						str+='<i class="glyphicon glyphicon-user"></i> ';
+						str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
+				}else{
+					str +='<td style="width:150px;"><div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
+				}
+				
+				str+=' </td>';
+				
+			if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
+					//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].cadreName+'</td>';
+					str+='<td>'+result.subList[i].cadreMobile+'</td>';
+					str+='<td>'+result.subList[i].cadreGender+'</td>';
+					str+='<td>'+result.subList[i].cadreAge+'</td>';
+					str+='<td>'+result.subList[i].caste+'</td>';
+					str+='<td>'+result.subList[i].casteName+'</td>';
+					str+='<td>';
+					if(result.subList[i].publicReprStr != null && result.subList[i].publicReprStr.length > 0)
+						str+='<p>'+result.subList[i].publicReprStr+'</p>';
+					if(result.subList[i].partyPosition != null && result.subList[i].partyPosition.length > 0)
+						str+='<p>'+result.subList[i].partyPosition+'</p>';
+					if(result.subList[i].publicReprStr == null && result.subList[i].partyPosition == null)
+						str+=' - ';
+					str+='</td>';
+					str+='<td>';
+					if(result.subList[i].idNamevoList != null && result.subList[i].idNamevoList.length > 0){
+						for(var j in result.subList[i].idNamevoList){
+							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].idNamevoList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].idNamevoList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
+						}
+					}
+					if(result.subList[i].nomDocsList != null && result.subList[i].nomDocsList.length > 0){
+						for(var j in result.subList[i].nomDocsList){
+							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].nomDocsList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].nomDocsList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
+						}
+					}
+					if(result.subList[i].idNamevoList == null && result.subList[i].nomDocsList == null)
+						str+=' - ';
+					str+='</td>';
+					//Suitable<i class="glyphicon glyphicon-list-alt pull-right"></i></td>';
+			}
+			else{
+				str+='<td>'+result.subList[i].voterMoblie+'</td>';
+				str+='<td>'+result.subList[i].voterGender+'</td>';
+				str+='<td>'+result.subList[i].age+'</td>';
+				str+='<td>'+result.subList[i].candCaste+'</td>';
+				str+='<td>'+result.subList[i].candCasteName+'</td>';
+					str+='<td> - </td>';
+					str+='<td>';
+					if(result.subList[i].nomDocsList != null && result.subList[i].nomDocsList.length > 0){
+						for(var j in result.subList[i].nomDocsList){
+							str+='<p class="showPdfCls" attr_filePath="'+result.subList[i].nomDocsList[j].mobileNo+'" data-toggle="modal" data-target="#pdfModelId">'+result.subList[i].nomDocsList[j].status+'<i class="glyphicon glyphicon-list-alt pull-right" style="background-color:green;cursor:pointer;"></i></p>';
+						}
+					}
+					else
+						str+=' - ';
+					str+='</td>';
+			}
+				
+				str+='<td style="position:relative" class="text-center">';
+				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
+					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
+				else
+					str+='<span> NO </span>';
+					str+='<div class="appliedPostPopup">';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
+						str+='</div>';
+					str+='</div>';
+				str+='</td>';
+				
+				str+='<td style="position:relative" class="text-center">';
+					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
+						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
+					
+						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
+					else
+						str+='<span> NO </span>';
+						str+='<div class="appliedPostPopup">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'">';
+							str+='</div>';
+						str+='</div>';
+					
+				str+='</td>';
+						
+				if(result.subList[i].referenceCount != null && result.subList[i].referenceCount>0)
+					str+='<td><a class="referenceDetailsCls" style="cursor:pointer;" data-toggle="modal" data-target="#referModelId" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'">'+result.subList[i].referenceCount+'</a></td>';
+				else
+					str+='<td> - </td>';
+				str+='<td>'+result.subList[i].status+'</td>';
+				str+='<td style="position:relative;width:180px">';
+					if(result.subList[i].commentCount != null){
+						str+='<span style="position:relative"><img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
+						str+='<span class="commentCount" style="left:15px;top:-11px">'+result.subList[i].commentCount+'</span></span>';
+					}
+					else						
+						str+='<img src="dist/nominatedImages/Icon8.png" style="height:28px;margin-right:10px;"/>'; 
+					
+					str+='<div class="commentsDiv">';
+						str+='<div class="commentDropDownArrow" id="commentsDivId'+i+'">';
+							
+						str+='</div>';
+					str+='</div>';
+					//if(result.subList[i].isPrefered == "Y"){
+						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
+						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" id="wishListId'+i+'" attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
+					//}
+					/* else{
+						str+='<img src="dist/nominatedImages/Icon7.png" class="wishListCls" id="wishListId'+i+'" attr_remark="N" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
+					} */
+					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
+					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
+					str+='<div class="updateDropDown">';
+						if(gblStatus!="finaliZed"){
+							str+='<div class="updateDropDownArrow">';
+							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
+							str+='<label calss="m_top10">Select Status</label>';
+							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
+							str+='<option value="0">Select Status</option>';
+							str+='<option value="4">Rejected-Final Review</option>';
+							str+='<option value="5">Finalize</option>';
+							str+='</select>';
+							str+='<label class="m_top10">Comments</label>';
+							str+='<textarea class="form-control" id="commentAreaId'+i+'"></textarea>';
+							str+='<button id="commentStatusSubmitBtnId'+i+'" attr_current_position_id='+i+' class="btn btn-success btn-block submitBtnCls" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" attr_status_id="statusSelectId'+i+'" attr_comment_id="commentAreaId'+i+'" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_success_div_id="successDivId'+i+'">SUBMIT</button>';
+							str+='<img src="images//icons//ajaxImg.gif" id="processingImgId'+i+'" style="display:none;"></img>';
+							str+='</div>';
+						}
+					str+='</div>';
+				str+='</td>';
+			str+='</tr>';
+		}
+		}
+	}
+	str+='</table>';
+	str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		if(gblStatus=="finaliZed"){
+			str+='<button class="btn btn-success btnUpdateAll m_top20" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
+		}
+			str+='<div class="updateDropDown updateAllShowPopup">';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#wishListCountId").html(totalWishListCount);
+	$("#resultDivId").html(str);
+	$(".updateDropDown").width($("#resultDivId").width());
+	$(".updateDropDown").css("right","0px");
+	if(result.subList.length > 10)
+	{
+		$("#resultDivId").css("height","400px");
+	}else if(result.subList.length > 6)
+	{
+		$("#resultDivId").addClass("table-responsive");
+	}
+	$(".chosenSelect").chosen();
+				$(".dateR").daterangepicker({
+					opens:'left'
+				});
+				
+}
