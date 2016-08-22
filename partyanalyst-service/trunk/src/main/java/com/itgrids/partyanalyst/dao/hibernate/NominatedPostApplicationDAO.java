@@ -995,70 +995,138 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
  public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){
 		
 		       StringBuilder queryStr = new StringBuilder();
-		       
-		       queryStr.append(" select ");
-		       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
-		    	   queryStr.append(" model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId,model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.deptName,");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
-		      	   queryStr.append(" model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardName,");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
-		 		  queryStr.append(" model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName,");
-		 	   }
-		       if(status.equalsIgnoreCase("Total")  && LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
-		       queryStr.append(" model.nominatedPost.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(distinct model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId)");
-		       }else{
-		    	   queryStr.append(" model.nominatedPost.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(model.nominatedPost.nominatedPostId)"); 
+		       if(status != null && (status.equalsIgnoreCase("TOTAL") || status.equalsIgnoreCase("goPassed")))
+		       {
+			       queryStr.append(" select ");
+			       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+			    	   queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId,model.nominatedPostMember.nominatedPostPosition.departments.deptName,");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+			      	   queryStr.append(" model.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPostMember.nominatedPostPosition.board.boardName,");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+			 		  queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName,");
+			 	   }
+
+			       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId)"); 
+			       
+			       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' ");
+			       if(status != null && status.equalsIgnoreCase("finalReview"))
+			    	   queryStr.append(" and model.nominatedPostStatusId = 2 ");
+			       else if(status != null && status.equalsIgnoreCase("finaliZed"))
+			    	   queryStr.append(" and model.nominatedPostStatusId = 3 ");
+			       else if(status != null && status.equalsIgnoreCase("goPassed"))
+			    	   queryStr.append(" and model.nominatedPostStatusId = 4 ");
+			       else if(status != null && status.equalsIgnoreCase("total"))
+			    	   queryStr.append(" and model.nominationPostCandidateId is null ");
+			       
+			        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+		    	 	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+		    	    }
+			      /* if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+			    	   if(LocationLevelId.longValue() != 5L)
+			    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+			    	   else
+			    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+			       }*/
+			       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+			    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+			       }
+			       if(departmentId != null && departmentId.longValue() > 0){
+			    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
+			    	   
+			       }
+			       if(boardId != null && boardId.longValue() > 0){
+			    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId=:boardId ");
+			       }
+			       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+			    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+			     	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.board.boardId order by model.nominatedPostMember.nominatedPostPosition.board.boardId ");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+			    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.position.positionId order by  model.nominatedPostMember.nominatedPostPosition.position.positionId ");
+			       }
+			       
+			       Query query = getSession().createQuery(queryStr.toString());
+			       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+			    	  // if(LocationLevelId.longValue() != 5L)
+			    		   query.setParameter("LocationLevelId", LocationLevelId);
+			       }
+			       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+			    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
+			       }
+			       if(departmentId != null && departmentId.longValue() > 0){
+			    	   query.setParameter("departmentId", departmentId);
+			       }
+			       if(boardId != null && boardId.longValue() > 0){
+			    	   query.setParameter("boardId", boardId);
+			       }
+			    return query.list();
+		
 		       }
-		       
-		       queryStr.append(" from  NominatedPostFinal model where model.nominatedPost.isDeleted = 'N' ");
-		       if(status != null && status.equalsIgnoreCase("finalReview"))
-		    	   queryStr.append(" and model.applicationStatusId = 6 ");
-		       else if(status != null && status.equalsIgnoreCase("finaliZed"))
-		    	   queryStr.append(" and model.applicationStatusId = 5 ");
-		       else if(status != null && status.equalsIgnoreCase("goPassed"))
-		    	   queryStr.append(" and model.applicationStatusId = 7 ");
-		        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	 	   queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
-	    	    }
-		      /* if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-		    	   if(LocationLevelId.longValue() != 5L)
-		    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
-		    	   else
-		    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
-		       }*/
-		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
-		    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+		       else{
+				       queryStr.append(" select ");
+				       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+				    	   queryStr.append(" model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId,model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.deptName,");
+				       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+				      	   queryStr.append(" model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId,model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardName,");
+				       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+				 		  queryStr.append(" model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionName,");
+				 	   }
+				       if(status.equalsIgnoreCase("Total")  && LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+				       queryStr.append(" model.nominatedPost.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(distinct model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId)");
+				       }else{
+				    	   queryStr.append(" model.nominatedPost.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(model.nominatedPost.nominatedPostId)"); 
+				       }
+				       
+				       queryStr.append(" from  NominatedPostFinal model where model.nominatedPost.isDeleted = 'N' ");
+				       if(status != null && status.equalsIgnoreCase("finalReview"))
+				    	   queryStr.append(" and model.applicationStatusId = 6 ");
+				       else if(status != null && status.equalsIgnoreCase("finaliZed"))
+				    	   queryStr.append(" and model.applicationStatusId = 5 ");
+				       else if(status != null && status.equalsIgnoreCase("goPassed"))
+				    	   queryStr.append(" and model.applicationStatusId = 7 ");
+				        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+			    	 	   queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+			    	    }
+				      /* if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+				    	   if(LocationLevelId.longValue() != 5L)
+				    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+				    	   else
+				    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+				       }*/
+				       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+				       }
+				       if(departmentId != null && departmentId.longValue() > 0){
+				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
+				    	   
+				       }
+				       if(boardId != null && boardId.longValue() > 0){
+				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId=:boardId ");
+				       }
+				       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
+				    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
+				       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
+				     	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId ");
+				       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
+				    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId order by  model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
+				       }
+				       
+				       Query query = getSession().createQuery(queryStr.toString());
+				       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+				    	  // if(LocationLevelId.longValue() != 5L)
+				    		   query.setParameter("LocationLevelId", LocationLevelId);
+				       }
+				       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+				    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
+				       }
+				       if(departmentId != null && departmentId.longValue() > 0){
+				    	   query.setParameter("departmentId", departmentId);
+				       }
+				       if(boardId != null && boardId.longValue() > 0){
+				    	   query.setParameter("boardId", boardId);
+				       }
+				    return query.list();
 		       }
-		       if(departmentId != null && departmentId.longValue() > 0){
-		    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
-		    	   
-		       }
-		       if(boardId != null && boardId.longValue() > 0){
-		    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId=:boardId ");
-		       }
-		       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
-		    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
-		     	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId ");
-		       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
-		    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId order by  model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
-		       }
-		       
-		       Query query = getSession().createQuery(queryStr.toString());
-		       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-		    	  // if(LocationLevelId.longValue() != 5L)
-		    		   query.setParameter("LocationLevelId", LocationLevelId);
-		       }
-		       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
-		    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
-		       }
-		       if(departmentId != null && departmentId.longValue() > 0){
-		    	   query.setParameter("departmentId", departmentId);
-		       }
-		       if(boardId != null && boardId.longValue() > 0){
-		    	   query.setParameter("boardId", boardId);
-		       }
-		    return query.list();
 	}
  public List<Object[]> getApplicationStatusCntByPositionId(Long positionId){
 		StringBuilder queryStr = new StringBuilder();
@@ -1689,4 +1757,24 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       }
 	    return query.list();  
 }
+	
+	public List<Object[]> getTotalAvaiableApplicationsDetails(Long boardLevelId,Long stateId,Long applicationStatusId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.applicationStatusId, count(distinct model.nominatedPostApplicationId)  from NominatedPostApplication model " +
+				" where model.boardLevelId=:boardLevelId ");
+		if(stateId != null && stateId>0L)
+			queryStr.append(" and model.address.state.stateId=:stateId ");
+		if(applicationStatusId != null && applicationStatusId>0L)
+			queryStr.append(" and model.applicationStatusId=:applicationStatusId ");
+		
+		queryStr.append(" group by model.applicationStatusId order by model.applicationStatusId ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		   query.setParameter("boardLevelId", boardLevelId);
+		  if(stateId != null && stateId>0L)
+			query.setParameter("stateId", stateId);
+		  if(applicationStatusId != null && applicationStatusId>0L)
+			query.setParameter("applicationStatusId", applicationStatusId);
+		  
+		  return query.list();
+	}
 }
