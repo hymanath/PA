@@ -305,7 +305,6 @@ $(document).on("click",".newWindowCls",function(){
 	var status = $(this).attr("attr_status");
 	var stateId = $('input[name=stateName]:checked').val();
 	var levelTxt = $(this).attr("attr_level_txt");
-	
 	if(status == "TOTAL")//totalCorpCls
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_self');
 	else if(status == "TOTAL AVAILABLE")//totalCorpCls
@@ -320,7 +319,7 @@ $(document).on("click",".newWindowCls",function(){
 		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finalReview','_self');
 	else if(status == "FINALYZED")
 		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finaliZed','_self');
-	else if(status == "GO PASSED / COMPLETED")
+	else if(status == "GO ISSUED / COMPLETED")  
 		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=goPassed','_self');
 	
 });

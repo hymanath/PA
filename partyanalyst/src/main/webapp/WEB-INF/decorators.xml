@@ -683,6 +683,6 @@
 	    <pattern>/coreDashboardAction*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>
 		<pattern>/birthDayAction*</pattern>
-		<pattern>/govtOrderIssuedAction*</pattern>
+		<pattern>/govtOrderIssuedAction*</pattern>  
 	</decorator> 
 </decorators>
