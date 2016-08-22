@@ -598,8 +598,8 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_btn_id="readytoFinalReviewBtnId'+boards+'" attr_finalReviewCls="" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name ="'+result[i].name+'"/>'+result[i].name+'</label></td>';
 							}
 							 else{
-								//str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
-								str+='<td> - </td>';
+								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
+								//str+='<td> - </td>';
 							}					
 						}else{
 								str+='<td><label>Any Position</td>';
