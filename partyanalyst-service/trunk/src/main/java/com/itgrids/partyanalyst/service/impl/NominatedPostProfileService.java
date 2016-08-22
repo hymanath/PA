@@ -4452,7 +4452,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				}
 				if(commonMethodsUtilService.isListOrSetValid(subList)){
 					 for (NominatedPostReferVO vo : subList) {
-						 Long count = commentMap.get(vo.getNominatedPostCandidateId());
+						 Long count = commentMap.get(vo.getNominatedPostApplicationId());
 						 vo.setCommentCount(count);
 					 }
 				 }
