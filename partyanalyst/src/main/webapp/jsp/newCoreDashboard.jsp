@@ -979,6 +979,7 @@
 		getCommitteesBasicCountReport();
 		getLevelWiseBasicCommitteesCountReport();
 		getUserTypeWiseCommitteesCompletedCounts();
+		getUserTypeWiseCommitteesCompletedCounts1();
 	}
 
 
