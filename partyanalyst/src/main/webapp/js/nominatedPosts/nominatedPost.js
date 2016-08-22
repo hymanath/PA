@@ -2530,6 +2530,7 @@ $("#searchDivId").show();
 		}
  $(document).on("click","#searchbtn",function(){
 	  var value = $("input[name='checkBoxName']:checked").val();
+	  $("#addedRefferalsDiv").hide();
 	  	$('.ramakrishnaCls').hide();
 		$('#searchDivId').hide();
 		$("#uploadFlDivId").hide();
