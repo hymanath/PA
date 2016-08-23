@@ -1664,5 +1664,48 @@ public String execute()
 		}
 	   return Action.SUCCESS;	
 	 }  
+	public String getFinalReviewCandidateCountForLocationFilter(){
+		 try{
+			    jObj = new JSONObject(getTask());
+			    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 
+			    List<Long> deptList = new ArrayList<Long>(0);
+			    List<Long> boardList = new ArrayList<Long>(0);
+			    List<Long> positionList = new ArrayList<Long>(0);
+			    JSONArray locationLevelValueArr = jObj.getJSONArray("locationLevelValueArr");
+			    JSONArray departmentIdArray = jObj.getJSONArray("departmentIds");
+			    JSONArray boardIdArray = jObj.getJSONArray("boardIds");
+			    JSONArray positionIdArray = jObj.getJSONArray("positionIds");
+				
+			    if(locationLevelValueArr != null && locationLevelValueArr.length()> 0){
+			    	for(int i = 0;i<locationLevelValueArr.length();i++){
+			    		lctnLevelValueList.add(new Long(locationLevelValueArr.getInt(i)));
+			    	}
+			    }
+			    if(departmentIdArray != null && departmentIdArray.length() > 0){
+			    	for(int i=0;i<departmentIdArray.length();i++){
+			    		deptList.add(new Long(departmentIdArray.getInt(i)));
+			    	}
+			    }
+			    if(boardIdArray != null && boardIdArray.length() > 0){
+			    	for(int i=0;i<boardIdArray.length();i++){
+			    		boardList.add(new Long(boardIdArray.getInt(i)));
+			    	}
+			    }
+			    if(positionIdArray != null && positionIdArray.length() > 0){
+			    	for(int i=0;i<positionIdArray.length();i++){
+			    		positionList.add(new Long(positionIdArray.getInt(i)));
+			    	}
+			    }
+			    String today = jObj.getString("today");
+			    String expireDate = jObj.getString("expireDate");
+			    Long LocationLevelId = jObj.getLong("LocationLevelId");  
+			    String status = jObj.getString("status");
+			    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, today, expireDate, status);
+		 }catch(Exception e) {
+			 LOG.error("Exception Occured in getFinalReviewCandidateCountLocationWise() in NominatedPostProfileAction ",e);
+		}
+	   return Action.SUCCESS;	
+	 }
+	
 	
 }
