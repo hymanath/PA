@@ -67,6 +67,7 @@
     background: #f8f9fb none repeat scroll 0 0;
     border: 1px solid #ddd;
     padding: 5px;
+    height :100px;
 }
 .involveBlockNew {
     background: #f8f9fb none repeat scroll 0 0;
@@ -433,7 +434,7 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
-									<select attr_no="" multiple class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].positions">
+									<select attr_no="" multiple class="chosenSelect deptBoardPostnCls" id="deptBoardPostnId" name="nominatedPostVO.nominatdList[0].positions" data-placeholder ="Select Board Position">
 									<option value="0">Select Board Position</option>
 									</select><br>
 									<span id="errdeptBoardPostnId" class="errdeptBoardPostnCls"></span>

@@ -253,6 +253,7 @@ function getDistrictsForStates(state,id,num){
 	   }
 	   
 	   $("#searchDataImgForDist").hide();
+	     $("#districtId").append('<option value="-1">Please Select District</option>');
      for(var i in result){
 		 if(id == "statesDivId"){
 			   if(result[i].id == 0){
@@ -282,7 +283,7 @@ function getDistrictsForStates(state,id,num){
   }
  function getConstituenciesForDistricts(district,id,num){
 	
-	// debugger; 
+	 //debugger;
 	 if(id == "districtId"){
 		 hideDetails();
 		 $("#constituencyIdImg").show();
@@ -338,7 +339,14 @@ function getDistrictsForStates(state,id,num){
 	 }
 	
 	if(district == 0){
-		getConstituenciesForState(0,'districtId');
+		if(id == "districtId")
+			getConstituenciesForState($('#statesDivId').val(),'constituencyId');
+		/*else if(id == "notCadreDistId")
+			getConstituenciesForState($('#notCadreStateId').val(),'notCadreConstId');
+		else if(id == "changedistrictId")
+			getConstituenciesForState($('#changestateId').val(),'changeConstiId');
+		else
+			getConstituenciesForState($('#nominatedStaeId').val(),'nominatdConstId');*/		
 		return;
 	}
 	
@@ -371,6 +379,7 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatdConstId"+num).empty();
 	   }
 	   $("#searchDataImgForConst").hide();
+	    $("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
      for(var i in result){
 		 if(id == "districtId"){
 		   if(result[i].id == 0){
@@ -933,7 +942,7 @@ function getNominatedPostApplication(startIndex)
 			str +='</ul>';	
 			$("#cadreSearchDtls").html(str);
 			var length = $("#cadreSearchDtls").find("li").length;
-			$("#membersCountId").html("<p>Seatch Results <span class='font_weight'>"+length+"</span> Members</p>")
+			$("#membersCountId").html("<p>Search Results <span class='font_weight'>"+length+"</span> Members</p>")
 			if(result.length>3)
 			{
 			$(".best-matched-profile").slick({
@@ -1163,19 +1172,20 @@ $('.searchTypeCls').click(function(){
    }).done(function(result){
     $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
-	  $("#deptBoardPostnId"+num).append('<option value=" ">Select Board Position</option>');
-	  if(result[0].status != "Applied"){
-		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
-	  }
-	  
-			for(var i in result){
-				$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-				
-	  }
+	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
+	  $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+	   if(result[0].status != "Applied"){
+		   //$("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+	  }   
+		for(var i in result){
+			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');				
+		}
+		$("#deptBoardPostnId"+num).trigger("chosen:updated");
    }else{
 	   //$("#errdeptBoardPostnId"+num).html('<b style="color:red;"> All Positions are filled out.</b>');
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated");
    }
-	  $("#deptBoardPostnId"+num).trigger("chosen:updated");
+   	  
    });
   }
   
@@ -1633,9 +1643,9 @@ function savingApplication(){
 		});  
 		 var candidateId="";
 		$(".involveBlock").each(function(){
-						var cadreId = $(this).attr("attr_cadreId");
-						if(cadreId != null && cadreId.length > 0)	
-						candidateId += cadreId+",";	
+			var cadreId = $(this).attr("attr_cadreId");
+			if(cadreId != null && cadreId.length > 0)	
+			candidateId += cadreId+",";	
 						
 		});
 	
@@ -2332,7 +2342,7 @@ function populateFields(result){
 								str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
                                 	str+='<div class="panel panel-default panelPost">';
                                     	str+='<div class="panel-heading">';
-                                        	str+='<h4 class="panel-title">Party Post</h4>';
+                                        	str+='<h4 class="panel-title">Nominated Post</h4>';
                                         str+='</div>';
                                         str+='<div class="" style="padding: 10px;;text-transform: uppercase;">';
                                         	str+='<h4 style="height:100%;width:100%" class="text-center">No Existing Applied Posts are Available...</h4>';
@@ -2376,7 +2386,8 @@ function searchByApplicant()
 		$("#searchMemberDiv").show();
 		$("#cadreById").hide();
          $("#addMemberDivId").hide();
-       		 
+         $("#searchBy").val(' ');
+         $( "#membershipId" ).prop( "checked", true);
 	}
 	else {
 	 $("#searchMemberDiv").hide();
