@@ -482,12 +482,12 @@ $(document).on("click",".referenceCls",function(){
 		levelValue = $("#constituencyId").val();
 		level = "Constituency";
 	}
-	else if(levelId >= 5){
+	else if(levelId >= 5){  
 		levelValue = $("#manTowDivId").val();
 		level = "Mandal";
 	}
 	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId);
-	$("#myModal").modal("show");
+	//$("#myModal").modal("show");
 	if(gblStatus == 'finaliZed' )
 		$("#actionId").html("G.O Issuing ");
 	else
