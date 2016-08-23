@@ -334,7 +334,6 @@ $(document).on("click","#addCandidateBtnId",function(){
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
 			
-			
 			if(selectVal == 2)
 			{
 				$(".advancePRCls,#searchBtnId").show();
@@ -582,8 +581,18 @@ $(document).on("click","#addCandidateBtnId",function(){
 	}
 	function buildLevels()
 	{
-	
+
 		var searchType = $("#advanceSearchTypeId").val();
+
+		if(searchType != null && searchType=="mobileno"){
+		 $("#searchNameLabel").html("Mobile Number");	
+		}else if(searchType =="mebershipno"){
+			$("#searchNameLabel").html("MemberShip Number");	
+		}else if(searchType == "votercardno"){
+			$("#searchNameLabel").html("VoterCard Number");	
+		}else if(searchType =="1"){
+			$("#searchNameLabel").html("Name");	
+		}
 		var str='';
 		 $("#alertlevelId").find('option').remove();
 		  str+='<option value="2">State</option>';
