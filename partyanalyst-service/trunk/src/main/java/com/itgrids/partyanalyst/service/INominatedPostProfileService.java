@@ -69,5 +69,6 @@ public interface INominatedPostProfileService {
 	 public ResultStatus checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId);
 	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId, Long positionId, String status);
 	 public ResultStatus assginGOToNominationPostCandidate(GovtOrderVO goVO,Long userId,Map<File,String> mapfiles);
-	 
+	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String today, String expireDate, String status); 
+
 }

@@ -5821,7 +5821,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
 						 nominatedPostMemberVO.setExpireDate(expairStr);
 					 }
-					 
+					   
 					
 					 nominatedPostMemberVOs.add(nominatedPostMemberVO);
 				 }
@@ -5834,4 +5834,78 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		 }
 		 return null; 
 	 }
+@SuppressWarnings("deprecation")
+public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String tday, String expireDate, String status){ 
+	 try{
+		 Date lowerRange = null;
+		 Date expDate = null;
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		 SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+		 if(expireDate != null){
+			 expDate = sdf2.parse(expireDate); 
+			 lowerRange = expDate;  
+			 expDate.setMonth( expDate.getMonth() + 1 );  
+		 } 
+		 DateUtilService dateUtilService = new DateUtilService();
+		 List<NomintedPostMemberVO> nominatedPostMemberVOs = new ArrayList<NomintedPostMemberVO>(0);
+		 NomintedPostMemberVO nominatedPostMemberVO = null;
+		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, lowerRange, expDate, status);
+		 if(candidateList != null && candidateList.size() > 0){
+			 for(Object[] candidate : candidateList){
+				 nominatedPostMemberVO = new NomintedPostMemberVO();
+				 nominatedPostMemberVO.setDeptId(commonMethodsUtilService.getLongValueForObject(candidate[0]));
+				 nominatedPostMemberVO.setDeptName(commonMethodsUtilService.getStringValueForObject(candidate[1]));
+				 nominatedPostMemberVO.setNominatedPostStatusId(commonMethodsUtilService.getLongValueForObject(candidate[2]));
+				 nominatedPostMemberVO.setStatus(commonMethodsUtilService.getStringValueForObject(candidate[3]));
+				 nominatedPostMemberVO.setNominatedPostId(commonMethodsUtilService.getLongValueForObject(candidate[4]));
+				 if(candidate[5] != null ){
+					 nominatedPostMemberVO.setName(commonMethodsUtilService.getStringValueForObject(candidate[5]));
+				 }else{
+					 nominatedPostMemberVO.setName(commonMethodsUtilService.getStringValueForObject(candidate[6]));
+				 }
+				 if(candidate[7] != null){
+					 nominatedPostMemberVO.setCadreMobile(commonMethodsUtilService.getStringValueForObject(candidate[7]));
+				 }else{
+					 nominatedPostMemberVO.setCadreMobile(commonMethodsUtilService.getStringValueForObject(candidate[8]));
+				 }
+				 nominatedPostMemberVO.setMembershipNO(commonMethodsUtilService.getStringValueForObject(candidate[9]));
+				 
+				 if(candidate[10] != null){
+					 nominatedPostMemberVO.setAge(commonMethodsUtilService.getLongValueForObject(candidate[10]));
+				 }else{
+					 nominatedPostMemberVO.setAge(commonMethodsUtilService.getLongValueForObject(candidate[11]));
+				 }
+				 nominatedPostMemberVO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(candidate[12]));
+				 nominatedPostMemberVO.setBoardName(commonMethodsUtilService.getStringValueForObject(candidate[13]));
+				 nominatedPostMemberVO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(candidate[14]));
+				 nominatedPostMemberVO.setPositionName(commonMethodsUtilService.getStringValueForObject(candidate[15]));
+				 nominatedPostMemberVO.setCastId(commonMethodsUtilService.getLongValueForObject(candidate[16]));
+				 nominatedPostMemberVO.setCasteName(commonMethodsUtilService.getStringValueForObject(candidate[17]));
+				 nominatedPostMemberVO.setCastCategoryId(commonMethodsUtilService.getLongValueForObject(candidate[18]));
+				 nominatedPostMemberVO.setCastCategoryName(commonMethodsUtilService.getStringValueForObject(candidate[19]));
+				 nominatedPostMemberVO.setGovtOrderId(commonMethodsUtilService.getLongValueForObject(candidate[20]));
+				 nominatedPostMemberVO.setGovtOrderName(commonMethodsUtilService.getStringValueForObject(candidate[21]));
+				 nominatedPostMemberVO.setFromDate(commonMethodsUtilService.getStringValueForObject(candidate[22]));
+				 nominatedPostMemberVO.setToDate(commonMethodsUtilService.getStringValueForObject(candidate[23])); 
+				 Date today = new Date();
+				 String toDate = commonMethodsUtilService.getStringValueForObject(candidate[23]); 
+				 if(toDate.length() > 10){
+					 toDate = toDate.substring(0, 10);
+					 Date lastDate = sdf.parse(toDate);
+					 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
+					 nominatedPostMemberVO.setExpireDate(expairStr);
+				 }
+				 
+				
+				 nominatedPostMemberVOs.add(nominatedPostMemberVO);
+			 }
+		 }
+		 return nominatedPostMemberVOs;
+		 
+	 }catch(Exception e){
+		 e.printStackTrace();
+		 LOG.error("Exception riased at getFinalReviewCandidateCountForLocation() ",e);
+	 }
+	 return null; 
+}
 }
