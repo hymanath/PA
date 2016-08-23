@@ -255,15 +255,20 @@ function getFinalReviewCandidateCountLocationWise(LocationLevelId,locationLevelV
 		}
 	}); 
 }
-function buildCandidateReviewRslt(result,status){   
+function buildCandidateReviewRslt(result,statusstr){   
  $("#boardRsltDivId").html(' ');
  $("#positionRsltDivId").html(' ');
  var str='';
  var titleStr="Ready For Final Review";
- if(gblStatus=="finaliZed")
-	 titleStr="Ready to Finalyze Posts";
- 
- if(status != "Total"){
+
+ if(gblStatus == "finaliZed")
+	 titleStr="Ready to Finalize Posts";
+ else if(gblStatus == "total")
+	  titleStr="Total Open Posts";
+ else if(gblStatus =="goPassed")
+	  titleStr="Total G.O Passed Posts";
+	  
+ if(statusstr != "Total"){
 	//str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
  }
     str+='<ul class="nav nav-tabs tabsCustomFinal" role="tablist">';
