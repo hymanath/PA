@@ -162,7 +162,7 @@
 			str+='<ul class="panelBlockCustom">';
 			for(var i in result){
 				if(result[i].name != "TOTAL AVAILABLE"){
-					if(result[i].name == "YET TO START" )
+					if(result[i].name == "READY TO SHORT LIST" )
 						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
 					else if(result[i].totalPositions >0)
 						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
@@ -188,7 +188,7 @@
 								</c:otherwise>
 							</c:choose>
 						}						
-						else if(result[i].name == "YET TO START" || result[i].name == "RUNNING"){
+						else if(result[i].name == "READY TO SHORT LIST" || result[i].name == "RUNNING"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
@@ -215,7 +215,7 @@
 								</c:otherwise>
 							</c:choose>
 						}
-						else if(result[i].name == "FINALYZED"){
+						else if(result[i].name == "FINALIZED"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
 								if(result[i].totalPositions > 0)
@@ -228,7 +228,7 @@
 								</c:otherwise>
 							</c:choose>
 						}
-						else if(result[i].name == "GO PASSED / COMPLETED"){
+						else if(result[i].name == "GO ISSUED / COMPLETED"){
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
 								if(result[i].totalPositions > 0)
@@ -309,7 +309,7 @@ $(document).on("click",".newWindowCls",function(){
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_self');
 	else if(status == "TOTAL AVAILABLE")//totalCorpCls
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Open&levelTxt='+levelTxt+'','_self');
-	else if(status == "YET TO START")
+	else if(status == "READY TO SHORT LIST")
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notYet&levelTxt='+levelTxt+'','_self');
 	else if(status == "RUNNING")
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running&levelTxt='+levelTxt+'','_self');	
@@ -317,7 +317,7 @@ $(document).on("click",".newWindowCls",function(){
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notRecieved&levelTxt='+levelTxt+'','_self');	
 	else if(status == "READY FOR FINAL REVIEW")
 		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finalReview','_self');
-	else if(status == "FINALYZED")
+	else if(status == "FINALIZED")
 		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finaliZed','_self');
 	else if(status == "GO ISSUED / COMPLETED")  
 		var redirectWindow=window.open('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=goPassed','_self');
@@ -333,7 +333,7 @@ $(document).on("click",".yetToStartCls11",function(){
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_self');
 	else if(status == "TOTAL AVAILABLE")//totalCorpCls
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=Open&levelTxt='+levelTxt+'','_self');
-	else if(status == "YET TO START")
+	else if(status == "READY TO SHORT LIST")
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=notYet&levelTxt='+levelTxt+'','_self');
 	else if(status == "RUNNING")
 		window.location.replace('nominatedPostManagementAction.action?lId='+levelId+'&stId='+stateId+'&sts=running&levelTxt='+levelTxt+'','_self');	
@@ -349,9 +349,9 @@ $(document).on("click",".finalReviewCls11",function(){
 	
 	if(status == "READY FOR FINAL REVIEW")
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finalReview','_self');
-	else if(status == "FINALYZED")
+	else if(status == "FINALIZED")
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=finaliZed','_self');
-	else if(status == "GO PASSED / COMPLETED")
+	else if(status == "GO ISSUED / COMPLETED")
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=goPassed','_self');
 	
 });
