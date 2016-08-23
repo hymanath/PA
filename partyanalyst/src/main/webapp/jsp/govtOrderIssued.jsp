@@ -49,7 +49,65 @@
 </style>
 </head>
 <body>
-<div class="container" id="buildBodyId">	
+<div class="container">
+<div class="row">';
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="background-color:#CCC">
+						<h3 class="text-capital">G.O.issued / completed</h3>
+						<p id="globalLocationId"></p>    
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="pad_15" style="background-color:#F5F5F5">
+									<div class="row">
+										<div class="col-md-3 col-sm-6 col-xs-12">
+									
+											<label>Department</label>
+											<select class="chosenSelect" id="departmentId" multiple>   
+												<option value="0">ALL</option>
+												<option value="1">aaa</option>
+												<option value="2">bbb</option>
+											</select>
+											
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-12">
+											<label>Board</label>
+											<select class="chosenSelect" id="corporationId" multiple> 
+												<option value="0">ALL</option>
+												<option value="1">aaa</option>
+												<option value="2">bbb</option>
+											</select>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-12">
+											<label>Position</label>
+											<select class="chosenSelect" id="positionId" multiple>   
+												<option value="0">ALL</option>
+												<option value="1">aaa</option>
+												<option value="2">bbb</option>										
+											</select>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-12">
+											<label>Date</label>
+											<div class="input-group"><input type="text" id="DateRanges" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div> 
+										</div>
+								</div>
+									<div class="row">
+										<div class="col-md-3 col-sm-2 col-xs-12 m_top20">      
+											<button type="button" value="getDetails" class="btn btn-success m_top10"  id="statusDetailsId">SUBMIT</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row m_top10" id="bodyId">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 </div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -59,6 +117,7 @@
 <script src="dist/activityDashboard/Date/daterangepicker.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+$('.chosenSelect').chosen({width: "100%"});  
 $(document).ready(function(){
 	getDepartmentList(globalLocationLevelId);
 	getBoardList(0);
@@ -82,8 +141,9 @@ if(globalLocationLevelId == 2){
 }else if(globalLocationLevelId == 4){
 	globalLocation = "Constituency";
 }
+$("#globalLocationId").html(globalLocation+"  Level")
 buildPage();
-function buildPage(){  
+function buildPage(){       
 	var jsObj = {
 	LocationLevelId : globalLocationLevelId, 
 	locationLevelValueArr : globalLocationLevelValueArr,              
@@ -101,105 +161,50 @@ function buildPage(){
 	if(result != null && result.length > 0){
 	   console.log(result);   
 	   buildModel(result);  
+	}else{
+		$("#bodyId").html("No Data Is Available...")
 	}
 	});
 }
 	function buildModel(result){      
 		var str = '';
-		str+='<div class="row">';
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading" style="background-color:#CCC">';
-						str+='<h3 class="text-capital">G.O.issued / completed</h3>';
-						str+='<p>'+globalLocation+' Level </p>';
+		for(var i in result){
+			str+='<div class="col-md-4 col-sm-6 col-xs-12">';
+				str+='<div class="panel panel-default panelGO">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+								str+='<img src="dist/img/profile.png" class="media-object"/>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<p>'+result[i].name+'</p>';
+								str+='<p>Ph: '+result[i].cadreMobile+'</p>';
+								str+='<p>M.ID: '+result[i].membershipNO+'</p>';
+							str+='</div>';
+						str+='</div>';
+						str+='<p>';
+							str+='<span>Male '+result[i].age+' years Old</span>';
+							str+='<span class="pull-right">'+result[i].castCategoryName+' - '+result[i].casteName+'</span>';
+						str+='</p>';
 					str+='</div>';
-					str+='<div class="panel-body">';
-						str+='<div class="row">';
-							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-								str+='<div class="pad_15" style="background-color:#F5F5F5">';
-									str+='<div class="row">';
-										str+='<div class="col-md-3 col-sm-6 col-xs-12">';
-									
-											str+='<label>Department</label>';
-											str+='<select class="chosenSelect" id="departmentId" multiple>';     
-												str+='<option value="0">ALL</option>';
-												str+='<option value="1">aaa</option>';
-												str+='<option value="2">bbb</option>';
-											str+='</select>';
-											
-										str+='</div>';
-										str+='<div class="col-md-3 col-sm-6 col-xs-12">';
-											str+='<label>Board</label>';
-											str+='<select class="chosenSelect" id="corporationId" multiple>';     
-												str+='<option value="0">ALL</option>';
-												str+='<option value="1">aaa</option>';
-												str+='<option value="2">bbb</option>';
-											str+='</select>';
-										str+='</div>';
-										str+='<div class="col-md-3 col-sm-6 col-xs-12">';
-											str+='<label>Position</label>';
-											str+='<select class="chosenSelect" id="positionId" multiple>';       
-												str+='<option value="0">ALL</option>';
-												str+='<option value="1">aaa</option>';
-												str+='<option value="2">bbb</option>';											
-											str+='</select>';  
-										str+='</div>';
-										str+='<div class="col-md-3 col-sm-6 col-xs-12">';
-											str+='<label>Date</label>';
-											str+='<div class="input-group"><input type="text" id="DateRanges" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div>';     
-										str+='</div>';
-									str+='</div>';
-									str+='<div class="row">';
-										str+='<div class="col-md-3 col-sm-2 col-xs-12 m_top20">';       
-											str+='<button type="button" value="getDetails" class="btn btn-success m_top10"  id="statusDetailsId">SUBMIT</button>';
-										str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-						str+='<div class="row m_top10">';
-						for(var i in result){
-							str+='<div class="col-md-4 col-sm-6 col-xs-12">';
-								str+='<div class="panel panel-default panelGO">';
-									str+='<div class="panel-heading">';
-										str+='<div class="media">';
-											str+='<div class="media-left">';
-												str+='<img src="dist/img/profile.png" class="media-object"/>';
-											str+='</div>';
-											str+='<div class="media-body">';
-												str+='<p>'+result[i].name+'</p>';
-												str+='<p>Ph: '+result[i].cadreMobile+'</p>';
-												str+='<p>M.ID: '+result[i].membershipNO+'</p>';
-											str+='</div>';
-										str+='</div>';
-										str+='<p>';
-											str+='<span>Male '+result[i].age+' years Old</span>';
-											str+='<span class="pull-right">'+result[i].castCategoryName+' - '+result[i].casteName+'</span>';
-										str+='</p>';
-									str+='</div>';
-									str+='<div class="panel-body text-capitalize">';
-										str+='<b>';
-											str+='<p>'+result[i].boardName+'</p>';
-											str+='<p> - '+result[i].positionName+'</p>';                    
-										str+='</b>';   
-									str+='</div>';
-									str+='<div class="panel-footer text-capitalize">';
-										str+='<p><b>'+result[i].govtOrderName+'</b></p>';
-										str+='<p class="text-muted">Dated : '+result[i].fromDate.substring(0,10)+' to '+result[i].toDate.substring(0,10)+'</p>';
-										str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						}
-						str+='</div>';
+					str+='<div class="panel-body text-capitalize">';
+						str+='<b>';
+							str+='<p>'+result[i].boardName+'</p>';
+							str+='<p> - '+result[i].positionName+'</p>';                    
+						str+='</b>';   
+					str+='</div>';
+					str+='<div class="panel-footer text-capitalize">';
+						str+='<p><b>'+result[i].govtOrderName+'</b></p>';
+						str+='<p class="text-muted">Dated : '+result[i].fromDate.substring(0,10)+' to '+result[i].toDate.substring(0,10)+'</p>';
+						str+='<p class="text-danger"><i>Going to expire : '+result[i].expireDate+'</i></p>';    
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-		str+='</div>';
-		
-		$("#buildBodyId").html(str);   
-		$('.chosenSelect').chosen({width: "100%"});  
-		$("#DateRanges").daterangepicker({
+	}
+						
+		$("#bodyId").html(str);  
+	} 
+	$("#DateRanges").daterangepicker({
 			opens:'left',
 			 ranges: {
 				   'Next One Month': [moment(), moment().add(1, 'month')],
@@ -210,8 +215,6 @@ function buildPage(){
 				}  
 			
 		});
-	}
-	
 	function getDepartmentList(boardLevelId){
 		var jsObj={
 			boardLevelId : boardLevelId  
@@ -311,8 +314,10 @@ function buildPage(){
 		if(result != null && result.length > 0){
 		   console.log(result);   
 		   buildModel(result);  
+		}else{
+		$("#bodyId").html("No Data Is Available...")
 		}
-		});
+		});      
 	});
 	
 	
