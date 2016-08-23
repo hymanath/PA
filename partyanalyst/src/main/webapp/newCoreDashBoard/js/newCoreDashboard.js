@@ -325,7 +325,7 @@ function getDistrictWiseCommitteesCountReport(){
 						
 						$(function () {
 							$('#mainCommittees'+i+''+j+'').highcharts({
-								colors: ['#F56800','#53BF8B','#A1B1BE'],
+								colors: ['#F56800','#53BF8B','#66728C'],
 								chart: {
 									type: 'column',
 									
