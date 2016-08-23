@@ -13422,5 +13422,10 @@
    			<param name="root">meetingStatusVOs</param>    
    		</result>
 	</action>
+	<action name="getFinalReviewCandidateCountForLocationFilterAction" class="nominatedPostProfileAction" method="getFinalReviewCandidateCountForLocationFilter">
+		<result type="json" name="success">
+   			<param name="root">nominatedPostMemberVOs</param>          
+   		</result> 
+   	</action>
 </package>
 </struts>
