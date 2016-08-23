@@ -161,6 +161,10 @@
 		if(result != null && result.length>0){
 			str+='<ul class="panelBlockCustom">';
 			for(var i in result){
+				var applicationsCount =0;
+				if(result[i].totalApplicationReceivedCnt != null && result[i].totalApplicationReceivedCnt >0)
+					applicationsCount = result[i].totalApplicationReceivedCnt;
+				
 				if(result[i].name != "TOTAL AVAILABLE"){
 					if(result[i].name == "READY TO SHORT LIST" )
 						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
@@ -179,12 +183,12 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when> 
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>
 						}						
@@ -192,12 +196,12 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when> 
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>
 						}
@@ -206,12 +210,12 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when>
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>
 						}
@@ -219,12 +223,12 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when>
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>
 						}
@@ -232,12 +236,12 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when>
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>
 						}
@@ -248,29 +252,29 @@
 							<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;"></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when>
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>
 							
 						}
 					}
 					else{
-						//str+='<h3>'+result[i].totalPositions+' </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+						//str+='<h3>'+result[i].totalPositions+' </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+result[i].totalApplicationReceivedCnt+'</span></p>';
 						
 						<c:choose>
 								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
-									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:when> 
 								<c:otherwise>
-									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;">Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';
+									str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								</c:otherwise>
 							</c:choose>							
 					}
