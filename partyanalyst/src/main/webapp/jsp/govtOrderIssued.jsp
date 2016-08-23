@@ -70,7 +70,7 @@
 												<option value="1">aaa</option>
 												<option value="2">bbb</option>
 											</select>
-											
+											<div id="deptErrVid" style="color:red;"></div>
 										</div>
 										<div class="col-md-3 col-sm-6 col-xs-12">
 											<label>Board</label>
@@ -79,14 +79,16 @@
 												<option value="1">aaa</option>
 												<option value="2">bbb</option>
 											</select>
+											<div id="boardErrVid" style="color:red;"></div>
 										</div>
-										<div class="col-md-3 col-sm-6 col-xs-12">
+										<div class="col-md-3 col-sm-6 col-xs-12">  
 											<label>Position</label>
 											<select class="chosenSelect" id="positionId" multiple>   
 												<option value="0">ALL</option>
 												<option value="1">aaa</option>
 												<option value="2">bbb</option>										
 											</select>
+											<div id="positionErrVid" style="color:red;"></div> 
 										</div>
 										<div class="col-md-3 col-sm-6 col-xs-12">
 											<label>Date</label>
@@ -275,18 +277,34 @@ function buildPage(){
 		getBoardList(departmentId);
 	}); */
 	$(document).on('click','#statusDetailsId',function(){
+		$("#deptErrVid").html("");
+		$("#boardErrVid").html("");
+		$("#positionErrVid").html("");
 		var deptIds = [];
 		deptIds = $("#departmentId").val();
+		
+		if(deptIds == null){
+			$("#deptErrVid").html("Please  select atleast one department");
+			return;
+		}
 		if(deptIds == null){
 			deptIds=[0];
 		}
 		var boardIds = [];
 		boardIds = $("#corporationId").val();
 		if(boardIds == null){
+			$("#boardErrVid").html("Please  select atleast one board");
+			return;
+		}
+		if(boardIds == null){
 			boardIds=[0];
 		}
 		var positionIs = [];
-		positionIs = $("#positionId").val();
+		positionIs = $("#positionId").val(); 
+		if(positionIs == null){
+			$("#positionErrVid").html("Please  select atleast one position");
+			return;
+		}
 		if(positionIs == null){
 			positionIs=[0];
 		}  
