@@ -1646,7 +1646,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 	       StringBuilder queryStr = new StringBuilder(); 
 	       
-	       queryStr.append(" select ");
+	       queryStr.append(" select distinct ");
 	       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l){
 	    	   queryStr.append(" D.departmentId,D.deptName,");  
 	       }
@@ -1779,8 +1779,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	}
 	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, Date lowerRange, Date expDate, String status){
 		
-	       StringBuilder queryStr = new StringBuilder(); 
-	       queryStr.append(" select" +
+	       StringBuilder queryStr = new StringBuilder();  
+	       queryStr.append(" select distinct " +
 	       				   " D.departmentId,D.deptName," +
 	       				   " NPS.nominatedPostStatusId, " +
 	       				   " NPS.status, " +
