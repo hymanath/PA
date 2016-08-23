@@ -1,0 +1,50 @@
+@media (min-width: 100px) and (max-width:500px) {
+	.committesBlockUl li
+	{
+		width:100%;
+		display:block;
+	}
+}
+@media (min-width: 500px) and (max-width:767px) {
+	.committesBlockUl li
+	{
+		width:100%;
+		display:block;
+	}
+}
+@media (min-width:769px) and  (max-width:991px){
+	.committesBlockUl li
+	{
+		width:47%;
+		display:inline-block;
+	}
+}
+@media (min-width:992px) and  (max-width:1199px){
+}
+@media (min-width:1200px){
+}
+
+/* Ipad Only STYLES START*/
+@media screen and (width:768px) {
+	.committesBlockUl li
+	{
+		width:100%;
+		display:block;
+	}
+	.headingColor
+	{
+		font-size:16px;
+	}
+	.activeUlCls
+	{
+		margin-top:10px;
+	}
+}
+@media screen and (width:1024px) {
+	.committesBlockUl li
+	{
+		width:47%;
+		display:inline-block;
+	}
+}
+/* Ipad Only STYLES END */
