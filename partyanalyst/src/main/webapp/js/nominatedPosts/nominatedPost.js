@@ -2658,11 +2658,13 @@ var isSameCheckBoxClicked=0;
 		   if(result == null){			
 			  // $(".addNewCandidateErrorCls").html("Please Enter Valid VoterId.");
 			    $("#voterExtraErrId").html("Please Enter Valid VoterId.");  
-				$("#addCandidateBtnId").hide();
+				//$("#addCandidateBtnId").hide();
+			    $("#addCandidateBtnId").prop('disabled','disabled');
 			    $(".addNewCandidateErrorCls").html(""); 
 		   }else{
 			   $("#voterExtraErrId").html("");
-			   $("#addCandidateBtnId").show();
+			   //$("#addCandidateBtnId").show();
+			   $("#addCandidateBtnId").removeAttr('disabled');
 		   }
 	   });
 	 }
