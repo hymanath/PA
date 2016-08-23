@@ -54,6 +54,7 @@ function getDistrictWiseCommitteesCountReport(){
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
+	   basicCommitteeIdsArray.push(4);
       
 	   
        var startDateString = '01/01/2014';
@@ -78,13 +79,151 @@ function getDistrictWiseCommitteesCountReport(){
 		});
 	}
 	
+	function buildgetCommitteesBasicCountReport(result){
+		var str='';
+		
+		str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 committeesBlock">';
+				str+='<ul class="committesBlockUl">';
+					str+='<li>';
+						str+='<h4 class="text-capital bg_49 pad_custom">main committees</h4>';
+						
+						str+='<table class="table table-condensed">';
+						   str+='<tr>';
+								str+='<td>';
+								if(result.mainVO.totalCount == null || result.mainVO.totalCount == 0){
+									str+='<h3> - </h3>';
+								}else{
+									str+='<h3>'+result.mainVO.totalCount+'</h3>';
+								}
+									str+='<h5 class="text-muted text-capitalize">total</h5>';
+								str+='</td>';
+								str+='<td>';
+								if(result.mainVO.startedCount == null || result.mainVO.startedCount == 0){
+									str+='<h3> - </h3>';
+									str+='<h5 class="text-muted text-capitalize">started</h5>';
+								}else{
+									str+='<h3>'+result.mainVO.startedCount+'</h3>';
+									str+='<h5 class="text-muted text-capitalize">started</h5>';
+									str+='<small class="text-success">'+result.mainVO.startedPerc+'%</small>';
+								}
+								str+='</td>';
+								str+='<td>';
+								if(result.mainVO.completedCount == null || result.mainVO.completedCount == 0){
+									str+='<h3> - </h3>';
+									str+='<h5 class="text-muted">Completed</h5>';
+								}else{
+									str+='<h3>'+result.mainVO.completedCount+'</h3>';
+									str+='<h5 class="text-muted">Completed</h5>';
+									str+='<small class="text-success">'+result.mainVO.completedPerc+'%</small>';
+								}
+								str+='</td>';
+							str+='</tr>';
+						str+='</table>';
+					str+='</li>';
+					str+='<li>';
+						str+='<h4 class="text-capital bg_49 pad_custom">affliated committees</h4>';
+						str+='<table class="table table-condensed">';
+							str+='<tr>';
+								str+='<td>';
+								if(result.affliatedVO.startedCount == null || result.affliatedVO.startedCount == 0){
+									str+='<h3> - </h3>';
+								}else{
+									str+='<h3>'+result.affliatedVO.startedCount+'</h3>';
+								}
+									str+='<h5 class="text-muted text-capitalize">Started</h5>';
+								str+='</td>';
+								str+='<td>';
+								if(result.affliatedVO.completedCount == null || result.affliatedVO.completedCount ==0){
+									str+='<h3> - </h3>';
+								}else{
+									str+='<h3>'+result.affliatedVO.completedCount+'</h3>';
+								}
+								str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+								str+='</td>';
+						   str+='</tr>';
+						str+='</table>';
+					str+='</li>';
+					str+='<hr style="margin:0px;">';
+					if(result.subList != null && result.subList.length >0){
+						var length = result.subList.length - 1;
+							for(var i = length; i >= 0; i--){
+								str+='<li>';
+										str+='<h4 class="text-capitalize m_top10" style="color:#c9c0cc">'+result.subList[i].name+'/Ward</h4>';
+										str+='<table class="table table-condensed bg_ED">';
+											str+='<tr>';
+												str+='<td>';
+													str+='<h5 class="text-muted text-capitalize">Total</h5>';
+													if(result.subList[i].mainVO.totalCount == null || result.subList[i].mainVO.totalCount == 0){
+														str+='<p> - </p>';
+													}else{
+														str+='<p>'+result.subList[i].mainVO.totalCount+'</p>';
+													}
+													
+											   str+='</td>';
+												str+='<td>';
+													str+='<h5 class="text-muted text-capitalize">Started</h5>';
+													if(result.subList[i].mainVO.startedCount == null || result.subList[i].mainVO.startedCount == 0){
+														str+='<p> - </p>';
+													}else{
+														str+='<p>'+result.subList[i].mainVO.startedCount+' <small class="text-success"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
+													}
+													
+												str+='</td>';
+												str+='<td>';
+													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+													if(result.subList[i].mainVO.completedCount == null || result.subList[i].mainVO.completedCount == 0){
+														str+='<p> - </p>';
+													}else{
+														str+='<p>'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
+													}
+													
+												str+='</td>';
+											str+='</tr>';
+										str+='</table>';
+									str+='</li>';
+									str+='<li>';
+										str+='<table class="table table-condensed bg_ED" style="margin-top:30px !important;">';
+											str+='<tr>';
+												str+='<td>';
+													str+='<h5 class="text-muted text-capitalize">Started</h5>';
+													if(result.subList[i].affliatedVO.startedCount == null || result.subList[i].affliatedVO.startedCount == 0){
+														str+='<p> - </p>';
+													}else{
+														str+='<p>'+result.subList[i].affliatedVO.startedCount+'</p>';
+													}
+													
+												str+='</td>';
+												str+='<td>';
+													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+													if(result.subList[i].affliatedVO.completedCount == null || result.subList[i].affliatedVO.completedCount == 0){
+														str+='<p> - </p>';
+													}else{
+														str+='<p>'+result.subList[i].affliatedVO.completedCount+'</p>';
+													}
+													
+												str+='</td>';
+											str+='</tr>';
+										str+='</table>';
+									str+='</li>';
+							}
+							
+					}
+					
+				str+='</ul>';
+        str+='</div>';
+		
+		$("#basicCommitteeCountsDiv").html(str)
+	}
+	
 	function getLevelWiseBasicCommitteesCountReport(){
 		
+		$("#levelWiseBasicCommittees").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
 		var state ='AP';
 		var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
+	   basicCommitteeIdsArray.push(4);
       
 	   
        var startDateString = '01/01/2014';
@@ -104,8 +243,210 @@ function getDistrictWiseCommitteesCountReport(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#levelWiseBasicCommittees").html('');
+			buildgetLevelWiseBasicCommitteesCountReport(result);
 			
+		});
+	}
+	
+	function getProperLocationLevelName(levelName){
+		var properName = "";
+		if(levelName == "Village"){
+			properName = "Village / Ward ";
+		}else if(levelName == "Mandal"){
+			properName = "Mandal / Town / Division ";
+		}else{
+			properName = levelName;
+		}
+		return properName;
+	}
+	
+	function buildgetLevelWiseBasicCommitteesCountReport(result)
+	{
+		$("#levelWiseBasicCommittees").html('');
+		
+		var locationLevelNameArray =[];
+		//var categories = [ "specialword", "word1", "word2" ],
+        //found = $.inArray('specialword1', categories);
+		
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<ul class="villageWardUl">';
+			var length = result.length - 1;
+			for(var i = length; i >= 0; i--){
+				
+				if(result[i].subList !=null && result[i].subList.length > 0){
+					for(var j in result[i].subList){
+						
+						str+='<li>';
+						var properName = getProperLocationLevelName(result[i].name);
+						if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+							locationLevelNameArray.push(properName);
+							str+='<h4>'+properName+' Level</h4>';
+						}
+						str+='<div id="mainCommittees'+i+''+j+'" class="chartLi" ></div>';
+						str+='</li>';
+					}
+				}
+										
+            }
+			str+='<ul>';
 			
+		}
+	$("#levelWiseBasicCommittees").html(str);
+		if(result != null && result.length > 0){
+			var length = result.length - 1;
+			for(var i = length; i >= 0; i--){
+				
+				if(result[i].subList !=null && result[i].subList.length > 0){
+					for(var j in result[i].subList){
+						var committeeName = result[i].subList[j].name;
+						var completedPerc = [];
+						var startedPerc = [];
+						var notStartedPerc = [];
+						if(result[i].subList[j].completedPerc == null || result[i].subList[j].completedPerc == 0){
+							completedPerc.push(" - ")
+						}else{
+							completedPerc.push(result[i].subList[j].completedPerc)
+						}
+						if(result[i].subList[j].startedPerc == null || result[i].subList[j].startedPerc == 0){
+							startedPerc.push(" - ")
+						}else{
+							startedPerc.push(result[i].subList[j].startedPerc)
+						}
+						if(result[i].subList[j].notStartedPerc == null || result[i].subList[j].notStartedPerc == 0){
+							notStartedPerc.push(" - ")
+						}else{
+							notStartedPerc.push(result[i].subList[j].notStartedPerc) 
+						}
+						
+						//if(committeeName == "Main")
+						
+						
+						$(function () {
+							$('#mainCommittees'+i+''+j+'').highcharts({
+								colors: ['#F56800','#53BF8B','#A1B1BE'],
+								chart: {
+									type: 'column',
+									
+								},
+								title: {
+									text: committeeName,
+									style: {
+											fontSize: '16px',
+											fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+											textTransform: "uppercase"
+											
+									}
+								},
+								subtitle: {
+									text: null
+								},
+								 xAxis: {
+									 min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									labels: {
+										enabled: false,
+									}
+								},
+								yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: true,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								tooltip: {
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
+									shared: true
+								},
+								legend: {
+									enabled: true,
+									align: 'left'
+							
+								},
+								plotOptions: {
+									column: {
+										  stacking: 'percent',
+										dataLabels:{
+											enabled: true,
+											formatter: function () {
+												if (this.y > 0) return this.y + '%';
+												else return '';
+											}
+										},
+										
+									},
+								},
+								 series: [{
+									name: 'Started',
+									data: startedPerc 
+								}, {
+									name: 'Completed',
+									data: completedPerc
+								}, {
+									name: 'Yet To Start',
+									data: notStartedPerc
+								}]
+							});
+						});	
+						
+					}
+				}
+				
+			}
+		}
+		
+		
+		$(".villageWardUl").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 4,
+			 infinite: false,
+			  responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 4,
+					slidesToScroll: 4,
+					infinite: false,
+					dots: false
+				  }
+				},
+				{
+				  breakpoint: 800,
+				  settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
 		});
 	}
 	
@@ -417,337 +758,7 @@ function getDistrictWiseCommitteesCountReport(){
 		});
 	}
 	
-	function moreBlocks()
-	{
-		
-		$(function () {
-			$('#mainCommittees').highcharts({
-				colors: ['#F56800','#53BF8B','#A1B1BE'],
-				chart: {
-					type: 'pie',
-					options3d: {
-						enabled: true,
-						alpha: 45
-					}
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				
-				plotOptions: {
-					pie: {
-						innerSize: 100,
-						depth: 45,
-						dataLabels:{
-							enabled: false
-						},
-						showInLegend: false
-					},
-					
-					
-				},
-				series: [{
-					name: 'Delivered amount',
-					data: [
-						['Started', 8],
-						['Completed', 3],
-						['Yet To Start', 1]
-					]
-				}]
-			}, function (chart) {
-				var $legend = ' ';
-				$legend = $('#customLegend');
-		
-				$.each(chart.series[0].data, function (j, data) {
-		
-					$legend.append('<li class="item"><div class="symbol" style="background-color:'+data.color+'"></div><div class="serieName">' + data.name + '</div></li>');
-		
-				});
-				
-				$('#customLegend .item').click(function(){
-					$(this).toggleClass("disabled");
-					var inx = $(this).index(),
-						point = chart.series[0].data[inx];
-				   
-					if(point.visible)
-					{
-						point.setVisible(false);
-					}else
-					{
-						point.setVisible(true);
-					}
-				});        
-		
-			});
-		});
-		$(function () {
-			$('#teluguYuvatha').highcharts({
-				colors: ['#F56800','#53BF8B','#A1B1BE'],
-				chart: {
-					type: 'pie',
-					options3d: {
-						enabled: true,
-						alpha: 45
-					}
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				
-				plotOptions: {
-					pie: {
-						innerSize: 100,
-						depth: 45,
-						dataLabels:{
-							enabled: false
-						},
-						showInLegend: false
-					},
-					
-					
-				},
-				series: [{
-					name: 'Delivered amount',
-					data: [
-						['Started', 8],
-						['Completed', 3]
-					]
-				}]
-			}, function (chart) {
-				var $legend = ' ';
-				$legend = $('#customLegend1');
-		
-				$.each(chart.series[0].data, function (j, data) {
-		
-					$legend.append('<li class="item"><div class="symbol" style="background-color:'+data.color+'"></div><div class="serieName">' + data.name + '</div></li>');
-		
-				});
-				
-				$('#customLegend1 .item').click(function(){
-					$(this).toggleClass("disabled");
-					var inx = $(this).index(),
-						point = chart.series[0].data[inx];
-				   
-					if(point.visible)
-					{
-						point.setVisible(false);
-					}else
-					{
-						point.setVisible(true);
-					}
-				});        
-		
-			});
-		});
-		$(function () {
-			$('#teluguMahila').highcharts({
-				colors: ['#F56800','#53BF8B','#A1B1BE'],
-				chart: {
-					type: 'pie',
-					options3d: {
-						enabled: true,
-						alpha: 45
-					}
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				
-				plotOptions: {
-					pie: {
-						innerSize: 100,
-						depth: 45,
-						dataLabels:{
-							enabled: false
-						},
-						showInLegend: false
-					},
-				},
-				series: [{
-					name: 'Delivered amount',
-					data: [
-						['Started', 8],
-						['Completed', 3],
-					]
-				}]
-			}, function (chart) {
-				var $legend = ' ';
-				$legend = $('#customLegend2');
-		
-				$.each(chart.series[0].data, function (j, data) {
-		
-					$legend.append('<li class="item"><div class="symbol" style="background-color:'+data.color+'"></div><div class="serieName">' + data.name + '</div></li>');
-		
-				});
-				
-				$('#customLegend2 .item').click(function(){
-					$(this).toggleClass("disabled");
-					var inx = $(this).index(),
-						point = chart.series[0].data[inx];
-				   
-					if(point.visible)
-					{
-						point.setVisible(false);
-					}else
-					{
-						point.setVisible(true);
-					}
-				});        
-		
-			});
-		});
-		$(function () {
-			$('#teluguRythu').highcharts({
-				colors: ['#F56800','#53BF8B','#A1B1BE'],
-				chart: {
-					type: 'pie',
-					options3d: {
-						enabled: true,
-						alpha: 45
-					}
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				
-				plotOptions: {
-					pie: {
-						innerSize: 100,
-						depth: 45,
-						dataLabels:{
-							enabled: false
-						},
-						showInLegend: false
-					},
-				},
-				series: [{
-					name: 'Delivered amount',
-					data: [
-						['Started', 8],
-						['Completed', 3],
-					]
-				}]
-			}, function (chart) {
-				var $legend = ' ';
-				$legend = $('#customLegend3');
-		
-				$.each(chart.series[0].data, function (j, data) {
-		
-					$legend.append('<li class="item"><div class="symbol" style="background-color:'+data.color+'"></div><div class="serieName">' + data.name + '</div></li>');
-		
-				});
-				
-				$('#customLegend3 .item').click(function(){
-					$(this).toggleClass("disabled");
-					var inx = $(this).index(),
-						point = chart.series[0].data[inx];
-				   
-					if(point.visible)
-					{
-						point.setVisible(false);
-					}else
-					{
-						point.setVisible(true);
-					}
-				});        
-		
-			});
-		});
-		$(".slickPanelSlider").slick({
-		 slide: 'li',
-		 slidesToShow: 3,
-		 slidesToScroll: 3,
-		 infinite: false,
-			  responsive: [
-				{
-				  breakpoint: 1024,
-				  settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: false,
-					dots: false
-				  }
-				},
-				{
-				  breakpoint: 800,
-				  settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				  }
-				},
-				{
-				  breakpoint: 600,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				},
-				{
-				  breakpoint: 480,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				}
-				// You can unslick at a given breakpoint now by adding:
-				// settings: "unslick"
-				// instead of a settings object
-			  ]
-		});
-		$(".villageWardUl").slick({
-			 slide: 'li',
-			 slidesToShow: 3,
-			 slidesToScroll: 3,
-			 infinite: false,
-			  responsive: [
-				{
-				  breakpoint: 1024,
-				  settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: false,
-					dots: false
-				  }
-				},
-				{
-				  breakpoint: 800,
-				  settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				  }
-				},
-				{
-				  breakpoint: 600,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				},
-				{
-				  breakpoint: 480,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				}
-				// You can unslick at a given breakpoint now by adding:
-				// settings: "unslick"
-				// instead of a settings object
-			  ]
-		});
-	}
+	
 	
 	$(document).on("click",".iconExpand",function(){
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -779,10 +790,8 @@ function getDistrictWiseCommitteesCountReport(){
 	});
 	$(document).on("click",".moreBlocksIcon",function(){
 		$(".moreBlocks").toggle();
-		setTimeout(function(){
-			moreBlocks();
-			customBuildGraph();
-		},1000);
+		getLevelWiseBasicCommitteesCountReport();
+		customBuildGraph();
 	});
 	$(document).on("click",".activeUlCls li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
