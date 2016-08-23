@@ -5840,7 +5840,7 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 		 Date lowerRange = null;
 		 Date expDate = null;
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		 SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+		 SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");   
 		 if(expireDate != null){
 			 expDate = sdf2.parse(expireDate); 
 			 lowerRange = expDate;  
