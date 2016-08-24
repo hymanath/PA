@@ -25,6 +25,8 @@ public class CommitteeDataVO implements Serializable{
 	private Double completedPerc = 0.0;
 	private Double notStartedPerc = 0.0;
 	
+	private String locationLevelName;
+	
 	public Long getCompletedCount() {
 		return completedCount;
 	}
@@ -102,6 +104,12 @@ public class CommitteeDataVO implements Serializable{
 	}
 	public void setNotStartedPerc(Double notStartedPerc) {
 		this.notStartedPerc = notStartedPerc;
+	}
+	public String getLocationLevelName() {
+		return locationLevelName;
+	}
+	public void setLocationLevelName(String locationLevelName) {
+		this.locationLevelName = locationLevelName;
 	}
 	
 }
