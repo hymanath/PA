@@ -91,7 +91,7 @@
 											<div id="positionErrVid" style="color:red;"></div> 
 										</div>
 										<div class="col-md-3 col-sm-6 col-xs-12">
-											<label>Date</label>
+											<label>Expire Date</label>  
 											<div class="input-group"><input type="text" id="DateRanges" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div> 
 										</div>
 								</div>
@@ -230,7 +230,12 @@ function buildPage(){
 			$('#departmentId').html('<option value="0">ALL</option>');
 			if(result != null && result.length > 0){
 				for(var i in result){
-					$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					if(result[i].id == deptId){
+						$('#departmentId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');    
+					}else{
+						$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+					
 				}
 				$("#departmentId").trigger("chosen:updated");
 			}
@@ -249,7 +254,12 @@ function buildPage(){
 			$('#corporationId').html('<option value="0">ALL</option>');
 			if(result != null && result.length > 0){  
 				for(var i in result){
-					$('#corporationId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');  
+					if(result[i].id == boardId){ 
+						$('#corporationId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');  
+					}else{
+						$('#corporationId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');  
+					}
+					
 				}
 				$("#corporationId").trigger("chosen:updated");	  			
 			}
@@ -266,7 +276,12 @@ function buildPage(){
 			$('#positionId').html('<option value="0">ALL</option>');
 			if(result != null && result.length > 0){
 				for(var i in result){
-					$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					if(result[i].id == positionId){  
+						$('#positionId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');
+					}else{
+						$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+					
 				}
 				$("#positionId").trigger("chosen:updated");  
 			}
