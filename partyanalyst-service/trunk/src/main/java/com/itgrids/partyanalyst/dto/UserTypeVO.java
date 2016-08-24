@@ -32,6 +32,7 @@ public class UserTypeVO implements Serializable{
 	private Long completedCount = 0l;
 	private Double completedPerc = 0.0;
 	
+	
 	public Long getId() {
 		return id;
 	}
@@ -147,5 +148,6 @@ public class UserTypeVO implements Serializable{
 	public void setCompletedPerc(Double completedPerc) {
 		this.completedPerc = completedPerc;
 	}
+	
 	
 }

@@ -1584,28 +1584,30 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
-			
 			sbS.append(",model.userAddress.state.stateId ");
-			/*if(committeeBO.getStateIds().contains(1l) && committeeBO.getStateIds().contains(36l)){
-				str.append(" and model.state in ('AP','TS') ");
-			}else if(committeeBO.getStateIds().contains(1l)){
-				str.append(" and model.state = 'AP' ");
-			}else if(committeeBO.getStateIds().contains(36l)){
-				str.append(" and model.state = 'TS' ");
-			}*/
 			sbM.append(" and model.userAddress.state.stateId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.state.stateId ");
 		}
-		
-		if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
-			sbS.append(",model.userAddress.district.districtId");
+		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			
+			sbS.append(",model.userAddress.district.districtId ");
 			sbM.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.district.districtId ");
+			
+		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+			
+			sbS.append(",model.userAddress.parliamentConstituency.constituencyId ");
+			sbM.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
+			sbE.append(" group by model.userAddress.parliamentConstituency.constituencyId ");
+			
 		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			
 			sbS.append(",model.userAddress.constituency.constituencyId");
 			sbM.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.constituency.constituencyId ");
+			
 		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			
 			sbS.append(",model.userAddress.tehsil.tehsilId ");
 			sbM.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group bymodel.userAddress.tehsil.tehsilId ");
@@ -1669,5 +1671,148 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
+    
+    public List<Object[]> committeesPerformanceCohort(CommitteeInputVO committeeBO){
+    	
+    	/*select  ua.constituency_id,tc.tdp_basic_committee_id,tbc.name,count(distinct tc.tdp_committee_id)
+ 	   from    tdp_committee tc 
+ 	           join  tdp_basic_committee tbc on tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id
+ 	           join  tdp_committee_level tcl on tc.tdp_committee_level_id = tcl.tdp_committee_level_id
+ 	           
+ 	           join user_address ua on tc.address_id = ua.user_address_id
+ 	           
+ 	           
+ 	   where   tbc.tdp_basic_committee_id in (1,2,3) and tcl.tdp_committee_level_id in (6,8)  and 
+ 	   
+ 	           ua.district_id in (19,23)
+ 	           
+ 	   group  by ua.constituency_id;*/
+    	
+    	StringBuilder sbS = new StringBuilder();
+		StringBuilder sbM = new StringBuilder();
+		StringBuilder sbE = new StringBuilder();
+		
+		sbS.append("select count(distinct model.tdpCommitteeId),model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name ");//2
+		
+		sbE.append(" group by model.tdpBasicCommittee.tdpBasicCommitteeId ");
+		
+		if(committeeBO.getGroupingLocation().equalsIgnoreCase("State")){
+			sbS.append(" ,model.userAddress.state.stateId,model.userAddress.state.stateName ");//4
+			sbE.append(" ,model.userAddress.state.stateId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("District")){
+			sbS.append(" ,model.userAddress.district.districtId,model.userAddress.district.districtName ");//4
+			sbE.append(" ,model.userAddress.district.districtId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Parliament")){
+			sbS.append(" ,model.userAddress.parliamentConstituency.constituencyId,model.userAddress.parliamentConstituency.name ");//4
+			sbE.append(" ,model.userAddress.parliamentConstituency.constituencyId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Constituency")){
+			sbS.append(" ,model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");//4
+			sbE.append(" ,model.userAddress.constituency.constituencyId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Mandal")){
+			sbS.append(" ,model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName ");//4
+			sbE.append(" ,model.userAddress.tehsil.tehsilId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("localElectionBody")){
+			sbS.append(" ,model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name " +//4
+					   " ,model.userAddress.localElectionBody.electionType.electionTypeId,model.userAddress.localElectionBody.electionType.electionType ");//6
+			sbE.append(" ,model.userAddress.localElectionBody.localElectionBodyId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Village")){
+			sbS.append(" ,model.userAddress.panchayat.panchayatId,model.userAddress.panchayat.panchayatName ");//10
+			sbE.append(" ,model.userAddress.panchayat.panchayatId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Ward")){
+			sbS.append(" ,model.userAddress.ward.constituencyId,model.userAddress.ward.name ");//12
+			sbE.append(" ,model.userAddress.ward.constituencyId ");
+		}
+		
+		sbM.append(" from  TdpCommittee model " +
+				  "  where model.tdpCommitteeLevel.tdpCommitteeLevelId in (:tdpCommitteeLevelIds) ");
+				
+		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size() >0l){
+			sbM.append(" and model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+		}
+		
+		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+			sbS.append(",model.userAddress.state.stateId,model.userAddress.state.stateName ");
+			sbM.append(" and model.userAddress.state.stateId in (:userAccessLocationValues) ");
+		}
+		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			
+			sbS.append(",model.userAddress.district.districtId,model.userAddress.district.districtName ");
+			sbM.append(" and model.userAddress.district.districtId in (:userAccessLocationValues) ");
+			
+		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+			
+			sbS.append(",model.userAddress.parliamentConstituency.constituencyId,model.userAddress.parliamentConstituency.name ");
+			sbM.append(" and model.userAddress.parliamentConstituency.constituencyId in (:userAccessLocationValues) ");
+			
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			
+			sbS.append(" ,model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");
+			sbM.append(" and model.userAddress.constituency.constituencyId in (:userAccessLocationValues) ");
+			
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			
+			sbS.append(",model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName ");
+			sbM.append(" and model.userAddress.tehsil.tehsilId in (:userAccessLocationValues) ");
+		}
+		
+		if( committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
+			
+			if(committeeBO.getStatus().equalsIgnoreCase("started")){
+				sbM.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' ");
+				if( committeeBO.getStartDate()!=null){
+					sbM.append( " and date(model.startedDate)>=:startDate " );
+				}
+				if(committeeBO.getEndDate()!=null){
+					sbM.append( " and date(model.startedDate)<=:endDate " );
+				}
+			}
+			else if(committeeBO.getStatus().equalsIgnoreCase("completed")){
+				sbM.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+				if( committeeBO.getStartDate()!=null){
+					sbM.append( " and date(model.completedDate)>=:startDate " );
+				}
+				if(committeeBO.getEndDate()!=null){
+					sbM.append( " and date(model.completedDate)<=:endDate " );
+				}
+			}else if(committeeBO.getStatus().equalsIgnoreCase("notStarted")){
+				sbM.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			}
+		}
+			
+		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+			sbM.append(" and model.userAddress.state.stateId = :stateId ");
+		}
+        
+		StringBuilder sbf = new StringBuilder().append(sbS).append(sbM).append(sbE);
+		Query query = getSession().createQuery(sbf.toString());
+		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size() >0l){
+			query.setParameterList("basicCommitteeIds", committeeBO.getBasicCommitteeIds());
+		}
+		query.setParameterList("tdpCommitteeLevelIds",committeeBO.getTdpCommitteeLevelIds()); 
+		
+		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+			query.setParameterList("userAccessLocationValues",committeeBO.getStateIds());
+		}
+		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			query.setParameterList("userAccessLocationValues",committeeBO.getDistrictIds());
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			query.setParameterList("userAccessLocationValues",committeeBO.getAssemblyConstIds());
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			query.setParameterList("userAccessLocationValues",committeeBO.getTehsilIds());
+		}
+		
+		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
+			if(committeeBO.getStartDate()!=null){
+				query.setDate("startDate",committeeBO.getStartDate());
+			}
+			if(committeeBO.getEndDate()!=null){
+				query.setDate("endDate",committeeBO.getEndDate());
+			}
+		}
+		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+			query.setParameter("stateId",committeeBO.getStateId());
+		}
+		return query.list();
+    }
     
 }
