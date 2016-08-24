@@ -974,6 +974,7 @@
 				    <value>com.itgrids.partyanalyst.model.PartyEventType</value>
 				    <value>com.itgrids.partyanalyst.model.AlertCommentAssignee</value>
 				     <value>com.itgrids.partyanalyst.model.DashboardComment</value>
+				     <value>com.itgrids.partyanalyst.model.TdpCadreHealthReport</value>
 				 </list>
 			
 		</property>
