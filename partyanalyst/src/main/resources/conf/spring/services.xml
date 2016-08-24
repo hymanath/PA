@@ -3389,5 +3389,24 @@
 	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
 	    <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
 	</bean>
+	
+	<bean id="coreDashboardGenericService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardGenericService">
+	    <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
+	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
+		<property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
+		<property name="delimitationConstituencyAssemblyDetailsDAO"  ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+	</bean>
+	
+	<bean id="coreDashboardMainService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardMainService">
+		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"></property>
+	    <property name="tdpCommitteeDAO"  ref="tdpCommitteeDAO"></property>
+	    <property name="tdpCommitteeLevelDAO"  ref="tdpCommitteeLevelDAO"></property>
+	    <property name="tdpBasicCommitteeDAO"  ref="tdpBasicCommitteeDAO"></property>
+	    <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
+	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
+	    <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
+	</bean>
+	
 </beans>		
 	

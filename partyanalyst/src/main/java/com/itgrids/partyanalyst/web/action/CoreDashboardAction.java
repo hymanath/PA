@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
 import com.opensymphony.xwork2.Action;
@@ -42,6 +43,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
+	private ICoreDashboardMainService coreDashboardMainService;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -138,6 +140,11 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setUserTypeVOList(List<List<UserTypeVO>> userTypeVOList) {
 		this.userTypeVOList = userTypeVOList;
+	}
+	
+	public void setCoreDashboardMainService(
+			ICoreDashboardMainService coreDashboardMainService) {
+		this.coreDashboardMainService = coreDashboardMainService;
 	}
 
 	//Implementation method
@@ -476,8 +483,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String startDateString = jObj.getString("startDateString");
 			String endDateString = jObj.getString("endDateString");
 			
-			userTypeVOList = coreDashboardService1.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
-			
+			//userTypeVOList = coreDashboardService1.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
 		}
