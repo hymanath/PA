@@ -7429,17 +7429,14 @@ function getNominatedPostReportFiles() {
     });
 	
 	function getLocationWisePartyMeetings(){
-	   
-	   $('#partyMeetingsLocWiseDiv').html('<center><img src="images/icons/loading.gif" style="width: 50px; height: 50px; margin-top: 10px;"></center>'); 
-	  
-	  
-	  
+		$('#noteId').html("");  
+	   $('#partyMeetingsLocWiseDiv').html('<center><img src="images/icons/loading.gif" style="width: 50px; height: 50px; margin-top: 10px;"></center>');
 	   var dates = $("#partyMeetingDateId").val();
 	   var startDateString = "";
 	   var endDateString = "";
 		if($.trim(dates).length > 0){
 		   var dates = dates.split("-");
-		   startDateString = dates[0].trim();
+		   startDateString = dates[0].trim();  
 		   endDateString = dates[1].trim();
 		}
 
@@ -7484,34 +7481,48 @@ function getNominatedPostReportFiles() {
 			if(result[0]!=null && result[0].subList!=null && result[0].subList.length > 0){
 			  for(var i in result[0].subList){
 				  if(result[0].subList[i].name == "VILLAGE"){
-					  str+='<th colspan="7" > VILLAGE / WARD</th>';
+					  str+='<th colspan="5" style="background-color:#F0E68C;"> VILLAGE / WARD</th>';
 				  }else if(result[0].subList[i].name == "MANDAL"){
-					   str+='<th colspan="7"> MANDAL / MUNCIPALITY</th>';  
+					   str+='<th colspan="5" style="background-color:#FAFAD2;"> MANDAL / MUNCIPALITY</th>';  
 				  }else{
-					  str+='<th colspan="7">'+result[0].subList[i].name+'</th>';    
+					  if(result[0].subList[i].name=="DISTRICT"){
+						  str+='<th colspan="5" style="background-color:#FAFAD2;">'+result[0].subList[i].name+'</th>';
+					  }else{
+						  str+='<th colspan="5" style="background-color:#F0E68C;">'+result[0].subList[i].name+'</th>';     
+					  }   
 				  }
 			  }
 			}	
 		str+='</tr>';
 		
 		str+='<tr>';
-			if(result[0].subList!=null && result[0].subList.length>0){
+			if(result[0].subList!=null && result[0].subList.length>0){  
+				var locationListJsonArr =  {"0":"DISTRICT","1":"CONSTITUENCY","2":"MANDAL","3":"VILLAGE"}; 
 				var locationsCount = result[0].subList.length;
+				//debugger;
 				for(var i=0;i<locationsCount;i++){
 				   str+='<th rowspan="2">Total</th>';
 				   if(result[0].subList[0].subList != null && result[0].subList[0].subList.length>0){
 					   for(var j in result[0].subList[0].subList){
-						  str+='<th colspan="2">'+result[0].subList[0].subList[j].name+'</th>';
+						  if((locationListJsonArr[i] == "DISTRICT") && (result[0].subList[0].subList[j].name == "Ivr")) {
+							  //do nothing
+						  }else{
+							  if((locationListJsonArr[i] == "CONSTITUENCY" || locationListJsonArr[i] == "MANDAL" || locationListJsonArr[i] == "VILLAGE") &&  (result[0].subList[0].subList[j].name == "Attendance")){
+							  	//do nothing
+							  }else{
+								  str+='<th colspan="2" style="width:10%;">'+result[0].subList[0].subList[j].name+'</th>';         
+							  }
+						  }  
 					   }
-				   }
+				   }  
 				}
 			}
 		str+='</tr>';
 		
 		str+='<tr>';
-			var count = result[0].subList.length * 3;
-			for( var i =0; i<count;i++){
-				str+='<th>C</th>';
+			var count = result[0].subList.length * 2;     
+			for( var i =0; i<count;i++){  
+				str+='<th>&nbsp&nbspC</th>';        
 				str+='<th>NC</th>';
 			}
 		str+='</tr>';
@@ -7529,21 +7540,32 @@ function getNominatedPostReportFiles() {
 				  for(var j in result[i].subList){
 					   //planned count
 					   if(result[i].subList[j].plannedCount != null && result[i].subList[j].plannedCount > 0){
+						   var location = result[i].subList[j].name;
 							str+='<td data-toggle="modal" data-target="#partyMeetingsModalId" attr_level_name="'+result[i].subList[j].name+'" attr_year_id="'+result[i].year+'" attr_month_id="'+result[i].month+'" class="summaryCls" style="cursor:pointer;color: #337ab7;">'+result[i].subList[j].plannedCount+'</td>';   
 					   }else{
-							str+='<td>  </td>';
+							str+='<td> - </td>';  
 						}
+						
 					   //conducted not conducted counts.
 					   if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 						   for(var k in result[i].subList[j].subList){
-							   //conducted count.
-						      if(result[i].subList[j].subList[k].conductedCount != null && result[i].subList[j].subList[k].conductedCount > 0){
-								str+='<td>'+result[i].subList[j].subList[k].conductedCount+'</td>';
-							  }else{
-							    str+='<td> - </td>';
-							  }
+							   if(result[i].subList[j].subList[k].name == "Ivr" && location == "DISTRICT"){
+								   
+							   }else{
+								   if((location == "CONSTITUENCY" || location == "MANDAL" || location == "VILLAGE") && (result[i].subList[j].subList[k].name == "Attendance")){
+									   
+								   }else{
+									   //conducted count.   
+									if(result[i].subList[j].subList[k].conductedCount != null && result[i].subList[j].subList[k].conductedCount > 0){
+										str+='<td>'+result[i].subList[j].subList[k].conductedCount+'</td>';
+									}else{
+										str+='<td> - </td>';
+									}
+								   }
+								    
+							   }
 							  //not conducted count.
-							  if(result[i].subList[j].subList[k].name == 'Attendance'){
+							  if(result[i].subList[j].subList[k].name == 'Attendance' && location == "DISTRICT"){      
 								  var plannedCount = result[i].subList[j].plannedCount;
 								  var conductedCount = result[i].subList[j].subList[k].conductedCount; 
 								  var notConductedCount = plannedCount - conductedCount;
@@ -7553,12 +7575,23 @@ function getNominatedPostReportFiles() {
 									  str+='<td> - </td>';
 								  }
 							  }else{
-								  if(result[i].subList[j].subList[k].notConductedCount != null && result[i].subList[j].subList[k].notConductedCount>0){
-									str+='<td>'+result[i].subList[j].subList[k].notConductedCount+'</td>';
+								  if(result[i].subList[j].subList[k].name == "Ivr" && location == "DISTRICT"){
+									  
 								  }else{
-							        str+='<td> - </td>';
-							      }
-							  }
+										if((location == "CONSTITUENCY" || location == "MANDAL" || location == "VILLAGE") && (result[i].subList[j].subList[k].name == "Attendance")){
+									   
+										}else{
+											if(result[i].subList[j].subList[k].notConductedCount != null && result[i].subList[j].subList[k].notConductedCount>0){
+												str+='<td>'+result[i].subList[j].subList[k].notConductedCount+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}   
+									   
+										}
+										
+								  }
+								  
+							  }  
 							  
 						   }
 					   }
@@ -7571,6 +7604,7 @@ function getNominatedPostReportFiles() {
 		str+='</table>';
 	str+='</div>';
      $('#partyMeetingsLocWiseDiv').html(str);
+     $('#noteId').html("<strong >Note:&nbsp&nbsp</strong>C:&nbsp<span style='color:#337ab7;'>Conducted</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspNC:&nbsp<span style='color:#337ab7;'>Not Conducted</span>"); 
      $('.tablePartyMeetings').dataTable({
 		"iDisplayLength": 15,
 		"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
@@ -7631,7 +7665,7 @@ function getNominatedPostReportFiles() {
   }
   
 	$(document).on('click','.summaryCls',function(){
-		
+		var location = $(this).attr("attr_level_name");
 		var locationDetailsObj = getLocationTypeAndValue();
 	    var headingName = locationDetailsObj["headingName"];
 		
@@ -7678,12 +7712,12 @@ function getNominatedPostReportFiles() {
 		  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		if(result != null && result.length > 0){ 
-			buildSummary(result);
+			buildSummary(result,location);
 		}
 		});
 	});
 	
-	function buildSummary(result){
+	function buildSummary(result,location){
 		var conducted = 0;
 		var notConducted = 0;
 		var mayBe = 0;
@@ -7695,7 +7729,10 @@ function getNominatedPostReportFiles() {
 				str+='<th>Party Meeting Name</th>';
 				str+='<th>Conducted Date </th>';
 				str+='<th>Party Office Status</th>';
-				str+='<th>IVR Status</th>';
+				if(location != "DISTRICT"){
+					str+='<th>IVR Status</th>';
+				}
+				
 				str+='<th>Meeting Status</th>';
 			str+='</thead>';
 			for(var i in result){
@@ -7716,13 +7753,16 @@ function getNominatedPostReportFiles() {
 						str+='<td> - </td>';
 					}
                     str+='<td>'+getRequiredStatus(result[i].dpoStatus)+'</td>';
- 				    str+='<td>'+getRequiredStatus(result[i].ivrStatus)+'</td>';	
+					if(location != "DISTRICT"){
+						str+='<td>'+getRequiredStatus(result[i].ivrStatus)+'</td>';
+					}  
+ 				    	
 					str+='<td>'+getRequiredStatus(result[i].meetingStatus)+'</td>';	
 					
 				str+='</tr>';
 			}
 		str+='</table>';
-		buildFinalSummary(str,conducted,notConducted,mayBe,totalCount); 
+		buildFinalSummary(str,conducted,notConducted,mayBe,totalCount,location); 
 	}
 	
 	function getRequiredStatus(statusType){
@@ -7738,21 +7778,27 @@ function getNominatedPostReportFiles() {
 		}
 		return requiredType;
 	}
-	function buildFinalSummary(str,conducted,notConducted,mayBe,totalCount){
+	function buildFinalSummary(str,conducted,notConducted,mayBe,totalCount,location){
 		var str1 = '';
 		str1+='<table class="table table-bordered">';
 				str1+='<thead style="background-color:#ECECEC">';
 					str1+='<th>Total Meetings</th>';
 					str1+='<th>Conducted Count</th>';
 					str1+='<th>Not Conducted Count</th>';
-					str1+='<th>May Be Count</th>';
+					if(location != "DISTRICT"){
+						str1+='<th>May Be Count</th>';
+					}
+					
 				str1+='</thead>';
 				str1+='<tr>';
 					str1+='<td>'+totalCount+'</td>';
 					str1+='<td>'+conducted+'</td>';
 					str1+='<td>'+notConducted+'</td>';
-					str1+='<td>'+mayBe+'</td>';
-				str1+='</tr>';
+					if(location != "DISTRICT"){
+						str1+='<td>'+mayBe+'</td>';  
+					}
+					
+				str1+='</tr>';  
 			str1+='</table>';
 			$("#summaryDivId").html(str1);
 			$("#detailsId").html(str);

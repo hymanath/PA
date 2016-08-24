@@ -959,27 +959,27 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			<div class="col-md-12 col-xs-12">
 				<div class="panel panel-default">
 					<div class="panel-heading partyMeetingsCollapse">
-						<h4 class="panel-title text-bold pointer"><i class="fa fa-user-secret "></i>&nbsp;&nbsp;&nbsp;PARTY MEETINGS
+						<h4 class="panel-title text-bold pointer"><i class="fa fa-user-secret "></i>&nbsp;&nbsp;&nbsp;COMMITTEE MEETINGS
 							<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
 					</div>
 					<div class="panel-body partyMeetingsCollapseBody" style="display:none">
 						<div class="row">
-							<div class="col-md-9 col-xs-12">
+							<div class="col-md-9 col-xs-12" style="font-size: 13px;">
 								<label class="radio-inline">
-									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="village">Village/Ward
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="village">Own Village/Ward
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="mandal">Mandal/Muncipality
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="mandal">Own Mandal/Muncipality
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="assemblyConstituency">Assembly Constituency
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="assemblyConstituency">Own Assembly Constituency
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="parliamentConstituency">Parliament Constituency
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="parliamentConstituency">Own Parliament Constituency
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="district" checked>District
+									<input type="radio" name="partyMetingsLocation" class="partyMeetingsLocCls" value="district" checked>Own District
 								</label>
 							</div>
 							<div class="col-md-3 col-xs-12">
@@ -994,6 +994,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						
 						<div id="partyMeetingsLocWiseDiv">
 						</div>
+						<div id="noteId" style="text-align:center;"></div>  
 						
 					</div>
 				</div>
