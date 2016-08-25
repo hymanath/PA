@@ -106,9 +106,6 @@ public class CoreDashboardService implements ICoreDashboardService{
 		UserDataVO finalVO = new UserDataVO();
 		try{
 			
-			/*List<Object[]> userTypeList = dashboardUserAccessTypeDAO.getUserTypeByUserId(userId);
-			List<Object[]> userLevelsList = dashboardUserAccessLevelDAO.getUserAccessLevelAndValues(userId);*/
-			
 			List<Object[]> userTypeList = activityMemberAccessTypeDAO.getActivityMemberUserAccessTypeByUserId(userId);
 			List<Object[]> userLevelsList = activityMemberAccessLevelDAO.getActivityMemberUserAccessLevelAndValues(userId);
 			
@@ -119,7 +116,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 				finalVO.setUserTypeId( obj[0]!= null ? (Long)obj[0] : 0l);
 				finalVO.setUserType(obj[1]!= null ? obj[1].toString() : "");
 			}
-			if( userLevelsList != null && userLevelsList.size()>0){
+			if(userLevelsList != null && userLevelsList.size()>0){
 				for (Object[] obj : userLevelsList) {
 					finalVO.setUserAccessLevelId( obj[0]!= null ? (Long)obj[0] : 0l);
 					finalVO.setUserAccessLevel(obj[1]!= null ? obj[1].toString() : "");
@@ -129,12 +126,40 @@ public class CoreDashboardService implements ICoreDashboardService{
 					finalVO.getUserAccessLevelValuesList().add(obj[2]!= null ? (Long)obj[2] : 0l);
 				}
 			}
+			
 		}catch(Exception e){
 			LOG.error("error occurred in getUserBasicDetails() of CoreDashboardService class",e);
 		}
 		return finalVO;
 	}
 	
+    public Map<Long,List<UserDataVO>> getAllChildUserTypesAndItsParents(){
+		
+		Map<Long,List<UserDataVO>> userTypesMap = new HashMap<Long, List<UserDataVO>>();
+		
+		List<Object[]> list  = userTypeRelationDAO.getParentUserTypesAndItsChildUserTypes();
+		if( list != null && list.size() > 0){
+			for( Object[] obj : list){
+				
+				if( obj[0] != null){
+					List<UserDataVO> childUserTypeIds = null;
+					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+					if( childUserTypeIds == null){
+						childUserTypeIds = new ArrayList<UserDataVO>();
+						userTypesMap.put((Long)obj[0],childUserTypeIds);
+					}
+					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+					UserDataVO childVO = new UserDataVO();
+					childVO.setUserId((Long)obj[0]);
+					childVO.setUserTypeId(obj[2]!=null?(Long)obj[2]:0l);
+					childVO.setUserType(obj[3]!=null?obj[3].toString():"");
+				}
+			}
+		}
+		return userTypesMap;
+	}
+    
+    
 	public Map<Long,String> getAllCommitteeLevels(){
 		
 		 Map<Long,String> committeeLevelsMap = new HashMap<Long,String>(0);

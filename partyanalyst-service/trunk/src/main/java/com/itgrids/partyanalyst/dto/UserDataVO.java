@@ -14,6 +14,9 @@ public class UserDataVO implements Serializable{
 	private Long userTypeId;
 	private String userType;
 	
+	private List<UserDataVO> subList;
+	private Long parentUserTypeId;
+	private String parentUserType;
 	
 	public Long getUserId() {
 		return userId;
@@ -51,5 +54,24 @@ public class UserDataVO implements Serializable{
 	public void setUserAccessLevelValuesList(List<Long> userAccessLevelValuesList) {
 		this.userAccessLevelValuesList = userAccessLevelValuesList;
 	}
-
+	public List<UserDataVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<UserDataVO> subList) {
+		this.subList = subList;
+	}
+	public Long getParentUserTypeId() {
+		return parentUserTypeId;
+	}
+	public void setParentUserTypeId(Long parentUserTypeId) {
+		this.parentUserTypeId = parentUserTypeId;
+	}
+	public String getParentUserType() {
+		return parentUserType;
+	}
+	public void setParentUserType(String parentUserType) {
+		this.parentUserType = parentUserType;
+	}
+	
+	
 }
