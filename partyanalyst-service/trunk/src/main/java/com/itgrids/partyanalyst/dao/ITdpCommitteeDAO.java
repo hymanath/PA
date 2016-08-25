@@ -68,6 +68,5 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public Long getCountsForCommittees(CommitteeInputVO committeeBO,String status);
 	public List<Object[]> districtWiseCommitteesCount(CommitteeInputVO committeeBO,String status);
 	public List<Object[]> getLocationWiseCommitteesCountByLocIds(CommitteeInputVO committeeBO);
-	
 	public List<Object[]> committeesPerformanceCohort(CommitteeInputVO committeeBO);
 }
