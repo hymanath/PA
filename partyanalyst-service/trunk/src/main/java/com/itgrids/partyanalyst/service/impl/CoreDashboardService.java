@@ -113,6 +113,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 			
 			if( userTypeList != null && userTypeList.size()>0){
 			    Object[] obj = userTypeList.get(0);
+			    finalVO.setActivityMemberId(obj[2]!=null?(Long)obj[2]:0l);
 				finalVO.setUserTypeId( obj[0]!= null ? (Long)obj[0] : 0l);
 				finalVO.setUserType(obj[1]!= null ? obj[1].toString() : "");
 			}

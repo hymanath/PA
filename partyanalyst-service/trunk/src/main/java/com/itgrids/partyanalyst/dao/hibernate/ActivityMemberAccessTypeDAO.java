@@ -16,7 +16,7 @@ public class ActivityMemberAccessTypeDAO extends GenericDaoHibernate<ActivityMem
 	
 	public List<Object[]> getActivityMemberUserAccessTypeByUserId(Long userId){
 		
-		Query query = getSession().createQuery("select model.userTypeId,model.userType.type from ActivityMemberAccessType model " +
+		Query query = getSession().createQuery("select model.userTypeId,model.userType.type,model.activityMember.activityMemberId from ActivityMemberAccessType model " +
 											  " where  model.activityMember.userId = :userId and model.isActive = 'Y' ");
 		query.setParameter("userId",userId);
 		return query.list();
