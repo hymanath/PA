@@ -1,7 +1,8 @@
-function getCommitteesBasicCountReport(){
+	function getCommitteesBasicCountReport(){
 		
-		var state ='AP';
-		var basicCommitteeIdsArray= [];
+	   var state ='AP';
+	   
+	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
@@ -11,12 +12,12 @@ function getCommitteesBasicCountReport(){
        var startDateString = '01/01/2014';
 	   var endDateString = '11/08/2016';
 		
-		var jsObj ={userAccessLevelId:globalUserAccessLevelId,
-					userAccessLevelValuesArray:globalUserAccessLevelValues,
-					state:state,
-					basicCommitteeIdsArray : basicCommitteeIdsArray,
-					startDateString : startDateString,
- 			        endDateString :   endDateString
+		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
+					  userAccessLevelValuesArray:globalUserAccessLevelValues,
+					  state:state,
+					  basicCommitteeIdsArray : basicCommitteeIdsArray,
+					  startDateString : startDateString,
+ 			          endDateString :   endDateString
 					}
 		
 		$.ajax({
@@ -29,6 +30,180 @@ function getCommitteesBasicCountReport(){
 			
 		});
 	}
+	function getUserTypeWiseCommitteesCompletedCounts(){
+		
+		var state ='AP';
+		var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+      
+	   
+       var startDateString = '01/01/2014';
+	   var endDateString = '11/08/2016';
+		
+		var jsObj ={  
+			          activityMemberId : globalActivityMemberId,
+					  userTypeId : globalUserTypeId,
+			          userAccessLevelId:globalUserAccessLevelId,
+					  userAccessLevelValuesArray:globalUserAccessLevelValues,
+					  
+					  state:state,
+					  basicCommitteeIdsArray : basicCommitteeIdsArray,
+					  startDateString : startDateString,
+ 			          endDateString :   endDateString
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getUserTypeWiseCommitteesCompletedCountsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			
+		});
+	}
+	function getUserTypeWiseCommitteesCompletedCounts1(){
+		
+	   var state ='AP';
+	   var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   
+       var startDateString = '01/01/2014';
+	   var endDateString = '11/08/2016';
+		
+		var jsObj ={  
+			          activityMemberId : globalActivityMemberId,
+					  userTypeId : globalUserTypeId,
+			          userAccessLevelId:globalUserAccessLevelId,
+					  userAccessLevelValuesArray:globalUserAccessLevelValues,
+					  
+					  state:state,
+					  basicCommitteeIdsArray : basicCommitteeIdsArray,
+					  startDateString : startDateString,
+ 			          endDateString :   endDateString
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getUserTypeWiseCommitteesCompletedCountsAction1.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			
+		});
+	}
+	function getLevelWiseBasicCommitteesCountReport(){
+		
+		$("#levelWiseBasicCommittees").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
+		var state ='AP';
+		var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   basicCommitteeIdsArray.push(4);
+      
+	   
+       var startDateString = '01/01/2014';
+	   var endDateString = '11/08/2016';
+		
+		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
+					userAccessLevelValuesArray:globalUserAccessLevelValues,
+					state:state,
+					basicCommitteeIdsArray : basicCommitteeIdsArray,
+					startDateString : startDateString,
+ 			        endDateString :   endDateString
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getLevelWiseBasicCommitteesCountReportAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#levelWiseBasicCommittees").html('');
+			buildgetLevelWiseBasicCommitteesCountReport(result);
+			
+		});
+	}
+	function getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray){
+		
+		
+		$("#districtWiseCommitteesReport").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+		var basicCommitteeIdsArray= [];
+		basicCommitteeIdsArray.push(1);
+		basicCommitteeIdsArray.push(2);
+		basicCommitteeIdsArray.push(3);
+		
+		var state = globalState;
+		
+		var userLocationLevelId = globalUserAccessLevelId;
+		var userLocationLevelValuesArray = globalUserAccessLevelValues;
+		
+		var groupingLocationConsider = 'self';
+		var groupingLocationsArray = [];
+		if(groupingLocationConsider == "self"){
+           if(userLocationLevelId == 2 ){//user_level table
+			   groupingLocationsArray.push("State");
+		   }else if(userLocationLevelId == 3){
+			   groupingLocationsArray.push("District");
+		   }else if(userLocationLevelId == 4){
+			   groupingLocationsArray.push("Parliament");
+		   }else if(userLocationLevelId == 5){
+			   groupingLocationsArray.push("Constituency");
+		   }else if(userLocationLevelId == 6){
+			   groupingLocationsArraypush("Mandal");
+			   groupingLocationsArraypush("LocalElectionbody");
+		   }
+		}else if( groupingLocationConsider == "subLevel"){
+			if(userLocationLevelId == 2 ){//user_level table
+			   groupingLocationsArray.push("District");
+		   }else if(userLocationLevelId == 3){
+			   groupingLocationsArray.push("Constituency");
+		   }else if(userLocationLevelId == 4){
+			   groupingLocationsArray.push("Constituency");
+		   }else if(userLocationLevelId == 5){
+			  groupingLocationsArraypush("Mandal");
+			   groupingLocationsArraypush("LocalElectionbody");
+		   }else if(userLocationLevelId == 6){
+			   groupingLocationsArraypush("Village");
+			   groupingLocationsArraypush("Ward");
+		   }
+		}
+		
+		var committeeStatus = 'all';
+	
+	   
+       var startDateString = '01/01/2014';
+	   var endDateString = '11/08/2016';
+		
+		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
+					basicCommitteeIdsArray : basicCommitteeIdsArray,
+					committeeStatus:committeeStatus,
+					userLocationLevelId:userLocationLevelId,
+					userLocationLevelValuesArray:userLocationLevelValuesArray,
+					groupingLocationsListArray:groupingLocationsArray,
+					startDateString : startDateString,
+ 			        endDateString :   endDateString,
+					state:state
+					}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'committeesPerformanceCohortAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#districtWiseCommitteesReport").html('');
+			buildCommitteesPerformanceCohort(result);
+			
+		});
+	}
+	
 	
 	function buildgetCommitteesBasicCountReport(result){
 		var str='';
@@ -168,41 +343,6 @@ function getCommitteesBasicCountReport(){
         str+='</div>';
 		
 		$("#basicCommitteeCountsDiv").html(str)
-	}
-	
-	
-function getLevelWiseBasicCommitteesCountReport(){
-		
-		$("#levelWiseBasicCommittees").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
-		var state ='AP';
-		var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   basicCommitteeIdsArray.push(4);
-      
-	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
-		
-		var jsObj ={userAccessLevelId:globalUserAccessLevelId,
-					userAccessLevelValuesArray:globalUserAccessLevelValues,
-					state:state,
-					basicCommitteeIdsArray : basicCommitteeIdsArray,
-					startDateString : startDateString,
- 			        endDateString :   endDateString
-					}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'getLevelWiseBasicCommitteesCountReportAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$("#levelWiseBasicCommittees").html('');
-			buildgetLevelWiseBasicCommitteesCountReport(result);
-			
-		});
 	}
 	
 	function getProperLocationLevelName(levelName){
@@ -407,79 +547,7 @@ function getLevelWiseBasicCommitteesCountReport(){
 		});
 	}
 	
-	function getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray){
-		
-		
-		$("#districtWiseCommitteesReport").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
-		var basicCommitteeIdsArray= [];
-		basicCommitteeIdsArray.push(1);
-		basicCommitteeIdsArray.push(2);
-		basicCommitteeIdsArray.push(3);
-		
-		var state = globalState;
-		
-		var userLocationLevelId = globalUserAccessLevelId;
-		var userLocationLevelValuesArray = globalUserAccessLevelValues;
-		
-		var groupingLocationConsider = 'subLevel';
-		var groupingLocationsArray = [];
-		if(groupingLocationConsider == "self"){
-           if(userLocationLevelId == 2 ){//user_level table
-			   groupingLocationsArray.push("State");
-		   }else if(userLocationLevelId == 3){
-			   groupingLocationsArray.push("District");
-		   }else if(userLocationLevelId == 4){
-			   groupingLocationsArray.push("Parliament");
-		   }else if(userLocationLevelId == 5){
-			   groupingLocationsArray.push("Constituency");
-		   }else if(userLocationLevelId == 6){
-			   groupingLocationsArraypush("Mandal");
-			   groupingLocationsArraypush("LocalElectionbody");
-		   }
-		}else if( groupingLocationConsider == "subLevel"){
-			if(userLocationLevelId == 2 ){//user_level table
-			   groupingLocationsArray.push("District");
-		   }else if(userLocationLevelId == 3){
-			   groupingLocationsArray.push("Constituency");
-		   }else if(userLocationLevelId == 4){
-			   groupingLocationsArray.push("Constituency");
-		   }else if(userLocationLevelId == 5){
-			  groupingLocationsArraypush("Mandal");
-			   groupingLocationsArraypush("LocalElectionbody");
-		   }else if(userLocationLevelId == 6){
-			   groupingLocationsArraypush("Village");
-			   groupingLocationsArraypush("Ward");
-		   }
-		}
-		
-		var committeeStatus = 'all';
 	
-	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
-		
-		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
-					basicCommitteeIdsArray : basicCommitteeIdsArray,
-					committeeStatus:committeeStatus,
-					userLocationLevelId:userLocationLevelId,
-					userLocationLevelValuesArray:userLocationLevelValuesArray,
-					groupingLocationsListArray:groupingLocationsArray,
-					startDateString : startDateString,
- 			        endDateString :   endDateString,
-					state:state
-					}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'committeesPerformanceCohortAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$("#districtWiseCommitteesReport").html('');
-			buildCommitteesPerformanceCohort(result);
-			
-		});
-	}
 	
 	function buildCommitteesPerformanceCohort(result){
 		$("#districtWiseCommitteesReport").html('');
@@ -518,7 +586,8 @@ function getLevelWiseBasicCommitteesCountReport(){
 						}else{
 							notStartedPercArray.push(result[i].subList[j].notStartedPerc) 
 						}
-					
+					}
+			}
 						$(function () {
 							$('#mainCommittees'+i+'').highcharts({
 								colors: ['#F56800','#53BF8B','#66728C'],
@@ -591,15 +660,13 @@ function getLevelWiseBasicCommitteesCountReport(){
 								}]
 							});
 						});
-				}
-			}
+				
 			
 		}
 	}else{
 		$("#districtWiseCommitteesReport").html("No Data Available")
 	}	
 }
-	
 	
 	$(document).on("click",".slick-next,.slick-prev",function(){
 		
@@ -624,75 +691,6 @@ function getLevelWiseBasicCommitteesCountReport(){
 		
 	});
 	
-	function getUserTypeWiseCommitteesCompletedCounts(){
-		
-		var state ='AP';
-		var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-      
-	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
-		
-		var jsObj ={
-			          userAccessLevelId:globalUserAccessLevelId,
-					  userAccessLevelValuesArray:globalUserAccessLevelValues,
-					  state:state,
-					  basicCommitteeIdsArray : basicCommitteeIdsArray,
-					  startDateString : startDateString,
- 			          endDateString :   endDateString,
-					  userId :1,
-					  activityMemberId : 0,
-					  userTypeId : globalUserTypeId
-					}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'getUserTypeWiseCommitteesCompletedCountsAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-			
-		});
-	}
-	
-	function getUserTypeWiseCommitteesCompletedCounts1(){
-		
-		var state ='AP';
-		var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-      
-	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
-		
-		var jsObj ={
-			          userAccessLevelId:globalUserAccessLevelId,
-					  userAccessLevelValuesArray:globalUserAccessLevelValues,
-					  state:state,
-					  basicCommitteeIdsArray : basicCommitteeIdsArray,
-					  startDateString : startDateString,
- 			          endDateString :   endDateString,
-					  userId :1,
-					  activityMemberId : 0,
-					  userTypeId : globalUserTypeId
-					}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'getUserTypeWiseCommitteesCompletedCountsAction1.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-			
-		});
-	}
 	
 	function initialiseGraph()
 	{

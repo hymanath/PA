@@ -1,5 +1,5 @@
 
-	function getUserBasicDetails(){
+	/* function getUserBasicDetails(){
 		
 		var jsObj ={userId:globalUserId}
 		$.ajax({
@@ -16,7 +16,7 @@
 				//onLoadCalls();
 			}
 		});
-	}
+	} */
 
 	
 	$(document).on("click",".iconExpand",function(){
