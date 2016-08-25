@@ -1214,6 +1214,9 @@
         </div>
 	</div>
 </div>
+
+<button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
+
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
@@ -1224,11 +1227,18 @@
 <script type="text/javascript">
 /* New Design */
     
-	var globalUserAccessLevelValues = getUserAccessLevelValues();
-	var globalUserId = '${sessionScope.USER.registrationID}';
-	var globalUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
-	var globalUserAccessLevelId = '${requestScope.userDataVO.userAccessLevelId}';
-	var globalState = 'AP';
+	  var loggedInUserId = '${sessionScope.USER.registrationID}';
+	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
+	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
+	  var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
+	  var loggedInUserAccessLevelValues = getLoggedInUserAccessLevelValues();
+	  
+	  var globalActivityMemberId = loggedInUserActivityMemberId;
+	  var globalUserTypeId = loggedInUserTypeId;
+	  var globalUserAccessLevelId = loggedInUserAccessLevelId;
+	  var globalUserAccessLevelValues = loggedInUserAccessLevelValues;
+	  
+	  var globalState = 'AP';
 
 	$(document).ready(function(){
 		//Main header remove
@@ -1238,24 +1248,50 @@
 	
 	onLoadCalls();
 	function onLoadCalls(){
-		
-		
 		getCommitteesBasicCountReport();
-		getLevelWiseBasicCommitteesCountReport();
-		//getUserTypeWiseCommitteesCompletedCounts();
 		getUserTypeWiseCommitteesCompletedCounts1();
-		
-		
 	}
-
-
-	function getUserAccessLevelValues(){
-			var globalUserAccessLevelValues = [];
-			<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
-			  globalUserAccessLevelValues.push( ${userAccessLevelValue} );        
-		   </c:forEach>
-		   return globalUserAccessLevelValues;
+	
+	$(document).on("click",".userStructureClass",function(){
+		
+        var  clickedActivityMemberId = $(this).attr("attr_activityMemberId");
+		var  clickedUserTypeId = $(this).attr("attr_userTypeId");
+		var  clickedUserAccessLevelId =  $(this).attr("attr_userAccessLevelId");
+		var  clickedUserAccessLevelValuesString = $(this).attr("attr_userAccessLevelValuesString");
+		var  clickedUserAccessLevelValuesArray = [];
+		if($.trim(clickedUserAccessLevelValuesString).length > 0){
+			clickedUserAccessLevelValuesArray = clickedUserAccessLevelValuesString.split(",");
 		}
+		//MAKE SELECTED MEMBER DATA AS GLOBAL.
+	    globalActivityMemberId = clickedActivityMemberId;
+	    globalUserTypeId = clickedUserTypeId;
+	    globalUserAccessLevelId = clickedUserAccessLevelId;
+	    globalUserAccessLevelValues = clickedUserAccessLevelValuesArray;
+		
+		onLoadCalls();
+	});
+	
+
+	/* getChildUserTypesByItsParentUserType();
+	
+	function getChildUserTypesByItsParentUserType(){
+		var jsObj = { parentUserTypeId : globalUserTypeId }
+		$.ajax({
+			type : 'POST',
+			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			alert("success");
+		});			 
+	} */
+	function getLoggedInUserAccessLevelValues(){
+		var loggedInUserAccessLevelValues = [];
+		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
+		  loggedInUserAccessLevelValues.push( ${userAccessLevelValue} );        
+	   </c:forEach>
+	   return loggedInUserAccessLevelValues;
+	}
 	
   </script>
 	

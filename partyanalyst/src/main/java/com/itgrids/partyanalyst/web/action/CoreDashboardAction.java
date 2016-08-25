@@ -472,12 +472,19 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	public String getUserTypeWiseCommitteesCompletedCounts1(){
-		
+		LOG.info("Entered into getUserTypeWiseCommitteesCompletedCounts1()  of CoreDashboardAction");
 		try{
-			LOG.info("Entered into getUserTypeWiseCommitteesCompletedCounts1()  of CoreDashboardAction");
+			
+			 HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			 }
+			
 			jObj = new JSONObject(getTask());
 			
-			Long userId = jObj.getLong("userId");
+			Long userId = user.getRegistrationID();
+			
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
 			
@@ -494,7 +501,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String startDateString = jObj.getString("startDateString");
 			String endDateString = jObj.getString("endDateString");
 			
-			//userTypeVOList = coreDashboardService1.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
 			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
