@@ -17,6 +17,7 @@ public class UserDataVO implements Serializable{
 	private List<UserDataVO> subList;
 	private Long parentUserTypeId;
 	private String parentUserType;
+	private Long activityMemberId;
 	
 	public Long getUserId() {
 		return userId;
@@ -71,6 +72,12 @@ public class UserDataVO implements Serializable{
 	}
 	public void setParentUserType(String parentUserType) {
 		this.parentUserType = parentUserType;
+	}
+	public Long getActivityMemberId() {
+		return activityMemberId;
+	}
+	public void setActivityMemberId(Long activityMemberId) {
+		this.activityMemberId = activityMemberId;
 	}
 	
 	
