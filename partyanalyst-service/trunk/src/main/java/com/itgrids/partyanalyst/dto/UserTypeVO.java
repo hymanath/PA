@@ -30,8 +30,11 @@ public class UserTypeVO implements Serializable{
 	
 	private Long totalCount = 0l;
 	private Long completedCount = 0l;
+	private Long startedCount = 0l;
+	private Long notStartedCount = 0l;
 	private Double completedPerc = 0.0;
-	
+	private Double startedPerc = 0.0;
+	private Double notStartedPerc = 0.0;
 	
 	public Long getId() {
 		return id;
@@ -147,6 +150,30 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setCompletedPerc(Double completedPerc) {
 		this.completedPerc = completedPerc;
+	}
+	public Long getStartedCount() {
+		return startedCount;
+	}
+	public void setStartedCount(Long startedCount) {
+		this.startedCount = startedCount;
+	}
+	public Double getStartedPerc() {
+		return startedPerc;
+	}
+	public void setStartedPerc(Double startedPerc) {
+		this.startedPerc = startedPerc;
+	}
+	public Long getNotStartedCount() {
+		return notStartedCount;
+	}
+	public void setNotStartedCount(Long notStartedCount) {
+		this.notStartedCount = notStartedCount;
+	}
+	public Double getNotStartedPerc() {
+		return notStartedPerc;
+	}
+	public void setNotStartedPerc(Double notStartedPerc) {
+		this.notStartedPerc = notStartedPerc;
 	}
 	
 	

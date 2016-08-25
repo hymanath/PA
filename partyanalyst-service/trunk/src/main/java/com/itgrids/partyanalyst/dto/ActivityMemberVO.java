@@ -13,6 +13,7 @@ public class ActivityMemberVO implements Serializable{
 	private Long userLocationLevelValues;
 	
 	Map<Long,Map<Long,UserTypeVO>> userTypesMap;
+	Map<Long,UserTypeVO> activityMembersMap;
 	Map<Long,Set<Long>> locationLevelIdsMap;
 	
 	public Long getUserId() {
@@ -56,6 +57,12 @@ public class ActivityMemberVO implements Serializable{
 	}
 	public void setLocationLevelIdsMap(Map<Long, Set<Long>> locationLevelIdsMap) {
 		this.locationLevelIdsMap = locationLevelIdsMap;
+	}
+	public Map<Long, UserTypeVO> getActivityMembersMap() {
+		return activityMembersMap;
+	}
+	public void setActivityMembersMap(Map<Long, UserTypeVO> activityMembersMap) {
+		this.activityMembersMap = activityMembersMap;
 	}
 	
 }

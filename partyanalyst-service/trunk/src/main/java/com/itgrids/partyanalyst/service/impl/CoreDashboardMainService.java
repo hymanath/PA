@@ -77,65 +77,44 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	
 	
 	/**
-	  * @param  Long userId
-	  * @param  Long activityMemberId
-	  * @param  Long userTypeId
-	  * @param  String state
-	  * @param  List<Long> basicCommitteeIds
-	  * @param  String startDateString
-	  * @param  String endDateString
-	  * @return List<List<UserTypeVO>>
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	  *  This Service Method is used to get top5 strong or top5 poor usertype committees count. 
 	  *  @since 10-AUGUST-2016
 	  */
-
-   @SuppressWarnings("unused")
-	public List<List<UserTypeVO>> getUserTypeWiseCommitteesCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
+   
+	public List<List<UserTypeVO>> getUserTypeWiseCommitteesCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,List<Long> basicCommitteeIds,String dateString){
 		List<List<UserTypeVO>> userTypesList = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try{ 
-			
-			 ActivityMemberVO activityMemberVO = new ActivityMemberVO();
-		     activityMemberVO.setUserId(userId);
-		     activityMemberVO.setActivityMemberId(activityMemberId);
-		     activityMemberVO.setUserTypeId(userTypeId);
-		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocations(activityMemberVO);//calling generic method.
-		     Map<Long,Map<Long,UserTypeVO>> userTypesMap = activityMemberVO.getUserTypesMap();
-		     Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
-		     
-		     
-			 //Creating Business Object.
+			 
+			//Creating Business Object.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
 		     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
 		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		     committeeBO.setStateId(stateId);
-		     List<Date> datesList = coreDashboardGenericService.getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
-		     committeeBO.setStartDate(datesList.get(0));
-		     committeeBO.setEndDate(datesList.get(1));
-		     
-		     //get commitees count based on location level id and location level values.
-	         
-		     Map<String,UserTypeVO> locationLevelCountsMap = new HashMap<String, UserTypeVO>(0);
-		     
-		     if(locationLevelIdsMap != null && locationLevelIdsMap.size()>0){
-		    	 for(Long accessLevelId : locationLevelIdsMap.keySet()){
-		    		 
-		    		 getRequiredCommitteeLevelIdsByUserAccessLevelId(accessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(accessLevelId)),committeeBO);
-		    		 setAppropriateLocationLevelInputsToBO(accessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(accessLevelId)),committeeBO);
-		    		 
-		    		 committeeBO.setStatus(null);
-		    		 List<Object[]> totalCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
-		    		 
-		    		 committeeBO.setStatus("completed");
-		    		 List<Object[]> completedCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
-		    		 
-	                 setCountsToALocation("total",totalCountList,locationLevelCountsMap,accessLevelId);
-	                 setCountsToALocation("completed",completedCountList,locationLevelCountsMap,accessLevelId);
-		    	 }    
+		     if(dateString != null && !dateString.isEmpty()){
+		    	 committeeBO.setDate(sdf.parse(dateString));
 		     }
 		     
+			 //calling generic method.
+			 ActivityMemberVO activityMemberVO = new ActivityMemberVO();
+		     activityMemberVO.setUserId(userId);
+		     activityMemberVO.setActivityMemberId(activityMemberId);
+		     activityMemberVO.setUserTypeId(userTypeId);
+		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocations(activityMemberVO);
+		     Map<Long,Map<Long,UserTypeVO>> userTypesMap = activityMemberVO.getUserTypesMap();
+		     Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+	         
+		   //get commitees count based on location level id and location level values.
+		     List<String> statusList = new ArrayList<String>();
+		     statusList.add("completed");
+		     committeeBO.setStatusList(statusList);
+		     Map<String,UserTypeVO> locationLevelCountsMap = getCommitteesCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,committeeBO);
+		     
 		     userTypesList = getMemberRelatedCountsOrPercantage(userTypesMap,"counts",locationLevelCountsMap);
-		     getMemberRelatedCountsOrPercantage(userTypesMap,"percanatge",null);
+		     if(userTypesList!=null && userTypesList.size()>0){
+		    	 getMemberRelatedCountsOrPercantage(userTypesMap,"percanatge",null);
+		     }
 		   
 		  //sorting
 		   if(userTypesList != null && userTypesList.size()>0)
@@ -155,25 +134,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		}
 	    return userTypesList;
 	}
-   public void setCountsToALocation(String status,List<Object[]> list,Map<String,UserTypeVO> locationLevelCountsMap,Long accessLevelId){
-		
-	   	 if(list!=null && list.size()>0){
-				 for(Object[] obj : list){
-					 String key = accessLevelId+"_"+(Long)obj[1]; 
-					 UserTypeVO countsVO = locationLevelCountsMap.get(key);
-					 if(countsVO == null){
-						 countsVO = new UserTypeVO();
-						 locationLevelCountsMap.put(key, countsVO);
-					 }
-					 countsVO = locationLevelCountsMap.get(key);
-					 if(status.equalsIgnoreCase("total")){
-						 countsVO.setTotalCount(obj[0]!=null?(Long)obj[0]:0l); 
-					 }else if(status.equalsIgnoreCase("completed")){
-						 countsVO.setCompletedCount(obj[0]!=null?(Long)obj[0]:0l); 
-					 }
-				 }
-			 }
-	    }
+   
 	
 	public List<List<UserTypeVO>> getMemberRelatedCountsOrPercantage(Map<Long,Map<Long,UserTypeVO>> userTypesMap,String type,Map<String,UserTypeVO> locationLevelCountsMap){
 		
@@ -224,54 +185,6 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		   return userTypesList;
     }
 	
-	public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
-		
-		if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
-			
-			inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
-			
-		}else if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
-			
-			inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
-			
-		}else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
-			
-			inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
-			
-	    }else if(userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
-			
-			inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
-			
-	    }else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
-			
-			inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
-		}
-	}
-
-	public void setAppropriateLocationLevelInputsToBO(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
-		
-		if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
-			
-			inputVO.setStateIds(userAccessLevelValues);
-			
-		}else if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
-			
-			inputVO.setDistrictIds(userAccessLevelValues);
-			
-		}else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
-			
-			inputVO.setParliamentConstIds(userAccessLevelValues);
-			
-		}else if(userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
-			
-			inputVO.setAssemblyConstIds(userAccessLevelValues);
-			
-	    }else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
-			
-			inputVO.setTehsilIds(userAccessLevelValues);
-		}
-		
-	}
 	public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new Comparator<UserTypeVO>() {
 	     public int compare(UserTypeVO member2, UserTypeVO member1) {
 
@@ -281,5 +194,147 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	         return perc1.compareTo(perc2);
 	    }
    }; 
-	
+   
+   /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
+	  *  @since 25-AUGUST-2016
+	  */
+   public List<UserTypeVO> getSelectedChildUserTypeMembers(Long parentActivityMemberId,Long childUserTypeId,String state,List<Long> basicCommitteeIds,String dateString){
+	    List<UserTypeVO> activityMembersList = null;
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   try{
+		   
+		     //Creating Business Object.
+		     CommitteeInputVO committeeBO = new CommitteeInputVO();
+		     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
+		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		     committeeBO.setStateId(stateId);
+		     if(dateString != null && !dateString.isEmpty()){
+		    	 committeeBO.setDate(sdf.parse(dateString));
+		     }
+		   
+		     //calling generic method.
+		    ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		     
+		     //get commitees count based on location level id and location level values.
+		     List<String> statusList = new ArrayList<String>();
+		     statusList.add("completed");
+		     statusList.add("started");
+		     committeeBO.setStatusList(statusList);
+		     Map<String,UserTypeVO> locationLevelCountsMap = getCommitteesCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,committeeBO);
+		     
+		     
+		     //add counts to activity members.
+		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap);
+		     if(activityMembersList!=null && activityMembersList.size()>0){
+		    	 setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null);
+		     }
+	   }catch(Exception e){
+		 e.printStackTrace();
+	   }
+	   return activityMembersList;
+   }
+   public List<UserTypeVO> setCommitteeCountsToActivityMembers(Map<Long,UserTypeVO> childActivityMembersMap,String type,Map<String,UserTypeVO> locationLevelCountsMap){
+	   	
+		List<UserTypeVO> activityMembersList = null;
+		
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			   activityMembersList = new ArrayList<UserTypeVO>();
+			   
+			   for(Long activityMemberId:childActivityMembersMap.keySet()){ 
+			     
+				   UserTypeVO memberVO = childActivityMembersMap.get(activityMemberId);
+				   
+				   if(type.equalsIgnoreCase("counts")){
+					   if(memberVO.getLocationValuesSet() != null && memberVO.getLocationValuesSet().size()>0){
+						   for(Long locationValue : memberVO.getLocationValuesSet()){
+							   String key = memberVO.getLocationLevelId()+"_"+locationValue;
+							   UserTypeVO countVO = locationLevelCountsMap.get(key);
+							   if(countVO != null)
+							   {
+								   memberVO.setTotalCount(memberVO.getTotalCount() + countVO.getTotalCount());
+								   memberVO.setCompletedCount(memberVO.getCompletedCount()+countVO.getCompletedCount());
+								   memberVO.setStartedCount(memberVO.getStartedCount()+countVO.getStartedCount());
+								   memberVO.setNotStartedCount(memberVO.getNotStartedCount()+countVO.getNotStartedCount());
+							   }
+						   }
+					   } 
+				   }else if(type.equalsIgnoreCase("percanatge")){
+					   if(memberVO.getTotalCount()!=null && memberVO.getTotalCount() > 0l){
+						   memberVO.setCompletedPerc( coreDashboardGenericService.caclPercantage(memberVO.getCompletedCount(),memberVO.getTotalCount()) );
+						   memberVO.setStartedPerc( coreDashboardGenericService.caclPercantage(memberVO.getStartedCount(),memberVO.getTotalCount()) );
+						   memberVO.setNotStartedPerc( coreDashboardGenericService.caclPercantage(memberVO.getNotStartedCount(),memberVO.getTotalCount()) );
+					   }
+	                }
+		     }
+			   activityMembersList.addAll(childActivityMembersMap.values());
+        }
+		   return activityMembersList;
+    }
+   
+   
+    /**
+	  *  This  Method is used to get the committees count based on given locations. 
+	  */
+   public Map<String,UserTypeVO> getCommitteesCountByLocationLevelIdAndLevelValues(Map<Long,Set<Long>> locationLevelIdsMap,CommitteeInputVO committeeBO){
+	   
+	   Map<String,UserTypeVO> locationLevelCountsMap = new HashMap<String, UserTypeVO>(0);
+	   
+	   if(locationLevelIdsMap != null && locationLevelIdsMap.size()>0){
+	    	 for(Long userAccessLevelId : locationLevelIdsMap.keySet()){
+	    		 
+	    		 //getRequiredCommitteeLevelIdsByUserAccessLevelId(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)),committeeBO);
+	    		 coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)),committeeBO);
+	    		 
+	    		 committeeBO.setStatus(null);
+	    		 List<Object[]> totalCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
+	    		 setCommitteesCountToItsCorrespondingLocation("total",totalCountList,locationLevelCountsMap,userAccessLevelId);
+	    		 
+	    		 if(committeeBO.getStatusList().contains("completed")){
+	    			 committeeBO.setStatus("completed");
+	    			 List<Object[]> completedCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
+	    			 setCommitteesCountToItsCorrespondingLocation("completed",completedCountList,locationLevelCountsMap,userAccessLevelId);
+	    		 }
+	    		 if(committeeBO.getStatusList().contains("started")){
+	    			 committeeBO.setStatus("started");
+	    			 List<Object[]> startedCountList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
+	    			 setCommitteesCountToItsCorrespondingLocation("started",startedCountList,locationLevelCountsMap,userAccessLevelId);
+	    		 }
+	    		 if(committeeBO.getStatusList().contains("notStarted")){
+	    			 committeeBO.setStatus("notStarted");
+	    			 List<Object[]> notStartedList = tdpCommitteeDAO.getLocationWiseCommitteesCountByLocIds(committeeBO);
+	    			 setCommitteesCountToItsCorrespondingLocation("notStarted",notStartedList,locationLevelCountsMap,userAccessLevelId);
+	    		 }
+	    	 }    
+	     }
+	    return locationLevelCountsMap;
+   }
+   public void setCommitteesCountToItsCorrespondingLocation(String status,List<Object[]> list,Map<String,UserTypeVO> locationLevelCountsMap,Long accessLevelId){
+		
+	   	 if(list!=null && list.size()>0){
+				 for(Object[] obj : list){
+					 String key = accessLevelId+"_"+(Long)obj[1]; 
+					 UserTypeVO countsVO = locationLevelCountsMap.get(key);
+					 if(countsVO == null){
+						 countsVO = new UserTypeVO();
+						 locationLevelCountsMap.put(key, countsVO);
+					 }
+					 countsVO = locationLevelCountsMap.get(key);
+					 if(status.equalsIgnoreCase("total")){
+						 countsVO.setTotalCount(obj[0]!=null?(Long)obj[0]:0l); 
+					 }else if(status.equalsIgnoreCase("completed")){
+						 countsVO.setCompletedCount(obj[0]!=null?(Long)obj[0]:0l); 
+					 }else if(status.equalsIgnoreCase("started")){
+						 countsVO.setStartedCount(obj[0]!=null?(Long)obj[0]:0l); 
+					 }else if(status.equalsIgnoreCase("notStarted")){
+						 countsVO.setNotStartedCount(obj[0]!=null?(Long)obj[0]:0l); 
+					 }
+				 }
+			 }
+	 }
+   	
+
 }
