@@ -13,7 +13,7 @@
 				globalUserAccessLevelId = result.userAccessLevelId;
 				globalUserAccessLevelValues = result.userAccessLevelValuesList;
 				
-				onLoadCalls();
+				//onLoadCalls();
 			}
 		});
 	}

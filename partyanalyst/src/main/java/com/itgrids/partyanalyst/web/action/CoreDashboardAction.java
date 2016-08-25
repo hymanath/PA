@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
@@ -44,6 +45,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
 	private ICoreDashboardMainService coreDashboardMainService;
+	private ICoreDashboardGenericService coreDashboardGenericService;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -146,6 +148,12 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			ICoreDashboardMainService coreDashboardMainService) {
 		this.coreDashboardMainService = coreDashboardMainService;
 	}
+	
+
+	public void setCoreDashboardGenericService(
+			ICoreDashboardGenericService coreDashboardGenericService) {
+		this.coreDashboardGenericService = coreDashboardGenericService;
+	}
 
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
@@ -176,6 +184,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			if(user == null || user.getRegistrationID() == null){
 				return ERROR;
 			}
+			
+			userDataVO = coreDashboardService.getUserBasicDetails(user.getRegistrationID());
+			
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
 		}
@@ -487,6 +498,18 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,startDateString,endDateString);
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getChildUserTypesByItsParentUserType(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			userDataVOList = coreDashboardGenericService.getChildUserTypesByItsParentUserType(jObj.getLong("parentUserTypeId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getChildUserTypesByItsParentUserType() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
