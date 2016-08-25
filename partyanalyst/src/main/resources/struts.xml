@@ -13438,5 +13438,12 @@
    			<param name="root">CommitteeDataVOList</param>          
    		</result> 
    	</action>
+   	
+   	<action name="getSelectedChildUserTypeMembersAction" class="coreDashboardAction" method="getSelectedChildUserTypeMembers">
+		<result type="json" name="success">
+   			<param name="root">activityMembersList</param>          
+   		</result> 
+   	</action>
+   	
 </package>
 </struts>
