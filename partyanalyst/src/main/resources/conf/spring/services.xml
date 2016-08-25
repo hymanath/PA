@@ -2720,6 +2720,7 @@
 		 <property name="tdpCadreReportDAO" ref="tdpCadreReportDAO" />
 		 <property name="importantLeadersLevelDAO" ref="importantLeadersLevelDAO" />
 		  <property name="applicationDocumentDAO" ref="applicationDocumentDAO" />
+		 <property name="tdpCadreHealthReportDAO" ref="tdpCadreHealthReportDAO" />	
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
