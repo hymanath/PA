@@ -102,6 +102,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<GrievanceReportVO> grievanceReportVOList;
 	private List<ReportVO> reportVOList;
 	private CadreLocationVO cadreLocationVO;
+	private List<CadreReportVO> cadreReportHealthVOList = new ArrayList<CadreReportVO>(0);
 	
 	
 	
@@ -565,6 +566,14 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	public void setCadreLocationVO(CadreLocationVO cadreLocationVO) {
 		this.cadreLocationVO = cadreLocationVO;
 	}
+	
+	public List<CadreReportVO> getCadreReportHealthVOList() {
+		return cadreReportHealthVOList;
+	}
+	public void setCadreReportHealthVOList(
+			List<CadreReportVO> cadreReportHealthVOList) {
+		this.cadreReportHealthVOList = cadreReportHealthVOList;
+	}
 	public String execute(){
 		
 		try{
@@ -589,6 +598,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 				entitlements = regVO.getEntitlements();
 				if(entitlements.contains("TDP_CADRE_DETAILS".trim())){
 					cadreReportVOList = cadreDetailsService.getCadreReportDetails(cadreId);
+					cadreReportHealthVOList = cadreDetailsService.getCadreHealthReport(cadreId);
 					return "tdpCadreDetails";
 				}
 			
