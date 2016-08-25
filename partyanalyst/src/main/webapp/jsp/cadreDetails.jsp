@@ -226,7 +226,12 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 									<!--<img src="dist/img/profile.png" class="img-responsive img-rounded" alt="Profile Image">-->
                                 </div>
                                 <div class="media-body">
-                                	<p class="m_0"><strong>NAME</strong> : <span id="nameId"></span></p>
+                                	<p class="m_0"><strong>NAME</strong> : <span id="nameId"></span>
+										<span id="reportsInfoId1">
+											<span id="reportsInfoId1"><i class="fa fa-heartbeat text-success nameClass"></i>
+											</span>
+										</span>
+									</p>
                                     <p class="m_0"><strong>AGE</strong> : <span id="ageId"></span></p>
                                     <p class="m_0"><strong>DOB</strong> : <span id="dobId"></span></p>
                                     <p class="m_0"><strong>QUALIFICATION</strong> : <span id="qualificationId"></span></p>
@@ -1490,17 +1495,30 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div><!— /.modal-dialog —>
 		</div><!— /.modal —>
 		<!-- Model for Report End-->  
-		
-		
-		<!-- Model for pdf Report start swadhin-->
-		<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
-			<div class="modal-dialog" style="width:80%;">      
+
+		<div class="modal fade" tabindex="-1" id="reportModelId1" role="dialog" >
+			<div class="modal-dialog modal-sm" style="width:50%;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+						<h4 class="modal-title">CADRE HEALTH REPORT DETAILS</h4>
 					</div>
-					<div class="modal-body" id="pdfReportDetailsId">
+					<div class="modal-body" id="reportDetailsId1">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!— /.modal-content —>
+			</div><!— /.modal-dialog —>
+		</div><!— /.modal —>
+		<div class="modal fade" tabindex="-1" id="healthReportPdfModelId" role="dialog">
+			<div class="modal-dialog" style="width:70%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">CADRE HEALTH REPORT DETAILS</h4>
+					</div>
+					<div class="modal-body" id="healthReportPdfDetailsId">
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -2647,6 +2665,44 @@ function buildReport()
 			$("#reportsInfoId").html('<i class="glyphicon glyphicon-list-alt remove-icon"  data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;cursor:pointer;color:gray;" id="reportsId" title="No Reports are available" ></i>');
 		}
 }
+
+function buildCadreHealthReport()
+{
+	var str = '';
+	var flag = false;
+	<c:if test="${fn:length(cadreReportHealthVOList) gt 0}">  
+	flag = true;
+	str +='<div class="row">';
+    str +='<div class="col-md-8 col-md-offset-2 col-xs-12 col-sm-10 col-sm-offset-0">';
+	str +='<table id="reportHealthTableId" class="table table-bordered">';
+	str +='<thead>';
+	str +='<th>SNO</th>';
+	str +='<th>REPORT DATE</th>';     
+	str +='</thead>';  
+	
+	str +='<tbody>';
+	<c:forEach items="${cadreReportHealthVOList}" var="cadreReportVO" varStatus="loop1">
+	str +='<tr>'; 
+	str +='<td>${cadreReportVO.sno}</td>';					
+	str +='<td><span filePath="${cadreReportVO.reportPath}" style="cursor:pointer;" id="showPdfId1" class="showPdfCls3">${cadreReportVO.reportDate}</span></td>';  
+	str +='</tr>';    
+	</c:forEach>
+	str +='</tbody>';                
+	str +='</table>';    
+	</c:if>
+	str +='</div>';
+   str +='</div>';
+	$("#reportDetailsId1").html(str);
+			$("#reportHealthTableId").dataTable(); 
+	if(flag == true)
+		{
+			$("#reportsInfoId1").html('<i class="fa fa-heartbeat text-success"  data-placement="bottom" style="margin-left: 5px;cursor:pointer;color:green;" id="reportsId1" title="Click Here To Get Health Reports" data-toggle="modal" data-target="#reportModelId1"></i>');	
+		}
+		else
+		{
+			$("#reportsInfoId1").html('<i class="fa fa-heartbeat text-success"  data-toggle="tooltip" data-placement="bottom" style="margin-left: 5px;cursor:pointer;color:gray;" id="reportsId1" title="Health Reports are not available" ></i>');
+		}
+}
 </script>
 <script>
 //getting Dynamic Browser URL
@@ -2720,6 +2776,37 @@ $(document).on("click",".partyMeetingsCollapse",function(){
 	$(".partyMeetingsCollapseBody").toggle();
 	$(this).find('.glyphicon').toggleClass('glyphicon-chevron-down').toggleClass('glyphicon-chevron-up');
 });
+
+$(document).on("click",".nameClass",function(){
+	 $("#reportModelId1").html("");
+
+	});
+	
+$(document).on('click','.showPdfCls3',function(){        
+	var str = '';
+	var filePath = $("#showPdfId1").attr("filePath");
+
+	if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+		$("#healthReportPdfModelId").modal("hide");
+		window.open(wurl+'/'+filePath+'','toolbar=0,location=0, directories=0, status=0, menubar=0,title=Cadre Reports');
+	
+		/*setTimeout(function(){
+		$(w.document).find('html').append('<head><title>your title</title></head>');}, 2000); */
+		//w.onload = function() { this.document.title = "your new title"; }
+		
+
+	}else{
+		
+		$("#healthReportPdfModelId").modal("show");
+		str += '<iframe src="'+wurl+'/'+filePath+'" width="100%" height="800">';    
+		str += '</iframe>';
+		$("#healthReportPdfDetailsId").html(str);
+	}
+	
+}); 
+$(document).on("click",".showPdfCls3",function(){
+		$("#healthReportPdfModelId").modal('show');
+	})
 
 </script>
 </body>
