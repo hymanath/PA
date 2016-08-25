@@ -9,6 +9,17 @@ public class CadreReportVO implements Serializable {
 	
 	private String reportType;
 	List<ReportVO> reportVOList;
+	private String reportPath;
+	private String reportDate;
+	private Integer sno;
+	
+	public Integer getSno() {
+		return sno;
+	}
+	public void setSno(Integer sno) {
+		this.sno = sno;
+	}
+	
 	public String getReportType() {
 		return reportType;
 	}
@@ -21,5 +32,18 @@ public class CadreReportVO implements Serializable {
 		}
 		return reportVOList;
 	}
+	public String getReportPath() {
+		return reportPath;
+	}
+	public void setReportPath(String reportPath) {
+		this.reportPath = reportPath;
+	}
+	public String getReportDate() {
+		return reportDate;
+	}
+	public void setReportDate(String reportDate) {
+		this.reportDate = reportDate;
+	}
 
+	
 }
