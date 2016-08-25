@@ -15,12 +15,7 @@ public class UserTypeRelationDAO extends GenericDaoHibernate<UserTypeRelation,Lo
 	}
 	
 	public List<Object[]>  getParentUserTypesAndItsChildUserTypes(){
-		
-		  /*select  child.user_type_id , child.type as child, parent.user_type_id , parent.type as parent
-		  from    user_type_relation utr 
-				  join user_type  as child on utr.user_type_id = child.user_type_id
-		          left join user_type as parent on utr.parent_user_type_id = parent.user_type_id
-		  where   utr.is_active= 'Y' ;*/
+		  
 		Query query = getSession().createQuery("" +
 		" select  parent.userTypeId,parent.type,child.userTypeId,child.type " +
 		" from   UserTypeRelation model" +
@@ -29,5 +24,16 @@ public class UserTypeRelationDAO extends GenericDaoHibernate<UserTypeRelation,Lo
 		" where  model.isActive = 'Y' ");
 		return query.list();
 	}
-
+	
+	public List<Object[]> getChildUserTypesByItsParentUserType(Long parentUserTypeId){
+		
+		Query query = getSession().createQuery("" +
+		" select model.userTypeId,model.childUserType.type,model.parentUserTypeId,model.parentUserType.type " +
+		" from  UserTypeRelation model " +
+		" where model.parentUserTypeId = :parentUserTypeId and model.isActive = 'Y' " +
+		" order by model.userTypeId asc ");
+		query.setParameter("parentUserTypeId",parentUserTypeId);
+		return query.list();
+	}
+	
 }

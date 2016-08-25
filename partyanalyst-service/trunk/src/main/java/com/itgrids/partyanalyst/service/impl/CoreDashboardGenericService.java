@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -208,7 +208,42 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		}
 		return userTypesMap;
 	}
-	
+    /**
+	  * @return List<>
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This  Method is used to get all 'child userTypes to parent userTypes'. 
+	  *  @since 24-AUGUST-2016
+	  */
+      public List<UserDataVO> getChildUserTypesByItsParentUserType(Long parentUserTypeId){
+    	  List<UserDataVO> finalList = null;
+    	  try{
+    			List<Object[]> list  = userTypeRelationDAO.getChildUserTypesByItsParentUserType(parentUserTypeId);
+    			
+    			if(list != null && list.size() > 0)
+    			{
+    				finalList = new ArrayList<UserDataVO>();
+    				
+    				for(Object[] obj : list)
+    				{	
+    					if(obj[0] != null)
+    					{	
+    						UserDataVO childUserTypeVO = new UserDataVO();
+    						childUserTypeVO.setUserTypeId((Long)obj[0]);
+    						childUserTypeVO.setUserType(obj[1]!=null?obj[1].toString():"");
+    						childUserTypeVO.setParentUserTypeId(obj[2]!=null?(Long)obj[2]:0l);
+    						childUserTypeVO.setParentUserType(obj[3]!=null?obj[3].toString():"");
+    						
+    						finalList.add(childUserTypeVO);
+    					}
+    				}
+    			}
+    		  
+		  }catch(Exception e){
+			  LOG.error("Exception occurred in getChildUserTypesByItsParent() method in CoreDashboardGenericService class",e);
+		  }
+    	  return finalList;
+      }
+    
     public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Long> parliamentIds){
 		List<Long> assemblyConstituencyIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(parliamentIds);
 		return assemblyConstituencyIds;
@@ -247,4 +282,5 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
+	
 }

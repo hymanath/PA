@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.UserDataVO;
 
 public interface ICoreDashboardGenericService {
 	
@@ -16,4 +17,5 @@ public interface ICoreDashboardGenericService {
 	public Long getStateIdByState(String state);
 	public List<Date> getDates(String startDateString,String endDateString,SimpleDateFormat sdf);
 	public Double caclPercantage(Long subCount,Long totalCount);
+	public List<UserDataVO> getChildUserTypesByItsParentUserType(Long parentUserTypeId);
 }

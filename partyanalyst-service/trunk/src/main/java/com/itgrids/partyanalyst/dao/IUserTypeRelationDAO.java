@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.UserTypeRelation;
 public interface IUserTypeRelationDAO extends GenericDao<UserTypeRelation,Long>{
 	
 	public List<Object[]>  getParentUserTypesAndItsChildUserTypes();
+	public List<Object[]>  getChildUserTypesByItsParentUserType(Long parentUserTypeId);
 }
