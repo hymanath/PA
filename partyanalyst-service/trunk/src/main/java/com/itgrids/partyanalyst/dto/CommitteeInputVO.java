@@ -18,10 +18,13 @@ public class CommitteeInputVO implements Serializable{
 	private List<Long> tdpCommitteeLevelIds;
 	private Date startDate;
 	private Date endDate;
+	private Date date;
 	private String status;
 	
 	private Long basicCommitteeId;
 	private String groupingLocation;
+	
+	private List<String> statusList; 
 	
 	public List<Long> getTehsilIds() {
 		return tehsilIds;
@@ -106,6 +109,18 @@ public class CommitteeInputVO implements Serializable{
 	}
 	public void setParliamentConstIds(List<Long> parliamentConstIds) {
 		this.parliamentConstIds = parliamentConstIds;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public List<String> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<String> statusList) {
+		this.statusList = statusList;
 	}
 	
 }

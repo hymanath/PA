@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -109,7 +111,7 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		}
     	return activityMemberVO;
     }
-
+    
     public void setLocationLevelsToActivityMembers( Map<Long,Map<Long,UserTypeVO>> userTypesMap , Long activityMemberId ,Long userTypeId, Map<Long,List<Long>> ParentChildUserTypesRelationMap,Map<Long,Set<Long>> locationLevelIdsMap){
 		try{
 			
@@ -283,4 +285,134 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		return d;
 	}
 	
+	/**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
+	  *  @since 25-AUGUST-2016
+	  */
+	public ActivityMemberVO getSelectedChildUserTypeMembers(Long parentActivityMemberId,Long childUSerTypeId){
+    	ActivityMemberVO finalVO = new ActivityMemberVO();
+    	
+    	try{
+    		List<Long> childUserTypeIds = new ArrayList<Long>();
+    		childUserTypeIds.add(childUSerTypeId);
+    		
+    		Map<Long,UserTypeVO> activityMembersMap  = new LinkedHashMap<Long,UserTypeVO>(0);
+    		Map<Long,Set<Long>> locationLevelIdsMap = new HashMap<Long, Set<Long>>();
+    		
+    		List<Object[]> childMembers = activityMemberRelationDAO.getChildUserTypeMembers(parentActivityMemberId, childUserTypeIds);
+    		if(childMembers != null && childMembers.size() > 0)
+			{
+    			finalVO = new ActivityMemberVO();
+				for(Object[] obj : childMembers)
+				{	 
+					 UserTypeVO activityMemberVO = null;
+					 Long memberid = (Long)obj[0];
+					 if(!activityMembersMap.containsKey(memberid)){
+						 
+						 activityMemberVO = new UserTypeVO();
+						 activityMemberVO.setActivityMemberId((Long)obj[0]);
+						 activityMemberVO.setTdpCadreId(obj[1]!=null?(Long)obj[1]:0l);
+						 activityMemberVO.setName(obj[2]!=null?obj[2].toString():"");
+						 activityMemberVO.setImage(obj[8]!=null?obj[8].toString():"");
+						 activityMemberVO.setUserTypeId(obj[3]!=null?(Long)obj[3]:0l);
+						 activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
+						 activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
+						 activityMemberVO.setLocationLevelName(obj[6]!=null?obj[6].toString():"");
+						 activityMemberVO.setLocationValuesSet( new HashSet<Long>());
+						 
+						 activityMembersMap.put(memberid,activityMemberVO);
+						 
+					 }
+					 activityMemberVO = activityMembersMap.get(memberid);
+					 activityMemberVO.getLocationValuesSet().add(obj[7]!= null ?(Long)obj[7]:0l);
+					 
+					 //get locationlevelId and its corresponding locationValues.
+					 Set<Long> locationLevelValues = null;
+					 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
+					 if(locationLevelValues == null){
+						 locationLevelValues = new HashSet<Long>();
+						 locationLevelIdsMap.put(activityMemberVO.getLocationLevelId(), locationLevelValues);
+					 }
+					 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
+					 if(obj[7]!=null){
+						 locationLevelValues.add((Long)obj[7]); 
+					 }
+				}
+			}
+    		
+    		
+    		finalVO.setActivityMembersMap(activityMembersMap);
+    		finalVO.setLocationLevelIdsMap(locationLevelIdsMap);
+    		
+    		/*List<List<UserTypeVO>> userTypesList = null;
+    		
+ 		   if( userTypesMap != null && userTypesMap.size() > 0)
+ 		   {
+ 			   userTypesList = new ArrayList<List<UserTypeVO>>();
+ 			   
+ 			   for(Long userType:userTypesMap.keySet())
+ 			   {   
+ 				   Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
+ 				   userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
+ 			   }
+ 		   }
+ 		 
+ 		   System.out.println(userTypesMap);
+ 	   	   System.out.println(locationLevelIdsMap);*/
+    		
+		}catch(Exception e){
+			LOG.error("Exception occurred in getChildActivityMembersAndLocations() method in CoreDashboardGenericService class",e);
+		}
+    	return finalVO;
+    }
+	
+	   public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
+			
+			if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				
+			}else if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				
+			}else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				
+		    }else if(userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+				
+		    }else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
+				
+				inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+			}
+		}
+
+		public void setAppropriateLocationLevelInputsToBO(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
+			
+			if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
+				
+				inputVO.setStateIds(userAccessLevelValues);
+				
+			}else if(userAccessLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
+				
+				inputVO.setDistrictIds(userAccessLevelValues);
+				
+			}else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
+				
+				inputVO.setParliamentConstIds(userAccessLevelValues);
+				
+			}else if(userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
+				
+				inputVO.setAssemblyConstIds(userAccessLevelValues);
+				
+		    }else if(userAccessLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
+				
+				inputVO.setTehsilIds(userAccessLevelValues);
+			}
+			
+		}
 }
