@@ -536,6 +536,7 @@ var globalidentityMembershipNo = ""	;
 					getTotalComplaintsForCandidate();
 					getPDFReportsForNominatedComplaints();
 					buildReport();
+					buildCadreHealthReport();
 					getRefferelDetailsStatusWise();
 					getConductedPartyMeetingDetails("","","true","0");
 					getTrainingCampAttendenceInfoInCadreLocation();
