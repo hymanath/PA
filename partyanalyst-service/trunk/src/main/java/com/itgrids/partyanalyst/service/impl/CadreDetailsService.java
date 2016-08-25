@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreHealthReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreNotesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
@@ -102,6 +103,7 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -244,6 +246,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ITdpCadreReportDAO tdpCadreReportDAO;
 	private IImportantLeadersLevelDAO importantLeadersLevelDAO;
+	private ITdpCadreHealthReportDAO tdpCadreHealthReportDAO;
 	
 	private IApplicationDocumentDAO applicationDocumentDAO;
 	
@@ -936,6 +939,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setApplicationDocumentDAO(
 			IApplicationDocumentDAO applicationDocumentDAO) {
 		this.applicationDocumentDAO = applicationDocumentDAO;
+	}
+	
+	public ITdpCadreHealthReportDAO getTdpCadreHealthReportDAO() {
+		return tdpCadreHealthReportDAO;
+	}
+
+	public void setTdpCadreHealthReportDAO(
+			ITdpCadreHealthReportDAO tdpCadreHealthReportDAO) {
+		this.tdpCadreHealthReportDAO = tdpCadreHealthReportDAO;
 	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
@@ -10889,5 +10901,33 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 		}
 		return locationVO;
 	}
+	public List<CadreReportVO> getCadreHealthReport(Long tdpCadreId){
+		 List<CadreReportVO> returnList = new ArrayList<CadreReportVO>();
+		 try{
+			 List<Object[]> list = tdpCadreHealthReportDAO.getCadreHealthReport(tdpCadreId);
+			 if(list != null && list.size()> 0)
+			 {
+				 CadreReportVO cadreReportVO = null;
+				 int index = 1;
+				 for(Object[] params : list)
+				 {
+					 cadreReportVO = new CadreReportVO();
+					 cadreReportVO.setSno(index);
+					 cadreReportVO.setReportDate(commonMethodsUtilService.getStringValueForObject(params[0]).substring(0,10));
+					 cadreReportVO.setReportPath(commonMethodsUtilService.getStringValueForObject(params[1]).trim());
+					 returnList.add(cadreReportVO);
+					 index++;
+				 }
+			 }
+			 
+		 }
+		 catch (Exception e) {
+			 e.printStackTrace();
+			 LOG.error("Exception Occured in getCadreHealthReport() method, Exception - ",e);
+			
+		}
+		return returnList;
+	 }
+
 	
 }
