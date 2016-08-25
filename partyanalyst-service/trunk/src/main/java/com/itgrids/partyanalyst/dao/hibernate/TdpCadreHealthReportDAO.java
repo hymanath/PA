@@ -1,10 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import java.util.List;
 
-import com.itgrids.partyanalyst.dao.IDashboardCommentDAO;
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.dao.ITdpCadreHealthReportDAO;
-import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.model.TdpCadreHealthReport;
 
 public class TdpCadreHealthReportDAO extends GenericDaoHibernate<TdpCadreHealthReport, Long> implements ITdpCadreHealthReportDAO{
@@ -12,6 +13,12 @@ public class TdpCadreHealthReportDAO extends GenericDaoHibernate<TdpCadreHealthR
 	public TdpCadreHealthReportDAO() {
 		super(TdpCadreHealthReport.class);
 		
+	}
+	public List<Object[]> getCadreHealthReport(Long tdpCadreId){
+		Query query = getSession().createQuery("select TCHR.reportDate,TCHR.reportPath from TdpCadreHealthReport TCHR where TCHR.tdpCadreId = :tdpCadreId " +
+				" order by TCHR.insertedTime desc");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
 	}
 
 }
