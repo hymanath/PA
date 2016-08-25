@@ -92,25 +92,9 @@
                         <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocks">
                         	
                         	<div class="panel panel-default">
-                            	<div class="panel-body">
-                                	<ul class="villageWardUl">
-                                    	<li>
-                                        	<div id="mainCommittees" class="chartLi"></div>
-   											<ul id="customLegend" class="customLegend"></ul>
-                                        </li>
-                                        <li>
-                                        	<div id="teluguYuvatha" class="chartLi"></div>
-   											<ul id="customLegend1" class="customLegend"></ul>
-                                        </li>
-                                        <li>
-                                        	<div id="teluguMahila" class="chartLi"></div>
-   											<ul id="customLegend2" class="customLegend"></ul>
-                                        </li>
-                                        <li>
-                                        	<div id="teluguRythu" class="chartLi"></div>
-   											<ul id="customLegend3" class="customLegend"></ul>
-                                        </li>
-                                    </ul>
+                            	<div class="panel-body ">
+								<div id="levelWiseBasicCommittees"></div>
+                                
                                 </div>
                             </div>
                         </div>
@@ -232,18 +216,22 @@
                                         <div class="col-md-8 col-xs-12 col-sm-12">
                                             <span class="headingColor text-capitalize">all committees performance cohort</span>
                                         </div>
-                                        <div class="col-md-4 col-xs-12 col-sm-12">
+                                        <!--<div class="col-md-4 col-xs-12 col-sm-12">
                                             <ul class="activeUlCls list-inline">
                                                 <li class="active">All</li>
                                                 <li>Yet To Start</li>
                                                 <li>Completed</li>
                                                 <li>Started</li>
                                             </ul>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                	<div>
+									<!--<div id="mainCommittees" class="chartLiD"></div>-->
+									
+									<div id="districtWiseCommitteesReport" ></div>
+									
+                                	<!--<div>
                                     	<h4>Main Committee</h4>
                                     	<ul class="graphStructure">
                                         	<li>
@@ -386,7 +374,7 @@
                                                 <p class="name">koushik</p>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -1229,6 +1217,7 @@
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -1250,11 +1239,13 @@
 	onLoadCalls();
 	function onLoadCalls(){
 		
-		getDistrictWiseCommitteesCountReport();
+		
 		getCommitteesBasicCountReport();
 		getLevelWiseBasicCommitteesCountReport();
 		//getUserTypeWiseCommitteesCompletedCounts();
 		getUserTypeWiseCommitteesCompletedCounts1();
+		
+		
 	}
 
 

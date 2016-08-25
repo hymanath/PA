@@ -501,7 +501,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getChildUserTypesByItsParentUserType(){
 		try{
 			
@@ -512,5 +511,59 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			LOG.error("Exception raised at getChildUserTypesByItsParentUserType() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String committeesPerformanceCohort(){
+		try{
+			LOG.info("Entered into committeesPerformanceCohort()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			
+			
+			List<Long> tdpCommitteeLevelIdsClicked = new ArrayList<Long>();
+			JSONArray tdpCommitteeLevelIdsClickedArray=jObj.getJSONArray("tdpCommitteeLevelIdsClickedArray");
+			if(tdpCommitteeLevelIdsClickedArray!=null &&  tdpCommitteeLevelIdsClickedArray.length()>0){
+				for( int i=0;i<tdpCommitteeLevelIdsClickedArray.length();i++){
+					tdpCommitteeLevelIdsClicked.add(Long.valueOf(tdpCommitteeLevelIdsClickedArray.getString(i)));
+				}
+			}
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			String committeeStatus = jObj.getString("committeeStatus");
+			Long userLocationLevelId = jObj.getLong("userLocationLevelId");
+			
+			List<Long> userLocationLevelValues = new ArrayList<Long>();
+			JSONArray userLocationLevelValuesArray=jObj.getJSONArray("userLocationLevelValuesArray");
+			if(userLocationLevelValuesArray!=null &&  userLocationLevelValuesArray.length()>0){
+				for( int i=0;i<userLocationLevelValuesArray.length();i++){
+					userLocationLevelValues.add(Long.valueOf(userLocationLevelValuesArray.getString(i)));
+				}
+			}
+			
+			 List<String> groupingLocationsList =null;
+			 JSONArray groupingLocationsListArray = jObj.getJSONArray("groupingLocationsListArray");
+			  if(groupingLocationsListArray != null && groupingLocationsListArray.length() > 0){
+				  groupingLocationsList = new ArrayList<String>(); 
+					for (int i = 0; i < groupingLocationsListArray.length(); i++) {
+						groupingLocationsList.add(groupingLocationsListArray.get(i).toString());
+					}
+			   }
+			  
+			String startDateString = jObj.getString("startDateString");
+			String endDateString = jObj.getString("endDateString");
+			String state = jObj.getString("state");
+			
+			CommitteeDataVOList = coreDashboardService1.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,basicCommitteeIds,committeeStatus,userLocationLevelId,userLocationLevelValues,groupingLocationsList,startDateString,endDateString,state);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at committeesPerformanceCohort() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	
 	}
 }

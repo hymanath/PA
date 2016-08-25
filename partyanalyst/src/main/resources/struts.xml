@@ -13427,11 +13427,16 @@
    			<param name="root">nominatedPostMemberVOs</param>          
    		</result> 
    	</action>
-   	<action name="getChildUserTypesByItsParentUserTypeAction" class="coreDashboardAction" method="getChildUserTypesByItsParentUserType">
+   		<action name="getChildUserTypesByItsParentUserTypeAction" class="coreDashboardAction" method="getChildUserTypesByItsParentUserType">
 		<result type="json" name="success">
    			<param name="root">userDataVOList</param>          
    		</result> 
    	</action>
    	
+   	<action name="committeesPerformanceCohortAction" class="coreDashboardAction" method="committeesPerformanceCohort">
+		<result type="json" name="success">
+   			<param name="root">CommitteeDataVOList</param>          
+   		</result> 
+   	</action>
 </package>
 </struts>
