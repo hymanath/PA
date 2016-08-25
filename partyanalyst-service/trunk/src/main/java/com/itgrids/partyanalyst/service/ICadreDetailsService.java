@@ -130,4 +130,5 @@ public interface ICadreDetailsService {
 	public List<ReportVO> getNominatedPostReportFiles(Long tdpCadreId);
 	//public String checkPositionExists(String position);
 	public CadreLocationVO getCadreBasicLocationDetails(Long tdpCadreId);
+	public List<CadreReportVO> getCadreHealthReport(Long tdpCadreId);
 }
