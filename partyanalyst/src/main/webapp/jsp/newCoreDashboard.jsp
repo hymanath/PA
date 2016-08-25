@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -91,9 +92,25 @@
                         <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocks">
                         	
                         	<div class="panel panel-default">
-                            	<div class="panel-body ">
-								<div id="levelWiseBasicCommittees"></div>
-                                
+                            	<div class="panel-body">
+                                	<ul class="villageWardUl">
+                                    	<li>
+                                        	<div id="mainCommittees" class="chartLi"></div>
+   											<ul id="customLegend" class="customLegend"></ul>
+                                        </li>
+                                        <li>
+                                        	<div id="teluguYuvatha" class="chartLi"></div>
+   											<ul id="customLegend1" class="customLegend"></ul>
+                                        </li>
+                                        <li>
+                                        	<div id="teluguMahila" class="chartLi"></div>
+   											<ul id="customLegend2" class="customLegend"></ul>
+                                        </li>
+                                        <li>
+                                        	<div id="teluguRythu" class="chartLi"></div>
+   											<ul id="customLegend3" class="customLegend"></ul>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -1217,30 +1234,41 @@
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* New Design */
-
+    
+	var globalUserAccessLevelValues = getUserAccessLevelValues();
 	var globalUserId = '${sessionScope.USER.registrationID}';
-	var globalUserTypeId;
-	var globalUserAccessLevelId;
-	var globalUserAccessLevelValues = [];
+	var globalUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
+	var globalUserAccessLevelId = '${requestScope.userDataVO.userAccessLevelId}';
 	var globalState = 'AP';
-	
+
 	$(document).ready(function(){
-		
 		//Main header remove
 		$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
-		
 	});
-	getUserBasicDetails();
+	
+	onLoadCalls();
 	function onLoadCalls(){
 		
 		getDistrictWiseCommitteesCountReport();
 		getCommitteesBasicCountReport();
-		getUserTypeWiseCommitteesCompletedCounts();
+		getLevelWiseBasicCommitteesCountReport();
+		//getUserTypeWiseCommitteesCompletedCounts();
 		getUserTypeWiseCommitteesCompletedCounts1();
 	}
 
+
+	function getUserAccessLevelValues(){
+			var globalUserAccessLevelValues = [];
+			<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
+			  globalUserAccessLevelValues.push( ${userAccessLevelValue} );        
+		   </c:forEach>
+		   return globalUserAccessLevelValues;
+		}
 	
-</script>
+  </script>
+	
+	
+ 
 </body>
 </html>
