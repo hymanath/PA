@@ -144,7 +144,7 @@
 		var userLocationLevelId = globalUserAccessLevelId;
 		var userLocationLevelValuesArray = globalUserAccessLevelValues;
 		
-		var groupingLocationConsider = 'self';
+		var groupingLocationConsider = 'subLevel';
 		var groupingLocationsArray = [];
 		if(groupingLocationConsider == "self"){
            if(userLocationLevelId == 2 ){//user_level table
@@ -204,6 +204,36 @@
 		});
 	}
 	
+	
+	function getSelectedChildUserTypeMembers(){
+	
+     //var parentActivityMemberId = globalActivityMemberId;
+	 var parentActivityMemberId = 1;
+	 var childUserTypeId = 4;
+	
+	  var date = '11/25/2016';   
+	  var state = globalState;
+  	  var basicCommitteeIdsArray= [];
+	  basicCommitteeIdsArray.push(1);
+	  basicCommitteeIdsArray.push(2);
+	  basicCommitteeIdsArray.push(3);
+	  
+	  var jsObj ={ 
+	               parentActivityMemberId : parentActivityMemberId,
+				   childUserTypeId : childUserTypeId,
+				   dateString : date,
+				   state:state,
+				   basicCommitteeIdsArray:basicCommitteeIdsArray
+				 }
+	  $.ajax({
+			type : 'POST',
+			url : 'getSelectedChildUserTypeMembersAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			alert("success");
+		});
+	}
 	
 	function buildgetCommitteesBasicCountReport(result){
 		var str='';

@@ -17,7 +17,18 @@
 			}
 		});
 	} */
-
+    function initialiseDatePicker(){
+		
+		$("#dateRangeId").daterangepicker({
+			singleDatePicker: true,
+			minDate:'01/01/2014',
+			maxDate:moment(),
+			locale: {
+			  format: 'DD/MM/YYYY'
+			},
+			opens:'left'
+		})
+	}
 	
 	$(document).on("click",".iconExpand",function(){
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");

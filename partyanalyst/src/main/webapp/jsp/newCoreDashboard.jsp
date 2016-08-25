@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container m_top20">
@@ -383,7 +384,7 @@
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-7 col-md-8">
+                                        <div class="col-xs-12 col-sm-8 col-md-10">
                                             <ul class="comparisonSelect">
                                                 <li class="active">General Secretary<span class="closeIconComparison"></span></li>
                                                 <li>Secretary<span class="closeIconComparison"></span></li>
@@ -392,46 +393,13 @@
                                                 <li>Constituency<span class="closeIconComparison"></span></li>
                                             </ul>
                                         </div>
-                                        <div class="col-xs-12 col-sm-5 col-md-4">
-                                            <ul class="list-inline">
-                                                <li>
-                                                    <div class="dropdown">
-                                                      <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        This Week <span class="text-muted">Sunday - Today</span>
-                                                        <span class="caret"></span>
-                                                      </button>
-                                                      <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
-                                                        <li><a href="#">LifeTime</a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="#">This Week <span class="text-muted">Sunday - Today</span></a></li>
-                                                        <li><a href="#">Last Week <span class="text-muted lastWeekDate"></span></a></li>
-                                                        <li><a href="#">Last 7 Days <span class="text-muted last7Days"></span></a></li>
-                                                        <li><a href="#">First 7 Days <span class="text-muted first7Days"></span></a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="#">This Month <span class="text-muted thisMonth"></span></a></li>
-                                                        <li><a href="#">Last Month <span class="text-muted lastMonth"></span></a></li>
-                                                        <li><a href="#">Last 28 Days <span class="text-muted last28Days"></span></a></li>
-                                                        <li><a href="#">Last 30 Days <span class="text-muted last30Days"></span></a></li>
-                                                        <li><a href="#">First 28 Days<span class="text-muted first28Days"></span></a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="#">This Quarter <span class="text-muted thisQuarter"></span></a></li>
-                                                        <li><a href="#">Last Quarter <span class="text-muted lastQuarter"></span></a></li>
-                                                        <li><a href="#">Last 90 Days <span class="text-muted Last90Days"></span></a></li>
-                                                        <li><a href="#">First 90 Days <span class="text-muted first90Days"></span></a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="#">This Year<span class="text-muted thisYear"></span></a></li>
-                                                        <li><a href="#">Last Year <span class="text-muted lastYear"></span></a></li>
-                                                        <li><a href="#">Last 365 Days <span class="text-muted last365Days"></span></a></li>
-                                                        <li><a href="#">First 365 Days <span class="text-muted first365Days"></span></a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="#">Custom Range <span class="customRange"></span></a></li>
-                                                      </ul>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <i class="glyphicon glyphicon-calendar calendarIcon"></i>
-                                                </li>
-                                            </ul>
+                                        <div class="col-xs-12 col-sm-4 col-md-2">
+											<div class="input-group">
+												<input type="text" id="dateRangeId"	 class="form-control"/>
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1224,9 +1192,15 @@
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+	
+	
 /* New Design */
-    
+      initialiseDatePicker();
+	  
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
@@ -1249,7 +1223,7 @@
 	onLoadCalls();
 	function onLoadCalls(){
 		getCommitteesBasicCountReport();
-		getUserTypeWiseCommitteesCompletedCounts1();
+		//getUserTypeWiseCommitteesCompletedCounts1();
 	}
 	
 	$(document).on("click",".userStructureClass",function(){
@@ -1270,11 +1244,12 @@
 		
 		onLoadCalls();
 	});
-	
+	getSelectedChildUserTypeMembers();
 
-	/* getChildUserTypesByItsParentUserType();
+	 getChildUserTypesByItsParentUserType();
 	
 	function getChildUserTypesByItsParentUserType(){
+		
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
 			type : 'POST',
@@ -1282,9 +1257,11 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			alert("success");
+			//alert("success");
 		});			 
-	} */
+	}
+	
+	
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
