@@ -1674,19 +1674,6 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
     
     public List<Object[]> committeesPerformanceCohort(CommitteeInputVO committeeBO){
     	
-    	/*select  ua.constituency_id,tc.tdp_basic_committee_id,tbc.name,count(distinct tc.tdp_committee_id)
- 	   from    tdp_committee tc 
- 	           join  tdp_basic_committee tbc on tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id
- 	           join  tdp_committee_level tcl on tc.tdp_committee_level_id = tcl.tdp_committee_level_id
- 	           
- 	           join user_address ua on tc.address_id = ua.user_address_id
- 	           
- 	           
- 	   where   tbc.tdp_basic_committee_id in (1,2,3) and tcl.tdp_committee_level_id in (6,8)  and 
- 	   
- 	           ua.district_id in (19,23)
- 	           
- 	   group  by ua.constituency_id;*/
     	
     	StringBuilder sbS = new StringBuilder();
 		StringBuilder sbM = new StringBuilder();
