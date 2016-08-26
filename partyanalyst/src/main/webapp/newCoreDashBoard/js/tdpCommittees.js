@@ -1314,6 +1314,7 @@
 		var childActivityMemberId = $(this).attr("attr_id");  
 		
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		getTopPoorPerformancecommittees(activityMemberId);
 	})
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
@@ -1341,7 +1342,30 @@
 			buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
 		});
 	}
-	
+	function getTopPoorPerformancecommittees(activityMemberId){
+	  
+	   var state ='AP';
+	   var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   var dateString = $('#dateRangeId').val();
+	   
+	   var jsObj ={  activityMemberId : activityMemberId,
+					 state:state,
+					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+ 			         dateString :   dateString
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getTopPoorPerformancecommitteesAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			//alert("success");
+		});
+	}
 	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
 		$("#"+childActivityMemberId).html('');
 		var str ='';

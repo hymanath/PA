@@ -636,4 +636,29 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	public String getTopPoorPerformancecommittees(){
+		LOG.info("Entered into getTopPoorPerformancecommittees()  of CoreDashboardAction");
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			
+			List<Long> basicCommitteeIds = new ArrayList<Long>();
+			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
+			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
+				for( int i=0;i<basicCommitteeIdsArray.length();i++){
+					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
+				}
+			}
+			String state = jObj.getString("state");
+			String dateString = jObj.getString("dateString");
+			
+			committeeDataVO = coreDashboardMainService.getTopPoorPerformancecommittees(activityMemberId,basicCommitteeIds,state,dateString);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getTopPoorPerformancecommittees() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 }
