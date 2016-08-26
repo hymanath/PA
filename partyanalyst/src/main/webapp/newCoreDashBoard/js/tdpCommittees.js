@@ -766,7 +766,8 @@
 	if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSlider">';
 		for(var i in result){
-			str+='<li>';
+			str+='<li class="compareActivityMemberCls" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+			
 				str+='<div class="panel panel-default panelSlick">';
 					str+='<div class="panel-heading">';
 						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
@@ -1304,6 +1305,11 @@
 			});
 		});
 	}
+	$(document).on("click",".compareActivityMemberCls",function(){
+		var activityMemberId = $(this).attr("attr_activitymemberid");  
+		var userTypeId = $(this).attr("attr_usertypeid"); 
+		
+		//getDirectChildActivityMemberCommitteeDetails();
+	})
 	
-	
-	
+	 
