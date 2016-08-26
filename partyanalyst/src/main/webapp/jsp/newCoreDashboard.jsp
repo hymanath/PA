@@ -82,8 +82,42 @@
                         	<ul class="list-inline pull-right activeUlCls">
                             	<li class="active">Detailed</li>
                                 <li>Comparison</li>
-                                <li><i class="fa fa-gears"></i></li>
+                                <li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>
                             </ul>
+							<div class="basicCommitteesBlockDropDown" style="z-index:999">
+								<h4 class="text-capital" style="color:#99A0A5;">Select Committees</h4>
+								<hr style ="margin-bottom:0px;" />
+								<div class="col-xs-12 col-sm-12 col-md-12">
+								<label class="checkbox-inline m_top10">
+								  <input type="checkbox" id="inlineCheckbox1" value="option1">
+								  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Main Committee</h5></div>
+								</label>
+								<hr style ="margin-bottom:0px;" />
+								</div>
+								
+								<div class="col-xs-12 col-sm-12 col-md-12">
+								<label class="checkbox-inline m_top10">
+								  <input type="checkbox" id="inlineCheckbox1" value="option1">
+								<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Telugu Yuvatha</h5></div>
+								</label>
+								<hr style ="margin-bottom:0px;" />
+								</div>
+								
+								<div class="col-xs-12 col-sm-12 col-md-12">
+								<label class="checkbox-inline m_top10">
+								  <input type="checkbox" id="inlineCheckbox1" value="option1">
+								  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Telugu Mahila</h5></div>
+								</label>
+								<hr style ="margin-bottom:0px;" />
+								</div>
+								<div class="col-xs-12 col-sm-12 col-md-12">
+								<label class="checkbox-inline m_top10">
+								  <input type="checkbox" id="inlineCheckbox1" value="option1">
+								  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Telugu Rythu</h5></div>
+								</label>
+								<hr style ="margin-bottom:0px;" />
+								</div>
+							</div>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocks">
                         	
