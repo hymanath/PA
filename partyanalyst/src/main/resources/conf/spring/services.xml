@@ -3409,6 +3409,7 @@
 	    <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
 	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
 	    <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
+	    <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
 	</bean>
 	
 </beans>		

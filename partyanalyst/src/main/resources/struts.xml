@@ -13449,6 +13449,10 @@
    			<param name="root">activityMembersList</param>          
    		</result> 
    	</action>
-   	
+   	<action name="getTopPoorPerformancecommitteesAction" class="coreDashboardAction" method="getTopPoorPerformancecommittees">
+		<result type="json" name="success">
+   			<param name="root">committeeDataVO</param>          
+   		</result> 
+   	</action>
 </package>
 </struts>
