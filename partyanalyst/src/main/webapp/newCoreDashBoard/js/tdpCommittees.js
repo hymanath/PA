@@ -67,7 +67,8 @@
 		});
 	}
 	function getUserTypeWiseCommitteesCompletedCounts1(){
-		
+		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+		$("#userTypeWiseCommitteesForTopFivePoorDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -95,6 +96,8 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('');
+			$("#userTypeWiseCommitteesForTopFivePoorDiv").html('');
 			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result);
 			buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result);
 			
@@ -263,31 +266,33 @@
 						str+='<table class="table table-condensed">';
 						   str+='<tr>';
 								str+='<td>';
-								if(result.mainVO.totalCount == null || result.mainVO.totalCount == 0){
-									str+='<h3> - </h3>';
-								}else{
+								if(result.mainVO.totalCount !=null && result.mainVO.totalCount >0){
 									str+='<h3>'+result.mainVO.totalCount+'</h3>';
+								}else{
+									str+='<h3> - </h3>';
 								}
 									str+='<h5 class="text-muted text-capitalize">total</h5>';
 								str+='</td>';
 								str+='<td>';
-								if(result.mainVO.startedCount == null || result.mainVO.startedCount == 0){
-									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted text-capitalize">started</h5>';
-								}else{
+								if(result.mainVO.startedCount !=null && result.mainVO.startedCount >0){
 									str+='<h3>'+result.mainVO.startedCount+'</h3>';
 									str+='<h5 class="text-muted text-capitalize">started</h5>';
 									str+='<small class="text-success">'+result.mainVO.startedPerc+'%</small>';
+									
+								}else{
+									str+='<h3> - </h3>';
+									str+='<h5 class="text-muted text-capitalize">started</h5>';
 								}
 								str+='</td>';
 								str+='<td>';
-								if(result.mainVO.completedCount == null || result.mainVO.completedCount == 0){
-									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted">Completed</h5>';
-								}else{
+								if(result.mainVO.completedCount !=null && result.mainVO.completedCount  >0){
 									str+='<h3>'+result.mainVO.completedCount+'</h3>';
 									str+='<h5 class="text-muted">Completed</h5>';
 									str+='<small class="text-success">'+result.mainVO.completedPerc+'%</small>';
+									
+								}else{
+									str+='<h3> - </h3>';
+									str+='<h5 class="text-muted">Completed</h5>';
 								}
 								str+='</td>';
 							str+='</tr>';
@@ -298,18 +303,18 @@
 						str+='<table class="table table-condensed">';
 							str+='<tr>';
 								str+='<td>';
-								if(result.affliatedVO.startedCount == null || result.affliatedVO.startedCount == 0){
-									str+='<h3> - </h3>';
-								}else{
+								if(result.affliatedVO.startedCount !=null && result.affliatedVO.startedCount  >0){
 									str+='<h3>'+result.affliatedVO.startedCount+'</h3>';
+								}else{
+									str+='<h3> - </h3>';
 								}
 									str+='<h5 class="text-muted text-capitalize">Started</h5>';
 								str+='</td>';
 								str+='<td>';
-								if(result.affliatedVO.completedCount == null || result.affliatedVO.completedCount ==0){
-									str+='<h3> - </h3>';
-								}else{
+								if(result.affliatedVO.completedCount !=null && result.affliatedVO.completedCount >0){
 									str+='<h3>'+result.affliatedVO.completedCount+'</h3>';
+								}else{
+									str+='<h3> - </h3>';
 								}
 								str+='<h5 class="text-muted text-capitalize">Completed</h5>';
 								str+='</td>';
@@ -330,28 +335,28 @@
 											str+='<tr>';
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Total</h5>';
-													if(result.subList[i].mainVO.totalCount == null || result.subList[i].mainVO.totalCount == 0){
-														str+='<p> - </p>';
-													}else{
+													if(result.subList[i].mainVO.totalCount !=null && result.subList[i].mainVO.totalCount >0){
 														str+='<p>'+result.subList[i].mainVO.totalCount+'</p>';
+													}else{
+															str+='<p> - </p>';
 													}
 													
 											   str+='</td>';
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Started</h5>';
-													if(result.subList[i].mainVO.startedCount == null || result.subList[i].mainVO.startedCount == 0){
-														str+='<p> - </p>';
-													}else{
+													if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
 														str+='<p>'+result.subList[i].mainVO.startedCount+' <small class="text-success"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
+													}else{
+														str+='<p> - </p>';
 													}
 													
 												str+='</td>';
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
-													if(result.subList[i].mainVO.completedCount == null || result.subList[i].mainVO.completedCount == 0){
-														str+='<p> - </p>';
-													}else{
+													if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
 														str+='<p>'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
+													}else{
+														str+='<p> - </p>';
 													}
 													
 												str+='</td>';
@@ -363,19 +368,19 @@
 											str+='<tr>';
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Started</h5>';
-													if(result.subList[i].affliatedVO.startedCount == null || result.subList[i].affliatedVO.startedCount == 0){
-														str+='<p> - </p>';
-													}else{
+													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
 														str+='<p>'+result.subList[i].affliatedVO.startedCount+'</p>';
+													}else{
+														str+='<p> - </p>';
 													}
 													
 												str+='</td>';
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
-													if(result.subList[i].affliatedVO.completedCount == null || result.subList[i].affliatedVO.completedCount == 0){
-														str+='<p> - </p>';
-													}else{
+													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
 														str+='<p>'+result.subList[i].affliatedVO.completedCount+'</p>';
+													}else{
+														str+='<p> - </p>';
 													}
 													
 												str+='</td>';
@@ -444,23 +449,23 @@
 				if(result[i].subList !=null && result[i].subList.length > 0){
 					for(var j in result[i].subList){
 						var committeeName = result[i].subList[j].name;
-						var completedPerc = [];
-						var startedPerc = [];
-						var notStartedPerc = [];
-						if(result[i].subList[j].completedPerc == null || result[i].subList[j].completedPerc == 0){
-							completedPerc.push(" - ")
+						var levelWiseBasicCompletedPercArray = [];
+						var levelWiseBasicStartedPercArray = [];
+						var levelWiseBasicNotStartedPercArray = [];
+						if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							levelWiseBasicCompletedPercArray.push(result[i].subList[j].completedPerc);
 						}else{
-							completedPerc.push(result[i].subList[j].completedPerc)
+							levelWiseBasicCompletedPercArray.push(" ");
 						}
-						if(result[i].subList[j].startedPerc == null || result[i].subList[j].startedPerc == 0){
-							startedPerc.push(" - ")
+						if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							levelWiseBasicStartedPercArray.push(result[i].subList[j].startedPerc);
 						}else{
-							startedPerc.push(result[i].subList[j].startedPerc)
+							levelWiseBasicStartedPercArray.push(" ");
 						}
-						if(result[i].subList[j].notStartedPerc == null || result[i].subList[j].notStartedPerc == 0){
-							notStartedPerc.push(" - ")
+						if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
+							levelWiseBasicNotStartedPercArray.push(result[i].subList[j].notStartedPerc); 
 						}else{
-							notStartedPerc.push(result[i].subList[j].notStartedPerc) 
+							levelWiseBasicNotStartedPercArray.push(" ");
 						}
 						
 						//if(committeeName == "Main")
@@ -533,13 +538,13 @@
 								},
 								 series: [{
 									name: 'Started',
-									data: startedPerc 
+									data: levelWiseBasicStartedPercArray 
 								}, {
 									name: 'Completed',
-									data: completedPerc
+									data: levelWiseBasicCompletedPercArray
 								}, {
 									name: 'Yet To Start',
-									data: notStartedPerc
+									data: levelWiseBasicNotStartedPercArray
 								}]
 							});
 						});	
@@ -613,27 +618,27 @@
 	if(result != null && result.length > 0){
 		for(var i in result){
 			var districtNamesArray =[];
-			var completedPercArray = [];
-			var startedPercArray = [];
-			var notStartedPercArray = [];
+			var districtWiseCompletedPercArray = [];
+			var districtWiseStartedPercArray = [];
+			var districtWiseNotStartedPercArray = [];
 			if(result[i].subList !=null && result[i].subList.length > 0){
 				for(var j in result[i].subList){
 						districtNamesArray.push(result[i].subList[j].name);
 						
-						if(result[i].subList[j].completedPerc == null || result[i].subList[j].completedPerc == 0){
-							completedPercArray.push(" - ")
+						if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							districtWiseCompletedPercArray.push(result[i].subList[j].completedPerc);
 						}else{
-							completedPercArray.push(result[i].subList[j].completedPerc)
+							districtWiseCompletedPercArray.push(" ");
 						}
-						if(result[i].subList[j].startedPerc == null || result[i].subList[j].startedPerc == 0){
-							startedPercArray.push(" - ")
+						if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							districtWiseStartedPercArray.push(result[i].subList[j].startedPerc);
 						}else{
-							startedPercArray.push(result[i].subList[j].startedPerc)
+							districtWiseStartedPercArray.push(" ");
 						}
-						if(result[i].subList[j].notStartedPerc == null || result[i].subList[j].notStartedPerc == 0){
-							notStartedPercArray.push(" - ")
+						if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
+							districtWiseNotStartedPercArray.push(result[i].subList[j].notStartedPerc);
 						}else{
-							notStartedPercArray.push(result[i].subList[j].notStartedPerc) 
+							districtWiseNotStartedPercArray.push("  ");
 						}
 					}
 			}
@@ -699,13 +704,13 @@
 								},
 								series: [{
 									name: 'Completed',
-									data: completedPercArray
+									data: districtWiseCompletedPercArray
 								}, {
 									name: 'Started',
-									data: startedPercArray
+									data: districtWiseStartedPercArray
 								}, {
 									name: 'Yet To Started',
-									data: notStartedPercArray
+									data: districtWiseNotStartedPercArray
 								}]
 							});
 						});
@@ -783,10 +788,26 @@
 								str+='<th>%</th>';
 							str+='</thead>';
 							str+='<tr>';
+							if(result[i].totalCount !=null && result[i].totalCount >0){
 								str+='<td>'+result[i].totalCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].startedCount !=null && result[i].startedCount >0){
 								str+='<td>'+result[i].startedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].completedCount !=null && result[i].completedCount >0){
 								str+='<td>'+result[i].completedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if(result[i].completedPerc !=null && result[i].completedPerc >0){
 								str+='<td>'+result[i].completedPerc+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
 							str+='</tr>';
 						str+='</table>';
 					str+='</div>';
@@ -1069,252 +1090,18 @@
 		getUserTypeWiseCommitteesCompletedCounts1();
 	})
 	
-	function initialiseGraph()
-	{
-		var getWidth = $("#genSec").parent().width()+'px';
-		$("#genSec").width(getWidth);
-		$(function () {
-			$('#genSec').highcharts({
-				colors: ['#0066DC'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					categories: ['B Jaya Nageshwar Reddy', 'G Buchaiah Chowdary', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-					title: {
-						text: null
-					}
-				},
-				yAxis: {
-					min: 0,
-					title: {
-						text: null,
-						align: 'high'
-					},
-					labels: {
-						overflow: 'justify'
-					}
-				},
-				tooltip: {
-					valueSuffix: '%'
-				},
-				plotOptions: {
-					bar: {
-						dataLabels: {
-							enabled: true
-						}
-					}
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -40,
-					y: 80,
-					floating: true,
-					borderWidth: 1,
-					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-					shadow: true
-				},
-				credits: {
-					enabled: false
-				},
-				series: [{
-					name: 'Year 1800',
-					data: [107, 31, 635, 203, 2]
-				}]
-			});
-		});
-		$(function () {
-			$('#Secretary').highcharts({
-				colors: ['#0066DC'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					categories: ['B Jaya Nageshwar Reddy', 'G Buchaiah Chowdary', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-					title: {
-						text: null
-					}
-				},
-				yAxis: {
-					min: 0,
-					title: {
-						text: null,
-						align: 'high'
-					},
-					labels: {
-						overflow: 'justify'
-					}
-				},
-				tooltip: {
-					valueSuffix: '%'
-				},
-				plotOptions: {
-					bar: {
-						dataLabels: {
-							enabled: true
-						}
-					}
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -40,
-					y: 80,
-					floating: true,
-					borderWidth: 1,
-					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-					shadow: true
-				},
-				credits: {
-					enabled: false
-				},
-				series: [{
-					name: 'Year 1800',
-					data: [107, 31, 635, 203, 2]
-				}]
-			});
-		});
-		$(function () {
-			$('#memOfParliament').highcharts({
-				colors: ['#0066DC'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					categories: ['B Jaya Nageshwar Reddy', 'G Buchaiah Chowdary', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-					title: {
-						text: null
-					}
-				},
-				yAxis: {
-					min: 0,
-					title: {
-						text: null,
-						align: 'high'
-					},
-					labels: {
-						overflow: 'justify'
-					}
-				},
-				tooltip: {
-					valueSuffix: '%'
-				},
-				plotOptions: {
-					bar: {
-						dataLabels: {
-							enabled: true
-						}
-					}
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -40,
-					y: 80,
-					floating: true,
-					borderWidth: 1,
-					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-					shadow: true
-				},
-				credits: {
-					enabled: false
-				},
-				series: [{
-					name: 'Year 1800',
-					data: [107, 31, 635, 203, 2]
-				}]
-			});
-		});
-		$(function () {
-			$('#disIncharges').highcharts({
-				colors: ['#0066DC'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					categories: ['Parthasarathi', 'Satyanarayana Murthy', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-					title: {
-						text: null
-					}
-				},
-				yAxis: {
-					min: 0,
-					title: {
-						text: null,
-						align: 'high'
-					},
-					labels: {
-						overflow: 'justify'
-					}
-				},
-				tooltip: {
-					valueSuffix: '%'
-				},
-				plotOptions: {
-					bar: {
-						dataLabels: {
-							enabled: true
-						}
-					}
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -40,
-					y: 80,
-					floating: true,
-					borderWidth: 1,
-					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-					shadow: true
-				},
-				credits: {
-					enabled: false
-				},
-				series: [{
-					name: 'Year 1800',
-					data: [107, 31, 635, 203, 2]
-				}]
-			});
-		});
-	}
+	
 	$(document).on("click",".compareActivityMemberCls",function(){
+		
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).attr("attr_id");  
+		$(".showChildBlockAndTopPoorBlock").show();
 		
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getTopPoorPerformancecommittees(activityMemberId);
+		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 	})
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
@@ -1342,8 +1129,8 @@
 			buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
 		});
 	}
-	function getTopPoorPerformancecommittees(activityMemberId){
-	  
+	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
+	   $("#topPoorPerformanceDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -1363,7 +1150,9 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			//alert("success");
+			 $("#topPoorPerformanceDiv").html('');
+			buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
+			
 		});
 	}
 	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
@@ -1400,12 +1189,36 @@
 							}else{
 								str+='<td>'+result[i].userType+'</td>';
 							}
-							str+='<td>'+result[i].name+'</td>';
-							str+='<td>'+result[i].totalCount+'</td>';
-							str+='<td>'+result[i].notStartedCount+'</td>';
-							str+='<td>'+result[i].startedCount+'</td>';
-							str+='<td>'+result[i].completedCount+'</td>';
-							str+='<td>'+result[i].completedPerc+'</td>';
+							if( result[i].name != null && $.trim(result[i].name).length > 0 ){
+									str+='<td>'+result[i].name+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if( result[i].totalCount != null && result[i].totalCount >0){
+									str+='<td>'+result[i].totalCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if( result[i].notStartedCount != null && result[i].notStartedCount >0){
+									str+='<td>'+result[i].notStartedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if( result[i].startedCount != null && result[i].startedCount >0){
+									str+='<td>'+result[i].startedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if( result[i].completedCount != null && result[i].completedCount >0){
+									str+='<td>'+result[i].completedCount+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							if( result[i].completedPerc != null && result[i].completedPerc >0){
+									str+='<td>'+result[i].completedPerc+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
 						str+='</tr>';
 						
 						str+='<tr class="showHideTr" style="display:none" attr_id = "districtpositionId'+result[i].userTypeId+''+i+'">';
@@ -1435,7 +1248,7 @@
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getTopPoorPerformancecommittees(activityMemberId);
+		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 	})
 	
 	$(document).on("click",".removeSelecUserType",function(){
@@ -1445,4 +1258,75 @@
 		 
 	});
 	
+	function buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){
+		$("#topPoorPerformanceDiv").html('');
+		var str='';
+		 str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> performance affliated committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+			str+='<div class="row m_top20">';
+			
+		if(result.subList1 != null && result.subList1.length >0){
+			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
+			str+='<table class="table tableCumulative">';
+				for(var i in result.subList1){
+					str+='<tr>';
+					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>';
+					str+='<td>'+result.subList1[i].name+'</td>';
+					str+='<td>';
+						str+='<div class="progress progressCustom">';
+						if(result.subList1[i].completedCount !=null && result.subList1[i].completedCount >0){
+							str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result.subList1[i].completedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result.subList1[i].completedPerc+'%;">';
+							str+='<span class="sr-only">'+result.subList1[i].completedPerc+'% Complete</span>';
+							str+='</div>';
+							str+='</div>';
+							str+='</td>';
+							str+='<td class="text-danger">'+result.subList1[i].completedCount+'</td>';
+						}else{
+							str+='<td class="text-danger"> - </td>';
+						}
+				str+='</tr>';
+				}
+				
+				
+			str+='</table>';
+		str+='</div>';
+		}
+		if(result.subList != null && result.subList.length >0){
+			var locationLevelNameArray =[];
+			for(var i in result.subList){
+				str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top20">';
+				var properName = getProperLocationLevelName(result.subList[i].name);
+					if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+						locationLevelNameArray.push(properName);
+						str+='<p class="text-capital"><b>'+properName+'</b></p>';
+					}
+				str+='<table class="table tableCumulative">';
+					for(var j in result.subList[i].subList){
+						str+='<tr>';
+						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>';
+						str+='<td>'+result.subList[i].subList[j].name+'</td>';
+						str+='<td>';
+						if(result.subList[i].subList[j].completedCount !=null && result.subList[i].subList[j].completedCount >0){
+							str+='<div class="progress progressCustom">';
+							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result.subList[i].subList[j].completedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result.subList[i].subList[j].completedPerc+'%;">';
+								str+='<span class="sr-only">'+result.subList[i].subList[j].completedPerc+'% Complete</span>';
+							  str+='</div>';
+							str+='</div>';
+							str+='</td>';
+							str+='<td class="text-danger">'+result.subList[i].subList[j].completedCount+'</td>';
+						}else{
+							str+='<td class="text-danger"> - </td>';
+						}
+							
+					str+='</tr>';
+					}
+				str+='</table>';
+				str+='</div>';
+			}
+		
+		}
+		str+='</div>';
+		$("#topPoorPerformanceDiv").html(str);
+		
+	}
 	
