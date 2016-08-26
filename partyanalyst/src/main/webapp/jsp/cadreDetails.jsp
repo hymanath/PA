@@ -2777,11 +2777,6 @@ $(document).on("click",".partyMeetingsCollapse",function(){
 	$(this).find('.glyphicon').toggleClass('glyphicon-chevron-down').toggleClass('glyphicon-chevron-up');
 });
 
-$(document).on("click",".nameClass",function(){
-	 $("#reportModelId1").html("");
-
-	});
-	
 $(document).on('click','.showPdfCls3',function(){        
 	var str = '';
 	var filePath = $("#showPdfId1").attr("filePath");
@@ -2804,9 +2799,6 @@ $(document).on('click','.showPdfCls3',function(){
 	}
 	
 }); 
-$(document).on("click",".showPdfCls3",function(){
-		$("#healthReportPdfModelId").modal('show');
-	})
 
 </script>
 </body>
