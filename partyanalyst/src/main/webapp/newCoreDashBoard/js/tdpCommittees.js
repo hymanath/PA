@@ -766,7 +766,7 @@
 	if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSlider">';
 		for(var i in result){
-			str+='<li class="compareActivityMemberCls" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+			str+='<li  style="cursor:pointer;" class="compareActivityMemberCls" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
 			
 				str+='<div class="panel panel-default panelSlick">';
 					str+='<div class="panel-heading">';
@@ -1309,7 +1309,31 @@
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
 		
-		//getDirectChildActivityMemberCommitteeDetails();
+		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId);
 	})
-	
+	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId){
+	   
+	   var state ='AP';
+	   var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   var dateString = $('#dateRangeId').val();
+	   
+	   var jsObj ={  activityMemberId : activityMemberId,
+			         userTypeId : userTypeId,
+					 state:state,
+					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+ 			         dateString :   dateString
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getDirectChildActivityMemberCommitteeDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			alert("success");
+		});
+	}
 	 
