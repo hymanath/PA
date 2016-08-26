@@ -1933,6 +1933,22 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 				
+				
+				
+				//Unique Available Posts
+				Map<Long,Long> appliedPostsMap = new HashMap<Long, Long>();
+				
+				//0.levelId,1.count Of Applied Posts
+				List<Object[]> levelPostCount = nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDetalsNew(levelId,startDate,endDate,stateId);
+				
+				if(commonMethodsUtilService.isListOrSetValid(levelPostCount)){
+					
+					for( Object[] obj : levelPostCount){
+						appliedPostsMap.put((Long)obj[0], (Long)obj[1]);
+					}
+					
+				}
+				
 				List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,startDate,endDate,stateId);
 				if(commonMethodsUtilService.isListOrSetValid(levelWiseApplicatinStatusDetailsList)){
 					for (Object[] param : levelWiseApplicatinStatusDetailsList) {
@@ -1941,7 +1957,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						//if(vo1 != null){
 							NominatedPostVO vo = applicationsStatusDtlsMap.get(applicationStatusArr[2].trim());//"READY TO SHORT LISTT"
 							if(vo != null){
-								vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[1]));
+								vo.setTotalPositions(appliedPostsMap.get((Long)param[0]));
 								vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[2]));
 								vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[3]));
 								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(1L));
