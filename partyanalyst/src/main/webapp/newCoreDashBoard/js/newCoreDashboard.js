@@ -35,6 +35,7 @@
 		$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".committeesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".showDatePicker").toggle();
 		setTimeout(function(){
 			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
 			//initialiseGraph();

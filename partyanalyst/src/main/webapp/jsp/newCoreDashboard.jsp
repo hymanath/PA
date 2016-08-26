@@ -31,7 +31,7 @@
                     	<span class="iconExpand pull-right">
                         	<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
                         </span>
-                    </h4>
+	                </h4>
                     <div class="notesDropDown">
                     	<h4 class="text-capital">notes
                         	<span class="pull-right">
@@ -52,8 +52,17 @@
                     </div>
                 </div>
                 <div class="panel-body">
+				
               		<div class="row">
-                    	<div id="basicCommitteeCountsDiv"></div>
+					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
+						<div class="input-group">
+							<input type="text" id="dateRangeId"	 class="form-control" />
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</div>
+						<div id="basicCommitteeCountsDiv"></div>
                         <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 committeesBlock committeesHiddenBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -373,14 +382,7 @@
                                         <div class="col-xs-12 col-sm-8 col-md-10">
                                            <div id="childUserTypeDetailsDiv"></div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-2">
-											<div class="input-group">
-												<input type="text" id="dateRangeId"	 class="form-control"/>
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</div>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                                 <div class="panel-body">
@@ -390,54 +392,8 @@
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12">
                                             <div class="bg_ED pad_15 arrow_top">
-                                                <h4><span  class="text-capital">b.jayanageshwar reddy</span> - <span class="text-capitalize">General Secretary</span></h4>
-                                                <table class="table table-condensed tableHoverLevels m_top20">
-                                                    <thead class="bg_D8 text-capital">
-                                                        <th>% Rank</th>
-                                                        <th>Secretary name</th>
-                                                        <th>total</th>
-                                                        <th>yet to start</th>
-                                                        <th>started</th>
-                                                        <th>completed</th>
-                                                        <th>%</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="tableCount">01</span>
-                                                            </td>
-                                                            <td>Parvin Raj</td>
-                                                            <td>1000</td>
-                                                            <td>600</td>
-                                                            <td>400</td>
-                                                            <td>400</td>
-                                                            <td>10%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="tableCount">02</span>
-                                                            </td>
-                                                            <td>Parvin Raj</td>
-                                                            <td>1000</td>
-                                                            <td>600</td>
-                                                            <td>400</td>
-                                                            <td>400</td>
-                                                            <td>10%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="tableCount">03</span>
-                                                            </td>
-                                                            <td>Parvin Raj</td>
-                                                            <td>1000</td>
-                                                            <td>600</td>
-                                                            <td>400</td>
-                                                            <td>400</td>
-                                                            <td>10%</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <span class="headingColor text-capitalize">←<i><b>back to </b>general secretary view</i></span>
+                                                <div id="directChildActivityMemberDiv"></div>
+                                                <!--<span class="headingColor text-capitalize">←<i><b>back to </b>general secretary view</i></span>
                                                 <span class="text-capitalize">B.T.Naidu - <i>Secretary</i></span>
                                                 <table class="table table-condensed tableLevels m_top20">
                                                     <thead class="bg_D8 text-capital">
@@ -488,116 +444,8 @@
                                                             <td>10%</td>
                                                         </tr>
                                                     </tbody>
-                                                </table>                      
-                                                <div class="row">
-                                                    <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
-                                                        <div class="panel panel-default panelNew">
-                                                            <div class="panel-heading">
-                                                                <span class="headingColor text-capitalize">logically complete - status not updated</span>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <table class="table table-condensed tableLevels">
-                                                                    <thead class="bg_ED">
-                                                                        <th>Level</th>
-                                                                        <th>Main</th>
-                                                                        <th>%</th>
-                                                                        <th>Affliated</th>
-                                                                        <th>%</th>
-                                                                    </thead>
-                                                                    <tr>
-                                                                        <td>Village/ Ward</td>
-                                                                        <td>11250</td>
-                                                                        <td>80%</td>
-                                                                        <td>1500</td>
-                                                                        <td>70%</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Mandal/ Town/ Village</td>
-                                                                        <td>11250</td>
-                                                                        <td>80%</td>
-                                                                        <td>1500</td>
-                                                                        <td>70%</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>District</td>
-                                                                        <td>11250</td>
-                                                                        <td>80%</td>
-                                                                        <td>1500</td>
-                                                                        <td>70%</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>State</td>
-                                                                        <td>11250</td>
-                                                                        <td>80%</td>
-                                                                        <td>1500</td>
-                                                                        <td>70%</td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
-                                                        <div class="panel panel-default panelNew">
-                                                            <div class="panel-heading">
-                                                                <div class="row">
-                                                                    <div class="col-md-8 col-xs-12 col-sm-7">
-                                                                        <span class="headingColor text-capitalize">running status - lapsed</span>
-                                                                    </div>
-                                                                    <div class="col-md-4 col-xs-12 col-sm-5">
-                                                                        <ul class="activeUlCls list-inline">
-                                                                            <li class="active">Main</li>
-                                                                            <li>Affliated</li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="panel-body">
-                                                                <table class="table table-condensed tableLevels">
-                                                                    <thead class="bg_ED">
-                                                                        <th>Level</th>
-                                                                        <th>&gt; 1Week</th>
-                                                                        <th>&gt; 2Week</th>
-                                                                        <th>&gt; 3Week</th>
-                                                                        <th>&gt; 1months</th>
-                                                                        <th>&gt; 3months</th>
-                                                                    </thead>
-                                                                    <tr>
-                                                                        <td>Village/ Ward</td>
-                                                                        <td>250</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Mandal/ Town/ Village</td>
-                                                                        <td>250</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>District</td>
-                                                                        <td>250</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>State</td>
-                                                                        <td>250</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                        <td>300</td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </table>     -->                 
+                                               
                                                 <div class="row">
                                                     <div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0" style="border-right:1px solid #ddd;">
                                                         <b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> performance affliated committees</span></b>
