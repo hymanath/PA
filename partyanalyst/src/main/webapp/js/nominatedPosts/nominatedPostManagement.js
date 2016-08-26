@@ -302,6 +302,9 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 				  titleStr =" Total Running Posts";
 			  else  if(globalStatus == "finalReview")
 				  titleStr ="Ready to final review Posts";
+			  else if(globalStatus == "notYet"){
+				  titleStr ="Total Available Posts";
+			  }
 			  for(var i in result){
 				  if(result[i].id !=null && result[i].id>0){
 					  if(result[i].availableCount != null){
