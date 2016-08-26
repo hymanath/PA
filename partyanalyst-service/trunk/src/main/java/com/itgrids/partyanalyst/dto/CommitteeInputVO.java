@@ -25,6 +25,7 @@ public class CommitteeInputVO implements Serializable{
 	private String groupingLocation;
 	
 	private List<String> statusList; 
+	private StringBuilder queryString;
 	
 	public List<Long> getTehsilIds() {
 		return tehsilIds;
@@ -122,5 +123,12 @@ public class CommitteeInputVO implements Serializable{
 	public void setStatusList(List<String> statusList) {
 		this.statusList = statusList;
 	}
+	public StringBuilder getQueryString() {
+		return queryString;
+	}
+	public void setQueryString(StringBuilder queryString) {
+		this.queryString = queryString;
+	}
+	
 	
 }
