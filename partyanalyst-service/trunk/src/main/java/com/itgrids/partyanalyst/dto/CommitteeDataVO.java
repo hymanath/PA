@@ -18,6 +18,7 @@ public class CommitteeDataVO implements Serializable{
 	private CommitteeDataVO affliatedVO; 
 	
 	private List<CommitteeDataVO> subList;
+	private List<CommitteeDataVO> subList1;
 	private Map<Long,CommitteeDataVO> subMap;
 	
 	
@@ -110,6 +111,12 @@ public class CommitteeDataVO implements Serializable{
 	}
 	public void setLocationLevelName(String locationLevelName) {
 		this.locationLevelName = locationLevelName;
+	}
+	public List<CommitteeDataVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<CommitteeDataVO> subList1) {
+		this.subList1 = subList1;
 	}
 	
 }

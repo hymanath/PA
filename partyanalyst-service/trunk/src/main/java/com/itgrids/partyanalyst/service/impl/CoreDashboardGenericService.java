@@ -469,4 +469,97 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 			}
 			
 		}
+		
+		public List<Long> getRequiredTdpCommitteeLevelIdsByUserAccessLevelId(Long userLocationLevelId,List<Long> userLocationLevelValues){
+			   
+		     //getting sameleveltosublevel and only sublevel maps.
+		     Map<Long,List<Long>> selfWithSubLevelCommitteeLevelIdsMap = committeeLevelIdsForUserAccessLevelIdBySameLevel();
+		     Map<Long,List<Long>> onlySubLevelCommitteeLevelIdsMap = committeeLevelIdsForUserAccessLevelIdBySubLevel();
+		     
+		     List<Long> requiredTdpCommitteeLevelIds = null;
+		     if(userLocationLevelValues!=null && userLocationLevelValues.size()>0){
+		    	 if(userLocationLevelValues.size()>1){
+		    		 requiredTdpCommitteeLevelIds = selfWithSubLevelCommitteeLevelIdsMap.get(userLocationLevelId);
+		    	 }else{
+		    		 requiredTdpCommitteeLevelIds = onlySubLevelCommitteeLevelIdsMap.get(userLocationLevelId);
+		    	 }
+		     }
+		     return requiredTdpCommitteeLevelIds;
+		}
+		
+		public Map<Long,List<Long>> committeeLevelIdsForUserAccessLevelIdBySameLevel(){
+		   
+		   Map<Long,List<Long>> tdpCommitteeLevelIdsMap = new LinkedHashMap<Long,List<Long>>();
+		   
+		   Long[] COUNTRY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {10l,11l ,5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.COUNTRY_LEVEl_ACCESS_ID, Arrays.asList(COUNTRY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {10l,11l ,5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.STATE_LEVEl_ACCESS_ID, Arrays.asList(STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {11l ,5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.DISTRICT_LEVEl_ACCESS_ID, Arrays.asList(DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] PARLIAMAENT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.PARLIAMENT_LEVEl_ACCESS_ID, Arrays.asList(PARLIAMAENT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.ASSEMBLY_LEVEl_ACCESS_ID, Arrays.asList(CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.MANDAL_LEVEl_ID, Arrays.asList(MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   return tdpCommitteeLevelIdsMap;
+		}
+		
+		public Map<Long,List<Long>> committeeLevelIdsForUserAccessLevelIdBySubLevel(){
+		   
+		   Map<Long,List<Long>> tdpCommitteeLevelIdsMap = new LinkedHashMap<Long,List<Long>>();
+		   
+		   Long[] COUNTRY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {10l,11l ,5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.COUNTRY_LEVEl_ACCESS_ID, Arrays.asList(COUNTRY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {11l ,5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.STATE_LEVEl_ACCESS_ID, Arrays.asList(STATE_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.DISTRICT_LEVEl_ACCESS_ID, Arrays.asList(DISTRICT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] PARLIAMAENT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.PARLIAMENT_LEVEl_ACCESS_ID, Arrays.asList(PARLIAMAENT_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {5l,7l,9l, 6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.ASSEMBLY_LEVEl_ACCESS_ID, Arrays.asList(CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   Long[] MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS = {6l,8l};
+		   tdpCommitteeLevelIdsMap.put(IConstants.MANDAL_LEVEl_ID, Arrays.asList(MANDAL_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
+		   
+		   return tdpCommitteeLevelIdsMap;
+		}
+		public StringBuilder getCommittesRelatedLocationQuerypart(CommitteeInputVO committeeBO){
+			   
+			   StringBuilder sb = new StringBuilder();
+			   
+			   if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+					sb.append(" and model.userAddress.state.stateId in (:tdpCommitteeLevelValues) ");
+				}
+				else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+					
+					sb.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
+					
+				}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+					
+					sb.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
+					
+				}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+					
+					sb.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
+					
+				}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+					
+					sb.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
+				}
+			   return sb;
+		   }
+		
 }

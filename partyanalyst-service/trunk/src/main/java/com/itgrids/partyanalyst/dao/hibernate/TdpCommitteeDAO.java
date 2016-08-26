@@ -1795,4 +1795,159 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
     }
     
+    public List<Object[]> getCommitteeLevelWiseCountsByLocIds(CommitteeInputVO committeeBO){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" " +
+	    "select  model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevel.tdpCommitteeLevel," +//1
+	    "        model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name," +//3
+		"        count(distinct model.tdpCommitteeId)" +//4
+		" from   TdpCommittee model " +
+	    " where  model.tdpCommitteeLevel.tdpCommitteeLevelId in (:tdpCommitteeLevelIds)  " );
+				
+		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size()>0){
+			sb.append(" and model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+		}
+		
+		//locations related.
+		if(committeeBO.getQueryString() != null && committeeBO.getQueryString().length()>0){
+			sb.append( committeeBO.getQueryString() );
+		}
+		
+		if( committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
+		
+			if(committeeBO.getStatus().equalsIgnoreCase("notStarted")){
+				sb.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
+				if( committeeBO.getDate()!=null){
+					sb.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+				}else{
+					sb.append(" and model.startedDate is null ");
+				}
+			}
+		   else if(committeeBO.getStatus().equalsIgnoreCase("started")){
+				sb.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
+				if(committeeBO.getDate()!=null){
+					sb.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+				}else{
+					sb.append(" and model.completedDate is null ");
+				}
+			}
+			else if(committeeBO.getStatus().equalsIgnoreCase("completed")){
+				sb.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+				if( committeeBO.getDate()!=null){
+					sb.append( " and date(model.completedDate) < :givendate " );
+				}
+			} 
+		}
+			
+		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+			sb.append(" and model.userAddress.state.stateId = :stateId ");
+		}
+		sb.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpBasicCommittee.tdpBasicCommitteeId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameterList("tdpCommitteeLevelIds", committeeBO.getTdpCommitteeLevelIds());
+		if(committeeBO.getBasicCommitteeIds() != null && committeeBO.getBasicCommitteeIds().size()>0){
+			query.setParameterList("basicCommitteeIds", committeeBO.getBasicCommitteeIds());
+		}
+		//locations.
+		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getStateIds());
+		}
+		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getDistrictIds());
+		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getParliamentConstIds());
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getAssemblyConstIds());
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getTehsilIds());
+		}
+		
+		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
+			if(committeeBO.getDate()!=null){
+				query.setDate("givendate",committeeBO.getDate());
+			}
+		}
+		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+			query.setParameter("stateId",committeeBO.getStateId());
+		}
+		return query.list();
+	}
+    
+    public List<Object[]> getCumulativeCommitteesCountsByLocIds(CommitteeInputVO committeeBO){
+		
+ 		StringBuilder sb = new StringBuilder();
+ 		
+ 		sb.append(" " +
+ 	    " select model.tdpBasicCommittee.tdpBasicCommitteeId,model.tdpBasicCommittee.name,count(distinct model.tdpCommitteeId)" +//2
+ 		" from   TdpCommittee model " +
+ 	    " where  model.tdpBasicCommittee.tdpBasicCommitteeId in (:basicCommitteeIds) ");
+ 		
+ 		//locations related.
+ 		if(committeeBO.getQueryString() != null && committeeBO.getQueryString().length()>0){
+ 			sb.append( committeeBO.getQueryString() );
+ 		}
+ 		
+ 		if( committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
+ 		
+ 			if(committeeBO.getStatus().equalsIgnoreCase("notStarted")){
+ 				sb.append("   and model.isCommitteeConfirmed = 'N' and model.completedDate is null ");
+ 				if( committeeBO.getDate()!=null){
+ 					sb.append( " and ( date(model.startedDate) > :givendate or model.startedDate is null)" );
+ 				}else{
+ 					sb.append(" and model.startedDate is null ");
+ 				}
+ 			}
+ 		   else if(committeeBO.getStatus().equalsIgnoreCase("started")){
+ 				sb.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' ");
+ 				if(committeeBO.getDate()!=null){
+ 					sb.append( " and date(model.startedDate)<= :givendate and ( date(model.completedDate)>=:givendate  or model.completedDate is null )  " );
+ 				}else{
+ 					sb.append(" and model.completedDate is null ");
+ 				}
+ 			}
+ 			else if(committeeBO.getStatus().equalsIgnoreCase("completed")){
+ 				sb.append(" and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+ 				if( committeeBO.getDate()!=null){
+ 					sb.append( " and date(model.completedDate) < :givendate " );
+ 				}
+ 			} 
+ 		}
+ 			
+ 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+ 			sb.append(" and model.userAddress.state.stateId = :stateId ");
+ 		}
+ 		sb.append(" group by model.tdpBasicCommittee.tdpBasicCommitteeId ");
+ 		
+ 		Query query = getSession().createQuery(sb.toString());
+ 		
+ 		
+ 		query.setParameterList("basicCommitteeIds", committeeBO.getBasicCommitteeIds());
+ 		//locations.
+ 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+ 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getStateIds());
+ 		}
+ 		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+ 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getDistrictIds());
+ 		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+ 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getParliamentConstIds());
+ 		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+ 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getAssemblyConstIds());
+ 		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+ 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getTehsilIds());
+ 		}
+ 		
+ 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
+ 			if(committeeBO.getDate()!=null){
+ 				query.setDate("givendate",committeeBO.getDate());
+ 			}
+ 		}
+ 		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+ 			query.setParameter("stateId",committeeBO.getStateId());
+ 		}
+ 		return query.list();
+ 	}
 }
