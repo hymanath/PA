@@ -60,17 +60,19 @@
 								<li style="color:#249E24">SHORTLISTING</li>
 								<li class="headingColor"><span  id="headPosId"></span></li>
 							</ul>
-						</div>
+						</div>						
+						
 						<div class="col-md-2 col-xs-4 col-sm-2 m_top20 pad_right0">
 							<h4 class="text-right"><b>Level - </b></h4>
 							<h4 class="text-right"><b>Department - </b></h4>
-							<h4 class="text-right"><b>Board/Corporation - </b></h4>
+							<h4 class="text-right"><b>Board/Corp - </b></h4>
 						</div>
 						<div class="col-md-7 col-xs-8 col-sm-6 m_top20" style="padding-left:12px">
-							<h4 class="text-left">State - Andhra Pradesh</h4>
-							<h4 class="text-left">Labour Department</h4>
-							<h4 class="text-left">A.P.Building and Other Construction Workers Welfare Board</h4>
+							<h4 class="text-left" id="levelTextId">State - Andhra Pradesh</h4>
+							<h4 class="text-left" id="deptHeadId">Labour Department</h4>
+							<h4 class="text-left" id="boardHeadId">A.P.Building and Other Construction Workers Welfare Board</h4>
 						</div>
+						
 					</div>
 				</div>
 				<div class="panel-body">
@@ -183,13 +185,15 @@ else if(globalStats == "positionLink")
 	globalStats =" Linking  <b class='headingColor'  style='text-transform:uppercase;' >"+globalPosName+" POST</b>";
 
 $("#headPosId").html(globalStats+" ");
-$("#headBrdId").html(headBrdId+" board");
+$("#headBrdId").html(headBrdId+" Board");
 
-if(globalDeptName !=null && globalDeptName.length>0){
-	$("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+globalDeptName+" department</li>");
-}else{
-	$("#headLvlDeptId").html("<li>"+globalLevelTxt+" level </li> <li> "+ANY+" department</li>");
-}
+
+$("#levelTextId").html("<span>&nbsp "+globalLevelTxt.substr(0,1).toUpperCase()+globalLevelTxt.substr(1)+"  </span>"); 
+$("#deptHeadId").html("<span>&nbsp"+globalDeptName+" department</span>");
+$("#boardHeadId").html("<span>&nbsp"+headBrdId+" Board</span>");
+
+
+
 
 $('[data-toggle="tooltip"]').tooltip();
 /*var globalDistrictArr=[];
