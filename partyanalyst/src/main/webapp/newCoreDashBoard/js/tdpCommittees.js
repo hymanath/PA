@@ -1435,7 +1435,7 @@
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		
+		getTopPoorPerformancecommittees(activityMemberId);
 	})
 	
 	$(document).on("click",".removeSelecUserType",function(){
