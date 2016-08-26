@@ -796,6 +796,18 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	box-shadow:0px 0px 7px rgba(0,0,0,0.6);
 	margin-top:10px;
 }
+.basicCommitteesBlockDropDown
+{
+	display:none;
+	position:absolute;
+	background:#fff;
+	width:300px;
+	padding:12px;
+	right:0px;
+	z-index:99;
+	box-shadow:0px 0px 7px rgba(0,0,0,0.6);
+	margin-top:34px;
+}
 .notesUl
 {
 	padding-left:10px;
