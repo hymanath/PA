@@ -1,5 +1,6 @@
 	function getCommitteesBasicCountReport(){
 		
+		$("#basicCommitteeCountsDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
 	   var state ='AP';
 	   
 	   var basicCommitteeIdsArray= [];
@@ -26,6 +27,7 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#basicCommitteeCountsDiv").html('');
 			buildgetCommitteesBasicCountReport(result);
 			
 		});
@@ -93,7 +95,8 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result);
+			buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result);
 			
 		});
 	}
@@ -204,14 +207,26 @@
 		});
 	}
 	
+	function getChildUserTypesByItsParentUserType(){
+		
+		var jsObj = { parentUserTypeId : globalUserTypeId }
+		$.ajax({
+			type : 'POST',
+			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildgetChildUserTypesByItsParentUserType(result)
+		});			 
+	}
 	
-	function getSelectedChildUserTypeMembers(){
 	
-     //var parentActivityMemberId = globalActivityMemberId;
-	 var parentActivityMemberId = 1;
-	 var childUserTypeId = 4;
-	
-	  var date = '11/25/2016';   
+	function getSelectedChildUserTypeMembers(childUserTypeId){
+	$("#SelectedUserTypeDetailsDiv").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
+     var parentActivityMemberId = globalActivityMemberId;
+	 var childUserTypeId = childUserTypeId;
+	 var date = $("#dateRangeId").val();
+	   
 	  var state = globalState;
   	  var basicCommitteeIdsArray= [];
 	  basicCommitteeIdsArray.push(1);
@@ -231,11 +246,13 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			alert("success");
+			$("#SelectedUserTypeDetailsDiv").html('');
+			buildgetSelectedChildUserTypeMembers(result);
 		});
 	}
 	
 	function buildgetCommitteesBasicCountReport(result){
+		$("#basicCommitteeCountsDiv").html('');
 		var str='';
 		var locationLevelNameArray =[];
 		str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 committeesBlock">';
@@ -372,7 +389,7 @@
 				str+='</ul>';
         str+='</div>';
 		
-		$("#basicCommitteeCountsDiv").html(str)
+		$("#basicCommitteeCountsDiv").html(str);
 	}
 	
 	function getProperLocationLevelName(levelName){
@@ -531,6 +548,8 @@
 				}
 				
 			}
+		}else{
+			$("#levelWiseBasicCommittees").html("No Data Available");
 		}
 		
 		
@@ -698,8 +717,7 @@
 	}	
 }
 	
-	$(document).on("click",".slick-next,.slick-prev",function(){
-		
+	$("#levelWiseBasicCommittees").on("click",".slick-next,.slick-prev",function(){
 		var currentSliderLevel = $(".slick-current").find("h4").html();
 		
 		var tdpCommitteeLevelIdsClickedArray = [];
@@ -721,6 +739,333 @@
 		
 	});
 	
+	function buildgetChildUserTypesByItsParentUserType(result){
+		$("#childUserTypeDetailsDiv").html('');
+		var str='';
+		 str+='<ul class="comparisonSelect">';
+		 
+		 var firstChildUserTypeId;
+		 
+		 if(result !=null && result.length >0){
+			 firstChildUserTypeId = result[0].userTypeId;
+			 for(var i in result){
+				 str+='<li attr_userTypeId="'+result[i].userTypeId+'" class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+			 }
+		 }
+		str+='</ul>';
+		$("#childUserTypeDetailsDiv").html(str);
+		$(".comparisonSelect li:first-child").addClass("active")
+		
+		getSelectedChildUserTypeMembers(firstChildUserTypeId);
+	}
+	
+	
+	function buildgetSelectedChildUserTypeMembers(result){
+		$("#SelectedUserTypeDetailsDiv").html('');
+	var str='';
+	if(result !=null && result.length >0){
+		str+='<ul class="list-inline slickPanelSlider">';
+		for(var i in result){
+			str+='<li>';
+				str+='<div class="panel panel-default panelSlick">';
+					str+='<div class="panel-heading">';
+						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+						str+='<span class="count">01</span>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+						str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
+						str+='<table class="table table-condensed">';
+							str+='<thead>';
+								str+='<th>Total</th>';
+								str+='<th>Started</th>';
+								str+='<th>Completed</th>';
+								str+='<th>%</th>';
+							str+='</thead>';
+							str+='<tr>';
+								str+='<td>'+result[i].totalCount+'</td>';
+								str+='<td>'+result[i].startedCount+'</td>';
+								str+='<td>'+result[i].completedCount+'</td>';
+								str+='<td>'+result[i].completedPerc+'</td>';
+							str+='</tr>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			str+='</li>';
+		
+		}
+		str+='</ul>';
+		
+		$("#SelectedUserTypeDetailsDiv").html(str);
+			$(".slickPanelSlider").slick({
+				 slide: 'li',
+				 slidesToShow: 3,
+				 slidesToScroll: 3,
+				 infinite: false,
+				  responsive: [
+					{
+					  breakpoint: 1024,
+					  settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3,
+						infinite: false,
+						dots: false
+					  }
+					},
+					{
+					  breakpoint: 800,
+					  settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					  }
+					},
+					{
+					  breakpoint: 600,
+					  settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					  }
+					},
+					{
+					  breakpoint: 480,
+					  settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					  }
+					}
+					// You can unslick at a given breakpoint now by adding:
+					// settings: "unslick"
+					// instead of a settings object
+				  ]
+			});
+	}else{
+		$("#SelectedUserTypeDetailsDiv").html("No Data Available");
+	}
+		
+		
+	}
+	
+	$(document).on("click",".childUserTypeCls",function(){
+		var childUserTypeId = $(this).attr("attr_userTypeId");
+		
+		getSelectedChildUserTypeMembers(childUserTypeId);
+	});
+	
+	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result){
+		var str='';
+		if(result != null && result.length > 0){
+		
+			var str='';
+			
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<h4 class="text-capital">'+result[i][0].userType+'</h4>';
+					str+='<div id="genSec'+i+'" style="width:100%;height:100px;"></div>';
+				str+='</div>'
+					
+			}
+			
+		}
+		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html(str);
+		if(result != null && result.length > 0){
+			for(var i in result){
+				var length1 = result[i].length ;
+				var candidateNameArray = [];
+				var CommitteeCompleteCountArray = [];
+				var countVar =0;
+				for(var j = 0; j <= length1; j++){
+					countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				
+					candidateNameArray.push(result[i][j].name);
+					CommitteeCompleteCountArray.push(result[i][j].completedCount);
+					
+				}
+					
+				
+				var getWidth = $("#genSec"+i).parent().width()+'px';
+				$("#genSec"+i).width(getWidth);
+				$(function () {
+					$("#genSec"+i).highcharts({
+						colors: ['#0066DC'],
+						chart: {
+							type: 'column'
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							categories: candidateNameArray,
+							title: {
+								text: null
+							}
+						},
+						yAxis: {
+							min: 0,
+							title: {
+								text: null,
+								align: 'high'
+							},
+							labels: {
+								overflow: 'justify'
+							}
+						},
+						tooltip: {
+							headerFormat: '<b>{point.x}</b><br/>',
+							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+							shared: true
+						},
+						plotOptions: {
+							bar: {
+								dataLabels: {
+									enabled: true,
+									formatter: function(){
+										return Highcharts.numberFormat(this.y,0) + '%';
+									}
+								  
+								}
+							}
+						},
+						legend: {
+							layout: 'vertical',
+							align: 'right',
+							verticalAlign: 'top',
+							x: -40,
+							y: 80,
+							floating: true,
+							borderWidth: 1,
+							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+							shadow: true
+						},
+						credits: {
+							enabled: false
+						},
+						series: [{
+							name: 'Completed',
+							data: CommitteeCompleteCountArray
+						}]
+					});
+				});
+			}
+			
+		}
+		
+	}
+	
+	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result){
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<h4 class="text-capital">'+result[i][0].userType+'</h4>';
+					str+='<div id="genSec1'+i+'" style="width:100%;height:100px;"></div>';
+				str+='</div>'
+			}
+		}
+		$("#userTypeWiseCommitteesForTopFivePoorDiv").html(str);
+		if(result != null && result.length > 0){
+			for(var i in result){
+				var candidateNameArray = [];
+				var CommitteeCompleteCountArray = [];
+				var countVar = 0;
+				var length = result[i].length - 1;
+				for(var j = length; j >= 0; j--){
+					countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+					candidateNameArray.push(result[i][j].name);
+					CommitteeCompleteCountArray.push(result[i][j].completedCount);
+					
+				}
+					
+				
+				var getWidth = $("#genSec1"+i).parent().width()+'px';
+				$("#genSec1"+i).width(getWidth);
+				$(function () {
+					$("#genSec1"+i).highcharts({
+						colors: ['#0066DC'],
+						chart: {
+							type: 'column'
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							categories: candidateNameArray,
+							title: {
+								text: null
+							}
+						},
+						yAxis: {
+							min: 0,
+							title: {
+								text: null,
+								align: 'high'
+							},
+							labels: {
+								overflow: 'justify'
+							}
+						},
+						tooltip: {
+							headerFormat: '<b>{point.x}</b><br/>',
+							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+							shared: true
+						},
+						plotOptions: {
+							bar: {
+								dataLabels: {
+									enabled: true,
+									formatter: function(){
+										return Highcharts.numberFormat(this.y,0) + '%';
+									}
+								  
+								}
+							}
+						},
+						legend: {
+							layout: 'vertical',
+							align: 'right',
+							verticalAlign: 'top',
+							x: -40,
+							y: 80,
+							floating: true,
+							borderWidth: 1,
+							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+							shadow: true
+						},
+						credits: {
+							enabled: false
+						},
+						series: [{
+							name: 'Completed',
+							data: CommitteeCompleteCountArray
+						}]
+					});
+				});
+			}
+			
+		}
+		
+	}
+	$(document).on("click",".topFivePoorResults",function(){
+		$("#userTypeWiseCommitteesForTopFiveStrongDiv").hide();
+		$("#userTypeWiseCommitteesForTopFivePoorDiv").show();
+		getUserTypeWiseCommitteesCompletedCounts1();
+	})
+	$(document).on("click",".topFiveStrongResults",function(){
+		$("#userTypeWiseCommitteesForTopFiveStrongDiv").show();
+		$("#userTypeWiseCommitteesForTopFivePoorDiv").hide();
+		getUserTypeWiseCommitteesCompletedCounts1();
+	})
 	
 	function initialiseGraph()
 	{
