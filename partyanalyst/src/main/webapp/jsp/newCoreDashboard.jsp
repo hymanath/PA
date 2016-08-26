@@ -58,26 +58,12 @@
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
-                                    	<li class="active">Top 5 Poor</li>
-                                        <li>Top 5 Strong</li>
+                                    	<li class="topFivePoorResults">Top 5 Poor</li>
+                                        <li class="active topFiveStrongResults">Top 5 Strong</li>
                                     </ul>
                                 </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                	<h4 class="text-capital">general secretary</h4>
-		                            <div id="genSec" style="width:100%;height:100px;"></div>
-                                </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                	<h4 class="text-capital">secretary</h4>
-		                            <div id="Secretary" style="width:100%;height:100px;"></div>
-                                </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                	<h4 class="text-capital">member of parliament</h4>
-		                            <div id="memOfParliament" style="width:100%;height:100px;"></div>
-                                </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                	<h4 class="text-capital">district incharges</h4>
-		                            <div id="disIncharges" style="width:100%;height:100px;"></div>
-                                </div>
+                                <div id="userTypeWiseCommitteesForTopFiveStrongDiv"></div>
+                                <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -385,13 +371,7 @@
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-8 col-md-10">
-                                            <ul class="comparisonSelect">
-                                                <li class="active">General Secretary<span class="closeIconComparison"></span></li>
-                                                <li>Secretary<span class="closeIconComparison"></span></li>
-                                                <li>M.P<span class="closeIconComparison"></span></li>
-                                                <li>District Incharge<span class="closeIconComparison"></span></li>
-                                                <li>Constituency<span class="closeIconComparison"></span></li>
-                                            </ul>
+                                           <div id="childUserTypeDetailsDiv"></div>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-2">
 											<div class="input-group">
@@ -406,158 +386,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-12 col-xs-12 col-sm-12">
-                                            <ul class="list-inline slickPanelSlider">
-                                                <li>
-                                                    <div class="panel panel-default panelSlick">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-                                                            <span class="count">01</span>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <h4 class="text-capital">General Secretary</h4>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <th>Total</th>
-                                                                    <th>Started</th>
-                                                                    <th>Completed</th>
-                                                                    <th>%</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100%</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="panel panel-default panelSlick">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-                                                            <span class="count">01</span>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <h4 class="text-capital">General Secretary</h4>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <th>Total</th>
-                                                                    <th>Started</th>
-                                                                    <th>Completed</th>
-                                                                    <th>%</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100%</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="panel panel-default panelSlick">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-                                                            <span class="count">01</span>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <h4 class="text-capital">General Secretary</h4>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <th>Total</th>
-                                                                    <th>Started</th>
-                                                                    <th>Completed</th>
-                                                                    <th>%</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100%</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="panel panel-default panelSlick">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-                                                            <span class="count">01</span>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <h4 class="text-capital">General Secretary</h4>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <th>Total</th>
-                                                                    <th>Started</th>
-                                                                    <th>Completed</th>
-                                                                    <th>%</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100%</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="panel panel-default panelSlick">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-                                                            <span class="count">01</span>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <h4 class="text-capital">General Secretary</h4>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <th>Total</th>
-                                                                    <th>Started</th>
-                                                                    <th>Completed</th>
-                                                                    <th>%</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100%</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="panel panel-default panelSlick">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-                                                            <span class="count">01</span>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <h4 class="text-capital">General Secretary</h4>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <th>Total</th>
-                                                                    <th>Started</th>
-                                                                    <th>Completed</th>
-                                                                    <th>%</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100</td>
-                                                                    <td>100%</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                           <div id="SelectedUserTypeDetailsDiv"></div>
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12">
                                             <div class="bg_ED pad_15 arrow_top">
@@ -1223,7 +1052,6 @@
 	onLoadCalls();
 	function onLoadCalls(){
 		getCommitteesBasicCountReport();
-		//getUserTypeWiseCommitteesCompletedCounts1();
 	}
 	
 	$(document).on("click",".userStructureClass",function(){
@@ -1244,24 +1072,8 @@
 		
 		onLoadCalls();
 	});
-	getSelectedChildUserTypeMembers();
+	
 
-	 getChildUserTypesByItsParentUserType();
-	
-	function getChildUserTypesByItsParentUserType(){
-		
-		var jsObj = { parentUserTypeId : globalUserTypeId }
-		$.ajax({
-			type : 'POST',
-			url : 'getChildUserTypesByItsParentUserTypeAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			//alert("success");
-		});			 
-	}
-	
-	
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">

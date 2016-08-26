@@ -37,8 +37,9 @@
 		$(".committeesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		setTimeout(function(){
 			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
-			initialiseGraph();
-		},800);
+			//initialiseGraph();
+			getUserTypeWiseCommitteesCompletedCounts1();
+		},500);
 	});
 	/* Notes Functionality Complete*/
 	$(document).on("click",".notesIcon",function(){
@@ -66,6 +67,7 @@
 		tdpCommitteeLevelIdsClickedArray.push(6);
 		tdpCommitteeLevelIdsClickedArray.push(8);
 		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
+		getChildUserTypesByItsParentUserType();
 	});
 	$(document).on("click",".activeUlCls li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
