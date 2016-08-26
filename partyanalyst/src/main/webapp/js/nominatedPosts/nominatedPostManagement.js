@@ -837,7 +837,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 			str+='<div class="pad_15">';
 				str+='<button id="readytoFinalReviewBtnId'+boards+'" class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_body_id="'+bodyId+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" disabled>Ready For Final Review</button>';
 				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
+				str+='<span id="updateSearchId'+depts+''+boards+'" style="display:none"><img src="images/search.gif"/></span>';
 			str+='</div>';
+			//
 		}
 		
 		$("#"+bodyId).html(str);
@@ -973,48 +975,19 @@ var globalReadyDeptId=0;
 var globalReadyBoardId=0;
 var globalReadyBodyId='';
 $(document).on("click",".moveToFinalReviewCls",function(){
-	var districtId=$("#districtId").val();
+	 var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
 	var stateId=$("#stateId").val();
 	//var stateId = 
 	var levelId = globalLevelId;
 	var searchLevelId = 1;
-	globalReadyDeptId = $(this).attr('attr_dept_id');
-	globalReadyBoardId = $(this).attr('attr_board_id');
-	globalReadyBodyId = $(this).attr('attr_body_id');
+	var deptId = $(this).attr('attr_dept_id');
+	var boardId = $(this).attr('attr_board_id');
+	var bodyId = $(this).attr('attr_body_id');
+	var positionId = 1;
 	//var searchLevelValue =stateId;
-	
-	
-	var availableCount = 0;
-	var shortListedCount=0;
-	var positionName='';
-	
-		$("#readyToFinalReviewDiv").modal('show');
 		
-		$("#modelErrId").html("");
-		$("#modelSuccessId").html("");
-		
-		$('.positionUpdateCls').each(function(){
-		if($(this).is(":checked")){
-			availableCount = $(this).attr('attr_available_posts');
-			shortListedCount=$(this).attr('attr_short_listedcount');
-			positionName=$(this).attr('attr_position_name');
-			var str=' Select Position Member : ';
-			str+='<select attr_member_class_name="moveToFinalReviewCls" id="membersSelId" class="chosenSelect" multiple attr_no="">';
-			for(var i=0;i<availableCount;i++){
-				str+='<option value="'+(i+1)+'">Member '+(i+1) +'</option>';
-			}
-			str+='</select>';
-			
-			$("#readyToFinalRevieId").html(str);		
-			$("#membersSelId").chosen();
-
-			return;			
-		}		
-	});
-	
-	
 	var levelValuesArr=[];
 
 	if(globalLevelId == 1){
@@ -1050,16 +1023,21 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 	}
 	var positionArr = [];
 	$(".positionUpdateCls").each(function(){
-		var positionId = $(this).attr("id");
-		positionArr.push(positionId);
+		if($(this).is(":checked")){
+			var positionId = $(this).attr("id");
+			positionArr.push(positionId);
+		}
 	});
-	/* var jsObj={		
+	var sizeOfMember=0;
+	$("#updateSearchId"+deptId+""+boardId).show();
+	var jsObj={		
 		deptId :deptId,
 		boardId :boardId,
 		positionArr:positionArr,
 		statusId:2,
 		levelId : globalLevelId,
-		levelValuesArr:levelValuesArr
+		levelValuesArr:levelValuesArr,
+		sizeOfMember:sizeOfMember
 	}
 	$.ajax({
           type:'POST',
@@ -1067,14 +1045,15 @@ $(document).on("click",".moveToFinalReviewCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	  console.log(result);
+	  $("#updateSearchId"+deptId+""+boardId).hide();
 	  if(result != null && result.resultCode==0){
-		  alert("Suucessfully this position Moved to Final Review...");
+		  alert("Successfully this position Moved to Final Review.");
+		  getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,'','','');
 	  }
 	  else if(result != null && result.resultCode==1){
-		  alert("Error Occured while moving this position to Final Review");
+		  alert("Error Occured while moving this position to Final Review.");
 	  }
-   }); */
+   });
 	
 });
 
@@ -1137,8 +1116,8 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 		positionArr.push(positionId);
 	});
 	
-	var sizeOfMember=0;
-	var value =$('#membersSelId').val();
+	 var sizeOfMember=0;
+	/*var value =$('#membersSelId').val();
 	
 	if(value ==null || value=="" || value == undefined){
 		$("#modelErrId").html("Please Select "+positionName);
@@ -1147,13 +1126,15 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 	
 	if(value.length>0){
 		sizeOfMember = value.length;
-	}
-	if(sizeOfMember >0 && sizeOfMember>shortListedCount){
+	} */
+	/* if(sizeOfMember >0 && sizeOfMember>shortListedCount){
 		$("#modelErrId").html("Selected Positions Count Should be greater than or equal to Shortlisted ");
 		return;
-	}	
+	} */	
 	$("#updateSearchId").show();
 	$("#modelErrId").html("");
+	
+	return;
 	var jsObj={		
 		deptId :globalReadyDeptId,
 		boardId :globalReadyBoardId,
@@ -1175,9 +1156,9 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 	  if(result != null && result.resultCode==0){
 		  $("#modelSuccessId").html("Successfully this position Moved to Final Review.");
 			  setTimeout(function(){ 
-				$("#readyToFinalReviewDiv").modal('hide');
+				//$("#readyToFinalReviewDiv").modal('hide');
 				//globalReadyBodyId
-				getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,globalReadyDeptId,globalReadyBoardId,globalReadyBodyId,'','','');
+				//getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,globalReadyDeptId,globalReadyBoardId,globalReadyBodyId,'','','');
 			  }, 2000);
 			  
 	  }
