@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 
 public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, Long>{
@@ -54,4 +55,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public List<Object[]> getBrdWisNominPstAppliedDepOrCorpDetails(Long candidateId);
 	 public List<Object[]> getNPCAndNpForApplication(List<Long> applicationIds);
 	 public Integer updateStatusToGOPassed(List<Long> applicationIds,Date date,Long statusId);
+	 public List<NominatedPostApplication> getNominatedPostApplicationsByMemberOfFinalReview(Long memberId);
 }

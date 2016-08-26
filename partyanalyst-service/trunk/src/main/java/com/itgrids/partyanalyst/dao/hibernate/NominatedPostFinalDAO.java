@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
+import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1822,5 +1823,19 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		query.setParameterList("applicationIds", applicationIds);
 		
 		return query.executeUpdate();
+	}
+	
+	public List<NominatedPostApplication> getNominatedPostApplicationsByMemberOfFinalReview(Long memberId){
+		
+		 Query query = getSession().createQuery(" select model.nominatedPostApplication from NominatedPostFinal model " +
+		 		" where model.nominatedPostMemberId = memberId " +
+		 		" and model.isDeleted = 'N'" +
+		 		" and model.nominatedPostApplication.isDeleted ='N'  " +
+		 		" and model.nominatedPostApplication.applicationStatusId = :finalReview ");
+		
+		 query.setParameter("finalReview", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
+		 query.setParameter("memberId", memberId);
+		 
+		return query.list();
 	}
 }

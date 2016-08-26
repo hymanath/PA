@@ -4150,13 +4150,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					
 						Long i=1l;
 						for(NominatedPost nominatedPostObj:nominatedPostsList){
-							if(i<=sizeOfMember){
+							//if(i<=sizeOfMember){
 								nominatedPostObj.setNominatedPostStatusId(statusId);
 								nominatedPostObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								nominatedPostObj.setUpdatedBy(userId);
 								nominatedPostDAO.save(nominatedPostObj);
 								i++;
-							}												
+							//}												
 						}
 					}
 					
@@ -4589,6 +4589,38 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						nominatedPostFinal.setUpdatedBy(userId);
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+						
+						
+						//Moving into OPEN Status if Applications Are less 
+						if(nominatedPostFinal !=null){							
+							Long memberId = nominatedPostFinal.getNominatedPostMemberId();
+							if(memberId !=null && memberId>0){
+								
+								//FinalReview Applications && Posts
+								List<NominatedPostApplication> applicationList =  nominatedPostFinalDAO.getNominatedPostApplicationsByMemberOfFinalReview(memberId);	
+								
+								List<NominatedPost> postsList   = nominatedPostDAO.getNominatedPostByMemberOfFinalReview(memberId);
+								
+								if(postsList !=null && (postsList.size()>applicationList.size())){
+									
+									int diff = (postsList.size() - (applicationList !=null ? applicationList.size():0));									
+									if(diff>0){		
+										int i=1;
+										for (NominatedPost nominatedPost : postsList) {											
+											if(i<=diff){												
+												nominatedPost.setNominatedPostStatusId(1l);
+												nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+												nominatedPost.setUpdatedBy(userId);												
+												nominatedPostDAO.save(nominatedPost);												
+												i++;
+											}
+										}										
+									}								
+								}
+							}
+							
+						}
+						
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
 						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
