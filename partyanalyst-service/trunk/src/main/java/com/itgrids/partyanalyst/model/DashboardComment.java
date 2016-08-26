@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class DashboardComment  extends BaseModel implements Serializable{
 	private String comment;
 	private User user;
 	private Long userId;
-	private String insertedTime;
+	private Date insertedTime;
 	private String isDeleted;
 	
 	@Id
@@ -95,16 +96,6 @@ public class DashboardComment  extends BaseModel implements Serializable{
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
-	@Column(name ="inserted_time")
-	public String getInsertedTime() {
-		return insertedTime;
-	}
-	
-	public void setInsertedTime(String insertedTime) {
-		this.insertedTime = insertedTime;
-	}
-	
 	@Column(name ="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
@@ -113,5 +104,14 @@ public class DashboardComment  extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	@Column(name ="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	
 	
 }
