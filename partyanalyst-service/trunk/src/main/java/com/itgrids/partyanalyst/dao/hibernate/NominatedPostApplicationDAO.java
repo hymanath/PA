@@ -1896,4 +1896,56 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       
 	    return query.list();  
 	}
+	
+public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId) " +				
+				" from NominatedPostApplication model,NominatedPost model1 ");	
+		
+		if(levelId != null && levelId.longValue()>1L && stateId != null){
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and model.isDeleted='N' " );
+			queryStr.append(" and nominatedPostMember.nominatedPostMemberId = model1.nominatedPostMember.nominatedPostMemberId " );
+		}
+		else{
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition where model.isDeleted='N' ");
+		}
+		
+		queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
+		if(levelId.longValue() != 5L)
+			queryStr.append("   and model.boardLevelId =:levelId ");
+		else
+			queryStr.append("   and model.boardLevelId in (5,6) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		queryStr.append(" and model.applicationStatusId = 1 " +
+				" and model1.nominatedPostStatus.nominatedPostStatusId = 1 ");//applied
+		
+		if(levelId != null && levelId.longValue()>2L && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append("  and (model3.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
+			else if(stateId.longValue() ==36L)
+				queryStr.append(" and  ( model3.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
+		}
+		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model3.state.stateId=:stateId ");
+		
+		queryStr.append(" group  by model.boardLevelId " +
+				"  order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(levelId.longValue() != 5L)
+			query.setParameter("levelId", levelId);
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
+		
+		return query.list();
+	}
 }
