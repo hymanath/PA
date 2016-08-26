@@ -16,7 +16,9 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
@@ -34,6 +36,8 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
     private IUserTypeRelationDAO userTypeRelationDAO;
     private IActivityMemberRelationDAO activityMemberRelationDAO;
     private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+    private IDistrictDAO districtDAO;
+    private IConstituencyDAO constituencyDAO;
     
 	//SETTERS
 	public void setActivityMemberAccessTypeDAO(
@@ -52,11 +56,17 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 				IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 			this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
-	 
-	 
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	
 	//BUSINESS METHODS
 	
-
 	/**
 	  * @param  ActivityMemberVO activityMemberVO
 	  * @return ActivityMemberVO activityMemberVO
@@ -89,22 +99,6 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
     		
     		activityMemberVO.setUserTypesMap(userTypesMap);
     		activityMemberVO.setLocationLevelIdsMap(locationLevelIdsMap);
-    		
-    		/*List<List<UserTypeVO>> userTypesList = null;
-    		
- 		   if( userTypesMap != null && userTypesMap.size() > 0)
- 		   {
- 			   userTypesList = new ArrayList<List<UserTypeVO>>();
- 			   
- 			   for(Long userType:userTypesMap.keySet())
- 			   {   
- 				   Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
- 				   userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
- 			   }
- 		   }
- 		 
- 		   System.out.println(userTypesMap);
- 	   	   System.out.println(locationLevelIdsMap);*/
     		
 		}catch(Exception e){
 			LOG.error("Exception occurred in getChildActivityMembersAndLocations() method in CoreDashboardGenericService class",e);
@@ -180,36 +174,148 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 			LOG.error("Exception occurred in setLocationLevelsToActivityMembers() method in CoreDashboardGenericService class",e);
 		}
 	}
-    
-    /**
-	  * 
-	  * @return Map<Long,List<Long>>
+	
+	/**
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-	  *  This  Method is used to get all 'child userTypes to parent userTypes'. 
-	  *  @since 24-AUGUST-2016
+	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
+	  *  @since 25-AUGUST-2016
 	  */
-    public Map<Long,List<Long>> getParentUserTypesAndItsChildUserTypes(){
+	public ActivityMemberVO getSelectedChildUserTypeMembers(Long parentActivityMemberId,Long childUSerTypeId){
+    	ActivityMemberVO finalVO = new ActivityMemberVO();
+    	
+    	try{
+    		List<Long> childUserTypeIds = new ArrayList<Long>();
+    		childUserTypeIds.add(childUSerTypeId);
+    		
+    		List<Object[]> childMembers = activityMemberRelationDAO.getChildUserTypeMembers(parentActivityMemberId, childUserTypeIds);
+    		setActivityMemberDetailsAsVOS(finalVO,childMembers);
+    		
+		}catch(Exception e){
+			LOG.error("Exception occurred in getChildActivityMembersAndLocations() method in CoreDashboardGenericService class",e);
+		}
+    	return finalVO;
+    }
+	
+	
+	/**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
+	  *  @since 25-AUGUST-2016
+	  */
+	public ActivityMemberVO getDirectChildActivityMemberCommitteeDetails(Long activityMemberId,Long userTypeId){
+   	    ActivityMemberVO finalVO = new ActivityMemberVO();
+   	    try{
+   		
+   	    	Map<Long,List<Long>> ParentChildUserTypesRelationMap = getParentUserTypesAndItsChildUserTypes();
+   	    	List<Long> childUserTypeIds = ParentChildUserTypesRelationMap.get(userTypeId);
+   		
+   	    	List<Object[]> childMembers = activityMemberRelationDAO.getChildUserTypeMembers(activityMemberId, childUserTypeIds);
+   		
+   	    	setActivityMemberDetailsAsVOS(finalVO,childMembers);
+		}catch(Exception e){
+			LOG.error("Exception occurred in getChildActivityMembersAndLocations() method in CoreDashboardGenericService class",e);
+		}
+   	   return finalVO;
+   }
+	
+	public void setActivityMemberDetailsAsVOS(ActivityMemberVO finalVO,List<Object[]> memberDetails){
 		
-		Map<Long,List<Long>> userTypesMap = new HashMap<Long, List<Long>>();
-		
-		List<Object[]> list  = userTypeRelationDAO.getParentUserTypesAndItsChildUserTypes();
-		if( list != null && list.size() > 0){
-			for( Object[] obj : list){
+		try{
+			//return variables
+			Map<Long,UserTypeVO> activityMembersMap  = null;
+			Map<Long,Set<Long>> locationLevelIdsMap  = null;
+					
+			if(memberDetails != null && memberDetails.size() > 0){
 				
-				if( obj[0] != null){
-					List<Long> childUserTypeIds = null;
-					childUserTypeIds = userTypesMap.get((Long)obj[0]);
-					if( childUserTypeIds == null){
-						childUserTypeIds = new ArrayList<Long>();
-						userTypesMap.put((Long)obj[0],childUserTypeIds);
+		   		activityMembersMap  = new LinkedHashMap<Long,UserTypeVO>(0);
+		   		locationLevelIdsMap = new HashMap<Long, Set<Long>>(0);
+   			    
+				for(Object[] obj : memberDetails)
+				{	 
+					 UserTypeVO activityMemberVO = null;
+					 Long memberid = (Long)obj[0];
+					 if(!activityMembersMap.containsKey(memberid)){
+						 
+						 activityMemberVO = new UserTypeVO();
+						 activityMemberVO.setActivityMemberId((Long)obj[0]);
+						 activityMemberVO.setTdpCadreId(obj[1]!=null?(Long)obj[1]:0l);
+						 activityMemberVO.setName(obj[2]!=null?obj[2].toString():"");
+						 activityMemberVO.setImage(obj[8]!=null?obj[8].toString():"");
+						 activityMemberVO.setUserTypeId(obj[3]!=null?(Long)obj[3]:0l);
+						 activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
+						 activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
+						 activityMemberVO.setLocationLevelName(obj[6]!=null?obj[6].toString():"");
+						 activityMemberVO.setLocationValuesSet( new HashSet<Long>());
+						 
+						 activityMembersMap.put(memberid,activityMemberVO);
+						 
+					 }
+					 activityMemberVO = activityMembersMap.get(memberid);
+					 activityMemberVO.getLocationValuesSet().add(obj[7]!= null ?(Long)obj[7]:0l);
+					 
+					 //get locationlevelId and its corresponding locationValues.
+					 Set<Long> locationLevelValues = null;
+					 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
+					 if(locationLevelValues == null){
+						 locationLevelValues = new HashSet<Long>();
+						 locationLevelIdsMap.put(activityMemberVO.getLocationLevelId(), locationLevelValues);
+					 }
+					 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
+					 if(obj[7]!=null){
+						 locationLevelValues.add((Long)obj[7]); 
+					 }
+				}
+				
+				finalVO.setActivityMembersMap(activityMembersMap);
+		   		finalVO.setLocationLevelIdsMap(locationLevelIdsMap);
+			}
+		}catch(Exception e){
+			LOG.error("Exception occurred in setActivityMemberDetailsAsVOS() method in CoreDashboardGenericService class",e);
+		}
+	}
+	
+	
+	/*
+	 * Get location Names By location Ids .
+	 */
+	
+	public  Map<String,String>  getLocationNamesByLocationIds( Map<Long,Set<Long>> locationLevelIdsMap){
+		
+		Map<String,String> locationNamesMap = new HashMap<String,String>(0);
+		
+		if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			
+			for(Long locationLevelId : locationLevelIdsMap.keySet()){
+				
+				Set<Long> locationLevelValues = locationLevelIdsMap.get(locationLevelId);
+				
+				if( locationLevelValues != null && locationLevelValues.size() > 0){
+					
+					List<Object[]> values = null;
+					String suffix = null;
+					if(locationLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID){
+						values = districtDAO.getDistrictNamesByIds(new ArrayList<Long>(locationLevelValues));
+						suffix = " District";
+					}else if(locationLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+						values = constituencyDAO.getConstituenctNamesByIds(new ArrayList<Long>(locationLevelValues));
+						suffix = " Parliament";
+					}else if(locationLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+						values = constituencyDAO.getConstituenctNamesByIds(new ArrayList<Long>(locationLevelValues));
+						suffix = " Constituency";
 					}
-					childUserTypeIds = userTypesMap.get((Long)obj[0]);
-					childUserTypeIds.add((Long)obj[2]);
+					
+					if( values != null && values.size() > 0){
+						for( Object[] obj : values){
+							locationNamesMap.put(locationLevelId+"_"+obj[0],obj[1]!=null ? obj[1].toString() +" "+suffix : "");
+						}
+					}
 				}
 			}
 		}
-		return userTypesMap;
+		return locationNamesMap;
 	}
+	
+	
     /**
 	  * @return List<>
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
@@ -284,88 +390,36 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return d;
 	}
-	
-	/**
+	 /**
+	  * 
+	  * @return Map<Long,List<Long>>
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
-	  *  @since 25-AUGUST-2016
+	  *  This  Method is used to get all 'child userTypes to parent userTypes'. 
+	  *  @since 24-AUGUST-2016
 	  */
-	public ActivityMemberVO getSelectedChildUserTypeMembers(Long parentActivityMemberId,Long childUSerTypeId){
-    	ActivityMemberVO finalVO = new ActivityMemberVO();
-    	
-    	try{
-    		List<Long> childUserTypeIds = new ArrayList<Long>();
-    		childUserTypeIds.add(childUSerTypeId);
-    		
-    		Map<Long,UserTypeVO> activityMembersMap  = new LinkedHashMap<Long,UserTypeVO>(0);
-    		Map<Long,Set<Long>> locationLevelIdsMap = new HashMap<Long, Set<Long>>();
-    		
-    		List<Object[]> childMembers = activityMemberRelationDAO.getChildUserTypeMembers(parentActivityMemberId, childUserTypeIds);
-    		if(childMembers != null && childMembers.size() > 0)
-			{
-    			finalVO = new ActivityMemberVO();
-				for(Object[] obj : childMembers)
-				{	 
-					 UserTypeVO activityMemberVO = null;
-					 Long memberid = (Long)obj[0];
-					 if(!activityMembersMap.containsKey(memberid)){
-						 
-						 activityMemberVO = new UserTypeVO();
-						 activityMemberVO.setActivityMemberId((Long)obj[0]);
-						 activityMemberVO.setTdpCadreId(obj[1]!=null?(Long)obj[1]:0l);
-						 activityMemberVO.setName(obj[2]!=null?obj[2].toString():"");
-						 activityMemberVO.setImage(obj[8]!=null?obj[8].toString():"");
-						 activityMemberVO.setUserTypeId(obj[3]!=null?(Long)obj[3]:0l);
-						 activityMemberVO.setUserType(obj[4]!=null?obj[4].toString():"");
-						 activityMemberVO.setLocationLevelId(obj[5]!=null?(Long)obj[5]:0l);
-						 activityMemberVO.setLocationLevelName(obj[6]!=null?obj[6].toString():"");
-						 activityMemberVO.setLocationValuesSet( new HashSet<Long>());
-						 
-						 activityMembersMap.put(memberid,activityMemberVO);
-						 
-					 }
-					 activityMemberVO = activityMembersMap.get(memberid);
-					 activityMemberVO.getLocationValuesSet().add(obj[7]!= null ?(Long)obj[7]:0l);
-					 
-					 //get locationlevelId and its corresponding locationValues.
-					 Set<Long> locationLevelValues = null;
-					 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
-					 if(locationLevelValues == null){
-						 locationLevelValues = new HashSet<Long>();
-						 locationLevelIdsMap.put(activityMemberVO.getLocationLevelId(), locationLevelValues);
-					 }
-					 locationLevelValues = locationLevelIdsMap.get(activityMemberVO.getLocationLevelId());
-					 if(obj[7]!=null){
-						 locationLevelValues.add((Long)obj[7]); 
-					 }
+   public Map<Long,List<Long>> getParentUserTypesAndItsChildUserTypes(){
+		
+		Map<Long,List<Long>> userTypesMap = new HashMap<Long, List<Long>>();
+		
+		List<Object[]> list  = userTypeRelationDAO.getParentUserTypesAndItsChildUserTypes();
+		if( list != null && list.size() > 0){
+			for( Object[] obj : list){
+				
+				if( obj[0] != null){
+					List<Long> childUserTypeIds = null;
+					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+					if( childUserTypeIds == null){
+						childUserTypeIds = new ArrayList<Long>();
+						userTypesMap.put((Long)obj[0],childUserTypeIds);
+					}
+					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+					childUserTypeIds.add((Long)obj[2]);
 				}
 			}
-    		
-    		
-    		finalVO.setActivityMembersMap(activityMembersMap);
-    		finalVO.setLocationLevelIdsMap(locationLevelIdsMap);
-    		
-    		/*List<List<UserTypeVO>> userTypesList = null;
-    		
- 		   if( userTypesMap != null && userTypesMap.size() > 0)
- 		   {
- 			   userTypesList = new ArrayList<List<UserTypeVO>>();
- 			   
- 			   for(Long userType:userTypesMap.keySet())
- 			   {   
- 				   Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
- 				   userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
- 			   }
- 		   }
- 		 
- 		   System.out.println(userTypesMap);
- 	   	   System.out.println(locationLevelIdsMap);*/
-    		
-		}catch(Exception e){
-			LOG.error("Exception occurred in getChildActivityMembersAndLocations() method in CoreDashboardGenericService class",e);
 		}
-    	return finalVO;
-    }
+		return userTypesMap;
+	}
+	
 	
 	   public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
 			

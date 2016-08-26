@@ -228,16 +228,16 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		     
 		     
 		     //add counts to activity members.
-		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap);
+		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap,null);
 		     if(activityMembersList!=null && activityMembersList.size()>0){
-		    	 setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null);
+		    	 setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
 		     }
 	   }catch(Exception e){
 		 e.printStackTrace();
 	   }
 	   return activityMembersList;
    }
-   public List<UserTypeVO> setCommitteeCountsToActivityMembers(Map<Long,UserTypeVO> childActivityMembersMap,String type,Map<String,UserTypeVO> locationLevelCountsMap){
+   public List<UserTypeVO> setCommitteeCountsToActivityMembers(Map<Long,UserTypeVO> childActivityMembersMap,String type,Map<String,UserTypeVO> countForLocationMap,Map<String,String> nameForLocationMap){
 	   	
 		List<UserTypeVO> activityMembersList = null;
 		
@@ -252,13 +252,23 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 					   if(memberVO.getLocationValuesSet() != null && memberVO.getLocationValuesSet().size()>0){
 						   for(Long locationValue : memberVO.getLocationValuesSet()){
 							   String key = memberVO.getLocationLevelId()+"_"+locationValue;
-							   UserTypeVO countVO = locationLevelCountsMap.get(key);
+							   
+							   //setting count to a location.
+							   UserTypeVO countVO = countForLocationMap.get(key);
 							   if(countVO != null)
 							   {
 								   memberVO.setTotalCount(memberVO.getTotalCount() + countVO.getTotalCount());
 								   memberVO.setCompletedCount(memberVO.getCompletedCount()+countVO.getCompletedCount());
 								   memberVO.setStartedCount(memberVO.getStartedCount()+countVO.getStartedCount());
 								   memberVO.setNotStartedCount(memberVO.getNotStartedCount()+countVO.getNotStartedCount());
+							   }
+							   //setting name to a location.
+							   if(nameForLocationMap!=null && nameForLocationMap.size()>0){
+								   if(memberVO.getLocationName() == null || memberVO.getLocationName().isEmpty()){
+									   memberVO.setLocationName(nameForLocationMap.get(key));
+								   }else{
+									   memberVO.setLocationName( memberVO.getLocationName()+","+ nameForLocationMap.get(key) );  
+								   }
 							   }
 						   }
 					   } 
@@ -335,6 +345,50 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 				 }
 			 }
 	 }
-   	
-
+   
+   /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the direct child usertype activity memberids and its committee counts for a parent usertype activity member id. 
+	  *  @since 25-AUGUST-2016
+	  */
+ public List<UserTypeVO> getDirectChildActivityMemberCommitteeDetails(Long activityMemberId,Long userTypeId,String state,List<Long> basicCommitteeIds,String dateString){
+	    List<UserTypeVO> activityMembersList = null;
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   try{
+		   
+		     //Creating Business Object.
+		     CommitteeInputVO committeeBO = new CommitteeInputVO();
+		     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
+		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		     committeeBO.setStateId(stateId);
+		     if(dateString != null && !dateString.isEmpty()){
+		    	 committeeBO.setDate(sdf.parse(dateString));
+		     }
+		   
+		     //calling generic method.
+		    ActivityMemberVO activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId);
+		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		     
+		     //get commitees count based on location level id and location level values.
+		     List<String> statusList = new ArrayList<String>();
+		     statusList.add("completed");
+		     statusList.add("started");
+		     statusList.add("notStarted");
+		     committeeBO.setStatusList(statusList);
+		     Map<String,UserTypeVO> countForLocationMap = getCommitteesCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,committeeBO);
+		     Map<String,String>     nameForLocationMap  = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+		     
+		     //add counts to activity members.
+		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",countForLocationMap,nameForLocationMap);
+		     if(activityMembersList!=null && activityMembersList.size()>0){
+		    	 //calculating percantage.
+		    	  setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
+		     }
+	   }catch(Exception e){
+		 e.printStackTrace();
+	   }
+	   return activityMembersList;
+ }
+ 
 }
