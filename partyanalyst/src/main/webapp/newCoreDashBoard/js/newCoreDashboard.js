@@ -120,5 +120,7 @@
 		}
 	});
 	
-	
+	$(document).on("click",".basicCommitteesBlockDiv",function(){
+		$(this).closest(".moreBlocks").find(".basicCommitteesBlockDropDown").toggle();
+	});
 	
