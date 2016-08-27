@@ -1,5 +1,6 @@
 
 function getOpenPositionDistrictsForState(state,id,num){
+	$("#searchDataImgForDSt").show();
 	state = $("#nominatedStaeId"+num).val();
 	//$("#nominatedDistId  option").remove();
 	$("#nominatedDistId"+num+"").empty();
@@ -28,7 +29,8 @@ function getOpenPositionDistrictsForState(state,id,num){
 	  url: 'getOpenPositionDistrictsForStateAction.action',
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){   
+   }).done(function(result){
+	$("#searchDataImgForDSt").hide();	   
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -1095,7 +1097,8 @@ $('.searchTypeCls').click(function(){
   }
 	
 	function getOpenedPostionsStates(id,num){
-		
+		$("#searchDataImgForSta").show();
+		$("#searchDataImgForState").show();
 		var jsObj = {			
 			boardLevelId:$('#boardLvlId'+num+'').val()
 		}
@@ -1105,6 +1108,8 @@ $('.searchTypeCls').click(function(){
 	          dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		   $("#searchDataImgForSta").hide();
+		   $("#searchDataImgForState").hide();
 	   $("#"+id+''+num+'').empty();
 	    
 	   if(result != null && result.length >0){
@@ -1118,7 +1123,8 @@ $('.searchTypeCls').click(function(){
 	  }
   
   function getDepartmentBoardPositions(num){
-	//$("#searchDataImgForDist").show();
+	$("#searchDataImgForPos").show();
+	$("#searchDataImgForPositn").show();
    
    
 	 var postTypeId=1;
@@ -1176,6 +1182,8 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#searchDataImgForPos").hide();
+	   $("#searchDataImgForPositn").hide();
     $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
 	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
@@ -1196,7 +1204,8 @@ $('.searchTypeCls').click(function(){
   }
   
     function getDepartmentBoards(num){
-	//$("#searchDataImgForDist").show();
+	$("#searchDataImgForDep").show();
+	$("#searchDataImgForCorp").show();
 
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
@@ -1252,7 +1261,8 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-   //$("#searchDataImgForDist").hide();
+   $("#searchDataImgForDep").hide();
+   $("#searchDataImgForCorp").hide();
   $("#deptBoardId"+num).empty();
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
@@ -1270,7 +1280,7 @@ $('.searchTypeCls').click(function(){
    });
   }  
   function getDepartments(num){
-	//$("#searchDataImgForDist").show();
+	$("#searchDataImgForDist").show();
 	 var postTypeId=0;
 	 var boardLevelId = $("#boardLvlId"+num).val();
 	 if(num ==0)
@@ -1331,7 +1341,8 @@ $('.searchTypeCls').click(function(){
   }
   
   function buildDepartments(postTypeId,boardLevelId,searchLevelValue,num){
-
+	$("#searchDataImgForDistrict").show();
+	$("#searchDataImgForDepmt").show();
 	  var jsObj = {
 		postType:postTypeId,
 		boardLevelId:boardLevelId,
@@ -1345,6 +1356,8 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $("#searchDataImgForDistrict").hide();
+	   $("#searchDataImgForDepmt").hide();
 	  if(num == 0)
 		  num='';
 	   $("#deptBoardId"+num).html('');
