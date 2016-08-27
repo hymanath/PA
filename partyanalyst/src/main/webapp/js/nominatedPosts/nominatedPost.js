@@ -1,3 +1,4 @@
+
 function getOpenPositionDistrictsForState(state,id,num){
 	state = $("#nominatedStaeId"+num).val();
 	//$("#nominatedDistId  option").remove();
@@ -252,12 +253,12 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatedDistId"+num).empty();
 	   }
 	   
-	   $("#searchDataImgForDist").hide();
-	     $("#districtId").append('<option value="-1">Please Select District</option>');
+		$("#searchDataImgForDist").hide();
+	     //$("#districtId").append('<option value="-1">Please Select District</option>');
      for(var i in result){
 		 if(id == "statesDivId"){
 			   if(result[i].id == 0){
-				  $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
+				  $("#districtId").append('<option value='+result[i].id+'>ALL</option>');  
 			   }else{
 				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
@@ -379,7 +380,7 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatdConstId"+num).empty();
 	   }
 	   $("#searchDataImgForConst").hide();
-	    $("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
+	    //$("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
      for(var i in result){
 		 if(id == "districtId"){
 		   if(result[i].id == 0){
@@ -2734,3 +2735,4 @@ function refreshOnLoadFields(){
 	$('#candidateTypeId').val('');
 	
 }
+$("#statesDivId").val(0).trigger("chosen:updated");
