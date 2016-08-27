@@ -1944,7 +1944,15 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				if(commonMethodsUtilService.isListOrSetValid(levelPostCount)){
 					
 					for( Object[] obj : levelPostCount){
-						appliedPostsMap.put((Long)obj[0], (Long)obj[1]);
+						
+						//Post Count       //ApplicationsCount
+						if((Long)obj[1] >= (Long)obj[2]){
+							appliedPostsMap.put((Long)obj[0], (Long)obj[2]);
+						}else{
+							appliedPostsMap.put((Long)obj[0], (Long)obj[1]);
+						}
+						
+						//appliedPostsMap.put((Long)obj[0], (Long)obj[1]);
 					}
 					
 				}
