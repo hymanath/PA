@@ -603,7 +603,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getNominatedPostsAppliedApplciationsDtals(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.boardLevelId, count( model.nominatedPostApplicationId), " +
+		queryStr.append(" select model.boardLevelId, count(distinct model.nominatedPostApplicationId), " +
 				" count(distinct nominatedPostPosition.departmentId), " +
 				" count(distinct nominatedPostPosition.boardId)  " +
 				" from NominatedPostApplication model ");
@@ -1900,7 +1900,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId) " +				
+		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId),count(distinct model.nominatedPostApplicationId) " +				
 				" from NominatedPostApplication model,NominatedPost model1 ");	
 		
 		if(levelId != null && levelId.longValue()>1L && stateId != null){
