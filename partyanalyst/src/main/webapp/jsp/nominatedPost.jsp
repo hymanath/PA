@@ -385,6 +385,7 @@
 									<select class="chosenSelect boardLvlCls boardLvelCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments(0);getOpenedPostionsStates('nominatedStaeId','')" attr_no="">
 									<option value="0">Select Post Level</option>
 									</select>
+									<img id="searchDataImgForSta" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
 									<label>State Name</label>
@@ -393,6 +394,7 @@
 										<!--<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>-->
 									</select>
+									<img id="searchDataImgForDistrict" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="districtShowDivId">
 									<label>District</label>
@@ -424,6 +426,7 @@
 									</select>
 									<br>
 									<span id="errdepmtsId" class="errdepmtscls"></span>
+									<img id="searchDataImgForDep" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
@@ -431,6 +434,7 @@
 									<option value="0">Select Department Board</option>	
 									</select><br>
 									<span id="errdeptBoardId" class="errdeptBoardCls"></span>
+									<img id="searchDataImgForPos" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
@@ -471,6 +475,7 @@
 									<label>Nominated Post Level</label>
 									<select class="boardLvlCls" id="" onchange="showHideByNominatedPost('');getDepartments('');" >
 									</select>
+									<img id="searchDataImgForState" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
 									<label>State Name</label>
@@ -479,12 +484,14 @@
 										<!--<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>-->
 									</select>
+									<img id="searchDataImgForDSt" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="">
 									<label>District</label>
 									<select  class="nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');" id=
 									"">
 									</select>
+									<img id="searchDataImgForDepmt" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="">
 									<label>Constituency</label>
@@ -507,12 +514,13 @@
 									<label>Department Name</label>
 									<select  class="depmtsCls"  id="" onchange="getDepartmentBoards('');">
 									</select>
+									<img id="searchDataImgForCorp" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
 									<select  class="deptBoardCls" id="" onchange="getDepartmentBoardPositions('');">
-										
 									</select>
+									<img id="searchDataImgForPositn" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
