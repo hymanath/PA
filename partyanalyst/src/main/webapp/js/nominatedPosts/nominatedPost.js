@@ -667,6 +667,7 @@ function getNominatedPostApplication(startIndex)
 		var mandalId = $("#mandalList").val();
 		var constituencyId = $("#constituencyId").val();
 		var districtId = $("#districtId").val();
+		var stateId = $("#statesDivId").val();
 		if(searchRadioType ==1)
 				searchRadioType ="membershipId";
 		else if(searchRadioType ==2)
@@ -678,7 +679,7 @@ function getNominatedPostApplication(startIndex)
 			
 			//alert(searchRadioType);
 			
-		if(panchayatId !=0)
+		if(panchayatId !=0 && panchayatId>0)
 		{
 			if(panchayatId.substr(0,1) == 1){
 				  locationLevel = 6;
@@ -689,7 +690,7 @@ function getNominatedPostApplication(startIndex)
 			}								
 			locationValue = panchayatId.substr(1);
 		}
-		else if(mandalId !=0)
+		else if(mandalId !=0 && mandalId>0)
 		{
 			if(mandalId.substr(0,1) == 1){
 				 locationLevel = 7;
@@ -703,15 +704,19 @@ function getNominatedPostApplication(startIndex)
 			locationValue = mandalId.substr(1);
 		}
 		
-		else if(constituencyId != 0)
+		else if(constituencyId != 0 && constituencyId>0)
 		{
 			locationValue = constituencyId;
 			locationLevel = 4;	
 		}
-		else if(districtId != 0)
+		else if(districtId != 0 && districtId>0)
 		{
 			locationValue = districtId;
 			locationLevel = 3;
+		}
+		else if(stateId !=0 && stateId>0){
+			locationValue = stateId;
+			locationLevel = 2;
 		}
 		if(searchRadioType == 'membershipId')
 		{
