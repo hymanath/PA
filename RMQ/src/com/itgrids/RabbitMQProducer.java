@@ -46,11 +46,14 @@ public class RabbitMQProducer {
 				e.printStackTrace();
 			}
 		}*/
-		String message = "Kamalakar";
-		byte[] messageBodyBytes = message.getBytes();
-		channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,messageBodyBytes);
-		result = channel.waitForConfirms();
-		System.out.println(++ind+" Is Submitted --> "+result);
+		for(int i=0;i<1;i++)
+		{
+			String message = "Kamalakar - "+i;
+			byte[] messageBodyBytes = message.getBytes();
+			channel.basicPublish(exchangeName,routingKey,MessageProperties.PERSISTENT_TEXT_PLAIN,messageBodyBytes);
+			result = channel.waitForConfirms();
+			System.out.println(++ind+" Is Submitted --> "+result);
+		}
 		
 		channel.close();
 		conn.close();
