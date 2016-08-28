@@ -1,17 +1,33 @@
 package com.itgrids;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
 import org.json.JSONObject;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 public class RabbitMQConsumer {
+	
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	static final String DB_URL = "jdbc:mysql://localhost:3306/rmq";
+	static final String USER = "root";
+	static final String PASS = "root";
+	
+	static Connection conn = null;
+	static Statement stmt = null;
+	
     public static void main(String []args) throws Exception 
     {
+    	 Class.forName("com.mysql.jdbc.Driver");
+    	 conn = DriverManager.getConnection(DB_URL,USER,PASS);
+ 		 stmt = conn.createStatement();
+ 		 
 		 ConnectionFactory factory = new ConnectionFactory();
 		 factory.setUsername("guest");
 		 factory.setPassword("guest");
@@ -19,7 +35,7 @@ public class RabbitMQConsumer {
 		 factory.setHost("localhost");
 		 factory.setPort(5672);
 		 
-		 Connection conn = factory.newConnection();
+		 com.rabbitmq.client.Connection conn = factory.newConnection();
 	     Channel channel = conn.createChannel();
 	     String exchangeName = "attendance_kamal";
 	     String queueName = "kamal_test";
@@ -49,11 +65,15 @@ public class RabbitMQConsumer {
 	    		 
 	    		// boolean result = doWork(msg);
 	    		 //if(result)
-	    			 System.out.println("msg");
+	    			 System.out.println("Received --> "+msg);
 	    		 /*else
 	    			 System.out.println("Failure");*/
+	    		 boolean result = saveData(msg);
+	    		 if(result)
+	    			 channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
+	    		 else
+	    			 System.out.println("Not Saved");
 	    		 
-	    		 channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
 	    	 }catch(Exception e)
 	    	 {
 	    		 e.printStackTrace();
@@ -87,5 +107,20 @@ public class RabbitMQConsumer {
     		e.printStackTrace();
     		return false;
     	}
+    }
+    
+    public static boolean saveData(String msg)
+    {
+    	boolean result = false;
+    	try{
+    		String sql = "INSERT INTO data(data_str) VALUES ('"+msg+"')";
+    		int inserted = stmt.executeUpdate(sql);
+    		if(inserted > 0)
+    			result = true;
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return result;
     }
 }
