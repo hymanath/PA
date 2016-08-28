@@ -540,8 +540,8 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 				str+='<table class="table table-bordered tableCollapse text-capital">';
 					str+='<thead>';
 							str+='<th>Position</th>';					
-							str+='<th>Total Positions</th>';					
-							str+='<th>Total Positions Available</th>';//Open Status					
+							str+='<th>Total Posts</th>';					
+							str+='<th>Total Posts Available</th>';//Open Status					
 							str+='<th>Total Applications Received </th>';					
 							str+='<th>Ready to Shortlist</th>';
 							str+='<th>Rejected</th>';					
@@ -683,7 +683,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 				str+='<table class="table table-bordered tableCollapse">';
 					str+='<thead>';
 							str+='<th>Position</th>';					
-							str+='<th>Total Positions</th>';					
+							str+='<th>Total Posts</th>';					
 							
 					str+='</thead>';
 					
@@ -708,8 +708,8 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 			str+='<table class="table table-bordered tableCollapse text-capital">';
 					str+='<thead>';
 							str+='<th>Position</th>';					
-							str+='<th>Total Positions</th>';					
-							str+='<th>Total Positions Available</th>';//Open Status					
+							str+='<th>Total Posts</th>';					
+							str+='<th>Total Posts Available</th>';//Open Status					
 							str+='<th>Total Applications Received </th>';					
 							str+='<th>Ready to Shortlist</th>';
 							str+='<th>Rejected</th>';					
