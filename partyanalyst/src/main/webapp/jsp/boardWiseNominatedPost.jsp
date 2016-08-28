@@ -830,7 +830,9 @@ $(document).on("click",".updateStatusCls",function(){
 		if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...").css("color","green");
 			//window.location.reload();
-			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();}, 1000);
+			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();
+				getNominatedPostPostionDetails();
+			}, 1000);
 			
 		}
 		else
