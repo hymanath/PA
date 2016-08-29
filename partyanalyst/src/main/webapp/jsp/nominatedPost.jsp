@@ -385,7 +385,7 @@
 									<select class="chosenSelect boardLvlCls boardLvelCls validateCls" id="boardLvlId" name="nominatedPostVO.nominatdList[0].boardLevelId" onchange="showHideByNominatedPost(''); getDepartments(0);getOpenedPostionsStates('nominatedStaeId','')" attr_no="">
 									<option value="0">Select Post Level</option>
 									</select>
-									<img id="searchDataImgForSta" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchDataImgForState" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
 									<label>State Name</label>
@@ -401,7 +401,8 @@
 									<select class="chosenSelect nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');getDepartments(0);" id=
 									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
-								</div>
+									<img id="searchImgForDistr" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="constituencyshowDivId">
 									<label>Constituency</label>
 									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
@@ -475,7 +476,7 @@
 									<label>Nominated Post Level</label>
 									<select class="boardLvlCls" id="" onchange="showHideByNominatedPost('');getDepartments('');" >
 									</select>
-									<img id="searchDataImgForState" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchDataImgForState" class="cloneImgStaCls" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
 									<label>State Name</label>
@@ -484,14 +485,14 @@
 										<!--<option value="1">Andhra Pradesh</option>
 										<option value="36">Telangana</option>-->
 									</select>
-									<img id="searchDataImgForDSt" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchDataImgForDistrict" class="cloneImgDstCls"  style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="">
 									<label>District</label>
 									<select  class="nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');" id=
 									"">
 									</select>
-									<img id="searchDataImgForDepmt" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchImgForDistr" class="cloneImgConCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="">
 									<label>Constituency</label>
@@ -514,17 +515,18 @@
 									<label>Department Name</label>
 									<select  class="depmtsCls"  id="" onchange="getDepartmentBoards('');">
 									</select>
-									<img id="searchDataImgForCorp" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchDataImgForDep" class="cloneImgDepCls"  style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
 									<select  class="deptBoardCls" id="" onchange="getDepartmentBoardPositions('');">
 									</select>
-									<img id="searchDataImgForPositn" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchDataImgForPos" class="cloneImgPosCls"  style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Position Name</label>
 									<select  class="deptBoardPostnCls" id="">
+									</select>
 									</select>
 								</div>
 								
