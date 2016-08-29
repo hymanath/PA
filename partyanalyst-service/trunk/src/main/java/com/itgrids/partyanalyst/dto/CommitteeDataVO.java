@@ -13,6 +13,7 @@ public class CommitteeDataVO implements Serializable{
 	
 	private Long id;
 	private String name;
+	private String requiredName;
 	
 	private CommitteeDataVO mainVO;
 	private CommitteeDataVO affliatedVO; 
@@ -117,6 +118,12 @@ public class CommitteeDataVO implements Serializable{
 	}
 	public void setSubList1(List<CommitteeDataVO> subList1) {
 		this.subList1 = subList1;
+	}
+	public String getRequiredName() {
+		return requiredName;
+	}
+	public void setRequiredName(String requiredName) {
+		this.requiredName = requiredName;
 	}
 	
 }
