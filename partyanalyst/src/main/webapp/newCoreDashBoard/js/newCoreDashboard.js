@@ -185,7 +185,7 @@ function MainPart(result){
 						}else{
 							locationName = result.userType;
 						}
-						str+='<label for="mian" class="text-capital userStructureClass" attr_userTypeId='+result.userTypeId+' attr_activityMemberId ='+result.activityMemberId+' attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+result.name+'</i></span>';
+						str+='<label for="mian" class="text-capital userStructureClass" attr_userTypeId='+result.userTypeId+' attr_activityMemberId ='+result.activityMemberId+' attr_userAccessLevelId='+result.locationLevelId+'  attr_selectedmembername="'+result.name+'"   attr_selectedusertype="'+result.userType+'" attr_id ="directChildActivityMemberDiv" attr_userAccessLevelValuesString='+result.locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+result.name+'</i></span>';
 						
 						str+='<span class="profileImageView">';
 						str+='<img src="https://mytdp.com/images/cadre_images/'+result.image+'" />';
@@ -206,7 +206,7 @@ function MainPart(result){
 						}else{
 							locationName = result.userType;
 						}
-						str+=' <label for="mian" class="userStructureClass" attr_userTypeId='+result.userTypeId+' attr_activityMemberId ='+result.activityMemberId+' attr_userAccessLevelId='+result.locationLevelId+' attr_userAccessLevelValuesString='+result.locationValuesSet+'><span class="hideDropDownView">'+locationName+' - <i>'+result.name+'</i></span>';
+						str+=' <label for="mian" class="userStructureClass" attr_userTypeId='+result.userTypeId+' attr_activityMemberId ='+result.activityMemberId+' attr_userAccessLevelId='+result.locationLevelId+' attr_selectedmembername="'+result.name+'"   attr_selectedusertype="'+result.userType+'" attr_id ="directChildActivityMemberDiv" attr_userAccessLevelValuesString='+result.locationValuesSet+'><span class="hideDropDownView">'+locationName+' - <i>'+result.name+'</i></span>';
 						str+='<span class="profileImageView">';
 						str+='<img src="https://mytdp.com/images/cadre_images/'+result.image+'" />';
 						str+='</span>';
@@ -279,7 +279,7 @@ function MainPart(result){
 										str+=' <li>';
 											str+='<input type="radio" id="'+i+''+j+'" name="selector">';
 											var locationName = getMemberName(userTypeMember[j].locationName,userTypeMember[j].shortName);
-											str+=' <label for="'+i+''+j+'" class="text-capital userStructureClass" attr_userTypeId='+userTypeMember[j].userTypeId+' attr_activityMemberId ='+userTypeMember[j].activityMemberId+' attr_userAccessLevelId='+userTypeMember[j].locationLevelId+' attr_userAccessLevelValuesString='+userTypeMember[j].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+userTypeMember[j].name+'</i></span>';
+											str+=' <label for="'+i+''+j+'" class="text-capital userStructureClass" attr_userTypeId='+userTypeMember[j].userTypeId+' attr_activityMemberId ='+userTypeMember[j].activityMemberId+' attr_userAccessLevelId='+userTypeMember[j].locationLevelId+' attr_selectedmembername="'+userTypeMember[j].name+'"   attr_selectedusertype="'+userTypeMember[j].userType+'" attr_id ="directChildActivityMemberDiv" attr_userAccessLevelValuesString='+userTypeMember[j].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+userTypeMember[j].name+'</i></span>';
 											str+='<span class="profileImageView">';
 											str+='<img src="https://mytdp.com/images/cadre_images/'+userTypeMember[j].image+'" />';
 											str+='</span>';
@@ -294,7 +294,7 @@ function MainPart(result){
 									str+=' <li>';
 									str+='<input type="radio" id="'+i+''+j+'" name="selector">';
 									var locationName = getMemberName(userTypeMember[j].locationName,userTypeMember[j].shortName);
-									str+=' <label for="'+i+''+j+'" class="userStructureClass"  attr_userTypeId='+userTypeMember[j].userTypeId+' attr_activityMemberId ='+userTypeMember[j].activityMemberId+' attr_userAccessLevelId='+userTypeMember[j].locationLevelId+' attr_userAccessLevelValuesString='+userTypeMember[j].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+userTypeMember[j].name+'</i></span>';
+									str+=' <label for="'+i+''+j+'" class="userStructureClass"  attr_userTypeId='+userTypeMember[j].userTypeId+' attr_activityMemberId ='+userTypeMember[j].activityMemberId+' attr_userAccessLevelId='+userTypeMember[j].locationLevelId+' attr_userAccessLevelValuesString='+userTypeMember[j].locationValuesSet+' attr_selectedmembername="'+userTypeMember[j].name+'"   attr_selectedusertype="'+userTypeMember[j].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+userTypeMember[j].name+'</i></span>';
 									str+='<span class="profileImageView">';
 									str+='<img src="https://mytdp.com/images/cadre_images/'+userTypeMember[j].image+'" />';
 									str+='</span>';
@@ -330,7 +330,7 @@ function MainPart(result){
 												str+='<li>';
 													str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
 													var locationName = getMemberName(childMember[l].locationName,childMember[l].shortName);
-													str+=' <label for="'+i+''+j+''+k+''+l+'"  class="userStructureClass" attr_userTypeId='+childMember[l].userTypeId+' attr_activityMemberId ='+childMember[l].activityMemberId+' attr_userAccessLevelId='+childMember[l].locationLevelId+' attr_userAccessLevelValuesString='+childMember[l].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+childMember[l].name+'</i></span>';
+													str+=' <label for="'+i+''+j+''+k+''+l+'"  class="userStructureClass" attr_userTypeId='+childMember[l].userTypeId+' attr_activityMemberId ='+childMember[l].activityMemberId+' attr_userAccessLevelId='+childMember[l].locationLevelId+' attr_selectedmembername="'+childMember[l].name+'"   attr_selectedusertype="'+childMember[l].userType+'" attr_userAccessLevelValuesString='+childMember[l].locationValuesSet+' attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childMember[l].name+'</i></span>';
 													str+='<span class="profileImageView">';
 													str+='<img src="https://mytdp.com/images/cadre_images/'+childMember[l].image+'" />';
 													str+='</span>';
@@ -345,7 +345,7 @@ function MainPart(result){
 											str+=' <li class=" dottedLine">';
 												str+='<input type="radio" id="'+i+''+j+''+k+''+l+'" name="selector">';
 												var locationName = getMemberName(childMember[l].locationName,childMember[l].shortName);
-												str+=' <label for="'+i+''+j+''+k+''+l+'" class="userStructureClass" attr_userTypeId='+childMember[l].userTypeId+' attr_activityMemberId ='+childMember[l].activityMemberId+' attr_userAccessLevelId='+childMember[l].locationLevelId+' attr_userAccessLevelValuesString='+childMember[l].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+childMember[l].name+'</i></span>';
+												str+=' <label for="'+i+''+j+''+k+''+l+'" class="userStructureClass" attr_userTypeId='+childMember[l].userTypeId+' attr_activityMemberId ='+childMember[l].activityMemberId+' attr_userAccessLevelId='+childMember[l].locationLevelId+' attr_userAccessLevelValuesString='+childMember[l].locationValuesSet+' attr_selectedmembername="'+childMember[l].name+'"   attr_selectedusertype="'+childMember[l].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childMember[l].name+'</i></span>';
 												str+='<span class="profileImageView">';
 												str+='<img src="https://mytdp.com/images/cadre_images/'+childMember[l].image+'" />';
 												str+='</span>';
@@ -380,7 +380,7 @@ function MainPart(result){
 												str+='<li>';
 													str+='<input type="radio" id="'+i+''+j+''+k+''+l+''+m+''+n+'" name="selector">';
 													var locationName = getMemberName(childChildMember[n].locationName,childChildMember[n].shortName);
-													str+=' <label for="'+i+''+j+''+k+''+l+''+m+''+n+'"  class="userStructureClass" attr_userTypeId='+childChildMember[n].userTypeId+' attr_activityMemberId ='+childChildMember[n].activityMemberId+'  attr_userAccessLevelId='+childChildMember[n].locationLevelId+' attr_userAccessLevelValuesString='+childChildMember[n].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+childChildMember[n].name+'</i></span>';
+													str+=' <label for="'+i+''+j+''+k+''+l+''+m+''+n+'"  class="userStructureClass" attr_userTypeId='+childChildMember[n].userTypeId+' attr_activityMemberId ='+childChildMember[n].activityMemberId+'  attr_userAccessLevelId='+childChildMember[n].locationLevelId+' attr_userAccessLevelValuesString='+childChildMember[n].locationValuesSet+' attr_selectedmembername="'+childChildMember[n].name+'"   attr_selectedusertype="'+childChildMember[n].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childChildMember[n].name+'</i></span>';
 													str+='<span class="profileImageView">';
 													str+='<img src="https://mytdp.com/images/cadre_images/'+childChildMember[n].image+'" />';
 													str+='</span>';
@@ -395,7 +395,7 @@ function MainPart(result){
 											str+=' <li class=" dottedLine">';
 												str+='<input type="radio" id="'+i+''+j+''+k+''+l+''+m+''+n+'" name="selector">';
 												var locationName = getMemberName(childChildMember[n].locationName,childChildMember[n].shortName);
-												str+=' <label for="'+i+''+j+''+k+''+l+''+m+''+n+'" class="userStructureClass" attr_userTypeId='+childChildMember[n].userTypeId+' attr_activityMemberId ='+childChildMember[n].activityMemberId+' attr_userAccessLevelId='+childChildMember[n].locationLevelId+' attr_userAccessLevelValuesString='+childChildMember[n].locationValuesSet+' ><span class="hideDropDownView">'+locationName+' - <i>'+childChildMember[n].name+'</i></span>';
+												str+=' <label for="'+i+''+j+''+k+''+l+''+m+''+n+'" class="userStructureClass" attr_userTypeId='+childChildMember[n].userTypeId+' attr_activityMemberId ='+childChildMember[n].activityMemberId+' attr_userAccessLevelId='+childChildMember[n].locationLevelId+' attr_userAccessLevelValuesString='+childChildMember[n].locationValuesSet+' attr_selectedmembername="'+childChildMember[n].name+'"   attr_selectedusertype="'+childChildMember[n].userType+'" attr_id ="directChildActivityMemberDiv" ><span class="hideDropDownView">'+locationName+' - <i>'+childChildMember[n].name+'</i></span>';
 												str+='<span class="profileImageView">';
 												str+='<img src="https://mytdp.com/images/cadre_images/'+childChildMember[n].image+'" />';
 												str+='</span>';

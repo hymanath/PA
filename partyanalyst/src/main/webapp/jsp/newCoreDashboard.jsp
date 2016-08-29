@@ -62,7 +62,7 @@
                             	<span class="caret" style="margin-top: 9px;"></span>
                             </span>
                           </a>
-						 <div class="dropdown-menu settingsDropDownOptionsView">
+						 <div class="dropdown-menu settingsDropDownOptionsView" style="z-index: 999;">
 								<div id= "userLevelDetailsDiv"></div>
 							</div>
                         </li>
@@ -508,7 +508,7 @@
                                            <div id="SelectedUserTypeDetailsDiv"></div>
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12">
-                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock" style="display:none">
+                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
                                                 <div id="directChildActivityMemberDiv"></div>
                                                 <div class="row m_top20">
                                                     <div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0" style="border-right:1px solid #ddd;">
@@ -888,6 +888,10 @@
 		var  clickedUserTypeId = $(this).attr("attr_userTypeId");
 		var  clickedUserAccessLevelId =  $(this).attr("attr_userAccessLevelId");
 		var  clickedUserAccessLevelValuesString = $(this).attr("attr_userAccessLevelValuesString");
+		var  selectedMemberName = $(this).attr("attr_selectedmembername");
+		var  selectedUserType = $(this).attr("attr_selectedusertype");
+		var  clickedChildActivityMemberId = $(this).attr("attr_selectedusertype");
+		
 		var  clickedUserAccessLevelValuesArray = [];
 		if($.trim(clickedUserAccessLevelValuesString).length > 0){
 			clickedUserAccessLevelValuesArray = clickedUserAccessLevelValuesString.split(",");
@@ -908,6 +912,11 @@
 		tdpCommitteeLevelIdsClickedArray.push(8);
 		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 		getChildUserTypesByItsParentUserType();
+		
+		getDirectChildActivityMemberCommitteeDetails(clickedActivityMemberId,clickedUserTypeId,selectedMemberName,selectedUserType,clickedChildActivityMemberId);
+		
+		getTopPoorPerformancecommittees(clickedActivityMemberId,selectedMemberName,selectedUserType);
+		getTopPoorCommitteeLocations(clickedActivityMemberId,selectedMemberName,selectedUserType);
 	});
 	
 	$(document).on("click",".hideDropDownView",function(){

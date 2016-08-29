@@ -258,18 +258,24 @@
 								str+='<td>';
 								if(result.affliatedVO.startedCount !=null && result.affliatedVO.startedCount  >0){
 									str+='<h3>'+result.affliatedVO.startedCount+'</h3>';
+									str+='<h5 class="text-muted text-capitalize">started</h5>';
+									str+='<small class="text-success">'+result.affliatedVO.startedPerc+'%</small>';
 								}else{
 									str+='<h3> - </h3>';
-								}
 									str+='<h5 class="text-muted text-capitalize">Started</h5>';
+								}
+									
 								str+='</td>';
 								str+='<td>';
 								if(result.affliatedVO.completedCount !=null && result.affliatedVO.completedCount >0){
 									str+='<h3>'+result.affliatedVO.completedCount+'</h3>';
+									str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+									str+='<small class="text-success">'+result.affliatedVO.completedPerc+'%</small>';
 								}else{
 									str+='<h3> - </h3>';
+									str+='<h5 class="text-muted text-capitalize">Completed</h5>';
 								}
-								str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+								
 								str+='</td>';
 						   str+='</tr>';
 						str+='</table>';
@@ -322,7 +328,7 @@
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Started</h5>';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
-														str+='<p>'+result.subList[i].affliatedVO.startedCount+'</p>';
+														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 													}else{
 														str+='<p> - </p>';
 													}
@@ -331,7 +337,7 @@
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
 													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
-														str+='<p>'+result.subList[i].affliatedVO.completedCount+'</p>';
+														str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
 													}else{
 														str+='<p> - </p>';
 													}
@@ -714,6 +720,7 @@
 		$(".comparisonSelect li:first-child").addClass("active")
 		
 		getSelectedChildUserTypeMembers(firstChildUserTypeId);
+		
 	}
 	
 	
@@ -722,13 +729,25 @@
 	var str='';
 	if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSlider">';
+		var firstActivityMemberId;
+		var firstUserTypeId;
+		var firstChildActivityMemberId = "directChildActivityMemberDiv";
+		var firstuserType;
+		var firstUserMemberName;
+		
+		var rankVar =0;
 		for(var i in result){
+			rankVar =rankVar+1;
+			firstActivityMemberId = result[0].activityMemberId;
+			firstUserTypeId = result[0].userTypeId;
+			firstuserType = result[0].userType;
+			firstUserMemberName = result[0].name;
 			str+='<li  style="cursor:pointer;" class="compareActivityMemberCls" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
 			
 				str+='<div class="panel panel-default panelSlick">';
 					str+='<div class="panel-heading">';
 						str+='<h4 class="panel-title"  >'+result[i].name+'</h4>';
-						str+='<span class="count">01</span>';
+						str+='<span class="count">'+rankVar+'</span>';
 					str+='</div>';
 					str+='<div class="panel-body">';
 						str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
@@ -815,7 +834,10 @@
 		$("#SelectedUserTypeDetailsDiv").html("No Data Available");
 	}
 		
-		
+	
+		getDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
+		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
+		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	}
 	
 	$(document).on("click",".childUserTypeCls",function(){
@@ -1051,7 +1073,7 @@
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).attr("attr_id");  
-		$(".showChildBlockAndTopPoorBlock").show();
+		//$(".showChildBlockAndTopPoorBlock").show();
 		
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
