@@ -16,12 +16,89 @@
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
+<header>
+	<nav class="navbar navbar-default navbarHeader">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+          	<span class="logo"></span>
+            <span class="logoText">TDP PARTY</span>
+          </a>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+          	<li><a href="#"><i class="glyphicon glyphicon-gift"></i></a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
+            <li class="dropdown profileDropDown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">Change Password</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Sign Out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class="navbar navbar-default navbarProfile">
+    	<div class="container">
+        	<div class="row">
+            	<div class="col-md-7 col-xs-12 col-sm-7">
+                	<ul class="nav navbar-nav navbar-left headerProfileName">
+                        <li class="dropdown profileDropDown toggleViewIcon">
+                          <a style="cursor:pointer;">ASHOK DAKAVARAM 
+                          	<span class="caretBackground">
+                            	<span class="caret" style="margin-top: 9px;"></span>
+                            </span>
+                          </a>
+						 <div class="dropdown-menu settingsDropDownOptionsView">
+								<div id= "userLevelDetailsDiv"></div>
+							</div>
+                        </li>
+                    </ul>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-default navbarProfile">
+    	<div class="container">
+        	<div class="row">
+            	
+                <div class="col-md-2 col-xs-12 col-sm-2 pull-right"  style="margin-top: -10px;">
+                	<ul class="list-inline profileSelection">
+                    	<li class="active" >
+                        	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">AP</a>
+                        </li>
+                        <li>
+                        	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">TS</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 <div class="container m_top20">
 	<div class="row">
     	<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 committeesBlock">
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
-                	<h4 class="panel-title">committees
+                	<h4 class="panel-title">
+						<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+						committees
+						
                     	<span class="settingsIcon pull-right">
                         	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
                         </span>
@@ -31,6 +108,15 @@
                     	<span class="iconExpand pull-right">
                         	<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
                         </span>
+						
+						<span class="input-group pull-right dateRangePickerCls hide">
+							<input type="text" id="dateRangeId"	 class="form-control" />
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</span>
+							
+						
 	                </h4>
                     <div class="notesDropDown">
                     	<h4 class="text-capital">notes
@@ -55,12 +141,7 @@
 				
               		<div class="row">
 					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
-						<div class="input-group">
-							<input type="text" id="dateRangeId"	 class="form-control" />
-							<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-						</div>
+						
 					</div>
 						<div id="basicCommitteeCountsDiv"></div>
                         <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 committeesBlock committeesHiddenBlock">
@@ -408,7 +489,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks" >
                             <p><i>Selected:</i> <b>Main Committee</b></p>
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
@@ -425,7 +506,7 @@
                                            <div id="SelectedUserTypeDetailsDiv"></div>
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12">
-                                            <div class="bg_ED pad_15 arrow_top showChildBlockAndTopPoorBlock" style="display:none">
+                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock" style="display:none">
                                                 <div id="directChildActivityMemberDiv"></div>
                                                 <div class="row m_top20">
                                                     <div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0" style="border-right:1px solid #ddd;">
@@ -557,7 +638,9 @@
         <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingBlock">
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
-                    <h4 class="panel-title">training
+                    <h4 class="panel-title">
+						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+						training
                         <span class="trainingIconExpand pull-right">
                             <i class="glyphicon glyphicon-fullscreen"></i>
                         </span>
@@ -620,6 +703,7 @@
 	onLoadCalls();
 	function onLoadCalls(){
 		getCommitteesBasicCountReport();
+		getLoggedInUserStructure();
 	}
 	
 	$(document).on("click",".userStructureClass",function(){
