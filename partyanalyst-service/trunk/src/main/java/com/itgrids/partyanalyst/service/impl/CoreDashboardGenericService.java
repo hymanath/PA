@@ -421,7 +421,7 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 	}
 	
 	
-	   public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,List<Long> userAccessLevelValues,CommitteeInputVO inputVO){
+	   public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,CommitteeInputVO inputVO){
 			
 			if(userAccessLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
 				
