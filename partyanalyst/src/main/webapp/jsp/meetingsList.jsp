@@ -2086,19 +2086,24 @@ $(document).on("click","#updateDetailsBtnId",function(){
 				districtId.push(districtId);
 			}
 			districtId = districtId;
+			var constituencyId=[];
 	 var jsObj={
-			districtId :districtId
+			stateId:0,			
+			districtId :districtId,
+			mandalId:0,
+			locationLevel:4,
+			constituencyId:constituencyId
 		}
 		$.ajax({
 			type:"POST",
-			url :"getMandalsForDistrictIdAction.action",
+			url :"getSubLevelLctnsForConstituencyAndMandalAction.action",
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result !=null && result.length>0){
 				$("#manTowDivId").append("<option value='0'>ALL</option>");
 			   for(var i in result){
-				   $("#manTowDivId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				   $("#manTowDivId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
 			   }
 		   }
    });	
@@ -2117,19 +2122,24 @@ function getVillagesForDistrictId(){
 				districtId.push(districtId);
 			}
 			districtId = districtId;
-	 		var jsObj={
-			districtId :districtId
+			var constituencyId=[];
+	 	var jsObj={
+			stateId:0,			
+			districtId :districtId,
+			mandalId:0,
+			locationLevel:5,
+			constituencyId:constituencyId
 		}
 		$.ajax({
 			type:"POST",
-			url :"getVillagesForDistrictIdAction.action",
+			url :"getSubLevelLctnsForConstituencyAndMandalAction.action",
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result !=null && result.length>0){
 				$("#villWardId").append("<option value='0'>ALL</option>");
 				for(var i in result){
-				   $("#villWardId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				   $("#villWardId").append('<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>');
 			   }
 		   }
    });	
