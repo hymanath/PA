@@ -469,7 +469,7 @@
 									}
 								},
 								tooltip: {
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
 									shared: true
 								},
 								legend: {
@@ -483,8 +483,7 @@
 										dataLabels:{
 											enabled: true,
 											formatter: function () {
-												if (this.y > 0) return this.y + '%';
-												else return '';
+												return Highcharts.numberFormat(this.y,0) + '%';
 											}
 										},
 										
