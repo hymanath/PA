@@ -1635,7 +1635,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     activityMemberVO.setUserId(userId);
 		     activityMemberVO.setActivityMemberId(activityMembersId);
 		     activityMemberVO.setUserTypeId(userTypeId);
-		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocations(activityMemberVO);//calling generic method.
+		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocationsNew(activityMemberVO);//calling generic method.
 		     userTypeMapDtls = activityMemberVO.getUserTypesMap();
 		     locationLevelMap = activityMemberVO.getLocationLevelIdsMap();
 		     
