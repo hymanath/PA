@@ -41,6 +41,19 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 		return query.list();
 	}
 	
-	
+	public List<Object[]> getAllChildUserTypeMembersAndParentUserTypeMembers(){
+		
+		Query query = getSession().createQuery("" +
+	    " select  rel.parentActivityMember.activityMemberId," +//0
+	    "         rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.tdpCadre.firstname," +//3
+	    "         amat.userType.userTypeId, amat.userType.type," +//5
+	    "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//8
+	    "         rel.childActivityMember.tdpCadre.image,amat.userType.shortName " +//10
+	    " from   ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
+	    " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
+	    "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
+	    "        rel.isActive = 'Y' and amat.isActive = 'Y' and amal.isActive = 'Y' ");
+		return query.list();
+		}
 	
 }

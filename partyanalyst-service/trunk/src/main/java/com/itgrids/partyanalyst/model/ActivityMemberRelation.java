@@ -68,7 +68,7 @@ public class ActivityMemberRelation {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="activity_member_id", insertable=false, updatable = false)
+	@JoinColumn(name="parent_member_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ActivityMember getParentActivityMember() {

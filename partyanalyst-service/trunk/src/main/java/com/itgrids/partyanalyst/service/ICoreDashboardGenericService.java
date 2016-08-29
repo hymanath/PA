@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.UserDataVO;
 public interface ICoreDashboardGenericService {
 	
 	public ActivityMemberVO getChildActivityMembersAndLocations(ActivityMemberVO activityMemberVO);
+	public ActivityMemberVO getChildActivityMembersAndLocationsNew(ActivityMemberVO activityMemberVO);
 	public Map<Long,List<Long>> getParentUserTypesAndItsChildUserTypes();
 	public Long getStateIdByState(String state);
 	public List<Date> getDates(String startDateString,String endDateString,SimpleDateFormat sdf);
@@ -27,4 +28,5 @@ public interface ICoreDashboardGenericService {
 	public List<Long> getRequiredTdpCommitteeLevelIdsByUserAccessLevelId(Long userLocationLevelId,List<Long> userLocationLevelValues);
 	public StringBuilder getCommittesRelatedLocationQuerypart(CommitteeInputVO committeeBO);
 	public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,CommitteeInputVO inputVO);
+	
 }
