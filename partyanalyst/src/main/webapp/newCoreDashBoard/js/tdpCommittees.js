@@ -1103,7 +1103,7 @@
 		
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		getTopPoorCommitteeLocations(activityMemberId);
+		getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 	})
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
@@ -1157,8 +1157,8 @@
 			
 		});
 	}
-	function getTopPoorCommitteeLocations(activityMemberId){
-	   //$("#topPoorPerformanceDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
+	   $("#topPoorLocationsDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -1178,9 +1178,9 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			 //$("#topPoorPerformanceDiv").html('');
-			//buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
-			alert("success");
+			 $("#topPoorLocationsDiv").html('');
+			buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType);
+			
 		});
 	}
 	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
@@ -1283,7 +1283,7 @@
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		getTopPoorCommitteeLocations(activityMemberId);
+		getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 	})
 	
 	$(document).on("click",".removeSelecUserType",function(){
@@ -1369,3 +1369,46 @@
 		
 	}
 	
+	function buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType){
+		var str ='';
+		
+		if(result !=null && result.length >0){
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> locations - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<p class="text-capital"><b>'+result[0].requiredName+'</b></p>';
+					str+='<table class="table tableCumulative">';
+			var countVar =0;
+			var length1 = result.length ;
+				for(var i = 0; i <= length1; i++){
+					countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+						str+='<tr>';
+							str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+countVar+'</span></td>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>';
+							if(result[i].completedCount !=null && result[i].completedCount >0){
+								str+='<div class="progress progressCustom">';
+								  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].completedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].completedPerc+'%;">';
+									str+='<span class="sr-only">'+result[i].completedPerc+'% Complete</span>';
+								  str+='</div>';
+								str+='</div>';
+							str+='</td>';
+							str+='<td class="text-danger">'+result[i].completedCount+'</td>';
+							}else{
+								str+='<td class="text-danger"> - </td>';
+							}
+								
+						str+='</tr>';
+				}
+				str+='</table>';
+				str+='</div>';
+			str+='</div>';
+			$("#topPoorLocationsDiv").html(str);
+		}else{
+			$("#topPoorLocationsDiv").html("No Data Available");
+		}			
+			
+	}
