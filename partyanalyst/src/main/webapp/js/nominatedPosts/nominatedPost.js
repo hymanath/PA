@@ -1,6 +1,4 @@
-
 function getOpenPositionDistrictsForState(state,id,num){
-	$("#searchDataImgForDSt").show();
 	state = $("#nominatedStaeId"+num).val();
 	//$("#nominatedDistId  option").remove();
 	$("#nominatedDistId"+num+"").empty();
@@ -29,8 +27,7 @@ function getOpenPositionDistrictsForState(state,id,num){
 	  url: 'getOpenPositionDistrictsForStateAction.action',
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
-	$("#searchDataImgForDSt").hide();	   
+   }).done(function(result){   
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -44,6 +41,7 @@ function getOpenPositionDistrictsForState(state,id,num){
 }
 
 function getOpenPositionConstituenciesForDistrict(district,id,num){
+	$("#searchImgForDistr"+num).show();
 	$("#nominatdConstId"+num+"").empty();
 	$("#nominatedMandlId"+num+"").empty();
 	$("#nominatedPanchayatId"+num+"").empty();					
@@ -66,6 +64,7 @@ function getOpenPositionConstituenciesForDistrict(district,id,num){
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){   
+   $("#searchImgForDistr"+num).hide();
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
@@ -255,12 +254,12 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatedDistId"+num).empty();
 	   }
 	   
-		$("#searchDataImgForDist").hide();
-	     //$("#districtId").append('<option value="-1">Please Select District</option>');
+	   $("#searchDataImgForDist").hide();
+	     $("#districtId").append('<option value="-1">Please Select District</option>');
      for(var i in result){
 		 if(id == "statesDivId"){
 			   if(result[i].id == 0){
-				  $("#districtId").append('<option value='+result[i].id+'>ALL</option>');  
+				  $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
 			   }else{
 				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
@@ -382,7 +381,7 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatdConstId"+num).empty();
 	   }
 	   $("#searchDataImgForConst").hide();
-	    //$("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
+	    $("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
      for(var i in result){
 		 if(id == "districtId"){
 		   if(result[i].id == 0){
@@ -669,7 +668,6 @@ function getNominatedPostApplication(startIndex)
 		var mandalId = $("#mandalList").val();
 		var constituencyId = $("#constituencyId").val();
 		var districtId = $("#districtId").val();
-		var stateId = $("#statesDivId").val();
 		if(searchRadioType ==1)
 				searchRadioType ="membershipId";
 		else if(searchRadioType ==2)
@@ -681,7 +679,7 @@ function getNominatedPostApplication(startIndex)
 			
 			//alert(searchRadioType);
 			
-		if(panchayatId !=0 && panchayatId>0)
+		if(panchayatId !=0)
 		{
 			if(panchayatId.substr(0,1) == 1){
 				  locationLevel = 6;
@@ -692,7 +690,7 @@ function getNominatedPostApplication(startIndex)
 			}								
 			locationValue = panchayatId.substr(1);
 		}
-		else if(mandalId !=0 && mandalId>0)
+		else if(mandalId !=0)
 		{
 			if(mandalId.substr(0,1) == 1){
 				 locationLevel = 7;
@@ -706,19 +704,15 @@ function getNominatedPostApplication(startIndex)
 			locationValue = mandalId.substr(1);
 		}
 		
-		else if(constituencyId != 0 && constituencyId>0)
+		else if(constituencyId != 0)
 		{
 			locationValue = constituencyId;
 			locationLevel = 4;	
 		}
-		else if(districtId != 0 && districtId>0)
+		else if(districtId != 0)
 		{
 			locationValue = districtId;
 			locationLevel = 3;
-		}
-		else if(stateId !=0 && stateId>0){
-			locationValue = stateId;
-			locationLevel = 2;
 		}
 		if(searchRadioType == 'membershipId')
 		{
@@ -1097,8 +1091,7 @@ $('.searchTypeCls').click(function(){
   }
 	
 	function getOpenedPostionsStates(id,num){
-		$("#searchDataImgForSta").show();
-		$("#searchDataImgForState").show();
+		$("#searchDataImgForState"+num).show();
 		var jsObj = {			
 			boardLevelId:$('#boardLvlId'+num+'').val()
 		}
@@ -1108,8 +1101,7 @@ $('.searchTypeCls').click(function(){
 	          dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		   $("#searchDataImgForSta").hide();
-		   $("#searchDataImgForState").hide();
+		   $("#searchDataImgForState"+num).hide();
 	   $("#"+id+''+num+'').empty();
 	    
 	   if(result != null && result.length >0){
@@ -1123,10 +1115,7 @@ $('.searchTypeCls').click(function(){
 	  }
   
   function getDepartmentBoardPositions(num){
-	$("#searchDataImgForPos").show();
-	$("#searchDataImgForPositn").show();
-   
-   
+	$("#searchDataImgForPos"+num).show();
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
      var isActive = $("#nomintdPostId"+num).hasClass("btnActive");
@@ -1182,8 +1171,7 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#searchDataImgForPos").hide();
-	   $("#searchDataImgForPositn").hide();
+	   $("#searchDataImgForPos"+num).hide();
     $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
 	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
@@ -1204,9 +1192,7 @@ $('.searchTypeCls').click(function(){
   }
   
     function getDepartmentBoards(num){
-	$("#searchDataImgForDep").show();
-	$("#searchDataImgForCorp").show();
-
+	$("#searchDataImgForDep"+num).show();
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
 	 if(num =="")
@@ -1261,8 +1247,7 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-   $("#searchDataImgForDep").hide();
-   $("#searchDataImgForCorp").hide();
+   $("#searchDataImgForDep"+num).hide();
   $("#deptBoardId"+num).empty();
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
@@ -1341,8 +1326,7 @@ $('.searchTypeCls').click(function(){
   }
   
   function buildDepartments(postTypeId,boardLevelId,searchLevelValue,num){
-	$("#searchDataImgForDistrict").show();
-	$("#searchDataImgForDepmt").show();
+	$("#searchDataImgForDistrict"+num).show();
 	  var jsObj = {
 		postType:postTypeId,
 		boardLevelId:boardLevelId,
@@ -1356,8 +1340,8 @@ $('.searchTypeCls').click(function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#searchDataImgForDistrict").hide();
-	   $("#searchDataImgForDepmt").hide();
+	   $("#searchDataImgForDistrict"+num).hide();
+	   $("#searchDataImgForDepmt"+num).hide();
 	  if(num == 0)
 		  num='';
 	   $("#deptBoardId"+num).html('');
@@ -1494,6 +1478,11 @@ $(document).on("click","#addOneMore",function(){
   var e = $("#cloneDivBlock").clone();
   e.removeClass("cloneBlockDiv");
   e.attr("id",'block'+cloneCount);
+  e.find(".cloneImgStaCls").attr("id","searchDataImgForState"+cloneCount);
+  e.find(".cloneImgDstCls").attr("id","searchDataImgForDistrict"+cloneCount);
+  e.find(".cloneImgPosCls").attr("id","searchDataImgForPos"+cloneCount);
+  e.find(".cloneImgDepCls").attr("id","searchDataImgForDep"+cloneCount);
+  e.find(".cloneImgConCls").attr("id","searchImgForDistr"+cloneCount);
   e.attr("attr_count",cloneCount);
   e.show();
   e.find(".nominatdPostSelCls").attr("id","nomintdPostId"+cloneCount);
