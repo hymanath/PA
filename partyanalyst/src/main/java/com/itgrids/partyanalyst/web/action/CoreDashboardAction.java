@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -41,8 +42,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<CommitteeDataVO> committeeDataVOList;
 	private CommitteeDataVO committeeDataVO;
 	private List<List<UserTypeVO>> userTypeVOList;
+	private TrainingCampProgramVO trainingCampProgramVO;
+	private List<TrainingCampProgramVO> trainingCampProgramVOList;
 	private List<UserTypeVO> activityMembersList;
-	
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -57,7 +59,22 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCoreDashboardService1(ICoreDashboardService1 coreDashboardService1) {
 		this.coreDashboardService1 = coreDashboardService1;
 	}
-	
+	public TrainingCampProgramVO getTrainingCampProgramVO() {
+		return trainingCampProgramVO;
+	}
+
+	public void setTrainingCampProgramVO(TrainingCampProgramVO trainingCampProgramVO) {
+		this.trainingCampProgramVO = trainingCampProgramVO;
+	}
+  public List<TrainingCampProgramVO> getTrainingCampProgramVOList() {
+		return trainingCampProgramVOList;
+	}
+
+	public void setTrainingCampProgramVOList(
+			List<TrainingCampProgramVO> trainingCampProgramVOList) {
+		this.trainingCampProgramVOList = trainingCampProgramVOList;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -580,7 +597,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	
 	}
-	
 	public String getSelectedChildUserTypeMembers(){
 		LOG.info("Entered into getSelectedChildUserTypeMembers()  of CoreDashboardAction");
 		try{
@@ -607,7 +623,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getDirectChildActivityMemberCommitteeDetails(){
 		LOG.info("Entered into getDirectChildActivityMemberCommitteeDetails()  of CoreDashboardAction");
 		try{
@@ -634,7 +649,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	public String getTopPoorPerformancecommittees(){
+public String getTopPoorPerformancecommittees(){
 		LOG.info("Entered into getTopPoorPerformancecommittees()  of CoreDashboardAction");
 		try{
 			
@@ -658,7 +673,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			LOG.error("Exception raised at getTopPoorPerformancecommittees() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
-	}
+}	
 	public String getTopPoorCommitteeLocations(){
 		LOG.info("Entered into getTopPoorCommitteeLocations()  of CoreDashboardAction");
 		try{
@@ -684,4 +699,104 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+  public String getTrainingCampBasicDetailsCntOverview(){
+	  try{
+			LOG.info("Entered into getTotalEligibleAttendedAndNotAttenedOverviewCount()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
+		}
+		return Action.SUCCESS;
+  }
+  public String getTrainingCampProgramsDetailsCntByDistrict(){
+	  try{
+			LOG.info("Entered into getTotalEligibleAttendedAndNotAttenedOverviewCount()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByDistrict(userAccessLevelId,userAccessLevelValues);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
+		}
+		return Action.SUCCESS;
+  }
+ public String getUserTypeWiseTotalEligibleAndAttendedCnt(){
+	 
+	 try{
+		 
+		 jObj = new JSONObject(getTask());
+		 
+		    Long userId = jObj.getLong("userId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long userTypeId = jObj.getLong("userTypeId");
+		    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues);
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
+	 }
+	 return Action.SUCCESS;
+ }
+public String getSelectedChildTypeMembersForTrainingProgram(){
+	try{
+		 
+		    jObj = new JSONObject(getTask());
+		 
+		 	Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+			Long childUserTypeId = jObj.getLong("childUserTypeId");
+		    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+		    String reportType = jObj.getString("reportType");
+			List<Long> userAccessLevelValues=new ArrayList<Long>();
+			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+				for( int i=0;i<userAccessLevelValuesArray.length();i++){
+					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+				}
+			}
+			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeId,userAccessLevelId,userAccessLevelValues,reportType);
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
+	 }
+	 return Action.SUCCESS;
+}
+public String getDirectChildActivityTrainingProgramMemberDetails(){
+	try{
+		 
+		    jObj = new JSONObject(getTask());
+		 
+		 	Long activityMemberId = jObj.getLong("activityMemberId");
+			Long userTypeId = jObj.getLong("userTypeId");
+			 String reportType = jObj.getString("reportType");
+		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,userTypeId,null,null,reportType);
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
+	 }
+	 return Action.SUCCESS;
+}
+
 }
