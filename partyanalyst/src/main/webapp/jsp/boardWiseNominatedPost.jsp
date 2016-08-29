@@ -616,6 +616,7 @@ $(document).on("click",".updateButtonAnyCls",function(){
 	$(".updateDropDownThisAny").hide();
 	var num = $(this).attr("attr_count");
 	getDepartments(num);
+	$("#successDivAnyId"+num).html('');
 	//getApplicationStatus("updatedStatusAnyId"+num);
 	$("#positionAnyId"+num).chosen();
 	$("#boardAnyId"+num).chosen();
@@ -659,7 +660,7 @@ function getDepartments(num){
 	   $("#positionAnyId"+num).html('');
 	   $("#positionAnyId"+num).trigger("chosen:updated")
        $("#departmentAnyId"+num).html('');
-	   $("#departmentAnyId"+num).trigger("chosen:updated")
+	  // $("#departmentAnyId"+num).trigger("chosen:updated")
 	   $("#updatedStatusAnyId"+num).trigger("chosen:updated");
 	   
 	   
@@ -880,7 +881,7 @@ $(document).on("click",".updateStatusThisAnyCls",function(){
 $(document).on("click",".updateStatusAnyCls",function(){
 
 
-	
+	 $("#successDivAnyId"+num).html('');
 	var applicationId = $(this).attr("attr_application_id");
 	var candidateId = $(this).attr("attr_candidate_id");
 	var num = $(this).attr("attr_count");
@@ -893,7 +894,7 @@ $(document).on("click",".updateStatusAnyCls",function(){
 	var positionId = $("#positionAnyId"+num).val();
 	var statusId = $("#updatedStatusAnyId"+num).val();
 	var comment = $("#statusCommentAnyId"+num).val();
-
+if(statusId == 3 || statusId == 0){
 	if(deptId == 0){
 			$("#successDivAnyId"+num).html(" <b style='color: red;' >Please select department.</b>");
 			return;
@@ -914,9 +915,20 @@ $(document).on("click",".updateStatusAnyCls",function(){
 			$("#successDivAnyId"+num).html("  <b style='color: red;' > Comment is required.</b>");
 			return;
 	}
+}else if(statusId ==  2 || statusId == 0){
+	 $("#successDivAnyId"+num).html('');
+	$("#departmentAnyId"+num).val(0);
+	$("#boardAnyId"+num).val(0);
+	$("#positionAnyId"+num).val(0);
+	if(comment =='' || comment.trim().length == 0){
+			$("#successDivAnyId"+num).html("  <b style='color: red;' > Comment is required.</b>");
+			return;
+	}
+}
 	
 	$("#successDivAnyId"+num).html('<img id="" src="images/icons/loading.gif" style="width:15px;"/>');
 	$('#'+butonId+'').hide();
+	
 	var jsObj=
 	   {	
 		applicationId : applicationId,

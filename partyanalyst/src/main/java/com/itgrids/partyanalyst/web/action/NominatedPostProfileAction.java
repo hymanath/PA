@@ -876,11 +876,16 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			}
 			Long userId = regVO.getRegistrationID();
 			jObj = new JSONObject(getTask());
-			
+			if(jObj.getLong("statusId") == 3){
 			status = nominatedPostProfileService.savingAnyPostCandidatesToPosition(userId,jObj.getLong("applicationId"),jObj.getLong("candidateId"),jObj.getLong("levelId"),
 					jObj.getLong("levelVal"),jObj.getLong("deptId"),jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getLong("statusId"),jObj.getString("comment"));
 			
-		}catch (Exception e) {
+			}else if(jObj.getLong("statusId") == 2){
+				status = nominatedPostProfileService.savingStatusAsReject(userId,jObj.getLong("applicationId"),jObj.getLong("candidateId"),jObj.getLong("levelId"),
+						jObj.getLong("levelVal"),jObj.getLong("statusId"),jObj.getString("comment"));	
+			}
+			
+			}catch (Exception e) {
 			LOG.error("Entered into savingAnyPostCandidatesToPosition Action",e);
 		}
 		
