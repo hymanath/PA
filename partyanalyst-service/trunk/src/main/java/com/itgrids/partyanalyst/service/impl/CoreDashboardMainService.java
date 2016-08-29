@@ -867,7 +867,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	   
 	   if(locationLevelIdsMap != null && locationLevelIdsMap.size()>0){
 	    	 for(Long userAccessLevelId : locationLevelIdsMap.keySet()){
-	    		 
+	    		 clearLocationLevelIds(committeeBO);
 	    		 //getRequiredCommitteeLevelIdsByUserAccessLevelId(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)),committeeBO);
 	    		 coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)),committeeBO);
 	    		 
@@ -894,6 +894,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	     }
 	    return locationLevelCountsMap;
    }
+   public void clearLocationLevelIds(CommitteeInputVO inputVO){
+			inputVO.setStateIds(null);
+			inputVO.setDistrictIds(null);
+			inputVO.setParliamentConstIds(null);
+			inputVO.setAssemblyConstIds(null);
+			inputVO.setTehsilIds(null);
+	}
    public void setCommitteesCountToItsCorrespondingLocation(String status,List<Object[]> list,Map<String,UserTypeVO> locationLevelCountsMap,Long accessLevelId){
 		
 	   	 if(list!=null && list.size()>0){
