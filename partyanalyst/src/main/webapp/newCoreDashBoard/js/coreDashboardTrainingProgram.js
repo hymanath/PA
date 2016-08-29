@@ -547,9 +547,12 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		$(".comparisonSelect li:first-child").addClass("active")
 		
 		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId);
+		getTrainingProgramPoorCompletedLocationDtls();
 	}
 	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId){
 	 $("#childActivityMemberDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	 $("#userTypeWiseChildDtlsTabId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeId = firstChildUserTypeId;
 	  var jsObj ={ 
@@ -566,6 +569,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		   $("#childActivityMemberDivId").html(' ');
+		   $("#userTypeWiseChildDtlsTabId").html(' ');
 		  if(result != null && result.length > 0){
 			  buildChildTypeMembersForTrainingReslt(result);
 		  }else{
@@ -719,7 +723,9 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
 			if(types != null && types=="subLevel"){
-			str+='<td>'+result[i].userType+' (<b>'+result[i].locationName+'</b>)</td>';
+			if(result[i].localName != null && result[i].localName.trim().length > 0){
+				str+='<td>'+result[i].userType+' (<b>'+result[i].locationName.split(" ")[0]+'</b>)</td>';	
+			}
 			}else{
 			  str+='<td>'+result[i].userType+'</td>';
 			}
