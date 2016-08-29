@@ -743,10 +743,10 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 	var str='';
 	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
-		str+='<h4 class="text-capitalize text-muted">'+globalTrainingProgramsRslt[0].name+'</h4>';
 		str+'<ul class="trainingsUl">';
 		  for(var i in globalTrainingProgramsRslt){
 			  str+='<li>';
+			  str+='<h4 class="text-capitalize text-muted">'+globalTrainingProgramsRslt[i].name+'</h4>';
 			  str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
 			  str+='</li>';
 		  }
