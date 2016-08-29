@@ -108,6 +108,12 @@
 							rectAngle.setAttribute('fill',myColors[i]);
 							//rectAngle.setAttribute("transform","rotate(90deg)");
 							rectAngle.setAttribute('class','hoverChange hoverChange'+n+''+h+'');
+							rectAngle.setAttribute("data-toggle","tooltip");
+							rectAngle.setAttribute("data-placement","top");
+							rectAngle.setAttribute("title",getNameOfLi+' '+getPercentage);
+							$('[data-toggle="tooltip"]').tooltip({
+								'container': 'body'
+							})
 						
 						h= h+1
 						
@@ -136,15 +142,17 @@
 					var liCount = $(this).find("span").length;
 					var textFirst  = $(".myBarSingle"+j+""+n+" rect").attr("y");
 						textFirst = textFirst / 2;
+					var XValueP = XValue+ (XValue * 0.018);
 					if( liCount === 1)
 					{
 						var liSingleP = 100 - $(this).find("span").attr("attr_percent");
+						
 						$(".myBarSingle"+j+""+n+" rect").attr("y",liSingleP);
-						$(".myBarSingle"+j+""+n+"").find(".textClass").attr("x",textFirst);
+						$(".myBarSingle"+j+""+n+"").find(".textClass").attr("x",XValueP);
 						$(".myBarSingle"+j+""+n+"").find(".textClass").attr("y",liSingleP);
 					}
 					var textFirstMany  = $(".myBarSingle11 rect:first-child").attr("width");
-						textFirstMany = textFirstMany * 0.35;
+						textFirstMany = textFirstMany * 0.30;
 						//alert(textFirstMany);
 						$(".myBarSingle11").find(".textClass").attr("x",textFirstMany);
 						$(".myBarSingle11").find(".textClass").attr("y",liSingleP);
@@ -153,9 +161,15 @@
 						rectText.setAttribute("y",graphHeight-20);
 						rectText.setAttribute("dy",".35em");
 						var SubStr = getNameOfLi;
-						var resultSubStr = SubStr.substring(0, 7); 
+						var legendLa = svgWidth/10;
+						var resultSubStr = SubStr.length <= legendLa?SubStr:SubStr.substring(0, legendLa+1)+'..';
 						rectText.innerHTML=resultSubStr;
-						
+						rectText.setAttribute("data-toggle","tooltip");
+						rectText.setAttribute("data-placement","bottom");
+						rectText.setAttribute("title",getNameOfLi);
+						$('[data-toggle="tooltip"]').tooltip({
+							'container': 'body'
+						})
 					var rectAngle1 = document.createElementNS('http://www.w3.org/2000/svg','rect');
 						rectAngle1.setAttribute("height","6");
 						rectAngle1.setAttribute("width",svgWidth);
@@ -173,7 +187,7 @@
 					}
 
 					XValue = parseInt(kk) + parseInt(XValue);
-					TextXValue = XValue + (svgWidth * 0.35);
+					TextXValue = XValue + (svgWidth * 0.20);
 					var noOfLis = $("#KChart_"+j+" li").length;
 				});
 				$.each(  KChartDefault.colors, function( i, l ){

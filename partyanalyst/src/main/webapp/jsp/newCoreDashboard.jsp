@@ -8,7 +8,7 @@
 <title>New Core DashBoard</title>
 <link href="newCoreDashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="newCoreDashBoard/responsive.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
@@ -534,6 +534,9 @@
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<h4 class="panel-title">training
+						<span class="settingsIcon pull-right">
+                        	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+                        </span>
 						<span class="trainingIconExpand pull-right">
 							<i class="glyphicon glyphicon-fullscreen"></i>
 						</span>
@@ -676,7 +679,7 @@
 														 <div id="childActivityMemberDivId"> </div>
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12">
-															<div class="bg_ED pad_15 arrow_top">
+															<div class="bg_ED pad_15 m_top20">
 															 <div id="userTypeWiseChildDtlsTabId"></div>
 																<div class="row">
 																	<div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
