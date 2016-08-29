@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -1533,6 +1534,19 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   query.setParameter("memberId", memberId);
 	   
 	   return query.list();
+	   
+   }
+   public Integer updateNominatedPostsForOpenState(Set<Long> postIds,Long userId,Date date){
+	   
+	   Query query = getSession().createQuery(" update NominatedPost model set model.nominatedPostStatus.nominatedPostStatusId = 1 " +
+	   		" ,model.updatedTime=:date,model.updatedBy=:userId " +
+	   		" where model.nominatedPostId in (:postIds) ");
+	   
+	   query.setParameter("userId", userId);
+	   query.setDate("date",date);
+	   query.setParameterList("postIds", postIds);
+	   
+	   return query.executeUpdate();
 	   
    }
 }

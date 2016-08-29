@@ -1596,7 +1596,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				"	WHERE  model.isDeleted = 'N'" +
 				"	AND model.nominatedPostMember.isDeleted ='N' " +
 				" AND model.nominatedPostMember.nominatedPostPosition.isDeleted ='N' " +
-				" AND model.applicationStatusId = :shortListId ");
+				" AND model.applicationStatusId in (1,3) ");
 		
 		if(deptId !=null && deptId>0){
 			queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId ");
@@ -1634,7 +1634,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		}
 		
 		//query.setParameter("applicationStatusId", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
-		query.setParameter("shortListId", 3L);
+		//query.setParameter("shortListId", 3L);
 	//	query.setParameter("updatedBy", userId);
 	//	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
 		
@@ -1897,7 +1897,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    return query.list();  
 	}
 	
-public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId){
+public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type){
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId),count(distinct model.nominatedPostApplicationId) " +				
@@ -1921,8 +1921,14 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 			queryStr.append("   and model.boardLevelId in (5,6) ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
-		queryStr.append(" and model.applicationStatusId = 1 " +
-				" and model1.nominatedPostStatus.nominatedPostStatusId = 1 ");//applied
+		
+		if(type !=null && type.trim().equalsIgnoreCase("applied")){
+			queryStr.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+") " );
+		}else if(type !=null && type.trim().equalsIgnoreCase("running")){
+			queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") " );
+		}
+		
+			queryStr.append(" and model1.nominatedPostStatus.nominatedPostStatusId = 1 ");//applied
 		
 		if(levelId != null && levelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
