@@ -21,5 +21,7 @@ public interface ICoreDashboardMainService {
 	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType);
+	public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userAccessLevelId,List<Long> userAccessLevelValues);
+	
 	
 }

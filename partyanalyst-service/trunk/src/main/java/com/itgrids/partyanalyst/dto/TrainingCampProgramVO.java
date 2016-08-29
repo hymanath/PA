@@ -11,12 +11,14 @@ public class TrainingCampProgramVO {
 	private Long totalNotAttenedCount=0l;
 	private Double totalAttenedCountPer=0.0;
 	private Double totalNotAttenedCountPer=0.0;
+	private Double totalEligibleCountPer=0.0;
 	private TrainingCampProgramVO villageWardVO;
 	private TrainingCampProgramVO mandalTownDivisionVO;
 	private TrainingCampProgramVO districtVO;
 	private TrainingCampProgramVO stateVO;
 	private List<TrainingCampProgramVO> trainingProgramList;
 	private List<TrainingCampProgramVO> districtList;
+	private List<TrainingCampProgramVO> constituencyList;
 	public Long getId() {
 		return id;
 	}
@@ -96,5 +98,16 @@ public class TrainingCampProgramVO {
 	public void setStateVO(TrainingCampProgramVO stateVO) {
 		this.stateVO = stateVO;
 	}
-	
+	public List<TrainingCampProgramVO> getConstituencyList() {
+		return constituencyList;
+	}
+	public void setConstituencyList(List<TrainingCampProgramVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+	public Double getTotalEligibleCountPer() {
+		return totalEligibleCountPer;
+	}
+	public void setTotalEligibleCountPer(Double totalEligibleCountPer) {
+		this.totalEligibleCountPer = totalEligibleCountPer;
+	}
 }
