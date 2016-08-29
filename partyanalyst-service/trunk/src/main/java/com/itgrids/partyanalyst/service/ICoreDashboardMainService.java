@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
+import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardMainService {
@@ -15,4 +16,10 @@ public interface ICoreDashboardMainService {
 	public List<CommitteeDataVO> getLevelWiseBasicCommitteesCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString);
 	public CommitteeDataVO getCommitteesBasicCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString);
 	public List<CommitteeDataVO> getTopPoorCommitteeLocations(Long activityMemberId,List<Long> basicCommitteeIds,String state,String dateString);
+	
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType);
+	
 }
