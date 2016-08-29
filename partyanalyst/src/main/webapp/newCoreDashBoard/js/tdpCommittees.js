@@ -407,30 +407,25 @@
 				
 				if(result[i].subList !=null && result[i].subList.length > 0){
 					for(var j in result[i].subList){
+						
 						var committeeName = result[i].subList[j].name;
 						var levelWiseBasicCompletedPercArray = [];
 						var levelWiseBasicStartedPercArray = [];
 						var levelWiseBasicNotStartedPercArray = [];
 						if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
 							levelWiseBasicCompletedPercArray.push(result[i].subList[j].completedPerc);
-						}else{
-							levelWiseBasicCompletedPercArray.push(" ");
 						}
 						if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
 							levelWiseBasicStartedPercArray.push(result[i].subList[j].startedPerc);
-						}else{
-							levelWiseBasicStartedPercArray.push(" ");
 						}
 						if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
 							levelWiseBasicNotStartedPercArray.push(result[i].subList[j].notStartedPerc); 
-						}else{
-							levelWiseBasicNotStartedPercArray.push(" ");
 						}
 						
 						//if(committeeName == "Main")
 						
-						
-						$(function () {
+						if( levelWiseBasicCompletedPercArray.length !=0 && levelWiseBasicStartedPercArray.length !=0 && levelWiseBasicNotStartedPercArray.length !=0){
+							$(function () {
 							$('#mainCommittees'+i+''+j+'').highcharts({
 								colors: ['#F56800','#53BF8B','#66728C'],
 								chart: {
@@ -507,6 +502,10 @@
 								}]
 							});
 						});	
+						}else{
+							$('#mainCommittees'+i+''+j+'').html("No Data Available")
+						}
+						
 						
 					}
 				}
@@ -586,18 +585,12 @@
 						
 						if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
 							districtWiseCompletedPercArray.push(result[i].subList[j].completedPerc);
-						}else{
-							districtWiseCompletedPercArray.push(" ");
 						}
 						if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
 							districtWiseStartedPercArray.push(result[i].subList[j].startedPerc);
-						}else{
-							districtWiseStartedPercArray.push(" ");
 						}
 						if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
 							districtWiseNotStartedPercArray.push(result[i].subList[j].notStartedPerc);
-						}else{
-							districtWiseNotStartedPercArray.push("  ");
 						}
 					}
 			}
@@ -886,10 +879,6 @@
 					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
 						candidateNameArray.push(result[i][j].name);
 						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
-					}else{
-						candidateNameArray.push("");
-						CommitteeCompleteCountArray.push("");
-						
 					}
 					
 					
@@ -957,7 +946,8 @@
 						});
 					});
 				}else{
-					$("#genSec"+i).html("No Data Available")
+					$("#genSec"+i).html("No Data Available");
+					$("#genSec"+i).css("height","35px;");
 				}
 				
 			}
@@ -994,9 +984,6 @@
 					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
 						candidateNameArray.push(result[i][j].name);
 						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
-					}else{
-						candidateNameArray.push("");
-						CommitteeCompleteCountArray.push("");
 					}
 					
 					
@@ -1065,7 +1052,9 @@
 						});
 					});
 				}else{
-					$("#genSec1"+i).html("No Data Available")
+					$("#genSec1"+i).html("No Data Available");
+					$("#genSec1"+i).css("height","35px");
+						
 				}
 				
 			}
