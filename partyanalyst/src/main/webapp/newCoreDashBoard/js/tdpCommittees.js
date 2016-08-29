@@ -179,6 +179,7 @@
 	
 	
 	function getSelectedChildUserTypeMembers(childUserTypeId){
+		
 	$("#SelectedUserTypeDetailsDiv").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
      var parentActivityMemberId = globalActivityMemberId;
 	 var childUserTypeId = childUserTypeId;
@@ -712,7 +713,7 @@
 		 if(result !=null && result.length >0){
 			 firstChildUserTypeId = result[0].userTypeId;
 			 for(var i in result){
-				 str+='<li attr_userTypeId="'+result[i].userTypeId+'" class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_usertypeid="'+result[i].userTypeId+'" class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
@@ -725,6 +726,7 @@
 	
 	
 	function buildgetSelectedChildUserTypeMembers(result){
+		
 		$("#SelectedUserTypeDetailsDiv").html('');
 	var str='';
 	if(result !=null && result.length >0){
@@ -734,20 +736,24 @@
 		var firstChildActivityMemberId = "directChildActivityMemberDiv";
 		var firstuserType;
 		var firstUserMemberName;
-		
-		var rankVar =0;
-		for(var i in result){
-			rankVar =rankVar+1;
 			firstActivityMemberId = result[0].activityMemberId;
 			firstUserTypeId = result[0].userTypeId;
 			firstuserType = result[0].userType;
 			firstUserMemberName = result[0].name;
+		var rankVar =0;
+		for(var i in result){
+			rankVar =rankVar+1;
 			str+='<li  style="cursor:pointer;" class="compareActivityMemberCls" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
 			
 				str+='<div class="panel panel-default panelSlick">';
 					str+='<div class="panel-heading">';
 						str+='<h4 class="panel-title"  >'+result[i].name+'</h4>';
-						str+='<span class="count">'+rankVar+'</span>';
+						if(result[i].completedPerc !=null && result[i].completedPerc >0){
+							str+='<span class="count">'+rankVar+'</span>';
+						}else{
+							str+='<span class="count"> - </span>';
+						}
+						
 					str+='</div>';
 					str+='<div class="panel-body">';
 						str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
@@ -834,16 +840,19 @@
 		$("#SelectedUserTypeDetailsDiv").html("No Data Available");
 	}
 		
-	
+		
 		getDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
 		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
 		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	}
 	
 	$(document).on("click",".childUserTypeCls",function(){
-		$("#directChildActivityMemberDiv").html('');
-		var childUserTypeId = $(this).attr("attr_userTypeId");
-		
+	
+		 $("#directChildActivityMemberDiv").html('');
+		$("#topPoorPerformanceDiv").html('');
+		$("#topPoorLocationsDiv").html(''); 
+		var childUserTypeId = $(this).attr("attr_usertypeid");
+	
 		getSelectedChildUserTypeMembers(childUserTypeId);
 	});
 	
@@ -874,81 +883,87 @@
 					if (countVar === 5) {
 						break;
 					}
-				
-					candidateNameArray.push(result[i][j].name);
-					CommitteeCompleteCountArray.push(result[i][j].completedCount);
+					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
+						candidateNameArray.push(result[i][j].name);
+						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
+					}else{
+						candidateNameArray.push("");
+						CommitteeCompleteCountArray.push("");
+						
+					}
+					
 					
 				}
 					
-				
-				var getWidth = $("#genSec"+i).parent().width()+'px';
-				$("#genSec"+i).width(getWidth);
-				$(function () {
-					$("#genSec"+i).highcharts({
-						colors: ['#0066DC'],
-						chart: {
-							type: 'column'
-						},
-						title: {
-							text: null
-						},
-						subtitle: {
-							text: null
-						},
-						xAxis: {
-							categories: candidateNameArray,
+				if(CommitteeCompleteCountArray.length !=0 && candidateNameArray.length !=0){
+					var getWidth = $("#genSec"+i).parent().width()+'px';
+					$("#genSec"+i).width(getWidth);
+					$(function () {
+						$("#genSec"+i).highcharts({
+							colors: ['#0066DC'],
+							chart: {
+								type: 'column'
+							},
 							title: {
 								text: null
-							}
-						},
-						yAxis: {
-							min: 0,
-							title: {
-								text: null,
-								align: 'high'
 							},
-							labels: {
-								overflow: 'justify'
-							}
-						},
-						tooltip: {
-							headerFormat: '<b>{point.x}</b><br/>',
-							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
-							shared: true
-						},
-						plotOptions: {
-							bar: {
-								dataLabels: {
-									enabled: true,
-									formatter: function(){
-										return Highcharts.numberFormat(this.y,0) + '%';
-									}
-								  
+							subtitle: {
+								text: null
+							},
+							xAxis: {
+								categories: candidateNameArray,
+								title: {
+									text: null
 								}
-							}
-						},
-						legend: {
-							layout: 'vertical',
-							align: 'right',
-							verticalAlign: 'top',
-							x: -40,
-							y: 80,
-							floating: true,
-							borderWidth: 1,
-							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-							shadow: true
-						},
-						credits: {
-							enabled: false
-						},
-						series: [{
-							name: 'Completed',
-							data: CommitteeCompleteCountArray
-						}]
+							},
+							yAxis: {
+								min: 0,
+								title: {
+									text: null,
+									align: 'high'
+								},
+								labels: {
+									overflow: 'justify'
+								}
+							},
+							tooltip: {
+								valueSuffix: '%'
+							},
+							plotOptions: {
+								bar: {
+									dataLabels: {
+										enabled: true
+									}
+								}
+							},
+							legend: {
+								layout: 'vertical',
+								align: 'right',
+								verticalAlign: 'top',
+								x: -40,
+								y: 80,
+								floating: true,
+								borderWidth: 1,
+								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+								shadow: true
+							},
+							credits: {
+								enabled: false
+							},
+							series: [{
+								name: 'Completed',
+								data: CommitteeCompleteCountArray
+							}]
+						});
 					});
-				});
+				}else{
+					$("#genSec"+i).html("No Data Available")
+				}
+				
 			}
 			
+		}else{
+			$("#userTypeWiseCommitteesForTopFiveStrongDiv").html("No Data Available");
 		}
 		
 	}
@@ -976,80 +991,87 @@
 					if (countVar === 5) {
 						break;
 					}
-					candidateNameArray.push(result[i][j].name);
-					CommitteeCompleteCountArray.push(result[i][j].completedCount);
+					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
+						candidateNameArray.push(result[i][j].name);
+						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
+					}else{
+						candidateNameArray.push("");
+						CommitteeCompleteCountArray.push("");
+					}
+					
+					
+					
 					
 				}
 					
-				
-				var getWidth = $("#genSec1"+i).parent().width()+'px';
-				$("#genSec1"+i).width(getWidth);
-				$(function () {
-					$("#genSec1"+i).highcharts({
-						colors: ['#0066DC'],
-						chart: {
-							type: 'column'
-						},
-						title: {
-							text: null
-						},
-						subtitle: {
-							text: null
-						},
-						xAxis: {
-							categories: candidateNameArray,
+				if(CommitteeCompleteCountArray.length !=0 && candidateNameArray.length !=0){
+					var getWidth = $("#genSec1"+i).parent().width()+'px';
+					$("#genSec1"+i).width(getWidth);
+					$(function () {
+						$("#genSec1"+i).highcharts({
+							colors: ['#0066DC'],
+							chart: {
+								type: 'column'
+							},
 							title: {
 								text: null
-							}
-						},
-						yAxis: {
-							min: 0,
-							title: {
-								text: null,
-								align: 'high'
 							},
-							labels: {
-								overflow: 'justify'
-							}
-						},
-						tooltip: {
-							headerFormat: '<b>{point.x}</b><br/>',
-							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
-							shared: true
-						},
-						plotOptions: {
-							bar: {
-								dataLabels: {
-									enabled: true,
-									formatter: function(){
-										return Highcharts.numberFormat(this.y,0) + '%';
-									}
-								  
+							subtitle: {
+								text: null
+							},
+							xAxis: {
+								categories: candidateNameArray,
+								title: {
+									text: null
 								}
-							}
-						},
-						legend: {
-							layout: 'vertical',
-							align: 'right',
-							verticalAlign: 'top',
-							x: -40,
-							y: 80,
-							floating: true,
-							borderWidth: 1,
-							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-							shadow: true
-						},
-						credits: {
-							enabled: false
-						},
-						series: [{
-							name: 'Completed',
-							data: CommitteeCompleteCountArray
-						}]
+							},
+							yAxis: {
+								min: 0,
+								title: {
+									text: null,
+									align: 'high'
+								},
+								labels: {
+									overflow: 'justify'
+								},
+								
+							},
+							tooltip: {
+								valueSuffix: '%'
+							},
+							plotOptions: {
+								bar: {
+									dataLabels: {
+										enabled: true
+									}
+								}
+							},
+							legend: {
+								layout: 'vertical',
+								align: 'right',
+								verticalAlign: 'top',
+								x: -40,
+								y: 80,
+								floating: true,
+								borderWidth: 1,
+								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+								shadow: true
+							},
+							
+							series: [{
+								name: 'Completed',
+								data: CommitteeCompleteCountArray
+							}]
+						});
 					});
-				});
+				}else{
+					$("#genSec1"+i).html("No Data Available")
+				}
+				
 			}
 			
+		}else{
+			$("#userTypeWiseCommitteesForTopFivePoorDiv").html("No Data Available");
 		}
 		
 	}
@@ -1162,7 +1184,7 @@
 		var str ='';
 		
 		if(result != null && result.length >0){
-			
+			var rankVar =0;
 			str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
 			if(childActivityMemberId != "directChildActivityMemberDiv"){
 				str+='<span class="removeSelecUserType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
@@ -1187,10 +1209,16 @@
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result){
+						rankVar = rankVar+1;
 						 var yourValues = result[i].locationName;
 						str+='<tr class="compareLowLevelActivityMemberCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 							str+='<td>';
-								str+='<span class="tableCount">01</span>';
+								if( result[i].completedPerc != null && result[i].completedPerc >0){
+									str+='<span class="tableCount">'+rankVar+'</span>';
+								}else{
+									str+='<span class="tableCount"> - </span>';
+								}
+								
 							str+='</td>';
 							if( yourValues.indexOf(',') == -1){
 								str+='<td>'+result[i].userType+' (<b>'+result[i].locationName+'</b>)</td>';
@@ -1241,7 +1269,7 @@
 				str+='</table>';
 				$("#"+childActivityMemberId).html(str);
 		}else{
-			$("#"+childActivityMemberId).html("No Data Available");
+			$("#"+childActivityMemberId).html("<span style='cursor: auto;'>No Data Available</span>");
 			
 		}
 	
@@ -1361,7 +1389,14 @@
 					}
 						str+='<tr>';
 							str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+countVar+'</span></td>';
-							str+='<td>'+result[i].name+'</td>';
+							if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
+								
+								str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
+							}else{
+							
+								str+='<td>'+result[i].name+'</td>';
+							}
+							
 							str+='<td>';
 							if(result[i].completedCount !=null && result[i].completedCount >0){
 								str+='<div class="progress progressCustom">';

@@ -68,15 +68,7 @@
                         </li>
                     </ul>
                 </div>
-              
-            </div>
-        </div>
-    </div>
-    <div class="navbar navbar-default navbarProfile">
-    	<div class="container">
-        	<div class="row">
-            	
-                <div class="col-md-2 col-xs-12 col-sm-2 pull-right"  style="margin-top: -10px;">
+				<div class="col-md-2 col-xs-12 col-sm-2 pull-right"  style="margin-top: -10px;">
                 	<ul class="list-inline profileSelection">
                     	<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">AP</a>
@@ -86,9 +78,11 @@
                         </li>
                     </ul>
                 </div>
+              
             </div>
         </div>
     </div>
+   
 </header>
 <div class="container m_top20">
 	<div class="row">
