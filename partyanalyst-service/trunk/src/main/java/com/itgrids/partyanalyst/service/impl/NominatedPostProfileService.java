@@ -5965,4 +5965,58 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 	 }
 	 return null; 
 }
+
+/**
+ * @Author  Hymavathi
+ * @Version NominatedPostProfileService.java  Aug 29, 2016 12:30:00 PM 
+ * @return status
+ * description  { Updating Application Status To Rejected }
+ */
+public String savingStatusAsReject(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
+		final Long statusId,final String comment){
+String status = null;
+try {
+	Long successValue = (Long) transactionTemplate.execute(new TransactionCallback() {
+		public Object doInTransaction(TransactionStatus arg0) {
+			//NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(applicationId);
+			int succesCnt = 0;
+			Long statusValue = 0l;
+			if(statusId == 2){
+			   succesCnt = nominatedPostApplicationDAO.updateApllicationStatusToReject(applicationId,statusId,userId);
+			   if(succesCnt > 0){
+					statusValue = 1l;
+				}
+			 }
+			
+			if(statusId == 2){
+			 succesCnt = nominatedPostFinalDAO.updateApllicationStatusToReject(applicationId,statusId,userId);
+			
+			 if(succesCnt > 0){
+					statusValue = 1l;
+				}
+			} 
+			
+			NominatedPostComment nominatedPostComment = new NominatedPostComment();
+			
+			nominatedPostComment.setNominatedPostApplicationId(applicationId);
+			nominatedPostComment.setRemarks(comment);  
+			nominatedPostComment.setInsertedBy(userId);
+			nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			
+			nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
+			return statusValue;
+		}
+	});
+	if(successValue.longValue() == 0l)
+		status="failure";
+	else
+		status = "success";
+	
+		} catch (Exception e) {
+			status = "failure";
+			e.printStackTrace();
+			LOG.error("Exception raised at savingStatusAsReject", e);
+		}
+		return status;
+	}
 }
