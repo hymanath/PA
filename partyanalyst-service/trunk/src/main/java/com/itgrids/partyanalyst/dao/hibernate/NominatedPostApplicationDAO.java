@@ -1948,4 +1948,23 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		
 		return query.list();
 	}
+public int updateApllicationStatusToReject(Long applicationId,Long statusId,Long userId){
+	
+	StringBuilder queryStr = new StringBuilder();
+	DateUtilService dateUtilService = new DateUtilService();
+	
+	queryStr.append("UPDATE NominatedPostApplication model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
+			" model.updatedBy =:updatedBy," +
+			" model.updatedTime =:updatedTime" +
+			"	WHERE  model.isDeleted = 'N' and model.nominatedPostApplicationId =:applicationId " );
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	
+	query.setParameter("applicationId", applicationId);
+	query.setParameter("applicationStatusId", statusId);
+	query.setParameter("updatedBy", userId);
+	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
+	
+	return query.executeUpdate();
+}
 }
