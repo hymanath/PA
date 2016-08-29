@@ -10,15 +10,13 @@
 	   basicCommitteeIdsArray.push(4);
       
 	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
+       var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  state:state,
 					  basicCommitteeIdsArray : basicCommitteeIdsArray,
-					  startDateString : startDateString,
- 			          endDateString :   endDateString
+					  dateString : dateString
 					}
 		
 		$.ajax({
@@ -40,10 +38,8 @@
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
       
-	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
-		
+	   var dateString = $("#dateRangeId").val();
+    
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
 					  userTypeId : globalUserTypeId,
@@ -52,8 +48,7 @@
 					  
 					  state:state,
 					  basicCommitteeIdsArray : basicCommitteeIdsArray,
-					  startDateString : startDateString,
- 			          endDateString :   endDateString
+					  dateString : dateString
 					}
 		
 		$.ajax({
@@ -75,8 +70,7 @@
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
 	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
+        var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
@@ -86,8 +80,8 @@
 					  
 					  state:state,
 					  basicCommitteeIdsArray : basicCommitteeIdsArray,
-					  startDateString : startDateString,
- 			          endDateString :   endDateString
+					  dateString : dateString
+ 			         
 					}
 		
 		$.ajax({
@@ -100,7 +94,6 @@
 			$("#userTypeWiseCommitteesForTopFivePoorDiv").html('');
 			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result);
 			buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result);
-			
 		});
 	}
 	function getLevelWiseBasicCommitteesCountReport(){
@@ -112,17 +105,14 @@
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
 	   basicCommitteeIdsArray.push(4);
-      
 	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
+       var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
-					userAccessLevelValuesArray:globalUserAccessLevelValues,
-					state:state,
-					basicCommitteeIdsArray : basicCommitteeIdsArray,
-					startDateString : startDateString,
- 			        endDateString :   endDateString
+					 userAccessLevelValuesArray:globalUserAccessLevelValues,
+					 state:state,
+					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+					 dateString : dateString
 					}
 		
 		$.ajax({
@@ -150,51 +140,15 @@
 		var userLocationLevelId = globalUserAccessLevelId;
 		var userLocationLevelValuesArray = globalUserAccessLevelValues;
 		
-		var groupingLocationConsider = 'subLevel';
-		var groupingLocationsArray = [];
-		if(groupingLocationConsider == "self"){
-           if(userLocationLevelId == 2 ){//user_level table
-			   groupingLocationsArray.push("State");
-		   }else if(userLocationLevelId == 3){
-			   groupingLocationsArray.push("District");
-		   }else if(userLocationLevelId == 4){
-			   groupingLocationsArray.push("Parliament");
-		   }else if(userLocationLevelId == 5){
-			   groupingLocationsArray.push("Constituency");
-		   }else if(userLocationLevelId == 6){
-			   groupingLocationsArraypush("Mandal");
-			   groupingLocationsArraypush("LocalElectionbody");
-		   }
-		}else if( groupingLocationConsider == "subLevel"){
-			if(userLocationLevelId == 2 ){//user_level table
-			   groupingLocationsArray.push("District");
-		   }else if(userLocationLevelId == 3){
-			   groupingLocationsArray.push("Constituency");
-		   }else if(userLocationLevelId == 4){
-			   groupingLocationsArray.push("Constituency");
-		   }else if(userLocationLevelId == 5){
-			  groupingLocationsArraypush("Mandal");
-			   groupingLocationsArraypush("LocalElectionbody");
-		   }else if(userLocationLevelId == 6){
-			   groupingLocationsArraypush("Village");
-			   groupingLocationsArraypush("Ward");
-		   }
-		}
-		
 		var committeeStatus = 'all';
-	
-	   
-       var startDateString = '01/01/2014';
-	   var endDateString = '11/08/2016';
+        var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
 					basicCommitteeIdsArray : basicCommitteeIdsArray,
 					committeeStatus:committeeStatus,
 					userLocationLevelId:userLocationLevelId,
 					userLocationLevelValuesArray:userLocationLevelValuesArray,
-					groupingLocationsListArray:groupingLocationsArray,
-					startDateString : startDateString,
- 			        endDateString :   endDateString,
+					dateString : dateString,
 					state:state
 					}
 		
