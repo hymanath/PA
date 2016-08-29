@@ -1150,11 +1150,23 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	  *  This Service Method is used to get the getTopPoorPerformancecommittees.
 	  *  @since 29-AUGUST-2016
 	  */
-	public List<CommitteeDataVO> getTopPoorCommitteeLocations(Long activityMemberId,Long userLocationLevelId,List<Long> userLocationLevelValues,List<Long> basicCommitteeIds,String state,String dateString){
+	public List<CommitteeDataVO> getTopPoorCommitteeLocations(Long activityMemberId,List<Long> basicCommitteeIds,String state,String dateString){
 		   List<CommitteeDataVO> finalList = null;
 		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		   try{
 			
+			    Long userLocationLevelId = null;
+			    List<Long> userLocationLevelValues = null;
+			    
+			    List<Object[]> locations = activityMemberAccessLevelDAO.getLocationsByActivityMemberId(activityMemberId);
+			    if(locations!=null && locations.size()>0){
+			    	userLocationLevelValues = new ArrayList<Long>();
+			    	for(Object[] obj : locations){
+			    		userLocationLevelId = (Long)obj[0];
+			    		userLocationLevelValues.add(obj[2]!=null?(Long)obj[2]:0l);
+			    	}
+			    }
+			    
 			     //Creating Business Object.
 			     CommitteeInputVO committeeBO = new CommitteeInputVO();
 			     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
