@@ -143,8 +143,10 @@
 					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
 						
 					</div>
+					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 basicCommitteesBlock">
 						<div id="basicCommitteeCountsDiv"></div>
-                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 committeesBlock committeesHiddenBlock">
+					</div>
+                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
@@ -867,11 +869,10 @@
 		$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 	});
-	
+	getLoggedInUserStructure();
 	onLoadCalls();
 	function onLoadCalls(){
 		getCommitteesBasicCountReport();
-		getLoggedInUserStructure();
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
 		
@@ -895,9 +896,21 @@
 	    globalUserAccessLevelValues = clickedUserAccessLevelValuesArray;
 		
 		onLoadCalls();
+		
+		
+		getLevelWiseBasicCommitteesCountReport();
+		getUserTypeWiseCommitteesCompletedCounts1();
+		var tdpCommitteeLevelIdsClickedArray = [];
+		tdpCommitteeLevelIdsClickedArray.push(6);
+		tdpCommitteeLevelIdsClickedArray.push(8);
+		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
+		getChildUserTypesByItsParentUserType();
 	});
 	
-
+	$(document).on("click",".hideDropDownView",function(){
+		$(".profileDropDown").removeClass("dropDownView");
+	});
+	
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
