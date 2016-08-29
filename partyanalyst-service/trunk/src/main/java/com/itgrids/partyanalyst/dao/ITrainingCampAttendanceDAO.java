@@ -49,4 +49,9 @@ public interface ITrainingCampAttendanceDAO extends GenericDao<TrainingCampAtten
 	public List<Object[]> getAttendedBatchDetailsByTdpCadreId(Long tdpCadreId,Long programId);
 	public Long getAttendedCountByLocation(Long id,String searchType);
 	public List<Long> getAttendedCadreIdsByLocation(Long id,String searchType);
+	
+	public List<Object[]> getTotalAttenedCadresByTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<Object[]> getTotalAttenedCadresByCommitteeLevel(Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<Object[]> getUserWiseTotalAttenedCadresCntForTrainingProgram(Long userAccessLevelId,List<Long> userAccessLevelValues);
 }

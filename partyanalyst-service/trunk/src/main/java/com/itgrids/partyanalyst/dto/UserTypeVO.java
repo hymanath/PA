@@ -36,6 +36,12 @@ public class UserTypeVO implements Serializable{
 	private Double startedPerc = 0.0;
 	private Double notStartedPerc = 0.0;
 	
+	private Long totalEligibleCount=0l;
+	private Long totalAttenedCount=0l;
+	private Long totalNotAttenedCount=0l;
+	private Double totalAttenedCountPer=0.0;
+	private Double totalNotAttenedCountPer=0.0;
+	
 	public Long getId() {
 		return id;
 	}
@@ -150,6 +156,36 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setCompletedPerc(Double completedPerc) {
 		this.completedPerc = completedPerc;
+	}
+	public Long getTotalEligibleCount() {
+		return totalEligibleCount;
+	}
+	public void setTotalEligibleCount(Long totalEligibleCount) {
+		this.totalEligibleCount = totalEligibleCount;
+	}
+	public Long getTotalAttenedCount() {
+		return totalAttenedCount;
+	}
+	public void setTotalAttenedCount(Long totalAttenedCount) {
+		this.totalAttenedCount = totalAttenedCount;
+	}
+	public Long getTotalNotAttenedCount() {
+		return totalNotAttenedCount;
+	}
+	public void setTotalNotAttenedCount(Long totalNotAttenedCount) {
+		this.totalNotAttenedCount = totalNotAttenedCount;
+	}
+	public Double getTotalAttenedCountPer() {
+		return totalAttenedCountPer;
+	}
+	public void setTotalAttenedCountPer(Double totalAttenedCountPer) {
+		this.totalAttenedCountPer = totalAttenedCountPer;
+	}
+	public Double getTotalNotAttenedCountPer() {
+		return totalNotAttenedCountPer;
+	}
+	public void setTotalNotAttenedCountPer(Double totalNotAttenedCountPer) {
+		this.totalNotAttenedCountPer = totalNotAttenedCountPer;
 	}
 	public Long getStartedCount() {
 		return startedCount;

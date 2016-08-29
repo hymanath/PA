@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -21,10 +23,13 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
@@ -44,6 +49,9 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IUserTypeRelationDAO userTypeRelationDAO;
 	 private IActivityMemberRelationDAO activityMemberRelationDAO;
 	 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+	 
+	 private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	 private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
@@ -83,8 +91,14 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
 		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
 	}
-	
-	
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
+	public void setTrainingCampAttendanceDAO(
+			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
+		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
+	}
 	/**
 	  * @param  Long userAccessLevelId
 	  * @param  List<Long> userAccessLevelValues
@@ -1267,14 +1281,500 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		   }
 		    
 	  }
-	
- 
- 
- 
- 
- 
- 
- 
- 
- 
+	   /**
+		  * @param  Long userAccessLevelId
+		  * @param List<Long> userAccessLevelValues
+		  * @return TrainingCampProgramVO
+		  * @author Santosh 
+		  * @Description :This Service Method is used to get training camp basic count details.. 
+		  *  @since 23-AUGUST-2016
+		  */
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues){
+		 
+	 TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
+		 
+		 Map<Long,Long> trainingCampProgramAttendedCntMap = new HashMap<Long, Long>();
+		 Map<Long,TrainingCampProgramVO> trainingCampProgramEligibleCntMap = new HashMap<Long, TrainingCampProgramVO>();
+		 Map<String,Long> totalEligibleMemberCntMap = new HashMap<String, Long>();
+		 Map<String,Long> totalAttenedMemberCntMap = new HashMap<String, Long>();
+		 
+		 try{
+			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues);//Eligible Member For Training Program
+			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues);//Attended Member In Training Program
+			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
+				 for (Object[] param : rtrnAttendedMemberForProgramObjList) {
+					 trainingCampProgramAttendedCntMap.put((Long)param[0],param[2] != null ? (Long)param[2]:0l);
+				}
+			 }
+			 if(rtrnElgbleMemberForProgramObjList != null && rtrnElgbleMemberForProgramObjList.size() > 0){
+				 for (Object[] param : rtrnElgbleMemberForProgramObjList) {
+					TrainingCampProgramVO programVO = new TrainingCampProgramVO();
+					Long programId= param[0] != null ? (Long)param[0] :0l;
+					programVO.setId(programId);
+					programVO.setName(param[1] != null ? param[1].toString():"");
+					programVO.setTotalEligibleCount(param[2] != null ? (Long)param[2]:0l);
+					if(trainingCampProgramAttendedCntMap.get(programId)!=null){
+						programVO.setTotalAttenedCount(trainingCampProgramAttendedCntMap.get(programId));
+					}
+					programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getTotalAttenedCount(),programVO.getTotalEligibleCount()));
+					if(programVO.getTotalEligibleCount()>0l){
+						programVO.setTotalNotAttenedCount(programVO.getTotalEligibleCount()-programVO.getTotalAttenedCount());	
+					}
+					programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),programVO.getTotalEligibleCount()));
+					trainingCampProgramEligibleCntMap.put(programId, programVO);
+				}
+			 }
+			List<Object[]> rtrnTtlElgbleMmbrObjList = tdpCommitteeMemberDAO.getLevelWiseTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues);//Level Wise Eligible Member
+			List<Object[]> rtrnTtlAttendedMmbrObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByCommitteeLevel(userAccessLevelId, userAccessLevelValues);//Level Wise Attended Member
+		
+			totalEligibleMemberCntMap.put("totalElibible", 0l);//to avoid NullPointerException
+			totalAttenedMemberCntMap.put("totalAttended", 0l);//to avoid NullPointerException
+			setEligibleMemberCntToMap(rtrnTtlElgbleMmbrObjList,totalEligibleMemberCntMap,"villageWard");
+			setAttendedMemberCntToMap(rtrnTtlAttendedMmbrObjList,totalAttenedMemberCntMap,"villageWard");
+			
+			  TrainingCampProgramVO villageWardVO = new TrainingCampProgramVO();
+			   villageWardVO.setName("Village/Ward");
+			   if(totalEligibleMemberCntMap.get("totalElibible") != null){
+				   villageWardVO.setTotalEligibleCount(totalEligibleMemberCntMap.get("totalElibible"));   
+			   }
+			   if(totalAttenedMemberCntMap.get("totalAttended") != null){
+				   villageWardVO.setTotalAttenedCount(totalAttenedMemberCntMap.get("totalAttended"));   
+			   }
+			   villageWardVO.setTotalAttenedCountPer(calculatePercantage(villageWardVO.getTotalAttenedCount(),villageWardVO.getTotalEligibleCount()));
+			   if(villageWardVO.getTotalEligibleCount() > 0l){
+				   villageWardVO.setTotalNotAttenedCount(villageWardVO.getTotalEligibleCount()-villageWardVO.getTotalAttenedCount());   
+			   }
+			   villageWardVO.setTotalNotAttenedCountPer(calculatePercantage(villageWardVO.getTotalNotAttenedCount(), villageWardVO.getTotalEligibleCount()));
+			   totalEligibleMemberCntMap.clear();
+			   totalAttenedMemberCntMap.clear(); 
+		       finalResultVO.setVillageWardVO(villageWardVO);
+			   
+			  totalEligibleMemberCntMap.put("totalElibible", 0l);//to avoid NullPointerException
+			  totalAttenedMemberCntMap.put("totalAttended", 0l);//to avoid NullPointerException
+			  setEligibleMemberCntToMap(rtrnTtlElgbleMmbrObjList,totalEligibleMemberCntMap,"mandalTwnDiv");
+			  setAttendedMemberCntToMap(rtrnTtlAttendedMmbrObjList,totalAttenedMemberCntMap,"mandalTwnDiv");
+		 
+		     TrainingCampProgramVO manTwnDivVO = new TrainingCampProgramVO();
+		 	  manTwnDivVO.setName("Mandal/Town/Division");
+			  if(totalEligibleMemberCntMap.get("totalElibible") != null){
+				 manTwnDivVO.setTotalEligibleCount(totalEligibleMemberCntMap.get("totalElibible"));  
+			  }
+			  if(totalAttenedMemberCntMap.get("totalAttended") != null){
+				  manTwnDivVO.setTotalAttenedCount(totalAttenedMemberCntMap.get("totalAttended"));	  
+			  }
+			  manTwnDivVO.setTotalAttenedCountPer(calculatePercantage(manTwnDivVO.getTotalAttenedCount(),manTwnDivVO.getTotalEligibleCount()));
+			  if(manTwnDivVO.getTotalEligibleCount() > 0){
+				  manTwnDivVO.setTotalNotAttenedCount(manTwnDivVO.getTotalEligibleCount()-manTwnDivVO.getTotalAttenedCount());	  
+			  }
+			  manTwnDivVO.setTotalNotAttenedCountPer(calculatePercantage(manTwnDivVO.getTotalNotAttenedCount(), manTwnDivVO.getTotalEligibleCount()));
+			  finalResultVO.setMandalTownDivisionVO(manTwnDivVO); 
+			  totalEligibleMemberCntMap.clear();
+			  totalAttenedMemberCntMap.clear();
+	      
+		      totalEligibleMemberCntMap.put("totalElibible", 0l);//to avoid NullPointerException
+			  totalAttenedMemberCntMap.put("totalAttended", 0l);//to avoid NullPointerException
+			  setEligibleMemberCntToMap(rtrnTtlElgbleMmbrObjList,totalEligibleMemberCntMap,"district");
+			  setAttendedMemberCntToMap(rtrnTtlAttendedMmbrObjList,totalAttenedMemberCntMap,"district");
+			  
+		     TrainingCampProgramVO districtVO = new TrainingCampProgramVO();
+		      districtVO.setName("District");
+		      if(totalEligibleMemberCntMap.get("totalElibible") != null){
+		    	districtVO.setTotalEligibleCount(totalEligibleMemberCntMap.get("totalElibible"));  
+			  }
+			  if(totalAttenedMemberCntMap.get("totalAttended") != null){
+				  districtVO.setTotalAttenedCount(totalAttenedMemberCntMap.get("totalAttended"));	  
+			  }
+			    districtVO.setTotalAttenedCountPer(calculatePercantage(districtVO.getTotalAttenedCount(),districtVO.getTotalEligibleCount()));
+			  if(districtVO.getTotalEligibleCount() > 0){
+				  districtVO.setTotalNotAttenedCount(districtVO.getTotalEligibleCount()-districtVO.getTotalAttenedCount());	  
+			  }
+			  districtVO.setTotalNotAttenedCountPer(calculatePercantage(districtVO.getTotalNotAttenedCount(), districtVO.getTotalEligibleCount()));
+	          finalResultVO.setDistrictVO(districtVO);
+	          totalEligibleMemberCntMap.clear();
+	          totalAttenedMemberCntMap.clear();
+		          
+	          totalEligibleMemberCntMap.put("totalElibible", 0l);//to avoid NullPointerException
+	    	  totalAttenedMemberCntMap.put("totalAttended", 0l);//to avoid NullPointerException
+	    	  setEligibleMemberCntToMap(rtrnTtlElgbleMmbrObjList,totalEligibleMemberCntMap,"state");
+	    	  setAttendedMemberCntToMap(rtrnTtlAttendedMmbrObjList,totalAttenedMemberCntMap,"state");
+	    	  
+	          TrainingCampProgramVO stateVO = new TrainingCampProgramVO();
+	           stateVO.setName("State");
+		      if(totalEligibleMemberCntMap.get("totalElibible") != null){
+		    	  stateVO.setTotalEligibleCount(totalEligibleMemberCntMap.get("totalElibible"));  
+			  }
+			  if(totalAttenedMemberCntMap.get("totalAttended") != null){
+				  stateVO.setTotalAttenedCount(totalAttenedMemberCntMap.get("totalAttended"));	  
+			  }
+			  stateVO.setTotalAttenedCountPer(calculatePercantage(stateVO.getTotalAttenedCount(),stateVO.getTotalEligibleCount()));
+			  if(stateVO.getTotalEligibleCount() > 0){
+				  stateVO.setTotalNotAttenedCount(stateVO.getTotalEligibleCount()-stateVO.getTotalAttenedCount());	  
+			  }
+			  stateVO.setTotalNotAttenedCountPer(calculatePercantage(stateVO.getTotalNotAttenedCount(), stateVO.getTotalEligibleCount()));
+	           finalResultVO.setStateVO(stateVO);
+	           totalEligibleMemberCntMap.clear();
+	           totalAttenedMemberCntMap.clear();  
+	          
+		  if(trainingCampProgramEligibleCntMap != null && trainingCampProgramEligibleCntMap.size() > 0){
+			  finalResultVO.setTrainingProgramList(new ArrayList<TrainingCampProgramVO>(trainingCampProgramEligibleCntMap.values()));
+		  }
+		 }catch(Exception e){
+			 LOG.error("Error occured at getTotalEligibleAttendedAndNotAttenedOverviewCount() in CoreDashboardMainService {}",e);
+		 }
+		 return finalResultVO;
+	}
+	public void setEligibleMemberCntToMap(List<Object[]> rtrnObjList,Map<String,Long> totalEligibleMemberCntMap,String levelType){
+	try{
+		 if(rtrnObjList != null && rtrnObjList.size() > 0){
+				for (Object[] param : rtrnObjList) {
+					Long levelId = param[0] != null ? (Long)param[0]:0l;
+					Long eligibleMembersCnt = 0l;
+					if(levelType.equalsIgnoreCase("villageWard")){
+						if(levelId.longValue()==6l || levelId.longValue()==8l){
+						 eligibleMembersCnt = param[1] != null ? (Long)param[1]:0l;	
+						}
+					}else if(levelType.equalsIgnoreCase("mandalTwnDiv")){
+						if(levelId.longValue()==5l || levelId.longValue()==7l || levelId.longValue()==9l){
+						 eligibleMembersCnt = param[1] != null ? (Long)param[1]:0l;	
+						}
+					}else if(levelType.equalsIgnoreCase("district")){
+					   if(levelId.longValue()==11l){
+						  eligibleMembersCnt = param[1] != null ? (Long)param[1]:0l; 
+					   }
+					}else if(levelType.equalsIgnoreCase("state")){
+						  if(levelId.longValue()==10l){
+							  eligibleMembersCnt = param[1] != null ? (Long)param[1]:0l; 
+						   }
+					}
+					totalEligibleMemberCntMap.put("totalElibible", totalEligibleMemberCntMap.get("totalElibible")+eligibleMembersCnt);
+				}
+			}
+	}catch(Exception e){
+		 LOG.error("Error occured at setEligibleMemberCntToMap() in CoreDashboardService1 {}",e); 
+	}
+	}
+	public void setAttendedMemberCntToMap(List<Object[]> rtrnTtlAttendedMmbrObjList,Map<String,Long> totalAttenedMemberCntMap,String levelType){
+	try{
+		 if(rtrnTtlAttendedMmbrObjList != null && rtrnTtlAttendedMmbrObjList.size() > 0){
+				for (Object[] param : rtrnTtlAttendedMmbrObjList) {
+					Long levelId = param[0] != null ? (Long)param[0]:0l;
+					Long attendedMemCnt = 0l;
+					if(levelType.equalsIgnoreCase("villageWard")){
+						if(levelId.longValue()==6l || levelId.longValue()==8l){
+							attendedMemCnt = param[1] != null ? (Long)param[1]:0l;	
+						}
+					}else if(levelType.equalsIgnoreCase("mandalTwnDiv")){
+						if(levelId.longValue()==5l || levelId.longValue()==7l || levelId.longValue()==9l){
+							attendedMemCnt = param[1] != null ? (Long)param[1]:0l;	
+						}
+					}else if(levelType.equalsIgnoreCase("district")){
+						if(levelId.longValue()==11l){
+						 attendedMemCnt = param[1] != null ? (Long)param[1]:0l; 
+						}
+					}else if(levelType.equalsIgnoreCase("state")){
+						if(levelId.longValue()==10){
+						 attendedMemCnt = param[1] != null ? (Long)param[1]:0l; 
+						 }
+					}
+					totalAttenedMemberCntMap.put("totalAttended", totalAttenedMemberCntMap.get("totalAttended")+attendedMemCnt);
+				}
+			}
+	}catch(Exception e){
+		 LOG.error("Error occured at setAttendedMemberCntToMap() in CoreDashboardMainService {}",e); 
+	}
+	}
+	/**
+	* @param  Long userAccessLevelId
+	* @param List<Long> userAccessLevelValues
+	* @return List<TrainingCampProgramVO>
+	* @author Santosh 
+	* @Description :This Service Method is used to get training camp program details count by user type.. 
+	*  @since 23-AUGUST-2016
+	*/
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues){
+
+	List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
+	Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
+	Map<Long,String> programIdNameMap = new HashMap<Long, String>();
+	try{
+		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues); 
+		 if(rtrnElgbleMmbrsObjLst != null && !rtrnElgbleMmbrsObjLst.isEmpty()){
+			 for (Object[] param : rtrnElgbleMmbrsObjLst) {
+				List<TrainingCampProgramVO> districtsList = programDtlsMap.get((Long)param[0]);
+				 if(districtsList == null){
+					 districtsList = new ArrayList<TrainingCampProgramVO>();
+					 programIdNameMap.put((Long)param[0], param[1] != null ? param[1].toString(): "");
+					 programDtlsMap.put((Long)param[0], districtsList);
+				 }
+				 TrainingCampProgramVO districtVO = new TrainingCampProgramVO();
+				   districtVO.setId(param[2] != null ? (Long)param[2] : 0l);
+				   districtVO.setName(param[3] != null ? param[3].toString() : "");
+				   districtVO.setTotalEligibleCount(param[4] != null ? (Long)param[4] : 0l);
+				   districtsList.add(districtVO);
+			}
+		 }
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues);
+		 if(rtrnAttnddMemObjList != null && !rtrnAttnddMemObjList.isEmpty()){
+				 for (Object[] param : rtrnAttnddMemObjList) {
+					Long programId= (Long)param[0];
+					Long districtId = param[2] != null ? (Long)param[2]:0l;
+					Long attendedCnt = param[4] != null ? (Long)param[4]:0l;
+					List<TrainingCampProgramVO> districtList = programDtlsMap.get(programId);
+					if(districtList != null && !districtList.isEmpty()){
+						 for (TrainingCampProgramVO districtVO : districtList) {
+								if(districtVO.getId().equals(districtId)){
+									districtVO.setTotalAttenedCount(attendedCnt);
+									districtVO.setTotalAttenedCountPer(calculatePercantage(districtVO.getTotalAttenedCount(), districtVO.getTotalEligibleCount()));
+									if(districtVO.getTotalEligibleCount() > 0l){
+										districtVO.setTotalNotAttenedCount(districtVO.getTotalEligibleCount()-districtVO.getTotalAttenedCount());	
+									}
+									districtVO.setTotalNotAttenedCountPer(calculatePercantage(districtVO.getTotalNotAttenedCount(), districtVO.getTotalEligibleCount()));
+								}
+						 }
+					}
+				}
+		 }
+		 if(programDtlsMap != null && programDtlsMap.size() > 0){
+			 for(Entry<Long, List<TrainingCampProgramVO>> entry:programDtlsMap.entrySet()){
+				 TrainingCampProgramVO programVO = new TrainingCampProgramVO();
+				        programVO.setId(entry.getKey());
+				        programVO.setName(programIdNameMap.get(entry.getKey()));
+				        programVO.setDistrictList(entry.getValue());
+				        resultList.add(programVO);
+			 }
+		 }
+		 
+	}catch(Exception e) {
+		  LOG.error("Error occured at getTrainingCampProgramsDetailsCntDistrictWise() in CoreDashboardMainService {}",e);
+	}
+	return resultList;	 
+	}
+	/**
+	* @param  Long userId
+	* @param  Long userTypeId
+	* @param  Long userAccessLevelId
+	* @param List<Long> userAccessLevelValues
+	* @return  List<List<UserTypeVO>>
+	* @author Santosh 
+	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count.. 
+	*  @since 24-AUGUST-2016
+	*/
+	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues){
+
+	List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
+	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
+	Map<String,Long> attendedMemberCntMap = new HashMap<String, Long>(0);
+	Map<Long,Set<Long>> locationLevelMap = null;
+	Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
+	try{
+		 
+		   ActivityMemberVO activityMemberVO = new ActivityMemberVO();
+		     activityMemberVO.setUserId(userId);
+		     activityMemberVO.setActivityMemberId(activityMembersId);
+		     activityMemberVO.setUserTypeId(userTypeId);
+		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocations(activityMemberVO);//calling generic method.
+		     userTypeMapDtls = activityMemberVO.getUserTypesMap();
+		     locationLevelMap = activityMemberVO.getLocationLevelIdsMap();
+		     
+	if(locationLevelMap != null && locationLevelMap.size() > 0){
+		  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
+			List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+			   if(returnObjList != null && returnObjList.size() > 0){
+				   for (Object[] param : returnObjList) {
+					String locationLevelAndId = param[0].toString()+"-"+param[1].toString();
+					elibibleMemberCntMap.put(locationLevelAndId, param[2] != null ? (Long)param[2]:0l);
+				}
+			   }
+		   }  
+	}
+	if(locationLevelMap != null && locationLevelMap.size() > 0){
+		  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
+			List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+			   if(returnObjList != null && returnObjList.size() > 0){
+				   for (Object[] param : returnObjList) {
+					 String locationLevelAndId = param[0].toString()+"-"+param[1].toString();
+					 attendedMemberCntMap.put(locationLevelAndId, param[2] != null ? (Long)param[2]:0l);
+				}
+			   }
+		   }  
+	}
+	//Pushing Eligible Count
+	if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+		  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
+		      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+		      for(UserTypeVO vo:userTypeMap.values()){
+		    	  for(Long locationValueId:vo.getLocationValuesSet()){
+		    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
+		    		  if(elibibleMemberCntMap.get(key) != null){
+				    		 vo.setTotalEligibleCount(vo.getTotalEligibleCount()+elibibleMemberCntMap.get(key)); 
+				    	 }
+		    	  }
+		      }
+	}  
+	}
+	//Pushing Attended Count
+	if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+		  for(Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()){
+		      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+		      for(UserTypeVO vo:userTypeMap.values()){
+		    	   for(Long locationValueId:vo.getLocationValuesSet()){
+		    			 String key = vo.getLocationLevelId()+"-"+locationValueId;   
+		    			 if(attendedMemberCntMap.get(key) != null){
+		    	    		 vo.setTotalAttenedCount(vo.getTotalAttenedCount()+attendedMemberCntMap.get(key)); 
+		    	    	 }
+		    	   }
+		      }
+	}	  
+	}
+
+	//Calculating percentage
+	if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+		  for(Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()){
+		      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+		      for(UserTypeVO vo:userTypeMap.values()){
+		    	 	vo.setTotalAttenedCountPer(calculatePercantage(vo.getTotalAttenedCount(),vo.getTotalEligibleCount()));  
+		    	 	if(vo.getTotalEligibleCount() > 0l){
+		    	 		vo.setTotalNotAttenedCount(vo.getTotalEligibleCount()-vo.getTotalAttenedCount());	
+		    	 	}
+			     	 vo.setTotalNotAttenedCountPer(calculatePercantage(vo.getTotalNotAttenedCount(),vo.getTotalEligibleCount()));	
+			     	}
+				  }
+	}
+	if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+		  for(Entry<Long, Map<Long, UserTypeVO>> entry:userTypeMapDtls.entrySet()){
+		   Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+		   resultList.add(new ArrayList<UserTypeVO>(userTypeMap.values()));
+	}
+	}
+	if(resultList != null && resultList.size() > 0){
+		for(List<UserTypeVO> memberList:resultList){
+			Collections.sort(memberList, trainingMemberEligibleAttendedPercDesc);
+		}
+	}
+	}catch(Exception e){
+	LOG.error("Error occured at getUserTypeWiseTotalEligibleAndAttendedCnt() in CoreDashboardMainService {}",e); 
+	}
+	return resultList; 
+	}
+	public static Comparator<UserTypeVO> trainingMemberEligibleAttendedPercDesc = new Comparator<UserTypeVO>() {
+	public int compare(UserTypeVO member2, UserTypeVO member1) {
+
+	Double perc2 = member2.getTotalAttenedCountPer();
+	Double perc1 = member1.getTotalAttenedCountPer();
+	//descending order of percantages.
+	 return perc1.compareTo(perc2);
+	}
+	}; 
+	public Double calculatePercantage(Long subCount,Long totalCount){
+	Double d=0.0d;
+	if(subCount.longValue()>0l && totalCount.longValue()==0l)
+	LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+
+	if(totalCount.longValue() > 0l){
+		 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+	}
+	return d;
+	}
+	/**
+	* @param  Long parentActivityMemberId
+	* @param  Long childUserTypeId
+	* @param  Long userAccessLevelId
+	* @param List<Long> userAccessLevelValues
+	* @param String reportType
+	* @return List<UserTypeVO>
+	* @author Santosh 
+	* @Description :This Service Method is used to get selected child member and for userType.. 
+	*  @since 26-AUGUST-2016
+	*/
+	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType){
+
+	List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0);
+	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
+	Map<String,Long> attendedMemberCntMap = new HashMap<String, Long>(0);
+	try{
+		   //calling generic method to get childActivityMembers and there location level and values
+		ActivityMemberVO activityMemberVO=null;
+		  Map<Long,UserTypeVO> childActivityMembersMap=null;
+		  
+		  
+		  Map<Long,Set<Long>> locationLevelIdsMap=null;
+		  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
+			  activityMemberVO= coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+			  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
+			  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+		  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
+			   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeId);//activityMemerId,userTypeId
+			   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+			   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		  }
+		  
+		    
+		    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+				  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+					List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+					   if(returnObjList != null && returnObjList.size() > 0){
+						   for (Object[] param : returnObjList) {
+							String locationLevelAndId = param[0].toString()+"-"+param[1].toString();
+							elibibleMemberCntMap.put(locationLevelAndId, param[2] != null ? (Long)param[2]:0l);
+						}
+					   }
+				   }  
+				  
+			}
+		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+				List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+				   if(returnObjList != null && returnObjList.size() > 0){
+					   for (Object[] param : returnObjList) {
+						 String locationLevelAndId = param[0].toString()+"-"+param[1].toString();
+						 attendedMemberCntMap.put(locationLevelAndId, param[2] != null ? (Long)param[2]:0l);
+					}
+				   }
+			   }  
+		  }
+		  //Pushing Eligible Count
+		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			      for(UserTypeVO vo:childActivityMembersMap.values()){
+			    	  for(Long locationValueId:vo.getLocationValuesSet()){
+			    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
+			    		  if(elibibleMemberCntMap.get(key) != null){
+					    		 vo.setTotalEligibleCount(vo.getTotalEligibleCount()+elibibleMemberCntMap.get(key)); 
+					    	 }
+			    	  }
+			      }
+		    }  
+		  //Pushing Attended Count
+		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			      for(UserTypeVO vo:childActivityMembersMap.values()){
+			    	   for(Long locationValueId:vo.getLocationValuesSet()){
+			    			 String key = vo.getLocationLevelId()+"-"+locationValueId;   
+			    			 if(attendedMemberCntMap.get(key) != null){
+			    	    		 vo.setTotalAttenedCount(vo.getTotalAttenedCount()+attendedMemberCntMap.get(key)); 
+			    	    	 }
+			    	   }
+			      }
+		  }
+		  //Calculating percentage
+		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			      for(UserTypeVO vo:childActivityMembersMap.values()){
+			    	 	vo.setTotalAttenedCountPer(calculatePercantage(vo.getTotalAttenedCount(),vo.getTotalEligibleCount()));  
+			    	 	if(vo.getTotalEligibleCount() > 0l){
+			    	 		 vo.setTotalNotAttenedCount(vo.getTotalEligibleCount()-vo.getTotalAttenedCount());	
+			    	 	}
+				     	 vo.setTotalNotAttenedCountPer(calculatePercantage(vo.getTotalNotAttenedCount(),vo.getTotalEligibleCount()));	
+		  		     	}
+		  }
+		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			  resultList.addAll(childActivityMembersMap.values());
+		  }
+		  if(resultList != null && resultList.size() > 0)
+		  {
+			  Collections.sort(resultList, trainingMemberEligibleAttendedPercDesc);
+		  }
+	}catch(Exception e){
+		LOG.error("Error occured at getSelectedChildTypeMembersForTrainingProgram() in CoreDashboardMainService ",e);
+	}
+	return resultList;	
+	}
+
 }
