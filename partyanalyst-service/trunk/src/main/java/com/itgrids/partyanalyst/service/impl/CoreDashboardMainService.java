@@ -111,7 +111,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	  *  This Service Method is used to get the main and affliated committees total and completed and started counts level wise based on the user access levels. 
 	  *  @since 29-JULY-2016
 	  */
-	public CommitteeDataVO getCommitteesBasicCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
+	public CommitteeDataVO getCommitteesBasicCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String dateString){
 		
 		LOG.info(" entered in to getCommitteesBAsicCountReport() ");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -119,27 +119,26 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		Date startDate = null;
 		Date endDate = null;
 		try{
-		     if(startDateString != null && !startDateString.isEmpty()){
-		    	 startDate = sdf.parse(startDateString);
-		     }
-		     if(endDateString != null && !endDateString.isEmpty()){
-		    	 endDate = sdf.parse(endDateString);
-		     }
 		     
-		     //Making BO.
+		     //Create Business object.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
-		     getRequiredCommitteeLevelIds(userAccessLevelId,committeeBO,userAccessLevelValues);
+		     coreDashboardGenericService.getRequiredCommitteeLevelIdsByUserAccessLevelId(userAccessLevelId,committeeBO);
+		     coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userAccessLevelId,userAccessLevelValues,committeeBO);
 		     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
-		     committeeBO.setStartDate(startDate);
-		     committeeBO.setEndDate(endDate);
-		     committeeBO.setState(state);
+		     if(dateString != null && !dateString.isEmpty()){
+			    committeeBO.setDate(sdf.parse(dateString));
+			 }
+		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		     committeeBO.setStateId(stateId);
 		     
 		     Map<Long,CommitteeDataVO> committeeLevelMap = new LinkedHashMap<Long,CommitteeDataVO>(0);
 		     setCommitteeLevelstoMap(committeeLevelMap,committeeBO.getTdpCommitteeLevelIds());
 		  
-		     List<Object[]> totalCommitteesList     =  tdpCommitteeDAO.getCommitteesTotalOrStartedOrCompletedCount(committeeBO,null);
-		     List<Object[]> completedCommitteesList =  tdpCommitteeDAO.getCommitteesTotalOrStartedOrCompletedCount(committeeBO,"completed");
-		     List<Object[]> startedCommitteesList   =  tdpCommitteeDAO.getCommitteesTotalOrStartedOrCompletedCount(committeeBO,"started");
+		     List<Object[]> totalCommitteesList     =  tdpCommitteeDAO.getCommitteesTotalOrStartedOrCompletedCount(committeeBO);
+		     committeeBO.setStatus("completed");
+		     List<Object[]> completedCommitteesList =  tdpCommitteeDAO.getCommitteesTotalOrStartedOrCompletedCount(committeeBO);
+		     committeeBO.setStatus("started");
+		     List<Object[]> startedCommitteesList   =  tdpCommitteeDAO.getCommitteesTotalOrStartedOrCompletedCount(committeeBO);
 		     
 		     setCountByLevel(totalCommitteesList,committeeLevelMap,null,finalVO);
 		     setCountByLevel(completedCommitteesList,committeeLevelMap,"completed",finalVO);
@@ -193,7 +192,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		}else if(userAccessLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
 			
 			inputVO.setTdpCommitteeLevelIds(Arrays.asList(IConstants.CONSTITUENCY_ACCESS_REQUIED_COMMITTEE_LEVEl_IDS));
-			inputVO.setAssemblyConstIds(delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(userAccessLevelValues));
+			inputVO.setParliamentConstIds(userAccessLevelValues);
 			
 		}else if(userAccessLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
 			
@@ -417,7 +416,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	  *  This Service Method is used to get committees count of given basic committess level wise based on user access levels. 
 	  *  @since 10-AUGUST-2016
 	  */
-		public List<CommitteeDataVO> getLevelWiseBasicCommitteesCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String startDateString,String endDateString){
+		public List<CommitteeDataVO> getLevelWiseBasicCommitteesCountReport(Long userAccessLevelId,List<Long> userAccessLevelValues,String state,List<Long> basicCommitteeIds,String dateString){
 		
 		LOG.info(" entered in to getLevelWiseBasicCommitteesCountReport() ");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -425,28 +424,32 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		Date startDate = null;
 		Date endDate = null;
 		try{
-		     if(startDateString != null && !startDateString.isEmpty()){
-		    	 startDate = sdf.parse(startDateString);
-		     }
-		     if(endDateString != null && !endDateString.isEmpty()){
-		    	 endDate = sdf.parse(endDateString);
-		     }
+			 
 		     
 		     //Making BO.
 		     CommitteeInputVO committeeBO = new CommitteeInputVO();
-		     getRequiredCommitteeLevelIds(userAccessLevelId,committeeBO,userAccessLevelValues);
+		     coreDashboardGenericService.getRequiredCommitteeLevelIdsByUserAccessLevelId(userAccessLevelId,committeeBO);
+		     coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userAccessLevelId,userAccessLevelValues,committeeBO);
 		     committeeBO.setBasicCommitteeIds(basicCommitteeIds);
-		     committeeBO.setStartDate(startDate);
-		     committeeBO.setEndDate(endDate);
-		     committeeBO.setState(state);
+		     if(dateString != null && !dateString.isEmpty()){
+				committeeBO.setDate(sdf.parse(dateString));
+			 }
+		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		     committeeBO.setStateId(stateId);
 		     
 		     Map<Long,CommitteeDataVO> committeeLevelMap = new LinkedHashMap<Long,CommitteeDataVO>(0);
 		     setCommitteeLevelstoMap(committeeLevelMap,committeeBO.getTdpCommitteeLevelIds(),basicCommitteeIds);
 		  
-		     List<Object[]> totalCommitteesList      =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO,null);
-		     List<Object[]> completedCommitteesList  =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO,"completed");
-		     List<Object[]> startedCommitteesList    =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO,"started");
-		     List<Object[]> notStartedCommitteesList =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO,"notStarted");
+		     List<Object[]> totalCommitteesList      =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO);
+		     
+		     committeeBO.setStatus("completed");
+		     List<Object[]> completedCommitteesList  =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO);
+		     
+		     committeeBO.setStatus("started");
+		     List<Object[]> startedCommitteesList    =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO);
+		     
+		     committeeBO.setStatus("notStarted");
+		     List<Object[]> notStartedCommitteesList =  tdpCommitteeDAO.levelWiseBasicCommitteesCount(committeeBO);
 		     
 		     setCountByLevelAndBasicCommittees(totalCommitteesList,committeeLevelMap,null);
 		     setCountByLevelAndBasicCommittees(completedCommitteesList,committeeLevelMap,"completed");
@@ -572,21 +575,62 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		  *  This Service Method is used to get CommitteesPerformance cohort details. 
 		  *  @since 10-AUGUST-2016
 		  */
-		public List<CommitteeDataVO> committeesPerformanceCohort(List<Long> tdpCommitteeLevelIdsClicked,List<Long> basicCommitteeIds,String committeeStatus,Long userLocationLevelId,List<Long> userLocationLevelValues,List<String> groupingLocationsList,String startDateString,String endDateString,String state){
+		public List<CommitteeDataVO> committeesPerformanceCohort(List<Long> tdpCommitteeLevelIdsClicked,List<Long> basicCommitteeIds,String committeeStatus,Long userLocationLevelId,List<Long> userLocationLevelValues,String dateString,String state){
 		    List<CommitteeDataVO> finalList = null;
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    try{
-		      
-		      List<Date> datesList = coreDashboardGenericService.getDates(startDateString,endDateString,new SimpleDateFormat("dd/MM/yyyy"));
 		      
 		      //CREATING BUSINESS OBJECT.
 		      CommitteeInputVO committeeBO = new CommitteeInputVO();
 		      committeeBO.setTdpCommitteeLevelIds(tdpCommitteeLevelIdsClicked);
 		      committeeBO.setBasicCommitteeIds(basicCommitteeIds);
+		      if(dateString != null && !dateString.isEmpty()){
+		         committeeBO.setDate(sdf.parse(dateString));
+		       }
 		      Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		      committeeBO.setStateId(stateId);
 		      setAppropriateLocationLevelInputsToBO(userLocationLevelId,committeeBO,userLocationLevelValues);
 		      
 		      Map<Long,CommitteeDataVO> finalMap = new LinkedHashMap<Long,CommitteeDataVO>();
+		      
+		      //finding grouping location.
+		      List<String> groupingLocationsList = new ArrayList<String>();
+		      if(userLocationLevelValues != null && userLocationLevelValues.size()>0){
+		    	  
+		    	  if(userLocationLevelValues.size()>1){
+		    		  
+		    		  String groupingLocationConsider = "self";
+		    		  if(userLocationLevelId == 2 ){//user_level table
+		    			  groupingLocationsList.add("State");
+					   }else if(userLocationLevelId == 3){
+						   groupingLocationsList.add("District");
+					   }else if(userLocationLevelId == 4){
+						   groupingLocationsList.add("Parliament");
+					   }else if(userLocationLevelId == 5){
+						   groupingLocationsList.add("Constituency");
+					   }else if(userLocationLevelId == 6){
+						   groupingLocationsList.add("Mandal");
+						   groupingLocationsList.add("LocalElectionbody");
+					   }
+		    		  
+		    	  }else if(userLocationLevelValues.size()==1){
+		    		  
+		    		  String groupingLocationConsider = "subLevel";
+	    			  if(userLocationLevelId == 2 ){//user_level table
+	    				  groupingLocationsList.add("District");
+					   }else if(userLocationLevelId == 3){
+						   groupingLocationsList.add("Constituency");
+					   }else if(userLocationLevelId == 4){
+						   groupingLocationsList.add("Constituency");
+					   }else if(userLocationLevelId == 5){
+						   groupingLocationsList.add("Mandal");
+						   groupingLocationsList.add("LocalElectionbody");
+					   }else if(userLocationLevelId == 6){
+						   groupingLocationsList.add("Village");
+						   groupingLocationsList.add("Ward");
+					   }
+		    	  }
+		      }
 		      
 		      if(groupingLocationsList != null && groupingLocationsList.size() > 0){
 		        for(String groupingLocation : groupingLocationsList){
@@ -1195,19 +1239,25 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			     committeeBO.setQueryString(coreDashboardGenericService.getCommittesRelatedLocationQuerypart(committeeBO));
 			     
 			     //get grouping locations.grouping location is direct single sublevel of the user location level.
+			     String returnLevelName="";
 			     List<String> groupingLocationsList = new ArrayList<String>();
 			     if(userLocationLevelId.longValue() == IConstants.COUNTRY_LEVEl_ACCESS_ID.longValue() || userLocationLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
 			    	 groupingLocationsList.add("District");
+			    	 returnLevelName = "Districts";
 				}else if(userLocationLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
 					groupingLocationsList.add("Constituency");
+					returnLevelName = "Constituencies";
 				}else if(userLocationLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
 					groupingLocationsList.add("Constituency");
+					returnLevelName = "Constituencies";
 				}else if(userLocationLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
 					groupingLocationsList.add("Mandal");
 					groupingLocationsList.add("LocalElectionbody");
+					returnLevelName = "Mandals/Muncipalitys/Divisions";
 			    }else if(userLocationLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
 			    	groupingLocationsList.add("Village");
 			    	groupingLocationsList.add("Ward");
+			    	returnLevelName = "Villages/Wards";
 				}
 			    
 			     Map<Long,CommitteeDataVO> finalMap = new LinkedHashMap<Long,CommitteeDataVO>();
@@ -1237,6 +1287,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			    	 }
 			    	 //sorting 
 			    	 Collections.sort(finalList,BasicCommitteesCompletedCountPercASC);
+			    	 finalList.get(0).setRequiredName(returnLevelName);
 			     }
 			     
 	 	  }catch(Exception e){

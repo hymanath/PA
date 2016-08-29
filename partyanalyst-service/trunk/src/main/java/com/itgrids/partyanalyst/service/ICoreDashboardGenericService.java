@@ -26,4 +26,5 @@ public interface ICoreDashboardGenericService {
 	public  Map<String,String>  getLocationNamesByLocationIds( Map<Long,Set<Long>> locationLevelIdsMap);
 	public List<Long> getRequiredTdpCommitteeLevelIdsByUserAccessLevelId(Long userLocationLevelId,List<Long> userLocationLevelValues);
 	public StringBuilder getCommittesRelatedLocationQuerypart(CommitteeInputVO committeeBO);
+	public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,CommitteeInputVO inputVO);
 }
