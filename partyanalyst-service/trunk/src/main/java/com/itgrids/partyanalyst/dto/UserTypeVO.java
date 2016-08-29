@@ -14,6 +14,7 @@ public class UserTypeVO implements Serializable{
 	
 	private Long   userId;
 	private Long   tdpCadreId;
+	private Long   parentActivityMemberId;
 	private Long   activityMemberId;
 	
 	private Long   userTypeId;
@@ -211,6 +212,11 @@ public class UserTypeVO implements Serializable{
 	public void setNotStartedPerc(Double notStartedPerc) {
 		this.notStartedPerc = notStartedPerc;
 	}
-	
+	public Long getParentActivityMemberId() {
+		return parentActivityMemberId;
+	}
+	public void setParentActivityMemberId(Long parentActivityMemberId) {
+		this.parentActivityMemberId = parentActivityMemberId;
+	}
 	
 }

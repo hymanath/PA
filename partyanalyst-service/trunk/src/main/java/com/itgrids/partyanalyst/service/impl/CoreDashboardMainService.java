@@ -310,7 +310,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		     activityMemberVO.setUserId(userId);
 		     activityMemberVO.setActivityMemberId(activityMemberId);
 		     activityMemberVO.setUserTypeId(userTypeId);
-		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocations(activityMemberVO);
+		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocationsNew(activityMemberVO);
 		     Map<Long,Map<Long,UserTypeVO>> userTypesMap = activityMemberVO.getUserTypesMap();
 		     Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
 	         
