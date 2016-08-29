@@ -154,7 +154,7 @@
                                 </div>
                                 <div id="userTypeWiseCommitteesForTopFiveStrongDiv"></div>
                                 <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>
-                            </div>
+						    </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
@@ -635,45 +635,321 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingBlock">
-        	<div class="panel panel-default panelNewCustom">
-            	<div class="panel-heading">
-                    <h4 class="panel-title">
-						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-						training
-                        <span class="trainingIconExpand pull-right">
-                            <i class="glyphicon glyphicon-fullscreen"></i>
-                        </span>
-                    </h4>
-                </div>
-                <div class="panel-body">
-                	<div class="row">
-                    	<div class="col-md-12 col-xs-12 col-sm-12">
-                        </div>
-                    	<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2">
-                        	<ul class="activeUlCls list-inline">
-                            	<li><span class="fa fa-long-arrow-up"></span>top 5 strong</li>
-                                <li><span class="fa fa-long-arrow-down"></span>last 5 poor</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- TRAINING PROGRAM BLOCK -->
+        <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingsBlock">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<h4 class="panel-title">training
+						<span class="trainingIconExpand pull-right">
+							<i class="glyphicon glyphicon-fullscreen"></i>
+						</span>
+					</h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock">
+							<div class="row">
+							 <div id="programsDtlsCntTableId"></div>
+								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top20">
+									 <div id="villageWardTblId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+									 <div id="mdlTwnDvsnTabId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+									 <div id="districtTblId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+									 <div id="stateTblDivId"></div>
+									<!--<hr class="m_0"/>"/>-->
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingsHiddenBlock">
+							   <div class="row">
+								  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+									<ul class="activeUlCls list-inline ">
+										<li class="liCls" attr_value="strong">top 5 strong</li>
+										<li class="liCls" attr_value="poor">last 5 poor</li>
+									</ul>
+								  </div>
+								</div>
+								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId"></div>
+                              </div>
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more"></i>
+						        </div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreTrainingBlocks">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<h4 class="text-capitalize text-muted">training programs</h4>
+									<ul class="trainingsUl">
+										<li>
+											<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
+										</li>
+										<li>
+											<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreTrainingBlocks">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-8 col-xs-12 col-sm-12">
+											<span class="headingColor text-capitalize">training program cohort</span>
+										</div>
+										<div class="col-md-4 col-xs-12 col-sm-12">
+											<ul class="activeUlCls list-inline">
+												<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
+												<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
+												<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div id="districtWiseProgramCntDivId"></div>
+										</div>
+										<!--<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="text-capitalize">Leadership SKills</h4>
+											<div id="leadershipSkillsDis" class="chartLi"></div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<h4 class="text-capitalize">official Spokes Person</h4>
+											<div id="officialSpokesPerDis" class="chartLi"></div>
+										</div>-->
+									</div>
+									<div class="row">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<div class="row">
+														<div class="col-xs-12 col-sm-7 col-md-8">
+														 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
+														</div>
+														<div class="col-xs-12 col-sm-5 col-md-4">
+															<ul class="list-inline">
+																<li>
+																	<div class="dropdown">
+																	  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+																		This Week <span class="text-muted">Sunday - Today</span>
+																		<span class="caret"></span>
+																	  </button>
+																	  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
+																		<li><a href="#">LifeTime</a></li>
+																		<li role="separator" class="divider"></li>
+																		<li><a href="#">This Week <span class="text-muted">Sunday - Today</span></a></li>
+																		<li><a href="#">Last Week <span class="text-muted lastWeekDate"></span></a></li>
+																		<li><a href="#">Last 7 Days <span class="text-muted last7Days"></span></a></li>
+																		<li><a href="#">First 7 Days <span class="text-muted first7Days"></span></a></li>
+																		<li role="separator" class="divider"></li>
+																		<li><a href="#">This Month <span class="text-muted thisMonth"></span></a></li>
+																		<li><a href="#">Last Month <span class="text-muted lastMonth"></span></a></li>
+																		<li><a href="#">Last 28 Days <span class="text-muted last28Days"></span></a></li>
+																		<li><a href="#">Last 30 Days <span class="text-muted last30Days"></span></a></li>
+																		<li><a href="#">First 28 Days<span class="text-muted first28Days"></span></a></li>
+																		<li role="separator" class="divider"></li>
+																		<li><a href="#">This Quarter <span class="text-muted thisQuarter"></span></a></li>
+																		<li><a href="#">Last Quarter <span class="text-muted lastQuarter"></span></a></li>
+																		<li><a href="#">Last 90 Days <span class="text-muted Last90Days"></span></a></li>
+																		<li><a href="#">First 90 Days <span class="text-muted first90Days"></span></a></li>
+																		<li role="separator" class="divider"></li>
+																		<li><a href="#">This Year<span class="text-muted thisYear"></span></a></li>
+																		<li><a href="#">Last Year <span class="text-muted lastYear"></span></a></li>
+																		<li><a href="#">Last 365 Days <span class="text-muted last365Days"></span></a></li>
+																		<li><a href="#">First 365 Days <span class="text-muted first365Days"></span></a></li>
+																		<li role="separator" class="divider"></li>
+																		<li><a href="#">Custom Range <span class="customRange"></span></a></li>
+																	  </ul>
+																	</div>
+																</li>
+																<li>
+																	<i class="glyphicon glyphicon-calendar calendarIcon"></i>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="panel-body">
+													<div class="row">
+														<div class="col-md-12 col-xs-12 col-sm-12">
+														 <div id="childActivityMemberDivId"> </div>
+														</div>
+														<div class="col-md-12 col-xs-12 col-sm-12">
+															<div class="bg_ED pad_15 arrow_top">
+															 <div id="userTypeWiseChildDtlsTabId"></div>
+																<div class="row">
+																	<div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+																		<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>
+																		<div class="row m_top20">
+																			<div class="col-md-6 col-xs-12 col-sm-6">
+																				<p class="text-capital">districts</p>
+																				<table class="table tableCumulative">
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
+																						<td>Kurnool</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.8)">1</span></td>
+																						<td>Chittoor</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.6)">1</span></td>
+																						<td>Kadapa</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.4)">1</span></td>
+																						<td>Ananthapur</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.2)">1</span></td>
+																						<td>Guntur</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																				</table>
+																			</div>
+																			<div class="col-md-6 col-xs-12 col-sm-6">
+																				<p class="text-capital">Constituencies</p>
+																				<table class="table tableCumulative">
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
+																						<td>ichapuram</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.8)">1</span></td>
+																						<td>Salur</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.6)">1</span></td>
+																						<td>Srikakulam</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.4)">1</span></td>
+																						<td>madugula</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																					<tr>
+																						<td><span class="count" style="background-color:rgba(237, 29, 38,.2)">1</span></td>
+																						<td>tuni</td>
+																						<td>
+																							<div class="progress progressCustom">
+																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+																								<span class="sr-only">60% Complete</span>
+																							  </div>
+																							</div>
+																						</td>
+																						<td class="text-danger">50</td>
+																					</tr>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
 	</div>
 </div>
-
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
-
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/KChart.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="js/KChart.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	
@@ -704,6 +980,10 @@
 	function onLoadCalls(){
 		getCommitteesBasicCountReport();
 		getLoggedInUserStructure();
+		//training program call
+		getTrainingCampBasicDetailsCntOverview();
+		
+		
 	}
 	
 	$(document).on("click",".userStructureClass",function(){

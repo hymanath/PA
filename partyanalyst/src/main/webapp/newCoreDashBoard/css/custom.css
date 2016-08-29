@@ -454,7 +454,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 .squaredOne label:after {
   font-family: 'Glyphicons Halflings';
   content:'\e013';
-  /*content:'✓';*/
+  /*content:'';*/
   width: 16px;
   height: 16px;
   position: absolute;
@@ -783,7 +783,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	color:#c286bc
 }
-.committeesHiddenBlock , .moreBlocks , .moreBlocksIcon
+.committeesHiddenBlock , .moreBlocks , .moreBlocksIcon , .trainingsHiddenBlock , .moreTrainingBlocksIcon , .moreTrainingBlocks
 {
 	display:none;
 }
@@ -903,15 +903,19 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	margin-left:10px;
 	border:0px !important;
 }
-.villageWardUl
+.villageWardUl , .trainingsUl
 {
 	padding:10px;
 	margin:0px;
 }
-.villageWardUl li
+.villageWardUl li , .trainingsUl li
 {
 	list-style:none;
-	border-right:1px solid #ddd;
+	border-right:1px solid #ddd;	
+}
+.trainingsUl li
+{
+	display:inline-block;
 }
 .chartLi
 {
@@ -925,7 +929,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	width:100%;
 	margin:auto;
 }
-.moreBlocksIcon
+.moreBlocksIcon , .moreTrainingBlocksIcon
 {
 	font-size:22px;
 	cursor:pointer;
@@ -1094,7 +1098,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-bottom-left-radius:4px;
 	border-bottom-right-radius:4px;
 }
-.slickPanelSlider li
+.slickPanelSlider li , .slickPanelSliderTraining li
 {
 	margin:0px 5px;
 }
@@ -1283,4 +1287,17 @@ margin-top:20px;
 	border:1px solid #999999;
 	border-left:0px;
 	background-color:#FFF
+}
+
+.font-10
+{
+	font-size:10px;
+}
+.m_0
+{
+	margin:0px;
+}
+.tableTraining tr td
+{
+	border-top:0px !important;
 }

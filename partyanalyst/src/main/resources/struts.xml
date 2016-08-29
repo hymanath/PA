@@ -13427,7 +13427,7 @@
    			<param name="root">nominatedPostMemberVOs</param>          
    		</result> 
    	</action>
-   		<action name="getChildUserTypesByItsParentUserTypeAction" class="coreDashboardAction" method="getChildUserTypesByItsParentUserType">
+   	<action name="getChildUserTypesByItsParentUserTypeAction" class="coreDashboardAction" method="getChildUserTypesByItsParentUserType">
 		<result type="json" name="success">
    			<param name="root">userDataVOList</param>          
    		</result> 
@@ -13438,7 +13438,6 @@
    			<param name="root">committeeDataVOList</param>          
    		</result> 
    	</action>
-   	
    	<action name="getSelectedChildUserTypeMembersAction" class="coreDashboardAction" method="getSelectedChildUserTypeMembers">
 		<result type="json" name="success">
    			<param name="root">activityMembersList</param>          
@@ -13454,10 +13453,38 @@
    			<param name="root">committeeDataVO</param>          
    		</result> 
    	</action>
-   	<action name="getTopPoorCommitteeLocationsAction" class="coreDashboardAction" method="getTopPoorCommitteeLocations">
+   	   <action name="getTopPoorCommitteeLocationsAction" class="coreDashboardAction" method="getTopPoorCommitteeLocations">
 		<result type="json" name="success">
    			<param name="root">committeeDataVOList</param>          
    		</result> 
    	</action>
+   	
+	<action name="getTrainingCampBasicDetailsCntOverviewAction" class="coreDashboardAction" method="getTrainingCampBasicDetailsCntOverview">
+		<result type="json" name="success">
+   			<param name="root">trainingCampProgramVO</param>
+   		</result>
+	</action>
+	<action name="getTrainingCampProgramsDetailsCntByDistrictAction" class="coreDashboardAction" method="getTrainingCampProgramsDetailsCntByDistrict">
+		<result type="json" name="success">
+   			<param name="root">trainingCampProgramVOList</param>
+   		</result>
+	</action>
+	<action name="getUserTypeWiseTotalEligibleAndAttendedCntAction" class="coreDashboardAction" method="getUserTypeWiseTotalEligibleAndAttendedCnt">
+		<result type="json" name="success">
+   			<param name="root">userTypeVOList</param>
+   		</result>
+	</action>
+		<action name="getSelectedChildTypeMembersForTrainingProgramAction" class="coreDashboardAction" method="getSelectedChildTypeMembersForTrainingProgram">
+		<result type="json" name="success">
+   			<param name="root">activityMembersList</param>
+   		</result>
+	</action>
+		<action name="getDirectChildActivityTrainingProgramMemberDetailsAction" class="coreDashboardAction" method="getDirectChildActivityTrainingProgramMemberDetails">
+		<result type="json" name="success">
+   			<param name="root">activityMembersList</param>
+   		</result>
+	</action>
+	
+	
 </package>
 </struts>

@@ -3194,7 +3194,10 @@
 	<bean id="dashboardCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.DashboardCommentDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="tdpCadreHealthReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHealthReportDAO" >
+	<bean id="trainingCampEligbleDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampEligbleDesignationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="tdpCadreHealthReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHealthReportDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>		
