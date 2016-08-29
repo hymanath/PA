@@ -1775,21 +1775,17 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		  if(reportType != null && reportType.equalsIgnoreCase("directChild")){
 			  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
 		  }
-		    
-		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
-			    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
-					  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-						List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
-						   if(returnObjList != null && returnObjList.size() > 0){
-							   for (Object[] param : returnObjList) {
-								String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
-								elibibleMemberCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
-							}
-						   }
-					   }  
-				}  
-		  }
-		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+	 	    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+				  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+					List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+					   if(returnObjList != null && returnObjList.size() > 0){
+						   for (Object[] param : returnObjList) {
+							String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
+							elibibleMemberCntMap.put(locationLevelAndId, param[1] != null ? (Long)param[1]:0l);
+						}
+					   }
+				   }  
+			}  
 			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
 					List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
@@ -1801,9 +1797,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 					   }
 				   }  
 			  } 
-		  }
 		  //Pushing Eligible Count
-		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 			  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 			      for(UserTypeVO vo:childActivityMembersMap.values()){
 			    	  for(Long locationValueId:vo.getLocationValuesSet()){
@@ -1814,10 +1808,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			    	  }
 			      }
 		    }    
-		  }
 		  //Pushing Attended Count
-		  if(childActivityMembersMap != null && childActivityMembersMap.size() >0){
-			  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 			      for(UserTypeVO vo:childActivityMembersMap.values()){
 			    	   for(Long locationValueId:vo.getLocationValuesSet()){
 			    			 String key = vo.getLocationLevelId()+"-"+locationValueId;   
@@ -1827,10 +1819,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			    	   }
 			      }
 		   }  
-		  }
 		  //Setting Location name
 		  if(reportType != null && reportType.equalsIgnoreCase("directChild")){
-			  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				      for(UserTypeVO vo:childActivityMembersMap.values()){
 				    	  for(Long locationValueId:vo.getLocationValuesSet()){
@@ -1844,7 +1834,6 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				      }
 			    }    
 			  }
-		  }
 		  //Calculating percentage
 		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 			      for(UserTypeVO vo:childActivityMembersMap.values()){
