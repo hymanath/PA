@@ -408,7 +408,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String startDateString = jObj.getString("startDateString");
 			String endDateString = jObj.getString("endDateString");
 			
-			committeeDataVO = coreDashboardService1.getCommitteesBasicCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			committeeDataVO = coreDashboardMainService.getCommitteesBasicCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteesBasicCountReport() method of CoreDashBoard", e);
@@ -443,7 +443,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String startDateString = jObj.getString("startDateString");
 			String endDateString = jObj.getString("endDateString");
 			
-			CommitteeDataVOList = coreDashboardService1.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
+			CommitteeDataVOList = coreDashboardMainService.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,startDateString,endDateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseBasicCommitteesCountReport() method of CoreDashBoard", e);
@@ -574,7 +574,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			String endDateString = jObj.getString("endDateString");
 			String state = jObj.getString("state");
 			
-			CommitteeDataVOList = coreDashboardService1.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,basicCommitteeIds,committeeStatus,userLocationLevelId,userLocationLevelValues,groupingLocationsList,startDateString,endDateString,state);
+			CommitteeDataVOList = coreDashboardMainService.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,basicCommitteeIds,committeeStatus,userLocationLevelId,userLocationLevelValues,groupingLocationsList,startDateString,endDateString,state);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at committeesPerformanceCohort() method of CoreDashBoard", e);
