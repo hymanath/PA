@@ -105,7 +105,7 @@
 	}
 	function getLevelWiseBasicCommitteesCountReport(){
 		
-		$("#levelWiseBasicCommittees").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
+		$("#levelWiseBasicCommittees").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
 		var state ='AP';
 		var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -225,7 +225,7 @@
 	
 	
 	function getSelectedChildUserTypeMembers(childUserTypeId){
-	$("#SelectedUserTypeDetailsDiv").html('<div ><center ><img  src="images/icons/loading.gif" id="commulativeEnlargeLoadingId"></center></div>');
+	$("#SelectedUserTypeDetailsDiv").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
      var parentActivityMemberId = globalActivityMemberId;
 	 var childUserTypeId = childUserTypeId;
 	 var date = $("#dateRangeId").val();
@@ -1092,7 +1092,8 @@
 	
 	
 	$(document).on("click",".compareActivityMemberCls",function(){
-		
+		$(".slickPanelSlider").find("li").removeClass("active")
+		$(this).addClass("active")
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
@@ -1166,7 +1167,13 @@
 				str+='<span class="removeSelecUserType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 			}
 			
-				str+='<table class="table table-condensed tableHoverLevels m_top20">';
+				if(childActivityMemberId != "directChildActivityMemberDiv")
+				{
+					str+='<table class="table table-condensed tableLevels m_top20">';
+				}else{
+					str+='<table class="table table-condensed tableHoverLevels m_top20">';
+				}
+				
 					str+='<thead class="bg_D8 text-capital">';
 						str+='<th>% Rank</th>';
 						str+='<th>Designation</th>';
@@ -1268,9 +1275,11 @@
 			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
 			str+='<table class="table tableCumulative">';
+			var number =0;
 				for(var i in result.subList1){
 					str+='<tr>';
-					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>';
+					number = number+1;
+					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+number+'</span></td>';
 					str+='<td>'+result.subList1[i].name+'</td>';
 					str+='<td>';
 						str+='<div class="progress progressCustom">';
@@ -1300,10 +1309,12 @@
 						locationLevelNameArray.push(properName);
 						str+='<p class="text-capital"><b>'+properName+'</b></p>';
 					}
+					var number =0;
 				str+='<table class="table tableCumulative">';
 					for(var j in result.subList[i].subList){
 						str+='<tr>';
-						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>';
+						number = number+1;
+						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+number+'</span></td>';
 						str+='<td>'+result.subList[i].subList[j].name+'</td>';
 						str+='<td>';
 						if(result.subList[i].subList[j].completedCount !=null && result.subList[i].subList[j].completedCount >0){
