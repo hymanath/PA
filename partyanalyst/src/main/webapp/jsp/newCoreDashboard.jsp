@@ -547,13 +547,13 @@
 								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
 									 <div id="mdlTwnDvsnTabId"></div>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+								<!--<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
 									 <div id="districtTblId"></div>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
 									 <div id="stateTblDivId"></div>
-									<!--<hr class="m_0"/>"/>-->
-								</div>
+									<!--<hr class="m_0"/>"/>
+								</div>-->
 							</div>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingsHiddenBlock">
@@ -575,14 +575,16 @@
 							<div class="panel panel-default">
 								<div class="panel-body">
 									<h4 class="text-capitalize text-muted">training programs</h4>
-									<ul class="trainingsUl">
+									<br>
+									<div id="programsDivId"></div>
+									<!--<ul class="trainingsUl">
 										<li>
 											<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
 										</li>
 										<li>
 											<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
 										</li>
-									</ul>
+									</ul>-->
 								</div>
 							</div>
 						</div>
@@ -676,12 +678,13 @@
 															<div class="bg_ED pad_15 m_top20">
 															 <div id="userTypeWiseChildDtlsTabId"></div>
 																<div class="row">
-																	<div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+																	<div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
 																		<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>
 																		<div class="row m_top20">
-																			<div class="col-md-6 col-xs-12 col-sm-6">
+																		  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
+																			<!--<div class="col-md-6 col-xs-12 col-sm-6">
 																				<p class="text-capital">districts</p>
-																				<table class="table tableCumulative">
+																				<!--<table class="table tableCumulative">
 																					<tr>
 																						<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
 																						<td>Kurnool</td>
@@ -743,8 +746,8 @@
 																						<td class="text-danger">50</td>
 																					</tr>
 																				</table>
-																			</div>
-																			<div class="col-md-6 col-xs-12 col-sm-6">
+																			</div>-->
+																			<!--<div class="col-md-6 col-xs-12 col-sm-6">
 																				<p class="text-capital">Constituencies</p>
 																				<table class="table tableCumulative">
 																					<tr>
@@ -808,7 +811,7 @@
 																						<td class="text-danger">50</td>
 																					</tr>
 																				</table>
-																			</div>
+																			</div>-->
 																		</div>
 																	</div>
 																</div>
@@ -872,8 +875,6 @@
 		getCommitteesBasicCountReport();
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
-		
-		
 	}
 	
 	$(document).on("click",".userStructureClass",function(){

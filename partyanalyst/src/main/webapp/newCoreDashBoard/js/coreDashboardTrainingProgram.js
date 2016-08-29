@@ -1,5 +1,5 @@
 //Training Program
-
+var globalTrainingProgramsRslt;
 var getDocumentWidth = $(document).width();
 
 	function getTrainingCampBasicDetailsCntOverview()
@@ -30,6 +30,7 @@ var getDocumentWidth = $(document).width();
   function buildTrainingProgramBasicDetails(result){
 	  var str='';
 	  var programList = result.trainingProgramList;
+	  globalTrainingProgramsRslt=result.trainingProgramList;
 	if(programList != null && programList.length > 0){
 		  for(var i in programList){
 	       str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">';
@@ -107,7 +108,7 @@ var getDocumentWidth = $(document).width();
 	 str2+='NO DATA AVAILABLE';	
 	}
     $("#mdlTwnDvsnTabId").html(str2);  
-	var str3='';
+	/* var str3='';
 	var districtRslt = result.districtVO;
 	str3+='<h4 class="text-capitalize m_top20">District</h4>';
 	if(districtRslt != null){
@@ -154,7 +155,7 @@ var getDocumentWidth = $(document).width();
 	}else{
 	 str4+='NO DATA AVAILABLE';	
 	}
-	$("#stateTblDivId").html(str4);  
+	$("#stateTblDivId").html(str4);   */
   }
   var globalTrainingProgramDtlsRslt;
  function getTrainingCampProgramsDetailsCntByDistrict(){
@@ -180,6 +181,7 @@ var getDocumentWidth = $(document).width();
 			}
 		});
 	}
+
  function buildLocationWiseTrainingProgramDetails(result){
 	
  var str='';	
@@ -493,8 +495,10 @@ $(document).on("click",".moreTrainingBlocksIcon",function(){
 	$(".moreTrainingBlocks").toggle();
 	setTimeout(function(){
 		moreTrainingBlocks();
+		buildTrainingProgramRslt(globalTrainingProgramsRslt);
 		getChildUserTypesByItsParentUserTypeForTrainingProgram();
 		getTrainingCampProgramsDetailsCntByDistrict();
+		getTrainingProgramPoorCompletedLocationDtls();
 	},600);
 	var moreBlocksWidth = $(".trainingsUl").width();
 	var getEachLiWidth;
@@ -575,7 +579,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	  str+='<ul class="list-inline slickPanelSliderTraining">';
 	  var rank=1; 
 	   for(var i in result){
-	str+='<li style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
+	str+='<li style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
 		  str+='<div class="panel panel-default panelSlick">';
 		  str+='<div class="panel-heading">';
 			 str+='<h4 class="panel-title">'+result[i].name+'</h4>';
@@ -586,10 +590,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='<table class="table table-condensed">';
 				 str+='<thead>';
 					 str+='<th>Eligible</th>';
-					 str+='<th>Attended</th>';
-					 str+='<th></th>';
-					 str+='<th>yet to train</th>';
-					 str+='<th></th>';
+					 str+='<th colspan="2">Attended</th>';
+				    str+='<th colspan="2">Yet to train</th>';
 				 str+='</thead>';
 				 str+='<tr>';
 					 str+='<td>'+result[i].totalEligibleCount+'</td>';
@@ -657,7 +659,7 @@ $(document).on("click",".activityMemberCls",function(){
     	var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype"); 	
 		var childActivityMemberId = $(this).attr("attr_id");  
-		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,"");
 });
 $(document).on("click",".remveSlcUsrType",function(){
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
@@ -670,9 +672,9 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
-		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,"subLevel");
 });
-  function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
+  function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,types){
 	  $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
 	  var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
@@ -686,13 +688,13 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		}).done(function(result){
 		  $("#"+childActivityMemberId).html('');
 		  if(result != null && result.length > 0){
-			  buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId);
+			  buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,types);
 		  }else{
 			  $("#"+childActivityMemberId).html('NO DATA AVAILABLE');  
 		  }
 		});
 	}
-	function buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
+	function buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,types){
 		var str='';
 		str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
@@ -716,7 +718,11 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
-			str+='<td>'+result[i].locationLevelName+'</td>';
+			if(types != null && types=="subLevel"){
+			str+='<td>'+result[i].userType+' (<b>'+result[i].locationName+'</b>)</td>';
+			}else{
+			  str+='<td>'+result[i].userType+'</td>';
+			}
 			str+='<td>'+result[i].name+'</td>';
 			str+='<td>'+result[i].totalEligibleCount+'</td>';
 			str+='<td>'+result[i].totalAttenedCount+'</td>';
@@ -734,6 +740,181 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 	$("#"+childActivityMemberId).html(str);
 	}
 /* more training blocks start*/
+function buildTrainingProgramRslt(globalTrainingProgramsRslt){
+	var str='';
+	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
+		str+='<h4 class="text-capitalize text-muted">'+globalTrainingProgramsRslt[0].name+'</h4>';
+		str+'<ul class="trainingsUl">';
+		  for(var i in globalTrainingProgramsRslt){
+			  str+='<li>';
+			  str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
+			  str+='</li>';
+		  }
+		str+='</ul>';
+	}
+	$("#programsDivId").html(str);
+	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
+		  for(var i in globalTrainingProgramsRslt){
+			var  jsonDataArr=[];
+			jsonDataArr.push({name:"Total Eligible",data:[globalTrainingProgramsRslt[i].totalEligibleCountPer]});
+			jsonDataArr.push({name:"Attended",data:[globalTrainingProgramsRslt[i].totalAttenedCountPer]});
+			jsonDataArr.push({name:"Yet to train",data:[globalTrainingProgramsRslt[i].totalNotAttenedCountPer]});
+		var chartWidth = $("#programHighChartId"+i).parent().width()/2;
+		$("#programHighChartId"+i).width(chartWidth);
+		$(function () {
+		  $('#programHighChartId'+i).highcharts({
+			colors: ['#F56800','#53BF8B','#66728C'],
+			chart: {
+			  type: 'column',
+			  
+			},
+			title: {
+			  text: null,
+			  style: {
+				  fontSize: '16px',
+				  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+				  textTransform: "uppercase"
+				  
+			  }
+			},
+			subtitle: {
+			  text: null
+			},
+			 xAxis: {
+			   min: 0,
+			  gridLineWidth: 0,
+			  minorGridLineWidth: 0,
+			  labels: {
+				enabled: false,
+			  }
+			},
+			yAxis: {
+			  min: 0,
+			  gridLineWidth: 0,
+			  minorGridLineWidth: 0,
+			  title: {
+				text: ''
+			  },
+			  labels: {
+				enabled: false,
+			  },
+			  stackLabels: {
+				enabled: true,
+				style: {
+				  fontWeight: 'bold',
+				  color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+				}
+			  }
+			},
+			tooltip: {
+			  pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
+			  shared: true
+			},
+			legend: {
+			  enabled: true,
+			  align: 'left'
+		  
+			},
+			plotOptions: {
+			  column: {
+				stacking: 'percent',
+				dataLabels:{
+				  enabled: true,
+				  formatter: function () {
+					if (this.y > 0){ return this.y + '%';}
+					else {return '';}
+				  }
+				}
+			  }
+			},
+			 series:jsonDataArr
+		  });
+		});  
+	   }
+	}
+}
+	 function getTrainingProgramPoorCompletedLocationDtls(){
+	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+		var jsObj ={ 
+		             userAccessLevelId : globalUserAccessLevelId,
+					 userAccessLevelValuesArray : globalUserAccessLevelValues
+				  }
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getTrainingProgramPoorCompletedLocationDtlsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   $("#poorPerformancTrainingPrograLocationsDivId").html('');
+	       if(result != null){
+			   buildTrainingProgramPoorPerformanceLocationRslt(result);
+		   }
+		});
+	}
+	function buildTrainingProgramPoorPerformanceLocationRslt(result){
+	var districtList = result.districtList;
+    var str='';
+	  str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+	  str+='<p class="text-capital">districts</p>';
+      str+='<table class="table tableCumulative">';
+      if(districtList != null && districtList.length > 0){
+		  var order=1;
+		  for(var i in districtList){
+			str+='<tr>';
+			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+order+'</span></td>';
+			str+='<td>'+districtList[i].name+'</td>';
+			str+='<td>';
+				str+='<div class="progress progressCustom">';
+			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+districtList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">';
+					str+='<span class="sr-only">'+districtList[i].totalAttenedCountPer+'</span>';
+				  str+='</div>';
+				str+='</div>';
+			str+='</td>';
+			str+='<td class="text-danger">'+districtList[i].totalAttenedCountPer+'</td>';
+			str+='</tr>';
+			order=order+1;
+			if(order==5)
+				break;
+			}
+			str+='</table>';
+	  }	  
+	  str+='</div>';
+		
+	var constituencyList = result.constituencyList;	
+	  str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+	  str+='<p class="text-capital">Constituencies</p>';
+      str+='<table class="table tableCumulative">';
+      if(constituencyList != null && constituencyList.length > 0){
+		  var order=1;
+		  for(var i in constituencyList){
+			str+='<tr>';
+			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+order+'</span></td>';
+			str+='<td>'+constituencyList[i].name+'</td>';
+			str+='<td>';
+				str+='<div class="progress progressCustom">';
+			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+constituencyList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">';
+			str+='<span class="sr-only">'+constituencyList[i].totalAttenedCountPer+'</span>';
+			str+='</div>';
+			str+='</div>';
+			str+='</td>';
+			str+='<td class="text-danger">'+constituencyList[i].totalAttenedCountPer+'</td>';
+			str+='</tr>';
+			order=order+1;
+			if(order==5)
+				break;
+			}
+				str+='</table>';
+			}
+	     str+='</div>';
+																				
+	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
+	}
+	
+	
+	
+	
+	
 function moreTrainingBlocks()
 	{
 		var chartWidth = $("#leadershipSkills").parent().width();
@@ -806,7 +987,7 @@ function moreTrainingBlocks()
 			},
 			 series: [{
 			  name: 'Total',
-			  data: [10,20,30,40]
+			  data: [10]
 			}, {
 			  name: 'Attended',
 			  data: [10,20,30,40]

@@ -13484,6 +13484,11 @@
    			<param name="root">activityMembersList</param>
    		</result>
 	</action>
+	<action name="getTrainingProgramPoorCompletedLocationDtlsAction" class="coreDashboardAction" method="getTrainingProgramPoorCompletedLocationDtls">
+		<result type="json" name="success">
+   			<param name="root">trainingCampProgramVO</param>
+   		</result>
+	</action>
 	
 	
 </package>
