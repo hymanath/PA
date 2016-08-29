@@ -13358,7 +13358,7 @@
 	</action>
 	<action name="getDistrictWiseCommitteesCountReportAction" class="coreDashboardAction" method="getDistrictWiseCommitteesCountReport">
 		<result type="json" name="success">
-   			<param name="root">CommitteeDataVOList</param>
+   			<param name="root">committeeDataVOList</param>
    		</result>
 	</action>
 	<action name="getCommitteesBasicCountReportAction" class="coreDashboardAction" method="getCommitteesBasicCountReport">
@@ -13368,7 +13368,7 @@
 	</action>
 	<action name="getLevelWiseBasicCommitteesCountReportAction" class="coreDashboardAction" method="getLevelWiseBasicCommitteesCountReport">
 		<result type="json" name="success">
-   			<param name="root">CommitteeDataVOList</param>
+   			<param name="root">committeeDataVOList</param>
    		</result>
 	</action>
 	<action name="getUserTypeWiseCommitteesCompletedCountsAction" class="coreDashboardAction" method="getUserTypeWiseCommitteesCompletedCounts">
@@ -13435,7 +13435,7 @@
    	
    	<action name="committeesPerformanceCohortAction" class="coreDashboardAction" method="committeesPerformanceCohort">
 		<result type="json" name="success">
-   			<param name="root">CommitteeDataVOList</param>          
+   			<param name="root">committeeDataVOList</param>          
    		</result> 
    	</action>
    	
@@ -13452,6 +13452,11 @@
    	<action name="getTopPoorPerformancecommitteesAction" class="coreDashboardAction" method="getTopPoorPerformancecommittees">
 		<result type="json" name="success">
    			<param name="root">committeeDataVO</param>          
+   		</result> 
+   	</action>
+   	<action name="getTopPoorCommitteeLocationsAction" class="coreDashboardAction" method="getTopPoorCommitteeLocations">
+		<result type="json" name="success">
+   			<param name="root">committeeDataVOList</param>          
    		</result> 
    	</action>
 </package>

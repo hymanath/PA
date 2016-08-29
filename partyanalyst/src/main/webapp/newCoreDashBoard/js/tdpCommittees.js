@@ -1103,6 +1103,7 @@
 		
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		getTopPoorCommitteeLocations(activityMemberId);
 	})
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
@@ -1154,6 +1155,32 @@
 			 $("#topPoorPerformanceDiv").html('');
 			buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
 			
+		});
+	}
+	function getTopPoorCommitteeLocations(activityMemberId){
+	   //$("#topPoorPerformanceDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+	   var state ='AP';
+	   var basicCommitteeIdsArray= [];
+       basicCommitteeIdsArray.push(1);
+       basicCommitteeIdsArray.push(2);
+       basicCommitteeIdsArray.push(3);
+	   var dateString = $('#dateRangeId').val();
+	   
+	   var jsObj ={  activityMemberId : activityMemberId,
+					 state:state,
+					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+ 			         dateString :   dateString
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getTopPoorCommitteeLocationsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 //$("#topPoorPerformanceDiv").html('');
+			//buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
+			alert("success");
 		});
 	}
 	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
@@ -1256,6 +1283,7 @@
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		getTopPoorCommitteeLocations(activityMemberId);
 	})
 	
 	$(document).on("click",".removeSelecUserType",function(){
