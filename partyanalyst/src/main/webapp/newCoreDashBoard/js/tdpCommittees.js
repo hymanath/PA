@@ -258,7 +258,6 @@
 		$("#basicCommitteeCountsDiv").html('');
 		var str='';
 		var locationLevelNameArray =[];
-		str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 committeesBlock">';
 				str+='<ul class="committesBlockUl">';
 					str+='<li>';
 						str+='<h4 class="text-capital bg_49 pad_custom">main committees</h4>';
@@ -392,8 +391,7 @@
 					}
 					
 				str+='</ul>';
-        str+='</div>';
-		
+       
 		$("#basicCommitteeCountsDiv").html(str);
 	}
 	

@@ -32,11 +32,20 @@
 	
 	$(document).on("click",".iconExpand",function(){
 		$(".dateRangePickerCls").toggleClass("hide");
+		
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".basicCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".userTypeCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".committeesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".basicCommitteesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".userTypeCommitteesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".showDatePicker").toggle();
+		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".moreBlocks").hide();
+			
+		}
 		setTimeout(function(){
 			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
 			//initialiseGraph();
