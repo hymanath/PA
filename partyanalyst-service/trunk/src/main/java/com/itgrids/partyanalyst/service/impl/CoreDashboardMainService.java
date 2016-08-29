@@ -339,7 +339,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		   }
 		   
 		}catch(Exception e){
-			e.printStackTrace();
+			LOG.error("exception occurred in getUserTypeWiseCommitteesCompletedCounts1()", e);
 		}
 	    return userTypesList;
 	}
@@ -472,7 +472,6 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		  
 		}catch(Exception e){
 			LOG.error("exception occurred in getCommitteesCumulativeOverallReportCharts()", e);
-			e.printStackTrace();
 		}
 		return finalList;
 	}
@@ -680,7 +679,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		        }
 		      
 		    }catch(Exception e){
-		      e.printStackTrace();
+		    	LOG.error("exception occurred in committeesPerformanceCohort()", e);
 		    }
 		    return finalList;
 }
@@ -802,9 +801,11 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     activityMembersList = setCommitteeCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap,null);
 		     if(activityMembersList!=null && activityMembersList.size()>0){
 		    	 setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
+		    	 //sorting in descending order of completed percantages.
+		    	 Collections.sort(activityMembersList,ActivityMemberCompletedCountPercDesc);
 		     }
 	   }catch(Exception e){
-		 e.printStackTrace();
+		   LOG.error("exception occurred in getSelectedChildUserTypeMembers()", e);
 	   }
 	   return activityMembersList;
    }
@@ -955,9 +956,12 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     if(activityMembersList!=null && activityMembersList.size()>0){
 		    	 //calculating percantage.
 		    	  setCommitteeCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
+		    	  
+		    	//sorting in descending order of completed percantages.
+			      Collections.sort(activityMembersList,ActivityMemberCompletedCountPercDesc);
 		     }
 	   }catch(Exception e){
-		 e.printStackTrace();
+		   LOG.error("exception occurred in getDirectChildActivityMemberCommitteeDetails()", e);
 	   }
 	   return activityMembersList;
   }
@@ -1129,7 +1133,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			 
 			 
 	} catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("exception occurred in getTopPoorPerformancecommittees()", e);
 	}
 	   return finalVO;
   }
@@ -1174,7 +1178,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     }
 		   
 	   }catch(Exception e){
-		 e.printStackTrace();
+		   LOG.error("exception occurred in setLevelWiseBasicCommitteesCounts()", e);
 	   }
  	}
 	
@@ -1291,7 +1295,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			     }
 			     
 	 	  }catch(Exception e){
-			e.printStackTrace();
+	 		 LOG.error("exception occurred in getTopPoorCommitteeLocations()", e);
 		  }
 		   return finalList;
 	   }
