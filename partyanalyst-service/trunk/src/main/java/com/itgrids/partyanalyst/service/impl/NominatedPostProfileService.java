@@ -4101,14 +4101,14 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	  		 LOG.debug(" in FolderForNotCadre ");
 	  		
 	  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
-			 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"/"+IConstants.NOT_CADRE_IMAGES);
+			 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"/images/"+IConstants.NOT_CADRE_IMAGES);
 			 
 			 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
 			 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
-			 return staticPath+"/"+IConstants.NOT_CADRE_IMAGES;
+			 return staticPath+"/images/"+IConstants.NOT_CADRE_IMAGES;
 			 
 		} catch (Exception e) {
 			LOG.error(" Failed to Create");
