@@ -269,7 +269,7 @@
 	                </div>
 	               
 				<div class="row ramakrishnaCls" style="display:none;" id="">
-					<div id="appliedPostForSelectedId" style="min-height:240px" class="hideDivCls"></div>
+					<div id="appliedPostForSelectedId" style="min-height:240px;display:none;" class="hideDivCls"></div>
 					
                     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20 hideDivCls">
                     	<div class="panel panel-default panelNewDepartments">

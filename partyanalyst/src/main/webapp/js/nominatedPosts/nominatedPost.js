@@ -254,8 +254,8 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatedDistId"+num).empty();
 	   }
 	   
-	   $("#searchDataImgForDist").hide();
-	     $("#districtId").append('<option value="-1">Please Select District</option>');
+		$("#searchDataImgForDist").hide();
+	     //$("#districtId").append('<option value="-1">Please Select District</option>');
      for(var i in result){
 		 if(id == "statesDivId"){
 			   if(result[i].id == 0){
@@ -381,7 +381,7 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatdConstId"+num).empty();
 	   }
 	   $("#searchDataImgForConst").hide();
-	    $("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
+	    //$("#constituencyId").append('<option value="-1">Please Select Constituency</option>');
      for(var i in result){
 		 if(id == "districtId"){
 		   if(result[i].id == 0){
@@ -668,6 +668,7 @@ function getNominatedPostApplication(startIndex)
 		var mandalId = $("#mandalList").val();
 		var constituencyId = $("#constituencyId").val();
 		var districtId = $("#districtId").val();
+		var stateId = $("#statesDivId").val();
 		if(searchRadioType ==1)
 				searchRadioType ="membershipId";
 		else if(searchRadioType ==2)
@@ -679,7 +680,7 @@ function getNominatedPostApplication(startIndex)
 			
 			//alert(searchRadioType);
 			
-		if(panchayatId !=0)
+		if(panchayatId !=0 && panchayatId>0)
 		{
 			if(panchayatId.substr(0,1) == 1){
 				  locationLevel = 6;
@@ -690,7 +691,7 @@ function getNominatedPostApplication(startIndex)
 			}								
 			locationValue = panchayatId.substr(1);
 		}
-		else if(mandalId !=0)
+		else if(mandalId !=0 && mandalId>0)
 		{
 			if(mandalId.substr(0,1) == 1){
 				 locationLevel = 7;
@@ -704,15 +705,19 @@ function getNominatedPostApplication(startIndex)
 			locationValue = mandalId.substr(1);
 		}
 		
-		else if(constituencyId != 0)
+		else if(constituencyId != 0 && constituencyId>0)
 		{
 			locationValue = constituencyId;
 			locationLevel = 4;	
 		}
-		else if(districtId != 0)
+		else if(districtId != 0 && districtId>0)
 		{
 			locationValue = districtId;
 			locationLevel = 3;
+		}
+		else if(stateId !=0 && stateId>0){
+			locationValue = stateId;
+			locationLevel = 2;
 		}
 		if(searchRadioType == 'membershipId')
 		{
@@ -742,6 +747,12 @@ function getNominatedPostApplication(startIndex)
 		}			
 		if(searchRadioType == 'voterId')
 		{
+			if(stateId ==0){
+			$('#searchErrDiv').html('Please Select State.');
+				return;				
+			}else{
+				$('#searchErrDiv').html(' ');
+			}		
 			voterCardNo = $('#searchBy').val().trim();
 			
 			if(searchBy.trim().length == 0 )
@@ -779,6 +790,24 @@ function getNominatedPostApplication(startIndex)
 		}
 		if(searchRadioType == 'name')
 		{
+			if(stateId ==0){
+			$('#searchErrDiv').html('Please Select State.');
+				return;				
+			}else{
+				$('#searchErrDiv').html(' ');
+			}	
+			if( districtId==0){
+			$('#searchErrDiv').html('Please Select District.');
+				return;				
+			}else{
+				$('#searchErrDiv').html(' ');
+			}
+			if(constituencyId ==0){
+			$('#searchErrDiv').html('Please Select Constituency.');
+				return;				
+			}else{
+				$('#searchErrDiv').html(' ');
+			}
 			searchName = $('#searchBy').val().trim();
 			
 			if(searchBy.trim().length == 0 )
@@ -901,7 +930,7 @@ function getNominatedPostApplication(startIndex)
 				//console.log(result[i].id);
 				if(result[i].id != null && result[i].id >= 0){ // no cadre search  candidate id
 				
-					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 						str +='</div>';
 					str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" sri attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="" />';
 				}else {
@@ -2288,6 +2317,8 @@ function populateFields(result){
   }
   function buildCandidateAppliedPostByCadreDetails(result){
 	 var str = '';
+	 if(result.subList.length > 0 || result.subList1.length > 0){
+		 $("#appliedPostForSelectedId").show();
 	 if(result.subList != null && result.subList.length > 0){
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">';
                     str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);">';
@@ -2346,24 +2377,25 @@ function populateFields(result){
                                        str+=' </div>';
                                     str+='</div>';
                                str+=' </div>';
-							}else{
+							} /* else{
 								str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
                                 	str+='<div class="panel panel-default panelPost">';
                                     	str+='<div class="panel-heading">';
-                                        	str+='<h4 class="panel-title">Nominated Post</h4>';
+                                        	str+='<h4 class="panel-title">Party Post</h4>';
                                         str+='</div>';
                                         str+='<div class="" style="padding: 10px;;text-transform: uppercase;">';
                                         	str+='<h4 style="height:100%;width:100%" class="text-center">No Existing Applied Posts are Available...</h4>';
                                        str+=' </div>';
                                     str+='</div>';
                                str+=' </div>';
-							}
+							}  */
+	 
                            str+='</div>';
                        str+='</div>';
-					   str+='<p class="text-muted">Note: Do you want to apply for more posts select below options</p>';
+					   //str+='<p class="text-muted">Note: Do you want to apply for more posts select below options</p>';
                    str+='</div>';
-	 
-	 $("#appliedPostForSelectedId").html(str);
+				    $("#appliedPostForSelectedId").html(str);
+				   }
 }
 function searchByApplicant()
   {
