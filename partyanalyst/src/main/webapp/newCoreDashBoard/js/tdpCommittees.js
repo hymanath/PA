@@ -1,7 +1,8 @@
+	
 	function getCommitteesBasicCountReport(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state ='AP';
+	    var state = globalState;
 	   
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -32,12 +33,12 @@
 	}
 	function getUserTypeWiseCommitteesCompletedCounts(){
 		
-		var state ='AP';
+		var state = globalState;
 		var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
-      
+       basicCommitteeIdsArray.push(4);
 	   var dateString = $("#dateRangeId").val();
     
 		var jsObj ={  
@@ -64,12 +65,12 @@
 	function getUserTypeWiseCommitteesCompletedCounts1(){
 		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	   var state ='AP';
+	   var state = globalState;
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
-	   
+	   basicCommitteeIdsArray.push(4);
         var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={  
@@ -99,7 +100,7 @@
 	function getLevelWiseBasicCommitteesCountReport(){
 		
 		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var state ='AP';
+		var state = globalState;
 		var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
@@ -134,6 +135,7 @@
 		basicCommitteeIdsArray.push(1);
 		basicCommitteeIdsArray.push(2);
 		basicCommitteeIdsArray.push(3);
+		basicCommitteeIdsArray.push(4);
 		
 		var state = globalState;
 		
@@ -190,7 +192,7 @@
 	  basicCommitteeIdsArray.push(1);
 	  basicCommitteeIdsArray.push(2);
 	  basicCommitteeIdsArray.push(3);
-	  
+	  basicCommitteeIdsArray.push(4);
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeId : childUserTypeId,
@@ -1153,11 +1155,12 @@
 	})
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state ='AP';
+	   var state = globalState
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
+	   basicCommitteeIdsArray.push(4);
 	   var dateString = $('#dateRangeId').val();
 	   
 	   var jsObj ={  activityMemberId : activityMemberId,
@@ -1179,11 +1182,12 @@
 	}
 	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
 	   $("#topPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state ='AP';
+	   var state = globalState;
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
+	    basicCommitteeIdsArray.push(4);
 	   var dateString = $('#dateRangeId').val();
 	   
 	   var jsObj ={  activityMemberId : activityMemberId,
@@ -1205,11 +1209,12 @@
 	}
 	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
 	   $("#topPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state ='AP';
+	   var state = globalState;
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
        basicCommitteeIdsArray.push(2);
        basicCommitteeIdsArray.push(3);
+	   basicCommitteeIdsArray.push(4);
 	   var dateString = $('#dateRangeId').val();
 	   
 	   var jsObj ={  activityMemberId : activityMemberId,
