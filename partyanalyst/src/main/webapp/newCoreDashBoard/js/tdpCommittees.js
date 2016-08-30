@@ -1044,16 +1044,18 @@
 				var candidateNameArray = [];
 				var CommitteeCompleteCountArray = [];
 				var countVar = 0;
-				var length = result[i].length - 1;
-				
-					for(var j = length; j > 0; j--){
-						countVar =countVar+1;
+				if(result[i] !=null && result[i].length  >0){
+					for(var j = result[i].length -1; j >= 0; j--){
+						
 						candidateNameArray.push(result[i][j].name);
 						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
+							
+						countVar =countVar+1;
 						if (countVar === 6) {
 							break;
 						}
-					}	
+					}
+				}
 					
 			
 					
