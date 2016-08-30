@@ -693,7 +693,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				str+='<td>'+result.subList[i].status+'</td>';
 				str+='<td style="position:relative;width:180px">';
 					if(result.subList[i].commentCount != null){
-						str+='<span style="position:relative"><img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'"/>'; 
+						str+='<span style="position:relative"><img src="dist/nominatedImages/Icon5.png" class="commentsBtn commentsDetailsCls" style="height:28px;margin-right:10px;cursor:pointer;" attr_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_div_id="commentsDivId'+i+'" attr_application_id="'+result.subList[i].nominatedPostApplicationId+'" attr_post_final_id="'+result.subList[i].nominatedPostFinalId+'"/>'; 
 						str+='<span class="commentCount" style="left:15px;top:-11px">'+result.subList[i].commentCount+'</span></span>';
 					}
 					else						
@@ -935,15 +935,19 @@ $(document).on("click",".submitBtnCls",function(){
 
 $(document).on('click','.commentsDetailsCls',function(){
 	var candidateId = $(this).attr("attr_candidate_id");
+	var aplicationId = $(this).attr("attr_application_id");
+	var postFinalId = $(this).attr("attr_post_final_id");
 	var divId = $(this).attr("attr_div_id");
-	getOverAllCommentDetails(candidateId,divId);
+	getOverAllCommentDetails(candidateId,divId,aplicationId,postFinalId);
 });
 
-function getOverAllCommentDetails(candidateId,divId){
+function getOverAllCommentDetails(candidateId,divId,aplicationId,postFinalId){
 	$("#"+divId).html("");
 	var jsObj=
 	   {				
-		candidateId:candidateId
+		candidateId:candidateId,
+		aplicationId:aplicationId,
+		postFinalId:postFinalId
 		}
     $.ajax({
           type:'GET',

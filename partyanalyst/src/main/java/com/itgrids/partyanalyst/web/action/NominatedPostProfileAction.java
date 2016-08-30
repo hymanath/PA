@@ -1113,7 +1113,7 @@ return Action.SUCCESS;
 			
 			jObj = new JSONObject(getTask());
 			
-			idNameVO = nominatedPostProfileService.getOverAllCommentsForCandidate(jObj.getLong("candidateId"));
+			idNameVO = nominatedPostProfileService.getOverAllCommentsForCandidate(jObj.getLong("candidateId"),jObj.getLong("aplicationId"),jObj.getLong("postFinalId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getOverAllCommentsForCandidate Action",e);
