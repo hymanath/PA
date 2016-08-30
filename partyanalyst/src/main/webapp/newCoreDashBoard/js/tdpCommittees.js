@@ -215,6 +215,7 @@
 		$("#basicCommitteeCountsDiv").html('');
 		var str='';
 		var locationLevelNameArray =[];
+		if(result !=null &&  result.mainVO !=null){
 				str+='<ul class="committesBlockUl">';
 					str+='<li>';
 						str+='<h4 class="text-capital bg_49 pad_custom">main committees</h4>';
@@ -285,9 +286,11 @@
 					str+='</li>';
 					str+='<hr style="margin:0px;">';
 					if(result.subList != null && result.subList.length >0){
+						
 						var length = result.subList.length - 1;
 							for(var i = length; i >= 0; i--){
-								str+='<li>';
+								if(result.subList[i].id !=10){
+									str+='<li>';
 										var properName = getProperLocationLevelName(result.subList[i].name);
 										if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 											locationLevelNameArray.push(properName);
@@ -349,13 +352,16 @@
 											str+='</tr>';
 										str+='</table>';
 									str+='</li>';
+								}
 							}
-							
 					}
 					
 				str+='</ul>';
-       
-		$("#basicCommitteeCountsDiv").html(str);
+				$("#basicCommitteeCountsDiv").html(str);
+		}else{
+			$("#basicCommitteeCountsDiv").html("No Data Available");
+		}
+		
 	}
 	
 	function getProperLocationLevelName(levelName){
@@ -381,137 +387,149 @@
 		if(result != null && result.length > 0){
 			var str='';
 			str+='<ul class="villageWardUl">';
+			
 			var length = result.length - 1;
 			for(var i = length; i >= 0; i--){
-				
-				if(result[i].subList !=null && result[i].subList.length > 0){
-					for(var j in result[i].subList){
-						
-						str+='<li>';
-						var properName = getProperLocationLevelName(result[i].name);
-						if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
-							locationLevelNameArray.push(properName);
-							str+='<h4>'+properName+' Level</h4>';
+				if(result[i].id !=10){
+					if(result[i].subList !=null && result[i].subList.length > 0){
+						for(var j in result[i].subList){
+							
+								str+='<li>';
+								var properName = getProperLocationLevelName(result[i].name);
+								if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+									locationLevelNameArray.push(properName);
+									str+='<h4>'+properName+' Level</h4>';
+								}
+								str+='<div id="mainCommittees'+i+''+j+'" class="chartLi" ></div>';
+								str+='</li>';
+							
 						}
-						str+='<div id="mainCommittees'+i+''+j+'" class="chartLi" ></div>';
-						str+='</li>';
 					}
+				
 				}
 										
             }
 			str+='<ul>';
-			
+				
 		}
 	$("#levelWiseBasicCommittees").html(str);
 		if(result != null && result.length > 0){
+		
 			var length = result.length - 1;
 			for(var i = length; i >= 0; i--){
-				
-				if(result[i].subList !=null && result[i].subList.length > 0){
-					for(var j in result[i].subList){
-						
-						var committeeName = result[i].subList[j].name;
-						var levelWiseBasicCompletedPercArray = [];
-						var levelWiseBasicStartedPercArray = [];
-						var levelWiseBasicNotStartedPercArray = [];
-						if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
-							levelWiseBasicCompletedPercArray.push(result[i].subList[j].completedPerc);
-						}
-						if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
-							levelWiseBasicStartedPercArray.push(result[i].subList[j].startedPerc);
-						}
-						if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
-							levelWiseBasicNotStartedPercArray.push(result[i].subList[j].notStartedPerc); 
-						}
-						
-						//if(committeeName == "Main")
-						
-						if( levelWiseBasicCompletedPercArray.length !=0 && levelWiseBasicStartedPercArray.length !=0 && levelWiseBasicNotStartedPercArray.length !=0){
-							$(function () {
-							$('#mainCommittees'+i+''+j+'').highcharts({
-								colors: ['#F56800','#53BF8B','#66728C'],
-								chart: {
-									type: 'column',
-									
-								},
-								title: {
-									text: committeeName,
-									style: {
-											fontSize: '16px',
-											fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-											textTransform: "uppercase"
-											
-									}
-								},
-								subtitle: {
-									text: null
-								},
-								 xAxis: {
-									 min: 0,
-									gridLineWidth: 0,
-									minorGridLineWidth: 0,
-									categories: null,
-									labels: {
-										enabled: false,
-									}
-								},
-								yAxis: {
-									min: 0,
-									gridLineWidth: 0,
-									minorGridLineWidth: 0,
-									title: {
-										text: ''
-									},
-									stackLabels: {
-										enabled: true,
-										style: {
-											fontWeight: 'bold',
-											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-										}
-									}
-								},
-								tooltip: {
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
-									shared: true
-								},
-								legend: {
-									enabled: true,
-									align: 'left'
+				if(result[i].id !=10){
+					if(result[i].subList !=null && result[i].subList.length > 0){
+						for(var j in result[i].subList){
 							
-								},
-								plotOptions: {
-									column: {
-										stacking: 'percent',
-										dataLabels:{
-											enabled: true,
-											formatter: function () {
-												return Highcharts.numberFormat(this.y,0) + '%';
-											}
-										},
+							var committeeName = result[i].subList[j].name;
+							var levelWiseBasicCompletedPercArray = [];
+							var levelWiseBasicStartedPercArray = [];
+							var levelWiseBasicNotStartedPercArray = [];
+							//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+								levelWiseBasicCompletedPercArray.push(result[i].subList[j].completedPerc);
+							//}
+							//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+								levelWiseBasicStartedPercArray.push(result[i].subList[j].startedPerc);
+							//}
+							//if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
+								levelWiseBasicNotStartedPercArray.push(result[i].subList[j].notStartedPerc); 
+							//}
+							
+							//if(committeeName == "Main")
+							
+							if( levelWiseBasicCompletedPercArray.length !=0 && levelWiseBasicStartedPercArray.length !=0 && levelWiseBasicNotStartedPercArray.length !=0){
+								$(function () {
+								$('#mainCommittees'+i+''+j+'').highcharts({
+									colors: ['#F56800','#53BF8B','#66728C'],
+									chart: {
+										type: 'column',
 										
 									},
-								},
-								 series: [{
-									name: 'Started',
-									data: levelWiseBasicStartedPercArray 
-								}, {
-									name: 'Completed',
-									data: levelWiseBasicCompletedPercArray
-								}, {
-									name: 'Yet To Start',
-									data: levelWiseBasicNotStartedPercArray
-								}]
-							});
-						});	
-						}else{
-							$('#mainCommittees'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
+									title: {
+										text: committeeName,
+										style: {
+												fontSize: '16px',
+												fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+												textTransform: "uppercase"
+												
+										}
+									},
+									subtitle: {
+										text: null
+									},
+									 xAxis: {
+										 min: 0,
+										gridLineWidth: 0,
+										minorGridLineWidth: 0,
+										categories: null,
+										labels: {
+											enabled: false,
+										}
+									},
+									yAxis: {
+										min: 0,
+										gridLineWidth: 0,
+										minorGridLineWidth: 0,
+										title: {
+											text: ''
+										},
+										stackLabels: {
+											enabled: true,
+											style: {
+												fontWeight: 'bold',
+												color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+											}
+										}
+									},
+									tooltip: {
+										pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+										shared: true
+									},
+									legend: {
+										enabled: true,
+										align: 'left'
+								
+									},
+									plotOptions: {
+										column: {
+											stacking: 'percent',
+											dataLabels:{
+												enabled: true,
+												formatter: function() {
+													if (this.y === 0) {
+														return null;
+													} else {
+														return Highcharts.numberFormat(this.y,0) + '%';
+													}
+												}
+											},
+											
+										},
+									},
+									 series: [{
+										name: 'Started',
+										data: levelWiseBasicStartedPercArray 
+									}, {
+										name: 'Completed',
+										data: levelWiseBasicCompletedPercArray
+									}, {
+										name: 'Yet To Start',
+										data: levelWiseBasicNotStartedPercArray
+									}]
+								});
+							});	
+							}else{
+								$('#mainCommittees'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
+							}
+							
+							
 						}
-						
-						
 					}
-				}
 				
+				}
+			
 			}
+		
 		}else{
 			$("#levelWiseBasicCommittees").html("No Data Available");
 		}
@@ -584,15 +602,15 @@
 				for(var j in result[i].subList){
 						districtNamesArray.push(result[i].subList[j].name);
 						
-						if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
 							districtWiseCompletedPercArray.push(result[i].subList[j].completedPerc);
-						}
-						if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+						//}
+						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
 							districtWiseStartedPercArray.push(result[i].subList[j].startedPerc);
-						}
-						if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
+						//}
+						//if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
 							districtWiseNotStartedPercArray.push(result[i].subList[j].notStartedPerc);
-						}
+						//}
 					}
 			}
 						$(function () {
@@ -655,19 +673,23 @@
 										stacking: 'percent',
 										dataLabels: {
 											enabled: true,
-											formatter: function(){
-												return Highcharts.numberFormat(this.y,0) + '%';
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,0) + '%';
+												}
 											}
 										  
 										}
 									}
 								},
 								series: [{
-									name: 'Completed',
-									data: districtWiseCompletedPercArray
-								}, {
 									name: 'Started',
 									data: districtWiseStartedPercArray
+								}, {
+									name: 'Completed',
+									data: districtWiseCompletedPercArray
 								}, {
 									name: 'Yet To Started',
 									data: districtWiseNotStartedPercArray
@@ -1353,7 +1375,7 @@
 		 str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> performance affliated committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 			
-		if(result.subList1 != null && result.subList1.length >0){
+		if(result != null && result.subList1 != null && result.subList1.length >0){
 			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
 			str+='<table class="table tableCumulative">';
@@ -1385,7 +1407,7 @@
 			str+='</table>';
 		str+='</div>';
 		}
-		if(result.subList != null && result.subList.length >0){
+		if(result != null && result.subList != null && result.subList.length >0){
 			var locationLevelNameArray =[];
 			for(var i in result.subList){
 				str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top20">';
@@ -1429,6 +1451,7 @@
 	}
 	
 	function buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType){
+		$("#topPoorLocationsDiv").html('');
 		var str ='';
 		
 		if(result !=null && result.length >0){
@@ -1442,18 +1465,25 @@
 			var BGColor = 1;
 				for(var i = 0; i <= length1; i++){
 					countVar =countVar+1;
-					if (countVar === 5) {
+					if (countVar === 6) {
 						break;
 					}
 						str+='<tr>';
 							str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+countVar+'</span></td>';
-							if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
+							if(result[i].locationLevelName != null && $.trim(result[i].locationLevelName).length > 0){
 								
-								str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
+								if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
+								
+									str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
+								}else{
+								
+									str+='<td>'+result[i].name+'</td>';
+								}
 							}else{
-							
+								
 								str+='<td>'+result[i].name+'</td>';
 							}
+							
 							
 							str+='<td>';
 							if(result[i].completedCount !=null && result[i].completedCount >0){

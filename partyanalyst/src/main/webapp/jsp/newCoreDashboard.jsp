@@ -613,6 +613,7 @@
 		getTrainingCampBasicDetailsCntOverview();
 	}
 	
+	
 	$(document).on("click",".userStructureClass",function(){
 		
 		$("#directChildActivityMemberDiv").html('');
@@ -638,17 +639,33 @@
 	    globalUserAccessLevelValues = clickedUserAccessLevelValuesArray;
 		
 		onLoadCalls();
-		
-		
-		getLevelWiseBasicCommitteesCountReport();
-		getUserTypeWiseCommitteesCompletedCounts1();
-		var tdpCommitteeLevelIdsClickedArray = [];
-		tdpCommitteeLevelIdsClickedArray.push(6);
-		tdpCommitteeLevelIdsClickedArray.push(8);
-		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
-		getChildUserTypesByItsParentUserType();
+		defaultCommitteeCalls();
 		
 	});
+	
+	function defaultCommitteeCalls(){
+		onLoadCalls();
+		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			getUserTypeWiseCommitteesCompletedCounts1();
+		}
+		if(!$(".moreBlocksIcon").find("i").hasClass("unExpandBlock")){
+			
+			if($(".detailedBlock").hasClass("active")){
+				getLevelWiseBasicCommitteesCountReport();
+				var tdpCommitteeLevelIdsClickedArray = [];
+				tdpCommitteeLevelIdsClickedArray.push(6);
+				tdpCommitteeLevelIdsClickedArray.push(8);
+				getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
+			}
+			if($(".comparisionBlock").hasClass("active")){
+				getChildUserTypesByItsParentUserType();
+			}
+		
+		}
+		
+		
+		
+	}
 	
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
