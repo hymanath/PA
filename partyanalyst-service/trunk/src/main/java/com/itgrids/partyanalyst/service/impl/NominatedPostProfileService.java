@@ -575,10 +575,6 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
-			if(nonAppliedPostns != null && nonAppliedPostns.size() > 0){
-				list.clear();
-				list.addAll(nonAppliedPostns);
-			}
 			String positnAnyAppld = "NotApplied";
 			if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
 				for(Long position : appliedPositions){
@@ -587,9 +583,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
-			if(commonMethodsUtilService.isListOrSetValid(list)){
+			if(commonMethodsUtilService.isListOrSetValid(nonAppliedPostns)){
 				String[] setterPropertiesList = {"id","name"};
-				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(nonAppliedPostns, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
 			}
 			if(returnList !=  null && returnList.size()  >0){
 			returnList.get(0).setStatus(positnAnyAppld);
