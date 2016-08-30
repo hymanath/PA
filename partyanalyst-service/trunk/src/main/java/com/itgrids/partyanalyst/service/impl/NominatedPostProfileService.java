@@ -3935,7 +3935,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			    			   vo.setMobileNo(obj[1]!=null?obj[1].toString():"");
 			    			   vo.setCadreName(obj[2]!=null?obj[2].toString():"");
 			    			   vo.setVoterCardNo(obj[3]!=null?obj[3].toString():"");
-			    			   vo.setImageURL(obj[4]!=null?"images/cadre_images/"+obj[4].toString():null);
+			    			   vo.setImageURL(obj[4]!=null?obj[4].toString():null);
 			    			   vo.setConstituencyId(obj[5]!=null?(Long)obj[5]:01);
 			    			   vo.setConstituency(obj[6]!=null?obj[6].toString():"");
 			    			   finalList.add(vo);
