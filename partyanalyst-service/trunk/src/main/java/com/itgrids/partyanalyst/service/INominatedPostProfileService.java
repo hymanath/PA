@@ -47,7 +47,7 @@ public interface INominatedPostProfileService {
 	public  List<CadreCommitteeVO> getNotCadreDetailsById(Long nominatedPostCandiId);
 	public ResultStatus updateNominatedPostStatusDetails(final Long deptId,final Long boardId,final List<Long> positions,final Long levelId,final List<Long> searchLevelValues,final Long statusId,final Long userId,final Long sizeOfMember);
 	public NominatedPostReferVO getAllReferredMemberDetailsForPosition(Long levelId,Long levelValue,Long departmentId,Long boardId,Long positionId,Long statusId);
-	public IdNameVO getOverAllCommentsForCandidate(Long candidateId);
+	public IdNameVO getOverAllCommentsForCandidate(Long candidateId,Long applicationId,Long postFinalId);
 	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId,final Long candidateId);
 	public String updateWishListForCandidate(final Long postFinalId,final String remark,final Long userId);
 	public NominatedPostDashboardVO getOverAllTotalCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId);

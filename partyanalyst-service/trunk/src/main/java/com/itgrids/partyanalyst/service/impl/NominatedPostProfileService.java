@@ -4549,13 +4549,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnvo;
 	}
 	
-	public IdNameVO getOverAllCommentsForCandidate(Long candidateId){
+	public IdNameVO getOverAllCommentsForCandidate(Long candidateId,Long applicationId,Long postFinalId){
 		IdNameVO returnvo = new IdNameVO();
 		try {
 			List<IdNameVO> subList = new ArrayList<IdNameVO>();
 			List<IdNameVO> subList1 = new ArrayList<IdNameVO>();
 			
-			List<Object[]> finalList = nominatedPostCommentDAO.getFinalyzedCommentsForCandidate(candidateId);
+			List<Object[]> finalList = nominatedPostCommentDAO.getFinalyzedCommentsForCandidate(postFinalId);
 			if(commonMethodsUtilService.isListOrSetValid(finalList)){
 				for (Object[] obj : finalList) {
 					IdNameVO vo = new IdNameVO();
@@ -4566,7 +4566,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					subList.add(vo);
 				}
 			}
-			List<Object[]> shortList = nominatedPostCommentDAO.getShortListingCommentsForCandidate(candidateId);
+			List<Object[]> shortList = nominatedPostCommentDAO.getShortListingCommentsForCandidate(applicationId);
 			if(commonMethodsUtilService.isListOrSetValid(shortList)){
 				for (Object[] obj : shortList) {
 					IdNameVO vo = new IdNameVO();
