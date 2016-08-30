@@ -1,6 +1,6 @@
 	function getCommitteesBasicCountReport(){
 		
-		$("#basicCommitteeCountsDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state ='AP';
 	   
 	   var basicCommitteeIdsArray= [];
@@ -62,8 +62,8 @@
 		});
 	}
 	function getUserTypeWiseCommitteesCompletedCounts1(){
-		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
-		$("#userTypeWiseCommitteesForTopFivePoorDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#userTypeWiseCommitteesForTopFivePoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -98,7 +98,7 @@
 	}
 	function getLevelWiseBasicCommitteesCountReport(){
 		
-		$("#levelWiseBasicCommittees").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var state ='AP';
 		var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -129,7 +129,7 @@
 	function getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray){
 		
 		
-		$("#districtWiseCommitteesReport").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+		$("#districtWiseCommitteesReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var basicCommitteeIdsArray= [];
 		basicCommitteeIdsArray.push(1);
 		basicCommitteeIdsArray.push(2);
@@ -180,7 +180,7 @@
 	
 	function getSelectedChildUserTypeMembers(childUserTypeId){
 		
-	$("#SelectedUserTypeDetailsDiv").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	$("#SelectedUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
      var parentActivityMemberId = globalActivityMemberId;
 	 var childUserTypeId = childUserTypeId;
 	 var date = $("#dateRangeId").val();
@@ -479,7 +479,7 @@
 								},
 								plotOptions: {
 									column: {
-										  stacking: 'percent',
+										stacking: 'percent',
 										dataLabels:{
 											enabled: true,
 											formatter: function () {
@@ -567,7 +567,7 @@
 			
 			for(var i in result){
 				str+=result[i].name;
-				str+='<div id="mainCommittees'+i+'" class="chartLiD" ></div>';
+				str+='<div id="mainCommittees'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
 			
 		}
@@ -606,7 +606,14 @@
 									 min: 0,
 										 gridLineWidth: 0,
 										 minorGridLineWidth: 0,
-										categories: districtNamesArray
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
 								},
 								yAxis: {
 									min: 0,
@@ -1090,7 +1097,7 @@
 		getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 	})
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
-	   $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -1116,7 +1123,7 @@
 		});
 	}
 	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
-	   $("#topPoorPerformanceDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+	   $("#topPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -1142,7 +1149,7 @@
 		});
 	}
 	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
-	   $("#topPoorLocationsDiv").html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+	   $("#topPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state ='AP';
 	   var basicCommitteeIdsArray= [];
        basicCommitteeIdsArray.push(1);
@@ -1294,10 +1301,12 @@
 			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
 			str+='<table class="table tableCumulative">';
 			var number =0;
+			var BGColor = 1;
 				for(var i in result.subList1){
 					str+='<tr>';
 					number = number+1;
-					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+number+'</span></td>';
+				
+					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+number+'</span></td>';
 					str+='<td>'+result.subList1[i].name+'</td>';
 					str+='<td>';
 						str+='<div class="progress progressCustom">';
@@ -1312,6 +1321,7 @@
 							str+='<td class="text-danger"> - </td>';
 						}
 				str+='</tr>';
+				BGColor = BGColor - 0.2;
 				}
 				
 				
@@ -1328,11 +1338,12 @@
 						str+='<p class="text-capital"><b>'+properName+'</b></p>';
 					}
 					var number =0;
+					var BGColor = 1;
 				str+='<table class="table tableCumulative">';
 					for(var j in result.subList[i].subList){
 						str+='<tr>';
 						number = number+1;
-						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+number+'</span></td>';
+						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+number+'</span></td>';
 						str+='<td>'+result.subList[i].subList[j].name+'</td>';
 						str+='<td>';
 						if(result.subList[i].subList[j].completedCount !=null && result.subList[i].subList[j].completedCount >0){
@@ -1348,6 +1359,7 @@
 						}
 							
 					str+='</tr>';
+					BGColor = BGColor - 0.2;
 					}
 				str+='</table>';
 				str+='</div>';
@@ -1370,13 +1382,14 @@
 					str+='<table class="table tableCumulative">';
 			var countVar =0;
 			var length1 = result.length ;
+			var BGColor = 1;
 				for(var i = 0; i <= length1; i++){
 					countVar =countVar+1;
 					if (countVar === 5) {
 						break;
 					}
 						str+='<tr>';
-							str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+countVar+'</span></td>';
+							str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+countVar+'</span></td>';
 							if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
 								
 								str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
@@ -1399,6 +1412,7 @@
 							}
 								
 						str+='</tr>';
+						BGColor = BGColor - 0.2;
 				}
 				str+='</table>';
 				str+='</div>';
