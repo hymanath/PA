@@ -20,6 +20,7 @@ public class UserType extends BaseModel{
 	private Long   userTypeId;
 	private String type;
 	private String shortName; 
+	private Long   orderNo;
 	
 	 public UserType() {}
 	 
@@ -53,6 +54,15 @@ public class UserType extends BaseModel{
 
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+	
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 }
