@@ -174,11 +174,12 @@
 	  event.preventDefault();
 	  defaultCommitteeCalls();
     });
+	
 	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
-			//do something, like clearing an input
-			defaultCommitteeCalls();
+		//do something, like clearing an input
+		defaultCommitteeCalls();
 	});
-	 
+
 	$(document).on("click",".basicCommitteesBlockDiv",function(){
 		$(this).closest(".moreBlocks").find(".basicCommitteesBlockDropDown").toggle();
 	});

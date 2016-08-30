@@ -36,7 +36,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="#"><i class="glyphicon glyphicon-gift"></i></a></li>
+          	<li><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i></a></li>
             <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
             <li class="dropdown profileDropDown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
@@ -158,7 +158,7 @@
                         	<ul class="list-inline pull-right activeUlCls">
                             	<li class="active detailedBlock">Detailed</li>
                                 <li class="comparisionBlock">Comparison</li>
-                                <li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>
+                                <!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
                             </ul>
 							<div class="basicCommitteesBlockDropDown" style="z-index:999">
 								<h4 class="text-capital" style="color:#99A0A5;">Select Committees</h4>
@@ -221,7 +221,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;" >
-                            <p><i>Selected:</i> <b>Main Committee</b></p>
+                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -539,10 +539,7 @@
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
 	});
-	$('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
-	  //do something, like clearing an input
-	 alert(1)
-	});
+	
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
