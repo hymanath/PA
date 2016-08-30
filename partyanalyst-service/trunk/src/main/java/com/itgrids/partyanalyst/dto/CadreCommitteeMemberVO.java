@@ -133,7 +133,7 @@ public class CadreCommitteeMemberVO {
 	private String wName;
 	private Long wardId;
 	private String wardName;
-	
+	private Long volunteerCount=0l;
 	
 	public Long getWardId() {
 		return wardId;
@@ -785,6 +785,12 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setEnrollmentYears(String enrollmentYears) {
 		this.enrollmentYears = enrollmentYears;
+	}
+	public Long getVolunteerCount() {
+		return volunteerCount;
+	}
+	public void setVolunteerCount(Long volunteerCount) {
+		this.volunteerCount = volunteerCount;
 	}
 	
 }

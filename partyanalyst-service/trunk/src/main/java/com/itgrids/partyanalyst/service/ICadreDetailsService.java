@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
@@ -28,9 +29,11 @@ import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.model.UserAddress;
 
@@ -131,4 +134,8 @@ public interface ICadreDetailsService {
 	//public String checkPositionExists(String position);
 	public CadreLocationVO getCadreBasicLocationDetails(Long tdpCadreId);
 	public List<CadreReportVO> getCadreHealthReport(Long tdpCadreId);
+	public VoterCastInfoVO getParliamentAndDistrictwiseCasteInformation(String type,Long locationId,Long publicationDateId,Long userId);
+	public List<VoterCastInfoVO> getCastNGenderWiseVotersCountByPublIdInALocFromIntermedTable(Long userId,Long reportLvlId,Long levelValue,Long publicationDateId,List<Long> assemblyIdsList);
+	public List<SelectOptionVO> getTotalBAsicCastInfoLst(Long userId,Long publicationDateId,List<Long> assemblyIdsList);
+	public List<SelectOptionVO> getVolunteerCadreDetilasInformation(Long cadreId);
 }

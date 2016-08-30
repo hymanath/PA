@@ -508,4 +508,28 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		  return null;
 	  }
   }
+  
+  @SuppressWarnings("unchecked")
+  public List<Object[]> getVotersCastInfoForParliament(Long levelId,List<Long> assemblyIdsList,Long publicationId,Long userId)
+  {
+		
+	  Query query = getSession().createQuery("SELECT model.casteState.casteStateId," +
+		" model.casteState.caste.casteName," +
+		" model.casteState.casteCategoryGroup.casteCategory.categoryName," +
+		" sum(model.casteVoters) ," +
+		" sum(casteMaleVoters)," +
+		" sum(casteFemaleVoters)," +
+		" sum(casteMaleVoters) " +
+		" from VoterCastInfo model where model.voterReportLevel.voterReportLevelId = :levelId and " +
+		" model.reportLevelValue in(:assemblyIdsList) and model.publicationDateId = :publicationId " +
+		" and model.userId = :userId group by model.casteState.caste.casteId order by sum(model.casteVoters) desc ");
+	  
+		query.setParameter("levelId", levelId);
+		query.setParameterList("assemblyIdsList", assemblyIdsList);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+  
 }

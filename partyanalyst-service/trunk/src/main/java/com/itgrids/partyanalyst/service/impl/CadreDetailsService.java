@@ -67,6 +67,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
@@ -94,9 +95,14 @@ import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVolunteersCadreDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -109,6 +115,7 @@ import com.itgrids.partyanalyst.dto.CadreLocationVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintScanCopyVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
@@ -129,9 +136,11 @@ import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -146,6 +155,7 @@ import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreNotes;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -153,6 +163,7 @@ import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -249,7 +260,36 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ITdpCadreHealthReportDAO tdpCadreHealthReportDAO;
 	
 	private IApplicationDocumentDAO applicationDocumentDAO;
-	
+	private IVoterCastInfoDAO voterCastInfoDAO;
+	private IVoterReportLevelDAO voterReportLevelDAO;
+	private IVotersAnalysisService votersAnalysisService;
+	private IVoterCastBasicInfoDAO voterCastBasicInfoDAO;
+	private IVolunteersCadreDetailsDAO volunteersCadreDetailsDAO;
+	public IVoterCastBasicInfoDAO getVoterCastBasicInfoDAO() {
+		return voterCastBasicInfoDAO;
+	}
+	public void setVoterCastBasicInfoDAO(
+			IVoterCastBasicInfoDAO voterCastBasicInfoDAO) {
+		this.voterCastBasicInfoDAO = voterCastBasicInfoDAO;
+	}
+
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	public IVoterReportLevelDAO getVoterReportLevelDAO() {
+		return voterReportLevelDAO;
+	}
+
+	public void setVoterReportLevelDAO(IVoterReportLevelDAO voterReportLevelDAO) {
+		this.voterReportLevelDAO = voterReportLevelDAO;
+	}
+
 	public IImportantLeadersLevelDAO getImportantLeadersLevelDAO() {
 		return importantLeadersLevelDAO;
 	}
@@ -950,6 +990,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.tdpCadreHealthReportDAO = tdpCadreHealthReportDAO;
 	}
 
+	public IVoterCastInfoDAO getVoterCastInfoDAO() {
+		return voterCastInfoDAO;
+	}
+
+	public void setVoterCastInfoDAO(IVoterCastInfoDAO voterCastInfoDAO) {
+		this.voterCastInfoDAO = voterCastInfoDAO;
+	}
+	
+	public IVolunteersCadreDetailsDAO getVolunteersCadreDetailsDAO() {
+		return volunteersCadreDetailsDAO;
+	}
+	public void setVolunteersCadreDetailsDAO(
+			IVolunteersCadreDetailsDAO volunteersCadreDetailsDAO) {
+		this.volunteersCadreDetailsDAO = volunteersCadreDetailsDAO;
+	}
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
 	{
@@ -1816,7 +1871,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					cadreDetailsVO.setFbUrl("-");
 				}
 			}
-			
+			Long volunteersCount = volunteersCadreDetailsDAO.getVolunteerCountDetails(cadreId);//Teja
+			cadreDetailsVO.setVolunteerCount(volunteersCount);
 			
 			return cadreDetailsVO;
 			
@@ -9696,6 +9752,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 		return resultStatus;
 	}
 public List<IdNameVO> getAllPublicRepresentatives(){
+	
 		
 		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
 		try{
@@ -10847,7 +10904,7 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 		}
 		return reprtVoLst;
 	}
-	
+
 	public CadreLocationVO getCadreBasicLocationDetails(Long tdpCadreId){
 		
 		CadreLocationVO locationVO = new CadreLocationVO();
@@ -10930,4 +10987,151 @@ public List<CadreReportVO> getCadreReportDetails(Long cadreId){
 	 }
 
 	
+	
+	/**
+	 * @author 		:Teja
+	 * @date   		:${20/08/2016}
+	 * @returntype  :${VoterCastInfoVO}
+	 * @description :${Getting Parliament and District wise Caste Details}
+	 */
+public VoterCastInfoVO getParliamentAndDistrictwiseCasteInformation(String type,Long locationId,Long publicationDateId,Long userId)
+	 {
+		 VoterCastInfoVO voterCastInfoVO = new VoterCastInfoVO();
+		 Long totalVoters=0l;
+		 Long votesConsidered = 0L;
+		 try {
+			 List<Long> assemblyIdsList = new ArrayList<Long>(0);
+				if(type.trim().equalsIgnoreCase("parliamentConstituency"))
+				{
+					List<Long> assemblyIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentId(locationId);
+					if(assemblyIds != null && assemblyIds.size() > 0){
+						for (Long long1 : assemblyIds) {
+							assemblyIdsList.add(long1);
+						}
+					}
+				}
+				else if(type.trim().equalsIgnoreCase("district"))
+				{
+					List<Long> assemblyIds = constituencyDAO.getConstituenciesInADistrict(locationId);
+					if(assemblyIds != null && assemblyIds.size() > 0){
+						for (Long long1 : assemblyIds) {
+							assemblyIdsList.add(long1);
+						}
+					}
+				}
+				
+				if(assemblyIdsList.size() > 0)
+				{
+					totalVoters = voterInfoDAO.getTotalVotersInALocationWiseCount(1L, publicationDateId, assemblyIdsList);
+					
+					voterCastInfoVO.setVoterCastInfoVOList(getCastNGenderWiseVotersCountByPublIdInALocFromIntermedTable(userId,1L,locationId,publicationDateId,assemblyIdsList));
+					voterCastInfoVO.setTotalVoters(totalVoters);
+					voterCastInfoVO.setTotalCasts(voterCastInfoVO.getVoterCastInfoVOList().size());
+					
+					for(VoterCastInfoVO castInfoVO : voterCastInfoVO.getVoterCastInfoVOList())
+						votesConsidered = votesConsidered + castInfoVO.getTotalVoters();
+					voterCastInfoVO.setMaleVoters(votesConsidered);//caste Assigned Voters
+					voterCastInfoVO.setFemaleVoters(totalVoters - votesConsidered);
+					
+					voterCastInfoVO.setCastCategoryWiseVotersList(getTotalBAsicCastInfoLst(userId,publicationDateId,assemblyIdsList));
+				}
+				
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getLocationwiseCasteInformation Service() - ",e);
+		}
+		 return voterCastInfoVO;
+	 }
+public List<VoterCastInfoVO> getCastNGenderWiseVotersCountByPublIdInALocFromIntermedTable(Long userId,Long reportLvlId,Long levelValue,Long publicationDateId,List<Long> assemblyIdsList)
+{
+	 List<VoterCastInfoVO> resultList = new ArrayList<VoterCastInfoVO>(0);
+	try{
+		List<Object[]> list = voterCastInfoDAO.getVotersCastInfoForParliament(1L, assemblyIdsList, publicationDateId, userId);
+		
+		VoterCastInfoVO voterCastInfoVO = null;
+		Long totalVoters = 0L;
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list) 
+			{
+				voterCastInfoVO = new VoterCastInfoVO();
+				voterCastInfoVO.setCasteStateId(commonMethodsUtilService.getLongValueForObject(params[0]));
+				voterCastInfoVO.setCastName(commonMethodsUtilService.getStringValueForObject(params[1]));
+				voterCastInfoVO.setCasteCategoryName(commonMethodsUtilService.getStringValueForObject(params[2]));
+				voterCastInfoVO.setMaleVoters(commonMethodsUtilService.getLongValueForObject(params[4]));
+				voterCastInfoVO.setFemaleVoters(commonMethodsUtilService.getLongValueForObject(params[5]));
+				voterCastInfoVO.setCasteAssignedVoters(commonMethodsUtilService.getLongValueForObject(params[6]));
+				voterCastInfoVO.setTotalVoters(commonMethodsUtilService.getLongValueForObject(params[3]));
+				resultList.add(voterCastInfoVO);
+			}
+			totalVoters = voterInfoDAO.getTotalVotersInALocationWiseCount(1L, publicationDateId, assemblyIdsList);
+			for(VoterCastInfoVO castInfoVO : resultList)
+			{
+				String percentage = "0.00";
+				try{
+					percentage = (new BigDecimal(castInfoVO.getTotalVoters()*(100.0)/totalVoters.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				}catch (Exception e) {}
+				finally{
+					castInfoVO.setVotesPercent(percentage);
+				}
+			}
+		}
+		
+	}catch (Exception e) {
+		LOG.error("Exception Occured in getCastNGenderWiseVotersCountByPublIdInALocFromIntermedTable() Method, Exception is - ",e);
+	}
+	return resultList;
+}
+public List<SelectOptionVO> getTotalBAsicCastInfoLst(Long userId,Long publicationDateId,List<Long> assemblyIdsList)
+{
+	List<SelectOptionVO> castCategoryWiseList = new ArrayList<SelectOptionVO>(0);
+	try{
+		List<Object[]> casteCatgeryLst = voterCastBasicInfoDAO.getTotalVoterCastBasicInfoList(assemblyIdsList, publicationDateId, userId,1L);
+		
+		if(casteCatgeryLst != null && casteCatgeryLst.size() > 0){
+			for (Object[] objects : casteCatgeryLst) {
+				for(int i=0;i<objects.length;i++){
+					SelectOptionVO vo = new SelectOptionVO();
+					String casteName = "";
+					if(i==0){
+						vo.setName("OC");
+					}else if(i==1){
+						vo.setName("BC");
+					}else if(i==2){
+						vo.setName("SC");
+					}else if(i==3){
+						vo.setName("ST");
+					}
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[i]));
+					castCategoryWiseList.add(vo);
+				}
+			}
+		}
+		
+	}catch (Exception e) {
+		LOG.error("Exception Occured in getTotalBAsicCastInfoLst() Method, Exception is - ",e);
+	}
+	return castCategoryWiseList;
+}
+public List<SelectOptionVO> getVolunteerCadreDetilasInformation(Long cadreId){
+	List<SelectOptionVO> finalList = new ArrayList<SelectOptionVO>(0);
+	try {
+		List<Object[]> volunteersLst = volunteersCadreDetailsDAO.getVolunteerDetailsInfo(cadreId);
+		if(commonMethodsUtilService.isListOrSetValid(volunteersLst)){
+			for (Object[] obj : volunteersLst) {
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				vo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				vo.setLocation(commonMethodsUtilService.getStringValueForObject(obj[2]));//workArea
+				vo.setLatitude(commonMethodsUtilService.getStringValueForObject(obj[3]));//workDate
+				vo.setType(commonMethodsUtilService.getStringValueForObject(obj[4]));//eventName
+				finalList.add(vo);
+			}
+		}
+		
+	} catch (Exception e) {
+		LOG.error("Exception Occured in getVolunteerCadreDetilasInformation() Method, Exception is - ",e);
+	}
+	return finalList;
+}
 }

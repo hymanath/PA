@@ -730,4 +730,17 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		
 		return query.list();
     }
+	public Long getTotalVotersInALocationWiseCount(Long reportLevelId, Long publicationDateId,List<Long> assemblyIdsList)
+	{
+		Query query = getSession().createQuery("select sum(model.totalVoters) from VoterInfo model " +
+				" where model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
+				" model.reportLevelValue in(:assemblyIdsList) and " +
+				" model.publicationDate.publicationDateId = :publicationDateId ");
+		
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("assemblyIdsList", assemblyIdsList);
+		
+		return (Long)query.uniqueResult();
+    }
 }
