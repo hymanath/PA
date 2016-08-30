@@ -48,7 +48,7 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
 	public List<Object[]> getNotCadreDetailsById(Long nominatedCandiId){
 		StringBuilder sb=new StringBuilder();
 		sb.append(" SELECT  model.nominationPostCandidateId,model.mobileNo,model.candidateName,voter.voterIDCardNo," +
-				"   model.imageurl,model.address.constituency.constituencyId,model.address.constituency.name" +
+				"   model.imageurl,model.address.constituency.constituencyId,model.address.constituency.name,model.tdpCadreId " +
 				"   FROM   NominationPostCandidate model left join model.voter voter " +
 				"   WHERE  model.nominationPostCandidateId = :nominatedCandiId and model.isDeleted = 'N' ");
 		

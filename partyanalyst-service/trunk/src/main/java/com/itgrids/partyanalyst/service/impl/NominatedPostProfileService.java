@@ -4133,6 +4133,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			    			   vo.setImageURL(obj[4]!=null?obj[4].toString():null);
 			    			   vo.setConstituencyId(obj[5]!=null?(Long)obj[5]:01);
 			    			   vo.setConstituency(obj[6]!=null?obj[6].toString():"");
+			    			   vo.setId(commonMethodsUtilService.getLongValueForObject(obj[7]));//tdp cadreId
 			    			   finalList.add(vo);
 				    	}
 			    	  }
