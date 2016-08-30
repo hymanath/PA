@@ -909,8 +909,8 @@
 			
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="text-capital">'+result[i][0].userType+'</h4>';
-					str+='<div id="genSec'+i+'" style="width:100%;height:100px;"></div>';
+					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+					str+='<div id="genSec'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
 				str+='</div>'
 					
 			}
@@ -920,15 +920,17 @@
 		if(result != null && result.length > 0){
 			for(var i in result){
 				
-				var candidateNameArray = [];
-				var CommitteeCompleteCountArray = [];
+				var candidateNameAndCompletedCountArray = [];
 				var countVar =0;
 				
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 						
-						candidateNameArray.push(result[i][j].name);
-						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
+						 var obj1 = {
+								name: result[i][j].name,
+								y: result[i][j].completedPerc
+							};
+						candidateNameAndCompletedCountArray.push(obj1);
 							
 						countVar =countVar+1;
 						if (countVar === 6) {
@@ -938,86 +940,83 @@
 				}
 				
 					
-				if(CommitteeCompleteCountArray.length !=0 && candidateNameArray.length !=0){
+				if( candidateNameAndCompletedCountArray.length !=0){
 					var getWidth = $("#genSec"+i).parent().width()+'px';
 					$("#genSec"+i).width(getWidth);
 					$(function () {
-						$("#genSec"+i).highcharts({
-							colors: ['#0066DC'],
+						 $("#genSec"+i).highcharts({
+							 colors: ['#0066DC'],
 							chart: {
 								type: 'column'
 							},
 							title: {
-								text: null
+								text: ''
 							},
 							subtitle: {
-								text: null
+								text: ''
 							},
 							xAxis: {
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								categories: candidateNameArray,
-								title: {
-									text: null
-								}
+								
+								type: 'category',
+								labels: {
+											formatter: function() {
+												return this.value.toString().substring(0, 10)+'...';
+											},
+											
+										}
 								
 							},
 							yAxis: {
 								min: 0,
-								 gridLineColor: '#ffffff',
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
 								title: {
-									text: null,
-									align: 'high'
-								},
-								labels: {
-									overflow: 'justify'
+									text: ''
 								}
+
 							},
-							tooltip: {
-								valueSuffix: '%'
-							},
-							/* plotOptions: {
-								bar: {
-									dataLabels: {
-										enabled: true
-									}
-								}
-							}, */
 							legend: {
-								layout: 'vertical',
-								align: 'right',
-								verticalAlign: 'top',
-								x: -40,
-								y: 80,
-								floating: true,
-								borderWidth: 1,
-								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-								shadow: true
-							},
-							credits: {
 								enabled: false
 							},
-							series: [{
-								name: 'Completed',
+							
+									
+							plotOptions: {
+								column: {
+									stacking: 'percent',
 									dataLabels: {
 										enabled: true,
-											formatter: function(){
-											return Highcharts.numberFormat(this.y,0) + '%';
-										},
-										style: {
-											color:'#ffffff',
-											
+										 formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
+												return Highcharts.numberFormat(this.y,0) + '%';
+											}
 										}
-									},
-								data: CommitteeCompleteCountArray
-							}]
+									  
+									}
+								}
+							},
+
+							tooltip: {
+								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}%</b>'
+							},
+
+							series: [{
+								name: 'Completed',
+								data: candidateNameAndCompletedCountArray
+							}],
+						 
 						});
 					});
 				}else{
 					$("#genSec"+i).html("No Data Available");
-					$("#genSec"+i).css("height","35px;");
-				}
+					$("#genSec"+i).css("height","35px");
+						
+				} 
 				
 			}
 			
@@ -1033,113 +1032,111 @@
 			var str='';
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="text-capital">'+result[i][0].userType+'</h4>';
-					str+='<div id="genSec1'+i+'" style="width:100%;height:100px;"></div>';
+					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+					str+='<div id="genSec1'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
 				str+='</div>'
 			}
 		}
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").html(str);
 		if(result != null && result.length > 0){
 			for(var i in result){
-				var candidateNameArray = [];
-				var CommitteeCompleteCountArray = [];
+				var candidateNameAndCompletedCountArray =[];
+				//var CommitteeCompleteCountArray;
 				var countVar = 0;
+				
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
+						 var obj1 = {
+								name: result[i][j].name,
+								y: result[i][j].completedPerc
+							};
 						
-						candidateNameArray.push(result[i][j].name);
-						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
-							
+						candidateNameAndCompletedCountArray.push(obj1);
 						countVar =countVar+1;
 						if (countVar === 6) {
 							break;
 						}
 					}
 				}
+				
 					
-			
-					
-				if(CommitteeCompleteCountArray.length !=0 && candidateNameArray.length !=0){
+				if( candidateNameAndCompletedCountArray.length !=0){
 					var getWidth = $("#genSec1"+i).parent().width()+'px';
 					$("#genSec1"+i).width(getWidth);
 					$(function () {
-						$("#genSec1"+i).highcharts({
-							colors: ['#0066DC'],
+						 $("#genSec1"+i).highcharts({
+							 colors: ['#0066DC'],
 							chart: {
 								type: 'column'
 							},
 							title: {
-								text: null
+								text: ''
 							},
 							subtitle: {
-								text: null
+								text: ''
 							},
 							xAxis: {
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								categories: candidateNameArray,
-								title: {
-									text: null
-								}
+								
+								type: 'category',
+								labels: {
+											formatter: function() {
+												return this.value.toString().substring(0, 10)+'...';
+											},
+											
+										}
 								
 							},
 							yAxis: {
 								min: 0,
-								 gridLineColor: '#ffffff',
-
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
 								title: {
-									text: null,
-									align: 'high'
-								},
-								labels: {
-									overflow: 'justify'
-								},
-								
-							},
-							tooltip: {
-								valueSuffix: '%'
-							},
-							/* plotOptions: {
-								bar: {
-									dataLabels: {
-										enabled: true
-									}
+									text: ''
 								}
-							}, */
+
+							},
 							legend: {
-								layout: 'vertical',
-								align: 'right',
-								verticalAlign: 'top',
-								x: -40,
-								y: 80,
-								floating: true,
-								borderWidth: 1,
-								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-								shadow: true
+								enabled: false
 							},
 							
-							series: [{
-								name: 'Completed',
+									
+							plotOptions: {
+								column: {
+									stacking: 'percent',
 									dataLabels: {
 										enabled: true,
-										formatter: function(){
+										 formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
 												return Highcharts.numberFormat(this.y,0) + '%';
-											},
-										style: {
-											color:'#ffffff',
-											
+											}
 										}
-									},
-								data: CommitteeCompleteCountArray
-							}]
+									  
+									}
+								}
+							},
+
+							tooltip: {
+								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}%</b>'
+							},
+
+							series: [{
+								name: 'Completed',
+								data: candidateNameAndCompletedCountArray
+							}],
+						 
 						});
 					});
 				}else{
 					$("#genSec1"+i).html("No Data Available");
 					$("#genSec1"+i).css("height","35px");
 						
-				}
+				} 
 				
 			}
 			
