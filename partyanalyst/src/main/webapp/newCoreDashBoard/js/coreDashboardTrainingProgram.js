@@ -182,7 +182,111 @@ var getDocumentWidth = $(document).width();
 		});
 	}
 
- function buildLocationWiseTrainingProgramDetails(result){
+function buildLocationWiseTrainingProgramDetails(result){
+		$("#districtWiseProgramCntDivId").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+=result[i].name
+				str+='<div id="locationDivId'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+			
+		}
+		$("#districtWiseProgramCntDivId").html(str);
+	if(result != null && result.length > 0){
+		for(var i in result){
+			var districtNamesArray =[];
+			var districtWiseAttendedPercArray = [];
+			var districtWiseYetToTrainPercArray = [];
+			if(result[i].districtList !=null && result[i].districtList.length > 0){
+				for(var j in result[i].districtList){
+						districtNamesArray.push(result[i].districtList[j].name);
+						districtWiseAttendedPercArray.push(result[i].districtList[j].totalAttenedCountPer);
+						districtWiseYetToTrainPercArray.push(result[i].districtList[j].totalNotAttenedCountPer);
+					}
+			}
+						$(function () {
+							$('#locationDivId'+i+'').highcharts({
+								colors: ['#F56800','#53BF8B'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											formatter: function(){
+												return Highcharts.numberFormat(this.y,0) + '%';
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Attended',
+									data: districtWiseAttendedPercArray
+								}, {
+									name: 'Yet to Train',
+									data: districtWiseYetToTrainPercArray
+								}]
+							});
+						});
+		}
+	}else{
+		$("#districtWiseProgramCntDivId").html("No Data Available");
+	}	
+}
+/*   function buildLocationWiseTrainingProgramDetails(result){
 	
  var str='';	
  	  for(var i in result){
@@ -209,8 +313,8 @@ var getDocumentWidth = $(document).width();
 		  labelLegendShow:false,
 		  graphHeading:false
 		});
- }
- $(document).on("click",".trainingProgramCohortLiCls",function(){
+ }  */
+/*  $(document).on("click",".trainingProgramCohortLiCls",function(){
 	 var reportType=$(this).attr("attr_li_value");
 	 if(reportType!= null && reportType=="all"){
 	  buildLocationWiseTrainingProgramDetails(globalTrainingProgramDtlsRslt);
@@ -219,7 +323,7 @@ var getDocumentWidth = $(document).width();
 	 }else if(reportType!= null && reportType=="notAttended"){
 	 buildNotAttendedTrainingProgramRslt(globalTrainingProgramDtlsRslt);		  
 	 }
- });
+ }); */
  function buildAttendedTrainingProgramRslt(result){
  var str='';	
  	  for(var i in result){
@@ -326,7 +430,7 @@ var globalUserWiseMemberRslt;
 				}
 				var getWidth = $("#genSecTraining"+i).parent().width()+'px';
 				$("#genSecTraining"+i).width(getWidth);
-		 $(function () {
+		     $(function () {
 			$('#genSecTraining'+i).highcharts({
 				colors: ['#0066DC'],
 				chart: {
@@ -555,7 +659,6 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId){
 	 $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeId = firstChildUserTypeId;
 	  var jsObj ={ 
@@ -659,6 +762,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
  $(document).on("click",".childUserTypeClsForTrainingProgram",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
 	getSelectedChildTypeMembersForTrainingProgram(childUserTypeId);
+	getTrainingProgramPoorCompletedLocationDtls();
 });
 $(document).on("click",".activityMemberCls",function(){
 	    var activityMemberId = $(this).attr("attr_activitymemberid");  
@@ -667,6 +771,7 @@ $(document).on("click",".activityMemberCls",function(){
 		var selectedUserType = $(this).attr("attr_selectedusertype"); 	
 		var childActivityMemberId = $(this).attr("attr_id");  
 		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,"");
+		getTrainingProgramPoorCompletedLocationDtls();
 });
 $(document).on("click",".remveSlcUsrType",function(){
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
@@ -679,9 +784,9 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
-		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,"subLevel");
+		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 });
-  function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,types){
+  function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
@@ -695,13 +800,13 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		}).done(function(result){
 		  $("#"+childActivityMemberId).html('');
 		  if(result != null && result.length > 0){
-			  buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,types);
+			  buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
 		  }else{
 			  $("#"+childActivityMemberId).html('NO DATA AVAILABLE');  
 		  }
 		});
 	}
-	function buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,types){
+	function buildChildActivityMembersDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId){
 		var str='';
 		str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
@@ -712,7 +817,6 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		 }else{
 			str+='<table class="table table-condensed tableHoverLevels m_top20">';  
 		 }
-		
 				str+='<thead class="bg_D8 text-capital">';
 					str+='<th>% Rank</th>';
 					str+='<th>Designation</th>';
@@ -726,18 +830,24 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		str+='<tbody>';
 		var rank=1;
 		 for(var i in result){
+		var yourValues = result[i].locationName;
 		   str+='<tr class="lowLevelActivityMemberClsForTrainingProgram"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
-			if(types != null && types=="subLevel"){
-			if(result[i].localName != null && result[i].localName.trim().length > 0){
+			/* if(userTypeId != null && userTypeId==5 || userTypeId==6 || userTypeId==7 || userTypeId==8 || userTypeId==9){
+			if(result[i].locationName != null && result[i].locationName.trim().length > 0){
 				str+='<td>'+result[i].userType+' (<b>'+result[i].locationName.split(" ")[0]+'</b>)</td>';	
 			}
 			}else{
 			  str+='<td>'+result[i].userType+'</td>';
+			} */
+		  if(yourValues.indexOf(',') == -1){
+				str+='<td>'+result[i].userType+' (<b>'+result[i].locationName.split(" ")[0]+'</b>)</td>';
+			}else{
+				str+='<td>'+result[i].userType+'</td>';
 			}
-			str+='<td>'+result[i].name+'</td>';
+		   str+='<td>'+result[i].name+'</td>';
 			str+='<td>'+result[i].totalEligibleCount+'</td>';
 			str+='<td>'+result[i].totalAttenedCount+'</td>';
 			str+='<td>'+result[i].totalAttenedCountPer+'</td>';
@@ -757,27 +867,69 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 	var str='';
 	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
-		str+'<ul class="trainingsUl">';
+		//str+'<ul class="trainingsUl">';
 		  for(var i in globalTrainingProgramsRslt){
-			  str+='<li>';
+			//  str+='<li>';
 			  str+='<h4 class="text-capitalize text-muted">'+globalTrainingProgramsRslt[i].name+'</h4>';
 			  str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
-			  str+='</li>';
+			//  str+='</li>';
 		  }
-		str+='</ul>';
+		//str+='</ul>';
 	}
 	$("#programsDivId").html(str);
+	/* $(".trainingsUl").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 4,
+			 infinite: false,
+			  responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 4,
+					slidesToScroll: 4,
+					infinite: false,
+					dots: false
+				  }
+				},
+				{
+				  breakpoint: 800,
+				  settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
+		}); */
 	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
 		  for(var i in globalTrainingProgramsRslt){
 			var  jsonDataArr=[];
-			jsonDataArr.push({name:"Total Eligible",data:[globalTrainingProgramsRslt[i].totalEligibleCountPer]});
-			jsonDataArr.push({name:"Attended",data:[globalTrainingProgramsRslt[i].totalAttenedCountPer]});
-			jsonDataArr.push({name:"Yet to train",data:[globalTrainingProgramsRslt[i].totalNotAttenedCountPer]});
+			jsonDataArr.push({name:"Total Eligible",data:[globalTrainingProgramsRslt[i].totalEligibleCountPer,globalTrainingProgramsRslt[i].totalEligibleCountPer]});
+			jsonDataArr.push({name:"Attended",data:[globalTrainingProgramsRslt[i].totalAttenedCountPer,0]});
+			jsonDataArr.push({name:"Yet to train",data:[0,globalTrainingProgramsRslt[i].totalNotAttenedCountPer]});
+			
 		var chartWidth = $("#programHighChartId"+i).parent().width()/2;
 		$("#programHighChartId"+i).width(chartWidth);
 		$(function () {
 		  $('#programHighChartId'+i).highcharts({
-			colors: ['#F56800','#53BF8B','#66728C'],
+			colors: ['#66728C','#53BF8B','#F56800'],
 			chart: {
 			  type: 'column',
 			  
@@ -882,7 +1034,7 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			str+='<td>'+districtList[i].name+'</td>';
 			str+='<td>';
 				str+='<div class="progress progressCustom">';
-			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+districtList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">';
+			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+districtList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+districtList[i].totalAttenedCountPer+'%;">';
 					str+='<span class="sr-only">'+districtList[i].totalAttenedCountPer+'</span>';
 				  str+='</div>';
 				str+='</div>';
@@ -895,7 +1047,6 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			BGColor = BGColor - 0.2;
 			}
 			str+='</table>';
-			
 	  }	  
 	  str+='</div>';
 		
@@ -913,7 +1064,7 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			str+='<td>'+constituencyList[i].name+'</td>';
 			str+='<td>';
 				str+='<div class="progress progressCustom">';
-			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+constituencyList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">';
+		str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+constituencyList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+constituencyList[i].totalAttenedCountPer+'%;">';
 			str+='<span class="sr-only">'+constituencyList[i].totalAttenedCountPer+'</span>';
 			str+='</div>';
 			str+='</div>';

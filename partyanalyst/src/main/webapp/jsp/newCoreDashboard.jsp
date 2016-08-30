@@ -32,7 +32,7 @@
             <span class="logoText">TDP PARTY</span>
           </a>
         </div>
-    
+
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
@@ -82,7 +82,6 @@
             </div>
         </div>
     </div>
-   
 </header>
 <div class="container m_top20">
 	<div class="row">
@@ -418,136 +417,6 @@
 																		<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>
 																		<div class="row m_top20">
 																		  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
-																			<!--<div class="col-md-6 col-xs-12 col-sm-6">
-																				<p class="text-capital">districts</p>
-																				<!--<table class="table tableCumulative">
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
-																						<td>Kurnool</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.8)">1</span></td>
-																						<td>Chittoor</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.6)">1</span></td>
-																						<td>Kadapa</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.4)">1</span></td>
-																						<td>Ananthapur</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.2)">1</span></td>
-																						<td>Guntur</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																				</table>
-																			</div>-->
-																			<!--<div class="col-md-6 col-xs-12 col-sm-6">
-																				<p class="text-capital">Constituencies</p>
-																				<table class="table tableCumulative">
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
-																						<td>ichapuram</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.8)">1</span></td>
-																						<td>Salur</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.6)">1</span></td>
-																						<td>Srikakulam</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.4)">1</span></td>
-																						<td>madugula</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																					<tr>
-																						<td><span class="count" style="background-color:rgba(237, 29, 38,.2)">1</span></td>
-																						<td>tuni</td>
-																						<td>
-																							<div class="progress progressCustom">
-																							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-																								<span class="sr-only">60% Complete</span>
-																							  </div>
-																							</div>
-																						</td>
-																						<td class="text-danger">50</td>
-																					</tr>
-																				</table>
-																			</div>-->
 																		</div>
 																	</div>
 																</div>
@@ -670,7 +539,10 @@
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
 	});
-	
+	$('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
+	  //do something, like clearing an input
+	 alert(1)
+	});
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
@@ -679,6 +551,7 @@
 	   return loggedInUserAccessLevelValues;
 	}
 	
+
   </script>
 	
 	
