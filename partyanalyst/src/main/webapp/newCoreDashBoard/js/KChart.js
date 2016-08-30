@@ -104,7 +104,7 @@
 							rectAngle.setAttribute('height',getPercentage);
 							rectAngle.setAttribute('width',svgWidth);
 							rectAngle.setAttribute('x',XValue);
-							rectAngle.setAttribute('y',indexValue);
+							rectAngle.setAttribute('y',indexValue+10);
 							rectAngle.setAttribute('fill',myColors[i]);
 							//rectAngle.setAttribute("transform","rotate(90deg)");
 							rectAngle.setAttribute('class','hoverChange hoverChange'+n+''+h+'');
@@ -119,7 +119,7 @@
 						
 						var percEntage = document.createElementNS('http://www.w3.org/2000/svg','text');
 							percEntage.setAttribute('x',TextXValue);
-							percEntage.setAttribute('y',indexValue);
+							percEntage.setAttribute('y',indexValue+3);
 							percEntage.setAttribute('fill',KChartDefault.percentColor);
 							percEntage.setAttribute('class','textClass');
 							percEntage.setAttribute("dy","14px");
@@ -135,9 +135,9 @@
 							$(".myBarSingle"+j+""+n+"").append(percEntage);
 						}
 						svgXL = svgXL+parseInt(kk) + 5;
-						$(".myBarSingle"+j+""+n+" rect:first-child").attr("y","0");
+						$(".myBarSingle"+j+""+n+" rect:first-child").attr("y","15");
 						indexValue = parseInt(getPercentage) + parseInt(indexValue);
-						$(".myBarSingle"+j+""+n+" rect:first-child").attr("y","2");
+						$(".myBarSingle"+j+""+n+" rect:first-child").attr("y","17");
 					});
 					var liCount = $(this).find("span").length;
 					var textFirst  = $(".myBarSingle"+j+""+n+" rect").attr("y");
@@ -149,7 +149,7 @@
 						
 						$(".myBarSingle"+j+""+n+" rect").attr("y",liSingleP);
 						$(".myBarSingle"+j+""+n+"").find(".textClass").attr("x",XValueP);
-						$(".myBarSingle"+j+""+n+"").find(".textClass").attr("y",liSingleP);
+						$(".myBarSingle"+j+""+n+"").find(".textClass").attr("y",liSingleP-15);
 					}
 					var textFirstMany  = $(".myBarSingle11 rect:first-child").attr("width");
 						textFirstMany = textFirstMany * 0.30;
@@ -158,7 +158,7 @@
 						$(".myBarSingle11").find(".textClass").attr("y",liSingleP);
 					var rectText = document.createElementNS('http://www.w3.org/2000/svg','text');
 						rectText.setAttribute("x",XValue);
-						rectText.setAttribute("y",graphHeight-20);
+						rectText.setAttribute("y",graphHeight-5);
 						rectText.setAttribute("dy",".35em");
 						var SubStr = getNameOfLi;
 						var legendLa = svgWidth/10;
@@ -175,7 +175,7 @@
 						rectAngle1.setAttribute("width",svgWidth);
 						rectAngle1.setAttribute('fill','#A2A2A2');
 						rectAngle1.setAttribute('x',XValue);
-						rectAngle1.setAttribute("y","105");
+						rectAngle1.setAttribute("y","115");
 					
 					if(KChartDefault.borderLine)
 					{
