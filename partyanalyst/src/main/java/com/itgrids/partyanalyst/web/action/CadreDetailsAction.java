@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceReportVO;
@@ -38,10 +39,12 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
@@ -103,9 +106,30 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<ReportVO> reportVOList;
 	private CadreLocationVO cadreLocationVO;
 	private List<CadreReportVO> cadreReportHealthVOList = new ArrayList<CadreReportVO>(0);
+	private VoterCastInfoVO voterCastInfoVO ;
+	private ConstituencyManagementVO constituencyManagementVO;
+	private List<SelectOptionVO> selectOptList;
 	
 	
-	
+	public List<SelectOptionVO> getSelectOptList() {
+		return selectOptList;
+	}
+	public void setSelectOptList(List<SelectOptionVO> selectOptList) {
+		this.selectOptList = selectOptList;
+	}
+	public ConstituencyManagementVO getConstituencyManagementVO() {
+		return constituencyManagementVO;
+	}
+	public void setConstituencyManagementVO(
+			ConstituencyManagementVO constituencyManagementVO) {
+		this.constituencyManagementVO = constituencyManagementVO;
+	}
+	public VoterCastInfoVO getVoterCastInfoVO() {
+		return voterCastInfoVO;
+	}
+	public void setVoterCastInfoVO(VoterCastInfoVO voterCastInfoVO) {
+		this.voterCastInfoVO = voterCastInfoVO;
+	}
 	public List<GrievanceReportVO> getGrievanceReportVOList() {
 		return grievanceReportVOList;
 	}
@@ -1733,4 +1757,37 @@ public String updateCadreNotesInfrmationAction()
 		}
 		return Action.SUCCESS;
 	}
+public String getParliamentAndDistrictwiseCasteInformation(){
+		try{
+			constituencyManagementVO = new ConstituencyManagementVO();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			jObj = new JSONObject(getTask());
+			String type = jObj.getString("type");
+			Long locationId = jObj.getLong("id");
+			Long publicationDateId = jObj.getLong("publicationDateId");
+			Long userId = regVO.getRegistrationID();
+			VoterCastInfoVO votersByCast = cadreDetailsService.getParliamentAndDistrictwiseCasteInformation(type,locationId,publicationDateId,userId);
+			constituencyManagementVO.setVoterCastInfodetails(votersByCast);
+		}catch(Exception e){
+		 LOG.error("Exception occured in getNominatedPostReportFilesAction ",e);
+		}
+		return Action.SUCCESS;
+}
+public String getVolunteerCadreDetilasInformation(){
+	try{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		jObj = new JSONObject(getTask());
+		Long cadreId = jObj.getLong("tdpcadreId");
+		selectOptList = cadreDetailsService.getVolunteerCadreDetilasInformation(cadreId);
+	}catch(Exception e){
+	 LOG.error("Exception occured in getNominatedPostReportFilesAction ",e);
+	}
+	return Action.SUCCESS;
+}
 }
