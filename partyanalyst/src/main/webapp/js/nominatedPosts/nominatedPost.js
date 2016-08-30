@@ -930,11 +930,11 @@ function getNominatedPostApplication(startIndex)
 				//console.log(result[i].id);
 				if(result[i].id != null && result[i].id >= 0){ // no cadre search  candidate id
 				
-					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+					str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 						str +='</div>';
 					str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" sri attr_nominated_post_candidate_id="'+result[i].tdpCadreId+'" attr_membership_id="" />';
 				}else {
-						str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="http://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
+						str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+result[i].imageURL+'" class="img-responsive img-circle" alt="Profile"/>';
 							str +='</div>';
 						// cadre search  candidate id
 						str +='<input type="checkbox" attr_cadreId="'+result[i].tdpCadreId+'" class="cadreCls checkboxCls hideShowDivCls" name="checkbox" style="margin:auto;display:block;" id="appProfCheckBoxId" attr_nominated_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_membership_id="'+result[i].memberShipCardId+'" />';
