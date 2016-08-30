@@ -919,22 +919,24 @@
 		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html(str);
 		if(result != null && result.length > 0){
 			for(var i in result){
-				var length1 = result[i].length ;
+				
 				var candidateNameArray = [];
 				var CommitteeCompleteCountArray = [];
 				var countVar =0;
-				for(var j = 0; j <= length1; j++){
-					countVar =countVar+1;
-					if (countVar === 6) {
-						break;
-					}
-					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
+				
+				if(result[i] !=null && result[i].length>0){
+					for(var j in result[i]){
+						
 						candidateNameArray.push(result[i][j].name);
 						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
+							
+						countVar =countVar+1;
+						if (countVar === 6) {
+							break;
+						}
 					}
-					
-					
 				}
+				
 					
 				if(CommitteeCompleteCountArray.length !=0 && candidateNameArray.length !=0){
 					var getWidth = $("#genSec"+i).parent().width()+'px';
@@ -1043,20 +1045,17 @@
 				var CommitteeCompleteCountArray = [];
 				var countVar = 0;
 				var length = result[i].length - 1;
-				for(var j = length; j >= 0; j--){
-					countVar =countVar+1;
-					if (countVar === 6) {
-						break;
-					}
-					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
+				
+					for(var j = length; j > 0; j--){
+						countVar =countVar+1;
 						candidateNameArray.push(result[i][j].name);
 						CommitteeCompleteCountArray.push(result[i][j].completedPerc);
-					}
+						if (countVar === 6) {
+							break;
+						}
+					}	
 					
-					
-					
-					
-				}
+			
 					
 				if(CommitteeCompleteCountArray.length !=0 && candidateNameArray.length !=0){
 					var getWidth = $("#genSec1"+i).parent().width()+'px';
@@ -1275,7 +1274,7 @@
 				}
 				
 					str+='<thead class="bg_D8 text-capital">';
-						str+='<th>% Rank</th>';
+						str+='<th>Rank</th>';
 						str+='<th>Designation</th>';
 						str+='<th>Name</th>';
 						str+='<th>total</th>';
@@ -1287,7 +1286,7 @@
 					str+='<tbody>';
 					for(var i in result){
 						rankVar = rankVar+1;
-						 var yourValues = result[i].locationName;
+						 var locationNamevar = result[i].locationName;
 						str+='<tr class="compareLowLevelActivityMemberCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 							str+='<td>';
 								if( result[i].completedPerc != null && result[i].completedPerc >0){
@@ -1297,7 +1296,7 @@
 								}
 								
 							str+='</td>';
-							if( yourValues.indexOf(',') == -1){
+							if( locationNamevar.indexOf(',') == -1){
 								str+='<td>'+result[i].userType+' (<b>'+result[i].locationName+'</b>)</td>';
 							}else{
 								str+='<td>'+result[i].userType+'</td>';
@@ -1372,20 +1371,22 @@
 	function buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){
 		$("#topPoorPerformanceDiv").html('');
 		var str='';
-		 str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> performance affliated committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
-			str+='<div class="row m_top20">';
+		 
 			
 		if(result != null && result.subList1 != null && result.subList1.length >0){
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+			str+='<div class="row m_top20">';
+			
 			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
 			str+='<table class="table tableCumulative">';
-			var number =0;
+			var rankingvar =0;
 			var BGColor = 1;
 				for(var i in result.subList1){
 					str+='<tr>';
-					number = number+1;
+					rankingvar = rankingvar+1;
 				
-					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+number+'</span></td>';
+					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+rankingvar+'</span></td>';
 					str+='<td>'+result.subList1[i].name+'</td>';
 					str+='<td>';
 						str+='<div class="progress progressCustom">';
@@ -1455,35 +1456,29 @@
 		var str ='';
 		
 		if(result !=null && result.length >0){
-			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> locations - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> locations - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 					str+='<p class="text-capital"><b>'+result[0].requiredName+'</b></p>';
 					str+='<table class="table tableCumulative">';
 			var countVar =0;
-			var length1 = result.length ;
 			var BGColor = 1;
-				for(var i = 0; i <= length1; i++){
+			
+				for(var i in  result){
+					
+					//top 5 should build.
 					countVar =countVar+1;
 					if (countVar === 6) {
 						break;
 					}
 						str+='<tr>';
 							str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+countVar+'</span></td>';
-							if(result[i].locationLevelName != null && $.trim(result[i].locationLevelName).length > 0){
-								
-								if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
-								
-									str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
-								}else{
-								
-									str+='<td>'+result[i].name+'</td>';
-								}
+							
+							if(result[0].requiredName == "Mandals/Muncipalitys/Divisions" || result[0].requiredName == "Villages/Wards"){
+								str+='<td>'+result[i].name+' ('+result[i].locationLevelName+')</td>';
 							}else{
-								
 								str+='<td>'+result[i].name+'</td>';
 							}
-							
 							
 							str+='<td>';
 							if(result[i].completedCount !=null && result[i].completedCount >0){
