@@ -343,7 +343,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 											if(result[i].idnameList[j].availableCount != null && result[i].idnameList[j].availableCount >0)
 												str+='  <br><br> <span class="text-danger" title=" Total Available Posts " style="font-weight:bold;cursor:pointer;font-size: 12px;">  <b style="color:green;"> OPEN : </b> '+result[i].idnameList[j].availableCount+' , </span>';
 												if(result[i].idnameList[j].applicationsCount != null && result[i].idnameList[j].applicationsCount >0)
-											str+='<span class="text-danger " title=" Ready to Shortlist" style="font-weight:bold;cursor:pointer;font-size: 12px;"> <b style="color:orange;">  YET TO START :</b> '+result[i].idnameList[j].applicationsCount+' </span>';
+											str+='<span class="text-danger " title=" Ready to Shortlist" style="font-weight:bold;cursor:pointer;font-size: 12px;"> <b style="color:orange;"> READY TO SHORTLIST :</b> '+result[i].idnameList[j].applicationsCount+' </span>';
 										}
 										else{
 											//if(result[i].idnameList[j].applicationsCount != null && result[i].idnameList[j].applicationsCount >0)
