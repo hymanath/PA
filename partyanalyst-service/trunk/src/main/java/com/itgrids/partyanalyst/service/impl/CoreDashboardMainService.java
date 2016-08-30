@@ -1732,13 +1732,35 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			     	}
 				  }
 	}
+	
+	if(userTypeMapDtls!=null && userTypeMapDtls.size()>0){
+        Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
+        Map<Long,UserTypeVO>  secreteriesMap = null;
+        if(userTypeMapDtls.containsKey(11l)){
+          secreteriesMap = userTypeMapDtls.get(11l);
+          orgSecAndSecMap.putAll(secreteriesMap);
+          //remove secreteries from Map
+          userTypeMapDtls.remove(11l); 
+        }
+        
+        Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
+        if(userTypeMapDtls.containsKey(4l)){
+          organizingSecreteriesMap = userTypeMapDtls.get(4l);
+          orgSecAndSecMap.putAll(organizingSecreteriesMap);
+        }
+       
+        if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
+        	userTypeMapDtls.put(4l, orgSecAndSecMap); 
+        }
+      }
+	
 	if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 		  for(Entry<Long, Map<Long, UserTypeVO>> entry:userTypeMapDtls.entrySet()){
 		   Map<Long,UserTypeVO> userTypeMap = entry.getValue();
 		   resultList.add(new ArrayList<UserTypeVO>(userTypeMap.values()));
 	}
 	}
-	if(resultList != null && resultList.size() > 0){
+ 	if(resultList != null && resultList.size() > 0){
 		for(List<UserTypeVO> memberList:resultList){
 			Collections.sort(memberList, trainingMemberEligibleAttendedPercDesc);
 		}
