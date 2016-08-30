@@ -45,11 +45,12 @@
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".moreBlocks").hide();
 			
+		}else{
+			getUserTypeWiseCommitteesCompletedCounts1();
 		}
 		setTimeout(function(){
 			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
 			//initialiseGraph();
-			getUserTypeWiseCommitteesCompletedCounts1();
 		},500);
 	});
 	/* Notes Functionality Complete*/
@@ -110,11 +111,9 @@
 		$("#topPoorPerformanceDiv").html('');
 		$("#topPoorLocationsDiv").html(''); 
 		
-		
 		$(".moreBlocks").hide();
 		$(".moreBlocks1").show();
 		getChildUserTypesByItsParentUserType();
-		
 		
 	});
 	
@@ -169,12 +168,16 @@
 	});
 	
 	$(".stateCls").click(function(event){
-      $(".stateCls").parent().removeClass("active");
+	  $(".stateCls").parent().removeClass("active");
 	  $(this).parent().addClass("active");
 	  globalState = $(this).html();
 	  event.preventDefault();
+	  defaultCommitteeCalls();
     });
-	
+	$("#dateRangeId td").click(function(event){
+		 defaultCommitteeCalls();
+	 });
+	 
 	$(document).on("click",".basicCommitteesBlockDiv",function(){
 		$(this).closest(".moreBlocks").find(".basicCommitteesBlockDropDown").toggle();
 	});
