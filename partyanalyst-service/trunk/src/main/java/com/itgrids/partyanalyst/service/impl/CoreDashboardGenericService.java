@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -200,7 +201,7 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
     		 }
        		
        		Map<Long,List<Long>> ParentChildUserTypesMap = getParentUserTypesAndItsChildUserTypes();
-       		Map<Long,Map<Long,UserTypeVO>> userTypesMap  = new LinkedHashMap<Long, Map<Long,UserTypeVO>>(0);
+       		Map<Long,Map<Long,UserTypeVO>> userTypesMap  = new TreeMap<Long, Map<Long,UserTypeVO>>();
        		Map<Long,Set<Long>> locationLevelIdsMap = new HashMap<Long, Set<Long>>();
        		
        		Map<Long,Map<Long,UserTypeVO>> allParentsMap = getAllChildUserTypeMembersAndParentUserTypeMembers();
