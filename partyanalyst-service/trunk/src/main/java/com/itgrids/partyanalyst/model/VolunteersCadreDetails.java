@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,6 +38,7 @@ public class VolunteersCadreDetails extends BaseModel implements Serializable {
 	private String workArea;
 	private String mobileNo;
 	private String isDelete;
+	private Date workDate;
 	
 	private TdpCadre tdpCadre;
 	private Event event;
@@ -132,5 +134,13 @@ public class VolunteersCadreDetails extends BaseModel implements Serializable {
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
+	@Column(name = "work_date")
+	public Date getWorkDate() {
+		return workDate;
+	}
+	public void setWorkDate(Date workDate) {
+		this.workDate = workDate;
+	}
+	
 	
 }

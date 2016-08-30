@@ -11,7 +11,7 @@ public class CasteDetailsVO {
 	private String femaleCount;
 	private String maleCount;
 	
-	
+	private String casteCategoryName;
 	public String getFemaleCount() {
 		return femaleCount;
 	}
@@ -60,6 +60,12 @@ public class CasteDetailsVO {
 	}
 	public void setCasteCategoryGroupId(Long casteCategoryGroupId) {
 		this.casteCategoryGroupId = casteCategoryGroupId;
+	}
+	public String getCasteCategoryName() {
+		return casteCategoryName;
+	}
+	public void setCasteCategoryName(String casteCategoryName) {
+		this.casteCategoryName = casteCategoryName;
 	}
 	
 }

@@ -69,6 +69,21 @@ public class VoterCastBasicInfoDAO extends GenericDaoHibernate<VoterCastBasicInf
 		 query.setParameter("userId", userId);
 		return query.list();
 	}
-	
+	public List<Object[]> getTotalVoterCastBasicInfoList(List<Long> assemblyIdsList,Long publicationDateId, Long userId,Long reportLevelId)
+	{
+		Query query = getSession().createQuery("select sum(model.ocVoters)," +
+				" sum(model.bcVoters)," +
+				" sum(model.scVoters)," +
+				" sum(model.stVoters) from VoterCastBasicInfo model " +
+				" where model.reportLevelValue in(:assemblyIdsList)" +
+				" and model.publicationDateId = :publicationDateId " +
+				" and model.userId =:userId " +
+				" and model.voterReportLevel.voterReportLevelId =:reportLevelId");
+		 query.setParameterList("assemblyIdsList", assemblyIdsList);
+		 query.setParameter("publicationDateId",publicationDateId);
+		 query.setParameter("userId", userId);
+		 query.setParameter("reportLevelId", reportLevelId);
+		return query.list();
+	}
 	
 }

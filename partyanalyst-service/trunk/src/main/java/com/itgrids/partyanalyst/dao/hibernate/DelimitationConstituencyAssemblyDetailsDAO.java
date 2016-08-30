@@ -550,12 +550,14 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		query.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Long> getAssemblyConstituenciesByParliamentId(Long parliamentId) {
 		
 		Query query = getSession().createQuery("" +
 		" select model.constituency.constituencyId " +
 		" from   DelimitationConstituencyAssemblyDetails model " +
-		" where  model.delimitationConstituency.constituency.constituencyId in (:parliamentId) and model.delimitationConstituency.year = 2009 ");
+		" where  model.delimitationConstituency.constituency.constituencyId = :parliamentId and model.delimitationConstituency.year = 2009 ");
 			
 		query.setParameter("parliamentId", parliamentId);
 		return query.list();
@@ -578,5 +580,13 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		" WHERE  model.constituency.constituencyId = :constituencyId and model.delimitationConstituency.year = 2009");
 	    query.setParameter("constituencyId",constituencyId);
 	    return query.list();
+	}
+	public List<Long> findParliamentConstituenciesByDistrict(Long districtId)
+	{
+		Object[] params = {districtId};
+		return getHibernateTemplate().find(" select distinct model.delimitationConstituency.constituency.constituencyId, " +
+				" model.delimitationConstituency.constituency.name,model.constituency.district.districtName,model.constituency.district.districtId " +
+				" from DelimitationConstituencyAssemblyDetails model " +
+				"where model.constituency.district.districtId = ?  order by model.delimitationConstituency.constituency.name "  ,params);
 	}
 }
