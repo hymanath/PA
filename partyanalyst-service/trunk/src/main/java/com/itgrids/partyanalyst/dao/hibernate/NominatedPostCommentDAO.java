@@ -27,29 +27,29 @@ public class NominatedPostCommentDAO extends GenericDaoHibernate<NominatedPostCo
 		return query.list();
 	}
 	
-	public List<Object[]> getFinalyzedCommentsForCandidate(Long candidateId){
+	public List<Object[]> getFinalyzedCommentsForCandidate(Long postFinalId){
 		Query query = getSession().createQuery("select model.remarks," +
 										" model.insertedTime," +
 										" model1.firstName," +
 										" model1.lastName" +
 										" from NominatedPostComment model,User model1" +
 										" where model.insertedBy = model1.userId" +
-										" and model.nominatedPostFinal.nominationPostCandidateId = :candidateId" +
+										" and model.nominatedPostFinalId = :postFinalId" +
 										" and model.nominatedPostFinalId is not null");
-		query.setParameter("candidateId", candidateId);
+		query.setParameter("postFinalId", postFinalId);
 		return query.list();
 	}
 	
-	public List<Object[]> getShortListingCommentsForCandidate(Long candidateId){
+	public List<Object[]> getShortListingCommentsForCandidate(Long applicationId){
 		Query query = getSession().createQuery("select model.remarks," +
 										" model.insertedTime," +
 										" model1.firstName," +
 										" model1.lastName" +
 										" from NominatedPostComment model,User model1" +
 										" where model.insertedBy = model1.userId" +
-										" and model.nominatedPostApplication.nominationPostCandidateId = :candidateId" +
+										" and model.nominatedPostApplicationId = :applicationId" +
 										" and model.nominatedPostFinalId is null");
-		query.setParameter("candidateId", candidateId);
+		query.setParameter("applicationId", applicationId);
 		return query.list();
 	}
 }
