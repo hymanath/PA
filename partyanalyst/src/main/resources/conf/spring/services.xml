@@ -2719,8 +2719,13 @@
 		 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		 <property name="tdpCadreReportDAO" ref="tdpCadreReportDAO" />
 		 <property name="importantLeadersLevelDAO" ref="importantLeadersLevelDAO" />
-		  <property name="applicationDocumentDAO" ref="applicationDocumentDAO" />
+		 <property name="applicationDocumentDAO" ref="applicationDocumentDAO" />
+		 <property name="voterCastInfoDAO" ref="voterCastInfoDAO" />
+		 <property name="voterReportLevelDAO" ref="voterReportLevelDAO" />
+		 <property name="votersAnalysisService" ref="votersAnalysisService" />
+		 <property name="voterCastBasicInfoDAO" ref="voterCastBasicInfoDAO" />
 		 <property name="tdpCadreHealthReportDAO" ref="tdpCadreHealthReportDAO" />	
+		  <property name="volunteersCadreDetailsDAO" ref="volunteersCadreDetailsDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
