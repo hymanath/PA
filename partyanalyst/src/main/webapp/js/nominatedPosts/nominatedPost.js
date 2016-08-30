@@ -1731,17 +1731,19 @@ function savingApplication(){
 		if(result.indexOf("SUCCESS") > -1){
 			globalNominatedCandId = result.replace( /[^\d.]/g, '' );
 			saveFlag =true;
-			//$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application received  successfully , To complete the registration ,Upload the profiles below</span>");
-			if (confirm('Application Received Successfully...')) {
+			//if (confirm('Application Received Successfully...')) {
 				//location.reload();
-				clearAssignValues();
-			}
+				//clearAssignValues();
+			//}
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Received Successfully...</span>");
+			
+			setTimeout(function(){
+			clearAssignValues();
 			refreshExistingDetailsInNominatedLevel();
 			refreshExistingDetails();
-			//setTimeout(function(){
-			//$("#savingStatusDivId").html("");
-			//}, 5000);
+			}, 2000);
 			
+				
 		}else {
 			setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
