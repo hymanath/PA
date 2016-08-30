@@ -4,7 +4,7 @@ var getDocumentWidth = $(document).width();
 
 	function getTrainingCampBasicDetailsCntOverview()
 	{
-	 $("#programsDtlsCntTableId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	 $("#programsDtlsCntTableId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#villageWardTblId").html(' ');
 	 $("#mdlTwnDvsnTabId").html(' ');
 		var jsObj ={ 
@@ -159,7 +159,7 @@ var getDocumentWidth = $(document).width();
   }
   var globalTrainingProgramDtlsRslt;
  function getTrainingCampProgramsDetailsCntByDistrict(){
-		$("#districtWiseProgramCntDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues
@@ -204,6 +204,7 @@ var getDocumentWidth = $(document).width();
 		  labelText:true,
 		  showPercentage:true,
 		  percentColor:'#333',
+		  widthBtnGraphs:'12',
 		  chartHeight:'150px',
 		  labelLegendShow:false,
 		  graphHeading:false
@@ -234,8 +235,9 @@ var getDocumentWidth = $(document).width();
 	  }
 	  $("#districtWiseProgramCntDivId").html(str);
 	   $(".graphStructure").KChart({
-		  colors:['rgba(102,114,140,1)','rgba(245,104,0,1)','rgba(49,170,116,1)'],
+		  colors:['rgba(245,104,0,1)','rgba(102,114,140,1)','rgba(49,170,116,1)'],
 		  borderLine:true,
+		  widthBtnGraphs:'12',
 		  labelText:true,
 		  showPercentage:true,
 		  percentColor:'#333',
@@ -265,13 +267,14 @@ var getDocumentWidth = $(document).width();
 		  showPercentage:true,
 		  percentColor:'#333',
 		  chartHeight:'150px',
+		  widthBtnGraphs:'12',
 		  labelLegendShow:false,
 		  graphHeading:false
 		});
  }
 var globalUserWiseMemberRslt;
  function getUserTypeWiseTotalEligibleAndAttendedCnt(){
-	  $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	  $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 var jsObj ={
 			          userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
@@ -514,7 +517,7 @@ $(document).on("click",".moreTrainingBlocksIcon",function(){
 	
 });
   function getChildUserTypesByItsParentUserTypeForTrainingProgram(){
-		 $("#childUserTypeDetailsDivForTrainingProgram").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+		 $("#childUserTypeDetailsDivForTrainingProgram").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
 			type : 'POST',
@@ -550,9 +553,9 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		getTrainingProgramPoorCompletedLocationDtls();
 	}
 	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId){
-	 $("#childActivityMemberDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
-	 $("#userTypeWiseChildDtlsTabId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
-	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	 $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeId = firstChildUserTypeId;
 	  var jsObj ={ 
@@ -679,7 +682,7 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,"subLevel");
 });
   function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,types){
-	  $("#"+childActivityMemberId).html('<div ><center ><img  src="images/icons/loading.gif" ></center></div>');
+	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 reportType : "directChild",
@@ -704,7 +707,12 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
 				str+='<span class="remveSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 		 } 
-		str+='<table class="table table-condensed tableHoverLevels m_top20">';
+		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
+			 str+='<table class="table table-condensed tableHoverLevelsInner m_top20">';
+		 }else{
+			str+='<table class="table table-condensed tableHoverLevels m_top20">';  
+		 }
+		
 				str+='<thead class="bg_D8 text-capital">';
 					str+='<th>% Rank</th>';
 					str+='<th>Designation</th>';
@@ -840,7 +848,7 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 	}
 }
 	 function getTrainingProgramPoorCompletedLocationDtls(){
-	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div ><center ><img  src="images/icons/loading.gif"></center></div>');
+	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues
@@ -866,9 +874,11 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
       str+='<table class="table tableCumulative">';
       if(districtList != null && districtList.length > 0){
 		  var order=1;
+		  var BGColor = 1;
 		  for(var i in districtList){
+			
 			str+='<tr>';
-			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+order+'</span></td>';
+			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
 			str+='<td>'+districtList[i].name+'</td>';
 			str+='<td>';
 				str+='<div class="progress progressCustom">';
@@ -882,8 +892,10 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			order=order+1;
 			if(order==5)
 				break;
+			BGColor = BGColor - 0.2;
 			}
 			str+='</table>';
+			
 	  }	  
 	  str+='</div>';
 		
@@ -893,9 +905,11 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
       str+='<table class="table tableCumulative">';
       if(constituencyList != null && constituencyList.length > 0){
 		  var order=1;
+		  var BGColor = 1;
+		  
 		  for(var i in constituencyList){
 			str+='<tr>';
-			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,1)">'+order+'</span></td>';
+			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
 			str+='<td>'+constituencyList[i].name+'</td>';
 			str+='<td>';
 				str+='<div class="progress progressCustom">';
@@ -909,6 +923,7 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			order=order+1;
 			if(order==5)
 				break;
+			BGColor = BGColor - 0.2;
 			}
 				str+='</table>';
 			}
