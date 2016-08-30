@@ -1204,10 +1204,10 @@ $('.searchTypeCls').click(function(){
     $("#deptBoardPostnId"+num).empty();
    if(result != null && result.length >0){
 	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
-	  $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+	  
 	   if(result[0].status != "Applied"){
-		   //$("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
-	  }   
+		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
+	  } 
 		for(var i in result){
 			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');				
 		}
