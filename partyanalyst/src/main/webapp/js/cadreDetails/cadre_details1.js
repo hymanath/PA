@@ -706,3 +706,573 @@ function generatesExcel(id,excelName){
 	tableToExcel(id, excelName);
 }
 
+function getUpdatedCastePartyInfo(){
+	$("#localCastStatsTabContent_header").html("");
+    $("#localCastStatsTabContent_body").html("");
+	$("#localCastDetailsDiv").html("");
+	$("#partyBasicInfoStatsTab").html("");
+	$("#partyWiselocalcastDiv").html("");
+	$("#localCastChatDiv").html("");	
+	$("#localCastDetailsDivId").html("");
+	var constituencyId=0;
+	if($('#cadreParticipatedDistrictId').val().length > 0)
+	 {
+		 	if($('#cadreParticipatedConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreParticipatedConstituencyId").val();
+	 }
+	 else 
+	{
+		if($('#cadreConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreConstituencyId").val();
+	}
+  var castewiseAjaxDiv =  document.getElementById('castewiseAjaxDiv');
+		showAjaxImgDiv('castewiseAjaxDiv');
+		var jsObj=
+			{
+				type:"constituency",	
+				id:constituencyId,
+				typename:$("#participatedConstName").val(),
+				publicationDateId:22,
+				constituencyId:constituencyId,
+				queryType:"sub",
+				task:"getCastInfo"
+			}
+			$.ajax({
+			type:'POST',
+			 url: 'getvotersCastInfoByConstituency.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(results){
+					 $("#casteDiv").show();
+					buildCastInfoData(results,jsObj);
+					buildCastPiechart(results,jsObj);
+			});
+}
+function getUpdatedCasteLocationWiseInfoForMandalAndVillage(type){
+	$("#localCastStatsTabContent_header").html("");
+    $("#localCastStatsTabContent_body").html("");
+	$("#localCastDetailsDiv").html("");
+	$("#partyBasicInfoStatsTab").html("");
+	$("#partyWiselocalcastDiv").html("");
+	$("#localCastChatDiv").html("");
+	$("#localCastDetailsDivId").html("");
+	var constituencyId=0;
+	if($('#cadreParticipatedDistrictId').val().length > 0)
+	 {
+		 	if($('#cadreParticipatedConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreParticipatedConstituencyId").val();
+	 }
+	 else 
+	{
+		if($('#cadreConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreConstituencyId").val();
+	}
+	var locationId = 0;
+		if(type == "panchayat"){
+			//locationId = $('#cadrePanchaytId').val();;
+			locationId = globalPanchayatId;
+		}else if(type == "mandal"){
+			locationId = "2"+globalTehsilId;
+		}
+		var locationName = 0;
+		if(type == "panchayat"){
+			locationName = $("#panchayatId").html();
+		}else if(type == "mandal"){
+			locationName = $("#mandalId").html();
+		}
+  var castewiseAjaxDiv =  document.getElementById('castewiseAjaxDiv');
+		showAjaxImgDiv('castewiseAjaxDiv');
+		var jsObj=
+			{
+				type:type,	
+				id:locationId,
+				typename:locationName,
+				publicationDateId:22,
+				constituencyId:constituencyId,
+				queryType:"sub",
+				task:"getCastInfo"
+			}
+			$.ajax({
+			type:'POST',
+			 url: 'getvotersCastInfoByConstituency.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(results){
+					 $("#casteDiv").show();
+						buildCastInfoData(results,jsObj);
+						buildCastPiechart(results,jsObj);
+			});
+}
+function buildCastInfoData(results,jsObj)
+{ 
+   var constituencyId = $('#cadreConstituencyId').val();
+	// if( constituencyId == jsObj.id)
+  //{
+	$('#localCastDetailsHeadingDiv').html('');
+	$('.localCastStatsVotersTitle').html('');
+	
+	var result = results.voterCastInfodetails;
+	var castewiseAjaxDiv = document.getElementById('castewiseAjaxDiv');
+	hideAjaxImgDiv('castewiseAjaxDiv');
+	//var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
+	var totalVoters = result.totalVoters;
+	var totalCasts = result.totalCasts;
+	var totalMale = result.maleVoters;
+	var totalFemale = result.femaleVoters;
+	var voters = '';
+	if(totalVoters == 0){
+		$('#votersMainOuterDiv2').hide();
+		$('#casteDiv').hide();
+		return false;
+	}
+	$('#casteDiv').show();
+	if(result.maleVoters > 0){
+		
+       if("constituency" == jsObj.type)
+        $("#castPartyPopupShowBtn").hide();
+	   else
+		   $("#castPartyPopupShowBtn").show();
+		   $("#partywiseCasteTitle").html("Party Wise Caste Statistics In "+jsObj.typename+" ");
+		$("#partyBasicInfoStatsTabNewTitle").html("<div id='partyDiv'><input type='button' value='Graphical Representation Of Party Wise Voters Details' class='btn btn-info pull-right' onClick='showPartyWiseDetailsInGraph()' id='partyGraphButtonId'/></div>");
+	    $("#LocalCastDiv").css('padding-bottom','20px');
+	}
+	else{
+	   		$("#partyBasicInfoStatsTabNewTitle").html("").css("background","#ffffff");
+	}
+	var localCastStatsTabContent = '<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span class="" style="padding:10px;"> Total Voters : '+totalVoters+'</span>';
+	var localCastStatsTabContent = '<li style="padding:8px"> Total Voters : '+totalVoters+'</li>';
+	localCastStatsTabContent += '<li style="padding:8px">Total Castes : '+totalCasts+'</li>';
+	//localCastStatsTabContent += 'Total Male Voters : '+totalMale+'&nbsp;&nbsp;&nbsp;';
+	//localCastStatsTabContent += 'Total Female Voters : '+totalFemale+'<br><br>';
+	localCastStatsTabContent += '<li style="padding:8px">Caste Assigned Voters : '+result.maleVoters+'</li>';
+	//localCastStatsTabContent += '<span class="">Caste Not Assigned Voters : '+result.femaleVoters+'</span>';
+
+	if(result.voterCastInfoVOList != null && result.voterCastInfoVOList.length > 0)
+	  $('#localCastDetailsHeadingDiv').html('<h2 id="subHeading">Caste Category wise voters details</h2>');
+	else
+     	$('#localCastDetailsHeadingDiv').html('').css("background","#ffffff");
+	
+	voters +='<ul class="casteWiseUl">';
+	  var reqx = 0;
+	  for(var i=0;i<result.castCategoryWiseVotersList.length;i++){
+	    reqx = 1;
+	    if(i != 0 && i % 5 == 0)
+		 voters +='';
+		voters +='<li style="padding-left:14px;margin:2px;clear:both;display:block;padding:5px;">'+result.castCategoryWiseVotersList[i].name+' Voters : '+result.castCategoryWiseVotersList[i].id+'</li>';
+	     if(i != 0 && i%5 == 0)
+		 voters +='';
+	 }
+		 if(reqx % 5 != 0)
+		    voters+='';
+		
+    voters +='</ul>';
+	
+	localCastStatsTabContent += '</div>';
+	 
+	$('#localCastDetailsDiv').html(voters);
+//	localCastStatsTabContent_headerEl.innerHTML = localCastStatsTabContent;
+	var typeName = jsObj.typename;	
+	var publicationDateId=jsObj.publicationDateId;
+	var boothId=jsObj.id;
+	var type =jsObj.type;
+	var	castIno = new Array();
+	var castStatsArray = new Array();
+	
+	var cast = result.voterCastInfoVOList;
+		for(var i in cast)
+		{
+		var castStats = 
+			{
+			caste : cast[i].castName,
+			casteCategory:cast[i].casteCategoryName,
+			castePopulation : cast[i].totalVoters,
+			malePopulation : cast[i].maleVoters,
+			femalePopulation : cast[i].femaleVoters,
+			castePercentage:cast[i].votesPercent,
+			casteStateId : cast[i].casteStateId,
+			
+			};
+		castIno.push(castStats);
+		castStatsArray = castIno; 
+		}
+		if(cast != '')
+	{
+		buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type,castStatsArray);	
+		$('#castContainerChart').css('display','block');
+	}
+		
+		else{
+		$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+		$('.localCastStatsVotersTitle').css("backgrond","#FFF;");
+		$('#castContainerChart').css('display','none');
+		}
+}
+function buildCastPiechart(results,jsObj)
+{
+	$('#localCastChatDiv').html('');
+	var results = results.voterCastInfodetails;
+	if(results.castCategoryWiseVotersList.length == 0)
+	{
+		$("#localCastDetailsHeadingDiv").html('').css("background","#FFF");
+		$(".castDetailsMainDiv").css("border","none")
+		return;
+	}
+	//$(".castDetailsMainDiv").css("border","1px solid #CCC")
+	var data = new google.visualization.DataTable();
+	data.addColumn('string','cast');
+	data.addColumn('number','percentage');
+	data.addRows(results.castCategoryWiseVotersList.length);
+
+	for(var j=0; j<results.castCategoryWiseVotersList.length; j++)
+	{
+		data.setValue(j,0,results.castCategoryWiseVotersList[j].name);
+		data.setValue(j,1,results.castCategoryWiseVotersList[j].id);
+	} 
+
+	var chart = new google.visualization.PieChart(document.getElementById('localCastChatDiv'));
+		chart.draw(data, {width: 400, height: 200,legend:'right',legendTextStyle:{fontSize:12}, title:'Caste category wise voters details chart',titleTextStyle:{color:'blue',fontName:'verdana',fontSize:13}
+	});
+}
+
+//The Variable are for Caste Chart -- Created By Teja
+    var castesArr=[];
+	var totalVotersArr=[];
+	var maleVotersArr=[];
+	var femaleVotersArr=[];
+	var castPercentageArr=[];
+	var castArray=[];
+	77
+function buildLocalCastStatisticsDataTableForBooth(typeName,publicationDateId,boothId,type,castStatsArray)
+	{
+	 if(castStatsArray == null || castStatsArray.length == 0)
+	    return;
+	$("#localCastStatsTabContentTitle").html("Local Caste Statistics in "+typeName+" ");
+	 castArray = castStatsArray;
+	$("#localCastStatsVotersTitle").removeClass("localCastStatsVotersTitle");
+         var str =' <table id="localCastStatsJqTable" class="table table-bordered" cellpadding="0" cellspacing="0" border="0" width="100%">';
+          str+='  <thead style="background-color:#CCC">';
+          str+='   <tr>';
+          str+='     <th>Caste</th>';
+		  str+='	 <th>Caste Category</th>';
+		  str+='     <th>Voters</th>';
+          str+='     <th>Male Voters</th>';
+          str+='     <th>Female Voters</th>';
+          str+='	 <th>Caste Percentage</th>';
+          str+='   </tr>';
+          str+='  </thead>';
+          str+='  <tbody>';
+	   
+	$.each(castArray, function( key, value ) {
+		if(value.castePercentage>=1){
+			castesArr.push(value.caste);
+			totalVotersArr.push(value.castePopulation);
+			maleVotersArr.push(value.malePopulation);
+			femaleVotersArr.push(value.femalePopulation);
+			castPercentageArr.push(parseFloat(value.castePercentage));
+		}
+	});
+	
+	
+	/*buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,castPercentageArr); */
+	   
+	   
+	   for(var i in castArray){
+	      str +='   <tr>';
+		  //str +='		<td>'+castArray[i].caste+'</td>';
+		  if(type =='booth')
+		   {	  
+		  str+='<td>'+castArray[i].caste+'</td>';
+		   }
+		   else if(type =='panchayat')
+		   {
+			   str+='<td>'+castArray[i].caste+'</td>';
+		   }else if(type =='hamlet')
+		   {	  
+		  str+='<td>'+castArray[i].caste+'</td>';
+		   }
+		   else
+		  str +='		<td>'+castArray[i].caste+'</td>';
+		  str+='        <td>'+castArray[i].casteCategory+'</td>';
+          str +='		<td>'+castArray[i].castePopulation+'</td>';
+          str +='		<td>'+castArray[i].malePopulation+'</td>';
+		  str +='		<td>'+castArray[i].femalePopulation+'</td>';
+		  str +='		<td>'+castArray[i].castePercentage+'</td>';
+          str+='   </tr>';
+	   }
+          str+='  </tbody>';
+          str+=' </table>';
+	  
+	  $("#localCastStatsTabContent_body").html(str);
+	  $("#localCastStatsTabContent_body").css("margin-bottom","35px").css("margin-top","10px");
+	  	$('#localCastStatsJqTable').dataTable({
+		"aaSorting": [[ 2, "desc" ]],
+		"iDisplayLength": 10,
+		"aLengthMenu": [[10, 30, 90, -1], [10, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null
+		] 
+		});
+		$('#localCastStatsJqTable').removeClass("dataTable");
+	buildGraphBySlide();
+}
+function buildGraphBySlide(){
+	castesArr=[];
+	totalVotersArr=[];
+	maleVotersArr=[];
+	femaleVotersArr=[];
+	castPercentageArr=[];
+	
+	$.each(castArray, function( key, value ) {
+		if(value.castePercentage>=casteRange){
+			castesArr.push(value.caste);
+			totalVotersArr.push(value.castePopulation);
+			maleVotersArr.push(value.malePopulation);
+			femaleVotersArr.push(value.femalePopulation);
+			castPercentageArr.push(parseFloat(value.castePercentage));
+		}
+	});
+buildCasteVotersChart(castesArr,totalVotersArr,maleVotersArr,femaleVotersArr,castPercentageArr);
+}
+function buildCasteVotersChart(cs,tv,mv,fv,cp)
+ {
+ 
+ 
+   $('#container').highcharts({
+            chart: {
+                zoomType: 'xy',
+				marginRight: 130,
+                marginBottom: 100,
+				width:890,height:390
+            },
+			
+            title: {
+                text: 'Caste Wise Analysis'
+            },
+            
+            xAxis: [{
+                categories: cs,
+				labels: {
+                                align:'right',
+                                style: {
+                                      cursor: 'pointer',
+                                      fontSize: '14px',
+                                      //fontWeight:'bold'
+                                },
+                                rotation:300, 
+                            } 
+            }],
+            yAxis: [{ // Primary yAxis
+				min: 0,
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: 'caste Percentage ',
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                opposite: true
+    
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Caste Percentage/Total Voters',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#4572A7'
+                    }
+                }
+    
+            }, { // Tertiary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Total Voters',
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +'';
+                    },
+                    style: {
+                        color: '#AA4643'
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 0,
+                verticalAlign: 'top',
+                y: -10,
+                floating: true,
+                backgroundColor: '#FFFFFF'
+            },
+            series: [ {
+                name: 'Total Voters',
+                type: 'spline',
+                color: '#AA4643',
+                yAxis: 2,
+                data: tv,
+               /* marker: {
+                    enabled: false
+                },*/
+                //dashStyle: 'shortdot',
+                tooltip: {
+                    valueSuffix: ''
+                }
+    
+            }, {
+                name: 'Caste Percentage',
+                color: '#89A54E',
+                type: 'spline',
+                data: cp,
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }]
+        });
+		$('tspan:last').hide();
+    }
+	
+
+var casteRange;	
+/* $(document).ready(function() {
+	var data = new google.visualization.DataTable();
+$( "#slider" ).slider({
+value:1,
+min: 0,
+max: 40,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount" ).val( "Perc Of Voters Caste: " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Perc Of Voters Caste: " + ui.value +" %");
+casteRange=ui.value;
+buildGraphBySlide(casteRange);
+}
+});
+casteRange=$( "#amount" ).val( "Perc Of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+casteRange=$( "#slider" ).slider( "value" );
+}); */
+function showAjaxImgDiv(id)
+{
+	//document.getElementById(id).style.display = 'block';
+}	
+function hideAjaxImgDiv(id)
+{
+	//document.getElementById(id).style.display = 'none';
+}
+
+function getUpdatedCasteLocationWiseInfoForParliamentAndDistrict(type){
+	$("#localCastStatsTabContent_header").html("");
+    $("#localCastStatsTabContent_body").html("");
+	$("#localCastDetailsDiv").html("");
+	$("#partyBasicInfoStatsTab").html("");
+	$("#partyWiselocalcastDiv").html("");
+	$("#localCastChatDiv").html("");
+	$("#localCastDetailsDivId").html("");
+	var constituencyId=0;
+	if($('#cadreParticipatedDistrictId').val().length > 0)
+	 {
+		 	if($('#cadreParticipatedConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreParticipatedConstituencyId").val();
+	 }
+	 else 
+	{
+		if($('#cadreConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreConstituencyId").val();
+	}
+		var locationId = 0;
+		if(type == "parliamentConstituency"){
+			locationId = tdpCadreParliamentConstituencyId;
+		}else if(type == "district"){
+			locationId = tdpCadreDistrictId;
+		}
+	var castewiseAjaxDiv =  document.getElementById('castewiseAjaxDiv');
+		showAjaxImgDiv('castewiseAjaxDiv');
+		var jsObj=
+			{
+				type:type,	
+				id:locationId,
+				publicationDateId:22
+			}
+			$.ajax({
+			type:'POST',
+			 url: 'getParliamentAndDistrictwiseCasteInformationAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(results){
+					$("#casteDiv").show();
+					buildCastInfoData(results,jsObj);
+					buildCastPiechart(results,jsObj);
+			
+				
+			});
+} 
+$(document).on("click","#volunteerId",function(){
+		var jsObj=
+			{
+				tdpcadreId:globalCadreId	
+			}
+			$.ajax({
+			type:'POST',
+			 url: 'getVolunteerDetailsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			buildVolunteersDetails(result);	
+			});
+});
+function buildVolunteersDetails(result){
+	$("#volunteerModalDivId").modal("show");
+	$("#dataLoadiVolunteerDetailsImg").show();
+	//$("#volunteerDetailsModalHeadingId").html("<span style='text-transform:uppercase'>"++" </span>");
+		if(result != null){
+			var str='';
+			str+='<div class="table-responsive">';
+			str+='<table class="table m_0 table-bordered">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Date</th>';
+						str+='<th>Event</th>';
+						str+='<th>Designation</th>';
+						str+='<th>Work Area</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
+				for(var i in result){
+					str+='<tr>';
+						if(result[i].latitude == null || 	result[i].latitude == "")
+							str+='<td class="text-center">-</td>';
+						else	
+						str+='<td>'+result[i].latitude+'</td>';//work Date
+					
+						str+='<td>'+result[i].type+'</td>';//Event Name
+						str+='<td>'+result[i].name+'</td>';//designation
+						str+='<td>'+result[i].location+'</td>';//work Area
+						str+='</tr>';
+					}
+				str+='</tbody>'
+			str+='</table>';
+			str+='</div>';
+			
+			$("#dataLoadiVolunteerDetailsImg").hide();
+			$("#volunteerDetailsModalBodyId").html(str);
+		}
+	}
