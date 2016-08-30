@@ -564,12 +564,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				
 			List<Object[]>  list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
 			List<Object[]> nonAppliedPostns = new ArrayList<Object[]>();
-			if(commonMethodsUtilService.isListOrSetValid(list) && commonMethodsUtilService.isListOrSetValid(appliedPositions)){
+			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for(Object[] obj : list){
-					if(!appliedPositions.contains((Long)obj[0])){
-						
+					if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
+						if(!appliedPositions.contains((Long)obj[0])){
+							nonAppliedPostns.add(obj);
+						}
+					}else{
 						nonAppliedPostns.add(obj);
-						
 					}
 				}
 			}
