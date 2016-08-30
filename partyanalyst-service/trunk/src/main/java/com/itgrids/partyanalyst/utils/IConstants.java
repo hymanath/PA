@@ -1148,4 +1148,11 @@ public interface IConstants {
 	public static final Long[] NOMINATED_SHORTLISTED_STATUS_IDS ={3l,5l,6l,7l};
 	public static final String NOMINATED_POST_APPLICATION_STATUS="2,4,5,7";
 	public static final String NOMINATED_POST_FINALIZED_GOISSUED_STATUS="2,3";
+	//User Ids
+	
+	public static final Long DISTRICT_PRESIDENT_USER_ID = 5l;
+	public static final Long MP_USER_ID = 6l;
+	public static final Long MLA_USER_ID = 7l;
+	public static final Long CONSTITUENCY_USER_ID = 8l;
+	public static final Long CONSTITUENCY_INCHARGE_USER_ID = 9l;
 }

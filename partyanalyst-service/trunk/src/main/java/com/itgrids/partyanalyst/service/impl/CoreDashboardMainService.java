@@ -1801,7 +1801,10 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
 		  }
 		  
-		  if(reportType != null && reportType.equalsIgnoreCase("directChild")){
+	/*	if(childUserTypeId != null && childUserTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_ID || childUserTypeId.longValue()==IConstants.MP_USER_ID
+		   ||childUserTypeId.longValue()==IConstants.MLA_USER_ID || childUserTypeId.longValue()==IConstants.CONSTITUENCY_USER_ID || 
+		   childUserTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_ID){*/
+		   if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 			  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
 		  }
 	 	    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
@@ -1849,7 +1852,6 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			      }
 		   }  
 		  //Setting Location name
-		  if(reportType != null && reportType.equalsIgnoreCase("directChild")){
 				  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 				      for(UserTypeVO vo:childActivityMembersMap.values()){
 				    	  for(Long locationValueId:vo.getLocationValuesSet()){
@@ -1862,8 +1864,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				    	  }
 				      }
 			    }    
-			  }
-		  //Calculating percentage
+			//Calculating percentage
 		  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
 			      for(UserTypeVO vo:childActivityMembersMap.values()){
 			    	 	vo.setTotalAttenedCountPer(calculatePercantage(vo.getTotalAttenedCount(),vo.getTotalEligibleCount()));  
@@ -1885,6 +1886,14 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	}
 	return resultList;	
 	}
+	/**
+	* @param  Long userAccessLevelId
+	* @param List<Long> userAccessLevelValues
+	* @return  TrainingCampProgramVO
+	* @author Santosh 
+	* @Description :This Service Method is used to get top5 poor district and constituency locations attended counts. 
+	*  @since 29-AUGUST-2016
+	*/
   public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userAccessLevelId,List<Long> userAccessLevelValues){
 	  
 	  TrainingCampProgramVO resultVO = new TrainingCampProgramVO();
