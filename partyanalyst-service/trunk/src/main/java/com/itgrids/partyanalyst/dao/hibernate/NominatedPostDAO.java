@@ -493,8 +493,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 		    		       " model.nominatedPostMember.nominatedPostPosition.departments.deptName from NominatedPost " +
 		    		       " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
-		    		       //" and model.nominatedPostStatus.nominatedPostStatusId=1" +
-		    		       " and model.nominationPostCandidateId is null ");
+		    		       "  and model.nominationPostCandidateId is null ");
 		   
 		    if(postType != null && postType.longValue() > 0)
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.postType.postTypeId=:postTypeId ");
@@ -547,7 +546,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.board.boardId," +
 		    		       " model.nominatedPostMember.nominatedPostPosition.board.boardName from NominatedPost " +
 		    		       " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N' " +
-		    		       "  and model.nominatedPostStatus.nominatedPostStatusId=1 and model.nominationPostCandidateId is null  ");
+		    		       "  and model.nominationPostCandidateId is null  ");
 		    
 		    if(departmentId != null && departmentId.longValue() > 0){
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId");
@@ -602,8 +601,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    queryStr.append(" select distinct model.nominatedPostMember.nominatedPostPosition.position.positionId," +
 		    		        " model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPost " +
 		    		        " model where model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  " +
-		    		        //"  and model.nominatedPostStatus.nominatedPostStatusId=1" +
-		    		        " and model.nominationPostCandidateId is null  "); 
+		    		        "  and model.nominationPostCandidateId is null  "); 
 		    
 		       if(departmentId != null && departmentId.longValue()> 0L){
 			      queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId =:deapartmentId ");	
