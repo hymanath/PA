@@ -30,16 +30,27 @@
 	<link href="dist/JqueryTe/jquery-te-1.4.0.css" rel="stylesheet" type="text/css">
 	<!--<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">-->
 	<!-- Add fancyBox main JS and CSS files -->  
-	
-	<link rel="stylesheet" type="text/css" href="pdfexpand/source/jquery.fancybox.css?v=2.1.5" media="screen" />
-	
+	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 	
 						<!-- End -->
+
 <style type="text/css">
+
 
 .partyMeetingsCollapseBody
 {
 	position:relative;
+}
+.casteWiseUl
+{
+	padding-left:0px;
+}
+.casteWiseUl li
+{
+	border:1px solid #ddd;
+	padding:3px;
+	margin-top:2px;
+	list-style:none;
 }
 .mouse-over1
     {
@@ -316,6 +327,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;<span class="text-success" id="isFamilyId"></span></p>
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
+						<p class="m_0">Volunteers Count : <a class="pointer"><span id="volunteerId"></span></a></p>
 						<p class="m_0" id="debateMainDivId" style="display:none" >TV DEBATOR : DEBATES (<a class="pointer"><span id="debateCountId"></span></a>)</p>
 					</div>
 				</div>
@@ -959,7 +971,7 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
                 </div>
             </div>
         </div>
-		<!-- Party Meetings -->
+        <!-- Party Meetings -->
 		<div class="row">
 			<div class="col-md-12 col-xs-12">
 				<div class="panel panel-default">
@@ -1006,6 +1018,85 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div>
 		</div>
 		<!-- Party Meetings End-->
+		<div class="row">
+        	<div class="col-md-12 col-xs-12" >
+            	<!--<div class="panel panel-default">
+                	<div class="panel-heading" id="casteStatusId" >
+						<h4 class="panel-title text-bold" style="cusor:pointer">
+							&nbsp;&nbsp;&nbsp;CASTE DETAILS
+							<i  onclick="getUpdatedCastePartyInfo()" class="" style="margin-left:5px"></i>
+							<span class="pull-right" id="casteStatusHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+							<span class="pull-right" id="casteStatusShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>								 
+						</h4>
+                    </div>
+					<div class="panel-body" id="casteBodyDiv">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+						<div>
+                        	<label class="radio-inline casteUrbanClass">
+                            	<input type="radio" name="casteLocation" class="casteLocCls" value="panchayat">Village/Ward
+                            </label>
+                            <label class="radio-inline urbanClass">
+                            	<input type="radio" name="casteLocation" class="casteLocCls" value="mandal">Mandal/Town/Division
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio" name="casteLocation" class="casteLocCls" value="assemblyConstituency" checked>Assembly Constituency
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio" name="casteLocation" class="casteLocCls" value="parliamentConstituency">Parliament Constituency
+                            </label>
+                            <label class="radio-inline">
+                            	<input type="radio" name="casteLocation" class="casteLocCls" value="district" >District
+                            </label>
+                        </div>
+							<div id="casteDiv" class="widget blue whitegloss" style="display:block;width: 96%;color:#000;position:relative;margin:auto;">
+								<span id="castewiseAjaxDiv" style="display:block; position:absolute;top:10px;right:20px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
+							<div id='LocalCastDiv'>
+								<div>
+									<div class="row"  style="border:1px solid #DDD;margin-top:10px;" id="castInfoDiv">
+										<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top:12px;">
+											<div class="row" style="margin-top:25px;">
+												<div class="col-md-6 col-xs-12 col-sm-6">
+													<ul id='localCastStatsTabContent_header' class="casteWiseUl" ></ul>
+												</div>
+												<div class="col-md-6 col-xs-12 col-sm-6">
+													<div id="localCastDetailsDiv" ></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-6" style="border-left:1px solid #CCC;">
+											<div id="localCastChatDiv"  style="position:inherit;max-width:450px;"></div>
+										</div>
+									</div>
+									<div id="castContainerChart">
+										<div id="castContainerChartInner">
+											<!--<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
+													<h5 style="text-align:center;">Drag Slider for Building Chart Based on Voters Caste Percentage </h5>
+													<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
+													</div>
+													<p style="padding-bottom:2px;">
+														<input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+													</p>
+											</div>-->
+											<!--<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto;"></div>-->
+									<!--	</div>
+									</div>
+									<div id="partyWiseDetailsHeadingDiv" style="clear:both;" class="localCastDetailsHeadingDiv"></div>
+									<div id='partyWise_header'></div>
+									<div class="partyWiseDetailsMainDiv">
+										<table style="width:100%;"><tr>
+											<td><div id="partyWiseDetailsDiv"></div></td>
+												<td><div id="partyWiseChatDiv"></div></td></tr></table></div>
+									<div id='localCastStatsTabContent_body' class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:20px;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+	</div>
+ </div>
 		<!--<div class="col-md-12 m_top10 pad_10 block" id="surveyDetailsMainDivId">
 				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
 					
@@ -1607,9 +1698,30 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
     </div>
   </div>
 </div>
+<div class="modal fade" id="volunteerModalDivId">
+		  <div class="modal-dialog modal-excess">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="volunteerDetailsModalHeadingId">Volunteer Details Information</h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="volunteerDetailsModalBodyId">
+				</div>
+				<div id="statusDivIdForvolunteer" class="m_top20"></div>
+				<center><img id="dataLoadiVolunteerDetailsImg" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<!--<script src=" https://code.jquery.com/ui/1.11.1/jqueryui/1.11.1/jquery-ui.js "></script>-->
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
@@ -1635,8 +1747,12 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
 	<script type="text/javascript" src="pdfexpand/source/jquery.fancybox.js?v=2.1.5"></script>
-	
+	<script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
+	<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 	<script>
+	google.load("visualization", "1", {packages:["corechart"]});
 	$(document).on("click","#nominatedreportsId",function(){
 		$("#profileModelId").modal('show');
 	})
@@ -2021,6 +2137,15 @@ $(document).on("click",".newsRadioCls",function(){
 $('.committeeLocCls').click(function(){
     getLocationwiseCommitteesCount();
   });
+$(".casteLocCls").click(function(){
+	 var type = $("input[name='casteLocation']:checked").val();
+	 if(type == "parliamentConstituency" || type == "district")
+		getUpdatedCasteLocationWiseInfoForParliamentAndDistrict(type); 
+	else if(type == "mandal" || type == "panchayat")
+		getUpdatedCasteLocationWiseInfoForMandalAndVillage(type);
+	else if(type == "assemblyConstituency")
+		getUpdatedCastePartyInfo();
+});
 
 $(document).on("click",".candidateRedirectedCls",function(){
 	var candidateId=$(this).attr("attr_candidateId");;
@@ -2337,6 +2462,19 @@ $(document).on("click","#grievanceStatusDivId",function(){
 	}
 	$("#grievanceStatusMainDivId").collapse('toggle');
 });*/
+$("#casteBodyDiv").collapse('hide');
+$(document).on("click","#casteStatusId",function(){
+	var isVisible = $( "#casteStatusHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#casteStatusHideId" ).show();
+		 $( "#casteStatusShowId" ).hide();
+	}else{
+		$( "#casteStatusHideId" ).hide();
+		$( "#casteStatusShowId" ).show();
+	}
+	$("#casteBodyDiv").collapse('toggle');
+});
+
 $("#statusCountsMainDivId").collapse('hide');
 $(document).on("click","#StatusCountsDivId",function(){
 	var isVisible = $( "#statusCountsHideId" ).is( ":visible" );
