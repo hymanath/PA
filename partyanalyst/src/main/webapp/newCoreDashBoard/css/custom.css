@@ -257,6 +257,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	min-width:400px;
 }
+
 .panel-group
 {
 	margin-bottom:0px;
@@ -804,6 +805,40 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	box-shadow:0px 0px 7px rgba(0,0,0,0.6);
 	margin-top:10px;
 }
+.notesDropDownOptionsView
+{
+	min-width:200px !important;
+	right:0px;
+	background:#fff;
+	z-index:99;
+	display:none;
+	padding:12px 12px 12px 20px;
+	top:48px;
+	border:2px solid #FFCC2D !important
+}
+.notesDropDownOptionsView:after, .notesDropDownOptionsView:before {
+	bottom: 100%;
+	right: 40px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.notesDropDownOptionsView:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color:#FFC21F;
+	border-width: 15px;
+	margin-left: -15px;
+}
+.notesDropDownOptionsView:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #FFC21F;
+	border-width: 16px;
+	margin-left: -16px;
+}
 .basicCommitteesBlockDropDown
 {
 	display:none;
@@ -1118,6 +1153,9 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-radius:50%;
 	color:#EDEEF0;
 	padding:3px 4px;
+	display:block;
+	text-align:center;
+	width:25px;
 }
 .bg_CC
 {
@@ -1167,25 +1205,24 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	top:10px;
 	cursor:pointer;
 }
-
 .tableHoverLevels tr.showHideTr:hover td , .tableHoverLevels tr.showHideTr:hover td:first-child , .tableHoverLevels tr.showHideTr:hover td:last-child
 {
 	border:0px !important;
 }
-.tableHoverLevels tr:hover td
+.tableHoverLevels tr:hover td , .tableHoverLevelsInner tr:hover td
 {
 	border-top:1px solid #4a5865 !important;
 	border-bottom:1px solid #4a5865 !important;
 	cursor:pointer;
 }
-.tableHoverLevels tr:hover td:first-child
+.tableHoverLevels tr:hover td:first-child, .tableHoverLevelsInner tr:hover td:first-child
 {
 	border-left:1px solid #4a5865 !important;
 	border-top-left-radius:5px !important;
 	border-top:1px solid #4a5865 !important;
 	border-bottom:1px solid #4a5865 !important;
 }
-.tableHoverLevels tr:hover td:last-child
+.tableHoverLevels tr:hover td:last-child, .tableHoverLevelsInner tr:hover td:last-child
 {
 	border-right:1px solid #4a5865 !important;
 }
@@ -1206,6 +1243,12 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 .tableCumulative tr td.text-danger
 {
 	color:#E41B23
+}
+.remveSlcUsrType
+{
+	background: #cccccc none repeat scroll 0 0;
+    border-radius: 50%;
+	padding:2px 4px;
 }
 .progressCustom
 {
@@ -1302,4 +1345,53 @@ margin-top:20px;
 .tableTraining tr td
 {
 	border-top:0px !important;
+}
+/* Loader */
+.spinner {
+  margin: 30px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  text-align: center;
+  
+  -webkit-animation: sk-rotate 2.0s infinite linear;
+  animation: sk-rotate 2.0s infinite linear;
+}
+
+.dot1, .dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #1ABC9C;
+  border-radius: 100%;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
 }
