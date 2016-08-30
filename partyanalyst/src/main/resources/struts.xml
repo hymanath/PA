@@ -13488,8 +13488,16 @@
 		<result type="json" name="success">
    			<param name="root">trainingCampProgramVO</param>
    		</result>
+	</action>	
+	<action name="getParliamentAndDistrictwiseCasteInformationAction" class="cadreDetailsAction" method="getParliamentAndDistrictwiseCasteInformation">
+		<result type="json" name="success">
+   			<param name="root">constituencyManagementVO</param>
+   		</result>
 	</action>
-	
-	
+	<action name="getVolunteerDetailsAction" class="cadreDetailsAction" method="getVolunteerCadreDetilasInformation">
+		<result type="json" name="success">
+   			<param name="root">selectOptList</param>
+   		</result>
+	</action>
 </package>
 </struts>
