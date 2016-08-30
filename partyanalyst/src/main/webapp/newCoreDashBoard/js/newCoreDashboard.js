@@ -71,15 +71,53 @@
 		$(this).closest("li").remove();
 	});
 	$(document).on("click",".moreBlocksIcon",function(){
-		$(".moreBlocks").toggle();
-		getLevelWiseBasicCommitteesCountReport();
+		$(this).addClass("unExpandBlock");
+		$(".moreBlocks").show();
+		$(".moreBlocksDetailAndComp").show();
+		$(".moreBlocks1").hide();
 		customBuildGraph();
+
+		getLevelWiseBasicCommitteesCountReport();
 		var tdpCommitteeLevelIdsClickedArray = [];
 		tdpCommitteeLevelIdsClickedArray.push(6);
 		tdpCommitteeLevelIdsClickedArray.push(8);
 		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
-		getChildUserTypesByItsParentUserType();
+		
 	});
+	
+	$(document).on("click",".unExpandBlock",function(){
+		$(this).removeClass("unExpandBlock");
+		$(".moreBlocks").hide();
+		$(".moreBlocks1").hide();
+		$(".moreBlocksDetailAndComp").hide();
+		$(".comparisionBlock").removeClass("active");
+		$(".detailedBlock").addClass("active");
+	});
+	$(document).on("click",".detailedBlock",function(){
+		
+		$(".moreBlocks1").hide();
+		$(".moreBlocks").show();
+		getLevelWiseBasicCommitteesCountReport();
+		var tdpCommitteeLevelIdsClickedArray = [];
+		tdpCommitteeLevelIdsClickedArray.push(6);
+		tdpCommitteeLevelIdsClickedArray.push(8);
+		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
+		
+	});
+	$(document).on("click",".comparisionBlock",function(){
+		$("#SelectedUserTypeDetailsDiv").html(''); 
+		$("#directChildActivityMemberDiv").html('');
+		$("#topPoorPerformanceDiv").html('');
+		$("#topPoorLocationsDiv").html(''); 
+		
+		
+		$(".moreBlocks").hide();
+		$(".moreBlocks1").show();
+		getChildUserTypesByItsParentUserType();
+		
+		
+	});
+	
 	$(document).on("click",".activeUlCls li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");

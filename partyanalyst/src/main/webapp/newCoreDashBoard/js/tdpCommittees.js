@@ -502,7 +502,7 @@
 							});
 						});	
 						}else{
-							$('#mainCommittees'+i+''+j+'').html("No Data Available")
+							$('#mainCommittees'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
 						}
 						
 						
@@ -740,9 +740,19 @@
 			firstuserType = result[0].userType;
 			firstUserMemberName = result[0].name;
 		var rankVar =0;
+		
+		
 		for(var i in result){
 			rankVar =rankVar+1;
-			str+='<li  style="cursor:pointer;" class="compareActivityMemberCls" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+			
+			if(i == 0){
+				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls panelActiveSlick" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+			}else{
+				
+				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
+				
+			}
+			
 			
 				str+='<div class="panel panel-default panelSlick">';
 					str+='<div class="panel-heading">';
@@ -846,13 +856,25 @@
 	}
 	
 	$(document).on("click",".childUserTypeCls",function(){
-	
-		 $("#directChildActivityMemberDiv").html('');
-		$("#topPoorPerformanceDiv").html('');
-		$("#topPoorLocationsDiv").html(''); 
 		var childUserTypeId = $(this).attr("attr_usertypeid");
+		
+		
+		if($(this).hasClass("active")){
+		
+			$("#directChildActivityMemberDiv").html('');
+			$("#topPoorPerformanceDiv").html('');
+			$("#topPoorLocationsDiv").html(''); 
+			var childUserTypeId = $(this).attr("attr_usertypeid");
 	
-		getSelectedChildUserTypeMembers(childUserTypeId);
+			getSelectedChildUserTypeMembers(childUserTypeId);
+		}else{
+		
+			$("#SelectedUserTypeDetailsDiv").html('');
+			$("#directChildActivityMemberDiv").html('');
+			$("#topPoorPerformanceDiv").html('');
+			$("#topPoorLocationsDiv").html(''); 
+		}
+		
 	});
 	
 	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result){
@@ -879,7 +901,7 @@
 				var countVar =0;
 				for(var j = 0; j <= length1; j++){
 					countVar =countVar+1;
-					if (countVar === 5) {
+					if (countVar === 6) {
 						break;
 					}
 					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
@@ -906,13 +928,18 @@
 								text: null
 							},
 							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
 								categories: candidateNameArray,
 								title: {
 									text: null
 								}
+								
 							},
 							yAxis: {
 								min: 0,
+								 gridLineColor: '#ffffff',
 								title: {
 									text: null,
 									align: 'high'
@@ -924,13 +951,13 @@
 							tooltip: {
 								valueSuffix: '%'
 							},
-							plotOptions: {
+							/* plotOptions: {
 								bar: {
 									dataLabels: {
 										enabled: true
 									}
 								}
-							},
+							}, */
 							legend: {
 								layout: 'vertical',
 								align: 'right',
@@ -947,6 +974,16 @@
 							},
 							series: [{
 								name: 'Completed',
+									dataLabels: {
+										enabled: true,
+											formatter: function(){
+											return Highcharts.numberFormat(this.y,0) + '%';
+										},
+										style: {
+											color:'#ffffff',
+											
+										}
+									},
 								data: CommitteeCompleteCountArray
 							}]
 						});
@@ -984,7 +1021,7 @@
 				var length = result[i].length - 1;
 				for(var j = length; j >= 0; j--){
 					countVar =countVar+1;
-					if (countVar === 5) {
+					if (countVar === 6) {
 						break;
 					}
 					if(result[i][j].completedPerc !=null && result[i][j].completedPerc >0){
@@ -1013,13 +1050,19 @@
 								text: null
 							},
 							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
 								categories: candidateNameArray,
 								title: {
 									text: null
 								}
+								
 							},
 							yAxis: {
 								min: 0,
+								 gridLineColor: '#ffffff',
+
 								title: {
 									text: null,
 									align: 'high'
@@ -1032,13 +1075,13 @@
 							tooltip: {
 								valueSuffix: '%'
 							},
-							plotOptions: {
+							/* plotOptions: {
 								bar: {
 									dataLabels: {
 										enabled: true
 									}
 								}
-							},
+							}, */
 							legend: {
 								layout: 'vertical',
 								align: 'right',
@@ -1053,6 +1096,16 @@
 							
 							series: [{
 								name: 'Completed',
+									dataLabels: {
+										enabled: true,
+										formatter: function(){
+												return Highcharts.numberFormat(this.y,0) + '%';
+											},
+										style: {
+											color:'#ffffff',
+											
+										}
+									},
 								data: CommitteeCompleteCountArray
 							}]
 						});
@@ -1083,8 +1136,10 @@
 	
 	
 	$(document).on("click",".compareActivityMemberCls",function(){
-		$(".slickPanelSlider").find("li").removeClass("active")
-		$(this).addClass("active")
+		//$(".slickPanelSlider").find("li").removeClass("active");
+		//$(this).addClass("active");
+		$(".slickPanelSlider").find("li").removeClass("panelActiveSlick");
+		$(this).addClass("panelActiveSlick");
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
@@ -1263,9 +1318,6 @@
 			str+='</tbody>';
 				str+='</table>';
 				$("#"+childActivityMemberId).html(str);
-		}else{
-			$("#"+childActivityMemberId).html("<span style='cursor: auto;'>No Data Available</span>");
-			
 		}
 	
 	}
