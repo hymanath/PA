@@ -310,9 +310,14 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	                if(constituencyList.get(0)>0l){
 	                    query.setParameterList("constituencyList", constituencyList);
 	                }
-	                if(mandalList !=null && mandalList.size()>0){
-	                    query.setParameterList("mandalList", mandalList);
+	                
+	                if(townList !=null && townList.size()>0){
+	                	query.setParameterList("townList", townList);
 	                }
+	                
+	                /*if(mandalList !=null && mandalList.size()>0){
+	                    query.setParameterList("mandalList", mandalList);
+	                }*/
 	                if(wardList !=null && wardList.size()>0){
 	                    query.setParameterList("wardList", wardList);
 	                }
