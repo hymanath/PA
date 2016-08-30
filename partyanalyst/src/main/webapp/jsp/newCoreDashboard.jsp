@@ -144,8 +144,8 @@
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
-                                    	<li class="topFivePoorResults">Top 5 Poor</li>
-                                        <li class="active topFiveStrongResults">Top 5 Strong</li>
+                                    	<li class="active topFiveStrongResults">Top 5 Strong</li>
+										<li class="topFivePoorResults">Top 5 Poor</li>
                                     </ul>
                                 </div>
                                 <div id="userTypeWiseCommitteesForTopFiveStrongDiv"></div>
@@ -155,10 +155,10 @@
                         <div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
                         	<ul class="list-inline pull-right activeUlCls">
-                            	<li class="active">Detailed</li>
-                                <li>Comparison</li>
+                            	<li class="active detailedBlock">Detailed</li>
+                                <li class="comparisionBlock">Comparison</li>
                                 <li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>
                             </ul>
 							<div class="basicCommitteesBlockDropDown" style="z-index:999">
@@ -205,117 +205,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--<div class="col-md-12 col-xs-12 col-sm-12 moreBlocks">
-                        	<div class="row">
-                            	<div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-offset-0">
-                                	<div class="panel panel-default panelNew">
-                                    	<div class="panel-heading">
-                                        	<span class="headingColor text-capitalize">logically complete - status not updated</span>
-                                        </div>
-                                        <div class="panel-body">
-                                        	<table class="table table-condensed tableLevels">
-                                            	<thead class="bg_ED">
-                                                	<th>Level</th>
-                                                    <th>Main</th>
-                                                    <th>%</th>
-                                                    <th>Affliated</th>
-                                                    <th>%</th>
-                                                </thead>
-                                                <tr>
-                                                	<td>Village/ Ward</td>
-                                                    <td>11250</td>
-                                                    <td>80%</td>
-                                                    <td>1500</td>
-                                                    <td>70%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Mandal/ Town/ Village</td>
-                                                    <td>11250</td>
-                                                    <td>80%</td>
-                                                    <td>1500</td>
-                                                    <td>70%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>District</td>
-                                                    <td>11250</td>
-                                                    <td>80%</td>
-                                                    <td>1500</td>
-                                                    <td>70%</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>State</td>
-                                                    <td>11250</td>
-                                                    <td>80%</td>
-                                                    <td>1500</td>
-                                                    <td>70%</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-offset-0">
-                                	<div class="panel panel-default panelNew">
-                                    	<div class="panel-heading">
-                                        	<div class="row">
-                                            	<div class="col-md-8 col-xs-12 col-sm-12">
-                                                	<span class="headingColor text-capitalize">running status - lapsed</span>
-                                                </div>
-                                                <div class="col-md-4 col-xs-12 col-sm-12">
-                                                	<ul class="activeUlCls list-inline">
-                                                    	<li class="active">Main</li>
-                                                        <li>Affliated</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body">
-                                        	<table class="table table-condensed tableLevels">
-                                            	<thead class="bg_ED">
-                                                	<th>Level</th>
-                                                    <th>&gt; 1Week</th>
-                                                    <th>&gt; 2Week</th>
-                                                    <th>&gt; 3Week</th>
-                                                    <th>&gt; 1months</th>
-                                                    <th>&gt; 3months</th>
-                                                </thead>
-                                                <tr>
-                                                	<td>Village/ Ward</td>
-                                                    <td>250</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>Mandal/ Town/ Village</td>
-                                                    <td>250</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>District</td>
-                                                    <td>250</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                </tr>
-                                                <tr>
-                                                	<td>State</td>
-                                                    <td>250</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                    <td>300</td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
+                       
                         <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top20 moreBlocks">
                         	<div class="panel panel-default panelNew">
                                 <div class="panel-heading">
@@ -323,169 +213,15 @@
                                         <div class="col-md-8 col-xs-12 col-sm-12">
                                             <span class="headingColor text-capitalize">all committees performance cohort</span>
                                         </div>
-                                        <!--<div class="col-md-4 col-xs-12 col-sm-12">
-                                            <ul class="activeUlCls list-inline">
-                                                <li class="active">All</li>
-                                                <li>Yet To Start</li>
-                                                <li>Completed</li>
-                                                <li>Started</li>
-                                            </ul>
-                                        </div>-->
+                                        
                                     </div>
                                 </div>
                                 <div class="panel-body">
-									<!--<div id="mainCommittees" class="chartLiD"></div>-->
-									
 									<div id="districtWiseCommitteesReport" ></div>
-									
-                                	<!--<div>
-                                    	<h4>Main Committee</h4>
-                                    	<ul class="graphStructure">
-                                        	<li>
-                                            	<span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="60"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="90"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <hr/>
-                                    <div class="m_top20">
-                                    	<h4>Telugu Yuvatha</h4>
-                                    	<ul class="graphStructure">
-                                        	<li>
-                                            	<span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <hr/>
-                                    <div class="m_top20">
-                                    	<h4>Telugu Mahila</h4>
-                                    	<ul class="graphStructure">
-                                        	<li>
-                                            	<span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <hr/>
-                                    <div class="m_top20">
-                                    	<h4>Telugu Rythu</h4>
-                                    	<ul class="graphStructure">
-                                        	<li>
-                                            	<span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                        </ul>
-                                    </div>-->
-                                </div>
+								</div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks" >
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;" >
                             <p><i>Selected:</i> <b>Main Committee</b></p>
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
@@ -879,6 +615,10 @@
 	
 	$(document).on("click",".userStructureClass",function(){
 		
+		$("#directChildActivityMemberDiv").html('');
+		$("#topPoorPerformanceDiv").html('');
+		$("#topPoorLocationsDiv").html(''); 
+		
         var  clickedActivityMemberId = $(this).attr("attr_activityMemberId");
 		var  clickedUserTypeId = $(this).attr("attr_userTypeId");
 		var  clickedUserAccessLevelId =  $(this).attr("attr_userAccessLevelId");
@@ -908,10 +648,6 @@
 		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 		getChildUserTypesByItsParentUserType();
 		
-		getDirectChildActivityMemberCommitteeDetails(clickedActivityMemberId,clickedUserTypeId,selectedMemberName,selectedUserType,clickedChildActivityMemberId);
-		
-		getTopPoorPerformancecommittees(clickedActivityMemberId,selectedMemberName,selectedUserType);
-		getTopPoorCommitteeLocations(clickedActivityMemberId,selectedMemberName,selectedUserType);
 	});
 	
 	$(document).on("click",".hideDropDownView",function(){
