@@ -17,7 +17,8 @@ public class UserTypeRelationDAO extends GenericDaoHibernate<UserTypeRelation,Lo
 	public List<Object[]>  getParentUserTypesAndItsChildUserTypes(){
 		  
 		Query query = getSession().createQuery("" +
-		" select  parent.userTypeId,parent.type,child.userTypeId,child.type " +
+		" select  parent.userTypeId,parent.type," +
+		"         child.userTypeId,child.type " +
 		" from   UserTypeRelation model" +
 		"        join model.childUserType child " +
 		"        left join model.parentUserType parent " +

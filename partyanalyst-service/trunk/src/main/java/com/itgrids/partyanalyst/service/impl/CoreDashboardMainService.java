@@ -320,11 +320,44 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 		     committeeBO.setStatusList(statusList);
 		     Map<String,UserTypeVO> locationLevelCountsMap = getCommitteesCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,committeeBO);
 		     
-		     userTypesList = getMemberRelatedCountsOrPercantage(userTypesMap,"counts",locationLevelCountsMap);
-		     if(userTypesList!=null && userTypesList.size()>0){
-		    	 getMemberRelatedCountsOrPercantage(userTypesMap,"percanatge",null);
+		     getMemberRelatedCountsOrPercantage(userTypesMap,"counts",locationLevelCountsMap);
+		     getMemberRelatedCountsOrPercantage(userTypesMap,"percanatge",null);
+		     
+		    //mixing secreteries and general secreteries.
+		     if(userTypesMap!=null && userTypesMap.size()>0){
+		    	 
+		    	 Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
+		    	 
+		    	 Map<Long,UserTypeVO>  secreteriesMap = null;
+		    	 if(userTypesMap.containsKey(11l)){
+		    		 secreteriesMap = userTypesMap.get(11l);
+		    		 orgSecAndSecMap.putAll(secreteriesMap);
+		    		 //remove secreteries from Map
+		    		 userTypesMap.remove(11l); 
+		    	 }
+		    	 
+		    	 Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
+		    	 if(userTypesMap.containsKey(4l)){
+		    		 organizingSecreteriesMap = userTypesMap.get(4l);
+		    		 orgSecAndSecMap.putAll(organizingSecreteriesMap);
+		    	 }
+		    	
+		    	 if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
+		    		 userTypesMap.put(4l, orgSecAndSecMap); 
+		    	 }
+		    	 
 		     }
-		   
+		     
+		     //converting Map to list.
+		     if(userTypesMap != null && userTypesMap.size() > 0){
+		    	 userTypesList = new ArrayList<List<UserTypeVO>>();
+		    	 for(Long userType:userTypesMap.keySet()){
+		    		 Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
+		    		 userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
+		    	 }
+		     }
+		     
+		     
 		  //sorting
 		   if(userTypesList != null && userTypesList.size()>0)
 		   {
@@ -345,15 +378,12 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	}
    
 	
-	public List<List<UserTypeVO>> getMemberRelatedCountsOrPercantage(Map<Long,Map<Long,UserTypeVO>> userTypesMap,String type,Map<String,UserTypeVO> locationLevelCountsMap){
+	public void getMemberRelatedCountsOrPercantage(Map<Long,Map<Long,UserTypeVO>> userTypesMap,String type,Map<String,UserTypeVO> locationLevelCountsMap){
 		
    	//get member related counts or percanatges
-		List<List<UserTypeVO>> userTypesList = null;
 		
 		   if( userTypesMap != null && userTypesMap.size() > 0)
-		   {
-			   userTypesList = new ArrayList<List<UserTypeVO>>();
-			   
+		   {   
 			   for(Long userType:userTypesMap.keySet())
 			   {   
 				   Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
@@ -388,10 +418,9 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 						   }
 					   }
 				   }
-				   userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
 			   }
 		   }
-		   return userTypesList;
+		  
     }
 	
 	public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new Comparator<UserTypeVO>() {
