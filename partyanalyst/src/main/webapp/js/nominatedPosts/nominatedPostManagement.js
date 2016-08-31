@@ -558,21 +558,13 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					
 					if(result[i].receivedCount > 0){
 					var availablePosts = 0;
-					var readyForFinalReview= 0;
-					var finalized = 0;
-					var goPassed = 0;
+					
 					var totalPositions=0;
 							if(result[i].idNameVoList !=null && result[i].idNameVoList.length>0){
 								
 								for(var j in result[i].idNameVoList){
 										if(result[i].idNameVoList[j].name =="Open"){
-											availablePosts = result[i].idNameVoList[j].count;
-										}else if(result[i].idNameVoList[j].name =="Final Review"){
-											readyForFinalReview = result[i].idNameVoList[j].count;
-										}else if(result[i].idNameVoList[j].name =="Confirmed"){
-											finalized = result[i].idNameVoList[j].count;
-										}else if(result[i].idNameVoList[j].name =="GO Issued"){
-											goPassed = result[i].idNameVoList[j].count;
+											availablePosts = availablePosts+result[i].idNameVoList[j].count;
 										}
 										
 										totalPositions = totalPositions + result[i].idNameVoList[j].count;
@@ -585,15 +577,24 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					var rdyToShortlist = 0;
 					var shortListed = 0;
 					var rejected =0;
+					var readyForFinalReview= 0;
+					var finalized = 0;
+					var goPassed = 0;
 					
 						if(result[i].distList !=null && result[i].distList.length>0){
 								for(var j in result[i].distList){
 										if(result[i].distList[j].name =="Applied"){
-											rdyToShortlist = result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="Rejected"){
-											rejected  = result[i].distList[j].count;
+											rdyToShortlist = rdyToShortlist+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Rejected" || result[i].distList[j].name =="Rejected in Final Review" || result[i].distList[j].name =="Rejected in Finalized"){
+											rejected  = rejected+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Shortlisted"){
-											shortListed = result[i].distList[j].count;
+											shortListed = shortListed+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Final Review"){
+											readyForFinalReview = readyForFinalReview+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Confirmed"){
+											finalized = finalized+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="GO Issued"){
+											goPassed = goPassed+result[i].distList[j].count;
 										}
 								}
 							} 
@@ -631,9 +632,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								
 								if(rdyToShortlist>0){
 									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
-										str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> <span title=" Yet to Start Applications Count">'+rdyToShortlist+'</span></td>';
+										str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> <span title="Ready to Shortlist Applications Count">'+rdyToShortlist+'</span></td>';
 									else
-										str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >  <span title=" Yet to Start Applications Count">'+rdyToShortlist+'</span></td>';
+										str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >  <span title=" Ready to Shortlist Applications Count">'+rdyToShortlist+'</span></td>';
 								}
 								else
 									str+='<td> - </td>';
