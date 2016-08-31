@@ -909,7 +909,12 @@
 			
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
+					str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
+				}else{
 					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+				}
+					
 					str+='<div id="genSec'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
 				str+='</div>'
 					
@@ -1032,9 +1037,14 @@
 			var str='';
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+				
+					if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
+					str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
+					}else{
+						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+					}
 					str+='<div id="genSec1'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
-				str+='</div>'
+				str+='</div>';
 			}
 		}
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").html(str);
