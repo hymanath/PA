@@ -2069,7 +2069,7 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 	  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId,");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-             queryStr.append(" TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId,");  
+             queryStr.append(" TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
           queryStr.append(" TCM.tdpCommitteeRole.tdpCommittee.userAddress.parliamentConstituency.constituencyId, ");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
@@ -2096,7 +2096,7 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 	  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-             queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId in (:userAccessLevelValues)");  
+             queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
           queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
@@ -2114,7 +2114,7 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 	  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId ");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-             queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId ");  
+             queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId ");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
           queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.parliamentConstituency.constituencyId ");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
@@ -2152,6 +2152,14 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
 	         queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,"); //3
 	  	     queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.name,"); //4
 	  	    }
+	        if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+		         queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId,");
+		         queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilName,");
+		     }
+            if(locationType != null && locationType.equalsIgnoreCase("Village")){
+	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId,");
+	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatName,");
+	        }
 			queryStr.append(" count(distinct TCM.tdpCadre.tdpCadreId) " + //4
 			" from " +
 			" TdpCommitteeMember TCM,TrainingCampEligbleDesignation TCED " +
@@ -2185,7 +2193,12 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
         if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
          queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId order by TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId"); //3
   	    }
-   
+        if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+     	   queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId order by TCM.tdpCommitteeRole.tdpCommittee.userAddress.tehsil.tehsilId asc"); //1  
+        }  
+        if(locationType != null && locationType.equalsIgnoreCase("Village")){
+     	   queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId order by TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId asc"); //1   
+        }
 	   Query query = getSession().createQuery(queryStr.toString());
 	   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
