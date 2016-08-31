@@ -517,7 +517,7 @@
 		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			getUserTypeWiseCommitteesCompletedCounts1();
 		}
-		if($(".moreBlocksIcon").find("i").hasClass("unExpandBlock")){
+		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
 			
 			if($(".detailedBlock").hasClass("active")){
 				getLevelWiseBasicCommitteesCountReport();

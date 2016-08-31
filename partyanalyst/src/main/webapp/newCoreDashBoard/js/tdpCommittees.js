@@ -1353,6 +1353,11 @@
 			str+='</tbody>';
 				str+='</table>';
 				$("#"+childActivityMemberId).html(str);
+		}else{
+			if(childActivityMemberId == "directChildActivityMemberDiv"){
+				$("#"+childActivityMemberId).html("No Data Available");
+			}
+			
 		}
 	
 	}
@@ -1374,7 +1379,8 @@
 		 
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
 		 $("#"+removeSelected).remove();
-		 
+		 $("#topPoorPerformanceDiv").html('');
+		 $("#topPoorLocationsDiv").html('');
 	});
 	
 	function buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){
