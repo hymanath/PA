@@ -1973,4 +1973,113 @@ public int updateApllicationStatusToReject(Long applicationId,Long statusId,Long
 	
 	return query.executeUpdate();
 }
+public List<Object[]> getPositionWiseTotalApplicationsReceived(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType){
+	
+	StringBuilder str = new StringBuilder();
+	
+		/*if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+			str.append(" SELECT model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName," +
+					" model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
+					" count(distinct model.nominatedPostApplicationId) " +
+					" FROM NominatedPostFinal model left join model.nominatedPostMember.nominatedPostPosition.position position" +
+					" WHERE " +
+					" model.isDeleted = 'N' " );
+			if(boardLevelId !=null && boardLevelId>0){
+					str.append(" AND model.nominatedPostMember.boardLevel.boardLevelId=:boardLevelId");		
+			}
+			if(locationValues !=null && locationValues.size()>0){
+				str.append(" AND model.nominatedPostMember.locationValue in (:locationValues)");
+			}
+		// Any Dept && Board && post Scenarios Consideration && non Consideration
+			
+			if(deptsIds !=null && deptsIds.size()>0){
+				str.append(" AND model.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptsIds) ");
+			}
+			if(boardIds !=null && boardIds.size()>0){
+				str.append(" AND model.nominatedPostMember.nominatedPostPosition.board.boardId in (:boardIds) ");
+			}
+			
+		if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+			
+			str.append(" and   model.nominatedPostMember.nominatedPostPosition.position.positionId is not null ");
+			
+		}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
+			str.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId is null ");
+		}
+			if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
+				str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
+			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+				str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+			}
+			
+			str.append(" GROUP BY  model.nominatedPostMember.nominatedPostPosition.position.positionId,model.applicationStatus.applicationStatusId " +
+						" ORDER BY  model.nominatedPostMember.nominatedPostPosition.position.positionId");
+	}
+	else{*/
+	str.append(" SELECT position.positionId,position.positionName,model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
+			" count(distinct model.nominatedPostApplicationId) " +
+			" FROM NominatedPostApplication model left join model.position position" +
+			" WHERE " +
+			" model.isDeleted = 'N' " );
+	
+	if(boardLevelId !=null && boardLevelId>0){
+		//if(boardLevelId.longValue() != 5L)
+			str.append(" AND model.boardLevel.boardLevelId=:boardLevelId");		
+		//else
+		//	str.append(" AND model.boardLevel.boardLevelId in (5,6) ");		
+	}
+	if(locationValues !=null && locationValues.size()>0){
+		str.append(" AND model.locationValue in (:locationValues)");
+	}
+// Any Dept && Board && post Scenarios Consideration && non Consideration
+	
+	if(deptsIds !=null && deptsIds.size()>0){
+		str.append(" AND model.departments.departmentId in (:deptsIds) ");
+	}
+	if(boardIds !=null && boardIds.size()>0){
+		str.append(" AND model.board.boardId in (:boardIds) ");
+	}
+	
+	
+if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
+	
+	str.append(" and  model.positionId is not null ");
+	
+}else if(positionType !=null && positionType.trim().equalsIgnoreCase("anyPost")){
+	str.append(" and model.positionId is null ");
+}
+	
+	if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")){
+		str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
+	}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+		str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+	}
+	
+	str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +
+				" ORDER BY position.positionId");
+	
+	//}
+	Query query = getSession().createQuery(str.toString());
+	
+	if(boardLevelId !=null && boardLevelId>0){			
+			query.setParameter("boardLevelId", boardLevelId);		
+	}
+	if(locationValues !=null && locationValues.size()>0){
+		query.setParameterList("locationValues",locationValues);
+	}
+	if(deptsIds !=null && deptsIds.size()>0){
+		query.setParameterList("deptsIds",deptsIds);
+	}
+	if(boardIds !=null && boardIds.size()>0){
+		query.setParameterList("boardIds",boardIds);
+	}
+	
+	/*if(statusType !=null && (statusType.trim().equalsIgnoreCase("notYet") )){
+		query.setParameter("notYet",IConstants.NOMINATED_APPLIED_STATUS);
+	}else if(statusType !=null && (statusType.trim().equalsIgnoreCase("running"))){
+		query.setParameter("running",Long.valueOf(IConstants.NOMINATED_POST_NOT_RUNNING_STATUS));
+	}*/
+	
+	return query.list();
+}
 }
