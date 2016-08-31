@@ -57,11 +57,15 @@
 		font-size:14px !important;
 	}
 }
-@media screen and (width:1024px) {
+@media (min-width:1023px) and (max-width:1024px) {
 	.committesBlockUl li
 	{
 		width:47%;
 		display:inline-block;
+	}
+	.responsiveFont
+	{
+		font-size:14px !important;
 	}
 }
 /* Ipad Only STYLES END */
