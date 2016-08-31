@@ -44,6 +44,8 @@
 		$(".showDatePicker").toggle();
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".moreBlocks").hide();
+			$(".moreBlocks1").hide();
+			$(".moreBlocksDetailAndComp").hide();
 			
 		}else{
 			getUserTypeWiseCommitteesCompletedCounts1();
