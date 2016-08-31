@@ -78,6 +78,7 @@
 		$(".moreBlocks").show();
 		$(".moreBlocksDetailAndComp").show();
 		$(".moreBlocks1").hide();
+		$(".committeeSeetingBlock").show();
 		customBuildGraph();
 
 		getLevelWiseBasicCommitteesCountReport();
@@ -93,6 +94,7 @@
 		$(".moreBlocks").hide();
 		$(".moreBlocks1").hide();
 		$(".moreBlocksDetailAndComp").hide();
+		$(".committeeSeetingBlock").hide();
 		$(".comparisionBlock").removeClass("active");
 		$(".detailedBlock").addClass("active");
 	});
@@ -183,8 +185,23 @@
 	});
 
 	$(document).on("click",".basicCommitteesBlockDiv",function(){
-		$(this).closest(".moreBlocks").find(".basicCommitteesBlockDropDown").toggle();
+		$(this).closest(".moreBlocksDetailAndComp").find(".basicCommitteesBlockDropDown").toggle();
 	});
+	
+	function getCheckedBasicCommitteeIds(){
+		globalBasicCommitteeIdsArray =[];
+		$(".checkedBasicComm").each(function(){
+			if($(this).is(':checked')){
+				globalBasicCommitteeIdsArray.push( $(this).val() );
+			}
+		});
+	}
+	
+	$(".basicCommittessDiv").click(function(event){
+	    getCheckedBasicCommitteeIds();
+		defaultCommitteeCalls();
+		$(".basicCommitteesBlockDropDown").hide();
+    });
 	
 	$(document).on("click",".settingsDropDown",function(){
 		$(this).toggleClass("dropdownOpen")

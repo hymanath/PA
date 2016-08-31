@@ -3,20 +3,11 @@
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	    var state = globalState;
-	   
-	   var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   basicCommitteeIdsArray.push(4);
-      
-	   
-       var dateString = $("#dateRangeId").val();
-		
+        var dateString = $("#dateRangeId").val();
 		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  state:state,
-					  basicCommitteeIdsArray : basicCommitteeIdsArray,
+					  basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
 					  dateString : dateString
 					}
 		
@@ -34,12 +25,7 @@
 	function getUserTypeWiseCommitteesCompletedCounts(){
 		
 		var state = globalState;
-		var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-       basicCommitteeIdsArray.push(4);
-	   var dateString = $("#dateRangeId").val();
+	    var dateString = $("#dateRangeId").val();
     
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
@@ -48,7 +34,7 @@
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  
 					  state:state,
-					  basicCommitteeIdsArray : basicCommitteeIdsArray,
+					  basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
 					  dateString : dateString
 					}
 		
@@ -66,12 +52,7 @@
 		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state = globalState;
-	   var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   basicCommitteeIdsArray.push(4);
-        var dateString = $("#dateRangeId").val();
+       var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
@@ -80,7 +61,7 @@
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  
 					  state:state,
-					  basicCommitteeIdsArray : basicCommitteeIdsArray,
+					  basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
 					  dateString : dateString
  			         
 					}
@@ -101,18 +82,13 @@
 		
 		$("#levelWiseBasicCommittees").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var state = globalState;
-		var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   basicCommitteeIdsArray.push(4);
 	   
        var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
 					 userAccessLevelValuesArray:globalUserAccessLevelValues,
 					 state:state,
-					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
 					 dateString : dateString
 					}
 		
@@ -131,11 +107,6 @@
 		
 		
 		$("#districtWiseCommitteesReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var basicCommitteeIdsArray= [];
-		basicCommitteeIdsArray.push(1);
-		basicCommitteeIdsArray.push(2);
-		basicCommitteeIdsArray.push(3);
-		basicCommitteeIdsArray.push(4);
 		
 		var state = globalState;
 		
@@ -146,7 +117,7 @@
         var dateString = $("#dateRangeId").val();
 		
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
-					basicCommitteeIdsArray : basicCommitteeIdsArray,
+					basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
 					committeeStatus:committeeStatus,
 					userLocationLevelId:userLocationLevelId,
 					userLocationLevelValuesArray:userLocationLevelValuesArray,
@@ -188,17 +159,13 @@
 	 var date = $("#dateRangeId").val();
 	   
 	  var state = globalState;
-  	  var basicCommitteeIdsArray= [];
-	  basicCommitteeIdsArray.push(1);
-	  basicCommitteeIdsArray.push(2);
-	  basicCommitteeIdsArray.push(3);
-	  basicCommitteeIdsArray.push(4);
+  	
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeId : childUserTypeId,
 				   dateString : date,
 				   state:state,
-				   basicCommitteeIdsArray:basicCommitteeIdsArray
+				   basicCommitteeIdsArray:globalBasicCommitteeIdsArray
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -215,7 +182,7 @@
 		$("#basicCommitteeCountsDiv").html('');
 		var str='';
 		var locationLevelNameArray =[];
-		if(result !=null &&  result.mainVO !=null){
+		if(result !=null &&  result.mainVO !=null && result.affliatedVO !=null){
 				str+='<ul class="committesBlockUl">';
 					str+='<li>';
 						str+='<h4 class="text-capital bg_49 pad_custom">main committees</h4>';
@@ -389,26 +356,30 @@
 			str+='<ul class="villageWardUl">';
 			
 			var length = result.length - 1;
+			
 			for(var i = length; i >= 0; i--){
 				if(result[i].id !=10){
 					if(result[i].subList !=null && result[i].subList.length > 0){
+						str+='<li>';
 						for(var j in result[i].subList){
 							
-								str+='<li>';
+								
 								var properName = getProperLocationLevelName(result[i].name);
 								if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 									locationLevelNameArray.push(properName);
 									str+='<h4>'+properName+' Level</h4>';
 								}
-								str+='<div id="mainCommittees'+i+''+j+'" class="chartLi" ></div>';
-								str+='</li>';
+								str+='<div id="mainCommittees'+i+''+j+'" class="chartLi" style="display:inline-block;"></div>';
+								
 							
 						}
+						str+='</li>';
 					}
 				
 				}
 										
             }
+			
 			str+='<ul>';
 				
 		}
@@ -537,44 +508,9 @@
 		
 		$(".villageWardUl").slick({
 			 slide: 'li',
-			 slidesToShow: 4,
-			 slidesToScroll: 4,
+			 slidesToShow: 1,
+			 slidesToScroll: 1,
 			 infinite: false,
-			  responsive: [
-				{
-				  breakpoint: 1024,
-				  settings: {
-					slidesToShow: 4,
-					slidesToScroll: 4,
-					infinite: false,
-					dots: false
-				  }
-				},
-				{
-				  breakpoint: 800,
-				  settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				  }
-				},
-				{
-				  breakpoint: 600,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				},
-				{
-				  breakpoint: 480,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				}
-				// You can unslick at a given breakpoint now by adding:
-				// settings: "unslick"
-				// instead of a settings object
-			  ]
 		});
 	}
 	
@@ -795,7 +731,7 @@
 								str+='<th>Total</th>';
 								str+='<th>Started</th>';
 								str+='<th>Completed</th>';
-								str+='<th>%</th>';
+								str+='<th>%(<small>completed</small>)</th>';
 							str+='</thead>';
 							str+='<tr>';
 							if(result[i].totalCount !=null && result[i].totalCount >0){
@@ -1186,17 +1122,13 @@
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState
-	   var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   basicCommitteeIdsArray.push(4);
+	   
 	   var dateString = $('#dateRangeId').val();
 	   
 	   var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 state:state,
-					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
  			         dateString :   dateString
 				  }
 	   
@@ -1213,16 +1145,12 @@
 	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
 	   $("#topPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState;
-	   var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	    basicCommitteeIdsArray.push(4);
+	  
 	   var dateString = $('#dateRangeId').val();
 	   
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
-					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
  			         dateString :   dateString
 				  }
 	   
@@ -1240,16 +1168,12 @@
 	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
 	   $("#topPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState;
-	   var basicCommitteeIdsArray= [];
-       basicCommitteeIdsArray.push(1);
-       basicCommitteeIdsArray.push(2);
-       basicCommitteeIdsArray.push(3);
-	   basicCommitteeIdsArray.push(4);
+	   
 	   var dateString = $('#dateRangeId').val();
 	   
 	   var jsObj ={  activityMemberId : activityMemberId,
 					 state:state,
-					 basicCommitteeIdsArray : basicCommitteeIdsArray,
+					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
  			         dateString :   dateString
 				  }
 	   
@@ -1298,12 +1222,7 @@
 						 var locationNamevar = result[i].locationName;
 						str+='<tr class="compareLowLevelActivityMemberCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 							str+='<td>';
-								if( result[i].completedPerc != null && result[i].completedPerc >0){
-									str+='<span class="tableCount">'+rankVar+'</span>';
-								}else{
-									str+='<span class="tableCount"> - </span>';
-								}
-								
+							str+='<span class="tableCount">'+rankVar+'</span>';	
 							str+='</td>';
 							if( locationNamevar.indexOf(',') == -1){
 								str+='<td>'+result[i].userType+' (<b>'+result[i].locationName+'</b>)</td>';
