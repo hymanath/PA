@@ -50,6 +50,13 @@
 		}else{
 			getUserTypeWiseCommitteesCompletedCounts1();
 		}
+		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+			
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}
 		setTimeout(function(){
 			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
 			//initialiseGraph();

@@ -86,6 +86,8 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
     height: 20px;
     display: inline-block;
     width: 20px;
+	position:relative;
+	top:-6px;
 }
 .caret
 {
@@ -1404,4 +1406,31 @@ margin-top:20px;
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+.calenarUl li
+{
+  padding:5px;
+  padding-left:15px;
+  padding-right:0px;
+  cursor:pointer;
+}
+.calenarUl li.divider
+{
+  padding:0px;
+}
+.calenarUl li.active
+{
+  position:relative;
+}
+.calenarUl li.active:before
+{
+  display:block;
+  content: "\e013";
+  font-family: 'Glyphicons Halflings';
+  position:absolute;
+  left:0px;
+}
+.calenarUl li span
+{
+  font-size:12px;
 }

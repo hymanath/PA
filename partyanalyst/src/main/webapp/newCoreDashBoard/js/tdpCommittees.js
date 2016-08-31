@@ -191,36 +191,85 @@
 						   str+='<tr>';
 								str+='<td>';
 								if(result.mainVO.totalCount !=null && result.mainVO.totalCount >0){
-									str+='<h3>'+result.mainVO.totalCount+'</h3>';
+									str+='<h3 class="responsiveFont">'+result.mainVO.totalCount+'</h3>';
 								}else{
-									str+='<h3> - </h3>';
+									str+='<h3 class="responsiveFont"> - </h3>';
 								}
-									str+='<h5 class="text-muted text-capitalize">total</h5>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">total</h5>';
 								str+='</td>';
 								str+='<td>';
 								if(result.mainVO.startedCount !=null && result.mainVO.startedCount >0){
-									str+='<h3>'+result.mainVO.startedCount+'</h3>';
-									str+='<h5 class="text-muted text-capitalize">started</h5>';
-									str+='<small class="text-success">'+result.mainVO.startedPerc+'%</small>';
+									str+='<h3 class="responsiveFont">'+result.mainVO.startedCount+'</h3>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
+									str+='<small class="text-success responsiveFont">'+result.mainVO.startedPerc+'%</small>';
 									
 								}else{
-									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted text-capitalize">started</h5>';
+									str+='<h3 class="responsiveFont"> - </h3>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
 								}
 								str+='</td>';
 								str+='<td>';
 								if(result.mainVO.completedCount !=null && result.mainVO.completedCount  >0){
-									str+='<h3>'+result.mainVO.completedCount+'</h3>';
-									str+='<h5 class="text-muted">Completed</h5>';
-									str+='<small class="text-success">'+result.mainVO.completedPerc+'%</small>';
+									str+='<h3 class="responsiveFont">'+result.mainVO.completedCount+'</h3>';
+									str+='<h5 class="text-muted responsiveFont">Completed</h5>';
+									str+='<small class="text-success responsiveFont">'+result.mainVO.completedPerc+'%</small>';
 									
 								}else{
-									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted">Completed</h5>';
+									str+='<h3 class="responsiveFont"> - </h3>';
+									str+='<h5 class="text-muted responsiveFont">Completed</h5>';
 								}
 								str+='</td>';
 							str+='</tr>';
 						str+='</table>';
+						if(result.subList != null && result.subList.length >0){
+							
+							var length = result.subList.length - 1;
+								for(var i = length; i >= 0; i--){
+									if(result.subList[i].id !=10){
+										//str+='<li>';
+											var properName = getProperLocationLevelName(result.subList[i].name);
+											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+												locationLevelNameArray.push(properName);
+												str+='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">'+properName+' Level</h4>';
+											}
+											str+='<table class="table table-condensed bg_ED">';
+												str+='<tr>';
+													str+='<td>';
+														str+='<h5 class="text-muted text-capitalize responsiveFont">Total</h5>';
+														if(result.subList[i].mainVO.totalCount !=null && result.subList[i].mainVO.totalCount >0){
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.totalCount+'</p>';
+														}else{
+																str+='<p> - </p>';
+														}
+														
+												   str+='</td>';
+													str+='<td>';
+														str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
+														if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-success"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
+														}else{
+															str+='<p> - </p>';
+														}
+														
+													str+='</td>';
+													str+='<td>';
+														str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
+														if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
+														}else{
+															str+='<p> - </p>';
+														}
+														
+													str+='</td>';
+												str+='</tr>';
+											str+='</table>';
+										//str+='</li>';
+										//str+='<li>';
+											
+										//str+='</li>';
+									}
+								}
+						}
 					str+='</li>';
 					str+='<li>';
 						str+='<h4 class="text-capital bg_49 pad_custom">affliated committees</h4>';
@@ -228,78 +277,45 @@
 							str+='<tr>';
 								str+='<td>';
 								if(result.affliatedVO.startedCount !=null && result.affliatedVO.startedCount  >0){
-									str+='<h3>'+result.affliatedVO.startedCount+'</h3>';
-									str+='<h5 class="text-muted text-capitalize">started</h5>';
-									str+='<small class="text-success">'+result.affliatedVO.startedPerc+'%</small>';
+									str+='<h3 class="responsiveFont">'+result.affliatedVO.startedCount+'</h3>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
+									str+='<small class="text-success responsiveFont">'+result.affliatedVO.startedPerc+'%</small>';
 								}else{
 									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted text-capitalize">Started</h5>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
 								}
 									
 								str+='</td>';
 								str+='<td>';
 								if(result.affliatedVO.completedCount !=null && result.affliatedVO.completedCount >0){
-									str+='<h3>'+result.affliatedVO.completedCount+'</h3>';
-									str+='<h5 class="text-muted text-capitalize">Completed</h5>';
-									str+='<small class="text-success">'+result.affliatedVO.completedPerc+'%</small>';
+									str+='<h3 class="responsiveFont">'+result.affliatedVO.completedCount+'</h3>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
+									str+='<small class="text-success responsiveFont">'+result.affliatedVO.completedPerc+'%</small>';
 								}else{
 									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+									str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
 								}
 								
 								str+='</td>';
 						   str+='</tr>';
 						str+='</table>';
-					str+='</li>';
-					str+='<hr style="margin:0px;">';
-					if(result.subList != null && result.subList.length >0){
-						
-						var length = result.subList.length - 1;
-							for(var i = length; i >= 0; i--){
-								if(result.subList[i].id !=10){
-									str+='<li>';
+						if(result.subList != null && result.subList.length >0){
+							
+							var length = result.subList.length - 1;
+								for(var i = length; i >= 0; i--){
+									if(result.subList[i].id !=10){
 										var properName = getProperLocationLevelName(result.subList[i].name);
-										if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
-											locationLevelNameArray.push(properName);
-											str+='<h4 class="text-capitalize m_top10" style="color:#c9c0cc">'+properName+' Level</h4>';
+										var getWidth = $(document).width();
+										if(getWidth < 500)
+										{
+											str+='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">'+properName+' Level</h4>';
+											str+='<table class="table table-condensed bg_ED">';
+										}else{
+											str+='<table class="table table-condensed bg_ED" style="margin-top:40px !important;">';
 										}
-										str+='<table class="table table-condensed bg_ED">';
 											str+='<tr>';
 												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize">Total</h5>';
-													if(result.subList[i].mainVO.totalCount !=null && result.subList[i].mainVO.totalCount >0){
-														str+='<p>'+result.subList[i].mainVO.totalCount+'</p>';
-													}else{
-															str+='<p> - </p>';
-													}
-													
-											   str+='</td>';
-												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize">Started</h5>';
-													if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
-														str+='<p>'+result.subList[i].mainVO.startedCount+' <small class="text-success"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
-													}else{
-														str+='<p> - </p>';
-													}
-													
-												str+='</td>';
-												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
-													if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
-														str+='<p>'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
-													}else{
-														str+='<p> - </p>';
-													}
-													
-												str+='</td>';
-											str+='</tr>';
-										str+='</table>';
-									str+='</li>';
-									str+='<li>';
-										str+='<table class="table table-condensed bg_ED" style="margin-top:30px !important;">';
-											str+='<tr>';
-												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize">Started</h5>';
+													str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
 														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 													}else{
@@ -308,7 +324,7 @@
 													
 												str+='</td>';
 												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize">Completed</h5>';
+													str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
 													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
 														str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
 													}else{
@@ -318,11 +334,10 @@
 												str+='</td>';
 											str+='</tr>';
 										str+='</table>';
-									str+='</li>';
-								}
-							}
-					}
-					
+										}
+									}
+						}
+					str+='</li>';
 				str+='</ul>';
 				$("#basicCommitteeCountsDiv").html(str);
 		}else{
@@ -851,7 +866,7 @@
 					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 				}
 					
-					str+='<div id="genSec'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
+					str+='<div id="genSec'+i+'" style="width:100%;height:100px;"></div>';
 				str+='</div>'
 					
 			}
@@ -916,8 +931,10 @@
 								minorGridLineWidth: 0,
 								title: {
 									text: ''
+								},
+								labels: {
+									enabled:false
 								}
-
 							},
 							legend: {
 								enabled: false
@@ -1323,7 +1340,7 @@
 					str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+rankingvar+'</span></td>';
 					str+='<td>'+result.subList1[i].name+'</td>';
 					str+='<td>';
-						str+='<div class="progress progressCustom">';
+						str+='<div class="progress progressCustom"  data-toggle="tooltip" data-placement="top" title="'+result.subList1[i].completedPerc+'%">';
 						if(result.subList1[i].completedCount !=null && result.subList1[i].completedCount >0){
 							str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result.subList1[i].completedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result.subList1[i].completedPerc+'%;">';
 							str+='<span class="sr-only">'+result.subList1[i].completedPerc+'% Complete</span>';
@@ -1361,7 +1378,7 @@
 						str+='<td>'+result.subList[i].subList[j].name+'</td>';
 						str+='<td>';
 						if(result.subList[i].subList[j].completedCount !=null && result.subList[i].subList[j].completedCount >0){
-							str+='<div class="progress progressCustom">';
+							str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result.subList[i].subList[j].completedPerc+'%">';
 							  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result.subList[i].subList[j].completedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result.subList[i].subList[j].completedPerc+'%;">';
 								str+='<span class="sr-only">'+result.subList[i].subList[j].completedPerc+'% Complete</span>';
 							  str+='</div>';
@@ -1382,6 +1399,7 @@
 		}
 		str+='</div>';
 		$("#topPoorPerformanceDiv").html(str);
+		$('.progressCustom').tooltip()
 		
 	}
 	
@@ -1416,7 +1434,7 @@
 							
 							str+='<td>';
 							if(result[i].completedCount !=null && result[i].completedCount >0){
-								str+='<div class="progress progressCustom">';
+								str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].completedPerc+'%">';
 								  str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].completedCount+'" aria-valuemin="0" aria-valuemax="100" style="width: '+result[i].completedPerc+'%;">';
 									str+='<span class="sr-only">'+result[i].completedPerc+'% Complete</span>';
 								  str+='</div>';
@@ -1434,6 +1452,7 @@
 				str+='</div>';
 			str+='</div>';
 			$("#topPoorLocationsDiv").html(str);
+			$('.progressCustom').tooltip()
 		}else{
 			$("#topPoorLocationsDiv").html("No Data Available");
 		}			
