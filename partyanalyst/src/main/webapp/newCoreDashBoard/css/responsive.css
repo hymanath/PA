@@ -4,12 +4,25 @@
 		width:100%;
 		display:block;
 	}
+	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand
+	{
+		margin-right:7px;
+		margin-top:10px;
+	}
+	.dateRangePickerCls
+	{
+		margin-top:10px;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) {
 	.committesBlockUl li
 	{
 		width:100%;
 		display:block;
+	}
+	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand
+	{
+		margin-right:5px;
 	}
 }
 @media (min-width:769px) and  (max-width:991px){
@@ -25,11 +38,11 @@
 }
 
 /* Ipad Only STYLES START*/
-@media screen and (width:768px) {
+@media (min-width:767px) and (max-width:768px) {
 	.committesBlockUl li
 	{
-		width:100%;
-		display:block;
+		width:47%;
+		display:inline-block;
 	}
 	.headingColor
 	{
@@ -38,6 +51,10 @@
 	.activeUlCls
 	{
 		margin-top:10px;
+	}
+	.responsiveFont
+	{
+		font-size:14px !important;
 	}
 }
 @media screen and (width:1024px) {

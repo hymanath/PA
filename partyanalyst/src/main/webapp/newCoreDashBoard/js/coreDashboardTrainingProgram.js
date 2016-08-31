@@ -33,8 +33,8 @@ var getDocumentWidth = $(document).width();
 	  globalTrainingProgramsRslt=result.trainingProgramList;
 	if(programList != null && programList.length > 0){
 		  for(var i in programList){
-	       str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">';
-			 str+='<h4 class="text-capital" attr_program_id='+programList[i].id+'>'+programList[i].name+'</h4>';
+	       str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
+			 str+='<span style="font-size:18px" class="text-capital bg_49 pad_custom" attr_program_id='+programList[i].id+'>'+programList[i].name+'</span>';
 			str+='<table class="table tableTraining">';
 				str+='<tr>';
 					str+='<td>';
@@ -61,7 +61,7 @@ var getDocumentWidth = $(document).width();
 	 
 	var villageWardRslt = result.villageWardVO;
  	var str1='';
-	str1='<h4 class="text-capitalize m_top20">village / ward</h4>';
+	str1='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">village / ward</h4>';
 	if(villageWardRslt != null){
 	 str1+='<table class="table tableTraining bg_ED">';
 		str1+='<tr>';
@@ -86,7 +86,7 @@ var getDocumentWidth = $(document).width();
 	
 	var mandalTwnDivRslt = result.mandalTownDivisionVO; 
     var str2='';
-	 str2+='<h4 class="text-capitalize m_top20">mandal / town / division</h4>';
+	 str2+='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">mandal / town / division</h4>';
 	if(mandalTwnDivRslt != null){
 	  str2+='<table class="table tableTraining bg_ED">';
 		str2+='<tr>';
@@ -408,7 +408,7 @@ var globalUserWiseMemberRslt;
 			var str='';
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="text-capital">'+result[i][0].userType+'</h4>';
+					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 					str+='<div id="genSecTraining'+i+'" style="width:100%;height:100px;"></div>';
 				str+='</div>'
 			}
@@ -443,13 +443,24 @@ var globalUserWiseMemberRslt;
 					text: null
 				},
 				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					categories: candidateNameArray,
 					title: {
 						text: null
-					}
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
 				},
 				yAxis: {
 					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					title: {
 						text: null,
 						align: 'high'
@@ -483,6 +494,7 @@ var globalUserWiseMemberRslt;
 				credits: {
 					enabled: false
 				},
+				
 				series: [{
 					name: 'Attended',
 					data: trainingProgramCountArray
@@ -498,7 +510,7 @@ var globalUserWiseMemberRslt;
 			var str='';
 			for(var i in result){
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="text-capital">'+result[i][0].userType+'</h4>';
+					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 					str+='<div id="genSecTraining'+i+'" style="width:100%;height:100px;"></div>';
 				str+='</div>'
 			}
@@ -588,22 +600,39 @@ $(document).on("click",".liCls",function(){
 	  buildgetUserTypeWiseTrainingProgramAttendedCountTopFivePoorResults(globalUserWiseMemberRslt);
 	 }
 });
+
 /* Training Funcitons Start*/
 $(document).on("click",".trainingIconExpand",function(){
+
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".moreTrainingBlocks").hide();
+	}else{
+		getUserTypeWiseTotalEligibleAndAttendedCnt();
+	}
+	if( !$(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".moreBlocks").hide();
+		$(".moreBlocks1").hide();
+		$(".moreBlocksDetailAndComp").hide();
+	}
+	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocksIcon").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}
+	
 	 setTimeout(function(){
 		$(".trainingsHiddenBlock,.moreTrainingBlocksIcon").toggle();
-		getUserTypeWiseTotalEligibleAndAttendedCnt();
 	},800); 
 });
 $(document).on("click",".moreTrainingBlocksIcon",function(){
+	$(this).addClass("unExpandTrainingBlock");
 	$(".moreTrainingBlocks").toggle();
 	setTimeout(function(){
-		moreTrainingBlocks();
-		buildTrainingProgramRslt(globalTrainingProgramsRslt);
-		getChildUserTypesByItsParentUserTypeForTrainingProgram();
 		getTrainingCampProgramsDetailsCntByDistrict();
 		getTrainingProgramPoorCompletedLocationDtls();
 	},600);
@@ -618,8 +647,27 @@ $(document).on("click",".moreTrainingBlocksIcon",function(){
 		getEachLiWidth = moreBlocksWidth / 4 +'px';
 		$(".trainingsUl li").width(getEachLiWidth);
 	}
-	
+	$(".trainingDetailed").trigger("click");
 });
+$(document).on("click",".trainingDetailed",function(){
+	$(this).addClass("active")
+	$(".trainingComparison").removeClass("active");
+	$(".trainingDetailedBlock").show();
+	$(".trainingComparisonBlock").hide();
+	buildTrainingProgramRslt(globalTrainingProgramsRslt);
+});
+$(document).on("click",".trainingComparison",function(){
+	$(this).addClass("active")
+	$(".trainingDetailed").removeClass("active");
+	$(".trainingDetailedBlock").hide();
+	$(".trainingComparisonBlock").show();
+	getChildUserTypesByItsParentUserTypeForTrainingProgram();
+});
+
+$(document).on("click",".unExpandTrainingBlock",function(){
+		$(this).removeClass("unExpandTrainingBlock");
+		$(".moreTrainingBlocks").hide();
+	});
   function getChildUserTypesByItsParentUserTypeForTrainingProgram(){
 		 $("#childUserTypeDetailsDivForTrainingProgram").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = { parentUserTypeId : globalUserTypeId }
@@ -765,6 +813,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	getTrainingProgramPoorCompletedLocationDtls();
 });
 $(document).on("click",".activityMemberCls",function(){
+		$(this).find(".panelSlick").addClass("panelActiveSlick")
 	    var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
     	var selectedMemberName = $(this).attr("attr_selectedmembername");  
@@ -1033,7 +1082,7 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
 			str+='<td>'+districtList[i].name+'</td>';
 			str+='<td>';
-				str+='<div class="progress progressCustom">';
+				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+districtList[i].totalAttenedCountPer+'%">';
 			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+districtList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+districtList[i].totalAttenedCountPer+'%;">';
 					str+='<span class="sr-only">'+districtList[i].totalAttenedCountPer+'</span>';
 				  str+='</div>';
@@ -1063,7 +1112,7 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
 			str+='<td>'+constituencyList[i].name+'</td>';
 			str+='<td>';
-				str+='<div class="progress progressCustom">';
+				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+constituencyList[i].totalAttenedCountPer+'%">';
 		str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+constituencyList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+constituencyList[i].totalAttenedCountPer+'%;">';
 			str+='<span class="sr-only">'+constituencyList[i].totalAttenedCountPer+'</span>';
 			str+='</div>';
@@ -1081,365 +1130,6 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 	     str+='</div>';
 																				
 	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
+	 $('.progressCustom').tooltip()
 	}
-	
-	
-	
-	
-	
-function moreTrainingBlocks()
-	{
-		var chartWidth = $("#leadershipSkills").parent().width();
-		$(".trainingGraphWidth").width(chartWidth);
-		$(function () {
-		  $('#leadershipSkills').highcharts({
-			colors: ['#F56800','#53BF8B','#66728C'],
-			chart: {
-			  type: 'column',
-			  
-			},
-			title: {
-			  text: null,
-			  style: {
-				  fontSize: '16px',
-				  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-				  textTransform: "uppercase"
-				  
-			  }
-			},
-			subtitle: {
-			  text: null
-			},
-			 xAxis: {
-			   min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  labels: {
-				enabled: false,
-			  }
-			},
-			yAxis: {
-			  min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  title: {
-				text: ''
-			  },
-			  labels: {
-				enabled: false,
-			  },
-			  stackLabels: {
-				enabled: true,
-				style: {
-				  fontWeight: 'bold',
-				  color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-				}
-			  }
-			},
-			tooltip: {
-			  pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
-			  shared: true
-			},
-			legend: {
-			  enabled: true,
-			  align: 'left'
-		  
-			},
-			plotOptions: {
-			  column: {
-				stacking: 'percent',
-				dataLabels:{
-				  enabled: true,
-				  formatter: function () {
-					if (this.y > 0){ return this.y + '%';}
-					else {return '';}
-				  }
-				}
-			  }
-			},
-			 series: [{
-			  name: 'Total',
-			  data: [10]
-			}, {
-			  name: 'Attended',
-			  data: [10,20,30,40]
-			}, {
-			  name: 'Not attended',
-			  data: [10,20,30,40]
-			}]
-		  });
-		});
-		$(function () {
-		  $('#officialSpokespersons').highcharts({
-			colors: ['#F56800','#53BF8B','#66728C'],
-			chart: {
-			  type: 'column',
-			  
-			},
-			title: {
-			  text: null,
-			  style: {
-				  fontSize: '16px',
-				  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-				  textTransform: "uppercase"
-				  
-			  }
-			},
-			subtitle: {
-			  text: null
-			},
-			 xAxis: {
-			   min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  labels: {
-				enabled: false,
-			  }
-			},
-			yAxis: {
-			  min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  title: {
-				text: ''
-			  },
-			  labels: {
-				enabled: false,
-			  },
-			  stackLabels: {
-				enabled: true,
-				style: {
-				  fontWeight: 'bold',
-				  color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-				}
-			  }
-			},
-			tooltip: {
-			  pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
-			  shared: true
-			},
-			legend: {
-			  enabled: true,
-			  align: 'left'
-		  
-			},
-			plotOptions: {
-			  column: {
-				stacking: 'percent',
-				dataLabels:{
-				  enabled: true,
-				  formatter: function () {
-					if (this.y > 0){ return this.y + '%';}
-					else {return '';}
-				  }
-				}
-			  }
-			},
-			 series: [{
-			  name: 'Started',
-			  data: [10,20,30,40]
-			}, {
-			  name: 'Completed',
-			  data: [10,20,30,40]
-			}, {
-			  name: 'Yet To Start',
-			  data: [10,20,30,40]
-			}]
-		  });
-		});
-		$(function () {
-			$('#leadershipSkillsDis').width($('#leadershipSkillsDis').parent().width());
-		  $('#leadershipSkillsDis').highcharts({
-			colors: ['#F56800','#53BF8B','#66728C'],
-			chart: {
-			  type: 'column',
-			  
-			},
-			title: {
-			  text: null,
-			  style: {
-				  fontSize: '16px',
-				  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-				  textTransform: "uppercase"
-				  
-			  }
-			},
-			subtitle: {
-			  text: null
-			},
-			 xAxis: {
-			   min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  labels: {
-				enabled: false,
-			  }
-			},
-			yAxis: {
-			  min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  title: {
-				text: ''
-			  },
-			  labels: {
-				enabled: false,
-			  },
-			  stackLabels: {
-				enabled: true,
-				style: {
-				  fontWeight: 'bold',
-				  color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-				}
-			  }
-			},
-			tooltip: {
-			  pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
-			  shared: true
-			},
-			legend: {
-			  enabled: true,
-			  align: 'left'
-		  
-			},
-			plotOptions: {
-			  column: {
-				stacking: 'percent',
-				dataLabels:{
-				  enabled: true,
-				  formatter: function () {
-					if (this.y > 0){ return this.y + '%';}
-					else {return '';}
-				  }
-				}
-			  }
-			},
-			 series: [{
-			  name: 'Started',
-			  data: [10,20,30,40]
-			}, {
-			  name: 'Completed',
-			  data: [10,20,30,40]
-			}]
-		  });
-		});
-		$(function () {
-			$('#officialSpokesPerDis').width($('#leadershipSkillsDis').parent().width());
-		  $('#officialSpokesPerDis').highcharts({
-			colors: ['#F56800','#53BF8B','#66728C'],
-			chart: {
-			  type: 'column',
-			  
-			},
-			title: {
-			  text: null,
-			  style: {
-				  fontSize: '16px',
-				  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-				  textTransform: "uppercase"
-				  
-			  }
-			},
-			subtitle: {
-			  text: null
-			},
-			 xAxis: {
-			   min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  labels: {
-				enabled: false,
-			  }
-			},
-			yAxis: {
-			  min: 0,
-			  gridLineWidth: 0,
-			  minorGridLineWidth: 0,
-			  title: {
-				text: ''
-			  },
-			  labels: {
-				enabled: false,
-			  },
-			  stackLabels: {
-				enabled: true,
-				style: {
-				  fontWeight: 'bold',
-				  color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-				}
-			  }
-			},
-			tooltip: {
-			  pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
-			  shared: true
-			},
-			legend: {
-			  enabled: true,
-			  align: 'left'
-		  
-			},
-			plotOptions: {
-			  column: {
-				stacking: 'percent',
-				dataLabels:{
-				  enabled: true,
-				  formatter: function () {
-					if (this.y > 0){ return this.y + '%';}
-					else {return '';}
-				  }
-				}
-			  }
-			},
-			 series: [{
-			  name: 'Started',
-			  data: [10,20,30,40]
-			}, {
-			  name: 'Completed',
-			  data: [10,20,30,40]
-			}]
-		  });
-		});
-		$(".slickPanelSliderTraining").slick({
-		 slide: 'li',
-		 slidesToShow: 3,
-		 slidesToScroll: 3,
-		 infinite: false,
-			  responsive: [
-				{
-				  breakpoint: 1024,
-				  settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: false,
-					dots: false
-				  }
-				},
-				{
-				  breakpoint: 800,
-				  settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				  }
-				},
-				{
-				  breakpoint: 600,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				},
-				{
-				  breakpoint: 480,
-				  settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				  }
-				}
-				// You can unslick at a given breakpoint now by adding:
-				// settings: "unslick"
-				// instead of a settings object
-			  ]
-		});
-	}
-/* more training blocks end*/
 /* Training Funcitons End*/

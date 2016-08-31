@@ -36,7 +36,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i></a></li>
+          	<li><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
             <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
             <li class="dropdown profileDropDown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
@@ -68,7 +68,7 @@
                         </li>
                     </ul>
                 </div>
-				<div class="col-md-2 col-xs-12 col-sm-2 pull-right"  style="margin-top: -10px;">
+				<div class="col-md-2 col-xs-12 col-sm-3 pull-right"  style="margin-top: -10px;">
                 	<ul class="list-inline profileSelection">
                     	<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">AP</a>
@@ -85,33 +85,36 @@
 </header>
 <div class="container m_top20">
 	<div class="row">
-    	<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 committeesBlock">
+    	<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
-                	<h4 class="panel-title">
-						<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-						committees
-						
-                    	<span class="settingsIcon pull-right">
-                        	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-                        </span>
-                    	<span class="notesIcon pull-right">
-                        	<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
-                        </span>
-                    	<span class="iconExpand pull-right">
-                        	<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-                        </span>
-						
-						<span class="input-group pull-right dateRangePickerCls hide">
-							<input type="text" id="dateRangeId"	 class="form-control" />
-							<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
+                	<div class="row">
+						<div class="col-md-6 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+								committees
+							</h4>
+						</div>
+						<div class="col-md-6 col-sm-4 col-xs-5">
+							<span class="settingsIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
-						</span>
+							<span class="notesIcon pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
+							</span>
+							<span class="iconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+							</span>
 							
-						
-	                </h4>
-                    <div class="notesDropDown">
+							<span class="input-group pull-right dateRangePickerCls hide">
+								<input type="text" id="dateRangeId"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					<div class="notesDropDown">
                     	<h4 class="text-capital">notes
                         	<span class="pull-right">
                             	<i class="glyphicon glyphicon-list-alt"></i>
@@ -136,10 +139,10 @@
 					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
 						
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 basicCommitteesBlock">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock">
 						<div id="basicCommitteeCountsDiv"></div>
 					</div>
-                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
@@ -154,7 +157,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
                         	<div class="committeeSeetingBlock" style="display:none;">
 								<ul class="list-inline pull-right activeUlCls">
 									<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>
@@ -202,7 +205,7 @@
 								<button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
 							</div>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks">
                         	
                         	<div class="panel panel-default">
                             	<div class="panel-body ">
@@ -212,7 +215,7 @@
                             </div>
                         </div>
                        
-                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top20 moreBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocks">
                         	<div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -247,11 +250,11 @@
                                             <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
                                                 <div id="directChildActivityMemberDiv"></div>
                                                 <div class="row m_top20">
-                                                    <div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0" style="border-right:1px solid #ddd;">
+                                                    <div class="col-md-8 col-xs-12 col-sm-12 col-md-offset-0" style="border-right:1px solid #ddd;">
 													 <div id="topPoorPerformanceDiv"></div>
                                                        
                                                     </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+                                                    <div class="col-md-4 col-xs-12 col-sm-12 col-md-offset-0">
                                                         <div id="topPoorLocationsDiv"></div>
                                                     </div>
                                                 </div>
@@ -266,10 +269,12 @@
             </div>
         </div>
         <!-- TRAINING PROGRAM BLOCK -->
-        <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingsBlock">
+        <div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
-					<h4 class="panel-title">training
+					<h4 class="panel-title">
+						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+						training
 						<span class="settingsIcon pull-right">
                         	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
                         </span>
@@ -283,150 +288,157 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock">
 							<div class="row">
 							 <div id="programsDtlsCntTableId"></div>
-								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top20">
+								<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20">
 									 <div id="villageWardTblId"></div>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+								<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="mdlTwnDvsnTabId"></div>
 								</div>
-								<!--<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+								<!--<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="districtTblId"></div>
 								</div>
-								<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+								<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="stateTblDivId"></div>
 									<!--<hr class="m_0"/>"/>
 								</div>-->
 							</div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 trainingsHiddenBlock">
-							   <div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
+								<div class="row">
 								  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 									<ul class="activeUlCls list-inline ">
-										<li class="liCls" attr_value="strong">top 5 strong</li>
+										<li class="liCls active" attr_value="strong">top 5 strong</li>
 										<li class="liCls" attr_value="poor">last 5 poor</li>
 									</ul>
 								  </div>
 								</div>
 								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId"></div>
-                              </div>
-								<div class="col-xs-12 col-sm-12 col-md-12">
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
 									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more"></i>
-						        </div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreTrainingBlocks">
-							<div class="panel panel-default">
-								<div class="panel-body">
-									<h4 class="text-capitalize text-muted">training programs</h4>
-									<br>
-									<div id="programsDivId"></div>
-									<!--<ul class="trainingsUl">
-										<li>
-											<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
-										</li>
-										<li>
-											<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
-										</li>
-									</ul>-->
+						    </div>
+							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks">
+									<ul class="list-inline pull-right activeUlCls">
+										<li class="trainingDetailed">Detailed</li>
+										<li class="trainingComparison">Comparison</li>
+										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
+									</ul>
+							</div>
+						
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<h4 class="text-capitalize text-muted">training programs</h4>
+										<br>
+										<div id="programsDivId"></div>
+										<!--<ul class="trainingsUl">
+											<li>
+												<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
+											</li>
+											<li>
+												<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
+											</li>
+										</ul>-->
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreTrainingBlocks">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<div class="row">
-										<div class="col-md-8 col-xs-12 col-sm-12">
-											<span class="headingColor text-capitalize">training program cohort</span>
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-8 col-xs-12 col-sm-6">
+												<span class="headingColor text-capitalize">training program cohort</span>
+											</div>
+											<div class="col-md-4 col-xs-12 col-sm-6">
+												<ul class="activeUlCls list-inline">
+													<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
+													<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
+													<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
+												</ul>
+											</div>
 										</div>
-										<div class="col-md-4 col-xs-12 col-sm-12">
-											<ul class="activeUlCls list-inline">
-												<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
-												<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
-												<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
-											</ul>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="districtWiseProgramCntDivId"></div>
+											</div>
+											<!--<div class="col-md-12 col-xs-12 col-sm-12">
+												<h4 class="text-capitalize">Leadership SKills</h4>
+												<div id="leadershipSkillsDis" class="chartLi"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<h4 class="text-capitalize">official Spokes Person</h4>
+												<div id="officialSpokesPerDis" class="chartLi"></div>
+											</div>-->
 										</div>
+										
 									</div>
 								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="districtWiseProgramCntDivId"></div>
+							</div>
+						
+							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-7 col-md-8">
+											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
+											</div>
+											<div class="col-xs-12 col-sm-5 col-md-4">
+												<ul class="list-inline">
+													<li>
+														<div class="dropdown">
+														  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								<span class="changeDate">
+															This Week <span class="text-muted">Sunday - Today</span>
+								  </span>
+															<span class="caret"></span>
+														  </button>
+														  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
+															<li>LifeTime</li>
+															<li role="separator" class="divider"></li>
+															<li class="thisWeek">This Week <span class="text-muted">Sunday - Today</span></li>
+															<li>Last Week <span class="text-muted lastWeekDate"></span></li>
+															<li>Last 7 Days <span class="text-muted last7Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>This Month <span class="text-muted thisMonth"></span></li>
+															<li>Last Month <span class="text-muted lastMonth"></span></li>
+															<li>Last 28 Days <span class="text-muted last28Days"></span></li>
+															<li>Last 30 Days <span class="text-muted last30Days"></span></li>
+															<li>First 28 Days<span class="text-muted first28Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>This Quarter <span class="text-muted thisQuarter"></span></li>
+															<li>Last Quarter <span class="text-muted lastQuarter"></span></li>
+															<li>Last 90 Days <span class="text-muted Last90Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>This Year<span class="text-muted thisYear"></span></li>
+															<li>Last Year <span class="text-muted lastYear"></span></li>
+															<li>Last 365 Days <span class="text-muted last365Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>Custom Range <span class="customRange"></span></li>
+														  </ul>
+														</div>
+													</li>
+													<li>
+														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
+													</li>
+												</ul>
+											</div>
 										</div>
-										<!--<div class="col-md-12 col-xs-12 col-sm-12">
-											<h4 class="text-capitalize">Leadership SKills</h4>
-											<div id="leadershipSkillsDis" class="chartLi"></div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<h4 class="text-capitalize">official Spokes Person</h4>
-											<div id="officialSpokesPerDis" class="chartLi"></div>
-										</div>-->
 									</div>
-									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childActivityMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												 <div id="userTypeWiseChildDtlsTabId"></div>
 													<div class="row">
-														<div class="col-xs-12 col-sm-7 col-md-8">
-														 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
-														</div>
-														<div class="col-xs-12 col-sm-5 col-md-4">
-															<ul class="list-inline">
-																<li>
-																	<div class="dropdown">
-																	  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-																		This Week <span class="text-muted">Sunday - Today</span>
-																		<span class="caret"></span>
-																	  </button>
-																	  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
-																		<li><a href="#">LifeTime</a></li>
-																		<li role="separator" class="divider"></li>
-																		<li><a href="#">This Week <span class="text-muted">Sunday - Today</span></a></li>
-																		<li><a href="#">Last Week <span class="text-muted lastWeekDate"></span></a></li>
-																		<li><a href="#">Last 7 Days <span class="text-muted last7Days"></span></a></li>
-																		<li><a href="#">First 7 Days <span class="text-muted first7Days"></span></a></li>
-																		<li role="separator" class="divider"></li>
-																		<li><a href="#">This Month <span class="text-muted thisMonth"></span></a></li>
-																		<li><a href="#">Last Month <span class="text-muted lastMonth"></span></a></li>
-																		<li><a href="#">Last 28 Days <span class="text-muted last28Days"></span></a></li>
-																		<li><a href="#">Last 30 Days <span class="text-muted last30Days"></span></a></li>
-																		<li><a href="#">First 28 Days<span class="text-muted first28Days"></span></a></li>
-																		<li role="separator" class="divider"></li>
-																		<li><a href="#">This Quarter <span class="text-muted thisQuarter"></span></a></li>
-																		<li><a href="#">Last Quarter <span class="text-muted lastQuarter"></span></a></li>
-																		<li><a href="#">Last 90 Days <span class="text-muted Last90Days"></span></a></li>
-																		<li><a href="#">First 90 Days <span class="text-muted first90Days"></span></a></li>
-																		<li role="separator" class="divider"></li>
-																		<li><a href="#">This Year<span class="text-muted thisYear"></span></a></li>
-																		<li><a href="#">Last Year <span class="text-muted lastYear"></span></a></li>
-																		<li><a href="#">Last 365 Days <span class="text-muted last365Days"></span></a></li>
-																		<li><a href="#">First 365 Days <span class="text-muted first365Days"></span></a></li>
-																		<li role="separator" class="divider"></li>
-																		<li><a href="#">Custom Range <span class="customRange"></span></a></li>
-																	  </ul>
-																	</div>
-																</li>
-																<li>
-																	<i class="glyphicon glyphicon-calendar calendarIcon"></i>
-																</li>
-															</ul>
-														</div>
-													</div>
-												</div>
-												<div class="panel-body">
-													<div class="row">
-														<div class="col-md-12 col-xs-12 col-sm-12">
-														 <div id="childActivityMemberDivId"> </div>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12">
-															<div class="bg_ED pad_15 m_top20">
-															 <div id="userTypeWiseChildDtlsTabId"></div>
-																<div class="row">
-																	<div class="col-md-8 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
-																		<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>
-																		<div class="row m_top20">
-																		  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
-																		</div>
-																	</div>
-																</div>
+														<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
+															<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>
+															<div class="row m_top20">
+															  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
 															</div>
 														</div>
 													</div>
@@ -455,10 +467,36 @@
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="js/KChart.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-	
+	DatePickerDropdown();
+	function DatePickerDropdown()
+	{
+		$(".thisWeek").find(".text-muted").html("("+moment().subtract(7, 'days').startOf('week').format("dddd") + "- today)")
+		$(".last7Days").html("("+moment().subtract(7, 'days').format("DD/MM/YY") + "-"+moment().format("DD/MM/YY")+")");
+		$(".lastWeekDate").html("("+moment().subtract(7, 'days').startOf('week').format("DD/MM/YY") + "-"+moment().subtract(7, 'days').endOf('week').format("DD/MM/YY")+")");
+		$(".thisMonth").html("("+moment().startOf('month').format("DD/MM/YY")+'-'+moment().endOf('month').format("DD/MM/YYYY")+")");
+		$(".lastMonth").html("("+moment().subtract(1,'month').startOf('month').format("DD/MM/YYYY")+'-'+moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY")+")");
+		$(".last28Days").html("("+moment().subtract(28,'days').format("DD/MM/YY")+'-'+moment().format("DD/MM/YY")+")");
+		$(".last30Days").html("("+moment().subtract(30,'days').format("DD/MM/YY")+'-'+moment().format("DD/MM/YY")+")");
+		$(".first28Days").html("("+moment().startOf('month').format("DD/MM/YYYY")+'-'+moment().startOf('month').add(28,'days').format("DD/MM/YY")+")");
+		$(".thisQuarter").html("("+moment().startOf('quarter').format('MMMM')+'-'+moment().endOf('quarter').format('MMMM')+")");
+		$(".lastQuarter").html("("+moment().subtract(1,'quarter').startOf('quarter').format('MMMM')+'-'+moment().subtract(1,'quarter').endOf('quarter').format('MMMM')+")");
+		$(".Last90Days").html("("+moment().subtract(90,'days').format('DD/MM/YY')+'-'+moment().format('DD/MM/YY')+")");
+		$(".lastYear").html("("+moment().subtract(1,'year').startOf('year').format('YYYY')+'-'+moment().subtract(1,'year').endOf('year').format('YYYY')+")");
+		$(".thisYear").html("("+moment().startOf('year').format('YYYY')+'-'+moment().endOf('year').format('YYYY')+")");
+		$(".last365Days").html("("+moment().subtract(365,'days').format('DD/MM/YY')+'-'+moment().format('DD/MM/YY')+")");
+		$(".calendarIcon").daterangepicker({opens:'left',parentEl:$(this).closest(".row")})
+		$(".calenarUl li:last-child").click(function(){
+		  $(this).closest(".list-inline").find(".calendarIcon").trigger("click");
+		  $(this).closest(".dropdown").removeClass("open")
+		});
+		$(document).on("click",".calenarUl li",function(){
+		  $(".calenarUl li").removeClass("active")
+		  $(this).addClass("active")
+		  var kk = $(this).html();
+		  $(document).find(".changeDate").html(kk);
+		});
+	}
 	
 /* New Design */
       initialiseDatePicker();
