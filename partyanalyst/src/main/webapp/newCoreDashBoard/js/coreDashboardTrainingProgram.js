@@ -272,12 +272,12 @@ function buildLocationWiseTrainingProgramDetails(result){
 										}
 									}
 								},
-								series: [{
-									name: 'Attended',
-									data: districtWiseAttendedPercArray
-								}, {
+								series: [ {
 									name: 'Yet to Train',
 									data: districtWiseYetToTrainPercArray
+								},{
+									name: 'Attended',
+									data: districtWiseAttendedPercArray
 								}]
 							});
 						});
@@ -402,16 +402,26 @@ var globalUserWiseMemberRslt;
 		  }
 		});
  }
-  function buildgetUserTypeWiseTrainingProgramAttendedCountTopFiveStrongResults(result){
+ 
+	function buildgetUserTypeWiseTrainingProgramAttendedCountTopFiveStrongResults(result){
 		var str='';
 		if(result != null && result.length > 0){
-			var str='';
-			for(var i in result){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-					str+='<div id="genSecTraining'+i+'" style="width:100%;height:100px;"></div>';
-				str+='</div>'
-			}
+		  var str='';
+		  for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].userTypeId==4 || result[i][0].userTypeId==11){
+				  if(result[i][0].userTypeId==4){
+				   str+='<h5 class="text-capital">'+result[i][0].userType+' / SECRETARY </h5>';      
+				  }
+				  if(result[i][0].userTypeId==11){
+				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].userType+'</h5>';      
+				  }
+			   }else{
+				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
+			   }
+			  str+='<div id="genSecTraining'+i+'" style="width:100%;height:100px;"></div>';
+			str+='</div>'
+		  }
 		}
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
 		if(result != null && result.length > 0){

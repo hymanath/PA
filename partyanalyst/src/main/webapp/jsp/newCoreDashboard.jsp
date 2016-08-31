@@ -160,7 +160,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
                         	<div class="committeeSeetingBlock" style="display:none;">
 								<ul class="list-inline pull-right activeUlCls">
-									<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>
+									<li class="basicCommitteesBlockDiv" style="margin-left:10px;"><i class="fa fa-gears"></i></li>
 								</ul>
 							</div>
 							<ul class="list-inline pull-right activeUlCls">
