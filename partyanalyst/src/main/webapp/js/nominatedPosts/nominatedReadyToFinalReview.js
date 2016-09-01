@@ -426,11 +426,16 @@ var glFinalyeboardId=0;
 var glFinalyePositionId=0;
 
 $(document).on("click",".referenceCls",function(){  
-	if(gblStatus != "goPassed"){
 		var departmentId = $(this).attr("attr_department_id");
 		var boardId = $(this).attr("attr_board_id");
 		var positionId = $(this).attr("attr_position_id");
 		var positionName = $(this).attr("attr_position_name");
+		
+		glFinalyeDeptId = departmentId;
+		glFinalyeboardId = boardId;
+		glFinalyePositionId = positionId;
+	if(gblStatus != "goPassed"){
+
 		
 		var levelId = boardLevelId;
 		var levelValue = 1;
@@ -459,34 +464,36 @@ $(document).on("click",".referenceCls",function(){
 		$("#headingPostId").html(positionName+" POST");
 		$("#totalHeadingId").html(level+" Level - "+globalDepartmentName+" Department - "+globalBoardName+" Board");
 	}
+	else{
+		/*glFinalyeDeptId = departmentId;
+		glFinalyeboardId = boardId;
+		glFinalyePositionId = positionId;*/
+		var levelId = boardLevelId;
+		var levelValue = 1;
+		var level = "Central";
+		/*if(levelId == 1){
+			levelValue = $("#stateId").val();	
+		}*/
+		if(levelId == 2){
+			levelValue = $("#stateId").val();	
+			level = "State";
+		}
+		else if(levelId == 3){	
+			levelValue = $("#districtId").val();
+			level = "District";
+		}
+		else if(levelId == 4){
+			levelValue = $("#constituencyId").val();
+			level = "Constituency";
+		}
+		else if(levelId >= 5){  
+			levelValue = $("#manTowDivId").val();
+			level = "Mandal";
+		}
+		getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId);
+	}
 	
-	
-	glFinalyeDeptId = departmentId;
-	glFinalyeboardId = boardId;
-	glFinalyePositionId = positionId;
-	var levelId = boardLevelId;
-	var levelValue = 1;
-	var level = "Central";
-	/*if(levelId == 1){
-		levelValue = $("#stateId").val();	
-	}*/
-	if(levelId == 2){
-		levelValue = $("#stateId").val();	
-		level = "State";
-	}
-	else if(levelId == 3){	
-		levelValue = $("#districtId").val();
-		level = "District";
-	}
-	else if(levelId == 4){
-		levelValue = $("#constituencyId").val();
-		level = "Constituency";
-	}
-	else if(levelId >= 5){  
-		levelValue = $("#manTowDivId").val();
-		level = "Mandal";
-	}
-	getReferralCandidateDetails(levelId,levelValue,departmentId,boardId,positionId);
+
 	//$("#myModal").modal("show");
 	if(gblStatus == 'finaliZed' )
 		$("#actionId").html("G.O Issuing ");
@@ -925,7 +932,7 @@ $(document).on("click",".submitBtnCls",function(){
 			$("#"+divId).html("Successfully Updated...");
 	        $("#"+btnId).attr("disabled","disabled");
 			
-			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr,glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId);
+			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr[0],glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId);
 			
 	   }else{
 		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");
