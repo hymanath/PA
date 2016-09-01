@@ -772,7 +772,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					
 					if( childDetails != null && childDetails.size() > 0){
 						for( Object[] obj : childDetails){
-							
+							try{
 							if( finalVO.getSubMap() == null){
 								finalVO.setSubMap(new LinkedHashMap<Long,UserTypeVO>());
 							}
@@ -806,7 +806,10 @@ public class CoreDashboardService implements ICoreDashboardService{
 							}
 							activityMemberVO = userTypeVO.getSubMap().get((Long)obj[0]);
 							activityMemberVO.getLocationValuesSet().add(obj[7]!= null ?(Long)obj[7]:0l);
+						}catch(Exception e){
+							LOG.error(e);
 						}
+						}	
 					}
 					if(finalVO.getSubMap() != null && finalVO.getSubMap().size() > 0){
 						for(Long usertypeId : finalVO.getSubMap().keySet()){
