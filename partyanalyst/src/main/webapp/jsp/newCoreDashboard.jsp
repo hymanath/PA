@@ -263,22 +263,28 @@
         <div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
-					<h4 class="panel-title">
-						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-						training
-						<span class="settingsIcon pull-right">
-                        	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-                        </span>
-						<span class="trainingIconExpand pull-right">
-							<i class="glyphicon glyphicon-fullscreen"></i>
-						</span>
-						<!--<span class="input-group pull-right dateRangePickerCls hide">
-								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-						</span>-->
-					</h4>
+					<div class="row">
+						<div class="col-md-6 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+								training
+							</h4>
+						</div>
+						<div class="col-md-6 col-sm-4 col-xs-5">
+							<span class="settingsIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="trainingIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForTraining hide">
+									<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+							</span>
+						</div>
+					</div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -696,6 +702,7 @@
 	
 /* New Design */
       initialiseDatePicker();
+	  initialiseDatePickerForTrainingProgram();
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
