@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
+import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardMainService {
@@ -30,5 +31,5 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr);
 	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr);
 	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr);
-	
+	public List<UserDataVO> getbasicCommitteeDetails();
 }

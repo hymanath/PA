@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
+import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Characteristics;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -2552,4 +2553,30 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		return returnList;
 	}
 	
+	/**
+	  * @author <a href="mailto:aravind.itgrids.hyd@gmail.com">ARAVIND</a>
+	  *  This Service Method is used to get the basic Committee Details
+	  *  @since 01-SEPTEMBER-2016
+	  */
+	
+	public List<UserDataVO> getbasicCommitteeDetails(){
+		//appCndDesigList->appointmentCandidateDesignationList
+		List<UserDataVO> basicCommitteeList = new ArrayList<UserDataVO>(0);
+		try{
+			LOG.info("Entered into getbasicCommitteeDetails() method of CoreDashboardMainService");
+			List<Object[]>  objList = tdpBasicCommitteeDAO.getBasicCommittees();
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					UserDataVO vo = new UserDataVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					basicCommitteeList.add(vo);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getbasicCommitteeDetails() method of CoreDashboardMainService", e);
+		}
+		return basicCommitteeList;
+	}
 }
