@@ -716,7 +716,8 @@ public String getTopPoorPerformancecommittees(){
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
-			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues);
+			Long stateId = jObj.getLong("stateId");
+			trainingCampProgramVO = coreDashboardMainService.getTrainingCampBasicDetailsCntOverview(userAccessLevelId,userAccessLevelValues,stateId);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
@@ -736,7 +737,8 @@ public String getTopPoorPerformancecommittees(){
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
-			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByDistrict(userAccessLevelId,userAccessLevelValues);
+			Long stateId = jObj.getLong("stateId");
+			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByDistrict(userAccessLevelId,userAccessLevelValues,stateId);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
@@ -755,7 +757,7 @@ public String getTopPoorPerformancecommittees(){
 			if(user == null || user.getRegistrationID() == null){
 				return ERROR;
 			}
-		    Long userId = jObj.getLong("userId");
+		  //  Long userId = jObj.getLong("userId");
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
 		    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
@@ -766,7 +768,8 @@ public String getTopPoorPerformancecommittees(){
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(user.getRegistrationID(),userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues);
+			Long stateId = jObj.getLong("stateId");
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(user.getRegistrationID(),userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
 	 }
@@ -788,7 +791,8 @@ public String getSelectedChildTypeMembersForTrainingProgram(){
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
-			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeId,userAccessLevelId,userAccessLevelValues,reportType);
+			Long stateId = jObj.getLong("stateId");
+			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeId,userAccessLevelId,userAccessLevelValues,reportType,stateId);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
 	 }
@@ -802,7 +806,8 @@ public String getDirectChildActivityTrainingProgramMemberDetails(){
 		 	Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
 			 String reportType = jObj.getString("reportType");
-		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,userTypeId,null,null,reportType);
+			 Long stateId = jObj.getLong("stateId");
+		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,userTypeId,null,null,reportType,stateId);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
 	 }
@@ -812,22 +817,36 @@ public String getTrainingProgramPoorCompletedLocationDtls(){
 	  try{
 			LOG.info("Entered into getTrainingProgramPoorCompletedLocationDtls()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
-			Long userAccessLevelId = jObj.getLong("userAccessLevelId");
-			
-			List<Long> userAccessLevelValues=new ArrayList<Long>();
-			JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
-			if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
-				for( int i=0;i<userAccessLevelValuesArray.length();i++){
-					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
-				}
-			}
-			trainingCampProgramVO = coreDashboardMainService.getTrainingProgramPoorCompletedLocationDtls(userAccessLevelId,userAccessLevelValues);
+			Long userTypeId = jObj.getLong("userTypeId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			 Long stateId = jObj.getLong("stateId");
+			trainingCampProgramVO = coreDashboardMainService.getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,stateId);
 		}catch(Exception e){
 			LOG.error("Exception raised at getTrainingProgramPoorCompletedLocationDtls() method of CoreDashBoardAction", e);
 		}
 		return Action.SUCCESS;
 }
-
+public String getTrainingProgramBasicCnt(){
+	
+	try{
+		 
+	    jObj = new JSONObject(getTask());
+	 
+	     Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+		List<Long> userAccessLevelValues=new ArrayList<Long>();
+		JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+		if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+			for( int i=0;i<userAccessLevelValuesArray.length();i++){
+				userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+			}
+		}
+		 Long stateId = jObj.getLong("stateId");
+		trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsBasicCountDetails(userAccessLevelId,userAccessLevelValues,stateId);
+ }catch(Exception e){
+	 LOG.error("Exception raised at getTrainingProgramBasicCnt() method of CoreDashBoardAction", e); 
+ }
+ return Action.SUCCESS;
+}
 //Debate Action Methods
 
 public String getPartyWiseTotalDebateDetails(){
