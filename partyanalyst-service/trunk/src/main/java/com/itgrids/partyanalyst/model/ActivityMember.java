@@ -29,7 +29,8 @@ public class ActivityMember {
 	private Long updatedBy;
 	private Long tdpCadreId;
 	private Long userId;
-	
+	private String memberName;
+	private String imageUrl;
 	
 	private TdpCadre tdpCadre;
 	private User user;
@@ -95,6 +96,21 @@ public class ActivityMember {
 		this.user = user;
 	}
 	
+	@Column(name="member_name")
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
 	
+	@Column(name="image_url")
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 	
 }
