@@ -4762,7 +4762,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			if(effectedPostsCount != null && effectedPostsCount.longValue()>0)
 				status = "success";
 			else
-				status = "No Posts are available to assign to this application.";
+				status = "Already all posts are filled out.";
 		} catch (Exception e) {
 			status = "failure";
 			LOG.error("Exception raised at updateFinalyzationStatusForPost() method of NominatedPostProfileService", e);
