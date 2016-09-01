@@ -49,4 +49,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public Integer updateNominatedPost(Long nominatedPostId,Long nominatedPostCandidateId,Date date,Long userId);
 	public List<NominatedPost> getNominatedPostByMemberOfFinalReview(Long memberId);
 	public Integer updateNominatedPostsForOpenState(Set<Long> postIds,Long userId,Date date);
+	public Long getOpenedPositions(Long memberId);
 }

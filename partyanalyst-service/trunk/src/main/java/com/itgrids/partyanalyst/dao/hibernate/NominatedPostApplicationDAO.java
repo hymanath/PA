@@ -2082,4 +2082,33 @@ if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
 	
 	return query.list();
 }
+public int updateApllicationStatusToReject(Long memberId,final Long userId){
+	
+	StringBuilder queryStr = new StringBuilder();
+	DateUtilService dateUtilService = new DateUtilService();
+	
+	queryStr.append("UPDATE NominatedPostApplication model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
+			" model.updatedBy =:updatedBy," +
+			" model.updatedTime =:updatedTime " +
+			"	WHERE  model.isDeleted = 'N' and model.nominatedPostMember.nominatedPostMemberId =:memberId and " +
+			" model.applicationStatus.applicationStatusId not in (5,7) " );//5--confirmed, 7 -- g.o passed
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	
+	query.setParameter("memberId", memberId);
+	query.setParameter("applicationStatusId", 4L);// rejected in final review status id
+	query.setParameter("updatedBy", userId);
+	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
+	
+	return query.executeUpdate();
+}
+public List<NominatedPostApplication> getApplicationIdsByMemberId(Long memberId){
+	
+	 Query query = getSession().createQuery(" select model from NominatedPostApplication model " +
+		 		" where  and model.isDeleted='N' " +
+		 		" and model.nominatedPostMember.nominatedPostMemberId =:memberId  and model.applicationStatus.applicationStatusId not in (5,7) ");
+		 query.setParameter("applicationId", memberId);
+		 
+		return query.list();
+}
 }

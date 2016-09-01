@@ -1035,7 +1035,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(nominatePostApplicationId);
 						 
-						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
 						
 						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
 						nominatedPostApplication.setApplicationStatusId(statusId);
@@ -1064,7 +1064,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return status;
 	}
 	
-	public void savingNominatedPostApplicationHistoryDetails(final NominatedPostApplication nominatedPostApplication){
+	public void savingNominatedPostApplicationHistoryDetails(final NominatedPostApplication nominatedPostApplication,final Long statusId,final Long userId){
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
@@ -1078,11 +1078,17 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					nominatedPostApplicationHistory.setPositionId(nominatedPostApplication.getPositionId());
 					nominatedPostApplicationHistory.setBoardLevelId(nominatedPostApplication.getBoardLevelId());
 					nominatedPostApplicationHistory.setLocationValue(nominatedPostApplication.getLocationValue());
+					if(statusId != null && statusId.longValue() > 0l && userId != null && userId.longValue() > 0l){
+					nominatedPostApplicationHistory.setApplicationStatusId(statusId);
+					nominatedPostApplicationHistory.setUpdatedBy(userId.longValue());
+					nominatedPostApplicationHistory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					}else{
 					nominatedPostApplicationHistory.setApplicationStatusId(nominatedPostApplication.getApplicationStatusId());
-					nominatedPostApplicationHistory.setInsertedBy(nominatedPostApplication.getInsertedBy());
-					nominatedPostApplicationHistory.setInsertedTime(nominatedPostApplication.getInsertedTime());
 					nominatedPostApplicationHistory.setUpdatedBy(nominatedPostApplication.getUpdatedBy());
 					nominatedPostApplicationHistory.setUpdatedTime(nominatedPostApplication.getUpdatedTime());
+					}
+					nominatedPostApplicationHistory.setInsertedBy(nominatedPostApplication.getInsertedBy());
+					nominatedPostApplicationHistory.setInsertedTime(nominatedPostApplication.getInsertedTime());
 					nominatedPostApplicationHistory.setIsDeleted(nominatedPostApplication.getIsDeleted());
 					
 					nominatedPostApplicationHistory = nominatedPostApplicationHistoryDAO.save(nominatedPostApplicationHistory);
@@ -3796,7 +3802,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(applicationId);
 						
-						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
 						
 						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
 						nominatedPostApplication.setApplicationStatusId(statusId);
@@ -4622,8 +4628,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId,final Long candidateId){
 		String status = null;
 		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {	
+			
+			Long effectedPostsCount = (Long) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
 					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
 					
 					if(statusId != null && statusId.longValue() == 5l){
@@ -4642,28 +4650,32 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 							nominatedPostFinal.setUpdatedBy(userId);
 							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+							
+							NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+							savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
+							
+							nominatedPostApplication.setApplicationStatusId(statusId);
+							nominatedPostApplication.setUpdatedBy(userId);
+							nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
+							
+							changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
 						}
 						else{
-							nominatedPostFinal.setApplicationStatusId(statusId);
+							
+							return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
+							
+							/*nominatedPostFinal.setApplicationStatusId(statusId);
 							nominatedPostFinal.setUpdatedBy(userId);
 							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);*/
 						}
-						
-						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
-						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
-						
-						nominatedPostApplication.setApplicationStatusId(statusId);
-						nominatedPostApplication.setUpdatedBy(userId);
-						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
 					}
 					else{
 						nominatedPostFinal.setApplicationStatusId(statusId);
 						nominatedPostFinal.setUpdatedBy(userId);
 						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
-						
 						
 						//Moving into OPEN Status if Applications Are less 
 						if(nominatedPostFinal !=null){							
@@ -4672,17 +4684,16 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 								//FinalReview Applications && Posts
 								List<NominatedPostApplication> applicationList =  nominatedPostFinalDAO.getNominatedPostApplicationsByMemberOfFinalReview(memberId);	
-								
 								List<NominatedPost> postsList   = nominatedPostDAO.getNominatedPostByMemberOfFinalReview(memberId);
 								
+								//if application count is less than final review posts then we will move that remaining posts to open status
 								if(postsList !=null && (postsList.size()>applicationList.size())){
-									
 									int diff = (postsList.size() - (applicationList !=null ? applicationList.size():0));									
 									if(diff>0){		
 										int i=1;
 										for (NominatedPost nominatedPost : postsList) {											
 											if(i<=diff){												
-												nominatedPost.setNominatedPostStatusId(1l);
+												nominatedPost.setNominatedPostStatusId(1l);// moving nominated post to open status 
 												nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 												nominatedPost.setUpdatedBy(userId);												
 												nominatedPostDAO.save(nominatedPost);												
@@ -4692,12 +4703,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 									}								
 								}
 							}
-							
 						}
 						
 						
 						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
-						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
 						
 						nominatedPostApplication.setApplicationStatusId(statusId);
 						nominatedPostApplication.setUpdatedBy(userId);
@@ -4743,14 +4753,47 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					nominatedPostComment.setInsertedBy(userId);
 					nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
+					
+				
+					return 1L;
 				}
-			});
-			status = "success";
+			}); 
+			
+			if(effectedPostsCount != null && effectedPostsCount.longValue()>0)
+				status = "success";
+			else
+				status = "No Posts are available to assign to this application.";
 		} catch (Exception e) {
 			status = "failure";
 			LOG.error("Exception raised at updateFinalyzationStatusForPost() method of NominatedPostProfileService", e);
 		}
 		return status;
+	}
+	
+	/**
+	 * @Author  Hymavathi
+	 * @Version NominatedPostProfileService.java  Sep 01, 2016 12:00:00 PM 
+	 * @return void
+	 * description  { If all positions are filled out then remaining applications of same position are making to reject status  }
+	 */
+	public void changingApplicationsToRejectStatus(NominatedPostFinal nominatedPostFinal,final Long userId,final Long postApplicationId){
+		try {
+			Long openPositions = nominatedPostDAO.getOpenedPositions(nominatedPostFinal.getNominatedPostMemberId());
+			
+			if(openPositions == null || openPositions.longValue() ==0l){
+				int updateCnt = nominatedPostApplicationDAO.updateApllicationStatusToReject(nominatedPostFinal.getNominatedPostMemberId(), userId);
+					updateCnt = nominatedPostFinalDAO.updateApllicationStatusToReject(nominatedPostFinal.getNominatedPostMemberId(), userId);
+				List<NominatedPostApplication> nominatedPostApplications = nominatedPostApplicationDAO.getApplicationIdsByMemberId(nominatedPostFinal.getNominatedPostMemberId());
+				if(commonMethodsUtilService.isListOrSetValid(nominatedPostApplications)){
+					for(NominatedPostApplication nominatedPostApplication : nominatedPostApplications){
+						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,4l,userId);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised at changingApplicationsToRejectStatus() method of NominatedPostProfileService", e);
+		}
 	}
 	
 	public String updateWishListForCandidate(final Long postFinalId,final String remark,final Long userId){
@@ -5808,7 +5851,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 								for(Long long1 : applicationIds){
 									NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
-									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
 									
 									nominatedPostApplication.setApplicationStatusId(7l);
 									nominatedPostApplication.setUpdatedBy(userId);
@@ -5847,7 +5890,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 								for(Long long1 : applicationIds){
 									NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(long1);
-									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication);
+									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
 									
 									nominatedPostApplication.setApplicationStatusId(IConstants.rejectedInFinalized);
 									nominatedPostApplication.setUpdatedBy(userId);
