@@ -171,7 +171,7 @@ var globalSearchLevelValue = parseInt('${param.searchLevelValue}');
 
 
 	if(globalStatusMainName == "notYet"){
-		$("#flowHeading").html(""+globalLevelTxt.substr(0,1).toUpperCase()+globalLevelTxt.substr(1)+" Level - Board/Corporation &mdash; Yet to start");
+		$("#flowHeading").html(""+globalLevelTxt.substr(0,1).toUpperCase()+globalLevelTxt.substr(1)+" Level - Board/Corporation &mdash; Ready to shortlist");
 	}
 	else{
 		$("#flowHeading").html(globalLevelTxt.substr(0,1).toUpperCase()+globalLevelTxt.substr(1)+" Level - Board/Corporation <span>	&mdash;</span> "+globalStatusMainName.substr(0,1).toUpperCase()+globalStatusMainName.substr(1)+"");

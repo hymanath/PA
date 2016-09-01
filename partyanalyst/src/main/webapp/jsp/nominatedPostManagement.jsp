@@ -167,7 +167,7 @@ if(globalStatus !=null && globalStatus.trim().length>0){
 function capitalizeFirstLetter(stringStr){
 	var returnStmt = stringStr.charAt(0).toUpperCase() + stringStr.slice(1);
 	if(returnStmt=="Notyet"){
-		returnStmt = "Yet to Start";
+		returnStmt = "Ready To ShortList";
 	}
 	return returnStmt;	
 }
@@ -184,7 +184,7 @@ var globalMandalTowDivArr=[];
 $(document).ready(function() {
 	if(globalStatus == "notYet"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
-		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; Yet to start");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; ready to shortlist");
 	}else if(globalStatus == "notRecieved "){
 		$("#headinggId").html("Not Received "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; NOT RECEIVED");
