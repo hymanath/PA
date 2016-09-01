@@ -1,5 +1,12 @@
+
+
 //Training Program
-var globalTrainingProgramsRslt;
+var globalStateId=1; //default Ap 
+$(document).on("click",".stateCls",function(){
+ var stateId=$(this).attr("attr_state_id");
+ globalStateId = stateId; 
+});
+
 var getDocumentWidth = $(document).width();
 
 	function getTrainingCampBasicDetailsCntOverview()
@@ -9,7 +16,8 @@ var getDocumentWidth = $(document).width();
 	 $("#mdlTwnDvsnTabId").html(' ');
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
-					 userAccessLevelValuesArray : globalUserAccessLevelValues
+					 userAccessLevelValuesArray : globalUserAccessLevelValues,
+					 stateId : globalStateId
 				  }
 		$.ajax({
 			type : 'POST',
@@ -30,7 +38,6 @@ var getDocumentWidth = $(document).width();
   function buildTrainingProgramBasicDetails(result){
 	  var str='';
 	  var programList = result.trainingProgramList;
-	  globalTrainingProgramsRslt=result.trainingProgramList;
 	if(programList != null && programList.length > 0){
 		  for(var i in programList){
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
@@ -162,7 +169,8 @@ var getDocumentWidth = $(document).width();
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
-					 userAccessLevelValuesArray : globalUserAccessLevelValues
+					 userAccessLevelValuesArray : globalUserAccessLevelValues,
+					 stateId : globalStateId
 				  }
 		
 		$.ajax({
@@ -175,7 +183,6 @@ var getDocumentWidth = $(document).width();
 			if(result != null && result.length > 0){
 			  buildLocationWiseTrainingProgramDetails(result);	
 			  globalTrainingProgramDtlsRslt=result;
-			  
 			}else{
 			$("#districtWiseProgramCntDivId").html("NO DATA AVAILABLE");	
 			}
@@ -190,7 +197,6 @@ function buildLocationWiseTrainingProgramDetails(result){
 				str+=result[i].name
 				str+='<div id="locationDivId'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
-			
 		}
 		$("#districtWiseProgramCntDivId").html(str);
 	if(result != null && result.length > 0){
@@ -324,7 +330,7 @@ function buildLocationWiseTrainingProgramDetails(result){
 	 buildNotAttendedTrainingProgramRslt(globalTrainingProgramDtlsRslt);		  
 	 }
  }); */
- function buildAttendedTrainingProgramRslt(result){
+/*  function buildAttendedTrainingProgramRslt(result){
  var str='';	
  	  for(var i in result){
 		  str+='<h4>'+result[i].name+'</h4>';
@@ -375,16 +381,16 @@ function buildLocationWiseTrainingProgramDetails(result){
 		  labelLegendShow:false,
 		  graphHeading:false
 		});
- }
+ } */
 var globalUserWiseMemberRslt;
  function getUserTypeWiseTotalEligibleAndAttendedCnt(){
 	  $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 var jsObj ={
 			          userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
-					  userId :1,
 					  activityMemberId : globalActivityMemberId,
-					  userTypeId : globalUserTypeId
+					  userTypeId : globalUserTypeId,
+					  stateId : globalStateId
 					}
 		
 		$.ajax({
@@ -644,7 +650,7 @@ $(document).on("click",".moreTrainingBlocksIcon",function(){
 	$(".moreTrainingBlocks").toggle();
 	setTimeout(function(){
 		getTrainingCampProgramsDetailsCntByDistrict();
-		getTrainingProgramPoorCompletedLocationDtls();
+		//getTrainingProgramPoorCompletedLocationDtls();
 	},600);
 	var moreBlocksWidth = $(".trainingsUl").width();
 	var getEachLiWidth;
@@ -664,7 +670,8 @@ $(document).on("click",".trainingDetailed",function(){
 	$(".trainingComparison").removeClass("active");
 	$(".trainingDetailedBlock").show();
 	$(".trainingComparisonBlock").hide();
-	buildTrainingProgramRslt(globalTrainingProgramsRslt);
+	//buildTrainingProgramRslt(globalTrainingProgramsRslt);
+	getTrainingProgramBasicCnt();
 });
 $(document).on("click",".trainingComparison",function(){
 	$(this).addClass("active")
@@ -680,7 +687,10 @@ $(document).on("click",".unExpandTrainingBlock",function(){
 	});
   function getChildUserTypesByItsParentUserTypeForTrainingProgram(){
 		 $("#childUserTypeDetailsDivForTrainingProgram").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var jsObj = { parentUserTypeId : globalUserTypeId }
+		var jsObj = {
+			parentUserTypeId : globalUserTypeId,
+		    stateId : globalStateId
+		}
 		$.ajax({
 			type : 'POST',
 			url : 'getChildUserTypesByItsParentUserTypeAction.action',
@@ -712,7 +722,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		$(".comparisonSelect li:first-child").addClass("active")
 		
 		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId);
-		getTrainingProgramPoorCompletedLocationDtls();
+		//getTrainingProgramPoorCompletedLocationDtls();
 	}
 	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId){
 	 $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -724,7 +734,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 				   childUserTypeId : childUserTypeId,
 				   userAccessLevelId : globalUserAccessLevelId,
 				   userAccessLevelValuesArray : globalUserAccessLevelValues,
-				   reportType :"selectedUserType"
+				   reportType :"selectedUserType",
+				    stateId : globalStateId
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -742,13 +753,20 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		});
  }
  function buildChildTypeMembersForTrainingReslt(result){
-	 
+	  var userTypeId = result[0].userTypeId;
+	  var activityMemberId = result[0].activityMemberId;
+	  var selectedMemberName = result[0].name;
+	  var selectedUserType = result[0].userType;
 	 var str='';
 	  str+='<ul class="list-inline slickPanelSliderTraining">';
 	  var rank=1; 
 	   for(var i in result){
 	str+='<li style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
+	     if(i==0){
+			str+='<div class="panel panel-default panelSlick panelActiveSlick">';
+		  }else{
 		  str+='<div class="panel panel-default panelSlick">';
+		  }
 		  str+='<div class="panel-heading">';
 			 str+='<h4 class="panel-title">'+result[i].name+'</h4>';
 			 str+='<span class="count">'+rank+'</span>';
@@ -816,11 +834,13 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 				// instead of a settings object
 			  ]
 		});   
+	getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
+	getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"userTypeWiseChildDtlsTabId");
  }
  $(document).on("click",".childUserTypeClsForTrainingProgram",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
 	getSelectedChildTypeMembersForTrainingProgram(childUserTypeId);
-	getTrainingProgramPoorCompletedLocationDtls();
+	//getTrainingProgramPoorCompletedLocationDtls();
 });
 $(document).on("click",".activityMemberCls",function(){
 		$(this).find(".panelSlick").addClass("panelActiveSlick")
@@ -829,8 +849,8 @@ $(document).on("click",".activityMemberCls",function(){
     	var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype"); 	
 		var childActivityMemberId = $(this).attr("attr_id");  
-		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,"");
-		getTrainingProgramPoorCompletedLocationDtls();
+		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
 });
 $(document).on("click",".remveSlcUsrType",function(){
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
@@ -844,12 +864,14 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 		getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
 });
   function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var jsObj ={  activityMemberId : activityMemberId,
 			         userTypeId : userTypeId,
 					 reportType : "directChild",
+					 stateId : globalStateId
 				  }
 	   	$.ajax({
 			type : 'POST',
@@ -894,15 +916,11 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
-			/* if(userTypeId != null && userTypeId==5 || userTypeId==6 || userTypeId==7 || userTypeId==8 || userTypeId==9){
-			if(result[i].locationName != null && result[i].locationName.trim().length > 0){
-				str+='<td>'+result[i].userType+' (<b>'+result[i].locationName.split(" ")[0]+'</b>)</td>';	
-			}
-			}else{
-			  str+='<td>'+result[i].userType+'</td>';
-			} */
 		  if(yourValues.indexOf(',') == -1){
-				str+='<td>'+result[i].userType+' (<b>'+result[i].locationName.split(" ")[0]+'</b>)</td>';
+				//  var locationNameArr=result[i].locationName.split(" ");
+			 	var locatinName = result[i].locationName;
+                 locatinName = locatinName.substring(0, locatinName.lastIndexOf(" "));
+				str+='<td>'+result[i].userType+' (<b>'+locatinName+'</b>)</td>';
 			}else{
 				str+='<td>'+result[i].userType+'</td>';
 			}
@@ -923,20 +941,39 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 	$("#"+childActivityMemberId).html(str);
 	}
 /* more training blocks start*/
-function buildTrainingProgramRslt(globalTrainingProgramsRslt){
-	var str='';
-	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
-		//str+'<ul class="trainingsUl">';
-		  for(var i in globalTrainingProgramsRslt){
-			//  str+='<li>';
-			  str+='<h4 class="text-capitalize text-muted">'+globalTrainingProgramsRslt[i].name+'</h4>';
-			  str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
-			//  str+='</li>';
+function getTrainingProgramBasicCnt(){
+	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+ 	  var jsObj ={ 
+	               userAccessLevelId : globalUserAccessLevelId,
+				   userAccessLevelValuesArray : globalUserAccessLevelValues,
+				    stateId : globalStateId
+				 }
+	  $.ajax({
+			type : 'POST',
+			url : 'getTrainingProgramBasicCntAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#programsDivId").html(' ');
+		  if(result != null && result.length > 0){
+			  buildTrainingProgramRslt(result);
+		  }else{
+			  $("#programsDivId").html("NO DATA AVAILABLE");
 		  }
-		//str+='</ul>';
-	}
+		});	
+}
+function buildTrainingProgramRslt(result){
+	var str='';
+		str+='<ul class="trainingsUl">';
+		  for(var i in result){
+			  str+='<li>';
+			  str+='<h4 class="text-capitalize text-muted">'+result[i].name+'</h4>';
+			  str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
+			  str+='</li>';
+		  }
+		str+='</ul>';
 	$("#programsDivId").html(str);
-	/* $(".trainingsUl").slick({
+	 $(".trainingsUl").slick({ //santosh
 			 slide: 'li',
 			 slidesToShow: 4,
 			 slidesToScroll: 4,
@@ -976,13 +1013,13 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 				// settings: "unslick"
 				// instead of a settings object
 			  ]
-		}); */
-	if(globalTrainingProgramsRslt != null && globalTrainingProgramsRslt.length > 0){
-		  for(var i in globalTrainingProgramsRslt){
+		}); 
+	if(result != null && result.length > 0){
+		  for(var i in result){
 			var  jsonDataArr=[];
-			jsonDataArr.push({name:"Total Eligible",data:[globalTrainingProgramsRslt[i].totalEligibleCountPer,globalTrainingProgramsRslt[i].totalEligibleCountPer]});
-			jsonDataArr.push({name:"Attended",data:[globalTrainingProgramsRslt[i].totalAttenedCountPer,0]});
-			jsonDataArr.push({name:"Yet to train",data:[0,globalTrainingProgramsRslt[i].totalNotAttenedCountPer]});
+			jsonDataArr.push({name:"Total Eligible",data:[result[i].totalEligibleCountPer,result[i].totalEligibleCountPer]});
+			jsonDataArr.push({name:"Attended",data:[result[i].totalAttenedCountPer,0]});
+			jsonDataArr.push({name:"Yet to train",data:[0,result[i].totalNotAttenedCountPer]});
 			
 		var chartWidth = $("#programHighChartId"+i).parent().width()/2;
 		$("#programHighChartId"+i).width(chartWidth);
@@ -1058,11 +1095,12 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 	   }
 	}
 }
-	 function getTrainingProgramPoorCompletedLocationDtls(){
+	 function getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedUserName,userType){
 	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj ={ 
-		             userAccessLevelId : globalUserAccessLevelId,
-					 userAccessLevelValuesArray : globalUserAccessLevelValues
+		              userTypeId : userTypeId,
+					  activityMemberId:activityMemberId,
+					  stateId : globalStateId
 				  }
 		
 		$.ajax({
@@ -1073,65 +1111,89 @@ function buildTrainingProgramRslt(globalTrainingProgramsRslt){
 		}).done(function(result){
 		   $("#poorPerformancTrainingPrograLocationsDivId").html('');
 	       if(result != null){
-			   buildTrainingProgramPoorPerformanceLocationRslt(result);
+			   buildTrainingProgramPoorPerformanceLocationRslt(result,userTypeId,selectedUserName,userType);
 		   }
 		});
 	}
-	function buildTrainingProgramPoorPerformanceLocationRslt(result){
-	var districtList = result.districtList;
+	function buildTrainingProgramPoorPerformanceLocationRslt(result,userTypeId,selectedUserName,userType){
+    var resultListFirst;
+	var resultListSecond;
     var str='';
-	  str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-	  str+='<p class="text-capital">districts</p>';
+		str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
+	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	  if(userTypeId!= null && userTypeId==3 || userTypeId==2){
+		str+='<p class="text-capital">districts</p>';  
+		resultListFirst = result.districtList;
+		resultListSecond = result.constituencyList;
+	  }
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+		 str+='<p class="text-capital">Constituencies</p>';  
+		resultListFirst = result.constituencyList;
+		resultListSecond = result.mandalList;  
+	  }
+	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
+		 str+='<p class="text-capital">Mandal</p>';  
+		resultListFirst = result.mandalList;
+		resultListSecond = result.villageList;  
+	  }
+	  
       str+='<table class="table tableCumulative">';
-      if(districtList != null && districtList.length > 0){
+      if(resultListFirst != null && resultListFirst.length > 0){
 		  var order=1;
 		  var BGColor = 1;
-		  for(var i in districtList){
+		  for(var i in resultListFirst){
 			
 			str+='<tr>';
 			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
-			str+='<td>'+districtList[i].name+'</td>';
+			str+='<td>'+resultListFirst[i].name+'</td>';
 			str+='<td>';
-				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+districtList[i].totalAttenedCountPer+'%">';
-			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+districtList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+districtList[i].totalAttenedCountPer+'%;">';
-					str+='<span class="sr-only">'+districtList[i].totalAttenedCountPer+'</span>';
+				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+resultListFirst[i].totalAttenedCountPer+'%">';
+			str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+resultListFirst[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+resultListFirst[i].totalAttenedCountPer+'%;">';
+					str+='<span class="sr-only">'+resultListFirst[i].totalAttenedCountPer+'</span>';
 				  str+='</div>';
 				str+='</div>';
 			str+='</td>';
-			str+='<td class="text-danger">'+districtList[i].totalAttenedCountPer+'</td>';
+			str+='<td class="text-danger">'+resultListFirst[i].totalAttenedCountPer+'</td>';
 			str+='</tr>';
 			order=order+1;
-			if(order==5)
+			if(order==6)
 				break;
 			BGColor = BGColor - 0.2;
 			}
 			str+='</table>';
 	  }	  
 	  str+='</div>';
-		
-	var constituencyList = result.constituencyList;	
-	  str+='<div class="col-md-6 col-xs-12 col-sm-6">';
-	  str+='<p class="text-capital">Constituencies</p>';
-      str+='<table class="table tableCumulative">';
-      if(constituencyList != null && constituencyList.length > 0){
+	  
+	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+	   if(userTypeId!= null && userTypeId==3 || userTypeId==2){
+		str+='<p class="text-capital">Constituencies</p>';  
+	  }
+	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
+		 str+='<p class="text-capital">Mandal</p>';  
+	  }
+	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
+		 str+='<p class="text-capital">Village</p>';  
+	  }
+	  str+='<table class="table tableCumulative">';
+      if(resultListSecond != null && resultListSecond.length > 0){
 		  var order=1;
 		  var BGColor = 1;
 		  
-		  for(var i in constituencyList){
+		  for(var i in resultListSecond){
 			str+='<tr>';
 			str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
-			str+='<td>'+constituencyList[i].name+'</td>';
+			str+='<td>'+resultListSecond[i].name+'</td>';
 			str+='<td>';
-				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+constituencyList[i].totalAttenedCountPer+'%">';
-		str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+constituencyList[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+constituencyList[i].totalAttenedCountPer+'%;">';
-			str+='<span class="sr-only">'+constituencyList[i].totalAttenedCountPer+'</span>';
+				str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+resultListSecond[i].totalAttenedCountPer+'%">';
+		str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+resultListSecond[i].totalAttenedCountPer+'" aria-valuemin="0" aria-valuemax="100" style="width:'+resultListSecond[i].totalAttenedCountPer+'%;">';
+			str+='<span class="sr-only">'+resultListSecond[i].totalAttenedCountPer+'</span>';
 			str+='</div>';
 			str+='</div>';
 			str+='</td>';
-			str+='<td class="text-danger">'+constituencyList[i].totalAttenedCountPer+'</td>';
+			str+='<td class="text-danger">'+resultListSecond[i].totalAttenedCountPer+'</td>';
 			str+='</tr>';
 			order=order+1;
-			if(order==5)
+			if(order==6)
 				break;
 			BGColor = BGColor - 0.2;
 			}
