@@ -631,7 +631,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}
 								
 								if(rdyToShortlist>0){
-									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved")
+									if(globalStatus != "Total" && globalStatus != "Open" &&  globalStatus != "notRecieved" && globalStatus != "running")
 										str+='<td id="shortListPositinId" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_name="'+deptName+'" attr_board_name="'+boardName+'" attr_position_name="'+result[i].name+'" attr_dept_id="'+depts+'" style="color:green;font-weight:bold;cursor:pointer;"> <span title="Ready to Shortlist Applications Count">'+rdyToShortlist+'</span></td>';
 									else
 										str+='<td id="" attr_position_id="'+result[i].id+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" >  <span title=" Ready to Shortlist Applications Count">'+rdyToShortlist+'</span></td>';
