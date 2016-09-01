@@ -1931,7 +1931,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		
 	}
 	
-	public List<Object[]> getTotalEligibleMembersForTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public List<Object[]> getTotalEligibleMembersForTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 	
@@ -1943,8 +1943,11 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 				" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=TCED.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 				" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=TCED.tdpRoles.tdpRolesId and " +
 				" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
-				" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 ");
+				" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender");
 		
+		  if(stateId != null && stateId.longValue() > 0){
+			  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId"); 
+		   }
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
              queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -1968,11 +1971,13 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		   }
-		
+		   if(stateId != null && stateId.longValue() > 0){
+			  query.setParameter("stateId", stateId); 
+		   }
 		return query.list();
 	}
 	
-public List<Object[]> getLevelWiseTotalEligibleMembersForTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues){
+public List<Object[]> getLevelWiseTotalEligibleMembersForTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 		
 		StringBuilder queryStr = new StringBuilder();
 	
@@ -1984,8 +1989,11 @@ public List<Object[]> getLevelWiseTotalEligibleMembersForTrainingCampProgram(Lon
 				" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=TCED.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 				" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=TCED.tdpRoles.tdpRolesId and " +
 				" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
-				" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 ");
+				" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender");
 		
+		  if(stateId != null && stateId.longValue() > 0){
+			  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId"); 
+		   }
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
              queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -2009,10 +2017,12 @@ public List<Object[]> getLevelWiseTotalEligibleMembersForTrainingCampProgram(Lon
 		   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		   }
-		
+		   if(stateId != null && stateId.longValue() > 0){
+				  query.setParameter("stateId", stateId); 
+		   }
 		return query.list();
     }
-public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues){
+public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 	
 	StringBuilder queryStr = new StringBuilder();
 
@@ -2029,8 +2039,10 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Lo
 			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=TCED.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 			" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=TCED.tdpRoles.tdpRolesId and " +
 			" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
-			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 ");
-	
+			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender ");
+	  if(stateId != null && stateId.longValue() > 0){
+		  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId"); 
+	   }
 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -2055,17 +2067,16 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Lo
 	   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 	   }
-	
+	   if(stateId != null && stateId.longValue() > 0){
+			  query.setParameter("stateId", stateId); 
+	   }
 	return query.list();
 }
-public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues){
+public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 	
 	StringBuilder queryStr = new StringBuilder();
          
 	    queryStr.append(" select");
-	    
-         // queryStr.append(" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,");
-          
 	  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId,");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -2091,8 +2102,10 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=TCED.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 			" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=TCED.tdpRoles.tdpRolesId and " +
 			" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
-			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 ");
-	
+			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender ");
+	   if(stateId != null && stateId.longValue() > 0){
+			  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId  "); 
+	   }
 	 /* if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -2129,21 +2142,21 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 	         queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId "); 
 	  }
 	     
-	 //  queryStr.append(" order by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId");
-	 
 	   Query query = getSession().createQuery(queryStr.toString());
 	   /*if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 	   }*/
-	
+	   if(stateId != null && stateId.longValue() > 0){
+			  query.setParameter("stateId", stateId); 
+	   }
 	return query.list();
 }
 
-public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType){
+public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId){
 	
 	StringBuilder queryStr = new StringBuilder();
 
-	queryStr.append(" select ");
+	        queryStr.append(" select ");
 	        if(locationType != null && locationType.equalsIgnoreCase("District")){
 	         queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId,"); //1
 	         queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtName,"); //2
@@ -2160,6 +2173,7 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
 	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId,");
 	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatName,");
 	        }
+            
 			queryStr.append(" count(distinct TCM.tdpCadre.tdpCadreId) " + //4
 			" from " +
 			" TdpCommitteeMember TCM,TrainingCampEligbleDesignation TCED " +
@@ -2168,8 +2182,10 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
 			" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=TCED.tdpCommitteeLevel.tdpCommitteeLevelId and " +
 			" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=TCED.tdpRoles.tdpRolesId and " +
 			" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
-			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 ");
-	
+			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 and TCM.tdpCadre.gender=TCED.gender ");
+		if(stateId != null && stateId.longValue() > 0){
+				  queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId"); 
+	    }
 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -2203,7 +2219,9 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
 	   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 	   }
-	
+	   if(stateId != null && stateId.longValue() > 0){
+			  query.setParameter("stateId", stateId); 
+	   }
 	return query.list();
 }
 }

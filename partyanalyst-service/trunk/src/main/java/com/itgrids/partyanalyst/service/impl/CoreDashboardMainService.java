@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hsqldb.lib.HashSet;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
@@ -1403,15 +1404,17 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		   }
 		    
 	  }
+	   /* Training Camp Service */
 	   /**
 		  * @param  Long userAccessLevelId
 		  * @param List<Long> userAccessLevelValues
+		  * @param Long stateId
 		  * @return TrainingCampProgramVO
 		  * @author Santosh 
 		  * @Description :This Service Method is used to get training camp basic count details.. 
 		  *  @since 23-AUGUST-2016
 		  */
-	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 		 
 	 TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
 		 
@@ -1421,8 +1424,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		 Map<String,Long> totalAttenedMemberCntMap = new HashMap<String, Long>();
 		 
 		 try{
-			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues);//Eligible Member For Training Program
-			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues);//Attended Member In Training Program
+			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Eligible Member For Training Program
+			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Attended Member In Training Program
 			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
 				 for (Object[] param : rtrnAttendedMemberForProgramObjList) {
 					 trainingCampProgramAttendedCntMap.put((Long)param[0],param[2] != null ? (Long)param[2]:0l);
@@ -1447,8 +1450,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 					trainingCampProgramEligibleCntMap.put(programId, programVO);
 				}
 			 }
-			List<Object[]> rtrnTtlElgbleMmbrObjList = tdpCommitteeMemberDAO.getLevelWiseTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues);//Level Wise Eligible Member
-			List<Object[]> rtrnTtlAttendedMmbrObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByCommitteeLevel(userAccessLevelId, userAccessLevelValues);//Level Wise Attended Member
+			List<Object[]> rtrnTtlElgbleMmbrObjList = tdpCommitteeMemberDAO.getLevelWiseTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Level Wise Eligible Member
+			List<Object[]> rtrnTtlAttendedMmbrObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByCommitteeLevel(userAccessLevelId, userAccessLevelValues,stateId);//Level Wise Attended Member
 		
 			totalEligibleMemberCntMap.put("totalElibible", 0l);//to avoid NullPointerException
 			totalAttenedMemberCntMap.put("totalAttended", 0l);//to avoid NullPointerException
@@ -1610,17 +1613,18 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
 	* @return List<TrainingCampProgramVO>
+	* @param Long stateId
 	* @author Santosh 
 	* @Description :This Service Method is used to get training camp program details count by user type.. 
 	*  @since 23-AUGUST-2016
 	*/
-	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 
 	List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 	Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
 	Map<Long,String> programIdNameMap = new HashMap<Long, String>();
 	try{
-		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues); 
+		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId); 
 		 if(rtrnElgbleMmbrsObjLst != null && !rtrnElgbleMmbrsObjLst.isEmpty()){
 			 for (Object[] param : rtrnElgbleMmbrsObjLst) {
 				List<TrainingCampProgramVO> districtsList = programDtlsMap.get((Long)param[0]);
@@ -1636,7 +1640,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				   districtsList.add(districtVO);
 			}
 		 }
-		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues);
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId);
 		 if(rtrnAttnddMemObjList != null && !rtrnAttnddMemObjList.isEmpty()){
 				 for (Object[] param : rtrnAttnddMemObjList) {
 					Long programId= (Long)param[0];
@@ -1677,12 +1681,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @param  Long userTypeId
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
+	* @param Long stateId
 	* @return  List<List<UserTypeVO>>
 	* @author Santosh 
 	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count.. 
 	*  @since 24-AUGUST-2016
 	*/
-	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
 
 	List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
 	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
@@ -1701,7 +1706,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		     
 	if(locationLevelMap != null && locationLevelMap.size() > 0){
 		  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
-			List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+			List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
 			   if(returnObjList != null && returnObjList.size() > 0){
 				   for (Object[] param : returnObjList) {
 					String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -1712,7 +1717,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	}
 	if(locationLevelMap != null && locationLevelMap.size() > 0){
 		  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
-			List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+			List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
 			   if(returnObjList != null && returnObjList.size() > 0){
 				   for (Object[] param : returnObjList) {
 					 String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -1826,12 +1831,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
 	* @param String reportType
+	*  @param Long stateId
 	* @return List<UserTypeVO>
 	* @author Santosh 
 	* @Description :This Service Method is used to get selected child member and for userType.. 
 	*  @since 26-AUGUST-2016
 	*/
-	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType){
+	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId){
 
 	List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0);
 	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
@@ -1853,16 +1859,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
 			   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
 		  }
-		  
-	/*	if(childUserTypeId != null && childUserTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_ID || childUserTypeId.longValue()==IConstants.MP_USER_ID
-		   ||childUserTypeId.longValue()==IConstants.MLA_USER_ID || childUserTypeId.longValue()==IConstants.CONSTITUENCY_USER_ID || 
-		   childUserTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_ID){*/
-		   if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+		   
+		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 			  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
 		  }
 	 	    if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-					List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+					List<Object[]> returnObjList = tdpCommitteeMemberDAO.getUserWiseTotalEligibleMembersForTrainingCampProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
 					   if(returnObjList != null && returnObjList.size() > 0){
 						   for (Object[] param : returnObjList) {
 							String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -1873,7 +1876,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			}  
 			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-					List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()));
+					List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
 					   if(returnObjList != null && returnObjList.size() > 0){
 						   for (Object[] param : returnObjList) {
 							 String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -1942,43 +1945,108 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	/**
 	* @param  Long userAccessLevelId
 	* @param List<Long> userAccessLevelValues
+	* @param Long stateId
 	* @return  TrainingCampProgramVO
 	* @author Santosh 
 	* @Description :This Service Method is used to get top5 poor district and constituency locations attended counts. 
 	*  @since 29-AUGUST-2016
 	*/
-  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userAccessLevelId,List<Long> userAccessLevelValues){
+  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId){
 	  
 	  TrainingCampProgramVO resultVO = new TrainingCampProgramVO();
 	  Map<Long,TrainingCampProgramVO> eligibleMembersMap = new HashMap<Long, TrainingCampProgramVO>();
 	  Map<Long,Long> attendedMembersMap = new HashMap<Long, Long>();
+	  Map<Long,Set<Long>> locationMap = new HashMap<Long, Set<Long>>();
+	 
 	  try{
-	   List<Object[]> rtrnDistAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(userAccessLevelId, userAccessLevelValues,"District");   
-	   List<Object[]> rtrnDistEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(userAccessLevelId, userAccessLevelValues, "District"); 	 
-	   setAttendedMembersCntToMap(rtrnDistAttendedObj,attendedMembersMap);
-	   setEligibleMemberCntToMap(rtrnDistEligibleObj,attendedMembersMap,eligibleMembersMap);
-	  
-	   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
-		 resultVO.setDistrictList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+		  List<Object[]> rtrnUserAccessLevelIdAndValuesObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		   if(rtrnUserAccessLevelIdAndValuesObjList != null && rtrnUserAccessLevelIdAndValuesObjList.size() > 0){
+			   for (Object[] obj : rtrnUserAccessLevelIdAndValuesObjList) {
+				  Set<Long> locationValueSet= locationMap.get((Long)obj[0]);
+				    if(locationValueSet == null){
+				    	locationValueSet = new java.util.HashSet<Long>();
+				    	locationMap.put((Long)obj[0],locationValueSet);
+				    }
+				     locationValueSet.add(obj[1] != null ? (Long)obj[1]:0l);
+			}
+		   }
+		  
+	   if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
+		   if(locationMap != null && locationMap.size() > 0){
+			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
+				   List<Object[]> rtrnDistAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"District",stateId); // userAccessLevelId & values   
+				   List<Object[]> rtrnDistEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "District",stateId);// userAccessLevelId & values 	 
+				   setAttendedMembersCntToMap(rtrnDistAttendedObj,attendedMembersMap);
+				   setEligibleMemberCntToMap(rtrnDistEligibleObj,attendedMembersMap,eligibleMembersMap);
+				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
+					 resultVO.setDistrictList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+				   }
+				    eligibleMembersMap.clear();
+				    attendedMembersMap.clear(); 
+			   }
+		   }
 	   }
-	    eligibleMembersMap.clear();
-	    attendedMembersMap.clear(); 
-
-	   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(userAccessLevelId, userAccessLevelValues,"Constituency");   
-	   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(userAccessLevelId, userAccessLevelValues, "Constituency"); 	 
-	   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
-	   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
-	   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
-			 resultVO.setConstituencyList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
-			 eligibleMembersMap.clear();
-			 attendedMembersMap.clear(); 
-	   } 
+	   if(userTypeId != null && userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID ||  userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
+	   || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+		if(locationMap != null && locationMap.size() > 0){
+			for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
+				  List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()),"Constituency",stateId);   
+				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()), "Constituency",stateId); 	 
+				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
+				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
+				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
+						 resultVO.setConstituencyList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+						 eligibleMembersMap.clear();
+						 attendedMembersMap.clear(); 
+				   } 
+			}
+		}
+	   }
+	   if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue() ==IConstants.SECRETARY_USER_TYPE_ID
+			   || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ||
+			   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+		   if(locationMap != null && locationMap.size() > 0){
+			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
+				   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Mandal",stateId);   
+				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Mandal",stateId); 	 
+				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
+				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
+				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
+						 resultVO.setMandalList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+						 eligibleMembersMap.clear();
+						 attendedMembersMap.clear(); 
+				   } 
+		 
+			   }
+		   }
+		}
+	   if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID){
+		   if(locationMap != null && locationMap.size() > 0){
+			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
+				   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Village",stateId);   
+				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Village",stateId); 	 
+				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
+				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
+				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
+						 resultVO.setVillageList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+						 eligibleMembersMap.clear();
+						 attendedMembersMap.clear(); 
+				  }   
+			   }
+		   }
+		}
 	   if(resultVO != null){
 		   if(resultVO.getDistrictList() != null && resultVO.getDistrictList().size()> 0){
             Collections.sort(resultVO.getDistrictList(),trainingMemberEligibleAttendedPercasc);
 		   }
 		   if(resultVO.getConstituencyList() != null && resultVO.getConstituencyList().size() > 0){
 			Collections.sort(resultVO.getConstituencyList(),trainingMemberEligibleAttendedPercasc);   
+		   }
+		   if(resultVO.getMandalList()!= null && resultVO.getMandalList().size()> 0){
+	            Collections.sort(resultVO.getMandalList(),trainingMemberEligibleAttendedPercasc);
+		   }
+		   if(resultVO.getVillageList()!= null && resultVO.getVillageList().size() > 0){
+			 Collections.sort(resultVO.getVillageList(),trainingMemberEligibleAttendedPercasc);   
 		   }
 	   }
 	  }catch(Exception e) {
@@ -2005,7 +2073,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				  vo.setId((Long)obj[0]);
 				  vo.setName(obj[1] != null ? obj[1].toString():"");
 				  vo.setTotalEligibleCount(obj[2] != null ? (Long)obj[2]:0l);
-				  vo.setTotalAttenedCount(attendedMembersMap.get(vo.getId()));
+				  if(attendedMembersMap.get(vo.getId()) != null){
+					  vo.setTotalAttenedCount(attendedMembersMap.get(vo.getId()));  
+				  }
 				  vo.setTotalAttenedCountPer(calculatePercantage(vo.getTotalAttenedCount(),vo.getTotalEligibleCount()));
 				  if(vo.getTotalEligibleCount() > 0){
 					  vo.setTotalNotAttenedCount(vo.getTotalEligibleCount()-vo.getTotalAttenedCount());  
@@ -2026,557 +2096,606 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	 return perc2.compareTo(perc1);
 	}
 	}; 
-	
-	
-	/*  Debate Service*/
-	
-	
-	
-	public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr){		
-		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();		
-		try{
-			Date startDate = null;
-			Date endDate   =null;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
-			}
-			
-			Map<Long,CoreDebateVO> countMap = new HashMap<Long, CoreDebateVO>();
-			
-			//0.partyId,1.shortName,2.debateCount,3.candidateCount
-			List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);	
-			
-			//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
-			List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate);
-			
-			List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
-			
-			if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){			
-				countMap = setDebateValuesToMap(debateCountObjList,countMap);
-			}
-			
-			if(commonMethodsUtilService.isListOrSetValid(scaleCountObjList)){
-				countMap = setScaleVauesToParty(scaleCountObjList,countMap);
-			}
-			
-			if(countMap !=null && countMap.size()>0){				
-				returnList = new ArrayList<CoreDebateVO>(countMap.values());				
-			}
-			
-			if(commonMethodsUtilService.isListOrSetValid(returnList)){
-				for (CoreDebateVO objects : returnList) {
-					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-					if(objects.getScalePerc() !=null && objects.getScalePerc() >0.0 ){
-						objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-					}					
-				}
-			}
-			
-			//System.out.println(returnList);
-						
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return returnList;
-		
-	}
-	
-	public Map<Long,CoreDebateVO> setDebateValuesToMap(List<Object[]> ObjList,Map<Long,CoreDebateVO> countMap){
-		try{			
-			if(commonMethodsUtilService.isListOrSetValid(ObjList)){			
-				for (Object[] obj : ObjList) {					
-					CoreDebateVO coreDebateVO = new CoreDebateVO();
-						coreDebateVO.setId((Long)obj[0]);
-						coreDebateVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-						coreDebateVO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
-						coreDebateVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(obj[3]));						
-						countMap.put((Long)obj[0], coreDebateVO);										
-				}
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return countMap;
-	} 
-	
-	public Map<Long,CoreDebateVO> setScaleVauesToParty(List<Object[]> ObjList,Map<Long,CoreDebateVO> countMap){
-		try{
-			if(commonMethodsUtilService.isListOrSetValid(ObjList)){			
-				for (Object[] obj : ObjList) {
-					CoreDebateVO coreDebateVO = countMap.get((Long)obj[0]);
-					if(coreDebateVO == null){
-						coreDebateVO = new CoreDebateVO();
-						coreDebateVO.setId((Long)obj[0]);
-						coreDebateVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-						countMap.put((Long)obj[0], coreDebateVO);
-					}		
-				/*	if(coreDebateVO.getScale() !=null && coreDebateVO.getScale()>0 && obj[4] !=null && (Long)obj[4]>0){
-						coreDebateVO.setScale(Double.parseDouble(new BigDecimal((coreDebateVO.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-					}	*/				
-					coreDebateVO.setScale(coreDebateVO.getScale() + (Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4]))) );
-				}
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return countMap;
-	}	
-	public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType){
-	
-		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
-		
-		try{			
-			Date startDate = null;
-			Date endDate   =null;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
-			}
-			
-			Map<Long,Map<Long,CoreDebateVO>> partyMap = new HashMap<Long, Map<Long,CoreDebateVO>>();
-			//Map<Long,CoreDebateVO> candidateMap= new HashMap<Long, CoreDebateVO>();
-			
-			//0.partyId,1.name,2.candidateId,3.name,4.scale
-			List<Object[]> candidateObjList =  debateParticipantCharcsDAO.getPartywiseCandidateScaling(startDate,endDate,searchType);
-			
-			//0.partyId,1.name,2.candidateId,3.name,4.debateCount
-			 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate);
-			 
-			 List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
-						 
-			if(commonMethodsUtilService.isListOrSetValid(candidateObjList)){
-				for (Object[] parms : candidateObjList) {					
-					Map<Long,CoreDebateVO> candidateMap = partyMap.get((Long)parms[0]);
-					if(candidateMap == null){						
-						candidateMap = new HashMap<Long, CoreDebateVO>();						
-						partyMap.put((Long)parms[0], candidateMap);						
-					}					
-					CoreDebateVO VO = candidateMap.get((Long)parms[2]);			
-					
-					if(VO == null){
-						VO = new CoreDebateVO();
-						 VO.setId((Long)parms[0]);
-						 VO.setName(commonMethodsUtilService.getStringValueForObject(parms[1]));
-						 VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(parms[2]));
-						 VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(parms[3]));
-						 VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(parms[4])));//candidateId
-						 candidateMap.put((Long)parms[2], VO);
-					}
-				
-				}
-			}
-			
-			if(commonMethodsUtilService.isListOrSetValid(debateCountsList)){
-				for (Object[] obj : debateCountsList) {					
-					Map<Long,CoreDebateVO> candidateMap = partyMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));					
-					if(candidateMap !=null){
-						CoreDebateVO vo =candidateMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));						
-						if(vo !=null){	
-							
-							if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
-								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-								if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
-									vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-								}
-							}
-							vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
-							
-							//vo.setScalePerc(vo.getScale()/(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4]))));							
-						}						
-					}					
-				}
-			}
-			
-			if(partyMap !=null && partyMap.size()>0){
-				for (Entry<Long, Map<Long, CoreDebateVO>> party : partyMap.entrySet()) {					
-					List<CoreDebateVO> candidateList =new ArrayList<CoreDebateVO>();					
-					CoreDebateVO VO = new CoreDebateVO();					
-					Long partyId = party.getKey();					
-					VO.setId(partyId);//PartyId					
-					Map<Long, CoreDebateVO> candidateMap =  party.getValue();					
-					if(candidateMap !=null){
-						candidateList = new ArrayList<CoreDebateVO>(candidateMap.values());
-					}					
-					VO.setCoreDebateVOList(candidateList);					
-					returnList.add(VO);
-				}
-			}
-			
-			//System.out.println(returnList);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return returnList;
-	}
-	
-	public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr){
-		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
-		try{
-			
-			Date startDate = null;
-			Date endDate   =null;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
-			}
-			
-			Map<Long,CoreDebateVO> countMap = new HashMap<Long, CoreDebateVO>();			
-			List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);			
-			//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
-			List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate);
-			
-			if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){			
-				countMap = setDebateValuesToMap(debateCountObjList,countMap);
-			}
-			
-			if(commonMethodsUtilService.isListOrSetValid(scaleCountObjList)){			
-				for (Object[] obj : scaleCountObjList) {					
-					CoreDebateVO partyVO = countMap.get(obj[0]);					
-					if(partyVO != null){							
-						List<CoreDebateVO> list = partyVO.getCoreDebateVOList();
-						if(list == null){
-							list = new ArrayList<CoreDebateVO>();
-							partyVO.setCoreDebateVOList(list);
-						}						
-						CoreDebateVO VO = new CoreDebateVO();
-						VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-						VO.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));						
-						if(obj[4] !=null && (Double)obj[4]>0.0 && partyVO.getDebateCount() >0){
-							VO.setScalePerc(Double.parseDouble(new BigDecimal(((Double)obj[4])/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-						}						
-						list.add(VO);						
-					}	
-				}
-			}			
-			if(countMap !=null && countMap.size()>0){
-				returnList = new ArrayList<CoreDebateVO>(countMap.values());
-			}			
-			
-			//System.out.println(returnList);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return returnList;
-	}
-	
-	public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr){
-		
-		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
-		
-		try{			
-			Date startDate = null;
-			Date endDate   =null;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
-			}
-			
-			Map<Long,Map<Long,List<CoreDebateVO>>> countMap = new HashMap<Long, Map<Long,List<CoreDebateVO>>>();
-			
-			Map<Long,CoreDebateVO> debateMap = new HashMap<Long, CoreDebateVO>();
-			
-			//0.partyId,1.name,2.candidateId,3.name,4.charecterId,5.name,6.scale
-			List<Object[]> charecterObjList =  debateParticipantCharcsDAO.getPartywiseCandidateCharectersScaling(startDate,endDate);
-			
-			//0.partyId,1.name,2.candidateId,3.name,4.debateCount
-			 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate);
-			
-			 if(commonMethodsUtilService.isListOrSetValid(charecterObjList)){
-				 for (Object[] obj : charecterObjList) {				
-					 Map<Long,List<CoreDebateVO>> candidateMap = countMap.get((Long)obj[0]);					 
-					 if(candidateMap ==null){
-						 candidateMap = new HashMap<Long, List<CoreDebateVO>>();
-						 countMap.put((Long)obj[0], candidateMap);
-					 }					 
-					 List<CoreDebateVO> charecterList  = candidateMap.get((Long)obj[2]);
-					 if(charecterList == null){
-						 charecterList = new ArrayList<CoreDebateVO>();
-						 candidateMap.put((Long)obj[2], charecterList);
-					 }					 
-					 CoreDebateVO VO = new CoreDebateVO();
-					 VO.setId((Long)obj[0]);
-					 VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-					 VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					 VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));
-					 VO.setCharecterId(commonMethodsUtilService.getLongValueForObject(obj[4]));
-					 VO.setCharecterName(commonMethodsUtilService.getStringValueForObject(obj[5]));
-					 VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[6])));					
-					 charecterList.add(VO);
+	/**
+	* @param  Long userAccessLevelId
+	* @param List<Long> userAccessLevelValues
+	* @param Long stateId
+	* @return  List<TrainingCampProgramVO>
+	* @author Santosh 
+	* @Description :This Service Method get basic training program attended and eligible count. 
+	*  @since 29-AUGUST-2016
+	*/
+public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+		 
+		 List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
+		 Map<Long,Long> trainingCampProgramAttendedCntMap = new HashMap<Long, Long>();
+		 Map<Long,TrainingCampProgramVO> trainingCampProgramEligibleCntMap = new HashMap<Long, TrainingCampProgramVO>();
+
+		 try{
+			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);
+			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);
+			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
+				 for (Object[] param : rtrnAttendedMemberForProgramObjList) {
+					 trainingCampProgramAttendedCntMap.put((Long)param[0],param[2] != null ? (Long)param[2]:0l);
 				}
 			 }
-			 
-			 if(commonMethodsUtilService.isListOrSetValid(debateCountsList)){
-					for (Object[] obj : debateCountsList) {					
-						Map<Long,List<CoreDebateVO>> candidateMap = countMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));					
-						if(candidateMap !=null){
-								List<CoreDebateVO> voList = candidateMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));						
-								if(commonMethodsUtilService.isListOrSetValid(voList)){	
-									for (CoreDebateVO vo : voList) {
-										if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
-											vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-										}
-										vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
-									}
-								}
-							}						
-						}					
-			}
-			 
-			 if(countMap !=null && countMap.size()>0){				
-					for (Entry<Long, Map<Long, List<CoreDebateVO>>> party : countMap.entrySet()) {							
-						List<CoreDebateVO> partiesList =new ArrayList<CoreDebateVO>();								
-						CoreDebateVO VO = new CoreDebateVO();													
-						VO.setId(party.getKey());//partyId					
-						Map<Long, List<CoreDebateVO>> candidates =  party.getValue();
-						
-						if(candidates !=null){							
-							List<CoreDebateVO> candidatesList =new ArrayList<CoreDebateVO>();							
-							for (Entry<Long, List<CoreDebateVO>> candMap : candidates.entrySet()) {								
-								CoreDebateVO smallVo = new CoreDebateVO();
-								smallVo.setCandidateId(candMap.getKey());								
-								smallVo.setCoreDebateVOList(candMap.getValue());
-								candidatesList.add(smallVo);
-							}							
-							VO.setCoreDebateVOList(candidatesList);
-						}							
-						returnList.add(VO);
-					}				
-			}
-			 
-			//System.out.println(returnList);
-		}catch (Exception e) {
-			e.printStackTrace();
+			 if(rtrnElgbleMemberForProgramObjList != null && rtrnElgbleMemberForProgramObjList.size() > 0){
+				 for (Object[] param : rtrnElgbleMemberForProgramObjList) {
+					TrainingCampProgramVO programVO = new TrainingCampProgramVO();
+					Long programId= param[0] != null ? (Long)param[0] :0l;
+					programVO.setId(programId);
+					programVO.setName(param[1] != null ? param[1].toString():"");
+					programVO.setTotalEligibleCount(param[2] != null ? (Long)param[2]:0l);
+					programVO.setTotalEligibleCountPer(calculatePercantage(programVO.getTotalEligibleCount(), programVO.getTotalEligibleCount()));
+					if(trainingCampProgramAttendedCntMap.get(programId)!=null){
+						programVO.setTotalAttenedCount(trainingCampProgramAttendedCntMap.get(programId));
+					}
+					programVO.setTotalAttenedCountPer(calculatePercantage(programVO.getTotalAttenedCount(),programVO.getTotalEligibleCount()));
+					if(programVO.getTotalEligibleCount() > 0){
+						programVO.setTotalNotAttenedCount(programVO.getTotalEligibleCount()-programVO.getTotalAttenedCount());	
+					}
+					programVO.setTotalNotAttenedCountPer(calculatePercantage(programVO.getTotalNotAttenedCount(),programVO.getTotalEligibleCount()));
+					trainingCampProgramEligibleCntMap.put(programId, programVO);
+				}
+			 } 
+			  if(trainingCampProgramEligibleCntMap != null && trainingCampProgramEligibleCntMap.size() > 0){
+				  resultList.addAll(new ArrayList<TrainingCampProgramVO>(trainingCampProgramEligibleCntMap.values()));
+			  }
+		 }catch(Exception e){
+			 LOG.error("Error occured at getTrainingCampProgramsDetails() in CoreDashboardService1 {}",e); 
+		 }
+		 return resultList;
+	 }
+
+/*  Debate Service*/
+
+
+
+public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr){		
+	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();		
+	try{
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
 		}
 		
-		return returnList;
+		Map<Long,CoreDebateVO> countMap = new HashMap<Long, CoreDebateVO>();
+		
+		//0.partyId,1.shortName,2.debateCount,3.candidateCount
+		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);	
+		
+		//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
+		List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate);
+		
+		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
+		
+		if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){			
+			countMap = setDebateValuesToMap(debateCountObjList,countMap);
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(scaleCountObjList)){
+			countMap = setScaleVauesToParty(scaleCountObjList,countMap);
+		}
+		
+		if(countMap !=null && countMap.size()>0){				
+			returnList = new ArrayList<CoreDebateVO>(countMap.values());				
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for (CoreDebateVO objects : returnList) {
+				objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				if(objects.getScalePerc() !=null && objects.getScalePerc() >0.0 ){
+					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}					
+			}
+		}
+		
+		//System.out.println(returnList);
+					
+	}catch (Exception e) {
+		e.printStackTrace();
 	}
 	
-	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr){
-		
-		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
-		
-		try{			
-			Date startDate = null;
-			Date endDate   =null;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
+	return returnList;
+	
+}
+
+public Map<Long,CoreDebateVO> setDebateValuesToMap(List<Object[]> ObjList,Map<Long,CoreDebateVO> countMap){
+	try{			
+		if(commonMethodsUtilService.isListOrSetValid(ObjList)){			
+			for (Object[] obj : ObjList) {					
+				CoreDebateVO coreDebateVO = new CoreDebateVO();
+					coreDebateVO.setId((Long)obj[0]);
+					coreDebateVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					coreDebateVO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					coreDebateVO.setCandidateCount(commonMethodsUtilService.getLongValueForObject(obj[3]));						
+					countMap.put((Long)obj[0], coreDebateVO);										
 			}
-			
-			Map<Long,Map<Long,CoreDebateVO>> channelMap = new HashMap<Long, Map<Long,CoreDebateVO>>();			
-			//0.channelId,1.channel,2.partyId,3.partyName,4.scaleCount
-			List<Object[]> channelScaleObjList = debateParticipantCharcsDAO.getChannelAndPartyWiseCharecter(startDate,endDate);
-			
-			//0.channelId,1.channel,2.partyId,3.partyName,4.debateCount
-			List<Object[]> channelObjList = debateParticipantDAO.getChannelWiseDebateDetails(startDate,endDate);
-			
-			List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();			
-			
-			if(commonMethodsUtilService.isListOrSetValid(channelScaleObjList)){
+		}
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	return countMap;
+} 
+
+public Map<Long,CoreDebateVO> setScaleVauesToParty(List<Object[]> ObjList,Map<Long,CoreDebateVO> countMap){
+	try{
+		if(commonMethodsUtilService.isListOrSetValid(ObjList)){			
+			for (Object[] obj : ObjList) {
+				CoreDebateVO coreDebateVO = countMap.get((Long)obj[0]);
+				if(coreDebateVO == null){
+					coreDebateVO = new CoreDebateVO();
+					coreDebateVO.setId((Long)obj[0]);
+					coreDebateVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					countMap.put((Long)obj[0], coreDebateVO);
+				}		
+			/*	if(coreDebateVO.getScale() !=null && coreDebateVO.getScale()>0 && obj[4] !=null && (Long)obj[4]>0){
+					coreDebateVO.setScale(Double.parseDouble(new BigDecimal((coreDebateVO.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}	*/				
+				coreDebateVO.setScale(coreDebateVO.getScale() + (Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4]))) );
+			}
+		}
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	return countMap;
+}	
+public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType){
+
+	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
+	
+	try{			
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		Map<Long,Map<Long,CoreDebateVO>> partyMap = new HashMap<Long, Map<Long,CoreDebateVO>>();
+		//Map<Long,CoreDebateVO> candidateMap= new HashMap<Long, CoreDebateVO>();
+		
+		//0.partyId,1.name,2.candidateId,3.name,4.scale
+		List<Object[]> candidateObjList =  debateParticipantCharcsDAO.getPartywiseCandidateScaling(startDate,endDate,searchType);
+		
+		//0.partyId,1.name,2.candidateId,3.name,4.debateCount
+		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate);
+		 
+		 List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
+					 
+		if(commonMethodsUtilService.isListOrSetValid(candidateObjList)){
+			for (Object[] parms : candidateObjList) {					
+				Map<Long,CoreDebateVO> candidateMap = partyMap.get((Long)parms[0]);
+				if(candidateMap == null){						
+					candidateMap = new HashMap<Long, CoreDebateVO>();						
+					partyMap.put((Long)parms[0], candidateMap);						
+				}					
+				CoreDebateVO VO = candidateMap.get((Long)parms[2]);			
 				
-				channelMap = setDebateDetailsToMap(channelScaleObjList,channelMap);
-				
-				
-				for (Object[] obj : channelScaleObjList) {					
-					Map<Long,CoreDebateVO> partyMap =  channelMap.get((Long)obj[0]);							
-					if(partyMap ==null){
-						partyMap = new HashMap<Long, CoreDebateVO>();						
-						channelMap.put((Long)obj[0], partyMap);						
-					}					
-					CoreDebateVO VO = partyMap.get((Long)obj[2]);					
-					if(VO == null){
-						VO = new CoreDebateVO();
-						partyMap.put((Long)obj[2], VO);						
-					}					
-					VO.setId((Long)obj[0]);//channelId
-					VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));//channel
-					VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));//PartyId
-					VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));//PartyName
-					VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));					
+				if(VO == null){
+					VO = new CoreDebateVO();
+					 VO.setId((Long)parms[0]);
+					 VO.setName(commonMethodsUtilService.getStringValueForObject(parms[1]));
+					 VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(parms[2]));
+					 VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(parms[3]));
+					 VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(parms[4])));//candidateId
+					 candidateMap.put((Long)parms[2], VO);
 				}
-			}			
-			if(commonMethodsUtilService.isListOrSetValid(channelObjList)){	
-				for (Object[] param : channelObjList) {					
-					Map<Long,CoreDebateVO> partyMap = channelMap.get((Long)param[0]);
-					if(partyMap !=null){																	
-						CoreDebateVO vo = partyMap.get((Long)param[2]);
-						if(vo !=null){	
-							if(vo.getScale() !=null && param[4] !=null){
-								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)param[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-								if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
-									vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+			
+			}
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(debateCountsList)){
+			for (Object[] obj : debateCountsList) {					
+				Map<Long,CoreDebateVO> candidateMap = partyMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));					
+				if(candidateMap !=null){
+					CoreDebateVO vo =candidateMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));						
+					if(vo !=null){	
+						
+						if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
+							vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+							if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
+								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+							}
+						}
+						vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
+						
+						//vo.setScalePerc(vo.getScale()/(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4]))));							
+					}						
+				}					
+			}
+		}
+		
+		if(partyMap !=null && partyMap.size()>0){
+			for (Entry<Long, Map<Long, CoreDebateVO>> party : partyMap.entrySet()) {					
+				List<CoreDebateVO> candidateList =new ArrayList<CoreDebateVO>();					
+				CoreDebateVO VO = new CoreDebateVO();					
+				Long partyId = party.getKey();					
+				VO.setId(partyId);//PartyId					
+				Map<Long, CoreDebateVO> candidateMap =  party.getValue();					
+				if(candidateMap !=null){
+					candidateList = new ArrayList<CoreDebateVO>(candidateMap.values());
+				}					
+				VO.setCoreDebateVOList(candidateList);					
+				returnList.add(VO);
+			}
+		}
+		
+		//System.out.println(returnList);
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	return returnList;
+}
+
+public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr){
+	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
+	try{
+		
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		Map<Long,CoreDebateVO> countMap = new HashMap<Long, CoreDebateVO>();			
+		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);			
+		//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
+		List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate);
+		
+		if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){			
+			countMap = setDebateValuesToMap(debateCountObjList,countMap);
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(scaleCountObjList)){			
+			for (Object[] obj : scaleCountObjList) {					
+				CoreDebateVO partyVO = countMap.get(obj[0]);					
+				if(partyVO != null){							
+					List<CoreDebateVO> list = partyVO.getCoreDebateVOList();
+					if(list == null){
+						list = new ArrayList<CoreDebateVO>();
+						partyVO.setCoreDebateVOList(list);
+					}						
+					CoreDebateVO VO = new CoreDebateVO();
+					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					VO.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));						
+					if(obj[4] !=null && (Double)obj[4]>0.0 && partyVO.getDebateCount() >0){
+						VO.setScalePerc(Double.parseDouble(new BigDecimal(((Double)obj[4])/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+					}						
+					list.add(VO);						
+				}	
+			}
+		}			
+		if(countMap !=null && countMap.size()>0){
+			returnList = new ArrayList<CoreDebateVO>(countMap.values());
+		}			
+		
+		//System.out.println(returnList);
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	return returnList;
+}
+
+public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr){
+	
+	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
+	
+	try{			
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		Map<Long,Map<Long,List<CoreDebateVO>>> countMap = new HashMap<Long, Map<Long,List<CoreDebateVO>>>();
+		
+		Map<Long,CoreDebateVO> debateMap = new HashMap<Long, CoreDebateVO>();
+		
+		//0.partyId,1.name,2.candidateId,3.name,4.charecterId,5.name,6.scale
+		List<Object[]> charecterObjList =  debateParticipantCharcsDAO.getPartywiseCandidateCharectersScaling(startDate,endDate);
+		
+		//0.partyId,1.name,2.candidateId,3.name,4.debateCount
+		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate);
+		
+		 if(commonMethodsUtilService.isListOrSetValid(charecterObjList)){
+			 for (Object[] obj : charecterObjList) {				
+				 Map<Long,List<CoreDebateVO>> candidateMap = countMap.get((Long)obj[0]);					 
+				 if(candidateMap ==null){
+					 candidateMap = new HashMap<Long, List<CoreDebateVO>>();
+					 countMap.put((Long)obj[0], candidateMap);
+				 }					 
+				 List<CoreDebateVO> charecterList  = candidateMap.get((Long)obj[2]);
+				 if(charecterList == null){
+					 charecterList = new ArrayList<CoreDebateVO>();
+					 candidateMap.put((Long)obj[2], charecterList);
+				 }					 
+				 CoreDebateVO VO = new CoreDebateVO();
+				 VO.setId((Long)obj[0]);
+				 VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				 VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				 VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+				 VO.setCharecterId(commonMethodsUtilService.getLongValueForObject(obj[4]));
+				 VO.setCharecterName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+				 VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[6])));					
+				 charecterList.add(VO);
+			}
+		 }
+		 
+		 if(commonMethodsUtilService.isListOrSetValid(debateCountsList)){
+				for (Object[] obj : debateCountsList) {					
+					Map<Long,List<CoreDebateVO>> candidateMap = countMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));					
+					if(candidateMap !=null){
+							List<CoreDebateVO> voList = candidateMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));						
+							if(commonMethodsUtilService.isListOrSetValid(voList)){	
+								for (CoreDebateVO vo : voList) {
+									if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
+										vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+									}
+									vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
 								}
 							}
-							vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(param[4]));
-						}
-					}
-				}						
-			}					
-			if(channelMap !=null && channelMap.size()>0){				
-					for (Entry<Long, Map<Long, CoreDebateVO>> channel : channelMap.entrySet()) {					
-						List<CoreDebateVO> partiesList =new ArrayList<CoreDebateVO>();					
-						CoreDebateVO VO = new CoreDebateVO();					
-						Long channelId = channel.getKey();					
-						VO.setId(channelId);//channelId					
-						Map<Long, CoreDebateVO> partyMap =  channel.getValue();					
-						if(partyMap !=null){
-							partiesList = new ArrayList<CoreDebateVO>(partyMap.values());
-						}					
-						VO.setCoreDebateVOList(partiesList);					
-						returnList.add(VO);
-					}				
-			}
-			
-			//System.out.println(returnList);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
+						}						
+					}					
 		}
-		return returnList;
-		
-	}
-	
-	public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMap(List<Object[]> objList,Map<Long,Map<Long,CoreDebateVO>> mainMap){			
-		
-		try{
-			
-			if(commonMethodsUtilService.isListOrSetValid(objList)){
-				
-				for (Object[] obj : objList) {					
-					Map<Long,CoreDebateVO> innerMap =  mainMap.get((Long)obj[0]);							
-					if(innerMap ==null){
-						innerMap = new HashMap<Long, CoreDebateVO>();						
-						mainMap.put((Long)obj[0], innerMap);						
-					}					
-					CoreDebateVO VO = innerMap.get((Long)obj[2]);					
-					if(VO == null){
-						VO = new CoreDebateVO();
-						innerMap.put((Long)obj[2], VO);						
-					}					
-					VO.setId((Long)obj[0]);
-					VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-					VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));
-					VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));					
-				}
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mainMap;
-		
-	}
-	
-	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr){
-		
-		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>(0);
-		
-		try{			
-			Date startDate = null;
-			Date endDate   =null;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
-			}
-			
-			Map<Long,Map<Long,CoreDebateVO>> rolesMap = new HashMap<Long, Map<Long,CoreDebateVO>>();			
-			//0.partyId,1.name,2.rolesId,3.role,4.scale
-			List<Object[]> roleObjList = debateParticipantCharcsDAO.getRoleBasedPerformanceCohort(startDate, endDate);
-			
-			//0.partyId,1.shortName,2.debateCount,3.candidatesCount
-			List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);
-			
-			List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
-			
-			if(commonMethodsUtilService.isListOrSetValid(roleObjList)){			
-				rolesMap = setDebateDetailsToMap(roleObjList,rolesMap);				
-			}			
-			if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){
-				for (Object[] obj : debateCountObjList) {					
-					Map<Long,CoreDebateVO> roleMap =rolesMap.get((Long)obj[0]);					
-					if(roleMap !=null){
-						for (Entry<Long, CoreDebateVO> role : roleMap.entrySet()) {							
-							CoreDebateVO VO = role.getValue();	
-							if(VO !=null){
-								if( VO.getScale() !=null && obj[2] !=null && (Long)obj[2]>0l){
-									VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));									
-									if(VO.getScalePerc() !=null && VO.getScalePerc() >0.0 ){
-										VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
-									}									
-								}
-								VO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
-							}				
-						}
-					}					
-				}
-			}			
-			if(rolesMap !=null && rolesMap.size()>0){				
-				for (Entry<Long, Map<Long, CoreDebateVO>> party : rolesMap.entrySet()) {					
-					List<CoreDebateVO> rolesList =new ArrayList<CoreDebateVO>();					
+		 
+		 if(countMap !=null && countMap.size()>0){				
+				for (Entry<Long, Map<Long, List<CoreDebateVO>>> party : countMap.entrySet()) {							
+					List<CoreDebateVO> partiesList =new ArrayList<CoreDebateVO>();								
 					CoreDebateVO VO = new CoreDebateVO();													
 					VO.setId(party.getKey());//partyId					
-					Map<Long, CoreDebateVO> roles =  party.getValue();					
-					if(roles !=null){
-						rolesList = new ArrayList<CoreDebateVO>(roles.values());
-					}					
-					VO.setCoreDebateVOList(rolesList);					
+					Map<Long, List<CoreDebateVO>> candidates =  party.getValue();
+					
+					if(candidates !=null){							
+						List<CoreDebateVO> candidatesList =new ArrayList<CoreDebateVO>();							
+						for (Entry<Long, List<CoreDebateVO>> candMap : candidates.entrySet()) {								
+							CoreDebateVO smallVo = new CoreDebateVO();
+							smallVo.setCandidateId(candMap.getKey());								
+							smallVo.setCoreDebateVOList(candMap.getValue());
+							candidatesList.add(smallVo);
+						}							
+						VO.setCoreDebateVOList(candidatesList);
+					}							
 					returnList.add(VO);
 				}				
-			}
-			
-			//System.out.println(returnList);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
+		}
+		 
+		//System.out.println(returnList);
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	return returnList;
+}
+
+public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr){
+	
+	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
+	
+	try{			
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
 		}
 		
-		return returnList;
-	}
-	
-	/**
-	  * @author <a href="mailto:aravind.itgrids.hyd@gmail.com">ARAVIND</a>
-	  *  This Service Method is used to get the basic Committee Details
-	  *  @since 01-SEPTEMBER-2016
-	  */
-	
-	public List<UserDataVO> getbasicCommitteeDetails(){
-		//appCndDesigList->appointmentCandidateDesignationList
-		List<UserDataVO> basicCommitteeList = new ArrayList<UserDataVO>(0);
-		try{
-			LOG.info("Entered into getbasicCommitteeDetails() method of CoreDashboardMainService");
-			List<Object[]>  objList = tdpBasicCommitteeDAO.getBasicCommittees();
-			if(objList != null && objList.size() > 0){
-				for (Object[] objects : objList) {
-					UserDataVO vo = new UserDataVO();
-					vo.setId((Long)objects[0]);
-					vo.setName(objects[1].toString());
-					basicCommitteeList.add(vo);
-				}
-			}
+		Map<Long,Map<Long,CoreDebateVO>> channelMap = new HashMap<Long, Map<Long,CoreDebateVO>>();			
+		//0.channelId,1.channel,2.partyId,3.partyName,4.scaleCount
+		List<Object[]> channelScaleObjList = debateParticipantCharcsDAO.getChannelAndPartyWiseCharecter(startDate,endDate);
+		
+		//0.channelId,1.channel,2.partyId,3.partyName,4.debateCount
+		List<Object[]> channelObjList = debateParticipantDAO.getChannelWiseDebateDetails(startDate,endDate);
+		
+		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();			
+		
+		if(commonMethodsUtilService.isListOrSetValid(channelScaleObjList)){
 			
-		}catch(Exception e){
-			LOG.error("Exception raised at getbasicCommitteeDetails() method of CoreDashboardMainService", e);
+			channelMap = setDebateDetailsToMap(channelScaleObjList,channelMap);
+			
+			
+			for (Object[] obj : channelScaleObjList) {					
+				Map<Long,CoreDebateVO> partyMap =  channelMap.get((Long)obj[0]);							
+				if(partyMap ==null){
+					partyMap = new HashMap<Long, CoreDebateVO>();						
+					channelMap.put((Long)obj[0], partyMap);						
+				}					
+				CoreDebateVO VO = partyMap.get((Long)obj[2]);					
+				if(VO == null){
+					VO = new CoreDebateVO();
+					partyMap.put((Long)obj[2], VO);						
+				}					
+				VO.setId((Long)obj[0]);//channelId
+				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));//channel
+				VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));//PartyId
+				VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));//PartyName
+				VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));					
+			}
+		}			
+		if(commonMethodsUtilService.isListOrSetValid(channelObjList)){	
+			for (Object[] param : channelObjList) {					
+				Map<Long,CoreDebateVO> partyMap = channelMap.get((Long)param[0]);
+				if(partyMap !=null){																	
+					CoreDebateVO vo = partyMap.get((Long)param[2]);
+					if(vo !=null){	
+						if(vo.getScale() !=null && param[4] !=null){
+							vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)param[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+							if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
+								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+							}
+						}
+						vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+				}
+			}						
+		}					
+		if(channelMap !=null && channelMap.size()>0){				
+				for (Entry<Long, Map<Long, CoreDebateVO>> channel : channelMap.entrySet()) {					
+					List<CoreDebateVO> partiesList =new ArrayList<CoreDebateVO>();					
+					CoreDebateVO VO = new CoreDebateVO();					
+					Long channelId = channel.getKey();					
+					VO.setId(channelId);//channelId					
+					Map<Long, CoreDebateVO> partyMap =  channel.getValue();					
+					if(partyMap !=null){
+						partiesList = new ArrayList<CoreDebateVO>(partyMap.values());
+					}					
+					VO.setCoreDebateVOList(partiesList);					
+					returnList.add(VO);
+				}				
 		}
-		return basicCommitteeList;
+		
+		//System.out.println(returnList);
+		
+	}catch (Exception e) {
+		e.printStackTrace();
 	}
+	return returnList;
+	
 }
+
+public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMap(List<Object[]> objList,Map<Long,Map<Long,CoreDebateVO>> mainMap){			
+	
+	try{
+		
+		if(commonMethodsUtilService.isListOrSetValid(objList)){
+			
+			for (Object[] obj : objList) {					
+				Map<Long,CoreDebateVO> innerMap =  mainMap.get((Long)obj[0]);							
+				if(innerMap ==null){
+					innerMap = new HashMap<Long, CoreDebateVO>();						
+					mainMap.put((Long)obj[0], innerMap);						
+				}					
+				CoreDebateVO VO = innerMap.get((Long)obj[2]);					
+				if(VO == null){
+					VO = new CoreDebateVO();
+					innerMap.put((Long)obj[2], VO);						
+				}					
+				VO.setId((Long)obj[0]);
+				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+				VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));					
+			}
+		}
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	return mainMap;
+	
+}
+
+public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr){
+	
+	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>(0);
+	
+	try{			
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		Map<Long,Map<Long,CoreDebateVO>> rolesMap = new HashMap<Long, Map<Long,CoreDebateVO>>();			
+		//0.partyId,1.name,2.rolesId,3.role,4.scale
+		List<Object[]> roleObjList = debateParticipantCharcsDAO.getRoleBasedPerformanceCohort(startDate, endDate);
+		
+		//0.partyId,1.shortName,2.debateCount,3.candidatesCount
+		List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);
+		
+		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
+		
+		if(commonMethodsUtilService.isListOrSetValid(roleObjList)){			
+			rolesMap = setDebateDetailsToMap(roleObjList,rolesMap);				
+		}			
+		if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){
+			for (Object[] obj : debateCountObjList) {					
+				Map<Long,CoreDebateVO> roleMap =rolesMap.get((Long)obj[0]);					
+				if(roleMap !=null){
+					for (Entry<Long, CoreDebateVO> role : roleMap.entrySet()) {							
+						CoreDebateVO VO = role.getValue();	
+						if(VO !=null){
+							if( VO.getScale() !=null && obj[2] !=null && (Long)obj[2]>0l){
+								VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));									
+								if(VO.getScalePerc() !=null && VO.getScalePerc() >0.0 ){
+									VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								}									
+							}
+							VO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
+						}				
+					}
+				}					
+			}
+		}			
+		if(rolesMap !=null && rolesMap.size()>0){				
+			for (Entry<Long, Map<Long, CoreDebateVO>> party : rolesMap.entrySet()) {					
+				List<CoreDebateVO> rolesList =new ArrayList<CoreDebateVO>();					
+				CoreDebateVO VO = new CoreDebateVO();													
+				VO.setId(party.getKey());//partyId					
+				Map<Long, CoreDebateVO> roles =  party.getValue();					
+				if(roles !=null){
+					rolesList = new ArrayList<CoreDebateVO>(roles.values());
+				}					
+				VO.setCoreDebateVOList(rolesList);					
+				returnList.add(VO);
+			}				
+		}
+		
+		//System.out.println(returnList);
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	return returnList;
+}
+/**
+ * @author <a href="mailto:aravind.itgrids.hyd@gmail.com">ARAVIND</a>
+ *  This Service Method is used to get the basic Committee Details
+ *  @since 01-SEPTEMBER-2016
+ */
+
+public List<UserDataVO> getbasicCommitteeDetails(){
+	//appCndDesigList->appointmentCandidateDesignationList
+	List<UserDataVO> basicCommitteeList = new ArrayList<UserDataVO>(0);
+	try{
+		LOG.info("Entered into getbasicCommitteeDetails() method of CoreDashboardMainService");
+		List<Object[]>  objList = tdpBasicCommitteeDAO.getBasicCommittees();
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList) {
+				UserDataVO vo = new UserDataVO();
+				vo.setId((Long)objects[0]);
+				vo.setName(objects[1].toString());
+				basicCommitteeList.add(vo);
+			}
+		}
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getbasicCommitteeDetails() method of CoreDashboardMainService", e);
+	}
+	return basicCommitteeList;
+}
+}
+

@@ -1149,10 +1149,13 @@ public interface IConstants {
 	public static final String NOMINATED_POST_APPLICATION_STATUS="2,4,5,7";
 	public static final String NOMINATED_POST_FINALIZED_GOISSUED_STATUS="2,3";
 	//User Ids
-	
-	public static final Long DISTRICT_PRESIDENT_USER_ID = 5l;
-	public static final Long MP_USER_ID = 6l;
-	public static final Long MLA_USER_ID = 7l;
-	public static final Long CONSTITUENCY_USER_ID = 8l;
-	public static final Long CONSTITUENCY_INCHARGE_USER_ID = 9l;
+	public static final Long STATE_TYPE_USER_ID=2L;
+	public static final Long GENERAL_SECRETARY_USER_TYPE_ID = 3l;
+	public static final Long ORGANIZING_SECRETARY_USER_TYPE_ID = 4l;
+	public static final Long DISTRICT_PRESIDENT_USER_TYPE_ID = 5l;
+	public static final Long MP_USER_TYPE_ID = 6l;
+	public static final Long MLA_USER_TYPE_ID = 7l;
+	public static final Long CONSTITUENCY_USER_TYPE_ID = 8l;
+	public static final Long CONSTITUENCY_INCHARGE_USER_TYPE_ID = 9l;
+	public static final Long SECRETARY_USER_TYPE_ID = 11l;
 }

@@ -29,4 +29,11 @@ public class ActivityMemberAccessLevelDAO extends GenericDaoHibernate<ActivityMe
 		query.setParameter("activityMemberId",activityMemberId);
 		return query.list();
 	}
+	  public List<Object[]> getLocationLevelAndValuesByActivityMembersId(Long activityMemberId){
+		    StringBuilder queryStr = new StringBuilder();
+		   queryStr.append("select model.userLevel.userLevelId,model.activityLocationValue from ActivityMemberAccessLevel model where model.isActive = 'Y' and model.activityMember.activityMemberId=:activityMemberId ");
+		   Query query = getSession().createQuery(queryStr.toString());
+		   query.setParameter("activityMemberId", activityMemberId);
+		   return query.list();
+	  }
 }
