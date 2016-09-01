@@ -25,10 +25,10 @@ public class ActivityMemberAccessTypeDAO extends GenericDaoHibernate<ActivityMem
 	public List<Object[]> getAllActivityMembersOfGSAndDistAndMpUserTypes(List<Long> childUserTypeIds){
 		
 		Query query = getSession().createQuery("" +
-			    " select  amat.activityMember.activityMemberId,amat.activityMember.tdpCadreId,amat.activityMember.tdpCadre.firstname," +//2
+			    " select  amat.activityMember.activityMemberId,amat.activityMember.tdpCadreId,amat.activityMember.memberName," +//2
 			    "         amat.userType.userTypeId, amat.userType.type," +//4
 			    "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//7
-			    "         amat.activityMember.tdpCadre.image,amat.userType.shortName " +//9
+			    "         amat.activityMember.imageUrl,amat.userType.shortName " +//9
 			    " from    ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
 			    " where   amal.activityMember.activityMemberId = amat.activityMember.activityMemberId and " +
 			     "        amat.userType.userTypeId in (:childUserTypeIds) and " +
