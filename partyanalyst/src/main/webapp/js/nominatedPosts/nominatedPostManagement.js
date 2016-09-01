@@ -598,7 +598,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 											readyForFinalReview = readyForFinalReview+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Confirmed"){
 											finalized = finalized+result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="GO Issued"){
+										}else if(result[i].distList[j].name =="GO Passed"){
 											goPassed = goPassed+result[i].distList[j].count;
 										}
 								}
