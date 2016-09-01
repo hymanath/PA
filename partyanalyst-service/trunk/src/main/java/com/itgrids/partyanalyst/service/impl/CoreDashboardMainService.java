@@ -1414,7 +1414,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		  * @Description :This Service Method is used to get training camp basic count details.. 
 		  *  @since 23-AUGUST-2016
 		  */
-	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+	public TrainingCampProgramVO getTrainingCampBasicDetailsCntOverview(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr){
 		 
 	 TrainingCampProgramVO finalResultVO = new TrainingCampProgramVO();
 		 
@@ -1422,10 +1422,15 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		 Map<Long,TrainingCampProgramVO> trainingCampProgramEligibleCntMap = new HashMap<Long, TrainingCampProgramVO>();
 		 Map<String,Long> totalEligibleMemberCntMap = new HashMap<String, Long>();
 		 Map<String,Long> totalAttenedMemberCntMap = new HashMap<String, Long>();
-		 
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		 Date toDate=null;
 		 try{
+			 if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+				 toDate = sdf.parse(toDateStr);
+			 }
+			 
 			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Eligible Member For Training Program
-			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Attended Member In Training Program
+			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId,toDate);//Attended Member In Training Program
 			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
 				 for (Object[] param : rtrnAttendedMemberForProgramObjList) {
 					 trainingCampProgramAttendedCntMap.put((Long)param[0],param[2] != null ? (Long)param[2]:0l);
@@ -1451,7 +1456,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				}
 			 }
 			List<Object[]> rtrnTtlElgbleMmbrObjList = tdpCommitteeMemberDAO.getLevelWiseTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Level Wise Eligible Member
-			List<Object[]> rtrnTtlAttendedMmbrObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByCommitteeLevel(userAccessLevelId, userAccessLevelValues,stateId);//Level Wise Attended Member
+			List<Object[]> rtrnTtlAttendedMmbrObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByCommitteeLevel(userAccessLevelId, userAccessLevelValues,stateId,toDate);//Level Wise Attended Member
 		
 			totalEligibleMemberCntMap.put("totalElibible", 0l);//to avoid NullPointerException
 			totalAttenedMemberCntMap.put("totalAttended", 0l);//to avoid NullPointerException
@@ -1618,12 +1623,17 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get training camp program details count by user type.. 
 	*  @since 23-AUGUST-2016
 	*/
-	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr){
 
 	List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 	Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
 	Map<Long,String> programIdNameMap = new HashMap<Long, String>();
+	 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 Date toDate=null;
 	try{
+		if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+			 toDate = sdf.parse(toDateStr);
+		 }
 		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId); 
 		 if(rtrnElgbleMmbrsObjLst != null && !rtrnElgbleMmbrsObjLst.isEmpty()){
 			 for (Object[] param : rtrnElgbleMmbrsObjLst) {
@@ -1640,7 +1650,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				   districtsList.add(districtVO);
 			}
 		 }
-		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId);
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId,toDate);
 		 if(rtrnAttnddMemObjList != null && !rtrnAttnddMemObjList.isEmpty()){
 				 for (Object[] param : rtrnAttnddMemObjList) {
 					Long programId= (Long)param[0];
@@ -1687,16 +1697,20 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get top5 strong or top5 poor members attended and eligible count.. 
 	*  @since 24-AUGUST-2016
 	*/
-	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr){
 
 	List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
 	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
 	Map<String,Long> attendedMemberCntMap = new HashMap<String, Long>(0);
 	Map<Long,Set<Long>> locationLevelMap = null;
 	Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	Date toDate=null;
 	try{
-		 
-		   ActivityMemberVO activityMemberVO = new ActivityMemberVO();
+			if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+				 toDate = sdf.parse(toDateStr);
+			 }
+		     ActivityMemberVO activityMemberVO = new ActivityMemberVO();
 		     activityMemberVO.setUserId(userId);
 		     activityMemberVO.setActivityMemberId(activityMembersId);
 		     activityMemberVO.setUserTypeId(userTypeId);
@@ -1717,7 +1731,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	}
 	if(locationLevelMap != null && locationLevelMap.size() > 0){
 		  for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
-			List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
+			List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDate);
 			   if(returnObjList != null && returnObjList.size() > 0){
 				   for (Object[] param : returnObjList) {
 					 String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -1837,14 +1851,19 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get selected child member and for userType.. 
 	*  @since 26-AUGUST-2016
 	*/
-	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId){
+	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId,String toDateStr){
 
 	List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0);
 	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
 	Map<String,Long> attendedMemberCntMap = new HashMap<String, Long>(0);
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	Date toDate=null;
 	try{
+		if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+			 toDate = sdf.parse(toDateStr);
+		 }
 		   //calling generic method to get childActivityMembers and there location level and values
-		ActivityMemberVO activityMemberVO=null;
+		  ActivityMemberVO activityMemberVO=null;
 		  Map<Long,UserTypeVO> childActivityMembersMap=null;
 		  
 		  
@@ -1876,7 +1895,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			}  
 			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
 				  for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-					List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId);
+					List<Object[]> returnObjList = trainingCampAttendanceDAO.getUserWiseTotalAttenedCadresCntForTrainingProgram(entry.getKey(),new ArrayList<Long>(entry.getValue()),stateId,toDate);
 					   if(returnObjList != null && returnObjList.size() > 0){
 						   for (Object[] param : returnObjList) {
 							 String locationLevelAndId = entry.getKey()+"-"+param[0].toString();
@@ -1951,14 +1970,18 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get top5 poor district and constituency locations attended counts. 
 	*  @since 29-AUGUST-2016
 	*/
-  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId){
+  public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String toDateStr){
 	  
 	  TrainingCampProgramVO resultVO = new TrainingCampProgramVO();
 	  Map<Long,TrainingCampProgramVO> eligibleMembersMap = new HashMap<Long, TrainingCampProgramVO>();
 	  Map<Long,Long> attendedMembersMap = new HashMap<Long, Long>();
 	  Map<Long,Set<Long>> locationMap = new HashMap<Long, Set<Long>>();
-	 
+	  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	  Date toDate=null;
 	  try{
+		  if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+				 toDate = sdf.parse(toDateStr);
+			 }
 		  List<Object[]> rtrnUserAccessLevelIdAndValuesObjList=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 		   if(rtrnUserAccessLevelIdAndValuesObjList != null && rtrnUserAccessLevelIdAndValuesObjList.size() > 0){
 			   for (Object[] obj : rtrnUserAccessLevelIdAndValuesObjList) {
@@ -1974,7 +1997,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	   if(userTypeId != null && userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID){
 		   if(locationMap != null && locationMap.size() > 0){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
-				   List<Object[]> rtrnDistAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"District",stateId); // userAccessLevelId & values   
+				   List<Object[]> rtrnDistAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"District",stateId,toDate); // userAccessLevelId & values   
 				   List<Object[]> rtrnDistEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "District",stateId);// userAccessLevelId & values 	 
 				   setAttendedMembersCntToMap(rtrnDistAttendedObj,attendedMembersMap);
 				   setEligibleMemberCntToMap(rtrnDistEligibleObj,attendedMembersMap,eligibleMembersMap);
@@ -1990,7 +2013,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	   || userTypeId.longValue() ==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
 		if(locationMap != null && locationMap.size() > 0){
 			for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
-				  List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()),"Constituency",stateId);   
+				  List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()),"Constituency",stateId,toDate);   
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(), new ArrayList<Long>(entry.getValue()), "Constituency",stateId); 	 
 				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
@@ -2007,7 +2030,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			   userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
 		   if(locationMap != null && locationMap.size() > 0){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
-				   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Mandal",stateId);   
+				   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Mandal",stateId,toDate);   
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Mandal",stateId); 	 
 				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
@@ -2023,7 +2046,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	   if(userTypeId != null && userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID  || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID || userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID){
 		   if(locationMap != null && locationMap.size() > 0){
 			   for(Entry<Long,Set<Long>> entry:locationMap.entrySet()){
-				   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Village",stateId);   
+				   List<Object[]> rtrnConsAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Village",stateId,toDate);   
 				   List<Object[]> rtrnConsEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Village",stateId); 	 
 				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
@@ -2105,15 +2128,19 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method get basic training program attended and eligible count. 
 	*  @since 29-AUGUST-2016
 	*/
-public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr){
 		 
 		 List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 		 Map<Long,Long> trainingCampProgramAttendedCntMap = new HashMap<Long, Long>();
 		 Map<Long,TrainingCampProgramVO> trainingCampProgramEligibleCntMap = new HashMap<Long, TrainingCampProgramVO>();
-
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		 Date toDate=null;
 		 try{
+		   if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
+				 toDate = sdf.parse(toDateStr);
+			 }
 			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);
-			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);
+			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId,toDate);
 			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
 				 for (Object[] param : rtrnAttendedMemberForProgramObjList) {
 					 trainingCampProgramAttendedCntMap.put((Long)param[0],param[2] != null ? (Long)param[2]:0l);

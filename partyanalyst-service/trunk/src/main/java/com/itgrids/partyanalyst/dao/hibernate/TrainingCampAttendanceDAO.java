@@ -814,7 +814,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  
 	  return query.list();
   }
-  public List<Object[]> getTotalAttenedCadresByTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+  public List<Object[]> getTotalAttenedCadresByTrainingCampProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate){
 
 	  StringBuilder queryStr= new StringBuilder();
 		  
@@ -830,6 +830,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	
 	 if(stateId != null && stateId.longValue() > 0){
 		 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
+	 }
+	 if(toDate!=null){
+	  queryStr.append(" and date(model.attendance.attendedTime)<=:toDate ");	 
 	 }
 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	  queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
@@ -856,10 +859,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	   }
 	   if(stateId != null && stateId.longValue() > 0){
 			 query.setParameter("stateId", stateId);  
-		}
+	   }
+	   if(toDate!=null){
+		 query.setDate("toDate", toDate);  
+	   }
 		  return query.list();  
 	  }
-    public List<Object[]> getTotalAttenedCadresByCommitteeLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId)
+    public List<Object[]> getTotalAttenedCadresByCommitteeLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate)
 	{
 		StringBuilder queryStr= new StringBuilder();
 		  
@@ -874,6 +880,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		          " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
 		 if(stateId != null && stateId.longValue() > 0){
 			 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
+		 }
+		 if(toDate!=null){
+			  queryStr.append(" and date(model.attendance.attendedTime)<=:toDate ");	 
 		 }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
@@ -901,10 +910,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		if(stateId != null && stateId.longValue() > 0){
 				 query.setParameter("stateId", stateId);  
 		}
+		if(toDate!=null){
+		  query.setDate("toDate", toDate);  
+		}
 		  	return query.list();  
 	}
   		
-    public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId){
+    public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate){
 
 		  StringBuilder queryStr= new StringBuilder();
 			  
@@ -924,7 +936,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
 		  if(stateId != null && stateId.longValue() > 0){
 				 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
-		  }	  
+		  }
+		  if(toDate!=null){
+			  queryStr.append(" and date(model.attendance.attendedTime)<=:toDate ");	 
+		 }
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		  queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -953,10 +968,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		   if(stateId != null && stateId.longValue() > 0){
 				 query.setParameter("stateId", stateId);  
 		   }
+		   if(toDate!=null){
+				  query.setDate("toDate", toDate);  
+		   }
 
 			  return query.list();  
 		  }
-  	  public List<Object[]> getUserWiseTotalAttenedCadresCntForTrainingProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId)
+  	  public List<Object[]> getUserWiseTotalAttenedCadresCntForTrainingProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate)
   		{
   			StringBuilder queryStr= new StringBuilder();
   			
@@ -991,6 +1009,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
   			 if(stateId != null && stateId.longValue() > 0){
   				 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId ");
+  			 }
+  			  if(toDate!=null){
+  				  queryStr.append(" and date(model.attendance.attendedTime)<=:toDate ");	 
   			 }
 		   /* if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
@@ -1034,11 +1055,13 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   		  if(stateId != null && stateId.longValue() > 0){
   			 query.setParameter("stateId", stateId);  
   		   }
-
-			  	return query.list();  
+  		  if(toDate!=null){
+			  query.setDate("toDate", toDate);  
+	     }
+		 return query.list();  
   		}
   	
-	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId){
+	public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByLocationType(Long userAccessLevelId,List<Long> userAccessLevelValues,String locationType,Long stateId,Date toDate){
 
 	     StringBuilder queryStr= new StringBuilder();
 		  
@@ -1071,7 +1094,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
 	 if(stateId != null && stateId.longValue() > 0){
 		queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
-	 }	  
+	 }
+	  if(toDate!=null){
+			  queryStr.append(" and date(model.attendance.attendedTime)<=:toDate ");	 
+	  }
 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	  queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -1101,13 +1127,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
    if(locationType != null && locationType.equalsIgnoreCase("Village")){
 	   queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId asc"); //1   
    }
-	   Query query = getSession().createQuery(queryStr.toString());
-	   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
-		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-	   }
-	   if(stateId != null && stateId.longValue() > 0){
-		 query.setParameter("stateId", stateId);  
-	   }
+   Query query = getSession().createQuery(queryStr.toString());
+   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+   }
+   if(stateId != null && stateId.longValue() > 0){
+	 query.setParameter("stateId", stateId);  
+   }
+	  if(toDate!=null){
+	   query.setDate("toDate", toDate);  
+	  }
 		  return query.list();  
 	  }
 }
