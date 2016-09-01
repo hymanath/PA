@@ -32,7 +32,6 @@
 	
 	$(document).on("click",".iconExpand",function(){
 		$(".dateRangePickerCls").toggleClass("hide");
-		
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".basicCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -182,6 +181,8 @@
 	  $(".stateCls").parent().removeClass("active");
 	  $(this).parent().addClass("active");
 	  globalState = $(this).html();
+	  var stateId=$(this).attr("attr_state_id");
+	  globalStateId = stateId; //for Training program
 	  event.preventDefault();
 	  defaultCommitteeCalls();
     });
