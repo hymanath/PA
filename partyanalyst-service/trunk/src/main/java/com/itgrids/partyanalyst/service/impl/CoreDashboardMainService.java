@@ -2329,6 +2329,44 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 			}
 		}
 		
+		// Sorting Based On SearchType Of Scale Perc
+		
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){
+						for (CoreDebateVO party : returnList) {					
+							Collections.sort(party.getCoreDebateVOList(),debateComparedCountSort);
+							
+							List<CoreDebateVO> newList = new ArrayList<CoreDebateVO>();
+							
+							if(searchType !=null && searchType.trim().equalsIgnoreCase("top")){
+								if(party.getCoreDebateVOList() !=null && party.getCoreDebateVOList().size()>5){
+									
+									for(int i=Integer.parseInt(party.getCoreDebateVOList().size()+"");i>Integer.parseInt((party.getCoreDebateVOList().size()-5)+"");i--){	
+										CoreDebateVO VO = party.getCoreDebateVOList().get(i-1);
+										if(VO !=null){
+											newList.add(VO);
+										}								
+									}
+									
+								}else{
+									Collections.reverse(party.getCoreDebateVOList());
+								}						
+							}else if(searchType !=null && searchType.trim().equalsIgnoreCase("poor")){						
+								if(party.getCoreDebateVOList() !=null && party.getCoreDebateVOList().size()>5){
+									for(int i=0;i<5;i++){
+										CoreDebateVO VO = party.getCoreDebateVOList().get(i);
+										if(VO !=null){
+											newList.add(VO);
+										}
+									}
+								}else{
+									newList.addAll(party.getCoreDebateVOList());
+								}						
+							}					
+							party.getCoreDebateVOList().clear();					
+							party.setCoreDebateVOList(newList);
+						}				
+					}
+		
 		//System.out.println(returnList);
 		
 	}catch (Exception e) {
@@ -2337,6 +2375,16 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 	
 	return returnList;
 }
+
+	public static Comparator<CoreDebateVO> debateComparedCountSort = new Comparator<CoreDebateVO>()
+	{
+		public int compare(CoreDebateVO cstVO1, CoreDebateVO cstVO2)
+		{			
+			 Double perc1 = cstVO1.getScalePerc();
+		      Double perc2 = cstVO2.getScalePerc();
+			return perc1.compareTo(perc2);
+		}
+	};
 
 public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr){
 	List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
