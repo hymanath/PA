@@ -453,6 +453,1715 @@
 				</div>
 			</div>
         </div>
+        <div class="row">
+            <!-- DEBATES PROGRAM BLOCK -->
+            <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 debatesBlock">
+                <div class="panel panel-default panelNewCustom">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">debates
+                            <span class="debatesIconExpand pull-right">
+                                <i class="glyphicon glyphicon-fullscreen"></i>
+                            </span>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+                                        <h4 class="text-capital"><img src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/>TDP</h4>
+                                        <table class="table tableTraining bg_ED m_top10">
+                                          <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p class="text-capital">total debates</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">total spokes persons</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">performance</p>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                </td>
+                                            </tr>
+                                         </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+                                        <h4 class="text-capital"><img src="newCoreDashBoard/img/ysrLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>ysrc</h4>
+                                        <table class="table tableTraining bg_ED m_top10">
+                                          <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p class="text-capital">total debates</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">total spokes persons</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">performance</p>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                </td>
+                                            </tr>
+                                         </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+                                        <h4 class="text-capital"><img src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>bjp</h4>
+                                        <table class="table tableTraining bg_ED m_top10">
+                                          <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p class="text-capital">total debates</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">total spokes persons</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">performance</p>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                </td>
+                                            </tr>
+                                         </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+                                        <h4 class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>INC</h4>
+                                        <table class="table tableTraining bg_ED m_top10">
+                                          <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p class="text-capital">total debates</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">total spokes persons</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-capital">performance</p>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                    <i class="glyphicon glyphicon-star-empty"></i>
+                                                </td>
+                                            </tr>
+                                         </tbody>
+                                        </table>
+                                    </div>
+                                 </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+                                        <ul class="activeUlCls list-inline">
+                                            <li>top 5 strong</li>
+                                            <li>last 5 poor</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <h4 class="text-capital">tdp</h4>
+                                        <div id="tdp" style="width:100%;height:150px;"></div>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <h4 class="text-capital">ysrc</h4>
+                                        <div id="ysrc" style="width:100%;height:150px;"></div>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <h4 class="text-capital">bjp</h4>
+                                        <div id="bjp" style="width:100%;height:150px;"></div>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <h4 class="text-capital">inc</h4>
+                                        <div id="inc" style="width:100%;height:150px;"></div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
+                                    </div>	
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row debatesMoreHiddenBlock">
+                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                <div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+                                        <h4><span class="headingColor text-capitalize">scale based performance cohort</span></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/>tdp</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">subject</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">performance</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">counter action</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">body language</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                                <hr class="m_0"/>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/ysrLogo.png" alt="ysrcIcon" class="debatesPartyIcon"/>ysrc</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">subject</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">performance</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+    
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">counter action</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">body language</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                                <hr class="m_0"/>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>bjp</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">subject</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">performance</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">counter action</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">body language</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                                <hr class="m_0"/>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>inc</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">subject</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">performance</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">counter action</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">body language</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                <div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+                                        <h4><span class="headingColor text-capitalize">role based performance cohort</span></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/>tdp</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">bully</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">critic</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">nurse</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">philosoper</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                                <hr class="m_0"/>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/ysrLogo.png" alt="ysrcIcon" class="debatesPartyIcon"/>ysrc</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">bully</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">critic</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">nurse</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">philosoper</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                                <hr class="m_0"/>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>bjp</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">bully</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">critic</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">nurse</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">philosoper</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                                <hr class="m_0"/>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <h4 class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/>inc</h4>
+                                                <table class="table tableDebates m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="text-capital">overall debates</p>
+                                                            <h4>10000</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">bully</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">critic</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">nurse</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">philosoper</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                <div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+                                        <h4><span class="headingColor text-capitalize">candidate overall performance cohort</span></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                                  <div class="panel panel-default collapseDebates">
+                                                    <div class="panel-heading" role="tab" id="headingOne">
+                                                        <a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                          <h4 class="panel-title"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> tdp spokespersons</h4>
+                                                        </a>
+                                                    </div>
+                                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                      <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="panel panel-default collapseDebates">
+                                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                          <h4 class="panel-title">ysrc spokespersons</h4>
+                                                        </a>
+                                                    </div>
+                                                    <div id="collapseTwo collapseDebatesIcon" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                      <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="panel panel-default collapseDebates">
+                                                    <div class="panel-heading" role="tab" id="headingThree">
+                                                        <a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                          <h4 class="panel-title">bjp spokespersons</h4>
+                                                        </a>
+                                                    </div>
+                                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                      <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="panel panel-default collapseDebates">
+                                                    <div class="panel-heading" role="tab" id="headingFour">
+                                                        <a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                         <h4 class="panel-title"> inc spokespersons</h4>
+                                                        </a>
+                                                    </div>
+                                                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                                      <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                <table class="table tableDebates m_top10">
+                                                                  <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            raja reddy
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">overall performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">subject</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">performance</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">counter action</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-capital">body language</p>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                                        </td>
+                                                                    </tr>
+                                                                 </tbody>
+                                                                </table>
+                                                                <hr class="m_0"/>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                <div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+                                        <h4><span class="headingColor text-capitalize">channel vs parties</span></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <table class="table tableDebatesVs m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> tdp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/ysrLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> ysrc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> bjp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> inc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> tdp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/ysrLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> ysrc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> bjp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> inc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> tdp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/ysrLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> ysrc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> bjp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> inc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> tdp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/ysrLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> ysrc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/bjpLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> bjp</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital"><img  src="newCoreDashBoard/img/congLogo.png" alt="tdpIcon" class="debatesPartyIcon"/> inc</p>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                            <i class="glyphicon glyphicon-star-empty"></i>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                <div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+                                        <h4><span class="headingColor">SMS Poll</span></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <table class="table tableDebatesVs m_top10">
+                                                  <tbody>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">total questions</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">yes %</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">no % </p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">total questions</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">yes %</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">no % </p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">total questions</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">yes %</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">no % </p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">total questions</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">yes %</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">no % </p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="b_right1">
+                                                            <img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">total questions</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">yes %</p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-capital">no % </p>
+                                                            <h4>100</h4>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- DEBATES PROGRAM BLOCK END-->
+        </div>
 	</div>
 </div>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
@@ -460,6 +2169,7 @@
 <script src="newCoreDashBoard/js/bootstrap.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/KChart.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>

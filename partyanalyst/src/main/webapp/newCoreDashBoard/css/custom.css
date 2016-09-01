@@ -750,7 +750,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	color:#333;
 	font-weight:bold;
 }
-.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand
+.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand
 {
 	border:1px solid #999;
 	border-radius:5px;
@@ -762,11 +762,11 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	background-color:#FECB00;
 	margin-right:2px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i
+.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i
 {
 	transition:all .2s ease-in-out;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover
 {
 	transform: scale(1.4); 
 }
@@ -808,7 +808,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	color:#c286bc
 }
-.committeesHiddenBlock , .moreBlocks , .moreBlocksIcon , .trainingsHiddenBlock , .moreTrainingBlocksIcon , .moreTrainingBlocks
+.committeesHiddenBlock , .moreBlocks , .moreBlocksIcon , .trainingsHiddenBlock , .moreTrainingBlocksIcon , .moreTrainingBlocks , .meetingsHiddenBlock , .moreMeetingsBlocksIcon , .moreMeetingsBlocks , .debatesHiddenBlock , .debatesMoreHiddenBlock
 {
 	display:none;
 }
@@ -987,7 +987,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	width:100%;
 	margin:auto;
 }
-.moreBlocksIcon , .moreTrainingBlocksIcon
+.moreBlocksIcon , .moreTrainingBlocksIcon , .moreMeetingsBlocksIcon , .moreDebatesBlocksIcon
 {
 	font-size:22px;
 	cursor:pointer;
@@ -1454,4 +1454,60 @@ margin-top:20px;
 .calenarUl li span
 {
   font-size:12px;
+}
+.debatesPartyIcon
+{
+	height:18px;
+	width:20px;
+	margin-right:5px;
+}
+.tableDebates tr td
+{
+	border:0px !important;
+}
+.collapseDebates
+{
+	
+}
+.collapseDebatesIcon , .collapseDebatesIcon:active ,.collapseDebatesIcon:hover
+{
+	color:#666 !important
+}
+.collapseDebatesIcon:before {
+    /* symbol for "opening" panels */
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+	font-size:13px;
+	margin-top:-4px;
+	font-weight:400 !important;
+	margin-left:-4px;
+	color:#4B5763;
+	border:1px solid #4B5763;
+	padding:3px 5px;
+}
+.collapseDebatesIcon.collapsed:before {
+    /* symbol for "collapsed" panels */
+    content:"\2b";
+}
+.b_right1
+{
+	border-right:1px solid #ddd;
+}
+.channelLogo
+{
+	width:25px;
+	height:25px;
+}
+.tableDebatesVs tr td:first-child
+{
+	text-align:center;
+}
+.tableDebatesVs tr:first-child td
+{
+	border-top:0px;
+}
+.tableDebatesVs tr:last-child td
+{
+	border-bottom:0px;
 }
