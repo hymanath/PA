@@ -1153,7 +1153,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		              " model2.tdpRoles.tdpRolesId = model3.tdpCommitteeRole.tdpRoles.tdpRolesId and" +
 	  		              " model.attendance.tdpCadre.isDeleted='N' and model.attendance.tdpCadre.enrollmentYear=2014 and model3.isActive='Y' and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' ");
 			  
-		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		   /* if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId in (:userAccessLevelValues)");  
@@ -1169,7 +1169,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
   			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-  			}
+  			}*/
 	        if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		      queryStr.append(" group by  model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId ");  
 		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -1189,10 +1189,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   			} 
 		   
   			Query query = getSession().createQuery(queryStr.toString());
-  			if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+  			/*if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
   				query.setParameterList("userAccessLevelValues", userAccessLevelValues);
   			
-  			}
+  			}*/
   			
 			  	return query.list();  
   		}
