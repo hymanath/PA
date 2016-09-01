@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>New Core DashBoard</title>
-<link href="newCoreDashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -2166,7 +2166,7 @@
 </div>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/bootstrap.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
