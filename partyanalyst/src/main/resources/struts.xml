@@ -13499,7 +13499,12 @@
    			<param name="root">selectOptList</param>
    		</result>
 	</action>
-	<!-- Debate Actions-->
+	<action name="getTrainingProgramBasicCntAction" class="coreDashboardAction" method="getTrainingProgramBasicCnt">
+		<result type="json" name="success">
+   			<param name="root">trainingCampProgramVOList</param>
+   		</result>
+	</action>
+<!-- Debate Actions-->
 	
 	<action name="getPartyWiseTotalDebateDetailsAction" class="coreDashboardAction" method="getPartyWiseTotalDebateDetails">
 		<result type="json" name="success">
@@ -13536,11 +13541,10 @@
    			<param name="root">codeDebateVoList</param>
    		</result>
 	</action>
-	
-	<action name="getbasicCommitteeDetailsAction" class="coreDashboardAction" method="getbasicCommitteeDetails">
+		<action name="getbasicCommitteeDetailsAction" class="coreDashboardAction" method="getbasicCommitteeDetails">
 		<result type="json" name="success">
    			<param name="root">committeeDataVOList</param>
    		</result>
-	</action>
+	</action>	
 </package>
 </struts>
