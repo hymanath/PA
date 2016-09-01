@@ -476,22 +476,8 @@
                                             <li>last 5 poor</li>
                                         </ul>
                                     </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12">
-                                        <h4 class="text-capital">tdp</h4>
-                                        <div id="tdp" style="width:100%;height:150px;"></div>
-                                    </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12">
-                                        <h4 class="text-capital">ysrc</h4>
-                                        <div id="ysrc" style="width:100%;height:150px;"></div>
-                                    </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12">
-                                        <h4 class="text-capital">bjp</h4>
-                                        <div id="bjp" style="width:100%;height:150px;"></div>
-                                    </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12">
-                                        <h4 class="text-capital">inc</h4>
-                                        <div id="inc" style="width:100%;height:150px;"></div>
-                                    </div>
+									<div id="SpokesPersonWiseDebate"></div>
+                                    
                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                         <i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
                                     </div>	
