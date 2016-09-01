@@ -172,7 +172,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 													str+='<td>';
 														str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName+'</p>';
-														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
+														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
 													str+='</td>';
 													}
 												str+='</tr>';
