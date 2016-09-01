@@ -934,9 +934,12 @@ $(document).on("click",".submitBtnCls",function(){
 			
 			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr[0],glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId);
 			
-	   }else{
+	   }else if(result != null && result == 'failure'){
 		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");
 		}	
+		else{
+			 $("#"+divId).html("<span style='color:red;'>"+result+"</span>");
+		}
    });
 });
 
