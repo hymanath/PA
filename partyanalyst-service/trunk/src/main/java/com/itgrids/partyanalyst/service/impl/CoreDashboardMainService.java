@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
+import com.itgrids.partyanalyst.dao.ICharacteristicsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -34,6 +35,7 @@ import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.model.Characteristics;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -60,6 +62,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IDebateParticipantDAO debateParticipantDAO;
 	 private IDebateParticipantCharcsDAO debateParticipantCharcsDAO;
 	 private CommonMethodsUtilService commonMethodsUtilService;
+	 private ICharacteristicsDAO characteristicsDAO;
 	 
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
@@ -121,6 +124,10 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	
+	public void setCharacteristicsDAO(ICharacteristicsDAO characteristicsDAO) {
+		this.characteristicsDAO = characteristicsDAO;
 	}
 	/**
 	  * @param  Long userAccessLevelId
@@ -2030,6 +2037,12 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			Date startDate = null;
 			Date endDate   =null;
 			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
+			
 			Map<Long,CoreDebateVO> countMap = new HashMap<Long, CoreDebateVO>();
 			
 			//0.partyId,1.shortName,2.debateCount,3.candidateCount
@@ -2037,6 +2050,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			
 			//0.partyId,1.shortName,2.characteristicsId,3.name,4.scale
 			List<Object[]> scaleCountObjList = debateParticipantCharcsDAO.getPartyWiseScalesOfEachCharecter(startDate,endDate);
+			
+			List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 			
 			if(commonMethodsUtilService.isListOrSetValid(debateCountObjList)){			
 				countMap = setDebateValuesToMap(debateCountObjList,countMap);
@@ -2053,6 +2068,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			if(commonMethodsUtilService.isListOrSetValid(returnList)){
 				for (CoreDebateVO objects : returnList) {
 					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+					if(objects.getScalePerc() !=null && objects.getScalePerc() >0.0 ){
+						objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+					}					
 				}
 			}
 			
@@ -2113,9 +2131,14 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 		
 		try{			
-			Date startDate=null;
-			Date endDate=null;
-			//String searchType="Top";
+			Date startDate = null;
+			Date endDate   =null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
 			
 			Map<Long,Map<Long,CoreDebateVO>> partyMap = new HashMap<Long, Map<Long,CoreDebateVO>>();
 			//Map<Long,CoreDebateVO> candidateMap= new HashMap<Long, CoreDebateVO>();
@@ -2125,6 +2148,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			
 			//0.partyId,1.name,2.candidateId,3.name,4.debateCount
 			 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate);
+			 
+			 List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 						 
 			if(commonMethodsUtilService.isListOrSetValid(candidateObjList)){
 				for (Object[] parms : candidateObjList) {					
@@ -2157,6 +2182,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 							
 							if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
 								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
+									vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								}
 							}
 							vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
 							
@@ -2194,8 +2222,14 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 		try{
 			
-			Date startDate=null;
-			Date endDate = null;
+			Date startDate = null;
+			Date endDate   =null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
 			
 			Map<Long,CoreDebateVO> countMap = new HashMap<Long, CoreDebateVO>();			
 			List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);			
@@ -2242,8 +2276,14 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
 		
 		try{			
-			Date startDate=null;
-			Date endDate = null;
+			Date startDate = null;
+			Date endDate   =null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
 			
 			Map<Long,Map<Long,List<CoreDebateVO>>> countMap = new HashMap<Long, Map<Long,List<CoreDebateVO>>>();
 			
@@ -2331,7 +2371,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		
 		try{			
 			Date startDate = null;
-			Date endDate =null;
+			Date endDate   =null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
 			
 			Map<Long,Map<Long,CoreDebateVO>> channelMap = new HashMap<Long, Map<Long,CoreDebateVO>>();			
 			//0.channelId,1.channel,2.partyId,3.partyName,4.scaleCount
@@ -2339,6 +2385,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			
 			//0.channelId,1.channel,2.partyId,3.partyName,4.debateCount
 			List<Object[]> channelObjList = debateParticipantDAO.getChannelWiseDebateDetails(startDate,endDate);
+			
+			List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();			
 			
 			if(commonMethodsUtilService.isListOrSetValid(channelScaleObjList)){
 				
@@ -2371,6 +2419,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 						if(vo !=null){	
 							if(vo.getScale() !=null && param[4] !=null){
 								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)param[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
+									vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								}
 							}
 							vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(param[4]));
 						}
@@ -2439,7 +2490,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		
 		try{			
 			Date startDate = null;
-			Date endDate = null;
+			Date endDate   =null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
 			
 			Map<Long,Map<Long,CoreDebateVO>> rolesMap = new HashMap<Long, Map<Long,CoreDebateVO>>();			
 			//0.partyId,1.name,2.rolesId,3.role,4.scale
@@ -2447,6 +2504,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 			
 			//0.partyId,1.shortName,2.debateCount,3.candidatesCount
 			List<Object[]> debateCountObjList = debateParticipantDAO.getPartyWiseDebateDetails(startDate,endDate);
+			
+			List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 			
 			if(commonMethodsUtilService.isListOrSetValid(roleObjList)){			
 				rolesMap = setDebateDetailsToMap(roleObjList,rolesMap);				
@@ -2459,7 +2518,10 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 							CoreDebateVO VO = role.getValue();	
 							if(VO !=null){
 								if( VO.getScale() !=null && obj[2] !=null && (Long)obj[2]>0l){
-									VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+									VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));									
+									if(VO.getScalePerc() !=null && VO.getScalePerc() >0.0 ){
+										VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+									}									
 								}
 								VO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
 							}				
