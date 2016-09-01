@@ -4634,7 +4634,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					
 					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
 					
-					if(statusId != null && statusId.longValue() == 5l){
+					if(statusId != null && statusId.longValue() == 5l){// finalyzed status id
 						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
 						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
