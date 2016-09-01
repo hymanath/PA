@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.HashSet;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
@@ -2640,7 +2640,7 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMap(List<Object[]> obj
 				VO.setId((Long)obj[0]);
 				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 				VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-				VO.setCandidateName(commonMethodsUtilService.getStringValueForObject(obj[3]));
+				VO.setCandidateName(StringEscapeUtils.unescapeJava(commonMethodsUtilService.getStringValueForObject(obj[3])));
 				VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));					
 			}
 		}
