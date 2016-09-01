@@ -221,6 +221,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			}
 			
 			userDataVO = coreDashboardService.getUserBasicDetails(user.getRegistrationID());
+			List<UserDataVO> committeeDataVOList = coreDashboardMainService.getbasicCommitteeDetails();
+			if(committeeDataVOList!=null && committeeDataVOList.size()>0){
+				userDataVO.setSubList(committeeDataVOList);
+			}
 			
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
@@ -824,7 +828,6 @@ public String getTrainingProgramPoorCompletedLocationDtls(){
 		return Action.SUCCESS;
 }
 
-
 //Debate Action Methods
 
 public String getPartyWiseTotalDebateDetails(){
@@ -902,5 +905,6 @@ public String getRoleBasedPerformanceCohort(){
 	
 	return Action.SUCCESS;
 }
+
 
 }

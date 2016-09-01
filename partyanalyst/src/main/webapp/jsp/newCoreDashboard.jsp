@@ -96,7 +96,7 @@
 							</h4>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
-							<span class="settingsIcon pull-right">
+							<span class="basicCommitteesBlockDiv pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="notesIcon pull-right">
@@ -113,6 +113,35 @@
 								</span>
 							</span>
 						</div>
+					</div>
+					
+							
+					<div class="basicCommitteesBlockDropDown" style="z-index:999;margin-top: -3px;" >
+						<h4 class="text-capital" style="color:#99A0A5;">Select Committees</h4>
+						<hr style ="margin-bottom:0px;" />
+						<div id="basicCommitteeDetailsDiv" style="height:300px;overflow-y:scroll;">
+						
+						<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+							 <div class="col-xs-12 col-sm-12 col-md-12">
+								<label class="checkbox-inline m_top10">
+								 <c:choose>
+								   <c:when test="${basicCommittee.id == 1}">
+									   <input type="checkbox"  class="checkedBasicComm" value="${basicCommittee.id}" checked>
+								   </c:when>
+									<c:otherwise>
+									   <input type="checkbox"  class="checkedBasicComm" value="${basicCommittee.id}">
+									</c:otherwise>
+							   </c:choose>
+									<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+							   </label>
+							   <hr style ="margin-bottom:0px;" />
+						  </div>      
+						</c:forEach>
+						
+						
+						</div>
+						
+						<button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
 					</div>
 					<div class="notesDropDown">
                     	<h4 class="text-capital">notes
@@ -146,67 +175,27 @@
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
-                                    	<li class="active topFiveStrongResults">Top 5 Strong</li>
-										<li class="topFivePoorResults">Top 5 Poor</li>
+                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
+										<li class="topFivePoorResults">Top 5 Poor</li>-->
+										<li class="liCls1 active addactive" attr_value="strong">top 5 strong</li>
+										<li class="liCls1 removeactive" attr_value="poor">last 5 poor</li>
                                     </ul>
                                 </div>
-                                <div id="userTypeWiseCommitteesForTopFiveStrongDiv"></div>
-                                <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>
+                                <div id="userTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
+                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
 						    </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
-                        	<div class="committeeSeetingBlock" style="display:none;">
-								<ul class="list-inline pull-right activeUlCls">
-									<li class="basicCommitteesBlockDiv" style="margin-left:10px;"><i class="fa fa-gears"></i></li>
-								</ul>
-							</div>
+                        	
 							<ul class="list-inline pull-right activeUlCls">
                             	<li class="active detailedBlock">Detailed</li>
                                 <li class="comparisionBlock">Comparison</li>
                             </ul>
-							
-							
-							<div class="basicCommitteesBlockDropDown" style="z-index:999">
-								<h4 class="text-capital" style="color:#99A0A5;">Select Committees</h4>
-								<hr style ="margin-bottom:0px;" />
-								<div class="col-xs-12 col-sm-12 col-md-12">
-								<label class="checkbox-inline m_top10">
-								  <input type="checkbox" id="inlineCheckbox1" class="checkedBasicComm" value="1" checked>
-								  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Main Committee</h5></div>
-								</label>
-								<hr style ="margin-bottom:0px;" />
-								</div>
-								
-								<div class="col-xs-12 col-sm-12 col-md-12">
-								<label class="checkbox-inline m_top10">
-								  <input type="checkbox" id="inlineCheckbox1" class="checkedBasicComm" value="2" checked>
-								<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Telugu Yuvatha</h5></div>
-								</label>
-								<hr style ="margin-bottom:0px;" />
-								</div>
-								
-								<div class="col-xs-12 col-sm-12 col-md-12">
-								<label class="checkbox-inline m_top10">
-								  <input type="checkbox" id="inlineCheckbox1"  class="checkedBasicComm" value="3" checked>
-								  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Telugu Mahila</h5></div>
-								</label>
-								<hr style ="margin-bottom:0px;" />
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-12">
-								<label class="checkbox-inline m_top10">
-								  <input type="checkbox" id="inlineCheckbox1"  class="checkedBasicComm" value="4" checked>
-								  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> Telugu Rythu</h5></div>
-								</label>
-								<hr style ="margin-bottom:0px;" />
-								</div>
-								<button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
-							</div>
-                        </div>
+					    </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks">
-                        	
                         	<div class="panel panel-default">
                             	<div class="panel-body ">
 								<div id="levelWiseBasicCommittees"></div>
@@ -2210,7 +2199,6 @@
 	
 /* New Design */
       initialiseDatePicker();
-	  
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
@@ -2223,9 +2211,9 @@
 	  var globalUserAccessLevelValues = loggedInUserAccessLevelValues;
 	  
 	  var globalState = 'AP';
-	
-	  var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
-	  getCheckedBasicCommitteeIds();
+	  
+	   var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
+	  getCheckedBasicCommitteeIds(); 
 	  
 	  
 	$(document).ready(function(){
@@ -2273,7 +2261,18 @@
 	
 	function defaultCommitteeCalls(){
 		onLoadCalls();
+		
 		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".liCls1").each(function(){
+				var topvalue = $(this).attr("attr_value");
+				if(topvalue == "poor"){
+					$(".removeactive").removeClass("active");
+					
+				}else{
+					
+					$(".addactive").addClass("active");
+				}
+			});
 			getUserTypeWiseCommitteesCompletedCounts1();
 		}
 		if($(".moreBlocksIcon").hasClass("unExpandBlock")){

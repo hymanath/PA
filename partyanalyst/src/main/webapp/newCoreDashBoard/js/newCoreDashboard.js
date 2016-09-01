@@ -192,7 +192,7 @@
 	});
 
 	$(document).on("click",".basicCommitteesBlockDiv",function(){
-		$(this).closest(".moreBlocksDetailAndComp").find(".basicCommitteesBlockDropDown").toggle();
+		$(this).closest(".committeesBlock").find(".basicCommitteesBlockDropDown").toggle();
 	});
 	
 	function getCheckedBasicCommitteeIds(){
