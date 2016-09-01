@@ -351,4 +351,67 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		return query.list();
 		
 	}
+	
+	//Core DashBoard Queries
+	
+	public List<Object[]> getPartyWiseDebateDetails(Date startDate,Date endDate){		
+		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
+		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
+				" from DebateParticipant model" +
+				" where model.debate.isDeleted = 'N'" );		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debate.startTime) >= :startDate and date(model.debate.endTime) <= :endDate  ");
+		}		
+		
+		str.append(" group by model.party.partyId ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalDabtesCountsForEachCandidateNew(Date fromDate , Date toDate)
+	{
+		StringBuilder str = new StringBuilder();		
+		 str.append("select distinct model1.party.partyId,model1.party.shortName,model1.candidate.candidateId,model1.candidate.lastname,count(distinct model.debateId)  from " +
+				" Debate model , DebateParticipant model1 " +
+				" where  model.debateId = model1.debate.debateId and model.isDeleted = 'N' " );		
+		if(fromDate !=null && toDate !=null){
+			 str.append(" and date(model.startTime) >= :fromDate and date(model.endTime) <= :toDate ");
+		}		
+		str.append(" group by model1.party.partyId,model1.candidate.candidateId ");		
+		Query query = getSession().createQuery(str.toString());		
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	public List<Object[]> getChannelWiseDebateDetails(Date startDate,Date endDate){		
+		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
+		str.append(" select model.debate.channel.channelId,model.debate.channel.channelName,model.party.partyId,model.party.shortName," +
+				"count(distinct model.debate.debateId)" +
+				" from DebateParticipant model" +
+				" where model.debate.isDeleted = 'N'" );		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debate.startTime) >= :startDate and date(model.debate.endTime) <= :endDate  ");
+		}		
+		
+		str.append(" group by model.debate.channel.channelId,model.party.partyId ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
 }
