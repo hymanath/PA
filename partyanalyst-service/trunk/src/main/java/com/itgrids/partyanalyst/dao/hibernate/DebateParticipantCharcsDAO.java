@@ -508,4 +508,136 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getPartyWiseScalesOfEachCharecter(Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();		
+		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
+				"model.characteristics.characteristicsId,model.characteristics.name," +
+				" sum(model.scale)" +
+				" from DebateParticipantCharcs model" +
+				" where model.debateParticipant.debate.isDeleted = 'N' " +
+				" and model.characteristics.isDeleted ='N'" );		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+		}		
+		
+		str.append(" group by model.debateParticipant.party.partyId,model.characteristics.characteristicsId ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list(); 
+		
+	}
+	
+	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType){		
+		StringBuilder str = new StringBuilder();		
+		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
+				" model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname,sum(model.scale) " +
+				" from DebateParticipantCharcs model " +
+				" where model.debateParticipant.debate.isDeleted = 'N' " +
+				" and model.characteristics.isDeleted ='N'");		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+		}
+		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId ");
+		
+		if(searchType !=null && searchType.trim().equalsIgnoreCase("top")){
+			str.append(" order by sum(model.scale) desc ");
+		}else if(searchType !=null && searchType.trim().equalsIgnoreCase("poor")){
+			str.append(" order by sum(model.scale) ");
+		}
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}		
+		return query.list(); 
+		
+	}
+	
+	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();		
+		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
+				" model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname," +
+				" model.characteristics.characteristicsId," +
+				"model.characteristics.name," +
+				" sum(model.scale) " +
+				" from DebateParticipantCharcs model " +
+				" where model.debateParticipant.debate.isDeleted = 'N' " +
+				" and model.characteristics.isDeleted ='N'");		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+		}
+		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}		
+		return query.list(); 
+		
+	}
+	
+	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.debateParticipant.debate.channel.channelId,model.debateParticipant.debate.channel.channelName," +
+				" model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
+				" sum(model.scale) " +
+				" from DebateParticipantCharcs model " +
+				" where model.debateParticipant.debate.isDeleted = 'N' " +
+				" and model.characteristics.isDeleted ='N'");	
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+		}
+		str.append(" group by model.debateParticipant.debate.channel.channelId, model.debateParticipant.party.partyId ");
+		
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}		
+		return query.list(); 
+	}
+	
+	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model1.debateParticipant.party.partyId,model1.debateParticipant.party.shortName," +
+				"model1.debateRoles.debateRolesId,model1.debateRoles.name,sum(model.scale)" +
+				"  from DebateParticipantCharcs model ,DebateParticipantRole model1" +
+				" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId" +
+				" and model.characteristics.isDeleted = 'N' " +
+				" and model1.debateRoles.isDeleted ='N'");
+		
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+		}
+		
+		str.append(" group by model1.debateParticipant.party.partyId, model1.debateRoles.debateRolesId ");
+
+		Query query = getSession().createQuery(str.toString());	
+		
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}	
+		return query.list(); 		
+	}
+	
 }

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
+import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
@@ -22,6 +23,12 @@ public interface ICoreDashboardMainService {
 	public List<List<UserTypeVO>> getUserTypeWiseTotalEligibleAndAttendedCnt(Long userId,Long userTypeId,Long activityMembersId,Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType);
 	public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userAccessLevelId,List<Long> userAccessLevelValues);
-	
+	//Debate
+	public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr);
+	public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType);
+	public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr);
+	public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr);
+	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr);
+	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr);
 	
 }
