@@ -27,6 +27,7 @@ public class TrainingCampEligbleDesignation {
 	private Long tdpBasicCommitteeId;
 	private Long tdpCommitteeLevelId;
 	private Long tdpRolesId;
+	private String gender;
 	private TrainingCampProgram trainingCampProgram;
 	private TdpBasicCommittee tdpBasicCommittee;
 	private TdpCommitteeLevel tdpCommitteeLevel;
@@ -69,6 +70,13 @@ public class TrainingCampEligbleDesignation {
 	}
 	public void setTdpRolesId(Long tdpRolesId) {
 		this.tdpRolesId = tdpRolesId;
+	}
+	@Column(name="gender")
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="training_camp_program_id",updatable = false, insertable = false)
