@@ -17,10 +17,10 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 	public List<Object[]> getChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIds){
 	
 	Query query = getSession().createQuery("" +
-    " select  rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.tdpCadre.firstname," +//2
+    " select  rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.memberName," +//2
     "         amat.userType.userTypeId, amat.userType.type," +//4
     "         amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//7
-    "         rel.childActivityMember.tdpCadre.image,amat.userType.shortName " +//9
+    "         rel.childActivityMember.imageUrl,amat.userType.shortName " +//9
     " from   ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
     " where  rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
     "        rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
@@ -45,11 +45,11 @@ public class ActivityMemberRelationDAO extends GenericDaoHibernate<ActivityMembe
 		
 		Query query = getSession().createQuery("" +
 	    " select   rel.parentActivityMember.activityMemberId," +//0
-	    "          rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.tdpCadre.firstname," +//3
+	    "          rel.childActivityMember.activityMemberId,rel.childActivityMember.tdpCadreId,rel.childActivityMember.memberName," +//3
 	    "          amat.userType.userTypeId, amat.userType.type," +//5
 	    "          amal.userLevel.userLevelId,amal.userLevel.level,amal.activityLocationValue," +//8
 	    
-	    "          rel.childActivityMember.tdpCadre.image,amat.userType.shortName " +//10
+	    "          rel.childActivityMember.imageUrl,amat.userType.shortName " +//10
 	    " from     ActivityMemberRelation rel ,ActivityMemberAccessType amat,ActivityMemberAccessLevel amal " +
 	    " where    rel.childActivityMember.activityMemberId = amat.activityMember.activityMemberId and " +
 	    "          rel.childActivityMember.activityMemberId = amal.activityMember.activityMemberId and " +
