@@ -13499,5 +13499,45 @@
    			<param name="root">selectOptList</param>
    		</result>
 	</action>
+	
+	<!-- Debate Actions-->
+	
+	<action name="getPartyWiseTotalDebateDetailsAction" class="coreDashboardAction" method="getPartyWiseTotalDebateDetails">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
+	<action name="getSpokesPersonWiseDebateAction" class="coreDashboardAction" method="getSpokesPersonWiseDebate">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
+	<action name="getScaleBasedPerformanceCohortAction" class="coreDashboardAction" method="getScaleBasedPerformanceCohort">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
+	<action name="getCandidateOverAllPerformanceCohortAction" class="coreDashboardAction" method="getCandidateOverAllPerformanceCohort">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
+	<action name="getChannelAndPartyWiseDetailsAction" class="coreDashboardAction" method="getChannelAndPartyWiseDetails">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
+	<action name="getRoleBasedPerformanceCohortAction" class="coreDashboardAction" method="getRoleBasedPerformanceCohort">
+		<result type="json" name="success">
+   			<param name="root">codeDebateVoList</param>
+   		</result>
+	</action>
+	
+	
 </package>
 </struts>
