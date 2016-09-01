@@ -1323,6 +1323,7 @@ function getDepartmentWiseBoardAndPositionDetailsForAll(levelId,levelValues,dept
 			var btnId = $(this).attr('attr_btn_id');
 			$("#"+btnId+'').prop('disabled',false);
 		}else{
+			var btnId = $(this).attr('attr_btn_id');
 			$("#"+btnId+'').prop('disabled',true);
 		}
 	});
