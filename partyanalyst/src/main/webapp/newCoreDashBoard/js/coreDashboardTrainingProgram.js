@@ -1,5 +1,3 @@
-
-
 //Training Program
 var globalStateId=1; //default Ap 
 $(document).on("click",".stateCls",function(){
@@ -432,7 +430,7 @@ var globalUserWiseMemberRslt;
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
 		if(result != null && result.length > 0){
 			for(var i in result){
-				var length1 = result[i].length ;
+				var length1 = result[i].length-1 ;
 				var candidateNameArray = [];
 				var trainingProgramCountArray = [];
 				var countVar =0;
