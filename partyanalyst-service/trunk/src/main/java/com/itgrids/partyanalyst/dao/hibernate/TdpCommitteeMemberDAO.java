@@ -2093,7 +2093,7 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 			" TCM.isActive='Y' and TCM.tdpCadre.isDeleted='N' " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and TCM.tdpCadre.enrollmentYear=2014 ");
 	
-	  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	 /* if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
              queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId in (:userAccessLevelValues)");  
@@ -2109,7 +2109,7 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 	         queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 	         queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-	  }
+	  }*/
 	 
 	  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId ");  
@@ -2132,9 +2132,9 @@ public List<Object[]> getUserWiseTotalEligibleMembersForTrainingCampProgram(Long
 	 //  queryStr.append(" order by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId");
 	 
 	   Query query = getSession().createQuery(queryStr.toString());
-	   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	   /*if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-	   }
+	   }*/
 	
 	return query.list();
 }
