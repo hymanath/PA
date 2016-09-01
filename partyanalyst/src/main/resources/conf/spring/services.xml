@@ -3418,6 +3418,12 @@
 	    
 	    <property name="tdpCommitteeMemberDAO"  ref="tdpCommitteeMemberDAO"></property>
 	    <property name="trainingCampAttendanceDAO"  ref="trainingCampAttendanceDAO"></property>
+	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+	  
+	  <!-- Debate -->
+	  <property name="debateParticipantDAO"  ref="debateParticipantDAO"></property>
+	  <property name="debateParticipantCharcsDAO"  ref="debateParticipantCharcsDAO"></property>	  
+	  <property name="characteristicsDAO"  ref="characteristicsDAO"></property>
 	  
 	</bean>
 	

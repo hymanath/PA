@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
+import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
@@ -50,6 +51,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardService1 coreDashboardService1;
 	private ICoreDashboardMainService coreDashboardMainService;
 	private ICoreDashboardGenericService coreDashboardGenericService;
+	
+	private List<CoreDebateVO> codeDebateVoList;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -183,6 +186,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+	public List<CoreDebateVO> getCodeDebateVoList() {
+		return codeDebateVoList;
+	}
+
+	public void setCodeDebateVoList(List<CoreDebateVO> codeDebateVoList) {
+		this.codeDebateVoList = codeDebateVoList;
 	}
 
 	//business methods
@@ -813,4 +823,84 @@ public String getTrainingProgramPoorCompletedLocationDtls(){
 		}
 		return Action.SUCCESS;
 }
+
+
+//Debate Action Methods
+
+public String getPartyWiseTotalDebateDetails(){
+	
+	try{
+		jObj = new JSONObject(getTask());
+		codeDebateVoList = coreDashboardMainService.getPartyWiseTotalDebateDetails(jObj.getString("startDate"),jObj.getString("endDate"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getPartyWiseTotalDebateDetails() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String getSpokesPersonWiseDebate(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		codeDebateVoList = coreDashboardMainService.getSpokesPersonWiseDebate(jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getSpokesPersonWiseDebate() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String getScaleBasedPerformanceCohort(){
+
+	try{
+		
+		jObj = new JSONObject(getTask());
+		codeDebateVoList = coreDashboardMainService.getScaleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getScaleBasedPerformanceCohort() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getCandidateOverAllPerformanceCohort(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		codeDebateVoList = coreDashboardMainService.getCandidateOverAllPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getCandidateOverAllPerformanceCohort() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String getChannelAndPartyWiseDetails(){
+
+	try{
+		
+		jObj = new JSONObject(getTask());
+		codeDebateVoList = coreDashboardMainService.getChannelAndPartyWiseDetails(jObj.getString("startDate"),jObj.getString("endDate"));
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getChannelAndPartyWiseDetails() method of CoreDashBoardAction", e);
+	}
+	return Action.SUCCESS;
+}
+public String getRoleBasedPerformanceCohort(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		codeDebateVoList = coreDashboardMainService.getRoleBasedPerformanceCohort(jObj.getString("startDate"),jObj.getString("endDate"));
+				
+	}catch (Exception e) {
+		LOG.error("Exception raised at getRoleBasedPerformanceCohort() method of CoreDashBoardAction", e);
+	}
+	
+	return Action.SUCCESS;
+}
+
 }
