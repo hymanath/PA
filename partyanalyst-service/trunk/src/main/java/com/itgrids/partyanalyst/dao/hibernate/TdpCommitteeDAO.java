@@ -1729,31 +1729,31 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
 			sbS.append(",model.userAddress.state.stateId ");
-			sbM.append(" and model.userAddress.state.stateId in (:tdpCommitteeLevelValues) ");
+			//sbM.append(" and model.userAddress.state.stateId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.state.stateId ");
 		}
 		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
 			
 			sbS.append(",model.userAddress.district.districtId ");
-			sbM.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
+			//sbM.append(" and model.userAddress.district.districtId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.district.districtId ");
 			
 		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
 			
 			sbS.append(",model.userAddress.parliamentConstituency.constituencyId ");
-			sbM.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
+			//sbM.append(" and model.userAddress.parliamentConstituency.constituencyId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.parliamentConstituency.constituencyId ");
 			
 		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
 			
 			sbS.append(",model.userAddress.constituency.constituencyId");
-			sbM.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
+			//sbM.append(" and model.userAddress.constituency.constituencyId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.constituency.constituencyId ");
 			
 		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
 			
 			sbS.append(",model.userAddress.tehsil.tehsilId ");
-			sbM.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
+			//sbM.append(" and model.userAddress.tehsil.tehsilId in (:tdpCommitteeLevelValues) ");
 			sbE.append(" group by model.userAddress.tehsil.tehsilId ");
 		}
 		
@@ -1791,7 +1791,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		Query query = getSession().createQuery(sbf.toString());
 		
 		query.setParameterList("basicCommitteeIds", committeeBO.getBasicCommitteeIds());
-		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+		/*if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getStateIds());
 		}
 		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
@@ -1802,7 +1802,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getAssemblyConstIds());
 		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
 			query.setParameterList("tdpCommitteeLevelValues",committeeBO.getTehsilIds());
-		}
+		}*/
 		
 		if(committeeBO.getStatus() != null && !committeeBO.getStatus().isEmpty()){
 			
