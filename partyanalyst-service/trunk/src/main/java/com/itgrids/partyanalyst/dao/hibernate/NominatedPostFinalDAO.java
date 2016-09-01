@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.NominatedPostApplication;
 import com.itgrids.partyanalyst.model.NominatedPostFinal;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -1966,5 +1967,26 @@ public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevel
 		
 		return query.list();
 	}
+
+
+public int updateApllicationStatusToReject(Long memberId,final Long userId){
+	
+	StringBuilder queryStr = new StringBuilder();
+	DateUtilService dateUtilService = new DateUtilService();
+	
+	queryStr.append("UPDATE NominatedPostFinal model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
+			" model.updatedBy =:updatedBy," +
+			" model.updatedTime =:updatedTime " +
+			"	WHERE  model.isDeleted = 'N' and model.nominatedPostMember.nominatedPostMemberId =:memberId and model.applicationStatus.applicationStatusId not in (5,7) " );
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	
+	query.setParameter("memberId", memberId);
+	query.setParameter("applicationStatusId", 4L);
+	query.setParameter("updatedBy", userId);
+	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
+	
+	return query.executeUpdate();
+}
 
 }

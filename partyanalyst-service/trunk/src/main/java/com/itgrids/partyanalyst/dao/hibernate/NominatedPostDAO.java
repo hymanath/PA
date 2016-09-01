@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.NominatedPost;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1548,5 +1549,16 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	   
 	   return query.executeUpdate();
 	   
+   }
+   public Long getOpenedPositions(Long memberId){
+		
+	   Query query = getSession().createQuery(" select count(model.nominatedPostId) from NominatedPost model" +
+		   		" where model.isDeleted ='N' and model.nominatedPostMember.nominatedPostMemberId = :memberId and model.nominationPostCandidate.nominationPostCandidateId is null ");
+		   		
+		    query.setParameter("memberId", memberId);
+	   
+		   
+		   return (Long)query.uniqueResult();	
+		
    }
 }
