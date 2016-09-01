@@ -1511,3 +1511,15 @@ margin-top:20px;
 {
 	border-bottom:0px;
 }
+.basicCommitteesBlockDiv
+{
+	border:1px solid #999;
+	border-radius:5px;
+	padding:4px;
+	top:-3px;
+	position:relative;
+	cursor:pointer;
+	font-size:12px;
+	background-color:#FECB00;
+	margin-right:2px;
+}
