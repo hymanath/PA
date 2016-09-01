@@ -297,13 +297,18 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 			  str+='<ul class="nav nav-tabs tabsCustom deptsUlCls" role="tablist" style="margin-top:10px;min-height:400px;border:1px solid #ddd;">';
 			  
 			  var titleStr =" Total Posts - Ready For Final Review";
+			  var boardTitleStr =" Total Posts - Ready For Final Review";
 			  
-			  if(globalStatus == "running")
+			  if(globalStatus == "running"){
 				  titleStr =" Total Running Posts";
-			  else  if(globalStatus == "finalReview")
+				  boardTitleStr =" RUNNING ";
+			  }
+			  else  if(globalStatus == "finalReview"){
 				  titleStr ="Ready to final review Posts";
+			  }
 			  else if(globalStatus == "notYet"){
 				  titleStr ="Total Available Posts";
+				   boardTitleStr =" ready to shortlist ";
 			  }
 			  for(var i in result){
 				  if(result[i].id !=null && result[i].id>0){
@@ -329,7 +334,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 				
 				 for(var i in result){
 					 str+='<div role="tabpanel" class="tab-pane tabShowClsActive  pad_15 " id="home'+i+'">';
-					 str+='<h4 class="headingColor text-capital font_weight font_17">'+result[i].name+' department - corporation wise running positions</h4>';
+					 str+='<h4 class="headingColor text-capital font_weight font_17">'+result[i].name+' department - corporation wise '+boardTitleStr+' positions</h4>';
 						str+='<div class="panel-group m_top20" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
 						if(result[i].idnameList !=null && result[i].idnameList.length>0){
 							for(var j in result[i].idnameList){
