@@ -2105,7 +2105,7 @@ public int updateApllicationStatusToReject(Long memberId,final Long userId){
 public List<NominatedPostApplication> getApplicationIdsByMemberId(Long memberId){
 	
 	 Query query = getSession().createQuery(" select model from NominatedPostApplication model " +
-		 		" where  and model.isDeleted='N' " +
+		 		" where  model.isDeleted='N' " +
 		 		" and model.nominatedPostMember.nominatedPostMemberId =:memberId  and model.applicationStatus.applicationStatusId not in (5,7) ");
 		 query.setParameter("applicationId", memberId);
 		 
