@@ -13499,7 +13499,6 @@
    			<param name="root">selectOptList</param>
    		</result>
 	</action>
-	
 	<!-- Debate Actions-->
 	
 	<action name="getPartyWiseTotalDebateDetailsAction" class="coreDashboardAction" method="getPartyWiseTotalDebateDetails">
@@ -13538,6 +13537,10 @@
    		</result>
 	</action>
 	
-	
+	<action name="getbasicCommitteeDetailsAction" class="coreDashboardAction" method="getbasicCommitteeDetails">
+		<result type="json" name="success">
+   			<param name="root">committeeDataVOList</param>
+   		</result>
+	</action>
 </package>
 </struts>

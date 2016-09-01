@@ -48,9 +48,9 @@
 			
 		});
 	}
+	var globalUserWiseMemberRslt;
 	function getUserTypeWiseCommitteesCompletedCounts1(){
-		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		$("#userTypeWiseCommitteesForTopFivePoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state = globalState;
        var dateString = $("#dateRangeId").val();
 		
@@ -72,10 +72,11 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#userTypeWiseCommitteesForTopFiveStrongDiv").html('');
-			$("#userTypeWiseCommitteesForTopFivePoorDiv").html('');
+			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
 			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result);
-			buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result);
+			
+			//buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result);
+			 globalUserWiseMemberRslt = result;
 		});
 	}
 	function getLevelWiseBasicCommitteesCountReport(){
@@ -182,15 +183,23 @@
 		$("#basicCommitteeCountsDiv").html('');
 		var str='';
 		var locationLevelNameArray =[];
-		if(result !=null &&  result.mainVO !=null && result.affliatedVO !=null){
+		if(result !=null){
 				str+='<ul class="committesBlockUl">';
-					str+='<li>';
+				
+				   //MAIN
+				   if(result.mainVO != null){
+					 if(globalBasicCommitteeIdsArray.length == 1){
+						 str+='<li style="width:100%;">';
+					 }else{
+						 str+='<li>';
+					 }  
+					
 						str+='<h4 class="text-capital bg_49 pad_custom">main committees</h4>';
 						
 						str+='<table class="table table-condensed">';
 						   str+='<tr>';
 								str+='<td>';
-								if(result.mainVO.totalCount !=null && result.mainVO.totalCount >0){
+								if(result.mainVO != null && result.mainVO.totalCount !=null && result.mainVO.totalCount >0){
 									str+='<h3 class="responsiveFont">'+result.mainVO.totalCount+'</h3>';
 								}else{
 									str+='<h3 class="responsiveFont"> - </h3>';
@@ -230,7 +239,7 @@
 											var properName = getProperLocationLevelName(result.subList[i].name);
 											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 												locationLevelNameArray.push(properName);
-												str+='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">'+properName+' Level</h4>';
+												str+='<h4 class="text-capitalize m_top20">'+properName+' Level</h4>';
 											}
 											str+='<table class="table table-condensed bg_ED">';
 												str+='<tr>';
@@ -271,10 +280,26 @@
 								}
 						}
 					str+='</li>';
-					str+='<li>';
-						str+='<h4 class="text-capital bg_49 pad_custom">affliated committees</h4>';
+				 }
+					//AFFILIATED
+					if(result.affliatedVO != null){
+					if(globalBasicCommitteeIdsArray.length == 1){
+						 str+='<li style="width:100%;">';
+					 }else{
+						 str+='<li>';
+					 }  
+						str+='<h4 class="text-capital bg_49 pad_custom">affiliated committees</h4>';
 						str+='<table class="table table-condensed">';
 							str+='<tr>';
+							str+='<td>';
+								if(result.affliatedVO.totalCount !=null && result.affliatedVO.totalCount >0){
+									str+='<h3 class="responsiveFont">'+result.affliatedVO.totalCount+'</h3>';
+								}else{
+									str+='<h3 class="responsiveFont"> - </h3>';
+								}
+									str+='<h5 class="text-muted text-capitalize responsiveFont">total</h5>';
+								str+='</td>';
+								
 								str+='<td>';
 								if(result.affliatedVO.startedCount !=null && result.affliatedVO.startedCount  >0){
 									str+='<h3 class="responsiveFont">'+result.affliatedVO.startedCount+'</h3>';
@@ -304,16 +329,29 @@
 							var length = result.subList.length - 1;
 								for(var i = length; i >= 0; i--){
 									if(result.subList[i].id !=10){
-										var properName = getProperLocationLevelName(result.subList[i].name);
+										   var properName = getProperLocationLevelName(result.subList[i].name);
+											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+												locationLevelNameArray.push(properName);
+											}
+											str+='<h4 class="text-capitalize m_top20">'+properName+' Level</h4>';
 										var getWidth = $(document).width();
-										if(getWidth < 500)
-										{
-											str+='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">'+properName+' Level</h4>';
+										if(getWidth < 500){
+											
 											str+='<table class="table table-condensed bg_ED">';
 										}else{
-											str+='<table class="table table-condensed bg_ED" style="margin-top:40px !important;">';
+											str+='<table class="table table-condensed bg_ED">';
 										}
+											
 											str+='<tr>';
+											str+='<td>';
+												str+='<h5 class="text-muted text-capitalize responsiveFont">Total</h5>';
+												if(result.subList[i].affliatedVO.totalCount !=null && result.subList[i].affliatedVO.totalCount >0){
+													str+='<p class="responsiveFont">'+result.subList[i].affliatedVO.totalCount+'</p>';
+												}else{
+														str+='<p> - </p>';
+												}
+												
+										   str+='</td>';
 												str+='<td>';
 													str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
@@ -338,6 +376,9 @@
 									}
 						}
 					str+='</li>';
+					
+				 }
+					
 				str+='</ul>';
 				$("#basicCommitteeCountsDiv").html(str);
 		}else{
@@ -872,7 +913,7 @@
 			}
 			
 		}
-		$("#userTypeWiseCommitteesForTopFiveStrongDiv").html(str);
+		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html(str);
 		if(result != null && result.length > 0){
 			for(var i in result){
 				
@@ -889,14 +930,14 @@
 						candidateNameAndCompletedCountArray.push(obj1);
 							
 						countVar =countVar+1;
-						if (countVar === 6) {
+						if (countVar === 5) {
 							break;
 						}
 					}
 				}
 				
 					
-				if( candidateNameAndCompletedCountArray.length !=0){
+				if( result[i][j].completedPerc !=0){
 					var getWidth = $("#genSec"+i).parent().width()+'px';
 					$("#genSec"+i).width(getWidth);
 					$(function () {
@@ -979,7 +1020,7 @@
 			}
 			
 		}else{
-			$("#userTypeWiseCommitteesForTopFiveStrongDiv").html("No Data Available");
+			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
 		}
 		
 	}
@@ -1000,7 +1041,7 @@
 				str+='</div>';
 			}
 		}
-		$("#userTypeWiseCommitteesForTopFivePoorDiv").html(str);
+		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html(str);
 		if(result != null && result.length > 0){
 			for(var i in result){
 				var candidateNameAndCompletedCountArray =[];
@@ -1016,14 +1057,14 @@
 						
 						candidateNameAndCompletedCountArray.push(obj1);
 						countVar =countVar+1;
-						if (countVar === 6) {
+						if (countVar === 5) {
 							break;
 						}
 					}
 				}
 				
 					
-				if( candidateNameAndCompletedCountArray.length !=0){
+				//if( result[i][j].completedPerc !=0){
 					var getWidth = $("#genSec1"+i).parent().width()+'px';
 					$("#genSec1"+i).width(getWidth);
 					$(function () {
@@ -1095,19 +1136,28 @@
 						 
 						});
 					});
-				}else{
-					$("#genSec1"+i).html("No Data Available");
-					$("#genSec1"+i).css("height","35px");
+				//}else{
+					//$("#genSec1"+i).html("No Data Available");
+					//$("#genSec1"+i).css("height","35px");
 						
-				} 
+				//} 
 				
 			}
 			
 		}else{
-			$("#userTypeWiseCommitteesForTopFivePoorDiv").html("No Data Available");
+			$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html("No Data Available");
 		}
 		
 	}
+	$(document).on("click",".liCls1",function(){
+		var memberType=$(this).attr("attr_value");
+		 if(memberType != null && memberType == "strong"){
+			buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(globalUserWiseMemberRslt); 
+		 }else if(memberType == "poor"){
+			buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(globalUserWiseMemberRslt)
+		 }
+	});
+
 	$(document).on("click",".topFivePoorResults",function(){
 		$("#userTypeWiseCommitteesForTopFiveStrongDiv").hide();
 		$("#userTypeWiseCommitteesForTopFivePoorDiv").show();
