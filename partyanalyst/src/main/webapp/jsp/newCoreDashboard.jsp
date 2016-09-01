@@ -71,10 +71,10 @@
 				<div class="col-md-2 col-xs-12 col-sm-3 pull-right"  style="margin-top: -10px;">
                 	<ul class="list-inline profileSelection">
                     	<li class="active" >
-                        	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">AP</a>
+                        	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
                         <li>
-                        	<a  style="cursor:pointer;text-decoration:none;" class="stateCls">TS</a>
+                        	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
                         </li>
                     </ul>
                 </div>
@@ -270,6 +270,12 @@
 						<span class="trainingIconExpand pull-right">
 							<i class="glyphicon glyphicon-fullscreen"></i>
 						</span>
+						<!--<span class="input-group pull-right dateRangePickerCls hide">
+								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+						</span>-->
 					</h4>
 				</div>
 				<div class="panel-body">
@@ -338,13 +344,13 @@
 											<div class="col-md-8 col-xs-12 col-sm-6">
 												<span class="headingColor text-capitalize">training program cohort</span>
 											</div>
-											<div class="col-md-4 col-xs-12 col-sm-6">
+											<!--<div class="col-md-4 col-xs-12 col-sm-6">
 												<ul class="activeUlCls list-inline">
 													<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
 													<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
 													<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
 												</ul>
-											</div>
+											</div>-->
 										</div>
 									</div>
 									<div class="panel-body">
@@ -374,13 +380,13 @@
 											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
 											</div>
 											<div class="col-xs-12 col-sm-5 col-md-4">
-												<ul class="list-inline">
+												<!--<ul class="list-inline">
 													<li>
 														<div class="dropdown">
 														  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								<span class="changeDate">
+							                          	  <span class="changeDate">
 															This Week <span class="text-muted">Sunday - Today</span>
-								  </span>
+								                           </span>
 															<span class="caret"></span>
 														  </button>
 														  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
@@ -411,7 +417,7 @@
 													<li>
 														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
 													</li>
-												</ul>
+												</ul>-->
 											</div>
 										</div>
 									</div>
@@ -425,7 +431,7 @@
 												 <div id="userTypeWiseChildDtlsTabId"></div>
 													<div class="row">
 														<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
-															<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>
+															<!--<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>-->
 															<div class="row m_top20">
 															  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
 															</div>
