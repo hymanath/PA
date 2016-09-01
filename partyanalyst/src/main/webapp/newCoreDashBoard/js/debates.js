@@ -1,9 +1,5 @@
+
 getPartyWiseTotalDebateDetails()
-getSpokesPersonWiseDebate()
-getScaleBasedPerformanceCohort()
-getCandidateOverAllPerformanceCohort()
-getChannelAndPartyWiseDetails()
-getRoleBasedPerformanceCohort()
 function getPartyWiseTotalDebateDetails(){
 		
 		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -65,26 +61,7 @@ function buildPartyWiseTotalDebateDetails(result)
 		}
 
 }
-function getSpokesPersonWiseDebate(){
-		
-		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		
-		
-		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ' ,
-			searchType:' '
-		}
-	    $.ajax({
-			type : 'POST',
-			url : 'getSpokesPersonWiseDebateAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-			
-		});
-	}
+
 function getScaleBasedPerformanceCohort(){
 		
 		$("#scaleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -289,6 +266,123 @@ function buildChannelAndPartyWiseDetails(result)
 	}
 	
 }
+function getSpokesPersonWiseDebate(){
+		
+		$("#SpokesPersonWiseDebate").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj={
+			startDate: ' ' ,
+			endDate: ' ',
+			searchType:'top'
+		}
+	    $.ajax({
+			type : 'POST',
+			url : 'getSpokesPersonWiseDebateAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildSpokesPersonWiseDebate(result)
+		});
+	}
+function buildSpokesPersonWiseDebate(result){
+	var str='';
+	if(result != null){		
+		for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<h5 class="text-capital">NAME</h5>';
+				str+='<div id="debates'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
+			str+='</div>';
+		}
+	}
+	$("#SpokesPersonWiseDebate").html(str);
+	if(result != null && result.length > 0){
+		for(var i in result){
+			var candidateNameAndCompletedCountArray1 =[];
+				for(var j in result[i].coreDebateVOList){
+					 var obj1 = {
+							name: result[i].coreDebateVOList[j].candidateName,
+							y: result[i].coreDebateVOList[j].scale
+						};
+					
+					candidateNameAndCompletedCountArray1.push(obj1);
+				}
+				var getWidth = $("#debates"+i).parent().width()+'px';
+				$("#debates"+i).width(getWidth);
+				$(function () {
+					 $("#debates"+i).highcharts({
+						 colors: ['#0066DC'],
+						chart: {
+							type: 'column'
+						},
+						title: {
+							text: ''
+						},
+						subtitle: {
+							text: ''
+						},
+						xAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							
+							type: 'category',
+							labels: {
+										formatter: function() {
+											return this.value.toString().substring(0, 10)+'...';
+										},
+										
+									}
+							
+						},
+						yAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							title: {
+								text: ''
+							}
+
+						},
+						legend: {
+							enabled: false
+						},
+						
+								
+						plotOptions: {
+							column: {
+								stacking: 'percent',
+								dataLabels: {
+									enabled: true,
+									 formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.y,0) + '%';
+										}
+									}
+								  
+								}
+							}
+						},
+
+						tooltip: {
+							headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+							pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}%</b>'
+						},
+
+						series: [{
+							name: 'Completed',
+							data: candidateNameAndCompletedCountArray1
+						}],
+					 
+					});
+				});
+		}
+		
+	}else{
+		$("#SpokesPersonWiseDebate").html("No Data Available");
+	}
+	
+}
 function getRoleBasedPerformanceCohort(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -318,7 +412,9 @@ function buildRoleBasedPerformanceCohort(result)
 						str+='<tr>';
 							str+='<td>';
 								str+='<p class="text-capital">overall debates</p>';
-								str+='<h4>10000</h4>';
+								if(result[i].coreDebateVOList[0].debateCount !=null && result[i].coreDebateVOList[0].debateCount>0){
+								  str+='<h4>'+result[i].coreDebateVOList[0].debateCount+'</h4>';
+								}
 								
 							str+='</td>';
 							for(var j in result[i].coreDebateVOList){
@@ -358,256 +454,13 @@ $(document).on("click",".debatesIconExpand",function(){
 	$(".debatesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	setTimeout(function(){
 		$(".debatesHiddenBlock,.moreMeetingsBlocksIcon").toggle();
-		initialiseDebatesGraphs();
+		getSpokesPersonWiseDebate()
 	},800);
 });
 $(document).on("click",".moreDebatesBlocksIcon",function(){
 	$(".debatesMoreHiddenBlock").toggle();
+	getScaleBasedPerformanceCohort()
+	getCandidateOverAllPerformanceCohort()
+	getChannelAndPartyWiseDetails()
+	getRoleBasedPerformanceCohort()
 });
-
-
-function initialiseDebatesGraphs()
-{
-	var getWidth = $("#genSecMeetings").parent().width()+'px';
-	$("#genSecMeetings").width(getWidth);
-	$(function () {
-		$('#tdp').highcharts({
-			colors: ['#0066DC'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				categories: ['B Jaya Nageshwar Reddy', 'G Buchaiah Chowdary', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-				title: {
-					text: null
-				}
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: null,
-					align: 'high'
-				},
-				labels: {
-					overflow: 'justify',
-					enabled: false,
-				}
-			},
-			tooltip: {
-				valueSuffix: '%'
-			},
-			plotOptions: {
-				bar: {
-					dataLabels: {
-						enabled: true
-					}
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 80,
-				floating: false,
-				enabled:false,
-				borderWidth: 1,
-				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-				shadow: true
-			},
-			credits: {
-				enabled: false
-			},
-			series: [{
-				name: 'Year 1800',
-				data: [107, 31, 635, 203, 2]
-			}]
-		});
-	});
-	$(function () {
-		$('#ysrc').highcharts({
-			colors: ['#0066DC'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				categories: ['B Jaya Nageshwar Reddy', 'G Buchaiah Chowdary', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-				title: {
-					text: null
-				}
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: null,
-					align: 'high'
-				},
-				labels: {
-					overflow: 'justify',
-					enabled: false,
-				}
-			},
-			tooltip: {
-				valueSuffix: '%'
-			},
-			plotOptions: {
-				bar: {
-					dataLabels: {
-						enabled: true
-					}
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 80,
-				floating: false,
-				enabled:false,
-				borderWidth: 1,
-				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-				shadow: true
-			},
-			credits: {
-				enabled: false
-			},
-			series: [{
-				name: 'Year 1800',
-				data: [107, 31, 635, 203, 2]
-			}]
-		});
-	});
-	$(function () {
-		$('#bjp').highcharts({
-			colors: ['#0066DC'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				categories: ['B Jaya Nageshwar Reddy', 'G Buchaiah Chowdary', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-				title: {
-					text: null
-				}
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: null,
-					align: 'high'
-				},
-				labels: {
-					overflow: 'justify',
-					enabled: false,
-				}
-			},
-			tooltip: {
-				valueSuffix: '%'
-			},
-			plotOptions: {
-				bar: {
-					dataLabels: {
-						enabled: true
-					}
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 80,
-				floating: false,
-				enabled:false,
-				borderWidth: 1,
-				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-				shadow: true
-			},
-			credits: {
-				enabled: false
-			},
-			series: [{
-				name: 'Year 1800',
-				data: [107, 31, 635, 203, 2]
-			}]
-		});
-	});
-	$(function () {
-		$('#inc').highcharts({
-			colors: ['#0066DC'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				categories: ['Parthasarathi', 'Satyanarayana Murthy', 'Nimmala Ramanaidu', 'Reddy Subramanyam', 'Varla Ramaiah'],
-				title: {
-					text: null
-				}
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: null,
-					align: 'high'
-				},
-				labels: {
-					overflow: 'justify',
-					enabled: false,
-				}
-			},
-			tooltip: {
-				valueSuffix: '%'
-			},
-			plotOptions: {
-				bar: {
-					dataLabels: {
-						enabled: true
-					}
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 80,
-				floating: false,
-				enabled:false,
-				borderWidth: 1,
-				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-				shadow: true
-			},
-			credits: {
-				enabled: false
-			},
-			series: [{
-				name: 'Year 1800',
-				data: [107, 31, 635, 203, 2]
-			}]
-		});
-	});
-}
