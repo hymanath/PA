@@ -259,7 +259,7 @@ function buildCandidateReviewRslt(result,statusstr){
  $("#boardRsltDivId").html(' ');
  $("#positionRsltDivId").html(' ');
  var str='';
- var titleStr="Ready For Final Review";
+ var titleStr="Ready to Finalize Posts";
 
  if(gblStatus == "finaliZed")
 	 titleStr="Ready to Finalize Posts";
@@ -275,13 +275,13 @@ function buildCandidateReviewRslt(result,statusstr){
 	  for(var i in result){    
 	   if(i==0){
 		   if(status != "Total"){  
-		  str+='<li class="active"><a  id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
+		  str+='<li class="active"><a  id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }else{
 			   str+='<li class="active"><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom"  title="Total Open Posts" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		   }
 		 }else{
 			 if(status != "Total"){
-		 str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="Ready To Final Review Count" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
+		 str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';   
 		 }else{  
 		  str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span><span class="label label-primary pull-right labelCustom" title="Total Open Posts" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></a></li>';
 		 
@@ -300,7 +300,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 	var str='';
 	str+='<div role="tabpanel" class="tab-pane active pad_15" id="departments'+departmentId+'" style="padding-right:0px;padding-bottom:0px;">';
 	   str+='<h4 class="headingColor text-capital"><u>board / corporation</u></h4>';
-	    var titleStr="Ready For Final Review";
+	    var titleStr="Ready to Finalyze Posts";
 		if(gblStatus=="finaliZed")
 		titleStr="Ready to Finalyze Posts";
  
@@ -366,7 +366,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 }
 function buildCandidatePositionRslt(result,departmentId,boardId,status){
 var str = '';
- var titleStr="Ready For Final Review";
+ var titleStr="Ready to Finalyze Posts";
 		if(gblStatus=="finaliZed")
 		titleStr="Ready to Finalyze Posts";
 	str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
@@ -1407,7 +1407,7 @@ $(document).on("click",".boardHrfCls",function(){
 				strglob+='<select class="chosenSelect" id="goStatusSelId" name="govtOrderVO.status">';
 					strglob+='<option value="0">Select Status</option>';
 					strglob+='<option value="1">G.O Issue</option>';
-					strglob+='<option value="2">Rejected</option>';
+					//strglob+='<option value="2">Rejected</option>';
 				strglob+='</select>';
 			strglob+='</div>';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
