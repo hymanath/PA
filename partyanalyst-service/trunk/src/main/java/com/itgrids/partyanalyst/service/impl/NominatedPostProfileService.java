@@ -2412,7 +2412,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
 						if(levelId != null && levelId.longValue()>0L){
 							
-							List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(levelId,2L,stateId);
+							List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(levelId,2L,stateId,null);
 							Map<String,Long> totalPostMemeberCountMap = new HashMap<String, Long>(0);
 							if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
 								for (Object[] param : totalDeptsNCorpNDesig) {
