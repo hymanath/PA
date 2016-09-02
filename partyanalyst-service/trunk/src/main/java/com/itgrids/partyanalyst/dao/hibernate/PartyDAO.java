@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.PartyColumnNames;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IPartyDAO{
 	public PartyDAO(){
@@ -151,6 +152,26 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 	public List<Object[]> getPartiesList()
 	{
 	  Query query = getSession().createQuery(" select model.partyId,model.shortName from Party model where model.isNewsPortal = 'Y' order by model.shortName");
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesListForCoreDashBoard(String state)
+	{
+		StringBuilder str = new StringBuilder();
+	   str.append(" select model.partyId,model.shortName from Party model where model.isNewsPortal = 'Y' " );
+	  
+		if(state !=null && state.equalsIgnoreCase("ap")){
+			 str.append(" and model.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.equalsIgnoreCase("ts")){
+			 str.append(" and model.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		
+		 str.append(" order by model.newsOrderNo");
+		
+		Query query = getSession().createQuery(str.toString());
+	  		
+	  		
 	  return query.list();
 	}
 }

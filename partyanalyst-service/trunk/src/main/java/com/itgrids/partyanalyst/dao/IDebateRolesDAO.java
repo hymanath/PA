@@ -11,4 +11,6 @@ public interface IDebateRolesDAO extends GenericDao<DebateRoles, Long>{
 	public List<Object[]> getDebateRoles();
 	
 	public Long checkForExists(String name);
+	
+	public List<Object[]> getDebateRolesNew();
 }

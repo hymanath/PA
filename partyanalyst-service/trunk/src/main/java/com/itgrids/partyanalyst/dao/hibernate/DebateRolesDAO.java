@@ -29,4 +29,10 @@ public class DebateRolesDAO extends GenericDaoHibernate<DebateRoles, Long> imple
 		query.setParameter("name", name);
 		return (Long)query.uniqueResult();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDebateRolesNew()
+	{
+		return getHibernateTemplate().find("select model.debateRolesId ,model.aliasName from DebateRoles model " +
+				" where model.isDeleted = 'N'");
+	}
 }

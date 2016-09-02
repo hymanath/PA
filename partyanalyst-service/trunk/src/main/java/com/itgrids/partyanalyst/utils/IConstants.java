@@ -1158,4 +1158,9 @@ public interface IConstants {
 	public static final Long CONSTITUENCY_USER_TYPE_ID = 8l;
 	public static final Long CONSTITUENCY_INCHARGE_USER_TYPE_ID = 9l;
 	public static final Long SECRETARY_USER_TYPE_ID = 11l;
+	
+	//Debate Core
+	
+	public static final String CORE_DEBATE_ELIMINATED_PARTIES_AP = "1676,1677,1678,1887,662,514,268,886,72";
+	public static final String CORE_DEBATE_ELIMINATED_PARTIES_TS = "1676,1677,1678,1887,662,514,268,1117";
 }

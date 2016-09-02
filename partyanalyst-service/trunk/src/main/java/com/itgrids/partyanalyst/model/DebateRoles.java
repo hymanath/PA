@@ -23,6 +23,7 @@ public class DebateRoles extends BaseModel implements java.io.Serializable{
 	private Long debateRolesId;
 	private String name;
 	private String isDeleted;
+	private String aliasName;
 
 	//default constructor.
 	
@@ -62,12 +63,13 @@ public class DebateRoles extends BaseModel implements java.io.Serializable{
 		this.isDeleted = isDeleted;
 	}
 
-	
-	
-	
-	
-	
-	
+	@Column(name = "alias_name")
+	public String getAliasName() {
+		return aliasName;
+	}
+	public void setAliasName(String aliasName) {
+		this.aliasName = aliasName;
+	}
 	
 	
 }
