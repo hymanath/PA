@@ -605,7 +605,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.boardLevelId, count(distinct model.nominatedPostApplicationId), " +
 				" count(distinct nominatedPostPosition.departmentId), " +
-				" count(distinct nominatedPostPosition.boardId)  " +
+				" count(distinct nominatedPostPosition.boardId), " +
+				"  model.nominatedPostMemberId  " +
 				" from NominatedPostApplication model ");
 		
 		/*if(levelId != null && levelId.longValue()>1L && stateId != null){
@@ -647,7 +648,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		queryStr.append(" group  by model.boardLevelId, model.nominatedPostMemberId  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(levelId.longValue() != 5L)
@@ -718,7 +719,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			queryStr.append(" where "); */
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.boardLevelId, count( model.nominatedPostApplicationId), " +
+		queryStr.append(" select distinct model.boardLevelId, count( distinct model.nominatedPostApplicationId), " +
 				" count(distinct nominatedPostPosition.departmentId), " +
 				" count(distinct nominatedPostPosition.boardId)  " +
 				" from NominatedPostApplication model ");
@@ -1596,7 +1597,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				"	WHERE  model.isDeleted = 'N'" +
 				"	AND model.nominatedPostMember.isDeleted ='N' " +
 				" AND model.nominatedPostMember.nominatedPostPosition.isDeleted ='N' " +
-				" AND model.applicationStatusId in (1,3) ");
+				" AND model.applicationStatusId in (3) ");
 		
 		if(deptId !=null && deptId>0){
 			queryStr.append(" AND model.nominatedPostMember.nominatedPostPosition.departmentId = :departmentId ");
@@ -1900,7 +1901,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type){
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId),count(distinct model.nominatedPostApplicationId) " +				
+		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId),count(distinct model.nominatedPostApplicationId)," +
+				" model.nominatedPostMemberId " +				
 				" from NominatedPostApplication model,NominatedPost model1 ");	
 		
 		if(levelId != null && levelId.longValue()>1L && stateId != null){
@@ -1928,7 +1930,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 			queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") " );
 		}
 		
-			queryStr.append(" and model1.nominatedPostStatus.nominatedPostStatusId = 1 ");//applied
+			queryStr.append(" and model1.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_OPEN_POSTS_STATUS_IDS+") ");//not finalyzed and g.o passed
 		
 		if(levelId != null && levelId.longValue()>2L && stateId != null){
 			if(stateId.longValue() ==1L)
@@ -1939,7 +1941,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.boardLevelId " +
+		queryStr.append(" group  by model.boardLevelId , model.nominatedPostMemberId " +
 				"  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -1954,7 +1956,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		
 		return query.list();
 	}
-public int updateApllicationStatusToReject(Long applicationId,Long statusId,Long userId){
+public int updateApllicationStatusToReject(Long nominatedPostMemberId,Long statusId,Long userId){
 	
 	StringBuilder queryStr = new StringBuilder();
 	DateUtilService dateUtilService = new DateUtilService();
@@ -1962,11 +1964,11 @@ public int updateApllicationStatusToReject(Long applicationId,Long statusId,Long
 	queryStr.append("UPDATE NominatedPostApplication model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
 			" model.updatedBy =:updatedBy," +
 			" model.updatedTime =:updatedTime" +
-			"	WHERE  model.isDeleted = 'N' and model.nominatedPostApplicationId =:applicationId " );
+			"	WHERE  model.isDeleted = 'N' and model.nominatedPostMemberId =:nominatedPostMemberId and model.applicationStatusId in (1,3,6) " );
 	
 	Query query = getSession().createQuery(queryStr.toString());
 	
-	query.setParameter("applicationId", applicationId);
+	query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
 	query.setParameter("applicationStatusId", statusId);
 	query.setParameter("updatedBy", userId);
 	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
@@ -2107,7 +2109,7 @@ public List<NominatedPostApplication> getApplicationIdsByMemberId(Long memberId)
 	 Query query = getSession().createQuery(" select model from NominatedPostApplication model " +
 		 		" where  model.isDeleted='N' " +
 		 		" and model.nominatedPostMember.nominatedPostMemberId =:memberId  and model.applicationStatus.applicationStatusId not in (5,7) ");
-		 query.setParameter("applicationId", memberId);
+		 query.setParameter("memberId", memberId);
 		 
 		return query.list();
 }

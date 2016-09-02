@@ -1839,7 +1839,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		 
 		return query.list();
 	}
-	public int updateApllicationStatusToReject(Long applicationId,Long statusId,Long userId){
+	public int updateApllicationStatusToReject(Long nominatedPostMemberId,Long statusId,Long userId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		DateUtilService dateUtilService = new DateUtilService();
@@ -1847,11 +1847,12 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		queryStr.append("UPDATE NominatedPostFinal model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
 				" model.updatedBy =:updatedBy," +
 				" model.updatedTime =:updatedTime" +
-				"	WHERE  model.isDeleted = 'N' and model.nominatedPostApplication.nominatedPostApplicationId =:applicationId " );
+				"	WHERE  model.isDeleted = 'N' and " +
+				"  model.nominatedPostMemberId =:nominatedPostMemberId and model.applicationStatusId in (1,3,6) " );
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
-		query.setParameter("applicationId", applicationId);
+		query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
 		query.setParameter("applicationStatusId", statusId);
 		query.setParameter("updatedBy", userId);
 		query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
