@@ -468,7 +468,7 @@ var globalUserWiseMemberRslt;
 						}
 					}
 				}
-		if(result[i][j].totalAttenedCountPer!=0){
+		//if(result[i][j].totalAttenedCountPer!=0){
 				var getWidth = $("#genSecTraining"+i).parent().width()+'px';
 				$("#genSecTraining"+i).width(getWidth);
 		     $(function () {
@@ -542,10 +542,10 @@ var globalUserWiseMemberRslt;
 				}]
 			});
 		});
-		}else{
+		/* }else{
 		$("#genSecTraining"+i).html("No Data Available");
 		$("#genSecTraining"+i).css("height","35px");
-		}
+		} */
 	}
 	}else{
     $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
