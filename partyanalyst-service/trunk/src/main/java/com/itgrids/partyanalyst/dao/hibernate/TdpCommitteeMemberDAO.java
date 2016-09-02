@@ -2029,8 +2029,8 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Lo
 	queryStr.append(" select " +
 			" TCED.trainingCampProgram.trainingCampProgramId," + //0 
 			" TCED.trainingCampProgram.programName," + //1 
-			" TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId," + //2
-			" TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtName," + //3
+			" TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId," + //2
+			" TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName," + //3
 			" count(distinct TCM.tdpCadre.tdpCadreId) " + //4
 			" from " +
 			" TdpCommitteeMember TCM,TrainingCampEligbleDesignation TCED " +
@@ -2046,7 +2046,7 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Lo
 	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
          queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-             queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId in (:userAccessLevelValues)");  
+             queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
           queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues)");  
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
@@ -2060,7 +2060,7 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByDistrict(Lo
 	  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 	         queryStr.append(" and TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 	  }
-	   queryStr.append(" group by TCED.trainingCampProgram.trainingCampProgramId,TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId" +
+	   queryStr.append(" group by TCED.trainingCampProgram.trainingCampProgramId,TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId" +
 	   		           " order by TCED.trainingCampProgram.trainingCampProgramId asc ");
 	   
 	   Query query = getSession().createQuery(queryStr.toString());

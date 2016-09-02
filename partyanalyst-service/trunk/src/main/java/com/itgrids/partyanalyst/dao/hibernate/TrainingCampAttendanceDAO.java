@@ -923,8 +923,8 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  queryStr.append(" select " +
 		  		          " model.trainingCampProgram.trainingCampProgramId," +
 		  	 	          " model.trainingCampProgram.programName," +
-		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId," +
-		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtName," +
+		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId," +
+		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName," +
 		  		          " count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 		  		          " from TrainingCampAttendance model,TrainingCampEligbleDesignation model2,TdpCommitteeMember model3 " +
 	  		              " where model.attendance.tdpCadre.tdpCadreId = model3.tdpCadre.tdpCadreId and " +
@@ -957,7 +957,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		}
-		   queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId,model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.district.districtId " +
+		   queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId,model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId " +
 		   		           " order by " +
 		   		           " model.trainingCampProgram.trainingCampProgramId asc ");
 		   
