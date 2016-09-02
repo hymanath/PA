@@ -94,7 +94,9 @@ function buildScaleBasedPerformanceCohort(result)
 						str+='</td>';
 						for(var j in result[i].coreDebateVOList){
 							str+='<td>';
-								str+='<p class="text-capital">'+result[i].coreDebateVOList[j].name+'</p>';
+							if(result[i].coreDebateVOList[j].name !=null && result[i].coreDebateVOList[j].name.length>0){
+								str+='<p class="text-capital">'+result[i].coreDebateVOList[j].name.split("(")[0];+'</p>';
+							}
 								str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
 							str+='</td>';
 						}
@@ -168,10 +170,10 @@ function BuildCandidateOverAllPerformanceCohort(result)
 										str+='<tbody>';
 											for(var j in result[i].coreDebateVOList){
 												str+='<tr>';
-													str+='<td class="text-capitalize">'+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName+'</td>';
+													str+='<td class="text-capitalize">'+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName.toUpperCase()+'</td>';
 													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 													str+='<td>';
-														str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName+'</p>';
+														str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName.split("(")[0].toUpperCase()+'</p>';
 														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
 													str+='</td>';
 													}
@@ -202,7 +204,6 @@ function BuildCandidateOverAllPerformanceCohort(result)
 				for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 					if(result[i].coreDebateVOList[j].coreDebateVOList[k].length > 6)
 					{
-						alert(1)
 						$(".scroller"+i+"").mCustomScrollbar({setHeight:'300px'})
 					}
 				}
@@ -288,18 +289,21 @@ function buildSpokesPersonWiseDebate(result){
 	if(result != null){		
 		for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h5 class="text-capital">NAME</h5>';
+			if(result[i].coreDebateVOList != null && result[i].coreDebateVOList.length>0)
+				str+='<h5 class="text-capital">'+result[i].coreDebateVOList[0].name+'</h5>';
+			else
+				str+='';
 				str+='<div id="debates'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
 			str+='</div>';
-		}
-	}
-	$("#SpokesPersonWiseDebate").html(str);
+		}		
+		$("#SpokesPersonWiseDebate").html(str);
+	}	
 	if(result != null && result.length > 0){
 		for(var i in result){
 			var candidateNameAndCompletedCountArray1 =[];
 				for(var j in result[i].coreDebateVOList){
 					 var obj1 = {
-							name: result[i].coreDebateVOList[j].candidateName,
+							name: result[i].coreDebateVOList[j].candidateName.toUpperCase(),
 							y: result[i].coreDebateVOList[j].scale
 						};
 					
@@ -377,7 +381,6 @@ function buildSpokesPersonWiseDebate(result){
 					});
 				});
 		}
-		
 	}else{
 		$("#SpokesPersonWiseDebate").html("No Data Available");
 	}
