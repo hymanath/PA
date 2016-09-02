@@ -24,7 +24,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		queryStr.append(" select model.nominatedPostStatus.status, model.nominatedPostStatusId, " +
 				" model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostMember.nominatedPostMemberId), " +
-				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId) ");
+				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId)" +
+				"  ,model.nominatedPostMemberId ");
 		queryStr.append(" from NominatedPost model   " );
 		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
 			queryStr.append(" ,UserAddress model2 where model.nominatedPostMember.addressId = model2.userAddressId and " );
@@ -53,7 +54,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		else if(boardLevelId != null && boardLevelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model2.state.stateId=:stateId ");
 		
-		queryStr.append(" group by model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
+		queryStr.append(" group by model.nominatedPostMemberId, model.nominatedPostStatusId,model.nominatedPostMember.boardLevelId order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() !=5L)
@@ -1175,7 +1176,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
   }
   
 
-	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue){
+	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue,Long nominatedPostStatusId){
 		  
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select count( model.nominatedPostId), model.nominatedPostMember.nominatedPostMemberId ");
@@ -1206,6 +1207,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			else if(searchlevelId.longValue() ==7L  && searchLevelValue != null && searchLevelValue.longValue()>0L)
 				queryStr.append(" and model.nominatedPostMember.address.panchayatId =:searchLevelValue ");
 		}
+		
+		if(nominatedPostStatusId != null && nominatedPostStatusId.longValue()>0L)
+			queryStr.append(" and model.nominatedPostStatusId =:nominatedPostStatusId ");
+		
 		queryStr.append(" group by  model.nominatedPostMember.nominatedPostMemberId  ");
 		queryStr.append(" order by model.nominatedPostMember.boardLevelId  ");
 		
@@ -1215,6 +1220,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		if(searchLevelValue != null && searchLevelValue.longValue()>0L)
 			query.setParameter("searchLevelValue", searchLevelValue);
 	
+		if(nominatedPostStatusId != null && nominatedPostStatusId.longValue()>0L)
+			query.setParameter("nominatedPostStatusId", nominatedPostStatusId);
+		
 		return query.list();
 }
 	public List<Object[]> getBoardLevelsForOpenedPositions(){
