@@ -1,11 +1,17 @@
 
-getPartyWiseTotalDebateDetails()
+$(document).ready(function(){
+	getPartyWiseTotalDebateDetails();
+});	
+
+
 function getPartyWiseTotalDebateDetails(){
 		
 		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
 		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ' 
+			startDate: '' ,
+			endDate: '',
+			state:globalState
 		}
 		$.ajax({
 			type : 'POST',
@@ -23,7 +29,7 @@ function buildPartyWiseTotalDebateDetails(result)
 		for(var i in result){
 			
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">';
-				str+='<h4 class="text-capital"><img src="images/party_flags/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
+				str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
 				str+='<table class="table tableTraining bg_ED m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
@@ -67,7 +73,8 @@ function getScaleBasedPerformanceCohort(){
 		$("#scaleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
 			startDate: ' ' ,
-			endDate: ' ' 
+			endDate: ' ',
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -84,7 +91,7 @@ function buildScaleBasedPerformanceCohort(result)
 	if(result !=null){
 		for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h4 class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
+				str+='<h4 class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].name+'.png" alt="tdpIcon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
 				str+='<table class="table tableDebates m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
@@ -126,7 +133,8 @@ function getCandidateOverAllPerformanceCohort(){
 		$("#candidateOverAllPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
 			startDate: ' ' ,
-			endDate: ' ' 
+			endDate: ' ',
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -153,7 +161,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 						str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">';
 					}
 					
-						str+='<h4 class="panel-title"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[0].coreDebateVOList[0].name+' spokespersons</h4>';
+						str+='<h4 class="panel-title"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].coreDebateVOList[0].name+'.png" alt="tdpIcon" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[0].coreDebateVOList[0].name+' spokespersons</h4>';
 					str+='</a>';
 				str+='</div>';
 				if(i == 0)
@@ -221,7 +229,8 @@ function getChannelAndPartyWiseDetails(){
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
 			startDate: ' ' ,
-			endDate: ' ' 
+			endDate: ' ',
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -243,10 +252,10 @@ function buildChannelAndPartyWiseDetails(result)
 					for(var i in result){
 						str+='<tr>';
 							
-							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo"/>'+result[i].coreDebateVOList[0].name+'</td>';
+							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].coreDebateVOList[0].name+'</td>';
 							for(var j in result[i].coreDebateVOList){
 								str+='<td>';
-									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
+									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[j].candidateName+'.png" alt="tdpIcon" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
 									str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
 								str+='</td>';
 							}
@@ -267,13 +276,14 @@ function buildChannelAndPartyWiseDetails(result)
 	}
 	
 }
-function getSpokesPersonWiseDebate(){
+function getSpokesPersonWiseDebate(searchType){
 		
 		$("#SpokesPersonWiseDebate").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			searchType:'top'
+			searchType:searchType,
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -304,7 +314,7 @@ function buildSpokesPersonWiseDebate(result){
 				for(var j in result[i].coreDebateVOList){
 					 var obj1 = {
 							name: result[i].coreDebateVOList[j].candidateName.toUpperCase(),
-							y: result[i].coreDebateVOList[j].scale
+							y: result[i].coreDebateVOList[j].scalePerc
 						};
 					
 					candidateNameAndCompletedCountArray1.push(obj1);
@@ -391,7 +401,8 @@ function getRoleBasedPerformanceCohort(){
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
 			startDate: ' ' ,
-			endDate: ' ' 
+			endDate: ' ',
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -408,7 +419,7 @@ function buildRoleBasedPerformanceCohort(result)
 	if(result !=null){
 		for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="text-capital"><img  src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/>'+result[i].coreDebateVOList[0].name+'</h4>';
+					str+='<h4 class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" alt="tdpIcon" class="debatesPartyIcon"/>'+result[i].coreDebateVOList[0].name+'</h4>';
 			
 					str+='<table class="table tableDebates m_top10">';
 					  str+='<tbody>';
@@ -457,7 +468,7 @@ $(document).on("click",".debatesIconExpand",function(){
 	$(".debatesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	setTimeout(function(){
 		$(".debatesHiddenBlock,.moreMeetingsBlocksIcon").toggle();
-		getSpokesPersonWiseDebate()
+		getSpokesPersonWiseDebate("top");
 	},800);
 });
 $(document).on("click",".moreDebatesBlocksIcon",function(){
@@ -467,3 +478,14 @@ $(document).on("click",".moreDebatesBlocksIcon",function(){
 	getChannelAndPartyWiseDetails()
 	getRoleBasedPerformanceCohort()
 });
+
+$(document).on("click","#debateTopId",function(){
+	getSpokesPersonWiseDebate("top");
+});
+$(document).on("click","#debateLowId",function(){
+	getSpokesPersonWiseDebate("poor");
+});
+
+function setDefaultImageOfChannel(img){
+	 img.src = "newCoreDashBoard/img/channel.png";
+}

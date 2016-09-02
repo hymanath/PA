@@ -480,9 +480,9 @@
                                 		<h4 class="text-capital"><span class="headingColor">Spokespersons</span></h4>
                                 	</div>
                                     <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-                                        <ul class="activeUlCls list-inline">
-                                            <li>top 5 strong</li>
-                                            <li>last 5 poor</li>
+                                        <ul class="activeUlCls list-inline debateSpokesCls">
+                                            <li id="debateTopId">top 5 strong</li>
+                                            <li id="debateLowId">last 5 poor</li>
                                         </ul>
                                     </div>
 									<div id="SpokesPersonWiseDebate"></div>
@@ -1094,9 +1094,6 @@
 	}
 	
 
-  </script>
-	
-	
- 
+  </script>	
 </body>
 </html>
