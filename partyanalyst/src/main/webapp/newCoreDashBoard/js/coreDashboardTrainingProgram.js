@@ -542,6 +542,7 @@ var globalUserWiseMemberRslt;
 				}]
 			});
 		});
+		
 		/* }else{
 		$("#genSecTraining"+i).html("No Data Available");
 		$("#genSecTraining"+i).css("height","35px");
@@ -668,7 +669,7 @@ $(document).on("click",".liCls",function(){
 
 /* Training Funcitons Start*/
 $(document).on("click",".trainingIconExpand",function(){
-    $(".dateRangePickerClsForTraining").toggleClass("hide");
+    $(".dateRangePickerClsForTraining").toggleClass("hide");	
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
@@ -949,25 +950,25 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 				str+='<span class="remveSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 		 } 
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabId"){
-			 str+='<table class="table table-condensed tableHoverLevelsInner m_top20">';
+			 str+='<table  class="table table-condensed tableHoverLevelsInner m_top20">';
 		 }else{
 			str+='<table class="table table-condensed tableHoverLevels m_top20">';  
 		 }
-				str+='<thead class="bg_D8 text-capital">';
+				str+='<thead   class="bg_D8 text-capital">';
 					str+='<th>Rank</th>';
 					str+='<th>Designation</th>';
 					str+='<th>Name</th>';
-					str+='<th>Total Eligible</th>';
-					str+='<th>Attended</th>';
-					str+='<th>%</th>';
-					str+='<th>Not Attended</th>';
-					str+='<th>%</th>';
+					str+='<th style="text-align:center;">Total Eligible</th>';
+					str+='<th style="text-align:center;">Attended</th>';
+					str+='<th style="text-align:center;">%</th>';
+					str+='<th style="text-align:center;">Not Attended</th>';
+					str+='<th style="text-align:center;">%</th>';
 				str+'=</thead>';
 		str+='<tbody>';
 		var rank=1;
 		 for(var i in result){
 		var yourValues = result[i].locationName;
-		   str+='<tr class="lowLevelActivityMemberClsForTrainingProgram"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
+		   str+='<tr  class="lowLevelActivityMemberClsForTrainingProgram"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
@@ -980,11 +981,11 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 				str+='<td>'+result[i].userType+'</td>';
 			}
 		   str+='<td>'+result[i].name+'</td>';
-			str+='<td>'+result[i].totalEligibleCount+'</td>';
-			str+='<td>'+result[i].totalAttenedCount+'</td>';
-			str+='<td>'+result[i].totalAttenedCountPer+'</td>';
-			str+='<td>'+result[i].totalNotAttenedCount+'</td>';
-			str+='<td>'+result[i].totalNotAttenedCountPer+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalEligibleCount+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalAttenedCount+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalAttenedCountPer+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalNotAttenedCount+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalNotAttenedCountPer+'</td>';
 		 str+='</tr>';
 		str+='<tr class="showHideTr" style="display:none" attr_id = "subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='<td colspan="8"  id="subChildLevelMemDtslId'+result[i].userTypeId+''+i+'">';
@@ -1212,7 +1213,7 @@ function buildTrainingProgramRslt(result){
 				  str+='</div>';
 				str+='</div>';
 			str+='</td>';
-			str+='<td class="text-danger">'+resultListFirst[i].totalAttenedCountPer+'</td>';
+			str+='<td class="text-danger">'+resultListFirst[i].totalAttenedCountPer+'%</td>';
 			str+='</tr>';
 			order=order+1;
 			if(order==6)
@@ -1249,7 +1250,7 @@ function buildTrainingProgramRslt(result){
 			str+='</div>';
 			str+='</div>';
 			str+='</td>';
-			str+='<td class="text-danger">'+resultListSecond[i].totalAttenedCountPer+'</td>';
+			str+='<td class="text-danger">'+resultListSecond[i].totalAttenedCountPer+'%</td>';
 			str+='</tr>';
 			order=order+1;
 			if(order==6)
