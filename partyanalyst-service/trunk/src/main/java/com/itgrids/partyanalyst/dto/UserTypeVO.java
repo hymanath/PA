@@ -43,6 +43,11 @@ public class UserTypeVO implements Serializable{
 	private Double totalAttenedCountPer=0.0;
 	private Double totalNotAttenedCountPer=0.0;
 	
+	private Long positiveCount = 0l;
+	private Long negativeCount = 0l;
+	private Double positivePercentage = 0.0;
+	private Double negativePercentage = 0.0;
+	
 	public Long getId() {
 		return id;
 	}
@@ -218,5 +223,30 @@ public class UserTypeVO implements Serializable{
 	public void setParentActivityMemberId(Long parentActivityMemberId) {
 		this.parentActivityMemberId = parentActivityMemberId;
 	}
+	public Long getPositiveCount() {
+		return positiveCount;
+	}
+	public void setPositiveCount(Long positiveCount) {
+		this.positiveCount = positiveCount;
+	}
+	public Long getNegativeCount() {
+		return negativeCount;
+	}
+	public void setNegativeCount(Long negativeCount) {
+		this.negativeCount = negativeCount;
+	}
+	public Double getPositivePercentage() {
+		return positivePercentage;
+	}
+	public void setPositivePercentage(Double positivePercentage) {
+		this.positivePercentage = positivePercentage;
+	}
+	public Double getNegativePercentage() {
+		return negativePercentage;
+	}
+	public void setNegativePercentage(Double negativePercentage) {
+		this.negativePercentage = negativePercentage;
+	}
+	
 	
 }
