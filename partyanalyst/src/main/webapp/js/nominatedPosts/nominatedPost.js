@@ -1736,7 +1736,7 @@ function savingApplication(){
 				//clearAssignValues();
 			//}
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Application Received Successfully...</span>");
-			$(".container").hide();
+			
 			setTimeout(function(){
 			clearAssignValues();
 			refreshExistingDetailsInNominatedLevel();

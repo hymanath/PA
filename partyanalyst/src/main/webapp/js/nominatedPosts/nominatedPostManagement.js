@@ -1031,13 +1031,16 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 		}
 	}
 	var positionArr = [];
+	var sizeOfMember=0;
 	$(".positionUpdateCls").each(function(){
 		if($(this).is(":checked")){
 			var positionId = $(this).attr("id");
 			positionArr.push(positionId);
+			sizeOfMember = $(this).attr('attr_shortlisted');
 		}
 	});
-	var sizeOfMember=0;
+	
+	
 	$("#updateSearchId"+deptId+""+boardId).show();
 	var jsObj={		
 		deptId :deptId,
@@ -1048,6 +1051,7 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 		levelValuesArr:levelValuesArr,
 		sizeOfMember:sizeOfMember
 	}
+
 	$.ajax({
           type:'POST',
           url: 'updateNominatedPostStatusDetailsAction.action',
