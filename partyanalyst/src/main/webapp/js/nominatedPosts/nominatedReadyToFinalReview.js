@@ -837,7 +837,7 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 			}
 		});
 	}else{
-		assignGOTONominatedPostCandidates(candiIds);   
+		//assignGOTONominatedPostCandidates(candiIds);   
 		applicationIds = nominatedPostCandidateId;
 	}
 	if(typeof applicationIds == "undefined" || applicationIds.trim() == ""){
