@@ -23,7 +23,7 @@ function buildPartyWiseTotalDebateDetails(result)
 		for(var i in result){
 			
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">';
-				str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/tdpIcon.png" alt="tdpIcon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
+				str+='<h4 class="text-capital"><img src="images/party_flags/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
 				str+='<table class="table tableTraining bg_ED m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
