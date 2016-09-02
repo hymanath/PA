@@ -476,6 +476,9 @@
                             </div>
                             <div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
                                 <div class="row">
+                                	<div class="col-md-12 col-xs-12 col-sm-12">
+                                		<h4 class="text-capital"><span class="headingColor">Spokespersons</span></h4>
+                                	</div>
                                     <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
                                         <ul class="activeUlCls list-inline">
                                             <li>top 5 strong</li>
@@ -515,6 +518,55 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- TOP 5 BLock Start -->
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                                <div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<h4><span class="headingColor text-capitalize">top 5</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<ul class="activeUlCls list-inline pull-right">
+													<li>Bully</li>
+													<li>Critic</li>
+												</ul>
+											</div>
+										</div>
+                                        
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="table-responsive">
+													<table class="table tableTopDebates">
+														<tr>
+															<td class="text-capital">Raja Reddy</td>
+															<td class="text-capital">
+																<p>PARTY</p>
+																<p><img src="newCoreDashBoard/img/tdpIcon.png" class="debatesPartyIcon"/>TDP</p>
+															</td>
+															<td class="text-capital">
+																<p>debates</p>
+																<p class="text-muted">150</p>
+															</td>
+															<td class="text-capital">
+																<p>performance</p>
+																<i class="glyphicon glyphicon-star"></i>
+																<i class="glyphicon glyphicon-star"></i>
+																<i class="glyphicon glyphicon-star"></i>
+																<i class="glyphicon glyphicon-star"></i>
+																<i class="glyphicon glyphicon-star"></i>
+															</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TOP 5 BLock End -->
                             <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
@@ -543,7 +595,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                          <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
                                         <h4><span class="headingColor">SMS Poll</span></h4>
@@ -644,12 +696,243 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
             </div>
             <!-- DEBATES PROGRAM BLOCK END-->
+			<!-- NEWS BLOCK START-->
+			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<h4 class="panel-title">news
+							<span class="newsIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
+								<h4 class="text-capital"><span class="headingColor"><img src="dist/img/tdpIcon.png" alt="tdp icon" class="newsIcon"/>telugu desam party</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">main edition</p>
+													<p>1000</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">main edition</p>
+													<p>1000</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<h4 class="text-capital m_top20"><span class="headingColor">opposition parties</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">main edition</p>
+													<p>1000</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+										<table class="table table-condensed tableNews m_top10">
+											<tr>
+												<td>
+													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">main edition</p>
+													<p>1000</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+										<table class="table table-condensed tableNews m_top10">
+											<tr>
+												<td>
+													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<h4 class="text-capital m_top20"><span class="headingColor">government</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">main edition</p>
+													<p>1000</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">main edition</p>
+													<p>1000</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<p>1000<small class="text-success">40%</small></p>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline">
+											<li>top 5 strong</li>
+											<li>last 5 poor</li>
+										</ul>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<h4 class="text-capital">general secretary</h4>
+										<div id="newsSec" style="width:100%;height:150px;"></div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<h4 class="text-capital">secretary</h4>
+										<div id="newsGenSec" style="width:100%;height:150px;"></div>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<h4 class="text-capital">member of parliament</h4>
+										<div id="newsDistInch" style="width:100%;height:150px;"></div>
+									</div>
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
+									</div>	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- NEWS BLOCK END-->
         </div>
 	</div>
 </div>

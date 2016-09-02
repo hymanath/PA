@@ -571,42 +571,6 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	font-size:18px;
 	font-family: 'Oswald', sans-serif;
 }
-.committeesIcon
-{
-	background-image:url("../img/IconSet.png");
-	background-position:-365px -26px;
-	background-size:540px 540px;
-}
-.meetingsIcon
-{
-	background-image:url("../img/IconSet.png");
-	background-position:-309px -26px;
-	background-size:540px 540px;
-}
-.newsIcon
-{
-	background-image:url("../img/IconSet.png");
-	background-position:-253px -26px;
-	background-size:540px 540px;
-}
-.debateIcon
-{
-	background-image:url("../img/IconSet.png");
-	background-position:-205px -26px;
-	background-size:540px 540px;	
-}
-.trainingIcon
-{
-	background-image:url("../img/IconSet.png");
-	background-position:-147px -26px;
-	background-size:540px 540px;
-}
-.eventsIcon
-{
-	background-image:url("../img/IconSet.png");
-	background-position:-99px -26px;
-	background-size:540px 540px;
-}
 .expandIcon
 {
 	cursor:pointer;
@@ -808,7 +772,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	color:#c286bc
 }
-.committeesHiddenBlock , .moreBlocks , .moreBlocksIcon , .trainingsHiddenBlock , .moreTrainingBlocksIcon , .moreTrainingBlocks , .meetingsHiddenBlock , .moreMeetingsBlocksIcon , .moreMeetingsBlocks , .debatesHiddenBlock , .debatesMoreHiddenBlock
+.committeesHiddenBlock , .moreBlocks , .moreBlocksIcon , .trainingsHiddenBlock , .moreTrainingBlocksIcon , .moreTrainingBlocks , .meetingsHiddenBlock , .moreMeetingsBlocksIcon , .moreMeetingsBlocks , .debatesHiddenBlock , .debatesMoreHiddenBlock , .newsHiddenBlock , .morenewsBlocksIcon
 {
 	display:none;
 }
@@ -1522,4 +1486,15 @@ margin-top:20px;
 	font-size:12px;
 	background-color:#FECB00;
 	margin-right:2px;
+}
+.tableTopDebates tr td
+{
+	border-top:0px !important;
+	border-bottom:1px solid #DDD !important;
+	padding:12px 5px;
+}
+.tableTopDebates tr:last-child  td
+{
+	border-top:0px !important;
+	border-bottom:0px !important;
 }
