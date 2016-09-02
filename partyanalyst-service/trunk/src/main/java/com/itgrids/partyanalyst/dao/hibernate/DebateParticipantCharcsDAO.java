@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.model.DebateParticipantCharcs;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebateParticipantCharcs, Long> implements IDebateParticipantCharcsDAO{
 
@@ -509,7 +510,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		return query.list();
 	}
 	
-	public List<Object[]> getPartyWiseScalesOfEachCharecter(Date startDate,Date endDate){
+	public List<Object[]> getPartyWiseScalesOfEachCharecter(Date startDate,Date endDate,String state){
 		
 		StringBuilder str = new StringBuilder();		
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
@@ -517,12 +518,21 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				" sum(model.scale)" +
 				" from DebateParticipantCharcs model" +
 				" where model.debateParticipant.debate.isDeleted = 'N' " +
-				" and model.characteristics.isDeleted ='N'" );		
+				" and model.characteristics.isDeleted ='N' " +
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+		
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+				
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}		
 		
-		str.append(" group by model.debateParticipant.party.partyId,model.characteristics.characteristicsId ");
+		str.append(" group by model.debateParticipant.party.partyId,model.characteristics.characteristicsId" +
+				" order by model.debateParticipant.party.newsOrderNo,model.characteristics.characteristicsId ");
 		
 		Query query = getSession().createQuery(str.toString());	
 		
@@ -535,24 +545,31 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 	}
 	
-	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType){		
+	public List<Object[]> getPartywiseCandidateScaling(Date startDate,Date endDate,String searchType,String state){		
 		StringBuilder str = new StringBuilder();		
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
 				" model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname,sum(model.scale) " +
 				" from DebateParticipantCharcs model " +
 				" where model.debateParticipant.debate.isDeleted = 'N' " +
-				" and model.characteristics.isDeleted ='N'");		
+				" and model.characteristics.isDeleted ='N' " +
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}				
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
-		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId ");
-		
+		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId" +
+				" order by model.debateParticipant.party.newsOrderNo ");
+		/*
 		if(searchType !=null && searchType.trim().equalsIgnoreCase("top")){
 			str.append(" order by sum(model.scale) desc ");
 		}else if(searchType !=null && searchType.trim().equalsIgnoreCase("poor")){
 			str.append(" order by sum(model.scale) ");
 		}
-		
+		*/
 		Query query = getSession().createQuery(str.toString());	
 		
 		if(startDate !=null && endDate !=null){
@@ -563,7 +580,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 	}
 	
-	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate){
+	public List<Object[]> getPartywiseCandidateCharectersScaling(Date startDate,Date endDate,String state){
 		
 		StringBuilder str = new StringBuilder();		
 		str.append(" select model.debateParticipant.party.partyId,model.debateParticipant.party.shortName," +
@@ -573,11 +590,20 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				" sum(model.scale) " +
 				" from DebateParticipantCharcs model " +
 				" where model.debateParticipant.debate.isDeleted = 'N' " +
-				" and model.characteristics.isDeleted ='N'");		
+				" and model.characteristics.isDeleted ='N' " +
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+		
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+			
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
-		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId ");
+		str.append(" group by model.debateParticipant.party.partyId, model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId " +
+				" order by model.debateParticipant.party.newsOrderNo,model.debateParticipant.candidate.candidateId,model.characteristics.characteristicsId ");
 		
 		Query query = getSession().createQuery(str.toString());	
 		
@@ -589,7 +615,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 	}
 	
-	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate){
+	public List<Object[]> getChannelAndPartyWiseCharecter(Date startDate,Date endDate,String state){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -598,12 +624,20 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				" sum(model.scale) " +
 				" from DebateParticipantCharcs model " +
 				" where model.debateParticipant.debate.isDeleted = 'N' " +
-				" and model.characteristics.isDeleted ='N'");	
+				" and model.characteristics.isDeleted ='N'" +
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+		
+			if(state !=null && state.trim().equalsIgnoreCase("ap")){
+				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+			}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+			}	
 		
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
-		str.append(" group by model.debateParticipant.debate.channel.channelId, model.debateParticipant.party.partyId ");
+		str.append(" group by model.debateParticipant.debate.channel.channelId, model.debateParticipant.party.partyId " +
+				" order by model.debateParticipant.debate.channel.channelId,model.debateParticipant.party.newsOrderNo ");
 		
 		Query query = getSession().createQuery(str.toString());	
 		
@@ -614,22 +648,30 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		return query.list(); 
 	}
 	
-	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate){
+	public List<Object[]> getRoleBasedPerformanceCohort(Date startDate,Date endDate,String state){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select model1.debateParticipant.party.partyId,model1.debateParticipant.party.shortName," +
-				"model1.debateRoles.debateRolesId,model1.debateRoles.name,sum(model.scale)" +
+				"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale)" +
 				"  from DebateParticipantCharcs model ,DebateParticipantRole model1" +
 				" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId" +
 				" and model.characteristics.isDeleted = 'N' " +
-				" and model1.debateRoles.isDeleted ='N'");
+				" and model1.debateRoles.isDeleted ='N' " +
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+		
+			if(state !=null && state.trim().equalsIgnoreCase("ap")){
+				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+			}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+			}
 		
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
 		}
 		
-		str.append(" group by model1.debateParticipant.party.partyId, model1.debateRoles.debateRolesId ");
+		str.append(" group by model1.debateParticipant.party.partyId, model1.debateRoles.debateRolesId " +
+				" order by model.debateParticipant.party.newsOrderNo ");
 
 		Query query = getSession().createQuery(str.toString());	
 		

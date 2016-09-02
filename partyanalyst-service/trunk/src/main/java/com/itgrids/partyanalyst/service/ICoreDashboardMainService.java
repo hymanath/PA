@@ -26,11 +26,11 @@ public interface ICoreDashboardMainService {
 	public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String dateStr);
 	public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String dateStr);
 	//Debate
-	public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr);
-	public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType);
-	public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr);
-	public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr);
-	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr);
-	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr);
+	public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,String endDateStr,String state);
+	public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String endDateStr,String searchType,String state);
+	public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,String endDateStr,String state);
+	public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateStr,String endDateStr,String state);
+	public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,String endDateStr,String state);
+	public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,String endDateStr,String state);
 	public List<UserDataVO> getbasicCommitteeDetails();
 }

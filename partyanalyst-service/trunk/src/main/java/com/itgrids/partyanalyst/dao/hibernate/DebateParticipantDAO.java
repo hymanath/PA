@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 import com.itgrids.partyanalyst.model.DebateParticipant;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant, Long> implements IDebateParticipantDAO{
@@ -354,16 +355,24 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 	
 	//Core DashBoard Queries
 	
-	public List<Object[]> getPartyWiseDebateDetails(Date startDate,Date endDate){		
+	public List<Object[]> getPartyWiseDebateDetails(Date startDate,Date endDate,String state){		
 		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
 		str.append(" select model.party.partyId,model.party.shortName,count(distinct model.debate.debateId),count(distinct model.candidate.candidateId)" +
 				" from DebateParticipant model" +
-				" where model.debate.isDeleted = 'N'" );		
+				" where model.debate.isDeleted = 'N' " +
+				" and model.party.isNewsPortal = 'Y'" );
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+						
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debate.startTime) >= :startDate and date(model.debate.endTime) <= :endDate  ");
 		}		
 		
-		str.append(" group by model.party.partyId ");
+		str.append(" group by model.party.partyId " +
+				" order by model.party.newsOrderNo ");
 		
 		Query query = getSession().createQuery(str.toString());	
 		
@@ -375,16 +384,25 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		return query.list();
 	}
 	
-	public List<Object[]> getTotalDabtesCountsForEachCandidateNew(Date fromDate , Date toDate)
+	public List<Object[]> getTotalDabtesCountsForEachCandidateNew(Date fromDate , Date toDate,String state)
 	{
 		StringBuilder str = new StringBuilder();		
 		 str.append("select distinct model1.party.partyId,model1.party.shortName,model1.candidate.candidateId,model1.candidate.lastname,count(distinct model.debateId)  from " +
 				" Debate model , DebateParticipant model1 " +
-				" where  model.debateId = model1.debate.debateId and model.isDeleted = 'N' " );		
+				" where  model.debateId = model1.debate.debateId and model.isDeleted = 'N' " +
+				" and model1.party.isNewsPortal = 'Y'" );
+		 
+	 	if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model1.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		 
 		if(fromDate !=null && toDate !=null){
 			 str.append(" and date(model.startTime) >= :fromDate and date(model.endTime) <= :toDate ");
 		}		
-		str.append(" group by model1.party.partyId,model1.candidate.candidateId ");		
+		str.append(" group by model1.party.partyId,model1.candidate.candidateId " +
+				" order by model1.party.newsOrderNo ");		
 		Query query = getSession().createQuery(str.toString());		
 		if(fromDate !=null && toDate !=null){
 			query.setParameter("fromDate", fromDate);
@@ -393,17 +411,26 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		
 		return query.list();
 	}
-	public List<Object[]> getChannelWiseDebateDetails(Date startDate,Date endDate){		
+	public List<Object[]> getChannelWiseDebateDetails(Date startDate,Date endDate,String state){		
 		StringBuilder str = new StringBuilder();		//0.partyId,1.shortName,2.debateCount,3.candidateCount
 		str.append(" select model.debate.channel.channelId,model.debate.channel.channelName,model.party.partyId,model.party.shortName," +
 				"count(distinct model.debate.debateId)" +
 				" from DebateParticipant model" +
-				" where model.debate.isDeleted = 'N'" );		
+				" where model.debate.isDeleted = 'N' " +
+				" and model.party.isNewsPortal = 'Y' " );
+		
+		if(state !=null && state.trim().equalsIgnoreCase("ap")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+		}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+			str.append(" and model.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+		}
+		
 		if(startDate !=null && endDate !=null){
 			str.append(" and date(model.debate.startTime) >= :startDate and date(model.debate.endTime) <= :endDate  ");
 		}		
 		
-		str.append(" group by model.debate.channel.channelId,model.party.partyId ");
+		str.append(" group by model.debate.channel.channelId,model.party.partyId " +
+				" order by model.debate.channel.channelId,model.party.newsOrderNo   ");
 		
 		Query query = getSession().createQuery(str.toString());	
 		

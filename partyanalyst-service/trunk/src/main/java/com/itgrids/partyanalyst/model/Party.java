@@ -71,7 +71,9 @@ public class Party implements java.io.Serializable {
 	private Set<Candidate> candidates = new HashSet<Candidate>(0);
 	private Set<UserPartyRelation> userPartyRelations = new HashSet<UserPartyRelation>(0);
 	private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
-	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
+	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);	
+	private Long newsOrderNo;
+	
 	// Constructors
 	
 	/** default constructor */
@@ -416,6 +418,14 @@ public class Party implements java.io.Serializable {
 
 	public void setIsNewsPortal(String isNewsPortal) {
 		this.isNewsPortal = isNewsPortal;
+	}
+	@Column(name = "news_order_no")
+	public Long getNewsOrderNo() {
+		return newsOrderNo;
+	}
+
+	public void setNewsOrderNo(Long newsOrderNo) {
+		this.newsOrderNo = newsOrderNo;
 	}
 	
 
