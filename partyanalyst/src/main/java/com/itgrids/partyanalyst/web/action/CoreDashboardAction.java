@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
+import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -53,6 +54,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardGenericService coreDashboardGenericService;
 	
 	private List<CoreDebateVO> codeDebateVoList;
+	private INewsCoreDashBoardService newsCoreDashBoardService;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -193,6 +195,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setCodeDebateVoList(List<CoreDebateVO> codeDebateVoList) {
 		this.codeDebateVoList = codeDebateVoList;
+	}
+	
+	public INewsCoreDashBoardService getNewsCoreDashBoardService() {
+		return newsCoreDashBoardService;
+	}
+
+	public void setNewsCoreDashBoardService(
+			INewsCoreDashBoardService newsCoreDashBoardService) {
+		this.newsCoreDashBoardService = newsCoreDashBoardService;
 	}
 
 	//business methods
@@ -932,5 +943,25 @@ public String getRoleBasedPerformanceCohort(){
 	return Action.SUCCESS;
 }
 
-
+	
+	public String getUserTypeWiseNewsCounts(){
+		try {
+			
+			HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			 }
+			
+			jObj = new JSONObject(getTask());
+			
+			Long userId = user.getRegistrationID();
+			
+			newsCoreDashBoardService.getUserTypeWiseNewsCounts(userId,jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),
+					jObj.getString("state"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("benefitId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserTypeWiseNewsCounts", e);
+		}
+		return Action.SUCCESS;
+	}
 }
