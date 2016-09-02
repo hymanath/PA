@@ -166,7 +166,7 @@
 					applicationsCount = result[i].totalApplicationReceivedCnt;
 				
 				if(result[i].name != "TOTAL AVAILABLE"){
-					if(result[i].name == "READY TO SHORT LIST" )
+					if(result[i].name == "READY TO SHORT LIST" || result[i].name == "RUNNING")
 						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
 					else if(result[i].totalPositions >0)
 						str+='<li style="font-size:12px;cursor:pointer;" class="newWindowCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" >';
