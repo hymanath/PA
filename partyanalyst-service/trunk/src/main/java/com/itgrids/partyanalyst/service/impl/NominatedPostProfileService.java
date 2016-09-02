@@ -1772,6 +1772,405 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevels(Long levelId,String startDateStr, String endDateStr,Long stateId){
 		List<NominatedPostVO> returnList = null;
 		try {
+
+			//{"TOTAL AVAILABLE","APPLICATIONS NOT RECIEVED","READY TO SHORT LIST","RUNNING","READY FOR FINAL REVIEW","FINALYZED","GO ISSUED / COMPLETED","TOTAL"}
+			Map<String,NominatedPostVO> applicationsStatusDtlsMap = new LinkedHashMap<String,NominatedPostVO>(0);
+			String[] applicationStatusArr = IConstants.NOMINATED_POST_APPLICATION_STATUSES;
+			if(applicationStatusArr != null && applicationStatusArr.length>0)
+				for (int i = 0; i < applicationStatusArr.length; i++) 
+					applicationsStatusDtlsMap.put(applicationStatusArr[i].trim(),  new NominatedPostVO(Long.valueOf(String.valueOf(i)),applicationStatusArr[i]) );
+			
+			List<Object[]> totalAvailablePostsList = nominatedPostDAO.getTotalAvaiablePostDetails(levelId,null,null,stateId,"Total");
+			List<Object[]> totalAvailableApplicationsList = nominatedPostApplicationDAO.getTotalAvaiableApplicationsDetails(levelId,stateId,0L);
+			Map<Long,Long> applciationCountMap = new HashMap<Long, Long>(0);
+			Long totalApplcationsCount = 0L;
+			if(commonMethodsUtilService.isListOrSetValid(totalAvailableApplicationsList)){
+				for (Object[] param : totalAvailableApplicationsList){
+					applciationCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					totalApplcationsCount = totalApplcationsCount+commonMethodsUtilService.getLongValueForObject(param[1]);
+				}
+			}
+			
+			Long totalPositionsCount=0L;
+			Long totalCorpCount=0L;
+			if(commonMethodsUtilService.isListOrSetValid(totalAvailablePostsList)){
+				for (Object[] param : totalAvailablePostsList) {
+					NominatedPostVO vo = applicationsStatusDtlsMap.get("TOTAL");
+					if(vo != null){
+						vo.setTotalPositions(commonMethodsUtilService.getLongValueForObject(param[3]));
+						vo.setTotalDept(commonMethodsUtilService.getLongValueForObject(param[4]));
+						vo.setTotalCorp(commonMethodsUtilService.getLongValueForObject(param[6]));
+						vo.setTotalApplicationReceivedCnt(totalApplcationsCount);
+						
+						totalPositionsCount = vo.getTotalPositions();
+						totalCorpCount = vo.getTotalCorp();
+					}
+				}
+			}
+			
+			List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(levelId,2L,stateId,null);
+			Map<String,Long> totalPostMemeberCountMap = new HashMap<String, Long>(0);
+			if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
+				for (Object[] param : totalDeptsNCorpNDesig) {
+					Long maxCount = commonMethodsUtilService.getLongValueForObject(param[0]);
+					totalPostMemeberCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]).toString().trim(), maxCount);
+				}
+			}
+			
+			
+			NominatedPostVO vo2 = applicationsStatusDtlsMap.get("APPLICATIONS NOT RECIEVED".trim());
+			if(vo2 != null){
+				if(levelId != null && levelId.longValue()>0L){						
+					
+					List<Object[]> totalAppliedDeptsNCorpNDesig = nominatedPostApplicationDAO.getTotalAppliedCorpIdsAndBoardsIdsAndPositionsIds(levelId,2L,stateId);
+					Map<String,Long> appliedPostMemeberCountMap = new HashMap<String, Long>(0);
+					if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
+						for (Object[] param : totalAppliedDeptsNCorpNDesig) {
+							Long count = commonMethodsUtilService.getLongValueForObject(param[0]);
+							if(appliedPostMemeberCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]).toString().trim()) != null){
+								Long meberIdsCount=appliedPostMemeberCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]).toString().trim());
+								if(meberIdsCount != null)
+									count = meberIdsCount+count;
+							}
+							appliedPostMemeberCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]).toString().trim(), count);
+						}
+					}
+					
+					Long totalavailableCount = 0L;
+					if(commonMethodsUtilService.isMapValid(totalPostMemeberCountMap)){
+						for (String DCP : totalPostMemeberCountMap.keySet()) {
+							Long maxPositionsCount = totalPostMemeberCountMap.get(DCP) != null?totalPostMemeberCountMap.get(DCP):0L;
+							Long appliedCount = appliedPostMemeberCountMap.get(DCP) != null?appliedPostMemeberCountMap.get(DCP):0L;
+							
+							if(maxPositionsCount>appliedCount){
+								totalavailableCount = totalavailableCount+ (maxPositionsCount-appliedCount);
+							}
+						}
+					}
+							
+					List<Long> totalDeptIsList = nominatedPostDAO.getTotalDeptsCount(levelId);
+					List<Long> applRecievedDeptIsList = nominatedPostDAO.getTotalApplicationsDeptsCount(levelId);
+					List<Long> remainingDeptIdsList = new ArrayList<Long>(0);
+					
+					if(commonMethodsUtilService.isListOrSetValid(totalDeptIsList) && 
+							 commonMethodsUtilService.isListOrSetValid(applRecievedDeptIsList)){
+						for (Long deptIid : totalDeptIsList) {
+							if(!applRecievedDeptIsList.contains(deptIid))
+								remainingDeptIdsList.add(deptIid);
+						}
+					}
+					
+					
+					List<Object[]> totalCorpsIdsList = nominatedPostDAO.getTotalCorpsIdsCount(levelId);
+					List<Object[]> applRecievedCorpsIdList = nominatedPostDAO.getTotalApplicationsCorpsIdsCount(levelId);
+					
+					
+					List<String> totalCorpList = new ArrayList<String>(0);
+					List<String> applnRecvdCorpList = new ArrayList<String>(0);
+					List<String> remainingCorpsIdsList = new ArrayList<String>(0);
+					if(commonMethodsUtilService.isListOrSetValid(totalCorpsIdsList)){
+						for (Object[] param : totalCorpsIdsList) {
+							totalCorpList.add(commonMethodsUtilService.getStringValueForObject(param[0]+"-"+commonMethodsUtilService.getStringValueForObject(param[1])));
+						}
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(applRecievedCorpsIdList)){
+						for (Object[] param : applRecievedCorpsIdList) {
+							applnRecvdCorpList.add(commonMethodsUtilService.getStringValueForObject(param[0]+"-"+commonMethodsUtilService.getStringValueForObject(param[1])));
+						}
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(totalCorpList)){
+						for (String deptCorpStr : totalCorpList) {
+							if(!applnRecvdCorpList.contains(deptCorpStr))
+								remainingCorpsIdsList.add(deptCorpStr);
+						}
+					}
+					
+					vo2.setTotalPositions(totalavailableCount);
+					vo2.setTotalCorp(Long.valueOf(String.valueOf(remainingCorpsIdsList.size())));
+					vo2.setTotalDept(Long.valueOf(String.valueOf(remainingDeptIdsList.size())));
+					
+					if(totalavailableCount != null && totalavailableCount.longValue()>0L){
+						if(vo2.getTotalPositions() != null && vo2.getTotalPositions().longValue()>0L){
+							String perc = String.valueOf(vo2.getTotalPositions()*100.0/totalPositionsCount);
+							vo2.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+						}
+						
+						if(vo2.getTotalCorp() != null && vo2.getTotalCorp().longValue()>0L){
+							String perc1 = String.valueOf(vo2.getTotalCorp()*100.0/totalCorpCount);
+							vo2.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+						}
+					}
+				}
+			}
+			
+			List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
+			List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,null,null,statusList,stateId);
+			Map<Long,Map<String,Long>> movedPostsStatusDetailsMap = new HashMap<Long, Map<String,Long>>(0);
+			if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
+				for (Object[] param : levelWiseAvailablePostsList) {
+					String statusStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					Long memberId = commonMethodsUtilService.getLongValueForObject(param[7]);
+					Long count = commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+						Map<String,Long> posionwiseMovedMap = new HashMap<String, Long>(0);
+						 if(statusStr.trim().equalsIgnoreCase("2")){// nominatedPostStatusid
+							NominatedPostVO vo = applicationsStatusDtlsMap.get("READY FOR FINAL REVIEW".trim());
+							if(vo != null){
+								Long filledCount =0L;
+								if(movedPostsStatusDetailsMap.get(memberId) != null){
+									posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+									if(posionwiseMovedMap.get("READY FOR FINAL REVIEW") != null)
+										filledCount = posionwiseMovedMap.get("READY FOR FINAL REVIEW");
+								}
+								
+								filledCount = filledCount+count;
+								posionwiseMovedMap.put("READY FOR FINAL REVIEW", filledCount);
+								movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+								
+								vo.setTotalPositions(vo.getTotalPositions()+count);
+								
+								Long deptCount=commonMethodsUtilService.getLongValueForObject(param[4]);
+								Long corpCount=commonMethodsUtilService.getLongValueForObject(param[6]);
+								
+								vo.setTotalDept(vo.getTotalDept()+deptCount);
+								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(6L) != null?applciationCountMap.get(6L):0L); // ApplicationStatusId for ready to final review
+								
+								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+									if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+										String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+										vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+									}
+									
+									if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+										String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+										vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+									}
+								}
+							}
+						}
+						else if(statusStr.trim().equalsIgnoreCase("3")){// nominatedPostStatusid
+							NominatedPostVO vo = applicationsStatusDtlsMap.get("FINALIZED".trim());
+							if(vo != null){
+								
+								Long filledCount =0L;
+								if(movedPostsStatusDetailsMap.get(memberId) != null){
+									posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+									if(posionwiseMovedMap.get("FINALIZED") != null)
+										filledCount = posionwiseMovedMap.get("FINALIZED");
+								}
+								
+								filledCount = filledCount+count;
+								posionwiseMovedMap.put("FINALIZED", filledCount);
+								movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+								
+								vo.setTotalPositions(vo.getTotalPositions()+count);
+								Long deptCount=commonMethodsUtilService.getLongValueForObject(param[4]);
+								Long corpCount=commonMethodsUtilService.getLongValueForObject(param[6]);
+								
+								vo.setTotalDept(vo.getTotalDept()+deptCount);
+								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(5L) != null?applciationCountMap.get(5L):0L); // ApplicationStatusId for Confirmed/finalyszed
+								
+								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+									if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+										String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+										vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+									}
+									
+									if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+										String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+										vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+									}
+								}
+							}
+						}
+						else if(statusStr.trim().equalsIgnoreCase("4")){//nominatedPostStatusid
+							NominatedPostVO vo = applicationsStatusDtlsMap.get("GO ISSUED / COMPLETED".trim());
+							if(vo != null){
+								Long filledCount =0L;
+								if(movedPostsStatusDetailsMap.get(memberId) != null){
+									posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+									if(posionwiseMovedMap.get("GO ISSUED / COMPLETED") != null)
+										filledCount = posionwiseMovedMap.get("GO ISSUED / COMPLETED");
+								}
+								
+								filledCount = filledCount+count;
+								posionwiseMovedMap.put("GO ISSUED / COMPLETED", filledCount);
+								movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+								
+								vo.setTotalPositions(vo.getTotalPositions()+count);
+								Long deptCount=commonMethodsUtilService.getLongValueForObject(param[4]);
+								Long corpCount=commonMethodsUtilService.getLongValueForObject(param[6]);
+								
+								vo.setTotalDept(vo.getTotalDept()+deptCount);
+								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(7L)); // ApplicationStatusId for GO Issue
+								
+								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+									if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+										String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+										vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+									}
+									
+									if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+										String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+										vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+									}
+								}
+							}
+						}
+				}
+			}
+			
+			Map<Long,Long> runningPostsMap = new HashMap<Long, Long>();
+			
+			List<Object[]> levelPostCountList = nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDetalsNew(levelId,null,null,stateId,"running");	
+			Long runningStatusPostsCount =0L;
+			if(commonMethodsUtilService.isListOrSetValid(levelPostCountList)){
+				for (Object[] param : levelPostCountList) {
+					
+					Long applinCount  =  commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long memberId  =  commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+						Map<String,Long> movedPostsStatusMap = movedPostsStatusDetailsMap.get(memberId) != null ? movedPostsStatusDetailsMap.get(memberId):new HashMap<String, Long>(0);
+						
+						Long readyToFinalReviewPostsCount = movedPostsStatusMap.get("READY FOR FINAL REVIEW") != null?movedPostsStatusMap.get("READY FOR FINAL REVIEW"):0L;
+						Long finalyzedPostsCount = movedPostsStatusMap.get("FINALIZED") != null?movedPostsStatusMap.get("FINALIZED"):0L;
+						Long G_O_passedPostsCount = movedPostsStatusMap.get("GO ISSUED / COMPLETED") != null?movedPostsStatusMap.get("GO ISSUED / COMPLETED"):0L;
+						
+						Long almostFilledPosts = readyToFinalReviewPostsCount+finalyzedPostsCount+G_O_passedPostsCount;
+						Long maxPostsCount = totalPostMemeberCountMap.get(memberId.toString().trim()) != null ?  totalPostMemeberCountMap.get(memberId.toString().trim()) :0L ;
+						Long runningPostsCount =0L;
+						
+						if(maxPostsCount>almostFilledPosts){// available posts are there
+							Long openPostsCount = maxPostsCount-almostFilledPosts;
+							if(openPostsCount>applinCount){// applications count less than open posts
+								runningPostsCount = applinCount;
+							}else if(openPostsCount<=applinCount){// open posts count less than applications count
+								runningPostsCount = openPostsCount;
+							}
+						}
+						runningStatusPostsCount = runningStatusPostsCount+runningPostsCount;
+						runningPostsMap.put(memberId, runningPostsCount);
+				}
+			}
+			
+			List<Object[]> levelWiseRunningApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsRunningAppliedApplicationsDtals(levelId,null,null,stateId);
+			if(commonMethodsUtilService.isListOrSetValid(levelWiseRunningApplicatinStatusDetailsList)){
+				for (Object[] param : levelWiseRunningApplicatinStatusDetailsList) {
+						NominatedPostVO vo = applicationsStatusDtlsMap.get("RUNNING".trim());//"RUNNING"
+						if(vo != null){
+							vo.setTotalPositions(runningStatusPostsCount);
+							vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
+							vo.setTotalCorp(vo.getTotalCorp() + commonMethodsUtilService.getLongValueForObject(param[3]));
+							
+							vo.setTotalApplicationReceivedCnt((applciationCountMap.get(2L) !=null ? applciationCountMap.get(2L).longValue():0l) +  // rejected
+									(applciationCountMap.get(3L) !=null ? applciationCountMap.get(3L).longValue():0l) + // short listed
+									(applciationCountMap.get(4L) !=null ? applciationCountMap.get(4L).longValue():0l) + // rejected in final review
+									(applciationCountMap.get(8L) !=null ? applciationCountMap.get(8L).longValue():0l)); // rejected in finalized
+							
+							if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+								if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+									String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+									vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+								}
+								
+								if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+									String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+									vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+								}
+							}
+						}
+				}
+			}
+			
+			List<Object[]> levelWiseAppliedPostCountList = nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDetalsNew(levelId,null,null,stateId,"applied");	
+			Long appliedStatusPostsCount =0L;
+			//Map<Long,Long> appliedPostsMap = new HashMap<Long, Long>();
+			
+			if(commonMethodsUtilService.isListOrSetValid(levelWiseAppliedPostCountList)){
+				for (Object[] param : levelWiseAppliedPostCountList) {
+					
+					Long applinCount  =  commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long memberId  =  commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+					Map<String,Long> movedPostsStatusMap = movedPostsStatusDetailsMap.get(memberId) != null ? movedPostsStatusDetailsMap.get(memberId):new HashMap<String, Long>(0);
+						
+						Long readyToFinalReviewPostsCount = movedPostsStatusMap.get("READY FOR FINAL REVIEW") != null?movedPostsStatusMap.get("READY FOR FINAL REVIEW"):0L;
+						Long finalyzedPostsCount = movedPostsStatusMap.get("FINALIZED") != null?movedPostsStatusMap.get("FINALIZED"):0L;
+						Long G_O_passedPostsCount = movedPostsStatusMap.get("GO ISSUED / COMPLETED") != null?movedPostsStatusMap.get("GO ISSUED / COMPLETED"):0L;
+						
+						
+						Long almostFilledPosts = readyToFinalReviewPostsCount+finalyzedPostsCount+G_O_passedPostsCount;
+						Long maxPostsCount = totalPostMemeberCountMap.get(memberId.toString().trim()) != null ?  totalPostMemeberCountMap.get(memberId.toString().trim()) :0L ;
+						Long appliedPostsCount =0L;
+						
+						if(maxPostsCount>almostFilledPosts){// available posts are there
+							Long runnngPostsCount = runningPostsMap.get(memberId) != null?runningPostsMap.get(memberId):0L;
+							Long openPostsCount = maxPostsCount-almostFilledPosts;
+							openPostsCount = openPostsCount-runnngPostsCount;
+							if(openPostsCount>applinCount){// applications count less than open posts
+								appliedPostsCount = applinCount;
+							}else if(openPostsCount<=applinCount){// open posts count less than applications count
+								appliedPostsCount = openPostsCount;
+							}
+						}
+						appliedStatusPostsCount = appliedStatusPostsCount+appliedPostsCount;
+						//runningPostsMap.put(memberId, appliedPostsCount);
+				}
+			}
+			
+			List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,null,null,stateId);
+			if(commonMethodsUtilService.isListOrSetValid(levelWiseApplicatinStatusDetailsList)){
+				for (Object[] param : levelWiseApplicatinStatusDetailsList) {
+						NominatedPostVO vo = applicationsStatusDtlsMap.get("READY TO SHORT LIST".trim());//"RUNNING"
+						if(vo != null){
+							vo.setTotalPositions(appliedStatusPostsCount);
+							vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
+							vo.setTotalCorp(vo.getTotalCorp() + commonMethodsUtilService.getLongValueForObject(param[3]));
+							
+							vo.setTotalApplicationReceivedCnt((applciationCountMap.get(1L) !=null ? applciationCountMap.get(1L).longValue():0l));  // applied									(applciationCountMap.get(3L) !=null ? applciationCountMap.get(3L).longValue():0l) + // short listed
+							
+							if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
+								if(vo.getTotalPositions() != null && vo.getTotalPositions().longValue()>0L){
+									String perc = String.valueOf(vo.getTotalPositions()*100.0/totalPositionsCount);
+									vo.setPerc(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc)));
+								}
+								
+								if(vo.getTotalCorp() != null && vo.getTotalCorp().longValue()>0L){
+									String perc1 = String.valueOf(vo.getTotalCorp()*100.0/totalCorpCount);
+									vo.setPerc1(commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(perc1)));
+								}
+							}
+						}
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
+				returnList = new ArrayList<NominatedPostVO>();
+				for (String status : applicationsStatusDtlsMap.keySet()) {
+					if(status.equalsIgnoreCase("TOTAL"))
+						returnList.add(0,applicationsStatusDtlsMap.get("TOTAL"));
+					else
+						returnList.add(applicationsStatusDtlsMap.get(status));
+				}
+				
+			//	returnList.addAll(applicationsStatusDtlsMap.values());
+						
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exceptionr riased at getNominatedPostsStatusDetailsInAllLevels() in NominatedPostProfileService model", e);
+		}
+			return returnList;
+	}	
+			
+	public List<NominatedPostVO> getNominatedPostsStatusDetailsInAllLevel1s(Long levelId,String startDateStr, String endDateStr,Long stateId){
+		List<NominatedPostVO> returnList = null;
+		try {
 			Date startDate = null;
 			Date endDate = null;
 			if(startDateStr != null && !startDateStr.isEmpty()){
@@ -2800,7 +3199,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				Map<Long,String> boardNameMap = new HashMap<Long, String>(0);
 				
 				
-				List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,searchlevelId,searchLevelValue);
+				List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,searchlevelId,searchLevelValue,null);
 				Map<String,Long> totalPostMemeberCountMap = new HashMap<String, Long>(0);
 				if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
 					for (Object[] param : totalDeptsNCorpNDesig) {
@@ -4228,13 +4627,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 					
 						Long i=1l;
 						for(NominatedPost nominatedPostObj:nominatedPostsList){
-							//if(i<=sizeOfMember){
+							if(i<=sizeOfMember){
 								nominatedPostObj.setNominatedPostStatusId(statusId);
 								nominatedPostObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								nominatedPostObj.setUpdatedBy(userId);
 								nominatedPostDAO.save(nominatedPostObj);
 								i++;
-							//}												
+							}												
 						}
 					}
 					
@@ -4263,7 +4662,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						List<Long> finalIds = nominatedPostApplicationDAO.getApplicationIds(deptId,boardId,positions,levelId,searchLevelValues,userId); //updateApplicationStatusToFinal(deptId,boardId,positions,levelId,searchLevelValues,userId);
 						
 						if(finalIds !=null && finalIds.size()>0){
-							count=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);							
+							count=nominatedPostApplicationDAO.updateApplicationStatusToFinal(finalIds,userId);	
+							for (Long appliId : finalIds) {
+								savingNominatedPostApplicationHistoryDetails(nominatedPostApplicationDAO.get(appliId),6L,userId);
+							}
 						}							
 					}
 					
@@ -4297,7 +4699,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						List<Long> finalIds =  nominatedPostFinalDAO.getApplicationFinalModels(deptId,boardId,positions,levelId,searchLevelValues);
 						
 						if(finalIds !=null){
-							finalCount = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);							
+							finalCount = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);	
+							for (Long appliId : finalIds) {
+								savingNominatedPostApplicationHistoryDetails(nominatedPostApplicationDAO.get(appliId),6L,userId);
+							}
 						}
 						
 						
