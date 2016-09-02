@@ -13546,5 +13546,12 @@
    			<param name="root">committeeDataVOList</param>
    		</result>
 	</action>	
+	
+	<action name="getUserTypeWiseNewsCountsAction" class="coreDashboardAction" method="getUserTypeWiseNewsCounts">
+		<result type="json" name="success">
+   			<param name="root">committeeDataVOList</param>
+   		</result>
+	</action>
+	
 </package>
 </struts>
