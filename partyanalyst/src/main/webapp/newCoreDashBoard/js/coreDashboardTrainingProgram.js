@@ -426,13 +426,9 @@ var globalUserWiseMemberRslt;
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(' ');
-		  if(result != null && result.length > 0){
-			  buildgetUserTypeWiseTrainingProgramAttendedCountTopFiveStrongResults(result);
-			  globalUserWiseMemberRslt = result;
-		  }else{
-			  $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
-		  }
+		     $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(' ');
+			 buildgetUserTypeWiseTrainingProgramAttendedCountTopFiveStrongResults(result);
+			 globalUserWiseMemberRslt = result;
 		});
  }
  
@@ -459,19 +455,20 @@ var globalUserWiseMemberRslt;
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
 	if(result != null && result.length > 0){
 			for(var i in result){
-				var length1 = result[i].length-1 ;
 				var candidateNameArray = [];
 				var trainingProgramCountArray = [];
 				var countVar =0;
-				for(var j = 0; j <= length1; j++){
-					countVar =countVar+1;
-					candidateNameArray.push(result[i][j].name);
-					trainingProgramCountArray.push(result[i][j].totalAttenedCountPer);
-					if (countVar === 5) {
-						break;
+			  if(result[i] !=null && result[i].length>0){
+					for(var j in result[i]){
+						countVar =countVar+1;
+						candidateNameArray.push(result[i][j].name);
+						trainingProgramCountArray.push(result[i][j].totalAttenedCountPer);
+						if (countVar === 5) {
+							break;
+						}
 					}
 				}
-		if( result[i][j].totalAttenedCountPer!=0){
+		if(result[i][j].totalAttenedCountPer!=0){
 				var getWidth = $("#genSecTraining"+i).parent().width()+'px';
 				$("#genSecTraining"+i).width(getWidth);
 		     $(function () {
@@ -550,7 +547,9 @@ var globalUserWiseMemberRslt;
 		$("#genSecTraining"+i).css("height","35px");
 		}
 	}
-		}
+	}else{
+    $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
+	}
 	}
 	function buildgetUserTypeWiseTrainingProgramAttendedCountTopFivePoorResults(result){
 		var str='';
@@ -573,6 +572,7 @@ var globalUserWiseMemberRslt;
 			}
 		}
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
+	if(result != null && result.length > 0){
 		for(var i in result){
 				var candidateNameArray = [];
 				var trainingProgramCountArray = [];
@@ -586,7 +586,7 @@ var globalUserWiseMemberRslt;
 						break;
 					}
 				}
-			if( result[i][j].totalAttenedCountPer!=0){
+			//if( result[i][j].totalAttenedCountPer!=0){
 			var getWidth = $("#genSecTraining"+i).parent().width()+'px';
 				$("#genSecTraining"+i).width(getWidth);
 				$(function () {
@@ -648,11 +648,14 @@ var globalUserWiseMemberRslt;
 				}]
 			});
 		});
-		}else{
+		/* }else{
 		$("#genSecTraining"+i).html("No Data Available");
 		$("#genSecTraining"+i).css("height","35px");	
+		} */
 		}
-		}
+	}else{
+	 $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
+	}
 	}
 $(document).on("click",".liCls",function(){
 	var memberType=$(this).attr("attr_value");
@@ -666,7 +669,6 @@ $(document).on("click",".liCls",function(){
 /* Training Funcitons Start*/
 $(document).on("click",".trainingIconExpand",function(){
     $(".dateRangePickerClsForTraining").toggleClass("hide");
-	
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
@@ -952,7 +954,7 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
 			str+='<table class="table table-condensed tableHoverLevels m_top20">';  
 		 }
 				str+='<thead class="bg_D8 text-capital">';
-					str+='<th>% Rank</th>';
+					str+='<th>Rank</th>';
 					str+='<th>Designation</th>';
 					str+='<th>Name</th>';
 					str+='<th>Total Eligible</th>';
