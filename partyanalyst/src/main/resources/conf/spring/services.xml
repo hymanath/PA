@@ -3424,6 +3424,8 @@
 	  <property name="debateParticipantDAO"  ref="debateParticipantDAO"></property>
 	  <property name="debateParticipantCharcsDAO"  ref="debateParticipantCharcsDAO"></property>	  
 	  <property name="characteristicsDAO"  ref="characteristicsDAO"></property>
+	  <property name="debateRolesDAO"  ref="debateRolesDAO"></property>
+	  <property name="partyDAO"  ref="partyDAO"></property>
 	  
 	</bean>
 	
