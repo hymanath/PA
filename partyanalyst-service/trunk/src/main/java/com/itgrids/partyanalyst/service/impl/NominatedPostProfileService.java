@@ -6420,9 +6420,9 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 		 SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy");   
 		 if(expireDate != null){
 			 String dt = expireDate;
-			 lowerRange = sdf2.parse(dt);
+			 lowerRange = sdf2.parse(tday);
 			 expDate = sdf2.parse(expireDate); 
-			 expDate.setMonth( expDate.getMonth() + 1 );     
+			 //expDate.setMonth( expDate.getMonth() + 1 );     
 		 } 
 		 DateUtilService dateUtilService = new DateUtilService();
 		 List<NomintedPostMemberVO> nominatedPostMemberVOs = new ArrayList<NomintedPostMemberVO>(0);
