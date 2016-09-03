@@ -1939,7 +1939,7 @@
 		     <result type="redirect" name="dashBoard">dashBoardAction.action</result>
 		     <result type="redirect" name="CHANGE_PASSWORD_PAGE">changePasswordAction.action</result> 
 			 <!-- Problem Management Flow From Different Pages -->
-			<result name="error">/jsp/anonymousUserRegistration.jsp</result>	
+			 <result name="error">/jsp/anonymousUserRegistration.jsp</result>	
 			 <interceptor-ref name="userTrack"/>
 			 <interceptor-ref name="exception"/>
 			 <interceptor-ref name="alias"/>
