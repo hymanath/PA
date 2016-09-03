@@ -464,7 +464,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		   		}
 		     
 			resultStatus = nominatedPostProfileService.savingNominatedPostProfileApplication(nominatedPostVO,user.getRegistrationID(),mapfiles);
-			
+             
 			if(resultStatus!=null){
 				if(resultStatus.getResultCode() == 0){
 					inputStream = new StringBufferInputStream(resultStatus.getMessage());
