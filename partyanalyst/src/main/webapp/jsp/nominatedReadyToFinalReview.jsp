@@ -516,6 +516,7 @@ if(boardLevelId ==1){
 var stateId = '${param.stId}';
 $("#stateId").val(stateId);
 $(document).ready(function(){
+
 	if(gblStatus == "finaliZed"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; finalyzed");
@@ -523,10 +524,10 @@ $(document).ready(function(){
 		$("#headinggId").html("Final Review "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; FINAL REVIEW");
 	}else if(gblStatus == "goPassed"){
-		$("#headinggId").html("G O Passed"+globalLvlTxt+" level - board/corporation");
-		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; G.O PASSED");
+		$("#headinggId").html("G O Issued / Completed  "+globalLvlTxt+" level - board/corporation");
+		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; G O Issued / Completed ");
 	}else if(gblStatus == "notRecieved"){
-		$("#headinggId").html("G O Passed"+globalLvlTxt+" level - board/corporation");
+		$("#headinggId").html(" Not Recieved "+globalLvlTxt+" level - board/corporation");
 		$("#flowHeading").html(""+globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation &mdash; NOT RECEIVED");
 	}
 		
@@ -534,6 +535,7 @@ $(document).ready(function(){
 		$("#headinggId").html(gblStatus+"  - "+globalLvlTxt+" level  - board/corporation");
 		$("#flowHeading").html(globalLvlTxt.substr(0,1).toUpperCase()+globalLvlTxt.substr(1)+" Level - Board/Corporation <span>	&mdash;</span> "+gblStatus.substr(0,1).toUpperCase()+gblStatus.substr(1)+"");
 	}
+
 if(boardLevelId == 1){
  $(".hideRowCls").hide();	
 }
