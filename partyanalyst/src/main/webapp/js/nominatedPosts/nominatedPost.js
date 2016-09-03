@@ -2774,6 +2774,6 @@ function refreshOnLoadFields(){
 	$('.referCadreIds').val('');
 	$('.nominatedCandId').val('');
 	$('#candidateTypeId').val('');
+	$("#statesDivId").val(0).trigger("chosen:updated");  
 	
 }
-$("#statesDivId").val(0).trigger("chosen:updated");
