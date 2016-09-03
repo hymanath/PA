@@ -462,7 +462,9 @@
             <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 debatesBlock">
                 <div class="panel panel-default panelNewCustom">
                     <div class="panel-heading">
-                        <h4 class="panel-title">debates
+                        <h4 class="panel-title text-capital">
+						<img class="iconClass" src="newCoreDashBoard/img/debates.png">
+							debates
                             <span class="debatesIconExpand pull-right">
                                 <i class="glyphicon glyphicon-fullscreen"></i>
                             </span>
@@ -524,7 +526,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
-                                        <h4><span class="headingColor text-capitalize">scale based performance cohort</span></h4>
+                                        <h4><span class="headingColor text-capitalize">Scale based performance cohort</span></h4>
                                     </div>
                                     <div class="panel-body">
                                         <div class="row">
@@ -546,7 +548,7 @@
                                 </div>
                             </div>
                             <!-- TOP 5 BLock Start -->
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
 										<div class="row">
@@ -592,7 +594,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <!-- TOP 5 BLock End -->
                             <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
