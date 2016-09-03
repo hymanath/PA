@@ -1428,6 +1428,7 @@ margin-top:20px;
 .tableDebates tr td
 {
 	border:0px !important;
+	border-bottom:1px solid #DDD !important;
 }
 .collapseDebates
 {

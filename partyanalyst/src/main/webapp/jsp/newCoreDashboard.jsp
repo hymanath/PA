@@ -14,7 +14,8 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Rating/star-rating.css" type="text/css" rel="stylesheet"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
@@ -472,6 +473,32 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
                                 <div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
+									<!--<div ng-app="partyWiseTotalApp">
+										<div ng-controller="partyWiseTotalCont">
+											<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10" ng-repeat="item in partyWiseTotal">
+												<h4 class="text-capital"><img src="newCoreDashBoard/img/{{item.name}}.png" alt="Icon" class="debatesPartyIcon"/>{{item.name}}</h4>
+												<table class="table tableTraining bg_ED m_top10">
+												  <tbody>
+													<tr>
+														<td>
+															<p class="text-capital">total debates</p>
+															<h4>{{item.debateCount}}</h4>
+														</td>
+														<td>
+															<p class="text-capital">total spokes persons</p>
+															<h4>{{item.candidateCount}}</h4>
+														</td>
+														<td>
+															<p class="text-capital">performance</p>
+															<input class="performanceRating" value="{{item.scalePerc}}" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly>
+															<span class="label label-default">{{item.scalePerc}}</span>
+														</td>
+													</tr>
+												 </tbody>
+												</table>
+											</div>
+										</div>
+									</div>-->
                                  </div>
                             </div>
                             <div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
@@ -481,7 +508,7 @@
                                 	</div>
                                     <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
                                         <ul class="activeUlCls list-inline debateSpokesCls">
-                                            <li id="debateTopId">top 5 strong</li>
+                                            <li id="debateTopId" class="active">top 5 strong</li>
                                             <li id="debateLowId">last 5 poor</li>
                                         </ul>
                                     </div>
@@ -937,8 +964,10 @@
 	</div>
 </div>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
+<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
@@ -949,10 +978,34 @@
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/Rating/star-rating.min.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Rating/bootstrap-rating.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+
 <script type="text/javascript">
+	//Angular Start
+
+		var obj = angular.module("partyWiseTotalApp",[]);
+		//var dataA = [];
+		obj.controller('partyWiseTotalCont', function($scope,$http) {
+			var jsObj= {
+					startDate: " ",
+					endDate: " ",
+					state: "AP"
+				}
+
+			$http({
+				type : 'GET',
+				url : 'getPartyWiseTotalDebateDetailsAction.action?task={startDate:" ",endDate: " ",state: "AP"}',
+				//url : 'getPartyWiseTotalDebateDetailsAction.action?task='+jsObj+'',
+				dataType : 'application/json',
+				data : { },
+
+			}).success(function(data) {
+				$scope.partyWiseTotal = data
+			});
+		});
+	//Angular ENd
 	DatePickerDropdown();
 	function DatePickerDropdown()
 	{

@@ -4,7 +4,7 @@ $(document).ready(function(){
 });	
 
 
-function getPartyWiseTotalDebateDetails(){
+ function getPartyWiseTotalDebateDetails(){
 		
 		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		
@@ -19,16 +19,18 @@ function getPartyWiseTotalDebateDetails(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildPartyWiseTotalDebateDetails(result);
+			buildPartyWiseTotalDebateDetails(result);			
 		});
 	}
+
+
 function buildPartyWiseTotalDebateDetails(result)
 {
 	var str='';
 	if(result !=null){
 		for(var i in result){
 			
-			str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20">';
 				str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
 				str+='<table class="table tableTraining bg_ED m_top10">';
 				  str+='<tbody>';
@@ -43,7 +45,7 @@ function buildPartyWiseTotalDebateDetails(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">performance</p>';
-							str+='<input class="performanceRating" value="'+result[i].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
+							str+='<input class="performanceRating" value="'+result[i].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs">'+result[i].scalePerc+'</span>';
 						str+='</td>';
 					str+='</tr>';
 				 str+='</tbody>';
@@ -54,7 +56,7 @@ function buildPartyWiseTotalDebateDetails(result)
 		$("#partyWiseTotalDebateDetails").html(str);
 		$(".performanceRating").rating({
 			showClear: false,
-			showCaption:false,
+			showCaption:true,
 			hoverOnClear: true,
 			animate:false
 		});
@@ -104,7 +106,7 @@ function buildScaleBasedPerformanceCohort(result)
 							if(result[i].coreDebateVOList[j].name !=null && result[i].coreDebateVOList[j].name.length>0){
 								str+='<p class="text-capital">'+result[i].coreDebateVOList[j].name.split("(")[0];+'</p>';
 							}
-								str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
+								str+='<p class="text-capital"><input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs">'+result[i].coreDebateVOList[j].scalePerc+'</span></p>';
 							str+='</td>';
 						}
 					str+='</tr>';
@@ -174,15 +176,24 @@ function BuildCandidateOverAllPerformanceCohort(result)
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 								str+='<div class="scroller'+i+'">';
-									str+='<table class="table tableDebates m_top10">';
+									str+='<table class="table tableDebates m_top10 dataTableSorting">';
+										str+='<thead>';
+											str+='<th>Name</th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
+										str+='</thead>';
 										str+='<tbody>';
 											for(var j in result[i].coreDebateVOList){
 												str+='<tr>';
-													str+='<td class="text-capitalize">'+result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName.toUpperCase()+'</td>';
+													var canidateName = '';
+													if(result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName !=null &&
+													result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName.length>0){
+													  canidateName = getTitleContent(result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName,20);
+													}
+													//str+='<td class="text-capitalize">'+canidateName+'</td>';
+													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+' <p class="text-muted">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+' - Debates </p></td>';
 													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 													str+='<td>';
 														str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName.split("(")[0].toUpperCase()+'</p>';
-														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
+														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs">'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'</span>';
 													str+='</td>';
 													}
 												str+='</tr>';
@@ -207,6 +218,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 			hoverOnClear: true,
 			animate:false
 		});
+		$(".dataTableSorting").dataTable();
 		for(var i in result){
 			for(var j in result[i].coreDebateVOList){
 				for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
@@ -256,7 +268,7 @@ function buildChannelAndPartyWiseDetails(result)
 							for(var j in result[i].coreDebateVOList){
 								str+='<td>';
 									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[j].candidateName+'.png" alt="tdpIcon" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
-									str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
+									str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs">'+result[i].coreDebateVOList[j].scalePerc+'</span>';
 								str+='</td>';
 							}
 						str+='</tr>';
@@ -303,7 +315,7 @@ function buildSpokesPersonWiseDebate(result){
 				str+='<h5 class="text-capital">'+result[i].coreDebateVOList[0].name+'</h5>';
 			else
 				str+='';
-				str+='<div id="debates'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
+				str+='<div id="debates'+i+'" style="width:100%;height:100px;"></div>';
 			str+='</div>';
 		}		
 		$("#SpokesPersonWiseDebate").html(str);
@@ -360,31 +372,24 @@ function buildSpokesPersonWiseDebate(result){
 							enabled: false
 						},
 						
-								
-						plotOptions: {
-							column: {
-								stacking: 'percent',
-								dataLabels: {
-									enabled: true,
-									 formatter: function() {
-										if (this.y === 0) {
-											return null;
-										} else {
-											return Highcharts.numberFormat(this.y,0) + '%';
-										}
-									}
-								  
-								}
-							}
-						},
 
 						tooltip: {
 							headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-							pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}%</b>'
+							pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
 						},
 
 						series: [{
 							name: 'Completed',
+							dataLabels: {
+								enabled: true,
+								 formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.y);
+									}
+								}
+							},
 							data: candidateNameAndCompletedCountArray1
 						}],
 					 
@@ -434,7 +439,7 @@ function buildRoleBasedPerformanceCohort(result)
 							for(var j in result[i].coreDebateVOList){
 							str+='<td>';
 								str+='<p class="text-capital">'+result[i].coreDebateVOList[j].candidateName+'</p>';
-								str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="number" class="rating" min=0 max=5 step=0.2 data-size="xs">';
+								str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs"  data-readonly>'+result[i].coreDebateVOList[j].scalePerc+'</span>';
 							str+='</td>';
 							}
 						str+='</tr>';
@@ -488,4 +493,18 @@ $(document).on("click","#debateLowId",function(){
 
 function setDefaultImageOfChannel(img){
 	 img.src = "newCoreDashBoard/img/channel.png";
+}
+function getTitleContent(name,showCharVal){
+	ellipsetext=". ."
+	var showChar = showCharVal;
+	var content = name;
+	if(content!=null){
+		if(content.length > showChar) {
+		var c = content.substr(0, showChar);
+		var html = c + ellipsetext;
+		return html;
+		}
+	}
+   
+	return name;
 }
