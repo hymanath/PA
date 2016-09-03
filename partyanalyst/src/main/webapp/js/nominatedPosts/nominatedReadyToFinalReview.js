@@ -266,7 +266,7 @@ function buildCandidateReviewRslt(result,statusstr){
  else if(gblStatus == "total")
 	  titleStr="Total Open Posts";
  else if(gblStatus =="goPassed")
-	  titleStr="Total G.O Passed Posts";
+	  titleStr="Total G.O Issued Posts";
 	  
  if(statusstr != "Total"){
 	//str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
@@ -302,8 +302,10 @@ function buildCandidateBoardRslt(result,departmentId,status){
 	   str+='<h4 class="headingColor text-capital"><u>board / corporation</u></h4>';
 	    var titleStr="Ready to Finalyze Posts";
 		if(gblStatus=="finaliZed")
-		titleStr="Ready to Finalyze Posts";
- 
+			titleStr="Ready to Finalyze Posts";
+		else if(gblStatus=="goPassed")
+			titleStr="G.O Issued Posts";
+
 	   if(status != "Total"){
 	   //str+='<p class="font_13 text-danger pull-right"><small>Ready For Final Review</small></p>';
 	   }
@@ -368,7 +370,9 @@ function buildCandidatePositionRslt(result,departmentId,boardId,status){
 var str = '';
  var titleStr="Ready to Finalyze Posts";
 		if(gblStatus=="finaliZed")
-		titleStr="Ready to Finalyze Posts";
+			titleStr="Ready to Finalyze Posts";
+		else if(gblStatus=="goPassed")
+			titleStr="G.O Issued Posts";
 	str+='<div role="tabpane'+boardId+'" class="tab-pane active pad_15" id="board'+boardId+'">';
 		 str+='<h4 class="headingColor text-capital"><u>positions</u></h4>';
 		 if(status != "Total"){
@@ -396,6 +400,7 @@ var str = '';
 							}
 						str+='</div>';  
 					str+='</div>';
+					if(gblStatus=="finaliZed"){
 						if(gblStatus != "Total")
 						{
 							str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 pad_right0">';
@@ -407,6 +412,7 @@ var str = '';
 								str+='</div>';
 							str+='</div>';
 						}
+					}
 							//str+='<img src="dist/img/Icon1.png"/> - ';
 			   str+=' </div>';
 			str+='</li>'; 
@@ -712,7 +718,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 						str+='</div>';
 					str+='</div>';
 					if(result.subList[i].isPrefered == "Y"){
-						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
+						totalWishListCount = parseInt(totalWishListCount)+parseInt(1);//11111
 						str+='<img src="dist/nominatedImages/Icon4.png" class="wishListCls" id="wishListId'+i+'" attr_remark="Y" attr_final_id="'+result.subList[i].nominatedPostFinalId+'" style="height:28px;cursor:pointer;"/> ';
 					}
 					else{
@@ -770,35 +776,38 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 }
 
 $(document).on("click",".wishListCls",function(){
-	var postFinalId = $(this).attr("attr_final_id");
-	var remark = $(this).attr("attr_remark");
-	var id = $(this).attr("id");
-	
-	var jsObj={
-		postFinalId : postFinalId,
-		remark : remark
-	}
-	$.ajax({
-          type:'GET',
-          url: 'updateWishListForCandidateAction.action',
-          dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
-   }).done(function(result){
-	   if(result != null && result == 'success'){
-		   if(remark == 'Y'){
-			    $("#"+id).attr("src","dist/nominatedImages/Icon7.png");
-			    $("#"+id).attr("attr_remark","N");
-				totalWishListCount = parseInt(totalWishListCount)-parseInt(1);
-				$("#wishListCountId").html(totalWishListCount);
-		   }
-		   else if(remark == 'N'){
-			   $("#"+id).attr("src","dist/nominatedImages/Icon4.png");
-			   $("#"+id).attr("attr_remark","Y");
-			   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
-				$("#wishListCountId").html(totalWishListCount);
-		   }
+
+	if(gblStatus != 'finaliZed' && gblStatus != 'goPassed'){
+		var postFinalId = $(this).attr("attr_final_id");
+		var remark = $(this).attr("attr_remark");
+		var id = $(this).attr("id");
+		
+		var jsObj={
+			postFinalId : postFinalId,
+			remark : remark
 		}
-	});
+		$.ajax({
+			  type:'GET',
+			  url: 'updateWishListForCandidateAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result != null && result == 'success'){
+			   if(remark == 'Y'){
+					$("#"+id).attr("src","dist/nominatedImages/Icon7.png");
+					$("#"+id).attr("attr_remark","N");
+					totalWishListCount = parseInt(totalWishListCount)-parseInt(1);
+					$("#wishListCountId").html(totalWishListCount);
+			   }
+			   else if(remark == 'N'){
+				   $("#"+id).attr("src","dist/nominatedImages/Icon4.png");
+				   $("#"+id).attr("attr_remark","Y");
+				   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
+					$("#wishListCountId").html(totalWishListCount);
+			   }
+			}
+		});
+	}
 });
 
 $(document).on("click",".saveGoForCandidateCls",function(){
@@ -1398,7 +1407,9 @@ $(document).on("click",".boardHrfCls",function(){
 			alert("Something goes wrong, Please try again....");
 		}
 	}
-	var strglob = ' '
+
+
+	var strglob = ' ';
 	strglob+='<div class="updateDropDownArrow ">';
 		strglob+='<div class="row ">';
 		strglob+='<form name="goSubmitApplicationForCandi" id="goSubmitApplicationForCandi"  method="post" enctype="multipart/form-data">';
