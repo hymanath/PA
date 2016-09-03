@@ -81,7 +81,7 @@ public class PartyMeetingStatus {
 		this.insertedTime = insertedTime;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="party_meeting_id")
+	@JoinColumn(name="party_meeting_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public PartyMeeting getPartyMeeting() {
