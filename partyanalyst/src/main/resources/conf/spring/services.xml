@@ -3429,5 +3429,9 @@
 	  
 	</bean>
 	
+	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">
+		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+	</bean>
+	
 </beans>		
 	
