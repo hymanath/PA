@@ -11,7 +11,7 @@ $(document).ready(function(){
 		var jsObj={
 			startDate: '' ,
 			endDate: '',
-			state:globalState
+			state:"ap"
 		}
 		$.ajax({
 			type : 'POST',
@@ -76,7 +76,7 @@ function getScaleBasedPerformanceCohort(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:globalState
+			state:"ap"
 		}
 	    $.ajax({
 			type : 'POST',
@@ -136,7 +136,7 @@ function getCandidateOverAllPerformanceCohort(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:globalState
+			state:"ap"
 		}
 	    $.ajax({
 			type : 'POST',
@@ -178,7 +178,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 								str+='<div class="scroller'+i+'">';
 									str+='<table class="table tableDebates m_top10 dataTableSorting">';
 										str+='<thead>';
-											str+='<th>Name</th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
+											str+='<th>Name</th><th>Debates </th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
 										str+='</thead>';
 										str+='<tbody>';
 											for(var j in result[i].coreDebateVOList){
@@ -189,10 +189,14 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													  canidateName = getTitleContent(result[i].coreDebateVOList[j].coreDebateVOList[0].candidateName,20);
 													}
 													//str+='<td class="text-capitalize">'+canidateName+'</td>';
-													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+' <p class="text-muted">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+' - Debates </p></td>';
-													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
+													str+='<td class="text-capitalize">'+canidateName.toUpperCase()+'</td>';
 													str+='<td>';
-														str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName.split("(")[0].toUpperCase()+'</p>';
+															str+='<span class="">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</span>';
+													str+='</td>';
+													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
+													
+													str+='<td>';
+														/* str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName.split("(")[0].toUpperCase()+'</p>'; */
 														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs">'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'</span>';
 													str+='</td>';
 													}
@@ -242,7 +246,7 @@ function getChannelAndPartyWiseDetails(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:globalState
+			state:"ap"
 		}
 	    $.ajax({
 			type : 'POST',
@@ -295,7 +299,7 @@ function getSpokesPersonWiseDebate(searchType){
 			startDate: ' ' ,
 			endDate: ' ',
 			searchType:searchType,
-			state:globalState
+			state:"ap"
 		}
 	    $.ajax({
 			type : 'POST',
@@ -407,7 +411,7 @@ function getRoleBasedPerformanceCohort(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:globalState
+			state:"ap"
 		}
 	    $.ajax({
 			type : 'POST',
