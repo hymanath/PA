@@ -1688,7 +1688,7 @@
 		<property name="coreDashboardService1" ref="coreDashboardService1" />
 		<property name="coreDashboardMainService" ref="coreDashboardMainService" />
 		<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
-		<property name="newsCoreDashboardService" ref="newsCoreDashboardService" />
+		<property name="newsCoreDashBoardService" ref="newsCoreDashBoardService" />
 	</bean>
 	
 	<bean id="leadersBirthdayAction" class="com.itgrids.partyanalyst.web.action.LeadersBirthdayAction" singleton="false">
