@@ -2126,7 +2126,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,null,null,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(levelWiseApplicatinStatusDetailsList)){
 				for (Object[] param : levelWiseApplicatinStatusDetailsList) {
-						NominatedPostVO vo = applicationsStatusDtlsMap.get("READY TO SHORT LIST".trim());//"RUNNING"
+						NominatedPostVO vo = applicationsStatusDtlsMap.get("READY TO SHORT LIST".trim());//""
 						if(vo != null){
 							vo.setTotalPositions(appliedStatusPostsCount);
 							vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -3398,8 +3398,320 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
+			List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
+			List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(boardLevelId,null,null,statusList,null);
+			Map<Long,Map<String,Long>> movedPostsStatusDetailsMap = new HashMap<Long, Map<String,Long>>(0);
+			if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
+				for (Object[] param : levelWiseAvailablePostsList) {
+					String statusStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+					Long memberId = commonMethodsUtilService.getLongValueForObject(param[7]);
+					Long count = commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+						Map<String,Long> posionwiseMovedMap = new HashMap<String, Long>(0);
+						 if(statusStr.trim().equalsIgnoreCase("2")){// nominatedPostStatusid
+							
+							Long filledCount =0L;
+							if(movedPostsStatusDetailsMap.get(memberId) != null){
+								posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+								if(posionwiseMovedMap.get("READY FOR FINAL REVIEW") != null)
+									filledCount = posionwiseMovedMap.get("READY FOR FINAL REVIEW");
+							}
+							
+							filledCount = filledCount+count;
+							posionwiseMovedMap.put("READY FOR FINAL REVIEW", filledCount);
+							movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+						}
+						else if(statusStr.trim().equalsIgnoreCase("3")){// nominatedPostStatusid
+								
+								Long filledCount =0L;
+								if(movedPostsStatusDetailsMap.get(memberId) != null){
+									posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+									if(posionwiseMovedMap.get("FINALIZED") != null)
+										filledCount = posionwiseMovedMap.get("FINALIZED");
+								}
+								
+								filledCount = filledCount+count;
+								posionwiseMovedMap.put("FINALIZED", filledCount);
+								movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+						}
+						else if(statusStr.trim().equalsIgnoreCase("4")){//nominatedPostStatusid
+								Long filledCount =0L;
+								if(movedPostsStatusDetailsMap.get(memberId) != null){
+									posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+									if(posionwiseMovedMap.get("GO ISSUED / COMPLETED") != null)
+										filledCount = posionwiseMovedMap.get("GO ISSUED / COMPLETED");
+								}
+								
+								filledCount = filledCount+count;
+								posionwiseMovedMap.put("GO ISSUED / COMPLETED", filledCount);
+								movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+						}
+				}
+			}
 			
 			
+			List<Object[]> totalDeptsNCorpNDesig = nominatedPostDAO.getTotalCorpIdsAndBoardsIdsAndPositionsIds(boardLevelId,2L,null,null);
+			Map<String,Long> totalPostMemeberCountMap = new HashMap<String, Long>(0);
+			if(commonMethodsUtilService.isListOrSetValid(totalDeptsNCorpNDesig)){
+				for (Object[] param : totalDeptsNCorpNDesig) {
+					Long maxCount = commonMethodsUtilService.getLongValueForObject(param[0]);
+					totalPostMemeberCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]).toString().trim(), maxCount);
+				}
+			}
+			
+
+		
+			List<Object[]> levelPostCountList = nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDetalsNew(boardLevelId,null,null,null,"running");	
+			Long runningStatusPostsCount =0L;
+			Map<Long,Long> runningPostsMap  = new HashMap<Long, Long>(0);
+			
+			if(commonMethodsUtilService.isListOrSetValid(levelPostCountList)){
+				for (Object[] param : levelPostCountList) {
+					
+					Long applinCount  =  commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long memberId  =  commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+						Map<String,Long> movedPostsStatusMap = movedPostsStatusDetailsMap.get(memberId) != null ? movedPostsStatusDetailsMap.get(memberId):new HashMap<String, Long>(0);
+						
+						Long readyToFinalReviewPostsCount = movedPostsStatusMap.get("READY FOR FINAL REVIEW") != null?movedPostsStatusMap.get("READY FOR FINAL REVIEW"):0L;
+						Long finalyzedPostsCount = movedPostsStatusMap.get("FINALIZED") != null?movedPostsStatusMap.get("FINALIZED"):0L;
+						Long G_O_passedPostsCount = movedPostsStatusMap.get("GO ISSUED / COMPLETED") != null?movedPostsStatusMap.get("GO ISSUED / COMPLETED"):0L;
+						
+						Long almostFilledPosts = readyToFinalReviewPostsCount+finalyzedPostsCount+G_O_passedPostsCount;
+						Long maxPostsCount = totalPostMemeberCountMap.get(memberId.toString().trim()) != null ?  totalPostMemeberCountMap.get(memberId.toString().trim()) :0L ;
+						Long runningPostsCount =0L;
+						
+						if(maxPostsCount>almostFilledPosts){// available posts are there
+							Long openPostsCount = maxPostsCount-almostFilledPosts;
+							if(openPostsCount>applinCount){// applications count less than open posts
+								runningPostsCount = applinCount;
+							}else if(openPostsCount<=applinCount){// open posts count less than applications count
+								runningPostsCount = openPostsCount;
+							}
+						}
+						runningStatusPostsCount = runningStatusPostsCount+runningPostsCount;
+						runningPostsMap.put(memberId, runningPostsCount);
+				}
+			}
+			if(statusType != null && statusType.trim().equalsIgnoreCase("running"))
+			{
+				if(commonMethodsUtilService.isMapValid(runningPostsMap)){
+					List<Object[]> memberDeptBoardList = nominatedPostMemberDAO.getTotalBoardsAndCorpIdsByMembrIdsList(new ArrayList<Long>(runningPostsMap.keySet()));
+					//Map<Long,Map<Long,Map<Long,Map<Long,Long>>>> memberDeptBoardPositionCountMap = new HashMap<Long, Map<Long,Map<Long,Map<Long,Long>>>>(0);
+					Map<Long,Map<Long,Long>> memberDeptBoardMap = new HashMap<Long, Map<Long,Long>>(0);
+					
+					Map<Long,Long> deptWiseOpenPostsMap = new HashMap<Long,Long>(0);
+					Map<Long,Long> deptWiseAppliedApplnMap = new HashMap<Long,Long>(0);
+					
+					Map<Long,Long> boardWiseOpenPostsMap = new HashMap<Long,Long>(0);
+					Map<Long,Long> boardWiseAppliedApplnMap = new HashMap<Long,Long>(0);
+					
+					if(commonMethodsUtilService.isListOrSetValid(memberDeptBoardList)){
+						for (Object[] param : memberDeptBoardList) {
+							Long memberId = commonMethodsUtilService.getLongValueForObject(param[0]);
+							Long deptId = commonMethodsUtilService.getLongValueForObject(param[1]);
+							//String deptStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+							Long boardId = commonMethodsUtilService.getLongValueForObject(param[3]);
+							//String boardStr = commonMethodsUtilService.getStringValueForObject(param[4]);
+
+							
+							Map<Long,Long> deptBoardIdssMap = new HashMap<Long, Long>();
+							if(memberDeptBoardMap.get(deptId) != null){
+								deptBoardIdssMap = memberDeptBoardMap.get(deptId);
+							}
+							deptBoardIdssMap.put(deptId, boardId);
+							memberDeptBoardMap.put(memberId, deptBoardIdssMap);
+							
+							
+							// present open posts in dept
+							Long availablePstsCount = 0L;
+							if(deptWiseOpenPostsMap.get(deptId) != null){
+								availablePstsCount = deptWiseOpenPostsMap.get(deptId);
+							}
+							
+							availablePstsCount = availablePstsCount+(runningPostsMap.get(memberId) != null ? runningPostsMap.get(memberId):0L);
+							deptWiseOpenPostsMap.put(deptId, availablePstsCount);
+							
+							// present applied applications count in dept
+							Long appliedApplnCount = 0L;
+							if(deptWiseAppliedApplnMap.get(deptId) != null){
+								appliedApplnCount = deptWiseAppliedApplnMap.get(deptId);
+							}
+							
+							appliedApplnCount = appliedApplnCount+(runningPostsMap.get(memberId) != null ? runningPostsMap.get(memberId):0L);
+							deptWiseAppliedApplnMap.put(deptId, appliedApplnCount);
+							
+							
+							// present open posts in board
+							Long availableBorardPstsCount = 0L;
+							if(boardWiseOpenPostsMap.get(boardId) != null){
+								availableBorardPstsCount = boardWiseOpenPostsMap.get(boardId);
+							}
+							
+							availableBorardPstsCount = availableBorardPstsCount+(runningPostsMap.get(memberId) != null ? runningPostsMap.get(memberId):0L);
+							boardWiseOpenPostsMap.put(boardId, availableBorardPstsCount);
+							
+							// present applied applications count  in board
+							Long appliedBoardApplnCount = 0L;
+							if(boardWiseAppliedApplnMap.get(boardId) != null){
+								appliedBoardApplnCount = boardWiseAppliedApplnMap.get(boardId);
+							}
+							appliedBoardApplnCount = appliedBoardApplnCount+(runningPostsMap.get(memberId) != null ? runningPostsMap.get(memberId):0L);
+							boardWiseAppliedApplnMap.put(boardId, appliedBoardApplnCount);
+						}
+					}
+					
+					if(commonMethodsUtilService.isMapValid(deptMap)){
+						for (Long deptsId : deptMap.keySet()) {
+							IdNameVO deptVO = deptMap.get(deptsId);
+							if(deptVO != null){
+								deptVO.setAvailableCount(deptWiseOpenPostsMap.get(deptsId));
+								deptVO.setApplicationsCount(deptWiseAppliedApplnMap.get(deptsId));
+								
+								if(commonMethodsUtilService.isListOrSetValid(deptVO.getIdnameList())){
+									for (IdNameVO boardVO : deptVO.getIdnameList()) {
+										boardVO.setAvailableCount(boardWiseOpenPostsMap.get(boardVO.getId()));
+										boardVO.setApplicationsCount(boardWiseAppliedApplnMap.get(boardVO.getId()));
+									}
+								}
+								finalList.add(deptVO);
+							}
+						}
+					}
+				}
+			}
+			else if(statusType != null && statusType.trim().equalsIgnoreCase("notyet"))
+			{
+				List<Object[]> levelWiseAppliedPostCountList = nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDetalsNew(boardLevelId,null,null,null,"applied");	
+				Long appliedStatusPostsCount =0L;
+				Map<Long,Long> appliedPostsMap = new HashMap<Long, Long>();
+				Map<Long,Long> appliedApplciationsMap = new HashMap<Long, Long>();
+				
+				if(commonMethodsUtilService.isListOrSetValid(levelWiseAppliedPostCountList)){
+					for (Object[] param : levelWiseAppliedPostCountList) {
+						
+						Long applinCount  =  commonMethodsUtilService.getLongValueForObject(param[2]);
+						Long memberId  =  commonMethodsUtilService.getLongValueForObject(param[3]);
+						
+						Map<String,Long> movedPostsStatusMap = movedPostsStatusDetailsMap.get(memberId) != null ? movedPostsStatusDetailsMap.get(memberId):new HashMap<String, Long>(0);
+							
+							Long readyToFinalReviewPostsCount = movedPostsStatusMap.get("READY FOR FINAL REVIEW") != null?movedPostsStatusMap.get("READY FOR FINAL REVIEW"):0L;
+							Long finalyzedPostsCount = movedPostsStatusMap.get("FINALIZED") != null?movedPostsStatusMap.get("FINALIZED"):0L;
+							Long G_O_passedPostsCount = movedPostsStatusMap.get("GO ISSUED / COMPLETED") != null?movedPostsStatusMap.get("GO ISSUED / COMPLETED"):0L;
+							
+							
+							Long almostFilledPosts = readyToFinalReviewPostsCount+finalyzedPostsCount+G_O_passedPostsCount;
+							Long maxPostsCount = totalPostMemeberCountMap.get(memberId.toString().trim()) != null ?  totalPostMemeberCountMap.get(memberId.toString().trim()) :0L ;
+							Long appliedPostsCount =0L;
+							
+							if(maxPostsCount>almostFilledPosts){// available posts are there
+								Long runnngPostsCount = runningPostsMap.get(memberId) != null?runningPostsMap.get(memberId):0L;
+								Long openPostsCount = maxPostsCount-almostFilledPosts;
+								openPostsCount = openPostsCount-runnngPostsCount;
+								if(openPostsCount>applinCount){// applications count less than open posts
+									appliedPostsCount = openPostsCount;
+								}else if(openPostsCount<=applinCount){// open posts count less than applications count
+									appliedPostsCount = openPostsCount;
+								}
+							}
+							
+							appliedStatusPostsCount = appliedStatusPostsCount+appliedPostsCount;
+							appliedPostsMap.put(memberId, appliedPostsCount);
+							appliedApplciationsMap.put(memberId, applinCount);
+					}
+				}
+				
+				
+				if(commonMethodsUtilService.isMapValid(appliedPostsMap)){
+					List<Object[]> memberDeptBoardList = nominatedPostMemberDAO.getTotalBoardsAndCorpIdsByMembrIdsList(new ArrayList<Long>(appliedPostsMap.keySet()));
+					//Map<Long,Map<Long,Map<Long,Map<Long,Long>>>> memberDeptBoardPositionCountMap = new HashMap<Long, Map<Long,Map<Long,Map<Long,Long>>>>(0);
+					Map<Long,Map<Long,Long>> memberDeptBoardMap = new HashMap<Long, Map<Long,Long>>(0);
+					
+					Map<Long,Long> deptWiseOpenPostsMap = new HashMap<Long,Long>(0);
+					Map<Long,Long> deptWiseAppliedApplnMap = new HashMap<Long,Long>(0);
+					
+					Map<Long,Long> boardWiseOpenPostsMap = new HashMap<Long,Long>(0);
+					Map<Long,Long> boardWiseAppliedApplnMap = new HashMap<Long,Long>(0);
+					
+					if(commonMethodsUtilService.isListOrSetValid(memberDeptBoardList)){
+						for (Object[] param : memberDeptBoardList) {
+							Long memberId = commonMethodsUtilService.getLongValueForObject(param[0]);
+							Long deptId = commonMethodsUtilService.getLongValueForObject(param[1]);
+						//	String deptStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+							Long boardId = commonMethodsUtilService.getLongValueForObject(param[3]);
+						//	String boardStr = commonMethodsUtilService.getStringValueForObject(param[4]);
+							
+							Map<Long,Long> deptBoardIdssMap = new HashMap<Long, Long>();
+							if(memberDeptBoardMap.get(deptId) != null){
+								deptBoardIdssMap = memberDeptBoardMap.get(deptId);
+							}
+							deptBoardIdssMap.put(deptId, boardId);
+							memberDeptBoardMap.put(memberId, deptBoardIdssMap);
+							
+							
+							// present open posts in dept
+							Long availablePstsCount = 0L;
+							if(deptWiseOpenPostsMap.get(deptId) != null){
+								availablePstsCount = deptWiseOpenPostsMap.get(deptId);
+							}
+							
+							availablePstsCount = availablePstsCount+(appliedPostsMap.get(memberId) != null ? appliedPostsMap.get(memberId):0L);
+							deptWiseOpenPostsMap.put(deptId, availablePstsCount);
+							
+							// present applied applications count in dept
+							Long appliedApplnCount = 0L;
+							if(deptWiseAppliedApplnMap.get(deptId) != null){
+								appliedApplnCount = deptWiseAppliedApplnMap.get(deptId);
+							}
+							
+							appliedApplnCount = appliedApplnCount+(appliedApplciationsMap.get(memberId) != null ? appliedApplciationsMap.get(memberId):0L);
+							deptWiseAppliedApplnMap.put(deptId, appliedApplnCount);
+							
+							
+							// present open posts in board
+							Long availableBorardPstsCount = 0L;
+							if(boardWiseOpenPostsMap.get(boardId) != null){
+								availableBorardPstsCount = boardWiseOpenPostsMap.get(boardId);
+							}
+							
+							availableBorardPstsCount = availableBorardPstsCount+(appliedPostsMap.get(memberId) != null ? appliedPostsMap.get(memberId):0L);
+							boardWiseOpenPostsMap.put(boardId, availableBorardPstsCount);
+							
+							// present applied applications count  in board
+							Long appliedBoardApplnCount = 0L;
+							if(boardWiseAppliedApplnMap.get(boardId) != null){
+								appliedBoardApplnCount = boardWiseAppliedApplnMap.get(boardId);
+							}
+							appliedBoardApplnCount = appliedBoardApplnCount+(appliedApplciationsMap.get(memberId) != null ? appliedApplciationsMap.get(memberId):0L);
+							boardWiseAppliedApplnMap.put(boardId, appliedBoardApplnCount);
+							
+							
+						}
+						
+					}
+					
+					if(commonMethodsUtilService.isMapValid(deptMap)){
+						for (Long deptsId : deptMap.keySet()) {
+							IdNameVO deptVO = deptMap.get(deptsId);
+							if(deptVO != null){
+								deptVO.setAvailableCount(deptWiseOpenPostsMap.get(deptsId));
+								deptVO.setApplicationsCount(deptWiseAppliedApplnMap.get(deptsId));
+								
+								if(commonMethodsUtilService.isListOrSetValid(deptVO.getIdnameList())){
+									for (IdNameVO boardVO : deptVO.getIdnameList()) {
+										boardVO.setAvailableCount(boardWiseOpenPostsMap.get(boardVO.getId()));
+										boardVO.setApplicationsCount(boardWiseAppliedApplnMap.get(boardVO.getId()));
+									}
+								}
+								
+								finalList.add(deptVO);
+							}
+						}
+					}
+					
+					
+				}
+			}
 			/*if(deptBoardObj !=null && deptBoardObj.size()>0){
 				for (Object[] obj : deptBoardObj) {
 				
@@ -3431,7 +3743,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				//System.out.println(finalList);
 				
 			}*/
-			Map<Long,Long> deptPosMap = new LinkedHashMap<Long, Long>();
+			/*Map<Long,Long> deptPosMap = new LinkedHashMap<Long, Long>();
 			Map<Long,List<Long>> deptAvailableBoardsMap = new LinkedHashMap<Long, List<Long>>();
 			Map<Long,Map<Long,Long>> deptBrdPosMap = new LinkedHashMap<Long, Map<Long,Long>>();
 			Map<Long,List<Long>> deptBrdApplMap = new LinkedHashMap<Long,List<Long>>();
@@ -3660,7 +3972,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			
-			Collections.sort(finalList,sortByName);
+			Collections.sort(finalList,sortByName);*/
 			
 			//Any Board Scenario Of A department
 		/*	
@@ -4276,7 +4588,58 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			  List<Long> townList = new ArrayList<Long>();
 			  List<Long> divisonList = new ArrayList<Long>();			  
 			  
-			  
+			  List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
+				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(LocationLevelId,null,null,statusList,null);
+				Map<Long,Map<String,Long>> movedPostsStatusDetailsMap = new HashMap<Long, Map<String,Long>>(0);
+				if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
+					for (Object[] param : levelWiseAvailablePostsList) {
+						String statusStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+						Long memberId = commonMethodsUtilService.getLongValueForObject(param[7]);
+						Long count = commonMethodsUtilService.getLongValueForObject(param[3]);
+						
+							Map<String,Long> posionwiseMovedMap = new HashMap<String, Long>(0);
+							 if(statusStr.trim().equalsIgnoreCase("2")){// nominatedPostStatusid
+								
+								Long filledCount =0L;
+								if(movedPostsStatusDetailsMap.get(memberId) != null){
+									posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+									if(posionwiseMovedMap.get("READY FOR FINAL REVIEW") != null)
+										filledCount = posionwiseMovedMap.get("READY FOR FINAL REVIEW");
+								}
+								
+								filledCount = filledCount+count;
+								posionwiseMovedMap.put("READY FOR FINAL REVIEW", filledCount);
+								movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+							}
+							else if(statusStr.trim().equalsIgnoreCase("3")){// nominatedPostStatusid
+									
+									Long filledCount =0L;
+									if(movedPostsStatusDetailsMap.get(memberId) != null){
+										posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+										if(posionwiseMovedMap.get("FINALIZED") != null)
+											filledCount = posionwiseMovedMap.get("FINALIZED");
+									}
+									
+									filledCount = filledCount+count;
+									posionwiseMovedMap.put("FINALIZED", filledCount);
+									movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+							}
+							else if(statusStr.trim().equalsIgnoreCase("4")){//nominatedPostStatusid
+									Long filledCount =0L;
+									if(movedPostsStatusDetailsMap.get(memberId) != null){
+										posionwiseMovedMap = movedPostsStatusDetailsMap.get(memberId);
+										if(posionwiseMovedMap.get("GO ISSUED / COMPLETED") != null)
+											filledCount = posionwiseMovedMap.get("GO ISSUED / COMPLETED");
+									}
+									
+									filledCount = filledCount+count;
+									posionwiseMovedMap.put("GO ISSUED / COMPLETED", filledCount);
+									movedPostsStatusDetailsMap.put(memberId, posionwiseMovedMap);
+							}
+					}
+				}
+				
+				//Map<Long,Long> memberwisePostsCountMap = new HashMap<Long, Long>(0);
 			  if(LocationLevelId.equals(5l)){
 			        if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 			          for (Long manTowDivId : lctnLevelValueList) {
@@ -4296,30 +4659,38 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			        if(mandalList !=null && mandalList.size()>0){
 			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId,status);
 			        	 List<Object[]> mandalWishList = nominatedPostFinalDAO.getWishListCount(5l, mandalList, departmentId, boardId);
-					     finalMap = setDataToMapForFinalReview(mandalObjList,finalMap);
+					     finalMap = setDataToMapForFinalReview(mandalObjList,finalMap,movedPostsStatusDetailsMap,status);
 					     if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					    	 setWishListCountToVO(mandalWishList,finalMap);
 			        }
 			        if(townList != null && townList.size() > 0){
 			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId,status);
-					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap);
+					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap,movedPostsStatusDetailsMap,status);
 					      List<Object[]> townWishList = nominatedPostFinalDAO.getWishListCount(6l, townList, departmentId, boardId);  
 					      if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					    	  setWishListCountToVO(townWishList,finalMap);
 			        }
 			        if(divisonList != null && divisonList.size()>0){
 			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId,status);
-					        finalMap = setDataToMapForFinalReview(divObjList,finalMap);
+					        finalMap = setDataToMapForFinalReview(divObjList,finalMap,movedPostsStatusDetailsMap,status);
 					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, divisonList, departmentId, boardId); 
 					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					        	setWishListCountToVO(divWishList,finalMap);
 			        }
 			  }else{
 				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId,status);
-				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap);
+				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap,movedPostsStatusDetailsMap,status);
 				  List<Object[]> returnWishList = nominatedPostFinalDAO.getWishListCount(LocationLevelId, lctnLevelValueList, departmentId, boardId);
 				  if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					  setWishListCountToVO(returnWishList,finalMap);
+			  }
+				
+			  for (Long  deptId: finalMap.keySet()) {
+				  IdNameVO deptVo = finalMap.get(deptId);
+				  movedPostsStatusDetailsMap.get(deptVo.getMemberId());
+				  	if(status != null && status.trim().equalsIgnoreCase("finalReview")){
+				  		
+				  	}
 			  }
 			  
 			  if(finalMap !=null && finalMap.size() > 0){
@@ -4333,7 +4704,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		  return fnlCnddtCuntLst;
 	}
 
-	public Map<Long,IdNameVO> setDataToMapForFinalReview(List<Object[]> rtrnObjList,Map<Long,IdNameVO> finalMap){
+	public Map<Long,IdNameVO> setDataToMapForFinalReview(List<Object[]> rtrnObjList,Map<Long,IdNameVO> finalMap,Map<Long,Map<String,Long>> movedPostsStatusDetailsMap,String status){
 		try{
 			if(rtrnObjList != null && !rtrnObjList.isEmpty()){
 		    	for (Object[] obj : rtrnObjList) {
@@ -4347,7 +4718,22 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						 vo.setApplicationStatus(obj[3] != null ? obj[3].toString() : "");
 						 finalMap.put((Long)obj[0], vo);
 		    		}
-		   		   vo.setCount(vo.getCount() +( obj[4] != null ? (Long)obj[4]:0l));
+		    		if(movedPostsStatusDetailsMap.get(obj[5] != null ? (Long)obj[5]:0l) != null){
+		    			Map<String,Long> statusWiseMap = movedPostsStatusDetailsMap.get(obj[5] != null ? (Long)obj[5]:0l);
+		    			Long count =0L;
+		    			if(status.equalsIgnoreCase("finalReview"))
+		    				count = statusWiseMap.get("READY FOR FINAL REVIEW");
+		    			else if(status.equalsIgnoreCase("finaliZed"))
+		    				count = statusWiseMap.get("FINALIZED");
+		    			else if(status.equalsIgnoreCase("goPassed"))
+		    				count = statusWiseMap.get("GO ISSUED / COMPLETED");
+		    			
+		    			count = count!= null?count:0L;
+		    			
+		    			vo.setCount(vo.getCount() +count);
+		    		}else{
+		    			vo.setCount(vo.getCount() +( obj[4] != null ? (Long)obj[4]:0l));
+		    		}
 				}
 		    }
 			
@@ -4701,7 +5087,11 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						if(finalIds !=null){
 							finalCount = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);	
 							for (Long appliId : finalIds) {
-								savingNominatedPostApplicationHistoryDetails(nominatedPostApplicationDAO.get(appliId),6L,userId);
+								try {
+									savingNominatedPostApplicationHistoryDetails(nominatedPostApplicationDAO.get(appliId),6L,userId);
+								} catch (Exception e) {
+									LOG.error("Exception raised at updateNominatedPostStatusDetails() method of NominatedPostProfileService when application model status changing.", e);
+								}
 							}
 						}
 						
