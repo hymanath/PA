@@ -1,13 +1,61 @@
 	
+	function getLevelWiseBasicCommitteesArray(){
+		
+		var levelWiseBasicCommitteesArray = new Array();
+		var jsObj={committeeLevelId:"",basicCommitteeIds:""};
+		
+		//district level
+		var districtBasicCommitteeIds =[];
+		$(".districtCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				districtBasicCommitteeIds.push( $(this).val() );
+			}
+		}); 
+		var districtCommitteeLevelObject = new Object();
+		districtCommitteeLevelObject.committeeLevelId = 11;
+		districtCommitteeLevelObject.basicCommitteeIds = districtBasicCommitteeIds;
+		levelWiseBasicCommitteesArray.push(districtCommitteeLevelObject);
+		
+		//mandal/town/division level.
+		var mandalBasicCommitteeIds =[];
+		$(".mandalCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				mandalBasicCommitteeIds.push( $(this).val() );
+			}
+		}); 
+		var mandalCommitteeLevelObject = new Object();
+		mandalCommitteeLevelObject.committeeLevelId = 5;
+		mandalCommitteeLevelObject.basicCommitteeIds = mandalBasicCommitteeIds;
+		levelWiseBasicCommitteesArray.push(mandalCommitteeLevelObject);
+		
+		//village/ward level.
+		var villageBasicCommitteeIds =[];
+		$(".villageCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				villageBasicCommitteeIds.push( $(this).val() );
+			}
+		}); 
+		var villageCommitteeLevelObject = new Object();
+		villageCommitteeLevelObject.committeeLevelId = 6;
+		villageCommitteeLevelObject.basicCommitteeIds = villageBasicCommitteeIds;
+		levelWiseBasicCommitteesArray.push(villageCommitteeLevelObject);
+		
+		
+		return levelWiseBasicCommitteesArray;
+	}
+	
 	function getCommitteesBasicCountReport(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	    var state = globalState;
         var dateString = $("#dateRangeId").val();
+		
+		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+		
 		var jsObj ={  userAccessLevelId:globalUserAccessLevelId,
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  state:state,
-					  basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
+					  levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					  dateString : dateString
 					}
 		
@@ -53,6 +101,7 @@
 		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var state = globalState;
        var dateString = $("#dateRangeId").val();
+	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 		
 		var jsObj ={  
 			          activityMemberId : globalActivityMemberId,
@@ -61,7 +110,7 @@
 					  userAccessLevelValuesArray:globalUserAccessLevelValues,
 					  
 					  state:state,
-					  basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
+					  levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					  dateString : dateString
  			         
 					}
@@ -85,11 +134,12 @@
 		var state = globalState;
 	   
        var dateString = $("#dateRangeId").val();
-		
+	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   
 		var jsObj ={ userAccessLevelId:globalUserAccessLevelId,
 					 userAccessLevelValuesArray:globalUserAccessLevelValues,
 					 state:state,
-					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
+					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					 dateString : dateString
 					}
 		
@@ -116,9 +166,10 @@
 		
 		var committeeStatus = 'all';
         var dateString = $("#dateRangeId").val();
+		var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 		
 		var jsObj ={tdpCommitteeLevelIdsClickedArray:tdpCommitteeLevelIdsClickedArray,
-					basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
+					levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
 					committeeStatus:committeeStatus,
 					userLocationLevelId:userLocationLevelId,
 					userLocationLevelValuesArray:userLocationLevelValuesArray,
@@ -158,15 +209,14 @@
      var parentActivityMemberId = globalActivityMemberId;
 	 var childUserTypeId = childUserTypeId;
 	 var date = $("#dateRangeId").val();
-	   
-	  var state = globalState;
-  	
+	 var state = globalState;
+  	 var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeId : childUserTypeId,
 				   dateString : date,
 				   state:state,
-				   basicCommitteeIdsArray:globalBasicCommitteeIdsArray
+				   levelWiseBasicCommitteesArray:levelWiseBasicCommitteesArray
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -178,7 +228,76 @@
 			buildgetSelectedChildUserTypeMembers(result);
 		});
 	}
-	
+	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
+	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   var state = globalState
+	   
+	   var dateString = $('#dateRangeId').val();
+	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   
+	   var jsObj ={  activityMemberId : activityMemberId,
+			         userTypeId : userTypeId,
+					 state:state,
+					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
+ 			         dateString :   dateString
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getDirectChildActivityMemberCommitteeDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#"+childActivityMemberId).html('');
+			buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
+		});
+	}
+	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
+	   $("#topPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   var state = globalState;
+	  
+	   var dateString = $('#dateRangeId').val();
+	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   var jsObj ={  activityMemberId : activityMemberId,
+					 state:state,
+					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
+ 			         dateString :   dateString
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getTopPoorPerformancecommitteesAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 $("#topPoorPerformanceDiv").html('');
+			buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
+			
+		});
+	}
+	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
+	   $("#topPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   var state = globalState;
+	   
+	   var dateString = $('#dateRangeId').val();
+	   var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
+	   var jsObj ={  activityMemberId : activityMemberId,
+					 state:state,
+					 levelWiseBasicCommitteesArray : levelWiseBasicCommitteesArray,
+ 			         dateString :   dateString
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getTopPoorCommitteeLocationsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 $("#topPoorLocationsDiv").html('');
+			buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType);
+			
+		});
+	}
 	function buildgetCommitteesBasicCountReport(result){
 		$("#basicCommitteeCountsDiv").html('');
 		var str='';
@@ -425,7 +544,7 @@
 									locationLevelNameArray.push(properName);
 									str+='<h4>'+properName+' Level</h4>';
 								}
-								str+='<div id="mainCommittees'+i+''+j+'" class="chartLi" style="display:inline-block;"></div>';
+								str+='<div id="levelWiseCommittesDetailed'+i+''+j+'" class="chartLi" style="display:inline-block;"></div>';
 								
 							
 						}
@@ -466,7 +585,7 @@
 							
 							if( levelWiseBasicCompletedPercArray.length !=0 && levelWiseBasicStartedPercArray.length !=0 && levelWiseBasicNotStartedPercArray.length !=0){
 								$(function () {
-								$('#mainCommittees'+i+''+j+'').highcharts({
+								$('#levelWiseCommittesDetailed'+i+''+j+'').highcharts({
 									colors: ['#F56800','#53BF8B','#66728C'],
 									chart: {
 										type: 'column',
@@ -509,7 +628,7 @@
 										}
 									},
 									tooltip: {
-										pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+										pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
 										shared: true
 									},
 									legend: {
@@ -526,7 +645,7 @@
 													if (this.y === 0) {
 														return null;
 													} else {
-														return Highcharts.numberFormat(this.y,0) + '%';
+														return Highcharts.numberFormat(this.y,1) + '%';
 													}
 												}
 											},
@@ -546,7 +665,7 @@
 								});
 							});	
 							}else{
-								$('#mainCommittees'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
+								$('#levelWiseCommittesDetailed'+i+''+j+'').html("<b>"+committeeName+"</b> (<span style='text-align:center'>No Data Available</span>)");
 							}
 							
 							
@@ -657,7 +776,7 @@
 								},
 								tooltip: {
 									headerFormat: '<b>{point.x}</b><br/>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
 									shared: true
 								},
 								plotOptions: {
@@ -669,7 +788,7 @@
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,0) + '%';
+													return Highcharts.numberFormat(this.y,1);
 												}
 											}
 										  
@@ -991,7 +1110,7 @@
 											if (this.y === 0) {
 												return null;
 											} else {
-												return Highcharts.numberFormat(this.y,0) + '%';
+												return Highcharts.numberFormat(this.y,1) + '%';
 											}
 										}
 									  
@@ -1001,7 +1120,7 @@
 
 							tooltip: {
 								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}%</b>'
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 							},
 
 							series: [{
@@ -1116,7 +1235,7 @@
 											if (this.y === 0) {
 												return null;
 											} else {
-												return Highcharts.numberFormat(this.y,0) + '%';
+												return Highcharts.numberFormat(this.y,1) + '%';
 											}
 										}
 									  
@@ -1126,7 +1245,7 @@
 
 							tooltip: {
 								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}%</b>'
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 							},
 
 							series: [{
@@ -1186,75 +1305,7 @@
 		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
 		getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
 	})
-	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
-	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state = globalState
-	   
-	   var dateString = $('#dateRangeId').val();
-	   
-	   var jsObj ={  activityMemberId : activityMemberId,
-			         userTypeId : userTypeId,
-					 state:state,
-					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
- 			         dateString :   dateString
-				  }
-	   
-	   	$.ajax({
-			type : 'POST',
-			url : 'getDirectChildActivityMemberCommitteeDetailsAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$("#"+childActivityMemberId).html('');
-			buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId);
-		});
-	}
-	function getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType){
-	   $("#topPoorPerformanceDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state = globalState;
-	  
-	   var dateString = $('#dateRangeId').val();
-	   
-	   var jsObj ={  activityMemberId : activityMemberId,
-					 state:state,
-					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
- 			         dateString :   dateString
-				  }
-	   
-	   	$.ajax({
-			type : 'POST',
-			url : 'getTopPoorPerformancecommitteesAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			 $("#topPoorPerformanceDiv").html('');
-			buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType);
-			
-		});
-	}
-	function getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType){
-	   $("#topPoorLocationsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   var state = globalState;
-	   
-	   var dateString = $('#dateRangeId').val();
-	   
-	   var jsObj ={  activityMemberId : activityMemberId,
-					 state:state,
-					 basicCommitteeIdsArray : globalBasicCommitteeIdsArray,
- 			         dateString :   dateString
-				  }
-	   
-	   	$.ajax({
-			type : 'POST',
-			url : 'getTopPoorCommitteeLocationsAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			 $("#topPoorLocationsDiv").html('');
-			buildTopPoorCommitteeLocations(result,selectedMemberName,selectedUserType);
-			
-		});
-	}
+	
 	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
 		$("#"+childActivityMemberId).html('');
 		var str ='';

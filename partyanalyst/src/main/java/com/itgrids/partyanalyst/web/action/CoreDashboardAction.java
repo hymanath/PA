@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
@@ -420,7 +423,41 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	///////////////////
+	///////////////////COREDASHBOARD COMMITTEES////////////////////////////////////
+	
+	
+	public Map<Long,List<Long>> getLevelWiseBasicCommittees(JSONObject jObj){
+		
+		Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = new HashMap<Long, List<Long>>(0);
+		try{
+			
+			JSONArray levelWiseBasicCommitteesArray = jObj.getJSONArray("levelWiseBasicCommitteesArray");
+			
+			if(levelWiseBasicCommitteesArray!=null &&  levelWiseBasicCommitteesArray.length()>0){
+				
+				for(int i=0;i<levelWiseBasicCommitteesArray.length();i++){
+					
+						JSONObject tdpCommitteeLevelObject= levelWiseBasicCommitteesArray.getJSONObject(i);
+						
+						JSONArray basicCommitteeIdsArray = tdpCommitteeLevelObject.getJSONArray("basicCommitteeIds");
+						
+						if(basicCommitteeIdsArray!=null && basicCommitteeIdsArray.length()>0){
+							
+							List<Long> committeeIds = new ArrayList<Long>();
+							
+							for(int j=0;j<basicCommitteeIdsArray.length();j++){
+								
+								committeeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(j)));
+							}
+							committeeLevelBasedCommitteeIdsMap.put(tdpCommitteeLevelObject.getLong("committeeLevelId"), committeeIds);
+						}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getLevelWiseBasicCommittees() method of CoreDashBoard", e);
+		}
+		return committeeLevelBasedCommitteeIdsMap;
+	}
 	public String getCommitteesBasicCountReport(){
 		
 		try{
@@ -437,18 +474,12 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			}
 			String state = jObj.getString("state");
 			
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
 			String dateString = jObj.getString("dateString");
 			
 			
-			committeeDataVO = coreDashboardMainService.getCommitteesBasicCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,dateString);
+			committeeDataVO = coreDashboardMainService.getCommitteesBasicCountReport(userAccessLevelId,userAccessLevelValues,state,committeeLevelBasedCommitteeIdsMap,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getCommitteesBasicCountReport() method of CoreDashBoard", e);
@@ -505,18 +536,12 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 			String state = jObj.getString("state");
 			
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
-			
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
+	
 			String dateString = jObj.getString("dateString");
 			
 			
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,basicCommitteeIds,dateString);
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseCommitteesCompletedCounts1(userId,activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString);
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
 		}
@@ -538,17 +563,11 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			}
 			String state = jObj.getString("state");
 			
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
 			String dateString = jObj.getString("dateString");
 			
-			committeeDataVOList = coreDashboardMainService.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,basicCommitteeIds,dateString);
+			committeeDataVOList = coreDashboardMainService.getLevelWiseBasicCommitteesCountReport(userAccessLevelId,userAccessLevelValues,state,committeeLevelBasedCommitteeIdsMap,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getLevelWiseBasicCommitteesCountReport() method of CoreDashBoard", e);
@@ -569,13 +588,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 				}
 			}
 			
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
+			
 			String committeeStatus = jObj.getString("committeeStatus");
 			Long userLocationLevelId = jObj.getLong("userLocationLevelId");
 			
@@ -589,8 +602,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			  
 			String dateString = jObj.getString("dateString");
 			String state = jObj.getString("state");
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
-			committeeDataVOList = coreDashboardMainService.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,basicCommitteeIds,committeeStatus,userLocationLevelId,userLocationLevelValues,dateString,state);
+			committeeDataVOList = coreDashboardMainService.committeesPerformanceCohort(tdpCommitteeLevelIdsClicked,committeeLevelBasedCommitteeIdsMap,committeeStatus,userLocationLevelId,userLocationLevelValues,dateString,state);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at committeesPerformanceCohort() method of CoreDashBoard", e);
@@ -622,16 +636,12 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			Long childUserTypeId = jObj.getLong("childUserTypeId");
 			
 			String state = jObj.getString("state");
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
+			
 			String dateString = jObj.getString("dateString");
 			
-			activityMembersList = coreDashboardMainService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId,state,basicCommitteeIds,dateString);
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
+			
+			activityMembersList = coreDashboardMainService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
@@ -648,16 +658,12 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			Long userTypeId = jObj.getLong("userTypeId");
 			
 			String state = jObj.getString("state");
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
+			
 			String dateString = jObj.getString("dateString");
 			
-			activityMembersList = coreDashboardMainService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,state,basicCommitteeIds,dateString);
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
+			
+			activityMembersList = coreDashboardMainService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getDirectChildActivityMemberCommitteeDetails() method of CoreDashBoard", e);
@@ -672,17 +678,11 @@ public String getTopPoorPerformancecommittees(){
 			
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
 			String state = jObj.getString("state");
 			String dateString = jObj.getString("dateString");
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
-			committeeDataVO = coreDashboardMainService.getTopPoorPerformancecommittees(activityMemberId,basicCommitteeIds,state,dateString);
+			committeeDataVO = coreDashboardMainService.getTopPoorPerformancecommittees(activityMemberId,committeeLevelBasedCommitteeIdsMap,state,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTopPoorPerformancecommittees() method of CoreDashBoard", e);
@@ -697,17 +697,12 @@ public String getTopPoorPerformancecommittees(){
 			
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			
-			List<Long> basicCommitteeIds = new ArrayList<Long>();
-			JSONArray basicCommitteeIdsArray=jObj.getJSONArray("basicCommitteeIdsArray");
-			if(basicCommitteeIdsArray!=null &&  basicCommitteeIdsArray.length()>0){
-				for( int i=0;i<basicCommitteeIdsArray.length();i++){
-					basicCommitteeIds.add(Long.valueOf(basicCommitteeIdsArray.getString(i)));
-				}
-			}
+			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
+			
 			String state = jObj.getString("state");
 			String dateString = jObj.getString("dateString");
 			
-			committeeDataVOList = coreDashboardMainService.getTopPoorCommitteeLocations(activityMemberId,basicCommitteeIds,state,dateString);
+			committeeDataVOList = coreDashboardMainService.getTopPoorCommitteeLocations(activityMemberId,committeeLevelBasedCommitteeIdsMap,state,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getTopPoorCommitteeLocations() method of CoreDashBoard", e);
