@@ -185,6 +185,7 @@
 	  globalStateId = stateId; //for Training program
 	  event.preventDefault();
 	  defaultCommitteeCalls();
+	  getPartyWiseTotalDebateDetails();
     });
 	
 	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
@@ -197,16 +198,16 @@
 	});
 	
 	function getCheckedBasicCommitteeIds(){
-		globalBasicCommitteeIdsArray =[];
+		/* globalBasicCommitteeIdsArray =[];
 		$(".checkedBasicComm").each(function(){
 			if($(this).is(':checked')){
 				globalBasicCommitteeIdsArray.push( $(this).val() );
 			}
-		});
+		}); */
 	}
 	
 	$(".basicCommittessDiv").click(function(event){
-	    getCheckedBasicCommitteeIds();
+	   // getCheckedBasicCommitteeIds();
 		defaultCommitteeCalls();
 		$(".basicCommitteesBlockDropDown").hide();
     });

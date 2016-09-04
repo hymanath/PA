@@ -118,33 +118,91 @@
 						</div>
 					</div>
 					
-							
+					<!-- committees tabs for tdpcommittee ids -->	
 					<div class="basicCommitteesBlockDropDown" style="z-index:999;margin-top: -3px;" >
-						<h4 class="text-capital" style="color:#99A0A5;">Select Committees</h4>
-						<hr style ="margin-bottom:0px;" />
-						<div id="basicCommitteeDetailsDiv" style="height:300px;overflow-y:scroll;">
+						<div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
+							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+								<li role="presentation" class="active text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
+								<li role="presentation" class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
+								<li role="presentation" class="text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
+							  </ul>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							  <div class="tab-content navTabsSettingsContent">
+								<div role="tabpanel" class="tab-pane active" id="home">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										<li>
+											<label class="checkbox-inline">
+												<input type="checkbox"  class="checkedBasicComm districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										</li>      
+									</c:forEach>
+									</ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="profile">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										<li>
+											<label class="checkbox-inline">
+											 <c:choose>
+											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
+												   <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}">
+											   </c:when>
+												<c:otherwise>
+												   <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												</c:otherwise>
+										   </c:choose>
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										</li>      
+									</c:forEach>
+									</ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="messages">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										<li>
+											<label class="checkbox-inline">
+											 <c:choose>
+											   <c:when test="${basicCommittee.id == 1}">
+												   <input type="checkbox"  class="checkedBasicComm villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+											   </c:when>
+												<c:otherwise>
+												   <input type="checkbox"  class="checkedBasicComm villageCommitteecheckBoxClass" value="${basicCommittee.id}">
+												</c:otherwise>
+										   </c:choose>
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										</li>      
+									</c:forEach>
+									</ul>
+									</div>
+								</div>
+							  </div>
+							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
+							</div>
+
 						
-						<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-							 <div class="col-xs-12 col-sm-12 col-md-12">
-								<label class="checkbox-inline m_top10">
-								 <c:choose>
-								   <c:when test="${basicCommittee.id == 1}">
-									   <input type="checkbox"  class="checkedBasicComm" value="${basicCommittee.id}" checked>
-								   </c:when>
-									<c:otherwise>
-									   <input type="checkbox"  class="checkedBasicComm" value="${basicCommittee.id}">
-									</c:otherwise>
-							   </c:choose>
-									<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-							   </label>
-							   <hr style ="margin-bottom:0px;" />
-						  </div>      
-						</c:forEach>
+						
 						
 						
 						</div>
 						
-						<button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
+						
 					</div>
 					<div class="notesDropDown">
                     	<h4 class="text-capital">notes
@@ -985,6 +1043,7 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+	
 	/* //Angular Start
 
 		var obj = angular.module("partyWiseTotalApp",[]);
@@ -1008,6 +1067,9 @@
 			});
 		});
 	//Angular ENd */
+	
+	//settings scroll
+	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
 	DatePickerDropdown();
 	function DatePickerDropdown()
 	{

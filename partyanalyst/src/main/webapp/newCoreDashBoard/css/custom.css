@@ -832,7 +832,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	display:none;
 	position:absolute;
 	background:#fff;
-	width:300px;
+	width:550px;
 	padding:12px;
 	right:0px;
 	z-index:99;
@@ -1498,4 +1498,47 @@ margin-top:20px;
 {
 	border-top:0px !important;
 	border-bottom:0px !important;
+}
+.pad_right0
+{
+	padding-right:0px;
+}
+.pad_left0
+{
+	padding-left:0px;
+}
+.pad_right4
+{
+	padding-right:4px;
+}
+.navTabsSettings
+{
+	border-right:1px solid #555;
+}
+.navTabsSettings > li
+{
+	width:100%;
+}
+.navTabsSettings > li a
+{
+	color:#333;
+}
+.navTabsSettings > li.active > a, .navTabsSettings > li.active > a:focus, .navTabsSettings > li.active > a:hover
+{
+	border-right:0px;
+	border-top:1px solid #555;
+	border-left:1px solid #555;
+	border-bottom:1px solid #555;
+	right:-3px;
+	border-radius:0px;
+}
+.settingsUl
+{
+	padding:0px;
+}
+.settingsUl li
+{
+	border-bottom:1px solid #ddd;
+	list-style:none;
+	padding:3px 6px;
 }
