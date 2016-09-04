@@ -1007,7 +1007,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			 		  queryStr.append(" model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostMember.nominatedPostPosition.position.positionName,");
 			 	   }
 
-			       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId)"); 
+			       queryStr.append(" model.nominatedPostStatusId,model.nominatedPostStatus.status,count(model.nominatedPostId), model.nominatedPostMemberId "); 
 			       
 			       queryStr.append(" from  NominatedPost model where model.isDeleted = 'N' ");
 			       if(status != null && status.equalsIgnoreCase("finalReview"))
@@ -1078,7 +1078,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				    	   queryStr.append(" model.nominatedPost.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(model.nominatedPost.nominatedPostId)"); 
 				       }
 				       
-				       queryStr.append(" from  NominatedPostFinal model where model.nominatedPost.isDeleted = 'N' ");
+				       queryStr.append(", model.nominatedPostMemberId from  NominatedPostFinal model where model.nominatedPost.isDeleted = 'N' ");
 				       if(status != null && status.equalsIgnoreCase("finalReview"))
 				    	   queryStr.append(" and model.applicationStatusId = 6 ");
 				       else if(status != null && status.equalsIgnoreCase("finaliZed"))
@@ -1105,11 +1105,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId=:boardId ");
 				       }
 				       if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() == 0l && boardId != null && boardId.longValue() ==  0l){
-				    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
+				    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId, model.nominatedPostMemberId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
 				       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() == 0l){
-				     	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId ");
+				     	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId, model.nominatedPostMemberId order by model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId ");
 				       }else if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l){
-				    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId order by  model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
+				    	   queryStr.append(" group by model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId, model.nominatedPostMemberId order by  model.nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId ");
 				       }
 				       
 				       Query query = getSession().createQuery(queryStr.toString());
