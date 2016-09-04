@@ -391,7 +391,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 		$(".deptsUlCls li:first-child a").trigger("click");
 		setTimeout(function(){
 			$("#headingOne00 a").trigger("click");
-			$("#headingOne01 a").trigger("click");
+			//$("#headingOne01 a").trigger("click");
 		},500);
 		 if(globalStatus == "running")
 			$('#headingOne00').trigger('click');
@@ -546,14 +546,14 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					str+='<thead>';
 							str+='<th>Position</th>';					
 							str+='<th>Total Posts</th>';					
-							str+='<th>Total Posts Available</th>';//Open Status					
-							str+='<th>Total Applications Received </th>';					
-							str+='<th>Ready to Shortlist</th>';
-							str+='<th>Rejected</th>';					
-							str+='<th>Shortlisted</th>';					
-							str+='<th>Final Review</th>';
-							str+='<th>Finalized</th>';
-							str+='<th>G.O  Passed</th>';
+							str+='<th>Total  Available Posts </th>';//Open Status					
+							str+='<th>Total  Received Applications </th>';					
+							str+='<th>Ready to Shortlist Applications </th>';
+							str+='<th>Rejected Applications </th>';					
+							str+='<th>Shortlisted Applications </th>';					
+							str+='<th>Final Review Applications </th>';
+							str+='<th>Finalized Applications </th>';
+							str+='<th>G.O  Passed Applications</th>';
 
 							
 					str+='</thead>';
@@ -607,12 +607,12 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 						str+='<tr>';
 					
 						if(result[i].id != null){
-							if(shortListed !=null && shortListed>0){
+							if(shortListed !=null && shortListed>0 && globalStatus != 'notYet'){
 								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' attr_btn_id="readytoFinalReviewBtnId'+boards+'" attr_finalReviewCls="" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name ="'+result[i].name+'"/>'+result[i].name+'</label></td>';
 							}
 							 else{
-								str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
-								//str+='<td> - </td>';
+								//str+='<td><label class="checkbox-inline"><input type="checkbox" class="positionUpdateCls" id="'+result[i].id+'" attr_shortListed='+shortListed+' disabled/><span style="cursor:default;" attr_available_posts="'+availablePosts+'" attr_short_listedCount="'+shortListed+'" attr_position_name="'+result[i].name+'">'+result[i].name+'</span></label></td>';
+								str+='<td>'+result[i].name+'</td>';
 							}					
 						}else{
 								str+='<td><label>Any Position</td>';
@@ -715,14 +715,14 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					str+='<thead>';
 							str+='<th>Position</th>';					
 							str+='<th>Total Posts</th>';					
-							str+='<th>Total Posts Available</th>';//Open Status					
-							str+='<th>Total Applications Received </th>';					
-							str+='<th>Ready to Shortlist</th>';
-							str+='<th>Rejected</th>';					
-							str+='<th>Shortlisted</th>';
-							str+='<th>Final Review</th>';
-							str+='<th>Finalized</th>';
-							str+='<th>G.O  Passed</th>';							
+							str+='<th>Total Available Posts</th>';//Open Status					
+							str+='<th>Total Received Applications </th>';					
+							str+='<th>Ready to Shortlist Applications</th>';
+							str+='<th>Rejected Applications </th>';					
+							str+='<th>Shortlisted Applications</th>';
+							str+='<th>Final Review Applications </th>';
+							str+='<th>Finalized Applications </th>';
+							str+='<th>G.O  Passed Applications</th>';							
 					str+='</thead>';
 					
 				str+='<tbody>';
@@ -845,7 +845,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 		if(globalStatus !=null && globalStatus.trim().length>0 && (globalStatus != "Total" && globalStatus != "Open" && globalStatus != "notRecieved" && globalStatus != "notYet" )){
 			str+='<div class="pad_15">';
 				str+='<button id="readytoFinalReviewBtnId'+boards+'" class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_body_id="'+bodyId+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" disabled>Ready For Final Review</button>';
-				str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
+				//str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
 				str+='<span id="updateSearchId'+depts+''+boards+'" style="display:none"><img src="images/search.gif"/></span>';
 			str+='</div>';
 			//
@@ -1474,7 +1474,8 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 					str+='</tr>';
 				}
 			 }
-			 str+='<tr  style="background-color:#EFF3F4;"><td colspan="8" style="padding:15px !important;font-style:italic" class="text-capitalize">Note: Click on count to view applied candidate profile & update application status</td></tr>';
+			// str+='<tr  style="background-color:#EFF3F4;"><td colspan="8" style="padding:15px !important;font-style:italic" class="text-capitalize">Note: Click on count to view applied candidate profile & update application status</td></tr>';
+str+='<tr  style="background-color:#EFF3F4;"><td colspan="8" style="padding:15px !important;font-style:italic" class="text-capitalize"></td></tr>';
 	    str+='</tbody>';	 
 		str+='</table>';
 		str+='</div>';

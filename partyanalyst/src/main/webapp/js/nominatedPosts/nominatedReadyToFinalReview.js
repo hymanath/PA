@@ -220,6 +220,17 @@ $(document).on("click","#submitBtnId",function(){
 	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,locationLevelValueArr,0,0," ");
 });
 function getFinalReviewCandidateCountLocationWise(LocationLevelId,locationLevelValueArr,departmentId,boardId,locationType){
+
+	if(locationType == "department"){
+		$("#boardRsltDivId").html('<center><img src="images/Loading-data.gif" style="width:50px;height:50px;margin-top:15px; "/></center>'); 
+	 }else if(locationType == "board"){
+		$("#positionRsltDivId").html('<center><img src="images/Loading-data.gif" style="width:50px;height:50px;margin-top:15px; "/></center>');
+	 }else{
+	   $("#candiateReadyToFinalReviewDivId").html('<center><img src="images/Loading-data.gif" style="width:50px;height:50px;margin-top:15px; "/></center>');
+		$("#boardRsltDivId").html('<center><img src="images/Loading-data.gif" style="width:50px;height:50px;margin-top:15px; "/></center>');
+		$("#positionRsltDivId").html('<center><img src="images/Loading-data.gif" style="width:50px;height:50px;margin-top:15px; "/></center>');
+	 }
+
 	var jsObj =
 	{
 		LocationLevelId : LocationLevelId,
