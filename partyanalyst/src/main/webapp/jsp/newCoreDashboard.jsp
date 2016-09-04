@@ -966,7 +966,7 @@
 	</div>
 </div>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
-<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>
+<!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
@@ -985,7 +985,7 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-	//Angular Start
+	/* //Angular Start
 
 		var obj = angular.module("partyWiseTotalApp",[]);
 		//var dataA = [];
@@ -1007,7 +1007,7 @@
 				$scope.partyWiseTotal = data
 			});
 		});
-	//Angular ENd
+	//Angular ENd */
 	DatePickerDropdown();
 	function DatePickerDropdown()
 	{
