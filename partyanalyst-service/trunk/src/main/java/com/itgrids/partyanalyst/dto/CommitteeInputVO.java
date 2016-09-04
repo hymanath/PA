@@ -26,6 +26,7 @@ public class CommitteeInputVO implements Serializable{
 	
 	private List<String> statusList; 
 	private StringBuilder queryString;
+	private StringBuilder committeesQueryString;
 	
 	public List<Long> getTehsilIds() {
 		return tehsilIds;
@@ -128,6 +129,12 @@ public class CommitteeInputVO implements Serializable{
 	}
 	public void setQueryString(StringBuilder queryString) {
 		this.queryString = queryString;
+	}
+	public StringBuilder getCommitteesQueryString() {
+		return committeesQueryString;
+	}
+	public void setCommitteesQueryString(StringBuilder committeesQueryString) {
+		this.committeesQueryString = committeesQueryString;
 	}
 	
 	
