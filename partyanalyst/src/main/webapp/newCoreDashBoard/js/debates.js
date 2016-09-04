@@ -11,7 +11,7 @@ $(document).ready(function(){
 		var jsObj={
 			startDate: '' ,
 			endDate: '',
-			state:"ap"
+			state:globalState
 		}
 		$.ajax({
 			type : 'POST',
@@ -76,7 +76,7 @@ function getScaleBasedPerformanceCohort(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:"ap"
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -136,7 +136,7 @@ function getCandidateOverAllPerformanceCohort(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:"ap"
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -246,7 +246,7 @@ function getChannelAndPartyWiseDetails(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:"ap"
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -254,7 +254,7 @@ function getChannelAndPartyWiseDetails(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildChannelAndPartyWiseDetails(result)
+			buildChannelAndPartyWiseDetails(result);
 		});
 	}
 function buildChannelAndPartyWiseDetails(result)
@@ -299,7 +299,7 @@ function getSpokesPersonWiseDebate(searchType){
 			startDate: ' ' ,
 			endDate: ' ',
 			searchType:searchType,
-			state:"ap"
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -307,7 +307,7 @@ function getSpokesPersonWiseDebate(searchType){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildSpokesPersonWiseDebate(result)
+			buildSpokesPersonWiseDebate(result);
 		});
 	}
 function buildSpokesPersonWiseDebate(result){
@@ -411,7 +411,7 @@ function getRoleBasedPerformanceCohort(){
 		var jsObj={
 			startDate: ' ' ,
 			endDate: ' ',
-			state:"ap"
+			state:globalState
 		}
 	    $.ajax({
 			type : 'POST',
@@ -419,7 +419,7 @@ function getRoleBasedPerformanceCohort(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildRoleBasedPerformanceCohort(result)
+			buildRoleBasedPerformanceCohort(result);
 		});
 	}
 function buildRoleBasedPerformanceCohort(result)
@@ -482,10 +482,10 @@ $(document).on("click",".debatesIconExpand",function(){
 });
 $(document).on("click",".moreDebatesBlocksIcon",function(){
 	$(".debatesMoreHiddenBlock").toggle();
-	getScaleBasedPerformanceCohort()
-	getCandidateOverAllPerformanceCohort()
-	getChannelAndPartyWiseDetails()
-	getRoleBasedPerformanceCohort()
+	getScaleBasedPerformanceCohort();
+	getCandidateOverAllPerformanceCohort();
+	getChannelAndPartyWiseDetails();
+	getRoleBasedPerformanceCohort();
 });
 
 $(document).on("click","#debateTopId",function(){
