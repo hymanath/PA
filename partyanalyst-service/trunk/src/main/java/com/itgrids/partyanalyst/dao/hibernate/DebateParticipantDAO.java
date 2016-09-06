@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
@@ -440,5 +441,56 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		}
 		
 		return query.list();
+	}
+	
+	public List<Object[]> getDebatesCountOfCandidate(Date startDate,Date endDate,List<Long> roles,String state){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select C.candidate_id as candidateId,C.lastname as candidateName,P.party_id as partyId,P.short_name partyName,count(distinct D.debate_id) as count" +
+				" from debate_participant_role DPR " +
+				" ,debate_roles DR,debate_participant DP,debate D,candidate C,party P " +
+				" where DP.debate_participant_id = DPR.debate_participant_id " +
+				" and DPR.debate_roles_id  = DR.debate_roles_id " +
+				" and DP.debate_id = D.debate_id" +
+				" and DP.candidate_id = C.candidate_id" +
+				" and P.party_id = DP.party_id " +
+				" and D.is_deleted = 'N' " +
+				" and C.is_debate_candidate = 'Y'" );
+		
+				if(roles !=null && roles.size()>0){
+					str.append( " and DR.debate_roles_id in (:debateRoles) " );
+				}				
+				if(startDate !=null && endDate !=null){
+					str.append( " and date(D.start_time) >= :startDate and date(D.end_time) <= :endDate ");
+				}			  
+				
+				if(state !=null && state.trim().equalsIgnoreCase("ap")){
+					str.append(" and P.party_id not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+				}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+					str.append(" and P.party_id not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+				}
+				
+				str.append( " group by C.candidate_id,P.party_id ");
+				str.append( " order by count(distinct D.debate_id) desc ");
+				
+				Query query = getSession().createSQLQuery(str.toString())	
+						
+				.addScalar("candidateId",Hibernate.LONG)
+				.addScalar("candidateName",Hibernate.STRING)
+				.addScalar("partyId",Hibernate.LONG)
+				.addScalar("partyName",Hibernate.STRING)
+				.addScalar("count",Hibernate.LONG);
+				
+				if(roles !=null && roles.size()>0){
+					query.setParameterList("debateRoles",roles);
+				}
+				
+				if(startDate !=null && endDate !=null){
+					query.setParameter("startDate", startDate);
+					query.setParameter("endDate", endDate);
+				}
+				
+				return query.list();
 	}
 }
