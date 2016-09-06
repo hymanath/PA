@@ -555,27 +555,41 @@
 			for(var i = length; i >= 0; i--){
 				if(result[i].id !=10){
 					if(result[i].subList !=null && result[i].subList.length > 0){
-						str+='<li>';
-						for(var j in result[i].subList){
-							
-								
-								var properName = getProperLocationLevelName(result[i].name);
-								if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
-									locationLevelNameArray.push(properName);
-									str+='<h4>'+properName+' Level</h4>';
-								}
-								str+='<div id="levelWiseCommittesDetailed'+i+''+j+'" class="chartLi" style="display:inline-block;"></div>';
-								
-							
+						/* <div class="scroll-div" style="height: 100%;    overflow-x: scroll;    width: 100%;">
+							<ul class="list-inline best-matched-profile " style=" padding: 7px;    white-space: nowrap;    width: 100%;">
+								<li>
+									<div class="img-center">
+										<img src="dist/img/profileimage.png" class="img-responsive img-circle" alt="Profile"/>
+									</div>
+									<p class="m_0 m_top5 text-center">UNTA SAMBAMURTHI</p>
+									<p class="m_0 text-center">9908225232</p>
+						 */
+						str+='<li class="customLi">';
+						var properName = getProperLocationLevelName(result[i].name);
+						if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+							locationLevelNameArray.push(properName);
+							str+='<h4>'+properName+' Level</h4>';
 						}
+						str+='<div class="scroll-div">';
+							str+='<ul class="list-inline best-matched-profile ">';
+							for(var j in result[i].subList){
+								
+									
+									str+='<li><div id="levelWiseCommittesDetailed'+i+''+j+'" class="chartLi"></div></li>';
+							}
+							str+='</ul>';
+						str+='</div>';
 						str+='</li>';
+						
+							
+						
 					}
 				
 				}
 										
             }
 			
-			str+='<ul>';
+			str+='</ul>';
 				
 		}
 	$("#levelWiseBasicCommittees").html(str);
@@ -702,11 +716,14 @@
 		
 		
 		$(".villageWardUl").slick({
-			 slide: 'li',
+			 slide: '.customLi',
 			 slidesToShow: 1,
 			 slidesToScroll: 1,
 			 infinite: false,
-		});
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false
+		}); 
 	}
 	
 	
@@ -1446,7 +1463,7 @@
 		 
 			
 		if(result != null && result.subList1 != null && result.subList1.length >0){
-			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top <span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five<span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 			
 			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
@@ -1454,7 +1471,13 @@
 			str+='<table class="table tableCumulative">';
 			var rankingvar =0;
 			var BGColor = 1;
+			var countVar  = 0;
 				for(var i in result.subList1){
+					//top 5 should build.
+					countVar =countVar+1;
+					if (countVar === 6) {
+						break;
+					}
 					str+='<tr>';
 					rankingvar = rankingvar+1;
 				
@@ -1491,8 +1514,15 @@
 					}
 					var number =0;
 					var BGColor = 1;
+					var countVar = 0;
 				str+='<table class="table tableCumulative">';
 					for(var j in result.subList[i].subList){
+						//top 5 should build.
+						countVar =countVar+1;
+						if (countVar === 6) {
+							break;
+						}
+						
 						str+='<tr>';
 						number = number+1;
 						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+number+'</span></td>';
