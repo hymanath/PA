@@ -157,7 +157,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 }
 .settingsDropDownOptionsView
 {
-	min-width:500px !important;
+	min-width:540px !important;
 	right:0px;
 	background:#fff;
 	z-index:99;
@@ -395,6 +395,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
   z-index: 99;
   cursor: pointer;
   -webkit-transition: all 0.25s linear;
+  line-height: 16px;
 }
 .radioStyling li:hover label{
 	color: #555;

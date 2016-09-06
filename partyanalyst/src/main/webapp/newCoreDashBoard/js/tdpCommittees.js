@@ -737,9 +737,20 @@
 				str+=result[i].name;
 				str+='<div id="mainCommittees'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
-			
+									
 		}
 		$("#districtWiseCommitteesReport").html(str);
+		$("#districtWiseCommitteesReport").each(function(){
+			var scrollengthDiv = $(this).find(".chartLiD").length;
+			if(scrollengthDiv >= 4){
+				$(".verticalScrollBar").css("overflow-y","scroll");
+				$(".verticalScrollBar").css("height","560px");
+			}else{
+				$(".verticalScrollBar").css("height","auto");
+			}
+		});
+		
+		
 	if(result != null && result.length > 0){
 		for(var i in result){
 			var districtNamesArray =[];
@@ -1463,7 +1474,7 @@
 		 
 			
 		if(result != null && result.subList1 != null && result.subList1.length >0){
-			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five<span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 			
 			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
