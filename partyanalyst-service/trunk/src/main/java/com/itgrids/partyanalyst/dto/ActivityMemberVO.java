@@ -16,6 +16,10 @@ public class ActivityMemberVO implements Serializable{
 	Map<Long,UserTypeVO> activityMembersMap;
 	Map<Long,Set<Long>> locationLevelIdsMap;
 	
+	private String state;
+	private String fromDate;
+	private String toDate;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -63,6 +67,24 @@ public class ActivityMemberVO implements Serializable{
 	}
 	public void setActivityMembersMap(Map<Long, UserTypeVO> activityMembersMap) {
 		this.activityMembersMap = activityMembersMap;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
 	}
 	
 }

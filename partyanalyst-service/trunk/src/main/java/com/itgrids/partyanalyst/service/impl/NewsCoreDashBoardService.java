@@ -19,6 +19,10 @@ import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -49,13 +53,25 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocationsNew(activityMemberVO);
 		     Map<Long,Map<Long,UserTypeVO>> userTypesMap = activityMemberVO.getUserTypesMap();
 		     Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		     activityMemberVO.setState(state);
+		     activityMemberVO.setFromDate(fromDate);
+		     activityMemberVO.setToDate(toDate);
 		     
 		     //Calling Request.
-			 Client client = Client.create();
-			 
-			 WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts/"+locationLevelIdsMap+"/"+state+"/"+fromDate+"/"+toDate+"");
+			 //Client client = Client.create();
+		     ClientConfig clientConfig = new DefaultClientConfig();
 		     
-			 ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+			 
+	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts");
+	         
+			 //WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts/"+locationLevelIdsMap+"/"+state+"/"+fromDate+"/"+toDate+"");
+		     
+			 //ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+			 
+	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, activityMemberVO);
+	         
 	 	      if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
