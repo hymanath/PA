@@ -224,12 +224,22 @@
 		$(".basicCommitteesBlockDropDown").hide();
     });
 	
-	$(document).on("click",".settingsDropDown",function(){
+	/*$(document).on("click",".settingsDropDown",function(){
 		$(this).toggleClass("dropdownOpen")
-	});
-	$(document).on("click",".toggleViewIcon",function(){
+	});*/
+	$(document).on("click",".toggleViewIcon",function(e){
+		
 		$(this).toggleClass("dropDownView");
-		//$(".settingsDropDownOptionsView").show();
+		e.stopPropagation();
+		
+	});
+	$(document).on("click",function(e){
+		if($(".toggleViewIcon").hasClass("dropDownView"))
+		{
+			$(".toggleViewIcon").removeClass("dropDownView")
+			
+		}
+		e.stopPropagation();
 	});
 	$(document).on("click",".settingsDropDownOptions li,.toggleViewIcon .settingsDropDownOptionsView",function(e){
 		e.stopPropagation();
