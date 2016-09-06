@@ -1103,5 +1103,24 @@ public String deleteDashBoardcomments()
 	}
 	return Action.SUCCESS;	
 }
+public String getRolesPerformanceOfCandidate(){
+	  try{
+			
+			jObj = new JSONObject(getTask());
+			List<Long> roles = new ArrayList<Long>();
+			
+			Long roleId  = jObj.getLong("roleId");
+			if(roleId !=null && roleId>0l){
+				roles.add(roleId);
+			}
+			
+			codeDebateVoList = coreDashboardMainService.getRolesPerformanceOfCandidate(jObj.getString("startDate"),jObj.getString("endDate"),roles,jObj.getString("state"));
+					
+		}catch (Exception e) {
+			LOG.error("Exception raised at getRolesPerformanceOfCandidate() method of CoreDashBoardAction", e);
+		}
+		
+		return Action.SUCCESS;
+}
 
 }
