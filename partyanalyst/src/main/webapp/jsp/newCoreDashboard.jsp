@@ -387,7 +387,12 @@
 						<span class="trainingIconExpand pull-right">
 							<i class="glyphicon glyphicon-fullscreen"></i>
 						</span>
-						
+						<span class="input-group pull-right dateRangePickerClsForTraining hide">
+						<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+						</span>
 						<div class="notesDropDown" >
 							<h4 class="text-capital">notes
 								<span class="pull-right">
@@ -1786,6 +1791,7 @@
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
