@@ -63,7 +63,7 @@
                         <li class="dropdown profileDropDown toggleViewIcon">
                           <a style="cursor:pointer;">ASHOK DAKAVARAM 
                           	<span class="caretBackground">
-                            	<span class="caret" style="margin-top: 9px;"></span>
+                            	<span class="fa fa-sort-desc" aria-hidden="true" style="color: rgb(255, 255, 255); margin-left: -1px;"></span>
                             </span>
                           </a>
 						 <div class="dropdown-menu settingsDropDownOptionsView" style="z-index: 999;">
@@ -328,7 +328,7 @@
                                         
                                     </div>
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body verticalScrollBar">
 									<div id="districtWiseCommitteesReport" ></div>
 								</div>
                             </div>
