@@ -33,6 +33,7 @@ public class DashboardComment  extends BaseModel implements Serializable{
 	private User user;
 	private Long userId;
 	private Date insertedTime;
+	private Date updatedTime;
 	private String isDeleted;
 	
 	@Id
@@ -111,6 +112,14 @@ public class DashboardComment  extends BaseModel implements Serializable{
 
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	@Column(name ="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 	
 	
