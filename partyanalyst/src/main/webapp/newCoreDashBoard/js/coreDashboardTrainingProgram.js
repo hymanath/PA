@@ -829,7 +829,9 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	//getTrainingProgramPoorCompletedLocationDtls();
 });
 $(document).on("click",".activityMemberCls",function(){
-		$(this).find(".panelSlick").addClass("panelActiveSlick")
+	    
+		$(".slickPanelSliderTraining").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+		$(this).find(".panelSlick").addClass("panelActiveSlick");
 	    var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
     	var selectedMemberName = $(this).attr("attr_selectedmembername");  
