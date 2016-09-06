@@ -718,7 +718,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	color:#333;
 	font-weight:bold;
 }
-.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand
+.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .notesIconTraining
 {
 	border:1px solid #999;
 	border-radius:5px;
@@ -884,7 +884,8 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	display:none;
 	cursor:pointer;
 }
-.btnCustomCreate , .btnCustomCreate:hover , .btnCustomCreate:focus , .btnCustomCreate:active
+.btnCustomCreate , .btnCustomCreate:hover , .btnCustomCreate:focus , .btnCustomCreate:active,
+.btnCustomCreate1 , .btnCustomCreate1:hover , .btnCustomCreate1:focus , .btnCustomCreate1:active
 {
 	background-color:#9AB3BA;
 	border:1px solid #9AB3BA;

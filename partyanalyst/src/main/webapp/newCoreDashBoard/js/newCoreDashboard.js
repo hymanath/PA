@@ -68,13 +68,21 @@
 	$(document).on("click",".btnCustomCreate",function(){
 		var getNewNotes = $(".notesArea").val();
 		var todayDate = moment().format("DD MMMM YYYY");
-		var commentText = '<span class="notesText">'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>'; 
+		var cmtId = $("#cmtId").val();
+		var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+		if(cmtId>0)
 		$(".notesUl").append("<li>"+commentText+"</li>");
 		$(".notesArea").val('');	
 	});
-	$(document).on("click",".editNotes",function(){
-		var notesHtml = $(this).closest("li").find(".notesText").html();
-		$(".notesArea").val(notesHtml);
+	$(document).on("click",".editNotes",function(){ 
+		var commentId = $(this).attr("attr_cmt_id");
+		var commentId1 = $(this).parent().find(".notesText").attr("attr_commentid");
+		var notesHtml = $("#"+commentId).html();
+		$(".notesArea").val(notesHtml);  
+		$(".notesArea").attr("attr_commentid",commentId1);  
+		$("#cmtId").val(commentId);
+		//$("#cmtId").val();
+        $("#id1").html('');		
 	});
 	$(document).on("click",".deleteNotes",function(){
 		$(this).closest("li").remove();
