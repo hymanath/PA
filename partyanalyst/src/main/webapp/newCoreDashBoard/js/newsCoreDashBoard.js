@@ -1,7 +1,7 @@
 	function getNewsBasicCounts(){
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
-			for(var i in globalUserAccessLevelValues){alert(globalUserAccessLevelValues[i]);
+			for(var i in globalUserAccessLevelValues){
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}

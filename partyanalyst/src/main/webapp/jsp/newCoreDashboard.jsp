@@ -1072,6 +1072,657 @@
 			</div>
 			<!-- NEWS BLOCK END-->
         </div>
+	<!-- MEETING BLOCK START  -->
+	<div class="row">
+        <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 meetingsBlock">
+        	<div class="panel panel-default panelNewCustom">
+            	<div class="panel-heading">
+                    <h4 class="panel-title">meetings
+                        <span class="meetingsIconExpand pull-right">
+                            <i class="glyphicon glyphicon-fullscreen"></i>
+                        </span>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                	<div class="row">
+                    	<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock">
+                        	<div class="panelBlock">
+                            	<h4><span class="headingColor text-capitalize">committee meetings</span></h4>
+								 <div id="meetingBasicCountDivId"></div>
+                            </div>
+					        <!--<div class="panelBlock m_top10">
+                            	<h4><span class="headingColor text-capitalize">state level meetings</span></h4>
+                                <div class="row scrollDiv">
+                                	<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+                                        <h4 class="text-capitalize m_top10">general body meetings</h4>
+                                        <table class="table tableTraining bg_ED">
+                                            <tbody><tr>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">total</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">yes</p>
+                                                    <h4>10000 <span class="font-10 text-success">50%</span></h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">no</p>
+                                                    <h4>10000 <span class="font-10 text-success">50%</span></h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">may be</p>
+                                                    <h4>10000 <span class="font-10 text-success">50%</span></h4>
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                                        <hr class="m_0">
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">
+                                        <h4 class="text-capitalize m_top10">coordinate meetings</h4>
+                                        <table class="table tableTraining bg_ED">
+                                            <tbody><tr>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">total</p>
+                                                    <h4>10000</h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">yes</p>
+                                                    <h4>10000 <span class="font-10 text-success">50%</span></h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">no</p>
+                                                    <h4>10000 <span class="font-10 text-success">50%</span></h4>
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted text-capitalize">may be</p>
+                                                    <h4>10000 <span class="font-10 text-success">50%</span></h4>
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                                        <hr class="m_0">
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock">
+                        	<div class="row">
+                            	<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+                               	<ul class="activeUlCls list-inline ">
+										<li class="meetingLiCls active" attr_value="strong">top 5 strong</li>
+										<li class="meetingLiCls" attr_value="poor">last 5 poor</li>
+									</ul>
+                                </div>
+								<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
+                            </div>
+				        </div>
+						<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock">
+                        			<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
+                        </div>	
+                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocks">
+                        	<ul class="list-inline pull-right activeUlCls">
+                            	<li class="active">Detailed</li>
+                                <li>Comparison</li>
+                                <li><i class="fa fa-gears"></i></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocks">
+                        	<div class="panel panel-default">
+                            	<div class="panel-body">
+								<div id="meetingLevelHIghChartsDivId" ></div>
+                                	<!--<ul class="meetingsAttendanceUl">
+                                    	<li>
+                                        	<div id="meetingsState" class="chartLi"></div>
+   											<ul id="meetings1" class="customLegend"></ul>
+                                        </li>
+                                        <li>
+                                        	<div id="meetingsDistrict" class="chartLi"></div>
+   											<ul id="meetings2" class="customLegend"></ul>
+                                        </li>
+                                        <li>
+                                        	<div id="meetingsMandal" class="chartLi"></div>
+   											<ul id="meetings3" class="customLegend"></ul>
+                                        </li>
+                                        <li>
+                                        	<div id="meetingsVil" class="chartLi"></div>
+   											<ul id="meetings4" class="customLegend"></ul>
+                                        </li>
+                                    </ul>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top20 moreMeetingsBlocks">
+                        	<div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12 col-sm-12">
+                                            <span class="headingColor text-capitalize">meetings performance cohort</span>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12 col-sm-12">
+                                            <ul class="activeUlCls list-inline">
+                                                <li class="active">All</li>
+                                                <li>May be!</li>
+                                                <li>Yes</li>
+                                                <li>No</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                	<div>
+                                    	<h4>General Body Meetings</h4>
+                                    	<ul class="graphStructure">
+                                        	<li>
+                                            	<span attr_percent="33"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="50"></span>
+                                                <span attr_percent="20"></span>
+                                                <span attr_percent="30"></span>
+                                                <p class="name">Kandi</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="50"></span>
+                                                <span attr_percent="10"></span>
+                                                <span attr_percent="12"></span>
+                                                <p class="name">Kumar</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="50"></span>
+                                                <span attr_percent="50"></span>
+                                                <p class="name">ITG</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="50"></span>
+                                                <span attr_percent="50"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr/>
+                                    <div class="m_top20">
+                                    	<h4>Coordinate Meetings</h4>
+                                    	<ul class="graphStructure">
+                                        	<li>
+                                            	<span attr_percent="33"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="33"></span>
+                                                <span attr_percent="33"></span>
+                                                <span attr_percent="33"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="33"></span>
+                                                <span attr_percent="33"></span>
+                                                <span attr_percent="33"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="50"></span>
+                                                <span attr_percent="50"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                            <li>
+                                            	
+                                            	<span attr_percent="50"></span>
+                                                <span attr_percent="50"></span>
+                                                <p class="name">koushik</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocks">
+                            <p><i>Selected:</i> <b>Main Committee</b></p>
+                            <div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-7 col-md-8">
+                                            <ul class="comparisonSelect">
+                                                <li class="active">General Secretary<span class="closeIconComparison"></span></li>
+                                                <li>Secretary<span class="closeIconComparison"></span></li>
+                                                <li>M.P<span class="closeIconComparison"></span></li>
+                                                <li>District Incharge<span class="closeIconComparison"></span></li>
+                                                <li>Constituency<span class="closeIconComparison"></span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 col-md-4">
+                                            <ul class="list-inline">
+                                                <li>
+                                                    <div class="dropdown">
+                                                      <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        This Week <span class="text-muted">Sunday - Today</span>
+                                                        <span class="caret"></span>
+                                                      </button>
+                                                      <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
+                                                        <li><a href="#">LifeTime</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="#">This Week <span class="text-muted">Sunday - Today</span></a></li>
+                                                        <li><a href="#">Last Week <span class="text-muted lastWeekDate"></span></a></li>
+                                                        <li><a href="#">Last 7 Days <span class="text-muted last7Days"></span></a></li>
+                                                        <li><a href="#">First 7 Days <span class="text-muted first7Days"></span></a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="#">This Month <span class="text-muted thisMonth"></span></a></li>
+                                                        <li><a href="#">Last Month <span class="text-muted lastMonth"></span></a></li>
+                                                        <li><a href="#">Last 28 Days <span class="text-muted last28Days"></span></a></li>
+                                                        <li><a href="#">Last 30 Days <span class="text-muted last30Days"></span></a></li>
+                                                        <li><a href="#">First 28 Days<span class="text-muted first28Days"></span></a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="#">This Quarter <span class="text-muted thisQuarter"></span></a></li>
+                                                        <li><a href="#">Last Quarter <span class="text-muted lastQuarter"></span></a></li>
+                                                        <li><a href="#">Last 90 Days <span class="text-muted Last90Days"></span></a></li>
+
+                                                        <li><a href="#">First 90 Days <span class="text-muted first90Days"></span></a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="#">This Year<span class="text-muted thisYear"></span></a></li>
+                                                        <li><a href="#">Last Year <span class="text-muted lastYear"></span></a></li>
+                                                        <li><a href="#">Last 365 Days <span class="text-muted last365Days"></span></a></li>
+                                                        <li><a href="#">First 365 Days <span class="text-muted first365Days"></span></a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="#">Custom Range <span class="customRange"></span></a></li>
+                                                      </ul>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="glyphicon glyphicon-calendar calendarIcon"></i>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                            <ul class="list-inline slickPanelSliderMeetings">
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                            <div class="bg_ED pad_15 arrow_top">
+                                                <h4><span  class="text-capital">b.jayanageshwar reddy</span> - <span class="text-capitalize">General Secretary</span></h4>
+                                                <table class="table table-condensed tableHoverLevels m_top20">
+                                                    <thead class="bg_D8 text-capital">
+                                                        <th>% Rank</th>
+                                                        <th>Secretary name</th>
+                                                        <th>total</th>
+                                                        <th>yet to start</th>
+                                                        <th>started</th>
+                                                        <th>completed</th>
+                                                        <th>%</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="tableCount">01</span>
+                                                            </td>
+                                                            <td>Parvin Raj</td>
+                                                            <td>1000</td>
+                                                            <td>600</td>
+                                                            <td>400</td>
+                                                            <td>400</td>
+                                                            <td>10%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="tableCount">02</span>
+                                                            </td>
+                                                            <td>Parvin Raj</td>
+                                                            <td>1000</td>
+                                                            <td>600</td>
+                                                            <td>400</td>
+                                                            <td>400</td>
+                                                            <td>10%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="tableCount">03</span>
+                                                            </td>
+                                                            <td>Parvin Raj</td>
+                                                            <td>1000</td>
+                                                            <td>600</td>
+                                                            <td>400</td>
+                                                            <td>400</td>
+                                                            <td>10%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <span class="headingColor text-capitalize"><i><b>back to </b>general secretary view</i></span>
+                                                <span class="text-capitalize">B.T.Naidu - <i>Secretary</i></span>
+                                                <table class="table table-condensed tableLevels m_top20">
+                                                    <thead class="bg_D8 text-capital">
+                                                        <th>% Rank</th>
+                                                        <th>constituency</th>
+                                                        <th>mla name</th>
+                                                        <th>total</th>
+                                                        <th>yet to start</th>
+                                                        <th>started</th>
+                                                        <th>completed</th>
+                                                        <th>%</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="tableCount">01</span>
+                                                            </td>
+                                                            <td>madakisara</td>
+                                                            <td>K Eeranna</td>
+                                                            <td>1000</td>
+                                                            <td>600</td>
+                                                            <td>400</td>
+                                                            <td>400</td>
+                                                            <td>10%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="tableCount">02</span>
+                                                            </td>
+                                                            <td>madakisara</td>
+                                                            <td>K Eeranna</td>
+                                                            <td>1000</td>
+                                                            <td>600</td>
+                                                            <td>400</td>
+                                                            <td>400</td>
+                                                            <td>10%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span class="tableCount">03</span>
+                                                            </td>
+                                                            <td>madakisara</td>
+                                                            <td>K Eeranna</td>
+                                                            <td>1000</td>
+                                                            <td>600</td>
+                                                            <td>400</td>
+                                                            <td>400</td>
+                                                            <td>10%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>                      
+                                                <div class="row">
+                                                     <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+                                                        <b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> meetings conducted locations</span></b>
+                                                        <div class="row m_top20">
+                                                            <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
+                                                                <p class="text-capital">districts</p>
+                                                                <table class="table tableCumulative">
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
+                                                                        <td>kurnool</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,.8)">1</span></td>
+                                                                        <td>chittoor</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,.6)">1</span></td>
+                                                                        <td>kadapa</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 m_top20">
+                                                                <p class="text-capital">constituencies</p>
+                                                                <table class="table tableCumulative">
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,1)">1</span></td>
+                                                                        <td>ichapuram</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,.8)">1</span></td>
+                                                                        <td>salur</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,.6)">1</span></td>
+                                                                        <td>srikakulam</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,.4)">1</span></td>
+                                                                        <td>madugula</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="count" style="background-color:rgba(237, 29, 38,.2)">1</span></td>
+                                                                        <td>tuni</td>
+                                                                        <td>
+                                                                            <div class="progress progressCustom">
+                                                                              <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                                                                <span class="sr-only">60% Complete</span>
+                                                                              </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-danger">50</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                       	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>			
+	 </div>
+     <!--End -->
 	</div>
 </div>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
@@ -1085,6 +1736,7 @@
 <script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/KChart.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -1184,6 +1836,9 @@
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
 		getNewsBasicCounts();
+		//Meeting
+		getPartyMeetingBasicCountDetails();
+		
 	}
 	
 	

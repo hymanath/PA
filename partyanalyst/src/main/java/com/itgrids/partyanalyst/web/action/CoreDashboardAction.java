@@ -18,12 +18,14 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
+import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
@@ -50,6 +52,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private TrainingCampProgramVO trainingCampProgramVO;
 	private List<TrainingCampProgramVO> trainingCampProgramVOList;
 	private List<UserTypeVO> activityMembersList;
+	private PartyMeetingsVO partyMeetingsVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -58,6 +61,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
+    private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -81,6 +85,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setTrainingCampProgramVOList(
 			List<TrainingCampProgramVO> trainingCampProgramVOList) {
 		this.trainingCampProgramVOList = trainingCampProgramVOList;
+	}
+   public PartyMeetingsVO getPartyMeetingsVO() {
+		return partyMeetingsVO;
+	}
+
+	public void setPartyMeetingsVO(PartyMeetingsVO partyMeetingsVO) {
+		this.partyMeetingsVO = partyMeetingsVO;
 	}
 
 	public String getTask() {
@@ -207,6 +218,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setNewsCoreDashBoardService(
 			INewsCoreDashBoardService newsCoreDashBoardService) {
 		this.newsCoreDashBoardService = newsCoreDashBoardService;
+	}
+   public ICoreDashboardPartyMeetingService getCoreDashboardPartyMeetingService() {
+		return coreDashboardPartyMeetingService;
+	}
+
+	public void setCoreDashboardPartyMeetingService(
+			ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService) {
+		this.coreDashboardPartyMeetingService = coreDashboardPartyMeetingService;
 	}
 
 	//business methods
@@ -959,4 +978,42 @@ public String getRoleBasedPerformanceCohort(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPartyMeetingBasicCountDetails(){
+		  try{
+				LOG.info("Entered into getPartyMeetingBasicCountDetails()  of CoreDashboardAction");
+				jObj = new JSONObject(getTask());
+				Long activityMemberId = jObj.getLong("activityMemberId");
+				Long stateId = jObj.getLong("stateId");
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				partyMeetingsVO = coreDashboardPartyMeetingService.getPartyMeetingBasicCountDetails(activityMemberId,stateId,fromDate,toDate);
+			}catch(Exception e){
+				LOG.error("Exception raised at getPartyMeetingBasicCountDetails() method of CoreDashBoardAction", e);
+			}
+			return Action.SUCCESS;
+	}
+  public String getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
+	  try{
+			LOG.info("Entered into getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt()  of CoreDashboardAction");
+			
+			HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			 }
+			
+			jObj = new JSONObject(getTask());
+			Long userTypeId = jObj.getLong("userTypeId");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			 Long stateId = jObj.getLong("stateId");
+			 String fromDate = jObj.getString("fromDate");
+			 String toDate = jObj.getString("toDate");
+			 userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(user.getRegistrationID(),userTypeId,activityMemberId,stateId,fromDate,toDate);
+		}catch(Exception e){
+			LOG.error("Exception raised at getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt() method of CoreDashBoardAction", e);
+		}
+		return Action.SUCCESS; 
+	  
+  }
 }
