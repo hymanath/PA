@@ -719,7 +719,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	color:#333;
 	font-weight:bold;
 }
-.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .notesIconTraining
+.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .notesIconTraining , .newsIconExpand
 {
 	border:1px solid #999;
 	border-radius:5px;
@@ -731,11 +731,11 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	background-color:#FECB00;
 	margin-right:2px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i
+.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i, .newsIconExpand i
 {
 	transition:all .2s ease-in-out;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover, .newsIconExpand i:hover
 {
 	transform: scale(1.4); 
 }
@@ -1314,14 +1314,14 @@ margin-top:20px;
 	border-radius:50%;
 	padding:2px;
 }
-.dateRangePickerCls , .dateRangePickerClsForTraining , .dateRangePickerClsForDebates
+.dateRangePickerCls , .dateRangePickerClsForTraining , .dateRangePickerClsForDebates , .dateRangePickerClsForNews
 {
 	position:relative;
 	top:-3px;
 	width:100px;
 	margin-right:5px;
 }
-.dateRangePickerCls .form-control , .dateRangePickerClsForTraining .form-control , .dateRangePickerClsForDebates .form-control
+.dateRangePickerCls .form-control , .dateRangePickerClsForTraining .form-control , .dateRangePickerClsForDebates .form-control , .dateRangePickerClsForNews .form-control
 {
 	height:27px;
 	border:1px solid #999999;
@@ -1329,7 +1329,7 @@ margin-top:20px;
 	width:100px;
 	border-right:0px;
 }
-.dateRangePickerCls .input-group-addon , .dateRangePickerClsForTraining .input-group-addon , .dateRangePickerClsForDebates .input-group-addon
+.dateRangePickerCls .input-group-addon , .dateRangePickerClsForTraining .input-group-addon , .dateRangePickerClsForDebates .input-group-addon , .dateRangePickerClsForNews .input-group-addon
 {
 	padding:5px 7px;
 	border:1px solid #999999;

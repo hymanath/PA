@@ -23,6 +23,25 @@ $(document).ready(function(){
 	  customStartDate = picker.startDate.format('DD/MM/YYYY');
 	  customEndDate = picker.endDate.format('DD/MM/YYYY');
 	  getPartyWiseTotalDebateDetails()
+	  if($(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		  $(".debateSpokesCls li").hasClass("active")
+		  {
+			  if($(".debateSpokesCls li").attr("id") == "debateTopId")
+			  {
+				  searchType = 'top'  
+			  }else{
+				  searchType = 'poor'
+			  }
+		  }
+		 getSpokesPersonWiseDebate(searchType);
+	  };
+	  if($(".moreDebatesBlocksIcon").hasClass("unExpandDebatesBlock"))
+	  {
+		  getScaleBasedPerformanceCohort();
+		  getCandidateOverAllPerformanceCohort();
+		  getChannelAndPartyWiseDetails();
+		  getRoleBasedPerformanceCohort();
+	  }
 	});
 });	
  function getPartyWiseTotalDebateDetails(){
@@ -52,10 +71,13 @@ function buildPartyWiseTotalDebateDetails(result)
 		for(var i in result){
 			
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20">';
-				str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
+				//str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
 				str+='<table class="table tableTraining bg_ED m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
+						str+='<td style="vertical-align:middle">';
+							str+='<img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'';
+						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total debates</p>';
 							str+='<h4>'+result[i].debateCount+'</h4>';
@@ -95,8 +117,8 @@ function getScaleBasedPerformanceCohort(){
 		
 		$("#scaleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ',
+			startDate: customStartDate ,
+			endDate: customEndDate,
 			state:globalState
 		}
 	    $.ajax({
@@ -158,8 +180,8 @@ function getCandidateOverAllPerformanceCohort(){
 		
 		$("#candidateOverAllPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ',
+			startDate: customStartDate ,
+			endDate: customEndDate,
 			state:globalState
 		}
 	    $.ajax({
@@ -268,8 +290,8 @@ function getChannelAndPartyWiseDetails(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ',
+			startDate: customStartDate ,
+			endDate: customEndDate,
 			state:globalState
 		}
 	    $.ajax({
@@ -320,8 +342,8 @@ function getSpokesPersonWiseDebate(searchType){
 		
 		$("#SpokesPersonWiseDebate").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ',
+			startDate: customStartDate ,
+			endDate: customEndDate,
 			searchType:searchType,
 			state:globalState
 		}
@@ -343,7 +365,7 @@ function buildSpokesPersonWiseDebate(result){
 				str+='<h5 class="text-capital">'+result[i].coreDebateVOList[0].name+'</h5>';
 			else
 				str+='';
-				str+='<div id="debates'+i+'" style="width:100%;height:100px;"></div>';
+				str+='<div id="debates'+i+'" style="width:100%;height:80px;"></div>';
 			str+='</div>';
 		}		
 		$("#SpokesPersonWiseDebate").html(str);
@@ -433,8 +455,8 @@ function getRoleBasedPerformanceCohort(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
-			startDate: ' ' ,
-			endDate: ' ',
+			startDate: customStartDate ,
+			endDate: customEndDate,
 			state:globalState
 		}
 	    $.ajax({
