@@ -13552,6 +13552,17 @@
    			<param name="root">committeeDataVOList</param>
    		</result>
 	</action>
+	<!--  Party Meeting  -->
+	<action name="getPartyMeetingBasicCountDetailsAction" class="coreDashboardAction" method="getPartyMeetingBasicCountDetails">
+		<result type="json" name="success">
+   			<param name="root">partyMeetingsVO</param>
+   		</result>
+	</action>
+	<action name="getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCntAction" class="coreDashboardAction" method="getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt">
+		<result type="json" name="success">
+   			<param name="root">userTypeVOList</param>
+   		</result>
+	</action>
 	
 </package>
 </struts>
