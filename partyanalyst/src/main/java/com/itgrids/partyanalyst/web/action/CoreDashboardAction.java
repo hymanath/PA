@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
@@ -53,6 +54,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private TrainingCampProgramVO trainingCampProgramVO;
 	private List<TrainingCampProgramVO> trainingCampProgramVOList;
 	private List<UserTypeVO> activityMembersList;
+	private PartyMeetingsVO partyMeetingsVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
