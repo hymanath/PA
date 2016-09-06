@@ -743,10 +743,11 @@
 		$("#districtWiseCommitteesReport").each(function(){
 			var scrollengthDiv = $(this).find(".chartLiD").length;
 			if(scrollengthDiv >= 4){
-				$(".verticalScrollBar").css("overflow-y","scroll");
-				$(".verticalScrollBar").css("height","560px");
+				$(".verticalScrollBar").mCustomScrollbar({setHeight:'560px'})
+				
 			}else{
 				$(".verticalScrollBar").css("height","auto");
+			
 			}
 		});
 		
