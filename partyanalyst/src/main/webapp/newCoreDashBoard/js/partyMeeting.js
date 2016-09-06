@@ -356,7 +356,7 @@
 $(document).on("click",".meetingLiCls",function(){
 	var memberType=$(this).attr("attr_value");
 	 if(memberType != null && memberType == "strong"){
-	getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(globalUserWiseMeetingMemberRslt); 
+	  buildgUserTypeWiseConductedAndMayBeTopFiveStrongPerResults(globalUserWiseMeetingMemberRslt); 
 	 }else if(memberType == "poor"){
 	  buildgUserTypeWiseConductedAndMayBeTopFivePoorPerResults(globalUserWiseMeetingMemberRslt);
 	 }
