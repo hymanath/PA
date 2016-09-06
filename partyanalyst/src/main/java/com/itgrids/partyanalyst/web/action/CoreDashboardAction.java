@@ -18,8 +18,9 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
-import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -52,7 +53,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private TrainingCampProgramVO trainingCampProgramVO;
 	private List<TrainingCampProgramVO> trainingCampProgramVOList;
 	private List<UserTypeVO> activityMembersList;
-	private PartyMeetingsVO partyMeetingsVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -62,6 +62,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
     private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
+	private ResultStatus 						resultStatus;
+	private List<DashboardCommentVO> 						dashboardCommentVo;
+	private String status;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -197,6 +200,30 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setActivityMembersList(List<UserTypeVO> activityMembersList) {
 		this.activityMembersList = activityMembersList;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public List<DashboardCommentVO> getDashboardCommentVo() {
+		return dashboardCommentVo;
+	}
+
+	public void setDashboardCommentVo(List<DashboardCommentVO> dashboardCommentVo) {
+		this.dashboardCommentVo = dashboardCommentVo;
+	}
+	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	//Implementation method
@@ -978,7 +1005,6 @@ public String getRoleBasedPerformanceCohort(){
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getPartyMeetingBasicCountDetails(){
 		  try{
 				LOG.info("Entered into getPartyMeetingBasicCountDetails()  of CoreDashboardAction");
@@ -993,7 +1019,7 @@ public String getRoleBasedPerformanceCohort(){
 			}
 			return Action.SUCCESS;
 	}
-  public String getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
+public String getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
 	  try{
 			LOG.info("Entered into getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt()  of CoreDashboardAction");
 			
@@ -1015,5 +1041,65 @@ public String getRoleBasedPerformanceCohort(){
 		}
 		return Action.SUCCESS; 
 	  
-  }
+}
+
+public String savingDashboardComment()
+{
+	try
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		Long userId = regVO.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		DashboardCommentVO Vo = new DashboardCommentVO();
+	    Vo.setDashBoardCommentId(jObj.getLong("dashboardCommentId"));
+	    Vo.setDashboardComponentId(jObj.getLong("dashboardComponentId"));
+	    Vo.setComment(jObj.getString("comment"));
+	    //Vo.setUserId(regVO.getUser); 
+	    resultStatus = coreDashboardService1.savingDashboardComment(Vo,userId);
+		
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in savechangeAddressForNominatedPost() in NominatedPostProfileAction ",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String displayDashboardComments(){
+	try{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		Long userId = regVO.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		
+		dashboardCommentVo = coreDashboardService1.displayDashboardComments(userId,jObj.getLong("dashBoardComponentId"));
+		
+	}catch (Exception e) {
+		LOG.error("Entered into displayDashboardComments Action",e);
+	}
+	
+	return Action.SUCCESS;
+}
+public String deleteDashBoardcomments()
+{
+	try{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		Long userId = regVO.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		status = coreDashboardService1.deleteDashBoardcomments(jObj.getLong("dashboardCommentId"));
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception rised in deleteDashBoardcomments",e);
+	}
+	return Action.SUCCESS;	
+}
+
 }
