@@ -1080,6 +1080,7 @@
 <script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/KChart.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
@@ -1180,6 +1181,7 @@
 		getCommitteesBasicCountReport();
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
+		getNewsBasicCounts();
 	}
 	
 	
