@@ -187,6 +187,7 @@
 										   </label>
 										</li>  
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									        <c:if test="${basicCommittee.id != 1}">
 											 <c:choose>
 											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
 											     <li>
@@ -205,6 +206,7 @@
 													 </li> 
 												</c:otherwise>
 										   </c:choose>
+										  </c:if>
 									</c:forEach>
 									
 									</ul>
