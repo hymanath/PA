@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
+import com.itgrids.partyanalyst.dao.IDashboardCommentDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
@@ -26,8 +27,13 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CoreDashboardService1 implements ICoreDashboardService1{
@@ -42,6 +48,8 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 	 private IActivityMemberAccessTypeDAO activityMemberAccessTypeDAO;
 	 private IUserTypeRelationDAO userTypeRelationDAO;
 	 private IActivityMemberRelationDAO activityMemberRelationDAO;
+	 private IDashboardCommentDAO dashboardCommentDAO;
+	 private DateUtilService dateUtilService = new DateUtilService();
 	//setters
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
@@ -71,6 +79,19 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 	public void setActivityMemberRelationDAO(
 			IActivityMemberRelationDAO activityMemberRelationDAO) {
 		this.activityMemberRelationDAO = activityMemberRelationDAO;
+	}	
+	public IDashboardCommentDAO getDashboardCommentDAO() {
+		return dashboardCommentDAO;
+	}
+	public void setDashboardCommentDAO(IDashboardCommentDAO dashboardCommentDAO) {
+		this.dashboardCommentDAO = dashboardCommentDAO;
+	}
+	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
 	}
 	//business methods.
 	
@@ -476,6 +497,99 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 	    }
 	    return stateId;
 	  }
-				
+	  /**
+		 * @Author  Srujana
+		 * @Version CoreDashboardService1.java  Aug 31, 2016 05:30:00 PM 
+		 * @return ResultStatus
+		 * description  { Saving the DashboardComment in Database }
+		 */
+	  public ResultStatus savingDashboardComment(DashboardCommentVO vo,Long userId)
+	  {
+		  ResultStatus resultStatus = new ResultStatus();
+		  DashboardComment dc=null;
+		  try{
+		  		
+				if(vo.getDashBoardCommentId()!=null && vo.getDashBoardCommentId().longValue()>0)
+		  		{
+					dc=dashboardCommentDAO.get(vo.getDashBoardCommentId());
+		  		}
+				if(dc==null)
+				{
+					dc = new DashboardComment();
+					dc.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				}	
+				dc.setDashboradComponentId(vo.getDashboardComponentId());
+				dc.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				dc.setComment(vo.getComment() != null ?vo.getComment().trim() : "");
+				dc.setUserId(userId);
+				dc.setIsDeleted("N");
+		  			dashboardCommentDAO.save(dc);
+		  			resultStatus.setMessage("success");
+	  }catch(Exception e)
+	  	{
+		  resultStatus.setMessage("failure");
+	  		e.printStackTrace();
+	  		LOG.error("Exception Occured in savingDashboardComment() Method - Exception is : ",e);
+	  		
+	  	}
+	  	return resultStatus;
+	  }
+	  /**
+		 * @Author  Srujana
+		 * @Version CoreDashboardService1.java  Aug 31, 2016 05:30:00 PM 
+		 * @return ResultStatus
+		 * description  { Getting the DashboardComment from Database }
+		 */
+	    public List<DashboardCommentVO> displayDashboardComments(Long userId,Long dashBoardComponentId)
+	     {
+	  	List<DashboardCommentVO> returnList = new ArrayList<DashboardCommentVO>();
+	  	try{
+	  		List<DashboardComment> dashBoardCommentObj = dashboardCommentDAO.getDisplayDashboardComments(userId,dashBoardComponentId);
+	  		if(dashBoardCommentObj != null && dashBoardCommentObj.size() > 0){
+	  			for (DashboardComment objects : dashBoardCommentObj) {
+	  				DashboardCommentVO vo = new DashboardCommentVO();
+	  				vo.setDashBoardCommentId(objects.getDashboardCommentId());
+	  				vo.setDashboardComponentId(objects.getDashboradComponentId());
+	  				vo.setComment(objects.getComment());
+	  				vo.setInsertedTime(objects.getInsertedTime());
+	  				vo.setUserId(objects.getUserId());
+	  				vo.setIsDeleted(objects.getIsDeleted());
+	  				returnList.add(vo);
+	  			}
+	  		}
+	  	}
+	  	catch(Exception e)
+	  	{
+	  		e.printStackTrace();
+	  		LOG.error("Exception Occured in displayDashboardComments() Method - Exception is : ",e);
+	  	}
+	  	return returnList;
+	  	
+	  }
+	    public String deleteDashBoardcomments(Long dashboardCommentId)
+		{
+			String rs=null;
+			try{
+				DashboardComment dashboardComment = dashboardCommentDAO.deleteDashBoardcomments(dashboardCommentId);
+			
+				if(dashboardComment != null )
+				{
+						
+						dashboardComment.setIsDeleted("Y");
+						dashboardCommentDAO.save(dashboardComment);
+				}
+				rs="success";
+			}
+			catch (Exception e) {
+				     rs="failure";
+				e.printStackTrace();
+				LOG.error("Exception in deleteDashBoardcomments()",e);	
+			}
+			return rs;
+		}
 		
-}
+	
+ }
+			
+ 
+
