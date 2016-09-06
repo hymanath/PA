@@ -13564,5 +13564,20 @@
    		</result>
 	</action>
 	
+	<action name="savingDashboardCommentAction" class="coreDashboardAction" method="savingDashboardComment">
+		<result type="json" name="success">
+				<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="displayDashboardCommentsAction" class="coreDashboardAction" method="displayDashboardComments">
+		<result type="json" name="success">
+				<param name="root">dashboardCommentVo</param>
+		</result>
+	</action>
+	<action name="deleteDashBoardcommentsAction" class="coreDashboardAction" method="deleteDashBoardcomments">
+			<result type="json" name="success">
+				<param name="root">status</param>
+		 </result>
+	</action>
 </package>
 </struts>

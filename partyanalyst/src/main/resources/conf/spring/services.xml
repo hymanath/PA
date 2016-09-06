@@ -3394,6 +3394,7 @@
 	    <property name="activityMemberAccessTypeDAO"  ref="activityMemberAccessTypeDAO"></property>
 	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
 	    <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
+	    <property name="dashboardCommentDAO"  ref="dashboardCommentDAO"></property>
 	</bean>
 	
 	<bean id="coreDashboardGenericService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardGenericService">

@@ -103,7 +103,7 @@
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="notesIcon pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
 							</span>
 							<span class="iconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
@@ -261,20 +261,21 @@
                             	<i class="glyphicon glyphicon-list-alt"></i>
                             </span>
                         </h4>
-                    	<ul class="notesUl m_top20">
+						<div id="notesId"></div>
+                    	<!--<ul class="notesUl m_top20">
                         	<li>
-                            	<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
+                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
                             	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
                                 <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
                             </li>
                         </ul>
-                        <hr/>
+                        <hr/>        
                         <label>Create Notes</label>
                         <textarea class="form-control notesArea"></textarea>
-                        <button class="btn btn-default btnCustomCreate btn-sm">create</button>
-                    </div>
+                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment();">create</button>-->
+                    </div>  
                 </div>
-                <div class="panel-body">
+                <div class="panel-body">  
 				
               		<div class="row">
 					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
@@ -373,28 +374,39 @@
         <div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-6 col-sm-8 col-xs-7">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-								training
+					<h4 class="panel-title">
+						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+						training
+						<span class="settingsIcon pull-right">
+                        	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+                        </span>
+						<span class="notesIconTraining pull-right">
+							<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(2);"></i>
+						</span>
+						<span class="trainingIconExpand pull-right">
+							<i class="glyphicon glyphicon-fullscreen"></i>
+						</span>
+						
+						<div class="notesDropDown" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
 							</h4>
-						</div>
-						<div class="col-md-6 col-sm-4 col-xs-5">
-							<span class="settingsIcon pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="trainingIconExpand pull-right">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForTraining hide">
-									<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-							</span>
-						</div>
-					</div>
+							<div id="notesId1"></div>
+							<!--<ul class="notesUl m_top20">
+								<li>
+									<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
+									<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
+									<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
+								</li>
+							</ul>
+							<hr/>        
+							<label>Create Notes</label>
+							<textarea class="form-control notesArea"></textarea>
+							<button class="btn btn-default btnCustomCreate btn-sm">create</button>-->
+						</div>  
+					</h4>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -1725,6 +1737,8 @@
      <!--End -->
 	</div>
 </div>
+<input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
+<input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -1917,8 +1931,182 @@
 	   </c:forEach>
 	   return loggedInUserAccessLevelValues;
 	}
+	$(document).on("click",".notesIconTraining",function(){
+		$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+	});
+	$(document).on("click",".btnCustomCreate1",function(){
+		var getNewNotes = $(".notesArea1").val();
+		var todayDate = moment().format("DD MMMM YYYY");
+		var cmtId = $("#cmtTrngId").val();
+		var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes1"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes1" attr_cmt_id="'+cmtId+'"></i>'; 
+		if(cmtId>0)
+		$(".notesUl").append("<li>"+commentText+"</li>");
+		$(".notesArea").val('');	
+	});
+	$(document).on("click",".editNotes1",function(){ 
+		var commentId = $(this).attr("attr_cmt_id");
+		var commentId1 = $(this).parent().find(".notesText1").attr("attr_commentid");
+		var notesHtml = $("#"+commentId).html();
+		$(".notesArea1").val(notesHtml);  
+		$(".notesArea1").attr("attr_commentid",commentId);  
+		$("#cmtTrngId").val(commentId);
+		$("#cmtTrngId").val();  
+		$("#id2").html(''); 
+	});
+	$(document).on("click",".deleteNotes1",function(){
+		$(this).closest("li").remove();
+	});
+function savingDashboardComment(dashboardComponentId){  
+  var comment=$(".notesArea").val();
+  if(comment.trim() ==""){
+		  $("#id1").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesArea").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesArea").attr("attr_commentid");		
+	 }
 	
-
-  </script>	
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				$("#id1").html('update succuss');
+				displayDashboardComments(1);
+			}
+		}			
+	});
+}
+function displayDashboardComments(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+      		 
+	     str+='<ul class="notesUl m_top20">';  	
+            	     
+					for(var i in result){ 
+                        str+='<li>'; 
+                        str+='<span class="notesText" id="editTextId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes" attr_cmt_id="editTextId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="editTextId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+                        str+='</li>';
+					}
+                        str+='</ul>';
+						str+='<hr/>';
+						str+='<div id="id1" style="color:red;"></div>';
+                        str+='<label>Create Notes</label>';
+                        str+='<textarea class="form-control notesArea"></textarea>';
+                        str+='<button class="btn btn-default btnCustomCreate btn-sm " id="btton1" onClick="savingDashboardComment(1);">create</button>';
+			$("#notesId").html(str);	 
+		}
+	});
+}
+function deleteDashBoardcomments(dashboardCommentId)
+{
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				
+			}
+		}
+			
+	});
+	
+}
+function displayDashboardCommentsForTraining(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+      		 
+	     str+='<ul class="notesUl m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+            	     
+					for(var i in result){ 
+                        str+='<li style="margin-top:3px;">'; 
+                        str+='<span class="notesText1" id="editTextTrngId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes1" attr_cmt_id="editTextTrngId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes1" attr_cmt_id="editTextTrngId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+                        str+='</li>';
+					}
+                        str+='</ul>';
+						str+='<hr/>';
+						str+='<div id="id2" style="color:red;"></div>';
+                        str+='<label>Create Notes</label>';
+                        str+='<textarea class="form-control notesArea1"></textarea>';
+                        str+='<button class="btn btn-default btnCustomCreate1 btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(2);">create</button>';
+			
+			$("#notesId1").html(str);	 
+		}
+	});
+}
+function savingDashboardCommentForTraing(dashboardComponentId){  
+  var comment=$(".notesArea1").val();
+  if(comment.trim() ==""){
+		  $("#id2").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtTrngId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesArea").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesArea").attr("attr_commentid");		
+	 }
+	
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				$("#id2").html('update succuss');
+				displayDashboardCommentsForTraining(2);
+			}
+		}			
+	});
+}
+		
+  </script> 
 </body>
 </html>
