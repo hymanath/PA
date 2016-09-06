@@ -1,5 +1,4 @@
-   
-   var globalStateId=1; 
+      var globalStateId=1; 
 	function getPartyMeetingBasicCountDetails()
 	{ 
 	  $("#meetingBasicCountDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -17,11 +16,7 @@
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#meetingBasicCountDivId").html(' ');
-			if(result != null){
 			buildMeetingBasicCountDetails(result);
-			}else{
-			$("#meetingBasicCountDivId").html("No Data Available.");	
-			}
 		});
 	}
 	function buildMeetingBasicCountDetails(result){
@@ -47,14 +42,12 @@
 				  str+='</td>';
 				  str+='<td>';
 					  str+='<h3>'+overAllResult.mayBeCount+'<span class="font-10 text-success">'+overAllResult.mayBeCountPer+'%</span></h3>';
-					  str+='<p class="text-muted text-capital">may be</p>';
+					  str+='<p class="text-muted text-capital">maybe</p>';
 				  str+='</td>';
 			  str+='</tr>';
 	       str+='</tbody></table>';
 		  str+='<hr class="m_0">';
 		  str+='</div>';  
-		  }else{
-		   str+='No Data Available';	    
 		  }
 		 if(levelWiseResult != null && levelWiseResult.length > 0){
 			  for(var i in levelWiseResult){
@@ -75,7 +68,7 @@
 							 str+='<h4>'+levelWiseResult[i].notConductedCount+' <span class="font-10 text-success">'+levelWiseResult[i].notConductedCountPer+'%</span></h4>';
 						 str+='</td>';
 						 str+='<td>';
-							 str+='<p class="text-muted text-capitalize">may be</p>';
+							 str+='<p class="text-muted text-capitalize">maybe</p>';
 							 str+='<h4>'+levelWiseResult[i].mayBeCount+' <span class="font-10 text-success">'+levelWiseResult[i].mayBeCountPer+'%</span></h4>';
 						 str+='</td>';
 					 str+='</tr>';
@@ -191,12 +184,23 @@
 					}
 				},
 				tooltip: {
-					valueSuffix: '%'
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					shared: true
 				},
 				plotOptions: {
-					bar: {
+					column: {
+						stacking: 'percent',
 						dataLabels: {
-							enabled: true
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1);
+								}
+							}
+						  
 						}
 					}
 				},
@@ -299,12 +303,23 @@
 					}
 				},
 				tooltip: {
-					valueSuffix: '%'
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					shared: true
 				},
 				plotOptions: {
-					bar: {
+					column: {
+						stacking: 'percent',
 						dataLabels: {
-							enabled: true
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1);
+								}
+							}
+						  
 						}
 					}
 				},
@@ -466,10 +481,10 @@ function buildLevelWiseHighCharts(result){
 									shadow: false
 								},
 								tooltip: {
-									headerFormat: '<b>{point.x}</b><br/>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
-									shared: true
-								},
+								headerFormat: '<b>{point.x}</b>',
+								pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+								shared: true
+							},
 								plotOptions: {
 									column: {
 										dataLabels: {
