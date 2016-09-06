@@ -1,9 +1,4 @@
 //Training Program
-
-/* $(document).on("click",".stateCls",function(){
- var stateId=$(this).attr("attr_state_id");
- globalStateId = stateId; 
-}); */
 var globalStateId=1; //default Ap 
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 		getTrainingCampBasicDetailsCntOverview();
@@ -317,96 +312,6 @@ function buildLocationWiseTrainingProgramDetails(result){
 		$("#districtWiseProgramCntDivId").html("No Data Available");
 	}	
 }
-/*   function buildLocationWiseTrainingProgramDetails(result){
-	
- var str='';	
- 	  for(var i in result){
-		  str+='<h4>'+result[i].name+'</h4>';
-		   str+='<ul class="graphStructure" style="width:100px;">';
-		  for(var j in result[i].districtList){
-			str+='<li>';
-	         str+='<span attr_percent="'+result[i].districtList[j].totalAttenedCountPer+'"></span>';
-             str+='<span attr_percent="'+result[i].districtList[j].totalNotAttenedCountPer+'"></span>';
-            str+='<p class="name">'+result[i].districtList[j].name+'</p>';
-          str+='</li>'; 
-		  }
-		   str+='</ul>';
-	  }
-	  $("#districtWiseProgramCntDivId").html(str);
-	   $(".graphStructure").KChart({
-		  colors:['rgba(102,114,140,1)','rgba(245,104,0,1)','rgba(49,170,116,1)'],
-		  borderLine:true,
-		  labelText:true,
-		  showPercentage:true,
-		  percentColor:'#333',
-		  widthBtnGraphs:'12',
-		  chartHeight:'150px',
-		  labelLegendShow:false,
-		  graphHeading:false
-		});
- }  */
-/*  $(document).on("click",".trainingProgramCohortLiCls",function(){
-	 var reportType=$(this).attr("attr_li_value");
-	 if(reportType!= null && reportType=="all"){
-	  buildLocationWiseTrainingProgramDetails(globalTrainingProgramDtlsRslt);
-	 }else if(reportType!= null && reportType=="attended"){
-     buildAttendedTrainingProgramRslt(globalTrainingProgramDtlsRslt);		 
-	 }else if(reportType!= null && reportType=="notAttended"){
-	 buildNotAttendedTrainingProgramRslt(globalTrainingProgramDtlsRslt);		  
-	 }
- }); */
-/*  function buildAttendedTrainingProgramRslt(result){
- var str='';	
- 	  for(var i in result){
-		  str+='<h4>'+result[i].name+'</h4>';
-		   str+='<ul class="graphStructure" style="width:100px;">';
-		  for(var j in result[i].districtList){
-			str+='<li>';
-	         str+='<span attr_percent="'+result[i].districtList[j].totalAttenedCountPer+'"></span>';
-            str+='<p class="name">'+result[i].districtList[j].name+'</p>';
-          str+='</li>'; 
-		  }
-		   str+='</ul>';
-	  }
-	  $("#districtWiseProgramCntDivId").html(str);
-	   $(".graphStructure").KChart({
-		  colors:['rgba(245,104,0,1)','rgba(102,114,140,1)','rgba(49,170,116,1)'],
-		  borderLine:true,
-		  widthBtnGraphs:'12',
-		  labelText:true,
-		  showPercentage:true,
-		  percentColor:'#333',
-		  chartHeight:'150px',
-		  labelLegendShow:false,
-		  graphHeading:false
-		});
- }
-  function buildNotAttendedTrainingProgramRslt(result){
- var str='';	
- 	  for(var i in result){
-		  str+='<h4>'+result[i].name+'</h4>';
-		   str+='<ul class="graphStructure" style="width:100px;">';
-		  for(var j in result[i].districtList){
-			str+='<li>';
-	        str+='<span attr_percent="'+result[i].districtList[j].totalNotAttenedCountPer+'"></span>';
-            str+='<p class="name">'+result[i].districtList[j].name+'</p>';
-          str+='</li>'; 
-		  }
-		   str+='</ul>';
-	  }
-	  $("#districtWiseProgramCntDivId").html(str);
-	   $(".graphStructure").KChart({
-		  colors:['rgba(102,114,140,1)','rgba(245,104,0,1)','rgba(49,170,116,1)'],
-		  borderLine:true,
-		  labelText:true,
-		  showPercentage:true,
-		  percentColor:'#333',
-		  chartHeight:'150px',
-		  widthBtnGraphs:'12',
-		  labelLegendShow:false,
-		  graphHeading:false
-		});
- } */
 var globalUserWiseMemberRslt;
  function getUserTypeWiseTotalEligibleAndAttendedCnt(){
 	  $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -512,12 +417,23 @@ var globalUserWiseMemberRslt;
 					}
 				},
 				tooltip: {
-					valueSuffix: '%'
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					shared: true
 				},
 				plotOptions: {
-					bar: {
+					column: {
+						stacking: 'percent',
 						dataLabels: {
-							enabled: true
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1);
+								}
+							}
+						  
 						}
 					}
 				},
@@ -620,12 +536,23 @@ var globalUserWiseMemberRslt;
 					}
 				},
 				tooltip: {
-					valueSuffix: '%'
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					shared: true
 				},
 				plotOptions: {
-					bar: {
+					column: {
+						stacking: 'percent',
 						dataLabels: {
-							enabled: true
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1);
+								}
+							}
+						  
 						}
 					}
 				},
