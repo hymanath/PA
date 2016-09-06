@@ -1876,7 +1876,7 @@
 		getCommitteesBasicCountReport();
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
-		getNewsBasicCounts();
+		//getNewsBasicCounts();
 		//Meeting
 		getPartyMeetingBasicCountDetails();
 		
