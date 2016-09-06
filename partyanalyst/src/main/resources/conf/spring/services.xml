@@ -3427,6 +3427,7 @@
 	  <property name="characteristicsDAO"  ref="characteristicsDAO"></property>
 	  <property name="debateRolesDAO"  ref="debateRolesDAO"></property>
 	  <property name="partyDAO"  ref="partyDAO"></property>
+	  <property name="setterAndGetterUtilService"  ref="setterAndGetterUtilService"></property>
 	
 	</bean>
 	

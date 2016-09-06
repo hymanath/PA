@@ -695,6 +695,50 @@
 									</div>
 								  </div>
 								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFive">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										   <h4 class="panel-title"><span class="headingColor text-capitalize">Top 5 Performance</span></h4>
+										</a>
+									</div>
+									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="table-responsive" id="candidateRolesPerformanceNewId"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <!-- TOP 5 BLock Start -->
+							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">-->
+                                <!--<div class="panel panel-default panelNew">
+                                    <div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<h4><span class="headingColor text-capitalize">Top 5 Performers</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-6">
+												<ul class="activeUlCls list-inline pull-right candidateRolesCls">
+													<li value="1">Critic</li>
+													<li value="2">Bully</li>
+												</ul>
+											</div>
+										</div>
+                                        
+                                    </div>
+									
+                                    <div class="panel-body">
+                                        <div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="table-responsive" id="candidateRolesPerformanceId"													
+												</div>
+											</div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                           <!-- </div> -->
+                            <!-- TOP 5 BLock End -->
+								  
+								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingThree">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
 										   <h4><span class="headingColor text-capitalize">candidate overall performance cohort</span></h4>
@@ -728,55 +772,7 @@
 								  </div>
 								</div>
                             </div>
-                            <!-- TOP 5 BLock Start -->
-							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                <div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<h4><span class="headingColor text-capitalize">top 5</span></h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<ul class="activeUlCls list-inline pull-right">
-													<li>Bully</li>
-													<li>Critic</li>
-												</ul>
-											</div>
-										</div>
-                                        
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="table-responsive">
-													<table class="table tableTopDebates">
-														<tr>
-															<td class="text-capital">Raja Reddy</td>
-															<td class="text-capital">
-																<p>PARTY</p>
-																<p><img src="newCoreDashBoard/img/tdpIcon.png" class="debatesPartyIcon"/>TDP</p>
-															</td>
-															<td class="text-capital">
-																<p>debates</p>
-																<p class="text-muted">150</p>
-															</td>
-															<td class="text-capital">
-																<p>performance</p>
-																<i class="glyphicon glyphicon-star"></i>
-																<i class="glyphicon glyphicon-star"></i>
-																<i class="glyphicon glyphicon-star"></i>
-																<i class="glyphicon glyphicon-star"></i>
-																<i class="glyphicon glyphicon-star"></i>
-															</td>
-														</tr>
-													</table>
-												</div>
-											</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-                            <!-- TOP 5 BLock End -->
+                            
                           <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">

@@ -2,7 +2,7 @@ var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/
 var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 $(document).ready(function(){
 	
-	getPartyWiseTotalDebateDetails();
+	getPartyWiseTotalDebateDetails();	
 	$("#dateRangeIdForDebates").daterangepicker({
 		opens: 'left',
 		startDate: moment().subtract(1, 'month').startOf('month'),
@@ -16,7 +16,8 @@ $(document).ready(function(){
            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
            'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 3 Months': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
 	})
 	$('#dateRangeIdForDebates').on('apply.daterangepicker', function(ev, picker) {
@@ -41,6 +42,7 @@ $(document).ready(function(){
 		  getCandidateOverAllPerformanceCohort();
 		  getChannelAndPartyWiseDetails();
 		  getRoleBasedPerformanceCohort();
+		  getRolesPerformanceOfCandidate();
 	  }
 	});
 });	
@@ -429,7 +431,7 @@ function buildSpokesPersonWiseDebate(result){
 						},
 
 						series: [{
-							name: 'Completed',
+							name: '',
 							dataLabels: {
 								enabled: true,
 								 formatter: function() {
@@ -554,6 +556,7 @@ $(document).on("click",".moreDebatesBlocksIcon",function(){
 	getCandidateOverAllPerformanceCohort();
 	getChannelAndPartyWiseDetails();
 	getRoleBasedPerformanceCohort();
+	getRolesPerformanceOfCandidate();
 });
 
 $(document).on("click","#debateTopId",function(){
@@ -580,3 +583,57 @@ function getTitleContent(name,showCharVal){
    
 	return name;
 }
+
+function getRolesPerformanceOfCandidate(){
+		
+		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
+		var jsObj={
+			startDate: customStartDate ,
+			endDate: customEndDate,
+			state:globalState,
+			roleId:1
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getRolesPerformanceOfCandidateAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildRolesPerformanceOfCandidate(result);			
+		});
+	}
+	function buildRolesPerformanceOfCandidate(result){
+		var str='';
+		if(result !=null && result.length>0){
+			str+='<table class="table tableTopDebates">';			
+				for(var i in result){
+					str+='<tr>';
+							str+='<td class="text-capital" id="'+result[i].id+'">'+result[i].name+'</td>';
+							str+='<td class="text-capital">';
+								str+='<p>PARTY</p>';
+								str+='<p><img src="newCoreDashBoard/img/'+result[i].candidateName+'.png" class="debatesPartyIcon"/>'+result[i].candidateName+'</p>';
+							str+='</td>';
+							str+='<td class="text-capital">';
+								str+='<p>debates</p>';
+								str+='<p class="text-muted">'+result[i].debateCount+'</p>';
+							str+='</td>';
+							str+='<td class="text-capital">';
+								str+='<p>performance</p>';
+								str+='<input class="performanceRating" value="'+result[i].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result[i].scalePerc+'</span>';
+							str+='</td>';
+						str+='</tr>';
+				}
+				str+='</table>';
+		}
+		else{
+			str+='<div class="text-capital">No Data Available</div>';
+		}		
+		$("#candidateRolesPerformanceNewId").html(str);
+		$(".performanceRating").rating({
+			showClear: false,
+			showCaption:false,
+			hoverOnClear: true,
+			animate:false
+		});		
+	}
