@@ -43,7 +43,27 @@
 		
 		return levelWiseBasicCommitteesArray;
 	}
-	
+	$(document).on("click","#checkAllAffliatedVillagelevelId",function(){
+		if($(this).is(':checked')){
+		   $('.villageCommitteeAffliatedcheckBoxClass').prop('checked', true);
+		}else{
+		   $('.villageCommitteeAffliatedcheckBoxClass').prop('checked', false);
+		}
+	});
+	$(document).on("click","#checkAllAffliatedMandallevelId",function(){
+		if($(this).is(':checked')){
+		   $('.mandalCommitteeAffliatedcheckBoxClass').prop('checked', true);
+		}else{
+		   $('.mandalCommitteeAffliatedcheckBoxClass').prop('checked', false);
+		}
+	});
+	$(document).on("click","#checkAllAffliatedDistrictlevelId",function(){
+		if($(this).is(':checked')){
+		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', true);
+		}else{
+		   $('.districtCommitteeAffliatedcheckBoxClass').prop('checked', false);
+		}
+	});
 	function getCommitteesBasicCountReport(){
 		
 		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
