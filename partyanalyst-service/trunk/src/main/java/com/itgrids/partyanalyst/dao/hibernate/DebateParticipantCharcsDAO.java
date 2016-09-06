@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
@@ -680,6 +681,105 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			query.setParameter("endDate", endDate);
 		}	
 		return query.list(); 		
+	}
+	
+	public List<Object[]> getScaleOfCandidate(Date startDate,Date endDate,List<Long> roles,String state){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select C.candidate_id as candidateId,C.lastname as candidateName,P.party_id as partyId," +
+				"P.short_name as partyName,sum(DPC.scale) as sum,count(distinct D.debate_id) as count from debate_participant_charcs DPC, " +
+				" debate_participant_role DPR, " +
+				" debate_roles DR,debate_participant DP,debate D,candidate C,party P,characteristics CH " +
+				" where " +
+				" DPC.debate_participant_id = DPR.debate_participant_id " +
+				" and DP.debate_participant_id = DPC.debate_participant_id " +
+				" and DPR.debate_roles_id  = DR.debate_roles_id" +
+				" and DP.debate_id = D.debate_id " +
+				" and DP.candidate_id = C.candidate_id " +
+				" and P.party_id = DP.party_id " +
+				" and DPC.characteristics_id = CH.characteristics_id " +
+				" and D.is_deleted ='N' " +
+				" and C.is_debate_candidate = 'Y' " );
+		
+				if(roles !=null && roles.size()>0){
+					str.append(" and DR.debate_roles_id in (:debateRoles) " );
+				}
+				if(startDate !=null && endDate !=null){
+					str.append(" and date(D.start_time) >= :startDate and date(D.end_time) <= :endDate " );
+				}
+				
+				if(state !=null && state.trim().equalsIgnoreCase("ap")){
+					str.append(" and P.party_id not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+				}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+					str.append(" and P.party_id not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+				}
+				
+				str.append(" group by C.candidate_id,P.party_id " +
+						"  order by sum(DPC.scale) desc  " );
+				
+				Query query = getSession().createSQLQuery(str.toString())
+						.addScalar("candidateId",Hibernate.LONG)
+						.addScalar("candidateName",Hibernate.STRING)
+						.addScalar("partyId",Hibernate.LONG)
+						.addScalar("partyName",Hibernate.STRING)
+						.addScalar("sum",Hibernate.DOUBLE)
+						.addScalar("count",Hibernate.LONG);	
+							
+				if(roles !=null && roles.size()>0){
+					query.setParameterList("debateRoles",roles);
+				}
+				
+				if(startDate !=null && endDate !=null){
+					query.setParameter("startDate", startDate);
+					query.setParameter("endDate", endDate);
+				}
+				
+				return query.list();
+		
+	}
+	
+	public List<Object[]> getScaleOfCandidateNew(Date startDate,Date endDate,List<Long> roles,String state){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname" +
+				",model.debateParticipant.party.partyId,model.debateParticipant.party.shortName,sum(model.scale),count(distinct model.debateParticipant.debate.debateId) " +
+				" from DebateParticipantCharcs model ,DebateParticipantRole model1 " +
+				" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId" +
+				" and model.characteristics.isDeleted = 'N' " +
+				" and model1.debateRoles.isDeleted ='N' " +
+				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+		
+			if(state !=null && state.trim().equalsIgnoreCase("ap")){
+				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );
+			}else if(state !=null && state.trim().equalsIgnoreCase("ts")){
+				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_TS+") " );
+			}
+		
+			if(startDate !=null && endDate !=null){
+				str.append(" and date(model.debateParticipant.debate.startTime) >= :startDate and date(model.debateParticipant.debate.endTime) <= :endDate  ");
+			}
+			
+			if(roles !=null && roles.size()>0){
+				str.append(" and model1.debateRoles.debateRolesId in (:roles) ");
+			}
+			
+			str.append(" group by model.debateParticipant.candidate.candidateId, model.debateParticipant.party.partyId " +
+					" order by model.debateParticipant.party.newsOrderNo ");
+		
+			Query query = getSession().createQuery(str.toString());	
+			
+			if(startDate !=null && endDate !=null){
+				query.setParameter("startDate", startDate);
+				query.setParameter("endDate", endDate);
+			}	
+			if(roles !=null && roles.size()>0){
+				query.setParameterList("roles", roles);
+			}
+			
+			return query.list(); 		
+
 	}
 	
 }

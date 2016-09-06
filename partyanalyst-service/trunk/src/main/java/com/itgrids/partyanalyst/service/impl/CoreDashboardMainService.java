@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class CoreDashboardMainService implements ICoreDashboardMainService {
 
@@ -70,6 +71,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private ICharacteristicsDAO characteristicsDAO;
 	 private IDebateRolesDAO debateRolesDAO;
 	 private IPartyDAO partyDAO;
+	 private SetterAndGetterUtilService setterAndGetterUtilService;
 	 
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
@@ -144,6 +146,12 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
+	}
+	
+	
+	public void setSetterAndGetterUtilService(
+			SetterAndGetterUtilService setterAndGetterUtilService) {
+		this.setterAndGetterUtilService = setterAndGetterUtilService;
 	}
 	/**
 	  * @param  Long userAccessLevelId
@@ -2893,6 +2901,99 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 	
 	return returnList;
 }
+
+public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state){
+	
+	List<CoreDebateVO> candidateScaleList = new ArrayList<CoreDebateVO>();
+	
+	try{
+		
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		
+		//0.candidateId,1.name,2.partyId,3.name,4.scale	
+		List<Object[]> candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidateNew(startDate,endDate,roles,state);
+		
+		//0.candidateId,1.name,2.partyId,3.name,4.debatesCount			
+		//List<Object[]>  candidateDebateObj = debateParticipantDAO.getDebatesCountOfCandidate(startDate,endDate,roles,state);			
+		
+		
+		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
+		
+		if(commonMethodsUtilService.isListOrSetValid(candidateScaleObj)){
+			candidateScaleList = setCandidateObjIntoList(candidateScaleObj,candidateScaleList);
+		}
+		
+		if(commonMethodsUtilService.isListOrSetValid(candidateScaleList)){			
+			for (CoreDebateVO VO : candidateScaleList) {
+				
+				if(VO.getScale() !=null && VO.getScale()>0.00 &&  VO.getDebateCount() !=null &&  VO.getDebateCount()>0){
+					VO.setScalePerc(Double.parseDouble(new BigDecimal(((VO.getScale())/VO.getDebateCount()) / charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				}					
+			}				
+		}
+		
+		//Sorting Based on Scale Percenatage For Candidate
+		
+		if(commonMethodsUtilService.isListOrSetValid(candidateScaleList)){				
+			Collections.sort(candidateScaleList,scaleComparedCountSort);
+			
+			List<CoreDebateVO> newList = new ArrayList<CoreDebateVO>();
+			
+			if(candidateScaleList !=null && candidateScaleList.size()>5){
+				for(int i=0;i<5;i++){
+					CoreDebateVO VO = candidateScaleList.get(i);
+					if(VO !=null){
+						newList.add(VO);
+					}
+				}
+			}else{
+				newList.addAll(candidateScaleList);
+			}
+			
+			return newList;
+			
+		}
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	return candidateScaleList;
+	
+}
+
+public static Comparator<CoreDebateVO> scaleComparedCountSort = new Comparator<CoreDebateVO>()
+{
+			public int compare(CoreDebateVO cstVO1, CoreDebateVO cstVO2)
+			{			
+				 Double perc1 = cstVO1.getScalePerc();
+			      Double perc2 = cstVO2.getScalePerc();
+				return perc2.compareTo(perc1);
+			}
+};
+
+public List<CoreDebateVO> setCandidateObjIntoList(List<Object[]> candidateScaleObj ,  List<CoreDebateVO> candidateScaleList){
+	try{			
+		if(commonMethodsUtilService.isListOrSetValid(candidateScaleObj)){				
+			String[] propertiesList = {"id","name","candidateId","candidateName","scale","debateCount"};				
+			candidateScaleList = setterAndGetterUtilService.setValuesToVO(candidateScaleObj, propertiesList, "com.itgrids.partyanalyst.dto.CoreDebateVO");				
+		}
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	return candidateScaleList;
+}
+
+
 /**
  * @author <a href="mailto:aravind.itgrids.hyd@gmail.com">ARAVIND</a>
  *  This Service Method is used to get the basic Committee Details
