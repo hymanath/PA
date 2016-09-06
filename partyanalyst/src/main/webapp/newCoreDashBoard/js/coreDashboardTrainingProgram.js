@@ -616,6 +616,11 @@ $(document).on("click",".trainingIconExpand",function(){
 		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerCls").toggleClass("hide");
 		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
 	
 	 setTimeout(function(){

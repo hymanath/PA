@@ -9,13 +9,14 @@
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/GridStack/gridstack.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
@@ -89,7 +90,7 @@
 <div class="container m_top20">
 	<div class="row">
     	<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
-        	<div class="panel panel-default panelNewCustom">
+        	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
 						<div class="col-md-6 col-sm-8 col-xs-7">
@@ -290,8 +291,8 @@
                                 	<ul class="activeUlCls list-inline pull-right">
                                     	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
 										<li class="topFivePoorResults">Top 5 Poor</li>-->
-										<li class="liCls1 active addactive" attr_value="strong">top 5 strong</li>
-										<li class="liCls1 removeactive" attr_value="poor">last 5 poor</li>
+										<li class="liCls1 active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="liCls1 removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
                                     </ul>
                                 </div>
                                 <div id="userTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
@@ -372,7 +373,7 @@
         </div>
         <!-- TRAINING PROGRAM BLOCK -->
         <div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
-			<div class="panel panel-default panelNewCustom">
+			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
 					<h4 class="panel-title">
 						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
@@ -432,8 +433,8 @@
 								<div class="row">
 								  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 									<ul class="activeUlCls list-inline ">
-										<li class="liCls active" attr_value="strong">top 5 strong</li>
-										<li class="liCls" attr_value="poor">last 5 poor</li>
+										<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 									</ul>
 								  </div>
 								</div>
@@ -581,15 +582,29 @@
         <div class="row">
             <!-- DEBATES PROGRAM BLOCK -->
             <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 debatesBlock">
-                <div class="panel panel-default panelNewCustom">
+                <div class="panel panel-default panelNewCustom panel2">
                     <div class="panel-heading">
-                        <h4 class="panel-title text-capital">
-						<img class="iconClass" src="newCoreDashBoard/img/debates.png">
-							debates
-                            <span class="debatesIconExpand pull-right">
-                                <i class="glyphicon glyphicon-fullscreen"></i>
-                            </span>
-                        </h4>
+						<div class="row">
+							<div class="col-md-6 col-sm-8 col-xs-7">
+								<h4 class="panel-title text-capital">
+									<img class="iconClass" src="newCoreDashBoard/img/debates.png">
+									debates
+									
+								</h4>
+							</div>
+							<div class="col-md-6 col-sm-4 col-xs-5">
+								<span class="debatesIconExpand pull-right">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
+									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+                       
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -629,10 +644,10 @@
                                 	<div class="col-md-12 col-xs-12 col-sm-12">
                                 		<h4 class="text-capital"><span class="headingColor">Spokespersons</span></h4>
                                 	</div>
-                                    <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+                                    <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-12 ">
                                         <ul class="activeUlCls list-inline debateSpokesCls">
-                                            <li id="debateTopId" class="active">top 5 strong</li>
-                                            <li id="debateLowId">last 5 poor</li>
+                                            <li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+                                            <li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
                                         </ul>
                                     </div>
 									<div id="SpokesPersonWiseDebate"></div>
@@ -645,28 +660,68 @@
                         </div>
                         <div class="row debatesMoreHiddenBlock">
                             <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                <div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-                                        <h4><span class="headingColor text-capitalize">Scale based performance cohort</span></h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-											<div id="scaleBasedPerformanceCohort"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                <div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-                                        <h4><span class="headingColor text-capitalize">role based performance cohort</span></h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-											<div id="roleBasedPerformanceCohort"></div>
-                                        </div>
-                                    </div>
-                                </div>
+								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+												<h4><span class="headingColor text-capitalize">Scale based performance cohort</span></h4>
+											</a>
+										</div>
+										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body">
+												<div class="row">
+													<div id="scaleBasedPerformanceCohort"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										   <h4 class="panel-title"><span class="headingColor text-capitalize">role based performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									  <div class="panel-body">
+										<div class="row">
+												<div id="roleBasedPerformanceCohort"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										   <h4><span class="headingColor text-capitalize">candidate overall performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="candidateOverAllPerformanceCohort"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFour">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										   <h4><span class="headingColor text-capitalize">channel vs parties</span></h4>
+										</a>
+									</div>
+									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="channelAndPartyWiseDetails"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								</div>
                             </div>
                             <!-- TOP 5 BLock Start -->
 							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -717,34 +772,6 @@
                                 </div>
                             </div>-->
                             <!-- TOP 5 BLock End -->
-                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                <div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-                                        <h4><span class="headingColor text-capitalize">candidate overall performance cohort</span></h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="candidateOverAllPerformanceCohort"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                <div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-                                        <h4><span class="headingColor text-capitalize">channel vs parties</span></h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="channelAndPartyWiseDetails"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                           <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
@@ -852,11 +879,13 @@
                 </div>
             </div>
             <!-- DEBATES PROGRAM BLOCK END-->
-			<!-- NEWS BLOCK START-->
+			<!--  NEWS BLOCK START-->
 			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
-				<div class="panel panel-default panelNewCustom">
+				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
-						<h4 class="panel-title">news
+						<h4 class="panel-title">
+							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+							news
 							<span class="newsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
@@ -1057,8 +1086,8 @@
 								<div class="row">
 									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline">
-											<li>top 5 strong</li>
-											<li>last 5 poor</li>
+											<li class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 										</ul>
 									</div>
 									<div class="col-md-12 col-xs-12 col-sm-12">
@@ -1744,13 +1773,6 @@
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/KChart.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -1759,9 +1781,14 @@
 <script src="newCoreDashBoard/Plugins/Rating/bootstrap-rating.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/debates.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/newCoreDashboard.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-	
+
 	/* //Angular Start
 
 		var obj = angular.module("partyWiseTotalApp",[]);
@@ -1930,7 +1957,7 @@
 		  loggedInUserAccessLevelValues.push( ${userAccessLevelValue} );        
 	   </c:forEach>
 	   return loggedInUserAccessLevelValues;
-	}
+	}	
 	$(document).on("click",".notesIconTraining",function(){
 		$(this).closest(".panel-heading").find(".notesDropDown").toggle();
 	});
