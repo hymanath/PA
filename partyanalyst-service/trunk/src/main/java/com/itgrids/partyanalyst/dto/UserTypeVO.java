@@ -37,6 +37,7 @@ public class UserTypeVO implements Serializable{
 	private Double startedPerc = 0.0;
 	private Double notStartedPerc = 0.0;
 	
+	//For Training
 	private Long totalEligibleCount=0l;
 	private Long totalAttenedCount=0l;
 	private Long totalNotAttenedCount=0l;
@@ -47,6 +48,12 @@ public class UserTypeVO implements Serializable{
 	private Long negativeCount = 0l;
 	private Double positivePercentage = 0.0;
 	private Double negativePercentage = 0.0;
+	//For Meeting
+	private Long totalMeetingCnt=0l;
+	private Long conductedMeetingCnt=0l;
+	private Long notConductedMeetingCnt=0l;
+	private Long mayBeMeetingCnt=0l;
+	private Double conductedAndMayBeMeetingPer=0.0;
 	
 	public Long getId() {
 		return id;
@@ -247,6 +254,34 @@ public class UserTypeVO implements Serializable{
 	public void setNegativePercentage(Double negativePercentage) {
 		this.negativePercentage = negativePercentage;
 	}
-	
-	
+	public Long getTotalMeetingCnt() {
+		return totalMeetingCnt;
+	}
+	public void setTotalMeetingCnt(Long totalMeetingCnt) {
+		this.totalMeetingCnt = totalMeetingCnt;
+	}
+	public Long getConductedMeetingCnt() {
+		return conductedMeetingCnt;
+	}
+	public void setConductedMeetingCnt(Long conductedMeetingCnt) {
+		this.conductedMeetingCnt = conductedMeetingCnt;
+	}
+	public Long getNotConductedMeetingCnt() {
+		return notConductedMeetingCnt;
+	}
+	public void setNotConductedMeetingCnt(Long notConductedMeetingCnt) {
+		this.notConductedMeetingCnt = notConductedMeetingCnt;
+	}
+	public Long getMayBeMeetingCnt() {
+		return mayBeMeetingCnt;
+	}
+	public void setMayBeMeetingCnt(Long mayBeMeetingCnt) {
+		this.mayBeMeetingCnt = mayBeMeetingCnt;
+	}
+	public Double getConductedAndMayBeMeetingPer() {
+		return conductedAndMayBeMeetingPer;
+	}
+	public void setConductedAndMayBeMeetingPer(Double conductedAndMayBeMeetingPer) {
+		this.conductedAndMayBeMeetingPer = conductedAndMayBeMeetingPer;
+	}
 }

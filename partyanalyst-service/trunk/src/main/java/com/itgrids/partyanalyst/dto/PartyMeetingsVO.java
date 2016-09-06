@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,17 @@ public class PartyMeetingsVO implements Serializable{
 	private Long conductedCount = 0l;
 	private Long notConductedCount = 0l;
 	
+	/*For Core DashBoard  */
+	private Long totalCount=0l;
+	private Long mayBeCount=0l;
+	private Double totalCountPer=0.0;
+	private Double  conductedCountPer=0.0;
+	private Double notConductedCountPer=0.0;
+	private Double mayBeCountPer=0.0;
+	private PartyMeetingsVO overAllVO;
+	private List<PartyMeetingsVO> partyMettingsVOList;
+	
+	
 	private List<PartyMeetingsVO> subList;
 	private Map<Long,PartyMeetingsVO> subMap;
 	private Map<String,PartyMeetingsVO> subMap1;
@@ -20,6 +32,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Integer year;
 	private String month;
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -81,6 +94,52 @@ public class PartyMeetingsVO implements Serializable{
 	public void setSubMap1(Map<String, PartyMeetingsVO> subMap1) {
 		this.subMap1 = subMap1;
 	}
-	
-	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getMayBeCount() {
+		return mayBeCount;
+	}
+	public void setMayBeCount(Long mayBeCount) {
+		this.mayBeCount = mayBeCount;
+	}
+	public Double getTotalCountPer() {
+		return totalCountPer;
+	}
+	public void setTotalCountPer(Double totalCountPer) {
+		this.totalCountPer = totalCountPer;
+	}
+	public Double getConductedCountPer() {
+		return conductedCountPer;
+	}
+	public void setConductedCountPer(Double conductedCountPer) {
+		this.conductedCountPer = conductedCountPer;
+	}
+	public Double getNotConductedCountPer() {
+		return notConductedCountPer;
+	}
+	public void setNotConductedCountPer(Double notConductedCountPer) {
+		this.notConductedCountPer = notConductedCountPer;
+	}
+	public Double getMayBeCountPer() {
+		return mayBeCountPer;
+	}
+	public void setMayBeCountPer(Double mayBeCountPer) {
+		this.mayBeCountPer = mayBeCountPer;
+	}
+	public PartyMeetingsVO getOverAllVO() {
+		return overAllVO;
+	}
+	public void setOverAllVO(PartyMeetingsVO overAllVO) {
+		this.overAllVO = overAllVO;
+	}
+	public List<PartyMeetingsVO> getPartyMettingsVOList() {
+		if(partyMettingsVOList == null){
+			partyMettingsVOList = new ArrayList<PartyMeetingsVO>();
+		}
+		return partyMettingsVOList;
+	}	
 }
