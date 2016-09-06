@@ -136,13 +136,32 @@
 									<div class="basicCommitteeDetailsDiv">
 									<ul class="settingsUl">
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
 										<li>
 											<label class="checkbox-inline">
-												<input type="checkbox"  class="checkedBasicComm districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
 												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
 										   </label>
-										</li>      
+										</li>	
+                                     </c:if>										
 									</c:forEach>
+									   <li>
+										    <label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId"  checked>
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li> 
+										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									  </c:forEach>
+										
 									</ul>
 									</div>
 								</div>
@@ -152,20 +171,42 @@
 									<div class="basicCommitteeDetailsDiv">
 									<ul class="settingsUl">
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-										<li>
-											<label class="checkbox-inline">
+									   <c:if test="${basicCommittee.id == 1}">
+										 <li>
+										   <label class="checkbox-inline">
+											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										 </li>
+									   </c:if>
+									</c:forEach>
+									    <li>
+										    <label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedMandallevelId"  >
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
 											 <c:choose>
 											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
-												   <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}">
+											     <li>
+											      <label class="checkbox-inline">
+												     <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+												  </label>
+												 </li> 
 											   </c:when>
 												<c:otherwise>
-												   <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+													<li>
+													  <label class="checkbox-inline">
+													     <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+													     <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+													   </label>
+													 </li> 
 												</c:otherwise>
 										   </c:choose>
-												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										</li>      
 									</c:forEach>
+									
 									</ul>
 									</div>
 								</div>
@@ -175,19 +216,31 @@
 									<div class="basicCommitteeDetailsDiv">
 									<ul class="settingsUl">
 									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-										<li>
-											<label class="checkbox-inline">
-											 <c:choose>
-											   <c:when test="${basicCommittee.id == 1}">
-												   <input type="checkbox"  class="checkedBasicComm villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-											   </c:when>
-												<c:otherwise>
-												   <input type="checkbox"  class="checkedBasicComm villageCommitteecheckBoxClass" value="${basicCommittee.id}">
-												</c:otherwise>
-										   </c:choose>
-												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   <c:if test="${basicCommittee.id == 1}">
+											 <li>
+											   <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											 </li>
+										   </c:if>
+									</c:forEach>
+									     <li>
+										    <label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId"  >
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
 										   </label>
-										</li>      
+										</li>  
+									
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										 	<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageCommitteecheckBoxClass villageCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
 									</c:forEach>
 									</ul>
 									</div>
@@ -195,10 +248,6 @@
 							  </div>
 							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
 							</div>
-
-						
-						
-						
 						
 						</div>
 						
