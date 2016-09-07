@@ -10,6 +10,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
@@ -22,9 +25,6 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 
 public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	private final static Logger LOG = Logger.getLogger(CoreDashboardMainService.class);
@@ -69,7 +69,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 			 //WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts/"+locationLevelIdsMap+"/"+state+"/"+fromDate+"/"+toDate+"");
 		     
 			 //ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-			 
+	         
 	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, activityMemberVO);
 	         
 	 	      if(response.getStatus() != 200){
@@ -96,13 +96,13 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		 	    			
 		 	    			if(inArr != null && inArr.length() > 0){
 		 	    				for (int j = 0; j < inArr.length(); j++) {
-		 	    					JSONObject tmp1 = (JSONObject) inArr.get(i);
+		 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
 		 	    					
 		 	    					CoreDashBoardVO invo = new CoreDashBoardVO();
 		 	    					invo.setId(tmp1.getLong("id"));
-		 	    					invo.setPositiveCount(tmp1.getLong("positiveCount"));
-		 	    					invo.setNegativCount(tmp1.getLong("negativCount"));
-		 	    					invo.setNeutralCount(tmp1.getLong("neutralCount"));
+		 	    					invo.setPositiveCount(tmp1.getLong("positiveCountMain"));
+		 	    					invo.setNegativCount(tmp1.getLong("negativCountMain"));
+		 	    					invo.setNeutralCount(tmp1.getLong("neutralCountMain"));
 		 	    					vo.getCoreDashBoardVOList().add(invo);
 								}
 		 	    			}

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoreDashBoardVO {
@@ -14,7 +15,7 @@ public class CoreDashBoardVO {
 	public Long negativCount;
 	public Long neutralCount;
 	public String ediitonType;
-	public List<CoreDashBoardVO> coreDashBoardVOList;
+	public List<CoreDashBoardVO> coreDashBoardVOList=new ArrayList<CoreDashBoardVO>(0);
 	
 	
 	public Long getId() {
