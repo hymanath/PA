@@ -208,7 +208,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 			sbM.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
 		}
 		if(inputBO.getPartyMeetingTypeIds()!=null && inputBO.getPartyMeetingTypeIds().size()>0){
-			sbM.append(" and model.partyMeetingTypeId in (:partyMeetingTypeIds) ");
+			sbM.append(" and model.partyMeeting.partyMeetingTypeId in (:partyMeetingTypeIds) ");
 		}
 		
 		StringBuilder sbf = new StringBuilder().append(sbS).append(sbM).append(sbE);
