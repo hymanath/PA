@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -67,6 +68,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ResultStatus 						resultStatus;
 	private List<DashboardCommentVO> 						dashboardCommentVo;
 	private String status;
+	
+	private List<IdNameVO> idNameVoList;
 	
 	//setters And Getters
 	public void setCoreDashboardService(ICoreDashboardService coreDashboardService) {
@@ -255,6 +258,16 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCoreDashboardPartyMeetingService(
 			ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService) {
 		this.coreDashboardPartyMeetingService = coreDashboardPartyMeetingService;
+	}
+	
+	
+
+	public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
 	}
 
 	//business methods
@@ -1121,6 +1134,16 @@ public String getRolesPerformanceOfCandidate(){
 		}
 		
 		return Action.SUCCESS;
+}
+
+public String getDebateRolesNew(){
+	try{		
+		idNameVoList = coreDashboardMainService.getDebateRolesNew();
+	}
+	catch (Exception e) {
+		LOG.error("Exception rised in getDebateRolesNew",e);
+	}
+	return Action.SUCCESS;
 }
 
 }
