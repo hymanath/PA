@@ -399,7 +399,7 @@
 									<i class="glyphicon glyphicon-list-alt"></i>
 								</span>
 							</h4>
-							<div id="notesId1"></div>
+							<div id="notesTrainingId"></div>
 							<!--<ul class="notesUl m_top20">
 								<li>
 									<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
@@ -1973,31 +1973,6 @@
 	   </c:forEach>
 	   return loggedInUserAccessLevelValues;
 	}	
-	$(document).on("click",".notesIconTraining",function(){
-		$(this).closest(".panel-heading").find(".notesDropDown").toggle();
-	});
-	$(document).on("click",".btnCustomCreate1",function(){
-		var getNewNotes = $(".notesArea1").val();
-		var todayDate = moment().format("DD MMMM YYYY");
-		var cmtId = $("#cmtTrngId").val();
-		var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes1"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes1" attr_cmt_id="'+cmtId+'"></i>'; 
-		if(cmtId>0)
-		$(".notesUl").append("<li>"+commentText+"</li>");
-		$(".notesArea").val('');	
-	});
-	$(document).on("click",".editNotes1",function(){ 
-		var commentId = $(this).attr("attr_cmt_id");
-		var commentId1 = $(this).parent().find(".notesText1").attr("attr_commentid");
-		var notesHtml = $("#"+commentId).html();
-		$(".notesArea1").val(notesHtml);  
-		$(".notesArea1").attr("attr_commentid",commentId);  
-		$("#cmtTrngId").val(commentId);
-		$("#cmtTrngId").val();  
-		$("#id2").html(''); 
-	});
-	$(document).on("click",".deleteNotes1",function(){
-		$(this).closest("li").remove();
-	});
 function savingDashboardComment(dashboardComponentId){  
   var comment=$(".notesArea").val();
   if(comment.trim() ==""){
@@ -2062,92 +2037,7 @@ function displayDashboardComments(dashBoardComponentId){
 		}
 	});
 }
-function deleteDashBoardcomments(dashboardCommentId)
-{
-	var jsObj={
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "deleteDashBoardcommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
-				
-				
-			}
-		}
-			
-	});
-	
-}
-function displayDashboardCommentsForTraining(dashBoardComponentId){
-	var jsObj={
-		dashBoardComponentId:dashBoardComponentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "displayDashboardCommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length >0){
-		 var str=''; 
-      		 
-	     str+='<ul class="notesUl m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
-            	     
-					for(var i in result){ 
-                        str+='<li style="margin-top:3px;">'; 
-                        str+='<span class="notesText1" id="editTextTrngId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
-					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes1" attr_cmt_id="editTextTrngId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
-                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes1" attr_cmt_id="editTextTrngId'+i+'" attr_comment="'+result[i].comment+'"></i>';
-                        str+='</li>';
-					}
-                        str+='</ul>';
-						str+='<hr/>';
-						str+='<div id="id2" style="color:red;"></div>';
-                        str+='<label>Create Notes</label>';
-                        str+='<textarea class="form-control notesArea1"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreate1 btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(2);">create</button>';
-			
-			$("#notesId1").html(str);	 
-		}
-	});
-}
-function savingDashboardCommentForTraing(dashboardComponentId){  
-  var comment=$(".notesArea1").val();
-  if(comment.trim() ==""){
-		  $("#id2").html("Notes Required.");
-		  return;
-	  }
-	var editId = $("#cmtTrngId").val();
-	//$("#"+editId).parent().html(' ');
-	$("#"+editId).html(comment);
-	 var dashboardCommentId=0;
-	 if($(".notesArea").attr("attr_commentid")>0)
-	 {
-		dashboardCommentId=$(".notesArea").attr("attr_commentid");		
-	 }
-	
-	var jsObj={
-		comment:comment,
-		dashboardComponentId: dashboardComponentId,
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "savingDashboardCommentAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
-				
-				$("#id2").html('update succuss');
-				displayDashboardCommentsForTraining(2);
-			}
-		}			
-	});
-}
+
 		
   </script> 
 </body>
