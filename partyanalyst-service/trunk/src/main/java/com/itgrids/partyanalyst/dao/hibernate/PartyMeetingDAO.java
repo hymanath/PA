@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1373,4 +1374,70 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		}	
         
     }
+    
+    
+    public List<Object[]> getLocationWiseMeetingsCountByLocIds(CommitteeInputVO inputBO){
+		
+		StringBuilder sbS = new StringBuilder();
+		sbS.append(" select count(distinct model.partyMeetingId) ");
+		StringBuilder sbM = new StringBuilder();
+		sbM.append(" from   PartyMeeting model ");
+		
+		sbM.append(" where model.isActive='Y' and model.startDate is not null ");
+		StringBuilder sbE = new StringBuilder();
+		if(inputBO.getStateIds()!=null && inputBO.getStateIds().size()>0){
+			sbS.append(",model.meetingAddress.state.stateId ");
+			sbE.append(" group by model.meetingAddress.state.stateId ");
+		}
+		else if(inputBO.getDistrictIds() != null && inputBO.getDistrictIds().size()>0){
+			
+			sbS.append(",model.meetingAddress.district.districtId ");
+			sbE.append(" group by model.meetingAddress.district.districtId ");
+			
+		}else if(inputBO.getParliamentConstIds() != null && inputBO.getParliamentConstIds().size()>0){
+			
+			sbS.append(",model.meetingAddress.parliamentConstituency.constituencyId ");
+			sbE.append(" group by model.meetingAddress.parliamentConstituency.constituencyId ");
+			
+		}else if(inputBO.getAssemblyConstIds() != null && inputBO.getAssemblyConstIds().size()>0){
+			
+			sbS.append(",model.meetingAddress.constituency.constituencyId");
+			sbE.append(" group by model.meetingAddress.constituency.constituencyId ");
+			
+		}else if(inputBO.getTehsilIds()!= null && inputBO.getTehsilIds().size()>0){
+			
+			sbS.append(",model.meetingAddress.tehsil.tehsilId ");
+			sbE.append(" group by model.meetingAddress.tehsil.tehsilId ");
+		}
+		
+		 if(inputBO.getStartDate()!= null && inputBO.getEndDate()!=null){
+			 sbM.append(" and date(model.startDate) between :startDate and :endDate ");	 
+		 }
+			
+		if(inputBO.getStateId()!= null && inputBO.getStateId() > 0l ){
+			sbM.append(" and model.meetingAddress.state.stateId = :stateId ");
+		}
+		if(inputBO.getPartyMeetingTypeIds()!=null && inputBO.getPartyMeetingTypeIds().size()>0){
+			sbM.append(" and model.partyMeetingTypeId in (:partyMeetingTypeIds) ");
+		}
+		
+		StringBuilder sbf = new StringBuilder().append(sbS).append(sbM).append(sbE);
+		
+		Query query = getSession().createQuery(sbf.toString());
+		
+		if(inputBO.getStateId()!= null && inputBO.getStateId() > 0l ){
+			query.setParameter("stateId",inputBO.getStateId());
+		}
+		if(inputBO.getStartDate()!= null && inputBO.getEndDate()!=null){
+			query.setDate("startDate",inputBO.getStartDate());
+			query.setDate("endDate",inputBO.getEndDate());
+		}
+		if(inputBO.getPartyMeetingTypeIds()!=null && inputBO.getPartyMeetingTypeIds().size()>0){
+			query.setParameterList("partyMeetingTypeIds",inputBO.getPartyMeetingTypeIds());
+		}
+		return query.list();
+	}
+    
+    
+    
     }

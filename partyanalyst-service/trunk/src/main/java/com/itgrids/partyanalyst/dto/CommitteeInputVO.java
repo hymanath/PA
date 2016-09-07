@@ -16,6 +16,7 @@ public class CommitteeInputVO implements Serializable{
 	private Long  stateId;
 	private List<Long> basicCommitteeIds;
 	private List<Long> tdpCommitteeLevelIds;
+	private List<Long> partyMeetingTypeIds;
 	private Date startDate;
 	private Date endDate;
 	private Date date;
@@ -135,6 +136,12 @@ public class CommitteeInputVO implements Serializable{
 	}
 	public void setCommitteesQueryString(StringBuilder committeesQueryString) {
 		this.committeesQueryString = committeesQueryString;
+	}
+	public List<Long> getPartyMeetingTypeIds() {
+		return partyMeetingTypeIds;
+	}
+	public void setPartyMeetingTypeIds(List<Long> partyMeetingTypeIds) {
+		this.partyMeetingTypeIds = partyMeetingTypeIds;
 	}
 	
 	

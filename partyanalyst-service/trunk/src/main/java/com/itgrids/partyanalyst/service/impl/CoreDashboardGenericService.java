@@ -20,9 +20,12 @@ import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -39,6 +42,8 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
     private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
     private IDistrictDAO districtDAO;
     private IConstituencyDAO constituencyDAO;
+    private IPartyMeetingDAO partyMeetingDAO;
+    private IPartyMeetingStatusDAO partyMeetingStatusDAO;;
     
 	//SETTERS
 	public void setActivityMemberAccessTypeDAO(
@@ -66,8 +71,15 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		this.constituencyDAO = constituencyDAO;
 	}
 	
+	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
+		this.partyMeetingDAO = partyMeetingDAO;
+	}
+
+	public void setPartyMeetingStatusDAO(
+			IPartyMeetingStatusDAO partyMeetingStatusDAO) {
+		this.partyMeetingStatusDAO = partyMeetingStatusDAO;
+	}
 	//BUSINESS METHODS
-	
 	/**
 	  * @param  ActivityMemberVO activityMemberVO
 	  * @return ActivityMemberVO activityMemberVO
@@ -697,5 +709,78 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 				}
 			   return sb;
 		   }
+		
+		 /**
+		  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+		  *  Generic method : This  Method is used to get the meetings count based on given locations. 
+		  *  @since 07-SEPTEMBER-2016
+		  */
+	 public Map<String,CoreDashboardCountsVO> getMeetingsCountByLocationLevelIdAndLevelValues(Map<Long,Set<Long>> locationLevelIdsMap,CommitteeInputVO committeeBO){
+		   
+		   Map<String,CoreDashboardCountsVO> locationLevelCountsMap = new HashMap<String, CoreDashboardCountsVO>(0);
+		   
+		   if(locationLevelIdsMap != null && locationLevelIdsMap.size()>0){
+		    	 for(Long userAccessLevelId : locationLevelIdsMap.keySet()){
+		    		 
+		    		 clearMeetingsLocationLevelIds(committeeBO);
+		    		 
+		    		 setAppropriateLocationLevelInputsToBO(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)),committeeBO);
+		    		 
+		    		 List<Object[]> totalCountList  =  partyMeetingDAO.getLocationWiseMeetingsCountByLocIds(committeeBO); 
+		    		 
+		    		 List<Object[]> statusCountList =  partyMeetingStatusDAO.getLocationWiseMeetingsStatusCountByLocIds(committeeBO);
+		    		 
+		    		 setMeetingsCountToItsCorrespondingLocation("total",totalCountList,locationLevelCountsMap,userAccessLevelId);
+		    		 setMeetingsCountToItsCorrespondingLocation("meetingStatus",statusCountList,locationLevelCountsMap,userAccessLevelId);
+		    	 }    
+		     }
+		    return locationLevelCountsMap;
+	 }
+	 public void clearMeetingsLocationLevelIds(CommitteeInputVO inputVO){
+			inputVO.setStateIds(null);
+			inputVO.setDistrictIds(null);
+			inputVO.setParliamentConstIds(null);
+			inputVO.setAssemblyConstIds(null);
+			inputVO.setTehsilIds(null);
+	}
+	 public void setMeetingsCountToItsCorrespondingLocation(String status,List<Object[]> list,Map<String,CoreDashboardCountsVO> locationLevelCountsMap,Long accessLevelId){
+			
+		 try{
+			  
+		   	 if(list!=null && list.size()>0){
+				 for(Object[] obj : list){
+					 
+					 Long locationId = obj[1]!=null?(Long)obj[1]:0l;
+					 if(locationId > 0l){
+						 
+						 String key = accessLevelId+"_"+(Long)obj[1]; 
+						 CoreDashboardCountsVO countsVO = locationLevelCountsMap.get(key);
+						 if(countsVO == null){
+							 countsVO = new CoreDashboardCountsVO();
+							 locationLevelCountsMap.put(key, countsVO);
+						 }
+						 countsVO = locationLevelCountsMap.get(key);
+						 Long count = obj[0]!=null?(Long)obj[0]:0l;
+						 
+						 if(status.equalsIgnoreCase("total")){
+							 countsVO.setTotalCount(count); 
+						 }else{
+							 String meetingStatus = obj[2]!=null?obj[2].toString():"";
+							 if(meetingStatus.equalsIgnoreCase("Y")){
+								 countsVO.setConductedCount(count);
+							 }else if(meetingStatus.equalsIgnoreCase("N")){
+								 countsVO.setNotConductedCount(count);
+							 }else if(meetingStatus.equalsIgnoreCase("M")){
+								 countsVO.setMayBeCount(count);
+							 }
+						 }
+					 }
+				 }
+			}
+		 }catch(Exception e){
+			 LOG.error("Exception occurred in setMeetingsCountToItsCorrespondingLocation() method in CoreDashboardGenericService class",e);
+		}
+
+	  }
 		
 }

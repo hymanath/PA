@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 
 public interface ICoreDashboardGenericService {
@@ -28,5 +29,6 @@ public interface ICoreDashboardGenericService {
 	public List<Long> getRequiredTdpCommitteeLevelIdsByUserAccessLevelId(Long userLocationLevelId,List<Long> userLocationLevelValues);
 	public StringBuilder getCommittesRelatedLocationQuerypart(CommitteeInputVO committeeBO);
 	public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,CommitteeInputVO inputVO);
+	public Map<String,CoreDashboardCountsVO> getMeetingsCountByLocationLevelIdAndLevelValues(Map<Long,Set<Long>> locationLevelIdsMap,CommitteeInputVO committeeBO);
 	
 }

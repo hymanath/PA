@@ -19,6 +19,8 @@ import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -507,4 +509,106 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	return d;
 	} 
 	 
+	
+	/**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the selected child usertype activity memberids and its meeting counts for a parent usertype activity member id. 
+	  *  @since 07-SEPTEMBER-2016
+	  */
+  public List<UserTypeVO> getSelectedChildUserTypeMembersWithMeetingsCount(Long parentActivityMemberId,Long childUserTypeId,String state,String startDateString,String endDateString){
+	    List<UserTypeVO> activityMembersList = null;
+	   try{
+		   
+		    //calling generic method.
+		    ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		   
+		     //Creating Business Object.
+		     CommitteeInputVO meetingBO = new CommitteeInputVO();
+		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		     meetingBO.setStateId(stateId);
+		     List<Date>  datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+		     meetingBO.setStartDate(datesList.get(0));
+		     meetingBO.setEndDate(datesList.get(1));
+		     
+		     Map<String,CoreDashboardCountsVO> locationLevelCountsMap = coreDashboardGenericService.getMeetingsCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,meetingBO);
+		     Map<String,String>     nameForLocationMap  = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+		     
+		     activityMembersList = setMeetingsCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap,nameForLocationMap);
+		     if(activityMembersList!=null && activityMembersList.size()>0){
+		    	 setMeetingsCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
+		    	 //sorting in descending order of completed percantages.
+		    	 Collections.sort(activityMembersList,ActivityMemberConductedCountPercDesc);
+		     }
+		     
+	   }catch(Exception e){
+		   LOG.error("exception occurred in getSelectedChildUserTypeMembersWithMeetingsCount()", e);
+	   }
+	   return activityMembersList;
+  }
+
+  public List<UserTypeVO> setMeetingsCountsToActivityMembers(Map<Long,UserTypeVO> childActivityMembersMap,String type,Map<String,CoreDashboardCountsVO> countForLocationMap,Map<String,String> nameForLocationMap){
+	   List<UserTypeVO> activityMembersList = null;
+	   try{
+			
+		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			   activityMembersList = new ArrayList<UserTypeVO>();
+			   
+			   for(Long activityMemberId:childActivityMembersMap.keySet()){ 
+			     
+				   UserTypeVO memberVO = childActivityMembersMap.get(activityMemberId);
+				   
+				   if(type.equalsIgnoreCase("counts")){
+					   if(memberVO.getLocationValuesSet() != null && memberVO.getLocationValuesSet().size()>0){
+						   for(Long locationValue : memberVO.getLocationValuesSet()){
+							   String key = memberVO.getLocationLevelId()+"_"+locationValue;
+							   
+							   //setting count to a location.
+							   CoreDashboardCountsVO countVO = countForLocationMap.get(key);
+							   if(countVO != null)
+							   {
+								   memberVO.setTotalMeetingCnt(memberVO.getTotalMeetingCnt() + countVO.getTotalCount());
+								   memberVO.setConductedMeetingCnt(memberVO.getConductedMeetingCnt()+countVO.getConductedCount());
+								   memberVO.setNotConductedMeetingCnt(memberVO.getNotConductedMeetingCnt()+countVO.getNotConductedCount());
+								   memberVO.setMayBeMeetingCnt(memberVO.getMayBeMeetingCnt()+countVO.getMayBeCount());
+							   }
+							   //setting name to a location.
+							   if(nameForLocationMap!=null && nameForLocationMap.size()>0){
+								   if(memberVO.getLocationName() == null || memberVO.getLocationName().isEmpty()){
+									   memberVO.setLocationName(nameForLocationMap.get(key));
+								   }else{
+									   memberVO.setLocationName( memberVO.getLocationName()+","+ nameForLocationMap.get(key) );  
+								   }
+							   }
+						   }
+					   } 
+				   }else if(type.equalsIgnoreCase("percanatge")){
+					   if(memberVO.getTotalMeetingCnt()!=null && memberVO.getTotalMeetingCnt() > 0l){
+						   memberVO.setConductedMeetingPerc( coreDashboardGenericService.caclPercantage(memberVO.getConductedMeetingCnt(),memberVO.getTotalMeetingCnt()) );
+						   memberVO.setNotConductedMeetingPerc( coreDashboardGenericService.caclPercantage(memberVO.getNotConductedMeetingCnt(),memberVO.getTotalMeetingCnt()) );
+						   memberVO.setMayBeMeetingPerc( coreDashboardGenericService.caclPercantage(memberVO.getMayBeMeetingCnt(),memberVO.getTotalMeetingCnt()) );
+					   }
+	                }
+		     }
+			   activityMembersList.addAll(childActivityMembersMap.values());
+      }
+		   
+	   }catch(Exception e){
+		   LOG.error("exception occurred in setMeetingsCountsToActivityMembers()", e);
+	   }
+	   return activityMembersList;
+  }
+  
+  public static Comparator<UserTypeVO> ActivityMemberConductedCountPercDesc = new Comparator<UserTypeVO>() {
+	     public int compare(UserTypeVO member2, UserTypeVO member1) {
+
+	        Double perc2 = member2.getConductedMeetingPerc();
+	        Double perc1 = member1.getConductedMeetingPerc();
+	        //descending order of percantages.
+	         return perc1.compareTo(perc2);
+	    }
+  }; 
+
+	
 }
