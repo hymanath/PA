@@ -13599,7 +13599,7 @@
    			<param name="root">idNameVOsList</param>      
    		</result>
 	</action>
-	<action name="getSelectedChildUserTypeMembersWithMeetingsCountaction" class="coreDashboardAction" method="getSelectedChildUserTypeMembersWithMeetingsCount">
+	<action name="getSelectedChildUserTypeMembersWithMeetingsCountAction" class="coreDashboardAction" method="getSelectedChildUserTypeMembersWithMeetingsCount">
 		<result type="json" name="success">
    			<param name="root">activityMembersList</param>      
    		</result>
