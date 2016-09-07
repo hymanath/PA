@@ -13599,11 +13599,19 @@
    			<param name="root">idNameVOsList</param>      
    		</result>
 	</action>
-	<action name="stateLevelCampDetailsDistWise" class="coreDashboardAction" method="getDistrictWiseCampAttendedMembers">
+	<action name="getSelectedChildUserTypeMembersWithMeetingsCountaction" class="coreDashboardAction" method="getSelectedChildUserTypeMembersWithMeetingsCount">
 		<result type="json" name="success">
-   			<param name="root">idNameVoList</param>      
+   			<param name="root">activityMembersList</param>      
    		</result>
 	</action>
+	
+	<action name="getDirectChildActivityMemberCommitteeDetailsAction" class="coreDashboardAction" method="getDirectChildActivityMemberCommitteeDetails">
+		<result type="json" name="success">
+   			<param name="root">activityMembersList</param>      
+   		</result>
+	</action>
+	
+	
 	<action name="getPartyMeetingTypeByPartyMeetingMainTypeAction" class="coreDashboardAction" method="getPartyMeetingTypeByPartyMeetingMainType">
 		<result type="json" name="success">
    			<param name="root">partyMeetingsVOList</param>
