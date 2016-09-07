@@ -1242,7 +1242,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
       	
       	return query.list();
       }
-    public List<Object[]> getPartyMeetingOverAllCountByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+    public List<Object[]> getPartyMeetingOverAllCountByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues){
     	
           StringBuilder queryStr = new StringBuilder();
     	
@@ -1256,6 +1256,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		  }
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and (date(model.startDate) between :fromDate and :toDate ) ");	 
+		 }
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+			 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
 		 }
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		   queryStr.append(" and model.meetingAddress.state.stateId in (:userAccessLevelValues)");  
@@ -1290,9 +1293,12 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	 if(stateId != null && stateId.longValue() > 0){
 		 query.setParameter("stateId", stateId);
 	 }
+	 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+		 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
+	 }
      return query.list(); 	
     }
-    public List<Object[]> getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate){
+    public List<Object[]> getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues){
     	
     	{
 			  StringBuilder queryStr= new StringBuilder();
@@ -1325,7 +1331,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			  if(fromDate!= null && toDate!=null){
 				  queryStr.append(" and date(model.startDate) between :fromDate and :toDate ");	 
 			 }
-		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+					 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+			 }
+		  /*  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		      queryStr.append(" and model.meetingAddress.state.stateId in (:userAccessLevelValues)");  
 		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		      queryStr.append(" and model.meetingAddress.district.districtId in (:userAccessLevelValues)");  
@@ -1341,7 +1350,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		      queryStr.append(" and model.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
 			}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		      queryStr.append(" and model.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-			}
+			}*/
 	        if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		      queryStr.append(" group by  model.meetingAddress.state.stateId order by model.meetingAddress.state.stateId ");  
 		    }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -1360,15 +1369,18 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			  queryStr.append(" group by model.meetingAddress.ward.constituencyId order by model.meetingAddress.ward.constituencyId");	
 			} 
 		    Query query = getSession().createQuery(queryStr.toString());
-	     	 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	     	/* if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 				   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-			 }
+			 }*/
 			 if(fromDate!= null && toDate!=null){
 			   query.setDate("fromDate", fromDate);
 			   query.setDate("toDate", toDate);
 			 }
 			 if(stateId != null && stateId.longValue() > 0){
 				 query.setParameter("stateId", stateId);
+			 }
+			 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
 			 }
 	    return query.list();  
 		}	
