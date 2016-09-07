@@ -907,22 +907,22 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
-								<h4 class="text-capital"><span class="headingColor"><img src="dist/img/tdpIcon.png" alt="tdp icon" class="newsIcon"/>telugu desam party</span></h4>
+								<h4 class="text-capital"><span class="headingColor"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">main edition</p>
-													<p>1000</p>
+													<p class="text-capital">Main Edition</p>
+													<p id="tdpMainTotal">0</p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">positive</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Positive</p>
+													<p id="tdpMainPositive">0<small id="tdpMainPositivePercent" class="text-success">0%</small></p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">negative</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Negative</p>
+													<p id="tdpMainNegative">0<small id="tdpMainNegativePercent" class="text-success">0%</small></p>
 												</td>
 											</tr>
 										</table>
@@ -931,72 +931,72 @@
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">main edition</p>
-													<p>1000</p>
+													<p class="text-capital">Dist edition</p>
+													<p id="tdpDistTotal">0</p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">positive</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Positive</p>
+													<p id="tdpDistPositive">0<small class="text-success" id="tdpDistPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">negative</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Negative</p>
+													<p id="tdpDistNegative">0<small class="text-success" id="tdpDistNegativePercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
 									</div>
 								</div>
-								<h4 class="text-capital m_top20"><span class="headingColor">opposition parties</span></h4>
+								<h4 class="text-capital m_top20"><span class="headingColor">Opposition Parties</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">main edition</p>
-													<p>1000</p>
+													<p class="text-capital">Main Edition</p>
+													<p id="oppMainTotal">0</p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">positive</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Positive</p>
+													<p id="oppPositiveTotal">0<small class="text-success" id="oppPositiveTotalPercent">0%</small></p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">negative</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Negative</p>
+													<p id="oppNegativeTotal">0<small class="text-success" id="oppNegativeTotalPercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
 										<table class="table table-condensed tableNews m_top10">
 											<tr>
 												<td>
-													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="newsIcon"/><p id="ysrcMainTotal">0</p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="ysrcMainPositive">0<small class="text-success" id="ysrcMainPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
-												</td>
-												<td>
-													<p>1000<small class="text-success">40%</small></p>
-												</td>
-												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="ysrcMainNegative">0<small class="text-success" id="ysrcMainNegativePercent">0%</small></p>
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="newsIcon"/><p id="incMainTotal">0</p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="incMainPositive">0<small class="text-success" id="incMainPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="incMainNegative">0<small class="text-success" id="incMainNegativePercent">0%</small></p>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="newsIcon"/><p id="bjpMainTotal">0</p>
+												</td>
+												<td>
+													<p id="bjpMainPositive">0<small class="text-success" id="bjpMainPositivePercent">0%</small></p>
+												</td>
+												<td>
+													<p id="bjpMainNegative">0<small class="text-success" id="bjpMainNegativePercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
@@ -1005,72 +1005,72 @@
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">main edition</p>
-													<p>1000</p>
+													<p class="text-capital">Dist Edition</p>
+													<p id="oppDistTotal">0</p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">positive</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Positive</p>
+													<p id="oppDistPositive">0<small class="text-success" id="oppDistPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">negative</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Negative</p>
+													<p id="oppDistNegative">0<small class="text-success" id="oppDistNegativePercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
 										<table class="table table-condensed tableNews m_top10">
 											<tr>
 												<td>
-													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="newsIcon"/><p id="ysrcDistTotal">0</p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="ysrcDistPositive">0<small class="text-success" id="ysrcDistPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
-												</td>
-												<td>
-													<p>1000<small class="text-success">40%</small></p>
-												</td>
-												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="ysrcDistNegative">0<small class="text-success" id="ysrcDistNegativePercent">0%</small></p>
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<p><img src="dist/img/congLogo.png" alt="cong logo" class="newsIcon"/>250</p>
+													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="newsIcon"/><p id="incDistTotal">0</p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="incDistPositive">0<small class="text-success" id="incDistPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="incDistNegative">0<small class="text-success" id="incDistNegativePercent">0%</small></p>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="newsIcon"/><p id="bjpDistTotal">0</p>
+												</td>
+												<td>
+													<p id="bjpDistPositive">0<small class="text-success" id="bjpDistPositivePercent">0%</small></p>
+												</td>
+												<td>
+													<p id="bjpDistNegative">0<small class="text-success" id="bjpDistNegativePercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
 									</div>
 								</div>
-								<h4 class="text-capital m_top20"><span class="headingColor">government</span></h4>
+								<h4 class="text-capital m_top20"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="tdp icon" class="newsIcon"/>Government</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">main edition</p>
-													<p>1000</p>
+													<p class="text-capital">Main Edition</p>
+													<p id="govtMainTotal">0</p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">positive</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Positive</p>
+													<p id="govtMainPositive">0<small class="text-success" id="govtMainPositivePercent">0%</small></p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">negative</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p class="text-capital text-muted">Negative</p>
+													<p id="govtMainNegative">0<small class="text-success" id="govtMainNegativePercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
@@ -1079,16 +1079,16 @@
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">main edition</p>
-													<p>1000</p>
+													<p class="text-capital">Dist Edition</p>
+													<p id="govtDistTotal">0</p>
 												</td>
 												<td>
 													<p class="text-capital text-muted">positive</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="govtDistPositive">0<small class="text-success" id="govtDistPositivePercent">0%</small></p>
 												</td>
 												<td>
 													<p class="text-capital text-muted">negative</p>
-													<p>1000<small class="text-success">40%</small></p>
+													<p id="govtDistNegative">0<small class="text-success" id="govtDistNegativePercent">0%</small></p>
 												</td>
 											</tr>
 										</table>
@@ -1890,10 +1890,11 @@
 		getCommitteesBasicCountReport();
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
-		//getNewsBasicCounts();
+		getNewsBasicCounts();
 		//Meeting
 		getPartyMeetingBasicCountDetails();
 		
+		getUserTypeWiseNewsCounts();
 	}
 	
 	

@@ -13549,7 +13549,7 @@
 	
 	<action name="getUserTypeWiseNewsCountsAction" class="coreDashboardAction" method="getUserTypeWiseNewsCounts">
 		<result type="json" name="success">
-   			<param name="root">committeeDataVOList</param>
+   			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
 	<!--  Party Meeting  -->
