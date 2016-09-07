@@ -971,7 +971,7 @@
 										<table class="table table-condensed tableNews m_top10">
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="newsIcon"/><span id="ysrcMainTotal">0</span>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
 												</td>
 												<td>
 													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent">0%</small>
@@ -982,7 +982,7 @@
 											</tr>
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="newsIcon"/><span id="incMainTotal">0</span>
+													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incMainTotal">0</span>
 												</td>
 												<td>
 													<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent">0%</small>
@@ -993,7 +993,7 @@
 											</tr>
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="newsIcon"/><span id="bjpMainTotal">0</span>
+													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpMainTotal">0</span>
 												</td>
 												<td>
 													<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent">0%</small>
@@ -1024,7 +1024,7 @@
 										<table class="table table-condensed tableNews m_top10">
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="newsIcon"/><span id="ysrcDistTotal">0</span>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcDistTotal">0</span>
 												</td>
 												<td>
 													<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent">0%</small>
@@ -1035,7 +1035,7 @@
 											</tr>
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="newsIcon"/><span id="incDistTotal">0</span>
+													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incDistTotal">0</span>
 												</td>
 												<td>
 													<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent">0%</small>
@@ -1046,7 +1046,7 @@
 											</tr>
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="newsIcon"/><span id="bjpDistTotal">0</span>
+													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpDistTotal">0</span>
 												</td>
 												<td>
 													<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent">0%</small>
@@ -1058,7 +1058,7 @@
 										</table>
 									</div>
 								</div>
-								<h4 class="text-capital m_top20"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="tdp icon" class="newsIcon"/>Government</span></h4>
+								<h4 class="text-capital m_top20"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Government</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
 										<table class="table table-condensed tableNews bg_ED">
@@ -1111,6 +1111,42 @@
 									<div class="col-xs-12 col-sm-12 col-md-12">
 										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
 									</div>	
+								</div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<ul class="activeUlCls list-inline pull-right">
+											<li><i class="fa fa-gears"></i></li>
+										</ul>
+										<ul class="newsComparisonUl list-inline">
+											<li>Comparison</li>
+											<li>Party</li>
+											<li>Government</li>
+										</ul>
+										<ul class="newsComparisonUl list-inline">
+											<li>Detailed</li>
+											<li>Party</li>
+											<li>Government</li>
+										</ul>
+									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
+											</div>
+											<div class="panel-body" id="mainEditiongraphId">
+												<div class="scroll-div">
+													<ul class="list-inline best-matched-profile ">
+														<li><div class="chartLi newsGraph0"></div></li>
+														<li><div class="chartLi newsGraph1"></div></li>
+														<li><div class="chartLi newsGraph2"></div></li>
+														<li><div class="chartLi newsGraph3"></div></li>														
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -1809,7 +1845,6 @@
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-
 	/* //Angular Start
 
 		var obj = angular.module("partyWiseTotalApp",[]);
