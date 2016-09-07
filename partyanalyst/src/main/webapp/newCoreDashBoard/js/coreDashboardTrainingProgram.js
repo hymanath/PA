@@ -52,6 +52,9 @@ var getDocumentWidth = $(document).width();
 		  for(var i in programList){
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
 			 str+='<span style="font-size:18px" class="text-capital bg_49 pad_custom" attr_program_id='+programList[i].id+'>'+programList[i].name+'</span>';
+			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;">';
+				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
+			str+='</span>';  
 			str+='<table class="table tableTraining">';
 				str+='<tr>';
 					str+='<td>';
@@ -314,7 +317,9 @@ function buildLocationWiseTrainingProgramDetails(result){
 }
 var globalUserWiseMemberRslt;
  function getUserTypeWiseTotalEligibleAndAttendedCnt(){
-	  $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$(".hideCls").show();    
+	 	$("#clickInfoId").hide();
+	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	 var jsObj ={
 			          userAccessLevelId:globalUserAccessLevelId,
@@ -357,6 +362,7 @@ var globalUserWiseMemberRslt;
 			str+='</div>'
 		  }
 		}
+		$("#clickInfoId").hide();
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
 	if(result != null && result.length > 0){
 			for(var i in result){
@@ -468,6 +474,7 @@ var globalUserWiseMemberRslt;
 	}
 	}
 	function buildgetUserTypeWiseTrainingProgramAttendedCountTopFivePoorResults(result){
+		$("#clickInfoId").hide(); 
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
@@ -487,6 +494,7 @@ var globalUserWiseMemberRslt;
 				str+='</div>'
 			}
 		}
+		$("#clickInfoId").hide();
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
 	if(result != null && result.length > 0){
 		for(var i in result){
@@ -591,6 +599,7 @@ var globalUserWiseMemberRslt;
 		} */
 		}
 	}else{
+	$("#clickInfoId").hide();   
 	 $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
 	}
 	}
@@ -1096,6 +1105,7 @@ function buildTrainingProgramRslt(result){
 	   }
 	}
 }
+//swadhin
 	 function getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedUserName,userType){
 	 $("#poorPerformancTrainingPrograLocationsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
@@ -1354,13 +1364,160 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	$(".trainingCampDetailed").trigger("click");
 });
 $(document).on("click",".trainingCampDetailed",function(){
-	alert(10)
 	$(this).addClass("active")
 	$(".trainingComparison").removeClass("active");
 	$(".trainingDetailedBlock").show();
 	$(".trainingComparisonBlock").hide();
 	//getTrainingProgramBasicCnt(); 
+	getStateLevelCampCount();
 });
+function getStateLevelCampCount(){
+	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$.ajax({
+		type : 'GET',
+		url : 'getStateLevelCampAttendedDetails.action',     
+		dataType : 'json',
+		data : {}
+	}).done(function(result){ 
+		$("#programsDivId").html(' ');
+		if(result != null){    
+			buildStateLevelCampDetails(result);
+		}else{
+			$("#programsDivId").html("NO DATA AVAILABLE");
+		}
+	});
+}
+function buildStateLevelCampDetails(result){ 
+	var str='';
+	str+='<ul class="trainingsUl">';
+	//for(var i in result){
+		str+='<li>';
+		str+='<h4 class="text-capitalize text-muted">official spokespersons</h4>';
+		str+='<div id="programHighChartId0" class="chartLi trainingGraphWidth"></div>';
+		str+='</li>';
+	//}
+	str+='</ul>';
+	$("#programsDivId").html(str);
+	$(".trainingsUl").slick({ 
+			slide: 'li',
+			slidesToShow: 4,
+			slidesToScroll: 4,
+			infinite: false,
+			responsive: [
+				{
+				  breakpoint: 1024,
+					settings: {
+						slidesToShow: 4,
+						slidesToScroll: 4,
+						infinite: false,
+						dots: false
+					}
+				},
+				{
+					breakpoint: 800,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					}
+				},
+				{
+					breakpoint: 600,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+				
+			]
+	}); 
+	if(result != null){
+		//for(var i in result){
+			var  jsonDataArr=[];
+			var precent = (result.availableCount*(100/result.count)).toFixed(2);
+			jsonDataArr.push({name:"Total Eligible",data:[100,100]});
+			jsonDataArr.push({name:"Attended",data:[parseFloat(precent),0]});
+			var abs = 100-precent;
+			jsonDataArr.push({name:"Yet to train",data:[0,parseFloat(abs.toFixed(2))]});
+			
+			var chartWidth = $("#programHighChartId0").parent().width()/2;
+			$("#programHighChartId0").width(chartWidth);
+			$(function () {
+				$('#programHighChartId0').highcharts({
+				colors: ['#66728C','#53BF8B','#F56800'],
+				chart: {
+					type: 'column',    
+				},
+				title: {
+					text: null,
+					style: {
+						fontSize: '16px',
+						fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+						textTransform: "uppercase"
+					}
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					labels: {
+						enabled: false,
+					}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					labels: {
+						enabled: false,
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}%</b><br/>',
+					shared: true
+				},
+				legend: {
+					enabled: true,
+					align: 'left'
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels:{
+							enabled: true,
+							formatter: function () {
+								if (this.y > 0){ return this.y + '%';}
+								else {return '';}
+							}
+						}
+					}
+				},
+				series:jsonDataArr
+				});
+			});  
+		//}
+	}
+	
+}
 function stateLevelCampMembersDistWise(){
 	$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$.ajax({
