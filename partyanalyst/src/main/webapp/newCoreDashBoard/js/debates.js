@@ -42,7 +42,8 @@ $(document).ready(function(){
 		  getCandidateOverAllPerformanceCohort();
 		  getChannelAndPartyWiseDetails();
 		  getRoleBasedPerformanceCohort();
-		  getRolesPerformanceOfCandidate();
+		  getRolesPerformanceOfCandidate(0);
+		  getDebateRolesNew();
 	  }
 	});
 });	
@@ -556,7 +557,8 @@ $(document).on("click",".moreDebatesBlocksIcon",function(){
 	getCandidateOverAllPerformanceCohort();
 	getChannelAndPartyWiseDetails();
 	getRoleBasedPerformanceCohort();
-	getRolesPerformanceOfCandidate();
+	getRolesPerformanceOfCandidate(0);
+	getDebateRolesNew();
 });
 
 $(document).on("click","#debateTopId",function(){
@@ -584,15 +586,15 @@ function getTitleContent(name,showCharVal){
 	return name;
 }
 
-function getRolesPerformanceOfCandidate(){
+function getRolesPerformanceOfCandidate(roleId){
 		
-		$("#partyWiseTotalDebateDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#candidateRolesPerformanceNewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
 			state:globalState,
-			roleId:1
+			roleId:roleId
 		}
 		$.ajax({
 			type : 'POST',
@@ -637,3 +639,37 @@ function getRolesPerformanceOfCandidate(){
 			animate:false
 		});		
 	}
+	
+	function getDebateRolesNew(){
+		
+		//$("#candidateRolesBuildId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getDebateRolesNewAction.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){
+			buildDebateRolesNew(result);			
+		});
+	}
+	function buildDebateRolesNew(result){
+		var str='';
+		if(result !=null && result.length>0){
+			str+='<div class="col-md-6 col-xs-12 col-sm-6 pull-right">';
+				str+='<ul class="activeUlCls list-inline pull-right candidateRolesCls">';	
+				str+='<li id="0" class="active">All</li>';				
+				for(var i in result){								
+					str+='<li id="'+result[i].id+'" >'+result[i].name+'</li>';									
+				}	
+				str+='</ul>';
+			str+='</div>';
+			
+			$("#candidateRolesBuildId").html(str);
+		}
+		
+	}
+	 $(document).on("click",".candidateRolesCls li",function(){		 
+		getRolesPerformanceOfCandidate($(this).attr('id')); 
+	 });
+	
