@@ -711,36 +711,6 @@
 									  </div>
 									</div>
 								  </div>
-								  <!-- TOP 5 BLock Start -->
-							<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top20">-->
-                                <!--<div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<h4><span class="headingColor text-capitalize">Top 5 Performers</span></h4>
-											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<ul class="activeUlCls list-inline pull-right candidateRolesCls">
-													<li value="1">Critic</li>
-													<li value="2">Bully</li>
-												</ul>
-											</div>
-										</div>
-                                        
-                                    </div>
-									
-                                    <div class="panel-body">
-                                        <div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="table-responsive" id="candidateRolesPerformanceId"													
-												</div>
-											</div>
-                                        </div>
-                                    </div>
-                                </div>-->
-                           <!-- </div> -->
-                            <!-- TOP 5 BLock End -->
-								  
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingThree">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
