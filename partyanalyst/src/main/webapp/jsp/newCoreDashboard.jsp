@@ -425,6 +425,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="mdlTwnDvsnTabId"></div>
 								</div>
+								<div id="stateLevelCampId"></div>
 								<!--<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
 									 <div id="districtTblId"></div>
 								</div>
@@ -436,21 +437,22 @@
 						</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
 								<div class="row">
+								<div id="clickInfoId" class="text-capital bg_49 pad_custom" style="font-size:18px"> </div>
 								  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-									<ul class="activeUlCls list-inline ">
+									<ul class="activeUlCls list-inline hideCls">
 										<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
 										<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 									</ul>
 								  </div>
 								</div>
-								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId"></div>
+								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId"></div>  
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
-									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more"></i>
+									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more"></i>
 						    </div>
 							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks">
 									<ul class="list-inline pull-right activeUlCls">
-										<li class="trainingDetailed">Detailed</li>
+										<li id="detailedId" class="trainingDetailed">Detailed</li>
 										<li class="trainingComparison">Comparison</li>
 										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
 									</ul>
@@ -1898,6 +1900,7 @@
 		//Main header remove
 		$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
+		stateLevelCampDetails();
 	});
 	getLoggedInUserStructure();
 	onLoadCalls();
@@ -1989,7 +1992,192 @@
 		  loggedInUserAccessLevelValues.push( ${userAccessLevelValue} );        
 	   </c:forEach>
 	   return loggedInUserAccessLevelValues;
-	}	
+	}
+	function stateLevelCampDetailsRepresentativeWise(){
+		$.ajax({
+			type : 'GET',
+			url : 'stateLevelCampDetailsRepresentativeWise.action',  
+			dataType : 'json',
+			data : {}
+		}).done(function(result){  
+			if(result != null && result.length >0){
+				buildstateLevelCampDetailsRepresentativeWise(result);
+			}
+		});
+	}
+	function buildstateLevelCampDetailsRepresentativeWise(result){
+		$(".hideCls").hide();   
+		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
+			var str='';
+			if(result != null && result.length > 0){
+				var k = 0;
+				for(var i in result){  
+					for(var j in result[i]){
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<h5 class="text-capital">'+result[i][j].status+' committee</h5>'; 
+						str+='<div id="genCampId'+k+'" style="width:100%;height:100px;"></div>';
+						str+='</div>'
+						k+=1;  
+					}    
+				} 
+				
+			}
+			$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);  
+			if(result != null && result.length > 0){
+					var candidateNameArray = [];
+					candidateNameArray.push("eligible");
+					candidateNameArray.push("invited");
+					candidateNameArray.push("attended");
+					candidateNameArray.push("absent");
+					k=0;
+				for(var i in result){
+					for(var j in result[i]){
+						var trainingProgramCountArray = [];
+						trainingProgramCountArray.push(100);
+						trainingProgramCountArray.push(100);
+						var present = (result[i][j].actualCount*(100/result[i][j].count)).toFixed(2);
+						trainingProgramCountArray.push(parseFloat(present));
+						var abs = 100-present;  
+						trainingProgramCountArray.push(parseFloat(abs.toFixed(2)));            
+						console.log(trainingProgramCountArray);
+						var getWidth = $("#genCampId"+k).parent().width()+'px';
+						$("#genCampId"+k).width(getWidth);
+						$(function () {
+						$('#genCampId'+k).highcharts({  
+							colors: ['#0066DC'],
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: null
+							},
+							subtitle: {
+								text: null
+							},
+							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								categories: candidateNameArray,
+								title: {
+									text: null
+								},
+								labels: {
+										formatter: function() {
+											return this.value.toString().substring(0, 10)+'...';
+										},
+										
+									}
+							},
+							yAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								title: {
+									text: null,
+									align: 'high'
+								},
+								labels: {
+									overflow: 'justify',
+									enabled: false,
+								}
+							},
+							tooltip: {
+								valueSuffix: '%'
+							},
+							plotOptions: {
+								bar: {
+									dataLabels: {
+										enabled: true
+									}
+								}
+							},
+							legend: {
+								layout: 'vertical',
+								align: 'right',
+								verticalAlign: 'top',
+								x: -40,
+								y: 80,
+								floating: true,
+								borderWidth: 1,
+								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+								shadow: true
+							},
+							credits: {
+								enabled: false
+							},
+						
+							series: [{
+								name: 'Attended',
+								data: trainingProgramCountArray
+							}]
+						});
+					});
+					k+=1;
+				}
+			}
+		}else{
+			$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
+		}
+	}
+	function stateLevelCampDetails(){ 
+		$.ajax({
+			type : 'GET',
+			url : 'getStateLevelCampAttendedDetails.action',     
+			dataType : 'json',
+			data : {}
+		}).done(function(result){    
+			buildStateLevelCampAttendedDetails(result);
+		});
+	}  
+	function buildStateLevelCampAttendedDetails(result){  
+		var str = '';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
+		str+='<h5 class="text-capital m_top10">official spokespersons<span style="background-color:#fff;margin-left:5px;" class="stateLevelTrainingInd" attr_location="official spokespersons"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';
+		str+='<table class="table tableTraining">';     
+		str+='<tbody>';
+		str+='<tr>';
+		str+='<td>';
+		str+='<h3>'+result.count+'</h3>';
+		str+='<p class="text-muted text-capital">eligible</p>';
+		str+='</td>';
+		str+='<td>';
+		str+='<h3>'+result.count+'</h3>';
+		str+='<p class="text-muted text-capital">invited</p>';
+		str+='</td>';
+		str+='<td>';
+		var per = (result.availableCount*(100/result.count)).toFixed(2);
+		str+='<h3>'+result.availableCount+'<span class="font-10 text-success">'+per+'%</span></h3>'; 
+		str+='<p class="text-muted text-capital">attended</p>';
+		str+='</td>';
+		str+='<td>';
+		var abs = result.count - result.availableCount; 
+		str+='<h3>'+abs+'<span class="font-10 text-success">'+(100-per).toFixed(2)+'%</span></h3>';     
+		str+='<p class="text-muted text-capital">absent</p>    ';
+		str+='</td>';
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';  
+		str+='</div>';  
+		$("#stateLevelCampId").html(str);        
+	}
+$(document).on("click",".stateLevelTraining",function(){
+	stateLevelCampDetailsRepresentativeWise()
+	var val = $(this).attr("attr_location");
+	$("#clickInfoId").html(val);
+	$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
+	$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");
+	$("#detailedId").removeClass("trainingDetailed");
+	$("#detailedId").addClass("trainingCampDetailed");
+});
+$(document).on("click",".stateLevelTrainingInd",function(){
+	stateLevelCampDetailsRepresentativeWise()
+	var val = $(this).attr("attr_location");
+	$("#clickInfoId").html(val); 
+	$("#detailedId").removeClass("trainingDetailed");
+	$("#detailedId").addClass("trainingCampDetailed");
+});
 	
 	
   </script> 
