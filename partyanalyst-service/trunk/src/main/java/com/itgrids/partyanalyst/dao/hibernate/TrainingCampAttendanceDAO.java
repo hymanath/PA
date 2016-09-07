@@ -1204,7 +1204,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   			  " TCA.attendance_id = A.attendance_id and "+
 				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
 				   			  " TC.address_id = UA.user_address_id and " +
-				   			  " D.district_id BETWEEN 11 AND 23 AND"+
+				   			  " (D.district_id BETWEEN 11 and 23) and"+
 				   			  " UA.district_id = D.district_id "+
 				   			  " group by D.district_id order by D.district_id ");
 		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
