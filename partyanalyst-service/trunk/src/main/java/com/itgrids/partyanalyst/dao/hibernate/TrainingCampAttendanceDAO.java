@@ -1197,19 +1197,20 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 }
 	 public List<Object[]> getDestWiseAttendedMembers(Long stateId, Long campId, Long programId){
 		 StringBuilder queryString = new StringBuilder();
-		   queryString.append(" select D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, tdp_cadre TC, user_address UA, state S, district D "+
+		   queryString.append(" select D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, tdp_cadre TC, user_address UA, district D "+
 				   			  " where "+
 				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
 				   			  " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
 				   			  " TCA.attendance_id = A.attendance_id and "+
 				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
-				   			  " TC.address_id = UA.user_address_id and UA.state_id = S.state_id and S.state_id = (:stateId) and "+
+				   			  " TC.address_id = UA.user_address_id and " +
+				   			  " D.district_id BETWEEN 11 AND 23 AND"+
 				   			  " UA.district_id = D.district_id "+
 				   			  " group by D.district_id order by D.district_id ");
 		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 		   query.setParameter("campId", campId);
-		   query.setParameter("programId", programId);
-		   query.setParameter("stateId", stateId);
+		   query.setParameter("programId", programId);  
+		 
 		   return query.list();
 	 }
 	
