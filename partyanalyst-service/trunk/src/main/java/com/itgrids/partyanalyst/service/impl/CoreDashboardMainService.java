@@ -2318,7 +2318,7 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 			for (CoreDebateVO objects : returnList) {
 				objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 				if(objects.getScalePerc() !=null && objects.getScalePerc() >0.0 ){
-					objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+					objects.setScalePerc(Double.parseDouble(new BigDecimal(objects.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 				}					
 			}
 		}
@@ -2432,7 +2432,7 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 						if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
 							vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 							if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
-								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								vo.setScalePerc(Double.parseDouble(new BigDecimal(vo.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 							}
 						}
 						vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
@@ -2546,12 +2546,15 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 					if(list == null){
 						list = new LinkedList<CoreDebateVO>();
 						partyVO.setCoreDebateVOList(list);
+						partyVO.setOverAllPerc(0.00);
 					}						
 					CoreDebateVO VO = new CoreDebateVO();
 					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					VO.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));						
 					if(obj[4] !=null && (Double)obj[4]>0.0 && partyVO.getDebateCount() >0){
-						VO.setScalePerc(Double.parseDouble(new BigDecimal(((Double)obj[4])/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+						VO.setScalePerc(Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+						partyVO.setOverAllPerc(Double.parseDouble(new BigDecimal(partyVO.getOverAllPerc()+/*VO.getScalePerc()*/ 
+								Double.parseDouble(new BigDecimal((Double)obj[4]/partyVO.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString())   ).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 					}						
 					list.add(VO);						
 				}	
@@ -2623,7 +2626,11 @@ public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateS
 							if(commonMethodsUtilService.isListOrSetValid(voList)){	
 								for (CoreDebateVO vo : voList) {
 									if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
-										vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+										vo.setScalePerc(Double.parseDouble(new BigDecimal(vo.getScale()/(Long)obj[4]).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+										if(vo.getScalePerc() !=null && vo.getScalePerc()>0.00){
+											vo.setOverAllPerc(Double.parseDouble(new BigDecimal(vo.getOverAllPerc()+/*vo.getScalePerc()*/
+													Double.parseDouble(new BigDecimal(vo.getScale()/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+										}
 									}
 									vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
 								}
@@ -2717,7 +2724,7 @@ public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,Stri
 						if(vo.getScale() !=null && param[4] !=null){
 							vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScale())/(Long)param[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 							if(vo.getScalePerc() !=null && vo.getScalePerc() >0.0 ){
-								vo.setScalePerc(Double.parseDouble(new BigDecimal((vo.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+								vo.setScalePerc(Double.parseDouble(new BigDecimal(vo.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 							}
 						}
 						vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(param[4]));
@@ -2871,7 +2878,7 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 							if( VO.getScale() !=null && VO.getScale()>0.00 && obj[2] !=null && (Long)obj[2]>0l){
 								VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));									
 								if(VO.getScalePerc() !=null && VO.getScalePerc() >0.0 ){
-									VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScalePerc())/charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+									VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 								}									
 							}
 							VO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
@@ -2942,7 +2949,7 @@ public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,Str
 			for (CoreDebateVO VO : candidateScaleList) {
 				
 				if(VO.getScale() !=null && VO.getScale()>0.00 &&  VO.getDebateCount() !=null &&  VO.getDebateCount()>0){
-					VO.setScalePerc(Double.parseDouble(new BigDecimal(((VO.getScale())/VO.getDebateCount()) / charecters.size()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+					VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale()/VO.getDebateCount()) / charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 				}					
 			}				
 		}
