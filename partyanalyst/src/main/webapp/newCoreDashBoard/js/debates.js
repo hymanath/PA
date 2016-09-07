@@ -78,7 +78,7 @@ function buildPartyWiseTotalDebateDetails(result)
 				str+='<table class="table tableTraining bg_ED m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
-						str+='<td style="vertical-align:middle">';
+						str+='<td style="vertical-align:middle;font-size:18px;width:90px !important;">';
 							str+='<img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'';
 						str+='</td>';
 						str+='<td>';
@@ -115,7 +115,9 @@ function buildPartyWiseTotalDebateDetails(result)
 		}
 
 }
-
+$(document).on("click","#headingOne",function(){
+	$("#collapseOne").collapse("toggle");
+});
 function getScaleBasedPerformanceCohort(){
 		
 		$("#scaleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
