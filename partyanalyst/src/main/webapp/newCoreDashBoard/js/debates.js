@@ -73,9 +73,15 @@ function buildPartyWiseTotalDebateDetails(result)
 	if(result !=null){
 		for(var i in result){
 			
-			str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20">';
+			if(i==0)
+			{
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
+			}else{
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">';
+			}
+			
 				//str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
-				str+='<table class="table tableTraining bg_ED m_top10">';
+				str+='<table class="table tableTraining bg_ED">';
 				  str+='<tbody>';
 					str+='<tr>';
 						str+='<td style="vertical-align:middle;font-size:18px;width:90px !important;">';
@@ -120,8 +126,9 @@ function buildPartyWiseTotalDebateDetails(result)
 		}
 
 }
-$(document).on("click","#headingOne",function(){
-	$("#collapseOne").collapse("toggle");
+$(document).on("click","#collapseOneId",function(){
+	$("#collapseOneBodyId").collapse("toggle");
+	$(".arrowChange").find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
 });
 function getScaleBasedPerformanceCohort(){
 		
@@ -150,7 +157,7 @@ function buildScaleBasedPerformanceCohort(result)
 				str+='<table class="table tableDebates m_top10">';
 				  str+='<tbody>';
 					str+='<tr>';
-						str+='<td style="width:100px;border-right:1px solid #ddd;vertical-align:middle;">';
+						str+='<td style="width:100px;border-right:1px solid #ddd;vertical-align:middle;font-size:18px;">';
 							str+='<img  src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+'" class="debatesPartyIcon"/>'+result[i].name+'';
 						str+='</td>';
 						str+='<td>';
@@ -251,7 +258,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 					str+='<div class="panel-body">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-								str+='<div class="scroller'+i+'">';
+								str+='<div class="table-responsive scroller'+i+'">';
 									str+='<table class="table tableDebates m_top10 dataTableSorting">';
 										str+='<thead>';
 											str+='<th>Name</th><th>Debates </th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
@@ -325,7 +332,7 @@ function BuildCandidateOverAllPerformanceCohort(result)
 }
 function getChannelAndPartyWiseDetails(){
 		
-		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#channelAndPartyWiseDetails").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
@@ -420,7 +427,7 @@ function buildSpokesPersonWiseDebate(result){
 		for(var i in result){
 			var candidateNameAndCompletedCountArray1 =[];
 				for(var j in result[i].coreDebateVOList){
-					 var obj1 = {
+					 var obj1 = {							
 							name: result[i].coreDebateVOList[j].candidateName.toUpperCase(),
 							y: result[i].coreDebateVOList[j].scalePerc
 						};
@@ -499,7 +506,7 @@ function buildSpokesPersonWiseDebate(result){
 }
 function getRoleBasedPerformanceCohort(){
 		
-		$("#basicCommitteeCountsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#roleBasedPerformanceCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj={
 			startDate: customStartDate ,
 			endDate: customEndDate,
@@ -525,7 +532,7 @@ function buildRoleBasedPerformanceCohort(result)
 					str+='<table class="table tableDebates m_top10">';
 					  str+='<tbody>';
 						str+='<tr>';
-							str+='<td>';
+							str+='<td style="font-size:18px;">';
 								str+='<img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" alt="'+result[i].coreDebateVOList[0].name+'" class="debatesPartyIcon"/>'+result[i].coreDebateVOList[0].name+'';
 							str+='</td>';
 							str+='<td>';
@@ -660,7 +667,7 @@ function getRolesPerformanceOfCandidate(roleId){
 			str+='<table class="table tableTopDebates">';			
 				for(var i in result){
 					str+='<tr>';
-							str+='<td class="text-capital" id="'+result[i].id+'">'+result[i].name+'</td>';
+							str+='<td class="text-capital" style="width:25% !important" id="'+result[i].id+'">'+result[i].name+'</td>';
 							str+='<td class="text-capital">';
 								str+='<p>PARTY</p>';
 								str+='<p><img src="newCoreDashBoard/img/'+result[i].candidateName+'.png" class="debatesPartyIcon"/>'+result[i].candidateName+'</p>';
@@ -715,9 +722,9 @@ function getRolesPerformanceOfCandidate(roleId){
 		if(result !=null && result.length>0){
 			str+='<div class="col-md-6 col-xs-12 col-sm-6 pull-right">';
 				str+='<ul class="activeUlCls list-inline pull-right candidateRolesCls">';	
-				str+='<li id="0" class="active">All</li>';				
+				str+='<li id="0" class="active" style="margin-right:3px;">All</li>';				
 				for(var i in result){								
-					str+='<li id="'+result[i].id+'" >'+result[i].name+'</li>';									
+					str+='<li id="'+result[i].id+'" style="margin-right:3px;" >'+result[i].name+'</li>';									
 				}	
 				str+='</ul>';
 			str+='</div>';

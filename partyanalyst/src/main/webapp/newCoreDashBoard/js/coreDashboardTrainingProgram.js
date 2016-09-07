@@ -78,7 +78,7 @@ var getDocumentWidth = $(document).width();
 	 
 	var villageWardRslt = result.villageWardVO;
  	var str1='';
-	str1='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">village / ward</h4>';
+	str1='<h4 class="text-capitalize m_top20">village / ward</h4>';
 	if(villageWardRslt != null){
 	if(villageWardRslt.totalEligibleCount !=0){
 	 str1+='<table class="table tableTraining bg_ED">';
@@ -107,7 +107,7 @@ var getDocumentWidth = $(document).width();
 	
 	var mandalTwnDivRslt = result.mandalTownDivisionVO; 
     var str2='';
-	 str2+='<h4 class="text-capitalize m_top20" style="color:#c9c0cc">mandal / town / division</h4>';
+	 str2+='<h4 class="text-capitalize m_top20">mandal / town / division</h4>';
 	if(mandalTwnDivRslt != null){
 	if(+mandalTwnDivRslt.totalEligibleCount !=0){
 	  str2+='<table class="table tableTraining bg_ED">';
@@ -518,13 +518,24 @@ var globalUserWiseMemberRslt;
 					text: null
 				},
 				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					categories: candidateNameArray,
 					title: {
 						text: null
-					}
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
 				},
 				yAxis: {
 					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
 					title: {
 						text: null,
 						align: 'high'
