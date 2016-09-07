@@ -1989,72 +1989,8 @@
 	   </c:forEach>
 	   return loggedInUserAccessLevelValues;
 	}	
-function savingDashboardComment(dashboardComponentId){  
-  var comment=$(".notesArea").val();
-  if(comment.trim() ==""){
-		  $("#id1").html("Notes Required.");
-		  return;
-	  }
-	var editId = $("#cmtId").val();
-	//$("#"+editId).parent().html(' ');
-	$("#"+editId).html(comment);
-	 var dashboardCommentId=0;
-	 if($(".notesArea").attr("attr_commentid")>0)
-	 {
-		dashboardCommentId=$(".notesArea").attr("attr_commentid");		
-	 }
 	
-	var jsObj={
-		comment:comment,
-		dashboardComponentId: dashboardComponentId,
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "savingDashboardCommentAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
-				$("#id1").html('update succuss');
-				displayDashboardComments(1);
-			}
-		}			
-	});
-}
-function displayDashboardComments(dashBoardComponentId){
-	var jsObj={
-		dashBoardComponentId:dashBoardComponentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "displayDashboardCommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length >0){
-		 var str=''; 
-      		 
-	     str+='<ul class="notesUl m_top20">';  	
-            	     
-					for(var i in result){ 
-                        str+='<li>'; 
-                        str+='<span class="notesText" id="editTextId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
-					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes" attr_cmt_id="editTextId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
-                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="editTextId'+i+'" attr_comment="'+result[i].comment+'"></i>';
-                        str+='</li>';
-					}
-                        str+='</ul>';
-						str+='<hr/>';
-						str+='<div id="id1" style="color:red;"></div>';
-                        str+='<label>Create Notes</label>';
-                        str+='<textarea class="form-control notesArea"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreate btn-sm " id="btton1" onClick="savingDashboardComment(1);">create</button>';
-			$("#notesId").html(str);	 
-		}
-	});
-}
-
-		
+			
   </script> 
 </body>
 </html>
