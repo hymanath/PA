@@ -1914,7 +1914,8 @@
 		//getNewsBasicCounts();
 		//getUserTypeWiseNewsCounts();
 		//getDetailedPartyMainEditionsOverview();
-		getDetailedPartyDistrictEditionsOverview();
+		//getDetailedPartyDistrictEditionsOverview();
+		getDetailedPartyNewsTypeAnalysis();
 	}
 	
 	
