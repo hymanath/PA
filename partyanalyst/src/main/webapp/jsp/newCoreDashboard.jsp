@@ -1102,22 +1102,12 @@
 								<div class="row">
 									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline">
-											<li class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+											<li class="active newsliCls" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
+											<li class="newsliCls" attr_value="poor"> <i class="fa fa-arrow-down"></i>&nbsp;last 5 Negative</li>
 										</ul>
 									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<h4 class="text-capital">general secretary</h4>
-										<div id="newsSec" style="width:100%;height:150px;"></div>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<h4 class="text-capital">secretary</h4>
-										<div id="newsGenSec" style="width:100%;height:150px;"></div>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<h4 class="text-capital">member of parliament</h4>
-										<div id="newsDistInch" style="width:100%;height:150px;"></div>
-									</div>
+									 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
+									
 									<div class="col-xs-12 col-sm-12 col-md-12">
 										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
 									</div>	
@@ -1912,7 +1902,6 @@
 		
 		//news please dont remove
 		//getNewsBasicCounts();
-		getUserTypeWiseNewsCounts();
 		//getDetailedPartyMainEditionsOverview();
 	}
 	
