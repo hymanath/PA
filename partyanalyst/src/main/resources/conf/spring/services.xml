@@ -3422,7 +3422,8 @@
 	    <property name="tdpCommitteeMemberDAO"  ref="tdpCommitteeMemberDAO"></property>
 	    <property name="trainingCampAttendanceDAO"  ref="trainingCampAttendanceDAO"></property>
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
-	  
+	  	<property name="trainingCampBatchAttendeeDAO"  ref="trainingCampBatchAttendeeDAO"></property>
+	  	<property name="publicRepresentativeTypeDAO"  ref="publicRepresentativeTypeDAO"></property>     
 	  <!-- Debate -->
 	  <property name="debateParticipantDAO"  ref="debateParticipantDAO"></property>
 	  <property name="debateParticipantCharcsDAO"  ref="debateParticipantCharcsDAO"></property>	  
@@ -3443,7 +3444,6 @@
 	    <property name="partyMeetingStatusDAO"  ref="partyMeetingStatusDAO"></property>
 	    <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
-	    <property name="partyMeetingTypeDAO"  ref="partyMeetingTypeDAO"></property>
 	</bean>
 	
 </beans>		

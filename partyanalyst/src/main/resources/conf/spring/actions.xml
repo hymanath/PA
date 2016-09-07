@@ -1689,6 +1689,7 @@
 		<property name="coreDashboardMainService" ref="coreDashboardMainService" />
 		<property name="coreDashboardGenericService" ref="coreDashboardGenericService" />
 		<property name="newsCoreDashBoardService" ref="newsCoreDashBoardService" />
+		
 	   <property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService" />
 		
 	</bean>
