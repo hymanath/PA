@@ -1272,7 +1272,7 @@ jObj = new JSONObject(getTask());
 			}
 		}
 		
-		activityMembersList = coreDashboardMainService.getDirectChildActivityMemberMeetingsDetails(parentActivityMemberId,childUserTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
+		activityMembersList = coreDashboardPartyMeetingService.getDirectChildActivityMemberMeetingsDetails(parentActivityMemberId,childUserTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getDirectChildActivityMemberCommitteeDetails() method of CoreDashBoard", e);
