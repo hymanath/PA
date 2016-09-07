@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.PublicRepresentativeType;
 public interface IPublicRepresentativeTypeDAO extends GenericDao<PublicRepresentativeType, Long>{
 
 	public List<Object[]> getAllPublicRepresentativeList();
+	public List<Long> getIds(List<Long> representativeIds);
+
 }

@@ -22,4 +22,9 @@ public class PublicRepresentativeTypeDAO extends GenericDaoHibernate<PublicRepre
 		
 		return query.list();
 	}
+	public List<Long> getIds(List<Long> representativeIds){
+		Query query = getSession().createQuery(" select PRT.publicRepresentativeTypeId from PublicRepresentativeType PRT where PRT.publicRepresentativeTypeId not in (:representativeIds)");
+		query.setParameterList("representativeIds", representativeIds);
+		return query.list();
+	}
 }

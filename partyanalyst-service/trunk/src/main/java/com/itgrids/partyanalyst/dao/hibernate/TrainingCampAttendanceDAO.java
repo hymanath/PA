@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.model.TrainingCampAttendance;
@@ -1135,8 +1137,81 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 query.setParameter("stateId", stateId);  
    }
 	  if(toDate!=null){
-	   query.setDate("toDate", toDate);  
-	  }
-		  return query.list();  
-	  }
+	   query.setDate("toDate", toDate);    
+  }
+		  return query.list();    
+  }
+	public Long getTotalAttendedForTrainingCampStateLevel(Long campId, Long programId){ 
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select count(distinct ATT.tdpCadre.tdpCadreId) from TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where " +
+				           " TCA.trainingCampSchedule.trainingCamp.trainingCampId = (:campId) and " +
+				           " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = (:programId) and " +
+				           " TCA.attendance.attendanceId = ATT.attendanceId and " +
+				           " ATT.tdpCadre.tdpCadreId = TC.tdpCadreId and " +    
+				           " TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId ");  
+		Query query = getSession().createQuery(queryString.toString()); 
+		query.setParameter("campId", campId);
+		query.setParameter("programId", programId);  
+		return (Long) query.uniqueResult();
+	}
+	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, Long programId){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select TCL.tdp_committee_level_id as id, TCL.tdp_committee_level as level,count(distinct TCM.tdp_cadre_id) as total from "+
+						   " tdp_committee_member TCM, tdp_committee_role TCR, tdp_committee TC, tdp_committee_level TCL, tdp_cadre TDP, "+
+						   " training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA "+
+						   " where "+
+						   " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
+						   " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
+						   " TCA.attendance_id = A.attendance_id and "+
+						   " TDP.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
+						   " TCM.tdp_committee_role_id = TCR.tdp_committee_role_id and "+
+						   " TCR.tdp_committee_id = TC.tdp_committee_id and "+
+						   " TC.tdp_committee_level_id = TCL.tdp_committee_level_id and "+
+						   " TCM.tdp_cadre_id = TDP.tdp_cadre_id and TDP.enrollment_year = 2014 "+
+						   " group by "+
+						   " TCL.tdp_committee_level_id ");
+		SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("level", Hibernate.STRING).addScalar("total", Hibernate.LONG);  
+		query.setParameter("campId", campId);
+		query.setParameter("programId", programId);
+		return query.list();
+	}
+	 public List<Object[]> getMlaMpInchargeTrainingProgramAttendedDetails(Long campId, Long programId){
+		 StringBuilder queryString = new StringBuilder();
+		 queryString.append(" select PRT.public_representative_type_id as id,PRT.position as position,count(distinct TDP.tdp_cadre_id) as total from "+
+				 			" candidate CND, tdp_cadre_candidate TCC, public_representative PR, public_representative_type PRT, tdp_cadre TDP, "+
+				 			" training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA "+
+				 			" where "+
+				 			" TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
+				 			" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
+				 			" TCA.attendance_id = A.attendance_id and "+
+				 			" TDP.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
+				 			" TCC.candidate_id = CND.candidate_id and "+
+				 			" PR.candidate_id = CND.candidate_id and "+
+				 			" PR.public_representative_type_id = PRT.public_representative_type_id and "+
+				 			" TCC.tdp_cadre_id = TDP.tdp_cadre_id "+
+				 			" group by PRT.public_representative_type_id ");
+		 SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("position", Hibernate.STRING).addScalar("total", Hibernate.LONG);
+		 query.setParameter("campId", campId);
+		 query.setParameter("programId", programId);    
+		 return query.list();
+	 }
+	 public List<Object[]> getDestWiseAttendedMembers(Long stateId, Long campId, Long programId){
+		 StringBuilder queryString = new StringBuilder();
+		   queryString.append(" select D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, tdp_cadre TC, user_address UA, state S, district D "+
+				   			  " where "+
+				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
+				   			  " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
+				   			  " TCA.attendance_id = A.attendance_id and "+
+				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
+				   			  " TC.address_id = UA.user_address_id and UA.state_id = S.state_id and S.state_id = (:stateId) and "+
+				   			  " UA.district_id = D.district_id "+
+				   			  " group by D.district_id order by D.district_id ");
+		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
+		   query.setParameter("campId", campId);
+		   query.setParameter("programId", programId);
+		   query.setParameter("stateId", stateId);
+		   return query.list();
+	 }
+	
+	
 }
