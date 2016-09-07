@@ -13584,5 +13584,11 @@
    		</result>
 	</action>
 	
+	<action name="getDebateRolesNewAction" class="coreDashboardAction" method="getDebateRolesNew">
+		<result type="json" name="success">
+   			<param name="root">idNameVoList</param>
+   		</result>
+	</action>
+	
 </package>
 </struts>
