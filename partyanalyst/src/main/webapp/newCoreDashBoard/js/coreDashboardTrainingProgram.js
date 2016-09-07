@@ -192,7 +192,7 @@ var getDocumentWidth = $(document).width();
 					 stateId : globalStateId,
 					 dateStr : dateStr
 				  }
-		
+		  
 		$.ajax({
 			type : 'POST',
 			url : 'getTrainingCampProgramsDetailsCntByDistrictAction.action',
@@ -1321,3 +1321,156 @@ $(document).on("click",".btnCustomCreateTraining",function(){
 	$(".notesUlTraining").append("<li>"+commentText+"</li>");
 	$(".notesAreaTraining").val('');	
 });
+//training camp start
+$(document).on("click",".moreTrainingCampBlocksIcon",function(){
+	$(this).addClass("unExpandTrainingBlock");
+	$(".moreTrainingBlocks").toggle();
+	setTimeout(function(){
+		stateLevelCampMembersDistWise();
+		//getTrainingProgramPoorCompletedLocationDtls();
+	},600);
+	var moreBlocksWidth = $(".trainingsUl").width();
+	var getEachLiWidth;
+	if(getDocumentWidth > 1024)
+	{
+		getEachLiWidth = moreBlocksWidth / 3 +'px';
+		$(".trainingsUl li").width(getEachLiWidth);
+	}else if(getDocumentWidth < 1024 && getDocumentWidth > 600)
+	{
+		getEachLiWidth = moreBlocksWidth / 4 +'px';
+		$(".trainingsUl li").width(getEachLiWidth);
+	}
+	$(".trainingCampDetailed").trigger("click");
+});
+$(document).on("click",".trainingCampDetailed",function(){
+	alert(10)
+	$(this).addClass("active")
+	$(".trainingComparison").removeClass("active");
+	$(".trainingDetailedBlock").show();
+	$(".trainingComparisonBlock").hide();
+	//getTrainingProgramBasicCnt(); 
+});
+function stateLevelCampMembersDistWise(){
+	$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$.ajax({
+			type : 'GET',
+			url : 'stateLevelCampDetailsDistWise.action',  
+			dataType : 'json',
+			data : {}
+		}).done(function(result){ 
+			$("#districtWiseProgramCntDivId").html(" ");
+			if(result != null && result.length > 0){
+			  buildStateLevelCampDetailsDistWise(result);
+			}else{
+			$("#districtWiseProgramCntDivId").html("NO DATA AVAILABLE");	
+			}
+			
+		});
+}
+function buildStateLevelCampDetailsDistWise(result){
+	$("#districtWiseProgramCntDivId").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			//for(var i in result){
+				//str+=result[i].name
+				str+='<div id="trainingLocationDivId" class="chartLiD" style="height:300px" ></div>';
+			//}
+		}
+		$("#districtWiseProgramCntDivId").html(str);
+		if(result != null && result.length > 0){
+		//for(var i in result){
+			var districtNamesArray =[];
+			var districtWiseAttendedPercArray = [];
+			var districtWiseYetToTrainPercArray = [];
+			//if(result[i].districtList !=null && result[i].districtList.length > 0){
+				//debugger; 
+				for(var j in result){
+					districtNamesArray.push(result[j].name);
+					var precent = (result[j].actualCount*(100/result[j].count)).toFixed(2);
+					districtWiseAttendedPercArray.push(parseFloat(precent));  
+					var abs = 100-precent;
+					districtWiseYetToTrainPercArray.push(parseFloat(abs.toFixed(2)));
+				}  
+			//}
+						$(function () {
+							$('#trainingLocationDivId').highcharts({  
+								colors: ['#F56800','#53BF8B'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											formatter: function(){
+												return Highcharts.numberFormat(this.y,0) + '%';
+											}
+										  
+										}
+									}
+								},
+								series: [ {
+									name: 'Yet to Train',
+									data: districtWiseYetToTrainPercArray
+								},{
+									name: 'Attended',
+									data: districtWiseAttendedPercArray
+								}]
+							});
+						});
+		//}
+	}else{
+		$("#districtWiseProgramCntDivId").html("No Data Available");
+	}	
+}
+//end
