@@ -617,13 +617,14 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 			   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
 			   			  " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
 			   			  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
-			   			  " TDP.address_id = UA.user_address_id and UA.state_id = S.state_id and S.state_id = (:stateId) and "+
-			   			  " UA.district_id = D.district_id "+
+			   			  " TDP.address_id = UA.user_address_id and " +
+			   			  " D.district_id BETWEEN 11 AND 23 AND"+
+			   			  " UA.district_id = D.district_id "+    
                           " group by D.district_id order by D.district_id ");
 	   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
 	   query.setParameter("campId", campId);
 	   query.setParameter("programId", programId);
-	   query.setParameter("stateId", stateId);
-	   return query.list();
+	  
+	   return query.list();  
    }
 }
