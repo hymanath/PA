@@ -160,12 +160,16 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
      }
        //Calculate OverAll Details percentage
        PartyMeetingsVO overAllDtlsVO = overAllTotalDtlsMap.get("overAllTotalDtls");
-       overAllDtlsVO.setName("OverAllDtls");
-       overAllDtlsVO.setTotalCount(overAllTotalCountMap.get("overAllTotalCount"));
-       overAllDtlsVO.setTotalCountPer(calculatePercantage(overAllDtlsVO.getTotalCount(),overAllDtlsVO.getTotalCount()));
-       overAllDtlsVO.setConductedCountPer(calculatePercantage(overAllDtlsVO.getConductedCount(),overAllDtlsVO.getTotalCount()));
-       overAllDtlsVO.setNotConductedCountPer(calculatePercantage(overAllDtlsVO.getNotConductedCount(), overAllDtlsVO.getTotalCount()));
-       overAllDtlsVO.setMayBeCountPer(calculatePercantage(overAllDtlsVO.getMayBeCount(),overAllDtlsVO.getTotalCount()));
+       if(overAllDtlsVO != null){
+    	   overAllDtlsVO.setName("OverAllDtls");
+           if(overAllTotalCountMap.get("overAllTotalCount") != null){
+        	   overAllDtlsVO.setTotalCount(overAllTotalCountMap.get("overAllTotalCount"));
+           }
+           overAllDtlsVO.setTotalCountPer(calculatePercantage(overAllDtlsVO.getTotalCount(),overAllDtlsVO.getTotalCount()));
+           overAllDtlsVO.setConductedCountPer(calculatePercantage(overAllDtlsVO.getConductedCount(),overAllDtlsVO.getTotalCount()));
+           overAllDtlsVO.setNotConductedCountPer(calculatePercantage(overAllDtlsVO.getNotConductedCount(), overAllDtlsVO.getTotalCount()));
+           overAllDtlsVO.setMayBeCountPer(calculatePercantage(overAllDtlsVO.getMayBeCount(),overAllDtlsVO.getTotalCount()));
+       }
      
        //Calculate Party Meeting Level Wise Data 
         setDataToPartyMeetingLevelWise( overAllLevelWiseDtlsMap.get(1l),overAllTotalLevelWiseCountMap,"State","totalStateCount");
@@ -181,32 +185,40 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
        PartyMeetingsVO manTwnDivVO = new PartyMeetingsVO();
        
        manTwnDivVO.setName("Mandal/Town/Division");
-       manTwnDivVO.setTotalCount(overAllTotalLevelWiseCountMap.get("totalMandalTownDivisionCount"));
-       manTwnDivVO.setConductedCount(mandalVO.getConductedCount()+townVO.getConductedCount()+divisionVO.getConductedCount());
-       manTwnDivVO.setNotConductedCount(mandalVO.getNotConductedCount()+townVO.getNotConductedCount()+divisionVO.getNotConductedCount());
-       manTwnDivVO.setMayBeCount(mandalVO.getMayBeCount()+townVO.getMayBeCount()+divisionVO.getMayBeCount());
-       manTwnDivVO.setTotalCountPer(calculatePercantage(manTwnDivVO.getTotalCount(),manTwnDivVO.getTotalCount()));
-       manTwnDivVO.setConductedCountPer(calculatePercantage(manTwnDivVO.getConductedCount(),manTwnDivVO.getTotalCount()));
-       manTwnDivVO.setNotConductedCountPer(calculatePercantage(manTwnDivVO.getNotConductedCount(),manTwnDivVO.getTotalCount()));
-       manTwnDivVO.setMayBeCountPer(calculatePercantage(manTwnDivVO.getMayBeCount(),manTwnDivVO.getTotalCount()));
-       mandalTwnDivMap.put("mandalTwnDiv", manTwnDivVO);
-       
-       //Merge Village Ward 
+       if(overAllTotalLevelWiseCountMap.get("totalMandalTownDivisionCount") != null){
+    	 manTwnDivVO.setTotalCount(overAllTotalLevelWiseCountMap.get("totalMandalTownDivisionCount"));   
+       }
+      if(mandalVO != null){
+    	  mergeRequiredData(manTwnDivVO,mandalVO);  
+      }
+      if(townVO != null){
+    	  mergeRequiredData(manTwnDivVO,townVO);  
+      }
+      if(divisionVO != null){
+    	  mergeRequiredData(manTwnDivVO,divisionVO);  
+      }
+      //Calculating Percentage 
+      calculatePercentages(manTwnDivVO,mandalTwnDivMap,"mandalTwnDiv");
+      
+      //Merge Village Ward 
        PartyMeetingsVO villageVO = overAllLevelWiseDtlsMap.get(7l);
        PartyMeetingsVO wardVO = overAllLevelWiseDtlsMap.get(8l);
       
        PartyMeetingsVO villageWardVO = new PartyMeetingsVO();
        
        villageWardVO.setName("Village/Ward");
-       villageWardVO.setTotalCount(overAllTotalLevelWiseCountMap.get("totalVillageWardCount"));
-       villageWardVO.setConductedCount(villageVO.getConductedCount()+wardVO.getConductedCount());
-       villageWardVO.setNotConductedCount(villageVO.getNotConductedCount()+wardVO.getNotConductedCount());
-       villageWardVO.setMayBeCount(villageVO.getMayBeCount()+wardVO.getMayBeCount());
-       villageWardVO.setTotalCountPer(calculatePercantage(villageWardVO.getTotalCount(),villageWardVO.getTotalCount()));
-       villageWardVO.setConductedCountPer(calculatePercantage(villageWardVO.getConductedCount(), villageWardVO.getTotalCount()));
-       villageWardVO.setNotConductedCountPer(calculatePercantage(villageWardVO.getNotConductedCount(), villageWardVO.getTotalCount()));
-       villageWardVO.setMayBeCountPer(calculatePercantage(villageWardVO.getMayBeCount(),villageWardVO.getTotalCount()));
-       villageWardMap.put("villageWard", villageWardVO);
+       if(overAllTotalLevelWiseCountMap.get("totalVillageWardCount") != null){
+    	   villageWardVO.setTotalCount(overAllTotalLevelWiseCountMap.get("totalVillageWardCount"));
+       }
+       if(villageVO != null){
+     	  mergeRequiredData(villageWardVO,villageVO);  
+       }
+       if(wardVO != null){
+     	  mergeRequiredData(villageWardVO,wardVO);  
+       }
+       //Calculating Percentage 
+       calculatePercentages(villageWardVO,villageWardMap,"villageWard");
+       
        
        //Setting Result to final VO By User Access Level
        
@@ -292,13 +304,37 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
   }
  public void  setDataToPartyMeetingLevelWise(PartyMeetingsVO VO, Map<String,Long> overAllTotalLevelWiseCountMap,String levelName,String key){
 	 try{
-		 VO.setTotalCount(overAllTotalLevelWiseCountMap.get(key));
-		 VO.setName(levelName);
-		 VO.setConductedCountPer(calculatePercantage(VO.getConductedCount(),VO.getTotalCount()));
-		 VO.setNotConductedCountPer(calculatePercantage(VO.getNotConductedCount(),VO.getTotalCount()));
-		 VO.setMayBeCountPer(calculatePercantage(VO.getMayBeCount(), VO.getTotalCount())); 
+		 if(VO != null){
+			 VO.setTotalCount(overAllTotalLevelWiseCountMap.get(key));
+			 VO.setName(levelName);
+			 VO.setConductedCountPer(calculatePercantage(VO.getConductedCount(),VO.getTotalCount()));
+			 VO.setNotConductedCountPer(calculatePercantage(VO.getNotConductedCount(),VO.getTotalCount()));
+			 VO.setMayBeCountPer(calculatePercantage(VO.getMayBeCount(), VO.getTotalCount())); 
+		 }
 	 }catch(Exception e){
 		  LOG.error("Exception raised at setDataToPartyMeetingLevelWise() method of CoreDashboardPartyMeetingService", e); 
+	 }
+ }
+ public void mergeRequiredData(PartyMeetingsVO resultVO,PartyMeetingsVO VO){
+	 try{
+		 resultVO.setConductedCount(resultVO.getConductedCount()+VO.getConductedCount());
+		 resultVO.setNotConductedCount(resultVO.getNotConductedCount()+VO.getNotConductedCount());
+		 resultVO.setMayBeCount(resultVO.getMayBeCount()+VO.getMayBeCount());
+	 }catch(Exception e){
+		 LOG.error("Exception raised at mergeRequiredData() method of CoreDashboardPartyMeetingService", e); 
+	 }
+ }
+ public void calculatePercentages(PartyMeetingsVO resultVO, Map<String,PartyMeetingsVO> map,String key){
+	 try{
+		 if(resultVO != null){
+			 resultVO.setTotalCountPer(calculatePercantage(resultVO.getTotalCount(),resultVO.getTotalCount()));
+			 resultVO.setConductedCountPer(calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
+			 resultVO.setNotConductedCountPer(calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
+			 resultVO.setMayBeCountPer(calculatePercantage(resultVO.getMayBeCount(),resultVO.getTotalCount()));
+			 map.put(key, resultVO);	 
+		 }
+		 }catch(Exception e){
+		 LOG.error("Exception raised at calculatePercentage() method of CoreDashboardPartyMeetingService", e);	 
 	 }
  }
 	/**
