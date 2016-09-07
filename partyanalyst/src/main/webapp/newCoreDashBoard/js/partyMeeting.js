@@ -1,3 +1,29 @@
+var customStartDateMeetings = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
+var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+
+	$("#dateRangeIdForMeetings").daterangepicker({
+		opens: 'left',
+		startDate: moment().subtract(1, 'month').startOf('month'),
+        endDate: moment().subtract(1, 'month').endOf('month'),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()]
+        }
+	})
+	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
+	  customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
+	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
+	  alert(customStartDateMeetings + "-" +customEndDateMeetings);
+	});
+
       var globalStateId=1; 
 	function getPartyMeetingBasicCountDetails()
 	{ 
@@ -362,7 +388,7 @@ $(document).on("click",".meetingLiCls",function(){
 	 }
 });
 	$(document).on("click",".meetingsIconExpand",function(){
-		//$(".dateRangePickerClsForTraining").toggleClass("hide");	
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");	
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");

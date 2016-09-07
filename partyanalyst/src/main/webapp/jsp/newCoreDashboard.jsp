@@ -1131,11 +1131,25 @@
         <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 meetingsBlock">
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
-                    <h4 class="panel-title">meetings
-                        <span class="meetingsIconExpand pull-right">
-                            <i class="glyphicon glyphicon-fullscreen"></i>
-                        </span>
-                    </h4>
+					<div class="row">
+						<div class="col-md-6 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+								meetings
+							</h4>
+						</div>
+						<div class="col-md-6 col-sm-4 col-xs-5">
+							<span class="meetingsIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForMeetings hide" style="width:200px;">
+								<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
                 </div>
                 <div class="panel-body">
                 	<div class="row">

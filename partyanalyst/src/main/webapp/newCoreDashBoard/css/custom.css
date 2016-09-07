@@ -1314,14 +1314,14 @@ margin-top:20px;
 	border-radius:50%;
 	padding:2px;
 }
-.dateRangePickerCls , .dateRangePickerClsForTraining , .dateRangePickerClsForDebates , .dateRangePickerClsForNews
+.dateRangePickerCls , .dateRangePickerClsForTraining , .dateRangePickerClsForDebates , .dateRangePickerClsForNews , .dateRangePickerClsForMeetings
 {
 	position:relative;
 	top:-3px;
 	width:100px;
 	margin-right:5px;
 }
-.dateRangePickerCls .form-control , .dateRangePickerClsForTraining .form-control , .dateRangePickerClsForDebates .form-control , .dateRangePickerClsForNews .form-control
+.dateRangePickerCls .form-control , .dateRangePickerClsForTraining .form-control , .dateRangePickerClsForDebates .form-control , .dateRangePickerClsForNews .form-control , .dateRangePickerClsForMeetings .form-control
 {
 	height:27px;
 	border:1px solid #999999;
@@ -1329,7 +1329,7 @@ margin-top:20px;
 	width:100px;
 	border-right:0px;
 }
-.dateRangePickerCls .input-group-addon , .dateRangePickerClsForTraining .input-group-addon , .dateRangePickerClsForDebates .input-group-addon , .dateRangePickerClsForNews .input-group-addon
+.dateRangePickerCls .input-group-addon , .dateRangePickerClsForTraining .input-group-addon , .dateRangePickerClsForDebates .input-group-addon , .dateRangePickerClsForNews .input-group-addon , .dateRangePickerClsForMeetings .input-group-addon
 {
 	padding:5px 7px;
 	border:1px solid #999999;
