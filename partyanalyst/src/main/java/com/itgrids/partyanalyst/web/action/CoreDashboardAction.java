@@ -1000,7 +1000,7 @@ public String getRoleBasedPerformanceCohort(){
 			
 			Long userId = user.getRegistrationID();
 			
-			newsCoreDashBoardService.getUserTypeWiseNewsCounts(userId,jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),
+			userTypeVOList = newsCoreDashBoardService.getUserTypeWiseNewsCounts(userId,jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),
 					jObj.getString("state"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("benefitId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getUserTypeWiseNewsCounts", e);
