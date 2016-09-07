@@ -719,7 +719,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	color:#333;
 	font-weight:bold;
 }
-.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .notesIconTraining , .newsIconExpand
+.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .meetingsIconExpand , .debatesIconExpand , .notesIconTraining , .newsIconExpand , .committeeMeetingsSettings
 {
 	border:1px solid #999;
 	border-radius:5px;
@@ -731,11 +731,11 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	background-color:#FECB00;
 	margin-right:2px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i, .newsIconExpand i
+.iconExpand i, .notesIcon i, .settingsIcon i , .trainingIconExpand i , .meetingsIconExpand i , .debatesIconExpand i, .newsIconExpand i , .committeeMeetingsSettings i
 {
 	transition:all .2s ease-in-out;
 }
-.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover, .newsIconExpand i:hover
+.iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover , .trainingIconExpand i:hover , .meetingsIconExpand i:hover , .debatesIconExpand i:hover, .newsIconExpand i:hover , .committeeMeetingsSettings i:hover
 {
 	transform: scale(1.4); 
 }
@@ -785,7 +785,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	position:relative;
 }
-.notesDropDown
+.notesDropDown , .settingsDropDown
 {
 	display:none;
 	position:absolute;
@@ -1593,6 +1593,15 @@ margin-top:20px;
 .best-matched-profile li:hover , .best-matched-profile li:active  , .best-matched-profile li:focus
 {
 	 box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.35);
+}
+.selectAllOptions
+{
+	padding:0px;
+}
+.selectAllOptions li
+{
+	list-style:none;
+	padding:4px;
 }
 .newsComparisonUl
 {

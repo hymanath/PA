@@ -21,18 +21,92 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
-	  alert(customStartDateMeetings + "-" +customEndDateMeetings);
+	  //alert(customStartDateMeetings + "-" +customEndDateMeetings);
+	  getPartyMeetingBasicCountDetails();
+	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 	});
-
+    $(document).on("click",".meetingGetDtlsBtnId",function(){
+		getPartyMeetingBasicCountDetails();
+		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+		$(".settingsDropDown").hide();
+		$("#committeeTypeDivId").hide();
+	});
+	function getPartyMeetingTypeByPartyMeetingMainType()
+	{ 
+		var jsObj ={ 
+		             partyMeetingMainTypeId : 1
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingTypeByPartyMeetingMainTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildCommitteeTypes(result);
+			}
+			getPartyMeetingBasicCountDetails();
+		});
+	}
+ function buildCommitteeTypes(result){
+	 var str='';
+	 str+='<ul id="committeeTypeId" class="selectAllOptions">';
+	 for(var i in result){
+		 str+="<li><label><input checked type='checkbox' id="+result[i].id+">&nbsp&nbsp"+result[i].name+"</label></li>";
+	 }
+	 str+='</ul> ';
+	 $("#committeeTypeDivId").html(str);
+ }	
+$(document).on("click",".committeeMeetingsSettings",function(){
+    $("#committeeTypeDivId").show();
+	$(".settingsDropDown").toggle();
+});
+$(document).on("click",".selectAll",function(){
+   if($(this).is(":checked")){
+	$("#committeeTypeId li").each(function() {
+	  $(this).find("input").prop("checked",true)
+	});
+   }else{
+	 $("#committeeTypeId li").each(function() {
+	  $(this).find("input").prop("checked",false)
+	});
+   }	
+});
+/* $(document).on("click",".selectAll",function(){
+	$("#committeeTypeId li").each(function() {
+	  $(this).find("input").prop("checked",true)
+	});
+}); */
+/* $(document).on("click",".unSelectAll",function(){
+	$("#committeeTypeId li").each(function() {
+	  $(this).find("input").prop("checked",false)
+	});
+}); */
       var globalStateId=1; 
 	function getPartyMeetingBasicCountDetails()
 	{ 
 	  $("#meetingBasicCountDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	 var partyMeetingTypeArr=[];
+	  $("#committeeTypeId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	   });
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj ={ 
 		             activityMemberId : globalActivityMemberId,
 					 stateId : globalStateId,
-					 fromDate : "9/06/2015",
-					 toDate : "9/03/2016"
+					 fromDate : fromDateStr,
+					 toDate : toDateStr,
+					 partyMeetingTypeArr:partyMeetingTypeArr
 					 
 				  }
 		$.ajax({
@@ -111,12 +185,27 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	var globalUserWiseMeetingMemberRslt;
 	function getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
    $("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+      var partyMeetingTypeArr=[];
+	  $("#committeeTypeId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	  });
+	     var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		  var jsObj ={ 
 		             activityMemberId : globalActivityMemberId,
 					 userTypeId : globalUserTypeId,
 					 stateId : globalStateId,
-					 fromDate : "9/06/2015",
-					 toDate : "9/03/2016"
+					 fromDate : fromDateStr,
+					 toDate : toDateStr,
+					 partyMeetingTypeArr : partyMeetingTypeArr
 				  }
 		$.ajax({
 			type : 'POST',
@@ -210,9 +299,8 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 					}
 				},
 				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
-					shared: true
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 				},
 				plotOptions: {
 					column: {
@@ -246,7 +334,7 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 				},
 				
 				series: [{
-					name: 'Counducted And MayBe ',
+					name: 'Conducted',
 					data: meetingCounductedAndMayBePerArray
 				}]
 			});
@@ -329,10 +417,10 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 					}
 				},
 				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
-					shared: true
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 				},
+
 				plotOptions: {
 					column: {
 						stacking: 'percent',
@@ -364,7 +452,7 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 					enabled: false
 				},
 				series: [{
-					name: 'Attended',
+					name: 'Conducted',
 					data: meetingCounductedAndMayBePerArray
 				}]
 			});
@@ -403,12 +491,26 @@ $(document).on("click",".meetingLiCls",function(){
 
 function getMeetingLevelDetails(){
    $("#meetingLevelHIghChartsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var partyMeetingTypeArr=[];
+		  $("#committeeTypeId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	       });
+		var dates=$("#dateRangeIdForMeetings").val();   
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
 		var jsObj ={ 
 		             activityMemberId : globalActivityMemberId,
 					 stateId : globalStateId,
-					 fromDate : "9/06/2015",
-					 toDate : "9/03/2016"
-					 
+					 fromDate : fromDateStr,
+					 toDate : toDateStr,
+					 partyMeetingTypeArr : partyMeetingTypeArr
 				  }
 		$.ajax({
 			type : 'POST',
@@ -538,6 +640,7 @@ function buildLevelWiseHighCharts(result){
 								}]
 							});
 						});
+						    
 		}
 	}else{
 		$("#meetingLevelHIghChartsDivId").html("No Data Available")
