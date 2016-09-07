@@ -90,6 +90,11 @@ function buildPartyWiseTotalDebateDetails(result)
 							str+='<h4>'+result[i].candidateCount+'</h4>';
 						str+='</td>';
 						str+='<td>';
+						if(result[i].scalePerc !=null){
+						if(result[i].scalePerc.toString().split(".")[1] ==null  || result[i].scalePerc.toString().split(".")[1] == undefined || result[i].scalePerc.toString().split(".")[1].length<0){								
+								result[i].scalePerc = result[i].scalePerc.toString().concat(".0");								
+							}
+						}
 							str+='<p class="text-capital">performance</p>';
 							str+='<input class="performanceRating" value="'+result[i].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].scalePerc+'</span>';
 						str+='</td>';
@@ -152,11 +157,31 @@ function buildScaleBasedPerformanceCohort(result)
 							str+='<p class="text-capital">overall debates</p>';
 							str+='<h4>'+result[i].debateCount+'</h4>';
 						str+='</td>';
+						
+						str+='<td>';
+							str+='<p class="text-capital">overall Performance</p>';
+							if(result[i].overAllPerc !=null && result[i].overAllPerc>0.0){
+								str+='<p class="text-capital"><input class="performanceRating" value="'+(result[i].overAllPerc / (result[i].coreDebateVOList).length).toFixed(1)+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+(result[i].overAllPerc / (result[i].coreDebateVOList).length).toFixed(1)+'</span></p>';
+							}else{
+								str+='<p class="text-capital"><input class="performanceRating" value="0.0" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">0.0</span></p>';
+							}
+							
+							
+						str+='</td>';
+						
 						for(var j in result[i].coreDebateVOList){
 							str+='<td>';
 							if(result[i].coreDebateVOList[j].name !=null && result[i].coreDebateVOList[j].name.length>0){
 								str+='<p class="text-capital">'+result[i].coreDebateVOList[j].name.split("(")[0];+'</p>';
 							}
+							
+								//New One
+								if(result[i].coreDebateVOList[j].scalePerc !=null){
+								if(result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1] ==null  || result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1] == undefined || result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1].length<0){								
+										result[i].coreDebateVOList[j].scalePerc = result[i].coreDebateVOList[j].scalePerc.toString().concat(".0");								
+									}
+								}
+								
 								str+='<p class="text-capital"><input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].coreDebateVOList[j].scalePerc+'</span></p>';
 							str+='</td>';
 						}
@@ -246,6 +271,13 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													str+='</td>';
 													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 													
+													//Digit Adding
+													if(result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc !=null){
+													if(result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc.toString().split(".")[1] ==null  || result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc.toString().split(".")[1] == undefined || result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc.toString().split(".")[1].length<0){								
+															result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc = result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc.toString().concat(".0");								
+														}
+													}
+													
 													str+='<td>';
 														/* str+='<p class="text-capital">'+result[i].coreDebateVOList[j].coreDebateVOList[k].charecterName.split("(")[0].toUpperCase()+'</p>'; */
 														str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].coreDebateVOList[j].coreDebateVOList[k].scalePerc+'</span>';
@@ -321,6 +353,15 @@ function buildChannelAndPartyWiseDetails(result)
 							
 							str+='<td class="b_right1"><img src="newCoreDashBoard/img/'+result[i].coreDebateVOList[0].name+'.png" class="channelLogo" alt="Ntv Logo" onerror="setDefaultImageOfChannel(this)"/>'+result[i].coreDebateVOList[0].name+'</td>';
 							for(var j in result[i].coreDebateVOList){
+								
+								//Digit Adding
+								if(result[i].coreDebateVOList[j].scalePerc !=null){
+								if(result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1] ==null  || result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1] == undefined || result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1].length<0){								
+										result[i].coreDebateVOList[j].scalePerc = result[i].coreDebateVOList[j].scalePerc.toString().concat(".0");								
+									}
+								}
+								
+								
 								str+='<td>';
 									str+='<p class="text-capital"><img  src="newCoreDashBoard/img/'+result[i].coreDebateVOList[j].candidateName+'.png" alt="'+result[i].coreDebateVOList[j].candidateName+'" class="debatesPartyIcon"/> '+result[i].coreDebateVOList[j].candidateName+'</p>';
 									str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom">'+result[i].coreDebateVOList[j].scalePerc+'</span>';
@@ -496,6 +537,12 @@ function buildRoleBasedPerformanceCohort(result)
 							str+='</td>';
 							for(var j in result[i].coreDebateVOList){
 							str+='<td>';
+							
+							if(result[i].coreDebateVOList[j].scalePerc !=null){
+							if(result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1] ==null  || result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1] == undefined || result[i].coreDebateVOList[j].scalePerc.toString().split(".")[1].length<0){								
+									result[i].coreDebateVOList[j].scalePerc = result[i].coreDebateVOList[j].scalePerc.toString().concat(".0");								
+								}
+							}
 								str+='<p class="text-capital">'+result[i].coreDebateVOList[j].candidateName+'</p>';
 								str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result[i].coreDebateVOList[j].scalePerc+'</span>';
 							str+='</td>';
@@ -622,6 +669,14 @@ function getRolesPerformanceOfCandidate(roleId){
 								str+='<p>debates</p>';
 								str+='<p class="text-muted">'+result[i].debateCount+'</p>';
 							str+='</td>';
+							
+							//Digit Adding
+								if(result[i].scalePerc !=null){
+							if(result[i].scalePerc.toString().split(".")[1] ==null  || result[i].scalePerc.toString().split(".")[1] == undefined || result[i].scalePerc.toString().split(".")[1].length<0){
+										result[i].scalePerc = result[i].scalePerc.toString().concat(".0");				
+									}
+								}
+							
 							str+='<td class="text-capital">';
 								str+='<p>performance</p>';
 								str+='<input class="performanceRating" value="'+result[i].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result[i].scalePerc+'</span>';
