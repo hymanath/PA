@@ -190,9 +190,7 @@ function getNewsBasicCounts(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
-			if(result != null && result.length > 0){
-				
-			}
+			buildMainEditionPartieWiseGraph(result);
 		});
 		
 	}
@@ -487,3 +485,96 @@ function getNewsBasicCounts(){
 			buildgetUserTypeWiseNewsForTopFivePoorResults(globalUserWiseMemberRslt)
 		 }
 	});
+$(document).on("click",".newsIconExpand",function(){
+	$(".dateRangePickerClsForNews").toggleClass("hide");
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	$(".newsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
+});
+$(document).on("click",".morenewsBlocksIcon",function(){
+	$(".newsHiddenMoreBlock").toggle();
+});
+
+function buildMainEditionPartieWiseGraph(result){
+	var str='';
+  for(i=0;i<4;i++){
+    $('.newsGraph'+i).highcharts({
+	
+    colors: ['#53BF8B','#F56800'],
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+			xAxis: {
+		  min: 0,
+		  gridLineWidth: 0,
+		  minorGridLineWidth: 0,
+		  
+		  type: 'category',
+		  labels: {
+				formatter: function() {
+				  return this.value.toString().substring(0, 10)+'...';
+				},
+				
+			  }
+		  
+		},
+		yAxis: {
+		  min: 0,
+		  gridLineWidth: 0,
+		  minorGridLineWidth: 0,
+		  title: {
+			text: ''
+		  }
+
+		},
+        legend: {
+            enabled: true
+        },
+        series: [{
+            name: 'Positive',
+     
+            data: [
+                ['', result[i].positiveCountMain],    
+            ],
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },{
+            name: 'Negative',
+            data: [
+                ['',result[i].negativCountMain], 
+            ],
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    
+    });
+  }
+  
+}
