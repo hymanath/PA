@@ -1909,8 +1909,8 @@
 		
 		//news please dont remove
 		//getNewsBasicCounts();
-		//getUserTypeWiseNewsCounts();
-		getDetailedPartyMainEditionsOverview();
+		getUserTypeWiseNewsCounts();
+		//getDetailedPartyMainEditionsOverview();
 	}
 	
 	
