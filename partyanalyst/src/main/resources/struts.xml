@@ -13617,5 +13617,10 @@
    			<param name="root">partyMeetingsVOList</param>
    		</result>
 	</action>
+	<action name="stateLevelCampDetailsDistWise" class="coreDashboardAction" method="getDistrictWiseCampAttendedMembers">
+		<result type="json" name="success"> 
+   			<param name="root">idNameVoList</param> 
+   		</result>
+	</action>
 </package>
 </struts>
