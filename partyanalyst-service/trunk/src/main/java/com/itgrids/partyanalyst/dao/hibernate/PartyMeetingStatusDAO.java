@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.model.PartyMeetingStatus;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -150,5 +151,68 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 			 }
 	    return query.list();  
 		}	
-	
+		
+    public List<Object[]> getLocationWiseMeetingsStatusCountByLocIds(CommitteeInputVO inputBO){
+		
+		StringBuilder sbS = new StringBuilder();
+		sbS.append(" select count(distinct model.partyMeeting.partyMeetingId) ");
+		StringBuilder sbM = new StringBuilder();
+		sbM.append(" from   PartyMeetingStatus model ");
+		
+		sbM.append(" where model.partyMeeting.isActive='Y' and model.partyMeeting.startDate is not null ");
+		StringBuilder sbE = new StringBuilder();
+		if(inputBO.getStateIds()!=null && inputBO.getStateIds().size()>0){
+			sbS.append(",model.partyMeeting.meetingAddress.state.stateId ");
+			sbE.append(" group by model.partyMeeting.meetingAddress.state.stateId,model.mettingStatus ");
+		}
+		else if(inputBO.getDistrictIds() != null && inputBO.getDistrictIds().size()>0){
+			
+			sbS.append(",model.partyMeeting.meetingAddress.district.districtId ");
+			sbE.append(" group by model.partyMeeting.meetingAddress.district.districtId,model.mettingStatus ");
+			
+		}else if(inputBO.getParliamentConstIds() != null && inputBO.getParliamentConstIds().size()>0){
+			
+			sbS.append(",model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId ");
+			sbE.append(" group by model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId,model.mettingStatus ");
+			
+		}else if(inputBO.getAssemblyConstIds() != null && inputBO.getAssemblyConstIds().size()>0){
+			
+			sbS.append(",model.partyMeeting.meetingAddress.constituency.constituencyId");
+			sbE.append(" group by model.partyMeeting.meetingAddress.constituency.constituencyId,model.mettingStatus ");
+			
+		}else if(inputBO.getTehsilIds()!= null && inputBO.getTehsilIds().size()>0){
+			
+			sbS.append(",model.partyMeeting.meetingAddress.tehsil.tehsilId ");
+			sbE.append(" group by model.partyMeeting.meetingAddress.tehsil.tehsilId,model.mettingStatus ");
+		}
+		 sbS.append(",model.mettingStatus");
+		
+		 if(inputBO.getStartDate()!= null && inputBO.getEndDate()!=null){
+			 sbM.append(" and date(model.partyMeeting.startDate) between :startDate and :endDate ");	 
+		 }
+			
+		if(inputBO.getStateId()!= null && inputBO.getStateId() > 0l ){
+			sbM.append(" and model.partyMeeting.meetingAddress.state.stateId = :stateId ");
+		}
+		if(inputBO.getPartyMeetingTypeIds()!=null && inputBO.getPartyMeetingTypeIds().size()>0){
+			sbM.append(" and model.partyMeetingTypeId in (:partyMeetingTypeIds) ");
+		}
+		
+		StringBuilder sbf = new StringBuilder().append(sbS).append(sbM).append(sbE);
+		
+		Query query = getSession().createQuery(sbf.toString());
+		
+		if(inputBO.getStateId()!= null && inputBO.getStateId() > 0l ){
+			query.setParameter("stateId",inputBO.getStateId());
+		}
+		if(inputBO.getStartDate()!= null && inputBO.getEndDate()!=null){
+			query.setDate("startDate",inputBO.getStartDate());
+			query.setDate("endDate",inputBO.getEndDate());
+		}
+		if(inputBO.getPartyMeetingTypeIds()!=null && inputBO.getPartyMeetingTypeIds().size()>0){
+			query.setParameterList("partyMeetingTypeIds",inputBO.getPartyMeetingTypeIds());
+		}
+		return query.list();
+	}
+   
 }

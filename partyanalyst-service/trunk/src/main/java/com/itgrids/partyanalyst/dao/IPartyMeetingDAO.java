@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 
 public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
@@ -35,4 +36,6 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 	
 	public List<Object[]> getPartyMeetingOverAllCountByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
 	public List<Object[]> getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate);
+
+	public List<Object[]> getLocationWiseMeetingsCountByLocIds(CommitteeInputVO inputBO);
 }

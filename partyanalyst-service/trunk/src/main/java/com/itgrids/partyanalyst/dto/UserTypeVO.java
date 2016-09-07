@@ -53,7 +53,11 @@ public class UserTypeVO implements Serializable{
 	private Long conductedMeetingCnt=0l;
 	private Long notConductedMeetingCnt=0l;
 	private Long mayBeMeetingCnt=0l;
+	
 	private Double conductedAndMayBeMeetingPer=0.0;
+	private Double conductedMeetingPerc=0.0;
+	private Double notConductedMeetingPerc=0.0;
+	private Double mayBeMeetingPerc=0.0;
 	
 	public Long getId() {
 		return id;
@@ -284,4 +288,23 @@ public class UserTypeVO implements Serializable{
 	public void setConductedAndMayBeMeetingPer(Double conductedAndMayBeMeetingPer) {
 		this.conductedAndMayBeMeetingPer = conductedAndMayBeMeetingPer;
 	}
+	public Double getConductedMeetingPerc() {
+		return conductedMeetingPerc;
+	}
+	public void setConductedMeetingPerc(Double conductedMeetingPerc) {
+		this.conductedMeetingPerc = conductedMeetingPerc;
+	}
+	public Double getNotConductedMeetingPerc() {
+		return notConductedMeetingPerc;
+	}
+	public void setNotConductedMeetingPerc(Double notConductedMeetingPerc) {
+		this.notConductedMeetingPerc = notConductedMeetingPerc;
+	}
+	public Double getMayBeMeetingPerc() {
+		return mayBeMeetingPerc;
+	}
+	public void setMayBeMeetingPerc(Double mayBeMeetingPerc) {
+		this.mayBeMeetingPerc = mayBeMeetingPerc;
+	}
+	
 }
