@@ -1199,3 +1199,127 @@ function buildTrainingProgramRslt(result){
 	 $('.progressCustom').tooltip()
 	}
 /* Training Funcitons End*/
+
+/*Notes Functionality*/
+function displayDashboardCommentsForTraining(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+      		 
+	     str+='<ul class="notesUlTraining m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+            	     
+					for(var i in result){ 
+                        str+='<li style="margin-top:3px;">'; 
+                        str+='<span class="notesTextTraining" id="editTextTrngId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesTraining" attr_cmt_id="editTextTrngId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesTraining" attr_cmt_id="editTextTrngId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+                        str+='</li>';
+					}
+                        str+='</ul>';
+						str+='<hr/>';
+						str+='<div id="id2" style="color:red;"></div>';
+                        str+='<label>Create Notes</label>';
+                        str+='<textarea class="form-control notesAreaTraining"></textarea>';
+                        str+='<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(2);">create</button>';
+			
+			$("#notesTrainingId").html(str);	 
+		}
+	});
+}
+function deleteDashBoardcomments(dashboardCommentId)
+{
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				
+			}
+		}
+			
+	});
+	
+}
+
+function savingDashboardCommentForTraing(dashboardComponentId){  
+  var comment=$(".notesAreaTraining").val();
+  if(comment.trim() ==""){
+		  $("#id2").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtTrngId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesAreaTraining").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesAreaTraining").attr("attr_commentid");		
+	 }
+	
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				$("#id2").html('update succuss');
+				displayDashboardCommentsForTraining(2);
+			}
+		}			
+	});
+}
+$(document).on("click",".notesIconTraining",function(){
+	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+});
+$(document).on("click",".btnCustomCreate",function(){
+	var getNewNotes = $(".notesArea").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUl").append("<li>"+commentText+"</li>");
+	$(".notesArea").val('');	
+});
+$(document).on("click",".deleteNotesTraining",function(){
+	$(this).closest("li").remove();
+});
+$(document).on("click",".editNotesTraining",function(){ 
+	var commentId = $(this).attr("attr_cmt_id");
+	var commentId1 = $(this).parent().find(".notesTextTraining").attr("attr_commentid");
+	var notesHtml = $("#"+commentId).html();
+	$(".notesAreaTraining").val(notesHtml);  
+	$(".notesAreaTraining").attr("attr_commentid",commentId1);  
+	$("#cmtId").val(commentId);
+	//$("#cmtId").val();
+	$("#id1").html('');		
+});
+
+$(document).on("click",".btnCustomCreateTraining",function(){
+	var getNewNotes = $(".notesAreaTraining").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesTraining"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUlTraining").append("<li>"+commentText+"</li>");
+	$(".notesAreaTraining").val('');	
+});
