@@ -27,11 +27,13 @@ import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 import com.itgrids.partyanalyst.dao.IDebateRolesDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
@@ -72,6 +74,8 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private ICharacteristicsDAO characteristicsDAO;
 	 private IDebateRolesDAO debateRolesDAO;
 	 private IPartyDAO partyDAO;
+	 private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	 private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	 private SetterAndGetterUtilService setterAndGetterUtilService;
 	 
 	//SETTERS
@@ -147,6 +151,16 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
+	}
+	
+	public void setTrainingCampBatchAttendeeDAO(
+			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
+		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
+	}
+	
+	public void setPublicRepresentativeTypeDAO(
+			IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO) {
+		this.publicRepresentativeTypeDAO = publicRepresentativeTypeDAO;
 	}
 	
 	
@@ -3051,5 +3065,218 @@ public List<UserDataVO> getbasicCommitteeDetails(){
 	}
 	return basicCommitteeList;
 }
+public IdNameVO getStateLevelCampAttendedDetails(){  
+	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
+	try{
+		IdNameVO idNameVO = new IdNameVO();  
+		Long stateLevelCampId = 6l;
+		Long stateLevelProgramId = 6l;
+		Long inviteCount = trainingCampBatchAttendeeDAO.getTotalInvitedForTrainingCampStateLevel(stateLevelCampId, stateLevelProgramId);
+		Long attendedCount = trainingCampAttendanceDAO.getTotalAttendedForTrainingCampStateLevel(stateLevelCampId, stateLevelProgramId);
+		idNameVO.setCount(inviteCount);
+		idNameVO.setAvailableCount(attendedCount);
+		return idNameVO;
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at getStateLevelCampAttendedDetails() in CoreDashBoardMainService ",e); 
+	}
+	return null;
+}
+public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
+	LOG.info(" entered in to getStateLevelCampDetailsRepresentatative() of CoreDashBoardMainService ");
+	try{
+		List<List<IdNameVO>> pubRepDtls = new ArrayList<List<IdNameVO>>();
+		List<Long> locationIdList = null;
+		Long count = 0l;
+		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		IdNameVO idNameVO = null;
+		Map<Long,String> idAndLocationMapInvite = new HashMap<Long,String>();
+		Map<Long,Long> idAndValueMapInvite = new HashMap<Long,Long>();
+		Map<Long,String> idAndLocationMapAttendee = new HashMap<Long,String>();
+		Map<Long,Long> idAndValueMapAttendee = new HashMap<Long,Long>();
+		
+		Long stateLevelCampId = 6l;
+		Long stateLevelProgramId = 6l;
+		List<IdNameVO> campDetailsRepresentative = new ArrayList<IdNameVO>(0);
+		List<Object[]> stateDistrictTrainingProgramInvitedDetails = trainingCampBatchAttendeeDAO.getStateDistrictTrainingProgramInvitedDetails(stateLevelCampId, stateLevelProgramId);
+		List<Object[]> stateDistrictTrainingProgramAttendedDetails = trainingCampAttendanceDAO.getStateDistrictTrainingProgramAttendedDetails(stateLevelCampId, stateLevelProgramId);
+		
+		List<Object[]> mlaMpInchargeTrainingProgramInvitedDetails = trainingCampBatchAttendeeDAO.getMlaMpInchargeTrainingProgramInvitedDetails(stateLevelCampId, stateLevelProgramId);
+		List<Object[]> mlaMpInchargeTrainingProgramAttendedDetails = trainingCampAttendanceDAO.getMlaMpInchargeTrainingProgramAttendedDetails(stateLevelCampId, stateLevelProgramId);
+		if(stateDistrictTrainingProgramInvitedDetails != null && stateDistrictTrainingProgramInvitedDetails.size() > 0){
+			for(Object[] obj : stateDistrictTrainingProgramInvitedDetails){
+				idAndLocationMapInvite.put(obj[0] != null ? (Long)obj[0] : 0l, obj[1] != null ? obj[1].toString() : "");
+				idAndValueMapInvite.put(obj[0] != null ? (Long)obj[0] : 0l, obj[2] != null ? (Long)obj[2] : 0l);
+			}
+			//10:state 11:dist
+			locationIdList = new ArrayList<Long>(){{  
+				add(10l);
+				add(11l);
+			}};
+		}
+		if(stateDistrictTrainingProgramAttendedDetails != null && stateDistrictTrainingProgramAttendedDetails.size() > 0){
+			for(Object[] obj : stateDistrictTrainingProgramAttendedDetails){
+				idAndLocationMapAttendee.put(obj[0] != null ? (Long)obj[0] : 0l, obj[1] != null ? obj[1].toString() : "");
+				idAndValueMapAttendee.put(obj[0] != null ? (Long)obj[0] : 0l, obj[2] != null ? (Long)obj[2] : 0l);
+			}
+		}
+		//for district and state
+		if(locationIdList != null && locationIdList.size() > 0 ){
+			for(Long id : locationIdList){
+				idNameVO = new IdNameVO();
+				count = idAndValueMapInvite.get(id);
+				if(count != null){
+					idNameVO.setId(id);
+					idNameVO.setCount(count);
+					idNameVO.setStatus(idAndLocationMapInvite.get(id) != null ? idAndLocationMapInvite.get(id) : "");
+					idNameVO.setActualCount(idAndValueMapAttendee.get(id) != null ? idAndValueMapAttendee.get(id) : 0l);
+					idNameVOs.add(idNameVO);
+				}
+			}
+		}
+		//for MLA/MLC/MP/CONSTITUTION/INCHARGE
+		
+		idAndLocationMapInvite.clear();
+		idAndValueMapInvite.clear();
+		idAndLocationMapAttendee.clear();
+		idAndValueMapAttendee.clear();
+		if(mlaMpInchargeTrainingProgramInvitedDetails != null && mlaMpInchargeTrainingProgramInvitedDetails.size() > 0){
+			for(Object[] obj : mlaMpInchargeTrainingProgramInvitedDetails){
+				idAndLocationMapInvite.put(obj[0] != null ? (Long)obj[0] : 0l, obj[1] != null ? obj[1].toString() : "");
+				idAndValueMapInvite.put(obj[0] != null ? (Long)obj[0] : 0l, obj[2] != null ? (Long)obj[2] : 0l);
+			}
+		}
+		if(mlaMpInchargeTrainingProgramAttendedDetails != null && mlaMpInchargeTrainingProgramAttendedDetails.size() > 0){
+			for(Object[] obj : mlaMpInchargeTrainingProgramAttendedDetails){
+				idAndLocationMapAttendee.put(obj[0] != null ? (Long)obj[0] : 0l, obj[1] != null ? obj[1].toString() : "");
+				idAndValueMapAttendee.put(obj[0] != null ? (Long)obj[0] : 0l, obj[2] != null ? (Long)obj[2] : 0l);
+			}
+		}
+		//for MLA-2
+		count = idAndValueMapInvite.get(2l);
+		if(count != null){
+			idNameVO = new IdNameVO();
+			idNameVO.setId(2l);
+			idNameVO.setCount(count);
+			idNameVO.setStatus(idAndLocationMapInvite.get(2l) != null ? idAndLocationMapInvite.get(2l) : "");
+			idNameVO.setActualCount(idAndValueMapAttendee.get(2l) != null ? idAndValueMapAttendee.get(2l) : 0l);
+			campDetailsRepresentative.add(idNameVO);
+		}
+		//for MLC-12
+		count = idAndValueMapInvite.get(12l);
+		if(count != null){
+			idNameVO = new IdNameVO();
+			idNameVO.setId(12l);
+			idNameVO.setCount(count);
+			idNameVO.setStatus(idAndLocationMapInvite.get(12l) != null ? idAndLocationMapInvite.get(12l) : "");
+			idNameVO.setActualCount(idAndValueMapAttendee.get(12l) != null ? idAndValueMapAttendee.get(12l) : 0l);
+			campDetailsRepresentative.add(idNameVO);
+		}
+		//for MP-1
+		count = idAndValueMapInvite.get(1l);
+		if(count != null){
+			idNameVO = new IdNameVO();
+			idNameVO.setId(1l);
+			idNameVO.setCount(count);
+			idNameVO.setStatus(idAndLocationMapInvite.get(1l) != null ? idAndLocationMapInvite.get(1l) : "");
+			idNameVO.setActualCount(idAndValueMapAttendee.get(1l) != null ? idAndValueMapAttendee.get(1l) : 0l);
+			campDetailsRepresentative.add(idNameVO);
+		}
+		//for Constituency Incharge-21
+		count = idAndValueMapInvite.get(21l);
+		if(count != null){
+			idNameVO = new IdNameVO();
+			idNameVO.setId(21l);
+			idNameVO.setCount(count);
+			idNameVO.setStatus(idAndLocationMapInvite.get(21l) != null ? idAndLocationMapInvite.get(21l) : "");
+			idNameVO.setActualCount(idAndValueMapAttendee.get(21l) != null ? idAndValueMapAttendee.get(21l) : 0l);
+			campDetailsRepresentative.add(idNameVO);
+		}
+		//for Other
+		List<Long> representativeIds = new ArrayList<Long>(){{
+			add(1l);
+			add(2l);
+			add(12l);
+			add(21l);
+		}};
+		List<Long> otherPubRepIdList = publicRepresentativeTypeDAO.getIds(representativeIds);
+		idNameVO = new IdNameVO();
+		Long actualCount = 0l;
+		for(Long id : otherPubRepIdList){
+			count = idAndValueMapInvite.get(id);
+			actualCount = idAndValueMapAttendee.get(id) != null ? idAndValueMapAttendee.get(id) : 0l;
+			if(count != null){
+				idNameVO.setId(0l);
+				idNameVO.setCount(idNameVO.getCount()+count);
+				idNameVO.setStatus("Other");
+				idNameVO.setActualCount(idNameVO.getActualCount() + actualCount);
+			}
+		}
+		campDetailsRepresentative.add(idNameVO);
+		if(idNameVOs.size() > 0 ){
+			pubRepDtls.add(idNameVOs);
+		}
+		if(campDetailsRepresentative.size() > 0){
+			pubRepDtls.add(campDetailsRepresentative);
+		}
+		return pubRepDtls;
+	}catch(Exception e){  
+		e.printStackTrace();
+		LOG.error("Error occured at getStateLevelCampDetailsRepresentatative() in CoreDashBoardMainService ",e); 
+	}
+	return null;
+}
+public List<IdNameVO> getDistrictWiseCampAttendedMembers(){
+	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
+	try{
+		Long stateId = 1l;    
+		Long campId = 6l;
+		Long programId = 6l;
+		IdNameVO idNameVO = null;
+		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		//distId and distName map for invite->idAndLocationInviteMap
+		//distId and count map for invite ->idAndValueInviteMap
+		Map<Long,String> idAndLocationInviteMap = new HashMap<Long,String>();
+		Map<Long,Long> idAndValueInviteMap = new HashMap<Long,Long>();
+		//distId and distName map for Attended->idAndLocationAttendedMap
+		//distId and count map for Attended ->idAndValueAttendedMap
+		Map<Long,String> idAndLocationAttendedMap = new HashMap<Long,String>();
+		Map<Long,Long> idAndValueAttendedMap = new HashMap<Long,Long>();
+		
+		List<Object[]> distWiseInvitedMembers = trainingCampBatchAttendeeDAO.getDistWiseInvitedMembers(stateId,campId,programId);
+		List<Object[]> destWiseAttendedMembers = trainingCampAttendanceDAO.getDestWiseAttendedMembers(stateId,campId,programId);  
+		if(distWiseInvitedMembers != null && distWiseInvitedMembers.size() > 0){
+			for(Object[] obj : distWiseInvitedMembers){
+				idAndLocationInviteMap.put((Long)obj[0], obj[1].toString());
+				idAndValueInviteMap.put((Long)obj[0], (Long)obj[2]);
+			}
+		}
+		if(destWiseAttendedMembers != null && destWiseAttendedMembers.size() > 0){
+			for(Object[] obj : destWiseAttendedMembers){
+				idAndLocationAttendedMap.put((Long)obj[0], obj[1].toString());
+				idAndValueAttendedMap.put((Long)obj[0], (Long)obj[2]);
+			}
+		}
+		Set<Long> distIdList = idAndLocationInviteMap.keySet();
+		if(distIdList != null && distIdList.size() > 0){
+			for(Long distId : distIdList){
+				idNameVO = new IdNameVO();  
+				idNameVO.setDistrictid(distId);
+				idNameVO.setName(idAndLocationInviteMap.get(distId));
+				idNameVO.setCount(idAndValueInviteMap.get(distId));
+				idNameVO.setActualCount(idAndValueAttendedMap.get(distId) != null ? idAndValueAttendedMap.get(distId) : 0l);
+				idNameVOs.add(idNameVO);
+			}
+		}
+		
+		return idNameVOs;
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at getDistrictWiseCampAttendedMembers() in CoreDashBoardMainService ",e); 
+	}
+	return null;
+}
+
 }
 
