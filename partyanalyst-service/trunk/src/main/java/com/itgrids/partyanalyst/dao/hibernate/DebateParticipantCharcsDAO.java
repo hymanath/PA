@@ -687,24 +687,15 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select C.candidate_id as candidateId,C.lastname as candidateName,P.party_id as partyId," +
-				"P.short_name as partyName,sum(DPC.scale) as sum,count(distinct D.debate_id) as count from debate_participant_charcs DPC, " +
-				" debate_participant_role DPR, " +
-				" debate_roles DR,debate_participant DP,debate D,candidate C,party P,characteristics CH " +
-				" where " +
-				" DPC.debate_participant_id = DPR.debate_participant_id " +
-				" and DP.debate_participant_id = DPC.debate_participant_id " +
-				" and DPR.debate_roles_id  = DR.debate_roles_id" +
-				" and DP.debate_id = D.debate_id " +
-				" and DP.candidate_id = C.candidate_id " +
-				" and P.party_id = DP.party_id " +
-				" and DPC.characteristics_id = CH.characteristics_id " +
-				" and D.is_deleted ='N' " +
-				" and C.is_debate_candidate = 'Y' " );
-		
-				if(roles !=null && roles.size()>0){
-					str.append(" and DR.debate_roles_id in (:debateRoles) " );
-				}
+		str.append( "  select C.candidate_id as candidateId,C.lastname as candidateName,P.party_id as partyId,P.short_name as partyName," +
+				"  sum(DPC.scale) as sum,count(distinct D.debate_id) as count " +
+				" from debate_participant DP,debate_participant_charcs DPC,debate D,candidate C,party P,characteristics CH " +
+				" where DP.debate_participant_id = DPC.debate_participant_id " +
+				" and DP.debate_id = D.debate_id  and DP.candidate_id = C.candidate_id " +
+				" and P.party_id = DP.party_id  and DPC.characteristics_id = CH.characteristics_id " +
+				" and D.is_deleted ='N'  and C.is_debate_candidate = 'Y' " +
+				"  and CH.is_deleted ='N' " );
+				
 				if(startDate !=null && endDate !=null){
 					str.append(" and date(D.start_time) >= :startDate and date(D.end_time) <= :endDate " );
 				}
@@ -725,10 +716,6 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 						.addScalar("partyName",Hibernate.STRING)
 						.addScalar("sum",Hibernate.DOUBLE)
 						.addScalar("count",Hibernate.LONG);	
-							
-				if(roles !=null && roles.size()>0){
-					query.setParameterList("debateRoles",roles);
-				}
 				
 				if(startDate !=null && endDate !=null){
 					query.setParameter("startDate", startDate);
@@ -744,7 +731,8 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select model.debateParticipant.candidate.candidateId,model.debateParticipant.candidate.lastname" +
-				",model.debateParticipant.party.partyId,model.debateParticipant.party.shortName,sum(model.scale),count(distinct model.debateParticipant.debate.debateId) " +
+				",model.debateParticipant.party.partyId,model.debateParticipant.party.shortName,sum(model.scale)," +
+				" count(distinct model.debateParticipant.debate.debateId) " +
 				" from DebateParticipantCharcs model ,DebateParticipantRole model1 " +
 				" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId" +
 				" and model.characteristics.isDeleted = 'N' " +
