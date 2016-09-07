@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
@@ -2325,7 +2326,7 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 		//System.out.println(returnList);
 					
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getPartyWiseTotalDebateDetails() method of CoreDashboardMainService", e);
 	}
 	
 	return returnList;
@@ -2346,7 +2347,7 @@ public Map<Long,CoreDebateVO> setDebateValuesToMap(List<Object[]> ObjList,Map<Lo
 		}
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at setDebateValuesToMap() method of CoreDashboardMainService", e);
 	}
 	return countMap;
 } 
@@ -2370,7 +2371,7 @@ public Map<Long,CoreDebateVO> setScaleVauesToParty(List<Object[]> ObjList,Map<Lo
 		}
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at setScaleVauesToParty() method of CoreDashboardMainService", e);
 	}
 	return countMap;
 }	
@@ -2499,7 +2500,7 @@ public List<CoreDebateVO> getSpokesPersonWiseDebate(String startDateStr,String e
 		//System.out.println(returnList);
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getSpokesPersonWiseDebate() method of CoreDashboardMainService", e);
 	}
 	
 	return returnList;
@@ -2563,7 +2564,7 @@ public List<CoreDebateVO> getScaleBasedPerformanceCohort(String startDateStr,Str
 		//System.out.println(returnList);
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getScaleBasedPerformanceCohort() method of CoreDashboardMainService", e);
 	}
 	return returnList;
 }
@@ -2653,7 +2654,7 @@ public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateS
 		 
 		//System.out.println(returnList);
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getCandidateOverAllPerformanceCohort() method of CoreDashboardMainService", e);
 	}
 	
 	return returnList;
@@ -2742,7 +2743,7 @@ public List<CoreDebateVO> getChannelAndPartyWiseDetails(String startDateStr,Stri
 		//System.out.println(returnList);
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getChannelAndPartyWiseDetails() method of CoreDashboardMainService", e);
 	}
 	return returnList;
 	
@@ -2784,7 +2785,7 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMap(List<Object[]> obj
 		}
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at setDebateDetailsToMap() method of CoreDashboardMainService", e);
 	}
 	return mainMap;
 	
@@ -2826,7 +2827,7 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMapNew(List<Object[]> 
 		}
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at setDebateDetailsToMapNew() method of CoreDashboardMainService", e);
 	}
 	return mainMap;
 	
@@ -2896,7 +2897,7 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 		//System.out.println(returnList);
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getRoleBasedPerformanceCohort() method of CoreDashboardMainService", e);
 	}
 	
 	return returnList;
@@ -2918,8 +2919,14 @@ public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,Str
 		}
 		
 		
-		//0.candidateId,1.name,2.partyId,3.name,4.scale	
-		List<Object[]> candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidateNew(startDate,endDate,roles,state);
+		//0.candidateId,1.name,2.partyId,3.name,4.scale,5.debateCount	
+		List<Object[]> candidateScaleObj = null;
+		if(roles !=null && roles.size()>0){
+			candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidateNew(startDate,endDate,roles,state);
+		}else{
+			candidateScaleObj = debateParticipantCharcsDAO.getScaleOfCandidate(startDate, endDate, roles, state);
+		}
+		
 		
 		//0.candidateId,1.name,2.partyId,3.name,4.debatesCount			
 		//List<Object[]>  candidateDebateObj = debateParticipantDAO.getDebatesCountOfCandidate(startDate,endDate,roles,state);			
@@ -2962,7 +2969,7 @@ public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,Str
 			
 		}
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at getRolesPerformanceOfCandidate() method of CoreDashboardMainService", e);
 	}
 	
 	return candidateScaleList;
@@ -2987,10 +2994,27 @@ public List<CoreDebateVO> setCandidateObjIntoList(List<Object[]> candidateScaleO
 		}
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		LOG.error("Exception raised at setCandidateObjIntoList() method of CoreDashboardMainService", e);
 	}
 	
 	return candidateScaleList;
+}
+
+public List<IdNameVO> getDebateRolesNew(){
+	List<IdNameVO> returnList = new ArrayList<IdNameVO>(0);
+	try{
+		
+		List<Object[]> debateRoles =  debateRolesDAO.getDebateRolesNew();
+		
+		if(commonMethodsUtilService.isListOrSetValid(debateRoles)){			
+			String[] propertiesList = {"id","name"};				
+			returnList = setterAndGetterUtilService.setValuesToVO(debateRoles, propertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");			
+		}
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getDebateRolesNew() method of CoreDashboardMainService", e);
+	}
+	return returnList;
 }
 
 
