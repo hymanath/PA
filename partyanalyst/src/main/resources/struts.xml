@@ -13589,11 +13589,20 @@
    			<param name="root">idNameVoList</param>
    		</result>
 	</action>
-	<action name="getPartyMeetingTypeByPartyMeetingMainTypeAction" class="coreDashboardAction" method="getPartyMeetingTypeByPartyMeetingMainType">
+	<action name="getStateLevelCampAttendedDetails" class="coreDashboardAction" method="getStateLevelCampAttendedDetails">
 		<result type="json" name="success">
-   			<param name="root">partyMeetingsVOList</param>
+   			<param name="root">idNameVO</param>    
    		</result>
 	</action>
-	
+	<action name="stateLevelCampDetailsRepresentativeWise" class="coreDashboardAction" method="getStateLevelCampDetailsRepresentative">
+		<result type="json" name="success">
+   			<param name="root">idNameVOsList</param>      
+   		</result>
+	</action>
+	<action name="stateLevelCampDetailsDistWise" class="coreDashboardAction" method="getDistrictWiseCampAttendedMembers">
+		<result type="json" name="success">
+   			<param name="root">idNameVoList</param>      
+   		</result>
+	</action>
 </package>
 </struts>

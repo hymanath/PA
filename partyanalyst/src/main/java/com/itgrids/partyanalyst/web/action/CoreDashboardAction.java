@@ -13,12 +13,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
-import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.DashboardCommentVO;  
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -56,7 +55,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<TrainingCampProgramVO> trainingCampProgramVOList;
 	private List<UserTypeVO> activityMembersList;
 	private PartyMeetingsVO partyMeetingsVO;
-	private List<PartyMeetingsVO> partyMeetingsVOList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -65,6 +63,9 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
+	private IdNameVO idNameVO; 
+	
+	private List<List<IdNameVO>> idNameVOsList;
     private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	private ResultStatus 						resultStatus;
 	private List<DashboardCommentVO> 						dashboardCommentVo;
@@ -231,13 +232,6 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setStatus(String status) {
 		this.status = status;
 	}
-   	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
-		return partyMeetingsVOList;
-	}
-
-	public void setPartyMeetingsVOList(List<PartyMeetingsVO> partyMeetingsVOList) {
-		this.partyMeetingsVOList = partyMeetingsVOList;
-	}
 
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
@@ -259,6 +253,26 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			INewsCoreDashBoardService newsCoreDashBoardService) {
 		this.newsCoreDashBoardService = newsCoreDashBoardService;
 	}
+	
+	public void setIdNameVO(IdNameVO idNameVO) {
+		this.idNameVO = idNameVO;
+	}
+	  
+
+	public IdNameVO getIdNameVO() {
+		return idNameVO;
+	}
+	
+	
+	public List<List<IdNameVO>> getIdNameVOsList() {
+		return idNameVOsList;
+	}
+
+	public void setIdNameVOsList(List<List<IdNameVO>> idNameVOsList) {
+		this.idNameVOsList = idNameVOsList;
+	}
+	
+	
    public ICoreDashboardPartyMeetingService getCoreDashboardPartyMeetingService() {
 		return coreDashboardPartyMeetingService;
 	}
@@ -1004,7 +1018,7 @@ public String getRoleBasedPerformanceCohort(){
 		LOG.error("Exception raised at getRoleBasedPerformanceCohort() method of CoreDashBoardAction", e);
 	}
 	
-	return Action.SUCCESS;
+	return Action.SUCCESS;  
 }
 
 	
@@ -1028,6 +1042,30 @@ public String getRoleBasedPerformanceCohort(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getStateLevelCampAttendedDetails(){  
+		try {
+			idNameVO = coreDashboardMainService.getStateLevelCampAttendedDetails();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
+		}
+		return Action.SUCCESS; 
+	}
+	public String getStateLevelCampDetailsRepresentative(){
+		try{
+			idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative();
+		}catch(Exception e){
+			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
+		}
+		return Action.SUCCESS;      
+	}
+	public String getDistrictWiseCampAttendedMembers(){ 
+		try {
+			idNameVoList = coreDashboardMainService.getDistrictWiseCampAttendedMembers();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseCampAttendedMembers", e);
+		}
+		return Action.SUCCESS; 
+	}
 	public String getPartyMeetingBasicCountDetails(){
 		  try{
 				LOG.info("Entered into getPartyMeetingBasicCountDetails()  of CoreDashboardAction");
@@ -1036,14 +1074,7 @@ public String getRoleBasedPerformanceCohort(){
 				Long stateId = jObj.getLong("stateId");
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");
-				List<Long> partyMeetingTypeValues=new ArrayList<Long>();
-				JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
-				if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
-					for( int i=0;i<partyMeetingTypeArray.length();i++){
-						partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
-					}
-				}
-				partyMeetingsVO = coreDashboardPartyMeetingService.getPartyMeetingBasicCountDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues);
+				partyMeetingsVO = coreDashboardPartyMeetingService.getPartyMeetingBasicCountDetails(activityMemberId,stateId,fromDate,toDate);
 			}catch(Exception e){
 				LOG.error("Exception raised at getPartyMeetingBasicCountDetails() method of CoreDashBoardAction", e);
 			}
@@ -1065,15 +1096,7 @@ public String getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
 			 Long stateId = jObj.getLong("stateId");
 			 String fromDate = jObj.getString("fromDate");
 			 String toDate = jObj.getString("toDate");
-			 
-			 List<Long> partyMeetingTypeValues=new ArrayList<Long>();
-				JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
-				if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
-					for( int i=0;i<partyMeetingTypeArray.length();i++){
-						partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
-					}
-			}
-			 userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(user.getRegistrationID(),userTypeId,activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues);
+			 userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(user.getRegistrationID(),userTypeId,activityMemberId,stateId,fromDate,toDate);
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt() method of CoreDashBoardAction", e);
 		}
@@ -1168,13 +1191,5 @@ public String getDebateRolesNew(){
 	}
 	return Action.SUCCESS;
 }
-public String getPartyMeetingTypeByPartyMeetingMainType(){
-	 try{
-			jObj = new JSONObject(getTask());
-			partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingTypeByPartyMeetingMainType(jObj.getLong("partyMeetingMainTypeId"));
-		}catch (Exception e) {
-			LOG.error("Exception raised at getPartyMeetingTypeByPartyMeetingMainType() method of CoreDashBoardAction", e);
-		}
-		return Action.SUCCESS;
-}
+
 }
