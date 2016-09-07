@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.PartyMeetingType;
 public interface IPartyMeetingTypeDAO extends GenericDao<PartyMeetingType,Long>{
 	public List<Object[]> getMeetingTypesBasedOnLocationLevel(Long locationLevel);
 	public List<Object[]> getMeetingTypesBasedOnLocationLevelNew(List<Long> locationLevels);
+	public List<Object[]> getPartyMeetingTypeByPartyMeetingMainType(Long partyMeetingMainTypeId);
 }

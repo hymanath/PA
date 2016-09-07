@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
@@ -37,6 +38,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private CommonMethodsUtilService commonMethodsUtilService;
 	 private ICoreDashboardGenericService coreDashboardGenericService;
 	 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+	 private IPartyMeetingTypeDAO partyMeetingTypeDAO;
 	 
 	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
 		this.partyMeetingDAO = partyMeetingDAO;
@@ -57,6 +59,9 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
 		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
 	}
+   public void setPartyMeetingTypeDAO(IPartyMeetingTypeDAO partyMeetingTypeDAO) {
+		this.partyMeetingTypeDAO = partyMeetingTypeDAO;
+	}
 /**
  * @param  Long activityMemberId
  * @param String fromDateStr
@@ -67,7 +72,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
  * @Description :This Service Method is used to get Meeting basic count details.. 
  *  @since 9-AUGUST-2016
  */
- public PartyMeetingsVO getPartyMeetingBasicCountDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr){
+ public PartyMeetingsVO getPartyMeetingBasicCountDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues){
 	  
 	 PartyMeetingsVO resultVO = new PartyMeetingsVO(); 
 	 
@@ -104,7 +109,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	   // OverAll
 	  if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
 		  for (Entry<Long,Set<Long>> entry : locationAccessLevelMap.entrySet()) {
-			List<Object[]> rtrnObjList = partyMeetingDAO.getPartyMeetingOverAllCountByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);// userAccessLevelId,locationValues,
+			List<Object[]> rtrnObjList = partyMeetingDAO.getPartyMeetingOverAllCountByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);// userAccessLevelId,locationValues,
 			 if(rtrnObjList != null && rtrnObjList.size() > 0){
 				 overAllTotalCountMap.put("overAllTotalCount",0l);
 				 for (Object[] param : rtrnObjList) {
@@ -116,7 +121,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	  }
 	 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
 		 for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
-			 List<Object[]> rtrnList = partyMeetingStatusDAO.getPartyMeetingCountLevelWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);
+			 List<Object[]> rtrnList = partyMeetingStatusDAO.getPartyMeetingCountLevelWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
 			  if(rtrnList != null && rtrnList.size() > 0){
 				  for (Object[] param : rtrnList) {
 					 PartyMeetingsVO VO = overAllTotalDtlsMap.get("overAllTotalDtls");
@@ -139,7 +144,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 }
 	 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
 		 for(Entry<Long,Set<Long>> entry:locationAccessLevelMap.entrySet()){
-			 List<Object[]> rtrnObjList =  partyMeetingDAO.getPartyMeetingOverAllCountByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);// userAccessLevelId,locationValues,
+			 List<Object[]> rtrnObjList =  partyMeetingDAO.getPartyMeetingOverAllCountByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);// userAccessLevelId,locationValues,
 			
 			 overAllTotalLevelWiseCountMap.put("totalStateCount", 0l);
 			 setOverAllCountToMap(rtrnObjList,overAllTotalLevelWiseCountMap,"totalStateCount","STATE");
@@ -156,7 +161,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 }
      if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
     	 for(Entry<Long,Set<Long>> entry:locationAccessLevelMap.entrySet()){
-    		 List<Object[]> rtrnObjList = partyMeetingStatusDAO.getPartyMeetingCountLevelWise(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);
+    		 List<Object[]> rtrnObjList = partyMeetingStatusDAO.getPartyMeetingCountLevelWise(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
     		 setPartyMeetingLevelWiseDtlsCntToMap(rtrnObjList,overAllLevelWiseDtlsMap);
     	 }
      }
@@ -230,16 +235,28 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	   resultVO.getPartyMettingsVOList().add(mandalTwnDivMap.get("mandalTwnDiv"));
 	 
        if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-    	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));
-    	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(2l));
-    	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(1l));
+    	   if(overAllLevelWiseDtlsMap.get(3l) != null){
+    		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));   
+    	   }
+    	   if(overAllLevelWiseDtlsMap.get(2l) != null){
+    		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(2l));   
+    	   }
+    	   if(overAllLevelWiseDtlsMap.get(1l) != null){
+    	 	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(1l));
+    	   }
        }
        if(userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-    	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));
-    	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(2l));
+    	   if(overAllLevelWiseDtlsMap.get(3l) != null){
+    		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));   
+    	   }
+    	   if(overAllLevelWiseDtlsMap.get(2l) != null){
+    		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(2l));   
+    	   }
        }
        if(userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-    	   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));
+    	   if(overAllLevelWiseDtlsMap.get(3l) != null){
+    		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));   
+    	   }
         }
     }catch(Exception e) {
 		 LOG.error("Exception raised at getPartyMeetingBasicCount() method of CoreDashboardPartyMeetingService", e);	
@@ -351,7 +368,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	* @Description :This Service Method is used to get top5 strong or top5 poor members Conducted And Maybe Meeting  count.. 
 	*  @since 9-AUGUST-2016
 	*/
- public List<List<UserTypeVO>> getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(Long userId,Long userTypeId,Long activityMemberId,Long stateId,String fromDateStr,String toDateStr){
+ public List<List<UserTypeVO>> getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(Long userId,Long userTypeId,Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues){
 	
 	    List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
 	    
@@ -377,14 +394,14 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		     
 		     if(locationLevelMap != null && locationLevelMap.size() > 0){
 		    	 for (Entry<Long, Set<Long>> entry : locationLevelMap.entrySet()) {
-                   List<Object[]> returnOverAllObjList = partyMeetingDAO.getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);
+                   List<Object[]> returnOverAllObjList = partyMeetingDAO.getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
                    totalCntMap.put(entry.getKey(), 0l);
                    calculateTotalCntByAccessLevelWise(entry.getKey(),returnOverAllObjList,totalCntMap);
 				}
 		     }
 		    if(locationLevelMap != null && locationLevelMap.size() > 0){
 		    	for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
-		    		List<Object[]> returnList = partyMeetingStatusDAO.getPartyMeetingCountLocationWiseByUserAccess(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate);
+		    		List<Object[]> returnList = partyMeetingStatusDAO.getPartyMeetingCountLocationWiseByUserAccess(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
 		    		calculateMeetingStatusWiseDetailsCnt(entry.getKey(),returnList,meetingCntDtlsMap);
 		    	}
 		    }
@@ -508,7 +525,27 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	}
 	return d;
 	} 
-	 
+	
+   public List<PartyMeetingsVO> getPartyMeetingTypeByPartyMeetingMainType(Long partyMeetingMainTypeId){
+	  
+	   List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>(0);
+	   
+	   try{
+		List<Object[]>   rtrnObjList = partyMeetingTypeDAO.getPartyMeetingTypeByPartyMeetingMainType(partyMeetingMainTypeId);
+		  if(rtrnObjList != null && rtrnObjList.size() > 0){
+			  for(Object[] param:rtrnObjList){
+				  PartyMeetingsVO vo = new PartyMeetingsVO();
+				  vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				  resultList.add(vo);
+			  }
+			  
+		  }
+	   }catch(Exception e){
+		   LOG.error("Exception raised at getPartyMeetingTypeByPartyMeetingMainType() method of CoreDashboardPartyMeetingService", e);   
+	   }
+	   return resultList;
+   } 
 	
 	/**
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
