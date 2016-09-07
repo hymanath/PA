@@ -417,9 +417,8 @@ var globalUserWiseMemberRslt;
 					}
 				},
 				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
-					shared: true
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 				},
 				plotOptions: {
 					column: {
@@ -536,9 +535,8 @@ var globalUserWiseMemberRslt;
 					}
 				},
 				tooltip: {
-					headerFormat: '<b>{point.x}</b><br/>',
-					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
-					shared: true
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 				},
 				plotOptions: {
 					column: {

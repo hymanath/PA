@@ -1148,8 +1148,17 @@
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock">
                         	<div class="panelBlock">
-                            	<h4><span class="headingColor text-capitalize">committee meetings</span></h4>
+                            	<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings"><i class="fa fa-gears"></i></span></h4>
+								<div class="settingsDropDown" style="left:0px;">
+								    <ul class="list-inline">
+										<li><label><input type="checkbox" class="selectAll"/>Select All</label></li>
+										<!--<li><label><input type="checkbox" class="unSelectAll"/>UnSelect All</label></li>-->
+									</ul>
+								    <div id="committeeTypeDivId"></div>
+									<button type="button" class="btn btn-success meetingGetDtlsBtnId">Get Details</button>
+								</div>
 								 <div id="meetingBasicCountDivId"></div>
+								 
                             </div>
 					        <!--<div class="panelBlock m_top10">
                             	<h4><span class="headingColor text-capitalize">state level meetings</span></h4>
@@ -1897,8 +1906,7 @@
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
 		//Meeting
-		getPartyMeetingBasicCountDetails();
-		
+		getPartyMeetingTypeByPartyMeetingMainType();
 		//news please dont remove
 		//getNewsBasicCounts();
 		//getUserTypeWiseNewsCounts();
@@ -1983,7 +1991,7 @@
 	   return loggedInUserAccessLevelValues;
 	}	
 	
-			
+	
   </script> 
 </body>
 </html>
