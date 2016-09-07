@@ -1225,4 +1225,59 @@ public String getPartyMeetingTypeByPartyMeetingMainType(){
 		return Action.SUCCESS;
 }
 
+public String getSelectedChildUserTypeMembersWithMeetingsCount(){
+	LOG.info("Entered into getSelectedChildUserTypeMembersWithMeetingsCount()  of CoreDashboardAction");
+	try{
+		
+		jObj = new JSONObject(getTask());
+		
+		Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+		Long childUserTypeId = jObj.getLong("childUserTypeId");
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");
+		
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+			}
+		}
+		
+		activityMembersList = coreDashboardPartyMeetingService.getSelectedChildUserTypeMembersWithMeetingsCount(parentActivityMemberId,childUserTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at setMeetingsCountsToActivityMembers() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDirectChildActivityMemberMeetingsDetails(){
+	LOG.info("Entered into getDirectChildActivityMemberMeetingsDetails()  of CoreDashboardAction");
+	try{
+		
+jObj = new JSONObject(getTask());
+		
+		Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+		Long childUserTypeId = jObj.getLong("childUserTypeId");
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");
+		
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+			}
+		}
+		
+		activityMembersList = coreDashboardMainService.getDirectChildActivityMemberMeetingsDetails(parentActivityMemberId,childUserTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getDirectChildActivityMemberCommitteeDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
 }
