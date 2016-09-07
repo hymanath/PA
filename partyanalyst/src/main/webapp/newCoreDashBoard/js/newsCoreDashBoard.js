@@ -220,7 +220,22 @@
 	}
 	
 	function getDetailedPartyNewsTypeAnalysis(){
+		var temp;
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		var startDate="08-01-2015",endDate="08-31-2016";
 		
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+		}).then(function(result){
+			if(result != null && result.length > 0){
+				
+			}
+		});
 	}
 	
 	function getDetailedPartyPartyVsPublications(){
