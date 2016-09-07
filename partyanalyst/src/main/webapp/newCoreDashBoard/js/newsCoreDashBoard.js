@@ -13,6 +13,7 @@
 	$(document).on("click",".morenewsBlocksIcon",function(){
 		$(".newsHiddenMoreBlock").toggle();
 		getDetailedPartyMainEditionsOverview();
+		getDetailedPartyDistrictEditionsOverview();
 	});
 	
 	function getNewsBasicCounts(){
@@ -174,7 +175,7 @@
 	
 	$(document).on("click","#detailedPartyId",function(){
 		
-		getDetailedPartyDistrictEditionsOverview();
+		
 		getDetailedPartyNewsTypeAnalysis();
 		getDetailedPartyPartyVsPublications();
 	});
@@ -213,9 +214,7 @@
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
-			if(result != null && result.length > 0){
-				
-			}
+			buildDetailedPartyDistrictEditionsOverview(result);
 		});
 	}
 	
@@ -534,8 +533,8 @@
 				 var positiveCountArray =[];
 				var negativeCountArray =[];
 				var organizationName = result[i].organization;
-				positiveCountArray.push(result[i].positiveCountMain)
-				negativeCountArray.push(result[i].negativCountMain)
+				positiveCountArray.push(result[i].positivePerc);
+				negativeCountArray.push(result[i].negativePerc);
 			
 			$(function () {
 				$('#mainEditiongraph'+i+'').highcharts({
@@ -584,7 +583,7 @@
 					tooltip: {
 						headerFormat: '<b>{point.x}</b><br/>',
 						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
-						shared: true
+						
 					},
 					legend: {
 						enabled: true,
@@ -618,3 +617,145 @@
 		}
 	  }
 	}
+	
+	function buildDetailedPartyDistrictEditionsOverview(result){
+		$("#districtWiseNewsReport").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			var countVar =0;
+			for(var i in result){
+				countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				str+=result[i].organization;
+				str+='<div id="districtWiseNews'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+									
+		}
+		$("#districtWiseNewsReport").html(str);
+		/* $("#districtWiseNewsReport").each(function(){
+			var scrollengthDiv = $(this).find(".chartLiD").length;
+			if(scrollengthDiv >= 4){
+				$(".verticalScrollBar").mCustomScrollbar({setHeight:'560px'})
+				
+			}else{
+				$(".verticalScrollBar").css("height","auto");
+			
+			}
+		}); */
+		
+		
+	if(result != null && result.length > 0){
+		var countVar =0;
+		for(var i in result){
+			countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+			var districtNamesArray =[];
+			var districtWisePositivePercArray = [];
+			var districtWiseNegativePercArray = [];
+			
+			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
+				
+				for(var j in result[i].coreDashBoardVOList){
+					
+						districtNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
+						
+						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							districtWisePositivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc);
+						//}
+						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							districtWiseNegativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc);
+						//}
+						
+					}
+			}
+						$(function () {
+							$('#districtWiseNews'+i+'').highcharts({
+								colors: ['#F56800','#53BF8B','#66728C'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,1);
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Positive',
+									data: districtWisePositivePercArray
+								}, {
+									name: 'Negative',
+									data: districtWiseNegativePercArray
+								}]
+							});
+						});
+				
+			
+		}
+	}else{
+		$("#districtWiseNewsReport").html("No Data Available")
+	}	
+}
