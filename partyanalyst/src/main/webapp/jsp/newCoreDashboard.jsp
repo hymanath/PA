@@ -1349,7 +1349,10 @@
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-7 col-md-8">
+									<div class="col-xs-12 col-sm-7 col-md-8">
+									  <div id="childUserTypeDetailsDivIdForMeeting"></div>
+								    </div>
+                                        <!--<div class="col-xs-12 col-sm-7 col-md-8">
                                             <ul class="comparisonSelect">
                                                 <li class="active">General Secretary<span class="closeIconComparison"></span></li>
                                                 <li>Secretary<span class="closeIconComparison"></span></li>
@@ -1357,7 +1360,7 @@
                                                 <li>District Incharge<span class="closeIconComparison"></span></li>
                                                 <li>Constituency<span class="closeIconComparison"></span></li>
                                             </ul>
-                                        </div>
+                                        </div>-->
                                         <div class="col-xs-12 col-sm-5 col-md-4">
                                             <ul class="list-inline">
                                                 <li>
@@ -1403,8 +1406,11 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <div class="row"> 
+									    <div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childActivityMemberDivIdForMeeting"> </div>
+										</div>
+                                        <!--<div class="col-md-12 col-xs-12 col-sm-12">
                                             <ul class="list-inline slickPanelSliderMeetings">
                                                 <li>
                                                     <div class="panel panel-default panelSlick">
@@ -1557,7 +1563,7 @@
                                                     </div>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div>-->
                                         <div class="col-md-12 col-xs-12 col-sm-12">
                                             <div class="bg_ED pad_15 arrow_top">
                                                 <h4><span  class="text-capital">b.jayanageshwar reddy</span> - <span class="text-capitalize">General Secretary</span></h4>
