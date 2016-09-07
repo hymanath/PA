@@ -64,15 +64,14 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts");
+	         WebResource webResource = client.resource("https://mytdp.com/CNP_TEST/webservice/getUserTypeWiseNewsCounts");
 	         
-			 //WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts/"+locationLevelIdsMap+"/"+state+"/"+fromDate+"/"+toDate+"");
-		     
-			 //ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+			// String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
+	        // System.out.println(jsonInString);
 	         
 	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, activityMemberVO);
 	         
-	 	      if(response.getStatus() != 200){
+	          if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
 	 	    	 
