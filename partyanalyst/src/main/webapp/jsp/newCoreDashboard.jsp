@@ -669,7 +669,7 @@
 									<div class="panel panel-default panelNew">
 										<div class="panel-heading" role="tab" id="headingOne">
 											<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-												<h4><span class="headingColor text-capitalize">Scale based performance cohort</span></h4>
+												<h4><span class="headingColor text-capitalize">Character based performance cohort</span></h4>
 											</a>
 										</div>
 										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
@@ -697,12 +697,15 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingFive">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor text-capitalize">Top 5 Performance</span></h4>
+										   <h4 class="panel-title"><span class="headingColor text-capitalize">Top 5 Performers</span></h4>
 										</a>
 									</div>
 									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
 									  <div class="panel-body">
 										<div class="row">
+											<div id="candidateRolesBuildId"></div>
+										</div>
+										<div class="row m_top20">
 											<div class="table-responsive" id="candidateRolesPerformanceNewId"></div>
 										</div>
 									  </div>
