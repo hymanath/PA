@@ -552,7 +552,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	  *  This Service Method is used to get the selected child usertype activity memberids and its meeting counts for a parent usertype activity member id. 
 	  *  @since 07-SEPTEMBER-2016
 	  */
-  public List<UserTypeVO> getSelectedChildUserTypeMembersWithMeetingsCount(Long parentActivityMemberId,Long childUserTypeId,String state,String startDateString,String endDateString){
+  public List<UserTypeVO> getSelectedChildUserTypeMembersWithMeetingsCount(Long parentActivityMemberId,Long childUserTypeId,String state,String startDateString,String endDateString,List<Long> partyMeetingTypeIds){
 	    List<UserTypeVO> activityMembersList = null;
 	   try{
 		   
@@ -568,7 +568,9 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		     List<Date>  datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
 		     meetingBO.setStartDate(datesList.get(0));
 		     meetingBO.setEndDate(datesList.get(1));
+		     meetingBO.setPartyMeetingTypeIds(partyMeetingTypeIds);
 		     
+		     //getting counts.
 		     Map<String,CoreDashboardCountsVO> locationLevelCountsMap = coreDashboardGenericService.getMeetingsCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,meetingBO);
 		     Map<String,String>     nameForLocationMap  = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
 		     
@@ -647,5 +649,43 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	    }
   }; 
 
-	
+     /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the direct child usertype activity memberids and its meetings counts for a parent usertype activity member id. 
+	  *  @since 07-SEPTEMBER-2016
+	  */
+  public List<UserTypeVO> getDirectChildActivityMemberMeetingsDetails(Long activityMemberId,Long userTypeId,String state,String startDateString,String endDateString,List<Long> partyMeetingTypeIds){
+	    List<UserTypeVO> activityMembersList = null;
+	   try{
+		   
+		   //calling generic method.
+		    ActivityMemberVO activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId);
+		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		   
+		     //Creating Business Object.
+		     CommitteeInputVO meetingBO = new CommitteeInputVO();
+		     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		     meetingBO.setStateId(stateId);
+		     List<Date>  datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+		     meetingBO.setStartDate(datesList.get(0));
+		     meetingBO.setEndDate(datesList.get(1));
+		     meetingBO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+		     
+		     //getting counts
+		     Map<String,CoreDashboardCountsVO> locationLevelCountsMap = coreDashboardGenericService.getMeetingsCountByLocationLevelIdAndLevelValues(locationLevelIdsMap,meetingBO);
+		     Map<String,String>     nameForLocationMap  = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+		     
+		     activityMembersList = setMeetingsCountsToActivityMembers(childActivityMembersMap,"counts",locationLevelCountsMap,nameForLocationMap);
+		     if(activityMembersList!=null && activityMembersList.size()>0){
+		    	 setMeetingsCountsToActivityMembers(childActivityMembersMap,"percanatge",null,null);
+		    	 //sorting in descending order of completed percantages.
+		    	 Collections.sort(activityMembersList,ActivityMemberConductedCountPercDesc);
+		     }
+		     
+	   }catch(Exception e){
+		   LOG.error("exception occurred in getDirectChildActivityMemberMeetingsDetails()", e);
+	   }
+	   return activityMembersList;
+    }
 }
