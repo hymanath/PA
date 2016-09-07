@@ -1102,6 +1102,16 @@
 											</div>
 										</div>
 									</div>
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
+											</div>
+											<div class="panel-body verticalScrollBar" >
+												<div id="districtWiseNewsReport"></div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -1908,7 +1918,6 @@
 		//getNewsBasicCounts();
 		//getUserTypeWiseNewsCounts();
 		//getDetailedPartyMainEditionsOverview();
-		//getDetailedPartyDistrictEditionsOverview();
 		getDetailedPartyNewsTypeAnalysis();
 	}
 	
