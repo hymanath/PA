@@ -1078,11 +1078,12 @@
 									</div>
 									 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
 									
-									<div class="col-xs-12 col-sm-12 col-md-12">
-										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
-									</div>	
+									
 								</div>
 							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
+							</div>	
 							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock">
 								<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12">
@@ -1090,14 +1091,14 @@
 											<li><i class="fa fa-gears"></i></li>
 										</ul>
 										<ul class="newsComparisonUl list-inline">
-											<li>Comparison</li>
-											<li>Party</li>
-											<li>Government</li>
+											<li class="text-capital" >Comparison</li>
+											<li style="margin-left: -6px;" class="text-capital">Party</li>
+											<li style="margin-left: -6px;" class="text-capital">Government</li>
 										</ul>
-										<ul class="newsComparisonUl list-inline">
-											<li>Detailed</li>
-											<li>Party</li>
-											<li>Government</li>
+										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
+											<li class="active text-capital">Detailed</li>
+											<li class="active text-capital" style="margin-left: -6px;">Party</li>
+											<li style="margin-left: -6px;" class="text-capital">Government</li>
 										</ul>
 									</div>
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -1105,15 +1106,8 @@
 											<div class="panel-heading">
 												<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
 											</div>
-											<div class="panel-body" id="mainEditiongraphId">
-												<div class="scroll-div">
-													<ul class="list-inline best-matched-profile ">
-														<li><div class="chartLi newsGraph0"></div></li>
-														<li><div class="chartLi newsGraph1"></div></li>
-														<li><div class="chartLi newsGraph2"></div></li>
-														<li><div class="chartLi newsGraph3"></div></li>														
-													</ul>
-												</div>
+											<div class="panel-body" >
+												<div id="mainEditiongraphId"></div>
 											</div>
 										</div>
 									</div>

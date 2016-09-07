@@ -1,19 +1,21 @@
+	
 	$(document).on("click",".newsIconExpand",function(){
-		
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			getUserTypeWiseNewsCounts();
+			
 		}
 	});
 	$(document).on("click",".morenewsBlocksIcon",function(){
+		$(".newsHiddenMoreBlock").toggle();
+		getDetailedPartyMainEditionsOverview();
+	});
 	
-	$(".moreBlocksDetailForNews").toggle();
-	
-	});	
-function getNewsBasicCounts(){
+	function getNewsBasicCounts(){
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -171,13 +173,15 @@ function getNewsBasicCounts(){
 	}
 	
 	$(document).on("click","#detailedPartyId",function(){
-		getDetailedPartyMainEditionsOverview();
+		
 		getDetailedPartyDistrictEditionsOverview();
 		getDetailedPartyNewsTypeAnalysis();
 		getDetailedPartyPartyVsPublications();
 	});
 	
 	function getDetailedPartyMainEditionsOverview(){
+		$("#mainEditiongraphId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
 		var temp;
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -190,6 +194,7 @@ function getNewsBasicCounts(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
+			$("#mainEditiongraphId").html('');
 			buildMainEditionPartieWiseGraph(result);
 		});
 		
@@ -477,96 +482,124 @@ function getNewsBasicCounts(){
 			buildgetUserTypeWiseNewsForTopFivePoorResults(globalUserWiseMemberRslt)
 		 }
 	});
-$(document).on("click",".newsIconExpand",function(){
-	$(".dateRangePickerClsForNews").toggleClass("hide");
-	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	$(".newsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
-});
-$(document).on("click",".morenewsBlocksIcon",function(){
-	$(".newsHiddenMoreBlock").toggle();
-});
-
-function buildMainEditionPartieWiseGraph(result){
-	var str='';
-  for(i=0;i<4;i++){
-    $('.newsGraph'+i).highcharts({
 	
-    colors: ['#53BF8B','#F56800'],
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ''
-        },
-			xAxis: {
-		  min: 0,
-		  gridLineWidth: 0,
-		  minorGridLineWidth: 0,
-		  
-		  type: 'category',
-		  labels: {
-				formatter: function() {
-				  return this.value.toString().substring(0, 10)+'...';
-				},
-				
-			  }
-		  
-		},
-		yAxis: {
-		  min: 0,
-		  gridLineWidth: 0,
-		  minorGridLineWidth: 0,
-		  title: {
-			text: ''
-		  }
 
-		},
-        legend: {
-            enabled: true
-        },
-        series: [{
-            name: 'Positive',
-     
-            data: [
-                ['', result[i].positiveCountMain],    
-            ],
-            dataLabels: {
-                enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                format: '{point.y:.1f}', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        },{
-            name: 'Negative',
-            data: [
-                ['',result[i].negativCountMain], 
-            ],
-            dataLabels: {
-                enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                format: '{point.y:.1f}', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        }]
-    
-    });
-  }
-  
-}
+	function buildMainEditionPartieWiseGraph(result){
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<ul class="newsPartyWiseUI">';
+			str+='<li>';
+			str+='<div class="scroll-div">';
+			str+='<ul class="list-inline best-matched-profile ">';
+			var countVar =0;
+			for(var i in result){
+				countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+					str+='<li><div id="mainEditiongraph'+i+'" class="chartLi"></div></li>';
+		    }
+			str+='</ul>';
+			str+='</div>';
+			str+='</li>';
+			str+='</ul>';
+				
+		}
+		$("#mainEditiongraphId").html(str);
+	  
+	  if(result != null && result.length > 0){
+		  var countVar =0;
+		 
+		 
+			for(var i in result){
+				countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				 var positiveCountArray =[];
+				var negativeCountArray =[];
+				var organizationName = result[i].organization;
+				positiveCountArray.push(result[i].positiveCountMain)
+				negativeCountArray.push(result[i].negativCountMain)
+			
+			$(function () {
+				$('#mainEditiongraph'+i+'').highcharts({
+					colors: ['#F56800','#53BF8B','#66728C'],
+					chart: {
+						type: 'column',
+						
+					},
+					title: {
+						 useHTML: true,
+						text: '<img src="newCoreDashBoard/img/'+organizationName+'.png" style="width:25px;" alt="tdp icon"/> &nbsp;&nbsp;&nbsp;'+organizationName+'',
+						style: {
+								fontSize: '16px',
+								fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+								textTransform: "uppercase"
+								
+						}
+					},
+					subtitle: {
+						text: null
+					},
+					 xAxis: {
+						 min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: null,
+						labels: {
+							enabled: false,
+						}
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							}
+						}
+					},
+					tooltip: {
+						headerFormat: '<b>{point.x}</b><br/>',
+						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+						shared: true
+					},
+					legend: {
+						enabled: true,
+						align: 'left'
+					
+					},
+					plotOptions: {
+						column: {
+							dataLabels:{
+								enabled: true,
+								formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.y,1) + '%';
+									}
+								}
+							},
+							
+						},
+					},
+					 series: [{
+						name: 'Positive',
+						data: positiveCountArray 
+					}, {
+						name: 'Negative',
+						data: negativeCountArray
+					}]
+				});
+			});	
+		}
+	  }
+	}
