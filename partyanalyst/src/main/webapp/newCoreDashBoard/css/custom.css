@@ -932,17 +932,20 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	margin-left:10px;
 	border:0px !important;
 }
-.villageWardUl , .trainingsUl
+.villageWardUl , .trainingsUl, .newsPartyWiseUI
 {
 	padding:10px;
 	margin:0px;
 }
-.villageWardUl li , .trainingsUl li
+.villageWardUl li , .trainingsUl li, .newsPartyWiseUI li
 {
 	list-style:none;
 }
 .trainingsUl li
 {
+	display:inline-block;
+}
+.newsPartyWiseUI li{
 	display:inline-block;
 }
 .chartLi
@@ -1604,10 +1607,7 @@ margin-top:20px;
 	cursor:pointer;
 	text-transform:capitalize;
 }
-.newsComparisonUl li:first-child , .newsComparisonUl li:first-child.active
-{
-	background-color:#CCD0D3
-}
+
 .newsComparisonUl li.active 
 {
 	background-color:#4A5863;
