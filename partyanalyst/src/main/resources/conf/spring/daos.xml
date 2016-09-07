@@ -3203,4 +3203,9 @@
 	<bean id="partyMeetingStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="partyMeetingMainTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingMainTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		
