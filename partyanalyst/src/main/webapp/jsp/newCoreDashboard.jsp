@@ -400,17 +400,6 @@
 								</span>
 							</h4>
 							<div id="notesTrainingId"></div>
-							<!--<ul class="notesUl m_top20">
-								<li>
-									<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
-									<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
-									<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
-								</li>
-							</ul>
-							<hr/>        
-							<label>Create Notes</label>
-							<textarea class="form-control notesArea"></textarea>
-							<button class="btn btn-default btnCustomCreate btn-sm">create</button>-->
 						</div>  
 					</h4>
 				</div>
@@ -588,18 +577,18 @@
         </div>
         <div class="row">
             <!-- DEBATES PROGRAM BLOCK -->
-            <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 debatesBlock">
+            <div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
                 <div class="panel panel-default panelNewCustom panel2">
                     <div class="panel-heading">
 						<div class="row">
-							<div class="col-md-6 col-sm-8 col-xs-7">
+							<div class="col-md-6 col-sm-6 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img class="iconClass" src="newCoreDashBoard/img/debates.png">
 									debates
 									
 								</h4>
 							</div>
-							<div class="col-md-6 col-sm-4 col-xs-5">
+							<div class="col-md-6 col-sm-6 col-xs-5">
 								<span class="debatesIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
@@ -648,10 +637,10 @@
                             </div>
                             <div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
                                 <div class="row">
-                                	<div class="col-md-6 col-xs-12 col-sm-12">
+                                	<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
                                 		<h4 class="text-capital"><span class="headingColor">Spokespersons</span></h4>
                                 	</div>
-                                    <div class="col-md-6 col-xs-12 col-sm-12 ">
+                                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
                                         <ul class="activeUlCls list-inline debateSpokesCls">
                                             <li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
                                             <li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
@@ -669,18 +658,18 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default panelNew">
-										<div class="panel-heading" role="tab" id="headingOne">
-											<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-												<h4><span class="headingColor text-capitalize">Character based performance cohort</span></h4>
-											</a>
+										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
+											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
+												<h4><span class="headingColor text-capitalize">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+											<!--</a>-->
 										</div>
-										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-											<div class="panel-body">
+										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
+											<div class="panel-body collapse in" id="collapseOneBodyId">
 												<div class="row">
 													<div id="scaleBasedPerformanceCohort"></div>
 												</div>
 											</div>
-										</div>
+										<!--</div>-->
 									</div>
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingTwo">
@@ -708,7 +697,7 @@
 											<div id="candidateRolesBuildId"></div>
 										</div>
 										<div class="row m_top20">
-											<div class="table-responsive" id="candidateRolesPerformanceNewId"></div>
+											<div class="table-responsive col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
 										</div>
 									  </div>
 									</div>
@@ -1818,7 +1807,6 @@
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 	/* //Angular Start
 
