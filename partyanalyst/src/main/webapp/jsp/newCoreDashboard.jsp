@@ -426,7 +426,7 @@
 						</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
 								<div class="row">
-								<div id="clickInfoId" class="text-capital bg_49 pad_custom" style="font-size:18px"> </div>
+								<div><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </div>  
 								  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 									<ul class="activeUlCls list-inline hideCls">
 										<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
@@ -439,15 +439,14 @@
 							<div class="col-xs-12 col-sm-12 col-md-12">
 									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more"></i>
 						    </div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks">
+							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls">
 									<ul class="list-inline pull-right activeUlCls">
 										<li id="detailedId" class="trainingDetailed">Detailed</li>
 										<li class="trainingComparison">Comparison</li>
 										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
 									</ul>
-							</div>
-						
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock">
+							</div> 
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<h4 class="text-capitalize text-muted">training programs</h4>
@@ -464,7 +463,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -1801,7 +1800,7 @@
 	 </div>
      <!--End -->
 	</div>
-</div>
+</div> 
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
@@ -1998,12 +1997,16 @@
 	   return loggedInUserAccessLevelValues;
 	}
 	function stateLevelCampDetailsRepresentativeWise(){
+		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
+		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
+
 		$.ajax({
 			type : 'GET',
 			url : 'stateLevelCampDetailsRepresentativeWise.action',  
 			dataType : 'json',
 			data : {}
-		}).done(function(result){  
+		}).done(function(result){ 
+		
 			if(result != null && result.length >0){
 				buildstateLevelCampDetailsRepresentativeWise(result);
 			}
@@ -2018,7 +2021,15 @@
 				for(var i in result){  
 					for(var j in result[i]){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-						str+='<h5 class="text-capital">'+result[i][j].status+' committee</h5>'; 
+						if(result[i][j].status == "State"){
+							str+='<h5 class="text-capital">'+result[i][j].status+' committee</h5>'; 
+						}
+						else if(result[i][j].status == "District"){
+							str+='<h5 class="text-capital">'+result[i][j].status+' committee</h5>'; 
+						}else{
+							str+='<h5 class="text-capital">'+result[i][j].status+'</h5>';
+						}
+						 
 						str+='<div id="genCampId'+k+'" style="width:100%;height:100px;"></div>';
 						str+='</div>'
 						k+=1;  
@@ -2112,7 +2123,7 @@
 							},
 						
 							series: [{
-								name: 'Attended',
+								name: 'Member',    
 								data: trainingProgramCountArray
 							}]
 						});
@@ -2172,17 +2183,46 @@ $(document).on("click",".stateLevelTraining",function(){
 	$("#clickInfoId").html(val);
 	$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
 	$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");
+	
 	$("#detailedId").removeClass("trainingDetailed");
 	$("#detailedId").addClass("trainingCampDetailed");
+	$("#clickInfoId").show();
+	$(".trainingComparison").hide();
 });
 $(document).on("click",".stateLevelTrainingInd",function(){
 	stateLevelCampDetailsRepresentativeWise()
 	var val = $(this).attr("attr_location");
 	$("#clickInfoId").html(val); 
+	$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
+	$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");   
 	$("#detailedId").removeClass("trainingDetailed");
 	$("#detailedId").addClass("trainingCampDetailed");
+	$("#clickInfoId").show();
+	$(".trainingComparison").hide();
 });
-	
+$(document).on("click",".programSkillsCls",function(){
+	getUserTypeWiseTotalEligibleAndAttendedCnt();
+		$("#clickInfoId").hide(); 
+
+	$("#switchButtonId").addClass("moreTrainingBlocksIcon");
+	$("#switchButtonId").removeClass("moreTrainingCampBlocksIcon");
+	$("#detailedId").addClass("trainingDetailed");
+	$("#detailedId").removeClass("trainingCampDetailed"); 
+	$(".trainingComparison").show();   
+});	//programSkillsCls
+$(document).on("click",".moreTrainingCampBlocksIcon",function(){
+	//$("#switchButtonId").removeClass("showCls");
+	//$("#switchButtonId").addClass("hdCls");
+	if($("#switchButtonId").hasClass("showCls")){
+		$(".trainingDetailedBlock").hide();
+		$("#switchButtonId").addClass("hdCls");
+		$("#switchButtonId").removeClass("showCls");  
+	}else{
+		$(".trainingDetailedBlock").show();
+		$("#switchButtonId").removeClass("hdCls");
+		$("#switchButtonId").addClass("showCls");
+	}
+});    
 	
   </script> 
 </body>
