@@ -611,14 +611,14 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
    public List<Object[]> getDistWiseInvitedMembers(Long stateId, Long campId, Long programId){
 	   StringBuilder queryString = new StringBuilder();
 	   queryString.append(" select D.district_id as id, D.district_name as name, count(distinct TDP.tdp_cadre_id) as total from "+
-			   			  " training_camp_batch_attendee TCBA, training_camp_batch TCB, training_camp TC, training_camp_program TCP, training_camp_schedule TCS, tdp_cadre TDP, user_address UA, state S, district D "+
+			   			  " training_camp_batch_attendee TCBA, training_camp_batch TCB, training_camp TC, training_camp_program TCP, training_camp_schedule TCS, tdp_cadre TDP, user_address UA, district D "+
 			   			  " where "+
 			   			  " TCBA.training_camp_batch_id = TCB.training_camp_batch_id and "+
 			   			  " TCB.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
 			   			  " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
 			   			  " TCBA.tdp_cadre_id = TDP.tdp_cadre_id and "+
 			   			  " TDP.address_id = UA.user_address_id and " +
-			   			  " D.district_id BETWEEN 11 AND 23 AND"+
+			   			  " (D.district_id BETWEEN 11 and 23) and "+
 			   			  " UA.district_id = D.district_id "+    
                           " group by D.district_id order by D.district_id ");
 	   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
