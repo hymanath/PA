@@ -3404,6 +3404,8 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO"  ref="delimitationConstituencyAssemblyDetailsDAO"></property>
 		<property name="districtDAO"  ref="districtDAO"></property>
 		<property name="constituencyDAO"  ref="constituencyDAO"></property>
+		<property name="partyMeetingDAO"  ref="partyMeetingDAO"></property>
+	    <property name="partyMeetingStatusDAO"  ref="partyMeetingStatusDAO"></property>
 	</bean>
 	
 	<bean id="coreDashboardMainService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardMainService">
