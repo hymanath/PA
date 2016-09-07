@@ -17,6 +17,7 @@ public class CoreDebateVO implements Serializable {
 	private String candidateName;	
 	private Long charecterId;
 	private String charecterName;
+	private Double overAllPerc=0.00;
 	
 	private List<CoreDebateVO> coreDebateVOList ;
 	
@@ -91,6 +92,12 @@ public class CoreDebateVO implements Serializable {
 	}
 	public void setCharecterName(String charecterName) {
 		this.charecterName = charecterName;
+	}
+	public Double getOverAllPerc() {
+		return overAllPerc;
+	}
+	public void setOverAllPerc(Double overAllPerc) {
+		this.overAllPerc = overAllPerc;
 	}
 	
 	
