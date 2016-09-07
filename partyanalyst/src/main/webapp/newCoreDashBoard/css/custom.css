@@ -844,16 +844,16 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	box-shadow:0px 0px 7px rgba(0,0,0,0.6);
 	margin-top:34px;
 }
-.notesUl
+.notesUl , .notesUlTraining
 {
 	padding-left:10px;
 }
-.notesUl li
+.notesUl li , .notesUlTraining li
 {
 	list-style:none;
 	position:relative;
 }
-.notesUl li:before
+.notesUl li:before , .notesUlTraining li:before
 {
 	background-color:#ddd;
 	content:' ';
@@ -864,29 +864,29 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-radius:50%;
 	top:5px;
 }
-.notesUl li:hover
+.notesUl li:hover , .notesUlTraining li:hover
 {
 	background-color:#f8f8f8;
 }
-.notesUl li:hover .hoverBlock
+.notesUl li:hover .hoverBlock , .notesUlTraining li:hover .hoverBlock
 {
 	display:block
 }
-.notesUl li .glyphicon-edit
+.notesUl li .glyphicon-edit , .notesUlTraining li .glyphicon-edit
 {
 	color:#A8D0D1;
 	margin-right:2px;
 	display:none;
 	cursor:pointer;
 }
-.notesUl li .glyphicon-trash
+.notesUl li .glyphicon-trash , .notesUlTraining li .glyphicon-trash
 {
 	color:#FE9999;
 	display:none;
 	cursor:pointer;
 }
 .btnCustomCreate , .btnCustomCreate:hover , .btnCustomCreate:focus , .btnCustomCreate:active,
-.btnCustomCreate1 , .btnCustomCreate1:hover , .btnCustomCreate1:focus , .btnCustomCreate1:active
+.btnCustomCreateTraining , .btnCustomCreateTraining:hover , .btnCustomCreateTraining:focus , .btnCustomCreateTraining:active
 {
 	background-color:#9AB3BA;
 	border:1px solid #9AB3BA;
