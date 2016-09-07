@@ -409,7 +409,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 				      for(UserTypeVO vo:userTypeMap.values()){
 				    		  Long totalMeetingCnt = totalCntMap.get(vo.getLocationLevelId());
 				    		  if(totalMeetingCnt != null){
-				    			  vo.setConductedAndMayBeMeetingPer(calculatePercantage(vo.getConductedMeetingCnt()+vo.getMayBeMeetingCnt(),totalMeetingCnt));  
+				    			  vo.setConductedAndMayBeMeetingPer(calculatePercantage(vo.getConductedMeetingCnt(),totalMeetingCnt));  
 				    		  }
 				     		}
 				      }

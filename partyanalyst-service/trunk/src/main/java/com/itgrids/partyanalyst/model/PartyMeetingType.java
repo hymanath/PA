@@ -32,7 +32,9 @@ public class PartyMeetingType extends BaseModel implements Serializable{
 	private PartyMeetingLevel partyMeetingLevel;
 	
 	private Long partyMeetingLevelId;
+	private Long partyMeetingMainTypeId;
 	
+    private PartyMeetingMainType partyMeetingMainType;
 	private String isActive;
 	
 	public PartyMeetingType(){}
@@ -103,6 +105,24 @@ public class PartyMeetingType extends BaseModel implements Serializable{
 
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	@Column(name="party_meeting_main_type_id")
+	public Long getPartyMeetingMainTypeId() {
+		return partyMeetingMainTypeId;
+	}
+
+	public void setPartyMeetingMainTypeId(Long partyMeetingMainTypeId) {
+		this.partyMeetingMainTypeId = partyMeetingMainTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_meeting_main_type_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyMeetingMainType getPartyMeetingMainType() {
+		return partyMeetingMainType;
+	}
+	public void setPartyMeetingMainType(PartyMeetingMainType partyMeetingMainType) {
+		this.partyMeetingMainType = partyMeetingMainType;
 	}
 	
 	
