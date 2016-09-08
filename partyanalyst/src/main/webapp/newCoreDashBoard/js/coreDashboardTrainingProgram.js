@@ -1246,7 +1246,7 @@ function displayDashboardCommentsForTraining(dashBoardComponentId){
 						str+='<div id="id2" style="color:red;"></div>';
                         str+='<label>Create Notes</label>';
                         str+='<textarea class="form-control notesAreaTraining"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(2);">create</button>';
+                        str+='<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>';
 			
 			$("#notesTrainingId").html(str);	 
 		}
@@ -1302,7 +1302,7 @@ function savingDashboardCommentForTraing(dashboardComponentId){
 			if(result.message == "success"){
 				
 				$("#id2").html('update succuss');
-				displayDashboardCommentsForTraining(2);
+				displayDashboardCommentsForTraining(4);
 			}
 		}			
 	});
@@ -1330,7 +1330,7 @@ $(document).on("click",".editNotesTraining",function(){
 	$(".notesAreaTraining").attr("attr_commentid",commentId1);  
 	$("#cmtId").val(commentId);
 	//$("#cmtId").val();
-	$("#id1").html('');		
+	$("#id2").html('');		
 });
 
 $(document).on("click",".btnCustomCreateTraining",function(){

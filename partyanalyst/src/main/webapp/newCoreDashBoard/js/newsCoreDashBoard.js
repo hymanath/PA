@@ -759,3 +759,118 @@
 		$("#districtWiseNewsReport").html("No Data Available")
 	}	
 }
+/*Notes Functionality*/
+	function displayDashboardCommentsForNews(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+      		 
+	     str+='<ul class="notesUlDebates m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+            	     
+					for(var i in result){ 
+                        str+='<li style="margin-top:3px;">'; 
+                        str+='<span class="notesTextNews" id="editTextNewsId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesnews" attr_cmt_id="editTextNewsId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesNews" attr_cmt_id="editTextNewsId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+                        str+='</li>';
+					}
+                        str+='</ul>';
+						str+='<hr/>';
+						str+='<div id="newsUpId" style="color:red;"></div>';
+                        str+='<label>Create Notes</label>';
+                        str+='<textarea class="form-control notesAreaNews"></textarea>';
+                        str+='<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>';
+			
+			$("#notesNewsId").html(str);	 
+		}
+	});
+}
+function deleteDashBoardcomments(dashboardCommentId)
+{
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				
+			}
+		}
+			
+	});
+	
+}
+
+function savingDashboardCommentForNews(dashboardComponentId){  
+  var comment=$(".notesAreaNews").val();
+  if(comment.trim() ==""){
+		  $("#newsUpId").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtNewsId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesAreaNews").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesAreaNews").attr("attr_commentid");		
+	 }
+	
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				$("#newsUpId").html('update succuss');
+				displayDashboardCommentsForNews(5);
+			}
+		}			
+	});
+}
+$(document).on("click",".notesIconNews",function(){
+	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+});
+$(document).on("click",".deleteNotesNews",function(){
+	$(this).closest("li").remove();
+});
+$(document).on("click",".editNotesNews",function(){ 
+	var commentId = $(this).attr("attr_cmt_id");
+	var commentId1 = $(this).parent().find(".notesTextNews").attr("attr_commentid");
+	var notesHtml = $("#"+commentId).html();
+	$(".notesAreaNews").val(notesHtml);  
+	$(".notesAreaNews").attr("attr_commentid",commentId1);  
+	$("#cmtId").val(commentId);
+	//$("#cmtId").val();
+	$("#newsUpId").html('');		
+});
+
+$(document).on("click",".btnCustomCreateNews",function(){
+	var getNewNotes = $(".notesAreaNews").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesNews"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUlDebates").append("<li>"+commentText+"</li>");
+	$(".notesAreaNews").val('');	
+});
+
