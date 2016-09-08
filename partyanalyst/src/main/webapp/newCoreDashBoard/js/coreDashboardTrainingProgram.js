@@ -51,10 +51,10 @@ var getDocumentWidth = $(document).width();
 	if(programList != null && programList.length > 0){
 		  for(var i in programList){
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
-			 str+='<span style="font-size:18px" class="text-capital bg_49 pad_custom" attr_program_id='+programList[i].id+'>'+programList[i].name+'</span>';
-			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;">';
+			 str+='<h4 class="text-capital pad_custom" attr_program_id='+programList[i].id+'><span class="bg_49">'+programList[i].name+'</span>';
+			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
 				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
-			str+='</span>';  
+			str+='</span></h4>';  
 			str+='<table class="table tableTraining">';
 				str+='<tr>';
 					str+='<td>';
