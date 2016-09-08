@@ -614,6 +614,7 @@
 							<div id="notesDebatesId"></div>
 						</div> 	
                     </div>
+                </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
@@ -1157,6 +1158,7 @@
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 								meetings
+							</h4>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
 						 <span class="settingsIcon pull-right">
@@ -1173,9 +1175,8 @@
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-							</span>	
+							</span>
 						</div>
-						</h4>
 					</div>
 					<div class="notesDropDown" >
 						<h4 class="text-capital">notes
