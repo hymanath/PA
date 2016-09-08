@@ -382,7 +382,7 @@
                         	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
                         </span>
 						<span class="notesIconTraining pull-right">
-							<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(2);"></i>
+							<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
 						</span>
 						<span class="trainingIconExpand pull-right">
 							<i class="glyphicon glyphicon-fullscreen"></i>
@@ -393,26 +393,15 @@
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
 						</span>
-						<div class="notesDropDown" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesTrainingId"></div>
-							<!--<ul class="notesUl m_top20">
-								<li>
-									<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
-									<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
-									<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
-								</li>
-							</ul>
-							<hr/>        
-							<label>Create Notes</label>
-							<textarea class="form-control notesArea"></textarea>
-							<button class="btn btn-default btnCustomCreate btn-sm">create</button>-->
-						</div>  
 					</h4>
+					<div class="notesDropDown" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesTrainingId"></div>
+					</div>  
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -594,23 +583,38 @@
 							<div class="col-md-6 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img class="iconClass" src="newCoreDashBoard/img/debates.png">
-									debates
-									
+										debates
+										
 								</h4>
-							</div>
+						    </div>
 							<div class="col-md-6 col-sm-4 col-xs-5">
-								<span class="debatesIconExpand pull-right">
-									<i class="glyphicon glyphicon-fullscreen"></i>
+							<span class="settingsIcon pull-right">
+                        	   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+                             </span>
+						    <span class="notesIconDebates pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
+						    </span>
+							<span class="debatesIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
+								<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
-									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
+							</span>
 						</div>
-                       
+						
+					</div>
+					
+						<div class="notesDropDown" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesDebatesId"></div>
+						</div> 	
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -746,7 +750,7 @@
 								  </div>
 								</div>
                             </div>
-                            
+                                                        
                           <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
@@ -859,13 +863,18 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-6 col-sm-8 col-xs-7">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									news
-								</h4>
+						<div class="col-md-6 col-sm-8 col-xs-7">
+						<h4 class="panel-title text-capital">
+						<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+							news
 							</div>
 							<div class="col-md-6 col-sm-4 col-xs-5">
+			            <span class="settingsIcon pull-right">
+                        <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+                           </span>
+						 <span class="notesIconNews pull-right">
+						<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
+						    </span>
 								<span class="newsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
@@ -875,8 +884,18 @@
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 								</span>
+								
 							</div>
 						</div>
+						</h4>
+						<div class="notesDropDown" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesNewsId"></div>
+						</div> 
 					</div>
 					<div class="panel-body">
 						<div class="row">
@@ -942,7 +961,7 @@
 										<table class="table table-condensed tableNews m_top10">
 											<tr>
 												<td>
-													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
+												   <img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
 												</td>
 												<td>
 													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent">0%</small>
@@ -1140,9 +1159,14 @@
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 								meetings
-							</h4>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
+						 <span class="settingsIcon pull-right">
+                        <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+                           </span>
+						 <span class="notesIconMeeting pull-right">
+						<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
+						    </span>
 							<span class="meetingsIconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
@@ -1151,9 +1175,18 @@
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-							</span>
+							</span>	
 						</div>
+						</h4>
 					</div>
+					<div class="notesDropDown" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesMeetingId"></div>
+					</div> 
                 </div>
                 <div class="panel-body">
                 	<div class="row">
@@ -1316,7 +1349,7 @@
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
-									<div class="col-xs-12 col-sm-7 col-md-8">
+                                    <div class="col-xs-12 col-sm-7 col-md-8">
 									  <div id="childUserTypeDetailsDivIdForMeeting"></div>
 								    </div>
                                        <div class="col-xs-12 col-sm-5 col-md-4">
@@ -1392,9 +1425,12 @@
 	 </div>
      <!--End -->
 	</div>
-</div> 
+</div>
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
+<input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
+<input type="hidden" id="cmtNewsId" attr_cmt_id="editTextNewsId'+i+'" value=""></input>
+<input type="hidden" id="cmtMeetingId" attr_cmt_id="editTextmettingId'+i+'" value=""></input>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>

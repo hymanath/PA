@@ -1105,4 +1105,120 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 		}else{
 			$("#topPoorLocationsMeetingDiv").html("No Data Available");
 		}			
-	}
+/*Notes Functionality*/
+	function displayDashboardCommentsForMeetings(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+      		 
+	     str+='<ul class="notesUlMeetings m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+            	     
+					for(var i in result){ 
+                        str+='<li style="margin-top:3px;">'; 
+                        str+='<span class="notesTextMeetings" id="editTextmettingId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesMeetings" attr_cmt_id="editTextmettingId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesMeetings" attr_cmt_id="editTextmettingId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+                        str+='</li>';
+					}
+                        str+='</ul>';
+						str+='<hr/>';
+						str+='<div id="meetingsUpId" style="color:red;"></div>';
+                        str+='<label>Create Notes</label>';
+                        str+='<textarea class="form-control notesAreaMeetings"></textarea>';
+                        str+='<button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>';
+			
+			$("#notesMeetingId").html(str);	 
+		}
+	});
+}
+function deleteDashBoardcomments(dashboardCommentId)
+{
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				
+			}
+		}
+			
+	});
+	
+}
+
+function savingDashboardCommentForMeetings(dashboardComponentId){  
+  var comment=$(".notesAreaMeetings").val();
+  if(comment.trim() ==""){
+		  $("#meetingsUpId").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtMeetingId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesAreaMeetings").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesAreaMeetings").attr("attr_commentid");		
+	 }
+	
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				$("#meetingsUpId").html('update succuss');
+				displayDashboardCommentsForMeetings(2);
+			}
+		}			
+	});
+}
+$(document).on("click",".notesIconMeeting",function(){
+	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+});
+$(document).on("click",".deleteNotesMeetings",function(){
+	$(this).closest("li").remove();
+});
+$(document).on("click",".editNotesMeetings",function(){ 
+	var commentId = $(this).attr("attr_cmt_id");
+	var commentId1 = $(this).parent().find(".notesTextMeetings").attr("attr_commentid");
+	var notesHtml = $("#"+commentId).html();
+	$(".notesAreaMeetings").val(notesHtml);  
+	$(".notesAreaMeetings").attr("attr_commentid",commentId1);  
+	$("#cmtId").val(commentId);
+	//$("#cmtId").val();
+	$("#meetingsUpId").html('');		
+});
+
+$(document).on("click",".btnCustomCreateMeetings",function(){
+	var getNewNotes = $(".notesAreaMeetings").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesMeetings"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUlMeetings").append("<li>"+commentText+"</li>");
+	$(".notesAreaMeetings").val('');	
+});
+
+
+	

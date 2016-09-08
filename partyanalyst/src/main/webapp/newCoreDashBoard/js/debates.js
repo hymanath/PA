@@ -736,4 +736,117 @@ function getRolesPerformanceOfCandidate(roleId){
 	 $(document).on("click",".candidateRolesCls li",function(){		 
 		getRolesPerformanceOfCandidate($(this).attr('id')); 
 	 });
+	/*Notes Functionality*/
+	function displayDashboardCommentsForDebates(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+      		 
+	     str+='<ul class="notesUlDebates m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+            	     
+					for(var i in result){ 
+                        str+='<li style="margin-top:3px;">'; 
+                        str+='<span class="notesTextDebates" id="editTextDebateId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesDebates" attr_cmt_id="editTextDebateId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesDebates" attr_cmt_id="editTextDebateId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+                        str+='</li>';
+					}
+                        str+='</ul>';
+						str+='<hr/>';
+						str+='<div id="debateUpId" style="color:red;"></div>';
+                        str+='<label>Create Notes</label>';
+                        str+='<textarea class="form-control notesAreaDebates"></textarea>';
+                        str+='<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>';
+			
+			$("#notesDebatesId").html(str);	 
+		}
+	});
+}
+function deleteDashBoardcomments(dashboardCommentId)
+{
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				
+			}
+		}
+			
+	});
 	
+}
+
+function savingDashboardCommentFordebates(dashboardComponentId){  
+  var comment=$(".notesAreaDebates").val();
+  if(comment.trim() ==""){
+		  $("#debateUpId").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtDebateId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesAreaDebates").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesAreaDebates").attr("attr_commentid");		
+	 }
+	
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				$("#debateUpId").html('update succuss');
+				displayDashboardCommentsForDebates(3);
+			}
+		}			
+	});
+}
+$(document).on("click",".notesIconDebates",function(){
+	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+});
+$(document).on("click",".deleteNotesDebates",function(){
+	$(this).closest("li").remove();
+});
+$(document).on("click",".editNotesDebates",function(){ 
+	var commentId = $(this).attr("attr_cmt_id");
+	var commentId1 = $(this).parent().find(".notesTextDebates").attr("attr_commentid");
+	var notesHtml = $("#"+commentId).html();
+	$(".notesAreaDebates").val(notesHtml);  
+	$(".notesAreaDebates").attr("attr_commentid",commentId1);  
+	$("#cmtId").val(commentId);
+	//$("#cmtId").val();
+	$("#debateUpId").html('');		
+});
+
+$(document).on("click",".btnCustomCreateDebates",function(){
+	var getNewNotes = $(".notesAreaDebates").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesDebates"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUlDebates").append("<li>"+commentText+"</li>");
+	$(".notesAreaDebates").val('');	
+});
