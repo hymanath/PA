@@ -23,6 +23,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Double mayBeCountPer=0.0;
 	private PartyMeetingsVO overAllVO;
 	private List<PartyMeetingsVO> partyMettingsVOList;
+	private Long totalMeetingCnt =0l;
 	
 	
 	private List<PartyMeetingsVO> subList;
@@ -141,5 +142,12 @@ public class PartyMeetingsVO implements Serializable{
 			partyMettingsVOList = new ArrayList<PartyMeetingsVO>();
 		}
 		return partyMettingsVOList;
-	}	
+	}
+	public Long getTotalMeetingCnt() {
+		return totalMeetingCnt;
+	}
+	public void setTotalMeetingCnt(Long totalMeetingCnt) {
+		this.totalMeetingCnt = totalMeetingCnt;
+	}
+	
 }
