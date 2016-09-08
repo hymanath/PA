@@ -576,7 +576,7 @@
         </div>
         <div class="row">
             <!-- DEBATES PROGRAM BLOCK -->
-            <div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 debatesBlock">
+            <div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
                 <div class="panel panel-default panelNewCustom panel2">
                     <div class="panel-heading">
 						<div class="row">
@@ -605,9 +605,7 @@
 							</span>
 						</div>
 						
-					</div>
-					
-						<div class="notesDropDown" >
+                       <div class="notesDropDown" >
 							<h4 class="text-capital">notes
 								<span class="pull-right">
 									<i class="glyphicon glyphicon-list-alt"></i>
@@ -651,10 +649,10 @@
                             </div>
                             <div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
                                 <div class="row">
-                                	<div class="col-md-6 col-xs-12 col-sm-12">
-                                		<h4 class="text-capital"><span class="headingColor">Spokespersons</span></h4>
+                                	<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+                                		<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
                                 	</div>
-                                    <div class="col-md-6 col-xs-12 col-sm-12 ">
+                                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
                                         <ul class="activeUlCls list-inline debateSpokesCls">
                                             <li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
                                             <li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
@@ -672,23 +670,23 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default panelNew">
-										<div class="panel-heading" role="tab" id="headingOne">
-											<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-												<h4><span class="headingColor text-capitalize">Character based performance cohort</span></h4>
-											</a>
+										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
+											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
+												<h4><span class="headingColor text-capitalize responsiveWidth">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+											<!--</a>-->
 										</div>
-										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-											<div class="panel-body">
+										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
+											<div class="panel-body collapse in" id="collapseOneBodyId">
 												<div class="row">
 													<div id="scaleBasedPerformanceCohort"></div>
 												</div>
 											</div>
-										</div>
+										<!--</div>-->
 									</div>
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingTwo">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										   <h4 class="panel-title"><span class="headingColor text-capitalize">role based performance cohort</span></h4>
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize">role based performance cohort</span></h4>
 										</a>
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
@@ -702,7 +700,7 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingFive">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor text-capitalize">Top 5 Performers</span></h4>
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize">Top 5 Performers</span></h4>
 										</a>
 									</div>
 									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
@@ -711,7 +709,7 @@
 											<div id="candidateRolesBuildId"></div>
 										</div>
 										<div class="row m_top20">
-											<div class="table-responsive" id="candidateRolesPerformanceNewId"></div>
+											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
 										</div>
 									  </div>
 									</div>
@@ -719,14 +717,14 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingThree">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										   <h4><span class="headingColor text-capitalize">candidate overall performance cohort</span></h4>
+										   <h4><span class="headingColor responsiveWidth text-capitalize">candidate overall performance cohort</span></h4>
 										</a>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 									  <div class="panel-body">
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="candidateOverAllPerformanceCohort"></div>
+												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
 											</div>
 										</div>
 									  </div>
@@ -735,14 +733,14 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingFour">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										   <h4><span class="headingColor text-capitalize">channel vs parties</span></h4>
+										   <h4><span class="headingColor responsiveWidth text-capitalize">channel vs parties</span></h4>
 										</a>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
 									  <div class="panel-body">
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="channelAndPartyWiseDetails"></div>
+												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
 											</div>
 										</div>
 									  </div>
@@ -750,7 +748,7 @@
 								  </div>
 								</div>
                             </div>
-                                                        
+                            
                           <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 <div class="panel panel-default panelNew">
                                     <div class="panel-heading">
@@ -961,7 +959,7 @@
 										<table class="table table-condensed tableNews m_top10">
 											<tr>
 												<td>
-												   <img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
 												</td>
 												<td>
 													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent">0%</small>
@@ -1192,7 +1190,7 @@
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock">
                         	<div class="panelBlock">
-                            	<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings"><i class="fa fa-gears"></i></span></h4>
+                            	<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff"><i class="fa fa-gears"></i></span></h4>
 								<div class="settingsDropDown" style="left:0px;">
 								    <ul class="list-inline">
 										<li><label><input type="checkbox" class="selectAll"/>Select All</label></li>
@@ -1271,74 +1269,10 @@
                                 <div class="panel-body">
                                 	<div>
                                     	<h4>General Body Meetings</h4>
-                                    	<!--<ul class="graphStructure">
-                                        	<li>
-                                            	<span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="20"></span>
-                                                <span attr_percent="30"></span>
-                                                <p class="name">Kandi</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="10"></span>
-                                                <span attr_percent="12"></span>
-                                                <p class="name">Kumar</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">ITG</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                        </ul>-->
                                     </div>
                                     <hr/>
                                     <div class="m_top20">
                                     	<h4>Coordinate Meetings</h4>
-                                    	<!-- <ul class="graphStructure">
-                                        	<li>
-                                            	<span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <span attr_percent="33"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                            <li>
-                                            	
-                                            	<span attr_percent="50"></span>
-                                                <span attr_percent="50"></span>
-                                                <p class="name">koushik</p>
-                                            </li>
-                                        </ul>-->
                                     </div>
                                     
                                 </div>
@@ -1349,7 +1283,7 @@
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
-                                    <div class="col-xs-12 col-sm-7 col-md-8">
+									<div class="col-xs-12 col-sm-7 col-md-8">
 									  <div id="childUserTypeDetailsDivIdForMeeting"></div>
 								    </div>
                                        <div class="col-xs-12 col-sm-5 col-md-4">
@@ -1425,7 +1359,7 @@
 	 </div>
      <!--End -->
 	</div>
-</div>
+</div> 
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
