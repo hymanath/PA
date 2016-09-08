@@ -676,7 +676,7 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 	getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
 
 });
-	
+
 function getChildUserTypesByItsParentUserTypeForMeeting(){
 		
 		var jsObj = { parentUserTypeId : globalUserTypeId }
@@ -1104,7 +1104,8 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 			$('.progressCustom').tooltip();
 		}else{
 			$("#topPoorLocationsMeetingDiv").html("No Data Available");
-		}			
+	    }
+	}
 /*Notes Functionality*/
 	function displayDashboardCommentsForMeetings(dashBoardComponentId){
 	var jsObj={
