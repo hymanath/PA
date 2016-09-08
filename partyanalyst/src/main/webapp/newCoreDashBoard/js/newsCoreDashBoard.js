@@ -1,4 +1,8 @@
-	
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	if(wurl.length == 3)
+		wurl = url.substr(0,(url.indexOf(".in")+3));
+		
 	$(document).on("click",".newsIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -25,8 +29,6 @@
 		}
 		var startDate='08-01-2016',endDate='08-31-2016';
 		var state = globalState;
-		var url = window.location.href;
-		var wurl = url.substr(0,(url.indexOf(".com")+4));
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
 			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
