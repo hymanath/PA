@@ -1099,6 +1099,7 @@
 									
 									
 								</div>
+								
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
 								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
@@ -1109,36 +1110,74 @@
 										<ul class="activeUlCls list-inline pull-right">
 											<li><i class="fa fa-gears"></i></li>
 										</ul>
-										<ul class="newsComparisonUl list-inline">
-											<li class="text-capital" >Comparison</li>
-											<li style="margin-left: -6px;" class="text-capital">Party</li>
-											<li style="margin-left: -6px;" class="text-capital">Government</li>
-										</ul>
+										
 										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
-											<li class="active text-capital">Detailed</li>
-											<li class="active text-capital" style="margin-left: -6px;">Party</li>
-											<li style="margin-left: -6px;" class="text-capital">Government</li>
+											<li class="text-capital newsComparisonHeading">Comparison</li>
+											<li class="text-capital a viewsLiClass" id="comparisonPartyLiId" attr_div_id="comparisonPartyMainDivId">Party</li><!--Teja-->
+											<li class="text-capital a viewsLiClass" id="comparisonGovernmentLiId" attr_div_id="comparisonGovernamentMainDivId">Government</li>
 										</ul>
+										
+										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
+											<li class="text-capital newsComparisonHeading">Detailed</li>
+											<li class="active text-capital a viewsLiClass" id="detailedPartyLiId" attr_div_id="detailedPartyMainDivId">Party</li>
+											<li class="text-capital a viewsLiClass" id="detailedGovernmentLiId" attr_div_id="detailedGovernamentMainDivId">Government</li>
+										</ul>
+										
 									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
+									<div id="detailedPartyMainDivId" class="mainBuildingDivClass">
+										<!-- News 1 Block-->
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew mainEditionCls">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
+												</div>
+												<div class="panel-body" >
+													<div id="mainEditiongraphId"></div>
+												</div>
 											</div>
-											<div class="panel-body" >
-												<div id="mainEditiongraphId"></div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew mainEditionCls">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
+												</div>
+												<div class="panel-body verticalScrollBar" >
+													<div id="districtWiseNewsReport"></div>
+												</div>
 											</div>
 										</div>
 									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
+									
+									<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+										<!--2nd block-->
+									</div>
+									
+									<div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
+										
+										<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<div class="row">
+													<div id="userTypeStrId"></div>
+														<!--<div class="col-xs-12 col-sm-12 col-md-12">
+															<ul class="comparisonSelect">
+																<li class="childUserTypeCls">Gen Sec<span class="closeIconComparison"></span></li>
+																<li class="childUserTypeCls">Sec<span class="closeIconComparison"></span></li>
+															</ul>
+														</div>-->
+													</div>
+												</div>
+												<div class="panel-body">
+													
+												</div>
 											</div>
-											<div class="panel-body verticalScrollBar" >
-												<div id="districtWiseNewsReport"></div>
-											</div>
+											
 										</div>
+									</div>
+									
+									
+									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+										<!--4th block-->
 									</div>
 								</div>
 							</div>
@@ -1336,6 +1375,160 @@
 									    <div class="col-md-12 col-xs-12 col-sm-12">
 											 <div id="childActivityMemberDivIdForMeeting"> </div>
 										</div>
+                                        <!--<div class="col-md-12 col-xs-12 col-sm-12">
+                                            <ul class="list-inline slickPanelSliderMeetings">
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="panel panel-default panelSlick">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
+                                                            <span class="count">01</span>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <h4 class="text-capital">General Secretary</h4>
+                                                            <table class="table table-condensed">
+                                                                <thead>
+                                                                    <th>Total</th>
+                                                                    <th>Started</th>
+                                                                    <th>Completed</th>
+                                                                    <th>%</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>-->
                                         <div class="col-md-12 col-xs-12 col-sm-12">
 										    <div class="bg_ED pad_15 arrow_top">
 											   <div id="directChildActivityMeetingMemberDiv"></div>
@@ -1486,7 +1679,7 @@
 		//getUserTypeWiseNewsCounts();
 		//getDetailedPartyMainEditionsOverview();
 		//getDetailedPartyDistrictEditionsOverview();
-		getDetailedPartyNewsTypeAnalysis();
+		//getDetailedPartyNewsTypeAnalysis();
 	}
 	
 	
