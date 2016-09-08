@@ -1263,14 +1263,16 @@ public String getSelectedChildUserTypeMembersWithMeetingsCount(){
 	}
 	return Action.SUCCESS;
 }
-public String getDirectChildActivityMemberMeetingsDetails(){
-	LOG.info("Entered into getDirectChildActivityMemberMeetingsDetails()  of CoreDashboardAction");
+
+public String getDirectChildActivityMeetingMemberDetails()
+{
+	LOG.info("Entered into getDirectChildActivityMeetingMemberDetails()  of CoreDashboardAction");
 	try{
 		
-jObj = new JSONObject(getTask());
+		jObj = new JSONObject(getTask());
 		
-		Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
-		Long childUserTypeId = jObj.getLong("childUserTypeId");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long userTypeId = jObj.getLong("userTypeId");
 		String state = jObj.getString("state");
 		String startDateString = jObj.getString("startDateString");
 		String endDateString   = jObj.getString("endDateString");
@@ -1282,15 +1284,13 @@ jObj = new JSONObject(getTask());
 				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
 			}
 		}
-		
-		activityMembersList = coreDashboardPartyMeetingService.getDirectChildActivityMemberMeetingsDetails(parentActivityMemberId,childUserTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
+		activityMembersList = coreDashboardPartyMeetingService.getDirectChildActivityMemberMeetingsDetails(activityMemberId,userTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
 		
 	}catch(Exception e){
-		LOG.error("Exception raised at getDirectChildActivityMemberCommitteeDetails() method of CoreDashBoard", e);
+		LOG.error("Exception raised at getDirectChildActivityMeetingMemberDetails() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
 }
-
  public String getTopPoorMeetingLocations(){
 		LOG.info("Entered into getTopPoorMeetingLocations()  of CoreDashboardAction");
 		try{

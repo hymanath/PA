@@ -913,7 +913,7 @@
 		$("#SelectedUserTypeDetailsDiv").html('');
 	var str='';
 	if(result !=null && result.length >0){
-		str+='<ul class="list-inline slickPanelSlider">';
+		str+='<ul class="list-inline slickPanelSliderCommittee">';
 		var firstActivityMemberId;
 		var firstUserTypeId;
 		var firstChildActivityMemberId = "directChildActivityMemberDiv";
@@ -988,7 +988,7 @@
 		str+='</ul>';
 		
 		$("#SelectedUserTypeDetailsDiv").html(str);
-			$(".slickPanelSlider").slick({
+			$(".slickPanelSliderCommittee").slick({
 				 slide: 'li',
 				 slidesToShow: 3,
 				 slidesToScroll: 3,
@@ -1341,7 +1341,7 @@
 	$(document).on("click",".compareActivityMemberCls",function(){
 		//$(".slickPanelSlider").find("li").removeClass("active");
 		//$(this).addClass("active");
-		$(".slickPanelSlider").find("li").removeClass("panelActiveSlick");
+		$(".slickPanelSliderCommittee").find("li").removeClass("panelActiveSlick");
 		$(this).addClass("panelActiveSlick");
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 

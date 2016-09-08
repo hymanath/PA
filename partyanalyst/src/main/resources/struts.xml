@@ -13604,13 +13604,11 @@
    			<param name="root">activityMembersList</param>      
    		</result>
 	</action>
-	
-	<action name="getDirectChildActivityMemberCommitteeDetailsAction" class="coreDashboardAction" method="getDirectChildActivityMemberCommitteeDetails">
+	<action name="getDirectChildActivityMeetingMemberDetailsAction" class="coreDashboardAction" method="getDirectChildActivityMeetingMemberDetails">
 		<result type="json" name="success">
    			<param name="root">activityMembersList</param>      
    		</result>
 	</action>
-	
 	
 	<action name="getPartyMeetingTypeByPartyMeetingMainTypeAction" class="coreDashboardAction" method="getPartyMeetingTypeByPartyMeetingMainType">
 		<result type="json" name="success">
