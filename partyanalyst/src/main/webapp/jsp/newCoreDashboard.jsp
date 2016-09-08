@@ -434,7 +434,7 @@
 									</ul>
 								  </div> 
 								</div>
-								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId"></div>  
+								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
 									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
