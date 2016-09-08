@@ -1598,10 +1598,10 @@ margin-top:20px;
 {
 	background:#fff;
 	border:1px solid #ddd;
-	border-radius:4px;
 	padding:5px 8px;
 	cursor:pointer;
 	text-transform:capitalize;
+	margin-left:-4px;
 }
 
 .newsComparisonUl li.active 
@@ -1639,4 +1639,9 @@ margin-top:20px;
 .debateSpokesCls
 {
 	margin-top:-6px;
+}
+.newsComparisonHeading
+{
+	background-color:#CACFD3 !important;
+	color:#555 !important;	
 }
