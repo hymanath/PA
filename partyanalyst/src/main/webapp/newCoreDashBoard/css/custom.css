@@ -1626,3 +1626,17 @@ margin-top:20px;
 	border:1px solid #4B5763;
 	padding:3px 5px 6px 6px;
 }
+.tableDebatesMain tr td:first-child
+{
+	font-size:18px;
+	width:90px !important;
+}
+.tableDebatesMainText tr td:first-child
+{
+	font-size:14px;
+	width:90px !important;
+}
+.debateSpokesCls
+{
+	margin-top:-6px;
+}
