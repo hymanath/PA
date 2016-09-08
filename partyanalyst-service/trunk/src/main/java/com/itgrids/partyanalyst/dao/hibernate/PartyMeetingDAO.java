@@ -1450,6 +1450,97 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		return query.list();
 	}
     
-    
+    public List<Object[]> getTopPoorMeetingLocations(CommitteeInputVO committeeBO){
+		
+		StringBuilder sbS = new StringBuilder();
+		sbS.append("select count(distinct model.partyMeetingId)");//0
+		StringBuilder sbE = new StringBuilder();
+		if(committeeBO.getGroupingLocation().equalsIgnoreCase("State")){
+			sbS.append(" ,model.meetingAddress.state.stateId,model.meetingAddress.state.stateName ");//2
+			sbE.append("  group by model.meetingAddress.state.stateId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("District")){
+			sbS.append(" ,model.meetingAddress.district.districtId,model.meetingAddress.district.districtName ");//2
+			sbE.append("  group by model.meetingAddress.district.districtId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Constituency")){
+			sbS.append(" ,model.meetingAddress.constituency.constituencyId,model.meetingAddress.constituency.name ");//2
+			sbE.append("  group by model.meetingAddress.constituency.constituencyId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Mandal")){
+			sbS.append(" ,model.meetingAddress.tehsil.tehsilId,model.meetingAddress.tehsil.tehsilName ");//2
+			sbE.append("  group by model.meetingAddress.tehsil.tehsilId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("localElectionBody")){
+			sbS.append(" ,model.meetingAddress.localElectionBody.localElectionBodyId,model.meetingAddress.localElectionBody.name " +//2
+					   " ,model.meetingAddress.localElectionBody.electionType.electionTypeId,model.meetingAddress.localElectionBody.electionType.electionType ");//4
+			sbE.append(" group by model.meetingAddress.localElectionBody.localElectionBodyId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Village")){
+			sbS.append(" ,model.meetingAddress.panchayat.panchayatId,model.meetingAddress.panchayat.panchayatName ");//2
+			sbE.append(" group by model.meetingAddress.panchayat.panchayatId ");
+		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Ward")){
+			sbS.append(" ,model.meetingAddress.ward.constituencyId,model.meetingAddress.ward.name ");//2
+			sbE.append(" group by model.meetingAddress.ward.constituencyId ");
+		}
+		StringBuilder sbM = new StringBuilder();
+		sbM.append(" from  PartyMeeting model where model.isActive = 'Y' and model.startDate is not null ");
+		
+		//locations related.
+		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+			sbM.append(" and model.meetingAddress.state.stateId in (:locationValues) ");
+		}
+		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			
+			sbM.append(" and model.meetingAddress.district.districtId in (:locationValues) ");
+			
+		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+			
+			sbM.append(" and model.meetingAddress.parliamentConstituency.constituencyId in (:locationValues) ");
+			
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			
+			sbM.append(" and model.meetingAddress.constituency.constituencyId in (:locationValues) ");
+			
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			
+			sbM.append(" and model.meetingAddress.tehsil.tehsilId in (:locationValues) ");
+		}
+		
+ 		if(committeeBO.getStartDate()!= null && committeeBO.getEndDate()!=null){
+			 sbM.append(" and date(model.startDate) between :startDate and :endDate ");	 
+		 }	
+		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+			sbM.append(" and model.meetingAddress.state.stateId = :stateId ");
+		}
+		if(committeeBO.getPartyMeetingTypeIds()!=null && committeeBO.getPartyMeetingTypeIds().size()>0){
+			sbM.append(" and model.partyMeetingTypeId in (:partyMeetingTypeIds) ");
+		}
+		
+		StringBuilder sbf = new StringBuilder().append(sbS).append(sbM).append(sbE);
+		
+		Query query = getSession().createQuery(sbf.toString());
+		
+		if(committeeBO.getPartyMeetingTypeIds()!=null && committeeBO.getPartyMeetingTypeIds().size()>0){
+			query.setParameterList("partyMeetingTypeIds",committeeBO.getPartyMeetingTypeIds());
+		}
+		
+		if(committeeBO.getStateId()!= null && committeeBO.getStateId() > 0l ){
+			query.setParameter("stateId",committeeBO.getStateId());
+		}
+		if(committeeBO.getStartDate()!= null && committeeBO.getEndDate()!=null){
+			query.setDate("startDate",committeeBO.getStartDate());
+			query.setDate("endDate",committeeBO.getEndDate());
+		}
+		//locations
+		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
+			query.setParameterList("locationValues",committeeBO.getStateIds());
+		}
+		else if(committeeBO.getDistrictIds() != null && committeeBO.getDistrictIds().size()>0){
+			query.setParameterList("locationValues",committeeBO.getDistrictIds());
+		}else if(committeeBO.getParliamentConstIds() != null && committeeBO.getParliamentConstIds().size()>0){
+			query.setParameterList("locationValues",committeeBO.getParliamentConstIds());
+		}else if(committeeBO.getAssemblyConstIds() != null && committeeBO.getAssemblyConstIds().size()>0){
+			query.setParameterList("locationValues",committeeBO.getAssemblyConstIds());
+		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
+			query.setParameterList("locationValues",committeeBO.getTehsilIds());
+		}
+		return query.list();
+    }
     
     }
