@@ -874,3 +874,37 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	$(".notesAreaNews").val('');	
 });
 
+$(document).on("click",".viewsLiClass",function(){
+	$(".mainBuildingDivClass").hide();
+	var divId = $(this).attr("attr_div_id");
+	$("#"+divId).show();
+});
+
+$(document).on("click","#comparisonPartyLiId",function(){
+	getChildUserTypesByItsParentUserType1();
+});
+function getChildUserTypesByItsParentUserType1(){
+		var jsObj = { parentUserTypeId : globalUserTypeId }
+		$.ajax({
+			type : 'POST',
+			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){	
+			buildChildUserTypesByItsParentUserType(result);
+		});			 
+	}
+
+function buildChildUserTypesByItsParentUserType(result){
+	var str ='';
+	if(result != null && result.length > 0){
+		str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+			str+='<ul class="comparisonSelect">';
+			for(var i in result){
+				str+='<li class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+			}
+			str+='</ul>';
+		str+='</div>';
+	}
+	$("#userTypeStrId").html(str);
+}	
