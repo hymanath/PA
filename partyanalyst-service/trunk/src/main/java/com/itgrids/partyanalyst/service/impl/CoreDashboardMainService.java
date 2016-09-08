@@ -3277,6 +3277,125 @@ public List<IdNameVO> getDistrictWiseCampAttendedMembers(){
 	}
 	return null;
 }
+public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate){
+	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
+	try{
+		List<Long> invitedCadreIds = new ArrayList<Long>();
+		List<Long> attendedCadreIds = new ArrayList<Long>();
+		List<Long> absentCadreIds = new ArrayList<Long>();
+		IdNameVO idNameVO = null;
+		Long cadreId = null;
+		Map<Long,IdNameVO> idAndMemberDtlsMap = new HashMap<Long,IdNameVO>();
+		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		List<Object[]> getInvitedMemberCadreId = trainingCampBatchAttendeeDAO.getInvitedMemberCadreId(distId,programId);
+		List<Object[]> getAttendedMemberCadreId = trainingCampAttendanceDAO.getAttendedMemberCadreId(distId,programId);
+		if(getInvitedMemberCadreId != null && getInvitedMemberCadreId.size() > 0){
+			for(Object[] obj : getInvitedMemberCadreId){
+				invitedCadreIds.add(obj[2] != null ? (Long)obj[2] : 0l);
+			}
+		}
+		if(getAttendedMemberCadreId != null && getAttendedMemberCadreId.size() > 0){
+			for(Object[] obj : getAttendedMemberCadreId){
+				attendedCadreIds.add(obj[2] != null ? (Long)obj[2] : 0l);
+			}
+		}
+		if(invitedCadreIds.size() > 0){
+			for(Long id : invitedCadreIds){
+				if(!(attendedCadreIds.contains(id))){
+					absentCadreIds.add(id);
+				}
+			}
+		}
+		if(attendedCadreIds.size() > 0){
+			List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getAttendedMembersForDist(attendedCadreIds); 
+			if(destWiseAttendedMembersDesignation != null && destWiseAttendedMembersDesignation.size() > 0){
+				for(Object[] obj : destWiseAttendedMembersDesignation){
+					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					if(idNameVO != null){
+						String status = idNameVO.getStatus();
+						if(obj[2] != null){
+							status = status+","+obj[2].toString();
+							idNameVO.setStatus(status);
+							idAndMemberDtlsMap.put(cadreId, idNameVO);
+						}else{
+							if(obj[3] != null){
+								status = status+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+								idNameVO.setStatus(status);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}
+						}
+						
+					}else{
+						idNameVO = new IdNameVO();
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						if(obj[2] != null){
+							idNameVO.setStatus(obj[2].toString());
+						}else if(obj[3] != null){
+							idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+						}else{
+							idNameVO.setStatus("");
+						}
+						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+						idNameVO.setWish("attended");
+						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+					}
+				}
+			}
+		}
+		if(idAndMemberDtlsMap.size() > 0){
+			idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
+			idAndMemberDtlsMap.clear();
+		}
+		if(absentCadreIds.size() > 0){
+			List<Object[]> destWiseAbsaentMembersDesignation = trainingCampAttendanceDAO.getAbsaentMembersForDist(absentCadreIds);  
+			if(destWiseAbsaentMembersDesignation != null && destWiseAbsaentMembersDesignation.size() > 0){
+				for(Object[] obj : destWiseAbsaentMembersDesignation){
+					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					if(idNameVO != null){
+						String status = idNameVO.getStatus();
+						if(obj[2] != null){
+							status = status+","+obj[2].toString();
+							idNameVO.setStatus(status);
+							idAndMemberDtlsMap.put(cadreId, idNameVO);
+						}else{
+							if(obj[3] != null){
+								status = status+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+								idNameVO.setStatus(status);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}
+						}
+						
+					}else{
+						idNameVO = new IdNameVO();
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						if(obj[2] != null){
+							idNameVO.setStatus(obj[2].toString());
+						}
+						else if(obj[3] != null){
+							idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+						}else{
+							idNameVO.setStatus("");
+						}
+						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+						idNameVO.setWish("absent");
+						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+					}
+				}
+			}
+		}  
+		if(idAndMemberDtlsMap.size() > 0){
+			idNameVOs.addAll(new ArrayList<IdNameVO>(idAndMemberDtlsMap.values()));
+		}
+		
+		return idNameVOs;
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at getDistrictWiseCampAttendedMembers() in CoreDashBoardMainService ",e); 
+	}
+	return null;
+}
 
 }
 
