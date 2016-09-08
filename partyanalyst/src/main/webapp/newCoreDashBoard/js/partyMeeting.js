@@ -129,19 +129,19 @@ $(document).on("click",".selectAll",function(){
 		      str+='<table class="table tableTraining">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
-					  str+='<h3>'+overAllResult.totalCount+'</h3>';
+					  str+='<h4>'+overAllResult.totalCount+'</h4>';
 					  str+='<p class="text-muted text-capital">total</p>';
 				  str+='</td>';
 				  str+='<td>';
-					  str+='<h3>'+overAllResult.conductedCount+'<span class="font-10 text-success">'+overAllResult.conductedCountPer+'%</span></h3>';
+					  str+='<h4>'+overAllResult.conductedCount+'<span class="font-10 text-success">'+overAllResult.conductedCountPer+'%</span></h4>';
 					  str+='<p class="text-muted text-capital">yes</p>';
 				  str+='</td>';
 				  str+='<td>';
-					  str+='<h3>'+overAllResult.notConductedCount+'<span class="font-10 text-success">'+overAllResult.notConductedCountPer+'%</span></h3>';
+					  str+='<h4>'+overAllResult.notConductedCount+'<span class="font-10 text-success">'+overAllResult.notConductedCountPer+'%</span></h4>';
 					  str+='<p class="text-muted text-capital">no</p>';
 				  str+='</td>';
 				  str+='<td>';
-					  str+='<h3>'+overAllResult.mayBeCount+'<span class="font-10 text-success">'+overAllResult.mayBeCountPer+'%</span></h3>';
+					  str+='<h4>'+overAllResult.mayBeCount+'<span class="font-10 text-success">'+overAllResult.mayBeCountPer+'%</span></h4>';
 					  str+='<p class="text-muted text-capital">maybe</p>';
 				  str+='</td>';
 			  str+='</tr>';
@@ -152,7 +152,7 @@ $(document).on("click",".selectAll",function(){
 		 if(levelWiseResult != null && levelWiseResult.length > 0){
 		   for(var i in levelWiseResult){
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-				 str+='<h4 class="text-capitalize m_top10">'+levelWiseResult[i].name+'</h4>';
+				 str+='<h4 class="text-capitalize">'+levelWiseResult[i].name+'</h4>';
 				str+='<table class="table tableTraining bg_ED">';
 					 str+='<tbody><tr>';
 						 str+='<td>';
@@ -235,7 +235,7 @@ $(document).on("click",".selectAll",function(){
 			   }else{
 				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
 			   }
-			  str+='<div id="genSecMeeting'+i+'" style="width:100%;height:100px;"></div>';
+			  str+='<div id="genSecMeeting'+i+'" style="width:100%;height:80px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -478,10 +478,32 @@ $(document).on("click",".meetingLiCls",function(){
 	$(document).on("click",".meetingsIconExpand",function(){
 		$(".dateRangePickerClsForMeetings").toggleClass("hide");	
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
-	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
+		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".meetingsHiddenBlock,.moreMeetingsBlocks").hide();
+		}else{
+			getUserTypeWiseTotalEligibleAndAttendedCnt();
+		}
+		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon").hide();
+			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerCls").toggleClass("hide");
+			$(".moreBlocksIcon").removeClass("unExpandBlock");
+		}
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
 		getChildUserTypesByItsParentUserTypeForMeeting();
@@ -545,6 +567,34 @@ function buildLevelWiseHighCharts(result){
 			 slidesToShow: 4,
 			 slidesToScroll: 2,
 			 infinite: false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: true,
+					dots: true
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
 		});
 	if(levelWiseResult != null && levelWiseResult.length > 0){
 	  var length = levelWiseResult.length - 1;
@@ -784,52 +834,54 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 					str+='</div>';
 					str+='<div class="panel-body">';
 						str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
-						str+='<table class="table table-condensed">';
-							str+='<thead>';
-							 str+='<th>Total</th>';
-							  str+='<th colspan="2">Yes</th>';
-							  str+='<th colspan="2">No</th>';
-							  str+='<th colspan="2">Maybe</th>';
-						 str+='</thead>';
-							str+='</thead>';
-							str+='<tr>';
-							if(result[i].totalMeetingCnt !=null && result[i].totalMeetingCnt >0){
-								str+='<td>'+result[i].totalMeetingCnt+'</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].conductedMeetingCnt !=null && result[i].conductedMeetingCnt >0){
-								str+='<td>'+result[i].conductedMeetingCnt+'</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].conductedMeetingPerc !=null && result[i].conductedMeetingPerc >0){
-								str+='<td>'+result[i].conductedMeetingPerc+'%</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].notConductedMeetingCnt !=null && result[i].notConductedMeetingCnt >0){
-								str+='<td>'+result[i].notConductedMeetingCnt+'</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].notConductedMeetingPerc !=null && result[i].notConductedMeetingPerc >0){
-								str+='<td>'+result[i].notConductedMeetingPerc+'%</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].mayBeMeetingCnt !=null && result[i].mayBeMeetingCnt >0){
-								str+='<td>'+result[i].mayBeMeetingCnt+'</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							if(result[i].mayBeMeetingPerc !=null && result[i].mayBeMeetingPerc >0){
-								str+='<td>'+result[i].mayBeMeetingPerc+'%</td>';
-							}else{
-								str+='<td> - </td>';
-							}
-							str+='</tr>';
-						str+='</table>';
+						str+='<div class="table-responsive">';
+							str+='<table class="table table-condensed">';
+								str+='<thead>';
+								 str+='<th>Total</th>';
+								  str+='<th colspan="2">Yes</th>';
+								  str+='<th colspan="2">No</th>';
+								  str+='<th colspan="2">Maybe</th>';
+							 str+='</thead>';
+								str+='</thead>';
+								str+='<tr>';
+								if(result[i].totalMeetingCnt !=null && result[i].totalMeetingCnt >0){
+									str+='<td>'+result[i].totalMeetingCnt+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result[i].conductedMeetingCnt !=null && result[i].conductedMeetingCnt >0){
+									str+='<td>'+result[i].conductedMeetingCnt+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result[i].conductedMeetingPerc !=null && result[i].conductedMeetingPerc >0){
+									str+='<td>'+result[i].conductedMeetingPerc+'%</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result[i].notConductedMeetingCnt !=null && result[i].notConductedMeetingCnt >0){
+									str+='<td>'+result[i].notConductedMeetingCnt+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result[i].notConductedMeetingPerc !=null && result[i].notConductedMeetingPerc >0){
+									str+='<td>'+result[i].notConductedMeetingPerc+'%</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result[i].mayBeMeetingCnt !=null && result[i].mayBeMeetingCnt >0){
+									str+='<td>'+result[i].mayBeMeetingCnt+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(result[i].mayBeMeetingPerc !=null && result[i].mayBeMeetingPerc >0){
+									str+='<td>'+result[i].mayBeMeetingPerc+'%</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								str+='</tr>';
+							str+='</table>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</li>';

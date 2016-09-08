@@ -150,6 +150,11 @@
 	{
 		font-size:12px;
 	}
+	.activeUlCls
+	{
+		float:right;
+		margin-top:10px;
+	}
 }
 @media (min-width:1023px) and (max-width:1024px) {
 	.committesBlockUl li
