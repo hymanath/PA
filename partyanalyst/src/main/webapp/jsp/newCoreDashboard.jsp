@@ -432,12 +432,12 @@
 										<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
 										<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 									</ul>
-								  </div>
+								  </div> 
 								</div>
 								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId"></div>  
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
-									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more"></i>
+									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
 						    </div>
 							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls">
 									<ul class="list-inline pull-right activeUlCls">
@@ -1147,7 +1147,6 @@
 											</div>
 										</div>
 									</div>
-									
 									<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
 										<!--2nd block-->
 									</div>
@@ -1554,6 +1553,38 @@
      <!--End -->
 	</div>
 </div> 
+<!--model start -->
+<!-- Modal -->
+<div class="modal fade" id="myModelId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Training Program Member Details</h4>
+      </div>
+      <div class="modal-body"> 
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="pull-right" id="positionId">  
+				
+			</div> 
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="table-responsive" id="memberId">
+				  
+				</div>
+				<div id="processingImgId" style="display:none;"></div>    
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--model end -->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
@@ -1940,7 +1971,9 @@
 		$("#stateLevelCampId").html(str);        
 	}
 $(document).on("click",".stateLevelTraining",function(){
-	stateLevelCampDetailsRepresentativeWise()
+	getStateLevelCampCount();   
+	stateLevelCampMembersDistWise();       
+	stateLevelCampDetailsRepresentativeWise() 
 	var val = $(this).attr("attr_location");
 	$("#clickInfoId").html(val);
 	$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
@@ -1949,9 +1982,11 @@ $(document).on("click",".stateLevelTraining",function(){
 	$("#detailedId").removeClass("trainingDetailed");
 	$("#detailedId").addClass("trainingCampDetailed");
 	$("#clickInfoId").show();
-	$(".trainingComparison").hide();
+	$(".trainingComparison").hide();  
 });
 $(document).on("click",".stateLevelTrainingInd",function(){
+	getStateLevelCampCount();     
+	stateLevelCampMembersDistWise(); 
 	stateLevelCampDetailsRepresentativeWise()
 	var val = $(this).attr("attr_location");
 	$("#clickInfoId").html(val); 
@@ -1964,6 +1999,8 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 });
 $(document).on("click",".programSkillsCls",function(){
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
+	getTrainingCampProgramsDetailsCntByDistrict();  
+	getTrainingProgramBasicCnt();
 		$("#clickInfoId").hide(); 
 
 	$("#switchButtonId").addClass("moreTrainingBlocksIcon");
@@ -1975,7 +2012,7 @@ $(document).on("click",".programSkillsCls",function(){
 $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	//$("#switchButtonId").removeClass("showCls");
 	//$("#switchButtonId").addClass("hdCls");
-	if($("#switchButtonId").hasClass("showCls")){
+	if($("#switchButtonId").hasClass("showCls")){ 
 		$(".trainingDetailedBlock").hide();
 		$("#switchButtonId").addClass("hdCls");
 		$("#switchButtonId").removeClass("showCls");  
