@@ -1546,7 +1546,8 @@ function buildStateLevelCampDetailsDistWise(result){
 		}
 		$("#districtWiseProgramCntDivId").html(str);
 		if(result != null && result.length > 0){
-		//for(var i in result){
+		//for(var i in result){ 
+			var districtIdArr=[];
 			var districtNamesArray =[];
 			var districtWiseAttendedPercArray = [];
 			var districtWiseYetToTrainPercArray = [];
@@ -1554,6 +1555,7 @@ function buildStateLevelCampDetailsDistWise(result){
 				//debugger; 
 				for(var j in result){
 					districtNamesArray.push(result[j].name);
+					districtIdArr.push(result[j].districtid);
 					var precent = (result[j].actualCount*(100/result[j].count)).toFixed(2);
 					districtWiseAttendedPercArray.push(parseFloat(precent));  
 					var abs = 100-precent;
@@ -1564,16 +1566,17 @@ function buildStateLevelCampDetailsDistWise(result){
 							$('#trainingLocationDivId').highcharts({  
 								colors: ['#F56800','#53BF8B'],
 								chart: {
-									type: 'column'
+									type: 'column'  
 								},
 								title: {
-									text: ''
+									text: 'Official Spokesperson'
 								},
 								xAxis: {
 									 min: 0,
 										 gridLineWidth: 0,
 										 minorGridLineWidth: 0,
 										categories: districtNamesArray,
+										
 									labels: {
 											rotation: -45,
 											style: {
@@ -1636,9 +1639,84 @@ function buildStateLevelCampDetailsDistWise(result){
 								}]
 							});
 						});
-		//}
+		//}districtIdArr
+		$.each($("#districtWiseProgramCntDivId").find(".highcharts-xaxis-labels").find("tspan"),function(index,item){ 
+			$(this).attr("style","cursor:pointer;");    
+			//$(this).addClass("distDtlsCls");
+			$(this).attr("class","distDtlsCls");    
+			$(this).attr("state_Program_Id","6");
+			$(this).attr("attr_dist_id",districtIdArr[index]);  
+		});    
 	}else{
 		$("#districtWiseProgramCntDivId").html("No Data Available");
 	}	
 }
-//end
+$(document).on("click",".distDtlsCls",function(){ 
+	$("#myModelId").modal('show');
+	$("#memberId").html(''); 
+	$("#processingImgId").show();	  
+	$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
+	var distId = $(this).attr("attr_dist_id");  
+	var programId = $(this).attr("state_Program_Id");
+	var stateId = globalStateId;
+	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	   
+ 	var jsObj ={ 
+	    distId : distId,
+		programId : programId,  
+		stateId : stateId,
+		dateStr : dateStr
+	}
+	  $.ajax({
+			type : 'POST',
+			url : 'getCandidateDtlsPerDist.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#processingImgId").hide();    
+			if(result != null && result.length > 0){
+				buildMemberRslt(result);
+				
+			}else{
+				$("#memberId").html('No Data Available');   
+			}
+		});	
+});
+function buildMemberRslt(result){ 
+	var str2 = '';
+	var totalMember = result.length;
+	var attendedMember = 0;
+	var absent = 0;
+	
+	var str = '';
+	str+='<table class="table table-condensed">';
+	str+='<thead>';
+		str+='<th>NAME</th>';
+		str+='<th>DESIGNATION</th>';
+		str+='<th>CONTACT NUMBER</th>'; 
+		str+='<th>STATUS</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+		if(result[i].wish=="attended"){
+			attendedMember+=1;
+		}
+		str+='<tr>'; 
+			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			if(result[i].status==""){ 
+				str+='<td>-</td>';
+			}else{    
+				str+='<td>'+result[i].status.toUpperCase()+'</td>';   
+			}  
+			str+='<td>'+result[i].mobileNo+'</td>';  
+			str+='<td>'+result[i].wish.toUpperCase()+'</td>'; 			
+		str+='</tr>';   
+	}
+	absent = totalMember - attendedMember;
+	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
+	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>';  
+	str2+='<span class="label label-warning">Yet to train-'+absent+'</span>'; 
+	str+='</tbody>';
+	$("#positionId").html(str2);
+	$("#memberId").html(str);   
+}
