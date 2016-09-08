@@ -1988,7 +1988,7 @@
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
 	});
-	
+	//getTopPoorMeetingLocations();
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">

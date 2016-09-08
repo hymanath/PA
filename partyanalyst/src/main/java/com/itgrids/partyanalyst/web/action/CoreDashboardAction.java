@@ -17,8 +17,9 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
-import com.itgrids.partyanalyst.dto.DashboardCommentVO;  
+import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -56,6 +57,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<UserTypeVO> activityMembersList;
 	private PartyMeetingsVO partyMeetingsVO;
 	private List<PartyMeetingsVO> partyMeetingsVOList;
+	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -240,6 +242,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public List<PartyMeetingsDataVO> getPartyMeetingDataVOList() {
+		return partyMeetingDataVOList;
+	}
+
+	public void setPartyMeetingDataVOList(
+			List<PartyMeetingsDataVO> partyMeetingDataVOList) {
+		this.partyMeetingDataVOList = partyMeetingDataVOList;
 	}
 
 	//Implementation method
@@ -1280,4 +1291,31 @@ jObj = new JSONObject(getTask());
 	return Action.SUCCESS;
 }
 
+ public String getTopPoorMeetingLocations(){
+		LOG.info("Entered into getTopPoorMeetingLocations()  of CoreDashboardAction");
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			String state = jObj.getString("state");
+			String startDateString = jObj.getString("startDateString");
+			String endDateString   = jObj.getString("endDateString");
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			
+			partyMeetingDataVOList = coreDashboardPartyMeetingService.getTopPoorMeetingLocations(activityMemberId,partyMeetingTypeIds,state,startDateString,endDateString);
+			
+	}catch(Exception e){
+		LOG.error("Exception raised at getTopPoorMeetingLocations() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+  }
+ 
 }

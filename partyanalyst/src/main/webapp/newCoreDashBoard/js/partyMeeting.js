@@ -861,3 +861,28 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 		$("#childActivityMemberDivIdForMeeting").html("No Data Available");
 	}
 	}
+	
+	function getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType){
+	 
+	   var state = globalState;
+	   
+	   var dateString = $('#dateRangeId').val();
+	   var partyMeetingTypeIds = [];
+	   
+	   var jsObj ={  activityMemberId : 3,
+					 state:state,
+					 partyMeetingTypeIds : partyMeetingTypeIds,
+ 			         startDateString :   '01/01/2013',
+					 endDateString   :   '09/09/2016'
+				  }
+	   
+	   	$.ajax({
+			type : 'POST',
+			url : 'getTopPoorMeetingLocationsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			
+		});
+	}

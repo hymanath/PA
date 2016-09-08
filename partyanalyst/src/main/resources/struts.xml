@@ -13622,5 +13622,10 @@
    			<param name="root">idNameVoList</param> 
    		</result>
 	</action>
+	<action name="getTopPoorMeetingLocationsAction" class="coreDashboardAction" method="getTopPoorMeetingLocations">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingDataVOList</param> 
+   		</result>
+	</action>
 </package>
 </struts>
