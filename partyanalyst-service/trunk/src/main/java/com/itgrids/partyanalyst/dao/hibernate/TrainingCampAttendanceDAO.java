@@ -1197,7 +1197,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 }
 	 public List<Object[]> getDestWiseAttendedMembers(Long stateId, Long campId, Long programId){
 		 StringBuilder queryString = new StringBuilder();
-		   queryString.append(" select D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, tdp_cadre TC, user_address UA, district D "+
+		 queryString.append(" select D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, tdp_cadre TC, user_address UA, district D "+
 				   			  " where "+
 				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
 				   			  " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
@@ -1207,12 +1207,74 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 				   			  " (D.district_id BETWEEN 11 and 23) and"+
 				   			  " UA.district_id = D.district_id "+
 				   			  " group by D.district_id order by D.district_id ");
-		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
-		   query.setParameter("campId", campId);
-		   query.setParameter("programId", programId);  
+		 SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
+		 query.setParameter("campId", campId);
+		 query.setParameter("programId", programId);  
 		 
-		   return query.list();
-	 }
+		 return query.list();
+	}
 	
+	public List<Object[]> getAttendedMemberCadreId(Long distId,Long programId){
+		StringBuilder queryString = new StringBuilder();
+		   queryString.append(" select distinct D.district_id as id,D.district_name as name,  A.tdp_cadre_id as tid from "+
+				   			  " training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, "+
+				   			  " tdp_cadre TC, user_address UA, district D "+
+				   			  " where "+
+				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
+				   			  " TCS.training_camp_program_id = (:programId) and "+
+				   			  " TCA.attendance_id = A.attendance_id and "+
+				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
+				   			  " TC.address_id = UA.user_address_id and "+
+				   			  " D.district_id = (:distId) and "+
+				   			  " UA.district_id = D.district_id "+
+				   			  " order by D.district_id ");
+		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("tid", Hibernate.LONG);
+		   query.setParameter("distId", distId);
+		   query.setParameter("programId", programId);
+		  
+		   return query.list(); 
+	}
+	public List<Object[]> getAttendedMembersForDist(List<Long> attendedCadreIds){
+		StringBuilder queryString = new StringBuilder();
+		   queryString.append(" SELECT TC.tdp_cadre_id,TC.first_name,PRT.position,TR.role,TCL.tdp_committee_level,TC.mobile_no "+
+				   			  " FROM tdp_cadre TC "+
+				   			  " LEFT OUTER JOIN tdp_cadre_candidate TCC ON TC.tdp_cadre_id = TCC.tdp_cadre_id "+
+				   			  " LEFT OUTER JOIN public_representative  PR ON TCC.candidate_id = PR.candidate_id "+
+				   			  " LEFT OUTER JOIN public_representative_type PRT ON PR.public_representative_type_id = PRT.public_representative_type_id "+
+				   			  " LEFT OUTER JOIN tdp_committee_member TCM ON TC.tdp_cadre_id = TCM.tdp_cadre_id AND TCM.is_active = 'Y' "+
+				   			  " LEFT OUTER JOIN tdp_committee_role TCR ON TCM.tdp_committee_role_id = TCR.tdp_committee_role_id "+
+				   			  " LEFT OUTER JOIN tdp_roles TR ON TCR.tdp_roles_id = TR.tdp_roles_id "+
+				   			  " LEFT OUTER JOIN tdp_committee TCT ON TCR.tdp_committee_id = TCT.tdp_committee_id "+
+				   			  " LEFT OUTER JOIN tdp_committee_level TCL ON TCT.tdp_committee_level_id = TCL.tdp_committee_level_id "+
+				   			  " WHERE "+
+				   			  " TC.enrollment_year = 2014 AND "+
+				   			  " TC.is_deleted = 'N' AND "+
+				   			  " TC.tdp_cadre_id IN (:attendedCadreIds) ");
+		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("tdp_cadre_id", Hibernate.LONG).addScalar("first_name", Hibernate.STRING).addScalar("position", Hibernate.STRING).addScalar("role", Hibernate.STRING).addScalar("tdp_committee_level", Hibernate.STRING).addScalar("mobile_no", Hibernate.STRING);
+		   query.setParameterList("attendedCadreIds", attendedCadreIds);
+		    
+		   return query.list(); 
+	}
+	public List<Object[]> getAbsaentMembersForDist(List<Long> absentCadreIds){
+		StringBuilder queryString = new StringBuilder();
+		   queryString.append(" SELECT TC.tdp_cadre_id,TC.first_name,PRT.position,TR.role,TCL.tdp_committee_level,TC.mobile_no "+
+				   			  " FROM tdp_cadre TC "+
+				   			  " LEFT OUTER JOIN tdp_cadre_candidate TCC ON TC.tdp_cadre_id = TCC.tdp_cadre_id "+
+				   			  " LEFT OUTER JOIN public_representative  PR ON TCC.candidate_id = PR.candidate_id "+
+				   			  " LEFT OUTER JOIN public_representative_type PRT ON PR.public_representative_type_id = PRT.public_representative_type_id "+
+				   			  " LEFT OUTER JOIN tdp_committee_member TCM ON TC.tdp_cadre_id = TCM.tdp_cadre_id AND TCM.is_active = 'Y' "+
+				   			  " LEFT OUTER JOIN tdp_committee_role TCR ON TCM.tdp_committee_role_id = TCR.tdp_committee_role_id "+
+				   			  " LEFT OUTER JOIN tdp_roles TR ON TCR.tdp_roles_id = TR.tdp_roles_id "+
+				   			  " LEFT OUTER JOIN tdp_committee TCT ON TCR.tdp_committee_id = TCT.tdp_committee_id "+
+				   			  " LEFT OUTER JOIN tdp_committee_level TCL ON TCT.tdp_committee_level_id = TCL.tdp_committee_level_id "+
+				   			  " WHERE "+
+				   			  " TC.enrollment_year = 2014 AND "+
+				   			  " TC.is_deleted = 'N' AND "+
+				   			  " TC.tdp_cadre_id IN (:absentCadreIds) ");
+		   SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("tdp_cadre_id", Hibernate.LONG).addScalar("first_name", Hibernate.STRING).addScalar("position", Hibernate.STRING).addScalar("role", Hibernate.STRING).addScalar("tdp_committee_level", Hibernate.STRING).addScalar("mobile_no", Hibernate.STRING);
+		   query.setParameterList("absentCadreIds", absentCadreIds);
+		    
+		   return query.list();   
+	}
 	
 }

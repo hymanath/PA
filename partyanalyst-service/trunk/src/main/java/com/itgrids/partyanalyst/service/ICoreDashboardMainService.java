@@ -41,4 +41,6 @@ public interface ICoreDashboardMainService {
 	public List<IdNameVO> getDistrictWiseCampAttendedMembers();
 	public List<CoreDebateVO> getRolesPerformanceOfCandidate(String startDateStr,String endDateStr,List<Long> roles,String state);
 	public List<IdNameVO> getDebateRolesNew();
+	public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate);  
+
 }
