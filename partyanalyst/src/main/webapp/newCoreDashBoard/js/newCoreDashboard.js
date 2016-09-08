@@ -143,6 +143,10 @@
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 	});
+	$(document).on("click",".newsComparisonUl li.a",function(){
+		$(this).closest("ul").find("li.a").removeClass("active");
+		$(this).addClass("active");
+	});
 	
 	function customBuildGraph()
 	{
