@@ -1447,6 +1447,10 @@
       initialiseDatePicker();
 	  initialiseDatePickerForTrainingProgram();
 	  var loggedInUserId = '${sessionScope.USER.registrationID}';
+	  
+	  if(loggedInUserId == null || loggedInUserId == '')
+		  loggedInUserId = 1;
+		  
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
 	  var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
