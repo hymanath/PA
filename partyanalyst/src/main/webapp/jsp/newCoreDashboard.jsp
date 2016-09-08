@@ -1675,7 +1675,7 @@
 		//Meeting
 		getPartyMeetingTypeByPartyMeetingMainType();
 		//news please dont remove
-		//getNewsBasicCounts();
+		getNewsBasicCounts();
 		//getUserTypeWiseNewsCounts();
 		//getDetailedPartyMainEditionsOverview();
 		//getDetailedPartyDistrictEditionsOverview();
