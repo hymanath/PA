@@ -125,7 +125,7 @@ $(document).on("click",".selectAll",function(){
 		var str='';
 		  str+'<div class="row">';
 		  if(overAllResult != null){
-			 str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">';
+			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 		      str+='<table class="table tableTraining">';
 			  str+='<tbody><tr>';
 				  str+='<td>';
@@ -150,10 +150,10 @@ $(document).on("click",".selectAll",function(){
 		  str+='</div>';  
 		  }
 		 if(levelWiseResult != null && levelWiseResult.length > 0){
-			  for(var i in levelWiseResult){
-				 str+='<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 m_top10">';
+		   for(var i in levelWiseResult){
+			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 				 str+='<h4 class="text-capitalize m_top10">'+levelWiseResult[i].name+'</h4>';
-				 str+='<table class="table tableTraining bg_ED">';
+				str+='<table class="table tableTraining bg_ED">';
 					 str+='<tbody><tr>';
 						 str+='<td>';
 							 str+='<p class="text-muted text-capitalize">total</p>';
