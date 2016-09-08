@@ -910,11 +910,11 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Positive</p>
-													<span id="tdpMainPositive">0</span><small id="tdpMainPositivePercent" class="text-success">0%</small>
+													<span id="tdpMainPositive">0</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-success">0%</small>
+													<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-success"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -928,17 +928,17 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Positive</p>
-													<span id="tdpDistPositive">0</span><small class="text-success" id="tdpDistPositivePercent">0%</small>
+													<span id="tdpDistPositive">0</span><small class="text-success" id="tdpDistPositivePercent"> 0%</small>
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="tdpDistNegative">0</span><small class="text-success" id="tdpDistNegativePercent">0%</small>
+													<span id="tdpDistNegative">0</span><small class="text-success" id="tdpDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
 									</div>
 								</div>
-								<h4 class="text-capital m_top20"><span class="headingColor">Opposition Parties</span></h4>
+								<h4 class="text-capital m_top20"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
 										<table class="table table-condensed tableNews bg_ED">
@@ -949,11 +949,11 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Positive</p>
-													<span id="oppPositiveTotal">0</span><small class="text-success" id="oppPositiveTotalPercent">0%</small>
+													<span id="oppPositiveTotal">0</span><small class="text-success" id="oppPositiveTotalPercent"> 0%</small>
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="oppNegativeTotal">0</span><small class="text-success" id="oppNegativeTotalPercent">0%</small>
+													<span id="oppNegativeTotal">0</span><small class="text-success" id="oppNegativeTotalPercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -963,10 +963,10 @@
 													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
 												</td>
 												<td>
-													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent">0%</small>
+													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="ysrcMainNegative">0</span><small class="text-success" id="ysrcMainNegativePercent">0%</small>
+													<span id="ysrcMainNegative">0</span><small class="text-success" id="ysrcMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -974,10 +974,10 @@
 													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incMainTotal">0</span>
 												</td>
 												<td>
-													<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent">0%</small>
+													<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="incMainNegative">0</span><small class="text-success" id="incMainNegativePercent">0%</small>
+													<span id="incMainNegative">0</span><small class="text-success" id="incMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -985,10 +985,10 @@
 													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpMainTotal">0</span>
 												</td>
 												<td>
-													<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent">0%</small>
+													<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="bjpMainNegative">0</span><small class="text-success" id="bjpMainNegativePercent">0%</small>
+													<span id="bjpMainNegative">0</span><small class="text-success" id="bjpMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1002,11 +1002,11 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Positive</p>
-													<span id="oppDistPositive">0</span><small class="text-success" id="oppDistPositivePercent">0%</small>
+													<span id="oppDistPositive">0</span><small class="text-success" id="oppDistPositivePercent"> 0%</small>
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="oppDistNegative">0</span><small class="text-success" id="oppDistNegativePercent">0%</small>
+													<span id="oppDistNegative">0</span><small class="text-success" id="oppDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1016,10 +1016,10 @@
 													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcDistTotal">0</span>
 												</td>
 												<td>
-													<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent">0%</small>
+													<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="ysrcDistNegative">0</span><small class="text-success" id="ysrcDistNegativePercent">0%</small>
+													<span id="ysrcDistNegative">0</span><small class="text-success" id="ysrcDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1027,10 +1027,10 @@
 													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incDistTotal">0</span>
 												</td>
 												<td>
-													<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent">0%</small>
+													<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="incDistNegative">0</span><small class="text-success" id="incDistNegativePercent">0%</small>
+													<span id="incDistNegative">0</span><small class="text-success" id="incDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1038,10 +1038,10 @@
 													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpDistTotal">0</span>
 												</td>
 												<td>
-													<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent">0%</small>
+													<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="bjpDistNegative">0</span><small class="text-success" id="bjpDistNegativePercent">0%</small>
+													<span id="bjpDistNegative">0</span><small class="text-success" id="bjpDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1058,11 +1058,11 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Positive</p>
-													<span id="govtMainPositive">0</span><small class="text-success" id="govtMainPositivePercent">0%</small>
+													<span id="govtMainPositive">0</span><small class="text-success" id="govtMainPositivePercent"> 0%</small>
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="govtMainNegative">0</span><small class="text-success" id="govtMainNegativePercent">0%</small>
+													<span id="govtMainNegative">0</span><small class="text-success" id="govtMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1076,11 +1076,11 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">positive</p>
-													<span id="govtDistPositive">0</span><small class="text-success" id="govtDistPositivePercent">0%</small>
+													<span id="govtDistPositive">0</span><small class="text-success" id="govtDistPositivePercent"> 0%</small>
 												</td>
 												<td>
 													<p class="text-capital text-muted">negative</p>
-													<span id="govtDistNegative">0</span><small class="text-success" id="govtDistNegativePercent">0%</small>
+													<span id="govtDistNegative">0</span><small class="text-success" id="govtDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
