@@ -639,6 +639,11 @@ $(document).on("click",".trainingIconExpand",function(){
 		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
 		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
 		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
 	}
 	
 	 setTimeout(function(){
