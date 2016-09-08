@@ -61,7 +61,7 @@
             	<div class="col-md-7 col-xs-12 col-sm-7">
                 	<ul class="nav navbar-nav navbar-left headerProfileName">
                         <li class="dropdown profileDropDown toggleViewIcon">
-                          <a style="cursor:pointer;">ASHOK DAKAVARAM 
+                          <a style="cursor:pointer;">KALA VENKATA RAO 
                           	<span class="caretBackground">
                             	<span class="fa fa-sort-desc" aria-hidden="true" style="color: rgb(255, 255, 255); margin-left: -1px;"></span>
                             </span>
