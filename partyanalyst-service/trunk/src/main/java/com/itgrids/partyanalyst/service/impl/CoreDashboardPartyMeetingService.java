@@ -838,4 +838,246 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		         return perc2.compareTo(perc1);
 		    }
 		}; 
+  public List<PartyMeetingsVO> getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues){
+	  
+	  List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>(0);
+	    Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+	    Map<Long,Map<Long,PartyMeetingsVO>> meetingsDtlsMap = new HashMap<Long, Map<Long,PartyMeetingsVO>>(0);
+	    Long userAccessLevelId=0l;
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date fromDate=null;
+		Date toDate=null;
+	    List<Long> locationValues=null;
+	
+	   try{
+		   if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+				 fromDate = sdf.parse(fromDateStr);
+				 toDate = sdf.parse(toDateStr);
+			 }
+			
+		  List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				 if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				 }
+				 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			}
+		   }
+		    if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+				  for (Entry<Long,Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+					   locationValues = new ArrayList<Long>(entry.getValue());
+					   List<Object[]> rtrnObjList = null;
+					   if(entry.getKey().longValue()==5l && locationValues != null && locationValues.size() == 1){
+						   rtrnObjList = partyMeetingStatusDAO.getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(entry.getKey(),locationValues, stateId, fromDate, toDate, partyMeetingTypeValues, "tehsil");
+						   setDataToMap(rtrnObjList,meetingsDtlsMap);
+						   rtrnObjList = partyMeetingStatusDAO.getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(entry.getKey(),locationValues, stateId, fromDate, toDate, partyMeetingTypeValues, "townDivision");
+						   setDataToMap(rtrnObjList,meetingsDtlsMap);
+					   }else{
+						   rtrnObjList = partyMeetingStatusDAO.getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(entry.getKey(),locationValues, stateId, fromDate, toDate, partyMeetingTypeValues,null);// userAccessLevelId,locationValues,
+						   setDataToMap(rtrnObjList,meetingsDtlsMap);
+					   }
+				}
+			  }
+		    // merging mandal town division data
+		    Map<Long,PartyMeetingsVO> mandalMap = meetingsDtlsMap.get(4l);
+		    Map<Long,PartyMeetingsVO> townMap = meetingsDtlsMap.get(5l);
+		    Map<Long,PartyMeetingsVO> divisionMap = meetingsDtlsMap.get(6l);
+		    
+		    Map<Long,PartyMeetingsVO> mandalTwnDivisionMap = new HashMap<Long, PartyMeetingsVO>(0);
+		    
+		     if(mandalMap != null){
+		    	 mandalTwnDivisionMap.putAll(mandalMap);
+		    	 for(Entry<Long,PartyMeetingsVO> entry:mandalTwnDivisionMap.entrySet()){
+		    		 Long locationId = entry.getKey();
+		    		 PartyMeetingsVO mandalVO = entry.getValue();
+		    		 if(townMap != null){
+		    			 if(townMap.get(locationId) != null){
+		    				 mergeRequiredData(mandalVO,townMap.get(locationId)); 
+		    			 }
+		    		 }
+		    		 if(divisionMap != null){
+		    			 if(divisionMap.get(locationId) != null){
+		    				 mergeRequiredData(mandalVO,divisionMap.get(locationId)); 
+		    			 }
+		    		 }
+		    	 }
+		     }else if(townMap != null) {
+		    		 mandalTwnDivisionMap.putAll(townMap); 
+		    		 for(Entry<Long,PartyMeetingsVO> entry:mandalTwnDivisionMap.entrySet()){
+			    		 Long locationId = entry.getKey();
+			    		 PartyMeetingsVO townVO = entry.getValue();
+			    		 if(divisionMap != null){
+			    			 if(divisionMap.get(locationId) != null){
+			    				 mergeRequiredData(townVO,divisionMap.get(locationId)); 
+			    			 }
+			    		 }
+			    	 }
+		     }else if(divisionMap != null){
+		    	 mandalTwnDivisionMap.putAll(divisionMap);  
+		     }
+		     
+		    // Merging village ward data
+		     Map<Long,PartyMeetingsVO> villageMap = meetingsDtlsMap.get(7l);
+			 Map<Long,PartyMeetingsVO> wardMap = meetingsDtlsMap.get(8l);
+			 
+			 Map<Long,PartyMeetingsVO> villageWardMap = new HashMap<Long, PartyMeetingsVO>();
+			 
+			  if(villageMap != null ){
+				  villageWardMap.putAll(villageMap);
+				  for(Entry<Long,PartyMeetingsVO> entry:villageWardMap.entrySet()){
+					  Long locationId = entry.getKey();
+			    		 PartyMeetingsVO villageVO = entry.getValue();
+			    		 if(wardMap != null){
+			    			 if(wardMap.get(locationId) != null){
+			    				 mergeRequiredData(villageVO,wardMap.get(locationId)); 
+			    			 }
+			    		 } 
+				  }
+			  }else{
+				  villageWardMap.putAll(wardMap);  
+			  }
+		      //calculate percentage
+			  if(meetingsDtlsMap != null && meetingsDtlsMap.size() > 0){
+				  for(Entry<Long, Map<Long, PartyMeetingsVO>> entry:meetingsDtlsMap.entrySet()){
+					   Long levelId = entry.getKey();
+					   if(levelId.longValue() == 1l || levelId.longValue()==2l || levelId.longValue()==3l){
+						   if(entry.getValue() != null && entry.getValue().size() > 0){
+							   for(Entry<Long,PartyMeetingsVO> locationEntry:entry.getValue().entrySet()){
+								   calculateTotalCntAndPercentage(locationEntry.getValue());  
+							   }   
+						   }
+						  
+					   }
+				  }
+			  }
+			 if(mandalTwnDivisionMap != null && mandalTwnDivisionMap.size() > 0){
+				 for(Entry<Long,PartyMeetingsVO> entry:mandalTwnDivisionMap.entrySet()){
+					 calculateTotalCntAndPercentage(entry.getValue());  
+				 }
+			 }
+			 if(villageWardMap != null && villageWardMap.size() > 0){
+				 for(Entry<Long,PartyMeetingsVO> entry:villageWardMap.entrySet()){
+					 calculateTotalCntAndPercentage(entry.getValue());  
+				 }
+			 }
+			   //Preparing final result based on user access level
+			  
+			  // common for all 
+		       PartyMeetingsVO villageWardVO = new PartyMeetingsVO();
+			   villageWardVO.setName("Village/Ward");
+			   if(villageWardMap != null && villageWardMap.size()  > 0){
+				   villageWardVO.getPartyMettingsVOList().addAll(villageWardMap.values());   
+			   }
+			   resultList.add(villageWardVO);
+			   PartyMeetingsVO manDalTwnDivVO = new PartyMeetingsVO();
+			   manDalTwnDivVO.setName("Mandal/Town/Division");
+			   if(mandalTwnDivisionMap != null && mandalTwnDivisionMap.size()  > 0){
+				   manDalTwnDivVO.getPartyMettingsVOList().addAll(mandalTwnDivisionMap.values());   
+			   }
+			   resultList.add(manDalTwnDivVO);
+			  
+			  
+			    PartyMeetingsVO stateVO = new PartyMeetingsVO();
+			    stateVO.setName("State");
+			    if(meetingsDtlsMap.get(1l) != null && meetingsDtlsMap.get(1l).size() > 0){
+			    	 stateVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(1l).values()); 	
+			    }
+			    PartyMeetingsVO districtVO = new PartyMeetingsVO();
+			    districtVO.setName("District");
+			    if(meetingsDtlsMap.get(2l) != null && meetingsDtlsMap.get(2l).size() > 0){
+			    	districtVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(2l).values()); 	
+			    }
+			    PartyMeetingsVO constituencyVO = new PartyMeetingsVO();
+			    constituencyVO.setName("Constituency");
+			    if(meetingsDtlsMap.get(3l) != null && meetingsDtlsMap.get(3l).size() > 0){
+			    	constituencyVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(3l).values()); 	
+			    }
+			   
+			   
+		       if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		    	   if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID && locationValues != null && locationValues.size()==1){
+		    		   resultList.add(constituencyVO);
+			    	   resultList.add(districtVO);
+			       }else{
+			    	   resultList.add(stateVO);
+			     	   resultList.add(constituencyVO);
+			    	   resultList.add(districtVO);   
+		    	   }
+		       }else if(userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		    	   if(userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValues != null && locationValues.size()==1){
+		    		   resultList.add(constituencyVO);
+			       }else{
+			    	   resultList.add(constituencyVO);
+			    	   resultList.add(districtVO);  
+			       }  
+		    	   }
+		       else if(userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+		    	   if(userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID && locationValues != null && locationValues.size()==1 ){
+			        }else{
+			        	  resultList.add(constituencyVO);	
+			        }  
+		       }
+		         if(userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID ){
+		    	     resultList.add(constituencyVO);	
+		         }
+		     
+			  
+	  }catch(Exception e){
+		  LOG.error("exception occurred in getPartyMeetingCntDetailstLevelWiseByUserAccessLevel()", e);  
+	  }
+	  return resultList;
+  }
+  public void calculateTotalCntAndPercentage(PartyMeetingsVO vo){
+	  try{
+		  if(vo != null ){
+				  vo.setTotalMeetingCnt(vo.getConductedCount()+vo.getNotConductedCount()+vo.getMayBeCount());
+				  vo.setTotalCountPer(calculatePercantage(vo.getTotalMeetingCnt(), vo.getTotalMeetingCnt()));
+				  vo.setConductedCountPer(calculatePercantage(vo.getConductedCount(),vo.getTotalMeetingCnt()));
+				  vo.setNotConductedCountPer(calculatePercantage(vo.getNotConductedCount(), vo.getTotalMeetingCnt()));
+				  vo.setMayBeCountPer(calculatePercantage(vo.getMayBeCount(),vo.getTotalMeetingCnt()));
+		  }
+	  }catch(Exception e){
+		  LOG.error("exception occurred in calculateTotalCntAndPercentage()", e);	  
+	  }
+  }
+ public void setDataToMap(List<Object[]> rtrnObjList,Map<Long,Map<Long,PartyMeetingsVO>> meetingsDtlsMap){
+	 try{
+		 if(rtrnObjList != null && rtrnObjList.size() > 0){
+			 for(Object[] param:rtrnObjList){
+				 Long meetingLevelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				 Map<Long,PartyMeetingsVO> locationMap = meetingsDtlsMap.get(meetingLevelId);
+				   if(locationMap == null){
+					   locationMap = new HashMap<Long, PartyMeetingsVO>();
+					   meetingsDtlsMap.put(meetingLevelId, locationMap);
+				   }
+				   Long locationId = commonMethodsUtilService.getLongValueForObject(param[1]);
+				   String locationName = commonMethodsUtilService.getStringValueForObject(param[2]);
+				   String meetingStatus = commonMethodsUtilService.getStringValueForObject(param[3]);
+				   Long meetingCnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+				   PartyMeetingsVO locationVO = locationMap.get(locationId);
+				      if(locationVO == null){
+				    	  locationVO = new PartyMeetingsVO();
+				    	  locationVO.setId(locationId);
+				    	  locationVO.setName(locationName);
+				    	  locationMap.put(locationId, locationVO);
+				      }
+				      if(meetingStatus.equalsIgnoreCase("Y")){
+				    	  locationVO.setConductedCount(meetingCnt) ; 
+					  }else if(meetingStatus.equalsIgnoreCase("N")){
+						  locationVO.setNotConductedCount(meetingCnt);
+					  }else if(meetingStatus.equalsIgnoreCase("M")){
+						  locationVO.setMayBeCount(meetingCnt);
+					  }
+			 }
+		 }
+	 }catch(Exception e){
+		 LOG.error("exception occurred in getPartyMeetingCntDetailstLevelWiseByUserAccessLevel()", e);	 
+	 }
+ }
+		
+		
 }
