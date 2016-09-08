@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -688,4 +689,153 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	   }
 	   return activityMembersList;
     }
+  
+  /**
+	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+	  *  This Service Method is used to get the getTopPoorPerformancecommittees.
+	  *  @since 29-AUGUST-2016
+	  */
+	public List<PartyMeetingsDataVO> getTopPoorMeetingLocations(Long activityMemberId,List<Long> partyMeetingTypeIds,String state,String startDateString,String endDateString){
+		   List<PartyMeetingsDataVO> finalList = null;
+		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		   try{
+			
+			    Long userLocationLevelId = null;
+			    List<Long> userLocationLevelValues = null;
+			    List<Object[]> locations = activityMemberAccessLevelDAO.getLocationsByActivityMemberId(activityMemberId);
+			    if(locations!=null && locations.size()>0){
+			    	userLocationLevelValues = new ArrayList<Long>();
+			    	for(Object[] obj : locations){
+			    		userLocationLevelId = (Long)obj[0];
+			    		userLocationLevelValues.add(obj[2]!=null?(Long)obj[2]:0l);
+			    	}
+			    }
+			    
+			     //Creating Business Object.
+			     CommitteeInputVO meetingBO = new CommitteeInputVO();
+			     meetingBO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+			     List<Date>  datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+			     meetingBO.setStartDate(datesList.get(0));
+			     meetingBO.setEndDate(datesList.get(1));
+			     Long stateId = coreDashboardGenericService.getStateIdByState(state);
+			     meetingBO.setStateId(stateId);
+			     
+			     coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userLocationLevelId,userLocationLevelValues,meetingBO);
+			     
+			     //get grouping locations.grouping location is direct single sublevel of the user location level.
+			     String returnLevelName="";
+			     List<String> groupingLocationsList = new ArrayList<String>();
+			     if(userLocationLevelId.longValue() == IConstants.COUNTRY_LEVEl_ACCESS_ID.longValue() || userLocationLevelId.longValue() == IConstants.STATE_LEVEl_ACCESS_ID.longValue() ){
+			    	 groupingLocationsList.add("District");
+			    	 returnLevelName = "Districts";
+				}else if(userLocationLevelId.longValue() == IConstants.DISTRICT_LEVEl_ACCESS_ID.longValue() ){
+					groupingLocationsList.add("Constituency");
+					returnLevelName = "Constituencies";
+				}else if(userLocationLevelId.longValue() == IConstants.PARLIAMENT_LEVEl_ACCESS_ID.longValue()){
+					groupingLocationsList.add("Constituency");
+					returnLevelName = "Constituencies";
+				}else if(userLocationLevelId.longValue() == IConstants.ASSEMBLY_LEVEl_ACCESS_ID.longValue()){
+					groupingLocationsList.add("Mandal");
+					groupingLocationsList.add("LocalElectionbody");
+					returnLevelName = "Mandals/Muncipalitys/Divisions";
+			    }else if(userLocationLevelId.longValue() == IConstants.MANDAL_LEVEl_ID.longValue()){
+			    	groupingLocationsList.add("Village");
+			    	groupingLocationsList.add("Ward");
+			    	returnLevelName = "Villages/Wards";
+				}
+			    
+			     Map<Long,PartyMeetingsDataVO> finalMap = new LinkedHashMap<Long,PartyMeetingsDataVO>();
+			     
+			     if(groupingLocationsList != null && groupingLocationsList.size() > 0){
+				        for(String groupingLocation : groupingLocationsList){
+				          
+				        	meetingBO.setGroupingLocation(groupingLocation);
+				          
+				            List<Object[]>  totalList   = partyMeetingDAO.getTopPoorMeetingLocations(meetingBO);
+				            List<Object[]> completedList = partyMeetingStatusDAO.getTopPoorMeetingLocations(meetingBO);
+				          
+				            locationMeetingCountSetting(totalList,finalMap,"total",groupingLocation);
+				            locationMeetingCountSetting(completedList,finalMap,"conducted",groupingLocation);
+				          
+				        }
+				   }
+			     
+			     if(finalMap != null && finalMap.size()>0){
+			    	 finalList = new ArrayList<PartyMeetingsDataVO>(finalMap.values());
+			    	 //calculating percantages
+			    	 for(PartyMeetingsDataVO locationVO : finalList){
+			    		 if(locationVO.getTotalCount()!=null && locationVO.getTotalCount() > 0l){
+			    			 locationVO.setConductedPerc(coreDashboardGenericService.caclPercantage(locationVO.getConductedCount(),locationVO.getTotalCount()) );
+						  }
+			    	 }
+			    	 //sorting 
+			    	 Collections.sort(finalList,meetingsConductedCountPercASC);
+			    	 finalList.get(0).setRequiredName(returnLevelName);
+			     }
+			     
+	 	  }catch(Exception e){
+	 		 LOG.error("exception occurred in getTopPoorMeetingLocations()", e);
+		  }
+		   return finalList;
+	   }
+		
+	   public void locationMeetingCountSetting(List<Object[]> list,Map<Long,PartyMeetingsDataVO> finalMap,String status,String groupingLocation){
+		    try{
+				
+		        if(list !=null && list.size() >0){
+				      for(Object[] obj : list){
+				         
+					    	  Long locationId = obj[1]!=null ? (Long)obj[1]:0l;
+					    	  
+					    	  PartyMeetingsDataVO locationVO = null;
+					          locationVO = finalMap.get(locationId);
+					          if(locationVO==null){
+						          locationVO = new PartyMeetingsDataVO();
+						          locationVO.setId(locationId);
+						          locationVO.setName(obj[2]!=null ? obj[2].toString() : "");
+						          
+						          if(groupingLocation.equalsIgnoreCase("LocalElectionBody")){
+						            locationVO.setLocationLevelName(obj[4]!=null ? obj[4].toString() : "");
+						          }else{
+						            locationVO.setLocationLevelName(groupingLocation);
+						          }
+						          
+						          finalMap.put(locationId,locationVO);
+					         }
+					        locationVO = finalMap.get(locationId);
+					        Long count = obj[0]!=null?(Long)obj[0]:0l;
+					        
+					        if(status != null && !status.isEmpty()){
+					        	
+					          if(status.equalsIgnoreCase("total")){
+					            locationVO.setTotalCount(locationVO.getTotalCount() +count );
+					          }else{
+						        	String meetingStatus = null;
+				        			if(groupingLocation.equalsIgnoreCase("LocalElectionBody")){
+				        				meetingStatus = obj[5]!=null?obj[5].toString():"";
+							        }else{
+							        	meetingStatus = obj[3]!=null?obj[3].toString():"";
+							        }
+				        			if(meetingStatus!=null && meetingStatus.equalsIgnoreCase("Y")){
+				        				locationVO.setConductedCount(locationVO.getConductedCount()+count);
+				        			}
+						        }
+					       }
+				      }
+				   }
+			}catch(Exception e){
+				LOG.error("exception occurred in getTopPoorMeetingLocations()", e);
+			}
+		    
+	  }
+
+	   public static Comparator<PartyMeetingsDataVO> meetingsConductedCountPercASC = new Comparator<PartyMeetingsDataVO>() {
+		     public int compare(PartyMeetingsDataVO member2, PartyMeetingsDataVO member1) {
+		
+		        Double perc2 = member2.getConductedPerc();
+		        Double perc1 = member1.getConductedPerc();
+		        //ascending order of percantages.
+		         return perc2.compareTo(perc1);
+		    }
+		}; 
 }
