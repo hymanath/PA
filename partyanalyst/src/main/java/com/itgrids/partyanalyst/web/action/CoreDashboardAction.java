@@ -1289,7 +1289,25 @@ public String getDirectChildActivityMeetingMemberDetails()
 	}catch(Exception e){
 		LOG.error("Exception raised at getDirectChildActivityMeetingMemberDetails() method of CoreDashBoard", e);
 	}
-	return Action.SUCCESS;
+		return Action.SUCCESS;
+}
+public String getCandidateDtlsPerDist(){
+	LOG.info("Entered into getCandidateDtlsPerDist()  of CoreDashboardAction");
+	try{
+		
+		jObj = new JSONObject(getTask());
+		
+		Long distId = jObj.getLong("distId");
+		Long programId = jObj.getLong("programId");
+		Long stateId = jObj.getLong("stateId"); 
+		String strDate = jObj.getString("dateStr");
+		
+		idNameVoList = coreDashboardMainService.getCandidateDtlsPerDist(distId,programId,stateId,strDate); 
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getCandidateDtlsPerDist() method of CoreDashBoard", e);
+	}
+		return Action.SUCCESS;
 }
  public String getTopPoorMeetingLocations(){
 		LOG.info("Entered into getTopPoorMeetingLocations()  of CoreDashboardAction");
@@ -1318,4 +1336,5 @@ public String getDirectChildActivityMeetingMemberDetails()
 	return Action.SUCCESS;
   }
  
+
 }
