@@ -7,11 +7,87 @@
 	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .basicCommitteesBlockDiv , .notesIconTraining
 	{
 		margin-right:7px;
-		margin-top:10px;
+		margin-top:5px;
 	}
 	.dateRangePickerCls
 	{
 		margin-top:10px;
+	}
+	.tableDebatesMain tr td:first-child
+	{
+		font-size:11px;
+		width:60px !important;
+	}
+	.tableDebatesMainText tr td:first-child
+	{
+		font-size:11px;
+		width:60px !important;
+	}
+	.tableDebatesMain tr td p , .tableDebatesMainText tr td p
+	{
+		font-size:10px;
+	}
+	.label.label-default
+	{
+		margin-top:10px;
+		top:5px;
+		position:relative;
+	}
+	.headingColor
+	{
+		background:#fff;
+		color:#555;
+		border:1px solid #555;
+		padding:2px;
+	}
+	h4 .headingColor
+	{
+		font-size:11px !important;
+	}
+	.panelNewCustom .panel-heading
+	{
+		padding:3px 4px;
+	}
+	.panelNewCustom .panel-body  , .panelNew .panel-body
+	{
+		padding:5px;
+	}
+	.panelNew .panel-heading
+	{
+		padding:6px;
+	}
+	.collapseDebatesIcon:before {
+		/* symbol for "opening" panels */
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:10px;
+		margin-top:-4px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:#4B5763;
+		border:1px solid #4B5763;
+		padding:2px 3px;
+	}
+	.arrowChange
+	{
+		font-size:10px;
+		padding:2px 3px;
+		margin-top:-16px;
+	}
+	.collapseDebatesIcon.collapsed:before {
+		/* symbol for "collapsed" panels */
+		content:"\2b";
+	}
+	.ratingSpan
+	{
+		width:70px;
+		display:block;
+	}
+	.responsiveWidth
+	{
+		width:200px;
+		display:block;
 	}
 }
 @media (min-width: 500px) and (max-width:767px) {
@@ -56,6 +132,24 @@
 	{
 		font-size:14px !important;
 	}
+	.tableDebatesMain tr td:first-child
+	{
+		font-size:15px;
+		width:60px !important;
+	}
+	.tableDebatesMainText tr td:first-child
+	{
+		font-size:13px;
+		width:60px !important;
+	}
+	.tableDebatesMain tr td p , .tableDebatesMainText tr td p
+	{
+		font-size:11px;
+	}
+	.activeUlCls li
+	{
+		font-size:12px;
+	}
 }
 @media (min-width:1023px) and (max-width:1024px) {
 	.committesBlockUl li
@@ -67,5 +161,32 @@
 	{
 		font-size:14px !important;
 	}
+	.tableDebatesMain tr td:first-child
+	{
+		font-size:15px;
+		width:60px !important;
+	}
+	.tableDebatesMainText tr td:first-child
+	{
+		font-size:13px;
+		width:60px !important;
+	}
+	.tableDebatesMain tr td p , .tableDebatesMainText tr td p
+	{
+		font-size:11px;
+	}
+	.activeUlCls li
+	{
+		font-size:12px;
+	}
+	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .basicCommitteesBlockDiv , .notesIconTraining
+	{
+		margin-right:7px;
+	}
+	.headingColor , h4.bg_49
+	{
+		font-size:14px;
+	}
+	
 }
 /* Ipad Only STYLES END */
