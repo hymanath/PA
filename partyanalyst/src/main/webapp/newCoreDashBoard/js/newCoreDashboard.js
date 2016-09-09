@@ -64,6 +64,9 @@
 			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".dateRangePickerClsForMeetings").toggleClass("hide");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
 		}
 		setTimeout(function(){
 			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();

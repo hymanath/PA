@@ -482,36 +482,57 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
+		$(".moreMeetingsBlocks1").hide();
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".meetingsHiddenBlock,.moreMeetingsBlocks").hide();
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
 		}else{
-			getUserTypeWiseTotalEligibleAndAttendedCnt();
+			//getUserTypeWiseTotalEligibleAndAttendedCnt();
 		}
 		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
 			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
 			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
 		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
 			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
 			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
 		}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon").hide();
 			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".dateRangePickerCls").toggleClass("hide");
 			$(".moreBlocksIcon").removeClass("unExpandBlock");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
 		}
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
-		getChildUserTypesByItsParentUserTypeForMeeting();
+		$(this).addClass("unExpandBlock");
 		getMeetingLevelDetails();
 		getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
-		$(".moreMeetingsBlocks").toggle();
+		$(".moreMeetingsBlocksDetailed").show();
+		$(".moreMeetingsBlocks1").show();
 	});
-
+$(document).on("click",".unExpandBlock",function(){
+		$(this).removeClass("unExpandBlock");
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+		$(".moreMeetingsBlocks1").hide();
+		$(".meetingComparisionBlock").removeClass("active");
+		$(".meetingDetailedBlock").addClass("active");
+	});
 
 function getMeetingLevelDetails(){
    $("#meetingLevelHIghChartsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1323,4 +1344,16 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 		$("#districtWiseMeetingReport").html("No Data Available")
 	}	
 }
+$(document).on("click",".meetingComparisionBlock",function(){
+	getChildUserTypesByItsParentUserTypeForMeeting();
+	$(".moreMeetingsBlocksComparision").show();
+	$(".moreMeetingsBlocksDetailed").hide();
+});
+
+$(document).on("click",".meetingDetailedBlock",function(){
+	getMeetingLevelDetails();
+	getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
+	$(".moreMeetingsBlocksDetailed").show();
+	$(".moreMeetingsBlocksComparision").hide();
+});
 	
