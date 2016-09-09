@@ -7,6 +7,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 
 public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
@@ -39,4 +40,6 @@ public interface IPartyMeetingDAO extends GenericDao<PartyMeeting,Long>{
 
 	public List<Object[]> getLocationWiseMeetingsCountByLocIds(CommitteeInputVO inputBO);
 	public List<Object[]> getTopPoorMeetingLocations(CommitteeInputVO committeeBO);
+	
+	public List<Object[]> getNoOfMeetingsByPartyMeetingTypeIds(PartyMeetingsInputVO inputVO);
 }

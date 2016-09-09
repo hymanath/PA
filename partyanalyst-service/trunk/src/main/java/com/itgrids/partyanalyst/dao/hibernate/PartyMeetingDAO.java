@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1543,4 +1544,41 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		return query.list();
     }
     
+    
+    public List<Object[]> getNoOfMeetingsByPartyMeetingTypeIds(PartyMeetingsInputVO inputVO){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.partyMeetingType.partyMeetingTypeId,model.partyMeetingType.type,count(distinct model.partyMeetingId) " +
+				"   from   PartyMeeting model " +
+				"   where  model.isActive='Y' and model.startDate is not null and " +
+				"          model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = :partyMeetingMainTypeId  ");
+		
+		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+			 sb.append(" and date(model.startDate) between :startDate and :endDate ");	 
+		}
+		if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+			sb.append(" and model.meetingAddress.state.stateId = :stateId ");
+		}
+		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
+			sb.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeIds) ");	
+		}
+		sb.append(" group by model.partyMeetingType.partyMeetingTypeId ");
+		Query query = getSession().createQuery(sb.toString());
+	    
+		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+			query.setDate("startDate",inputVO.getStartDate());
+			query.setDate("endDate",inputVO.getEndDate());	 
+		}
+		if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+			query.setParameter("stateId",inputVO.getStateId());
+		}
+		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
+			query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
+		}
+		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+		
+	    return query.list();
+		
+	}
+
     }
