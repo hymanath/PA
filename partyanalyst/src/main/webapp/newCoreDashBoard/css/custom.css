@@ -1050,12 +1050,12 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	position:relative;
 	top:7px;
 }
-.comparisonSelect
+.comparisonSelect,.detailedPartySubUl
 {
 	padding:0px;
 	margin:0px;
 }
-.comparisonSelect li
+.comparisonSelect li,.detailedPartySubUl li
 {
 	list-style:none;
 	display:inline-block;
@@ -1068,13 +1068,13 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	position:relative;
 	color:#ddd;
 }
-.comparisonSelect li.active
+.comparisonSelect li.active,.detailedPartySubUl li.active
 {
 	padding-right:30px;
 	border:1px solid #4A5762;
 	color:#4A5762;
 }
-.comparisonSelect li.active .closeIconComparison:after
+.comparisonSelect li.active .closeIconComparison:after,.detailedPartySubUl li.active .closeIconComparison:after
 {
 	display:block;
 }
