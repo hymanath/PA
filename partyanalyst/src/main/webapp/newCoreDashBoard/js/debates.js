@@ -626,6 +626,10 @@ $(document).on("click",".debatesIconExpand",function(){
 		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+		
 	}
 });
 $(document).on("click",".moreDebatesBlocksIcon",function(){

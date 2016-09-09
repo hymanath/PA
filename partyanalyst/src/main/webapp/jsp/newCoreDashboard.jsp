@@ -927,14 +927,14 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock">
 										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
 							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocks">
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocks1" style="display:none;">
 								<ul class="list-inline pull-right activeUlCls">
-									<li class="active">Detailed</li>
-									<li>Comparison</li>
-									<li><i class="fa fa-gears"></i></li>
+									<li class="active meetingDetailedBlock">Detailed</li>
+									<li class="meetingComparisionBlock">Comparison</li>
+									
 								</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 moreMeetingsBlocks">
+							<div class="col-md-12 col-xs-12 col-sm-12 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default">
 									<div class="panel-body">
 									<div id="meetingLevelHIghChartsDivId" ></div>
@@ -959,7 +959,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocks">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -989,15 +989,15 @@
 									</div>
 								</div>
 							</div>
-							 <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocks">
-								<p><i>Selected:</i> <b>Main Committee</b></p>
+							 <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksComparision" style="display:none;">
+								<!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
 										<div class="col-xs-12 col-sm-12 col-md-8">
 										  <div id="childUserTypeDetailsDivIdForMeeting"></div>
 										</div>
-										   <div class="col-xs-12 col-sm-12 col-md-4">
+										   <!--<div class="col-xs-12 col-sm-12 col-md-4">
 												<ul class="list-inline">
 													<li>
 														<div class="dropdown">
@@ -1038,7 +1038,7 @@
 														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
 													</li>
 												</ul>
-											</div>
+											</div>-->
 										</div>
 									</div>
 									<div class="panel-body">
