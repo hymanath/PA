@@ -29,6 +29,36 @@
 		$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			getUserTypeWiseNewsCounts(1);
+		}else{
+			$(".newsHiddenMoreBlock").hide();
+		}
+		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			
+		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			
+		}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon").hide();
+			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerCls").toggleClass("hide");
+			$(".moreBlocksIcon").removeClass("unExpandBlock");
+			
+		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForMeetings").toggleClass("hide");
+			$(".moreMeetingsBlocks1").hide();
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksComparision").hide();
 		}
 	});
 	
@@ -36,7 +66,8 @@
 		$(".newsHiddenMoreBlock").toggle();
 		getDetailedPartyMainEditionsOverview();
 		getDetailedPartyDistrictEditionsOverview();
-		//getDetailedPartyNewsTypeAnalysis();
+		setcolorsForStatus();
+		getDetailedPartyNewsTypeAnalysis();
 	});
 	
 	$(document).on("click","#detailedPartyId",function(){
@@ -209,7 +240,7 @@
 				activityMemberId : globalActivityMemberId ,
 				userTypeId : globalUserTypeId,
 				state:globalState,
-				fromDate:'08-01-2016',
+				fromDate:'08-01-2014',
 				toDate:'08-31-2016',
 				benefitId:benefitId
 			}
@@ -237,11 +268,11 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2016",endDate="08-31-2016";
+		var startDate="08-01-2014",endDate="08-31-2016";
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			$("#mainEditiongraphId").html('');
 			buildMainEditionPartieWiseGraph(result);
@@ -256,11 +287,11 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2016",endDate="08-31-2016";
+		var startDate="08-01-2014",endDate="08-31-2016";
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			buildDetailedPartyDistrictEditionsOverview(result);
 		});
@@ -277,7 +308,7 @@
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				buildDetailedPartyNewsTypeAnalysis(result);
@@ -296,7 +327,7 @@
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				
@@ -584,8 +615,8 @@
 			var str='';
 			str+='<ul class="newsPartyWiseUI">';
 			str+='<li>';
-			str+='<div class="scroll-div">';
-			str+='<ul class="list-inline best-matched-profile ">';
+			str+='<div class="">';
+			str+='<ul class="list-inline ">';
 			var countVar =0;
 			for(var i in result){
 				countVar =countVar+1;
@@ -616,86 +647,92 @@
 				var organizationName = result[i].organization;
 				positiveCountArray.push(result[i].positivePerc);
 				negativeCountArray.push(result[i].negativePerc);
-			
-			$(function () {
-				$('#mainEditiongraph'+i+'').highcharts({
-					colors: ['#F56800','#53BF8B','#66728C'],
-					chart: {
-						type: 'column',
-						
-					},
-					title: {
-						 useHTML: true,
-						text: '<img src="newCoreDashBoard/img/'+organizationName+'.png" style="width:25px;" alt="tdp icon"/> &nbsp;&nbsp;&nbsp;'+organizationName+'',
-						style: {
-								fontSize: '16px',
-								fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-								textTransform: "uppercase"
-								
-						}
-					},
-					subtitle: {
-						text: null
-					},
-					 xAxis: {
-						 min: 0,
-						gridLineWidth: 0,
-						minorGridLineWidth: 0,
-						categories: null,
-						labels: {
-							enabled: false,
-						}
-					},
-					yAxis: {
-						min: 0,
-						gridLineWidth: 0,
-						minorGridLineWidth: 0,
-						title: {
-							text: ''
-						},
-						stackLabels: {
-							enabled: true,
-							style: {
-								fontWeight: 'bold',
-								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-							}
-						}
-					},
-					tooltip: {
-						headerFormat: '<b>{point.x}</b><br/>',
-						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
-						
-					},
-					legend: {
-						enabled: true,
-						align: 'left'
-					
-					},
-					plotOptions: {
-						column: {
-							dataLabels:{
-								enabled: true,
-								formatter: function() {
-									if (this.y === 0) {
-										return null;
-									} else {
-										return Highcharts.numberFormat(this.y,1) + '%';
-									}
-								}
-							},
+			if( positiveCountArray.length !=0 && negativeCountArray.length !=0){
+				$(function () {
+					$('#mainEditiongraph'+i+'').highcharts({
+						 colors: ['#53BF8B','#F56800'],
+						chart: {
+							type: 'column',
 							
 						},
-					},
-					 series: [{
-						name: 'Positive',
-						data: positiveCountArray 
-					}, {
-						name: 'Negative',
-						data: negativeCountArray
-					}]
-				});
-			});	
+						title: {
+							 useHTML: true,
+							text: '<img src="newCoreDashBoard/img/'+organizationName+'.png" style="width:25px;" alt="tdp icon"/> &nbsp;&nbsp;&nbsp;'+organizationName+'',
+							style: {
+									fontSize: '16px',
+									fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+									textTransform: "uppercase"
+									
+							}
+						},
+						subtitle: {
+							text: null
+						},
+						 xAxis: {
+							 min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							categories: null,
+							labels: {
+								enabled: false,
+							}
+						},
+						yAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							title: {
+								text: ''
+							},
+							stackLabels: {
+								enabled: true,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+								}
+							}
+						},
+						tooltip: {
+							headerFormat: '<b>{point.x}</b><br/>',
+							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+							
+						},
+						legend: {
+							enabled: true,
+							align: 'left'
+						
+						},
+						plotOptions: {
+							column: {
+								dataLabels:{
+									enabled: true,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.y,1) + '%';
+										}
+									}
+								},
+								
+							},
+						},
+						 series: [{
+							name: 'Positive',
+							data: positiveCountArray 
+						}, {
+							name: 'Negative',
+							data: negativeCountArray
+						}]
+					});
+				});	
+			}else{
+				$('#mainEditiongraph'+i+'').html("<b>"+organizationName+"</b> (<span style='text-align:center'>No Data Available</span>)");
+			}
+			
 		}
+	  }else{
+		  $("#mainEditiongraphId").html("No Data Available");
 	  }
 	}
 	
@@ -709,7 +746,8 @@
 					if (countVar === 5) {
 						break;
 					}
-				str+=result[i].organization;
+					 
+				str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon"/> &nbsp;&nbsp;&nbsp;'+result[i].organization+'';
 				str+='<div id="districtWiseNews'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
 									
@@ -752,10 +790,11 @@
 						//}
 						
 					}
-			}
+			}	
+					if(districtWisePositivePercArray.length !=0 && districtWiseNegativePercArray.length !=0){
 						$(function () {
 							$('#districtWiseNews'+i+'').highcharts({
-								colors: ['#F56800','#53BF8B','#66728C'],
+								 colors: ['#53BF8B','#F56800'],
 								chart: {
 									type: 'column'
 								},
@@ -833,13 +872,14 @@
 								}]
 							});
 						});
-				
-			
-		}
-	}else{
-		$("#districtWiseNewsReport").html("No Data Available")
-	}	
-}
+					}else{
+						$('#districtWiseNews'+i+'').html("No Data Available");
+					}
+			}
+		}else{
+			$("#districtWiseNewsReport").html("No Data Available")
+		}	
+	}
 
 /*Notes Functionality*/
 	function displayDashboardCommentsForNews(dashBoardComponentId){
@@ -960,7 +1000,11 @@ $(document).on("click",".viewsLiClass",function(){
 	$(".mainBuildingDivClass").hide();
 	var divId = $(this).attr("attr_div_id");
 	$("#"+divId).show();
+	$("#"+divId).removeClass("active");
+	
 });
+
+
 
 $(document).on("click","#comparisonPartyLiId",function(){
 	getChildUserTypesByItsParentUserType1();
@@ -1031,8 +1075,8 @@ function getChildUserTypesByItsParentUserType1(){
 						str+='<div class="row">';
 						str+='<div class="col-xs-12">';
 						for(var j in result[i].coreDashBoardVOList){
-							
-							  str+='<span>'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%</span> &nbsp;&nbsp;';
+							var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
+							  str+='<span style="color:'+color+'">'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%</span> &nbsp;&nbsp;';
 							
 						}
 						str+='</div>';
@@ -1086,11 +1130,11 @@ function getChildUserTypesByItsParentUserType1(){
 							
 						}
 					}
-					
+						
 					$(function () {
 						if(partyNameAndCountArray.length !=0){
 							$('#newsTypeAnalysisPieChart'+i).highcharts({
-								colors: ['#FFCC00','#31A973','#34CBFE','#FF9934'],
+								colors: ['#FFCB00','#005DB0','#3D9834','#FD9832'],
 								chart: {
 									type: 'pie',
 									options3d: {
@@ -1143,7 +1187,7 @@ function getChildUserTypesByItsParentUserType1(){
 					$(function () {
 						if(districtNameArray.length != 0 && tdpPercArray.length !=0 && ysrcPercArray.length !=0 && incPercArray.length !=0 && bjpPercArray.length !=0){
 						$('#newsTypeAnalysisBarChart'+i).highcharts({
-							colors: ['#FFCC00','#31A973','#34CBFE','#FF9934'],
+							colors: ['#FFCB00','#005DB0','#3D9834','#FD9832'],
 							chart: {
 								type: 'column'
 							},
@@ -1188,7 +1232,8 @@ function getChildUserTypesByItsParentUserType1(){
 								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
 								borderColor: '#CCC',
 								borderWidth: 1,
-								shadow: false
+								shadow: false,
+								
 							},
 							tooltip: {
 								headerFormat: '<b>{point.x}</b><br/>',

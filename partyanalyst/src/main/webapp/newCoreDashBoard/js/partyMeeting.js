@@ -516,6 +516,11 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".moreMeetingsBlocks1").hide();
 			$(".moreMeetingsBlocksDetailed").hide();
 			$(".moreMeetingsBlocksComparision").hide();
+		}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForNews").toggleClass("hide");
 		}
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
