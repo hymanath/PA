@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,6 +16,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -66,8 +68,8 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 			 
 	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts");
 	         
-			// String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
-	        // System.out.println(jsonInString);
+			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
+	         System.out.println(jsonInString);
 	         
 	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, activityMemberVO);
 	         
@@ -99,9 +101,9 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		 	    					
 		 	    					CoreDashBoardVO invo = new CoreDashBoardVO();
 		 	    					invo.setId(tmp1.getLong("id"));
-		 	    					invo.setPositiveCount(tmp1.getLong("positiveCountMain"));
-		 	    					invo.setNegativCount(tmp1.getLong("negativCountMain"));
-		 	    					invo.setNeutralCount(tmp1.getLong("neutralCountMain"));
+		 	    					invo.setPositiveCountMain(tmp1.getLong("positiveCountMain"));
+		 	    					invo.setNegativCountMain(tmp1.getLong("negativCountMain"));
+		 	    					invo.setNeutralCountMain(tmp1.getLong("neutralCountMain"));
 		 	    					vo.getCoreDashBoardVOList().add(invo);
 								}
 		 	    			}
@@ -114,6 +116,31 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	 	    	
 	 	    	if(wsResultList != null && wsResultList.size() > 0){
 	 	    		setResultToUserBase(userTypesMap,wsResultList);	
+	 	    		
+	 	    	 	//mixing secreteries and general secreteries.
+	 	    		if(userTypesMap!=null && userTypesMap.size()>0){
+	 			    	 
+	 			    	 Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
+	 			    	 
+	 			    	 Map<Long,UserTypeVO>  secreteriesMap = null;
+	 			    	 if(userTypesMap.containsKey(11l)){
+	 			    		 secreteriesMap = userTypesMap.get(11l);
+	 			    		 orgSecAndSecMap.putAll(secreteriesMap);
+	 			    		 //remove secreteries from Map
+	 			    		 userTypesMap.remove(11l); 
+	 			    	 }
+	 			    	 
+	 			    	 Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
+	 			    	 if(userTypesMap.containsKey(4l)){
+	 			    		 organizingSecreteriesMap = userTypesMap.get(4l);
+	 			    		 orgSecAndSecMap.putAll(organizingSecreteriesMap);
+	 			    	 }
+	 			    	
+	 			    	 if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
+	 			    		 userTypesMap.put(4l, orgSecAndSecMap); 
+	 			    	 }
+	 			    	 
+	 			     }
 	 	    		
 	 	    		//set result map to list
 	 	    		if(userTypesMap != null && userTypesMap.size() > 0){
@@ -158,7 +185,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 
 	        Double perc2 = member2.getPositivePercentage();
 	        Double perc1 = member1.getPositivePercentage();
-	         return perc2.compareTo(perc1);
+	         return perc1.compareTo(perc2);
 	    }
 	}; 
 	
@@ -167,7 +194,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 
 	        Double perc2 = member2.getNegativePercentage();
 	        Double perc1 = member1.getNegativePercentage();
-	         return perc2.compareTo(perc1);
+	         return perc1.compareTo(perc2);
 	    }
 	}; 
   
@@ -183,8 +210,8 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 							if(matchedLocationLevelvo != null){
 								CoreDashBoardVO matchedLocationVO = getMatchedLocationVO(matchedLocationLevelvo.getCoreDashBoardVOList(),locationId);//location vo
 								if(matchedLocationVO != null){
-									userVO.setPositiveCount(userVO.getPositiveCount()+matchedLocationVO.getPositiveCount());
-									userVO.setNegativeCount(userVO.getNegativeCount()+matchedLocationVO.getNegativCount());
+									userVO.setPositiveCount(userVO.getPositiveCount()+matchedLocationVO.getPositiveCountMain());
+									userVO.setNegativeCount(userVO.getNegativeCount()+matchedLocationVO.getNegativCountMain());
 								}
 							}
 							
@@ -217,5 +244,299 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		return null;
 	}
 	
+	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,Long childUserTypeId,String state,String startDate,String endDate){
+		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);
+		try {
+			
+			ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		    activityMemberVO.setState(state);
+		     activityMemberVO.setFromDate(startDate);
+		     activityMemberVO.setToDate(endDate);
+		     
+		    ClientConfig clientConfig = new DefaultClientConfig();
+		     
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+			 
+	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getPartyComparisonChildUserTypeMembers");
+	         
+			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
+	         System.out.println(jsonInString);
+	         
+	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, activityMemberVO);
+	         
+	         if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	 
+	 	    	  List<CoreDashBoardVO> wsResultList = new ArrayList<CoreDashBoardVO>();
+	 	    	  
+	 	    	 String output = response.getEntity(String.class);
+	 	    	 
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    		
+		 	    		 for(int i=0;i<finalArray.length();i++){
+		 	    			CoreDashBoardVO vo = new CoreDashBoardVO();
+		 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+		 	    			
+		 	    			vo.setId(tmp.getLong("id"));
+		 	    			
+		 	    			String s1 = tmp.getString("coreDashBoardVOList");
+		 	    			JSONArray inArr = new JSONArray(s1);
+		 	    			
+		 	    			if(inArr != null && inArr.length() > 0){
+		 	    				for (int j = 0; j < inArr.length(); j++) {
+		 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
+		 	    					
+		 	    					CoreDashBoardVO invo = new CoreDashBoardVO();
+		 	    					invo.setId(tmp1.getLong("id"));
+		 	    					
+		 	    					String s2 = tmp1.getString("coreDashBoardVOList");
+		 	    					JSONArray inArr1 = new JSONArray(s2);
+		 	    					if(inArr1 != null && inArr1.length() > 0){
+		 	    						for (int k = 0; k < inArr1.length(); k++) {
+		 	    							JSONObject tmp2 = (JSONObject) inArr1.get(k);
+		 	    							
+		 	    							CoreDashBoardVO orgvo = new CoreDashBoardVO();
+		 	    							orgvo.setOrganizationId(tmp2.getLong("organizationId"));
+		 	    							orgvo.setOrganization(tmp2.getString("organization"));
+		 	    							orgvo.setCount(tmp2.getLong("count"));
+		 	    							
+		 	    							invo.getCoreDashBoardVOList().add(orgvo);
+		 	    						}
+		 	    						
+		 	    					}
+		 	    					
+		 	    					vo.getCoreDashBoardVOList().add(invo);
+								}
+		 	    			}
+		 	    			
+		 	    			
+		 	    			String voList1 = tmp.getString("coreDashBoardVOList1");
+		 	    			JSONArray ediWiseArr = new JSONArray(voList1);
+		 	    			if(inArr != null && ediWiseArr.length() > 0){
+		 	    				for (int j = 0; j < ediWiseArr.length(); j++) {
+		 	    					JSONObject tmp1 = (JSONObject) ediWiseArr.get(j);
+		 	    					
+		 	    					CoreDashBoardVO invo = new CoreDashBoardVO();
+		 	    					invo.setId(tmp1.getLong("id"));
+		 	    					
+		 	    					String ediVOList = tmp1.getString("coreDashBoardVOList");
+		 	    					
+		 	    					JSONArray inArr1 = new JSONArray(ediVOList);
+		 	    					if(inArr1 != null && inArr1.length() > 0){
+		 	    						for (int k = 0; k < inArr1.length(); k++) {
+		 	    							JSONObject tmp2 = (JSONObject) inArr1.get(k);
+		 	    							CoreDashBoardVO ediVO = new CoreDashBoardVO();
+		 									ediVO.setOrganizationId(tmp2.getLong("organizationId"));
+		 									ediVO.setOrganization(tmp2.getString("organization"));
+		 									ediVO.setPositiveCountMain(tmp2.getLong("positiveCountMain"));
+		 									ediVO.setPositiveCountDist(tmp2.getLong("positiveCountDist"));
+		 									ediVO.setNegativCountMain(tmp2.getLong("negativCountMain"));
+		 									ediVO.setNegativCountDist(tmp2.getLong("negativCountDist"));
+		 									ediVO.setNeutralCountMain(tmp2.getLong("neutralCountMain"));
+		 									ediVO.setNeutralCountDist(tmp2.getLong("neutralCountDist"));
+		 									invo.getCoreDashBoardVOList().add(ediVO);
+		 	    						}
+		 	    					}
+		 	    					
+		 	    					vo.getCoreDashBoardVOList1().add(invo);
+		 	    				}
+		 	    			}
+		 	    			
+		 	    			wsResultList.add(vo);
+		 	    		 }
+	 	    		}
+	 	    		
+	 	    	}
+	 	    	
+	 	    	if(wsResultList != null && wsResultList.size() > 0){
+	 	    		setWSResultToUserBase(childActivityMembersMap,wsResultList,finalList);	
+	 	    		
+	 	    	 	//mixing secreteries and general secreteries.
+	 	    	/*	if(userTypesMap!=null && userTypesMap.size()>0){
+	 			    	 
+	 			    	 Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
+	 			    	 
+	 			    	 Map<Long,UserTypeVO>  secreteriesMap = null;
+	 			    	 if(userTypesMap.containsKey(11l)){
+	 			    		 secreteriesMap = userTypesMap.get(11l);
+	 			    		 orgSecAndSecMap.putAll(secreteriesMap);
+	 			    		 //remove secreteries from Map
+	 			    		 userTypesMap.remove(11l); 
+	 			    	 }
+	 			    	 
+	 			    	 Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
+	 			    	 if(userTypesMap.containsKey(4l)){
+	 			    		 organizingSecreteriesMap = userTypesMap.get(4l);
+	 			    		 orgSecAndSecMap.putAll(organizingSecreteriesMap);
+	 			    	 }
+	 			    	
+	 			    	 if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
+	 			    		 userTypesMap.put(4l, orgSecAndSecMap); 
+	 			    	 }
+	 			    	 
+	 			     }*/
+	 	    		
+	 	    		//set result map to list
+	 	    		/*if(userTypesMap != null && userTypesMap.size() > 0){
+	 			    	 userTypesList = new ArrayList<List<UserTypeVO>>();
+	 			    	 for(Long userType:userTypesMap.keySet()){
+	 			    		 Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
+	 			    		 userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
+	 			    	 }
+	 			     }
+	 	    		
+	 	    		if(benefitId == 1l){//sort based on positive
+	 	    			if(userTypesList != null && userTypesList.size()>0){
+	 	    			   for(List<UserTypeVO> membersList : userTypesList){
+	 	    				   if(membersList != null){  
+	 	    					  Collections.sort(membersList,positiveSorting);
+	 	    				   }
+	 	    			   }
+	 	    		   }
+	 	    		}else if(benefitId == 2l){//sort based in negative
+	 	    			if(userTypesList != null && userTypesList.size()>0){
+		 	    			   for(List<UserTypeVO> membersList : userTypesList){
+		 	    				   if(membersList != null){  
+		 	    					  Collections.sort(membersList,negativeSoring);
+		 	    				   }
+		 	    			   }
+		 	    		   }
+	 	    		}*/
+	 	    		
+	 	    	}
+	 	    	
+	 	    	
+	 	   }
+	         
+		} catch (Exception e) {
+			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers service", e);
+		}
+		return finalList;
+	}
 	
+	public void setWSResultToUserBase(Map<Long, UserTypeVO> childActivityMembersMap,List<CoreDashBoardVO> wsResultList,List<ChildUserTypeVO> finalList){
+		if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			for (Entry<Long, UserTypeVO> entry : childActivityMembersMap.entrySet()) {
+				ChildUserTypeVO vo = new ChildUserTypeVO();
+				UserTypeVO temp = entry.getValue();
+				vo.setActivityMemberId(temp.getActivityMemberId());
+				vo.setImage(temp.getImage());
+				vo.setLocationLevelId(temp.getLocationLevelId());
+				vo.setLocationLevelName(temp.getLocationLevelName());
+				vo.setLocationValueSet(temp.getLocationValuesSet());
+				vo.setName(temp.getName());
+				vo.setTdpCadreId(temp.getTdpCadreId()+"");
+				vo.setUserTypeId(temp.getUserTypeId());
+				vo.setUsertType(temp.getUserType());
+				
+				//counts setting for paries graph
+				if(vo.getLocationValueSet() != null && vo.getLocationValueSet().size() > 0){
+					for (Long locationId : vo.getLocationValueSet()) {
+						CoreDashBoardVO matchedLocationVo =  getMatchedLocationVO(vo.getLocationLevelId(),locationId,wsResultList);
+						if(matchedLocationVo.getCoreDashBoardVOList() != null && matchedLocationVo.getCoreDashBoardVOList().size() > 0){//parties wise vos list
+							for (CoreDashBoardVO childUserTypeVO : matchedLocationVo.getCoreDashBoardVOList()) {
+								ChildUserTypeVO matchedPartyVO = getMatchedPartyVO(childUserTypeVO.getOrganizationId(),vo.getChildUserTypeVOList());
+								if(matchedPartyVO == null){
+									matchedPartyVO = new ChildUserTypeVO();
+									matchedPartyVO.setOrganizationId(childUserTypeVO.getOrganizationId());
+									matchedPartyVO.setOrganization(childUserTypeVO.getOrganization());
+									matchedPartyVO.setCount(childUserTypeVO.getCount());
+									vo.getChildUserTypeVOList().add(matchedPartyVO);
+								}else{
+									matchedPartyVO.setCount(matchedPartyVO.getCount()+childUserTypeVO.getCount());
+								}
+							}
+						}
+						
+					}
+				}
+				
+				//counts setting for editions wise
+				if(vo.getLocationValueSet() != null && vo.getLocationValueSet().size() > 0){
+					for (Long locationId : vo.getLocationValueSet()) {
+						CoreDashBoardVO matchedLocationVo = getMatchedLocationLevelVoForEdi(vo.getLocationLevelId(),locationId,wsResultList);
+						if(matchedLocationVo != null && matchedLocationVo.getCoreDashBoardVOList() != null && matchedLocationVo.getCoreDashBoardVOList().size() > 0){
+							for (CoreDashBoardVO editionVO : matchedLocationVo.getCoreDashBoardVOList()) {
+								ChildUserTypeVO matchedEditionVO = getMatchedPartyVO(editionVO.getOrganizationId(),vo.getChildUserTypeVOList1());
+								if(matchedEditionVO == null){
+									matchedEditionVO = new ChildUserTypeVO();
+									matchedEditionVO.setOrganizationId(editionVO.getOrganizationId());
+									matchedEditionVO.setOrganization(editionVO.getOrganization());
+									matchedEditionVO.setName(editionVO.getName());
+									if(editionVO.getName().equalsIgnoreCase("Main")){
+										matchedEditionVO.setPositiveCountMain(matchedEditionVO.getPositiveCountMain());
+										matchedEditionVO.setNegativeCountMain(matchedEditionVO.getNegativeCountMain());
+									}else if(editionVO.getName().equalsIgnoreCase("Dist")){
+										matchedEditionVO.setPositiveCountDist(matchedEditionVO.getPositiveCountDist());
+										matchedEditionVO.setNegativeCountDist(matchedEditionVO.getNegativeCountDist());
+									}
+									
+									vo.getChildUserTypeVOList1().add(matchedEditionVO);
+								}else{
+									if(editionVO.getName().equalsIgnoreCase("Main")){
+										matchedEditionVO.setPositiveCountMain(matchedEditionVO.getPositiveCountMain()+matchedEditionVO.getPositiveCountMain());
+										matchedEditionVO.setNegativeCountMain(matchedEditionVO.getNegativeCountMain()+matchedEditionVO.getNegativeCountMain());
+									}else if(editionVO.getName().equalsIgnoreCase("Dist")){
+										matchedEditionVO.setPositiveCountDist(matchedEditionVO.getPositiveCountDist()+matchedEditionVO.getPositiveCountDist());
+										matchedEditionVO.setNegativeCountDist(matchedEditionVO.getNegativeCountDist()+matchedEditionVO.getNegativeCountDist());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public CoreDashBoardVO getMatchedLocationLevelVoForEdi(Long locationLevelId,Long locationId,List<CoreDashBoardVO> wsResultList){
+		if(wsResultList != null && wsResultList.size() > 0){
+			for (CoreDashBoardVO mainVo : wsResultList) {
+				if(mainVo.getId().equals(locationLevelId)){
+					if(mainVo.getCoreDashBoardVOList1() != null && mainVo.getCoreDashBoardVOList1().size() > 0){
+						for (CoreDashBoardVO subVO : mainVo.getCoreDashBoardVOList1()) {
+							if(subVO.getId().equals(locationId)){
+								return subVO;
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public ChildUserTypeVO getMatchedPartyVO(Long partyId,List<ChildUserTypeVO> voList){
+		if(voList != null && voList.size() > 0){
+			for (ChildUserTypeVO childUserTypeVO : voList) {
+				if(childUserTypeVO.getOrganizationId().equals(partyId)){
+					return childUserTypeVO;
+				}
+			}
+		}
+		return null; 
+	} 
+	
+	public CoreDashBoardVO getMatchedLocationVO(Long locationLevelId,Long locationId,List<CoreDashBoardVO> wsResultList){
+		if(wsResultList != null && wsResultList.size() > 0){
+			for (CoreDashBoardVO coreDashBoardVO : wsResultList) {
+				if(coreDashBoardVO.getId().equals(locationLevelId)){
+					if(coreDashBoardVO.getCoreDashBoardVOList() != null && coreDashBoardVO.getCoreDashBoardVOList().size() > 0){
+						for (CoreDashBoardVO partiesVo : coreDashBoardVO.getCoreDashBoardVOList()) {
+							if(partiesVo.getId().equals(locationId)){
+								return partiesVo;
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 }
