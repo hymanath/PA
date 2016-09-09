@@ -1847,10 +1847,10 @@
 			$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);  
 			if(result != null && result.length > 0){
 					var candidateNameArray = [];
-					candidateNameArray.push("eligible");
-					candidateNameArray.push("invited");
-					candidateNameArray.push("attended");
-					candidateNameArray.push("absent");
+					candidateNameArray.push("ELIGIBLE");
+					candidateNameArray.push("INVITED");
+					candidateNameArray.push("ATTENDED");
+					candidateNameArray.push("ABSENT"); 
 					k=0;
 				for(var i in result){
 					for(var j in result[i]){
