@@ -2083,7 +2083,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @param Long stateId
 	* @return  TrainingCampProgramVO
 	* @author Santosh 
-	* @Description :This Service Method is used to get top5 poor district and constituency locations attended counts. 
+	* @Description :This Service Method is used to get top5 poor Training Camp Program locations attended counts. 
 	*  @since 29-AUGUST-2016
 	*/
   public TrainingCampProgramVO getTrainingProgramPoorCompletedLocationDtls(Long userTypeId,Long activityMemberId,Long stateId,String toDateStr){
@@ -2151,11 +2151,20 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
 				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
-						 resultVO.setMandalList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+						 resultVO.getMandalList().addAll(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
 						 eligibleMembersMap.clear();
 						 attendedMembersMap.clear(); 
 				   } 
-		 
+				   List<Object[]> rtrnTwnDivsnAttendedObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"TownDivision",stateId,toDate);   
+				   List<Object[]> rtrnTwnDivsnEligibleObjList =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "TownDivision",stateId); 	 
+				   setAttendedMembersCntToMap(rtrnTwnDivsnAttendedObjList,attendedMembersMap);
+				   setEligibleMemberCntToMap(rtrnTwnDivsnEligibleObjList,attendedMembersMap,eligibleMembersMap);
+				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
+					   List<TrainingCampProgramVO> townDivList = new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values());
+						 resultVO.getMandalList().addAll(townDivList); // merging town division data
+						 eligibleMembersMap.clear();
+						 attendedMembersMap.clear(); 
+				   } 
 			   }
 		   }
 		}
@@ -2167,7 +2176,17 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				   setAttendedMembersCntToMap(rtrnConsAttendedObj,attendedMembersMap);
 				   setEligibleMemberCntToMap(rtrnConsEligibleObj,attendedMembersMap,eligibleMembersMap);
 				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
-						 resultVO.setVillageList(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+						 resultVO.getVillageList().addAll(new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values()));
+						 eligibleMembersMap.clear();
+						 attendedMembersMap.clear(); 
+				  }   
+				   List<Object[]> rtrnWardAttendedObj = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()),"Ward",stateId,toDate);   
+				   List<Object[]> rtrnWardEligibleObj =  tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByLocationType(entry.getKey(),new ArrayList<Long>(entry.getValue()), "Ward",stateId); 	 
+				   setAttendedMembersCntToMap(rtrnWardAttendedObj,attendedMembersMap);
+				   setEligibleMemberCntToMap(rtrnWardEligibleObj,attendedMembersMap,eligibleMembersMap);
+				   if(eligibleMembersMap != null && eligibleMembersMap.size()>0){
+					   List<TrainingCampProgramVO> wardList = new ArrayList<TrainingCampProgramVO>(eligibleMembersMap.values());
+						 resultVO.getVillageList().addAll(wardList); //merging ward data
 						 eligibleMembersMap.clear();
 						 attendedMembersMap.clear(); 
 				  }   

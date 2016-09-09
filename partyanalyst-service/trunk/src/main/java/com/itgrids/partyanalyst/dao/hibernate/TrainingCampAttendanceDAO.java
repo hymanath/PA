@@ -1084,7 +1084,16 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	        queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId,");
 	        queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatName,");
 	        }
-	        
+            if(locationType != null && locationType.equalsIgnoreCase("Ward")){
+    	        queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId,");
+    	        queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.name,");
+    	     }
+            if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+    	        queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId,");
+    	        queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.name,");
+    	    }
+    	        
+            
 		     queryStr.append(" count(distinct model.attendance.tdpCadre.tdpCadreId) " + //5
 		                  " from TrainingCampAttendance model,TrainingCampEligbleDesignation model2,TdpCommitteeMember model3 " +
 	  		              " where model.attendance.tdpCadre.tdpCadreId = model3.tdpCadre.tdpCadreId and " +
@@ -1128,6 +1137,12 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
    }  
    if(locationType != null && locationType.equalsIgnoreCase("Village")){
 	   queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId asc"); //1   
+   }
+   if(locationType != null && locationType.equalsIgnoreCase("Ward")){
+	queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId asc");   
+   }
+   if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+	 queryStr.append(" group by model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId order by model3.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId asc");  
    }
    Query query = getSession().createQuery(queryStr.toString());
    if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
