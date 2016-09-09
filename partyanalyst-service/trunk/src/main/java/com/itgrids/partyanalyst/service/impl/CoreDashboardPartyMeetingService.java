@@ -394,46 +394,77 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		     locationLevelMap = activityMemberVO.getLocationLevelIdsMap();
 		     
 		     if(locationLevelMap != null && locationLevelMap.size() > 0){
+		    	 
 		    	 for (Entry<Long, Set<Long>> entry : locationLevelMap.entrySet()) {
+		    		 
                    List<Object[]> returnOverAllObjList = partyMeetingDAO.getPartyMeetingOverAllCountLocationWiseByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
-                   totalCntMap.put(entry.getKey(), 0l);
-                   calculateTotalCntByAccessLevelWise(entry.getKey(),returnOverAllObjList,totalCntMap);
+                  
+                   if(returnOverAllObjList!=null && returnOverAllObjList.size()>0){
+                	   for(Object[] obj : returnOverAllObjList){
+                		   Long userAccessLevelId = entry.getKey();
+                		   Long locationLevelValue = (Long)obj[0];
+                		   String key = userAccessLevelId+"-"+locationLevelValue;
+                		   
+                		   PartyMeetingsVO locationVO = null;
+                		   locationVO = meetingCntDtlsMap.get(key);
+                		   if(locationVO==null){
+                			   locationVO = new PartyMeetingsVO();
+                			   locationVO.setTotalMeetingCnt(obj[1]!=null?(Long)obj[1]:0l);
+                			   meetingCntDtlsMap.put(key, locationVO);
+                		   }
+                	   }
+                   }
 				}
 		     }
+		     
 		    if(locationLevelMap != null && locationLevelMap.size() > 0){
 		    	for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
 		    		List<Object[]> returnList = partyMeetingStatusDAO.getPartyMeetingCountLocationWiseByUserAccess(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
 		    		calculateMeetingStatusWiseDetailsCnt(entry.getKey(),returnList,meetingCntDtlsMap);
 		    	}
 		    }
+		    
+		    
 		    if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+		    	
 				  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
+					  
 				      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+				      
 				      for(UserTypeVO vo:userTypeMap.values()){
+				    	  
 				    	  for(Long locationValueId:vo.getLocationValuesSet()){
+				    		  
 				    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
+				    		  
 				    		  PartyMeetingsVO partyMeetingVO = meetingCntDtlsMap.get(key);
+				    		  
 				    		  if(partyMeetingVO != null){
+				    			  vo.setTotalMeetingCnt(vo.getTotalMeetingCnt() + partyMeetingVO.getTotalMeetingCnt());
 					    		  vo.setConductedMeetingCnt(vo.getConductedMeetingCnt()+partyMeetingVO.getConductedCount());
 					    		  vo.setNotConductedMeetingCnt(vo.getNotConductedMeetingCnt()+partyMeetingVO.getNotConductedCount());
 					    		  vo.setMayBeMeetingCnt(vo.getMayBeMeetingCnt()+partyMeetingVO.getMayBeCount());
 				    		  }
+				    		  
 				    		}
 				      }
 			}  
 			} 
+		    
 		    //Calculate Percentage
 		    if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 				  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
 				      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
 				      for(UserTypeVO vo:userTypeMap.values()){
-				    		  Long totalMeetingCnt = totalCntMap.get(vo.getLocationLevelId());
+				    		  Long totalMeetingCnt = vo.getTotalMeetingCnt();
 				    		  if(totalMeetingCnt != null){
 				    			  vo.setConductedAndMayBeMeetingPer(calculatePercantage(vo.getConductedMeetingCnt(),totalMeetingCnt));  
 				    		  }
 				     		}
 				      }
 			} 
+		    
+		    //merging secreteries and general secrerteries.
 		    if(userTypeMapDtls!=null && userTypeMapDtls.size()>0){
 		        Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
 		        Map<Long,UserTypeVO>  secreteriesMap = null;
@@ -454,6 +485,8 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		        	userTypeMapDtls.put(4l, orgSecAndSecMap); 
 		        }
 		      }
+		    
+		    
 			if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 				  for(Entry<Long, Map<Long, UserTypeVO>> entry:userTypeMapDtls.entrySet()){
 				   Map<Long,UserTypeVO> userTypeMap = entry.getValue();
@@ -470,7 +503,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	}
 	return resultList; 
  }
- public void calculateTotalCntByAccessLevelWise(Long accessLevelId,List<Object[]> returnList,Map<Long,Long> totalCntMap){
+/* public void calculateTotalCntByAccessLevelWise(Long accessLevelId,List<Object[]> returnList,Map<Long,Long> totalCntMap){
 	 try{
 		if(returnList != null && returnList.size() > 0){
 			for(Object[] obj: returnList) {
@@ -480,7 +513,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 }catch(Exception e){
 		LOG.error("Exception raised at calculateTotalCntByAccessLevelWise() method of CoreDashboardPartyMeetingService", e);
 	 }
- }
+ }*/
  public void calculateMeetingStatusWiseDetailsCnt(Long userAccessLevelId,List<Object[]> returnList,Map<String,PartyMeetingsVO> meetingCntDtlsMap){
 	 try{
 		if(returnList != null && returnList.size() > 0){
@@ -494,6 +527,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 					  meetingsVO = new PartyMeetingsVO();
 					  meetingCntDtlsMap.put(key, meetingsVO);
 				  }
+				  meetingsVO = meetingCntDtlsMap.get(key);
 				  if(meetingStatus.equalsIgnoreCase("Y")){
 					  meetingsVO.setConductedCount(meetingCnt);
 				  }else if(meetingStatus.equalsIgnoreCase("N")){
