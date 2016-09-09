@@ -25,7 +25,7 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	  getPartyMeetingBasicCountDetails();
 	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 	});
-    $(document).on("click",".meetingGetDtlsBtnId",function(){
+    $(document).on("click",".meetingGetDtlsBtncls",function(){
 		getPartyMeetingBasicCountDetails();
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 		$(".settingsDropDown").hide();
@@ -72,16 +72,7 @@ $(document).on("click",".selectAll",function(){
 	});
    }	
 });
-/* $(document).on("click",".selectAll",function(){
-	$("#committeeTypeId li").each(function() {
-	  $(this).find("input").prop("checked",true)
-	});
-}); */
-/* $(document).on("click",".unSelectAll",function(){
-	$("#committeeTypeId li").each(function() {
-	  $(this).find("input").prop("checked",false)
-	});
-}); */
+
       var globalStateId=1; 
 	function getPartyMeetingBasicCountDetails()
 	{ 
@@ -1475,4 +1466,211 @@ if(cmtId>0)
 $(".notesUlMeetings").append("<li>"+commentText+"</li>");
 $(".notesAreaMeetings").val('');	
 });
+
+
+
+//State Level Meeting  && Special meeting section
+
+$(document).on("click",".stateLevelMeetingBtnCls",function(){
+	getPartyMeetingsMainTypeStateLevelOverview();
+	$(".settingsStateLevelMeetingDropDown").hide();
+	$("#stateLevelMeetingDivId").hide();
+});
+ $(document).on("click",".specialMeetingBtncls",function(){
+	getPartySpecialMeetingsMainTypeOverview();
+	$(".specialMeetingDropDown").hide();
+	$("#specialMeetingDivId").hide();
+});
+function getStateLevelMeetingsByMeetingType()
+	{ 
+		var jsObj ={ 
+		             partyMeetingMainTypeId : 2
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingTypeByPartyMeetingMainTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildStateLevelMeeting(result);
+			}
+			getPartyMeetingsMainTypeStateLevelOverview();
+		});
+	}
+	 function buildStateLevelMeeting(result){
+	 var str='';
+	 str+='<ul style="list-style: none;" id="stateLevelMeetingUlId" class="selectAllStateLevelOptions">';
+	 for(var i in result){
+		 str+="<li><label><input checked type='checkbox' id="+result[i].id+">&nbsp&nbsp"+result[i].name+"</label></li>";
+	 }
+	 str+='</ul> ';
+	 $("#stateLevelMeetingDivId").html(str);
+ }	
+	function getSpecialMeetingsByMeetingType(){
+	var jsObj ={ 
+		             partyMeetingMainTypeId : 3
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingTypeByPartyMeetingMainTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildSpecialMeetingResult(result);
+			}
+			getPartySpecialMeetingsMainTypeOverview();
+		});	
+	}
+	 function buildSpecialMeetingResult(result){
+	 var str='';
+	 str+='<ul style="list-style: none;" id="specialMeetingUlId" class="selectAllSpecialMeetingOptions">';
+	 for(var i in result){
+		 str+="<li><label><input checked type='checkbox' id="+result[i].id+">&nbsp&nbsp"+result[i].name+"</label></li>";
+	 }
+	 str+='</ul> ';
+	 $("#specialMeetingDivId").html(str);
+ }	
+$(document).on("click",".stateLevelMeetingSeeting",function(){
+	$("#stateLevelMeetingDivId").show();
+	$(".settingsStateLevelMeetingDropDown").toggle();
+	$(".specialMeetingDropDown").hide();
+});
+$(document).on("click",".specialMeetingSeeting",function(){
+    $("#specialMeetingDivId").show();
+	$(".specialMeetingDropDown").toggle();
+	$(".settingsStateLevelMeetingDropDown").hide();
+});
+$(document).on("click",".selectAllStateLevelMeeting",function(){
+   if($(this).is(":checked")){
+	$("#stateLevelMeetingUlId li").each(function() {
+	  $(this).find("input").prop("checked",true)
+	});
+   }else{
+	 $("#stateLevelMeetingUlId li").each(function() {
+	  $(this).find("input").prop("checked",false)
+	});
+   }	
+});
+$(document).on("click",".selectAllSpecialMeeting",function(){
+   if($(this).is(":checked")){
+	$("#specialMeetingUlId li").each(function() {
+	  $(this).find("input").prop("checked",true)
+	});
+   }else{
+	 $("#specialMeetingUlId li").each(function() {
+	  $(this).find("input").prop("checked",false)
+	});
+   }	
+});
+function getPartyMeetingsMainTypeStateLevelOverview(){
+	$("#stateLevelMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var partyMeetingTypeArr=[];
+	   $("#stateLevelMeetingUlId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	   }); 
+	     var state = globalState
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj ={ 
+		             partyMeetingMainTypeId : 2,
+					 state : state,
+					 startDateString : fromDateStr,
+					 endDateString : toDateStr,
+					 partyMeetingTypeIds:partyMeetingTypeArr
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingsMainTypeOverViewDataAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#stateLevelMeetingBasicCnt").html(" ");
+		    if(result != null && result.length > 0){
+				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt");
+			}else{
+			  $("#stateLevelMeetingBasicCnt").html("NO DATA AVAILABLE.");	
+			}
+		});
 	
+}
+function getPartySpecialMeetingsMainTypeOverview(){
+	$("#specialMeetingBasicCnt").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var partyMeetingTypeArr=[];
+	   $("#specialMeetingUlId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	   }); 
+	     var state = globalState;
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj ={ 
+		             partyMeetingMainTypeId : 3,
+					 state : state,
+					 startDateString : fromDateStr,
+					 endDateString : toDateStr,
+					 partyMeetingTypeIds:partyMeetingTypeArr
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingsMainTypeOverViewDataAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#specialMeetingBasicCnt").html(" ");
+		   if(result != null && result.length > 0){
+			   buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt");
+		   }else{
+			$("#specialMeetingBasicCnt").html("NO DATA AVAILABLE.");	   
+		   }
+		});
+	
+}
+function buildPartyMeetingOverviewRslt(result,divId){
+	var str='';
+		   for(var i in result){
+			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+				 str+='<h4 class="text-capital">'+result[i].name+'</h4>';
+				str+='<table class="table tableTraining bg_ED">';
+					 str+='<tbody><tr>';
+						 str+='<td>';
+							 str+='<h4>'+result[i].noOfMeetings+'</h4>';
+							  str+='<p class="text-muted text-capital">total meetings</p>';
+						 str+='</td>';
+						 str+='<td>';
+						 str+='<h4>'+result[i].invitedCount+'<span class="font-10 text-success"></span></h4>';
+						  str+='<p class="text-muted text-capital">Invited</p>';
+						 str+='</td>';
+						 str+='<td>';
+							 str+='<h4>'+result[i].attendedCount+' <span class="font-10 text-success">'+result[i].attendedPerc+'%</span></h4>';
+							  str+='<p class="text-muted text-capital">Attended</p>';
+						 str+='</td>';
+						 str+='<td>';
+							 str+='<h4>'+result[i].notAttendedCount+' <span class="font-10 text-success">'+result[i].notAttendedPerc+'%</span></h4>';
+							  str+='<p class="text-muted text-capital">Absent</p>';
+						 str+='</td>';
+					 str+='</tr>';
+				 str+='</tbody></table>';
+				 str+='<hr class="m_0">';
+			 str+='</div>';  
+			  }
+	$("#"+divId).html(str);  
+}
