@@ -331,25 +331,25 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		   queryStr.append(" model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,");
 		
 		   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-			if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){ 
+			if(userAccessLevelValues != null && userAccessLevelValues.size()==1){ 
 			  queryStr.append(" model.partyMeeting.meetingAddress.district.districtId,model.partyMeeting.meetingAddress.district.districtName, "); 
 		    }else{
 	         queryStr.append(" model.partyMeeting.meetingAddress.state.stateId,model.partyMeeting.meetingAddress.state.stateName,");  
 	       }
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+			  if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 			  queryStr.append(" model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId,model.partyMeeting.meetingAddress.parliamentConstituency.name, "); 
 		  }else{
 			  queryStr.append(" model.partyMeeting.meetingAddress.district.districtId,model.partyMeeting.meetingAddress.district.districtName, ");  
 	      }
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+			if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 			  queryStr.append(" model.partyMeeting.meetingAddress.constituency.constituencyId,model.partyMeeting.meetingAddress.constituency.name, "); 
 		  }else{
 			  queryStr.append(" model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId,model.partyMeeting.meetingAddress.parliamentConstituency.name, ");  
 	       }
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()>1){
+			  if(userAccessLevelValues != null && userAccessLevelValues.size()>1){
 				  if(levelType != null && levelType.equalsIgnoreCase("tehsil")){
 					  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 						   queryStr.append(" model.partyMeeting.meetingAddress.tehsil.tehsilId,model.partyMeeting.meetingAddress.tehsil.tehsilName,");  //Assembley Sub level 
@@ -364,13 +364,13 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 				 queryStr.append(" model.partyMeeting.meetingAddress.constituency.constituencyId,model.partyMeeting.meetingAddress.constituency.name, ");  
 			  }
 		  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID ){
-			  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+			  if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 				  queryStr.append(" model.partyMeeting.meetingAddress.panchayat.panchayatId,model.partyMeeting.meetingAddress.panchayat.panchayatName,");	  
 			  }else{
 				  queryStr.append(" model.partyMeeting.meetingAddress.tehsil.tehsilId,model.partyMeeting.meetingAddress.tehsil.tehsilName,");  
 		      }
 		  }if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){
-			  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+			  if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 				  queryStr.append(" model.partyMeeting.meetingAddress.ward.constituencyId,model.partyMeeting.meetingAddress.ward.name,"); //ward
 			  }else{
 				  queryStr.append(" model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId,model.partyMeeting.meetingAddress.localElectionBody.name,"); //  town/division 
@@ -416,7 +416,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
           queryStr.append(" group by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
 		  
 		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-				if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){ 
+				if(userAccessLevelValues != null && userAccessLevelValues.size()==1){ 
 					 queryStr.append(" ,model.partyMeeting.meetingAddress.district.districtId,model.mettingStatus " +
 			  		                " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.district.districtId  "); 
 			    }else{
@@ -424,7 +424,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		         		             " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.state.stateId "); 
 		       }
 			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-				  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+				  if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 					  queryStr.append("  ,model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId,model.mettingStatus" +
 						              "  order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId "); 
 			  }else{
@@ -432,7 +432,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 					  		      " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.district.districtId ");    
 		      }
 			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-				if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+				if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 					queryStr.append("  ,model.partyMeeting.meetingAddress.constituency.constituencyId,model.mettingStatus " +
 					  	            " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.constituency.constituencyId ");  
 			  }else{
@@ -440,7 +440,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 					  		      " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId ");  
 		       }
 			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-				  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID && userAccessLevelValues != null && userAccessLevelValues.size()>1){
+				  if(userAccessLevelValues != null && userAccessLevelValues.size()>1){
 					  if(levelType != null && levelType.equalsIgnoreCase("tehsil")){
 						  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 							  queryStr.append("  ,model.partyMeeting.meetingAddress.tehsil.tehsilId,model.mettingStatus " +
@@ -458,7 +458,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 						             "  order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.constituency.constituencyId "); 
 				  }
 			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID ){
-				  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+				  if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 					  queryStr.append("  ,model.partyMeeting.meetingAddress.panchayat.panchayatId,model.mettingStatus " +
 						  		     " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.panchayat.panchayatId");	  
 				  }else{
@@ -466,7 +466,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 						  		      " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.tehsil.tehsilId"); 
 			      }
 			  }if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){
-				  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID && userAccessLevelValues != null && userAccessLevelValues.size()==1){
+				  if(userAccessLevelValues != null && userAccessLevelValues.size()==1){
 					  queryStr.append("  ,model.partyMeeting.meetingAddress.ward.constituencyId,model.mettingStatus " +
 						  		      " order by model.partyMeeting.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.meetingAddress.ward.constituencyId"); //ward
 				  }else{

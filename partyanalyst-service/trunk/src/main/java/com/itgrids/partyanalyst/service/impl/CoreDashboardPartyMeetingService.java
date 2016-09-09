@@ -1047,7 +1047,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			   
 			   
 		       if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		    	   if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID && locationValues != null && locationValues.size()==1){
+		    	   if(locationValues != null && locationValues.size()==1){
 		    		   resultList.add(constituencyVO);
 			    	   resultList.add(districtVO);
 			       }else{
@@ -1056,7 +1056,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			    	   resultList.add(districtVO);   
 		    	   }
 		       }else if(userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-		    	   if(userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID && locationValues != null && locationValues.size()==1){
+		    	   if(locationValues != null && locationValues.size()==1){
 		    		   resultList.add(constituencyVO);
 			       }else{
 			    	   resultList.add(constituencyVO);
@@ -1064,7 +1064,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			       }  
 		    	   }
 		       else if(userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		    	   if(userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID && locationValues != null && locationValues.size()==1 ){
+		    	   if(locationValues != null && locationValues.size()==1 ){
 			        }else{
 			        	  resultList.add(constituencyVO);	
 			        }  
