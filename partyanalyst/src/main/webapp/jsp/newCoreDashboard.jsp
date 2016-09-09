@@ -916,9 +916,9 @@
 							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock">
 								<div class="row">
 									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-									<ul class="activeUlCls list-inline ">
-											<li class="meetingLiCls active" attr_value="strong">top 5 strong</li>
-											<li class="meetingLiCls" attr_value="poor">last 5 poor</li>
+										<ul class="activeUlCls list-inline">
+											<li class="active newsliCls" attr_value="1"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
+											<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-up"></i>&nbsp;Top 5 Negative</li>
 										</ul>
 									</div>
 									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
