@@ -16,13 +16,16 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -40,6 +43,8 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private ICoreDashboardGenericService coreDashboardGenericService;
 	 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	 private IPartyMeetingTypeDAO partyMeetingTypeDAO;
+	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;
+	 private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	 
 	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
 		this.partyMeetingDAO = partyMeetingDAO;
@@ -62,6 +67,15 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	}
    public void setPartyMeetingTypeDAO(IPartyMeetingTypeDAO partyMeetingTypeDAO) {
 		this.partyMeetingTypeDAO = partyMeetingTypeDAO;
+	}
+   
+	public void setPartyMeetingInviteeDAO(
+			IPartyMeetingInviteeDAO partyMeetingInviteeDAO) {
+		this.partyMeetingInviteeDAO = partyMeetingInviteeDAO;
+	}
+	public void setPartyMeetingAttendanceDAO(
+			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
+		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
 	}
 /**
  * @param  Long activityMemberId
@@ -1113,5 +1127,106 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 }
  }
 		
+ /**
+  *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+  *  This Service Method is used to get the getPartyMeetingsMainTypeOverView data.
+  *  @since 09-SEPTEMBER-2016
+  */
+public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString){
+	
+	List<PartyMeetingsDataVO> finalList = new ArrayList<PartyMeetingsDataVO>();
+	
+	try{
 		
+		//creating inputVO
+		PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+		
+		 inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+		 inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+		 List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+		 inputVO.setStartDate(datesList.get(0));
+		 inputVO.setEndDate(datesList.get(1));
+		 Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		 inputVO.setStateId(stateId);
+	     
+		 List<Object[]> noOfMeetingsList = partyMeetingDAO.getNoOfMeetingsByPartyMeetingTypeIds(inputVO);
+		 List<Object[]> inviteesList = partyMeetingInviteeDAO.getInvitedCountForPartyMeetingTypeIds(inputVO);
+		 List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getInvitteeAttendedCountForPartyMeetingTypeIds(inputVO);
+	     List<Object[]> attendedList = partyMeetingAttendanceDAO.getAttendedCountForPartyMeetingTypeIds(inputVO);
+	     
+		 
+	     Map<Long,PartyMeetingsDataVO> meetingTypeVOMap = new LinkedHashMap<Long,PartyMeetingsDataVO>(0); 
+	     
+		 if(noOfMeetingsList != null && noOfMeetingsList.size() > 0){
+			 for(Object[] obj : noOfMeetingsList){
+				 Long partyMeetingTypeId = obj[0]!=null ? (Long)obj[0]:0l;
+				 if(partyMeetingTypeId > 0){
+					 
+					 PartyMeetingsDataVO meetingTypeVO = new PartyMeetingsDataVO(); 
+					 meetingTypeVO.setId(partyMeetingTypeId);
+					 meetingTypeVO.setName(obj[1]!=null?obj[1].toString():"");
+					 meetingTypeVO.setNoOfMeetings(obj[2]!=null?(Long)obj[2]:0l);
+					 
+					 meetingTypeVOMap.put(meetingTypeVO.getId(), meetingTypeVO);
+				 }
+			 }
+		 }
+		 
+		 if(inviteesList!=null && inviteesList.size()>0){
+			 for(Object[] obj : inviteesList){
+				 Long partyMeetingTypeId = obj[0]!=null ? (Long)obj[0]:0l;
+				 if(partyMeetingTypeId > 0){
+					 PartyMeetingsDataVO meetingTypeVO  = meetingTypeVOMap.get(partyMeetingTypeId);
+					 if(meetingTypeVO!=null){
+						 meetingTypeVO.setInvitedCount(obj[2]!=null?(Long)obj[2]:0l);
+						 meetingTypeVO.setNotAttendedCount(obj[2]!=null?(Long)obj[2]:0l);
+					 }
+				 }
+			 }
+		 }
+		 
+		 if(attendedList!=null && attendedList.size()>0){
+			 for(Object[] obj : attendedList){
+				 Long partyMeetingTypeId = obj[0]!=null ? (Long)obj[0]:0l;
+				 if(partyMeetingTypeId > 0){
+					 PartyMeetingsDataVO meetingTypeVO  = meetingTypeVOMap.get(partyMeetingTypeId);
+					 if(meetingTypeVO!=null){
+						 meetingTypeVO.setAttendedCount(obj[2]!=null?(Long)obj[2]:0l);
+					 }
+				 }
+			 }
+		 }
+		 
+		 if(invitteeAttendedList!=null && invitteeAttendedList.size()>0){
+			 for(Object[] obj : invitteeAttendedList){
+				 Long partyMeetingTypeId = obj[0]!=null ? (Long)obj[0]:0l;
+				 if(partyMeetingTypeId > 0){
+					 PartyMeetingsDataVO meetingTypeVO  = meetingTypeVOMap.get(partyMeetingTypeId);
+					 if(meetingTypeVO!=null){
+						 meetingTypeVO.setInvitteeAttendedCount(obj[2]!=null?(Long)obj[2]:0l);
+						 meetingTypeVO.setNotAttendedCount( meetingTypeVO.getInvitedCount() - meetingTypeVO.getInvitteeAttendedCount() );
+					 }
+				 }
+			 }
+		 }
+		 
+		 if(meetingTypeVOMap != null && meetingTypeVOMap.size() > 0 ){
+			 
+			 for(Long partyMeetingTypeId : meetingTypeVOMap.keySet()){
+				 PartyMeetingsDataVO meetingTypeVO = meetingTypeVOMap.get(partyMeetingTypeId);
+				 if(meetingTypeVO.getInvitedCount()!=null && meetingTypeVO.getInvitedCount() > 0l) {
+					 meetingTypeVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getAttendedCount(),meetingTypeVO.getInvitedCount()) );
+					 meetingTypeVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getInvitteeAttendedCount(),meetingTypeVO.getInvitedCount()) );
+					 meetingTypeVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(meetingTypeVO.getNotAttendedCount(),meetingTypeVO.getInvitedCount()) );
+				   }
+			 }
+			 finalList.addAll(meetingTypeVOMap.values());
+		 }
+		 
+		 
+	}catch(Exception e){
+		LOG.error("exception occurred in getPartyMeetingsMainTypeOverViewData()", e);
+	}
+	return finalList;
+  }	
 }

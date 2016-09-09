@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.model.PartyMeetingInvitee;
 
 public interface IPartyMeetingInviteeDAO extends GenericDao<PartyMeetingInvitee,Long>{
@@ -24,4 +25,9 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getCommitteeMemberInviteesForPartyMeetings(List<Long> partyMeetingsList);
 	
 	public List<Long> getInvitedCadreIdsByPartyMeetingId(Long partyMeetingId);
+	
+	
+	public List<Object[]> getInvitedCountForPartyMeetingTypeIds(PartyMeetingsInputVO inputVO);
+	public List<Object[]> getInvitteeAttendedCountForPartyMeetingTypeIds(PartyMeetingsInputVO inputVO);
+	
 }
