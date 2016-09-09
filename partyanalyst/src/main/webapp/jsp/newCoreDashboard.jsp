@@ -1214,16 +1214,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
-											</div>
-											<div class="panel-body">
-											<div id ="newsTypeAnalysisDiv"></div>
-											</div>
-										</div>
-									</div>
+									
 								</div>                       	
 							</div>
 						</div>
@@ -1526,7 +1517,16 @@
 								<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
 									<!--2nd block-->
 								</div>
-								
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel panel-default panelNew">
+											<div class="panel-heading">
+												<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
+											</div>
+											<div class="panel-body">
+											<div id ="newsTypeAnalysisDiv"></div>
+											</div>
+										</div>
+									</div>
 								<div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
 									
 									<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
