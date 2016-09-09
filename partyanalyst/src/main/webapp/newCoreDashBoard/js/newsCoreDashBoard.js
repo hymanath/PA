@@ -2,7 +2,25 @@
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
-		
+	$(document).ready(function(){
+	$("#dateRangeIdForNews").daterangepicker({
+		opens: 'left',
+		startDate: moment().subtract(1, 'month').startOf('month'),
+        endDate: moment().subtract(1, 'month').endOf('month'),
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()]
+        }
+	});
+});	
 	$(document).on("click",".newsIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -222,8 +240,8 @@
 		var startDate="08-01-2016",endDate="08-31-2016";
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			$("#mainEditiongraphId").html('');
 			buildMainEditionPartieWiseGraph(result);
@@ -241,8 +259,8 @@
 		var startDate="08-01-2016",endDate="08-31-2016";
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			buildDetailedPartyDistrictEditionsOverview(result);
 		});
@@ -258,8 +276,8 @@
 		var startDate="08-01-2015",endDate="08-31-2016";
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				buildDetailedPartyNewsTypeAnalysis(result);
@@ -277,8 +295,8 @@
 		var startDate="08-01-2015",endDate="08-31-2016";
 		
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: "https://mytdp.com/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				
@@ -295,8 +313,12 @@
 				
 				for(var i in result){
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:100px;"></div>';
+						if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
+							str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
+						}else{
+							str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+						}
+						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:130px;"></div>';
 					str+='</div>'
 						
 				}
@@ -306,17 +328,16 @@
 			if(result != null && result.length > 0){
 				for(var i in result){
 					
-					var candidateNameAndPositiveCountArray = [];
+					var PositiveCountArray = [];
+					var NegativeCountArray = [];
+					var candidateNameArray=[];
 					var countVar =0;
 					
 					if(result[i] !=null && result[i].length>0){
 						for(var j in result[i]){
-							
-							 var obj1 = {
-									name: result[i][j].name,
-									y: result[i][j].positivePercentage
-								};
-							candidateNameAndPositiveCountArray.push(obj1);
+							candidateNameArray.push(result[i][j].name)
+							PositiveCountArray.push(result[i][j].positivePercentage)
+							NegativeCountArray.push(result[i][j].negativePercentage)
 								
 							countVar =countVar+1;
 							if (countVar === 5) {
@@ -326,12 +347,12 @@
 					}
 					
 						
-					if( result[i][j].positivePercentage !=0){
+					if( PositiveCountArray.length !=0 && NegativeCountArray.length !=0){
 						var getWidth = $("#newsBlockGenSecStrong"+i).parent().width()+'px';
 						$("#newsBlockGenSecStrong"+i).width(getWidth);
 						$(function () {
 							 $("#newsBlockGenSecStrong"+i).highcharts({
-								 colors: ['#0066DC'],
+								  colors: ['#F56800','#53BF8B'],
 								chart: {
 									type: 'column'
 								},
@@ -345,7 +366,7 @@
 									min: 0,
 									gridLineWidth: 0,
 									minorGridLineWidth: 0,
-									
+									categories: candidateNameArray,
 									type: 'category',
 									labels: {
 												formatter: function() {
@@ -389,13 +410,17 @@
 								},
 
 								tooltip: {
-									headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-									pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+									//headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br>',
+									shared:true
 								},
 
 								series: [{
+									name: 'Negative',
+									data: NegativeCountArray
+								},{
 									name: 'Positive',
-									data: candidateNameAndPositiveCountArray
+									data: PositiveCountArray
 								}],
 							 
 							});
@@ -419,8 +444,12 @@
 				
 				for(var i in result){
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:100px;"></div>';
+						if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
+							str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
+						}else{
+							str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+						}
+						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:130px;"></div>';
 					str+='</div>'
 						
 				}
@@ -430,17 +459,16 @@
 			if(result != null && result.length > 0){
 				for(var i in result){
 					
-					var candidateNameAndPositiveCountArray = [];
+					var PositiveCountArray = [];
+					var NegativeCountArray = [];
+					var candidateNameArray=[];
 					var countVar =0;
 					
 					if(result[i] !=null && result[i].length>0){
 						for(var j in result[i]){
-							
-							 var obj1 = {
-									name: result[i][j].name,
-									y: result[i][j].negativePercentage
-								};
-							candidateNameAndPositiveCountArray.push(obj1);
+							candidateNameArray.push(result[i][j].name)
+							PositiveCountArray.push(result[i][j].positivePercentage)
+							NegativeCountArray.push(result[i][j].negativePercentage)
 								
 							countVar =countVar+1;
 							if (countVar === 5) {
@@ -450,12 +478,12 @@
 					}
 					
 						
-					if( result[i][j].negativePercentage !=0){
+					if( PositiveCountArray.length !=0 && NegativeCountArray.length !=0){
 						var getWidth = $("#newsBlockGenSecStrong"+i).parent().width()+'px';
 						$("#newsBlockGenSecStrong"+i).width(getWidth);
 						$(function () {
 							 $("#newsBlockGenSecStrong"+i).highcharts({
-								 colors: ['#0066DC'],
+								 colors: ['#F56800','#53BF8B'],
 								chart: {
 									type: 'column'
 								},
@@ -469,7 +497,7 @@
 									min: 0,
 									gridLineWidth: 0,
 									minorGridLineWidth: 0,
-									
+									categories: candidateNameArray,
 									type: 'category',
 									labels: {
 												formatter: function() {
@@ -513,15 +541,19 @@
 								},
 
 								tooltip: {
-									headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-									pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+									//headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br>',
+									shared:true
 								},
 
 								series: [{
+									name: 'Negative',
+									data: NegativeCountArray
+								},{
 									name: 'Positive',
-									data: candidateNameAndPositiveCountArray
+									data: PositiveCountArray
 								}],
-							 
+								
 							});
 						});
 					}else{
@@ -540,134 +572,10 @@
 		
 	}
 	
-	/* function buildgetUserTypeWiseNewsForTopFivePoorResults(result){
-		var str='';
-		if(result != null && result.length > 0){
-			var str='';
-			for(var i in result){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-					str+='<div id="newsBlockGenSecPoor'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
-				str+='</div>';
-			}
-		}
-		$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html(str);
-		if(result != null && result.length > 0){
-			for(var i in result){
-				var candidateNameAndNegativeCountArray =[];
-				//var CommitteeCompleteCountArray;
-				var countVar = 0;
-				
-				if(result[i] !=null && result[i].length  >0){
-					for(var j = result[i].length -1; j >= 0; j--){
-						 var obj1 = {
-								name: result[i][j].name,
-								y: result[i][j].negativePercentage
-							};
-						
-						candidateNameAndNegativeCountArray.push(obj1);
-						countVar =countVar+1;
-						if (countVar === 5) {
-							break;
-						}
-					}
-				}
-				
-					
-				//if( result[i][j].completedPerc !=0){
-					var getWidth = $("#newsBlockGenSecPoor"+i).parent().width()+'px';
-					$("#newsBlockGenSecPoor"+i).width(getWidth);
-					$(function () {
-						 $("#newsBlockGenSecPoor"+i).highcharts({
-							 colors: ['#0066DC'],
-							chart: {
-								type: 'column'
-							},
-							title: {
-								text: ''
-							},
-							subtitle: {
-								text: ''
-							},
-							xAxis: {
-								min: 0,
-								gridLineWidth: 0,
-								minorGridLineWidth: 0,
-								
-								type: 'category',
-								labels: {
-											formatter: function() {
-												return this.value.toString().substring(0, 10)+'...';
-											},
-											
-										}
-								
-							},
-							yAxis: {
-								min: 0,
-								gridLineWidth: 0,
-								minorGridLineWidth: 0,
-								title: {
-									text: ''
-								}
-
-							},
-							legend: {
-								enabled: false
-							},
-							
-									
-							plotOptions: {
-								column: {
-									stacking: 'percent',
-									dataLabels: {
-										enabled: true,
-										 formatter: function() {
-											if (this.y === 0) {
-												return null;
-											} else {
-												return Highcharts.numberFormat(this.y,1) + '%';
-											}
-										}
-									  
-									}
-								}
-							},
-
-							tooltip: {
-								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-							},
-
-							series: [{
-								name: 'Negative',
-								data: candidateNameAndNegativeCountArray
-							}],
-						 
-						});
-					});
-				//}else{
-					//$("#genSec1"+i).html("No Data Available");
-					//$("#genSec1"+i).css("height","35px");
-						
-				//} 
-				
-			}
-			
-		}else{
-			$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html("No Data Available");
-		}
-		
-	} */
+	
 	
 	$(document).on("click",".newsliCls",function(){
 		getUserTypeWiseNewsCounts($(this).attr("attr_value"));
-		/* var memberType=$(this).attr("attr_value");
-		 if(memberType != null && memberType == "strong"){
-			buildgetUserTypeWiseNewsForTopFiveStrongResults(globalUserWiseMemberRslt); 
-		 }else if(memberType == "poor"){
-			buildgetUserTypeWiseNewsForTopFivePoorResults(globalUserWiseMemberRslt)
-		 } */
 	});
 	
 
