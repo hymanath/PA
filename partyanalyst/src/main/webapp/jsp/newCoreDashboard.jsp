@@ -1868,10 +1868,10 @@
 			$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);  
 			if(result != null && result.length > 0){
 					var candidateNameArray = [];
-					candidateNameArray.push("ELIGIBLE");
-					candidateNameArray.push("INVITED");
-					candidateNameArray.push("ATTENDED");
-					candidateNameArray.push("ABSENT"); 
+					candidateNameArray.push("ELIGIBLE");  
+					candidateNameArray.push("INVITED");  
+					candidateNameArray.push("ATTENDED");  
+					candidateNameArray.push("ABSENT");
 					k=0;
 				for(var i in result){
 					for(var j in result[i]){
@@ -1886,7 +1886,7 @@
 						var getWidth = $("#genCampId"+k).parent().width()+'px';
 						$("#genCampId"+k).width(getWidth);
 						$(function () {
-						$('#genCampId'+k).highcharts({  
+							$('#genCampId'+k).highcharts({  
 							colors: ['#0066DC'],
 							chart: {
 								type: 'column'
@@ -1907,7 +1907,7 @@
 								},
 								labels: {
 										formatter: function() {
-											return this.value.toString().substring(0, 10)+'...';
+											return this.value.toString().substring(0, 10);
 										},
 										
 									}
@@ -1926,15 +1926,21 @@
 								}
 							},
 							tooltip: {
-								valueSuffix: '%'
-							},
+									 
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+									shared: true,
+									valueSuffix: '%'
+								},
 							plotOptions: {
-								bar: {
-									dataLabels: {
-										enabled: true
+									column: {
+										stacking: 'normal',
+										dataLabels: {
+											enabled: true,
+											
+										  
+										}
 									}
-								}
-							},
+								},
 							legend: {
 								layout: 'vertical',
 								align: 'right',
