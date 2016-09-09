@@ -13629,6 +13629,14 @@
 		<result type="json" name="success"> 
    			<param name="root">partyMeetingDataVOList</param> 
    		</result>
-	</action>
+	</action>   
+	
+	<action name="getPartyMeetingCntDetailstLevelWiseByUserAccessLevelAction" class="coreDashboardAction" method="getPartyMeetingCntDetailstLevelWiseByUserAccessLevel">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingsVOList</param> 
+   		</result>
+	</action>   
+	
+	
 </package>
 </struts>

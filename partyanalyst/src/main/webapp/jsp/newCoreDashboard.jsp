@@ -966,24 +966,25 @@
 											<div class="col-md-8 col-xs-12 col-sm-6">
 												<span class="headingColor text-capitalize">meetings performance cohort</span>
 											</div>
-											<div class="col-md-4 col-xs-12 col-sm-6">
+											<!--<div class="col-md-4 col-xs-12 col-sm-6">
 												<ul class="activeUlCls list-inline pull-right">
 													<li class="active">All</li>
 													<li>May be!</li>
 													<li>Yes</li>
 													<li>No</li>
 												</ul>
-											</div>
+											</div>-->
 										</div>
 									</div>
 									<div class="panel-body">
-										<div>
+									 <div id="districtWiseMeetingReport"></div>
+										<!--<div>
 											<h4>General Body Meetings</h4>
 										</div>
 										<hr/>
 										<div class="m_top20">
 											<h4>Coordinate Meetings</h4>
-										</div>
+										</div>-->
 										
 									</div>
 								</div>

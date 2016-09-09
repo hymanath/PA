@@ -50,7 +50,7 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	}
  function buildCommitteeTypes(result){
 	 var str='';
-	 str+='<ul id="committeeTypeId" class="selectAllOptions">';
+	 str+='<ul style="list-style: none;" id="committeeTypeId" class="selectAllOptions">';
 	 for(var i in result){
 		 str+="<li><label><input checked type='checkbox' id="+result[i].id+">&nbsp&nbsp"+result[i].name+"</label></li>";
 	 }
@@ -508,6 +508,7 @@ $(document).on("click",".meetingLiCls",function(){
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
 		getChildUserTypesByItsParentUserTypeForMeeting();
 		getMeetingLevelDetails();
+		getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
 		$(".moreMeetingsBlocks").toggle();
 	});
 
@@ -547,7 +548,6 @@ function getMeetingLevelDetails(){
 }
 function buildLevelWiseHighCharts(result){
 	var levelWiseResult = result.partyMettingsVOList;
-		$("#meetingLevelHIghChartsDivId").html('');
 		if(levelWiseResult != null && levelWiseResult.length > 0){
 			var str='';
 			var locationLevelNameArray =[];
@@ -726,7 +726,7 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 	getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
 
 });
-
+	
 function getChildUserTypesByItsParentUserTypeForMeeting(){
 		
 		var jsObj = { parentUserTypeId : globalUserTypeId }
@@ -1156,122 +1156,171 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 			$('.progressCustom').tooltip();
 		}else{
 			$("#topPoorLocationsMeetingDiv").html("No Data Available");
-	    }
-	}
-/*Notes Functionality*/
-	function displayDashboardCommentsForMeetings(dashBoardComponentId){
-	var jsObj={
-		dashBoardComponentId:dashBoardComponentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "displayDashboardCommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length >0){
-		 var str=''; 
-      		 
-	     str+='<ul class="notesUlMeetings m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
-            	     
-					for(var i in result){ 
-                        str+='<li style="margin-top:3px;">'; 
-                        str+='<span class="notesTextMeetings" id="editTextmettingId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
-					    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesMeetings" attr_cmt_id="editTextmettingId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
-                        str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesMeetings" attr_cmt_id="editTextmettingId'+i+'" attr_comment="'+result[i].comment+'"></i>';
-                        str+='</li>';
-					}
-                        str+='</ul>';
-						str+='<hr/>';
-						str+='<div id="meetingsUpId" style="color:red;"></div>';
-                        str+='<label>Create Notes</label>';
-                        str+='<textarea class="form-control notesAreaMeetings"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>';
-			
-			$("#notesMeetingId").html(str);	 
-		}
-	});
-}
-function deleteDashBoardcomments(dashboardCommentId)
-{
-	var jsObj={
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "deleteDashBoardcommentsAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
-				
-				
-			}
-		}
-			
-	});
-	
-}
-
-function savingDashboardCommentForMeetings(dashboardComponentId){  
-  var comment=$(".notesAreaMeetings").val();
-  if(comment.trim() ==""){
-		  $("#meetingsUpId").html("Notes Required.");
-		  return;
-	  }
-	var editId = $("#cmtMeetingId").val();
-	//$("#"+editId).parent().html(' ');
-	$("#"+editId).html(comment);
-	 var dashboardCommentId=0;
-	 if($(".notesAreaMeetings").attr("attr_commentid")>0)
-	 {
-		dashboardCommentId=$(".notesAreaMeetings").attr("attr_commentid");		
-	 }
-	
-	var jsObj={
-		comment:comment,
-		dashboardComponentId: dashboardComponentId,
-		dashboardCommentId : dashboardCommentId
-	}	
-	$.ajax({
-	 type: "POST",
-	 url: "savingDashboardCommentAction.action",
-	 data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null){	
-			if(result.message == "success"){
-				
-				$("#meetingsUpId").html('update succuss');
-				displayDashboardCommentsForMeetings(2);
-			}
 		}			
-	});
+	}
+	
+	
+	function getPartyMeetingCntDetailstLevelWiseByUserAccessLevel()
+	{ 
+	  $("#districtWiseMeetingReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	 var partyMeetingTypeArr=[];
+	  $("#committeeTypeId li").each(function() {
+		  if($(this).find("input").is(":checked")){
+			  partyMeetingTypeArr.push($(this).find("input").attr("id"));
+		  }
+	   });
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj ={ 
+		             activityMemberId : globalActivityMemberId,
+					 stateId : globalStateId,
+					 fromDate : fromDateStr,
+					 toDate : toDateStr,
+					 partyMeetingTypeArr:partyMeetingTypeArr
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getPartyMeetingCntDetailstLevelWiseByUserAccessLevelAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		    buildPartyMeetingCntDetailstLevelWiseByUserAccessLevel(result);
+		});
+	}
+	
+	
+	function buildPartyMeetingCntDetailstLevelWiseByUserAccessLevel(result){
+		$("#districtWiseMeetingReport").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			
+			for(var i in result){
+				str+=result[i].name;
+				str+='<div id="locationWiseMeeting'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+									
+		}
+		$("#districtWiseMeetingReport").html(str);
+		
+		
+		
+	if(result != null && result.length > 0){
+		for(var i in result){
+			var districtNamesArray =[];
+			var conductedCountPercArray = [];
+			var notConductedCountPerArray = [];
+			var mayBeCountPerArray = [];
+			if(result[i].partyMettingsVOList !=null && result[i].partyMettingsVOList.length > 0){
+				for(var j in result[i].partyMettingsVOList){
+						districtNamesArray.push(result[i].partyMettingsVOList[j].name);
+						
+						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							conductedCountPercArray.push(result[i].partyMettingsVOList[j].conductedCountPer);
+						//}
+						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							notConductedCountPerArray.push(result[i].partyMettingsVOList[j].notConductedCountPer);
+						//}
+						//if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
+							mayBeCountPerArray.push(result[i].partyMettingsVOList[j].mayBeCountPer);
+						//}
+					}
+			}
+						$(function () {
+							$('#locationWiseMeeting'+i+'').highcharts({
+								colors: ['#53BF8B','#F56800','#66728C'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,1);
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Yes',
+									data: conductedCountPercArray
+								}, {
+									name: 'No',
+									data: notConductedCountPerArray
+								}, {
+									name: 'Maybe',
+									data: mayBeCountPerArray
+								}]
+							});
+						});
+				
+			
+		}
+	}else{
+		$("#districtWiseMeetingReport").html("No Data Available")
+	}	
 }
-$(document).on("click",".notesIconMeeting",function(){
-	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
-});
-$(document).on("click",".deleteNotesMeetings",function(){
-	$(this).closest("li").remove();
-});
-$(document).on("click",".editNotesMeetings",function(){ 
-	var commentId = $(this).attr("attr_cmt_id");
-	var commentId1 = $(this).parent().find(".notesTextMeetings").attr("attr_commentid");
-	var notesHtml = $("#"+commentId).html();
-	$(".notesAreaMeetings").val(notesHtml);  
-	$(".notesAreaMeetings").attr("attr_commentid",commentId1);  
-	$("#cmtId").val(commentId);
-	//$("#cmtId").val();
-	$("#meetingsUpId").html('');		
-});
-
-$(document).on("click",".btnCustomCreateMeetings",function(){
-	var getNewNotes = $(".notesAreaMeetings").val();
-	var todayDate = moment().format("DD MMMM YYYY");
-	var cmtId = $("#cmtId").val();
-	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesMeetings"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
-	if(cmtId>0)
-	$(".notesUlMeetings").append("<li>"+commentText+"</li>");
-	$(".notesAreaMeetings").val('');	
-});
-
-
 	
