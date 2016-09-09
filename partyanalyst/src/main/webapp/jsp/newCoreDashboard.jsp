@@ -268,11 +268,12 @@
                             	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
                                 <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
                             </li>
-                        </ul>
-                        <hr/>        
+                        </ul>-->
+                        <hr/>  
+                          <div id="id1" style="color:red;"></div>						
                         <label>Create Notes</label>
                         <textarea class="form-control notesArea"></textarea>
-                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment();">create</button>-->
+                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
                     </div>  
                 </div>
                 <div class="panel-body">  
@@ -400,6 +401,11 @@
 							</span>
 						</h4>
 						<div id="notesTrainingId"></div>
+						  <hr/>
+						<div id="id2" style="color:red;"></div>
+                        <label>Create Notes</label>';
+                        <textarea class="form-control notesAreaTraining"></textarea>
+                        <button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>
 					</div>  
 				</div>
 				<div class="panel-body">
@@ -611,6 +617,11 @@
 								</span>
 							</h4>
 							<div id="notesDebatesId"></div>
+							<hr/>
+						<div id="debateUpId" style="color:red;"></div>
+                        <label>Create Notes</label>
+                        <textarea class="form-control notesAreaDebates"></textarea>
+                        <button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
 						</div> 	
                     
                 </div>
@@ -892,7 +903,12 @@
 								</span>
 							</h4>
 							<div id="notesMeetingId"></div>
-						</div> 
+						<hr/>
+						<div id="meetingsUpId" style="color:red;"></div>
+                        <label>Create Notes</label>';
+                        <textarea class="form-control notesAreaMeetings"></textarea>
+                        <button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>
+						</div>
 					</div>
 					<div class="panel-body">
 						<div class="row">
@@ -1262,6 +1278,11 @@
 							</span>
 						</h4>
 						<div id="notesNewsId"></div>
+						<hr/>
+						<div id="newsUpId" style="color:red;"></div>
+                        <label>Create Notes</label>
+                        <textarea class="form-control notesAreaNews"></textarea>
+                        <button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
 					</div> 
 				</div>
 				<div class="panel-body">

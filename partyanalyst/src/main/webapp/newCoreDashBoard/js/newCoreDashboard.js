@@ -84,7 +84,7 @@
 		var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
 		if(cmtId>0)
 		$(".notesUl").append("<li>"+commentText+"</li>");
-		$(".notesArea").val('');	
+		$(".notesArea").val('');			
 	});
 	$(document).on("click",".editNotes",function(){ 
 		var commentId = $(this).attr("attr_cmt_id");
@@ -553,7 +553,7 @@ function MainPart(result){
 
 }
 
-function savingDashboardComment(dashboardComponentId){  
+function savingDashboardComment(dashboardComponentId){ 
   var comment=$(".notesArea").val();
   if(comment.trim() ==""){
 		  $("#id1").html("Notes Required.");
@@ -580,7 +580,7 @@ function savingDashboardComment(dashboardComponentId){
 	}).done(function(result){
 		if(result != null){	
 			if(result.message == "success"){
-				$("#id1").html('update succuss');
+				//$("#id1").html('update succuss');
 				displayDashboardComments(1);
 			}
 		}			
@@ -596,8 +596,8 @@ function displayDashboardComments(dashBoardComponentId){
 	 data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length >0){
-		 var str=''; 
-      		 
+		 var str='';
+		 
 	     str+='<ul class="notesUl m_top20">';  	
             	     
 					for(var i in result){ 
@@ -608,11 +608,11 @@ function displayDashboardComments(dashBoardComponentId){
                         str+='</li>';
 					}
                         str+='</ul>';
-						str+='<hr/>';
+						/*str+='<hr/>';
 						str+='<div id="id1" style="color:red;"></div>';
                         str+='<label>Create Notes</label>';
                         str+='<textarea class="form-control notesArea"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreate btn-sm " id="btton1" onClick="savingDashboardComment(1);">create</button>';
+                        str+='<button class="btn btn-default btnCustomCreate btn-sm " id="btton1" onClick="savingDashboardComment(1);">create</button>';*/
 			$("#notesId").html(str);	 
 		}
 	});

@@ -956,11 +956,11 @@
                         str+='</li>';
 					}
                         str+='</ul>';
-						str+='<hr/>';
+						/*str+='<hr/>';
 						str+='<div id="newsUpId" style="color:red;"></div>';
                         str+='<label>Create Notes</label>';
                         str+='<textarea class="form-control notesAreaNews"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>';
+                        str+='<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>';*/
 			
 			$("#notesNewsId").html(str);	 
 		}
@@ -1015,7 +1015,7 @@ function savingDashboardCommentForNews(dashboardComponentId){
 		if(result != null){	
 			if(result.message == "success"){
 				
-				$("#newsUpId").html('update succuss');
+				//$("#newsUpId").html('update succuss');
 				displayDashboardCommentsForNews(5);
 			}
 		}			
@@ -1045,7 +1045,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesNews"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
 	if(cmtId>0)
 	$(".notesUlDebates").append("<li>"+commentText+"</li>");
-	$(".notesAreaNews").val('');	
+	$(".notesAreaNews").val('');		
 });
 
 $(document).on("click",".viewsLiClass",function(){

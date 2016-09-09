@@ -1250,11 +1250,11 @@ function displayDashboardCommentsForTraining(dashBoardComponentId){
                         str+='</li>';
 					}
                         str+='</ul>';
-						str+='<hr/>';
+						/*str+='<hr/>';
 						str+='<div id="id2" style="color:red;"></div>';
                         str+='<label>Create Notes</label>';
                         str+='<textarea class="form-control notesAreaTraining"></textarea>';
-                        str+='<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>';
+                        str+='<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>';*/
 			
 			$("#notesTrainingId").html(str);	 
 		}
@@ -1309,7 +1309,7 @@ function savingDashboardCommentForTraing(dashboardComponentId){
 		if(result != null){	
 			if(result.message == "success"){
 				
-				$("#id2").html('update succuss');
+				//$("#id2").html('update succuss');
 				displayDashboardCommentsForTraining(4);
 			}
 		}			
@@ -1348,7 +1348,7 @@ $(document).on("click",".btnCustomCreateTraining",function(){
 	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesTraining"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
 	if(cmtId>0)
 	$(".notesUlTraining").append("<li>"+commentText+"</li>");
-	$(".notesAreaTraining").val('');	
+	$(".notesAreaTraining").val('');
 });
 //training camp start
 $(document).on("click",".moreTrainingCampBlocksIcon",function(){
