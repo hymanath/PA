@@ -1153,7 +1153,7 @@ function buildTrainingProgramRslt(result){
 		resultListSecond = result.mandalList;  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Mandal</p>';  
+		 str+='<p class="text-capital">Mandal/Town/Division</p>';  
 		resultListFirst = result.mandalList;
 		resultListSecond = result.villageList;  
 	  }
@@ -1190,10 +1190,10 @@ function buildTrainingProgramRslt(result){
 		str+='<p class="text-capital">Constituencies</p>';  
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
-		 str+='<p class="text-capital">Mandal</p>';  
+		 str+='<p class="text-capital">Mandal/Town/Division</p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Village</p>';  
+		 str+='<p class="text-capital">Village/Ward</p>';  
 	  }
 	  str+='<table class="table tableCumulative">';
       if(resultListSecond != null && resultListSecond.length > 0){
