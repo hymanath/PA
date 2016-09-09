@@ -1335,6 +1335,31 @@ public String getCandidateDtlsPerDist(){
 	}
 	return Action.SUCCESS;
   }
- 
+ public String getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(){
+	 LOG.info("Entered into getPartyMeetingCntDetailstLevelWiseByUserAccessLevel()  of CoreDashboardAction");
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String startDateString = jObj.getString("fromDate");
+			String endDateString   = jObj.getString("toDate");
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeArr");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(activityMemberId,stateId,startDateString,endDateString,partyMeetingTypeIds);
+	}catch(Exception e){
+		LOG.error("Exception raised at getPartyMeetingCntDetailstLevelWiseByUserAccessLevel() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+	 
+	 
+ }
 
 }
