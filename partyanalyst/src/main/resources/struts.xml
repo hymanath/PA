@@ -13638,5 +13638,12 @@
 	</action>   
 	
 	
+	
+	<action name="getPartyComparisonChildUserTypeMembersAction" class="coreDashboardAction" method="getPartyComparisonChildUserTypeMembers">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingDataVOList</param> 
+   		</result>
+	</action>
+	
 </package>
 </struts>

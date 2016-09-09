@@ -1361,5 +1361,15 @@ public String getCandidateDtlsPerDist(){
 	 
 	 
  }
-
+ 	
+ 	public String getPartyComparisonChildUserTypeMembers(){
+ 		try {
+			jObj = new JSONObject(getTask());
+			
+			newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),jObj.getLong("childUserTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+		} catch (Exception e) {
+			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers", e);
+		}
+		return Action.SUCCESS;
+	}
 }
