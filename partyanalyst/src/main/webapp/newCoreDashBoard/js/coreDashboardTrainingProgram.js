@@ -364,7 +364,7 @@ var globalUserWiseMemberRslt;
 		}
 		$("#clickInfoId").hide();
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);
-	if(result != null && result.length > 0){
+	if(result != null && result.length > 0){  
 			for(var i in result){
 				var candidateNameArray = [];
 				var trainingProgramCountArray = [];
@@ -388,49 +388,51 @@ var globalUserWiseMemberRslt;
 				chart: {
 					type: 'column'
 				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: candidateNameArray,
 					title: {
 						text: null
 					},
-					labels: {
-							formatter: function() {
-								return this.value.toString().substring(0, 10)+'...';
-							},
-							
-						}
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: null,
-						align: 'high'
+					subtitle: {
+						text: null
 					},
-					labels: {
-						overflow: 'justify',
-						enabled: false,
-					}
-				},
-				tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-				},
-				plotOptions: {
-					column: {
-						stacking: 'percent',
-						dataLabels: {
-							enabled: true,
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: candidateNameArray,
+						title: {
+							text: null
+						},
+						labels: {
+								formatter: function() {
+									return this.value.toString().substring(0, 10)+'...';
+								},
+								
+							}
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: null,
+							align: 'high'
+						},
+						labels: {
+							overflow: 'justify',
+							enabled: false,
+						}
+					},
+					tooltip: {
+										 
+						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+						shared: true,
+						valueSuffix: '%'
+					},
+					plotOptions: {
+						column: {
+							stacking: 'normal',      
+							dataLabels: {
+						    enabled: true,
 							 formatter: function() {
 								if (this.y === 0) {
 									return null;
@@ -1447,18 +1449,18 @@ function buildStateLevelCampDetails(result){
 	}); 
 	if(result != null){
 		//for(var i in result){
-			var  jsonDataArr=[];
+			//debugger;   
+			var  jsonDataArrAttended=[]; 
+			var  jsonDataArrYettotrain=[];
 			var precent = (result.availableCount*(100/result.count)).toFixed(2);
-			jsonDataArr.push({name:"Total Eligible",data:[100,100]});
-			jsonDataArr.push({name:"Attended",data:[parseFloat(precent),0]});
+			jsonDataArrAttended.push(parseFloat(precent));          
 			var abs = 100-precent;
-			jsonDataArr.push({name:"Yet to train",data:[0,parseFloat(abs.toFixed(2))]});
-			
+			jsonDataArrYettotrain.push(abs);      
 			var chartWidth = $("#programHighChartId0").parent().width()/2;
 			$("#programHighChartId0").width(chartWidth);
 			$(function () {
-				$('#programHighChartId0').highcharts({
-				colors: ['#66728C','#53BF8B','#F56800'],
+				$('#programHighChartId0').highcharts({  
+				colors: ['#F56800','#53BF8B','#66728C'],         
 				chart: {
 					type: 'column',    
 				},
@@ -1519,7 +1521,13 @@ function buildStateLevelCampDetails(result){
 						}
 					}
 				},
-				series:jsonDataArr
+				series: [ {
+		name: 'Yet to Train',
+		data: jsonDataArrYettotrain
+	},{
+		name: 'Attended',
+		data: jsonDataArrAttended
+	}]
 				});
 			});  
 		//}
@@ -1673,7 +1681,7 @@ $(document).on("click",".distDtlsCls",function(){
 	    distId : distId,
 		programId : programId,  
 		stateId : stateId,
-		dateStr : dateStr
+		dateStr : dateStr  
 	}
 	  $.ajax({
 			type : 'POST',
@@ -1697,7 +1705,7 @@ function buildMemberRslt(result){
 	var absent = 0;
 	
 	var str = '';
-	str+='<table class="table table-condensed">';
+	str+='<table class="table table-condensed" id="campMemberDtlsId">';
 	str+='<thead>';
 		str+='<th>NAME</th>';
 		str+='<th>DESIGNATION</th>';
@@ -1723,8 +1731,10 @@ function buildMemberRslt(result){
 	absent = totalMember - attendedMember;
 	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
 	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>';  
-	str2+='<span class="label label-warning">Absent-'+absent+'</span>';   
+	str2+='<span class="label label-warning">Yet to train-'+absent+'</span>'; 
 	str+='</tbody>';
 	$("#positionId").html(str2);
-	$("#memberId").html(str);   
+	$("#memberId").html(str); 
+	$("#campMemberDtlsId").dataTable();    
+	
 }
