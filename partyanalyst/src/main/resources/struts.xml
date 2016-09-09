@@ -13645,5 +13645,11 @@
    		</result>
 	</action>
 	
+	<action name="getPartyMeetingsMainTypeOverViewDataAction" class="coreDashboardAction" method="getPartyMeetingsMainTypeOverViewData">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingDataVOList</param> 
+   		</result>
+	</action>
+	
 </package>
 </struts>

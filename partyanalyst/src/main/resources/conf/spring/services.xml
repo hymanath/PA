@@ -3445,6 +3445,8 @@
 	    <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 	    <property name="partyMeetingTypeDAO" ref="partyMeetingTypeDAO" />
+	    <property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
+	    <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
 	</bean>
 	
 </beans>		
