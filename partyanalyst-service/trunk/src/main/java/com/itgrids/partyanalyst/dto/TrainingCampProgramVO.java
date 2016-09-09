@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingCampProgramVO {
@@ -113,15 +114,15 @@ public class TrainingCampProgramVO {
 		this.totalEligibleCountPer = totalEligibleCountPer;
 	}
 	public List<TrainingCampProgramVO> getMandalList() {
+		if(mandalList == null){
+			mandalList = new ArrayList<TrainingCampProgramVO>();
+		}
 		return mandalList;
 	}
-	public void setMandalList(List<TrainingCampProgramVO> mandalList) {
-		this.mandalList = mandalList;
-	}
 	public List<TrainingCampProgramVO> getVillageList() {
+		if(villageList == null){
+			villageList = new ArrayList<TrainingCampProgramVO>();
+		}
 		return villageList;
-	}
-	public void setVillageList(List<TrainingCampProgramVO> villageList) {
-		this.villageList = villageList;
-	}
+	}	
 }

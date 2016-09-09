@@ -2173,7 +2173,14 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
 	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId,");
 	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatName,");
 	        }
-            
+            if(locationType != null && locationType.equalsIgnoreCase("Ward")){
+    	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId,");
+    	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.name,");
+    	    }
+            if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+    	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId,");
+    	        queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.name,");
+    	    }
 			queryStr.append(" count(distinct TCM.tdpCadre.tdpCadreId) " + //4
 			" from " +
 			" TdpCommitteeMember TCM,TrainingCampEligbleDesignation TCED " +
@@ -2214,6 +2221,12 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByLocationTyp
         }  
         if(locationType != null && locationType.equalsIgnoreCase("Village")){
      	   queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId order by TCM.tdpCommitteeRole.tdpCommittee.userAddress.panchayat.panchayatId asc"); //1   
+        }
+        if(locationType != null && locationType.equalsIgnoreCase("Ward")){
+          queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId order by TCM.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId asc");	
+        }
+        if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+         queryStr.append(" group by TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId order by TCM.tdpCommitteeRole.tdpCommittee.userAddress.localElectionBody.localElectionBodyId asc");	
         }
 	   Query query = getSession().createQuery(queryStr.toString());
 	   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
