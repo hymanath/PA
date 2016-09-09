@@ -1720,7 +1720,7 @@ function buildMemberRslt(result){
 	absent = totalMember - attendedMember;
 	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
 	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>';  
-	str2+='<span class="label label-warning">Yet to train-'+absent+'</span>'; 
+	str2+='<span class="label label-warning">Absent-'+absent+'</span>';   
 	str+='</tbody>';
 	$("#positionId").html(str2);
 	$("#memberId").html(str);   
