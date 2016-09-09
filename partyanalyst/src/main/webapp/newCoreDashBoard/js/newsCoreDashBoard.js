@@ -10,15 +10,22 @@
 		$(".newsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			getUserTypeWiseNewsCounts();
-			
+			getUserTypeWiseNewsCounts(1);
 		}
 	});
+	
 	$(document).on("click",".morenewsBlocksIcon",function(){
 		$(".newsHiddenMoreBlock").toggle();
 		getDetailedPartyMainEditionsOverview();
 		getDetailedPartyDistrictEditionsOverview();
+		//getDetailedPartyNewsTypeAnalysis();
+	});
+	
+	$(document).on("click","#detailedPartyId",function(){
+		getDetailedPartyMainEditionsOverview();
+		getDetailedPartyDistrictEditionsOverview();
 		getDetailedPartyNewsTypeAnalysis();
+		getDetailedPartyPartyVsPublications();
 	});
 	
 	function getNewsBasicCounts(){
@@ -31,16 +38,16 @@
 		var startDate='08-01-2016',endDate='08-31-2016';
 		var state = globalState;
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
+			url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				$("#tdpMainTotal").html(result[0].positiveCountMain+result[0].negativCountMain);
 				$("#tdpMainPositive").html(result[0].positiveCountMain);
 				$("#tdpMainNegative").html(result[0].negativCountMain);
 				if((result[0].positiveCountMain+result[0].negativCountMain) > 0){
-					$("#tdpMainPositivePercent").html(((result[0].positiveCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+'%');
-					$("#tdpMainNegativePercent").html(((result[0].negativCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+'%');
+					//$("#tdpMainPositivePercent").html(((result[0].positiveCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+'%');
+					//$("#tdpMainNegativePercent").html(((result[0].negativCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+'%');
 					$("#tdpMainPositivePercent").html(" "+((result[0].positiveCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
 					$("#tdpMainNegativePercent").html(" "+((result[0].negativCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
 				}
@@ -49,8 +56,8 @@
 				$("#tdpDistPositive").html(result[0].positiveCountDist);
 				$("#tdpDistNegative").html(result[0].negativCountDist);
 				if((result[0].positiveCountDist+result[0].negativCountDist) > 0){
-					$("#tdpDistPositivePercent").html(((result[0].positiveCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+'%');
-					$("#tdpDistNegativePercent").html(((result[0].negativCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+'%');
+					//$("#tdpDistPositivePercent").html(((result[0].positiveCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+'%');
+					//$("#tdpDistNegativePercent").html(((result[0].negativCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+'%');
 					$("#tdpDistPositivePercent").html(" "+((result[0].positiveCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
 					$("#tdpDistNegativePercent").html(" "+((result[0].negativCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
 				}
@@ -60,8 +67,8 @@
 				$("#oppPositiveTotal").html(result[1].positiveCountMain+result[2].positiveCountMain+result[3].positiveCountMain);
 				$("#oppNegativeTotal").html(result[1].negativCountMain+result[2].negativCountMain+result[3].negativCountMain);
 				if(oppTotal > 0){
-					$("#oppPositiveTotalPercent").html((((result[1].positiveCountMain+result[2].positiveCountMain+result[3].positiveCountMain)/oppTotal)*100+'%').toFixed(2));
-					$("#oppNegativeTotalPercent").html((((result[1].negativCountMain+result[2].negativCountMain+result[3].negativCountMain)/oppTotal)*100+'%').toFixed(2));
+					//$("#oppPositiveTotalPercent").html((((result[1].positiveCountMain+result[2].positiveCountMain+result[3].positiveCountMain)/oppTotal)*100+'%').toFixed(2));
+					//$("#oppNegativeTotalPercent").html((((result[1].negativCountMain+result[2].negativCountMain+result[3].negativCountMain)/oppTotal)*100+'%').toFixed(2));
 					$("#oppPositiveTotalPercent").html(" "+(((result[1].positiveCountMain+result[2].positiveCountMain+result[3].positiveCountMain)/oppTotal)*100).toFixed(2)+" %");
 					$("#oppNegativeTotalPercent").html(" "+(((result[1].negativCountMain+result[2].negativCountMain+result[3].negativCountMain)/oppTotal)*100).toFixed(2)+" %");
 				}
@@ -72,8 +79,8 @@
 				$("#ysrcMainNegative").html(result[1].negativCountMain);
 				
 				if(ysrcMainTotal > 0){
-					$("#ysrcMainPositivePercent").html(((result[1].positiveCountMain*100)/ysrcMainTotal).toFixed(2)+'%');
-					$("#ysrcMainNegativePercent").html(((result[1].negativCountMain*100)/ysrcMainTotal).toFixed(2)+'%');
+					//$("#ysrcMainPositivePercent").html(((result[1].positiveCountMain*100)/ysrcMainTotal).toFixed(2)+'%');
+					//$("#ysrcMainNegativePercent").html(((result[1].negativCountMain*100)/ysrcMainTotal).toFixed(2)+'%');
 					$("#ysrcMainPositivePercent").html(" "+((result[1].positiveCountMain*100)/ysrcMainTotal).toFixed(2)+" %");
 					$("#ysrcMainNegativePercent").html(" "+((result[1].negativCountMain*100)/ysrcMainTotal).toFixed(2)+" %");
 					
@@ -84,8 +91,8 @@
 				$("#incMainPositive").html(result[2].positiveCountMain);
 				$("#incMainNegative").html(result[2].negativCountMain);
 				if(incMainTotal > 0){
-					$("#incMainPositivePercent").html(((result[2].positiveCountMain*100)/incMainTotal).toFixed(2)+'%');
-					$("#incMainNegativePercent").html(((result[2].negativCountMain*100)/incMainTotal).toFixed(2)+'%');
+					//$("#incMainPositivePercent").html(((result[2].positiveCountMain*100)/incMainTotal).toFixed(2)+'%');
+					//$("#incMainNegativePercent").html(((result[2].negativCountMain*100)/incMainTotal).toFixed(2)+'%');
 					$("#incMainPositivePercent").html(" "+((result[2].positiveCountMain*100)/incMainTotal).toFixed(2)+" %");
 					$("#incMainNegativePercent").html(" "+((result[2].negativCountMain*100)/incMainTotal).toFixed(2)+" %");
 				}
@@ -95,8 +102,8 @@
 				 $("#bjpMainNegative").html(result[3].negativCountMain);
 				 
 				 if(bjpMainTotal>0){
-					 $("#bjpMainPositivePercent").html(((result[3].positiveCountMain*100)/bjpMainTotal).toFixed(2)+'%');
-					 $("#bjpMainNegativePercent").html(((result[3].negativCountMain*100)/bjpMainTotal).toFixed(2)+'%');
+					 //$("#bjpMainPositivePercent").html(((result[3].positiveCountMain*100)/bjpMainTotal).toFixed(2)+'%');
+					 //$("#bjpMainNegativePercent").html(((result[3].negativCountMain*100)/bjpMainTotal).toFixed(2)+'%');
 					 $("#bjpMainPositivePercent").html(" "+((result[3].positiveCountMain*100)/bjpMainTotal).toFixed(2)+" %");
 					 $("#bjpMainNegativePercent").html(" "+((result[3].negativCountMain*100)/bjpMainTotal).toFixed(2)+" %");
 				 }
@@ -108,8 +115,8 @@
 				 $("#oppDistNegative").html(result[1].negativCountDist+result[2].negativCountDist+result[3].negativCountDist);
 				 
 				 if(oppDistTotal > 0){
-					 $("#oppDistPositivePercent").html((((result[1].positiveCountDist+result[2].positiveCountDist+result[3].positiveCountDist)*100)/oppDistTotal).toFixed(2)+'%');
-					 $("#oppDistNegativePercent").html((((result[1].negativCountDist+result[2].negativCountDist+result[3].negativCountDist)*100)/oppDistTotal).toFixed(2)+'%');
+					 //$("#oppDistPositivePercent").html((((result[1].positiveCountDist+result[2].positiveCountDist+result[3].positiveCountDist)*100)/oppDistTotal).toFixed(2)+'%');
+					 //$("#oppDistNegativePercent").html((((result[1].negativCountDist+result[2].negativCountDist+result[3].negativCountDist)*100)/oppDistTotal).toFixed(2)+'%');
 					 $("#oppDistPositivePercent").html(" "+(((result[1].positiveCountDist+result[2].positiveCountDist+result[3].positiveCountDist)*100)/oppDistTotal).toFixed(2)+" %");
 					 $("#oppDistNegativePercent").html(" "+(((result[1].negativCountDist+result[2].negativCountDist+result[3].negativCountDist)*100)/oppDistTotal).toFixed(2)+" %");
 				 }
@@ -120,8 +127,8 @@
 				$("#ysrcDistNegative").html(result[1].negativCountDist);
 				
 				if(ysrcDistTotal > 0){
-					$("#ysrcDistPositivePercent").html(((result[1].positiveCountDist*100)/ysrcDistTotal).toFixed(2)+'%');
-					$("#ysrcDistNegativePercent").html(((result[1].negativCountDist*100)/ysrcDistTotal).toFixed(2)+'%');
+					//$("#ysrcDistPositivePercent").html(((result[1].positiveCountDist*100)/ysrcDistTotal).toFixed(2)+'%');
+					//$("#ysrcDistNegativePercent").html(((result[1].negativCountDist*100)/ysrcDistTotal).toFixed(2)+'%');
 					$("#ysrcDistPositivePercent").html(" "+((result[1].positiveCountDist*100)/ysrcDistTotal).toFixed(2)+" %");
 					$("#ysrcDistNegativePercent").html(" "+((result[1].negativCountDist*100)/ysrcDistTotal).toFixed(2)+" %");
 					
@@ -132,8 +139,8 @@
 				$("#incDistPositive").html(result[2].positiveCountDist);
 				$("#incDistNegative").html(result[2].negativCountDist);
 				if(incDistTotal > 0){
-					$("#incDistPositivePercent").html(((result[2].positiveCountDist*100)/incDistTotal).toFixed(2)+'%');
-					$("#incDistNegativePercent").html(((result[2].negativCountDist*100)/incDistTotal).toFixed(2)+'%');
+					//$("#incDistPositivePercent").html(((result[2].positiveCountDist*100)/incDistTotal).toFixed(2)+'%');
+					//$("#incDistNegativePercent").html(((result[2].negativCountDist*100)/incDistTotal).toFixed(2)+'%');
 					$("#incDistPositivePercent").html(" "+((result[2].positiveCountDist*100)/incDistTotal).toFixed(2)+" %");
 					$("#incDistNegativePercent").html(" "+((result[2].negativCountDist*100)/incDistTotal).toFixed(2)+" %");
 				}
@@ -144,8 +151,8 @@
 				 $("#bjpDistNegative").html(result[3].negativCountDist);
 				 
 				 if(bjpDistTotal>0){
-					 $("#bjpDistPositivePercent").html(((result[3].positiveCountDist*100)/bjpDistTotal).toFixed(2)+'%');
-					 $("#bjpDistNegativePercent").html(((result[3].negativCountDist*100)/bjpDistTotal).toFixed(2)+'%');
+					 //$("#bjpDistPositivePercent").html(((result[3].positiveCountDist*100)/bjpDistTotal).toFixed(2)+'%');
+					 //$("#bjpDistNegativePercent").html(((result[3].negativCountDist*100)/bjpDistTotal).toFixed(2)+'%');
 					 $("#bjpDistPositivePercent").html(" "+((result[3].positiveCountDist*100)/bjpDistTotal).toFixed(2)+" %");
 					 $("#bjpDistNegativePercent").html(" "+((result[3].negativCountDist*100)/bjpDistTotal).toFixed(2)+" %");
 				 }
@@ -155,8 +162,8 @@
 				 $("#govtMainPositive").html(result[4].positiveCountMain);
 				 $("#govtMainNegative").html(result[4].negativCountMain);
 				 if(govtMainTotal > 0){
-					 $("#govtMainPositivePercent").html(((result[4].positiveCountMain*100)/govtMainTotal).toFixed(2)+'%');
-					 $("#govtMainNegativePercent").html(((result[4].negativCountMain*100)/govtMainTotal).toFixed(2)+'%');
+					 //$("#govtMainPositivePercent").html(((result[4].positiveCountMain*100)/govtMainTotal).toFixed(2)+'%');
+					 //$("#govtMainNegativePercent").html(((result[4].negativCountMain*100)/govtMainTotal).toFixed(2)+'%');
 					 $("#govtMainPositivePercent").html(" "+((result[4].positiveCountMain*100)/govtMainTotal).toFixed(2)+" %");
 					 $("#govtMainNegativePercent").html(" "+((result[4].negativCountMain*100)/govtMainTotal).toFixed(2)+" %");
 				 }
@@ -166,16 +173,17 @@
 				 $("#govtDistPositive").html(result[4].positiveCountDist);
 				 $("#govtDistNegative").html(result[4].negativCountDist);
 				 if(govtDistTotal > 0){
-					 $("#govtDistPositivePercent").html(((result[4].positiveCountDist*100)/govtDistTotal).toFixed(2)+'%');
-					 $("#govtDistNegativePercent").html(((result[4].negativCountDist*100)/govtDistTotal).toFixed(2)+'%');
+					 //$("#govtDistPositivePercent").html(((result[4].positiveCountDist*100)/govtDistTotal).toFixed(2)+'%');
+					 //$("#govtDistNegativePercent").html(((result[4].negativCountDist*100)/govtDistTotal).toFixed(2)+'%');
 					 $("#govtDistPositivePercent").html(" "+((result[4].positiveCountDist*100)/govtDistTotal).toFixed(2)+" %");
 					 $("#govtDistNegativePercent").html(" "+((result[4].negativCountDist*100)/govtDistTotal).toFixed(2)+" %");
 				 } 
 			}
 		});
 	}
-	var globalUserWiseMemberRslt;
-	function getUserTypeWiseNewsCounts(){
+	
+	//var globalUserWiseMemberRslt;
+	function getUserTypeWiseNewsCounts(benefitId){
 		$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
 		var startDate,endDate;
@@ -185,7 +193,7 @@
 				state:globalState,
 				fromDate:'08-01-2016',
 				toDate:'08-31-2016',
-				benefitId:1
+				benefitId:benefitId
 			}
 		
 			$.ajax({
@@ -195,15 +203,12 @@
 				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html('');
-				buildgetUserTypeWiseNewsForTopFiveStrongResults(result);
-				globalUserWiseMemberRslt = result;
+				buildgetUserTypeWiseNewsForTopFiveStrongResults(result,benefitId);
+				//globalUserWiseMemberRslt = result;
 			});
 	}
 	
-	$(document).on("click","#detailedPartyId",function(){
-		getDetailedPartyNewsTypeAnalysis();
-		getDetailedPartyPartyVsPublications();
-	});
+	
 	
 	function getDetailedPartyMainEditionsOverview(){
 		$("#mainEditiongraphId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -217,8 +222,8 @@
 		var startDate="08-01-2016",endDate="08-31-2016";
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			$("#mainEditiongraphId").html('');
 			buildMainEditionPartieWiseGraph(result);
@@ -236,8 +241,8 @@
 		var startDate="08-01-2016",endDate="08-31-2016";
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
 			buildDetailedPartyDistrictEditionsOverview(result);
 		});
@@ -250,148 +255,292 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="01-01-2014",endDate="08-31-2016";
+		var startDate="08-01-2015",endDate="08-31-2016";
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
-			buildDetailedPartyNewsTypeAnalysis(result);
+			if(result != null && result.length > 0){
+				buildDetailedPartyNewsTypeAnalysis(result);
+			}
 		});
 	}
 	
 	function getDetailedPartyPartyVsPublications(){
+		var temp;
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		var startDate="08-01-2015",endDate="08-31-2016";
 		
+		$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
+		}).then(function(result){
+			if(result != null && result.length > 0){
+				
+			}
+		});
 	}
 
-	function buildgetUserTypeWiseNewsForTopFiveStrongResults(result){
-		var str='';
-		if(result != null && result.length > 0){
-		
+	function buildgetUserTypeWiseNewsForTopFiveStrongResults(result,benefitId){
+		if(benefitId == 1){
 			var str='';
+			if(result != null && result.length > 0){
 			
-			for(var i in result){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-					str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:100px;"></div>';
-				str+='</div>'
-					
-			}
-			
-		}
-		$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html(str);
-		if(result != null && result.length > 0){
-			for(var i in result){
+				var str='';
 				
-				var candidateNameAndPositiveCountArray = [];
-				var countVar =0;
-				
-				if(result[i] !=null && result[i].length>0){
-					for(var j in result[i]){
+				for(var i in result){
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:100px;"></div>';
+					str+='</div>'
 						
-						 var obj1 = {
-								name: result[i][j].name,
-								y: result[i][j].positivePercentage
-							};
-						candidateNameAndPositiveCountArray.push(obj1);
-							
-						countVar =countVar+1;
-						if (countVar === 5) {
-							break;
-						}
-					}
 				}
 				
+			}
+			$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html(str);
+			if(result != null && result.length > 0){
+				for(var i in result){
 					
-				if( result[i][j].positivePercentage !=0){
-					var getWidth = $("#newsBlockGenSecStrong"+i).parent().width()+'px';
-					$("#newsBlockGenSecStrong"+i).width(getWidth);
-					$(function () {
-						 $("#newsBlockGenSecStrong"+i).highcharts({
-							 colors: ['#0066DC'],
-							chart: {
-								type: 'column'
-							},
-							title: {
-								text: ''
-							},
-							subtitle: {
-								text: ''
-							},
-							xAxis: {
-								min: 0,
-								gridLineWidth: 0,
-								minorGridLineWidth: 0,
+					var candidateNameAndPositiveCountArray = [];
+					var countVar =0;
+					
+					if(result[i] !=null && result[i].length>0){
+						for(var j in result[i]){
+							
+							 var obj1 = {
+									name: result[i][j].name,
+									y: result[i][j].positivePercentage
+								};
+							candidateNameAndPositiveCountArray.push(obj1);
 								
-								type: 'category',
-								labels: {
-											formatter: function() {
-												return this.value.toString().substring(0, 10)+'...';
-											},
-											
-										}
-								
-							},
-							yAxis: {
-								min: 0,
-								gridLineWidth: 0,
-								minorGridLineWidth: 0,
+							countVar =countVar+1;
+							if (countVar === 5) {
+								break;
+							}
+						}
+					}
+					
+						
+					if( result[i][j].positivePercentage !=0){
+						var getWidth = $("#newsBlockGenSecStrong"+i).parent().width()+'px';
+						$("#newsBlockGenSecStrong"+i).width(getWidth);
+						$(function () {
+							 $("#newsBlockGenSecStrong"+i).highcharts({
+								 colors: ['#0066DC'],
+								chart: {
+									type: 'column'
+								},
 								title: {
 									text: ''
 								},
-								labels: {
-									enabled:false
-								}
-							},
-							legend: {
-								enabled: false
-							},
-							
+								subtitle: {
+									text: ''
+								},
+								xAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
 									
-							plotOptions: {
-								column: {
-									stacking: 'percent',
-									dataLabels: {
-										enabled: true,
-										 formatter: function() {
-											if (this.y === 0) {
-												return null;
-											} else {
-												return Highcharts.numberFormat(this.y,1) + '%';
+									type: 'category',
+									labels: {
+												formatter: function() {
+													return this.value.toString().substring(0, 10)+'...';
+												},
+												
 											}
-										}
-									  
+									
+								},
+								yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									labels: {
+										enabled:false
 									}
-								}
-							},
+								},
+								legend: {
+									enabled: false
+								},
+								
+										
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,1) + '%';
+												}
+											}
+										  
+										}
+									}
+								},
 
-							tooltip: {
-								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-							},
+								tooltip: {
+									headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+									pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+								},
 
-							series: [{
-								name: 'Positive',
-								data: candidateNameAndPositiveCountArray
-							}],
-						 
+								series: [{
+									name: 'Positive',
+									data: candidateNameAndPositiveCountArray
+								}],
+							 
+							});
 						});
-					});
-				}else{
-					$("#newsBlockGenSecStrong"+i).html("No Data Available");
-					$("#newsBlockGenSecStrong"+i).css("height","35px");
+					}else{
+						$("#newsBlockGenSecStrong"+i).html("No Data Available");
+						$("#newsBlockGenSecStrong"+i).css("height","35px");
+							
+					} 
+					
+				}
+				
+			}else{
+				$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html("No Data Available");
+			}
+		}else if(benefitId == 2){
+			var str='';
+			if(result != null && result.length > 0){
+			
+				var str='';
+				
+				for(var i in result){
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:100px;"></div>';
+					str+='</div>'
 						
-				} 
+				}
 				
 			}
-			
-		}else{
-			$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html("No Data Available");
+			$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html(str);
+			if(result != null && result.length > 0){
+				for(var i in result){
+					
+					var candidateNameAndPositiveCountArray = [];
+					var countVar =0;
+					
+					if(result[i] !=null && result[i].length>0){
+						for(var j in result[i]){
+							
+							 var obj1 = {
+									name: result[i][j].name,
+									y: result[i][j].negativePercentage
+								};
+							candidateNameAndPositiveCountArray.push(obj1);
+								
+							countVar =countVar+1;
+							if (countVar === 5) {
+								break;
+							}
+						}
+					}
+					
+						
+					if( result[i][j].negativePercentage !=0){
+						var getWidth = $("#newsBlockGenSecStrong"+i).parent().width()+'px';
+						$("#newsBlockGenSecStrong"+i).width(getWidth);
+						$(function () {
+							 $("#newsBlockGenSecStrong"+i).highcharts({
+								 colors: ['#0066DC'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								subtitle: {
+									text: ''
+								},
+								xAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									
+									type: 'category',
+									labels: {
+												formatter: function() {
+													return this.value.toString().substring(0, 10)+'...';
+												},
+												
+											}
+									
+								},
+								yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									labels: {
+										enabled:false
+									}
+								},
+								legend: {
+									enabled: false
+								},
+								
+										
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,1) + '%';
+												}
+											}
+										  
+										}
+									}
+								},
+
+								tooltip: {
+									headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+									pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+								},
+
+								series: [{
+									name: 'Positive',
+									data: candidateNameAndPositiveCountArray
+								}],
+							 
+							});
+						});
+					}else{
+						$("#newsBlockGenSecStrong"+i).html("No Data Available");
+						$("#newsBlockGenSecStrong"+i).css("height","35px");
+							
+					} 
+					
+				}
+				
+			}else{
+				$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html("No Data Available");
+			}
 		}
+		
 		
 	}
 	
-	function buildgetUserTypeWiseNewsForTopFivePoorResults(result){
+	/* function buildgetUserTypeWiseNewsForTopFivePoorResults(result){
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
@@ -509,15 +658,16 @@
 			$("#userTypeWiseNewsForTopFiveStrongAndPoorDiv").html("No Data Available");
 		}
 		
-	}
+	} */
 	
 	$(document).on("click",".newsliCls",function(){
-		var memberType=$(this).attr("attr_value");
+		getUserTypeWiseNewsCounts($(this).attr("attr_value"));
+		/* var memberType=$(this).attr("attr_value");
 		 if(memberType != null && memberType == "strong"){
 			buildgetUserTypeWiseNewsForTopFiveStrongResults(globalUserWiseMemberRslt); 
 		 }else if(memberType == "poor"){
 			buildgetUserTypeWiseNewsForTopFivePoorResults(globalUserWiseMemberRslt)
-		 }
+		 } */
 	});
 	
 
@@ -919,21 +1069,45 @@ function getChildUserTypesByItsParentUserType1(){
 		});			 
 	}
 
-function buildChildUserTypesByItsParentUserType(result){
-	var str ='';
-	if(result != null && result.length > 0){
-		str+='<div class="col-xs-12 col-sm-12 col-md-12">';
-			str+='<ul class="comparisonSelect">';
-			for(var i in result){
-				str+='<li class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+	function buildChildUserTypesByItsParentUserType(result){
+		var str ='';
+		
+		if(result != null && result.length > 0){
+			str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+				str+='<ul class="detailedPartySubUl">';
+				for(var i in result){
+					str+='<li attr_usertypeid="'+result[i].userTypeId+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				}
+				str+='</ul>';
+			str+='</div>';
+			
+			getPartyComparisonChildUserTypeMembers(result[0].userTypeId);
+		}
+		$("#userTypeStrId").html(str);
+		$(".detailedPartySubUl li:first-child").addClass("active");
+		
+	}	
+	
+	function getPartyComparisonChildUserTypeMembers(childUserTypeId){
+		
+		var jsObj={
+				parentActivityMemberId : globalActivityMemberId ,
+				childUserTypeId : childUserTypeId,
+				state:globalState,
+				startDate:'08-01-2016',
+				endDate:'08-31-2016'
 			}
-			str+='</ul>';
-		str+='</div>';
+		
+			$.ajax({
+				type : 'POST',
+				url : 'getPartyComparisonChildUserTypeMembersAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+			});
+		
 	}
-	$("#userTypeStrId").html(str);
-}	
-
-
 	
 	function buildDetailedPartyNewsTypeAnalysis(result){
 		var str='';
@@ -1153,8 +1327,3 @@ function buildChildUserTypesByItsParentUserType(result){
 			
 		
 	}
-
-
-
-	
-	
