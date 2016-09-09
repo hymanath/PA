@@ -18,6 +18,7 @@
 		$(".newsHiddenMoreBlock").toggle();
 		getDetailedPartyMainEditionsOverview();
 		getDetailedPartyDistrictEditionsOverview();
+		getDetailedPartyNewsTypeAnalysis();
 	});
 	
 	function getNewsBasicCounts(){
@@ -249,15 +250,13 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2015",endDate="08-31-2016";
+		var startDate="01-01-2014",endDate="08-31-2016";
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
 		}).then(function(result){
-			if(result != null && result.length > 0){
-				
-			}
+			buildDetailedPartyNewsTypeAnalysis(result);
 		});
 	}
 	
@@ -783,6 +782,7 @@
 		$("#districtWiseNewsReport").html("No Data Available")
 	}	
 }
+
 /*Notes Functionality*/
 	function displayDashboardCommentsForNews(dashBoardComponentId){
 	var jsObj={
@@ -932,3 +932,229 @@ function buildChildUserTypesByItsParentUserType(result){
 	}
 	$("#userTypeStrId").html(str);
 }	
+
+
+	
+	function buildDetailedPartyNewsTypeAnalysis(result){
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+				
+			for(var i in result){
+				
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-ms-12"><h5 class="text-capital">'+result[i].name+'</h5></div>';
+					str+='<div class="col-md-2 col-xs-12 col-sm-4" style="border-right:1px solid #ddd">';
+						str+='<div id="newsTypeAnalysisPieChart'+i+'" style="height:165px;width:100%;"></div>';
+						str+='<div class="row">';
+						str+='<div class="col-xs-12">';
+						for(var j in result[i].coreDashBoardVOList){
+							
+							  str+='<span>'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%</span> &nbsp;&nbsp;';
+							
+						}
+						str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-md-10 col-xs-12 col-sm-8">';
+						str+='<div id="newsTypeAnalysisBarChart'+i+'" class="chartLiD" style="height:200px"></div>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-ms-12"><hr/></div>';
+				str+='</div>';
+					
+				
+			}
+			
+		}
+		$("#newsTypeAnalysisDiv").html(str);
+		
+			if(result != null && result.length > 0){
+				for(var i in result){
+					var PartyCountPerc;
+					var partyName;
+					var partyNameAndCountArray =[];
+					var districtNameArray =[];
+					var tdpPercArray = [];
+					var ysrcPercArray =[];
+					var incPercArray = [];
+					var bjpPercArray = [];
+					
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						for (var j in result[i].coreDashBoardVOList){
+							 PartyCountPerc = result[i].coreDashBoardVOList[j].positivePerc;
+							 partyName = result[i].coreDashBoardVOList[j].organization;
+							
+							var obj = {
+								name: partyName,
+								y:PartyCountPerc
+							}
+							
+							partyNameAndCountArray.push(obj);
+						}
+					}
+				
+					if(result[i].coreDashBoardVOList1 !=null && result[i].coreDashBoardVOList1.length >0){
+						for (var j in result[i].coreDashBoardVOList1){
+							districtNameArray.push(result[i].coreDashBoardVOList1[j].districtName)
+							tdpPercArray.push(result[i].coreDashBoardVOList1[j].tdpPerc)
+							ysrcPercArray.push(result[i].coreDashBoardVOList1[j].ysrcPerc)
+							incPercArray.push(result[i].coreDashBoardVOList1[j].incPerc)
+							bjpPercArray.push(result[i].coreDashBoardVOList1[j].bjpPerc)
+							
+							
+						}
+					}
+					
+					$(function () {
+						if(partyNameAndCountArray.length !=0){
+							$('#newsTypeAnalysisPieChart'+i).highcharts({
+								colors: ['#FFCC00','#31A973','#34CBFE','#FF9934'],
+								chart: {
+									type: 'pie',
+									options3d: {
+										enabled: true,
+										alpha: 25
+									}
+								},
+								title: {
+									text: null
+								},
+								subtitle: {
+									text: null
+								},
+								tooltip: {
+										headerFormat: '<b>{point.x}</b>',
+										pointFormat: '<span style="color:{series.color}">{point.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+										shared: true
+									},
+								plotOptions: {
+									pie: {
+										innerSize: 85,
+										depth: 10,
+										dataLabels:{
+											enabled: false,
+											 /* formatter: function() {
+													if (this.y === 0) {
+														return null;
+													} else {
+														return Highcharts.numberFormat(this.y,1)+ '%';
+													}
+												} */
+										},
+										showInLegend: false
+									},
+									
+									
+								},
+								series: [{
+									data: partyNameAndCountArray
+									
+								}]
+							});
+						}else{
+							$('#newsTypeAnalysisPieChart'+i).html("No Data Available")
+							$('#newsTypeAnalysisPieChart'+i).css("height","10px")
+						}
+						
+					});
+					
+					$(function () {
+						if(districtNameArray.length != 0 && tdpPercArray.length !=0 && ysrcPercArray.length !=0 && incPercArray.length !=0 && bjpPercArray.length !=0){
+						$('#newsTypeAnalysisBarChart'+i).highcharts({
+							colors: ['#FFCC00','#31A973','#34CBFE','#FF9934'],
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: ''
+							},
+							xAxis: {
+								 min: 0,
+									 gridLineWidth: 0,
+									 minorGridLineWidth: 0,
+									categories: districtNameArray,
+								labels: {
+										rotation: -45,
+										style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+										}
+									}
+							},
+							yAxis: {
+								min: 0,
+									   gridLineWidth: 0,
+										minorGridLineWidth: 0,
+								title: {
+									text: ''
+								},
+								stackLabels: {
+									enabled: false,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+									}
+								}
+							},
+							legend: {
+								enabled: true,
+								//align: 'center',
+								//x: -40,
+								//y: 23,
+								//verticalAlign: 'top',
+								//floating: true, 
+								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+								borderColor: '#CCC',
+								borderWidth: 1,
+								shadow: false
+							},
+							tooltip: {
+								headerFormat: '<b>{point.x}</b><br/>',
+								pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+								shared: true
+							},
+							plotOptions: {
+								column: {
+									 
+									dataLabels: {
+										enabled: false,
+										 formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
+												return Highcharts.numberFormat(this.y,0)+'%';
+											}
+										}
+									  
+									}
+								}
+							},
+							series: [{
+								name: 'TDP',
+								data: tdpPercArray
+							}, {
+								name: 'YSRC',
+								data: ysrcPercArray
+							},{
+								name: 'INC',
+								data: incPercArray
+							},{
+								name: 'BJP',
+								data: bjpPercArray
+							}]
+						});
+					}else{
+						$('#newsTypeAnalysisBarChart'+i).html("No Data Available");
+						$('#newsTypeAnalysisBarChart'+i).css("height","10px")
+					}
+					});
+				}
+			}
+			
+		
+	}
+
+
+
+	
+	
