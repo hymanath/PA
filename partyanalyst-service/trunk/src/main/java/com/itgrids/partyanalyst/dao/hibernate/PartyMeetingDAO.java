@@ -1305,7 +1305,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			  queryStr.append("select ");
 		      
 			  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		         queryStr.append(" model.meetingAddress.state.stateId,");  
+		         queryStr.append(" model.meetingAddress.state.stateId,");  //0
 		      }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		        queryStr.append(" model.meetingAddress.district.districtId, ");  
 		      }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
@@ -1321,7 +1321,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			  }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 			      queryStr.append(" model.meetingAddress.ward.constituencyId,"); 
 			  }
-			   queryStr.append("count(distinct model.partyMeetingId) " +
+			   queryStr.append("count(distinct model.partyMeetingId) " +//1
 				        " from PartyMeeting model " +
 		    	  		" where " +
 		    	  		" model.isActive='Y' and model.startDate is not null ");
