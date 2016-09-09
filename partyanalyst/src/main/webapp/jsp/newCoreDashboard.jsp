@@ -917,15 +917,47 @@
 									<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
-											<li><label><input type="checkbox" class="selectAll"/>Select All</label></li>
+											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
 											<!--<li><label><input type="checkbox" class="unSelectAll"/>UnSelect All</label></li>-->
 										</ul>
 										<div id="committeeTypeDivId"></div>
-										<button type="button" class="btn btn-success meetingGetDtlsBtnId">Get Details</button>
+										<button type="button" class="btn btn-success meetingGetDtlsBtncls">Get Details</button>
 									</div>
 									 <div class="row">
-										<div id="meetingBasicCountDivId" ></div>
+										<div id="meetingBasicCountDivId"></div>
 									 </div>
+									 
+									 
+								  <div class="panelBlock" >
+								  <h4><span class="headingColor text-capitalize">state level meetings</span><span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
+								  
+									
+									<div class="settingsStateLevelMeetingDropDown " style="left:0px;">
+										<ul class="list-inline">
+											<li><label><input type="checkbox" class="selectAllStateLevelMeeting"/>&nbsp&nbspSelect All</label></li>
+										</ul>
+										<div id="stateLevelMeetingDivId"></div>
+										<button type="button" class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
+									</div>
+									 <div class="row">
+										<div id="stateLevelMeetingBasicCnt"></div>
+									 </div>
+								  </div>
+								  
+								  <div class="panelBlock m_top10">
+								  <h4><span class="headingColor text-capitalize">special meetings</span><span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
+								 	<div class="specialMeetingDropDown " style="left:0px;">
+										<ul class="list-inline">
+											<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
+										</ul>
+										<div id="specialMeetingDivId"></div>
+										<button type="button" class="btn btn-success specialMeetingBtncls">Get Details</button>
+									</div>
+									 <div class="row">
+										<div id="specialMeetingBasicCnt"></div>
+									 </div>
+								   </div>
+									 
 									 
 								</div>
 							</div>
@@ -1741,6 +1773,8 @@
 		getTrainingCampBasicDetailsCntOverview();
 		//Meeting
 		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		getSpecialMeetingsByMeetingType();
 		//news please dont remove
 		getNewsBasicCounts();
 		//getUserTypeWiseNewsCounts();
