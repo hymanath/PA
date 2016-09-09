@@ -1535,11 +1535,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
-								<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-									<!--2nd block-->
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 										<div class="panel panel-default panelNew">
 											<div class="panel-heading">
 												<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
@@ -1549,6 +1545,11 @@
 											</div>
 										</div>
 									</div>
+								</div>
+								<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+									<!--2nd block-->
+								</div>
+								
 								<div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
 									
 									<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
@@ -1644,7 +1645,7 @@
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
-
+<script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
 <script type="text/javascript">
 	/* //Angular Start
 
