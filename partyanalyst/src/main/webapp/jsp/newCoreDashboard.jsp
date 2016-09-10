@@ -1293,7 +1293,7 @@
 										<!--2nd block-->
 									</div>
 									
-									<div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
+									<!-- <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
 										
 										<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
 											<div class="panel panel-default panelNew">
@@ -1306,7 +1306,7 @@
 																<li class="childUserTypeCls">Sec<span class="closeIconComparison"></span></li>
 															</ul>
 														</div>-->
-													</div>
+													<!-- </div>
 												</div>
 												<div class="panel-body">
 													
@@ -1318,8 +1318,8 @@
 									
 									
 									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-										<!--4th block-->
-									</div>
+										<!--4th block
+									</div>-->
 								</div>
 							</div>
 						</div>
