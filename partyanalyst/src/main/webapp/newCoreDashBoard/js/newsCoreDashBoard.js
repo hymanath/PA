@@ -1320,7 +1320,7 @@ $(document).on("click",".detailedPartySubLi",function(){
     function getRescentArticleTime(){
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
 		}).then(function(result){
 			if(result != null && result.length > 0){
 				
