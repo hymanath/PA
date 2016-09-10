@@ -1432,4 +1432,16 @@ public String getPartyMeetingsMainTypeOverViewData(){
 	}
 	return Action.SUCCESS;
   }
+
+	public String getPartyCompareSubLevelMemberDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+			 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
+		}
+		return Action.SUCCESS;
+	}
 }
