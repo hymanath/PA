@@ -21,6 +21,10 @@
         }
 	});
 });	
+	$(document).on("click",".settingsIconNews",function(e){
+		$(this).closest(".newsBlock").find(".basicCommitteesBlockDropDown").toggle();
+		e.stopPropagation();
+	});
 	$(document).on("click",".newsIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
