@@ -1311,4 +1311,13 @@ function getChildUserTypesByItsParentUserType1(){
 		$(".impactCheckCls").prop('checked', false);
 		$(this).prop('checked', true);
 	});
-            
+    function getRescentArticleTime(){
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/
+		}).then(function(result){
+			if(result != null && result.length > 0){
+				
+			}
+		});
+	}        

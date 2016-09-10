@@ -1868,6 +1868,7 @@
 		//getDetailedPartyMainEditionsOverview();
 		//getDetailedPartyDistrictEditionsOverview();
 		//getDetailedPartyNewsTypeAnalysis();
+		getRescentArticleTime();
 	}
 	
 	
