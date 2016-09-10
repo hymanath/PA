@@ -13662,5 +13662,13 @@
 		</result>
 	</action>
 	
+	<action name="getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction" class="coreDashboardAction" method="getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingDataVO</param> 
+		</result>
+	</action>
+	
+	
+	
 </package>
 </struts>

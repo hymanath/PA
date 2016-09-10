@@ -59,6 +59,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private PartyMeetingsVO partyMeetingsVO;
 	private List<PartyMeetingsVO> partyMeetingsVOList;
 	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
+	private PartyMeetingsDataVO partyMeetingDataVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -253,6 +254,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setPartyMeetingDataVOList(
 			List<PartyMeetingsDataVO> partyMeetingDataVOList) {
 		this.partyMeetingDataVOList = partyMeetingDataVOList;
+	}
+	
+	public void setPartyMeetingDataVO(PartyMeetingsDataVO partyMeetingDataVO) {
+		this.partyMeetingDataVO = partyMeetingDataVO;
 	}
 
 	//Implementation method
@@ -1437,11 +1442,40 @@ public String getPartyMeetingsMainTypeOverViewData(){
 		try {
 			jObj = new JSONObject(getTask());
 			
-			newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+			//newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
 			 
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(){
+		
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+			
+			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+			JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+				}
+			}
+			
+			String state = jObj.getString("state");
+			String startDateString = jObj.getString("startDateString");
+			String endDateString   = jObj.getString("endDateString");
+			
+			
+			partyMeetingDataVO = coreDashboardPartyMeetingService.getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
+			
+	}catch(Exception e){
+		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
 	}
 }
