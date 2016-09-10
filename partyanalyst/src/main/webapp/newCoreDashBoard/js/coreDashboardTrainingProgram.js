@@ -1697,6 +1697,7 @@ $(document).on("click",".distDtlsCls",function(){
 	var stateId = 0;
 	var dateStr = '';
 	$("#myModelId").modal('show');
+	$("#positionId").html('');  
 	$("#memberId").html(''); 
 	$("#processingImgId").show();	  
 	$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
@@ -1729,7 +1730,7 @@ function getCampMemberDtlsPerDist(distId,programId,stateId,dateStr){
 		}).done(function(result){
 			$("#processingImgId").hide();    
 			if(result != null && result.length > 0){
-				buildMemberRslt(result);
+				buildMemberRslt(result,"camp");
 				
 			}else{
 				$("#memberId").html('No Data Available');   
@@ -1754,14 +1755,14 @@ function getLeaderShipMemDtlsPerDist(distId){
 		}).done(function(result){
 			$("#processingImgId").hide();    
 			if(result != null && result.length > 0){
-				buildMemberRslt(result);
+				buildMemberRslt(result,"leadership"); 
 				
 			}else{  
 				$("#memberId").html('No Data Available');   
 			}
 		});	
 }
-function buildMemberRslt(result){ 
+function buildMemberRslt(result,status){ 
 	var str2 = '';
 	var totalMember = result.length;  
 	var attendedMember = 0;
@@ -1787,14 +1788,27 @@ function buildMemberRslt(result){
 			}else{    
 				str+='<td>'+result[i].status.toUpperCase()+'</td>';   
 			}  
-			str+='<td>'+result[i].mobileNo+'</td>';  
-			str+='<td>'+result[i].wish.toUpperCase()+'</td>'; 			
+			str+='<td>'+result[i].mobileNo+'</td>'; 
+			if(status=="camp"){
+				str+='<td>'+result[i].wish.toUpperCase()+'</td>';
+			}else{
+				if(result[i].wish=="absent"){
+					str+='<td>YET TO TRAIN</td>';      
+				}else{
+					str+='<td>'+result[i].wish.toUpperCase()+'</td>';
+				}
+			}		
 		str+='</tr>';   
 	}
 	absent = totalMember - attendedMember;
 	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
-	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>';  
-	str2+='<span class="label label-warning">Absent-'+absent+'</span>';     
+	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>'; 
+	if(status=="camp"){
+		str2+='<span class="label label-warning">Absent-'+absent+'</span>';  
+	}else{
+		str2+='<span class="label label-warning">Yet to train-'+absent+'</span>';    
+	}
+	 
 	str+='</tbody>';
 	$("#positionId").html(str2);
 	$("#memberId").html(str); 
