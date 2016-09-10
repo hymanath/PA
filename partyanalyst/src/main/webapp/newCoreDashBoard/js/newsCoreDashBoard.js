@@ -260,6 +260,7 @@
 	}
 	
 	function getDetailedPartyDistrictEditionsOverview(){
+		$("#districtWiseNewsReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp;
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -277,6 +278,7 @@
 	}
 	
 	function getDetailedPartyNewsTypeAnalysis(){
+		$("#newsTypeAnalysisDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp;
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -716,7 +718,7 @@
 	}
 	
 	function buildDetailedPartyDistrictEditionsOverview(result){
-		$("#districtWiseNewsReport").html('');
+		$("#districtWiseNewsReport").html(' ');
 		if(result != null && result.length > 0){
 			var str='';
 			var countVar =0;
@@ -1052,13 +1054,15 @@ function getChildUserTypesByItsParentUserType1(){
 					str+='<div class="col-md-2 col-xs-12 col-sm-4" style="border-right:1px solid #ddd">';
 						str+='<div id="newsTypeAnalysisPieChart'+i+'" style="height:165px;width:100%;"></div>';
 						str+='<div class="row">';
-						str+='<div class="col-xs-12">';
-						for(var j in result[i].coreDashBoardVOList){
-							var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
-							  str+='<span style="color:'+color+'">'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%</span> &nbsp;&nbsp;';
-							
-						}
-						str+='</div>';
+							str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+								str+='<ul class="list-inline">';
+								for(var j in result[i].coreDashBoardVOList){
+									var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
+									  str+='<li style="color:'+color+'">'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%</li> &nbsp;&nbsp;';
+									
+								}
+								str+='</ul>';
+							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 					str+='<div class="col-md-10 col-xs-12 col-sm-8">';
@@ -1113,7 +1117,7 @@ function getChildUserTypesByItsParentUserType1(){
 					$(function () {
 						if(partyNameAndCountArray.length !=0){
 							$('#newsTypeAnalysisPieChart'+i).highcharts({
-								colors: ['#FFCB00','#005DB0','#3D9834','#FD9832'],
+								colors: ['#FD9832','#3D9834','#FFCB00','#005DB0'],
 								chart: {
 									type: 'pie',
 									options3d: {
