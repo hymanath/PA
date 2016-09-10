@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PartyMeetingsDataVO implements Serializable{
 	
@@ -23,6 +24,10 @@ public class PartyMeetingsDataVO implements Serializable{
 	private Double attendedPerc=0.0;
 	private Double inviteeAttendedPerc=0.0;
 	private Double notAttendedPerc=0.0;
+	
+	private List<PartyMeetingsDataVO> subList1;
+	private List<PartyMeetingsDataVO> subList2;
+	private PartyMeetingsDataVO subVO;
 	
 	
 	public Long getId() {
@@ -120,6 +125,24 @@ public class PartyMeetingsDataVO implements Serializable{
 	}
 	public void setNotAttendedPerc(Double notAttendedPerc) {
 		this.notAttendedPerc = notAttendedPerc;
+	}
+	public PartyMeetingsDataVO getSubVO() {
+		return subVO;
+	}
+	public void setSubVO(PartyMeetingsDataVO subVO) {
+		this.subVO = subVO;
+	}
+	public List<PartyMeetingsDataVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<PartyMeetingsDataVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public List<PartyMeetingsDataVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<PartyMeetingsDataVO> subList2) {
+		this.subList2 = subList2;
 	}
 	
 }

@@ -399,4 +399,103 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		   return query.list();
 			
 		}
+		
+		
+		public List<Object[]> getAttendedCadreCountForMeetingsByCommitteeWise(PartyMeetingsInputVO inputVO){
+			
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("select tcl.tdp_committee_level_id as tdpCommitteeLevelId ,tcl.tdp_committee_level as tdpcommitteeLevel," +
+					"         COUNT(DISTINCT CONCAT(pm.party_meeting_id,'-',cadre.tdp_cadre_id)) as count " +
+					 " from   party_meeting_attendance pma join attendance a on pma.attendance_id = a.attendance_id  " +
+					 "        join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
+					 "        join party_meeting pm on pma.party_meeting_id = pm.party_meeting_id " +
+					 "        join user_address ua on pm.meeting_address_id = ua.user_address_id " +
+					 "        join party_meeting_type pmt on pm.party_meeting_type_id = pmt.party_meeting_type_id " +
+					 "        join party_meeting_main_type pmmt on pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id " +
+					 "" +
+					 "        join tdp_committee_member tcm  on tcm.tdp_cadre_id = cadre.tdp_cadre_id " +
+					 "        join tdp_committee_role   tcr  on tcm.tdp_committee_role_id = tcr.tdp_committee_role_id " +
+					 "        join tdp_committee        tc   on tcr.tdp_committee_id = tc.tdp_committee_id " +
+					 "        join tdp_committee_level  tcl  on tc.tdp_committee_level_id = tcl.tdp_committee_level_id " +
+					 " where  pmmt.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+					 "        cadre.is_deleted = 'N' and cadre.enrollment_year = 2014 and pm.is_active='Y' ");
+			if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+				 sb.append(" and date(pm.start_date) between :startDate and :endDate ");	 
+			}
+			if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+				sb.append(" and ua.state_id = :stateId ");
+			}
+			if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
+				sb.append(" and pmt.party_meeting_type_id in (:partyMeetingTypeIds) ");	
+			}
+			sb.append(" group by tcl.tdp_committee_level_id ");
+			
+			Query query = getSession().createSQLQuery(sb.toString())
+			.addScalar("tdpCommitteeLevelId",Hibernate.LONG)
+			.addScalar("tdpcommitteeLevel",Hibernate.STRING)
+			.addScalar("count",Hibernate.LONG);
+			
+			if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+				query.setDate("startDate",inputVO.getStartDate());
+				query.setDate("endDate",inputVO.getEndDate());	 
+			}
+			if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+				query.setParameter("stateId",inputVO.getStateId());
+			}
+			if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
+				query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
+			}
+			query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+		   return query.list();
+		}
+		
+     public List<Object[]> getAttendedCadreCountForMeetingsByByPublicRepresentativeWise(PartyMeetingsInputVO inputVO){
+	     StringBuilder sb = new StringBuilder();
+		 
+	     sb.append(" select   prt.public_representative_type_id as representativeTypeId,prt.position as position ,COUNT(DISTINCT CONCAT(pm.party_meeting_id,'-',cadre.tdp_cadre_id)) as count " +
+	     		"    from     party_meeting_attendance pma join attendance a on pma.attendance_id = a.attendance_id " +
+	     		"             join tdp_cadre cadre on a.tdp_cadre_id = cadre.tdp_cadre_id " +
+	     		"             join party_meeting pm on pma.party_meeting_id = pm.party_meeting_id " +
+	     		"             join user_address ua on pm.meeting_address_id = ua.user_address_id " +
+	     		"             join party_meeting_type pmt on pm.party_meeting_type_id = pmt.party_meeting_type_id" +
+	     		"             join party_meeting_main_type pmmt on pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id " +
+	     		"" +
+	     		"             join tdp_cadre_candidate tcc  on tcc.tdp_cadre_id = cadre.tdp_cadre_id" +
+	     		"             join candidate c on tcc.candidate_id = c.candidate_id " +
+	     		"             join public_representative pr on c.candidate_id = pr.candidate_id " +
+	     		"             join public_representative_type prt on pr.public_representative_type_id = prt.public_representative_type_id " +
+	     		"   where     pmmt.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+	     		"             cadre.is_deleted = 'N' and cadre.enrollment_year = 2014 and pm.is_active='Y'  ");
+	     
+	     if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+			 sb.append(" and date(pm.start_date) between :startDate and :endDate ");	 
+		}
+		if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+			sb.append(" and ua.state_id = :stateId ");
+		}
+		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
+			sb.append(" and pmt.party_meeting_type_id in (:partyMeetingTypeIds) ");	
+		}
+		sb.append(" group by prt.public_representative_type_id ");
+		
+		Query query = getSession().createSQLQuery(sb.toString())
+		.addScalar("representativeTypeId",Hibernate.LONG)
+		.addScalar("position",Hibernate.STRING)
+		.addScalar("count",Hibernate.LONG);
+		
+		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
+			query.setDate("startDate",inputVO.getStartDate());
+			query.setDate("endDate",inputVO.getEndDate());	 
+		}
+		if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+			query.setParameter("stateId",inputVO.getStateId());
+		}
+		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
+			query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
+		}
+		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+	   return query.list();
+     }		
+		
 }
