@@ -15,7 +15,6 @@
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/GridStack/gridstack.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
@@ -92,13 +91,13 @@
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-6 col-sm-8 col-xs-7">
+						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
 								committees - <small class="text-muted">up to date</small>
 							</h4>
 						</div>
-						<div class="col-md-6 col-sm-4 col-xs-5">
+						<div class="col-md-4 col-sm-4 col-xs-5">
 							<span class="basicCommitteesBlockDiv pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
@@ -410,7 +409,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock">
+						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
 							<div class="row">
 							 <div id="programsDtlsCntTableId"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12">
@@ -867,14 +866,355 @@
                 </div>
             </div>
             <!-- DEBATES PROGRAM BLOCK END-->
-			<!-- MEETING BLOCK START  -->
+			<!--  NEWS BLOCK START-->
+			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
+				<div class="panel panel-default panelNewCustom panel2">
+					<div class="panel-heading">
+						<div class="row">
+						<div class="col-md-6 col-sm-8 col-xs-7">
+						<h4 class="panel-title text-capital">
+						<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+							news
+							</div>
+							<div class="col-md-6 col-sm-4 col-xs-5">
+						<span class="settingsIcon pull-right">
+						<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+						   </span>
+						 <span class="notesIconNews pull-right">
+						<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
+							</span>
+								<span class="newsIconExpand pull-right">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForNews hide" style="width:200px;">
+									<input type="text" id="dateRangeIdForNews" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+								
+							</div>
+						</div>
+						</h4>
+						<div class="notesDropDown notesArrow" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesNewsId"></div>
+							<hr/>
+							<div id="newsUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaNews"></textarea>
+							<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
+						</div> 
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
+								<h4 class="text-capital"><span class="headingColor"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">Main Edition</p>
+													<p id="tdpMainTotal">0</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Positive</p>
+													<span id="tdpMainPositive">0</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Negative</p>
+													<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-customColor"> 0%</small>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">Dist edition</p>
+													<p id="tdpDistTotal">0</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Positive</p>
+													<span id="tdpDistPositive">0</span><small class="text-success" id="tdpDistPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Negative</p>
+													<span id="tdpDistNegative">0</span><small class="text-customColor" id="tdpDistNegativePercent"> 0%</small>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
+										<table class="table table-condensed tableNews ">
+											<tr class="bg_ED">
+												<td>
+													<p class="text-capital">Main Edition</p>
+													<p id="oppMainTotal">0</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Positive</p>
+													<span id="oppPositiveTotal">0</span><small class="text-success" id="oppPositiveTotalPercent"> 0%</small>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Negative</p>
+													<span id="oppNegativeTotal">0</span><small class="text-customColor" id="oppNegativeTotalPercent"> 0%</small>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
+												</td>
+												<td>
+													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<span id="ysrcMainNegative">0</span><small class="text-customColor" id="ysrcMainNegativePercent"> 0%</small>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incMainTotal">0</span>
+												</td>
+												<td>
+													<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<span id="incMainNegative">0</span><small class="text-customColor" id="incMainNegativePercent"> 0%</small>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpMainTotal">0</span>
+												</td>
+												<td>
+													<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<span id="bjpMainNegative">0</span><small class="text-customColor" id="bjpMainNegativePercent"> 0%</small>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
+										<table class="table table-condensed tableNews ">
+											<tr class="bg_ED">
+												<td>
+													<p class="text-capital">Dist Edition</p>
+													<p id="oppDistTotal">0</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Positive</p>
+													<span id="oppDistPositive">0</span><small class="text-success" id="oppDistPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Negative</p>
+													<span id="oppDistNegative">0</span><small class="text-customColor" id="oppDistNegativePercent"> 0%</small>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcDistTotal">0</span>
+												</td>
+												<td>
+													<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<span id="ysrcDistNegative">0</span><small class="text-customColor" id="ysrcDistNegativePercent"> 0%</small>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incDistTotal">0</span>
+												</td>
+												<td>
+													<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<span id="incDistNegative">0</span><small class="text-customColor" id="incDistNegativePercent"> 0%</small>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpDistTotal">0</span>
+												</td>
+												<td>
+													<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<span id="bjpDistNegative">0</span><small class="text-customColor" id="bjpDistNegativePercent"> 0%</small>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">Main Edition</p>
+													<p id="govtMainTotal">0</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Positive</p>
+													<span id="govtMainPositive">0</span><small class="text-success" id="govtMainPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<p class="text-capital text-muted">Negative</p>
+													<span id="govtMainNegative">0</span><small class="text-customColor" id="govtMainNegativePercent"> 0%</small>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
+										<table class="table table-condensed tableNews bg_ED">
+											<tr>
+												<td>
+													<p class="text-capital">Dist Edition</p>
+													<p id="govtDistTotal">0</p>
+												</td>
+												<td>
+													<p class="text-capital text-muted">positive</p>
+													<span id="govtDistPositive">0</span><small class="text-success" id="govtDistPositivePercent"> 0%</small>
+												</td>
+												<td>
+													<p class="text-capital text-muted">negative</p>
+													<span id="govtDistNegative">0</span><small class="text-customColor" id="govtDistNegativePercent"> 0%</small>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
+								<div class="row">
+									<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline pull-right">
+												<li class="active newsliCls" attr_value="1"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
+												<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-up"></i>&nbsp;Top 5 Negative</li>
+											</ul>
+									</div>
+									 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
+									
+									
+								</div>
+								
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<ul class="activeUlCls list-inline pull-right">
+											<li><i class="fa fa-gears"></i></li>
+										</ul>
+										
+										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
+											<li class="text-capital newsComparisonHeading">Comparison</li>
+											<li class="text-capital a viewsLiClass" id="comparisonPartyLiId" attr_div_id="comparisonPartyMainDivId">Party</li><!--Teja-->
+											<li class="text-capital a viewsLiClass" id="comparisonGovernmentLiId" attr_div_id="comparisonGovernamentMainDivId">Government</li>
+										</ul>
+										
+										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
+											<li class="text-capital newsComparisonHeading">Detailed</li>
+											<li class="active text-capital a viewsLiClass" id="detailedPartyLiId" attr_div_id="detailedPartyMainDivId">Party</li>
+											<li class="text-capital a viewsLiClass" id="detailedGovernmentLiId" attr_div_id="detailedGovernamentMainDivId">Government</li>
+										</ul>
+										
+									</div>
+									<div id="detailedPartyMainDivId" class="mainBuildingDivClass">
+										<!-- News 1 Block-->
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew mainEditionCls">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
+												</div>
+												<div class="panel-body" >
+													<div id="mainEditiongraphId"></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew mainEditionCls">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
+												</div>
+												<div class="panel-body verticalScrollBar" >
+													<div id="districtWiseNewsReport"></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
+												</div>
+												<div class="panel-body">
+												<div id ="newsTypeAnalysisDiv"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+										<!--2nd block-->
+									</div>
+									
+									<div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
+										
+										<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<div class="row">
+													<div id="userTypeStrId"></div>
+														<!--<div class="col-xs-12 col-sm-12 col-md-12">
+															<ul class="comparisonSelect">
+																<li class="childUserTypeCls">Gen Sec<span class="closeIconComparison"></span></li>
+																<li class="childUserTypeCls">Sec<span class="closeIconComparison"></span></li>
+															</ul>
+														</div>-->
+													</div>
+												</div>
+												<div class="panel-body">
+													
+												</div>
+											</div>
+											
+										</div>
+									</div>
+									
+									
+									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
+										<!--4th block-->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	<!-- NEWS BLOCK END-->
+	
+	<div class="row">
+		<!-- MEETING BLOCK START  -->
 			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-md-6 col-sm-6 col-xs-7">
 								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings <small class="text-muted"> - last month</small>
 								</h4>
 							</div>
@@ -928,7 +1268,7 @@
 									 </div>
 									 
 									 
-								  <div class="panelBlock" >
+								  <div class="panelBlock m_top20" >
 								  <h4><span class="headingColor text-capitalize">state level meetings</span><span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
 								  
 									
@@ -944,7 +1284,7 @@
 									 </div>
 								  </div>
 								  
-								  <div class="panelBlock m_top10">
+								  <div class="panelBlock m_top20">
 								  <h4><span class="headingColor text-capitalize">special meetings</span><span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
 								 	<div class="specialMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
@@ -1271,353 +1611,6 @@
 				</div>
 			</div>	
         </div>
-	
-	<div class="row">
-		<!--  NEWS BLOCK START-->
-		<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
-			<div class="panel panel-default panelNewCustom panel2">
-				<div class="panel-heading">
-					<div class="row">
-					<div class="col-md-6 col-sm-8 col-xs-7">
-					<h4 class="panel-title text-capital">
-					<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-						news
-						</div>
-						<div class="col-md-6 col-sm-4 col-xs-5">
-					<span class="settingsIcon pull-right">
-					<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-					   </span>
-					 <span class="notesIconNews pull-right">
-					<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
-						</span>
-							<span class="newsIconExpand pull-right">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForNews hide" style="width:200px;">
-								<input type="text" id="dateRangeIdForNews" style="width:180px" class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-							
-						</div>
-					</div>
-					</h4>
-					<div class="notesDropDown notesArrow" >
-						<h4 class="text-capital">notes
-							<span class="pull-right">
-								<i class="glyphicon glyphicon-list-alt"></i>
-							</span>
-						</h4>
-						<div id="notesNewsId"></div>
-						<hr/>
-						<div id="newsUpId" style="color:red;"></div>
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesAreaNews"></textarea>
-                        <button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
-					</div> 
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
-							<h4 class="text-capital"><span class="headingColor"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>
-							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
-									<table class="table table-condensed tableNews bg_ED">
-										<tr>
-											<td>
-												<p class="text-capital">Main Edition</p>
-												<p id="tdpMainTotal">0</p>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Positive</p>
-												<span id="tdpMainPositive">0</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Negative</p>
-												<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-success"> 0%</small>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
-									<table class="table table-condensed tableNews bg_ED">
-										<tr>
-											<td>
-												<p class="text-capital">Dist edition</p>
-												<p id="tdpDistTotal">0</p>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Positive</p>
-												<span id="tdpDistPositive">0</span><small class="text-success" id="tdpDistPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Negative</p>
-												<span id="tdpDistNegative">0</span><small class="text-success" id="tdpDistNegativePercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							<h4 class="text-capital m_top20"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>
-							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
-									<table class="table table-condensed tableNews bg_ED">
-										<tr>
-											<td>
-												<p class="text-capital">Main Edition</p>
-												<p id="oppMainTotal">0</p>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Positive</p>
-												<span id="oppPositiveTotal">0</span><small class="text-success" id="oppPositiveTotalPercent"> 0%</small>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Negative</p>
-												<span id="oppNegativeTotal">0</span><small class="text-success" id="oppNegativeTotalPercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-									<table class="table table-condensed tableNews m_top10">
-										<tr>
-											<td>
-												<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
-											</td>
-											<td>
-												<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<span id="ysrcMainNegative">0</span><small class="text-success" id="ysrcMainNegativePercent"> 0%</small>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incMainTotal">0</span>
-											</td>
-											<td>
-												<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<span id="incMainNegative">0</span><small class="text-success" id="incMainNegativePercent"> 0%</small>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpMainTotal">0</span>
-											</td>
-											<td>
-												<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<span id="bjpMainNegative">0</span><small class="text-success" id="bjpMainNegativePercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
-									<table class="table table-condensed tableNews bg_ED">
-										<tr>
-											<td>
-												<p class="text-capital">Dist Edition</p>
-												<p id="oppDistTotal">0</p>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Positive</p>
-												<span id="oppDistPositive">0</span><small class="text-success" id="oppDistPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Negative</p>
-												<span id="oppDistNegative">0</span><small class="text-success" id="oppDistNegativePercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-									<table class="table table-condensed tableNews m_top10">
-										<tr>
-											<td>
-												<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcDistTotal">0</span>
-											</td>
-											<td>
-												<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<span id="ysrcDistNegative">0</span><small class="text-success" id="ysrcDistNegativePercent"> 0%</small>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incDistTotal">0</span>
-											</td>
-											<td>
-												<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<span id="incDistNegative">0</span><small class="text-success" id="incDistNegativePercent"> 0%</small>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpDistTotal">0</span>
-											</td>
-											<td>
-												<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<span id="bjpDistNegative">0</span><small class="text-success" id="bjpDistNegativePercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							<h4 class="text-capital m_top20"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Government</span></h4>
-							<div class="row">
-								<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
-									<table class="table table-condensed tableNews bg_ED">
-										<tr>
-											<td>
-												<p class="text-capital">Main Edition</p>
-												<p id="govtMainTotal">0</p>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Positive</p>
-												<span id="govtMainPositive">0</span><small class="text-success" id="govtMainPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<p class="text-capital text-muted">Negative</p>
-												<span id="govtMainNegative">0</span><small class="text-success" id="govtMainNegativePercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="col-md-6 col-xs-12 col-sm-12 m_top20 ">
-									<table class="table table-condensed tableNews bg_ED">
-										<tr>
-											<td>
-												<p class="text-capital">Dist Edition</p>
-												<p id="govtDistTotal">0</p>
-											</td>
-											<td>
-												<p class="text-capital text-muted">positive</p>
-												<span id="govtDistPositive">0</span><small class="text-success" id="govtDistPositivePercent"> 0%</small>
-											</td>
-											<td>
-												<p class="text-capital text-muted">negative</p>
-												<span id="govtDistNegative">0</span><small class="text-success" id="govtDistNegativePercent"> 0%</small>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
-							<div class="row">
-								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-									<ul class="activeUlCls list-inline">
-											<li class="active newsliCls" attr_value="1"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
-											<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-up"></i>&nbsp;Top 5 Negative</li>
-										</ul>
-								</div>
-								 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
-								
-								
-							</div>
-							
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
-						</div>	
-						<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock">
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<ul class="activeUlCls list-inline pull-right">
-										<li><i class="fa fa-gears"></i></li>
-									</ul>
-									
-									<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
-										<li class="text-capital newsComparisonHeading">Comparison</li>
-										<li class="text-capital a viewsLiClass" id="comparisonPartyLiId" attr_div_id="comparisonPartyMainDivId">Party</li><!--Teja-->
-										<li class="text-capital a viewsLiClass" id="comparisonGovernmentLiId" attr_div_id="comparisonGovernamentMainDivId">Government</li>
-									</ul>
-									
-									<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
-										<li class="text-capital newsComparisonHeading">Detailed</li>
-										<li class="active text-capital a viewsLiClass" id="detailedPartyLiId" attr_div_id="detailedPartyMainDivId">Party</li>
-										<li class="text-capital a viewsLiClass" id="detailedGovernmentLiId" attr_div_id="detailedGovernamentMainDivId">Government</li>
-									</ul>
-									
-								</div>
-								<div id="detailedPartyMainDivId" class="mainBuildingDivClass">
-									<!-- News 1 Block-->
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew mainEditionCls">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
-											</div>
-											<div class="panel-body" >
-												<div id="mainEditiongraphId"></div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew mainEditionCls">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">District Edition Parties Overview</span></h4>
-											</div>
-											<div class="panel-body verticalScrollBar" >
-												<div id="districtWiseNewsReport"></div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">News Type Analysis</span></h4>
-											</div>
-											<div class="panel-body">
-											<div id ="newsTypeAnalysisDiv"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div id="detailedGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-									<!--2nd block-->
-								</div>
-								
-								<div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
-									
-									<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
-										<div class="panel panel-default panelNew">
-											<div class="panel-heading">
-												<div class="row">
-												<div id="userTypeStrId"></div>
-													<!--<div class="col-xs-12 col-sm-12 col-md-12">
-														<ul class="comparisonSelect">
-															<li class="childUserTypeCls">Gen Sec<span class="closeIconComparison"></span></li>
-															<li class="childUserTypeCls">Sec<span class="closeIconComparison"></span></li>
-														</ul>
-													</div>-->
-												</div>
-											</div>
-											<div class="panel-body">
-												
-											</div>
-										</div>
-										
-									</div>
-								</div>
-								
-								
-								<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-									<!--4th block-->
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- NEWS BLOCK END-->
-        		
-	 </div>
      <!--End -->
 	</div>
 </div> 
@@ -2014,77 +2007,22 @@
 			buildStateLevelCampAttendedDetails(result);
 		});
 	}  
-	function buildStateLevelCampAttendedDetails(result){  
-		var str = '';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
-		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
-		str+='<h5 class="text-capital m_top10">official spokespersons<span style="background-color:#fff;margin-left:5px;" class="stateLevelTrainingInd" attr_location="official spokespersons"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';
-		str+='<table class="table tableTraining">';     
-		str+='<tbody>';
-		str+='<tr>';
-		str+='<td>';
-		str+='<h3>'+result.count+'</h3>';
-		str+='<p class="text-muted text-capital">eligible</p>';
-		str+='</td>';
-		str+='<td>';
-		str+='<h3>'+result.count+'</h3>';
-		str+='<p class="text-muted text-capital">invited</p>';
-		str+='</td>';
-		str+='<td>';
-		var per = (result.availableCount*(100/result.count)).toFixed(2);
-		str+='<h3>'+result.availableCount+'<span class="font-10 text-success">'+per+'%</span></h3>'; 
-		str+='<p class="text-muted text-capital">attended</p>';
-		str+='</td>';
-		str+='<td>';
-		var abs = result.count - result.availableCount; 
-		str+='<h3>'+abs+'<span class="font-10 text-success">'+(100-per).toFixed(2)+'%</span></h3>';     
-		str+='<p class="text-muted text-capital">absent</p>    ';
-		str+='</td>';
-		str+='</tr>';
-		str+='</tbody>';
-		str+='</table>';  
-		str+='</div>';  
-		$("#stateLevelCampId").html(str);        
-	}
-$(document).on("click",".stateLevelTraining",function(){
-	getStateLevelCampCount();   
-	stateLevelCampMembersDistWise();       
-	stateLevelCampDetailsRepresentativeWise() 
-	var val = $(this).attr("attr_location");
-	$("#clickInfoId").html(val);
-	$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
-	$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");
 	
-	$("#detailedId").removeClass("trainingDetailed");
-	$("#detailedId").addClass("trainingCampDetailed");
-	$("#clickInfoId").show();
-	$(".trainingComparison").hide();  
-});
-$(document).on("click",".stateLevelTrainingInd",function(){
-	getStateLevelCampCount();     
-	stateLevelCampMembersDistWise(); 
-	stateLevelCampDetailsRepresentativeWise()
-	var val = $(this).attr("attr_location");
-	$("#clickInfoId").html(val); 
-	$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
-	$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");   
-	$("#detailedId").removeClass("trainingDetailed");
-	$("#detailedId").addClass("trainingCampDetailed");
-	$("#clickInfoId").show();
-	$(".trainingComparison").hide();
-});
+
+
+/*
 $(document).on("click",".programSkillsCls",function(){
 	getUserTypeWiseTotalEligibleAndAttendedCnt();
 	getTrainingCampProgramsDetailsCntByDistrict();  
 	getTrainingProgramBasicCnt();
 		$("#clickInfoId").hide(); 
-
+	
 	$("#switchButtonId").addClass("moreTrainingBlocksIcon");
 	$("#switchButtonId").removeClass("moreTrainingCampBlocksIcon");
 	$("#detailedId").addClass("trainingDetailed");
 	$("#detailedId").removeClass("trainingCampDetailed"); 
 	$(".trainingComparison").show();   
-});	//programSkillsCls
+});	//programSkillsCls*/
 $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	//$("#switchButtonId").removeClass("showCls");
 	//$("#switchButtonId").addClass("hdCls");

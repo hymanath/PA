@@ -137,6 +137,10 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border:1px solid #FFCC2D !important;
 	border-radius:0px;
 }
+.text-customColor
+{
+	color:#FF7F50 !important
+}
 .btnYellow img
 {
 	height:20px;
@@ -960,7 +964,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	width:100%;
 	margin:auto;
 }
-.moreBlocksIcon , .moreTrainingBlocksIcon , .moreMeetingsBlocksIcon , .moreDebatesBlocksIcon , .morenewsBlocksIcon
+.moreBlocksIcon , .moreTrainingBlocksIcon , .moreMeetingsBlocksIcon , .moreDebatesBlocksIcon , .morenewsBlocksIcon , .moreTrainingCampBlocksIcon
 {
 	font-size:22px;
 	cursor:pointer;
@@ -1428,7 +1432,7 @@ margin-top:20px;
 {
   font-size:12px;
 }
-.debatesPartyIcon
+.debatesPartyIcon , .newsIcon
 {
 	height:18px;
 	width:20px;
@@ -1645,11 +1649,11 @@ margin-top:20px;
 	background-color:#CACFD3 !important;
 	color:#555 !important;	
 }
-.selectAllOptions
+.selectAllOptions , .selectAllStateLevelOptions , .selectAllSpecialMeetingOptions
 {
 	padding:0px;
 }
-.selectAllOptions li
+.selectAllOptions li , .selectAllStateLevelOptions li , .selectAllSpecialMeetingOptions li
 {
 	list-style:none;
 	padding:0px;
