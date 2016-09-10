@@ -541,4 +541,40 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		}
 		return null;
 	}
+	
+	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate){
+		List<ChildUserTypeVO> finalVoList = new ArrayList<ChildUserTypeVO>(0);
+		try {
+			
+			ActivityMemberVO activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId);
+		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		    activityMemberVO.setState(state);
+		     activityMemberVO.setFromDate(startDate);
+		     activityMemberVO.setToDate(endDate);
+		     
+		    ClientConfig clientConfig = new DefaultClientConfig();
+		     
+		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+			 
+	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getPartyCompareSubLevelMemberDetails");
+	         
+			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
+	         System.out.println(jsonInString);
+	         
+	         ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, activityMemberVO);
+	         
+	         if(response.getStatus() != 200){
+	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+	 	      }else{
+	 	    	  
+	 	      }
+		    
+		    
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
+		}
+		return finalVoList;
+	}
 }
