@@ -670,13 +670,13 @@ $(document).on("click",".liCls",function(){
 $(document).on("click",".stateLevelTrainingInd",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".trainingsHiddenBlock").hide();
+		$(".trainingsHiddenBlock,.trainingDetailedBlock").hide();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}else{
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(".trainingsHiddenBlock").show();
+		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
 		getStateLevelCampCount();     
 		stateLevelCampMembersDistWise(); 
 		stateLevelCampDetailsRepresentativeWise()
