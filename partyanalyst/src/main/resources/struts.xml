@@ -13641,7 +13641,7 @@
 	
 	<action name="getPartyComparisonChildUserTypeMembersAction" class="coreDashboardAction" method="getPartyComparisonChildUserTypeMembers">
 		<result type="json" name="success"> 
-   			<param name="root">partyMeetingDataVOList</param> 
+   			<param name="root">childUserTypeVOList</param> 
    		</result>
 	</action>
 	
