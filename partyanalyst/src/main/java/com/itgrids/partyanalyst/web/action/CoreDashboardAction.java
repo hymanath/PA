@@ -13,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
@@ -75,6 +76,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String status;
 	
 	private List<IdNameVO> idNameVoList;
+	private List<ChildUserTypeVO> childUserTypeVOList;
 	
 	//setters And Getters
    	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
@@ -310,6 +312,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
 		this.idNameVoList = idNameVoList;
+	}
+	public List<ChildUserTypeVO> getChildUserTypeVOList() {
+		return childUserTypeVOList;
+	}
+
+	public void setChildUserTypeVOList(List<ChildUserTypeVO> childUserTypeVOList) {
+		this.childUserTypeVOList = childUserTypeVOList;
 	}
 
 	//business methods
@@ -1366,7 +1375,7 @@ public String getCandidateDtlsPerDist(){
  		try {
 			jObj = new JSONObject(getTask());
 			
-			newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),jObj.getLong("childUserTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),jObj.getLong("childUserTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
 		} catch (Exception e) {
 			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers", e);
 		}
