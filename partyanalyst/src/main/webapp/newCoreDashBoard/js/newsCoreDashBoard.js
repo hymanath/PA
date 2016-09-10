@@ -1282,3 +1282,33 @@ function getChildUserTypesByItsParentUserType1(){
 				
 			});
 	}
+	$(document).on("click",".detailedPartySubLi",function(){
+		getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"));
+	});	
+	$(document).on("click","#selectAllId",function(){
+		 if ($(this).prop('checked')) {
+			$(".pubCheckCls").prop('checked', true);
+		} else {
+			$(".pubCheckCls").prop('checked', false);
+		}
+	});	
+	$(document).on("click",".pubCheckCls",function(){
+		var checkAll = false;
+		$(".pubCheckCls").each(function(){
+			if (!$(this).prop('checked')) {
+				checkAll = true;
+			}
+		});
+		
+		if(checkAll){
+			$("#selectAllId").prop('checked', false);
+		}else{
+			$("#selectAllId").prop('checked', true);
+		}
+		
+	});
+	$(document).on("click",".impactCheckCls",function(){
+		$(".impactCheckCls").prop('checked', false);
+		$(this).prop('checked', true);
+	});
+            

@@ -921,29 +921,73 @@
 								<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
 								  <div class="tab-content navTabsSettingsContent">
 									<div role="tabpanel" class="tab-pane active" id="Editions">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
 											<ul class="settingsUl">
 												<li>
 													<label class="checkbox-inline">
-														<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> a</h5></div>
-												   </label>
+														<input type="checkbox"  id="selectAllId"/>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="0">Select all</h5></div>
+												    </label>
+													<label class="checkbox-inline">
+														<input type="checkbox" class="pubCheckCls"/>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="3">Eenadu</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" class="pubCheckCls"/>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="2">Andhra jyothi</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" class="pubCheckCls"/>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="8">Sakshi</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox" class="pubCheckCls"/>
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="1">Andhra Bhoomi</h5></div>
+													</label>   
 												</li>	
 											</ul>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane" id="impactScope">
-										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Impact</h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
 											<ul class="settingsUl">
 												<li>
 													<label class="checkbox-inline">
-														<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;"> b</h5></div>
-												   </label>
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="1">State</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="2">District</h5></div>
+													</label>	
+													<label class="checkbox-inline">
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="3">Constituency</h5></div>
+													</label>
+													<label class="checkbox-inline">
+													<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="4">Parliament</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="5">Mandal</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="6">Panchayat</h5></div>
+													</label>
+													<label class="checkbox-inline">
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="8">Municipality/Corporation</h5></div>
+													</label>	
+													<label class="checkbox-inline">	
+														<input type="checkbox"  class="impactCheckCls">
+														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="9">Ward</h5></div>
+												    </label>
 												</li>	
 											</ul>
 										</div>
