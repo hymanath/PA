@@ -875,7 +875,8 @@
 						<h4 class="panel-title text-capital">
 							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 							news
-							<small class="text-muted"> - today <span id="">last updated:</span></small>
+							<small class="text-muted" id="currentViewing"></small>
+							<!--<span id="">last updated:</span>-->
 						</h4>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
@@ -1271,8 +1272,8 @@
 														</div>
 														<div class="pull-right">
 															<ul class="list-inline  activeUlCls">
-																<li class="active partyDistrictWiseDiv">Parties district wise</li>
-																<li class="publictionWiseDiv">Publication Wise</li>
+																<li class="active partyDistrictWiseDiv" attr_search_type="party">Parties district wise</li>
+																<li class="partyDistrictWiseDiv" attr_search_type="publication">Publication Wise</li>
 															</ul>
 														</div>
 													</div>
@@ -1282,7 +1283,7 @@
 											<div class="panel-body">
 												<div class="row">
 													<div id="partyWiseDetailsDiv"></div>
-													<div id="publicationWiseDetailsDiv"></div>
+													<!--<div id="publicationWiseDetailsDiv"></div>-->
 												</div>
 											</div>
 										</div>
@@ -1891,6 +1892,7 @@
 		getStateLevelMeetingsByMeetingType();
 		getSpecialMeetingsByMeetingType();
 		//news please dont remove
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();
 		getRescentArticleTime();
 	}

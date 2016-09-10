@@ -28,8 +28,16 @@
 	});	
 	
 	$('#dateRangeIdForNews').on('apply.daterangepicker', function(ev, picker) {
+		
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		
+		if(picker.chosenLabel == "Today"){
+			$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
+		}else{
+			$("#currentViewing").html(picker.chosenLabel+" ( "+currentFromDate+" to "+currentToDate+" )");
+		}
+		
 		getNewsBasicCounts();
 		 if($(".newsIconExpand i").attr("class").split(" ")[1]=="glyphicon-resize-small"){
 			$(".newsliCls").each(function(){
@@ -43,6 +51,13 @@
 					if($(this).hasClass("active")){
 						var id = $(this).attr("id");
 						$( "#"+id).trigger( "click" );
+						
+						$(".partyDistrictWiseDiv").removeClass("active");
+						$(".partyDistrictWiseDiv").each(function(index){
+							if(index==0){
+								$(this).addClass("active");
+							}
+						});
 					}
 				});
 			} 
@@ -105,21 +120,22 @@
 	});
 	
 	$(document).on("click",".partyDistrictWiseDiv",function(){
-		$("#publicationWiseDetailsDiv").hide();
-		$("#partyWiseDetailsDiv").show();
-		getDetailedPartyPartyVsPublications("party");
+		//$("#publicationWiseDetailsDiv").hide();
+		//$("#partyWiseDetailsDiv").show();
+		getDetailedPartyPartyVsPublications($(this).attr("attr_search_type"));
 	});
-	$(document).on("click",".publictionWiseDiv",function(){
-		$("#partyWiseDetailsDiv").hide();
-		$("#publicationWiseDetailsDiv").show();
+	
+	/* $(document).on("click",".publictionWiseDiv",function(){
+		//$("#partyWiseDetailsDiv").hide();
+		//$("#publicationWiseDetailsDiv").show();
 		getDetailedPartyPartyVsPublications("publication");
-	});
+	}); */
 	
 	$(document).on("click","#detailedPartyLiId",function(){
 		//getDetailedPartyMainEditionsOverview();
 		getDetailedPartyDistrictEditionsOverview();
 		getDetailedPartyNewsTypeAnalysis();
-		getDetailedPartyPartyVsPublications();
+		getDetailedPartyPartyVsPublications("party");
 	});
 	
 	function getNewsBasicCounts(){
@@ -342,11 +358,12 @@
 	}
 	
 	function getDetailedPartyPartyVsPublications(searchType){
-		if(searchType == "party"){
+		$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		/* if(searchType == "party"){
 			$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}else{
 			$("#publicationWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		}
+		} */
 		var temp;
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -358,15 +375,15 @@
 		
 		$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+1+"/"+1+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType
 		}).then(function(result){
 			
 			
 			if(result != null && result.length > 0 && searchType == "party"){
-				$("#partyWiseDetailsDiv").html();
+				//$("#partyWiseDetailsDiv").html();
 				buildgetDetailedPartyWiseDetailes(result);
 			}else{
-				$("#publicationWiseDetailsDiv").html();
+				//$("#publicationWiseDetailsDiv").html();
 				buildgetDetailedPublicationsWiseDetails(result);
 			}
 		});
@@ -1387,6 +1404,7 @@ $(document).on("click",".detailedPartySubLi",function(){
 	}    
 	
 	function buildgetDetailedPartyWiseDetailes(result){
+		$("#partyWiseDetailsDiv").html();
 		var str ='';
 		if(result !=null && result.length >0){
 			for(var i in result){
@@ -1527,6 +1545,7 @@ $(document).on("click",".detailedPartySubLi",function(){
 	}
 	
 	function buildgetDetailedPublicationsWiseDetails(result){
+		$("#partyWiseDetailsDiv").html();
 		var str ='';
 		if(result !=null && result.length >0){
 			for(var i in result){
@@ -1558,7 +1577,8 @@ $(document).on("click",".detailedPartySubLi",function(){
 		}
 		
 		
-		$("#publicationWiseDetailsDiv").html(str);
+		//$("#publicationWiseDetailsDiv").html(str);
+		$("#partyWiseDetailsDiv").html(str);
 		if(result !=null && result.length >0){
 				for(var i in result){
 					
