@@ -343,28 +343,26 @@
 								}else{
 									str+='<h3 class="responsiveFont"> - </h3>';
 								}
-									str+='<h5 class="text-muted text-capitalize responsiveFont">total</h5>';
+									str+='<p class="text-muted text-capitalize responsiveFont m_top10">total</p>';
 								str+='</td>';
 								str+='<td>';
 								if(result.mainVO.startedCount !=null && result.mainVO.startedCount >0){
 									str+='<h3 class="responsiveFont">'+result.mainVO.startedCount+'</h3>';
-									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
-									str+='<small class="text-success responsiveFont">'+result.mainVO.startedPerc+'%</small>';
-									
+									str+='<small class="text-customColor responsiveFont">'+result.mainVO.startedPerc+'%</small>';
+									str+='<p class="text-muted text-capitalize responsiveFont">started</p>';
 								}else{
 									str+='<h3 class="responsiveFont"> - </h3>';
-									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
+									str+='<p class="text-muted text-capitalize responsiveFont">started</p>';
 								}
 								str+='</td>';
 								str+='<td>';
 								if(result.mainVO.completedCount !=null && result.mainVO.completedCount  >0){
 									str+='<h3 class="responsiveFont">'+result.mainVO.completedCount+'</h3>';
-									str+='<h5 class="text-muted responsiveFont">Completed</h5>';
 									str+='<small class="text-success responsiveFont">'+result.mainVO.completedPerc+'%</small>';
-									
+									str+='<p class="text-muted responsiveFont text-capitalize">Completed</p>';
 								}else{
 									str+='<h3 class="responsiveFont"> - </h3>';
-									str+='<h5 class="text-muted responsiveFont">Completed</h5>';
+									str+='<p class="text-muted responsiveFont text-capitalize">Completed</p>';
 								}
 								str+='</td>';
 							str+='</tr>';
@@ -378,12 +376,12 @@
 											var properName = getProperLocationLevelName(result.subList[i].name);
 											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 												locationLevelNameArray.push(properName);
-												str+='<h4 class="text-capitalize m_top20">'+properName+' Level</h4>';
+												str+='<h4 class="text-capitalize m_top10">'+properName+' Level</h4>';
 											}
 											str+='<table class="table table-condensed bg_ED">';
 												str+='<tr>';
 													str+='<td>';
-														str+='<h5 class="text-muted text-capitalize responsiveFont">Total</h5>';
+														str+='<p class="text-muted text-capitalize responsiveFont">Total</p>';
 														if(result.subList[i].mainVO.totalCount !=null && result.subList[i].mainVO.totalCount >0){
 															str+='<p class="responsiveFont">'+result.subList[i].mainVO.totalCount+'</p>';
 														}else{
@@ -392,16 +390,16 @@
 														
 												   str+='</td>';
 													str+='<td>';
-														str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
+														str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 														if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
-															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-success"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-customColor"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
 														}else{
 															str+='<p> - </p>';
 														}
 														
 													str+='</td>';
 													str+='<td>';
-														str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
+														str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
 														if(result.subList[i].mainVO.completedCount !=null && result.subList[i].mainVO.completedCount >0){
 															str+='<p class="responsiveFont">'+result.subList[i].mainVO.completedCount+'<small class="text-success"> '+result.subList[i].mainVO.completedPerc+'%</small></p>';
 														}else{
@@ -436,28 +434,30 @@
 								}else{
 									str+='<h3 class="responsiveFont"> - </h3>';
 								}
-									str+='<h5 class="text-muted text-capitalize responsiveFont">total</h5>';
+									str+='<p class="text-muted text-capitalize responsiveFont m_top10">total</p>';
 								str+='</td>';
 								
 								str+='<td>';
 								if(result.affliatedVO.startedCount !=null && result.affliatedVO.startedCount  >0){
 									str+='<h3 class="responsiveFont">'+result.affliatedVO.startedCount+'</h3>';
+									str+='<small class="text-customColor responsiveFont">'+result.affliatedVO.startedPerc+'%</small>';
 									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
-									str+='<small class="text-success responsiveFont">'+result.affliatedVO.startedPerc+'%</small>';
+									
 								}else{
 									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
+									str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 								}
 									
 								str+='</td>';
 								str+='<td>';
 								if(result.affliatedVO.completedCount !=null && result.affliatedVO.completedCount >0){
 									str+='<h3 class="responsiveFont">'+result.affliatedVO.completedCount+'</h3>';
-									str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
 									str+='<small class="text-success responsiveFont">'+result.affliatedVO.completedPerc+'%</small>';
+									str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
+									
 								}else{
 									str+='<h3> - </h3>';
-									str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
+									str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
 								}
 								
 								str+='</td>';
@@ -472,7 +472,7 @@
 											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 												locationLevelNameArray.push(properName);
 											}
-											str+='<h4 class="text-capitalize m_top20">'+properName+' Level</h4>';
+											str+='<h4 class="text-capitalize m_top10">'+properName+' Level</h4>';
 										var getWidth = $(document).width();
 										if(getWidth < 500){
 											
@@ -483,7 +483,7 @@
 											
 											str+='<tr>';
 											str+='<td>';
-												str+='<h5 class="text-muted text-capitalize responsiveFont">Total</h5>';
+												str+='<p class="text-muted text-capitalize responsiveFont">Total</p>';
 												if(result.subList[i].affliatedVO.totalCount !=null && result.subList[i].affliatedVO.totalCount >0){
 													str+='<p class="responsiveFont">'+result.subList[i].affliatedVO.totalCount+'</p>';
 												}else{
@@ -492,16 +492,16 @@
 												
 										   str+='</td>';
 												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize responsiveFont">Started</h5>';
+													str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
-														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
+														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-customColor"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 													}else{
 														str+='<p> - </p>';
 													}
 													
 												str+='</td>';
 												str+='<td>';
-													str+='<h5 class="text-muted text-capitalize responsiveFont">Completed</h5>';
+													str+='<p class="text-muted text-capitalize responsiveFont">Completed</p>';
 													if(result.subList[i].affliatedVO.completedCount !=null && result.subList[i].affliatedVO.completedCount >0){
 														str+='<p>'+result.subList[i].affliatedVO.completedCount+' <small class="text-success"> '+result.subList[i].affliatedVO.completedPerc+'%</small></p>';
 													}else{

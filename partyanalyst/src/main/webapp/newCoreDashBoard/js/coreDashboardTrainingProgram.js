@@ -50,8 +50,8 @@ var getDocumentWidth = $(document).width();
 	  var programList = result.trainingProgramList;
 	if(programList != null && programList.length > 0){
 		  for(var i in programList){
-	       str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
-			 str+='<h4 class="text-capital pad_custom" attr_program_id='+programList[i].id+'><span class="bg_49">'+programList[i].name+'</span>';
+	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
 			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
 				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
 			str+='</span></h4>';  
@@ -62,11 +62,11 @@ var getDocumentWidth = $(document).width();
 						str+='<p class="text-muted text-capital">Total eligible</p>';
 					str+='</td>';
 					str+='<td>';
-				 str+='<h3>'+programList[i].totalAttenedCount+'<span class="font-10 text-success">'+programList[i].totalAttenedCountPer+' %</span></h3>';
+				 str+='<h3>'+programList[i].totalAttenedCount+'&nbsp;<span class="font-10 text-success">'+programList[i].totalAttenedCountPer+' %</span></h3>';
 				   str+='<p class="text-muted text-capital">attended</p>';
 					str+='</td>';
 					str+='<td>';
-				str+='<h3>'+programList[i].totalNotAttenedCount+'<span class="font-10 text-success">'+programList[i].totalNotAttenedCountPer+'%</span></h3>';
+				str+='<h3>'+programList[i].totalNotAttenedCount+'&nbsp;<span class="font-10 text-customColor">'+programList[i].totalNotAttenedCountPer+'%</span></h3>';
 						str+='<p class="text-muted text-capital">yet to train</p>';
 					str+='</td>';
 				str+='</tr>';
@@ -81,7 +81,7 @@ var getDocumentWidth = $(document).width();
 	 
 	var villageWardRslt = result.villageWardVO;
  	var str1='';
-	str1='<h4 class="text-capitalize m_top20">village / ward</h4>';
+	str1='<h4 class="text-capitalize m_top10">village / ward</h4>';
 	if(villageWardRslt != null){
 	if(villageWardRslt.totalEligibleCount !=0){
 	 str1+='<table class="table tableTraining bg_ED">';
@@ -92,11 +92,11 @@ var getDocumentWidth = $(document).width();
 			str1+='</td>';
 			str1+='<td>';
 				str1+='<p class="text-muted text-capitalize">attended</p>';
-				str1+='<h4>'+villageWardRslt.totalAttenedCount+'<span class="font-10 text-success">'+villageWardRslt.totalAttenedCountPer+'%</span></h4>'
+				str1+='<h4>'+villageWardRslt.totalAttenedCount+'&nbsp;<span class="font-10 text-success">'+villageWardRslt.totalAttenedCountPer+'%</span></h4>'
 			str1+='</td>';
 			str1+='<td>';
 				str1+='<p class="text-muted text-capitalize">yet to train</p>';
-				str1+='<h4>'+villageWardRslt.totalNotAttenedCount+'<span class="font-10 text-success">'+villageWardRslt.totalNotAttenedCountPer+'%</span></h4>';
+				str1+='<h4>'+villageWardRslt.totalNotAttenedCount+'&nbsp;<span class="font-10 text-customColor">'+villageWardRslt.totalNotAttenedCountPer+'%</span></h4>';
 			str1+='</td>';
 		str1+='</tr>';
 	str1+='</table>';		
@@ -110,7 +110,7 @@ var getDocumentWidth = $(document).width();
 	
 	var mandalTwnDivRslt = result.mandalTownDivisionVO; 
     var str2='';
-	 str2+='<h4 class="text-capitalize m_top20">mandal / town / division</h4>';
+	 str2+='<h4 class="text-capitalize m_top10">mandal / town / division</h4>';
 	if(mandalTwnDivRslt != null){
 	if(+mandalTwnDivRslt.totalEligibleCount !=0){
 	  str2+='<table class="table tableTraining bg_ED">';
@@ -121,11 +121,11 @@ var getDocumentWidth = $(document).width();
 			str2+='</td>';
 			str2+='<td>';
 				str2+='<p class="text-muted text-capitalize">attended</p>';
-				str2+='<h4>'+mandalTwnDivRslt.totalAttenedCount+'<span class="font-10 text-success">'+mandalTwnDivRslt.totalAttenedCountPer+'%</span></h4>'
+				str2+='<h4>'+mandalTwnDivRslt.totalAttenedCount+' <span class="font-10 text-success">'+mandalTwnDivRslt.totalAttenedCountPer+'%</span></h4>'
 			str2+='</td>';
 			str2+='<td>';
 				str2+='<p class="text-muted text-capitalize">yet to train</p>';
-				str2+='<h4>'+mandalTwnDivRslt.totalNotAttenedCount+'<span class="font-10 text-success">'+mandalTwnDivRslt.totalNotAttenedCountPer+'%</span></h4>';
+				str2+='<h4>'+mandalTwnDivRslt.totalNotAttenedCount+' <span class="font-10 text-customColor">'+mandalTwnDivRslt.totalNotAttenedCountPer+'%</span></h4>';
 			str2+='</td>';
 		str2+='</tr>';
 	 str2+='</table>';		
@@ -614,6 +614,38 @@ var globalUserWiseMemberRslt;
 	 $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
 	}
 	}
+function buildStateLevelCampAttendedDetails(result){  
+		var str = '';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
+		str+='<h5 class="text-capital m_top10">official spokespersons<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" class="stateLevelTrainingInd" attr_location="official spokespersons"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';
+		str+='<table class="table tableTraining">';     
+		str+='<tbody>';
+		str+='<tr>';
+		str+='<td>';
+		str+='<h4>'+result.count+'</h4>';
+		str+='<p class="text-muted text-capital">eligible</p>';
+		str+='</td>';
+		str+='<td>';
+		str+='<h4>'+result.count+'</h4>';
+		str+='<p class="text-muted text-capital">invited</p>';
+		str+='</td>';
+		str+='<td>';
+		var per = (result.availableCount*(100/result.count)).toFixed(2);
+		str+='<h4>'+result.availableCount+'<span class="font-10 text-success">'+per+'%</span></h4>'; 
+		str+='<p class="text-muted text-capital">attended</p>';
+		str+='</td>';
+		str+='<td>';
+		var abs = result.count - result.availableCount; 
+		str+='<h4>'+abs+'<span class="font-10 text-success">'+(100-per).toFixed(2)+'%</span></h4>';     
+		str+='<p class="text-muted text-capital">absent</p>    ';
+		str+='</td>';
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';  
+		str+='</div>';  
+		$("#stateLevelCampId").html(str);        
+	}
 $(document).on("click",".liCls",function(){
 	var memberType=$(this).attr("attr_value");
 	 if(memberType != null && memberType == "strong"){
@@ -624,12 +656,39 @@ $(document).on("click",".liCls",function(){
 });
 
 /* Training Funcitons Start*/
-$(document).on("click",".trainingIconExpand",function(){
-    $(".dateRangePickerClsForTraining").toggleClass("hide");	
+$(document).on("click",".stateLevelTrainingInd",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".trainingsHiddenBlock").hide();
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}else{
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".trainingsHiddenBlock").show();
+		getStateLevelCampCount();     
+		stateLevelCampMembersDistWise(); 
+		stateLevelCampDetailsRepresentativeWise()
+		var val = $(this).attr("attr_location");
+		$("#clickInfoId").html(val); 
+		$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
+		$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");   
+		$("#detailedId").removeClass("trainingDetailed");
+		$("#detailedId").addClass("trainingCampDetailed");
+		$("#clickInfoId").show();
+		$(".trainingComparison").hide();
+	}
+	
+});
+$(document).on("click",".trainingIconExpand,.programSkillsCls",function(){
+	
+	$(".dateRangePickerClsForTraining").toggleClass("hide");	
+	//$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".programSkillsCls,.trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	
 	$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+    if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".moreTrainingBlocks").hide();
 	}else{
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
@@ -668,6 +727,43 @@ $(document).on("click",".trainingIconExpand",function(){
 	 setTimeout(function(){
 		$(".trainingsHiddenBlock,.moreTrainingBlocksIcon").toggle();
 	},800); 
+});
+$(document).on("click",".stateLevelTraining",function(){
+	$(this).find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
+	$(".trainingIconExpand").find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
+	
+	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon,.trainingDetailedBlock ").hide();
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}else{
+		
+		if( !$(".trainingsBlockExpand").hasClass("col-md-6"))
+		{
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		if($(".programSkillsCls").find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".programSkillsCls").find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
+		}
+		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
+		getStateLevelCampCount();   
+		stateLevelCampMembersDistWise();       
+		stateLevelCampDetailsRepresentativeWise() 
+		var val = $(this).attr("attr_location");
+		$("#clickInfoId").html(val);
+		$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
+		$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");
+		
+		$("#detailedId").removeClass("trainingDetailed");
+		$("#detailedId").addClass("trainingCampDetailed");
+		$("#clickInfoId").show();
+		$(".trainingComparison").hide();  
+	}
+	
+	
+	
 });
 $(document).on("click",".moreTrainingBlocksIcon",function(){
 	$(this).addClass("unExpandTrainingBlock");

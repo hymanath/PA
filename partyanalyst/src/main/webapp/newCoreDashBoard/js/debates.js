@@ -11,13 +11,13 @@ $(document).ready(function(){
 		  format: 'DD/MM/YYYY'
 		},
 		ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 3 Months': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+           'This Month': [moment().startOf('month'), moment()],
+           'This Year': [moment().startOf('Year'), moment()]
         }
 	})
 	$('#dateRangeIdForDebates').on('apply.daterangepicker', function(ev, picker) {
@@ -77,7 +77,7 @@ function buildPartyWiseTotalDebateDetails(result)
 			{
 				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0">';
 			}else{
-				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20">';
 			}
 			
 				//str+='<h4 class="text-capital"><img src="newCoreDashBoard/img/'+result[i].name+'.png" alt="'+result[i].name+' Icon" class="debatesPartyIcon"/>'+result[i].name+'</h4>';
