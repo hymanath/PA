@@ -875,6 +875,7 @@
 						<h4 class="panel-title text-capital">
 							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 							news
+							<small class="text-muted"> - today <span id="">last updated:</span></small>
 						</h4>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
@@ -1013,16 +1014,16 @@
 										<table class="table table-condensed tableNews bg_ED">
 											<tr>
 												<td>
-													<p class="text-capital">Main Edition</p>
+													<p class="text-capital responsiveFont">Main Edition</p>
 													<p id="tdpMainTotal">0</p>
 												</td>
 												<td>
-													<p class="text-capital text-muted">Positive</p>
+													<p class="text-capital text-muted responsiveFont">Positive</p>
 													<span id="tdpMainPositive">0</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>
 												</td>
 												<td>
-													<p class="text-capital text-muted">Negative</p>
-													<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-customColor"> 0%</small>
+													<p class="text-capital text-muted responsiveFont">Negative</p>
+													<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-danger"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1040,7 +1041,7 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="tdpDistNegative">0</span><small class="text-customColor" id="tdpDistNegativePercent"> 0%</small>
+													<span id="tdpDistNegative">0</span><small class="text-danger" id="tdpDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1061,7 +1062,7 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="oppNegativeTotal">0</span><small class="text-customColor" id="oppNegativeTotalPercent"> 0%</small>
+													<span id="oppNegativeTotal">0</span><small class="text-danger" id="oppNegativeTotalPercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1072,7 +1073,7 @@
 													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="ysrcMainNegative">0</span><small class="text-customColor" id="ysrcMainNegativePercent"> 0%</small>
+													<span id="ysrcMainNegative">0</span><small class="text-danger" id="ysrcMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1083,7 +1084,7 @@
 													<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="incMainNegative">0</span><small class="text-customColor" id="incMainNegativePercent"> 0%</small>
+													<span id="incMainNegative">0</span><small class="text-danger" id="incMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1094,7 +1095,7 @@
 													<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="bjpMainNegative">0</span><small class="text-customColor" id="bjpMainNegativePercent"> 0%</small>
+													<span id="bjpMainNegative">0</span><small class="text-danger" id="bjpMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1112,7 +1113,7 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="oppDistNegative">0</span><small class="text-customColor" id="oppDistNegativePercent"> 0%</small>
+													<span id="oppDistNegative">0</span><small class="text-danger" id="oppDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1123,7 +1124,7 @@
 													<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="ysrcDistNegative">0</span><small class="text-customColor" id="ysrcDistNegativePercent"> 0%</small>
+													<span id="ysrcDistNegative">0</span><small class="text-danger" id="ysrcDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1134,7 +1135,7 @@
 													<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="incDistNegative">0</span><small class="text-customColor" id="incDistNegativePercent"> 0%</small>
+													<span id="incDistNegative">0</span><small class="text-danger" id="incDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 											<tr>
@@ -1145,7 +1146,7 @@
 													<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent"> 0%</small>
 												</td>
 												<td>
-													<span id="bjpDistNegative">0</span><small class="text-customColor" id="bjpDistNegativePercent"> 0%</small>
+													<span id="bjpDistNegative">0</span><small class="text-danger" id="bjpDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1166,7 +1167,7 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">Negative</p>
-													<span id="govtMainNegative">0</span><small class="text-customColor" id="govtMainNegativePercent"> 0%</small>
+													<span id="govtMainNegative">0</span><small class="text-danger" id="govtMainNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -1184,7 +1185,7 @@
 												</td>
 												<td>
 													<p class="text-capital text-muted">negative</p>
-													<span id="govtDistNegative">0</span><small class="text-customColor" id="govtDistNegativePercent"> 0%</small>
+													<span id="govtDistNegative">0</span><small class="text-danger" id="govtDistNegativePercent"> 0%</small>
 												</td>
 											</tr>
 										</table>
@@ -2105,16 +2106,7 @@
 			$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
 		}
 	}
-	function stateLevelCampDetails(){ 
-		$.ajax({
-			type : 'GET',
-			url : 'getStateLevelCampAttendedDetails.action',     
-			dataType : 'json',
-			data : {}
-		}).done(function(result){    
-			buildStateLevelCampAttendedDetails(result);
-		});
-	}  
+	
 	
 
 

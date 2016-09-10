@@ -614,38 +614,49 @@ var globalUserWiseMemberRslt;
 	 $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
 	}
 	}
+function stateLevelCampDetails(){ 
+	$("#stateLevelCampId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$.ajax({
+		type : 'GET',
+		url : 'getStateLevelCampAttendedDetails.action',     
+		dataType : 'json',
+		data : {}
+	}).done(function(result){    
+		buildStateLevelCampAttendedDetails(result);
+	});
+}  
 function buildStateLevelCampAttendedDetails(result){  
-		var str = '';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+	var str = '';
+	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
 		str+='<h5 class="text-capital m_top10">official spokespersons<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" class="stateLevelTrainingInd" attr_location="official spokespersons"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';
 		str+='<table class="table tableTraining">';     
-		str+='<tbody>';
-		str+='<tr>';
-		str+='<td>';
-		str+='<h4>'+result.count+'</h4>';
-		str+='<p class="text-muted text-capital">eligible</p>';
-		str+='</td>';
-		str+='<td>';
-		str+='<h4>'+result.count+'</h4>';
-		str+='<p class="text-muted text-capital">invited</p>';
-		str+='</td>';
-		str+='<td>';
-		var per = (result.availableCount*(100/result.count)).toFixed(2);
-		str+='<h4>'+result.availableCount+'<span class="font-10 text-success">'+per+'%</span></h4>'; 
-		str+='<p class="text-muted text-capital">attended</p>';
-		str+='</td>';
-		str+='<td>';
-		var abs = result.count - result.availableCount; 
-		str+='<h4>'+abs+'<span class="font-10 text-success">'+(100-per).toFixed(2)+'%</span></h4>';     
-		str+='<p class="text-muted text-capital">absent</p>    ';
-		str+='</td>';
-		str+='</tr>';
-		str+='</tbody>';
+			str+='<tbody>';
+				str+='<tr>';
+					str+='<td>';
+						str+='<h4>'+result.count+'</h4>';
+						str+='<p class="text-muted text-capital">eligible</p>';
+					str+='</td>';
+					str+='<td>';
+						str+='<h4>'+result.count+'</h4>';
+						str+='<p class="text-muted text-capital">invited</p>';
+					str+='</td>';
+					str+='<td>';
+						var per = (result.availableCount*(100/result.count)).toFixed(2);
+						str+='<h4>'+result.availableCount+'<span class="font-10 text-success">'+per+'%</span></h4>'; 
+						str+='<p class="text-muted text-capital">attended</p>';
+					str+='</td>';
+					str+='<td>';
+						var abs = result.count - result.availableCount; 
+						str+='<h4>'+abs+'<span class="font-10 text-success">'+(100-per).toFixed(2)+'%</span></h4>';     
+						str+='<p class="text-muted text-capital">absent</p>    ';
+					str+='</td>';
+				str+='</tr>';
+			str+='</tbody>';
 		str+='</table>';  
-		str+='</div>';  
-		$("#stateLevelCampId").html(str);        
-	}
+	str+='</div>';  
+	$("#stateLevelCampId").html(str);        
+}
 $(document).on("click",".liCls",function(){
 	var memberType=$(this).attr("attr_value");
 	 if(memberType != null && memberType == "strong"){

@@ -12,7 +12,7 @@ $(document).ready(function(){
 		},
 		ranges: {
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
 		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
