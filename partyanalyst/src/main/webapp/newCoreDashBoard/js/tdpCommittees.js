@@ -348,7 +348,7 @@
 								str+='<td>';
 								if(result.mainVO.startedCount !=null && result.mainVO.startedCount >0){
 									str+='<h3 class="responsiveFont">'+result.mainVO.startedCount+'</h3>';
-									str+='<small class="text-customColor responsiveFont">'+result.mainVO.startedPerc+'%</small>';
+									str+='<small class="text-danger responsiveFont">'+result.mainVO.startedPerc+'%</small>';
 									str+='<p class="text-muted text-capitalize responsiveFont">started</p>';
 								}else{
 									str+='<h3 class="responsiveFont"> - </h3>';
@@ -392,7 +392,7 @@
 													str+='<td>';
 														str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 														if(result.subList[i].mainVO.startedCount !=null && result.subList[i].mainVO.startedCount >0){
-															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-customColor"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
+															str+='<p class="responsiveFont">'+result.subList[i].mainVO.startedCount+' <small class="text-danger"> '+result.subList[i].mainVO.startedPerc+'%</small></p>';
 														}else{
 															str+='<p> - </p>';
 														}
@@ -440,7 +440,7 @@
 								str+='<td>';
 								if(result.affliatedVO.startedCount !=null && result.affliatedVO.startedCount  >0){
 									str+='<h3 class="responsiveFont">'+result.affliatedVO.startedCount+'</h3>';
-									str+='<small class="text-customColor responsiveFont">'+result.affliatedVO.startedPerc+'%</small>';
+									str+='<small class="text-danger responsiveFont">'+result.affliatedVO.startedPerc+'%</small>';
 									str+='<h5 class="text-muted text-capitalize responsiveFont">started</h5>';
 									
 								}else{
@@ -494,7 +494,7 @@
 												str+='<td>';
 													str+='<p class="text-muted text-capitalize responsiveFont">Started</p>';
 													if(result.subList[i].affliatedVO.startedCount !=null && result.subList[i].affliatedVO.startedCount >0){
-														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-customColor"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
+														str+='<p>'+result.subList[i].affliatedVO.startedCount+' <small class="text-danger"> '+result.subList[i].affliatedVO.startedPerc+'%</small></p>';
 													}else{
 														str+='<p> - </p>';
 													}
