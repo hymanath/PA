@@ -850,7 +850,7 @@ public String getTopPoorPerformancecommittees(){
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
 			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByDistrict(userAccessLevelId,userAccessLevelValues,stateId,dateStr);
-			
+		
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);
 		}
@@ -1372,6 +1372,29 @@ public String getCandidateDtlsPerDist(){
 		}
 		return Action.SUCCESS;
 	}
+ 	public String getLeaderShipCandidateDtlsPerDist(){
+ 		  try{
+ 				LOG.info("Entered into getLeaderShipCandidateDtlsPerDist()  of CoreDashboardAction");
+ 				jObj = new JSONObject(getTask());
+ 				Long userAccessLevelId = jObj.getLong("userAccessLevelId");
+ 				
+ 				List<Long> userAccessLevelValues=new ArrayList<Long>();
+ 				JSONArray userAccessLevelValuesArray=jObj.getJSONArray("userAccessLevelValuesArray");
+ 				if(userAccessLevelValuesArray!=null &&  userAccessLevelValuesArray.length()>0){
+ 					for( int i=0;i<userAccessLevelValuesArray.length();i++){
+ 						userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
+ 					}
+ 				}
+ 				Long stateId = jObj.getLong("stateId");
+ 				Long distId = jObj.getLong("distId");
+ 				String dateStr = jObj.getString("dateStr");  
+ 				idNameVoList = coreDashboardMainService.getLeaderShipCandidateDtlsPerDist(userAccessLevelId,userAccessLevelValues,stateId,distId,dateStr);
+ 			
+ 			}catch(Exception e){
+ 				LOG.error("Exception raised at getLeaderShipCandidateDtlsPerDist() method of CoreDashBoardAction", e);
+ 			}
+ 			return Action.SUCCESS;
+ 	  }
 public String getPartyMeetingsMainTypeOverViewData(){
 		
 		try{

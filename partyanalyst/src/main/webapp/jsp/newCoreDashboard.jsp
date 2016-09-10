@@ -1872,14 +1872,14 @@
 		
 			if(result != null && result.length >0){
 				buildstateLevelCampDetailsRepresentativeWise(result);
-			}
+			}  
 		});
 	}
 	function buildstateLevelCampDetailsRepresentativeWise(result){
 		$(".hideCls").hide();   
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
 			var str='';
-			if(result != null && result.length > 0){
+			if(result != null && result.length > 0){ 
 				var k = 0;
 				for(var i in result){  
 					for(var j in result[i]){

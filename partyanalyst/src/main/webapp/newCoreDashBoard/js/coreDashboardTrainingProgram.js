@@ -224,12 +224,14 @@ function buildLocationWiseTrainingProgramDetails(result){
 		$("#districtWiseProgramCntDivId").html(str);
 	if(result != null && result.length > 0){
 		for(var i in result){
+			var distIdArray = [];
 			var districtNamesArray =[];
 			var districtWiseAttendedPercArray = [];
 			var districtWiseYetToTrainPercArray = [];
 			if(result[i].districtList !=null && result[i].districtList.length > 0){
 				for(var j in result[i].districtList){
 						districtNamesArray.push(result[i].districtList[j].name);
+						distIdArray.push(result[i].districtList[j].id);
 						districtWiseAttendedPercArray.push(result[i].districtList[j].totalAttenedCountPer);
 						districtWiseYetToTrainPercArray.push(result[i].districtList[j].totalNotAttenedCountPer);
 					}
@@ -310,6 +312,13 @@ function buildLocationWiseTrainingProgramDetails(result){
 								}]
 							});
 						});
+						$.each($('#locationDivId'+i+'').find(".highcharts-xaxis-labels").find("tspan"),function(index,item){ 
+							$(this).attr("style","cursor:pointer;");
+							$(this).attr("class","distDtlsCls");    
+							//$(this).attr("state_Program_Id","6");
+							$(this).attr("attr_dist_id",distIdArray[index]); 
+							$(this).attr("attr_position_id","leadership");
+						});   
 		}
 	}else{
 		$("#districtWiseProgramCntDivId").html("No Data Available");
@@ -1040,17 +1049,20 @@ function buildTrainingProgramRslt(result){
 			  ]
 		}); 
 	if(result != null && result.length > 0){
+		var  jsonDataArrAttended=[];
+		var  jsonDataArrYettotrain=[];
 		  for(var i in result){
-			var  jsonDataArr=[];
-			jsonDataArr.push({name:"Total Eligible",data:[result[i].totalEligibleCountPer,result[i].totalEligibleCountPer]});
-			jsonDataArr.push({name:"Attended",data:[result[i].totalAttenedCountPer,0]});
-			jsonDataArr.push({name:"Yet to train",data:[0,result[i].totalNotAttenedCountPer]});
+			
+			//jsonDataArr.push({name:"Total Eligible",data:[result[i].totalEligibleCountPer,result[i].totalEligibleCountPer]});
+			//jsonDataArrAttended.push({name:"Attended",data:[result[i].totalAttenedCountPer,0]});
+			jsonDataArrAttended.push(result[i].totalAttenedCountPer);
+			jsonDataArrYettotrain.push(result[i].totalNotAttenedCountPer); 
 			
 		var chartWidth = $("#programHighChartId"+i).parent().width()/2;
 		$("#programHighChartId"+i).width(chartWidth);
 		$(function () {
 		  $('#programHighChartId'+i).highcharts({
-			colors: ['#66728C','#53BF8B','#F56800'],
+			colors: ['#F56800','#53BF8B','#66728C'],   
 			chart: {
 			  type: 'column',
 			  
@@ -1114,7 +1126,13 @@ function buildTrainingProgramRslt(result){
 				}
 			  }
 			},
-			 series:jsonDataArr
+			series: [ {   
+				name: 'Yet to Train',
+				data: jsonDataArrYettotrain
+				},{
+				name: 'Attended',
+				data: jsonDataArrAttended
+				}]  
 		  });
 		});  
 	   }
@@ -1527,12 +1545,12 @@ function buildStateLevelCampDetails(result){
 					}
 				},
 				series: [ {
-		name: 'Yet to Train',
-		data: jsonDataArrYettotrain
-	},{
-		name: 'Attended',
-		data: jsonDataArrAttended
-	}]
+							name: 'Yet to Train',
+							data: jsonDataArrYettotrain
+						},{
+							name: 'Attended',
+							data: jsonDataArrAttended
+						}]
 				});
 			});  
 		//}
@@ -1666,33 +1684,48 @@ function buildStateLevelCampDetailsDistWise(result){
 			//$(this).addClass("distDtlsCls");
 			$(this).attr("class","distDtlsCls");    
 			$(this).attr("state_Program_Id","6");
-			$(this).attr("attr_dist_id",districtIdArr[index]);  
+			$(this).attr("attr_dist_id",districtIdArr[index]); 
+			$(this).attr("attr_position_id","camp");	  		
 		});    
 	}else{
 		$("#districtWiseProgramCntDivId").html("No Data Available");
 	}	
 }
 $(document).on("click",".distDtlsCls",function(){ 
+	var distId = 0;
+	var programId = 0;
+	var stateId = 0;
+	var dateStr = '';
 	$("#myModelId").modal('show');
 	$("#memberId").html(''); 
 	$("#processingImgId").show();	  
 	$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
-	var distId = $(this).attr("attr_dist_id");  
-	var programId = $(this).attr("state_Program_Id");
-	var stateId = globalStateId;
-	var dateStr = $("#dateRangeIdForTrainingCamp").val();
-	   
- 	var jsObj ={ 
+	var position = $(this).attr("attr_position_id");
+	if(position=="camp"){
+		distId = $(this).attr("attr_dist_id");  
+		programId = $(this).attr("state_Program_Id");
+		stateId = globalStateId;
+		dateStr = $("#dateRangeIdForTrainingCamp").val();
+		getCampMemberDtlsPerDist(distId,programId,stateId,dateStr);
+	}else{
+		distId = $(this).attr("attr_dist_id");
+		getLeaderShipMemDtlsPerDist(distId);
+	}
+	
+ 	
+});
+function getCampMemberDtlsPerDist(distId,programId,stateId,dateStr){
+	var jsObj ={ 
 	    distId : distId,
 		programId : programId,  
 		stateId : stateId,
 		dateStr : dateStr  
 	}
-	  $.ajax({
-			type : 'POST',
-			url : 'getCandidateDtlsPerDist.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
+	$.ajax({
+		type : 'POST',
+		url : 'getCandidateDtlsPerDist.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#processingImgId").hide();    
 			if(result != null && result.length > 0){
@@ -1702,10 +1735,35 @@ $(document).on("click",".distDtlsCls",function(){
 				$("#memberId").html('No Data Available');   
 			}
 		});	
-});
+}
+function getLeaderShipMemDtlsPerDist(distId){
+	
+	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	var jsObj ={ 
+		userAccessLevelId : globalUserAccessLevelId,
+		userAccessLevelValuesArray : globalUserAccessLevelValues,
+		stateId : globalStateId,
+		distId : distId,
+		dateStr : dateStr   
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getLeaderShipCandidateDtlsPerDist.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#processingImgId").hide();    
+			if(result != null && result.length > 0){
+				buildMemberRslt(result);
+				
+			}else{  
+				$("#memberId").html('No Data Available');   
+			}
+		});	
+}
 function buildMemberRslt(result){ 
 	var str2 = '';
-	var totalMember = result.length;
+	var totalMember = result.length;  
 	var attendedMember = 0;
 	var absent = 0;
 	
@@ -1736,7 +1794,7 @@ function buildMemberRslt(result){
 	absent = totalMember - attendedMember;
 	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
 	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>';  
-	str2+='<span class="label label-warning">Yet to train-'+absent+'</span>'; 
+	str2+='<span class="label label-warning">Absent-'+absent+'</span>';     
 	str+='</tbody>';
 	$("#positionId").html(str2);
 	$("#memberId").html(str); 
