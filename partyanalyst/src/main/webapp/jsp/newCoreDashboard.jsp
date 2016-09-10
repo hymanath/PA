@@ -1264,11 +1264,25 @@
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 										<div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">Party Vs Publication</span></h4>
+												<div class="row">
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														<div class="col-md-4">
+															<h4 class="panel-title"><span class="headingColor">Party Vs Publication</span></h4>
+														</div>
+														<div class="pull-right">
+															<ul class="list-inline  activeUlCls">
+																<li class="active partyDistrictWiseDiv">Parties district wise</li>
+																<li class="publictionWiseDiv">Publication Wise</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												
 											</div>
 											<div class="panel-body">
 												<div class="row">
 													<div id="partyWiseDetailsDiv"></div>
+													<div id="publicationWiseDetailsDiv"></div>
 												</div>
 											</div>
 										</div>
