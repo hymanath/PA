@@ -334,6 +334,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		 	    							CoreDashBoardVO ediVO = new CoreDashBoardVO();
 		 									ediVO.setOrganizationId(tmp2.getLong("organizationId"));
 		 									ediVO.setOrganization(tmp2.getString("organization"));
+		 									ediVO.setName(tmp2.getString("name"));
 		 									ediVO.setPositiveCountMain(tmp2.getLong("positiveCountMain"));
 		 									ediVO.setPositiveCountDist(tmp2.getLong("positiveCountDist"));
 		 									ediVO.setNegativCountMain(tmp2.getLong("negativCountMain"));
@@ -435,11 +436,11 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 				vo.setUserTypeId(temp.getUserTypeId());
 				vo.setUsertType(temp.getUserType());
 				
-				//counts setting for paries graph
+				//counts setting for parties graph
 				if(vo.getLocationValueSet() != null && vo.getLocationValueSet().size() > 0){
 					for (Long locationId : vo.getLocationValueSet()) {
 						CoreDashBoardVO matchedLocationVo =  getMatchedLocationVO(vo.getLocationLevelId(),locationId,wsResultList);
-						if(matchedLocationVo.getCoreDashBoardVOList() != null && matchedLocationVo.getCoreDashBoardVOList().size() > 0){//parties wise vos list
+						if(matchedLocationVo != null && matchedLocationVo.getCoreDashBoardVOList() != null && matchedLocationVo.getCoreDashBoardVOList().size() > 0){//parties wise vos list
 							for (CoreDashBoardVO childUserTypeVO : matchedLocationVo.getCoreDashBoardVOList()) {
 								ChildUserTypeVO matchedPartyVO = getMatchedPartyVO(childUserTypeVO.getOrganizationId(),vo.getChildUserTypeVOList());
 								if(matchedPartyVO == null){
@@ -491,6 +492,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 						}
 					}
 				}
+				finalList.add(vo);
 			}
 		}
 	}
