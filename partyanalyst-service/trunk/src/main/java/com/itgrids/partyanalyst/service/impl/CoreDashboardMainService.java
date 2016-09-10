@@ -1740,17 +1740,17 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	*  @since 23-AUGUST-2016
 	*/
 	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr){
-
+	String status = "leadership";
 	List<TrainingCampProgramVO> resultList = new ArrayList<TrainingCampProgramVO>(0);
 	Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
 	Map<Long,String> programIdNameMap = new HashMap<Long, String>();
 	 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	 Date toDate=null;
-	try{
+	 try{
 		if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 			 toDate = sdf.parse(toDateStr);
 		 }
-		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId); 
+		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId,status, null); 
 		 if(rtrnElgbleMmbrsObjLst != null && !rtrnElgbleMmbrsObjLst.isEmpty()){
 			 for (Object[] param : rtrnElgbleMmbrsObjLst) {
 				List<TrainingCampProgramVO> districtsList = programDtlsMap.get((Long)param[0]);
@@ -1762,11 +1762,11 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				 TrainingCampProgramVO districtVO = new TrainingCampProgramVO();
 				   districtVO.setId(param[2] != null ? (Long)param[2] : 0l);
 				   districtVO.setName(param[3] != null ? param[3].toString() : "");
-				   districtVO.setTotalEligibleCount(param[4] != null ? (Long)param[4] : 0l);
+				   districtVO.setTotalEligibleCount(param[4] != null ? (Long)param[4] : 0l);   
 				   districtsList.add(districtVO);
 			}
 		 }
-		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId,toDate);
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId,toDate,status, null);
 		 if(rtrnAttnddMemObjList != null && !rtrnAttnddMemObjList.isEmpty()){
 				 for (Object[] param : rtrnAttnddMemObjList) {
 					Long programId= (Long)param[0];
@@ -3229,7 +3229,7 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
 				idNameVO.setId(0l);
 				idNameVO.setCount(idNameVO.getCount()+count);
 				idNameVO.setStatus("Other");
-				idNameVO.setActualCount(idNameVO.getActualCount() + actualCount);
+				idNameVO.setActualCount(idNameVO.getActualCount() + actualCount); 
 			}
 		}
 		campDetailsRepresentative.add(idNameVO);
@@ -3416,5 +3416,135 @@ public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long 
 	return null;
 }
 
+public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long distId, String dateStr){
+	LOG.info(" entered in to getDistrictWiseCampAttendedMembers() of CoreDashBoardMainService ");
+	
+	try{
+		IdNameVO idNameVO = null;
+		Long cadreId = null;
+		Map<Long,IdNameVO> idAndMemberDtlsMap = new HashMap<Long,IdNameVO>();  
+		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		List<Long> invitedCadreIds = new ArrayList<Long>();
+		List<Long> attendedCadreIds = new ArrayList<Long>();
+		List<Long> absentCadreIds = new ArrayList<Long>();
+		String stats = "camp";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date toDate=null;
+		
+		if(dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0){ 
+			toDate = sdf.parse(dateStr);  
+		}
+		
+		List<Object[]> rtrnElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId,stats,distId); 
+		List<Object[]> rtrnAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByDistrict(userAccessLevelId, userAccessLevelValues,stateId,toDate,stats,distId);
+		if(rtrnElgbleMmbrsObjLst != null && rtrnElgbleMmbrsObjLst.size() > 0){  
+			for(Object[] obj : rtrnElgbleMmbrsObjLst){
+				invitedCadreIds.add(obj[4] != null ? (Long)obj[4] : 0l);
+			}
+		}
+		if(rtrnAttnddMemObjList != null && rtrnAttnddMemObjList.size() > 0){
+			for(Object[] obj : rtrnAttnddMemObjList){
+				attendedCadreIds.add(obj[4] != null ? (Long)obj[4] : 0l);
+			}
+		}
+		if(invitedCadreIds.size() > 0){
+			for(Long id : invitedCadreIds){
+				if(!(attendedCadreIds.contains(id))){
+					absentCadreIds.add(id);
+				}
+			}
+		}
+		if(attendedCadreIds.size() > 0){
+			List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getAttendedMembersForDist(attendedCadreIds); 
+			if(destWiseAttendedMembersDesignation != null && destWiseAttendedMembersDesignation.size() > 0){
+				for(Object[] obj : destWiseAttendedMembersDesignation){
+					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					if(idNameVO != null){
+						String status = idNameVO.getStatus();
+						if(obj[2] != null){
+							status = status+","+obj[2].toString();
+							idNameVO.setStatus(status);
+							idAndMemberDtlsMap.put(cadreId, idNameVO);
+						}else{
+							if(obj[3] != null){
+								status = status+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+								idNameVO.setStatus(status);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}
+						}
+						
+					}else{
+						idNameVO = new IdNameVO();
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						if(obj[2] != null){
+							idNameVO.setStatus(obj[2].toString());
+						}else if(obj[3] != null){
+							idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+						}else{
+							idNameVO.setStatus("");
+						}
+						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+						idNameVO.setWish("attended");
+						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+					}
+				}
+			}
+		}
+		if(idAndMemberDtlsMap.size() > 0){
+			idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
+			idAndMemberDtlsMap.clear();
+		}
+		if(absentCadreIds.size() > 0){
+			List<Object[]> destWiseAbsaentMembersDesignation = trainingCampAttendanceDAO.getAbsaentMembersForDist(absentCadreIds);  
+			if(destWiseAbsaentMembersDesignation != null && destWiseAbsaentMembersDesignation.size() > 0){
+				for(Object[] obj : destWiseAbsaentMembersDesignation){
+					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					if(idNameVO != null){
+						String status = idNameVO.getStatus();
+						if(obj[2] != null){
+							status = status+","+obj[2].toString();
+							idNameVO.setStatus(status);
+							idAndMemberDtlsMap.put(cadreId, idNameVO);
+						}else{
+							if(obj[3] != null){
+								status = status+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+								idNameVO.setStatus(status);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}
+						}
+						
+					}else{
+						idNameVO = new IdNameVO();
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						if(obj[2] != null){
+							idNameVO.setStatus(obj[2].toString());
+						}
+						else if(obj[3] != null){
+							idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+						}else{
+							idNameVO.setStatus("");
+						}
+						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+						idNameVO.setWish("absent");
+						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+					}
+				}
+			}
+		}  
+		if(idAndMemberDtlsMap.size() > 0){
+			idNameVOs.addAll(new ArrayList<IdNameVO>(idAndMemberDtlsMap.values()));  
+		}
+		
+		return idNameVOs;
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured at getLeaderShipCandidateDtlsPerDist() in CoreDashBoardMainService ",e); 
+	}
+	return null;
+	
 }
+
+}  
 

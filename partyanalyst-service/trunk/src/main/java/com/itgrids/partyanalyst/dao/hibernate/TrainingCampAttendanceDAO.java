@@ -918,17 +918,25 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		  	return query.list();  
 	}
   		
-    public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate){
+    public List<Object[]> getTotalAttenedCadresOfTrainingCampProgramByDistrict(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate, String status, Long distId){
 
 		  StringBuilder queryStr= new StringBuilder();
 			  
-		  queryStr.append(" select " +
-		  		          " model.trainingCampProgram.trainingCampProgramId," +
-		  	 	          " model.trainingCampProgram.programName," +
-		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId," +
-		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName," +
-		  		          " count(distinct model.attendance.tdpCadre.tdpCadreId) " +
-		  		          " from TrainingCampAttendance model,TrainingCampEligbleDesignation model2,TdpCommitteeMember model3 " +
+		  queryStr.append(" select ");
+		  if(status.equalsIgnoreCase("camp")){
+			  queryStr.append(" distinct ");
+		  }
+		  queryStr.append(" model.trainingCampProgram.trainingCampProgramId," +//0
+		  	 	          " model.trainingCampProgram.programName," +//1
+		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId," +//2
+		  		          " model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName,");//3
+		  if(status.equalsIgnoreCase("camp")){
+			  queryStr.append(" model.attendance.tdpCadre.tdpCadreId ");//4
+		  }else{
+			  queryStr.append(" count(distinct model.attendance.tdpCadre.tdpCadreId) ");//4
+		  }
+		  		        
+		  queryStr.append(" from TrainingCampAttendance model,TrainingCampEligbleDesignation model2,TdpCommitteeMember model3 " +
 	  		              " where model.attendance.tdpCadre.tdpCadreId = model3.tdpCadre.tdpCadreId and " +
 	  		              " model.trainingCampProgram.trainingCampProgramId = model2.trainingCampProgram.trainingCampProgramId and " +
 	  		              " model2.tdpBasicCommittee.tdpBasicCommitteeId = model3.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId and " +
@@ -938,6 +946,9 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  		              " and model3.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed='Y' and model3.tdpCadre.gender=model2.gender ");
 		  if(stateId != null && stateId.longValue() > 0){
 				 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.state.stateId=:stateId");
+		  }
+		  if(distId != null && distId.longValue() > 0){
+				 queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId=:distId");
 		  }
 		  if(toDate!=null){
 			  queryStr.append(" and date(model.attendance.attendedTime)<=:toDate ");	 
@@ -959,23 +970,28 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		}else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		      queryStr.append(" and model3.tdpCommitteeRole.tdpCommittee.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		}
-		   queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId,model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId " +
-		   		           " order by " +
-		   		           " model.trainingCampProgram.trainingCampProgramId asc ");
-		   
-		   Query query = getSession().createQuery(queryStr.toString());
-		   if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
-			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-		   }
-		   if(stateId != null && stateId.longValue() > 0){
-				 query.setParameter("stateId", stateId);  
-		   }
-		   if(toDate!=null){
-				  query.setDate("toDate", toDate);  
-		   }
+		if(status.equalsIgnoreCase("leadership")){
+			queryStr.append(" group by model.trainingCampProgram.trainingCampProgramId,model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId ");
+		}
+		
+		queryStr.append(" order by  model.trainingCampProgram.trainingCampProgramId asc ");
+	   
+		Query query = getSession().createQuery(queryStr.toString());
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		}
+	   	if(stateId != null && stateId.longValue() > 0){
+			 query.setParameter("stateId", stateId);  
+	   	}
+	   	if(distId != null && distId.longValue() > 0){
+			 query.setParameter("distId", distId);     
+	   	}
+	   	if(toDate!=null){
+			  query.setDate("toDate", toDate);  
+	   	}
 
-			  return query.list();  
-		  }
+		  return query.list();  
+	  }
   	  public List<Object[]> getUserWiseTotalAttenedCadresCntForTrainingProgram(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date toDate)
   		{
   			StringBuilder queryStr= new StringBuilder();
