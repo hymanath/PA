@@ -1231,7 +1231,7 @@
 									</div>
 									<div id="detailedPartyMainDivId" class="mainBuildingDivClass">
 										<!-- News 1 Block-->
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 											<div class="panel panel-default panelNew mainEditionCls">
 												<div class="panel-heading">
 													<h4 class="panel-title"><span class="headingColor">Main Edition Parties Overview</span></h4>
@@ -1240,7 +1240,7 @@
 													<div id="mainEditiongraphId"></div>
 												</div>
 											</div>
-										</div>
+										</div>-->
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 											<div class="panel panel-default panelNew mainEditionCls">
 												<div class="panel-heading">
@@ -1878,10 +1878,6 @@
 		getSpecialMeetingsByMeetingType();
 		//news please dont remove
 		getNewsBasicCounts();
-		//getUserTypeWiseNewsCounts();
-		//getDetailedPartyMainEditionsOverview();
-		//getDetailedPartyDistrictEditionsOverview();
-		//getDetailedPartyNewsTypeAnalysis();
 		getRescentArticleTime();
 	}
 	

@@ -2,25 +2,58 @@
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
+	
+	var currentFromDate = moment().format("DD-MM-YYYY");
+	var currentToDate = moment().format("DD-MM-YYYY");
+	
 	$(document).ready(function(){
-	$("#dateRangeIdForNews").daterangepicker({
-		opens: 'left',
-		startDate: moment().subtract(1, 'month').startOf('month'),
-        endDate: moment().subtract(1, 'month').endOf('month'),
-		locale: {
-		  format: 'DD/MM/YYYY'
-		},
-		ranges: {
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-           'This Month': [moment().startOf('month'), moment()],
-           'This Year': [moment().startOf('Year'), moment()]
-        }
+		$("#dateRangeIdForNews").daterangepicker({
+			opens: 'left',
+			startDate: moment(),
+			endDate: moment(),
+			locale: {
+			  format: 'DD-MM-YYYY'
+			},
+			ranges: {
+				'Today' : [moment(), moment()],
+			   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+			   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			   'This Month': [moment().startOf('month'), moment()],
+			   'This Year': [moment().startOf('Year'), moment()]
+			}
+		});
+	});	
+	
+	$('#dateRangeIdForNews').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD-MM-YYYY');
+		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		getNewsBasicCounts();
+		 if($(".newsIconExpand i").attr("class").split(" ")[1]=="glyphicon-resize-small"){
+			$(".newsliCls").each(function(){
+				if($(this).hasClass("active")){
+					getUserTypeWiseNewsCounts($(this).attr("attr_value"));
+				}
+			});
+		}
+			if($('.newsHiddenMoreBlock').css('display') != 'none'){
+				$(".viewsLiClass").each(function(){
+					if($(this).hasClass("active")){
+						var id = $(this).attr("id");
+						$( "#"+id).trigger( "click" );
+					}
+				});
+			} 
+			
+		
+	  
 	});
-});	
+	
+	$(document).on("click",".settingsIconNews",function(){
+		$(this).closest(".newsBlock").find(".basicCommitteesBlockDropDown").toggle();
+	});
 	$(document).on("click",".newsIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -64,28 +97,29 @@
 	
 	$(document).on("click",".morenewsBlocksIcon",function(){
 		$(".newsHiddenMoreBlock").toggle();
-		getDetailedPartyMainEditionsOverview();
+		//getDetailedPartyMainEditionsOverview();
 		getDetailedPartyDistrictEditionsOverview();
 		setcolorsForStatus();
 		getDetailedPartyNewsTypeAnalysis();
 		getDetailedPartyPartyVsPublications();
 	});
 	
-	$(document).on("click","#detailedPartyId",function(){
-		getDetailedPartyMainEditionsOverview();
+	$(document).on("click","#detailedPartyLiId",function(){
+		//getDetailedPartyMainEditionsOverview();
 		getDetailedPartyDistrictEditionsOverview();
 		getDetailedPartyNewsTypeAnalysis();
-		
+		getDetailedPartyPartyVsPublications();
 	});
 	
 	function getNewsBasicCounts(){
+	
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate='08-01-2016',endDate='08-31-2016';
+		var startDate=currentFromDate,endDate=currentToDate;
 		var state = globalState;
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
@@ -216,8 +250,8 @@
 				activityMemberId : globalActivityMemberId ,
 				userTypeId : globalUserTypeId,
 				state:globalState,
-				fromDate:'08-01-2014',
-				toDate:'08-31-2016',
+				fromDate:currentFromDate,
+				toDate:currentToDate,
 				benefitId:benefitId
 			}
 		
@@ -244,7 +278,7 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2014",endDate="08-31-2016";
+		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyMainEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
@@ -264,7 +298,7 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2014",endDate="08-31-2016";
+		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
@@ -283,7 +317,7 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2015",endDate="08-31-2016";
+		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
@@ -304,7 +338,7 @@
 				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
 			}
 		}
-		var startDate="08-01-2015",endDate="08-31-2016";
+		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+""
@@ -979,6 +1013,9 @@ $(document).on("click",".btnCustomCreateNews",function(){
 });
 
 $(document).on("click",".viewsLiClass",function(){
+	$(".viewsLiClass").removeClass("active");
+	$(this).addClass("active");
+	
 	$(".mainBuildingDivClass").hide();
 	var divId = $(this).attr("attr_div_id");
 	$("#"+divId).show();
@@ -1028,8 +1065,8 @@ function getChildUserTypesByItsParentUserType1(){
 				parentActivityMemberId : globalActivityMemberId ,
 				childUserTypeId : childUserTypeId,
 				state:globalState,
-				startDate:'08-01-2016',
-				endDate:'08-31-2016'
+				startDate:currentFromDate,
+				endDate:currentToDate
 			}
 		
 			$.ajax({
@@ -1274,8 +1311,8 @@ function getChildUserTypesByItsParentUserType1(){
 				activityMemberId : activityMemberId ,
 				userTypeId : userTypeId,
 				state:globalState,
-				startDate:'08-01-2016',
-				endDate:'08-31-2016'
+				startDate:currentFromDate,
+				endDate:currentToDate
 			}
 		
 			$.ajax({
