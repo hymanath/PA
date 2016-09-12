@@ -299,7 +299,7 @@ function validateAddNewCandidateFields(){
 		$(".addNewCandidateErrorCls").html("Please Select Panchayat/ Ward / Division/City.");
 		return false;   
 	 }
-	 if(pinCodeNo == null || pinCodeNo.trim().length == 0){
+	 /* if(pinCodeNo == null || pinCodeNo.trim().length == 0){
 		 $(".addNewCandidateErrorCls").html("Please Enter pinCode.");
 		 return false;
 	 }
@@ -307,7 +307,7 @@ function validateAddNewCandidateFields(){
 			{
 				$('.addNewCandidateErrorCls').html('Invalid pinCode.');
 				return false;				
-			}
+			} */
 	 $(".addNewCandidateErrorCls").html(" ");
 	  return true;
 }

@@ -549,7 +549,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Total  Available Posts </th>';//Open Status					
 							str+='<th>Total  Received Applications </th>';					
 							str+='<th>Ready to Shortlist Applications </th>';
-							str+='<th>Rejected Applications </th>';					
+							str+='<th>Rejected Applications </th>';
+							str+='<th>Rejected in Final Review </th>';
+							str+='<th>Rejected in Finalized </th>';
 							str+='<th>Shortlisted Applications </th>';					
 							str+='<th>Final Review Applications </th>';
 							str+='<th>Finalized Applications </th>';
@@ -585,13 +587,19 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					var readyForFinalReview= 0;
 					var finalized = 0;
 					var goPassed = 0;
+					var rejectedInFinalRev = 0;
+					var rejectedInFinalized = 0;
 					
 						if(result[i].distList !=null && result[i].distList.length>0){
 								for(var j in result[i].distList){
 										if(result[i].distList[j].name =="Applied"){
 											rdyToShortlist = rdyToShortlist+result[i].distList[j].count;
-										}else if(result[i].distList[j].name =="Rejected" || result[i].distList[j].name =="Rejected in Final Review" || result[i].distList[j].name =="Rejected in Finalized"){
+										}else if(result[i].distList[j].name =="Rejected" ){
 											rejected  = rejected+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Rejected in Final Review" ){
+											rejectedInFinalRev  = rejectedInFinalRev+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Rejected in Finalized" ){
+											rejectedInFinalized  = rejectedInFinalized+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Shortlisted"){
 											shortListed = shortListed+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Final Review"){
@@ -646,6 +654,16 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								
 								if(rejected >0){
 									str+='<td>'+rejected+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalRev >0){
+									str+='<td>'+rejectedInFinalRev+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalized >0){
+									str+='<td>'+rejectedInFinalized+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -718,7 +736,9 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Total Available Posts</th>';//Open Status					
 							str+='<th>Total Received Applications </th>';					
 							str+='<th>Ready to Shortlist Applications</th>';
-							str+='<th>Rejected Applications </th>';					
+							str+='<th>Rejected Applications </th>';
+							str+='<th>Rejected in Final Review </th>';
+							str+='<th>Rejected in Finalized </th>';							
 							str+='<th>Shortlisted Applications</th>';
 							str+='<th>Final Review Applications </th>';
 							str+='<th>Finalized Applications </th>';
@@ -755,6 +775,8 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 					var rdyToShortlist = 0;
 					var shortListed = 0;
 					var rejected =0;
+					var rejectedInFinalRev =0;
+					var rejectedInFinalized =0;
 					
 						if(result[i].distList !=null && result[i].distList.length>0){
 								for(var j in result[i].distList){
@@ -762,6 +784,10 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 											rdyToShortlist = result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Rejected"){
 											rejected  = result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Rejected in Final Review" ){
+											rejectedInFinalRev  = rejectedInFinalRev+result[i].distList[j].count;
+										}else if(result[i].distList[j].name =="Rejected in Finalized" ){
+											rejectedInFinalized  = rejectedInFinalized+result[i].distList[j].count;
 										}else if(result[i].distList[j].name =="Shortlisted"){
 											shortListed = result[i].distList[j].count;
 										}
@@ -802,6 +828,16 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								
 								if(rejected >0){
 									str+='<td> <span title="Rejected Applications count ">'+rejected+' </span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalRev >0){
+									str+='<td> <span title="Rejected in Final review count ">'+rejectedInFinalRev+' </span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalized >0){
+									str+='<td> <span title="Rejected in Finalized count ">'+rejectedInFinalized+' </span></td>';
 								}else{
 									str+='<td> - </td>';
 								}

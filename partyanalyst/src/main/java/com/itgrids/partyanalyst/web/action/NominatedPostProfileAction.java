@@ -1451,7 +1451,7 @@ public String execute()
 		return Action.SUCCESS;
 	}
 	
-	public String getMandalMuncilIdsForConstituency(Long boardLevelId){
+	public String getMandalMuncilIdsForConstituency(){
 		try{
 			
 			jObj = new JSONObject(getTask());
