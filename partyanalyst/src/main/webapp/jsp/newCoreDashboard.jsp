@@ -876,7 +876,7 @@
 							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 							news
 							<small class="text-muted" id="currentViewing"></small>
-							<!--<span id="">last updated:</span>-->
+							<span id="lastUpdatedId" ></span>
 						</h4>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
@@ -1884,6 +1884,7 @@
 	getLoggedInUserStructure();
 	onLoadCalls();
 	function onLoadCalls(){
+		getRescentArticleTime();
 		getCommitteesBasicCountReport();
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
@@ -1894,7 +1895,6 @@
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();
-		getRescentArticleTime();
 	}
 	
 	
