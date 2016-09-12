@@ -475,12 +475,13 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
-		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocks1,.stateLevelMeetingBlock,.stateGeneralMeetBlock").hide();
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".meetingsHiddenBlock,.moreMeetingsBlocks").hide();
 			$(".moreMeetingsBlocks1").hide();
 			$(".moreMeetingsBlocksDetailed").hide();
 			$(".moreMeetingsBlocksComparision").hide();
+			$(".stateGeneralMeeting,.specialMeetings,.stateLevelMeetingsExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
 			//getUserTypeWiseTotalEligibleAndAttendedCnt();
 		}
@@ -517,54 +518,100 @@ $(document).on("click",".meetingLiCls",function(){
 		}
 	});
 	$(document).on("click",".stateLevelMeetingsExpand",function(){
+		$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
 		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
 	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
-       $(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
-		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+        $(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".moreMeetingsBlocksIcon").removeClass("unExpandBlock");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon,.stateLevelMeetingBlock").show();
+		
+		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
 			$(".stateLevelMeetingBlock").hide();
+			$(".dateRangePickerClsForMeetings").addClass("hide");
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
+		   $(".dateRangePickerClsForMeetings").removeClass("hide");
+		   $(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 		   getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
 		}
 	});
 	$(document).on("click",".stateGeneralMeeting",function(){
 		var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 		var meetingTypeId = $(this).attr("attr_meeting_type_id");
+		$(".stateLevelMeetingsExpand,.specialMeetings").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		
-		 $(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
-		 $(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+		$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		
 		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
-		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".moreMeetingsBlocksIcon").removeClass("unExpandBlock");
+		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksDetailed,.moreMeetingsBlocksComparision,moreMeetingsBlocksDetailed").hide();
+		
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
-			$(".stateLevelMeetingBlock").hide();
-		}else{
 			
-		getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(attrMainTypeMeetingId,meetingTypeId);	
+			$(".stateLevelMeetingBlock").hide();
+			$(".dateRangePickerClsForMeetings").addClass("hide");
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		}else{
+			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".stateLevelMeetingBlock").show();
+			$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+			$(".dateRangePickerClsForMeetings").removeClass("hide");
+			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(attrMainTypeMeetingId,meetingTypeId);	
+			
 		}
 	});
+	
 	$(document).on("click",".specialMeetings",function(){
 		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
 		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
-		
+		$(".stateLevelMeetingsExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
 	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
-		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon,.stateLevelMeetingBlock").show();
+		if(!$(".meetingsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
-			$(".stateLevelMeetingBlock").hide();
+			$(".stateLevelMeetingBlock,.moreMeetingsBlocksDetailed,.meetingsHiddenBlock").hide();
+			$(".dateRangePickerClsForMeetings").addClass("hide");
+			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+			$(".meetingsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		}else{
-		getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
+			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+			$(".dateRangePickerClsForMeetings").removeClass("hide");
+			$(".moreMeetingsBlocksDetailed").hide();
+			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
 		}
 	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
@@ -584,7 +631,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".moreMeetingsBlocks1").show();
 		}
 	});
-$(document).on("click",".unExpandBlock",function(){
+	$(document).on("click",".unExpandBlock",function(){
 		$(this).removeClass("unExpandBlock");
 		$(".moreMeetingsBlocksDetailed").hide();
 		$(".moreMeetingsBlocksComparision").hide();
@@ -594,7 +641,7 @@ $(document).on("click",".unExpandBlock",function(){
 	});
 
 function getMeetingLevelDetails(){
-   $("#meetingLevelHIghChartsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+   $("#meetingLevelHIghChartsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var partyMeetingTypeArr=[];
 		  $("#committeeTypeId li").each(function() {
 		  if($(this).find("input").is(":checked")){
@@ -632,14 +679,21 @@ function buildLevelWiseHighCharts(result){
 			var str='';
 			var locationLevelNameArray =[];
 		//	str+='<h4 class="text-capitalize">meetings attendance</h4>';
-			  var length = levelWiseResult.length - 1;
-			  str+='<ul class="villageWardUlMeeting">';
-				for(var i = length; i >= 0; i--){
-				str+='<li   style="height:300px" >';
-					str+='<h4>'+levelWiseResult[i].name+'</h4>';
-				 str+='<div id="meetingsLevel'+i+'" class="chartLi"></div></li>';
-				}
-			  str+='</ul>';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 ">';
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-body">';
+					 var length = levelWiseResult.length - 1;
+					  str+='<ul class="villageWardUlMeeting">';
+						for(var i = length; i >= 0; i--){
+						str+='<li   style="height:300px" >';
+							str+='<h4>'+levelWiseResult[i].name+'</h4>';
+						 str+='<div id="meetingsLevel'+i+'" class="chartLi"></div></li>';
+						}
+					  str+='</ul>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			 
 		}
 		$("#meetingLevelHIghChartsDivId").html(str);
 		$(".villageWardUlMeeting").slick({
@@ -1932,258 +1986,240 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 }
 
 function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIdsString){
-	
-	
-	 var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
-	
-	
-	     var state = globalState
-	    var dates=$("#dateRangeIdForMeetings").val();
-		var fromDateStr;
-		var toDateStr;
-		if(dates != null && dates!=undefined){
-			var datesArr = dates.split("-");
-			fromDateStr = datesArr[0]; 
-			toDateStr = datesArr[1]; 
-		}
-		var jsObj ={ 
-		             partyMeetingMainTypeId : partyMeetingMainTypeId,
-					 state : state,
-					 startDateString : fromDateStr,
-					 endDateString : toDateStr,
-					 partyMeetingTypeIds:partyMeetingTypeArr
-					 
-				  }
-		$.ajax({
-			type : 'POST',
-			url : 'getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		   buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction(result)
-		});
+	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
+	var state = globalState
+	var dates=$("#dateRangeIdForMeetings").val();
+	var fromDateStr;
+	var toDateStr;
+	if(dates != null && dates!=undefined){
+		var datesArr = dates.split("-");
+		fromDateStr = datesArr[0]; 
+		toDateStr = datesArr[1]; 
+	}
+	var jsObj ={ 
+				 partyMeetingMainTypeId : partyMeetingMainTypeId,
+				 state : state,
+				 startDateString : fromDateStr,
+				 endDateString : toDateStr,
+				 partyMeetingTypeIds:partyMeetingTypeArr
+				 
+			  }
+	$.ajax({
+		type : 'POST',
+		url : 'getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+	   buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction(result)
+	});
 }
-
 function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction(result)
 {
-	
-	 var stateLevelMemDtlsArr=[];
-	 var otherRslt;
-	 if(result != null ){
-	   stateLevelMemDtlsArr.push(result.subList1);
-	   stateLevelMemDtlsArr.push(result.subList2);
-	   otherRslt = result.subVO;
-	 }
-	 var str='';
-	 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-	   for(var i=0;i<stateLevelMemDtlsArr.length;i++){
-		 var subList = stateLevelMemDtlsArr[i];
-		 if(subList != null && subList.length > 0){
-			 for(var j in subList){
-			   str+='<h5 class="text-capital">'+subList[j].name+'</h5>';      
-		       str+='<div id="stateLevelMeetingGraph'+i+''+j+'" style="width:100%;height:80px;"></div>';
-			 }
-		 }
-	   }
-	   
-	   if(otherRslt != null ){
-	   str+='<h5 class="text-capital">'+otherRslt.name+'</h5>';      
-	   str+='<div id="stateLevelMeetingOtherId" style="width:100%;height:80px;"></div>';
-	    }
-	   str+='</div>'
+  
+   var stateLevelMemDtlsArr=[];
+   var otherRslt;
+   if(result != null ){
+     stateLevelMemDtlsArr.push(result.subList1);
+     stateLevelMemDtlsArr.push(result.subList2);
+     otherRslt = result.subVO;
+   }
+   var str='';
+   str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+     for(var i=0;i<stateLevelMemDtlsArr.length;i++){
+     var subList = stateLevelMemDtlsArr[i];
+     if(subList != null && subList.length > 0){
+       for(var j in subList){
+         str+='<h5 class="text-capital">'+subList[j].name+'</h5>';      
+           str+='<div id="stateLevelMeetingGraph'+i+''+j+'" style="width:100%;height:80px;"></div>';
+       }
+     }
+     }
+     
+     if(otherRslt != null ){
+     str+='<h5 class="text-capital">'+otherRslt.name+'</h5>';      
+     str+='<div id="stateLevelMeetingOtherId" style="width:100%;height:80px;"></div>';
+      }
+     str+='</div>'
 
-	$("#stateLevelMeetingBlockId").html(str);
+  $("#stateLevelMeetingBlockId").html(str);
   for(var i=0;i<stateLevelMemDtlsArr.length;i++){
-		 var subList = stateLevelMemDtlsArr[i];
-	   if(subList != null && subList.length > 0){
-	      for(var j in subList){
-		    var inviteePerArr=[];
-			var notAttendedPer = [];
-			var attendedPer = [];
-			inviteePerArr.push(100);
-		    notAttendedPer.push(subList[j].notAttendedPerc)
-		    attendedPer.push(subList[j].attendedPerc)
-		  
-		  $('#stateLevelMeetingGraph'+i+''+j).highcharts({
-			colors: ['#0066DC'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: ['invited','Attended','Absent'],
-				title: {
-					text: null
-				},
-				labels: {
-						formatter: function() {
-							return this.value.toString().substring(0, 10)+'...';
-						},
-						
-					}
-			},
-			yAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null,
-					align: 'high'
-				},
-				labels: {
-					overflow: 'justify',
-					enabled: false,
-				}
-			},
-			tooltip: {
-			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-			},
-			plotOptions: {
-				column: {
-					//stacking: 'percent',
-					dataLabels: {
-						enabled: true,
-						 formatter: function() {
-							if (this.y === 0) {
-								return null;
-							} else {
-								return Highcharts.numberFormat(this.y,1);
-							}
-						}
-					  
-					}
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 80,
-				floating: true,
-				borderWidth: 1,
-				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-				shadow: true
-			},
-			credits: {
-				enabled: false
-			},
-			
-			series: [{
-				name: 'Invited',
-				data: inviteePerArr
-			},{
-				name: 'Attended',
-				data: attendedPer
-			},{
-				name: 'Absent',
-				data: notAttendedPer
-			}]
-		}); 
-	   }
-	}
+     var subList = stateLevelMemDtlsArr[i];
+     if(subList != null && subList.length > 0){
+        for(var j in subList){
+      var stateLevelPerArr=[];
+      stateLevelPerArr.push(100);
+       stateLevelPerArr.push(subList[j].attendedPerc);
+        stateLevelPerArr.push(subList[j].notAttendedPerc);
+       
+      
+      $('#stateLevelMeetingGraph'+i+''+j).highcharts({
+      colors: ['#0066DC'],
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: null
+      },
+      subtitle: {
+        text: null
+      },
+      xAxis: {
+        min: 0,
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        categories: ['invited','Attended','Absent'],
+        title: {
+          text: null
+        },
+        labels: {
+            formatter: function() {
+              return this.value.toString().substring(0, 10)+'...';
+            },
+            
+          }
+      },
+      yAxis: {
+        min: 0,
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        title: {
+          text: null,
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify',
+          enabled: false,
+        }
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+        shared: true,
+        valueSuffix: '%'
+      },
+      plotOptions: {
+        column: {
+          //stacking: 'percent',
+          dataLabels: {
+            enabled: true,
+             formatter: function() {
+              if (this.y === 0) {
+                return null;
+              } else {
+                return Highcharts.numberFormat(this.y,1);
+              }
+            }
+            
+          }
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+        shadow: true
+      },
+      credits: {
+        enabled: false
+      },
+      
+      series: [{
+        name: 'Members',
+        data: stateLevelPerArr
+      }]
+    }); 
+     }
+  }
   }
   //for other
-	var inviteeOtherPerArr=[];
-	var notAttendedOtherPer = [];
-	var attendedOtherPer = [];
+  var stateLevelOtherPerArr=[];
      if(otherRslt != null ){
-			inviteeOtherPerArr.push(100);
-			notAttendedOtherPer.push(notAttendedOtherPer);
-			attendedOtherPer.push(otherRslt.notAttendedPerc);
-		  $('#stateLevelMeetingOtherId').highcharts({
-			colors: ['#0066DC'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: ['invited','Attended','Absent'],
-				title: {
-					text: null
-				},
-				labels: {
-						formatter: function() {
-							return this.value.toString().substring(0, 10)+'...';
-						},
-						
-					}
-			},
-			yAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null,
-					align: 'high'
-				},
-				labels: {
-					overflow: 'justify',
-					enabled: false,
-				}
-			},
-			tooltip: {
-			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-			},
-			plotOptions: {
-				column: {
-					//stacking: 'percent',
-					dataLabels: {
-						enabled: true,
-						 formatter: function() {
-							if (this.y === 0) {
-								return null;
-							} else {
-								return Highcharts.numberFormat(this.y,1);
-							}
-						}
-					  
-					}
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
-				x: -40,
-				y: 80,
-				floating: true,
-				borderWidth: 1,
-				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-				shadow: true
-			},
-			credits: {
-				enabled: false
-			},
-			
-			series: [{
-				name: 'Invited',
-				data: inviteeOtherPerArr
-			},{
-				name: 'Attended',
-				data: notAttendedOtherPer
-			},{
-				name: 'Absent',
-				data: attendedOtherPer
-			}]
-		}); 
-	}      
+      stateLevelOtherPerArr.push(100);
+      stateLevelOtherPerArr.push(otherRslt.attendedPerc);
+      stateLevelOtherPerArr.push(otherRslt.notAttendedPerc);
+      $('#stateLevelMeetingOtherId').highcharts({
+      colors: ['#0066DC'],
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: null
+      },
+      subtitle: {
+        text: null
+      },
+      xAxis: {
+        min: 0,
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        categories: ['invited','Attended','Absent'],
+        title: {
+          text: null
+        },
+        labels: {
+            formatter: function() {
+              return this.value.toString();
+            },
+            
+          }
+      },
+      yAxis: {
+        min: 0,
+		gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        title: {
+          text: null,
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify',
+          enabled: false,
+        }
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+        shared: true,
+        valueSuffix: '%'
+      },
+      plotOptions: {
+        column: {
+          //stacking: 'percent',
+          dataLabels: {
+            enabled: true,
+              formatter: function() {
+              if (this.y === 0) {
+                return null;
+              } else {
+                return Highcharts.numberFormat(this.y,1);
+              }
+            } 
+          }
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+        shadow: true
+      },
+      credits: {
+        enabled: false
+      },
+      
+      series: [{
+        name: 'Members',
+        data: stateLevelOtherPerArr
+      }]
+    }); 
+  }      
 }

@@ -1369,7 +1369,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
 									<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
@@ -1433,6 +1433,12 @@
 									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
 								</div>
 							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 stateLevelMeetingBlock">
+								<div id="stateLevelMeetingBlockId"></div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 stateGeneralMeetBlock">
+								
+							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls ">
 										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
 							</div>	
@@ -1443,37 +1449,7 @@
 									
 								</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 stateLevelMeetingBlock">
-								<div id="stateLevelMeetingBlockId"></div>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 stateGeneralMeetBlock">
-								
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 moreMeetingsBlocksDetailed" style="display:none">
-								<div class="panel panel-default">
-									<div class="panel-body">
-									<div id="meetingLevelHIghChartsDivId" ></div>
-										<!--<ul class="meetingsAttendanceUl">
-											<li>
-												<div id="meetingsState" class="chartLi"></div>
-												<ul id="meetings1" class="customLegend"></ul>
-											</li>
-											<li>
-												<div id="meetingsDistrict" class="chartLi"></div>
-												<ul id="meetings2" class="customLegend"></ul>
-											</li>
-											<li>
-												<div id="meetingsMandal" class="chartLi"></div>
-												<ul id="meetings3" class="customLegend"></ul>
-											</li>
-											<li>
-												<div id="meetingsVil" class="chartLi"></div>
-												<ul id="meetings4" class="customLegend"></ul>
-											</li>
-										</ul>-->
-									</div>
-								</div>
-							</div>
+							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"></div>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
