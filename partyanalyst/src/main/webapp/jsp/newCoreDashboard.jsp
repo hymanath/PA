@@ -76,7 +76,8 @@
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
                         <li>
-                        	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
+                        	<!--<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>-->
+							<a>TS</a>
                         </li>
                     </ul>
                 </div>
@@ -374,25 +375,34 @@
         <div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
-					<h4 class="panel-title">
-						<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-						training<small class="text-muted"> - up to date</small>
-						<span class="settingsIcon pull-right">
-                        	<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-                        </span>
-						<span class="notesIconTraining pull-right">
-							<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
-						</span>
-						<span class="trainingIconExpand pull-right">
-							<i class="glyphicon glyphicon-fullscreen"></i>
-						</span>
-						<span class="input-group pull-right dateRangePickerClsForTraining hide">
-						<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-calendar"></i>
-						</span>
-						</span>
-					</h4>
+					<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-7">
+							<h4 class="panel-title">
+								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+								training<small class="text-muted"> - up to date</small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-5">
+							<span class="settingsIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIconTraining pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
+							</span>
+							<span class="trainingIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForTraining hide">
+								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					
+						
+					
 					<div class="notesDropDown notesArrow" >
 						<h4 class="text-capital">notes
 							<span class="pull-right">
@@ -430,13 +440,15 @@
 						</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
 								<div class="row">
-								<div><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </div>  
-								  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-									<ul class="activeUlCls list-inline hideCls">
-										<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-									</ul>
-								  </div> 
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<h4><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </h4>  
+									</div>
+									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										</ul>
+									</div> 
 								</div>
 								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
 							</div>
