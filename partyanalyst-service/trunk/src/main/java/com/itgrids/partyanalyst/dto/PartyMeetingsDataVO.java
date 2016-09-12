@@ -24,10 +24,11 @@ public class PartyMeetingsDataVO implements Serializable{
 	private Double attendedPerc=0.0;
 	private Double inviteeAttendedPerc=0.0;
 	private Double notAttendedPerc=0.0;
-	
 	private List<PartyMeetingsDataVO> subList1;
 	private List<PartyMeetingsDataVO> subList2;
 	private PartyMeetingsDataVO subVO;
+	
+	private List<PartyMeetingsDataVO> districtList;
 	
 	
 	public Long getId() {
@@ -144,5 +145,10 @@ public class PartyMeetingsDataVO implements Serializable{
 	public void setSubList2(List<PartyMeetingsDataVO> subList2) {
 		this.subList2 = subList2;
 	}
-	
+	public List<PartyMeetingsDataVO> getDistrictList() {
+		return districtList;
+	}
+	public void setDistrictList(List<PartyMeetingsDataVO> districtList) {
+		this.districtList = districtList;
+	}
 }

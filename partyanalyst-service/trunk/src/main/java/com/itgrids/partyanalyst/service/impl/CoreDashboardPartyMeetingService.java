@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -1229,240 +1230,363 @@ public List<PartyMeetingsDataVO> getPartyMeetingsMainTypeOverViewData(Long party
 	}
 	return finalList;
   }	
+/**
+ *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+ *  This Service Method is used to get the getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings
+ *  @since 10-SEPTEMBER-2016
+ */
+public PartyMeetingsDataVO getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString){
 
+PartyMeetingsDataVO finalVO = new PartyMeetingsDataVO();
 
-	/**
-	 *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
-	 *  This Service Method is used to get the getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings
-	 *  @since 10-SEPTEMBER-2016
-	 */
-  public PartyMeetingsDataVO getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString){
+try{
+	  //creating inputVO
+	  PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
 	
-	PartyMeetingsDataVO finalVO = new PartyMeetingsDataVO();
-	
-	try{
-		  //creating inputVO
-		  PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
-		
-		  inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
-		  inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
-		  List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
-		  inputVO.setStartDate(datesList.get(0));
-		  inputVO.setEndDate(datesList.get(1));
-		  Long stateId = coreDashboardGenericService.getStateIdByState(state);
-		  inputVO.setStateId(stateId);
-			 
-		  
-		  //prepare data
-		  List<Object[]> finalCommitteeLevelIds = new ArrayList<Object[]>();
-		  finalCommitteeLevelIds.add(new Object[] { 10l,"State Committee"  });
-		  finalCommitteeLevelIds.add(new Object[] { 11l,"District Committee"  });
-		  
-		  List<Object[]> finalPublicRepresentativeIds = new ArrayList<Object[]>();
-		  finalPublicRepresentativeIds.add(new Object[] { 2l,"MLA/MLC"  });//2-->mla,12-->mlc
-		  finalPublicRepresentativeIds.add(new Object[] { 1l,"MP"  });
-		  finalPublicRepresentativeIds.add(new Object[] { 21l,"CONSTITUENCY INCHARGES"  });
-		  
-		  Map<Long,PartyMeetingsDataVO> committeeLevelsMap = new LinkedHashMap<Long,PartyMeetingsDataVO>(0);
-		  if(finalCommitteeLevelIds != null && finalCommitteeLevelIds.size() > 0){
-			  for(Object[] obj : finalCommitteeLevelIds){
-				  PartyMeetingsDataVO dataVO = new PartyMeetingsDataVO();
-				  dataVO.setId((Long)obj[0]);
-				  dataVO.setName(obj[1].toString());
-				  committeeLevelsMap.put(dataVO.getId(),dataVO);
+	  inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+	  inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+	  List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+	  inputVO.setStartDate(datesList.get(0));
+	  inputVO.setEndDate(datesList.get(1));
+	  Long stateId = coreDashboardGenericService.getStateIdByState(state);
+	  inputVO.setStateId(stateId);
+		 
+	  
+	  //prepare data
+	  List<Object[]> finalCommitteeLevelIds = new ArrayList<Object[]>();
+	  finalCommitteeLevelIds.add(new Object[] { 10l,"State Committee"  });
+	  finalCommitteeLevelIds.add(new Object[] { 11l,"District Committee"  });
+	  
+	  List<Object[]> finalPublicRepresentativeIds = new ArrayList<Object[]>();
+	  finalPublicRepresentativeIds.add(new Object[] { 2l,"MLA/MLC"  });//2-->mla,12-->mlc
+	  finalPublicRepresentativeIds.add(new Object[] { 1l,"MP"  });
+	  finalPublicRepresentativeIds.add(new Object[] { 21l,"CONSTITUENCY INCHARGES"  });
+	  
+	  Map<Long,PartyMeetingsDataVO> committeeLevelsMap = new LinkedHashMap<Long,PartyMeetingsDataVO>(0);
+	  if(finalCommitteeLevelIds != null && finalCommitteeLevelIds.size() > 0){
+		  for(Object[] obj : finalCommitteeLevelIds){
+			  PartyMeetingsDataVO dataVO = new PartyMeetingsDataVO();
+			  dataVO.setId((Long)obj[0]);
+			  dataVO.setName(obj[1].toString());
+			  committeeLevelsMap.put(dataVO.getId(),dataVO);
+		  }
+	  }
+	  
+	  Map<Long,PartyMeetingsDataVO> publicRepresentativesMap = new LinkedHashMap<Long,PartyMeetingsDataVO>(0);
+	  if(finalPublicRepresentativeIds != null && finalPublicRepresentativeIds.size() > 0){
+		  for(Object[] obj : finalPublicRepresentativeIds){
+			  PartyMeetingsDataVO dataVO = new PartyMeetingsDataVO();
+			  dataVO.setId((Long)obj[0]);
+			  dataVO.setName(obj[1].toString());
+			  publicRepresentativesMap.put(dataVO.getId(),dataVO);
+		  }
+	  }
+	  
+	  Long othersInvitedCount = 0l;
+	  Long othersInvitteeAttendedCount=0l;
+	  Long othersNotAttendedCount = 0l;
+	  Long othersAttendedCount = 0l;
+	  
+	  //committees Queries
+	  List<Object[]> committeesInvitedList = partyMeetingInviteeDAO.getInvitedCadreCountForMeetingsByCommitteeWise(inputVO);
+	  List<Object[]> committeesInvitteeAttendedList = partyMeetingInviteeDAO.getInvitteeAttendedCadreCountForMeetingsByCommitteeWise(inputVO);
+	  List<Object[]> committeesAttendedList = partyMeetingAttendanceDAO.getAttendedCadreCountForMeetingsByCommitteeWise(inputVO);
+	  
+	  if(committeesInvitedList != null && committeesInvitedList.size() >0){
+		  for(Object[] obj : committeesInvitedList){
+			  Long committeeLevelId = obj[0]!=null?(Long)obj[0]:0l;
+			  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
+			  Long invitedCount = obj[2]!=null?(Long)obj[2]:0l;
+			  if(committeeLevelVO!=null){ //state or district committee
+				  committeeLevelVO.setInvitedCount(invitedCount); 
+			  }else{//others
+				  othersInvitedCount =  othersInvitedCount + invitedCount ;
 			  }
 		  }
-		  
-		  Map<Long,PartyMeetingsDataVO> publicRepresentativesMap = new LinkedHashMap<Long,PartyMeetingsDataVO>(0);
-		  if(finalPublicRepresentativeIds != null && finalPublicRepresentativeIds.size() > 0){
-			  for(Object[] obj : finalPublicRepresentativeIds){
-				  PartyMeetingsDataVO dataVO = new PartyMeetingsDataVO();
-				  dataVO.setId((Long)obj[0]);
-				  dataVO.setName(obj[1].toString());
-				  publicRepresentativesMap.put(dataVO.getId(),dataVO);
+	  }
+	  
+	  if(committeesInvitteeAttendedList != null && committeesInvitteeAttendedList.size() >0){
+		  for(Object[] obj : committeesInvitteeAttendedList){
+			  Long committeeLevelId = obj[0]!=null?(Long)obj[0]:0l;
+			  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
+			  Long inviteeAttendedCount = obj[2]!=null?(Long)obj[2]:0l;
+			  if(committeeLevelVO!=null){ //state or district committee
+				  committeeLevelVO.setInvitteeAttendedCount(inviteeAttendedCount); 
+			  }else{//others
+				  othersInvitteeAttendedCount =  othersInvitteeAttendedCount + inviteeAttendedCount ;
 			  }
 		  }
-		  
-		  Long othersInvitedCount = 0l;
-		  Long othersInvitteeAttendedCount=0l;
-		  Long othersNotAttendedCount = 0l;
-		  Long othersAttendedCount = 0l;
-		  
-		  //committees Queries
-		  List<Object[]> committeesInvitedList = partyMeetingInviteeDAO.getInvitedCadreCountForMeetingsByCommitteeWise(inputVO);
-		  List<Object[]> committeesInvitteeAttendedList = partyMeetingInviteeDAO.getInvitteeAttendedCadreCountForMeetingsByCommitteeWise(inputVO);
-		  List<Object[]> committeesAttendedList = partyMeetingAttendanceDAO.getAttendedCadreCountForMeetingsByCommitteeWise(inputVO);
-		  
-		  if(committeesInvitedList != null && committeesInvitedList.size() >0){
-			  for(Object[] obj : committeesInvitedList){
-				  Long committeeLevelId = obj[0]!=null?(Long)obj[0]:0l;
-				  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
-				  Long invitedCount = obj[2]!=null?(Long)obj[2]:0l;
-				  if(committeeLevelVO!=null){ //state or district committee
-					  committeeLevelVO.setInvitedCount(invitedCount); 
-				  }else{//others
-					  othersInvitedCount =  othersInvitedCount + invitedCount ;
-				  }
+	  }
+	  
+	  if(committeesAttendedList != null && committeesAttendedList.size() >0){
+		  for(Object[] obj : committeesAttendedList){
+			  Long committeeLevelId = obj[0]!=null?(Long)obj[0]:0l;
+			  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
+			  Long attendedCount = obj[2]!=null?(Long)obj[2]:0l;
+			  if(committeeLevelVO!=null){ //state or district committee
+				  committeeLevelVO.setAttendedCount(attendedCount); 
+			  }else{//others
+				  othersAttendedCount =  othersAttendedCount + attendedCount ;
 			  }
 		  }
-		  
-		  if(committeesInvitteeAttendedList != null && committeesInvitteeAttendedList.size() >0){
-			  for(Object[] obj : committeesInvitteeAttendedList){
-				  Long committeeLevelId = obj[0]!=null?(Long)obj[0]:0l;
-				  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
-				  Long inviteeAttendedCount = obj[2]!=null?(Long)obj[2]:0l;
-				  if(committeeLevelVO!=null){ //state or district committee
-					  committeeLevelVO.setInvitteeAttendedCount(inviteeAttendedCount); 
-				  }else{//others
-					  othersInvitteeAttendedCount =  othersInvitteeAttendedCount + inviteeAttendedCount ;
-				  }
+	  }
+	  
+	  if(committeeLevelsMap!=null && committeeLevelsMap.size()>0){
+		  for(Long committeeLevelId : committeeLevelsMap.keySet() ){
+			  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
+			  committeeLevelVO.setNotAttendedCount(committeeLevelVO.getInvitedCount() - committeeLevelVO.getInvitteeAttendedCount());
+		  }
+	  }
+	  
+	  //public representative queries.
+	  List<Object[]> publicRepresentativesInvitedList = partyMeetingInviteeDAO.getInvitedCadreCountForMeetingsByPublicRepresentativeWise(inputVO);
+	  List<Object[]> publicRepresentativesInvitedAttendedList = partyMeetingInviteeDAO.getInvitteeAttendedCadreCountForMeetingsByPublicRepresentativeWise(inputVO);
+	  List<Object[]> publicRepresentativesAttendedList = partyMeetingAttendanceDAO.getAttendedCadreCountForMeetingsByByPublicRepresentativeWise(inputVO);
+	  
+	  
+	  if(publicRepresentativesInvitedList != null && publicRepresentativesInvitedList.size() > 0){
+		  for(Object[] obj : publicRepresentativesInvitedList){
+			  Long  publicRepresentativeTypeId = obj[0]!=null?(Long)obj[0]:0l;
+			  Long invitedCount = obj[2]!=null?(Long)obj[2]:0l;
+			  PartyMeetingsDataVO publicRepresentativeTypeVO = null;
+			  if(publicRepresentativeTypeId.longValue() == 12l){//mlc
+				  publicRepresentativeTypeVO = publicRepresentativesMap.get(2l); //2-->mla
+			  }else{
+				  publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
+			  }
+			  if(publicRepresentativeTypeVO!=null){
+				  publicRepresentativeTypeVO.setInvitedCount( publicRepresentativeTypeVO.getInvitedCount() + invitedCount);
+			  }else{
+				  othersInvitedCount = othersInvitedCount + invitedCount;
 			  }
 		  }
-		  
-		  if(committeesAttendedList != null && committeesAttendedList.size() >0){
-			  for(Object[] obj : committeesAttendedList){
-				  Long committeeLevelId = obj[0]!=null?(Long)obj[0]:0l;
-				  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
-				  Long attendedCount = obj[2]!=null?(Long)obj[2]:0l;
-				  if(committeeLevelVO!=null){ //state or district committee
-					  committeeLevelVO.setAttendedCount(attendedCount); 
-				  }else{//others
-					  othersAttendedCount =  othersAttendedCount + attendedCount ;
-				  }
+	  }
+	  
+	  if(publicRepresentativesInvitedAttendedList != null && publicRepresentativesInvitedAttendedList.size() > 0){
+		  for(Object[] obj : publicRepresentativesInvitedAttendedList){
+			  Long  publicRepresentativeTypeId = obj[0]!=null?(Long)obj[0]:0l;
+			  Long inviteeAttendedCount = obj[2]!=null?(Long)obj[2]:0l;
+			  PartyMeetingsDataVO publicRepresentativeTypeVO = null;
+			  if(publicRepresentativeTypeId.longValue() == 12l){//mlc
+				  publicRepresentativeTypeVO = publicRepresentativesMap.get(2l); //2-->mla
+			  }else{
+				  publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
+			  }
+			  if(publicRepresentativeTypeVO!=null){
+				  publicRepresentativeTypeVO.setInvitteeAttendedCount( publicRepresentativeTypeVO.getInvitteeAttendedCount() + inviteeAttendedCount);
+			  }else{
+				  othersInvitteeAttendedCount = othersInvitteeAttendedCount + inviteeAttendedCount;
 			  }
 		  }
-		  
-		  if(committeeLevelsMap!=null && committeeLevelsMap.size()>0){
-			  for(Long committeeLevelId : committeeLevelsMap.keySet() ){
-				  PartyMeetingsDataVO committeeLevelVO = committeeLevelsMap.get(committeeLevelId);
-				  committeeLevelVO.setNotAttendedCount(committeeLevelVO.getInvitedCount() - committeeLevelVO.getInvitteeAttendedCount());
+	  }
+	  
+	  if(publicRepresentativesAttendedList != null && publicRepresentativesAttendedList.size() > 0){
+		  for(Object[] obj : publicRepresentativesAttendedList){
+			  Long  publicRepresentativeTypeId = obj[0]!=null?(Long)obj[0]:0l;
+			  Long  attendedCount = obj[2]!=null?(Long)obj[2]:0l;
+			  PartyMeetingsDataVO publicRepresentativeTypeVO = null;
+			  if(publicRepresentativeTypeId.longValue() == 12l){//mlc
+				  publicRepresentativeTypeVO = publicRepresentativesMap.get(2l); //2-->mla
+			  }else{
+				  publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
+			  }
+			  if(publicRepresentativeTypeVO!=null){
+				  publicRepresentativeTypeVO.setAttendedCount( publicRepresentativeTypeVO.getAttendedCount() + attendedCount);
+			  }else{
+				  othersAttendedCount = othersAttendedCount + attendedCount;
 			  }
 		  }
-		  
-		  //public representative queries.
-		  List<Object[]> publicRepresentativesInvitedList = partyMeetingInviteeDAO.getInvitedCadreCountForMeetingsByPublicRepresentativeWise(inputVO);
-		  List<Object[]> publicRepresentativesInvitedAttendedList = partyMeetingInviteeDAO.getInvitteeAttendedCadreCountForMeetingsByPublicRepresentativeWise(inputVO);
-		  List<Object[]> publicRepresentativesAttendedList = partyMeetingAttendanceDAO.getAttendedCadreCountForMeetingsByByPublicRepresentativeWise(inputVO);
-		  
-		  
-		  if(publicRepresentativesInvitedList != null && publicRepresentativesInvitedList.size() > 0){
-			  for(Object[] obj : publicRepresentativesInvitedList){
-				  Long  publicRepresentativeTypeId = obj[0]!=null?(Long)obj[0]:0l;
-				  Long invitedCount = obj[2]!=null?(Long)obj[2]:0l;
-				  PartyMeetingsDataVO publicRepresentativeTypeVO = null;
-				  if(publicRepresentativeTypeId.longValue() == 12l){//mlc
-					  publicRepresentativeTypeVO = publicRepresentativesMap.get(2l); //2-->mla
-				  }else{
-					  publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
-				  }
-				  if(publicRepresentativeTypeVO!=null){
-					  publicRepresentativeTypeVO.setInvitedCount( publicRepresentativeTypeVO.getInvitedCount() + invitedCount);
-				  }else{
-					  othersInvitedCount = othersInvitedCount + invitedCount;
-				  }
-			  }
+	  }
+	  
+	  if(publicRepresentativesMap!=null && publicRepresentativesMap.size()>0){
+		  for(Long publicRepresentativeTypeId : publicRepresentativesMap.keySet() ){
+			  PartyMeetingsDataVO publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
+			  publicRepresentativeTypeVO.setNotAttendedCount(publicRepresentativeTypeVO.getInvitedCount() - publicRepresentativeTypeVO.getInvitteeAttendedCount());
 		  }
-		  
-		  if(publicRepresentativesInvitedAttendedList != null && publicRepresentativesInvitedAttendedList.size() > 0){
-			  for(Object[] obj : publicRepresentativesInvitedAttendedList){
-				  Long  publicRepresentativeTypeId = obj[0]!=null?(Long)obj[0]:0l;
-				  Long inviteeAttendedCount = obj[2]!=null?(Long)obj[2]:0l;
-				  PartyMeetingsDataVO publicRepresentativeTypeVO = null;
-				  if(publicRepresentativeTypeId.longValue() == 12l){//mlc
-					  publicRepresentativeTypeVO = publicRepresentativesMap.get(2l); //2-->mla
-				  }else{
-					  publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
-				  }
-				  if(publicRepresentativeTypeVO!=null){
-					  publicRepresentativeTypeVO.setInvitteeAttendedCount( publicRepresentativeTypeVO.getInvitteeAttendedCount() + inviteeAttendedCount);
-				  }else{
-					  othersInvitteeAttendedCount = othersInvitteeAttendedCount + inviteeAttendedCount;
-				  }
-			  }
-		  }
-		  
-		  if(publicRepresentativesAttendedList != null && publicRepresentativesAttendedList.size() > 0){
-			  for(Object[] obj : publicRepresentativesAttendedList){
-				  Long  publicRepresentativeTypeId = obj[0]!=null?(Long)obj[0]:0l;
-				  Long  attendedCount = obj[2]!=null?(Long)obj[2]:0l;
-				  PartyMeetingsDataVO publicRepresentativeTypeVO = null;
-				  if(publicRepresentativeTypeId.longValue() == 12l){//mlc
-					  publicRepresentativeTypeVO = publicRepresentativesMap.get(2l); //2-->mla
-				  }else{
-					  publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
-				  }
-				  if(publicRepresentativeTypeVO!=null){
-					  publicRepresentativeTypeVO.setAttendedCount( publicRepresentativeTypeVO.getAttendedCount() + attendedCount);
-				  }else{
-					  othersAttendedCount = othersAttendedCount + attendedCount;
-				  }
-			  }
-		  }
-		  
-		  if(publicRepresentativesMap!=null && publicRepresentativesMap.size()>0){
-			  for(Long publicRepresentativeTypeId : publicRepresentativesMap.keySet() ){
-				  PartyMeetingsDataVO publicRepresentativeTypeVO = publicRepresentativesMap.get(publicRepresentativeTypeId);
-				  publicRepresentativeTypeVO.setNotAttendedCount(publicRepresentativeTypeVO.getInvitedCount() - publicRepresentativeTypeVO.getInvitteeAttendedCount());
-			  }
-		  }
-		  
-		  
-		  //calculating percantages.
-		  calculatingPercantages(committeeLevelsMap);
-		  calculatingPercantages(publicRepresentativesMap);
-		  
-		  
-		  //Others Related
-		  othersNotAttendedCount = othersInvitedCount - othersInvitteeAttendedCount;
-		  PartyMeetingsDataVO othersVO = new PartyMeetingsDataVO();
-		  othersVO.setName("Others");
-		  othersVO.setInvitedCount(othersInvitedCount);
-		  othersVO.setInvitteeAttendedCount(othersInvitteeAttendedCount);
-		  othersVO.setAttendedCount(othersAttendedCount);
-		  othersVO.setNotAttendedCount(othersNotAttendedCount);
-		  
-		  if(othersVO.getInvitedCount() != null && othersVO.getInvitedCount() > 0l){
-			  othersVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getAttendedCount(),othersVO.getInvitedCount()) );
-			  othersVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getInvitteeAttendedCount(),othersVO.getInvitedCount()) );
-			  othersVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getNotAttendedCount(),othersVO.getInvitedCount()) );
-		  }else{
-			  othersVO.setAttendedPerc(100.0);
-		  }
-		  
-		  if(committeeLevelsMap!=null && committeeLevelsMap.size()>0){
-			  finalVO.setSubList1(new ArrayList<PartyMeetingsDataVO>( committeeLevelsMap.values() ));
-		  }
-		  if(publicRepresentativesMap!=null && publicRepresentativesMap.size()>0){
-			  finalVO.setSubList2(new ArrayList<PartyMeetingsDataVO>( publicRepresentativesMap.values() ));
-		  }
-		  finalVO.setSubVO(othersVO);
-		  
-	}catch(Exception e){
-		e.printStackTrace();
-	}
-	return finalVO;
+	  }
+	  
+	  
+	  //calculating percantages.
+	  calculatingPercantages(committeeLevelsMap);
+	  calculatingPercantages(publicRepresentativesMap);
+	  
+	  
+	  //Others Related
+	  othersNotAttendedCount = othersInvitedCount - othersInvitteeAttendedCount;
+	  PartyMeetingsDataVO othersVO = new PartyMeetingsDataVO();
+	  othersVO.setName("Others");
+	  othersVO.setInvitedCount(othersInvitedCount);
+	  othersVO.setInvitteeAttendedCount(othersInvitteeAttendedCount);
+	  othersVO.setAttendedCount(othersAttendedCount);
+	  othersVO.setNotAttendedCount(othersNotAttendedCount);
+	  
+	  if(othersVO.getInvitedCount() != null && othersVO.getInvitedCount() > 0l){
+		  othersVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getAttendedCount(),othersVO.getInvitedCount()) );
+		  othersVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getInvitteeAttendedCount(),othersVO.getInvitedCount()) );
+		  othersVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getNotAttendedCount(),othersVO.getInvitedCount()) );
+	  }else{
+		  othersVO.setAttendedPerc(100.0);
+	  }
+	  
+	  if(committeeLevelsMap!=null && committeeLevelsMap.size()>0){
+		  finalVO.setSubList1(new ArrayList<PartyMeetingsDataVO>( committeeLevelsMap.values() ));
+	  }
+	  if(publicRepresentativesMap!=null && publicRepresentativesMap.size()>0){
+		  finalVO.setSubList2(new ArrayList<PartyMeetingsDataVO>( publicRepresentativesMap.values() ));
+	  }
+	  finalVO.setSubVO(othersVO);
+	  
+}catch(Exception e){
+	e.printStackTrace();
+}
+return finalVO;
 }
 
 public void calculatingPercantages(Map<Long,PartyMeetingsDataVO> dataMap){
-	
-	if(dataMap != null && dataMap.size() > 0 ){
-		 
-		 for(Long id : dataMap.keySet()){
-			 PartyMeetingsDataVO dataVO = dataMap.get(id);
-			 if(dataVO.getInvitedCount()!=null && dataVO.getInvitedCount() > 0l) {
-				 dataVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getAttendedCount(),dataVO.getInvitedCount()) );
-				 dataVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getInvitteeAttendedCount(),dataVO.getInvitedCount()) );
-				 dataVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getNotAttendedCount(),dataVO.getInvitedCount()) );
-			   }else{
-				   dataVO.setAttendedPerc(100.0);
-			   }
-		 }
-		 
+
+if(dataMap != null && dataMap.size() > 0 ){
+	 
+	 for(Long id : dataMap.keySet()){
+		 PartyMeetingsDataVO dataVO = dataMap.get(id);
+		 if(dataVO.getInvitedCount()!=null && dataVO.getInvitedCount() > 0l) {
+			 dataVO.setAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getAttendedCount(),dataVO.getInvitedCount()) );
+			 dataVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getInvitteeAttendedCount(),dataVO.getInvitedCount()) );
+			 dataVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getNotAttendedCount(),dataVO.getInvitedCount()) );
+		   }else{
+			   dataVO.setAttendedPerc(100.0);
+		   }
 	 }
-	
+	 
+ }
+
 }
-
-
-
-
+public List<PartyMeetingsDataVO> getParyMeetingTypeDetailsDistrictWise(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString){
+	
+	List<PartyMeetingsDataVO> resultList = new ArrayList<PartyMeetingsDataVO>();
+	Map<Long,String> partyMeetingTypeMap = new HashMap<Long, String>(0);
+	Map<Long,List<PartyMeetingsDataVO>> inviteeCadresMap = new HashMap<Long, List<PartyMeetingsDataVO>>(0);
+	
+	try{
+		
+		//creating inputVO
+		PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+		
+		 inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+		 inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+		 List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+		 inputVO.setStartDate(datesList.get(0));
+		 inputVO.setEndDate(datesList.get(1));
+		 Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		 inputVO.setStateId(stateId);
+		 List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingTypeIds(inputVO);
+		 List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds(inputVO);
+	     List<Object[]> attendedList = partyMeetingAttendanceDAO.getDistrictWiseAttendedCountForPartyMeetingTypeIds(inputVO);
+	     setInviteeDetails(inviteesList,inviteeCadresMap,partyMeetingTypeMap);
+	     
+	     if(invitteeAttendedList != null && invitteeAttendedList.size() > 0){
+	    	 for (Object[] param : invitteeAttendedList) {
+				Long partyMeetinTypeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				Long districtId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				Long inviteeAttendedCnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+				List<PartyMeetingsDataVO> inviteeList = inviteeCadresMap.get(partyMeetinTypeId);
+				  if(inviteeList != null && inviteeList.size() > 0){
+					  for (PartyMeetingsDataVO inviteeVO : inviteeList) {
+						  if(inviteeVO.getId().equals(districtId)){
+							  inviteeVO.setInvitteeAttendedCount(inviteeAttendedCnt);
+							  inviteeVO.setNotAttendedCount(inviteeVO.getInvitedCount()-inviteeVO.getInvitteeAttendedCount());
+						  }
+					}
+				  }
+			}
+	     }
+	    /* if(attendedList != null && attendedList.size() > 0){
+	    	  for (Object[] param : attendedList) {
+	    			Long partyMeetinTypeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+	    			String partyMeetingType = commonMethodsUtilService.getStringValueForObject(param[1]);
+					Long districtId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					String districtName = commonMethodsUtilService.getStringValueForObject(param[3]);
+					Long attendedCnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+					List<PartyMeetingsDataVO> inviteeList = inviteeCadresMap.get(partyMeetinTypeId);
+					
+					PartyMeetingsDataVO inviteeVO = getMatchVO(inviteeList,districtId);
+					if(inviteeVO == null){
+						PartyMeetingsDataVO attendedVO = new PartyMeetingsDataVO();
+						attendedVO.setId(districtId);
+						attendedVO.setName(districtName);
+						attendedVO.setAttendedCount(attendedCnt);
+						if(inviteeList == null){
+							inviteeList = new ArrayList<PartyMeetingsDataVO>(0);
+							inviteeCadresMap.put(partyMeetinTypeId, inviteeList);
+							partyMeetingTypeMap.put(partyMeetinTypeId, partyMeetingType);
+						}
+						inviteeList.add(attendedVO);	
+					}else{
+						 inviteeVO.setAttendedCount(attendedCnt);	
+					}
+					}
+	     }*/
+	     //Calculate percentage
+	     if(inviteeCadresMap != null && inviteeCadresMap.size() > 0){
+	    	 for(Entry<Long,List<PartyMeetingsDataVO>> entry:inviteeCadresMap.entrySet()){
+	    		  List<PartyMeetingsDataVO> inviteeAttendedNtAttnddCadreLst = entry.getValue();
+	    		   if(inviteeAttendedNtAttnddCadreLst != null && inviteeAttendedNtAttnddCadreLst.size() > 0){
+	    			   for (PartyMeetingsDataVO invtAttnddNtAttnddCdrVO : inviteeAttendedNtAttnddCadreLst) {
+	    				   invtAttnddNtAttnddCdrVO.setInviteeAttendedPerc(calculatePercantage(invtAttnddNtAttnddCdrVO.getInvitteeAttendedCount(),invtAttnddNtAttnddCdrVO.getInvitedCount()));
+	    				   invtAttnddNtAttnddCdrVO.setNotAttendedPerc(calculatePercantage(invtAttnddNtAttnddCdrVO.getNotAttendedCount(),invtAttnddNtAttnddCdrVO.getInvitedCount()));
+	    				   //invtAttnddNtAttnddCdrVO.setAttendedPerc(calculatePercantage(invtAttnddNtAttnddCdrVO.getAttendedCount(),invtAttnddNtAttnddCdrVO.getInvitedCount()));
+					}
+	    		   }
+	    	 }
+	     }
+	     //setting result to resultList
+	     if(inviteeCadresMap != null && inviteeCadresMap.size() > 0){
+	    	 for(Entry<Long,List<PartyMeetingsDataVO>> entry:inviteeCadresMap.entrySet()){
+	    		 Long partyMeetingTypeId = entry.getKey();
+	    		 PartyMeetingsDataVO partyMeetingTypeVO = new PartyMeetingsDataVO();
+	    		 partyMeetingTypeVO.setId(partyMeetingTypeId);
+	    		 partyMeetingTypeVO.setName(partyMeetingTypeMap.get(partyMeetingTypeId));
+	    		 partyMeetingTypeVO.setDistrictList(new ArrayList<PartyMeetingsDataVO>(entry.getValue()));
+	    		 resultList.add(partyMeetingTypeVO);
+	    	 }
+	     }
+	     }
+	catch(Exception e){
+		LOG.error("exception occurred in getParyMeetingTypeDistrictWiseDetails()", e);
+	}
+	return resultList;
+}
+@SuppressWarnings("null")
+public PartyMeetingsDataVO getMatchVO(List<PartyMeetingsDataVO> inviteeList,Long districtId){
+	if(inviteeList == null || inviteeList.size()==1)
+		return null;
+	for(PartyMeetingsDataVO districtVO:inviteeList){
+		 if(districtVO.getId().equals(districtId)){
+			 return districtVO;
+		 }
+	}
+	return null;
+}
+public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<PartyMeetingsDataVO>> inviteeMap,Map<Long,String> partyMeetingTypeMap){
+	try{
+		if(inviteeReturnList != null && inviteeReturnList.size() > 0){
+			for(Object[] param:inviteeReturnList){
+				Long partyMeetingTypeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				String partyMeetingType = commonMethodsUtilService.getStringValueForObject(param[1]);
+				 List<PartyMeetingsDataVO> inviteeList=inviteeMap.get(partyMeetingTypeId);
+				  if(inviteeList == null ){
+					  inviteeList = new ArrayList<PartyMeetingsDataVO>();
+					  partyMeetingTypeMap.put(partyMeetingTypeId, partyMeetingType);
+					  inviteeMap.put(partyMeetingTypeId, inviteeList);
+				  }
+				  PartyMeetingsDataVO inviteeCadreVO = new PartyMeetingsDataVO();
+				  inviteeCadreVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  inviteeCadreVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				  inviteeCadreVO.setInvitedCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+				  inviteeList.add(inviteeCadreVO);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("exception occurred in setInviteeDetails()", e);	
+	}
+}
 }
