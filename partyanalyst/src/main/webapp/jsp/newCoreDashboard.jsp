@@ -1294,20 +1294,14 @@
 										<!--2nd block-->
 									</div>
 									
-									<!-- <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
+									 <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
 										
 										<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
 											<div class="panel panel-default panelNew">
 												<div class="panel-heading">
 													<div class="row">
-													<div id="userTypeStrId"></div>
-														<!--<div class="col-xs-12 col-sm-12 col-md-12">
-															<ul class="comparisonSelect">
-																<li class="childUserTypeCls">Gen Sec<span class="closeIconComparison"></span></li>
-																<li class="childUserTypeCls">Sec<span class="closeIconComparison"></span></li>
-															</ul>
-														</div>-->
-													<!-- </div>
+														<div id="userTypeStrId"></div>
+													 </div>
 												</div>
 												<div class="panel-body">
 													
@@ -1319,8 +1313,8 @@
 									
 									
 									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-										<!--4th block
-									</div>-->
+										4th block
+									</div>
 								</div>
 							</div>
 						</div>
