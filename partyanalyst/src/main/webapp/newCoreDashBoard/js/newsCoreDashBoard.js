@@ -421,8 +421,8 @@
 					if(result[i] !=null && result[i].length>0){
 						for(var j in result[i]){
 							candidateNameArray.push(result[i][j].name)
-							PositiveCountArray.push(result[i][j].positivePercentage)
-							NegativeCountArray.push(result[i][j].negativePercentage)
+							PositiveCountArray.push(result[i][j].positiveCount)
+							NegativeCountArray.push(result[i][j].negativeCount)
 								
 							countVar =countVar+1;
 							if (countVar === 5) {
@@ -486,7 +486,7 @@
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,1) + '%';
+													return Highcharts.numberFormat(this.percentage,1) + '%';
 												}
 											}
 										  
@@ -495,17 +495,19 @@
 								},
 
 								tooltip: {
-									//headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br>',
+									//headerFormat: '<span style="font-size:11px">{series.count}</span><br>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}% - ({point.y})</b><br>',
 									shared:true
 								},
 
 								series: [{
 									name: 'Negative',
-									data: NegativeCountArray
+									data: NegativeCountArray,
+									
 								},{
 									name: 'Positive',
-									data: PositiveCountArray
+									data: PositiveCountArray,
+									
 								}],
 							 
 							});
@@ -552,8 +554,8 @@
 					if(result[i] !=null && result[i].length>0){
 						for(var j in result[i]){
 							candidateNameArray.push(result[i][j].name)
-							PositiveCountArray.push(result[i][j].positivePercentage)
-							NegativeCountArray.push(result[i][j].negativePercentage)
+							PositiveCountArray.push(result[i][j].positiveCount)
+							NegativeCountArray.push(result[i][j].negativeCount)
 								
 							countVar =countVar+1;
 							if (countVar === 5) {
@@ -617,7 +619,7 @@
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,1) + '%';
+													return Highcharts.numberFormat(this.percentage,1) + '%';
 												}
 											}
 										  
@@ -627,7 +629,7 @@
 
 								tooltip: {
 									//headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}% - ({point.y})</b><br>',
 									shared:true
 								},
 
@@ -801,7 +803,7 @@
 						break;
 					}
 					 
-				str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon"/> &nbsp;&nbsp;&nbsp;'+result[i].organization+'';
+				str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon" class=" m_top10"/> &nbsp;&nbsp;&nbsp;'+result[i].organization+'';
 				str+='<div id="districtWiseNews'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
 									
@@ -827,8 +829,8 @@
 						break;
 					}
 			var districtNamesArray =[];
-			var districtWisePositivePercArray = [];
-			var districtWiseNegativePercArray = [];
+			var districtWisePositiveCountArray = [];
+			var districtWiseNegativeCountArray = [];
 			
 			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
 				
@@ -837,15 +839,15 @@
 						districtNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
 						
 						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
-							districtWisePositivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc);
+							districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountMain);
 						//}
 						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
-							districtWiseNegativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc);
+							districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountMain);
 						//}
 						
 					}
 			}	
-					if(districtWisePositivePercArray.length !=0 && districtWiseNegativePercArray.length !=0){
+					if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
 						$(function () {
 							$('#districtWiseNews'+i+'').highcharts({
 								 colors: ['#64C664','#D33E39'],
@@ -898,10 +900,15 @@
 								},
 								tooltip: {
 									headerFormat: '<b>{point.x}</b><br/>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+									pointFormat: '<span style="color:{series.color};white-space:normal !important;">{series.name}: <b>{point.percentage:.1f}%({point.y})</b></span><br>',
 									shared: true
+									
 								},
+								
 								plotOptions: {
+									pointPadding: 0.2,
+									borderWidth: 2,
+									groupPadding: 0.2,
 									column: {
 										stacking: 'percent',
 										dataLabels: {
@@ -910,7 +917,7 @@
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,1);
+													return Highcharts.numberFormat(this.percentage,1) +'%';
 												}
 											}
 										  
@@ -919,15 +926,16 @@
 								},
 								series: [{
 									name: 'Positive',
-									data: districtWisePositivePercArray
+									data: districtWisePositiveCountArray
 								}, {
 									name: 'Negative',
-									data: districtWiseNegativePercArray
+									data: districtWiseNegativeCountArray
 								}]
 							});
 						});
 					}else{
 						$('#districtWiseNews'+i+'').html("No Data Available");
+						$('#districtWiseNews'+i+'').css("height","10px");
 					}
 			}
 		}else{
@@ -1134,7 +1142,7 @@ function getChildUserTypesByItsParentUserType1(){
 								str+='<ul class="list-inline">';
 								for(var j in result[i].coreDashBoardVOList){
 									var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
-									  str+='<li style="color:'+color+'">'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%</li> &nbsp;&nbsp;';
+									  str+='<li style="color:'+color+'">'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%('+result[i].coreDashBoardVOList[j].count+')</li> &nbsp;&nbsp;';
 									
 								}
 								str+='</ul>';
@@ -1166,7 +1174,7 @@ function getChildUserTypesByItsParentUserType1(){
 					
 					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
 						for (var j in result[i].coreDashBoardVOList){
-							 PartyCountPerc = result[i].coreDashBoardVOList[j].positivePerc;
+							 PartyCountPerc = result[i].coreDashBoardVOList[j].count;
 							 partyName = result[i].coreDashBoardVOList[j].organization;
 							
 							var obj = {
@@ -1208,8 +1216,8 @@ function getChildUserTypesByItsParentUserType1(){
 									text: null
 								},
 								tooltip: {
-										headerFormat: '<b>{point.x}</b>',
-										pointFormat: '<span style="color:{series.color}">{point.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+										//headerFormat: '<b>{point.x}</b>',
+										pointFormat: '<span style="color:{series.color}">: <b>{point.percentage:.1f}% ({point.y})</b></span><br>',
 										shared: true
 									},
 								plotOptions: {
@@ -1295,8 +1303,8 @@ function getChildUserTypesByItsParentUserType1(){
 								
 							},
 							tooltip: {
-								headerFormat: '<b>{point.x}</b><br/>',
-								pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+								//headerFormat: '<b>{point.x}</b><br/>',
+								pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.1f}%</b></span><br/>',
 								shared: true
 							},
 							plotOptions: {
@@ -1425,7 +1433,7 @@ $(document).on("click",".detailedPartySubLi",function(){
 						str+='<h4  style="height:150px;border-right:1px solid #ddd;padding-top:50px !important;"><img src="newCoreDashBoard/img/'+partyname+'.png" class="debatesPartyIcon" />'+partyname+'</h4>';
 							str+='</div>';
 							str+='<div class="col-xs-11 col-sm-10 col-md-11">';
-								str+='<ul class="villageWardUlffff">';
+								str+='<ul class="partyWiseSlickApply">';
 						for(var j in result[i].coreDashBoardVOList){
 							str+='<li><div id="partywisegraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
 						}
@@ -1462,71 +1470,77 @@ $(document).on("click",".detailedPartySubLi",function(){
 									
 								}
 							}
-							$(function () {
-								$('#partywisegraph'+i+''+j+'').highcharts({
-									 colors: ['#64C664','#D33E39'],
-									chart: {
-										type: 'column'
-									},
-									title: {
-										text: districtName
-									},
-								   
-									xAxis: {
-										 min: 0,
-											 gridLineWidth: 0,
-											 minorGridLineWidth: 0,
-											 categories: paperNamesArray,
-										labels: {
-												rotation: -45,
-												style: {
-													fontSize: '13px',
-													fontFamily: 'Verdana, sans-serif'
-												},
-											}
-									},
-									yAxis: {
-										min: 0,
-											   gridLineWidth: 0,
-												minorGridLineWidth: 0,
-										title: {
-											text: ''
-										}
-									},
-									tooltip: {
-										pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
-										shared: true
-									},
-									legend: {
-															
-											enabled: false,				
-															
-										},				
-									plotOptions: {
-										column: {
-											stacking: 'percent',
-											dataLabels:{
-												enabled: false,
-												formatter: function() {
-													if (this.y === 0) {
-														return null;
-													} else {
-														return Highcharts.numberFormat(this.y,1) + '%';
-													}
-												}
-											},
-											
+							if(paperNamesArray.length !=0 && positivePercArray.length !=0 &&  negativePercArray.length !=0 &&  negativePercArray.length !=0 && districtName !=0 && districtName !=null){
+								$(function () {
+									$('#partywisegraph'+i+''+j+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
 										},
-									},
-									series: [{
-										name: 'Positive',
-										data: positivePercArray
-									}, {
-										name: 'Negative',
-										data: negativePercArray
-									}]
+										title: {
+											text: districtName
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: paperNamesArray,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												stacking: 'percent',
+												dataLabels:{
+													enabled: false,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: positivePercArray
+										}, {
+											name: 'Negative',
+											data: negativePercArray
+										}]
+									});
 								});
-							});
+							}else{
+								$('#partywisegraph'+i+''+j+'').html("No Data Available");
+								$('#partywisegraph'+i+''+j+'').css("height","20px");
+							}
+							
 						}
 						
 					}
@@ -1535,16 +1549,20 @@ $(document).on("click",".detailedPartySubLi",function(){
 					
 				}
 			}
-			$(".villageWardUlffff").slick({
-				 slide: 'li',
-				 slidesToShow: 4,
-				 slidesToScroll: 1,
-				 infinite: false,
-				 swipeToSlide:false,
-				 swipe:false,
-				 touchMove:false
-			}); 
-		
+				
+			else{
+				$("#partyWiseDetailsDiv").html("No Data Available")
+			}
+			
+		$(".partyWiseSlickApply").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false
+		}); 
 	}
 	
 	function buildgetDetailedPublicationsWiseDetails(result){
@@ -1552,17 +1570,17 @@ $(document).on("click",".detailedPartySubLi",function(){
 		var str ='';
 		if(result !=null && result.length >0){
 			for(var i in result){
-				var partyname;
+				var papername;
 					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
 						str+='<div class="col-md-12 col-xs-12 col-ms-12">';
 							str+='<div class="col-xs-1 col-md-1 col-sm-2 pad_left0">';
 						for(var j in result[i].coreDashBoardVOList){
-							partyname = result[i].coreDashBoardVOList[0].name;
+							papername = result[i].coreDashBoardVOList[0].name;
 						}
-						str+='<h5  style="height:150px;border-right:1px solid #ddd;padding-top:50px !important;">'+partyname+'</h5>';
+						str+='<h5  style="height:150px;border-right:1px solid #ddd;padding-top:50px !important;"><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+papername+'.png" style="width:60px;" alt="tdp icon"/></h5>';
 							str+='</div>';
 							str+='<div class="col-xs-11 col-sm-10 col-md-11">';
-								str+='<ul class="villageWardUlddd">';
+								str+='<ul class="publicationWiseSlickApply">';
 						for(var j in result[i].coreDashBoardVOList){
 							str+='<li><div id="publicationwisegraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
 						}
@@ -1597,85 +1615,96 @@ $(document).on("click",".detailedPartySubLi",function(){
 									positivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc)
 									negativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc)
 						
-							$(function () {
-								$('#publicationwisegraph'+i+''+j+'').highcharts({
-									 colors: ['#64C664','#D33E39'],
-									chart: {
-										type: 'column'
-									},
-									title: {
-										text: ''
-									},
-								   
-									xAxis: {
-										 min: 0,
-											 gridLineWidth: 0,
-											 minorGridLineWidth: 0,
-											 categories: partyName,
-										labels: {
-												rotation: -45,
-												style: {
-													fontSize: '13px',
-													fontFamily: 'Verdana, sans-serif'
-												},
-											}
-									},
-									yAxis: {
-										min: 0,
-											   gridLineWidth: 0,
-												minorGridLineWidth: 0,
+							if(partyName.length !=0 && positivePercArray.length !=0 && negativePercArray.length !=0){
+								$(function () {
+									$('#publicationwisegraph'+i+''+j+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
 										title: {
 											text: ''
-										}
-									},
-									tooltip: {
-										pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b> <br/>',
-										shared: true
-									},
-									legend: {
-															
-											enabled: false,				
-															
-										},				
-									plotOptions: {
-										column: {
-											//stacking: 'percent',
-											dataLabels:{
-												enabled: true,
-												formatter: function() {
-													if (this.y === 0) {
-														return null;
-													} else {
-														return Highcharts.numberFormat(this.y,1) + '%';
-													}
-												}
-											},
-											
 										},
-									},
-									series: [{
-										name: 'Positive',
-										data: positivePercArray
-									}, {
-										name: 'Negative',
-										data: negativePercArray
-									}]
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: partyName,
+											labels: {
+													//rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b> <br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												//stacking: 'percent',
+												dataLabels:{
+													enabled: true,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: positivePercArray
+										}, {
+											name: 'Negative',
+											data: negativePercArray
+										}]
+									});
 								});
-							});
+							}else{
+								$('#publicationwisegraph'+i+''+j+'').html("No Data Available");
+								$('#publicationwisegraph'+i+''+j+'').css("height","20px");
+							}
+							
 							
 						}
 					}
 						
 				}
 			}
-		$(".villageWardUlddd").slick({
-				 slide: 'li',
-				 slidesToShow: 4,
-				 slidesToScroll: 1,
-				 infinite: false,
-				 swipeToSlide:false,
-				 swipe:false,
-				 touchMove:false
-			}); 
+				
+			else{
+				$("#partyWiseDetailsDiv").html("No Data Available");
+			}
+			$(".publicationWiseSlickApply").slick({
+					 slide: 'li',
+					 slidesToShow: 4,
+					 slidesToScroll: 3,
+					 infinite: false,
+					 swipeToSlide:false,
+					 swipe:false,
+					 touchMove:false
+				}); 
+		
 	}
 	
