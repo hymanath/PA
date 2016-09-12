@@ -3084,17 +3084,41 @@ public List<UserDataVO> getbasicCommitteeDetails(){
 	}
 	return basicCommitteeList;
 }
-public IdNameVO getStateLevelCampAttendedDetails(){  
+public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,Long stateId,String dateStr){    
 	LOG.info(" entered in to getStateLevelCampAttendedDetails() of CoreDashBoardMainService ");
 	try{
-		IdNameVO idNameVO = new IdNameVO();  
-		Long stateLevelCampId = 6l;
-		Long stateLevelProgramId = 6l;
-		Long inviteCount = trainingCampBatchAttendeeDAO.getTotalInvitedForTrainingCampStateLevel(stateLevelCampId, stateLevelProgramId);
-		Long attendedCount = trainingCampAttendanceDAO.getTotalAttendedForTrainingCampStateLevel(stateLevelCampId, stateLevelProgramId);
-		idNameVO.setCount(inviteCount);
-		idNameVO.setAvailableCount(attendedCount);
-		return idNameVO;
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0){
+			 toDate = sdf.parse(dateStr);  
+		}
+		IdNameVO idNameVO = null;  
+		Map<Long,IdNameVO> idAndIdNameVoMap = new HashMap<Long,IdNameVO>();
+		List<IdNameVO> idNameVOs  = new ArrayList<IdNameVO>();
+		
+		List<Object[]> inviteCountList = trainingCampBatchAttendeeDAO.getTotalInvitedForTrainingCampStateLevel(programIdList, stateId, toDate); 
+		List<Object[]> attendedCountList = trainingCampAttendanceDAO.getTotalAttendedForTrainingCampStateLevel(programIdList, stateId, toDate); 
+		if(inviteCountList != null && inviteCountList.size() > 0){
+			for(Object[] obj : inviteCountList){
+				idNameVO = new IdNameVO();
+				idNameVO.setId(obj[0] != null ? (Long)obj[0] : 0l);
+				idNameVO.setName(obj[1] != null ? obj[1].toString() : "");    
+				idNameVO.setCount(obj[2] != null ? (Long)obj[2] : 0l);
+				idAndIdNameVoMap.put(obj[0] != null ? (Long)obj[0] : 0l, idNameVO);
+				
+			}
+			
+		}
+		if(attendedCountList != null && attendedCountList.size() > 0){
+			for(Object[] obj : attendedCountList){
+				idNameVO = idAndIdNameVoMap.get(obj[0] != null ? (Long)obj[0] : 0l);
+				if(idNameVO != null){
+					idNameVO.setActualCount(obj[2] != null ? (Long)obj[2] : 0l);
+				}
+			}
+		}
+		idNameVOs = new ArrayList<IdNameVO>(idAndIdNameVoMap.values());
+		return idNameVOs;
 		
 	}catch(Exception e){
 		e.printStackTrace();
