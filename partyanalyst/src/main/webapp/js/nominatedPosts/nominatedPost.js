@@ -1,4 +1,5 @@
 function getOpenPositionDistrictsForState(state,id,num){
+	$("#searchDataImgForDistrict"+num).show();
 	state = $("#nominatedStaeId"+num).val();
 	//$("#nominatedDistId  option").remove();
 	$("#nominatedDistId"+num+"").empty();
@@ -31,6 +32,7 @@ function getOpenPositionDistrictsForState(state,id,num){
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
+	   $("#searchDataImgForDistrict"+num).hide();
 	   $("#nominatedDistId"+num).empty();
 	   $("#nominatedDistId"+num).append('<option value="0">Select District</option>');
 	   for(var i in result){
@@ -79,6 +81,7 @@ function getOpenPositionConstituenciesForDistrict(district,id,num){
 
 function getOpenPositionMandalsForConstituency(num,id){
 	var constituencyId  =0;
+	 $("#searchImgForConst"+num).show();
 	constituencyId = $("#nominatdConstId"+num).val();
 	$("#nominatedMandlId"+num+"  option").remove();
 	$("#nominatedMandlId"+num).append('<option value="0">Select Mandal/Municipality</option>');
@@ -91,7 +94,7 @@ function getOpenPositionMandalsForConstituency(num,id){
 	var jsObj=
    {				
 		constituencyId:constituencyId,
-		boardLevelId:$('#boardLvlId'+num+'').val()			
+		boardLevelId:$("#boardLvlId"+num).val()			
 	}
     $.ajax({
 	  type:'GET',
@@ -99,9 +102,12 @@ function getOpenPositionMandalsForConstituency(num,id){
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){   
+   
+   $("#searchImgForConst"+num).hide();
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
+	    
 	   $("#nominatedMandlId"+num).empty();
 	   $("#nominatedMandlId"+num).append('<option value="0">Select Mandal/Municipality</option>');
 	   for(var i in result){
@@ -114,7 +120,7 @@ function getOpenPositionMandalsForConstituency(num,id){
 function getOpenPositionVillagesForMandal(num,id){
 	var mandalId=0;
 	var constituencyId = 0; 
-	
+		 $("#searchImgForMandl"+num).show();
 	mandalId=$("#nominatedMandlId"+num).val();
 	constituencyId = $("#nominatdConstId"+num).val();
 	$("#nominatedPanchayatId"+num+"  option").remove();
@@ -137,6 +143,7 @@ function getOpenPositionVillagesForMandal(num,id){
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
+	   	 $("#searchImgForMandl"+num).hide();
 	   $("#nominatedPanchayatId"+num).empty();
 	   $("#nominatedPanchayatId"+num).append('<option value="0">Select Panchayat/Ward</option>');
 	   for(var i in result){
@@ -154,7 +161,7 @@ function getDistrictsForStates(state,id,num){
 		hideDetails();
 		$('#districtIdImg').show();
 			getConstituenciesForState(state,'constituencyId');
-			$("#searchDataImgForDist").show();
+			//$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
 			$("#districtId").empty();
 			$("#constituencyId").empty();
@@ -173,7 +180,7 @@ function getDistrictsForStates(state,id,num){
 			 
 	}else if(id == "changestateId"){
 			getConstituenciesForState(state,'changeConstiId');
-			$("#searchDataImgForDist").show();
+			//$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
 			$("#changedistrictId").empty();
 			$("#changeConstiId").empty();
@@ -190,7 +197,7 @@ function getDistrictsForStates(state,id,num){
 			$("#changePanchyatId").trigger("chosen:updated");
 	}else if(id == "notCadreStateId"){
 			getConstituenciesForState(state,'notCadreConstId');
-			$("#searchDataImgForDist").show();
+			//$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
 			$("#notCadreDistId").empty();
 			$("#notCadreConstId").empty();
@@ -254,7 +261,7 @@ function getDistrictsForStates(state,id,num){
 			$("#nominatedDistId"+num).empty();
 	   }
 	   
-		$("#searchDataImgForDist").hide();
+		//$("#searchDataImgForDist").hide();
 	     //$("#districtId").append('<option value="-1">Please Select District</option>');
      for(var i in result){
 		 if(id == "statesDivId"){
@@ -302,7 +309,7 @@ function getDistrictsForStates(state,id,num){
 			$("#panchaytList").trigger("chosen:updated");
 			
 	 }else if(id == "notCadreDistId"){			
-			$("#searchDataImgForDist").show();
+			//$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
 			$("#notCadreConstId").empty();
 			$("#notCadreMandlId").empty();
@@ -424,7 +431,7 @@ function getDistrictsForStates(state,id,num){
 			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
 			document.getElementById('membershipId').checked = true;
 	}else if(id == "notCadreConstId"){			
-			$("#searchDataImgForDist").show();
+			//$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
 			$("#notCadreMandlId").empty();
 			$("#notCadrePanchayatId").empty();
@@ -522,7 +529,7 @@ function getPanchayatWardByMandal(num,id){
 				$("#panchaytList  option").remove();
 				$("#panchaytList").append('<option value="0">Select Panchayat</option>');
 		}else if(id == "notCadreMandlId"){			
-			$("#searchDataImgForDist").show();
+			//$("#searchDataImgForDist").show();
 			//refreshExistingDetails();
 			$("#notCadrePanchayatId").empty();
 			mandalId=$("#notCadreMandlId").val();
@@ -1035,7 +1042,7 @@ function getNominatedPostApplication(startIndex)
 		}
 getDistricts();
 function getDistricts(){
-	$("#searchDataImgForDist").show();
+	//$("#searchDataImgForDist").show();
      var jsObj=
 		{				
 				stateId:1,
@@ -1049,7 +1056,7 @@ function getDistricts(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-   $("#searchDataImgForDist").hide();
+   //$("#searchDataImgForDist").hide();
     
    if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
@@ -1205,12 +1212,12 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
 	  
-	   if(result[0].status != "Applied"){
+	   if(result[0].status != "Applied" && result.length >1){
 		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
 	  } 
 		for(var i in result){
-			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');				
-		}
+			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
 		$("#deptBoardPostnId"+num).trigger("chosen:updated");
    }else{
 	   //$("#errdeptBoardPostnId"+num).html('<b style="color:red;"> All Positions are filled out.</b>');
@@ -1221,6 +1228,7 @@ $('.searchTypeCls').click(function(){
   }
   
     function getDepartmentBoards(num){
+		
 	$("#searchDataImgForDep"+num).show();
 	 var postTypeId=1;
 	 var boardLevelId = $("#boardLvlId"+num).val();
@@ -1280,7 +1288,10 @@ $('.searchTypeCls').click(function(){
   $("#deptBoardId"+num).empty();
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
+		   
+		   if(result != null && result.length >1)
 		   $("#deptBoardId"+num).append('<option value="0">Any</option>');
+	   
 		   if(depmtId > 0 )
 				for(var i in result){
 					$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -1294,7 +1305,7 @@ $('.searchTypeCls').click(function(){
    });
   }  
   function getDepartments(num){
-	$("#searchDataImgForDist").show();
+	//$("#searchDataImgForDist").show();
 	 var postTypeId=0;
 	 var boardLevelId = $("#boardLvlId"+num).val();
 	 if(num ==0)
@@ -1370,7 +1381,6 @@ $('.searchTypeCls').click(function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   $("#searchDataImgForDistrict"+num).hide();
-	   $("#searchDataImgForDepmt"+num).hide();
 	  if(num == 0)
 		  num='';
 	   $("#deptBoardId"+num).html('');
@@ -1381,8 +1391,11 @@ $('.searchTypeCls').click(function(){
 	   $("#depmtsId"+num).trigger("chosen:updated")
      
 	   if(result != null && result.length >0){
-			$("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
+		   $("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
+		   
+		   if(result != null && result.length >1)
 			$("#depmtsId"+num).append('<option value="0">Any</option>'); 
+		
 		 for(var i in result){
 		   $("#depmtsId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		 }
@@ -1512,6 +1525,9 @@ $(document).on("click","#addOneMore",function(){
   e.find(".cloneImgPosCls").attr("id","searchDataImgForPos"+cloneCount);
   e.find(".cloneImgDepCls").attr("id","searchDataImgForDep"+cloneCount);
   e.find(".cloneImgConCls").attr("id","searchImgForDistr"+cloneCount);
+  e.find(".cloneImgMandlCls").attr("id","searchImgForConst"+cloneCount);
+  e.find(".cloneImgPanchCls").attr("id","searchImgForMandl"+cloneCount);
+  e.find(".cloneImgDeptCls").attr("id","searchImgForPanch"+cloneCount);
   e.attr("attr_count",cloneCount);
   e.show();
   e.find(".nominatdPostSelCls").attr("id","nomintdPostId"+cloneCount);

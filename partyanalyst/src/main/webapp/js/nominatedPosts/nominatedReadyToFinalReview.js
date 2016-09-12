@@ -953,8 +953,19 @@ $(document).on("click",".submitBtnCls",function(){
 	   if(result != null && result == 'success'){
 			$("#"+divId).html("Successfully Updated...");
 	        $("#"+btnId).attr("disabled","disabled");
-			
-			getReferralCandidateDetails(globalLocationLevelId,globalLocationLevelValueArr[0],glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId,"finalReview");
+		if(globalLocationLevelId == 2){
+			levelValue = $("#stateId").val();	
+			}
+		else if(globalLocationLevelId == 3){			
+			levelValue = $("#districtId").val();
+			}
+		else if(globalLocationLevelId == 4){
+			levelValue = $("#constituencyId").val();
+		}
+		else if(globalLocationLevelId >= 5){
+			levelValue = $("#manTowDivId").val();
+			}
+			getReferralCandidateDetails(globalLocationLevelId,levelValue,glFinalyeDeptId,glFinalyeboardId,glFinalyePositionId,"finalReview");
 			
 	   }else if(result != null && result == 'failure'){
 		   $("#"+divId).html("<span style='color:red;'>Sorry,Exception Occured...Please try again...</span>");

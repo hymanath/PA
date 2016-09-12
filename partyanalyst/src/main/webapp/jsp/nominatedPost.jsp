@@ -401,33 +401,34 @@
 									<select class="chosenSelect nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');getDepartments(0);" id=
 									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
-									<img id="searchImgForDistr" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchImgForDistr" class="cloneImgConCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 									</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="constituencyshowDivId">
 									<label>Constituency</label>
 									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
 									</select>
+									<img id="searchImgForConst" class="cloneImgMandlCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="mondalShowDivId">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);getDepartments(0);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
-									
 									</select>
+									<img id="searchImgForMandl" class="cloneImgPanchCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="panchayatShowDivId">
 									<label>Panchayat/ Ward / Division</label>
 									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId" onchange="getDepartments(0);">
-										
 									</select>
+									<img id="searchImgForPanch" class="cloneImgDeptCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Department Name</label>
-									<select attr_no="" class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards(0);" name="nominatedPostVO.nominatdList[0].deptId">
+									<select attr_no="" class="chosenSelect depmtsCls"  id="depmtsId" onchange="getDepartmentBoards('');" name="nominatedPostVO.nominatdList[0].deptId">
 									<option value="0">Select Department</option>
 									</select>
 									<br>
 									<span id="errdepmtsId" class="errdepmtscls"></span>
-									<img id="searchDataImgForDep" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img id="searchDataImgForDep" class="cloneImgDepCls" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
@@ -489,7 +490,7 @@
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="">
 									<label>District</label>
-									<select  class="nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');" id=
+									<select  class="nominatedDistCls"  id=
 									"">
 									</select>
 									<img id="searchImgForDistr" class="cloneImgConCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
@@ -498,24 +499,25 @@
 									<label>Constituency</label>
 									<select class="nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);" id="">
 									</select>
+									<img id="searchImgForConst" class="cloneImgMandlCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select  class="nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);" id="nominatedMandlId">
-										
 									</select>
+									<img id="searchImgForMandl" class="cloneImgPanchCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="">
 									<label>Panchayat/ Ward / Division</label>
 									<select  class="nominatedPanchayatCls" id="nominatedPanchayatId">
-										
 									</select>
+									<img id="searchImgForPanch" class="cloneImgDeptCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Department Name</label>
 									<select  class="depmtsCls"  id="" onchange="getDepartmentBoards('');">
 									</select>
-									<img id="searchDataImgForDep" class="cloneImgDepCls"  style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
+									<img class="cloneImgDepCls" id="searchDataImgForDep" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
 								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10">
 									<label>Corporation/Board Name</label>
