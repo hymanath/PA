@@ -1172,18 +1172,29 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   }
 		  return query.list();    
   }
-	public Long getTotalAttendedForTrainingCampStateLevel(Long campId, Long programId){ 
+	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate){ 
 		StringBuilder queryString = new StringBuilder();
-		queryString.append(" select count(distinct ATT.tdpCadre.tdpCadreId) from TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where " +
-				           " TCA.trainingCampSchedule.trainingCamp.trainingCampId = (:campId) and " +
-				           " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId = (:programId) and " +
-				           " TCA.attendance.attendanceId = ATT.attendanceId and " +
+		queryString.append(" select TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
+						   " TCA.trainingCampSchedule.trainingCampProgram.programName ," +
+						   " count(distinct ATT.tdpCadre.tdpCadreId) from " +
+						   " TrainingCampAttendance TCA, Attendance ATT, TdpCadre TC, TrainingCampBatchAttendee TCBA where " +
+				        
+				           " TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId in (:programIdList) and " +
+				           " TCA.attendance.attendedTime <= (:toDate) and ");
+		if(stateId.longValue() == 1){
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 11 and 23 and ");
+		}else{
+			queryString.append(" TCBA.tdpCadre.userAddress.district.districtId between 1 and 10 and ");
+		}
+		queryString.append(" TCA.attendance.attendanceId = ATT.attendanceId and " +
 				           " ATT.tdpCadre.tdpCadreId = TC.tdpCadreId and " +    
-				           " TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId ");  
+				           " TCBA.tdpCadre.tdpCadreId = TC.tdpCadreId " +
+				           " group by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId " +
+				           " order by TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");  
 		Query query = getSession().createQuery(queryString.toString()); 
-		query.setParameter("campId", campId);
-		query.setParameter("programId", programId);  
-		return (Long) query.uniqueResult();
+		query.setParameterList("programIdList", programIdList);
+		query.setDate("toDate", toDate);
+		return  query.list();
 	}
 	public List<Object[]> getStateDistrictTrainingProgramAttendedDetails(Long campId, Long programId){
 		StringBuilder queryString = new StringBuilder();
