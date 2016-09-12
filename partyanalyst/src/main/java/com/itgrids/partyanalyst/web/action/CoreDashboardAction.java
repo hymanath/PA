@@ -1082,9 +1082,19 @@ public String getRoleBasedPerformanceCohort(){
 	}
 	public String getStateLevelCampAttendedDetails(){  
 		try {
-			idNameVO = coreDashboardMainService.getStateLevelCampAttendedDetails();
+			jObj = new JSONObject(getTask());
+			List<Long> programIdList = new ArrayList<Long>();
+			String dateStr = jObj.getString("dateStr");
+			Long stateId = jObj.getLong("stateId");
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){
+					programIdList.add(Long.valueOf(programIdArr.getString(i)));
+				}
+			}
+			idNameVoList = coreDashboardMainService.getStateLevelCampAttendedDetails(programIdList,stateId,dateStr);   
 		} catch (Exception e) {
-			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
+			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e); 
 		}
 		return Action.SUCCESS; 
 	}
