@@ -567,7 +567,7 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		}
-		$(".meetingsHiddenBlock,.moreMeetingsBlocksDetailed,.moreMeetingsBlocksComparision,moreMeetingsBlocksDetailed").hide();
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksDetailed,.moreMeetingsBlocksComparision,moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
 		
 		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
 		{
@@ -1967,7 +1967,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 }
 
 function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIdsString){
-   $("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html(' ');
+	$("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html(' ');
 	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
 	var state = globalState
