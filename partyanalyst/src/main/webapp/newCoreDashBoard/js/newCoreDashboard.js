@@ -215,6 +215,7 @@
 	  event.preventDefault();
 	  defaultCommitteeCalls();
 	  getPartyWiseTotalDebateDetails();
+	  stateLevelCampDetails(); 
     });
 	
 	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
