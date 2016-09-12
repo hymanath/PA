@@ -1522,11 +1522,18 @@ $(document).on("click",".trainingCampDetailed",function(){
 });
 function getStateLevelCampCount(){
 	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var programIdArr = [6]; 
+	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	var jsObj={  
+		programIdArr : programIdArr,
+		stateId : globalStateId,
+		dateStr : dateStr
+	} 
 	$.ajax({
 		type : 'GET',
 		url : 'getStateLevelCampAttendedDetails.action',     
 		dataType : 'json',
-		data : {}
+		data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){ 
 		$("#programsDivId").html(' ');
 		if(result != null){    
@@ -1539,14 +1546,14 @@ function getStateLevelCampCount(){
 function buildStateLevelCampDetails(result){ 
 	var str='';
 	str+='<ul class="trainingsUl">';
-	//for(var i in result){
+	for(var i in result){
 		str+='<li>';
 		str+='<h4 class="text-capitalize text-muted">official spokespersons</h4>';
-		str+='<div id="programHighChartId0" class="chartLi trainingGraphWidth"></div>';
+		str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
 		str+='</li>';
-	//}
+	}
 	str+='</ul>';
-	$("#programsDivId").html(str);
+	$("#programsDivId").html(str); 
 	$(".trainingsUl").slick({ 
 			slide: 'li',
 			slidesToShow: 4,
@@ -1587,18 +1594,17 @@ function buildStateLevelCampDetails(result){
 			]
 	}); 
 	if(result != null){
-		//for(var i in result){
-			//debugger;   
+		for(var i in result){  
 			var  jsonDataArrAttended=[]; 
 			var  jsonDataArrYettotrain=[];
-			var precent = (result.availableCount*(100/result.count)).toFixed(2);
+			var precent = (result[i].actualCount*(100/result[i].count)).toFixed(2);
 			jsonDataArrAttended.push(parseFloat(precent));          
 			var abs = 100-precent;
 			jsonDataArrYettotrain.push(abs);      
-			var chartWidth = $("#programHighChartId0").parent().width()/2;
-			$("#programHighChartId0").width(chartWidth);
+			var chartWidth = $("#programHighChartId"+i).parent().width()/2;
+			$("#programHighChartId"+i).width(chartWidth);  
 			$(function () {
-				$('#programHighChartId0').highcharts({  
+				$('#programHighChartId'+i).highcharts({  
 				colors: ['#F56800','#53BF8B','#66728C'],         
 				chart: {
 					type: 'column',    
@@ -1669,7 +1675,7 @@ function buildStateLevelCampDetails(result){
 						}]
 				});
 			});  
-		//}
+		}
 	}
 	
 }
