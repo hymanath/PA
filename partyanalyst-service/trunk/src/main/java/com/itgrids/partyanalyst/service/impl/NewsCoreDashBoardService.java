@@ -163,7 +163,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	 	    			if(userTypesList != null && userTypesList.size()>0){
 		 	    			   for(List<UserTypeVO> membersList : userTypesList){
 		 	    				   if(membersList != null){  
-		 	    					  Collections.sort(membersList,negativeSoring);
+		 	    					  Collections.sort(membersList,negativeSorting);
 		 	    				   }
 		 	    			   }
 		 	    		   }
@@ -189,7 +189,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	    }
 	}; 
 	
-	public static Comparator<UserTypeVO> negativeSoring = new Comparator<UserTypeVO>() {
+	public static Comparator<UserTypeVO> negativeSorting = new Comparator<UserTypeVO>() {
 	     public int compare(UserTypeVO member2, UserTypeVO member1) {
 
 	        Double perc2 = member2.getNegativePercentage();
@@ -354,72 +354,63 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	 	    		}
 	 	    		
 	 	    	}
-	 	    	
+	 	    	//For Parties Wise Percentages
 	 	    	if(wsResultList != null && wsResultList.size() > 0){
 	 	    		setWSResultToUserBase(childActivityMembersMap,wsResultList,finalList);	
-	 	    		
-	 	    	 	//mixing secreteries and general secreteries.
-	 	    	/*	if(userTypesMap!=null && userTypesMap.size()>0){
-	 			    	 
-	 			    	 Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
-	 			    	 
-	 			    	 Map<Long,UserTypeVO>  secreteriesMap = null;
-	 			    	 if(userTypesMap.containsKey(11l)){
-	 			    		 secreteriesMap = userTypesMap.get(11l);
-	 			    		 orgSecAndSecMap.putAll(secreteriesMap);
-	 			    		 //remove secreteries from Map
-	 			    		 userTypesMap.remove(11l); 
-	 			    	 }
-	 			    	 
-	 			    	 Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
-	 			    	 if(userTypesMap.containsKey(4l)){
-	 			    		 organizingSecreteriesMap = userTypesMap.get(4l);
-	 			    		 orgSecAndSecMap.putAll(organizingSecreteriesMap);
-	 			    	 }
-	 			    	
-	 			    	 if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
-	 			    		 userTypesMap.put(4l, orgSecAndSecMap); 
-	 			    	 }
-	 			    	 
-	 			     }*/
-	 	    		
-	 	    		//set result map to list
-	 	    		/*if(userTypesMap != null && userTypesMap.size() > 0){
-	 			    	 userTypesList = new ArrayList<List<UserTypeVO>>();
-	 			    	 for(Long userType:userTypesMap.keySet()){
-	 			    		 Map<Long,UserTypeVO> membersMap = userTypesMap.get(userType);
-	 			    		 userTypesList.add(new ArrayList<UserTypeVO>(membersMap.values()));
-	 			    	 }
-	 			     }
-	 	    		
-	 	    		if(benefitId == 1l){//sort based on positive
-	 	    			if(userTypesList != null && userTypesList.size()>0){
-	 	    			   for(List<UserTypeVO> membersList : userTypesList){
-	 	    				   if(membersList != null){  
-	 	    					  Collections.sort(membersList,positiveSorting);
-	 	    				   }
-	 	    			   }
-	 	    		   }
-	 	    		}else if(benefitId == 2l){//sort based in negative
-	 	    			if(userTypesList != null && userTypesList.size()>0){
-		 	    			   for(List<UserTypeVO> membersList : userTypesList){
-		 	    				   if(membersList != null){  
-		 	    					  Collections.sort(membersList,negativeSoring);
-		 	    				   }
-		 	    			   }
-		 	    		   }
-	 	    		}*/
-	 	    		
+	 	    		if(finalList != null && finalList.size() > 0){
+	 	    			for (ChildUserTypeVO chUsrTypVO : finalList) {
+	 	    				if(chUsrTypVO.getChildUserTypeVOList() != null && chUsrTypVO.getChildUserTypeVOList().size() > 0){
+	 	    					Long partyTotalCount = 0l;
+	 	    					for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
+									partyTotalCount = partyTotalCount +childUserTypeVO.getCount();
+								}
+	 	    					
+	 	    					if(partyTotalCount > 0l){
+	 	    						for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
+	 	    							if(childUserTypeVO.getOrganizationId() == 872l){
+	 	    								chUsrTypVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
+	 	    							}
+										childUserTypeVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
+									}
+	 	    					}
+	 	    				}
+	 	    				//For EditionWise Percentages
+	 	    				if(chUsrTypVO.getChildUserTypeVOList1() != null && chUsrTypVO.getChildUserTypeVOList1().size() > 0){
+	 	    					for (ChildUserTypeVO childUsrVO : chUsrTypVO.getChildUserTypeVOList1()) {
+									Long mainTotalCount=0l,distTotalCount=0l;
+									mainTotalCount = childUsrVO.getPositiveCountMain()+childUsrVO.getNegativeCountMain();
+									distTotalCount = childUsrVO.getPositiveCountDist()+childUsrVO.getNegativeCountDist();
+									if(mainTotalCount > 0l){
+										childUsrVO.setPositiveCountMainPerc(caclPercantage(childUsrVO.getPositiveCountMain(), mainTotalCount));
+										childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountMain(), mainTotalCount));
+									}
+									if(distTotalCount > 0l){
+										childUsrVO.setPositiveCountDistPerc(caclPercantage(childUsrVO.getPositiveCountDist(), distTotalCount));
+										childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountDist(), distTotalCount));
+									}
+								}
+	 	    				}
+						}
+	 	    			
+	 	    			
+	 	    			Collections.sort(finalList,positiveSorting1);
+	 	    		}
 	 	    	}
-	 	    	
-	 	    	
 	 	   }
-	         
 		} catch (Exception e) {
 			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers service", e);
 		}
 		return finalList;
 	}
+	
+	public static Comparator<ChildUserTypeVO> positiveSorting1 = new Comparator<ChildUserTypeVO>() {
+	     public int compare(ChildUserTypeVO member2, ChildUserTypeVO member1) {
+
+	        Double perc2 = member2.getPositiveCountMainPerc();
+	        Double perc1 = member1.getPositiveCountMainPerc();
+	         return perc1.compareTo(perc2);
+	    }
+	}; 
 	
 	public void setWSResultToUserBase(Map<Long, UserTypeVO> childActivityMembersMap,List<CoreDashBoardVO> wsResultList,List<ChildUserTypeVO> finalList){
 		if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
