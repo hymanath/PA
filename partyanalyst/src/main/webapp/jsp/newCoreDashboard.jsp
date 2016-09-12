@@ -876,8 +876,8 @@
 							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 							news
 							<small class="text-muted" id="currentViewing"></small>
-							<span id="lastUpdatedId" ></span>
 						</h4>
+						<span id="lastUpdatedId"></span>
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-5">
 						<span class="settingsIcon settingsIconNews pull-right">

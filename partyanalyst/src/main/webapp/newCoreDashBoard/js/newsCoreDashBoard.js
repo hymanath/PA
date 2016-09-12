@@ -1397,11 +1397,14 @@ $(document).on("click",".detailedPartySubLi",function(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/"
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
 		}).then(function(result){
-		var temp  = result.split("/");
-				$("#lastUpdatedId").html("last updated : "+temp[1]);
-			
+			if(result != null){
+				$("#lastUpdatedId").html("Last updated : "+ result[0].organization);
+			}
 		});
 	}    
+	setInterval(function() {
+		getRescentArticleTime();
+	}, 60 * 1000);
 	
 	function buildgetDetailedPartyWiseDetailes(result){
 		$("#partyWiseDetailsDiv").html();
