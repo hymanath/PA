@@ -740,16 +740,7 @@
 									
 		}
 		$("#districtWiseCommitteesReport").html(str);
-		$("#districtWiseCommitteesReport").each(function(){
-			var scrollengthDiv = $(this).find(".chartLiD").length;
-			if(scrollengthDiv >= 4){
-				$(".verticalScrollBar").mCustomScrollbar({setHeight:'560px'})
-				
-			}else{
-				$(".verticalScrollBar").css("height","auto");
-			
-			}
-		});
+		
 		
 		
 	if(result != null && result.length > 0){
@@ -760,7 +751,15 @@
 			var districtWiseNotStartedPercArray = [];
 			if(result[i].subList !=null && result[i].subList.length > 0){
 				for(var j in result[i].subList){
-						districtNamesArray.push(result[i].subList[j].name);
+						
+						if(result[i].subList[j].locationLevelName == "CORPORATION" || result[i].subList[j].locationLevelName == "Mandal" ||  result[i].subList[j].locationLevelName == "MUNCIPALITY"){
+							var locationlevelName =  ''+result[i].subList[j].name+' ('+result[i].subList[j].locationLevelName+')';
+							
+							districtNamesArray.push(locationlevelName);
+						}else{
+							districtNamesArray.push(result[i].subList[j].name);
+						}
+						
 						
 						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
 							districtWiseCompletedPercArray.push(result[i].subList[j].completedPerc);
@@ -861,7 +860,18 @@
 		}
 	}else{
 		$("#districtWiseCommitteesReport").html("No Data Available")
-	}	
+	}
+		
+		$("#districtWiseCommitteesReport").each(function(){
+			var scrollengthDiv = $(this).find(".chartLiD").length;
+			if(scrollengthDiv >= 4){
+				$(".verticalScrollBar").mCustomScrollbar({setHeight:'560px'})
+				
+			}else{
+				$(".verticalScrollBar").css("height","auto");
+			
+			}
+		});
 }
 	
 	$("#levelWiseBasicCommittees").on("click",".slick-next,.slick-prev",function(){
