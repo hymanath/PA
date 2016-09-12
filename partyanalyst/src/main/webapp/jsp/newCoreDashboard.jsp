@@ -1384,7 +1384,7 @@
 											<!--<li><label><input type="checkbox" class="unSelectAll"/>UnSelect All</label></li>-->
 										</ul>
 										<div id="committeeTypeDivId"></div>
-										<button type="button" class="btn btn-success meetingGetDtlsBtncls">Get Details</button>
+										<button type="button" attr_main_type_meeting_id="1" class="btn btn-success meetingGetDtlsBtncls">Get Details</button>
 									</div>
 									 <div class="row">
 										<div id="meetingBasicCountDivId"></div>
@@ -1392,15 +1392,17 @@
 									 
 									 
 								  <div class="panelBlock m_top20" >
-								  <h4><span class="headingColor text-capitalize">state level meetings</span><span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
-								  
-									
-									<div class="settingsStateLevelMeetingDropDown " style="left:0px;">
+									<h4>
+										<span class="headingColor text-capitalize">state level meetings</span>
+										<span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+										<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>
+									</h4>
+								    <div class="settingsStateLevelMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAllStateLevelMeeting"/>&nbsp&nbspSelect All</label></li>
 										</ul>
 										<div id="stateLevelMeetingDivId"></div>
-										<button type="button" class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
+										<button type="button" attr_main_type_meeting_id="2"  class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
 									</div>
 									 <div class="row">
 										<div id="stateLevelMeetingBasicCnt"></div>
@@ -1408,20 +1410,22 @@
 								  </div>
 								  
 								  <div class="panelBlock m_top20">
-								  <h4><span class="headingColor text-capitalize">special meetings</span><span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
+									<h4>
+										<span class="headingColor text-capitalize">special meetings</span>
+										<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span>
+								    </h4>
 								 	<div class="specialMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
 										</ul>
 										<div id="specialMeetingDivId"></div>
-										<button type="button" class="btn btn-success specialMeetingBtncls">Get Details</button>
+										<button type="button" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
 									</div>
 									 <div class="row">
 										<div id="specialMeetingBasicCnt"></div>
 									 </div>
 								   </div>
-									 
-									 
 								</div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock">
@@ -1435,7 +1439,7 @@
 									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock">
+							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls ">
 										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
 							</div>	
 							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocks1" style="display:none;">
@@ -1444,6 +1448,12 @@
 									<li class="meetingComparisionBlock">Comparison</li>
 									
 								</ul>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 stateLevelMeetingBlock">
+								<div id="stateLevelMeetingBlockId"></div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 stateGeneralMeetBlock">
+								
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 moreMeetingsBlocksDetailed" style="display:none">
 								<div class="panel panel-default">
@@ -1488,7 +1498,9 @@
 										</div>
 									</div>
 									<div class="panel-body">
-									 <div id="districtWiseMeetingReport"></div>
+									 <div id="userAccessLevelLocationDivId"></div>
+									 
+									 <div id="districtWisePartyMeetingTypeDivId"></div>
 										<!--<div>
 											<h4>General Body Meetings</h4>
 										</div>
