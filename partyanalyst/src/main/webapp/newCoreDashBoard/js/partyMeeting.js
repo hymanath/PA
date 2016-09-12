@@ -177,6 +177,7 @@ $(document).on("click",".selectAll",function(){
 	}
 	var globalUserWiseMeetingMemberRslt;
 	function getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
+	$("#stateLevelMeetingBlockId").html(' ');	
    $("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
       var partyMeetingTypeArr=[];
 	  $("#committeeTypeId li").each(function() {
@@ -343,6 +344,7 @@ $(document).on("click",".selectAll",function(){
 	}
 	}
 	function buildgUserTypeWiseConductedAndMayBeTopFivePoorPerResults(result){
+		$("#stateLevelMeetingBlockId").html(' ');
 		var str='';
 		if(result != null && result.length > 0){
 			var str='';
@@ -469,8 +471,9 @@ $(document).on("click",".meetingLiCls",function(){
 	 }
 });
 	$(document).on("click",".meetingsIconExpand",function(){
-		$(".dateRangePickerClsForMeetings").toggleClass("hide");	
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
@@ -1355,16 +1358,9 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 			if(result[i].partyMettingsVOList !=null && result[i].partyMettingsVOList.length > 0){
 				for(var j in result[i].partyMettingsVOList){
 						districtNamesArray.push(result[i].partyMettingsVOList[j].name);
-						
-						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
 							conductedCountPercArray.push(result[i].partyMettingsVOList[j].conductedCountPer);
-						//}
-						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
 							notConductedCountPerArray.push(result[i].partyMettingsVOList[j].notConductedCountPer);
-						//}
-						//if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
 							mayBeCountPerArray.push(result[i].partyMettingsVOList[j].mayBeCountPer);
-						//}
 					}
 			}
 						$(function () {
@@ -1590,7 +1586,7 @@ $(".notesAreaMeetings").val('');
 
 $(document).on("click",".stateLevelMeetingBtnCls",function(){
 	
-	var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+	//var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 	//$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
 	//$(".showMoreBlockCls").attr("attr_meeting_type_id",0);
 	getPartyMeetingsMainTypeStateLevelOverview();
@@ -1599,7 +1595,7 @@ $(document).on("click",".stateLevelMeetingBtnCls",function(){
 	$(".moreMeetingsBlocksDetailed").hide();
 });
  $(document).on("click",".specialMeetingBtncls",function(){
-	 var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+	// var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
 	// $(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
 	// $(".showMoreBlockCls").attr("attr_meeting_type_id",0);
 	 getPartySpecialMeetingsMainTypeOverview(); 
@@ -1777,12 +1773,7 @@ function getPartySpecialMeetingsMainTypeOverview(){
 		});
 	
 }
-var globalStateLevelMeetingArr=[];
-var globalSpecialMeetingArr=[];
 function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandTypeId){
-	globalStateLevelMeetingArr=[];
-	globalSpecialMeetingArr=[];
-	
 	var partyMeetingTypeIdsString = 0;
 	var count =0;
     
@@ -1795,12 +1786,6 @@ function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandType
 				   partyMeetingTypeIdsString = partyMeetingTypeIdsString + "," + result[i].id ;
 			   }
 			   count = count +1;
-			   
-			   if(mainTypeMeetingId == 2){
-				 globalStateLevelMeetingArr.push(result[i].id);  
-			   }else if(mainTypeMeetingId == 3){
-				 globalSpecialMeetingArr.push(result[i].id);  
-			   }
 			   
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 				 str+='<h4 attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+'  class="text-capital meetingTypeCls">'+result[i].name+'<span class="stateGeneralMeeting" attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+' style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
@@ -1885,11 +1870,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 			if(result[i].districtList !=null && result[i].districtList.length > 0){
 				for(var j in result[i].districtList){
 						districtNamesArray.push(result[i].districtList[j].name);
-						
-						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
 							attendedCntPercArray.push(result[i].districtList[j].inviteeAttendedPerc);
-						//}
-						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
 							notAttendedCntPerArray.push(result[i].districtList[j].notAttendedPerc);
 						//}
 						//if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
@@ -1986,6 +1967,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 }
 
 function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIdsString){
+   $("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html(' ');
 	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
 	var state = globalState
