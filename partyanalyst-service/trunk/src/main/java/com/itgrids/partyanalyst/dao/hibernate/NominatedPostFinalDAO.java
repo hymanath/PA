@@ -1829,7 +1829,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	public List<NominatedPostApplication> getNominatedPostApplicationsByMemberOfFinalReview(Long memberId){
 		
 		 Query query = getSession().createQuery(" select model.nominatedPostApplication from NominatedPostFinal model " +
-		 		" where model.nominatedPostMemberId = memberId " +
+		 		" where model.nominatedPostMemberId = :memberId " +
 		 		" and model.isDeleted = 'N'" +
 		 		" and model.nominatedPostApplication.isDeleted ='N'  " +
 		 		" and model.nominatedPostApplication.applicationStatusId = :finalReview ");
