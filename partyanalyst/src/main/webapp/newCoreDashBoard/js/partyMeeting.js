@@ -24,6 +24,8 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	  //alert(customStartDateMeetings + "-" +customEndDateMeetings);
 	  getPartyMeetingBasicCountDetails();
 	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+	  getPartySpecialMeetingsMainTypeOverview();
+	  getPartyMeetingsMainTypeStateLevelOverview();
 	});
     $(document).on("click",".meetingGetDtlsBtncls",function(){
 		getPartyMeetingBasicCountDetails();
@@ -514,12 +516,73 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".dateRangePickerClsForNews").toggleClass("hide");
 		}
 	});
+	$(document).on("click",".stateLevelMeetingsExpand",function(){
+		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
+		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
+		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
+	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
+       $(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".stateLevelMeetingBlock").hide();
+		}else{
+		   getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
+		}
+	});
+	$(document).on("click",".stateGeneralMeeting",function(){
+		var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+		var meetingTypeId = $(this).attr("attr_meeting_type_id");
+		
+		 $(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+		 $(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".stateLevelMeetingBlock").hide();
+		}else{
+			
+		getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(attrMainTypeMeetingId,meetingTypeId);	
+		}
+	});
+	$(document).on("click",".specialMeetings",function(){
+		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
+		var partymeetingtypeidsstring = $(this).attr("attr_partymeetingtypeidsstring");
+		
+		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",mainMeetingTypeId);
+	    $(".showMoreBlockCls").attr("attr_meeting_type_id",partymeetingtypeidsstring);
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".showMoreBlockCls,.moreMeetingsBlocksIcon").show();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+		{
+			$(".stateLevelMeetingBlock").hide();
+		}else{
+		getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
+		}
+	});
 	$(document).on("click",".moreMeetingsBlocksIcon",function(){
 		$(this).addClass("unExpandBlock");
+		var mainTypeMeetingId = $(this).parent().attr("attr_main_type_meeting_id");
+		var meetingtypeId = $(this).parent().attr("attr_meeting_type_id");
+		if(mainTypeMeetingId != null && mainTypeMeetingId!=undefined && mainTypeMeetingId==2 || mainTypeMeetingId==3){
+		$(".moreMeetingsBlocksDetailed").show();	
+		 getParyMeetingTypeDetailsDistrictWise(mainTypeMeetingId,meetingtypeId);
+	     $("#meetingLevelHIghChartsDivId").html(' ');
+	     $("#userAccessLevelLocationDivId").html(' ');
+		}else{
 		getMeetingLevelDetails();
 		getPartyMeetingCntDetailstLevelWiseByUserAccessLevel();
+		$("#districtWisePartyMeetingTypeDivId").html(' ');
 		$(".moreMeetingsBlocksDetailed").show();
 		$(".moreMeetingsBlocks1").show();
+		}
 	});
 $(document).on("click",".unExpandBlock",function(){
 		$(this).removeClass("unExpandBlock");
@@ -1179,7 +1242,7 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 	
 	function getPartyMeetingCntDetailstLevelWiseByUserAccessLevel()
 	{ 
-	  $("#districtWiseMeetingReport").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  $("#userAccessLevelLocationDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	
 	 var partyMeetingTypeArr=[];
 	  $("#committeeTypeId li").each(function() {
@@ -1215,7 +1278,7 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 	
 	
 	function buildPartyMeetingCntDetailstLevelWiseByUserAccessLevel(result){
-		$("#districtWiseMeetingReport").html('');
+		$("#userAccessLevelLocationDivId").html('');
 		if(result != null && result.length > 0){
 			var str='';
 			
@@ -1225,7 +1288,7 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 			}
 									
 		}
-		$("#districtWiseMeetingReport").html(str);
+		$("#userAccessLevelLocationDivId").html(str);
 		
 		
 		
@@ -1337,7 +1400,7 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 			
 		}
 	}else{
-		$("#districtWiseMeetingReport").html("No Data Available")
+		$("#userAccessLevelLocationDivId").html("No Data Available")
 	}	
 }
 $(document).on("click",".meetingComparisionBlock",function(){
@@ -1472,15 +1535,31 @@ $(".notesAreaMeetings").val('');
 //State Level Meeting  && Special meeting section
 
 $(document).on("click",".stateLevelMeetingBtnCls",function(){
+	
+	var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+	//$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+	//$(".showMoreBlockCls").attr("attr_meeting_type_id",0);
 	getPartyMeetingsMainTypeStateLevelOverview();
 	$(".settingsStateLevelMeetingDropDown").hide();
 	$("#stateLevelMeetingDivId").hide();
+	$(".moreMeetingsBlocksDetailed").hide();
 });
  $(document).on("click",".specialMeetingBtncls",function(){
-	getPartySpecialMeetingsMainTypeOverview();
-	$(".specialMeetingDropDown").hide();
-	$("#specialMeetingDivId").hide();
+	 var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+	// $(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+	// $(".showMoreBlockCls").attr("attr_meeting_type_id",0);
+	 getPartySpecialMeetingsMainTypeOverview(); 
+	 $(".specialMeetingDropDown").hide();
+	 $("#specialMeetingDivId").hide();
+	 $(".moreMeetingsBlocksDetailed").hide();
 });
+/* $(document).on("click",".meetingTypeCls",function(){
+	var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+	var meetingTypeId = $(this).attr("attr_meeting_type_id");
+	 $(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+	 $(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+	 $(".moreMeetingsBlocksDetailed").hide();
+}); */
 function getStateLevelMeetingsByMeetingType()
 	{ 
 		var jsObj ={ 
@@ -1495,7 +1574,7 @@ function getStateLevelMeetingsByMeetingType()
 			if(result != null && result.length > 0){
 				buildStateLevelMeeting(result);
 			}
-			getPartyMeetingsMainTypeStateLevelOverview();
+			getPartyMeetingsMainTypeStateLevelOverview(); 
 		});
 	}
 	 function buildStateLevelMeeting(result){
@@ -1597,7 +1676,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 		}).done(function(result){
 			$("#stateLevelMeetingBasicCnt").html(" ");
 		    if(result != null && result.length > 0){
-				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt");
+				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId");
 			}else{
 			  $("#stateLevelMeetingBasicCnt").html("NO DATA AVAILABLE.");	
 			}
@@ -1637,18 +1716,40 @@ function getPartySpecialMeetingsMainTypeOverview(){
 		}).done(function(result){
 			$("#specialMeetingBasicCnt").html(" ");
 		   if(result != null && result.length > 0){
-			   buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt");
+			   buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId");
 		   }else{
 			$("#specialMeetingBasicCnt").html("NO DATA AVAILABLE.");	   
 		   }
 		});
 	
 }
-function buildPartyMeetingOverviewRslt(result,divId){
+var globalStateLevelMeetingArr=[];
+var globalSpecialMeetingArr=[];
+function buildPartyMeetingOverviewRslt(result,divId,mainTypeMeetingId,expandTypeId){
+	globalStateLevelMeetingArr=[];
+	globalSpecialMeetingArr=[];
+	
+	var partyMeetingTypeIdsString = 0;
+	var count =0;
+    
 	var str='';
 		   for(var i in result){
+			   
+			   if(count ==  0){
+				   partyMeetingTypeIdsString = result[i].id ;
+			   }else{
+				   partyMeetingTypeIdsString = partyMeetingTypeIdsString + "," + result[i].id ;
+			   }
+			   count = count +1;
+			   
+			   if(mainTypeMeetingId == 2){
+				 globalStateLevelMeetingArr.push(result[i].id);  
+			   }else if(mainTypeMeetingId == 3){
+				 globalSpecialMeetingArr.push(result[i].id);  
+			   }
+			   
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-				 str+='<h4 class="text-capital">'+result[i].name+'</h4>';
+				 str+='<h4 attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+'  class="text-capital meetingTypeCls">'+result[i].name+'<span class="stateGeneralMeeting" attr_meeting_type_id="'+result[i].id+'" attr_main_type_meeting_id='+mainTypeMeetingId+' style="background-color:#fff;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
 				str+='<table class="table tableTraining bg_ED">';
 					 str+='<tbody><tr>';
 						 str+='<td>';
@@ -1672,5 +1773,417 @@ function buildPartyMeetingOverviewRslt(result,divId){
 				 str+='<hr class="m_0">';
 			 str+='</div>';  
 			  }
+			 $("#"+expandTypeId).attr("attr_partyMeetingTypeIdsString",partyMeetingTypeIdsString); 
 	$("#"+divId).html(str);  
+}
+
+function getParyMeetingTypeDetailsDistrictWise(mainMeetingTypeId,partyMeetingTypeIdsString){
+	$("#districtWisePartyMeetingTypeDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
+	 var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
+	 
+	     var state = globalState
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj ={ 
+		             partyMeetingMainTypeId : mainMeetingTypeId,
+					 state : state,
+					 startDateString : fromDateStr,
+					 endDateString : toDateStr,
+					 partyMeetingTypeIds:partyMeetingTypeArr
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getParyMeetingTypeDetailsDistrictWiseAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 $("#districtWisePartyMeetingTypeDivId").html(' ');
+				buildDistrictWisePartyMeetingTypeDtlsRslt(result);
+		});
+}
+function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
+		$("#districtWisePartyMeetingTypeDivId").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			
+			for(var i in result){
+				str+=result[i].name;
+				str+='<div id="districtWiseMeetingType'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+									
+		}
+		$("#districtWisePartyMeetingTypeDivId").html(str);
+		
+	if(result != null && result.length > 0){
+		for(var i in result){
+			var districtNamesArray =[];
+			var attendedCntPercArray = [];
+			var notAttendedCntPerArray = [];
+			var mayBeCountPerArray = [];
+			if(result[i].districtList !=null && result[i].districtList.length > 0){
+				for(var j in result[i].districtList){
+						districtNamesArray.push(result[i].districtList[j].name);
+						
+						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							attendedCntPercArray.push(result[i].districtList[j].inviteeAttendedPerc);
+						//}
+						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							notAttendedCntPerArray.push(result[i].districtList[j].notAttendedPerc);
+						//}
+						//if(result[i].subList[j].notStartedPerc !=null && result[i].subList[j].notStartedPerc >0){
+							//mayBeCountPerArray.push(result[i].partyMettingsVOList[j].mayBeCountPer);
+						//}
+					}
+			}
+						$(function () {
+							$('#districtWiseMeetingType'+i+'').highcharts({
+								colors: ['#53BF8B','#F56800'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+									shared: true
+								},
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.y,1);
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Attended',
+									data: attendedCntPercArray
+								}, {
+									name: 'Absent',
+									data: notAttendedCntPerArray
+								}]
+							});
+						});
+				
+			
+		}
+	}else{
+		$("#districtWisePartyMeetingTypeDivId").html("No Data Available")
+	}	
+}
+
+function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIdsString){
+	
+	
+	 var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
+	
+	
+	     var state = globalState
+	    var dates=$("#dateRangeIdForMeetings").val();
+		var fromDateStr;
+		var toDateStr;
+		if(dates != null && dates!=undefined){
+			var datesArr = dates.split("-");
+			fromDateStr = datesArr[0]; 
+			toDateStr = datesArr[1]; 
+		}
+		var jsObj ={ 
+		             partyMeetingMainTypeId : partyMeetingMainTypeId,
+					 state : state,
+					 startDateString : fromDateStr,
+					 endDateString : toDateStr,
+					 partyMeetingTypeIds:partyMeetingTypeArr
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction(result)
+		});
+}
+
+function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetingsAction(result)
+{
+	
+	 var stateLevelMemDtlsArr=[];
+	 var otherRslt;
+	 if(result != null ){
+	   stateLevelMemDtlsArr.push(result.subList1);
+	   stateLevelMemDtlsArr.push(result.subList2);
+	   otherRslt = result.subVO;
+	 }
+	 var str='';
+	 str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+	   for(var i=0;i<stateLevelMemDtlsArr.length;i++){
+		 var subList = stateLevelMemDtlsArr[i];
+		 if(subList != null && subList.length > 0){
+			 for(var j in subList){
+			   str+='<h5 class="text-capital">'+subList[j].name+'</h5>';      
+		       str+='<div id="stateLevelMeetingGraph'+i+''+j+'" style="width:100%;height:80px;"></div>';
+			 }
+		 }
+	   }
+	   
+	   if(otherRslt != null ){
+	   str+='<h5 class="text-capital">'+otherRslt.name+'</h5>';      
+	   str+='<div id="stateLevelMeetingOtherId" style="width:100%;height:80px;"></div>';
+	    }
+	   str+='</div>'
+
+	$("#stateLevelMeetingBlockId").html(str);
+  for(var i=0;i<stateLevelMemDtlsArr.length;i++){
+		 var subList = stateLevelMemDtlsArr[i];
+	   if(subList != null && subList.length > 0){
+	      for(var j in subList){
+		    var inviteePerArr=[];
+			var notAttendedPer = [];
+			var attendedPer = [];
+			inviteePerArr.push(100);
+		    notAttendedPer.push(subList[j].notAttendedPerc)
+		    attendedPer.push(subList[j].attendedPerc)
+		  
+		  $('#stateLevelMeetingGraph'+i+''+j).highcharts({
+			colors: ['#0066DC'],
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ['invited','Attended','Absent'],
+				title: {
+					text: null
+				},
+				labels: {
+						formatter: function() {
+							return this.value.toString().substring(0, 10)+'...';
+						},
+						
+					}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null,
+					align: 'high'
+				},
+				labels: {
+					overflow: 'justify',
+					enabled: false,
+				}
+			},
+			tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+			},
+			plotOptions: {
+				column: {
+					//stacking: 'percent',
+					dataLabels: {
+						enabled: true,
+						 formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return Highcharts.numberFormat(this.y,1);
+							}
+						}
+					  
+					}
+				}
+			},
+			legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: -40,
+				y: 80,
+				floating: true,
+				borderWidth: 1,
+				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+				shadow: true
+			},
+			credits: {
+				enabled: false
+			},
+			
+			series: [{
+				name: 'Invited',
+				data: inviteePerArr
+			},{
+				name: 'Attended',
+				data: attendedPer
+			},{
+				name: 'Absent',
+				data: notAttendedPer
+			}]
+		}); 
+	   }
+	}
+  }
+  //for other
+	var inviteeOtherPerArr=[];
+	var notAttendedOtherPer = [];
+	var attendedOtherPer = [];
+     if(otherRslt != null ){
+			inviteeOtherPerArr.push(100);
+			notAttendedOtherPer.push(notAttendedOtherPer);
+			attendedOtherPer.push(otherRslt.notAttendedPerc);
+		  $('#stateLevelMeetingOtherId').highcharts({
+			colors: ['#0066DC'],
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ['invited','Attended','Absent'],
+				title: {
+					text: null
+				},
+				labels: {
+						formatter: function() {
+							return this.value.toString().substring(0, 10)+'...';
+						},
+						
+					}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null,
+					align: 'high'
+				},
+				labels: {
+					overflow: 'justify',
+					enabled: false,
+				}
+			},
+			tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+			},
+			plotOptions: {
+				column: {
+					//stacking: 'percent',
+					dataLabels: {
+						enabled: true,
+						 formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return Highcharts.numberFormat(this.y,1);
+							}
+						}
+					  
+					}
+				}
+			},
+			legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: -40,
+				y: 80,
+				floating: true,
+				borderWidth: 1,
+				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+				shadow: true
+			},
+			credits: {
+				enabled: false
+			},
+			
+			series: [{
+				name: 'Invited',
+				data: inviteeOtherPerArr
+			},{
+				name: 'Attended',
+				data: notAttendedOtherPer
+			},{
+				name: 'Absent',
+				data: attendedOtherPer
+			}]
+		}); 
+	}      
 }

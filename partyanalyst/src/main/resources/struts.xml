@@ -13655,6 +13655,11 @@
    			<param name="root">partyMeetingDataVOList</param> 
 		</result>
 	</action>
+	<action name="getParyMeetingTypeDetailsDistrictWiseAction" class="coreDashboardAction" method="getParyMeetingTypeDetailsDistrictWise">
+		<result type="json" name="success"> 
+   			<param name="root">partyMeetingDataVOList</param> 
+		</result>
+	</action>
 	
 	<action name="getPartyCompareSubLevelMemberDetailsAction" class="coreDashboardAction" method="getPartyCompareSubLevelMemberDetails">
 		<result type="json" name="success"> 

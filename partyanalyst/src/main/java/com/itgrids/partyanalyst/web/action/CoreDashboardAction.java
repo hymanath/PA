@@ -259,6 +259,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setPartyMeetingDataVO(PartyMeetingsDataVO partyMeetingDataVO) {
 		this.partyMeetingDataVO = partyMeetingDataVO;
 	}
+    
+	public PartyMeetingsDataVO getPartyMeetingDataVO() {
+		return partyMeetingDataVO;
+	}
 
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
@@ -1437,45 +1441,72 @@ public String getPartyMeetingsMainTypeOverViewData(){
 	}
 	return Action.SUCCESS;
   }
-
-	public String getPartyCompareSubLevelMemberDetails(){
-		try {
-			jObj = new JSONObject(getTask());
-			
-			//newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
-			 
-		} catch (Exception e) {
-			LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
-		}
-		return Action.SUCCESS;
-	}
+public String getParyMeetingTypeDetailsDistrictWise(){
 	
-	public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(){
+	try{
 		
-		try{
-			
-			jObj = new JSONObject(getTask());
-			
-			Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
-			
-			List<Long> partyMeetingTypeIds = new ArrayList<Long>();
-			JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
-			if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
-				for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
-					partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
-				}
+		jObj = new JSONObject(getTask());
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
 			}
-			
-			String state = jObj.getString("state");
-			String startDateString = jObj.getString("startDateString");
-			String endDateString   = jObj.getString("endDateString");
-			
-			
-			partyMeetingDataVO = coreDashboardPartyMeetingService.getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
-			
-	}catch(Exception e){
-		LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings() method of CoreDashBoard", e);
+		}
+		
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");
+		
+		
+		partyMeetingDataVOList = coreDashboardPartyMeetingService.getParyMeetingTypeDetailsDistrictWise(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getParyMeetingTypeDetailsDistrictWise() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
+public String getPartyCompareSubLevelMemberDetails(){
+	try {
+		jObj = new JSONObject(getTask());
+		
+		//newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+		 
+	} catch (Exception e) {
+		LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
 	}
 	return Action.SUCCESS;
-	}
+}
+
+public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask());
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+			}
+		}
+		
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");
+		
+		
+		partyMeetingDataVO = coreDashboardPartyMeetingService.getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
 }
