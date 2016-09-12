@@ -887,6 +887,17 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		         return perc2.compareTo(perc1);
 		    }
 		}; 
+	/**
+	* @param Long activityMemberId
+	* @param Long stateId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @param  List<Long> partyMeetingTypeValues
+	* @return List<PartyMeetingsVO>
+	* @author Santosh 
+	* @Description :This Service Method is used to get Meeting conducted,not conducted and may be count details by user access level. 
+	*  @since 9-AUGUST-2016
+	*/
   public List<PartyMeetingsVO> getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues){
 	  
 	  List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>(0);
@@ -1460,6 +1471,17 @@ if(dataMap != null && dataMap.size() > 0 ){
  }
 
 }
+/**
+* @param  Long partyMeetingMainTypeId
+* @param  List<Long> partyMeetingTypeIds
+* @param String fromDateStr
+* @param String toDateStr
+* @param Long stateId
+* @return  List<PartyMeetingsDataVO>
+* @author Santosh 
+* @Description :This Service Method is used to get state level meeting invited and absent count.. 
+*  @since 11-AUGUST-2016
+*/
 public List<PartyMeetingsDataVO> getParyMeetingTypeDetailsDistrictWise(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString){
 	
 	List<PartyMeetingsDataVO> resultList = new ArrayList<PartyMeetingsDataVO>();
