@@ -1464,8 +1464,8 @@ $(document).on("click",".detailedPartySubLi",function(){
 								for(var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
 									districtName = result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].districtName;
 									paperNamesArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].name)
-									positivePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positivePerc)
-									negativePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativePerc)
+									positivePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveCountDist)
+									negativePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountDist)
 									
 									
 								}
@@ -1503,7 +1503,7 @@ $(document).on("click",".detailedPartySubLi",function(){
 											}
 										},
 										tooltip: {
-											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}% ({point.y})</b><br/>',
 											shared: true
 										},
 										legend: {
@@ -1520,7 +1520,7 @@ $(document).on("click",".detailedPartySubLi",function(){
 														if (this.y === 0) {
 															return null;
 														} else {
-															return Highcharts.numberFormat(this.y,1) + '%';
+															return Highcharts.numberFormat(this.percentage,1) + '%';
 														}
 													}
 												},
