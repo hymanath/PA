@@ -2030,9 +2030,13 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
      if(subList != null && subList.length > 0){
         for(var j in subList){
       var stateLevelPerArr=[];
-      stateLevelPerArr.push(100);
-       stateLevelPerArr.push(subList[j].attendedPerc);
-        stateLevelPerArr.push(subList[j].notAttendedPerc);
+	  if(subList[j].invitedCount == 0){
+		 stateLevelPerArr.push(0); 
+	  }else{
+		  stateLevelPerArr.push(100);  
+	  }
+      stateLevelPerArr.push(subList[j].attendedPerc);
+      stateLevelPerArr.push(subList[j].notAttendedPerc);
        
       
       $('#stateLevelMeetingGraph'+i+''+j).highcharts({
@@ -2075,7 +2079,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
         }
       },
       tooltip: {
-        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
         shared: true,
         valueSuffix: '%'
       },
@@ -2088,7 +2092,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
               if (this.y === 0) {
                 return null;
               } else {
-                return Highcharts.numberFormat(this.y,1);
+                return Highcharts.numberFormat(this.y) + '%';
               }
             }
             
@@ -2121,7 +2125,11 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
   //for other
   var stateLevelOtherPerArr=[];
      if(otherRslt != null ){
-      stateLevelOtherPerArr.push(100);
+	  if(otherRslt.invitedCount == 0){
+		 stateLevelOtherPerArr.push(0); 
+	  }else{
+		  stateLevelOtherPerArr.push(100);  
+	  }
       stateLevelOtherPerArr.push(otherRslt.attendedPerc);
       stateLevelOtherPerArr.push(otherRslt.notAttendedPerc);
       $('#stateLevelMeetingOtherId').highcharts({
@@ -2164,7 +2172,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
         }
       },
       tooltip: {
-        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
         shared: true,
         valueSuffix: '%'
       },
@@ -2173,13 +2181,13 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
           //stacking: 'percent',
           dataLabels: {
             enabled: true,
-              formatter: function() {
+               formatter: function() {
               if (this.y === 0) {
                 return null;
               } else {
-                return Highcharts.numberFormat(this.y,1);
+                return Highcharts.numberFormat(this.y) + '%';
               }
-            } 
+            }  
           }
         }
       },
