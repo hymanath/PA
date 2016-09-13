@@ -1073,8 +1073,16 @@ public String getRoleBasedPerformanceCohort(){
 			
 			Long userId = user.getRegistrationID();
 			
+			List<Long> npIdsList = new ArrayList<Long>(0);
+			
+			if(jObj.getJSONArray("npIdsArr") != null && jObj.getJSONArray("npIdsArr").length()>0){
+				for(int i=0;i<jObj.getJSONArray("npIdsArr").length();i++){
+					npIdsList.add(Long.parseLong(jObj.getJSONArray("npIdsArr").getString(i)));
+				}
+			}
+			
 			userTypeVOList = newsCoreDashBoardService.getUserTypeWiseNewsCounts(userId,jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),
-					jObj.getString("state"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("benefitId"));
+					jObj.getString("state"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("benefitId"),npIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getUserTypeWiseNewsCounts", e);
 		}
@@ -1394,7 +1402,15 @@ public String getCandidateDtlsPerDist(){
  		try {
 			jObj = new JSONObject(getTask());
 			
-			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),jObj.getLong("childUserTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+			JSONArray arr = jObj.getJSONArray("npIdsArr");
+			List<Long> npIdsList = new ArrayList<Long>(0);
+			if(arr != null && arr.length() > 0){
+				for(int i=0;i<arr.length();i++){
+					npIdsList.add(Long.parseLong(arr.getString(i)));
+				}
+			}
+			
+			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),jObj.getLong("childUserTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers", e);
 		}
@@ -1483,7 +1499,15 @@ public String getPartyCompareSubLevelMemberDetails(){
 	try {
 		jObj = new JSONObject(getTask());
 		
-		//newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"));
+		List<Long> npIdsList = new ArrayList<Long>(0);
+		
+		if(jObj.getJSONArray("npIdsArr") != null && jObj.getJSONArray("npIdsArr").length()>0){
+			for(int i=0;i<jObj.getJSONArray("npIdsArr").length();i++){
+				npIdsList.add(Long.parseLong(jObj.getJSONArray("npIdsArr").getString(i)));
+			}
+		}
+		
+		newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
 		 
 	} catch (Exception e) {
 		LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
