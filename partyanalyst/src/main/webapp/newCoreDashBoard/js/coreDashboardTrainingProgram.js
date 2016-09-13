@@ -1541,7 +1541,6 @@ $(document).on("click",".trainingCampDetailed",function(){
 	getStateLevelCampCount(programIdArr);
 });
 function getStateLevelCampCount(programIdArr){
-alert(11);	
 	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	//var programIdArr = [6]; 
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
