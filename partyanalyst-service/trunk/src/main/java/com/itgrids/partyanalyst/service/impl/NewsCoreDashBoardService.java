@@ -43,7 +43,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 
 
 
-	public List<List<UserTypeVO>> getUserTypeWiseNewsCounts(Long userId,Long activityMemberId,Long userTypeId,String state,String fromDate,String toDate,Long benefitId){
+	public List<List<UserTypeVO>> getUserTypeWiseNewsCounts(Long userId,Long activityMemberId,Long userTypeId,String state,String fromDate,String toDate,Long benefitId,List<Long> npIds){
 		List<List<UserTypeVO>> userTypesList = null;
 		try {
 			
@@ -58,6 +58,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     activityMemberVO.setState(state);
 		     activityMemberVO.setFromDate(fromDate);
 		     activityMemberVO.setToDate(toDate);
+		     activityMemberVO.setNpIds(npIds);
 		     
 		     //Calling Request.
 			 //Client client = Client.create();
@@ -244,7 +245,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		return null;
 	}
 	
-	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,Long childUserTypeId,String state,String startDate,String endDate){
+	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,Long childUserTypeId,String state,String startDate,String endDate,List<Long> npIds){
 		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);
 		try {
 			
@@ -254,6 +255,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		    activityMemberVO.setState(state);
 		     activityMemberVO.setFromDate(startDate);
 		     activityMemberVO.setToDate(endDate);
+		     activityMemberVO.setNpIds(npIds);
 		     
 		    ClientConfig clientConfig = new DefaultClientConfig();
 		     
@@ -533,7 +535,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		return null;
 	}
 	
-	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate){
+	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate,List<Long> npIds){
 		List<ChildUserTypeVO> finalVoList = new ArrayList<ChildUserTypeVO>(0);
 		try {
 			
@@ -543,6 +545,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		    activityMemberVO.setState(state);
 		     activityMemberVO.setFromDate(startDate);
 		     activityMemberVO.setToDate(endDate);
+		     activityMemberVO.setNpIds(npIds);
 		     
 		    ClientConfig clientConfig = new DefaultClientConfig();
 		     
