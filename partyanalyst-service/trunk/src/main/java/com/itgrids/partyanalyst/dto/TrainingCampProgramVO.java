@@ -22,6 +22,7 @@ public class TrainingCampProgramVO {
 	private List<TrainingCampProgramVO> constituencyList;
 	private List<TrainingCampProgramVO> mandalList;
 	private List<TrainingCampProgramVO> villageList;
+	private List<TrainingCampProgramVO> locationList;
  	public Long getId() {
 		return id;
 	}
@@ -124,5 +125,12 @@ public class TrainingCampProgramVO {
 			villageList = new ArrayList<TrainingCampProgramVO>();
 		}
 		return villageList;
-	}	
+	}
+	public List<TrainingCampProgramVO> getLocationList() {
+		if(locationList == null){
+			locationList = new ArrayList<TrainingCampProgramVO>();
+		}
+		return locationList;
+	}
+	
 }

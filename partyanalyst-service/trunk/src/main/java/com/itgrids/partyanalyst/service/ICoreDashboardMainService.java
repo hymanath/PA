@@ -43,5 +43,7 @@ public interface ICoreDashboardMainService {
 	public List<IdNameVO> getDebateRolesNew();
 	public List<IdNameVO> getCandidateDtlsPerDist(Long distId, Long programId, Long stateId, String strDate);   
 	public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, Long distId, String dateStr);
+	
+	public List<TrainingCampProgramVO> getTrainingCampProgramsDetailsCntByUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,String toDateStr,Long userTypeId);
 
 }

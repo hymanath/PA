@@ -1148,7 +1148,8 @@ public interface IConstants {
 	public static final Long[] NOMINATED_SHORTLISTED_STATUS_IDS ={3l,5l,6l,7l};
 	public static final String NOMINATED_POST_APPLICATION_STATUS="2,4,5,7";
 	public static final String NOMINATED_POST_FINALIZED_GOISSUED_STATUS="2,3";
-	//User Ids
+	//User Type Id
+	public static final Long COUNTRY_TYPE_USER_ID=1l;
 	public static final Long STATE_TYPE_USER_ID=2L;
 	public static final Long GENERAL_SECRETARY_USER_TYPE_ID = 3l;
 	public static final Long ORGANIZING_SECRETARY_USER_TYPE_ID = 4l;
