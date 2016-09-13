@@ -836,7 +836,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-width: 16px;
 	margin-left: -16px;
 }
-.basicCommitteesBlockDropDown
+.basicCommitteesBlockDropDown , .newsBlockDropDown
 {
 	display:none;
 	position:absolute;

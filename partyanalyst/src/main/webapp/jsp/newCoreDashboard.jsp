@@ -924,7 +924,7 @@
 							<textarea class="form-control notesAreaNews"></textarea>
 							<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
 						</div>
-						<div class="basicCommitteesBlockDropDown" style="z-index:999;margin-top: -3px;width:450px;" >
+						<div class="newsBlockDropDown" style="z-index:999;margin-top: -3px;width:450px;" >
 							<div class="row">
 								<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
 								  <ul class="nav nav-tabs navTabsSettings" role="tablist">
@@ -938,30 +938,7 @@
 										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Publication</h4>
 										<hr style ="margin-bottom:0px;" />
 										<div class="">
-											<ul class="settingsUl">
-												<li>
-													<label class="checkbox-inline">
-														<input type="checkbox"  id="selectAllId"/>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="0">Select all</h5></div>
-												    </label>
-													<label class="checkbox-inline">
-														<input type="checkbox" class="pubCheckCls"/>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="3">Eenadu</h5></div>
-													</label>
-													<label class="checkbox-inline">
-														<input type="checkbox" class="pubCheckCls"/>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="2">Andhra jyothi</h5></div>
-													</label>
-													<label class="checkbox-inline">
-														<input type="checkbox" class="pubCheckCls"/>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="8">Sakshi</h5></div>
-													</label>
-													<label class="checkbox-inline">
-														<input type="checkbox" class="pubCheckCls"/>
-														<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;" value="1">Andhra Bhoomi</h5></div>
-													</label>   
-												</li>	
-											</ul>
+											<ul class="settingsUl" id="newsPapersUlId"></ul>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane" id="impactScope">
@@ -1010,7 +987,7 @@
 								  
 								</div>
 								<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-									<button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
+									<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
 								</div>
 							</div>
 							
@@ -1901,6 +1878,7 @@
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();
+		getAllNewsPapers();
 	}
 	
 	
