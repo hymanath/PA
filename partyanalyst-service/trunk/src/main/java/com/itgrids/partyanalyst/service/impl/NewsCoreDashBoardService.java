@@ -463,23 +463,23 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 									matchedEditionVO.setOrganizationId(editionVO.getOrganizationId());
 									matchedEditionVO.setOrganization(editionVO.getOrganization());
 									matchedEditionVO.setName(editionVO.getName());
-									if(editionVO.getName().equalsIgnoreCase("Main")){
+									//if(editionVO.getName().equalsIgnoreCase("Main")){
 										matchedEditionVO.setPositiveCountMain(editionVO.getPositiveCountMain());
 										matchedEditionVO.setNegativeCountMain(editionVO.getNegativCountMain());
-									}else if(editionVO.getName().equalsIgnoreCase("Dist")){
+									//}else if(editionVO.getName().equalsIgnoreCase("Dist")){
 										matchedEditionVO.setPositiveCountDist(editionVO.getPositiveCountDist());
 										matchedEditionVO.setNegativeCountDist(editionVO.getNegativCountDist());
-									}
+									//}
 									
 									vo.getChildUserTypeVOList1().add(matchedEditionVO);
 								}else{
-									if(editionVO.getName().equalsIgnoreCase("Main")){
+									//if(editionVO.getName().equalsIgnoreCase("Main")){
 										matchedEditionVO.setPositiveCountMain(matchedEditionVO.getPositiveCountMain()+editionVO.getPositiveCountMain());
 										matchedEditionVO.setNegativeCountMain(matchedEditionVO.getNegativeCountMain()+editionVO.getNegativCountMain());
-									}else if(editionVO.getName().equalsIgnoreCase("Dist")){
+									//}else if(editionVO.getName().equalsIgnoreCase("Dist")){
 										matchedEditionVO.setPositiveCountDist(matchedEditionVO.getPositiveCountDist()+editionVO.getPositiveCountDist());
 										matchedEditionVO.setNegativeCountDist(matchedEditionVO.getNegativeCountDist()+editionVO.getNegativCountDist());
-									}
+									//}
 								}
 							}
 						}
