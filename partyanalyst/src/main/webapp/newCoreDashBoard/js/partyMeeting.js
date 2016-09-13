@@ -2062,7 +2062,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 				},
 				labels: {
 					formatter: function() {
-					  return this.value.toString().substring(0, 10)+'...';
+					  return this.value.toString();
 					},
 					
 				  }
