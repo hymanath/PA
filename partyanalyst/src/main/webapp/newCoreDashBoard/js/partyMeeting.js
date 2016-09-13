@@ -2038,87 +2038,91 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
       stateLevelPerArr.push(subList[j].attendedPerc);
       stateLevelPerArr.push(subList[j].notAttendedPerc);
        
-      
-      $('#stateLevelMeetingGraph'+i+''+j).highcharts({
-      colors: ['#0066DC'],
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: null
-      },
-      subtitle: {
-        text: null
-      },
-      xAxis: {
-        min: 0,
-        gridLineWidth: 0,
-        minorGridLineWidth: 0,
-        categories: ['invited','Attended','Absent'],
-        title: {
-          text: null
-        },
-        labels: {
-            formatter: function() {
-              return this.value.toString().substring(0, 10)+'...';
-            },
-            
-          }
-      },
-      yAxis: {
-        min: 0,
-        gridLineWidth: 0,
-        minorGridLineWidth: 0,
-        title: {
-          text: null,
-          align: 'high'
-        },
-        labels: {
-          overflow: 'justify',
-          enabled: false,
-        }
-      },
-      tooltip: {
-        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
-        shared: true,
-        valueSuffix: '%'
-      },
-      plotOptions: {
-        column: {
-          //stacking: 'percent',
-          dataLabels: {
-            enabled: true,
-             formatter: function() {
-              if (this.y === 0) {
-                return null;
-              } else {
-                return Highcharts.numberFormat(this.y) + '%';
-              }
-            }
-            
-          }
-        }
-      },
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
-        x: -40,
-        y: 80,
-        floating: true,
-        borderWidth: 1,
-        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-        shadow: true
-      },
-      credits: {
-        enabled: false
-      },
-      
-      series: [{
-        name: 'Members',
-        data: stateLevelPerArr
-      }]
-    }); 
+      if( subList[j].invitedCount == 0 && subList[j].attendedCount == 0 && subList[j].notAttendedCount==0){
+		 $('#stateLevelMeetingGraph'+i+''+j).html("<h5>No Data Available</h5>");
+	  }else{
+		    $('#stateLevelMeetingGraph'+i+''+j).highcharts({
+			  colors: ['#0066DC'],
+			  chart: {
+				type: 'column'
+			  },
+			  title: {
+				text: null
+			  },
+			  subtitle: {
+				text: null
+			  },
+			  xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ['invited','Attended','Absent'],
+				title: {
+				  text: null
+				},
+				labels: {
+					formatter: function() {
+					  return this.value.toString().substring(0, 10)+'...';
+					},
+					
+				  }
+			  },
+			  yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+				  text: null,
+				  align: 'high'
+				},
+				labels: {
+				  overflow: 'justify',
+				  enabled: false,
+				}
+			  },
+			  tooltip: {
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+				shared: true,
+				valueSuffix: '%'
+			  },
+			  plotOptions: {
+				column: {
+				  //stacking: 'percent',
+				  dataLabels: {
+					enabled: true,
+					 formatter: function() {
+					  if (this.y === 0) {
+						return null;
+					  } else {
+						return Highcharts.numberFormat(this.y) + '%';
+					  }
+					}
+					
+				  }
+				}
+			  },
+			  legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: -40,
+				y: 80,
+				floating: true,
+				borderWidth: 1,
+				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+				shadow: true
+			  },
+			  credits: {
+				enabled: false
+			  },
+			  
+			  series: [{
+				name: 'Members',
+				data: stateLevelPerArr
+			  }]
+			}); 
+	  }
+	
      }
   }
   }
@@ -2132,84 +2136,89 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 	  }
       stateLevelOtherPerArr.push(otherRslt.attendedPerc);
       stateLevelOtherPerArr.push(otherRslt.notAttendedPerc);
-      $('#stateLevelMeetingOtherId').highcharts({
-      colors: ['#0066DC'],
-      chart: {
-        type: 'column'
-      },
-      title: {
-        text: null
-      },
-      subtitle: {
-        text: null
-      },
-      xAxis: {
-        min: 0,
-        gridLineWidth: 0,
-        minorGridLineWidth: 0,
-        categories: ['invited','Attended','Absent'],
-        title: {
-          text: null
-        },
-        labels: {
-            formatter: function() {
-              return this.value.toString();
-            },
-            
-          }
-      },
-      yAxis: {
-        min: 0,
-		gridLineWidth: 0,
-        minorGridLineWidth: 0,
-        title: {
-          text: null,
-          align: 'high'
-        },
-        labels: {
-          overflow: 'justify',
-          enabled: false,
-        }
-      },
-      tooltip: {
-        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
-        shared: true,
-        valueSuffix: '%'
-      },
-      plotOptions: {
-        column: {
-          //stacking: 'percent',
-          dataLabels: {
-            enabled: true,
-               formatter: function() {
-              if (this.y === 0) {
-                return null;
-              } else {
-                return Highcharts.numberFormat(this.y) + '%';
-              }
-            }  
-          }
-        }
-      },
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
-        x: -40,
-        y: 80,
-        floating: true,
-        borderWidth: 1,
-        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-        shadow: true
-      },
-      credits: {
-        enabled: false
-      },
-      
-      series: [{
-        name: 'Members',
-        data: stateLevelOtherPerArr
-      }]
-    }); 
+	  
+	  if(otherRslt.invitedCount == 0 && otherRslt.attendedCount == 0 && otherRslt.notAttendedCount==0){
+		  $('#stateLevelMeetingOtherId').html("<h5> No Data Available </h5>");
+	  }else{
+		   $('#stateLevelMeetingOtherId').highcharts({
+			  colors: ['#0066DC'],
+			  chart: {
+				type: 'column'
+			  },
+			  title: {
+				text: null
+			  },
+			  subtitle: {
+				text: null
+			  },
+			  xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: ['invited','Attended','Absent'],
+				title: {
+				  text: null
+				},
+				labels: {
+					formatter: function() {
+					  return this.value.toString();
+					},
+					
+				  }
+			  },
+			  yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+				  text: null,
+				  align: 'high'
+				},
+				labels: {
+				  overflow: 'justify',
+				  enabled: false,
+				}
+			  },
+			  tooltip: {
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+				shared: true,
+				valueSuffix: '%'
+			  },
+			  plotOptions: {
+				column: {
+				  //stacking: 'percent',
+				  dataLabels: {
+					enabled: true,
+					   formatter: function() {
+					  if (this.y === 0) {
+						return null;
+					  } else {
+						return Highcharts.numberFormat(this.y) + '%';
+					  }
+					}  
+				  }
+				}
+			  },
+			  legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+				x: -40,
+				y: 80,
+				floating: true,
+				borderWidth: 1,
+				backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+				shadow: true
+			  },
+			  credits: {
+				enabled: false
+			  },
+			  
+			  series: [{
+				name: 'Members',
+				data: stateLevelOtherPerArr
+			  }]
+			}); 
+	  }
   }      
 }
