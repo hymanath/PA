@@ -13464,7 +13464,7 @@
    			<param name="root">trainingCampProgramVO</param>
    		</result>
 	</action>
-	<action name="getTrainingCampProgramsDetailsCntByDistrictAction" class="coreDashboardAction" method="getTrainingCampProgramsDetailsCntByDistrict">
+	<action name="getTrainingCampProgramsDetailsCntByUserTypeAction" class="coreDashboardAction" method="getTrainingCampProgramsDetailsCntByUserType">
 		<result type="json" name="success">
    			<param name="root">trainingCampProgramVOList</param>
    		</result>
