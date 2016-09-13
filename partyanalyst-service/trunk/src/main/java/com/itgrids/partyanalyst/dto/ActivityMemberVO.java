@@ -1,8 +1,12 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.mapping.Array;
 
 public class ActivityMemberVO implements Serializable{
 	
@@ -19,6 +23,8 @@ public class ActivityMemberVO implements Serializable{
 	private String state;
 	private String fromDate;
 	private String toDate;
+	
+	private List<Long> npIds=new ArrayList<Long>(0);
 	
 	public Long getUserId() {
 		return userId;
@@ -85,6 +91,12 @@ public class ActivityMemberVO implements Serializable{
 	}
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
+	}
+	public List<Long> getNpIds() {
+		return npIds;
+	}
+	public void setNpIds(List<Long> npIds) {
+		this.npIds = npIds;
 	}
 	
 }
