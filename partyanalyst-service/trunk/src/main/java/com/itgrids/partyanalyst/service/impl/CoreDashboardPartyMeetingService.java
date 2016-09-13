@@ -1436,7 +1436,9 @@ try{
 		  othersVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getInvitteeAttendedCount(),othersVO.getInvitedCount()) );
 		  othersVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(othersVO.getNotAttendedCount(),othersVO.getInvitedCount()) );
 	  }else{
-		  othersVO.setAttendedPerc(100.0);
+		  if(othersVO.getAttendedCount() != null && othersVO.getAttendedCount() > 0l){
+			  othersVO.setAttendedPerc(100.0);
+		  }
 	  }
 	  
 	  if(committeeLevelsMap!=null && committeeLevelsMap.size()>0){
@@ -1464,7 +1466,9 @@ if(dataMap != null && dataMap.size() > 0 ){
 			 dataVO.setInviteeAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getInvitteeAttendedCount(),dataVO.getInvitedCount()) );
 			 dataVO.setNotAttendedPerc( coreDashboardGenericService.caclPercantage(dataVO.getNotAttendedCount(),dataVO.getInvitedCount()) );
 		   }else{
-			   dataVO.setAttendedPerc(100.0);
+			   if(dataVO.getAttendedCount() != null && dataVO.getAttendedCount() > 0l){
+				   dataVO.setAttendedPerc(100.0);
+			   }
 		   }
 	 }
 	 
