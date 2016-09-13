@@ -137,6 +137,10 @@ $(document).on("click",".selectAll",function(){
 					  str+='<h4>'+overAllResult.mayBeCount+'<span class="font-10 text-customColor"> '+overAllResult.mayBeCountPer+'%</span></h4>';
 					  str+='<p class="text-muted text-capital">maybe</p>';
 				  str+='</td>';
+				    str+='<td>';
+						 str+='<h4>'+overAllResult.totalNotUpdatedCnt+' <span class="font-10 text-customColor"> '+overAllResult.totalNotUpdatedCntPer+'%</span></h4>';
+						 str+='<p class="text-muted text-capitalize">Not Updated</p>';
+				str+='</td>';
 			  str+='</tr>';
 	       str+='</tbody></table>';
 		  str+='<hr class="m_0">';
@@ -163,6 +167,10 @@ $(document).on("click",".selectAll",function(){
 						 str+='<td>';
 							 str+='<p class="text-muted text-capitalize">maybe</p>';
 							 str+='<h4>'+levelWiseResult[i].mayBeCount+' <span class="font-10 text-customColor"> '+levelWiseResult[i].mayBeCountPer+'%</span></h4>';
+						 str+='</td>';
+						  str+='<td>';
+							 str+='<p class="text-muted text-capitalize">Not Updated</p>';
+							 str+='<h4>'+levelWiseResult[i].totalNotUpdatedCnt+' <span class="font-10 text-customColor"> '+levelWiseResult[i].totalNotUpdatedCntPer+'%</span></h4>';
 						 str+='</td>';
 					 str+='</tr>';
 				 str+='</tbody></table>';
