@@ -169,8 +169,8 @@
 					$("#tdpMainNegativePercent").html(" "+((result[0].negativCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
 				}
 				else{
-					$("#tdpMainPositivePercent").html("");
-					$("#tdpMainNegativePercent").html("");
+					$("#tdpMainPositivePercent").html(" 0.0 %");
+					$("#tdpMainNegativePercent").html(" 0.0 %");
 				}
 				
 				$("#tdpDistTotal").html(result[0].positiveCountDist+result[0].negativCountDist);				
@@ -181,8 +181,8 @@
 					$("#tdpDistNegativePercent").html(" "+((result[0].negativCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
 				}
 				else{
-					$("#tdpDistPositivePercent").html("");
-					$("#tdpDistNegativePercent").html("");
+					$("#tdpDistPositivePercent").html(" 0.0 %");
+					$("#tdpDistNegativePercent").html(" 0.0 %");
 				}
 				
 				var oppTotal=(result[1].positiveCountMain+result[1].negativCountMain)+(result[2].positiveCountMain+result[2].negativCountMain)+(result[3].positiveCountMain+result[3].negativCountMain);
@@ -194,8 +194,8 @@
 					$("#oppNegativeTotalPercent").html(" "+(((result[1].negativCountMain+result[2].negativCountMain+result[3].negativCountMain)/oppTotal)*100).toFixed(2)+" %");
 				}
 				else{
-					$("#oppPositiveTotalPercent").html("");
-					$("#oppNegativeTotalPercent").html("");
+					$("#oppPositiveTotalPercent").html(" 0.0 %");
+					$("#oppNegativeTotalPercent").html(" 0.0 %");
 				}
 				
 				var ysrcMainTotal = result[1].positiveCountMain+result[1].negativCountMain;
@@ -208,8 +208,8 @@
 					$("#ysrcMainNegativePercent").html(" "+((result[1].negativCountMain*100)/ysrcMainTotal).toFixed(2)+" %");	
 				}
 				else{
-					$("#ysrcMainPositivePercent").html("");
-					$("#ysrcMainNegativePercent").html("");
+					$("#ysrcMainPositivePercent").html(" 0.0 %");
+					$("#ysrcMainNegativePercent").html(" 0.0 %");
 				}
 				
 				var incMainTotal = result[2].positiveCountMain+result[2].negativCountMain;
@@ -221,8 +221,8 @@
 					$("#incMainNegativePercent").html(" "+((result[2].negativCountMain*100)/incMainTotal).toFixed(2)+" %");
 				}
 				else{
-					$("#incMainPositivePercent").html("");
-					$("#incMainNegativePercent").html("");
+					$("#incMainPositivePercent").html(" 0.0 %");
+					$("#incMainNegativePercent").html(" 0.0 %");
 				}
 				 var bjpMainTotal = result[3].positiveCountMain+result[3].negativCountMain;
 				 $("#bjpMainTotal").html(bjpMainTotal);
@@ -234,8 +234,8 @@
 					$("#bjpMainNegativePercent").html(" "+((result[3].negativCountMain*100)/bjpMainTotal).toFixed(2)+" %");
 				 }
 				 else{
-					$("#bjpMainPositivePercent").html("");
-					$("#bjpMainNegativePercent").html(""); 
+					$("#bjpMainPositivePercent").html(" 0.0 %");
+					$("#bjpMainNegativePercent").html(" 0.0 %"); 
 				 }
 				 
 				 var oppDistTotal=(result[1].positiveCountDist+result[1].negativCountDist)+(result[2].positiveCountDist+result[2].negativCountDist)+(result[3].positiveCountDist+result[3].negativCountDist);
@@ -249,8 +249,8 @@
 					$("#oppDistNegativePercent").html(" "+(((result[1].negativCountDist+result[2].negativCountDist+result[3].negativCountDist)*100)/oppDistTotal).toFixed(2)+" %");
 				 }
 				 else{
-					$("#oppDistPositivePercent").html("");
-					$("#oppDistNegativePercent").html(""); 
+					$("#oppDistPositivePercent").html(" 0.0 %");
+					$("#oppDistNegativePercent").html(" 0.0 %"); 
 				 }
 				 
 				 var ysrcDistTotal = result[1].positiveCountDist+result[1].negativCountDist;
@@ -263,8 +263,8 @@
 					$("#ysrcDistNegativePercent").html(" "+((result[1].negativCountDist*100)/ysrcDistTotal).toFixed(2)+" %");
 				}
 				else{
-					$("#ysrcDistPositivePercent").html("");
-					$("#ysrcDistNegativePercent").html("");
+					$("#ysrcDistPositivePercent").html(" 0.0 %");
+					$("#ysrcDistNegativePercent").html(" 0.0 %");
 				}
 				
 				var incDistTotal = result[2].positiveCountDist+result[2].negativCountDist;
@@ -276,8 +276,8 @@
 					$("#incDistNegativePercent").html(" "+((result[2].negativCountDist*100)/incDistTotal).toFixed(2)+" %");
 				}
 				else{
-					$("#incDistPositivePercent").html("");
-					$("#incDistNegativePercent").html("");
+					$("#incDistPositivePercent").html(" 0.0 %");
+					$("#incDistNegativePercent").html(" 0.0 %");
 				}
 				
 				var bjpDistTotal = result[3].positiveCountDist+result[3].negativCountDist;
@@ -290,8 +290,8 @@
 					$("#bjpDistNegativePercent").html(" "+((result[3].negativCountDist*100)/bjpDistTotal).toFixed(2)+" %");
 				 }
 				 else{
-					$("#bjpDistPositivePercent").html("");
-					$("#bjpDistNegativePercent").html(""); 
+					$("#bjpDistPositivePercent").html(" 0.0 %");
+					$("#bjpDistNegativePercent").html(" 0.0 %"); 
 				 }
 				 
 				 var govtMainTotal = result[4].positiveCountMain+result[4].negativCountMain;
@@ -303,8 +303,8 @@
 					$("#govtMainNegativePercent").html(" "+((result[4].negativCountMain*100)/govtMainTotal).toFixed(2)+" %");
 				 }
 				 else{
-					$("#govtMainPositivePercent").html("");
-					$("#govtMainNegativePercent").html(""); 
+					$("#govtMainPositivePercent").html(" 0.0 %");
+					$("#govtMainNegativePercent").html(" 0.0 %"); 
 				 }
 				 
 				var govtDistTotal = result[4].positiveCountDist+result[4].negativCountDist;
@@ -316,8 +316,8 @@
 					$("#govtDistNegativePercent").html(" "+((result[4].negativCountDist*100)/govtDistTotal).toFixed(2)+" %");
 				 }
 				  else{
-					$("#govtDistPositivePercent").html("");
-					$("#govtDistNegativePercent").html("");	
+					$("#govtDistPositivePercent").html(" 0.0 %");
+					$("#govtDistNegativePercent").html(" 0.0 %");	
 				 }
 			}
 		});
@@ -1202,7 +1202,8 @@ function getChildUserTypesByItsParentUserType1(){
 				childUserTypeId : childUserTypeId,
 				state:globalState,
 				startDate:currentFromDate,
-				endDate:currentToDate
+				endDate:currentToDate,
+				npIdsArr:newsPaperIdsGlob
 			}
 		
 			$.ajax({
@@ -2091,3 +2092,33 @@ function getChildUserTypesByItsParentUserType1(){
 		});
 	}
 	 */
+	
+	$(document).on("click","#detailedGovernmentLiId",function(){
+		getDetailedGovtDepartmentWiseDistrictsOverview();
+	});
+	
+	function getDetailedGovtDepartmentWiseDistrictsOverview(){
+		
+	var temp;
+	if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+		for(var i in globalUserAccessLevelValues){
+			temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+		}
+	}
+	
+	var newsPaperIdsStr="";
+	if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+		for(var i in newsPaperIdsGlob){
+			newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+		}
+	}
+	
+	var startDate=currentFromDate,endDate=currentToDate;
+	
+	$.ajax({
+		url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
+		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
+	}).then(function(result){
+			
+	});
+}
