@@ -120,8 +120,8 @@
 	});
 	
 	$(document).on("click",".partyDistrictWiseDiv",function(){
-		//$("#publicationWiseDetailsDiv").hide();
-		//$("#partyWiseDetailsDiv").show();
+		$("#publicationWiseDetailsDiv").hide();
+		$("#partyWiseDetailsDiv").show();
 		getDetailedPartyPartyVsPublications($(this).attr("attr_search_type"));
 	});
 	
@@ -1118,6 +1118,8 @@ $(document).on("click",".viewsLiClass",function(){
 
 
 $(document).on("click","#comparisonPartyLiId",function(){
+	$("#partyWiseComparisionBlock").html('');
+	setcolorsForStatus();
 	getChildUserTypesByItsParentUserType1();
 });
 function getChildUserTypesByItsParentUserType1(){
@@ -1152,7 +1154,7 @@ function getChildUserTypesByItsParentUserType1(){
 	}	
 	
 	function getPartyComparisonChildUserTypeMembers(childUserTypeId){
-		
+		$("#partyWiseComparisionBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var jsObj={
 				parentActivityMemberId : globalActivityMemberId ,
 				childUserTypeId : childUserTypeId,
@@ -1167,7 +1169,8 @@ function getChildUserTypesByItsParentUserType1(){
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				$("#partyWiseComparisionBlock").html('');
+				buildgetPartyCompareSubLevelMemberDetails(result);
 			});
 		
 	}
@@ -1226,6 +1229,7 @@ function getChildUserTypesByItsParentUserType1(){
 							var obj = {
 								name: partyName,
 								y:PartyCountPerc
+								
 							}
 							
 							partyNameAndCountArray.push(obj);
@@ -1416,9 +1420,25 @@ function getChildUserTypesByItsParentUserType1(){
 				
 			});
 	}
-
-$(document).on("click",".detailedPartySubLi",function(){
-		getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"));
+	
+	$(document).on("click",".detailedPartySubUl li",function(){
+		if($(this).hasClass("active") == true)
+		{
+			$(this).removeClass("active");
+		}else{
+			$(".detailedPartySubUl li").removeClass("active");
+			$(this).addClass("active");
+		}
+	});
+	
+	$(document).on("click",".detailedPartySubLi",function(){
+		
+		if($(this).hasClass("active")){
+			$("#partyWiseComparisionBlock").html('');
+			getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"));
+		}
+		
+		
 	});	
 	$(document).on("click","#selectAllId",function(){
 		 if ($(this).prop('checked')) {
@@ -1448,8 +1468,8 @@ $(document).on("click",".detailedPartySubLi",function(){
 	});
     function getRescentArticleTime(){
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/"
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
+			url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/"
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
 		}).then(function(result){
 			if(result != null){
 				$("#lastUpdatedId").html("Last updated : "+ result[0].organization);
@@ -1754,3 +1774,180 @@ $(document).on("click",".detailedPartySubLi",function(){
 		
 	}
 	
+	function buildgetPartyCompareSubLevelMemberDetails(result){
+		$("#partyWiseComparisionBlock").html('');
+		var str='';
+		if(result !=null && result.length >0){
+			
+			str+='<ul class="list-inline slickPanelSlider">';
+			var rankVar =0;
+			for(var i in result){
+				rankVar =rankVar+1;
+				str+='<li>';
+					str+='<div class="panel panel-default panelSlick">';
+						str+='<div class="panel-heading" style="background-color: rgb(237, 238, 240);">';
+							str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+							str+='<span class="count">'+rankVar+'</span>';
+						str+='</div>';
+						str+='<div class="panel-body" style="background-color:#fff;">';
+							str+='<h4 class="text-capital">'+result[i].usertType+'</h4>';
+							str+='<div class="row">';
+								str+='<div class="col-xs-12">';
+									str+='<div class="col-xs-4 newsComparisionBorder" >';
+									str+='<div id="partiesComparisionGraph'+i+'" style="height:150px;width:150px;margin-left: -9px; margin-top: 30px;"></div>';
+									str+='</div>';
+									str+='<div class="col-xs-4 newsComparisionBorder scrollableDiv" >';
+										str+='<p>Main Edition</p>';
+										if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
+											for(var j in result[i].childUserTypeVOList1){
+												str+='<p><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].childUserTypeVOList1[j].organization+'.png" style="width:50px;" alt="tdp icon"/></p>';
+												str+='<ul class="list-inline">';
+													if(result[i].childUserTypeVOList1[j].positiveCountMainPerc !=null && result[i].childUserTypeVOList1[j].positiveCountMainPerc >0){
+														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].positiveCountMainPerc.toFixed(0)+'% +ve</li>';
+													}else{
+														str+='<li class="newsCompBlockAlign" >- +ve</li>';
+													}
+													if(result[i].childUserTypeVOList1[j].negativeCountMainperc !=null && result[i].childUserTypeVOList1[j].negativeCountMainperc >0){
+														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].negativeCountMainperc.toFixed(0)+'% -ve</li>';
+													}else{
+														str+='<li class="newsCompBlockAlign" >- +ve</li>';
+													}
+													str+='</ul>';
+												str+='<hr  class="newshrAlignment" >';
+											}
+										}else{
+											str+='<p>No Data Available</p>';
+										}
+										str+='</div>';
+										
+										str+='<div class="col-xs-4 newsComparisionBorder scrollableDiv">';
+											str+='<p>District Edition</p>';
+										if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
+											for(var k in result[i].childUserTypeVOList1){
+												str+='<p><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].childUserTypeVOList1[k].organization+'.png" style="width:50px;" alt="tdp icon"/></p>';
+													str+='<ul class="list-inline">';
+													if(result[i].childUserTypeVOList1[k].positiveCountDistPerc !=null && result[i].childUserTypeVOList1[k].positiveCountDistPerc >0){
+														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[k].positiveCountDistPerc.toFixed(0)+'% +ve</li>';
+													}else{
+														str+='<li class="newsCompBlockAlign" >- +ve</li>';
+													}
+													if(result[i].childUserTypeVOList1[k].negativeCountDistPerc !=null && result[i].childUserTypeVOList1[k].negativeCountDistPerc >0){
+														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[k].negativeCountDistPerc.toFixed(0)+'% -ve</li>';
+													}else{
+														str+='<li class="newsCompBlockAlign" >- -ve</li>';
+													}
+													str+='</ul>';
+													str+='<hr class="newshrAlignment">';
+											}
+										}else{
+											str+='<p>No Data Available</p>';
+										}
+												
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</li>';
+			}
+			str+='</ul>';
+		}else{
+			$("#partyWiseComparisionBlock").html("No Data Available");
+		}
+			$("#partyWiseComparisionBlock").html(str);
+			
+			$(".slickPanelSlider").slick({
+				 slide: 'li',
+				 slidesToShow: 2,
+				 slidesToScroll: 2,
+				 infinite: false,
+				
+			});
+			/* $(".scrollableDiv").each(function(){
+				var length = $(this).find("ul").length;
+				if(length > 3){
+				$(".scrollableDiv").mCustomScrollbar({setHeight:'200px'})
+				
+				}
+				
+			}); */
+			if(result !=null && result.length >0){
+				for(var i in result){
+					var ComparisionPartyNameAndPostivePercArray =[];
+					if(result[i].childUserTypeVOList !=null && result[i].childUserTypeVOList.length >0){
+						for(var j in result[i].childUserTypeVOList){
+							var partyName;
+							var positivepercArray =[] ;
+							partyName = result[i].childUserTypeVOList[j].organization;
+							positivepercArray.push(result[i].childUserTypeVOList[j].positiveCountMainPerc)
+							var color = getColorCodeByStatus(result[i].childUserTypeVOList[j].organization);
+							var obj = {
+									name: partyName,
+									data:positivepercArray,
+									color:color
+								}
+								
+								ComparisionPartyNameAndPostivePercArray.push(obj);
+							
+						}
+					}
+					if(ComparisionPartyNameAndPostivePercArray.length !=0){
+						$(function () {
+							$('#partiesComparisionGraph'+i).highcharts({
+								//colors: ['#FD9832','#3D9834','#FFCB00','#005DB0'],
+								chart: {
+									type: 'column'
+								},
+
+								title: {
+									text: ''
+								},
+								xAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									categories: ['Apples'],
+									labels: {
+										style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+										}
+									}
+								},
+								yAxis: {
+									min: 0,
+									 gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+
+								legend: {
+										enabled: false,
+															
+										},
+								plotOptions: {
+									column: {
+										//stacking: 'normal'
+									}
+								},
+
+								series: ComparisionPartyNameAndPostivePercArray
+							});
+						});
+					}else{
+						$('#partiesComparisionGraph'+i).html("No Data Available")
+					}
+					
+				}
+				
+			}
+	}

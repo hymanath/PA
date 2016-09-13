@@ -1316,7 +1316,19 @@
 													 </div>
 												</div>
 												<div class="panel-body">
-													
+													 <div class="row">
+													 <div class="col-md-4 col-xs-12 col-sm-4 pull-right">
+														<ul class="list-inline">
+															<li><img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/> TDP<li>
+															<li><img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> YSRC<li>
+															<li><img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> INC<li>
+															<li><img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> BJP<li>
+														</ul>
+														</div>
+														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+																<div id="partyWiseComparisionBlock"></div>
+															</div>
+														</div>
 												</div>
 											</div>
 											
