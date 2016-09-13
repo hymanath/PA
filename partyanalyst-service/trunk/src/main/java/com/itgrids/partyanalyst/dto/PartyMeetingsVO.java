@@ -24,6 +24,8 @@ public class PartyMeetingsVO implements Serializable{
 	private PartyMeetingsVO overAllVO;
 	private List<PartyMeetingsVO> partyMettingsVOList;
 	private Long totalMeetingCnt =0l;
+	private Long totalNotUpdatedCnt=0l;
+	private Double totalNotUpdatedCntPer=0.0;
 	
 	
 	private List<PartyMeetingsVO> subList;
@@ -148,6 +150,18 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setTotalMeetingCnt(Long totalMeetingCnt) {
 		this.totalMeetingCnt = totalMeetingCnt;
+	}
+	public Long getTotalNotUpdatedCnt() {
+		return totalNotUpdatedCnt;
+	}
+	public void setTotalNotUpdatedCnt(Long totalNotUpdatedCnt) {
+		this.totalNotUpdatedCnt = totalNotUpdatedCnt;
+	}
+	public Double getTotalNotUpdatedCntPer() {
+		return totalNotUpdatedCntPer;
+	}
+	public void setTotalNotUpdatedCntPer(Double totalNotUpdatedCntPer) {
+		this.totalNotUpdatedCntPer = totalNotUpdatedCntPer;
 	}
 	
 }
