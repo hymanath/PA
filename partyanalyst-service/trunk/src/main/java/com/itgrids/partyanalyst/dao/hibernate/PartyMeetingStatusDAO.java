@@ -498,4 +498,125 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		 }
     return query.list();  
 	}
+    
+    public int deleteAllRecords(){
+    	
+    	Query query = getSession().createSQLQuery(" delete from party_meeting_status ");
+    	return query.executeUpdate();
+    }
+    public int setPrimaryKeyAutoIncrementToOne(){
+    	Query query = getSession().createSQLQuery(" ALTER TABLE party_meeting_status AUTO_INCREMENT = 1 ");
+    	return query.executeUpdate();
+    }
+    
+    public int insertPartyofficeAndIvrStatus(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  INSERT INTO party_meeting_status(party_meeting_id,party_office_status,ivr_status) " +
+        "         SELECT PM.party_meeting_id,PM.is_conducted,IVR.is_conducted_by_ivr " +
+        "         FROM   party_meeting PM " +
+        "         LEFT OUTER JOIN party_meeting_ivr_status IVR ON PM.party_meeting_id = IVR.party_meeting_id "+
+        "         WHERE PM.start_date IS NOT NULL AND "+
+        "         PM.is_active = 'Y' ");
+    	return query.executeUpdate();
+    }
+    public int updatePartyMeetingStatus1(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  UPDATE party_meeting_status SET meeting_status = 'Y' "+
+        "  WHERE  party_office_status IS NOT NULL AND " +
+        "         ivr_status IS NOT NULL AND "+
+        "         party_office_status = 'Y' AND "+
+        "         ivr_status = 'Y' " ); 
+    	return query.executeUpdate();
+    }
+    
+    public int updatePartyMeetingStatus2(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  UPDATE party_meeting_status SET meeting_status = 'N' "+ 
+		"   WHERE  party_office_status IS NOT NULL AND "+ 
+		"	       ivr_status IS NOT NULL AND "+ 
+		"	       party_office_status = 'N' AND "+ 
+		"	       ivr_status = 'N' "); 
+    	return query.executeUpdate();
+    	
+    }
+    public int updatePartyMeetingStatus3(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+    	"  UPDATE party_meeting_status SET meeting_status = 'M' "+
+        "   WHERE  party_office_status IS NOT NULL AND "+
+        "   ivr_status IS NOT NULL AND "+
+        "   party_office_status = 'Y' AND "+
+        "  ivr_status = 'N' ");
+    	return query.executeUpdate();
+    	
+    }
+    public int updatePartyMeetingStatus4(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+		" UPDATE party_meeting_status SET meeting_status = 'M' "+ 
+		" WHERE  party_office_status IS NOT NULL AND "+
+		"       ivr_status IS NOT NULL AND "+
+		"       party_office_status = 'N' AND "+
+		"      ivr_status = 'Y' ");
+    	return query.executeUpdate();
+    	
+    }
+    
+    public int updatePartyMeetingStatus5(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+		" UPDATE party_meeting_status SET meeting_status = 'Y' "+ 
+		" WHERE  party_office_status IS NOT NULL AND "+
+		"       ivr_status IS NULL AND "+
+		"       party_office_status = 'Y' ");
+    	return query.executeUpdate();
+    	
+    }
+    
+    public int updatePartyMeetingStatus6(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+		" UPDATE party_meeting_status SET meeting_status = 'N' "+ 
+		" WHERE  party_office_status IS NOT NULL AND "+
+		"       ivr_status IS NULL AND "+
+		"       party_office_status = 'N' ");
+    	return query.executeUpdate();
+    }
+    
+    public int updatePartyMeetingStatus7(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+		"UPDATE party_meeting_status SET meeting_status = 'Y' "+ 
+		"WHERE  party_office_status IS NULL AND "+
+		"       ivr_status IS NOT NULL AND "+
+		"       ivr_status = 'Y' ");
+    	return query.executeUpdate();
+    }
+    
+   public int updatePartyMeetingStatus8(){
+    	
+    	Query query = getSession().createSQLQuery("" +
+		"UPDATE party_meeting_status SET meeting_status = 'N' "+
+		"WHERE  party_office_status IS NULL AND "+
+		"       ivr_status IS NOT NULL AND "+
+		"       ivr_status = 'N' ");
+    	return query.executeUpdate();
+    }
+   public int updatePartyMeetingStatus9(){
+   	
+   	Query query = getSession().createSQLQuery("" +
+	" UPDATE party_meeting_status SET meeting_status = 'NU' "+ 
+	" WHERE  party_office_status IS NULL AND "+
+	"	     ivr_status IS NULL ");
+   	return query.executeUpdate();
+   }
+   public int setInsertedDate(){
+	   Query query = getSession().createSQLQuery(" UPDATE party_meeting_status SET inserted_time = NOW() WHERE inserted_time IS NULL ");
+	   return query.executeUpdate();
+   }
+   
+   
 }

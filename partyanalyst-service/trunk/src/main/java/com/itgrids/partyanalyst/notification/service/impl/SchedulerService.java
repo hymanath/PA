@@ -27,6 +27,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -75,6 +76,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
+import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
@@ -116,6 +118,7 @@ public class SchedulerService implements ISchedulerService{
 	private IUserEmailDAO userEmailDAO;
 	private IPartyOfficeDAO partyOfficeDAO;
 	private IEventAttendeeDAO eventAttendeeDAO;
+	private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
 		return trainingCampBatchDAO;
@@ -282,6 +285,11 @@ public class SchedulerService implements ISchedulerService{
 
 	public void setEventAttendeeDAO(IEventAttendeeDAO eventAttendeeDAO) {
 		this.eventAttendeeDAO = eventAttendeeDAO;
+	}
+	
+	public void setCoreDashboardPartyMeetingService(
+			ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService) {
+		this.coreDashboardPartyMeetingService = coreDashboardPartyMeetingService;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -1756,5 +1764,17 @@ public class SchedulerService implements ISchedulerService{
 			return resultStatus;
 		}
 	}
-
+    
+	
+	public ResultStatus pushDataToPartyMeetingStatusTable(){
+		ResultStatus rs = null;
+		try{
+			
+		    rs = coreDashboardPartyMeetingService.insertDataInToPartyMeetingStatusTable();
+			
+		}catch (Exception e) {
+			Log.error("Exception Occurred in pushDataToPartyMeetingStatusTable() of scheduler Service", e);
+		}
+		return rs;
+	}
 }

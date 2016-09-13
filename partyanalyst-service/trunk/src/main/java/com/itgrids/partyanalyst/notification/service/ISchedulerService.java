@@ -28,4 +28,6 @@ public interface ISchedulerService {
 	public void sendPdfReport();
 	public void runTheJobForEveryDayToSendEmployeeAttendance();
 	public void runTheJobForEveryDayToSendEmpAttendanceDeptWise();
+	
+	public ResultStatus pushDataToPartyMeetingStatusTable();
 }
