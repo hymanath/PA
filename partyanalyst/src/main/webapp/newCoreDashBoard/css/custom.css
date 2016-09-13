@@ -1623,12 +1623,13 @@ margin-top:20px;
     content:"\2212";
     float: right;
 	font-size:13px;
-	margin-top:-4px;
+	top:-25px;
 	font-weight:400 !important;
 	margin-left:-4px;
 	color:#4B5763;
 	border:1px solid #4B5763;
 	padding:3px 5px 6px 6px;
+	position:relative;
 }
 .tableDebatesMain tr td:first-child
 {
