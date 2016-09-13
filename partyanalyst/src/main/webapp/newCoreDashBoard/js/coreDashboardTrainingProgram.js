@@ -632,12 +632,16 @@ function stateLevelCampDetails(){
 		buildStateLevelCampAttendedDetails(result);
 	});
 }  
-function buildStateLevelCampAttendedDetails(result){  
+function buildStateLevelCampAttendedDetails(result){ 
+	var programIdsStr = [];
+	for(var i in result){
+		programIdsStr.push(result[i].id);     
+	}      
 	var str = '';
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
+		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" attr_program_id="'+programIdsStr+'" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
 		for(var i in result){    
-		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" class="stateLevelTrainingInd" attr_location="'+result[i].name+'"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';
+		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" class="stateLevelTrainingInd" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';  
 		str+='<table class="table tableTraining">';     
 			str+='<tbody>';
 				str+='<tr>';
@@ -686,7 +690,9 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
-		getStateLevelCampCount();     
+		var programId = [];
+		programId.push($(this).attr("attr_program_id"));
+		getStateLevelCampCount(programId);         
 		stateLevelCampMembersDistWise(); 
 		stateLevelCampDetailsRepresentativeWise()
 		var val = $(this).attr("attr_location");
@@ -697,6 +703,7 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 		$("#detailedId").addClass("trainingCampDetailed");
 		$("#clickInfoId").show();
 		$(".trainingComparison").hide();
+		$(".trainingCampDetailed").attr("attr_program_id",$(this).attr("attr_program_id"));  
 	}
 	
 });
@@ -768,7 +775,13 @@ $(document).on("click",".stateLevelTraining",function(){
 			$(".programSkillsCls").find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
 		}
 		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
-		getStateLevelCampCount();   
+		var idStr = $(this).attr("attr_program_id");
+		var programIdArr = [];
+		var arr = idStr.split(","); 
+		for(var i in arr){
+			programIdArr.push(arr[i]);
+		} 
+		getStateLevelCampCount(programIdArr);         
 		stateLevelCampMembersDistWise();       
 		stateLevelCampDetailsRepresentativeWise() 
 		var val = $(this).attr("attr_location");
@@ -779,7 +792,8 @@ $(document).on("click",".stateLevelTraining",function(){
 		$("#detailedId").removeClass("trainingDetailed");
 		$("#detailedId").addClass("trainingCampDetailed");
 		$("#clickInfoId").show();
-		$(".trainingComparison").hide();  
+		$(".trainingComparison").hide();
+		$(".trainingCampDetailed").attr("attr_program_id",$(this).attr("attr_program_id")); 
 	}
 	
 	
@@ -1517,12 +1531,19 @@ $(document).on("click",".trainingCampDetailed",function(){
 	$(".trainingComparison").removeClass("active");
 	$(".trainingDetailedBlock").show();
 	$(".trainingComparisonBlock").hide();
-	//getTrainingProgramBasicCnt(); 
-	getStateLevelCampCount();
+	//getTrainingProgramBasicCnt();
+	var idStr = $(this).attr("attr_program_id");
+	var programIdArr = [];
+	var arr = idStr.split(","); 
+	for(var i in arr){
+		programIdArr.push(arr[i]);
+	}       
+	getStateLevelCampCount(programIdArr);
 });
-function getStateLevelCampCount(){
+function getStateLevelCampCount(programIdArr){
+alert(11);	
 	$("#programsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	var programIdArr = [6]; 
+	//var programIdArr = [6]; 
 	var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	var jsObj={  
 		programIdArr : programIdArr,
@@ -1548,7 +1569,7 @@ function buildStateLevelCampDetails(result){
 	str+='<ul class="trainingsUl">';
 	for(var i in result){
 		str+='<li>';
-		str+='<h4 class="text-capitalize text-muted">official spokespersons</h4>';
+		str+='<h4 class="text-capitalize text-muted">'+result[i].name+'</h4>';    
 		str+='<div id="programHighChartId'+i+'" class="chartLi trainingGraphWidth"></div>';
 		str+='</li>';
 	}
@@ -1666,7 +1687,7 @@ function buildStateLevelCampDetails(result){
 						}
 					}
 				},
-				series: [ {
+				series: [ { 
 							name: 'Yet to Train',
 							data: jsonDataArrYettotrain
 						},{
