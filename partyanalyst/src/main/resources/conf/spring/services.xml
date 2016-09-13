@@ -1339,7 +1339,8 @@
 		<property name="reportEmailDAO" ref="reportEmailDAO"/>
 		<property name="userEmailDAO" ref="userEmailDAO"/>
 		<property name="partyOfficeDAO" ref="partyOfficeDAO"/>  
-		<property name="eventAttendeeDAO" ref="eventAttendeeDAO"/> 		
+		<property name="eventAttendeeDAO" ref="eventAttendeeDAO"/> 
+		<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService"/> 	
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1411,8 +1412,7 @@
 	  	<property name="targetMethod" value="sendPdfReport" />
     </bean> 
     -->
-    
-			
+    	
 	<bean name="updateTrainingCampSpeakers" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="updateTrainingCampSpeakerDtls" />
     	<property name="cronExpression" value="0 30 5,9,13 * * ?" />
@@ -1578,6 +1578,17 @@
     	<property name="jobDetail" ref="mahanaduVisitInfoInvok" />
     	<property name="cronExpression" value="0 0 0/1 * * ?" />
 	</bean>
+	 
+	 <!-- scheduler for partyMeetingStatusUpdation in core dashboard -->
+	<bean name="partyMeetingStatusUpdation" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="insertTriggerForPartyMeetingStatus" />
+    	<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>
+	<bean name="insertTriggerForPartyMeetingStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="pushDataToPartyMeetingStatusTable" />
+    </bean> 
+    
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
         <list>
@@ -1607,6 +1618,8 @@
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
 		 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> 
 			<ref bean="tdpcadreInfo" />-->
+			
+			<ref bean="partyMeetingStatusUpdation" />
 			
         </list>
     	</property>
@@ -3447,6 +3460,7 @@
 	    <property name="partyMeetingTypeDAO" ref="partyMeetingTypeDAO" />
 	    <property name="partyMeetingInviteeDAO" ref="partyMeetingInviteeDAO" />
 	    <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
+	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
 </beans>		
