@@ -694,7 +694,7 @@
 									<div class="panel panel-default panelNew">
 										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
 											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
-												<h4><span class="headingColor text-capitalize responsiveWidth">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
 											<!--</a>-->
 										</div>
 										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
@@ -708,7 +708,7 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingTwo">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize">role based performance cohort</span></h4>
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
 										</a>
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
@@ -722,7 +722,7 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingFive">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize">Top 5 Performers</span></h4>
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
 										</a>
 									</div>
 									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
@@ -739,7 +739,7 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingThree">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										   <h4><span class="headingColor responsiveWidth text-capitalize">candidate overall performance cohort</span></h4>
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
 										</a>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
@@ -755,7 +755,7 @@
 								  <div class="panel panel-default panelNew">
 									<div class="panel-heading" role="tab" id="headingFour">
 										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										   <h4><span class="headingColor responsiveWidth text-capitalize">channel vs parties</span></h4>
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
 										</a>
 									</div>
 									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
@@ -1879,6 +1879,10 @@
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();
 		getAllNewsPapers();
+		//getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems();
+		
+		//Debates
+		getPartyWiseTotalDebateDetails();
 	}
 	
 	

@@ -56,7 +56,8 @@
 			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock").hide();
+			$(".dateRangePickerClsForDebates").toggleClass("hide");
 			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
 			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){

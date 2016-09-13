@@ -478,6 +478,7 @@ $(document).on("click",".meetingLiCls",function(){
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".meetingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
+		$(".meetingsHiddenBlock").find("i").show();
 		$(".moreMeetingsBlocks1,.stateLevelMeetingBlock,.stateGeneralMeetBlock").hide();
 		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".meetingsHiddenBlock,.moreMeetingsBlocks").hide();
@@ -498,7 +499,8 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".moreMeetingsBlocksComparision").hide();
 		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+			$(".debatesMoreHiddenBlock,.debatesHiddenBlock").hide();
+			$(".dateRangePickerClsForDebates").toggleClass("hide");
 			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
 			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".moreMeetingsBlocks1").hide();
