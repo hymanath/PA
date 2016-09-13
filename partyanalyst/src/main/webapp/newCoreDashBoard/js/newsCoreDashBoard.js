@@ -2098,7 +2098,7 @@ function getChildUserTypesByItsParentUserType1(){
 	});
 	
 	function getDetailedGovtDepartmentWiseDistrictsOverview(){
-		
+		$("#districtWiseNewsReportGovtDetailed").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var temp;
 	if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 		for(var i in globalUserAccessLevelValues){
@@ -2119,6 +2119,148 @@ function getChildUserTypesByItsParentUserType1(){
 		url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
 		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtDepartmentWiseDistrictsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
 	}).then(function(result){
-			
+		$("#districtWiseNewsReportGovtDetailed").html('');
+		buildgetDetailedGovtDepartmentWiseDistrictsOverview(result);
 	});
+}
+	
+	function buildgetDetailedGovtDepartmentWiseDistrictsOverview(result){
+		$("#districtWiseNewsReportGovtDetailed").html(' ');
+		if(result != null && result.length > 0){
+			var str='';
+			
+			for(var i in result){
+				var departmentName;
+				if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
+					for(var j in result[i].coreDashBoardVOList){
+						departmentName = result[i].coreDashBoardVOList[j].organization
+					}
+				}
+				str+='<h4>'+departmentName+'</h4>';
+				str+='<div id="districtWiseNewsGovtDetailed'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+									
+		}
+		$("#districtWiseNewsReportGovtDetailed").html(str);
+		
+		
+	if(result != null && result.length > 0){
+		
+		for(var i in result){
+			
+			var govtDetailedDistrictNamesArray =[];
+			var govtDetailedDistrictWisePositiveCountArray = [];
+			var govtDetailedDistrictWiseNegativeCountArray = [];
+			
+			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
+				
+				for(var j in result[i].coreDashBoardVOList){
+					
+						govtDetailedDistrictNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
+						
+						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							govtDetailedDistrictWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountDist);
+						//}
+						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							govtDetailedDistrictWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountDist);
+						//}
+						
+					}
+			}	
+					if(govtDetailedDistrictWisePositiveCountArray.length !=0 && govtDetailedDistrictWiseNegativeCountArray.length !=0 && govtDetailedDistrictNamesArray.length !=0){
+						$(function () {
+							$('#districtWiseNewsGovtDetailed'+i+'').highcharts({
+								 colors: ['#64C664','#D33E39'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: govtDetailedDistrictNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									headerFormat: '<b>{point.x}</b><br/>',
+									pointFormat: '<span style="color:{series.color};white-space:normal !important;">{series.name}: <b>{point.percentage:.1f}%({point.y})</b></span><br>',
+									shared: true
+									
+								},
+								
+								plotOptions: {
+									pointPadding: 0.2,
+									borderWidth: 2,
+									groupPadding: 0.2,
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.percentage,1) +'%';
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Positive',
+									data: govtDetailedDistrictWisePositiveCountArray
+								}, {
+									name: 'Negative',
+									data: govtDetailedDistrictWiseNegativeCountArray
+								}]
+							});
+						});
+					}else{
+						$('#districtWiseNewsGovtDetailed'+i+'').html("No Data Available");
+						$('#districtWiseNewsGovtDetailed'+i+'').css("height","10px");
+					}
+			}
+		}else{
+			$("#districtWiseNewsReportGovtDetailed").html("No Data Available")
+		}	
+		
+	}
 }
