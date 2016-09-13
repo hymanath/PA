@@ -372,4 +372,24 @@ public class Scheduler {
 			log.info("\n\n Total sendPdfReport "); 
 		}
 	}
+	
+	public ResultStatus pushDataToPartyMeetingStatusTable()
+	{	
+		
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+			
+		try{
+			rs = schedulerService.pushDataToPartyMeetingStatusTable();
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n pushDataToPartyMeetingStatusTable "); 
+		}
+		return rs;
+	}
+	
+	
 }

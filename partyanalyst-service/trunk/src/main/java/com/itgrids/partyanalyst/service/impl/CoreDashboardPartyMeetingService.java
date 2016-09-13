@@ -12,9 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingAttendanceDAO;
@@ -28,6 +31,7 @@ import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
@@ -46,6 +50,8 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private IPartyMeetingTypeDAO partyMeetingTypeDAO;
 	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;
 	 private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
+	 private TransactionTemplate transactionTemplate;
+	 
 	 
 	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
 		this.partyMeetingDAO = partyMeetingDAO;
@@ -77,6 +83,10 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	public void setPartyMeetingAttendanceDAO(
 			IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO) {
 		this.partyMeetingAttendanceDAO = partyMeetingAttendanceDAO;
+	}
+	
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 /**
  * @param  Long activityMemberId
@@ -1623,4 +1633,56 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		LOG.error("exception occurred in setInviteeDetails()", e);	
 	}
 }
+
+/**
+ *  @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+ *  This Service Method is used to push details to intermediate table 'party_meeting_status'. 
+ *  @since 13-SEPTEMBER-2016
+ */
+ public ResultStatus insertDataInToPartyMeetingStatusTable(){
+	 
+	 ResultStatus resultStatus = new ResultStatus();
+	 try{
+		 
+		 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		      public void doInTransactionWithoutResult(TransactionStatus status) {
+		    	  
+		    	 int deletedRecords = partyMeetingStatusDAO.deleteAllRecords();
+		 		 
+		    	 int count = partyMeetingStatusDAO.setPrimaryKeyAutoIncrementToOne();
+		    	 
+		    	 System.out.println(count);
+		    	 
+		 		 int insertedRecordsCount = partyMeetingStatusDAO.insertPartyofficeAndIvrStatus();
+		 		 
+		 		 int updatedCount1= partyMeetingStatusDAO.updatePartyMeetingStatus1();
+		 		 int updatedCount2= partyMeetingStatusDAO.updatePartyMeetingStatus2();
+		 		 int updatedCount3= partyMeetingStatusDAO.updatePartyMeetingStatus3();
+		 		 int updatedCount4= partyMeetingStatusDAO.updatePartyMeetingStatus4();
+		 		 int updatedCount5= partyMeetingStatusDAO.updatePartyMeetingStatus5();
+		 		 int updatedCount6= partyMeetingStatusDAO.updatePartyMeetingStatus6();
+		 		 int updatedCount7= partyMeetingStatusDAO.updatePartyMeetingStatus7();
+		 		 int updatedCount8= partyMeetingStatusDAO.updatePartyMeetingStatus8(); 
+		 		 int updatedCount9= partyMeetingStatusDAO.updatePartyMeetingStatus9();
+		 		 
+		 		 int insertedTime = partyMeetingStatusDAO.setInsertedDate();
+		 		 
+		 	     Log.debug(""+ deletedRecords +" - " +insertedRecordsCount +" - " +updatedCount1 + " - " +updatedCount2 +" - "
+		 				   + updatedCount3 + " - " + updatedCount4 + " - " +updatedCount5 + " - " +updatedCount6 + " - " +updatedCount7
+		 				   + "-" +updatedCount8 + " - "+updatedCount9 + " - "+insertedTime );
+			  }
+		 });
+		 resultStatus.setResultCode(0);
+		 resultStatus.setMessage("success");
+		 
+	}catch(Exception e){
+		resultStatus.setResultCode(1);
+		resultStatus.setMessage("failure");
+		LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
+	}
+	 return resultStatus;
+ }
+
+
+
 }
