@@ -852,7 +852,7 @@ public String getTopPoorPerformancecommittees(){
 		}
 		return Action.SUCCESS;
   }
-  public String getTrainingCampProgramsDetailsCntByDistrict(){
+  public String getTrainingCampProgramsDetailsCntByUserType(){
 	  try{
 			LOG.info("Entered into getTotalEligibleAttendedAndNotAttenedOverviewCount()  of CoreDashboardAction");
 			jObj = new JSONObject(getTask());
@@ -867,7 +867,8 @@ public String getTopPoorPerformancecommittees(){
 			}
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
-			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByDistrict(userAccessLevelId,userAccessLevelValues,stateId,dateStr);
+			Long userTypeId = jObj.getLong("userTypeId");
+			trainingCampProgramVOList = coreDashboardMainService.getTrainingCampProgramsDetailsCntByUserType(userAccessLevelId,userAccessLevelValues,stateId,dateStr,userTypeId);
 		
 		}catch(Exception e){
 			LOG.error("Exception raised at getTotalEligibleAttendedAndNotAttenedOverviewCount() method of CoreDashBoardAction", e);

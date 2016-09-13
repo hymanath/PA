@@ -185,27 +185,26 @@ var getDocumentWidth = $(document).width();
 	}
 	$("#stateTblDivId").html(str4);   */
   }
-  var globalTrainingProgramDtlsRslt;
- function getTrainingCampProgramsDetailsCntByDistrict(){
+ function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 var dateStr = $("#dateRangeIdForTrainingCamp").val();
 		var jsObj ={ 
 		             userAccessLevelId : globalUserAccessLevelId,
 					 userAccessLevelValuesArray : globalUserAccessLevelValues,
 					 stateId : globalStateId,
-					 dateStr : dateStr
+					 dateStr : dateStr,
+					 userTypeId : globalUserTypeId
 				  }
 		  
 		$.ajax({
 			type : 'POST',
-			url : 'getTrainingCampProgramsDetailsCntByDistrictAction.action',
+			url : 'getTrainingCampProgramsDetailsCntByUserTypeAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#districtWiseProgramCntDivId").html(" ");
 			if(result != null && result.length > 0){
 			  buildLocationWiseTrainingProgramDetails(result);	
-			  globalTrainingProgramDtlsRslt=result;
 			}else{
 			$("#districtWiseProgramCntDivId").html("NO DATA AVAILABLE");	
 			}
@@ -228,12 +227,12 @@ function buildLocationWiseTrainingProgramDetails(result){
 			var districtNamesArray =[];
 			var districtWiseAttendedPercArray = [];
 			var districtWiseYetToTrainPercArray = [];
-			if(result[i].districtList !=null && result[i].districtList.length > 0){
-				for(var j in result[i].districtList){
-						districtNamesArray.push(result[i].districtList[j].name);
-						distIdArray.push(result[i].districtList[j].id);
-						districtWiseAttendedPercArray.push(result[i].districtList[j].totalAttenedCountPer);
-						districtWiseYetToTrainPercArray.push(result[i].districtList[j].totalNotAttenedCountPer);
+			if(result[i].locationList !=null && result[i].locationList.length > 0){
+				for(var j in result[i].locationList){
+						districtNamesArray.push(result[i].locationList[j].name);
+						distIdArray.push(result[i].locationList[j].id);
+						districtWiseAttendedPercArray.push(result[i].locationList[j].totalAttenedCountPer);
+						districtWiseYetToTrainPercArray.push(result[i].locationList[j].totalNotAttenedCountPer);
 					}
 			}
 						$(function () {
@@ -803,7 +802,7 @@ $(document).on("click",".moreTrainingBlocksIcon",function(){
 	$(this).addClass("unExpandTrainingBlock");
 	$(".moreTrainingBlocks").toggle();
 	setTimeout(function(){
-		getTrainingCampProgramsDetailsCntByDistrict();
+		getTrainingCampProgramsDetailsCntByUserType();
 		//getTrainingProgramPoorCompletedLocationDtls();
 	},600);
 	var moreBlocksWidth = $(".trainingsUl").width();
