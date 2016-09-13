@@ -2,7 +2,7 @@ var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/
 var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
 $(document).ready(function(){
 	
-	getPartyWiseTotalDebateDetails();	
+	
 	$("#dateRangeIdForDebates").daterangepicker({
 		opens: 'left',
 		startDate: moment().subtract(1, 'month').startOf('month'),

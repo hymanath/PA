@@ -1994,6 +1994,7 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 	}
 	
+	
 	function getAllNewsPapers(){
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
@@ -2019,7 +2020,7 @@ function getChildUserTypesByItsParentUserType1(){
 				$("#newsPapersUlId").html(str);
 			}
 		});
-	}
+	}	
 	
 	$(document).on("click","#filtersSubmitDivId",function(){
 		newsPaperIdsGlob=[];
@@ -2059,3 +2060,34 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		}
 	});
+	
+	
+	/* function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(){alert(1);
+		//$("#").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+		
+		var propertyId=0;
+		
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+npIdsArr+"/"+propertyId
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsArr+"/"+propertyId
+		}).then(function(result){
+
+		});
+	}
+	 */
