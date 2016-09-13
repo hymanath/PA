@@ -153,6 +153,8 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 						  VO.setNotConductedCount(VO.getNotConductedCount()+count);
 					  }else if(status.equalsIgnoreCase("M")){
 						  VO.setMayBeCount(VO.getMayBeCount()+count); 
+					  }else if(status.equalsIgnoreCase("NU")){
+						 VO.setTotalNotUpdatedCnt(VO.getTotalNotUpdatedCnt()+count);  
 					  }
 				}
 			  }
@@ -192,6 +194,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
            overAllDtlsVO.setConductedCountPer(calculatePercantage(overAllDtlsVO.getConductedCount(),overAllDtlsVO.getTotalCount()));
            overAllDtlsVO.setNotConductedCountPer(calculatePercantage(overAllDtlsVO.getNotConductedCount(), overAllDtlsVO.getTotalCount()));
            overAllDtlsVO.setMayBeCountPer(calculatePercantage(overAllDtlsVO.getMayBeCount(),overAllDtlsVO.getTotalCount()));
+           overAllDtlsVO.setTotalNotUpdatedCntPer(calculatePercantage(overAllDtlsVO.getTotalNotUpdatedCnt(), overAllDtlsVO.getTotalCount()));
        }
      
        //Calculate Party Meeting Level Wise Data 
@@ -330,6 +333,8 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 				  VO.setNotConductedCount(totalMeetingCount);
 			  }else if(status.equalsIgnoreCase("M")){
 				  VO.setMayBeCount(totalMeetingCount);
+			  }else if(status.equalsIgnoreCase("NU")){
+				  VO.setTotalNotUpdatedCnt(totalMeetingCount);
 			  }
 			}
 		 }
@@ -345,6 +350,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			 VO.setConductedCountPer(calculatePercantage(VO.getConductedCount(),VO.getTotalCount()));
 			 VO.setNotConductedCountPer(calculatePercantage(VO.getNotConductedCount(),VO.getTotalCount()));
 			 VO.setMayBeCountPer(calculatePercantage(VO.getMayBeCount(), VO.getTotalCount())); 
+			 VO.setTotalNotUpdatedCntPer(calculatePercantage(VO.getTotalNotUpdatedCnt(), VO.getTotalCount()));
 		 }
 	 }catch(Exception e){
 		  LOG.error("Exception raised at setDataToPartyMeetingLevelWise() method of CoreDashboardPartyMeetingService", e); 
@@ -355,6 +361,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 		 resultVO.setConductedCount(resultVO.getConductedCount()+VO.getConductedCount());
 		 resultVO.setNotConductedCount(resultVO.getNotConductedCount()+VO.getNotConductedCount());
 		 resultVO.setMayBeCount(resultVO.getMayBeCount()+VO.getMayBeCount());
+		 resultVO.setTotalNotUpdatedCnt(resultVO.getTotalNotUpdatedCnt()+VO.getTotalNotUpdatedCnt());
 	 }catch(Exception e){
 		 LOG.error("Exception raised at mergeRequiredData() method of CoreDashboardPartyMeetingService", e); 
 	 }
@@ -366,6 +373,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 			 resultVO.setConductedCountPer(calculatePercantage(resultVO.getConductedCount(),resultVO.getTotalCount()));
 			 resultVO.setNotConductedCountPer(calculatePercantage(resultVO.getNotConductedCount(),resultVO.getTotalCount()));
 			 resultVO.setMayBeCountPer(calculatePercantage(resultVO.getMayBeCount(),resultVO.getTotalCount()));
+			 resultVO.setTotalNotUpdatedCntPer(calculatePercantage(resultVO.getTotalNotUpdatedCnt(),resultVO.getTotalCount()));
 			 map.put(key, resultVO);	 
 		 }
 		 }catch(Exception e){
