@@ -632,7 +632,10 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}
 								
 								if(availablePosts >0){
-									str+='<td>'+availablePosts+'</td>';
+									if(availablePosts > totalPositions)
+										str+='<td>'+totalPositions+'</td>';
+									else
+										str+='<td>'+availablePosts+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -806,7 +809,10 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}
 								
 								if(availablePosts >0){
-									str+='<td>'+availablePosts+'</td>';
+									if(availablePosts > totalPositions)
+										str+='<td>'+totalPositions+'</td>';
+									else
+										str+='<td>'+availablePosts+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
