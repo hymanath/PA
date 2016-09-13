@@ -313,7 +313,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 							str+='<i class="glyphicon glyphicon-user"></i> ';
 							str+='<div class="media-body"> '+result.subList[i].cadreName+'</div></div></a>';
 						}else{
-							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
+							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
 						}
 					</c:when> 
 					<c:otherwise>
@@ -325,7 +325,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 							str+='<i class="glyphicon glyphicon-user"></i> ';
 							str+='<div class="media-body"> '+result.subList[i].voterName+'</div></div>';
 						}else{
-							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/not_cadre_images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
+							str +='<img style="width: 70px;height:70px;border:1px solid #ddd;" src="https://mytdp.com/images/'+ result.subList[i].imageURL+'" class="img-responsive img-circle" onerror="setDefaultImage(this);" alt="Profile"/> '+result.subList[i].voterName+'';
 						}
 					</c:otherwise>
 				</c:choose>
@@ -601,7 +601,7 @@ function buildReferenceCandidateDetails(result){
 $(document).on('click','.showPdfCls',function(){        
 	var str = '';
 	var filePath = $(this).attr("attr_filePath");
-	str += '<iframe src="https://mytdp.com/'+filePath+'" width="100%" height="800">';    
+	str += '<iframe src="https://mytdp.com/nominated_post_documents/'+filePath+'" width="100%" height="800">';    
 	str += '</iframe>';
 	$("#pdfReportDetailsId").html(str);
 }); 
