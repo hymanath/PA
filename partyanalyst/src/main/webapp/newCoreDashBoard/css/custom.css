@@ -1687,11 +1687,56 @@ margin-top:20px;
 }
 
 .newsComparisionBorder{
-border-right: 1px solid rgb(211, 211, 211);
+	border-right: 1px solid rgb(211, 211, 211);
 }
 .newsCompBlockAlign{
-background-color: rgb(237, 238, 240); padding: 5px;
+	background-color: rgb(237, 238, 240); 
+	padding: 5px;
+	font-size:11px !important;
+	width:55px;
+	margin:3px !important;	
 }
 .newshrAlignment{
 margin-top: 5px; margin-bottom: 2px;
+}
+.scrollableDiv
+{
+	padding-right:5px;
+	padding-left:5px;
+}
+.partyWiseSlickApply
+{
+	padding-left:0px
+}
+.listIcon li .tdpColor
+{
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius:50%;
+	background-color:#FFCB00
+}
+.listIcon li .ysrcColor
+{
+	background-color:#005DB0;
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius:50%;
+}
+.listIcon li .incColor
+{
+	background-color:#3D9834;
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius:50%;
+}
+.listIcon li .bjpColor
+{
+	background-color:#FD9832;
+	width:10px;
+	height:10px;
+	display:inline-block;
+	border-radius:50%;
 }

@@ -431,7 +431,8 @@ var globalUserWiseMemberRslt;
 						}
 					},
 					tooltip: {
-						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+										 
+						pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
 						shared: true,
 						valueSuffix: '%'
 					},
@@ -444,7 +445,7 @@ var globalUserWiseMemberRslt;
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2) +"%";
+									return Highcharts.numberFormat(this.y,1);
 								}
 							}
 						  
@@ -563,8 +564,8 @@ var globalUserWiseMemberRslt;
 					}
 				},
 				tooltip: {
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>',
-				valueSuffix: '%'
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
 				},
 				plotOptions: {
 					column: {
@@ -575,7 +576,7 @@ var globalUserWiseMemberRslt;
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2) +"%";
+									return Highcharts.numberFormat(this.y,1);
 								}
 							}
 						  

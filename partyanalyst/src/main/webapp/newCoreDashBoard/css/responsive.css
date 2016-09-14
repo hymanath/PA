@@ -4,11 +4,6 @@
 		width:100%;
 		display:block;
 	}
-	.iconExpand , .notesIcon , .settingsIcon , .trainingIconExpand , .basicCommitteesBlockDiv , .notesIconTraining
-	{
-		margin-right:7px;
-		margin-top:5px;
-	}
 	.dateRangePickerCls
 	{
 		margin-top:10px;
@@ -114,16 +109,33 @@
 	{
 		padding-right:15px;
 	}
-	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings
+	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings , .basicCommitteesBlockDiv
 	{
 		font-size:10px;
 		padding:2px;
 		top:-1px;
+		margin-right:7px;
+		margin-top:5px;
 	}
 	.newsIcon
 	{
 		height:15px;
 		width:15px;
+	}
+	.dateRangePickerClsForNews
+	{
+		margin-top:20px;
+	}
+	#lastUpdatedId
+	{
+		font-size:10px !important;
+		margin-left:30px !important;
+	}
+	.newsComparisonUl
+	{
+		width:100% !important;
+		margin-top:5px !important;
+		margin-right:0px !important;
 	}
 }
 @media (min-width: 500px) and (max-width:767px) {
@@ -150,7 +162,7 @@
 }
 
 /* Ipad Only STYLES START*/
-@media (min-width:767px) and (max-width:768px) {
+@media only screen and (device-width: 768px) {
 	.committesBlockUl li
 	{
 		width:47%;
@@ -191,8 +203,12 @@
 		float:right;
 		margin-top:10px;
 	}
+	.basicCommitteesBlockDropDown
+	{
+		width:380px;
+	}
 }
-@media (min-width:1023px) and (max-width:1024px) {
+@media only screen and (device-width: 1024px) {
 	.committesBlockUl li
 	{
 		width:47%;
@@ -228,6 +244,15 @@
 	{
 		font-size:14px;
 	}
+	.settingsDropDownOptionsView
+	{
+		min-width:320px !important;
+	}
+	.basicCommitteesBlockDropDown
+	{
+		width:250px !important;
+	}
 	
 }
+
 /* Ipad Only STYLES END */

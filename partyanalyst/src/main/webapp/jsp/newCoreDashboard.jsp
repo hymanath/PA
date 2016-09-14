@@ -92,13 +92,13 @@
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
+						<div class="col-md-8 col-sm-8 col-xs-8">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
 								committees - <small class="text-muted">up to date</small>
 							</h4>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-5">
+						<div class="col-md-4 col-sm-4 col-xs-4">
 							<span class="basicCommitteesBlockDiv pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
@@ -883,15 +883,15 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-						<div class="col-md-6 col-sm-8 col-xs-7">
+						<div class="col-md-6 col-sm-8 col-xs-8">
 						<h4 class="panel-title text-capital">
 							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 							news
 							<small class="text-muted" id="currentViewing"></small>
 						</h4>
-						<span id="lastUpdatedId"></span>
+						<h6 id="lastUpdatedId"></h6>
 						</div>
-						<div class="col-md-6 col-sm-4 col-xs-5">
+						<div class="col-md-6 col-sm-4 col-xs-4">
 						<span class="settingsIcon settingsIconNews pull-right">
 						<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 						   </span>
@@ -1206,13 +1206,13 @@
 											<li><i class="fa fa-gears"></i></li>
 										</ul>
 										
-										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
+										<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
 											<li class="text-capital newsComparisonHeading">Comparison</li>
 											<li class="text-capital a viewsLiClass" id="comparisonPartyLiId" attr_div_id="comparisonPartyMainDivId">Party</li><!--Teja-->
 											<li class="text-capital a viewsLiClass" id="comparisonGovernmentLiId" attr_div_id="comparisonGovernamentMainDivId">Government</li>
 										</ul>
 										
-										<ul class="newsComparisonUl list-inline" style="margin-right: 12px ! important;">
+										<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
 											<li class="text-capital newsComparisonHeading">Detailed</li>
 											<li class="active text-capital a viewsLiClass" id="detailedPartyLiId" attr_div_id="detailedPartyMainDivId">Party</li>
 											<li class="text-capital a viewsLiClass" id="detailedGovernmentLiId" attr_div_id="detailedGovernamentMainDivId">Government</li>
@@ -1255,10 +1255,10 @@
 										<div class="panel panel-default panelNew">
 											<div class="panel-heading">
 												<div class="row">
-													<div class="col-md-12 col-xs-12 col-sm-12">
-														<div class="col-md-4">
-															<h4 class="panel-title"><span class="headingColor">Party Vs Publication</span></h4>
-														</div>
+													<div class="col-md-8 col-xs-7 col-sm-7">
+														<h4 class="panel-title"><span class="headingColor">Party Vs Publication</span></h4>
+													</div>
+													<div class="col-md-4 col-xs-5 col-sm-5">
 														<div class="pull-right">
 															<ul class="list-inline  activeUlCls">
 																<li class="active partyDistrictWiseDiv" attr_search_type="party">Parties district wise</li>
@@ -1304,12 +1304,28 @@
 												</div>
 												<div class="panel-body">
 													 <div class="row">
-													 <div class="col-md-4 col-xs-12 col-sm-4 pull-right">
-														<ul class="list-inline">
-															<li><img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/> TDP<li>
-															<li><img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> YSRC<li>
-															<li><img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> INC<li>
-															<li><img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> BJP<li>
+													 <div class="col-md-5 col-xs-12 col-sm-6 pull-right">
+														<ul class="list-inline listIcon">
+															<li>
+																<span class="tdpColor"></span>
+																<img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/>
+																TDP
+															</li>
+															<li>
+																<span class="ysrcColor"></span>
+																<img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> 
+																YSRC
+															</li>
+															<li>
+																<span class="incColor"></span>
+																<img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> 
+																INC
+															</li>
+															<li>
+																<span class="bjpColor"></span>
+																<img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> 
+																BJP
+															</li>
 														</ul>
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">

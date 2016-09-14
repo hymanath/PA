@@ -398,12 +398,11 @@
 		}
 		
 		var startDate=currentFromDate,endDate=currentToDate;
-		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
 		}).then(function(result){
-				$("#districtWiseNewsReport").html();
+			$("#districtWiseNewsReport").html();
 			buildDetailedPartyDistrictEditionsOverview(result);
 		});
 	}
@@ -1350,7 +1349,7 @@ function getChildUserTypesByItsParentUserType1(){
 								},
 								plotOptions: {
 									pie: {
-										innerSize: 85,
+										innerSize: 65,
 										depth: 10,
 										dataLabels:{
 											enabled: false,
@@ -1706,7 +1705,7 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 				
 			else{
-				$("#partyWiseDetailsDiv").html("No Data Available")
+				$("#partyWiseDetailsDiv").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
 			
 		$(".partyWiseSlickApply").slick({
@@ -1881,11 +1880,12 @@ function getChildUserTypesByItsParentUserType1(){
 						str+='<div class="panel-body" style="background-color:#fff;">';
 							str+='<h4 class="text-capital">'+result[i].usertType+'</h4>';
 							str+='<div class="row">';
-								str+='<div class="col-xs-12">';
-									str+='<div class="col-xs-4 newsComparisionBorder" >';
-									str+='<div id="partiesComparisionGraph'+i+'" style="height:150px;width:150px;margin-left: -9px; margin-top: 30px;"></div>';
+								str+='<div class="col-xs-12 col-md-12 col-xs-12">';
+								str+='<div class="row">';
+									str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder" >';
+										str+='<div id="partiesComparisionGraph'+i+'" style="height:150px;width:100%;margin-left: -9px; margin-top: 30px;"></div>';
 									str+='</div>';
-									str+='<div class="col-xs-4 newsComparisionBorder scrollableDiv" >';
+									str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder scrollableDiv" >';
 										str+='<p>Main Edition</p>';
 										if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
 											for(var j in result[i].childUserTypeVOList1){
@@ -1909,7 +1909,7 @@ function getChildUserTypesByItsParentUserType1(){
 										}
 										str+='</div>';
 										
-										str+='<div class="col-xs-4 newsComparisionBorder scrollableDiv">';
+										str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder scrollableDiv">';
 											str+='<p>District Edition</p>';
 										if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
 											for(var k in result[i].childUserTypeVOList1){
@@ -1932,6 +1932,7 @@ function getChildUserTypesByItsParentUserType1(){
 											str+='<p>No Data Available</p>';
 										}
 												
+										str+='</div>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -1950,16 +1951,47 @@ function getChildUserTypesByItsParentUserType1(){
 				 slidesToShow: 2,
 				 slidesToScroll: 2,
 				 infinite: false,
-				
-			});
-			/* $(".scrollableDiv").each(function(){
+				 responsive: [
+					{
+					  breakpoint: 1024,
+					  settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3
+					  }
+					},
+					{
+					  breakpoint: 768,
+					  settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					  }
+					},
+					{
+					  breakpoint: 600,
+					  settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					  }
+					},
+					{
+					  breakpoint: 480,
+					  settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					  }
+					}
+					// You can unslick at a given breakpoint now by adding:
+					// settings: "unslick"
+					// instead of a settings object
+				  ]
+				});
+			$(".scrollableDiv").each(function(){
 				var length = $(this).find("ul").length;
 				if(length > 3){
-				$(".scrollableDiv").mCustomScrollbar({setHeight:'200px'})
-				
+					$(".scrollableDiv").mCustomScrollbar({setHeight:'200px'})
 				}
 				
-			}); */
+			});
 			if(result !=null && result.length >0){
 				for(var i in result){
 					var ComparisionPartyNameAndPostivePercArray =[];
