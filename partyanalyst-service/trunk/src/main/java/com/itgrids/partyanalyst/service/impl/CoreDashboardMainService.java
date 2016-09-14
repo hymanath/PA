@@ -2762,6 +2762,8 @@ public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateS
 		
 		//0.partyId,1.name,2.candidateId,3.name,4.debateCount
 		 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidateNew(startDate, endDate,state);
+		 
+		 List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
 		
 		 if(commonMethodsUtilService.isListOrSetValid(charecterObjList)){
 			 for (Object[] obj : charecterObjList) {				
@@ -2793,15 +2795,23 @@ public List<CoreDebateVO> getCandidateOverAllPerformanceCohort(String startDateS
 					if(candidateMap !=null){
 							List<CoreDebateVO> voList = candidateMap.get(commonMethodsUtilService.getLongValueForObject(obj[2]));						
 							if(commonMethodsUtilService.isListOrSetValid(voList)){	
+								Double candidateScale=0.00;
 								for (CoreDebateVO vo : voList) {
 									if(vo.getScale() !=null && vo.getScale()>0.0 && obj[4] !=null && (Long)obj[4]>0){
 										vo.setScalePerc(Double.parseDouble(new BigDecimal(vo.getScale()/(Long)obj[4]).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
-										if(vo.getScalePerc() !=null && vo.getScalePerc()>0.00){
-											vo.setOverAllPerc(Double.parseDouble(new BigDecimal(vo.getOverAllPerc()+/*vo.getScalePerc()*/
+										/*if(vo.getScalePerc() !=null && vo.getScalePerc()>0.00){
+											vo.setOverAllPerc(Double.parseDouble(new BigDecimal(vo.getOverAllPerc()+vo.getScalePerc()
 													Double.parseDouble(new BigDecimal(vo.getScale()/(Long)obj[4]).setScale(2, BigDecimal.ROUND_HALF_UP).toString())).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
-										}
+										}*/
+										
+										candidateScale = candidateScale + vo.getScale();
 									}
-									vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));
+									vo.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[4]));	
+									
+									CoreDebateVO firstVo  = voList.get(0);
+									if(candidateScale>0.00 && (obj[4] !=null && (Long)obj[4] >0l))
+										firstVo.setOverAllPerc(Double.parseDouble(new BigDecimal((candidateScale/(Long)obj[4])/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+									
 								}
 							}
 						}						
