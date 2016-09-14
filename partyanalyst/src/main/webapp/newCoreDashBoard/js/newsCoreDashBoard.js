@@ -32,7 +32,7 @@
 		
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
-		
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems()
 		if(picker.chosenLabel == "Today"){
 			$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
 		}else{
@@ -2063,7 +2063,7 @@ function getChildUserTypesByItsParentUserType1(){
 	});
 	
 	
-	/* function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(){alert(1);
+	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId){
 		//$("#").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 
 		var temp="";
@@ -2073,10 +2073,10 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		}
 		
-		var newsPaperIdsStr="";
+		var npIdsStr="";
 		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
 			for(var i in newsPaperIdsGlob){
-				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+				npIdsStr=i==0?newsPaperIdsGlob[i]:npIdsStr+","+newsPaperIdsGlob[i];
 			}
 		}
 		
@@ -2085,13 +2085,13 @@ function getChildUserTypesByItsParentUserType1(){
 		var propertyId=0;
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+npIdsArr+"/"+propertyId
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsArr+"/"+propertyId
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+npIdsStr+"/"+propertyId
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId
 		}).then(function(result){
 
 		});
 	}
-	 */
+	
 	
 	$(document).on("click","#detailedGovernmentLiId",function(){
 		getDetailedGovtDepartmentWiseDistrictsOverview();
