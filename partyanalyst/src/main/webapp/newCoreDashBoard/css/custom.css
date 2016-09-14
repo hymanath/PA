@@ -1740,3 +1740,12 @@ margin-top: 5px; margin-bottom: 2px;
 	display:inline-block;
 	border-radius:50%;
 }
+.textAlignDepartment{
+	list-style:none;
+	
+}
+.textAlignDepartment li{
+	line-height:35px;
+	font-size:14px;
+	
+}
