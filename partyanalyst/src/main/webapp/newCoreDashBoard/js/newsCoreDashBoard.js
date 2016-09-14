@@ -2263,4 +2263,3 @@ function getChildUserTypesByItsParentUserType1(){
 		}	
 		
 	}
-}
