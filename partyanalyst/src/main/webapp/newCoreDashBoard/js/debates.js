@@ -261,9 +261,9 @@ function BuildCandidateOverAllPerformanceCohort(result)
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 								str+='<div class="table-responsive scroller'+i+'">';
-									str+='<table class="table table-bordered tableDebatesMainText m_top10 dataTableSorting">';
+									str+='<table class="table table-bordered tableDebatesMainText m_top10 dataTableSorting text-center">';
 										str+='<thead>';
-											str+='<th>Name</th><th>Debates </th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
+											str+='<th>NAME</th><th>DEBATES </th><th>OVERALL PERFORMANCE </th><th>SUBJECT</th><th>PRESENTATION</th><th>COUNTER ATTACK</th><th>BODY LANGUAGE</th>';
 										str+='</thead>';
 										str+='<tbody>';
 											for(var j in result[i].coreDebateVOList){
@@ -278,6 +278,18 @@ function BuildCandidateOverAllPerformanceCohort(result)
 													str+='<td>';
 															str+='<span class="">'+result[i].coreDebateVOList[j].coreDebateVOList[0].debateCount+'</span>';
 													str+='</td>';
+													
+													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc !=null){
+													if(result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc.toString().split(".")[1] ==null  || result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc.toString().split(".")[1] == undefined || result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc.toString().split(".")[1].length<0){								
+															result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc = result[i].coreDebateVOList[j].coreDebateVOList[0].scalePerc.toString().concat(".0");								
+														}
+													}
+													
+													
+													str+='<td>';
+															str+='<span class="">'+result[i].coreDebateVOList[j].coreDebateVOList[0].overAllPerc+'</span>';
+													str+='</td>';
+													
 													for(var k in result[i].coreDebateVOList[j].coreDebateVOList){
 													
 													//Digit Adding
