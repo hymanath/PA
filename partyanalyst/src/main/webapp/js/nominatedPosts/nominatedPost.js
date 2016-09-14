@@ -768,12 +768,10 @@ function getNominatedPostApplication(startIndex)
 			}		
 			voterCardNo = $('#searchBy').val().trim();
 			
-			if(searchBy.trim().length == 0 || searchBy.trim() == null || searchBy.trim().length  > 10 || searchBy.trim().length != 10 )
+			if(searchBy.trim().length == 0 || searchBy.trim() == null || searchBy.trim().length != 10 )
 			{
 				$('#searchErrDiv').html('Please enter Voter Card No.');
 				return;
-			}else{
-				$('#searchErrDiv').html(' ');
 			}
 		}
 		if(searchRadioType == 'mobileNo')
