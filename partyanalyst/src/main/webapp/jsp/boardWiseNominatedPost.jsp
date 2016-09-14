@@ -454,8 +454,8 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='<div class="updateDropDownAny" id="updateDropDownAny'+i+'">';
 						str+='<div class="updateDropDownArrow">';
 						str+='<div class="text-success" id="successDivAnyId'+i+'"></div>';
-							str+='<i class="glyphicon glyphicon-remove pull-right closeDivAnyCls" id="updateDropDownAny'+i+'" style="cursor:pointer;"></i>';
-								str+='<div class="row">';
+							str+='<i class="glyphicon glyphicon-remove pull-right closeDivAnyCls" id="updateDropDownAny'+i+'" style="cursor: pointer; position: absolute; right: 7px; top: 8px;"></i>';
+								str+='<div class="row m_top10" >';
 								str+='<div class="col-md-3 col-xs-12 col-sm-3">';
 									str+='<label>Department</label>';
 									str+='<select class="chosenSelect" id="departmentAnyId'+i+'" attr_applctnId="'+result.subList[i].nominatePostApplicationId+'" onchange="getBoardsForDepartments('+i+')">';
@@ -692,10 +692,12 @@ function getDepartments(num){
    });
 }
 
-function getBoardsForDepartments(num){
+function getBoardsForDepartments(num){   
 	
 	$("#boardAnyId"+num+" option").remove();
 	  $("#boardAnyId"+num).trigger('chosen:updated');
+	$("#positionAnyId"+num+" option").remove();
+	$("#positionAnyId"+num).trigger('chosen:updated');
 	var depmtId = $("#departmentAnyId"+num).val();
 	$("#statusCommentAnyId"+num).html('');
 	 $("#updatedStatusAnyId"+num).val(0);
@@ -1148,7 +1150,10 @@ function buildDepartmentDetails(result,divId){
 function checkPositionAvailableOrNot(num){
 	
 	var positionName = $("#positionAnyId"+num).find(":selected").text();
-		 
+		 if($("#positionAnyId"+num).val()==0)
+		 {
+			 return;
+		 }
 	 var jsObj={
 		departmentId:$("#departmentAnyId"+num).val(),
 		boardId     : $("#boardAnyId"+num).val(),
@@ -1169,6 +1174,7 @@ function checkPositionAvailableOrNot(num){
 		  $("#errorMsg"+num).html("This&nbsp;&nbsp;"   +positionName+  "&nbsp;&nbsp;posts are already filled out.");
 	   }else if(result.message != null && result.message == "AVAILABLE"){
 		  $("#updateStatusAnyId").show(); 
+		  $("#errorMsg"+num).html("");
 	   }
    });
 }
