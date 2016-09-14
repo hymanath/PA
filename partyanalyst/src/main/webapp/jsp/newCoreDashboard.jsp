@@ -1291,6 +1291,18 @@
 												</div>
 											</div>
 										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
+												</div>
+												<div class="panel-body">
+												<div id="problemsDetailedOverview"></div>
+												
+												</div>
+												<div id="problemsDetailedOverview22"></div>
+											</div>
+										</div>
 									</div>
 									
 									 <div id="comparisonPartyMainDivId" class="mainBuildingDivClass" style="display:none;">
