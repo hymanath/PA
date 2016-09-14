@@ -260,10 +260,13 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
        
        //common for all user
        resultVO.setOverAllVO(overAllTotalDtlsMap.get("overAllTotalDtls"));
-	   resultVO.getPartyMettingsVOList().add(villageWardMap.get("villageWard"));
-	   resultVO.getPartyMettingsVOList().add(mandalTwnDivMap.get("mandalTwnDiv"));
-	 
-       if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+       if(villageWardMap.get("villageWard") != null){
+    	   resultVO.getPartyMettingsVOList().add(villageWardMap.get("villageWard"));   
+       }
+       if(mandalTwnDivMap.get("mandalTwnDiv") != null){
+    	   resultVO.getPartyMettingsVOList().add(mandalTwnDivMap.get("mandalTwnDiv"));
+       }
+	   if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
     	   if(overAllLevelWiseDtlsMap.get(3l) != null){
     		   resultVO.getPartyMettingsVOList().add(overAllLevelWiseDtlsMap.get(3l));   
     	   }
@@ -406,7 +409,6 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	
 	    List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
 	    
-	    Map<Long,Long> totalCntMap = new HashMap<Long, Long>(0);
 	    Map<String,PartyMeetingsVO> meetingCntDtlsMap = new HashMap<String, PartyMeetingsVO>(0);
 	    Map<Long,Set<Long>> locationLevelMap = null;
 		Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
@@ -918,7 +920,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	*/
   public List<PartyMeetingsVO> getPartyMeetingCntDetailstLevelWiseByUserAccessLevel(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues){
 	  
-	  List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>(0);
+	    List<PartyMeetingsVO> resultList = new ArrayList<PartyMeetingsVO>(0);
 	    Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
 	    Map<Long,Map<Long,PartyMeetingsVO>> meetingsDtlsMap = new HashMap<Long, Map<Long,PartyMeetingsVO>>(0);
 	    Long userAccessLevelId=0l;
