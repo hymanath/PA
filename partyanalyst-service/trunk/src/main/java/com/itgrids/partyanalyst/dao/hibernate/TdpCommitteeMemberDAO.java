@@ -2264,16 +2264,17 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 	
 	StringBuilder queryStr = new StringBuilder();
 
-	  queryStr.append(" select ");
-			if(status.equalsIgnoreCase("camp")){
-				queryStr.append(" distinct " );
-			}
-			          queryStr.append(" TCED.trainingCampProgram.trainingCampProgramId," + //0 
-		              " TCED.trainingCampProgram.programName,"); //1 
+			        queryStr.append(" select ");
+					if(status.equalsIgnoreCase("camp")){
+						queryStr.append(" distinct " );
+					}
+		           queryStr.append(" TCED.trainingCampProgram.trainingCampProgramId," + //0 
+                                   " TCED.trainingCampProgram.programName,"); //1 
+			          
 			  if(status.equalsIgnoreCase("leadership")){
 				  if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-			    	  queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,");
-			    	  queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName,"); 
+			    	      queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,");
+			    	      queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName,"); 
 			       }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 			    	|| userType.longValue()==IConstants.MP_USER_TYPE_ID){
 			    	 	  queryStr.append("TCM.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,");
