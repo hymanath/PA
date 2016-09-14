@@ -2147,7 +2147,12 @@ function getChildUserTypesByItsParentUserType1(){
 	
 	
 	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId){
-		//$("#problemsDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		if(propertyId == 7){
+			$("#problemsDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		}else if(propertyId == 0){
+				$("#problemsDetailedOverview22").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		}
+		
 
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
@@ -2171,7 +2176,11 @@ function getChildUserTypesByItsParentUserType1(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+npIdsStr+"/"+propertyId
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId
 		}).then(function(result){
-		$("#problemsDetailedOverview").html('');
+			if(propertyId == 7){
+				$("#problemsDetailedOverview").html('');
+			}else if(propertyId == 0){
+				$("#problemsDetailedOverview22").html('');
+			}
 			buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
 		});
 	}
