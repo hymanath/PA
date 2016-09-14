@@ -1423,7 +1423,7 @@ public String getCandidateDtlsPerDist(){
 					eventIds.add(Long.valueOf(eventIdsArray.getString(i)));
 				}
 			}
-			IdAndNameVOList = coreDashboardService1.getEventInviteeAttendeeCount(eventIds,activityMemberId);
+			//IdAndNameVOList = coreDashboardService1.getEventInviteeAttendeeCount(eventIds,activityMemberId);
 	}catch(Exception e){
 		LOG.error("Exception raised at getEventInviteeAttendeeCount() method of coreDashboardAction", e);
 	}
