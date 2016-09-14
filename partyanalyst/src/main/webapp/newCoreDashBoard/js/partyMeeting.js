@@ -15,7 +15,8 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
            'This Month': [moment().startOf('month'), moment()],
-           'This Year': [moment().startOf('Year'), moment()]
+           'This Year': [moment().startOf('Year'), moment()],
+		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	})
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
