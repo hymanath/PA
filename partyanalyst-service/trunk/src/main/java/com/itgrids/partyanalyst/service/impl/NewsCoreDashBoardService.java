@@ -67,7 +67,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getUserTypeWiseNewsCounts");
+	         WebResource webResource = client.resource("https://mytdp.com/CNP_TEST/webservice/getUserTypeWiseNewsCounts");
 	         
 			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
 	         System.out.println(jsonInString);
