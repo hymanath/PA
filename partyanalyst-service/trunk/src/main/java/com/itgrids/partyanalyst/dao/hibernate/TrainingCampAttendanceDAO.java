@@ -1328,15 +1328,15 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 			  queryStr.append(" distinct ");
 		  }
 		  queryStr.append(" model.trainingCampProgram.trainingCampProgramId," +//0
-  	 	          " model.trainingCampProgram.programName,"); //1
+  	 	                   " model.trainingCampProgram.programName,"); //1
   
 		  if(status.equalsIgnoreCase("leadership")){
 		  if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
-	  	  queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,");
-	  	  queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName,"); 
+	  	          queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtId,");
+	  	          queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.district.districtName,"); 
 	     }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
 	  	|| userType.longValue()==IConstants.MP_USER_TYPE_ID){
-	  	 	  queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,");
+	  	 	      queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,");
 		    	  queryStr.append("model3.tdpCommitteeRole.tdpCommittee.userAddress.constituency.name,"); 
 		   }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
 			     if(levelType != null && levelType.equalsIgnoreCase("tehsil")){
