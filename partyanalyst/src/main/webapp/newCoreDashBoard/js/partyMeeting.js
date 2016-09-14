@@ -302,7 +302,7 @@ $(document).on("click",".selectAll",function(){
 				},
 				tooltip: {
 				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
 				},
 				plotOptions: {
 					column: {
@@ -313,7 +313,7 @@ $(document).on("click",".selectAll",function(){
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,1);
+									return Highcharts.numberFormat(this.y,2) +"%";
 								}
 							}
 						  
@@ -421,7 +421,7 @@ $(document).on("click",".selectAll",function(){
 				},
 				tooltip: {
 				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
 				},
 
 				plotOptions: {
@@ -433,7 +433,7 @@ $(document).on("click",".selectAll",function(){
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,1);
+									return Highcharts.numberFormat(this.y,2) +"%";
 								}
 							}
 						  
@@ -819,7 +819,7 @@ function buildLevelWiseHighCharts(result){
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,1);
+													return Highcharts.numberFormat(this.y,1) +"%";
 												}
 											}
 										  
@@ -1437,7 +1437,7 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,1);
+													return Highcharts.numberFormat(this.y,1) +"%";
 												}
 											}
 										  
@@ -1952,7 +1952,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 												if (this.y === 0) {
 													return null;
 												} else {
-													return Highcharts.numberFormat(this.y,1);
+													return Highcharts.numberFormat(this.y,1) +"%";
 												}
 											}
 										  

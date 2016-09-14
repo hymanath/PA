@@ -2074,7 +2074,7 @@
 							},
 							tooltip: {
 									 
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
 									shared: true,
 									valueSuffix: '%'
 								},
@@ -2083,7 +2083,9 @@
 										stacking: 'normal',
 										dataLabels: {
 											enabled: true,
-											
+											formatter: function(){
+												return Highcharts.numberFormat(this.y,2) + '%';
+											}
 										  
 										}
 									}

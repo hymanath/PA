@@ -287,7 +287,7 @@ function buildLocationWiseTrainingProgramDetails(result){
 								},
 								tooltip: {
 									headerFormat: '<b>{point.x}</b><br/>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>',
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
 									shared: true
 								},
 								plotOptions: {
@@ -444,7 +444,7 @@ var globalUserWiseMemberRslt;
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2);
+									return Highcharts.numberFormat(this.y,2) +"%";
 								}
 							}
 						  
@@ -575,7 +575,7 @@ var globalUserWiseMemberRslt;
 								if (this.y === 0) {
 									return null;
 								} else {
-									return Highcharts.numberFormat(this.y,2);
+									return Highcharts.numberFormat(this.y,2) +"%";
 								}
 							}
 						  
