@@ -246,7 +246,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	}
 	
 	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,Long childUserTypeId,String state,String startDate,String endDate,List<Long> npIds){
-		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);
+		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);//Teja
 		try {
 			
 			ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
@@ -262,7 +262,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getPartyComparisonChildUserTypeMembers");
+	         WebResource webResource = client.resource("https://mytdp.com/CNP_TEST/webservice/getPartyComparisonChildUserTypeMembers");
 	         
 			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
 	         System.out.println(jsonInString);
@@ -274,130 +274,8 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	 	      }else{
 	 	    	 
 	 	    	  List<CoreDashBoardVO> wsResultList = new ArrayList<CoreDashBoardVO>();
-	 	    	  
-	 	    	 String output = response.getEntity(String.class);
-	 	    	 
-	 	    	if(output != null && !output.isEmpty()){
-	 	    		JSONArray finalArray = new JSONArray(output);
-	 	    		if(finalArray!=null && finalArray.length()>0){
-		 	    		
-		 	    		 for(int i=0;i<finalArray.length();i++){
-		 	    			CoreDashBoardVO vo = new CoreDashBoardVO();
-		 	    			JSONObject tmp = (JSONObject) finalArray.get(i);
-		 	    			
-		 	    			vo.setId(tmp.getLong("id"));
-		 	    			
-		 	    			String s1 = tmp.getString("coreDashBoardVOList");
-		 	    			JSONArray inArr = new JSONArray(s1);
-		 	    			
-		 	    			if(inArr != null && inArr.length() > 0){
-		 	    				for (int j = 0; j < inArr.length(); j++) {
-		 	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
-		 	    					
-		 	    					CoreDashBoardVO invo = new CoreDashBoardVO();
-		 	    					invo.setId(tmp1.getLong("id"));
-		 	    					
-		 	    					String s2 = tmp1.getString("coreDashBoardVOList");
-		 	    					JSONArray inArr1 = new JSONArray(s2);
-		 	    					if(inArr1 != null && inArr1.length() > 0){
-		 	    						for (int k = 0; k < inArr1.length(); k++) {
-		 	    							JSONObject tmp2 = (JSONObject) inArr1.get(k);
-		 	    							
-		 	    							CoreDashBoardVO orgvo = new CoreDashBoardVO();
-		 	    							orgvo.setOrganizationId(tmp2.getLong("organizationId"));
-		 	    							orgvo.setOrganization(tmp2.getString("organization"));
-		 	    							orgvo.setCount(tmp2.getLong("count"));
-		 	    							
-		 	    							invo.getCoreDashBoardVOList().add(orgvo);
-		 	    						}
-		 	    						
-		 	    					}
-		 	    					
-		 	    					vo.getCoreDashBoardVOList().add(invo);
-								}
-		 	    			}
-		 	    			
-		 	    			
-		 	    			String voList1 = tmp.getString("coreDashBoardVOList1");
-		 	    			JSONArray ediWiseArr = new JSONArray(voList1);
-		 	    			if(inArr != null && ediWiseArr.length() > 0){
-		 	    				for (int j = 0; j < ediWiseArr.length(); j++) {
-		 	    					JSONObject tmp1 = (JSONObject) ediWiseArr.get(j);
-		 	    					
-		 	    					CoreDashBoardVO invo = new CoreDashBoardVO();
-		 	    					invo.setId(tmp1.getLong("id"));
-		 	    					
-		 	    					String ediVOList = tmp1.getString("coreDashBoardVOList");
-		 	    					
-		 	    					JSONArray inArr1 = new JSONArray(ediVOList);
-		 	    					if(inArr1 != null && inArr1.length() > 0){
-		 	    						for (int k = 0; k < inArr1.length(); k++) {
-		 	    							JSONObject tmp2 = (JSONObject) inArr1.get(k);
-		 	    							CoreDashBoardVO ediVO = new CoreDashBoardVO();
-		 									ediVO.setOrganizationId(tmp2.getLong("organizationId"));
-		 									ediVO.setOrganization(tmp2.getString("organization"));
-		 									ediVO.setName(tmp2.getString("name"));
-		 									ediVO.setPositiveCountMain(tmp2.getLong("positiveCountMain"));
-		 									ediVO.setPositiveCountDist(tmp2.getLong("positiveCountDist"));
-		 									ediVO.setNegativCountMain(tmp2.getLong("negativCountMain"));
-		 									ediVO.setNegativCountDist(tmp2.getLong("negativCountDist"));
-		 									ediVO.setNeutralCountMain(tmp2.getLong("neutralCountMain"));
-		 									ediVO.setNeutralCountDist(tmp2.getLong("neutralCountDist"));
-		 									invo.getCoreDashBoardVOList().add(ediVO);
-		 	    						}
-		 	    					}
-		 	    					
-		 	    					vo.getCoreDashBoardVOList1().add(invo);
-		 	    				}
-		 	    			}
-		 	    			
-		 	    			wsResultList.add(vo);
-		 	    		 }
-	 	    		}
-	 	    		
-	 	    	}
-	 	    	//For Parties Wise Percentages
-	 	    	if(wsResultList != null && wsResultList.size() > 0){
-	 	    		setWSResultToUserBase(childActivityMembersMap,wsResultList,finalList);	
-	 	    		if(finalList != null && finalList.size() > 0){
-	 	    			for (ChildUserTypeVO chUsrTypVO : finalList) {
-	 	    				if(chUsrTypVO.getChildUserTypeVOList() != null && chUsrTypVO.getChildUserTypeVOList().size() > 0){
-	 	    					Long partyTotalCount = 0l;
-	 	    					for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
-									partyTotalCount = partyTotalCount +childUserTypeVO.getCount();
-								}
-	 	    					
-	 	    					if(partyTotalCount > 0l){
-	 	    						for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
-	 	    							if(childUserTypeVO.getOrganizationId() == 872l){
-	 	    								chUsrTypVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
-	 	    							}
-										childUserTypeVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
-									}
-	 	    					}
-	 	    				}
-	 	    				//For EditionWise Percentages
-	 	    				if(chUsrTypVO.getChildUserTypeVOList1() != null && chUsrTypVO.getChildUserTypeVOList1().size() > 0){
-	 	    					for (ChildUserTypeVO childUsrVO : chUsrTypVO.getChildUserTypeVOList1()) {
-									Long mainTotalCount=0l,distTotalCount=0l;
-									mainTotalCount = childUsrVO.getPositiveCountMain()+childUsrVO.getNegativeCountMain();
-									distTotalCount = childUsrVO.getPositiveCountDist()+childUsrVO.getNegativeCountDist();
-									if(mainTotalCount > 0l){
-										childUsrVO.setPositiveCountMainPerc(caclPercantage(childUsrVO.getPositiveCountMain(), mainTotalCount));
-										childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountMain(), mainTotalCount));
-									}
-									if(distTotalCount > 0l){
-										childUsrVO.setPositiveCountDistPerc(caclPercantage(childUsrVO.getPositiveCountDist(), distTotalCount));
-										childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountDist(), distTotalCount));
-									}
-								}
-	 	    				}
-						}
-	 	    			
-	 	    			
-	 	    			Collections.sort(finalList,positiveSorting1);
-	 	    		}
-	 	    	}
+	 	    	  String output = response.getEntity(String.class);
+	 	    	 finalList =  getCommanPartyComparisonChildUserTypeMembers(childActivityMembersMap,wsResultList,output);
 	 	   }
 		} catch (Exception e) {
 			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers service", e);
@@ -536,7 +414,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	}
 	
 	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate,List<Long> npIds){
-		List<ChildUserTypeVO> finalVoList = new ArrayList<ChildUserTypeVO>(0);
+		List<ChildUserTypeVO> finalVoList = new ArrayList<ChildUserTypeVO>(0);//sandeep
 		try {
 			
 			ActivityMemberVO activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId);
@@ -552,7 +430,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 			 
-	         WebResource webResource = client.resource("https://mytdp.com/CommunityNewsPortal/webservice/getPartyCompareSubLevelMemberDetails");
+	         WebResource webResource = client.resource("https://mytdp.com/CNP_TEST/webservice/getPartyCompareSubLevelMemberDetails");
 	         
 			 String jsonInString = new ObjectMapper().writeValueAsString(activityMemberVO);
 	         System.out.println(jsonInString);
@@ -562,7 +440,9 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	         if(response.getStatus() != 200){
 	 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 	 	      }else{
-	 	    	  
+	 	    	 List<CoreDashBoardVO> wsResultList = new ArrayList<CoreDashBoardVO>();
+	 	    	  String output = response.getEntity(String.class);
+	 	    	 finalVoList = getCommanPartyComparisonChildUserTypeMembers(childActivityMembersMap,wsResultList,output);
 	 	      }
 		    
 		    
@@ -570,5 +450,135 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 			LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
 		}
 		return finalVoList;
+	}
+	public List<ChildUserTypeVO> getCommanPartyComparisonChildUserTypeMembers(Map<Long,UserTypeVO> childActivityMembersMap,List<CoreDashBoardVO> wsResultList,String output){
+		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);
+	try {
+		
+		if(output != null && !output.isEmpty()){
+			JSONArray finalArray = new JSONArray(output);
+			if(finalArray!=null && finalArray.length()>0){
+	    		
+	    		 for(int i=0;i<finalArray.length();i++){
+	    			CoreDashBoardVO vo = new CoreDashBoardVO();
+	    			JSONObject tmp = (JSONObject) finalArray.get(i);
+	    			
+	    			vo.setId(tmp.getLong("id"));
+	    			
+	    			String s1 = tmp.getString("coreDashBoardVOList");
+	    			JSONArray inArr = new JSONArray(s1);
+	    			
+	    			if(inArr != null && inArr.length() > 0){
+	    				for (int j = 0; j < inArr.length(); j++) {
+	    					JSONObject tmp1 = (JSONObject) inArr.get(j);
+	    					
+	    					CoreDashBoardVO invo = new CoreDashBoardVO();
+	    					invo.setId(tmp1.getLong("id"));
+	    					
+	    					String s2 = tmp1.getString("coreDashBoardVOList");
+	    					JSONArray inArr1 = new JSONArray(s2);
+	    					if(inArr1 != null && inArr1.length() > 0){
+	    						for (int k = 0; k < inArr1.length(); k++) {
+	    							JSONObject tmp2 = (JSONObject) inArr1.get(k);
+	    							
+	    							CoreDashBoardVO orgvo = new CoreDashBoardVO();
+	    							orgvo.setOrganizationId(tmp2.getLong("organizationId"));
+	    							orgvo.setOrganization(tmp2.getString("organization"));
+	    							orgvo.setCount(tmp2.getLong("count"));
+	    							
+	    							invo.getCoreDashBoardVOList().add(orgvo);
+	    						}
+	    						
+	    					}
+	    					
+	    					vo.getCoreDashBoardVOList().add(invo);
+						}
+	    			}
+	    			
+	    			
+	    			String voList1 = tmp.getString("coreDashBoardVOList1");
+	    			JSONArray ediWiseArr = new JSONArray(voList1);
+	    			if(inArr != null && ediWiseArr.length() > 0){
+	    				for (int j = 0; j < ediWiseArr.length(); j++) {
+	    					JSONObject tmp1 = (JSONObject) ediWiseArr.get(j);
+	    					
+	    					CoreDashBoardVO invo = new CoreDashBoardVO();
+	    					invo.setId(tmp1.getLong("id"));
+	    					
+	    					String ediVOList = tmp1.getString("coreDashBoardVOList");
+	    					
+	    					JSONArray inArr1 = new JSONArray(ediVOList);
+	    					if(inArr1 != null && inArr1.length() > 0){
+	    						for (int k = 0; k < inArr1.length(); k++) {
+	    							JSONObject tmp2 = (JSONObject) inArr1.get(k);
+	    							CoreDashBoardVO ediVO = new CoreDashBoardVO();
+									ediVO.setOrganizationId(tmp2.getLong("organizationId"));
+									ediVO.setOrganization(tmp2.getString("organization"));
+									ediVO.setName(tmp2.getString("name"));
+									ediVO.setPositiveCountMain(tmp2.getLong("positiveCountMain"));
+									ediVO.setPositiveCountDist(tmp2.getLong("positiveCountDist"));
+									ediVO.setNegativCountMain(tmp2.getLong("negativCountMain"));
+									ediVO.setNegativCountDist(tmp2.getLong("negativCountDist"));
+									ediVO.setNeutralCountMain(tmp2.getLong("neutralCountMain"));
+									ediVO.setNeutralCountDist(tmp2.getLong("neutralCountDist"));
+									invo.getCoreDashBoardVOList().add(ediVO);
+	    						}
+	    					}
+	    					
+	    					vo.getCoreDashBoardVOList1().add(invo);
+	    				}
+	    			}
+	    			
+	    			wsResultList.add(vo);
+	    		 }
+			}
+			
+		}
+		//For Parties Wise Percentages
+		if(wsResultList != null && wsResultList.size() > 0){
+			setWSResultToUserBase(childActivityMembersMap,wsResultList,finalList);	
+			if(finalList != null && finalList.size() > 0){
+				for (ChildUserTypeVO chUsrTypVO : finalList) {
+					if(chUsrTypVO.getChildUserTypeVOList() != null && chUsrTypVO.getChildUserTypeVOList().size() > 0){
+						Long partyTotalCount = 0l;
+						for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
+							partyTotalCount = partyTotalCount +childUserTypeVO.getCount();
+						}
+						
+						if(partyTotalCount > 0l){
+							for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
+								if(childUserTypeVO.getOrganizationId() == 872l){
+									chUsrTypVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
+								}
+								childUserTypeVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
+							}
+						}
+					}
+					//For EditionWise Percentages
+					if(chUsrTypVO.getChildUserTypeVOList1() != null && chUsrTypVO.getChildUserTypeVOList1().size() > 0){
+						for (ChildUserTypeVO childUsrVO : chUsrTypVO.getChildUserTypeVOList1()) {
+							Long mainTotalCount=0l,distTotalCount=0l;
+							mainTotalCount = childUsrVO.getPositiveCountMain()+childUsrVO.getNegativeCountMain();
+							distTotalCount = childUsrVO.getPositiveCountDist()+childUsrVO.getNegativeCountDist();
+							if(mainTotalCount > 0l){
+								childUsrVO.setPositiveCountMainPerc(caclPercantage(childUsrVO.getPositiveCountMain(), mainTotalCount));
+								childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountMain(), mainTotalCount));
+							}
+							if(distTotalCount > 0l){
+								childUsrVO.setPositiveCountDistPerc(caclPercantage(childUsrVO.getPositiveCountDist(), distTotalCount));
+								childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountDist(), distTotalCount));
+							}
+						}
+					}
+				}
+				
+				
+				Collections.sort(finalList,positiveSorting1);
+			}
+		}
+	}catch(Exception e){
+		LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
+	}
+	return finalList;
 	}
 }
