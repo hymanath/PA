@@ -1371,7 +1371,7 @@
 							<div class="col-md-6 col-sm-6 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-									meetings <small class="text-muted"> - last month</small>
+									meetings <small class="text-muted"><span id="dateMeetingHeadingId"> - last month</span></small>
 								</h4>
 							</div>
 							<div class="col-md-6 col-sm-6 col-xs-5">
