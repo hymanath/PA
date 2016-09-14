@@ -356,7 +356,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			jObj = new JSONObject(getTask());
 			
 			idNameVOList = nominatedPostProfileService.getDepartments(jObj.getLong("postType"),jObj.getLong("boardLevelId"),jObj.getLong("searchLevelValue"),
-					jObj.getLong("searchLevelId"));
+					jObj.getLong("searchLevelId"),jObj.getLong("positionId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getDepartments Action",e);
@@ -371,7 +371,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 			jObj = new JSONObject(getTask());
 			
 			idNameVOList = nominatedPostProfileService.getDepartmentBoard(jObj.getLong("depmtId"),jObj.getLong("boardLevelId"),jObj.getLong("searchLevelValue"),
-					jObj.getLong("searchLevelId"),jObj.getLong("applicationId"));
+					jObj.getLong("searchLevelId"),jObj.getLong("applicationId"),jObj.getLong("positionId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getDepartmentBoard Action",e);

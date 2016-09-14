@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -77,11 +78,20 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String status;
 	
 	private List<IdNameVO> idNameVoList;
+	private List<IdAndNameVO> IdAndNameVOList;
 	private List<ChildUserTypeVO> childUserTypeVOList;
 	
 	//setters And Getters
-   	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
+	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
+	}
+
+	public List<IdAndNameVO> getIdAndNameVOList() {
+		return IdAndNameVOList;
+	}
+
+	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
+		IdAndNameVOList = idAndNameVOList;
 	}
 
 	public void setPartyMeetingsVOList(List<PartyMeetingsVO> partyMeetingsVOList) {
@@ -1397,6 +1407,27 @@ public String getCandidateDtlsPerDist(){
 	return Action.SUCCESS; 
 	 
 	 
+ }
+ public String getEventInviteeAttendeeCount(){
+	 LOG.info("Entered into getEventInviteeAttendeeCount()  of CoreDashboardAction");
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			
+			List<Long> eventIds = new ArrayList<Long>();
+			JSONArray eventIdsArray=jObj.getJSONArray("partyMeetingTypeArr");
+			if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+				for( int i=0;i<eventIdsArray.length();i++){
+					eventIds.add(Long.valueOf(eventIdsArray.getString(i)));
+				}
+			}
+			IdAndNameVOList = coreDashboardService1.getEventInviteeAttendeeCount(eventIds,activityMemberId);
+	}catch(Exception e){
+		LOG.error("Exception raised at getEventInviteeAttendeeCount() method of coreDashboardAction", e);
+	}
+	return Action.SUCCESS; 
  }
  	
  	public String getPartyComparisonChildUserTypeMembers(){

@@ -13635,10 +13635,7 @@
 		<result type="json" name="success"> 
    			<param name="root">partyMeetingsVOList</param> 
    		</result>
-	</action>   
-	
-	
-	
+	</action> 
 	<action name="getPartyComparisonChildUserTypeMembersAction" class="coreDashboardAction" method="getPartyComparisonChildUserTypeMembers">
 		<result type="json" name="success"> 
    			<param name="root">childUserTypeVOList</param> 
@@ -13671,6 +13668,11 @@
 		<result type="json" name="success"> 
    			<param name="root">partyMeetingDataVO</param> 
 		</result>
-	</action>
+	</action>  
+	<action name="getEventInviteeAttendeeCountForCoreDashbrdAction" class="coreDashboardAction" method="getEventInviteeAttendeeCount">
+		<result type="json" name="success"> 
+   			<param name="root">IdAndNameVOList</param> 
+   		</result>
+	</action> 
 </package>
 </struts>
