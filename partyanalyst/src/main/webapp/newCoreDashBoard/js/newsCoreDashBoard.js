@@ -582,10 +582,19 @@
 									}
 								},
 
-								tooltip: {
-									//headerFormat: '<span style="font-size:11px">{series.count}</span><br>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}% - ({point.y})</b><br>',
-									shared:true
+								 tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
 								},
 
 								series: [{
@@ -716,9 +725,18 @@
 								},
 
 								tooltip: {
-									//headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}% - ({point.y})</b><br>',
-									shared:true
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
 								},
 
 								series: [{
@@ -987,10 +1005,18 @@
 									shadow: false
 								},
 								tooltip: {
-									headerFormat: '<b>{point.x}</b><br/>',
-									pointFormat: '<span style="color:{series.color};white-space:normal !important;">{series.name}: <b>{point.percentage:.1f}%({point.y})</b></span><br>',
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
 									shared: true
-									
 								},
 								
 								plotOptions: {
@@ -1309,23 +1335,32 @@ function getChildUserTypesByItsParentUserType1(){
 									text: null
 								},
 								tooltip: {
-										//headerFormat: '<b>{point.x}</b>',
-										pointFormat: '<span style="color:{series.color}">: <b>{point.percentage:.1f}% ({point.y})</b></span><br>',
-										shared: true
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
 									},
+									shared: true
+								},
 								plotOptions: {
 									pie: {
 										innerSize: 85,
 										depth: 10,
 										dataLabels:{
 											enabled: false,
-											 /* formatter: function() {
+											  formatter: function() {
 													if (this.y === 0) {
 														return null;
 													} else {
-														return Highcharts.numberFormat(this.y,1)+ '%';
+														return Highcharts.numberFormat(this.percentage,1)+ '%';
 													}
-												} */
+												} 
 										},
 										showInLegend: false
 									},
@@ -1396,10 +1431,10 @@ function getChildUserTypesByItsParentUserType1(){
 								
 							},
 							tooltip: {
-								//headerFormat: '<b>{point.x}</b><br/>',
-								pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.1f}%</b></span><br/>',
-								shared: true
-							},
+										//headerFormat: '<b>{point.x}</b>',
+										pointFormat: '<span style="color:{series.color}">: <b>{point.percentage:.1f}% ({point.y})</b></span><br>',
+										shared: true
+									},
 							plotOptions: {
 								column: {
 									 
@@ -1613,7 +1648,17 @@ function getChildUserTypesByItsParentUserType1(){
 											}
 										},
 										tooltip: {
-											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}% ({point.y})</b><br/>',
+											formatter: function () {
+												var s = '<b>' + this.x + '</b>';
+
+												$.each(this.points, function () {
+													s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+														Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+														(this.y);
+												});
+
+												return s;
+											},
 											shared: true
 										},
 										legend: {
@@ -1999,8 +2044,8 @@ function getChildUserTypesByItsParentUserType1(){
 	
 	function getAllNewsPapers(){
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
+			url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllNewsPapers/"+globalState
 		}).then(function(result){
 			$("#newsPapersUlId").html("");
 			if(result != null && result.length > 0){
@@ -2225,10 +2270,18 @@ function getChildUserTypesByItsParentUserType1(){
 									shadow: false
 								},
 								tooltip: {
-									headerFormat: '<b>{point.x}</b><br/>',
-									pointFormat: '<span style="color:{series.color};white-space:normal !important;">{series.name}: <b>{point.percentage:.1f}%({point.y})</b></span><br>',
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
 									shared: true
-									
 								},
 								
 								plotOptions: {
