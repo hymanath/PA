@@ -1298,7 +1298,8 @@ $('.searchTypeCls').click(function(){
 		boardLevelId : $("#boardLvlId"+num).val(),
 		searchLevelValue:searchLevelValue,
 		searchLevelId:0,
-		applicationId:0
+		applicationId:0,
+		positionId :0
 	}
     $.ajax({
           type:'GET',
@@ -1393,7 +1394,8 @@ $('.searchTypeCls').click(function(){
 		postType:postTypeId,
 		boardLevelId:boardLevelId,
 		searchLevelValue : searchLevelValue,
-		searchLevelId:0
+		searchLevelId:0,
+		positionId:0
 		}
 		
     $.ajax({

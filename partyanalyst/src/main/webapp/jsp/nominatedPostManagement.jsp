@@ -219,11 +219,12 @@ $(document).ready(function() {
 });
 $(document).on("click",".filterBtn",function(){
 	$(".filterSection").toggle("slow");
-	$(".filterSectionIconCls").toggle("slow");
+	//$(".filterSectionIconCls").toggle("slow");
 	//$(".filterSectionIconCls").hide();
 });
 $(document).on("click",".filterBtnCls",function(){
-	$(".filterSectionIconCls").toggle();
+	//$(".filterSectionIconCls").toggle();
+	$(this).closest(".panel").find(".panel-body").toggle();
 	$(this).find("i").toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
 });
 </script>

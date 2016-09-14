@@ -669,7 +669,8 @@ function getDepartments(num){
 		postType:1,
 		boardLevelId:parseInt('${param.lId}'),
 		searchLevelId:parseInt('${param.searchLevelId}'),
-		searchLevelValue : parseInt('${param.searchLevelValue}')
+		searchLevelValue : parseInt('${param.searchLevelValue}'),
+		positionId:parseInt('${positionId}')
 	}
 	$.ajax({
           type:'GET',
@@ -708,7 +709,9 @@ function getBoardsForDepartments(num){
 		boardLevelId:parseInt('${param.lId}'),
 		searchLevelValue : parseInt('${param.searchLevelValue}'),
 		searchLevelId : parseInt('${param.searchLevelId}'),
-		applicationId:applctnId
+		applicationId:applctnId,
+		positionId:parseInt('${positionId}')
+		
 	}
 	$.ajax({
           type:'GET',
@@ -761,6 +764,7 @@ function getPositionsForBoard(num){
 	    if(result != null && result.length > 0){
 		   $("#positionAnyId"+num).append('<option value="0">Select Position</option>');
 		   for(var i in result){
+			   if(result[i].id == parseInt('${positionId}'))
 			    $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			   /* if(globalPositionId>0){
 				   if( globalPositionId == parseInt(result[i].id)){

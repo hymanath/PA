@@ -1440,7 +1440,7 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		str+='<div class="" style="padding: 12px;">';
 		str+='<p class="text-capital headingColor filterBtnCls font_17" style="cursor:pointer;">';
 		str+='<b><span id="anyDeptHeadingId"></span></b>';
-		str+='<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;"></i>';
+		str+='<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;top:-5px;"></i>';
 		str+='</p>';
 		str+='</div>';
 		str+='<div class="panel-body">';
