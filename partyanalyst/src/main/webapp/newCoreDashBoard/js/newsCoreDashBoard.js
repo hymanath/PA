@@ -32,7 +32,7 @@
 		
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
-		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems()
+		//getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems()
 		if(picker.chosenLabel == "Today"){
 			$("#currentViewing").html(" TODAY ( "+currentFromDate+" )");
 		}else{
@@ -2147,7 +2147,7 @@ function getChildUserTypesByItsParentUserType1(){
 	
 	
 	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId){
-		//$("#").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		//$("#problemsDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
@@ -2165,19 +2165,24 @@ function getChildUserTypesByItsParentUserType1(){
 		
 		var startDate=currentFromDate,endDate=currentToDate;
 		
-		var propertyId=0;
+		//var propertyId=0;
 		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+npIdsStr+"/"+propertyId
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId
 		}).then(function(result){
-
+		$("#problemsDetailedOverview").html('');
+			buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
 		});
 	}
 	
 	
 	$(document).on("click","#detailedGovernmentLiId",function(){
 		getDetailedGovtDepartmentWiseDistrictsOverview();
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7);
+		setTimeout(function(){ getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0); }, 5000);
+		
+		getDetailedGovernamentTrendingTrackedIssues();
 	});
 	
 	function getDetailedGovtDepartmentWiseDistrictsOverview(){
@@ -2379,3 +2384,234 @@ function getChildUserTypesByItsParentUserType1(){
 
 		});
 	}
+	
+	function buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId){
+		if(propertyId == 7){
+			if(result != null && result.length > 0){
+				var str='';
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+						str+='<h4>DEPARTMENTS WISE PROBLEMS</h4>';
+							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+							str+='<ul style="list-style:none;" class="textAlignDepartment">';
+							for(var i in result){
+								str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+							}
+							
+							
+							str+='</ul>';
+						str+='</div>';
+						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+						str+='<div id="problemsRelatedGraph" style="width:300px;"></div>';
+						
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			
+		}
+		
+		$("#problemsDetailedOverview").html(str);
+	
+			 
+		if(result != null && result.length > 0){
+				var problemDeptPostivePercArray =[];
+				var dynamicHeight;
+				for(var i in result){
+					problemDeptPostivePercArray.push(result[i].positivePerc)
+				}
+				
+				$(".textAlignDepartment").each(function(){
+					dynamicHeight = $(this).find("li").length;
+					dynamicHeight = (dynamicHeight*38)+"px";
+					
+				});
+				
+			
+			$("#problemsRelatedGraph").css("height",dynamicHeight);
+			
+			$(function () {
+				$('#problemsRelatedGraph').highcharts({
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: ''
+					},
+					subtitle: {
+						text: ''
+					},
+					xAxis: {
+					 min: 0,
+						 gridLineWidth: 0,
+						 minorGridLineWidth: 0,
+						categories: '',
+					labels: {
+							rotation: -45,
+							style: {
+								fontSize: '13px',
+								fontFamily: 'Verdana, sans-serif'
+							}
+						}
+				},
+				yAxis: {
+					min: 0,
+						   gridLineWidth: 0,
+							minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: false,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+					tooltip: {
+						valueSuffix: '%'
+					},
+					plotOptions: {
+						bar: {
+							dataLabels: {
+								enabled: true
+							}
+						}
+					},
+					legend: {
+						enabled: false,
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'top',
+						x: -40,
+						y: 80,
+						floating: true,
+						borderWidth: 1,
+						backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+						shadow: true
+					},
+					
+					series: [{
+						name: '',
+						 colorByPoint: true,
+						data: problemDeptPostivePercArray
+					}]
+				});
+			});
+		}
+	}else if(propertyId == 0)
+		if(result != null && result.length > 0){
+				var str='';
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+						str+='<h4>OVERALL ANALYSIS OF ACTION IMMEDIATELY PROBLEMS</h4>';
+							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicheightaaply">';
+							for(var i in result){
+								str+='<li class="heightDyna">'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+							}
+							
+							
+							str+='</ul>';
+						str+='</div>';
+						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+						str+='<div id="problemsRelatedGraph22" style="width:300px;"></div>';
+						
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			
+		}
+		
+		$("#problemsDetailedOverview22").html(str);
+	
+			 
+		if(result != null && result.length > 0){
+			var problemDeptPostivePercArray =[];
+			var dynamicHeight1;
+			for(var i in result){
+				problemDeptPostivePercArray.push(result[i].positivePerc)
+			}
+			
+			$(".dynamicheightaaply").each(function(){
+				dynamicHeight1 = $(this).find("li").length;
+				dynamicHeight1 = (dynamicHeight1*38)+"px";
+				
+			});
+			
+		
+		$("#problemsRelatedGraph22").css("height",dynamicHeight1);
+		
+		$(function () {
+			$('#problemsRelatedGraph22').highcharts({
+				chart: {
+					type: 'bar'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+				 min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: '',
+				labels: {
+						rotation: -45,
+						style: {
+							fontSize: '13px',
+							fontFamily: 'Verdana, sans-serif'
+						}
+					}
+			},
+			yAxis: {
+				min: 0,
+					   gridLineWidth: 0,
+						minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				stackLabels: {
+					enabled: false,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+					}
+				}
+			},
+				tooltip: {
+					valueSuffix: '%'
+				},
+				plotOptions: {
+					bar: {
+						dataLabels: {
+							enabled: true
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				
+				series: [{
+					name: '',
+					 colorByPoint: true,
+					data: problemDeptPostivePercArray
+				}]
+			});
+		});
+	}
+	}
+	
+	
