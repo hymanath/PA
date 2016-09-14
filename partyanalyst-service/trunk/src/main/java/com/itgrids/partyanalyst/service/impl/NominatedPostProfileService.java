@@ -498,11 +498,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All Departments From Database }
 	 */
-	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue,Long seachLevelId){
+	public List<IdNameVO> getDepartments(Long postTpe,Long boardLevelId,Long searchLevelValue,Long seachLevelId,Long positionId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 			Long applicationId =0L;
-			List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue,seachLevelId,applicationId);
+			List<Object[]> list =nominatedPostDAO.getBoardLevelWiseDepartments(postTpe,boardLevelId,searchLevelValue,seachLevelId,applicationId,positionId);
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				String[] setterPropertiesList = {"id","name"};
 				returnList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
@@ -520,7 +520,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 * @return List<IdNameVO>
 	 * description  { Getting All DepartmentBoards From Database }
 	 */
-	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue,Long seachLevelId,Long applicationId){
+	public List<IdNameVO> getDepartmentBoard(Long depmtId,Long boardLevlId,Long searchLevelValue,Long seachLevelId,Long applicationId,Long positionId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 			//Long applicationId =0L;
@@ -533,7 +533,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			if(obj != null){
-				list = nominatedPostDAO.getApllicationDepmtBoards(depmtId,(Long)obj[0],(Long)obj[1]);
+				list = nominatedPostDAO.getApllicationDepmtBoards(depmtId,(Long)obj[0],(Long)obj[1],positionId);
 			}
 			
 			if(commonMethodsUtilService.isListOrSetValid(list)){

@@ -16,7 +16,7 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<NominatedPost> getNominatedPostDetailsBySearchCriteria(Long departmentId,Long boardId,List<Long> positionIds,Long boardLevelId,List<Long> searchLevelValue);
 	public List<Object[]> getNominatdPostStatusCntByPosition(Long positionId);
 	
-	public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId);
+	public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId,Long positionId);
 	public List<Object[]> getLevelWiseDepartmentsBoard(Long departmentId,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId);
 	public List<Object[]> getLevelWiseDepartmentsBoardPosition(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId);
 	public List<Object[]> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> levelValue,String statusType, Long searchlevelId,Long searchLevelValue);
@@ -45,7 +45,7 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	public List<Long> getNominatedPostIds(Long locationLevelId,List<Long> locationLevelValueList,Long departmentId,Long boardId,List<Long> positionsList);
 	public Integer updateGoIssuedStatusInNominatedPost(List<Long> nominatedPostIds,Date date);
 	public List<Long> checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId);
-	public List<Object[]> getApllicationDepmtBoards(Long departmentId,Long boardLevelId,Long levelValue);
+	public List<Object[]> getApllicationDepmtBoards(Long departmentId,Long boardLevelId,Long levelValue,Long positionId);
 	public Integer updateNominatedPost(Long nominatedPostId,Long nominatedPostCandidateId,Date date,Long userId);
 	public List<NominatedPost> getNominatedPostByMemberOfFinalReview(Long memberId);
 	public Integer updateNominatedPostsForOpenState(Set<Long> postIds,Long userId,Date date);
