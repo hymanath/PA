@@ -3408,8 +3408,8 @@
 	    <property name="userTypeRelationDAO"  ref="userTypeRelationDAO"></property>
 	    <property name="activityMemberRelationDAO"  ref="activityMemberRelationDAO"></property>
 	    <property name="dashboardCommentDAO"  ref="dashboardCommentDAO"></property>
-	    <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
-	    <property name="commonMethodsUtilService"  ref="commonMethodsUtilService"></property>
+	    <!-- <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
+	    <property name="commonMethodsUtilService"  ref="commonMethodsUtilService"></property> -->
 	</bean>
 	
 	<bean id="coreDashboardGenericService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardGenericService">
