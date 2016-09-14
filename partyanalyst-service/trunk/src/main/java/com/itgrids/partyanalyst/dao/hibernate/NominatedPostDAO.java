@@ -488,7 +488,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	}
 
 
-	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId){
+	   public List<Object[]> getBoardLevelWiseDepartments(Long postType,Long boardLevelId,Long searchLevelValue,Long searchlevelId,Long applicationId,Long positionId){
 		   
 		   StringBuilder queryStr = new StringBuilder();
 		   
@@ -499,6 +499,10 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		   
 		    if(postType != null && postType.longValue() > 0)
 		          queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.postType.postTypeId=:postTypeId ");
+		    
+		    if(positionId != null && positionId.longValue() > 0)
+		    	queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId ");
+		    
 		    if(boardLevelId != null && boardLevelId.longValue() > 0){
 		    	
 		    	if(boardLevelId.longValue() !=5L)
@@ -538,6 +542,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    }
 		    if(searchLevelValue != null && searchLevelValue.longValue() > 0L)
 		    	query.setParameter("searchLevelValue", searchLevelValue);
+		    
+		    if(positionId != null && positionId.longValue() > 0)
+		    	query.setParameter("positionId", positionId);
 		    
 		    return query.list();
 	   }
@@ -1505,15 +1512,23 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
    
    }
    
-   public List<Object[]> getApllicationDepmtBoards(Long departmentId,Long boardLevelId,Long levelValue){
-	   Query query = getSession().createQuery(" select distinct model.nominatedPostMember.nominatedPostPosition.board.boardId, " +
+   public List<Object[]> getApllicationDepmtBoards(Long departmentId,Long boardLevelId,Long levelValue,Long positionId){
+	   
+	   StringBuilder queryStr = new StringBuilder();
+	   queryStr.append("  select distinct model.nominatedPostMember.nominatedPostPosition.board.boardId, " +
 	   		" model.nominatedPostMember.nominatedPostPosition.board.boardName from NominatedPost model where " +
 	   		" model.nominatedPostMember.boardLevel.boardLevelId =:boardLevelId and model.nominatedPostMember.nominatedPostPosition.departmentId =:departmentId" +
 	   		" and model.nominatedPostMember.locationValue = :levelValue and model.nominatedPostMember.isDeleted = 'N' and model.isExpired='N' and  model.nominationPostCandidateId is null ");
 	   
+	   if(positionId != null && positionId.longValue() > 0l)
+		   queryStr.append(" and  model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId " ); 
+	   Query query = getSession().createQuery(queryStr.toString());
 	   query.setParameter("boardLevelId", boardLevelId);
 	   query.setParameter("levelValue", levelValue);
 	   query.setParameter("departmentId", departmentId);
+	   
+	   if(positionId != null && positionId.longValue() > 0l)
+		   query.setParameter("positionId", positionId);
 	   
 	   return query.list();
    }
