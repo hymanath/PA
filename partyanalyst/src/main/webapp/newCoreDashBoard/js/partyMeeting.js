@@ -31,6 +31,21 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	  getPartySpecialMeetingsMainTypeOverview();
 	  getPartyMeetingsMainTypeStateLevelOverview();
 	});
+	//Changing date heading based on date selection
+	var dateTextRange;
+	$(document).on("click",".ranges li",function(){
+	    dateTextRange = $(this).text();
+		if(dateTextRange!="Custom Range"){
+	    $("#dateMeetingHeadingId").html(" - "+dateTextRange);	
+		}
+	});
+	var selectDates;
+	$(document).on("click",".applyBtn",function(){
+	  selectDates = $("#dateRangeIdForMeetings").val();
+	  if(dateTextRange=="Custom Range"){
+	    $("#dateMeetingHeadingId").html(" - "+selectDates);	
+		}
+    });
     $(document).on("click",".meetingGetDtlsBtncls",function(){
 		getPartyMeetingBasicCountDetails();
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
