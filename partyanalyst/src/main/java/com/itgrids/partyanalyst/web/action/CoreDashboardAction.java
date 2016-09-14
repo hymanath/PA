@@ -1508,7 +1508,7 @@ public String getPartyCompareSubLevelMemberDetails(){
 			}
 		}
 		
-		newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
+		childUserTypeVOList = newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
 		 
 	} catch (Exception e) {
 		LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
