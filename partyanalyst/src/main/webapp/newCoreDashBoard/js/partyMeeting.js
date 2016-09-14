@@ -22,6 +22,9 @@ var customEndDateMeetings = moment().subtract(1, 'month').endOf('month').format(
 	  customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
 	  //alert(customStartDateMeetings + "-" +customEndDateMeetings);
+	  $(".meetingsHiddenBlock").show();
+	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	  $(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
 	  getPartyMeetingBasicCountDetails();
 	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 	  getPartySpecialMeetingsMainTypeOverview();
@@ -622,7 +625,7 @@ $(document).on("click",".meetingLiCls",function(){
 		}else{
 			$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 			$(".dateRangePickerClsForMeetings").removeClass("hide");
-			$(".moreMeetingsBlocksDetailed").hide();
+			$(".moreMeetingsBlocksDetailed,.moreMeetingsBlocks1").hide();
 			$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 			getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(mainMeetingTypeId,partymeetingtypeidsstring);	
 		}
