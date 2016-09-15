@@ -651,16 +651,16 @@ function getApplicationStatus(divId){
 }
 
 function getDepartments(num){
-	$("#departmentAnyId"+num+" option").remove();
-		$("#statusCommentAnyId"+num).html('');
+	<!--$("#departmentAnyId"+num+" option").remove();-->
+	   $("#statusCommentAnyId"+num).html('');
 	   $("#updatedStatusAnyId"+num).val(0);
+	   $("#departmentAnyId"+num).val(0).trigger("chosen:updated");
 	   $("#boardAnyId"+num).html('');
 	   $("#boardAnyId"+num).trigger("chosen:updated")
 	   $("#boardAnyId"+num).trigger("chosen:updated")
 	   $("#positionAnyId"+num).html('');
 	   $("#positionAnyId"+num).trigger("chosen:updated")
-       $("#departmentAnyId"+num).html('');
-	  // $("#departmentAnyId"+num).trigger("chosen:updated")
+	   //$("#departmentAnyId"+num).trigger("chosen:updated");
 	   $("#updatedStatusAnyId"+num).trigger("chosen:updated");
 	   
 	   
@@ -679,7 +679,7 @@ function getDepartments(num){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	    if(result != null && result.length > 0){
-		   $("#departmentAnyId"+num).append('<option value="0">Select Department</option>');
+		   <!--$("#departmentAnyId"+num).append('<option value="0">Select Department</option>');-->
 		   for(var i in result){
 			   if(globalDeptId > 0){
 					if(globalDeptId == parseInt(result[i].id))
