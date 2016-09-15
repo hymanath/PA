@@ -2402,16 +2402,14 @@ function getChildUserTypesByItsParentUserType1(){
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 						str+='<h4>DEPARTMENTS WISE PROBLEMS</h4>';
 							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-							str+='<ul style="list-style:none;" class="textAlignDepartment">';
+							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
 							for(var i in result){
 								str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
 							}
-							
-							
 							str+='</ul>';
 						str+='</div>';
 						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-						str+='<div id="problemsRelatedGraph" style="width:300px;height:1000px;"></div>';
+						str+='<div id="problemsRelatedGraph" style="width:300px;"></div>';
 						
 						str+='</div>';
 					str+='</div>';
@@ -2420,24 +2418,20 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		
 			$("#problemsDetailedOverview").html(str);
-	
+			var dynamicHeight;
+				$(".dynamicHeightApply").each(function(){
+					dynamicHeight = $(this).find("li").length;
+					dynamicHeight = (dynamicHeight*38)+"px";
+						
+				});
+					
+			$("#problemsRelatedGraph").css("height",dynamicHeight);
 			 
 			if(result != null && result.length > 0){
 					var problemDeptPostivePercArray =[];
-					var dynamicHeight;
 					for(var i in result){
 						problemDeptPostivePercArray.push(result[i].positivePerc)
 					}
-					
-					/* $(".textAlignDepartment").each(function(){
-						dynamicHeight = $(this).find("li").length;
-						dynamicHeight = (dynamicHeight*38)+"px";
-						
-					});
-					
-				
-				$("#problemsRelatedGraph").css("height",dynamicHeight); */
-				
 				$(function () {
 					$('#problemsRelatedGraph').highcharts({
 						chart: {
@@ -2515,7 +2509,7 @@ function getChildUserTypesByItsParentUserType1(){
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<h4>OVERALL ANALYSIS OF ACTION IMMEDIATELY PROBLEMS</h4>';
 								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicheightaaply">';
+								str+='<ul style="list-style:none;" class="textAlignDepartment">';
 								for(var i in result){
 									str+='<li class="heightDyna">'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
 								}
@@ -2524,7 +2518,7 @@ function getChildUserTypesByItsParentUserType1(){
 								str+='</ul>';
 							str+='</div>';
 							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-							str+='<div id="problemsRelatedGraph22" style="width:300px;height:200px;"></div>';
+							str+='<div id="overAllAnalysisPieChart" style="width:300px;height:200px;"></div>';
 							
 							str+='</div>';
 						str+='</div>';
@@ -2532,91 +2526,78 @@ function getChildUserTypesByItsParentUserType1(){
 				
 			}
 			
-			$("#problemsDetailedOverview22").html(str);
+			$("#overAllAnalysisDetailsBlock").html(str);
 		
 				 
 			if(result != null && result.length > 0){
 				var problemDeptPostivePercArray =[];
-				var dynamicHeight1;
 				for(var i in result){
 					problemDeptPostivePercArray.push(result[i].positivePerc)
 				}
 				
-				
-			
-			
-				
 				$(function () {
-					$('#problemsRelatedGraph22').highcharts({
-						chart: {
-							type: 'bar'
-						},
-						title: {
-							text: ''
-						},
-						subtitle: {
-							text: ''
-						},
-						xAxis: {
-						 min: 0,
-							 gridLineWidth: 0,
-							 minorGridLineWidth: 0,
-							categories: '',
-						labels: {
-								rotation: -45,
-								style: {
-									fontSize: '13px',
-									fontFamily: 'Verdana, sans-serif'
-								}
-							}
-					},
-					yAxis: {
-						min: 0,
-							   gridLineWidth: 0,
-								minorGridLineWidth: 0,
-						title: {
-							text: ''
-						},
-						stackLabels: {
-							enabled: false,
-							style: {
-								fontWeight: 'bold',
-								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-							}
+						if(problemDeptPostivePercArray.length !=0){
+							$('#overAllAnalysisPieChart').highcharts({
+								chart: {
+									type: 'pie',
+									options3d: {
+										enabled: true,
+										alpha: 25
+									}
+								},
+								title: {
+									text: null
+								},
+								subtitle: {
+									text: null
+								},
+								tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},
+								plotOptions: {
+									pie: {
+										innerSize: 65,
+										depth: 10,
+										dataLabels:{
+											enabled: false,
+											  formatter: function() {
+													if (this.y === 0) {
+														return null;
+													} else {
+														return Highcharts.numberFormat(this.percentage,1)+ '%';
+													}
+												} 
+										},
+										showInLegend: false
+									},
+									
+									
+								},
+								series: [{
+									name: '',
+									 colorByPoint: true,
+									data: problemDeptPostivePercArray
+								}]
+							});
+						}else{
+							$('#overAllAnalysisPieChart').html("No Data Available")
+							$('#overAllAnalysisPieChart').css("height","10px")
 						}
-					},
-						tooltip: {
-							valueSuffix: '%'
-						},
-						plotOptions: {
-							bar: {
-								dataLabels: {
-									enabled: true
-								}
-							}
-						},
-						legend: {
-							enabled: false,
-							layout: 'vertical',
-							align: 'right',
-							verticalAlign: 'top',
-							x: -40,
-							y: 80,
-							floating: true,
-							borderWidth: 1,
-							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-							shadow: true
-						},
 						
-						series: [{
-							name: '',
-							 colorByPoint: true,
-							data: problemDeptPostivePercArray
-						}]
 					});
-				});
+				}
 			}
-		}
 		
 	}
 	
