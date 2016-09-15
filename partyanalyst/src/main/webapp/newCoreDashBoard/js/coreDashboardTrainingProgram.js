@@ -927,9 +927,9 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		 str+='</div>';
 		 str+='<div class="panel-body">';
 		 if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9){ // MLA and Constituency Incharge 
-		// var lctnName = result[i].locationName;
-          // lctnName = lctnName.substring(0, lctnName.lastIndexOf(" "));
-		 str+='<h4 class="text-capital">'+result[i].userType+' - '+result[i].locationName+'</h4>';	 
+		   var lctnName = result[i].locationName;
+           lctnName = lctnName.substring(0, lctnName.lastIndexOf(" "));
+		 str+='<h4 class="text-capital">'+result[i].userType+' - '+lctnName+'</h4>';	 
 		 }else{
 		 str+='<h4 class="text-capital">'+result[i].userType+'</h4>';	 
 		 }
