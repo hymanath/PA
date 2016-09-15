@@ -2050,15 +2050,27 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
      var subList = stateLevelMemDtlsArr[i];
      if(subList != null && subList.length > 0){
        for(var j in subList){
-         str+='<h5 class="text-capital">'+subList[j].name+'</h5>';      
-           str+='<div id="stateLevelMeetingGraph'+i+''+j+'" style="width:100%;height:80px;"></div>';
+		   if( subList[j].invitedCount == 0 && subList[j].attendedCount == 0 && subList[j].notAttendedCount==0){
+			   str+='<h5 class="text-capital"></h5>'; 
+		   }else{
+			    str+='<h5 class="text-capital">'+subList[j].name+'</h5>'; 
+				str+='<div id="stateLevelMeetingGraph'+i+''+j+'" style="width:100%;height:80px;"></div>';
+		   }
+            
+           
        }
      }
      }
      
      if(otherRslt != null ){
-     str+='<h5 class="text-capital">'+otherRslt.name+'</h5>';      
-     str+='<div id="stateLevelMeetingOtherId" style="width:100%;height:80px;"></div>';
+		  if(otherRslt.invitedCount == 0 && otherRslt.attendedCount == 0 && otherRslt.notAttendedCount==0){
+			  str+='<h5 class="text-capital"></h5>'; 
+		  }else{
+			   str+='<h5 class="text-capital">'+otherRslt.name+'</h5>';
+			str+='<div id="stateLevelMeetingOtherId" style="width:100%;height:80px;"></div>';
+		  }
+     
+    
       }
      str+='</div>'
 
@@ -2077,7 +2089,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
       stateLevelPerArr.push(subList[j].notAttendedPerc);
        
       if( subList[j].invitedCount == 0 && subList[j].attendedCount == 0 && subList[j].notAttendedCount==0){
-		 $('#stateLevelMeetingGraph'+i+''+j).html("<h5>No Data Available</h5>");
+		 //$('#stateLevelMeetingGraph'+i+''+j).html("<h5>No Data Available</h5>");
 	  }else{
 		    $('#stateLevelMeetingGraph'+i+''+j).highcharts({
 			  colors: ['#0066DC'],
@@ -2176,7 +2188,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
       stateLevelOtherPerArr.push(otherRslt.notAttendedPerc);
 	  
 	  if(otherRslt.invitedCount == 0 && otherRslt.attendedCount == 0 && otherRslt.notAttendedCount==0){
-		  $('#stateLevelMeetingOtherId').html("<h5> No Data Available </h5>");
+		  //$('#stateLevelMeetingOtherId').html("<h5> No Data Available </h5>");
 	  }else{
 		   $('#stateLevelMeetingOtherId').highcharts({
 			  colors: ['#0066DC'],

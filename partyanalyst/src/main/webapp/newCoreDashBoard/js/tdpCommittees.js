@@ -1195,11 +1195,11 @@
 						 
 						});
 					});
-				}else{
+				}/* else{
 					$("#genSec"+i).html("No Data Available");
 					$("#genSec"+i).css("height","35px");
 						
-				} 
+				}  */
 				
 			}
 			

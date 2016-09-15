@@ -458,74 +458,77 @@ function buildSpokesPersonWiseDebate(result){
 				}
 				var getWidth = $("#debates"+i).parent().width()+'px';
 				$("#debates"+i).width(getWidth);
-				$(function () {
-					 $("#debates"+i).highcharts({
-						 colors: ['#0066DC'],
-						chart: {
-							type: 'column'
-						},
-						title: {
-							text: ''
-						},
-						subtitle: {
-							text: ''
-						},
-						xAxis: {
-							min: 0,
-							gridLineWidth: 0,
-							minorGridLineWidth: 0,
-							
-							type: 'category',
-							labels: {
-										formatter: function() {
-											if($(window).width() < 799)
-											{
-												return this.value.toString();
-											}else if($(window).width() > 800){
-												return this.value.toString().substring(0, 10)+'...';
-											}
-											
-										},
-										
-									}
-							
-						},
-						yAxis: {
-							min: 0,
-							gridLineWidth: 0,
-							minorGridLineWidth: 0,
+				if(candidateNameAndCompletedCountArray1.length !=0){
+					$(function () {
+						 $("#debates"+i).highcharts({
+							 colors: ['#0066DC'],
+							chart: {
+								type: 'column'
+							},
 							title: {
 								text: ''
-							}
-
-						},
-						legend: {
-							enabled: false
-						},
-						
-
-						tooltip: {
-							headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-							pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
-						},
-
-						series: [{
-							name: '',
-							dataLabels: {
-								enabled: true,
-								 formatter: function() {
-									if (this.y === 0) {
-										return null;
-									} else {
-										return Highcharts.numberFormat(this.y);
-									}
-								}
 							},
-							data: candidateNameAndCompletedCountArray1
-						}],
-					 
+							subtitle: {
+								text: ''
+							},
+							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								
+								type: 'category',
+								labels: {
+											formatter: function() {
+												if($(window).width() < 799)
+												{
+													return this.value.toString();
+												}else if($(window).width() > 800){
+													return this.value.toString().substring(0, 10)+'...';
+												}
+												
+											},
+											
+										}
+								
+							},
+							yAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								title: {
+									text: ''
+								}
+
+							},
+							legend: {
+								enabled: false
+							},
+							
+
+							tooltip: {
+								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
+							},
+
+							series: [{
+								name: '',
+								dataLabels: {
+									enabled: true,
+									 formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.y);
+										}
+									}
+								},
+								data: candidateNameAndCompletedCountArray1
+							}],
+						 
+						});
 					});
-				});
+				}
+				
 		}
 	}else{
 		$("#SpokesPersonWiseDebate").html("No Data Available");
