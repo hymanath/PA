@@ -3465,5 +3465,13 @@
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
+	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
+	 <property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+	 <property name="activityMemberAccessLevelDAO"  ref="activityMemberAccessLevelDAO"></property>
+	 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+	 <property name="eventInviteeDAO" ref="eventInviteeDAO" />
+	 <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
+	</bean>
+
 </beans>		
 	

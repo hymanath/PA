@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
@@ -73,6 +74,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	private List<List<IdNameVO>> idNameVOsList;
     private ICoreDashboardPartyMeetingService coreDashboardPartyMeetingService;
+    private ICoreDashboardEventsActivitiesService coreDashboardEventsActivitiesService;
+    
 	private ResultStatus 						resultStatus;
 	private List<DashboardCommentVO> 						dashboardCommentVo;
 	private String status;
@@ -338,6 +341,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setChildUserTypeVOList(List<ChildUserTypeVO> childUserTypeVOList) {
 		this.childUserTypeVOList = childUserTypeVOList;
+	}
+   public void setCoreDashboardEventsActivitiesService(
+			ICoreDashboardEventsActivitiesService coreDashboardEventsActivitiesService) {
+		this.coreDashboardEventsActivitiesService = coreDashboardEventsActivitiesService;
 	}
 
 	//business methods
@@ -939,7 +946,6 @@ public String getSelectedChildTypeMembersForTrainingProgram(){
 		    jObj = new JSONObject(getTask());
 		 
 		 	Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
-			Long childUserTypeId = jObj.getLong("childUserTypeId");
 		    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
 		    String reportType = jObj.getString("reportType");
 			List<Long> userAccessLevelValues=new ArrayList<Long>();
@@ -949,9 +955,17 @@ public String getSelectedChildTypeMembersForTrainingProgram(){
 					userAccessLevelValues.add(Long.valueOf(userAccessLevelValuesArray.getString(i)));
 				}
 			}
+			List<Long> childUserTypeIds=new ArrayList<Long>();
+			JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+			if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+				for( int i=0;i<childUserTypeIdsArray.length();i++){
+					childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+				}
+			}
+			
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
-			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeId,userAccessLevelId,userAccessLevelValues,reportType,stateId,dateStr);
+			activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(parentActivityMemberId,childUserTypeIds,userAccessLevelId,userAccessLevelValues,reportType,stateId,dateStr);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
 	 }
@@ -963,13 +977,20 @@ public String getDirectChildActivityTrainingProgramMemberDetails(){
 		    jObj = new JSONObject(getTask());
 		 
 		 	Long activityMemberId = jObj.getLong("activityMemberId");
-			Long userTypeId = jObj.getLong("userTypeId");
+		//	Long userTypeId = jObj.getLong("userTypeId");
 			 String reportType = jObj.getString("reportType");
 			 Long stateId = jObj.getLong("stateId");
 			 String dateStr = jObj.getString("dateStr");
-		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,userTypeId,null,null,reportType,stateId,dateStr);
+			List<Long> childUserTypeIds=new ArrayList<Long>();
+			JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+			if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+				for( int i=0;i<childUserTypeIdsArray.length();i++){
+					childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+				}
+			}
+		 	activityMembersList = coreDashboardMainService.getSelectedChildTypeMembersForTrainingProgram(activityMemberId,childUserTypeIds,null,null,reportType,stateId,dateStr);
 	 }catch(Exception e){
-		 LOG.error("Exception raised at getSelectedChildTypeMembersForTrainingProgram() method of CoreDashBoardAction", e); 
+		 LOG.error("Exception raised at getDirectChildActivityTrainingProgramMemberDetails() method of CoreDashBoardAction", e); 
 	 }
 	 return Action.SUCCESS;
 }
