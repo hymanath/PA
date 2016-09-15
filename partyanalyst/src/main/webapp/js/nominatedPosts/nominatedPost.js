@@ -2333,8 +2333,8 @@ function populateFields(result){
    });	
   } */
  $( document ).on("click",".cadreCls",function(){
-	 
-	 
+ 
+ 
 		$('#phoneNumId').val('');
 		$('#houseNumberId').val('');
 		$('#addressLane1Id').val('');
@@ -2347,6 +2347,7 @@ function populateFields(result){
 		$('#addPincodeId').val('');
 		
 		$('.membersBlock').html('');
+		$("#appliedPostId").html('');
 		$('.jFiler-row').html('');
 		
 		$('.boardLvlCls').val(0);
@@ -2408,7 +2409,7 @@ function populateFields(result){
 		}).done(function(result){
 		   if(result !=null){
 			   buildCandidateAppliedPostByCadreDetails(result);
-		   }
+		   }   
    });	
   }
   function buildCandidateAppliedPostByCadreDetails(result){
@@ -2417,7 +2418,7 @@ function populateFields(result){
 		 $("#appliedPostForSelectedId").show();
 	 if(result.subList != null && result.subList.length > 0){
 		 str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m_top20">';
-                    str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);">';
+                    str+='<div class="bg_ff pad_10" style="border: 1px solid rgb(204, 204, 204);" id="appliedPostId">';
                         	str+='<h4 class="panel-title font_weight">APPLIED POSTS FOR THE SELECTED PROFILE</h4>';
                            str+='<div class="row">';
                             str+='<div class="col-md-6 col-xs-12 col-sm-6 col-lg-6">';
@@ -2491,6 +2492,9 @@ function populateFields(result){
 					   //str+='<p class="text-muted">Note: Do you want to apply for more posts select below options</p>';
                    str+='</div>';
 				    $("#appliedPostForSelectedId").html(str);
+				   }
+				   else{
+			          $("#appliedPostForSelectedId").css("display","none");
 				   }
 }
 function searchByApplicant()
