@@ -2102,7 +2102,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	* @Description :This Service Method is used to get selected child member and for userType.. 
 	*  @since 26-AUGUST-2016
 	*/
-	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,Long childUserTypeId,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId,String toDateStr){
+	public List<UserTypeVO> getSelectedChildTypeMembersForTrainingProgram(Long parentActivityMemberId,List<Long> childUserTypeIds,Long locationLevelId,List<Long> locationLevelValues,String reportType,Long stateId,String toDateStr){
 
 	List<UserTypeVO> resultList = new ArrayList<UserTypeVO>(0);
 	Map<String,Long> elibibleMemberCntMap = new HashMap<String, Long>(0);
@@ -2121,11 +2121,14 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		  Map<Long,Set<Long>> locationLevelIdsMap=null;
 		  Map<String,String>     nameForLocationMap=null;
 		  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
-			  activityMemberVO= coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+			 // activityMemberVO= coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+			  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
 			  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
 			  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
 		  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
-			   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeId);//activityMemerId,userTypeId
+			  if(childUserTypeIds != null && childUserTypeIds.size()>0){
+				   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+			  }
 			   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
 			   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
 		  }
