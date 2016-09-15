@@ -864,8 +864,8 @@ function buildLevelWiseHighCharts(result){
 	}
 }
  $(document).on("click",".childUserTypeClsForMeeting",function(){
-	var childUserTypeId = $(this).attr("attr_userTypeId");
-	getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeId);
+	var childUserTypeIdString = $(this).attr("attr_userTypeId");
+	getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString);
 });
 $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 		//$(".slickPanelSlider").find("li").removeClass("active");
@@ -893,12 +893,12 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 
 });
 	
-function getChildUserTypesByItsParentUserTypeForMeeting(){
+function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 		
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
 			type : 'POST',
-			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			url : 'getAllItsSubUserTypeIdsByParentUserTypeIdAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -910,25 +910,26 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 		var str='';
 		 str+='<ul class="comparisonSelect">';
 		 
-		 var firstChildUserTypeId;
+		 var firstChildUserTypeIdString;
 		 
 		 if(result !=null && result.length >0){
-			 firstChildUserTypeId = result[0].userTypeId;
+			 firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_usertypeid="'+result[i].userTypeId+'" class="childUserTypeClsForMeeting">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_usertypeid="'+result[i].shortName+'" class="childUserTypeClsForMeeting">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDivIdForMeeting").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeId);
+		getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeIdString);
 		
 	}
-	function getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeId){
+	function getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString){
 		 $("#childActivityMemberDivIdForMeeting").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
-	  var childUserTypeId = firstChildUserTypeId;
+	  var childUserTypeIdsArray = childUserTypeIdString.split(",");
+	  
 	   var state = globalState
 	  var partyMeetingTypeArr=[];
 	  $("#committeeTypeId li").each(function() {
@@ -946,7 +947,7 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 		}
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
-				   childUserTypeId : childUserTypeId,
+				   childUserTypeIdsArray : childUserTypeIdsArray,
 				   state : state,
 				   partyMeetingTypeIds : partyMeetingTypeArr,
 				   startDateString : fromDateStr,
@@ -999,7 +1000,14 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 							str+='<span class="count">'+rankVar+'</span>';
 					str+='</div>';
 					str+='<div class="panel-body">';
-						str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
+					
+					var userTypeId = result[i].userTypeId;
+					 if(userTypeId!=5 && userTypeId!=6 && userTypeId!=7 && userTypeId!=9){//General Secretery or Organising secretery/secretery.
+						 str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
+					 }else{//district President or Mp or MLA or Constituency Incharge
+					     var locationName = result[i].locationName.split(" ")[0];
+						 str+='<h4 class="text-capital">'+result[i].userType+' (' + locationName+ ' ) </h4>';
+					 }	
 						str+='<div class="table-responsive">';
 							str+='<table class="table table-condensed">';
 								str+='<thead>';
@@ -1483,7 +1491,8 @@ function getChildUserTypesByItsParentUserTypeForMeeting(){
 	}	
 }
 $(document).on("click",".meetingComparisionBlock",function(){
-	getChildUserTypesByItsParentUserTypeForMeeting();
+	//getChildUserTypesByItsParentUserTypeForMeeting();
+	getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting();
 	$(".moreMeetingsBlocksComparision").show();
 	$(".moreMeetingsBlocksDetailed").hide();
 });
