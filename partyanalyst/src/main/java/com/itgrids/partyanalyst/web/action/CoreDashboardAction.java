@@ -1338,7 +1338,15 @@ public String getSelectedChildUserTypeMembersWithMeetingsCount(){
 		jObj = new JSONObject(getTask());
 		
 		Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
-		Long childUserTypeId = jObj.getLong("childUserTypeId");
+		
+		List<Long> childUserTypeIds=new ArrayList<Long>();
+		JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+		if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			for( int i=0;i<childUserTypeIdsArray.length();i++){
+				childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+			}
+		}
+		
 		String state = jObj.getString("state");
 		String startDateString = jObj.getString("startDateString");
 		String endDateString   = jObj.getString("endDateString");
@@ -1351,7 +1359,7 @@ public String getSelectedChildUserTypeMembersWithMeetingsCount(){
 			}
 		}
 		
-		activityMembersList = coreDashboardPartyMeetingService.getSelectedChildUserTypeMembersWithMeetingsCount(parentActivityMemberId,childUserTypeId,state,startDateString,endDateString,partyMeetingTypeIds);
+		activityMembersList = coreDashboardPartyMeetingService.getSelectedChildUserTypeMembersWithMeetingsCount(parentActivityMemberId,childUserTypeIds,state,startDateString,endDateString,partyMeetingTypeIds);
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at setMeetingsCountsToActivityMembers() method of CoreDashBoard", e);
