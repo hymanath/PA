@@ -518,7 +518,7 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
-											<div class="col-xs-12 col-sm-7 col-md-8">
+											<div class="col-xs-12 col-sm-7 col-md-12">
 											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
 											</div>
 											<div class="col-xs-12 col-sm-5 col-md-4">
