@@ -322,7 +322,73 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
     	   return parentMap;
        }
     
-    
+       /**
+  	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
+  	  *  This Service Method is used required child usertype members and 5heir details. 
+  	  *  @since 15-SEPTEMBER-2016
+  	  */
+  	public ActivityMemberVO getRequiredSubLevelActivityMembersDetails(Long parentActivityMemberId,List<Long> childUSerTypeIds){
+  		
+  		ActivityMemberVO activityMemberVO = null;
+  		try{
+  			 activityMemberVO =  new ActivityMemberVO();
+  			 
+  			 activityMemberVO.setActivityMemberId(parentActivityMemberId);
+  			 
+  			 //Get All sub level userTypes And thier members.
+  			 activityMemberVO = getChildActivityMembersAndLocationsNew(activityMemberVO);
+  			 Map<Long,Map<Long,UserTypeVO>> userTypesMap = activityMemberVO.getUserTypesMap();
+  		     Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+  		     
+  		     activityMemberVO.setUserTypesMap(null);
+  		     activityMemberVO.setLocationLevelIdsMap(null);
+  		     
+  		     //get only required usertypes and their members.
+  		     
+  		     Map<Long,UserTypeVO> requiredUserTypeMap =  new LinkedHashMap<Long, UserTypeVO>(0);
+  		     
+  		     if(childUSerTypeIds != null && childUSerTypeIds.size() > 0){
+  		    	
+  		    	 for(Long childUSerTypeId : childUSerTypeIds ){
+  		    		
+  		    		Map<Long,UserTypeVO> userTypeCorrespondingActivityMembers = userTypesMap.get(childUSerTypeId);
+  		    		
+  		    		requiredUserTypeMap.putAll(userTypeCorrespondingActivityMembers);
+  		    		
+  		    	 }
+  		     }
+  		     
+  		     
+  		     Set<Long> requiredLocationLevelIds = new HashSet<Long>();
+  		     if(requiredUserTypeMap != null && requiredUserTypeMap.size() > 0){
+  		    	 
+  		    	 for(Long activityMemberId : requiredUserTypeMap.keySet()){
+  		    		 
+  		    		 UserTypeVO memberVO = requiredUserTypeMap.get(activityMemberId);
+  		    		 requiredLocationLevelIds.add(memberVO.getLocationLevelId());
+  		    	 }
+  		     }
+  		     
+  		     Map<Long,Set<Long>> requiredLocationLevelIdsMap = new HashMap<Long, Set<Long>>();
+  		     if(requiredLocationLevelIds!=null && requiredLocationLevelIds.size() > 0){
+  		    	 
+  		    	 for(Long locationLevelId : requiredLocationLevelIds){
+  		    		 
+  		    		 Set<Long> locationLevelValues = locationLevelIdsMap.get(locationLevelId);
+  		    		 requiredLocationLevelIdsMap.put(locationLevelId, locationLevelValues);
+  		    	 }
+  		     }
+  		     activityMemberVO.setActivityMembersMap(requiredUserTypeMap);
+  		     activityMemberVO.setLocationLevelIdsMap(requiredLocationLevelIdsMap);
+  			 
+  		}catch(Exception e) {
+  			LOG.error("Exception occurred in getRequiredSubLevelActivityMembersDetails() method in CoreDashboardGenericService class",e);
+  			e.printStackTrace();
+  		}
+  		return activityMemberVO;
+  	} 
+       
+       
 	/**
 	  * @author <a href="mailto:sreedhar.itgrids.hyd@gmail.com">SREEDHAR</a>
 	  *  This Service Method is used to get the selected child usertype activity memberids and its committee counts for a parent usertype activity member id. 
@@ -499,7 +565,136 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		  }
     	  return finalList;
       }
-    
+      
+      /**   START
+ 	  *  This  Method is used to get all aub level child userTypes to parent userType.. 
+ 	  */
+  	public List<UserTypeVO> getAllItsSubUserTypeIdsByParentUserTypeId(Long parentUserTypeId){
+  		
+  		List<UserTypeVO> finalList = null;
+  		try{
+  			
+  			Map<Long,List<UserTypeVO>> allParentChildUserTypesMap = getAllParentChildUserTypesMap();
+  			
+  			Map<Long,UserTypeVO> finalMap = new TreeMap<Long,UserTypeVO>();
+  			
+  			getAllSubUserTypes(finalMap,parentUserTypeId,allParentChildUserTypesMap);
+  			
+  			if(finalMap!=null && finalMap.size() > 0){
+  				
+  			  
+  				if(finalMap!=null && finalMap.size()>0){
+					
+	  				  //mixing organizing secretery and secretery.
+	  					UserTypeVO secOrgSecVO = null;
+	  					if(finalMap.containsKey(11l)){//secretery. 
+	  						secOrgSecVO = new UserTypeVO();
+	  						secOrgSecVO.setShortName("4,11");
+	  						secOrgSecVO.setUserType(" ORGANIZING SECRETARY / SECRETARY");
+	  						finalMap.remove(11l); 
+	  					}
+	  					if(finalMap.containsKey(4l)){//organizing secretery.
+	  						if(secOrgSecVO==null){
+	  							secOrgSecVO = new UserTypeVO();
+	  	  						secOrgSecVO.setShortName("4,11");
+	  	  						secOrgSecVO.setUserType(" ORGANIZING SECRETARY / SECRETARY");
+	  						}
+	  					}
+	  					if(secOrgSecVO!=null){
+	  						finalMap.put(4l, secOrgSecVO); 
+	 			    	 }
+	  			    	
+	  				   /*//mixing mla and constituency incharge.
+	  					UserTypeVO mlaConstInchargeVO = null;
+	  					if(finalMap.containsKey(9l)){//const incharge. 
+	  						mlaConstInchargeVO = new UserTypeVO();
+	  						mlaConstInchargeVO.setShortName("7,9");
+	  						mlaConstInchargeVO.setUserType(" MLA / CONSTITUENCY INCHARGE ");
+	  						finalMap.remove(9l); 
+	  					}
+	  					if(finalMap.containsKey(7l)){//mla
+	  						if(mlaConstInchargeVO==null){
+	  							mlaConstInchargeVO = new UserTypeVO();
+	  							mlaConstInchargeVO.setShortName("7,9");
+	  							mlaConstInchargeVO.setUserType(" MLA / CONSTITUENCY INCHARGE ");
+	  						}
+	  					}
+	  					if(mlaConstInchargeVO!=null){
+	  						finalMap.put(7l, mlaConstInchargeVO); 
+	 			    	 } */
+  			     }
+  				
+  				finalList = new ArrayList<UserTypeVO>(finalMap.values());
+  			}
+  			
+  			
+  		}catch(Exception e){
+  			LOG.error("Exception occurred in getAllItsSubUserTypeIdsByParentUserTypeId() ",e);
+  		}
+  		return finalList;
+  	}
+  	
+  	public void getAllSubUserTypes(Map<Long,UserTypeVO> finalMap,Long parentUserTypeId,Map<Long,List<UserTypeVO>> ParentChildUserTypesMap){
+  		
+  		try{
+  			
+  			 List<UserTypeVO> childUserTypeIds = ParentChildUserTypesMap.get(parentUserTypeId);
+  			 
+  			 if(childUserTypeIds!=null && childUserTypeIds.size() > 0)
+  			 {
+  				 for(UserTypeVO childUserTypeVO : childUserTypeIds)
+  				 {
+  					 Long childUserTypeId = childUserTypeVO.getId();
+  					 
+  					 UserTypeVO childVO = finalMap.get(childUserTypeId);
+  					 
+  					 if(childVO == null)
+  					 {
+  						 UserTypeVO userTypeVO = new UserTypeVO();
+  						 userTypeVO.setUserTypeId(childUserTypeId);
+  						 userTypeVO.setUserType(childUserTypeVO.getName());
+  						 userTypeVO.setShortName(childUserTypeId.toString());
+  						 finalMap.put(childUserTypeId, userTypeVO);
+  						 
+  						 //its child data.
+  						 getAllSubUserTypes(finalMap,childUserTypeId,ParentChildUserTypesMap);
+  						 
+  					 }
+  				 }
+  			 }
+  			
+  		}catch(Exception e){
+  			LOG.error("Exception occurred in getAllSubUserTypes() ",e);
+  		}
+  	}
+  	
+  	public Map<Long,List<UserTypeVO>> getAllParentChildUserTypesMap(){
+  		
+  		Map<Long,List<UserTypeVO>> userTypesMap = new HashMap<Long, List<UserTypeVO>>();
+  		
+  		List<Object[]> list  = userTypeRelationDAO.getParentUserTypesAndItsChildUserTypes();
+  		if( list != null && list.size() > 0){
+  			for( Object[] obj : list){
+  				
+  				if( obj[0] != null){
+  					List<UserTypeVO> childUserTypeIds = null;
+  					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+  					if( childUserTypeIds == null){
+  						childUserTypeIds = new ArrayList<UserTypeVO>();
+  						userTypesMap.put((Long)obj[0],childUserTypeIds);
+  					}
+  					childUserTypeIds = userTypesMap.get((Long)obj[0]);
+  					UserTypeVO childVO = new UserTypeVO();
+  					childVO.setId(obj[2]!=null?(Long)obj[2]:0l);
+  					childVO.setName(obj[3]!=null?obj[3].toString():"");
+  					childUserTypeIds.add(childVO);
+  				}
+  			}
+  		}
+  		return userTypesMap;
+  	}
+    /**   END */
+  	
     public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Long> parliamentIds){
 		List<Long> assemblyConstituencyIds = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituenciesByParliamentList(parliamentIds);
 		return assemblyConstituencyIds;
@@ -782,5 +977,6 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
 		}
 
 	  }
-		
+	  
+	 
 }

@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface ICoreDashboardGenericService {
 	
@@ -30,5 +31,8 @@ public interface ICoreDashboardGenericService {
 	public StringBuilder getCommittesRelatedLocationQuerypart(CommitteeInputVO committeeBO);
 	public void getRequiredCommitteeLevelIdsByUserAccessLevelId(Long userAccessLevelId,CommitteeInputVO inputVO);
 	public Map<String,CoreDashboardCountsVO> getMeetingsCountByLocationLevelIdAndLevelValues(Map<Long,Set<Long>> locationLevelIdsMap,CommitteeInputVO committeeBO);
+	
+	public List<UserTypeVO> getAllItsSubUserTypeIdsByParentUserTypeId(Long parentUserTypeId);
+	public ActivityMemberVO getRequiredSubLevelActivityMembersDetails(Long parentActivityMemberId,List<Long> childUSerTypeIds);
 	
 }
