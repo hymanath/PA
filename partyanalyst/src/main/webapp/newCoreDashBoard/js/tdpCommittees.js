@@ -209,12 +209,11 @@
 		});
 	}
 	
-	function getChildUserTypesByItsParentUserType(){
-		
+	function getAllItsSubUserTypeIdsByParentUserTypeId(){
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
 			type : 'POST',
-			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			url : 'getAllItsSubUserTypeIdsByParentUserTypeIdAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -223,17 +222,19 @@
 	}
 	
 	
-	function getSelectedChildUserTypeMembers(childUserTypeId){
+	function getSelectedChildUserTypeMembers(childUserTypeIdString){
 		
 	$("#SelectedUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
      var parentActivityMemberId = globalActivityMemberId;
-	 var childUserTypeId = childUserTypeId;
+	 
+	 var childUserTypeIdsArray = childUserTypeIdString.split(",");
+	 
 	 var date = $("#dateRangeId").val();
 	 var state = globalState;
   	 var levelWiseBasicCommitteesArray = getLevelWiseBasicCommitteesArray();
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
-				   childUserTypeId : childUserTypeId,
+				   childUserTypeIdsArray : childUserTypeIdsArray,
 				   dateString : date,
 				   state:state,
 				   levelWiseBasicCommitteesArray:levelWiseBasicCommitteesArray
@@ -901,19 +902,19 @@
 		var str='';
 		 str+='<ul class="comparisonSelect">';
 		 
-		 var firstChildUserTypeId;
+		 var firstChildUserTypeIdString;
 		 
 		 if(result !=null && result.length >0){
-			 firstChildUserTypeId = result[0].userTypeId;
+			 firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_usertypeid="'+result[i].userTypeId+'" class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_usertypeid="'+result[i].shortName+'" class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDiv").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildUserTypeMembers(firstChildUserTypeId);
+		getSelectedChildUserTypeMembers(firstChildUserTypeIdString);
 		
 	}
 	
@@ -1050,17 +1051,15 @@
 	}
 	
 	$(document).on("click",".childUserTypeCls",function(){
-		var childUserTypeId = $(this).attr("attr_usertypeid");
-		
 		
 		if($(this).hasClass("active")){
 		
 			$("#directChildActivityMemberDiv").html('');
 			$("#topPoorPerformanceDiv").html('');
 			$("#topPoorLocationsDiv").html(''); 
-			var childUserTypeId = $(this).attr("attr_usertypeid");
+			var childUserTypeIdString = $(this).attr("attr_usertypeid");
 	
-			getSelectedChildUserTypeMembers(childUserTypeId);
+			getSelectedChildUserTypeMembers(childUserTypeIdString);
 		}else{
 		
 			$("#SelectedUserTypeDetailsDiv").html('');

@@ -754,7 +754,17 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getAllItsSubUserTypeIdsByParentUserTypeId(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			activityMembersList = coreDashboardGenericService.getAllItsSubUserTypeIdsByParentUserTypeId(jObj.getLong("parentUserTypeId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAllItsSubUserTypeIdsByParentUserTypeId() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 	public String getSelectedChildUserTypeMembers(){
@@ -764,7 +774,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			jObj = new JSONObject(getTask());
 			
 			Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
-			Long childUserTypeId = jObj.getLong("childUserTypeId");
+			
+			List<Long> childUserTypeIds=new ArrayList<Long>();
+			JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+			if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+				for( int i=0;i<childUserTypeIdsArray.length();i++){
+					childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+				}
+			}
 			
 			String state = jObj.getString("state");
 			
@@ -772,7 +789,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 			Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
 			
-			activityMembersList = coreDashboardMainService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString);
+			activityMembersList = coreDashboardMainService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeIds,state,committeeLevelBasedCommitteeIdsMap,dateString);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getUserTypeWiseCommitteesCompletedCounts1() method of CoreDashBoard", e);
