@@ -832,24 +832,19 @@ $(document).on("click",".trainingComparison",function(){
 	$(".trainingDetailed").removeClass("active");
 	$(".trainingDetailedBlock").hide();
 	$(".trainingComparisonBlock").show();
-	getChildUserTypesByItsParentUserTypeForTrainingProgram();
+	getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram();
 });
 
 $(document).on("click",".unExpandTrainingBlock",function(){
 		$(this).removeClass("unExpandTrainingBlock");
 		$(".moreTrainingBlocks").hide();
 	});
-  function getChildUserTypesByItsParentUserTypeForTrainingProgram(){
+  function getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram(){
 		 $("#childUserTypeDetailsDivForTrainingProgram").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		  var dateStr = $("#dateRangeIdForTrainingCamp").val();
-		var jsObj = {
-			parentUserTypeId : globalUserTypeId,
-		    stateId : globalStateId,
-			dateStr : dateStr
-		}
+		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
 			type : 'POST',
-			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			url : 'getAllItsSubUserTypeIdsByParentUserTypeIdAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -861,39 +856,40 @@ $(document).on("click",".unExpandTrainingBlock",function(){
 			}
 		});		 
 	}
+	
 function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		var str='';
 		 str+='<ul class="comparisonSelect">';
 		 
-		 var firstChildUserTypeId;
+		 var firstChildUserTypeIdString;
 		 
 		 if(result !=null && result.length >0){
-			 firstChildUserTypeId = result[0].userTypeId;
+			  firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_userTypeId="'+result[i].userTypeId+'" class="childUserTypeClsForTrainingProgram">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_userTypeId="'+result[i].shortName+'" class="childUserTypeClsForTrainingProgram">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDivForTrainingProgram").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId);
+		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString);
 		//getTrainingProgramPoorCompletedLocationDtls();
 	}
-	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeId){
+	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString){
 	 $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
-	  var childUserTypeId = firstChildUserTypeId;
+	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
 	  var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
-				   childUserTypeId : childUserTypeId,
+				   childUserTypeIdsArray : childUserTypeIdsArray,
 				   userAccessLevelId : globalUserAccessLevelId,
 				   userAccessLevelValuesArray : globalUserAccessLevelValues,
 				   reportType :"selectedUserType",
-				    stateId : globalStateId,
-					dateStr : dateStr
+				   stateId : globalStateId,
+				   dateStr : dateStr
 				 }
 	  $.ajax({
 			type : 'POST',
@@ -930,7 +926,14 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='<span class="count">'+rank+'</span>';
 		 str+='</div>';
 		 str+='<div class="panel-body">';
-			 str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
+		 if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9){ // MLA and Constituency Incharge 
+		// var lctnName = result[i].locationName;
+          // lctnName = lctnName.substring(0, lctnName.lastIndexOf(" "));
+		 str+='<h4 class="text-capital">'+result[i].userType+' - '+result[i].locationName+'</h4>';	 
+		 }else{
+		 str+='<h4 class="text-capital">'+result[i].userType+'</h4>';	 
+		 }
+			
 			 str+='<table class="table table-condensed">';
 				 str+='<thead>';
 					 str+='<th>Eligible</th>';
@@ -1029,8 +1032,10 @@ $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function()
   function getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	  var childUserTypeIdsArray=[];
+	             childUserTypeIdsArray.push(userTypeId);
 	  var jsObj ={  activityMemberId : activityMemberId,
-			         userTypeId : userTypeId,
+			         childUserTypeIdsArray : childUserTypeIdsArray,
 					 reportType : "directChild",
 					 stateId : globalStateId,
 					 dateStr : dateStr
