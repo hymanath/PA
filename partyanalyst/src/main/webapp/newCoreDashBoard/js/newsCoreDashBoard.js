@@ -2599,5 +2599,25 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		
 	}
-	
+	function getGovtMinisteriesInfo(){
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		var state = globalState;
+		var startDate=currentFromDate,endDate=currentToDate;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getGovtMinisteriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getGovtMinisteriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+""
+		}).then(function(result){
+		});
+	}
 		
