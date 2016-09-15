@@ -1979,13 +1979,10 @@
 				getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 			}
 			if($(".comparisionBlock").hasClass("active")){
-				getChildUserTypesByItsParentUserType();
+				getAllItsSubUserTypeIdsByParentUserTypeId();
 			}
 		
 		}
-		
-		
-		
 	}
 	
 	$(document).on("click",".hideDropDownView",function(){

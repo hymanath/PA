@@ -141,6 +141,8 @@
 		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 		
 	});
+	
+	//committees.
 	$(document).on("click",".comparisionBlock",function(){
 		$("#SelectedUserTypeDetailsDiv").html(''); 
 		$("#directChildActivityMemberDiv").html('');
@@ -149,7 +151,7 @@
 		
 		$(".moreBlocks").hide();
 		$(".moreBlocks1").show();
-		getChildUserTypesByItsParentUserType();
+		getAllItsSubUserTypeIdsByParentUserTypeId();
 		
 	});
 	
