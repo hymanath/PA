@@ -987,7 +987,7 @@
 								  
 								</div>
 								<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3">
-									<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
+									<!-- <button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button> -->
 								</div>
 							</div>
 							
