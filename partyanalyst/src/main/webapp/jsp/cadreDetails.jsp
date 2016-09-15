@@ -1618,6 +1618,21 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 			</div><!— /.modal-dialog —>
 		</div><!— /.modal —>
 		<!-- Model for pdf Report End-->
+	<div class="modal fade" tabindex="-1" id="pdfModelId" role="dialog">  
+			<div class="modal-dialog" style="width:80%;">      
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">CADRE REPORT DETAILS</h4>
+					</div>
+					<div class="modal-body" id="pdfReportDetailsId">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 <div class="modal fade" id="notesModalDivId" style="display:none;">
 			  <div class="modal-dialog" style="width:80%">
