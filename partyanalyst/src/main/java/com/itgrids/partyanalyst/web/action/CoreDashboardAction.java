@@ -1143,7 +1143,7 @@ public String getRoleBasedPerformanceCohort(){
 			List<Long> programIdList = new ArrayList<Long>();
 			String dateStr = jObj.getString("dateStr");
 			Long stateId = jObj.getLong("stateId");
-			JSONArray programIdArr=jObj.getJSONArray("programIdArr");
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");  
 			if(programIdArr!=null &&  programIdArr.length()>0){
 				for( int i=0;i<programIdArr.length();i++){
 					programIdList.add(Long.valueOf(programIdArr.getString(i)));
@@ -1157,7 +1157,17 @@ public String getRoleBasedPerformanceCohort(){
 	}
 	public String getStateLevelCampDetailsRepresentative(){
 		try{
-			idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative();
+			jObj = new JSONObject(getTask());
+			List<Long> programIdList = new ArrayList<Long>();
+			String dateStr = jObj.getString("dateStr");
+			Long stateId = jObj.getLong("stateId");
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){
+					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
+				}
+			}
+			idNameVOsList = coreDashboardMainService.getStateLevelCampDetailsRepresentative(programIdList,stateId,dateStr);
 		}catch(Exception e){
 			LOG.error("Exception raised at getStateLevelCampAttendedDetails", e);
 		}
