@@ -1,6 +1,7 @@
 //Training Program
 var globalStateId=1; //default Ap 
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
+	 	stateLevelCampDetails();
 		getTrainingCampBasicDetailsCntOverview();
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
 	});
@@ -608,7 +609,7 @@ var globalUserWiseMemberRslt;
 		} */
 		}
 	}else{
-	$("#clickInfoId").hide();   
+	$("#clickInfoId").hide();     
 	 $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
 	}
 	}
@@ -627,7 +628,15 @@ function stateLevelCampDetails(){
 		dataType : 'json',
 		data : {task :JSON.stringify(jsObj)}
 	}).done(function(result){    
-		buildStateLevelCampAttendedDetails(result);
+		if(result != null && result.length > 0){
+			buildStateLevelCampAttendedDetails(result);
+		}else{
+			var str = '';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+			str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';    
+			str+='No Data Available';
+			$("#stateLevelCampId").html(str);
+		}
 	});
 }  
 function buildStateLevelCampAttendedDetails(result){ 
@@ -694,7 +703,7 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 		programId.push($(this).attr("attr_program_id"));
 		getStateLevelCampCount(programId);         
 		stateLevelCampMembersDistWise(); 
-		stateLevelCampDetailsRepresentativeWise()
+		stateLevelCampDetailsRepresentativeWise(programId);
 		var val = $(this).attr("attr_location");
 		$("#clickInfoId").html(val); 
 		$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
@@ -783,7 +792,7 @@ $(document).on("click",".stateLevelTraining",function(){
 		} 
 		getStateLevelCampCount(programIdArr);         
 		stateLevelCampMembersDistWise();       
-		stateLevelCampDetailsRepresentativeWise() 
+		stateLevelCampDetailsRepresentativeWise(programIdArr); 
 		var val = $(this).attr("attr_location");
 		$("#clickInfoId").html(val);
 		$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
@@ -1961,4 +1970,154 @@ function buildMemberRslt(result,status){
 	$("#memberId").html(str); 
 	$("#campMemberDtlsId").dataTable();    
 	
+}
+function stateLevelCampDetailsRepresentativeWise(programIdArr){
+	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
+	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
+	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	var jsObj={  
+	programIdArr : programIdArr,         
+	stateId : globalStateId,
+	dateStr : dateStr
+	} 
+	$.ajax({
+		type : 'GET',
+		url : 'stateLevelCampDetailsRepresentativeWise.action',  
+		dataType : 'json',
+		data : {task :JSON.stringify(jsObj)} 
+	}).done(function(result){ 
+	
+		if(result != null && result.length >0){
+			buildstateLevelCampDetailsRepresentativeWise(result);
+		}  
+	});
+}
+function buildstateLevelCampDetailsRepresentativeWise(result){
+	$(".hideCls").hide();   
+	$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('');  
+		var str='';
+		if(result != null && result.length > 0){ 
+			var k = 0;
+			for(var i in result){  
+				for(var j in result[i]){
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					if(result[i][j].status == "State"){
+						str+='<h5 class="text-capital">'+result[i][j].status+' committee</h5>'; 
+					}
+					else if(result[i][j].status == "District"){
+						str+='<h5 class="text-capital">'+result[i][j].status+' committee</h5>'; 
+					}else{
+						str+='<h5 class="text-capital">'+result[i][j].status+'</h5>';
+					}
+					 
+					str+='<div id="genCampId'+k+'" style="width:100%;height:100px;"></div>';
+					str+='</div>'
+					k+=1;  
+				}    
+			} 
+			
+		}
+		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html(str);  
+		if(result != null && result.length > 0){
+				var candidateNameArray = [];
+				candidateNameArray.push("ELIGIBLE");  
+				candidateNameArray.push("INVITED");  
+				candidateNameArray.push("ATTENDED");  
+				candidateNameArray.push("ABSENT");
+				k=0;
+			for(var i in result){
+				for(var j in result[i]){
+					var trainingProgramCountArray = [];
+					trainingProgramCountArray.push(100);
+					trainingProgramCountArray.push(100);
+					var present = (result[i][j].actualCount*(100/result[i][j].count)).toFixed(2);
+					trainingProgramCountArray.push(parseFloat(present));
+					var abs = 100-present;  
+					trainingProgramCountArray.push(parseFloat(abs.toFixed(2)));            
+					console.log(trainingProgramCountArray);
+					var getWidth = $("#genCampId"+k).parent().width()+'px';
+					$("#genCampId"+k).width(getWidth);
+					$(function () {
+						$('#genCampId'+k).highcharts({  
+						colors: ['#0066DC'],
+						chart: {
+							type: 'column'
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							categories: candidateNameArray,
+							title: {
+								text: null
+							},
+							labels: {
+									formatter: function() {
+										return this.value.toString().substring(0, 10);
+									},
+									
+								}
+						},
+						yAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							title: {
+								text: null,
+								align: 'high'
+							},
+							labels: {
+								overflow: 'justify',
+								enabled: false,
+							}
+						},
+						tooltip: {
+								 
+								pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}%</b><br/>',
+								shared: true,
+								valueSuffix: '%'
+							},
+						plotOptions: {
+								column: {
+									stacking: 'normal',
+									dataLabels: {
+										enabled: true,
+										
+									  
+									}
+								}
+							},
+						legend: {
+							layout: 'vertical',
+							align: 'right',
+							verticalAlign: 'top',
+							x: -40,
+							y: 80,
+							floating: true,
+							borderWidth: 1,
+							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+							shadow: true
+						},
+						credits: {
+							enabled: false
+						},
+					  
+						series: [{
+							name: 'Member',    
+							data: trainingProgramCountArray
+						}]
+					});
+				});
+				k+=1;
+			}
+		}
+	}else{
+		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
+	}
 }
