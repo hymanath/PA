@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>New Core DashBoard</title>
+<title>Core DashBoard</title>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
@@ -1298,7 +1298,7 @@
 												</div>
 												<div class="panel-body">
 												<div id="problemsDetailedOverview"></div>
-												<div id="problemsDetailedOverview22"></div>
+												<div id="overAllAnalysisDetailsBlock"></div>
 												</div>
 												
 											</div>
