@@ -2109,7 +2109,7 @@ function getChildUserTypesByItsParentUserType1(){
 	$(document).on("click",".filtersSubmitDivId",function(){
 		newsPaperIdsGlob=[];
 		$(".pubCheckCls").each(function(){
-			if($(this).is("checked")){
+			if($(this).is(":checked")){
 				newsPaperIdsGlob.push($(this).val());
 			}
 		});
@@ -2190,8 +2190,7 @@ function getChildUserTypesByItsParentUserType1(){
 		getDetailedGovtDepartmentWiseDistrictsOverview();
 		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7);
 		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0);
-		
-		//getDetailedGovernamentTrendingTrackedIssues();
+		getDetailedGovernamentTrendingTrackedIssues();
 	});
 	
 	function getDetailedGovtDepartmentWiseDistrictsOverview(){
@@ -2385,7 +2384,7 @@ function getChildUserTypesByItsParentUserType1(){
 		}
 		
 		var startDate=currentFromDate,endDate=currentToDate;
-	
+		
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
