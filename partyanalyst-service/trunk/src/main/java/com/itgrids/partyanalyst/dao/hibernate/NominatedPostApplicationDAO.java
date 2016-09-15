@@ -1956,7 +1956,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		
 		return query.list();
 	}
-public int updateApllicationStatusToReject(Long nominatedPostMemberId,Long statusId,Long userId){
+public int updateApllicationStatusToReject(Long nominatedPostApplicationId,Long statusId,Long userId){
 	
 	StringBuilder queryStr = new StringBuilder();
 	DateUtilService dateUtilService = new DateUtilService();
@@ -1964,11 +1964,11 @@ public int updateApllicationStatusToReject(Long nominatedPostMemberId,Long statu
 	queryStr.append("UPDATE NominatedPostApplication model SET model.applicationStatus.applicationStatusId = :applicationStatusId," +
 			" model.updatedBy =:updatedBy," +
 			" model.updatedTime =:updatedTime" +
-			"	WHERE  model.isDeleted = 'N' and model.nominatedPostMemberId =:nominatedPostMemberId and model.applicationStatusId in (1,3,6) " );
+			"	WHERE  model.isDeleted = 'N' and model.nominatedPostApplicationId =:nominatedPostApplicationId and model.applicationStatusId in (1,3,6) " );
 	
 	Query query = getSession().createQuery(queryStr.toString());
 	
-	query.setParameter("nominatedPostMemberId", nominatedPostMemberId);
+	query.setParameter("nominatedPostApplicationId", nominatedPostApplicationId);
 	query.setParameter("applicationStatusId", statusId);
 	query.setParameter("updatedBy", userId);
 	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
