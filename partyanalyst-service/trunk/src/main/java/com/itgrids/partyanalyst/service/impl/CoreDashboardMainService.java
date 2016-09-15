@@ -3274,13 +3274,20 @@ public List<IdNameVO> getStateLevelCampAttendedDetails(List<Long> programIdList,
 		e.printStackTrace();
 		LOG.error("Error occured at getStateLevelCampAttendedDetails() in CoreDashBoardMainService ",e); 
 	}
-	return null;
+	return null;  
 }
-public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
+
+public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> programIdList, Long stateId, String dateStr){
 	LOG.info(" entered in to getStateLevelCampDetailsRepresentatative() of CoreDashBoardMainService ");
 	try{
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(dateStr != null && !dateStr.isEmpty() && dateStr.length() > 0){
+			 toDate = sdf.parse(dateStr);  
+		}
 		List<List<IdNameVO>> pubRepDtls = new ArrayList<List<IdNameVO>>();
 		List<Long> locationIdList = null;
+		List<Long> idList = new ArrayList<Long>();
 		Long count = 0l;
 		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
 		IdNameVO idNameVO = null;
@@ -3291,14 +3298,15 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
 		
 		Long stateLevelCampId = 6l;
 		Long stateLevelProgramId = 6l;
-		List<IdNameVO> campDetailsRepresentative = new ArrayList<IdNameVO>(0);
-		List<Object[]> stateDistrictTrainingProgramInvitedDetails = trainingCampBatchAttendeeDAO.getStateDistrictTrainingProgramInvitedDetails(stateLevelCampId, stateLevelProgramId);
-		List<Object[]> stateDistrictTrainingProgramAttendedDetails = trainingCampAttendanceDAO.getStateDistrictTrainingProgramAttendedDetails(stateLevelCampId, stateLevelProgramId);
+		List<IdNameVO> campDetailsRepresentative = new ArrayList<IdNameVO>(0);     
+		List<Object[]> stateDistrictTrainingProgramInvitedDetails = trainingCampBatchAttendeeDAO.getStateDistrictTrainingProgramInvitedDetails(stateLevelCampId, programIdList, stateId, toDate);
+		List<Object[]> stateDistrictTrainingProgramAttendedDetails = trainingCampAttendanceDAO.getStateDistrictTrainingProgramAttendedDetails(stateLevelCampId, programIdList, stateId, toDate);  
 		
-		List<Object[]> mlaMpInchargeTrainingProgramInvitedDetails = trainingCampBatchAttendeeDAO.getMlaMpInchargeTrainingProgramInvitedDetails(stateLevelCampId, stateLevelProgramId);
-		List<Object[]> mlaMpInchargeTrainingProgramAttendedDetails = trainingCampAttendanceDAO.getMlaMpInchargeTrainingProgramAttendedDetails(stateLevelCampId, stateLevelProgramId);
-		if(stateDistrictTrainingProgramInvitedDetails != null && stateDistrictTrainingProgramInvitedDetails.size() > 0){
-			for(Object[] obj : stateDistrictTrainingProgramInvitedDetails){
+		List<Object[]> mlaMpInchargeTrainingProgramInvitedDetails = trainingCampBatchAttendeeDAO.getMlaMpInchargeTrainingProgramInvitedDetails(stateLevelCampId, programIdList, stateId, toDate);
+		List<Object[]> mlaMpInchargeTrainingProgramAttendedDetails = trainingCampAttendanceDAO.getMlaMpInchargeTrainingProgramAttendedDetails(stateLevelCampId, programIdList, stateId, toDate);
+		if(stateDistrictTrainingProgramInvitedDetails != null && stateDistrictTrainingProgramInvitedDetails.size() > 0){ 
+			for(Object[] obj : stateDistrictTrainingProgramInvitedDetails){      
+				idList.add(obj[0] != null ? (Long)obj[0] : 0l);
 				idAndLocationMapInvite.put(obj[0] != null ? (Long)obj[0] : 0l, obj[1] != null ? obj[1].toString() : "");
 				idAndValueMapInvite.put(obj[0] != null ? (Long)obj[0] : 0l, obj[2] != null ? (Long)obj[2] : 0l);
 			}
@@ -3307,6 +3315,7 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
 				add(10l);
 				add(11l);
 			}};
+			idList.removeAll(locationIdList);
 		}
 		if(stateDistrictTrainingProgramAttendedDetails != null && stateDistrictTrainingProgramAttendedDetails.size() > 0){
 			for(Object[] obj : stateDistrictTrainingProgramAttendedDetails){
@@ -3325,6 +3334,18 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
 					idNameVO.setStatus(idAndLocationMapInvite.get(id) != null ? idAndLocationMapInvite.get(id) : "");
 					idNameVO.setActualCount(idAndValueMapAttendee.get(id) != null ? idAndValueMapAttendee.get(id) : 0l);
 					idNameVOs.add(idNameVO);
+				}
+			}
+		}
+		//except dist and state remaining are in others
+		Long othersCount = 0l;
+		Long othersActualCount = 0l;
+		if(idList != null && idList.size() > 0 ){
+			for(Long id : idList){
+				count = idAndValueMapInvite.get(id);
+				if(count != null){
+					othersCount+=count;
+					othersActualCount+=idAndValueMapAttendee.get(id) != null ? idAndValueMapAttendee.get(id) : 0l;
 				}
 			}
 		}
@@ -3406,8 +3427,10 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(){
 				idNameVO.setActualCount(idNameVO.getActualCount() + actualCount); 
 			}
 		}
+		idNameVO.setCount(idNameVO.getCount()+othersCount);
+		idNameVO.setActualCount(idNameVO.getActualCount() + othersActualCount); 
 		campDetailsRepresentative.add(idNameVO);
-		if(idNameVOs.size() > 0 ){
+		if(idNameVOs.size() > 0 ){    
 			pubRepDtls.add(idNameVOs);
 		}
 		if(campDetailsRepresentative.size() > 0){

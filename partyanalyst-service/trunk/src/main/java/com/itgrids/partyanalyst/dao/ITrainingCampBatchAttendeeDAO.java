@@ -38,8 +38,8 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public Long getInvitedCountByLocation(Long id,String searchType);
 	public List<Long> getInvitedCadreIdsByLocation(Long id,String searchType);
 	public List<Object[]> getTotalInvitedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate);
-	public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, Long programId);
-	public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, Long programId);
+	public List<Object[]> getStateDistrictTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);  
+	public List<Object[]> getMlaMpInchargeTrainingProgramInvitedDetails(Long campId, List<Long> programIdList, Long stateId, Date toDate);
 	public List<Object[]> getDistWiseInvitedMembers(Long stateId, Long campId, Long programId);
     public List<Object[]> getInvitedMemberCadreId(Long distId, Long programId);
 
