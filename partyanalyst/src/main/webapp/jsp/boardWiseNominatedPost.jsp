@@ -764,8 +764,12 @@ function getPositionsForBoard(num){
 	    if(result != null && result.length > 0){
 		   $("#positionAnyId"+num).append('<option value="0">Select Position</option>');
 		   for(var i in result){
-			   if(result[i].id == parseInt('${positionId}'))
-			    $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   if(parseInt('${positionId}') > 0 ){
+				   if(result[i].id == parseInt('${positionId}'))
+				 $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }else{
+				   $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
 			   /* if(globalPositionId>0){
 				   if( globalPositionId == parseInt(result[i].id)){
 					   $("#positionAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
