@@ -919,6 +919,7 @@
 	}
 	
 	
+	
 	function buildgetSelectedChildUserTypeMembers(result){
 		
 		$("#SelectedUserTypeDetailsDiv").html('');
@@ -939,7 +940,7 @@
 		
 		for(var i in result){
 			rankVar =rankVar+1;
-			
+			var locationNamevaraiable =result[i].locationName;
 			if(i == 0){
 				str+='<li  style="cursor:pointer;" class="compareActivityMemberCls panelActiveSlick" attr_id ="directChildActivityMemberDiv" attr_selectedmembername="'+result[i].name+'" attr_selectedusertype="'+result[i].userType+'" attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' >';
 			}else{
@@ -951,7 +952,7 @@
 			
 				str+='<div class="panel panel-default panelSlick">';
 					str+='<div class="panel-heading">';
-						str+='<h4 class="panel-title"  >'+result[i].name+'</h4>';
+					str+='<h4 class="panel-title"  >'+result[i].name+'</h4>';
 						if(result[i].completedPerc !=null && result[i].completedPerc >0){
 							str+='<span class="count">'+rankVar+'</span>';
 						}else{
@@ -960,7 +961,13 @@
 						
 					str+='</div>';
 					str+='<div class="panel-body">';
-						str+='<h4 class="text-capital">'+result[i].userType+'</h4>';
+						
+						if( locationNamevaraiable.indexOf(',') == -1){
+							locationNamevaraiable = locationNamevaraiable.substring(0, locationNamevaraiable.lastIndexOf(" "));
+							str+='<h4 class="panel-title"  >'+result[i].userType+' (<b style="font-size: 12px;text-transform: uppercase;">'+locationNamevaraiable+'</b>)</h4>';
+						}else{
+							str+='<h4 class="panel-title"  >'+result[i].userType+'</h4>';
+						}
 						str+='<table class="table table-condensed">';
 							str+='<thead>';
 								str+='<th>Total</th>';
@@ -1040,9 +1047,9 @@
 					// instead of a settings object
 				  ]
 			});
-	}else{
+	}/* else{
 		$("#SelectedUserTypeDetailsDiv").html("No Data Available");
-	}
+	} */
 		
 		
 		getDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
@@ -1450,7 +1457,7 @@
 				$("#"+childActivityMemberId).html(str);
 		}else{
 			if(childActivityMemberId == "directChildActivityMemberDiv"){
-				$("#"+childActivityMemberId).html("No Data Available");
+				$("#"+childActivityMemberId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
 			}
 			
 		}
@@ -1481,8 +1488,7 @@
 	function buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){
 		$("#topPoorPerformanceDiv").html('');
 		var str='';
-		 
-			
+		 	
 		if(result != null && result.subList1 != null && result.subList1.length >0){
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
@@ -1572,6 +1578,7 @@
 		str+='</div>';
 		$("#topPoorPerformanceDiv").html(str);
 		$('.progressCustom').tooltip()
+	
 		
 	}
 	
@@ -1625,8 +1632,8 @@
 			str+='</div>';
 			$("#topPoorLocationsDiv").html(str);
 			$('.progressCustom').tooltip()
-		}else{
-			$("#topPoorLocationsDiv").html("No Data Available");
-		}			
+		}/* else{
+			$("#topPoorLocationsDiv").html("<span class='color_333 pad_5 bg_CC text-capital'>top five <span class='text-danger'>poor</span> locations - (<span style='font-size:11px;'><i> "+selectedMemberName+" - "+selectedUserType+"</i></span>) - (No Data Available)</span>");
+		}	 */		
 			
 	}
