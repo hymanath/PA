@@ -17,10 +17,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.IDashboardCommentDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
@@ -28,11 +30,13 @@ import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.DashboardComment;
 import com.itgrids.partyanalyst.service.ICoreDashboardService1;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -49,11 +53,37 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 	 private IUserTypeRelationDAO userTypeRelationDAO;
 	 private IActivityMemberRelationDAO activityMemberRelationDAO;
 	 private IDashboardCommentDAO dashboardCommentDAO;
+	 private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
 	 private DateUtilService dateUtilService = new DateUtilService();
+	 private IEventInviteeDAO eventInviteeDAO;
+	 private CommonMethodsUtilService commonMethodsUtilService;;
 	//setters
+	 
+	 
+	 
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	public IEventInviteeDAO getEventInviteeDAO() {
+		return eventInviteeDAO;
+	}
+	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
+		this.eventInviteeDAO = eventInviteeDAO;
+	}
+	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
+		return activityMemberAccessLevelDAO;
+	}
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
 	}
 	public void setTdpCommitteeDAO(ITdpCommitteeDAO tdpCommitteeDAO) {
 		this.tdpCommitteeDAO = tdpCommitteeDAO;
@@ -588,8 +618,94 @@ public class CoreDashboardService1 implements ICoreDashboardService1{
 			return rs;
 		}
 		
+	    /**
+		 * @Author  Hymavathi
+		 * @Version CoreDashboardService1.java  Sep 09, 2016 05:30:00 PM 
+		 * @return List<IdAndNameVO>
+		 * @description  { Getting Invitee and Attendee count for core dashboard By Events & activityMemberId }
+		 */
+	public List<IdAndNameVO> getEventInviteeAttendeeCount(List<Long> eventList,Long activityMemberId){
+		
+		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>();
+		try{
+		
+	    Map<Long,List<Long>> actvtyMembrAccsLvlMap = new HashMap<Long,List<Long>>();
+	    List<Object[]> locations = activityMemberAccessLevelDAO.getLocationsByActivityMemberId(activityMemberId);
+	    if(locations!=null && locations.size()>0){
+	    	for(Object[] obj : locations){
+	    		
+	    		List<Long> locationValues = null;
+	    		if(actvtyMembrAccsLvlMap.get(commonMethodsUtilService.getLongValueForObject(obj[0])) != null){
+	    			locationValues = actvtyMembrAccsLvlMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+	    			locationValues.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
+	    		}else{
+	    			locationValues = new ArrayList<Long>();
+	    			locationValues.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
+	    			actvtyMembrAccsLvlMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), locationValues);
+	    		}
+	    		
+	    	}
+	    }
+	    if(commonMethodsUtilService.isMapValid(actvtyMembrAccsLvlMap)){
+	    	for(Long levelId : actvtyMembrAccsLvlMap.keySet()){
+	    		List<Object[]> inviteeCount = eventInviteeDAO.getInviteedCountByEventsAndLocations(eventList,actvtyMembrAccsLvlMap.get(levelId),levelId);
+	    		setEventInviteeAndAttendeeCountDetails(inviteeCount,"invitee",finalList);
+	    		
+	    		List<Object[]> totaAttendeeCount = eventInviteeDAO.getTotAttendeeCountByEventsAndLocations(eventList,actvtyMembrAccsLvlMap.get(levelId),levelId);
+	    		setEventInviteeAndAttendeeCountDetails(totaAttendeeCount,"attendee",finalList);
+	    		
+	    		List<Object[]> inviteeAttendeeCount = eventInviteeDAO.getInviteeAttendeeCountByEventsAndLocations(eventList,actvtyMembrAccsLvlMap.get(levelId),levelId);
+	    		setEventInviteeAndAttendeeCountDetails(inviteeAttendeeCount,"inviteeAttendee",finalList);
+	    	}
+	    }
+	    
+		}
+	    catch (Exception e) {
+	    	e.printStackTrace();
+	    	LOG.error("Exception in getEventInviteeAttendeeCount()",e);	
+	    }
+		return finalList;
+	}
 	
- }
+	/**
+	 * @Author  Hymavathi
+	 * @Version CoreDashboardService1.java  Sep 09, 2016 06:00:00 PM 
+	 * @return void
+	 * @description  { Setting Count For List  }
+	 */
+	public void setEventInviteeAndAttendeeCountDetails(List<Object[]> inviteeCount,String type,List<IdAndNameVO> finalList){
+		Map<Long,IdAndNameVO> eventMap = new HashMap<Long,IdAndNameVO>();
+		try{
+			
+				if(commonMethodsUtilService.isListOrSetValid(inviteeCount) ){
+					for(Object[] obj : inviteeCount){
+						IdAndNameVO vo = null;
+						if(eventMap.get(commonMethodsUtilService.getLongValueForObject(obj[0])) != null){
+							vo = eventMap.get(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						}else{
+							vo = new IdAndNameVO();
+							vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+							vo.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));
+						}
+						if(type.equalsIgnoreCase("invitee")){
+							vo.setInviteeCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						}else if(type.equalsIgnoreCase("attendee")){
+							vo.setAttenteeCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						}else if(type.equalsIgnoreCase("inviteeAttendee")){
+							vo.setInviteeAttendeeCnt(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						}
+						finalList.add(vo);
+					}
+					
+				}
+		
+		}catch (Exception e) {
+	    	e.printStackTrace();
+	    	LOG.error("Exception in setEventInviteeAndAttendeeCountDetails()",e);	
+	    }
+	}
+		
+}
 			
  
 

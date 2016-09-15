@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 
@@ -21,5 +22,6 @@ public interface ICoreDashboardService1 {
 	  public List<DashboardCommentVO> displayDashboardComments(Long userId,Long dashBoardComponentId);
 	  public ResultStatus savingDashboardComment(DashboardCommentVO vo,Long userId);
 	  public String deleteDashBoardcomments(Long dashboardCommentId);
+	  public List<IdAndNameVO> getEventInviteeAttendeeCount(List<Long> eventList,Long activityMemberId);
 	
 }
