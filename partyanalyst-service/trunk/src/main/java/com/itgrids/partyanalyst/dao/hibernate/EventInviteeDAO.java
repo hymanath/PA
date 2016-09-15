@@ -692,4 +692,123 @@ public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(Li
 		query.setParameter("locationId",locationId);
 		return query.list();
 	}
+	
+	public List<Object[]> getInviteedCountByEventsAndLocations(List<Long> eventIds,List<Long> locationValues,Long locationId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.event.parentEventId , count(distinct model.tdpCadre.tdpCadreId) ,model.event.name ");
+		
+		str.append(" from EventInvitee model where  model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014  ");
+		if(eventIds != null && eventIds.size() >0){
+			str.append(" and model.event.parentEventId in (:eventIds) " );	
+		}
+		if(locationId.longValue() == 2l){
+			str.append(" and model.tdpCadre.userAddress.state.stateId  in (:locationValues) ");
+		}else if(locationId.longValue() == 3l){
+			str.append(" and model.tdpCadre.userAddress.constituency.district.districtId  in (:locationValues) ");
+		}else if(locationId.longValue() == 4l){
+			str.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId  in (:locationValues) ");
+		}else if(locationId.longValue() == 5l){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in (:locationValues) ");
+		}else if(locationId.longValue() == 6l){
+			str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId  in (:locationValues) ");
+		}else if(locationId.longValue() == 7l){
+			str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId  in (:locationValues) ");
+		}else if(locationId.longValue() == 8l){
+			str.append(" and model.tdpCadre.userAddress.panchayat.panchayatId  in (:locationValues) ");
+		}else if(locationId.longValue() == 8l){
+			str.append(" and model.tdpCadre.userAddress.ward.constituencyId  in (:locationValues) ");
+		}
+		str.append(" group by model.event.parentEventId ");
+		Query query = getSession().createQuery(str.toString());
+		
+		if(eventIds != null && eventIds.size() >0){
+			query.setParameterList("eventIds", eventIds);	
+		}
+		if(locationValues != null && locationValues.size() >0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		
+		return query.list();
+	}
+public List<Object[]> getInviteeAttendeeCountByEventsAndLocations(List<Long> eventIds,List<Long> locationValues,Long locationId){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.event.parentEventId , count(distinct model.tdpCadre.tdpCadreId),model.event.name  ");
+		
+		str.append(" from EventInvitee model,EventAttendee model1  where  model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014  ");
+		str.append(" and model1.event.eventId = model.event.eventId  and model1.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId  ");
+		if(eventIds != null && eventIds.size() >0){
+			str.append(" and model.event.parentEventId in (:eventIds) " );	
+		}
+		if(locationId.longValue() == 2l){
+			str.append(" and model.tdpCadre.userAddress.state.stateId  in (:locationValues) ");
+		}else if(locationId.longValue() == 3l){
+			str.append(" and model.tdpCadre.userAddress.constituency.district.districtId  in (:locationValues) ");
+		}else if(locationId.longValue() == 4l){
+			str.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId  in (:locationValues) ");
+		}else if(locationId.longValue() == 5l){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in (:locationValues) ");
+		}else if(locationId.longValue() == 6l){
+			str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId  in (:locationValues) ");
+		}else if(locationId.longValue() == 7l){
+			str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId  in (:locationValues) ");
+		}else if(locationId.longValue() == 8l){
+			str.append(" and model.tdpCadre.userAddress.panchayat.panchayatId  in (:locationValues) ");
+		}else if(locationId.longValue() == 8l){
+			str.append(" and model.tdpCadre.userAddress.ward.constituencyId  in (:locationValues) ");
+		}
+		str.append(" group by model.event.parentEventId ");
+		Query query = getSession().createQuery(str.toString());
+		
+		if(eventIds != null && eventIds.size() >0){
+			query.setParameterList("eventIds", eventIds);	
+		}
+		if(locationValues != null && locationValues.size() >0){
+			query.setParameterList("locationValues", locationValues);
+		}
+		
+		return query.list();
+	}
+public List<Object[]> getTotAttendeeCountByEventsAndLocations(List<Long> eventIds,List<Long> locationValues,Long locationId){
+	
+	StringBuilder str = new StringBuilder();
+	
+	str.append(" select model.event.parentEventId , count(distinct model.tdpCadre.tdpCadreId),model.event.name  ");
+	
+	str.append(" from EventAttendee model where  model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014  ");
+	if(eventIds != null && eventIds.size() >0){
+		str.append(" and model.event.parentEventId in (:eventIds) " );	
+	}
+	if(locationId.longValue() == 2l){
+		str.append(" and model.tdpCadre.userAddress.state.stateId  in (:locationValues) ");
+	}else if(locationId.longValue() == 3l){
+		str.append(" and model.tdpCadre.userAddress.constituency.district.districtId  in (:locationValues) ");
+	}else if(locationId.longValue() == 4l){
+		str.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId  in (:locationValues) ");
+	}else if(locationId.longValue() == 5l){
+		str.append(" and model.tdpCadre.userAddress.constituency.constituencyId  in (:locationValues) ");
+	}else if(locationId.longValue() == 6l){
+		str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId  in (:locationValues) ");
+	}else if(locationId.longValue() == 7l){
+		str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId  in (:locationValues) ");
+	}else if(locationId.longValue() == 8l){
+		str.append(" and model.tdpCadre.userAddress.panchayat.panchayatId  in (:locationValues) ");
+	}else if(locationId.longValue() == 8l){
+		str.append(" and model.tdpCadre.userAddress.ward.constituencyId  in (:locationValues) ");
+	}
+	str.append(" group by model.event.parentEventId ");
+	Query query = getSession().createQuery(str.toString());
+	
+	if(eventIds != null && eventIds.size() >0){
+		query.setParameterList("eventIds", eventIds);	
+	}
+	if(locationValues != null && locationValues.size() >0){
+		query.setParameterList("locationValues", locationValues);
+	}
+	
+	return query.list();
+}
 }
