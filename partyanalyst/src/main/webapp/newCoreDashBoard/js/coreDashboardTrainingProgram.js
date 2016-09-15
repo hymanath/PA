@@ -926,10 +926,10 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='<span class="count">'+rank+'</span>';
 		 str+='</div>';
 		 str+='<div class="panel-body">';
-		 if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9){ // MLA and Constituency Incharge 
+	   if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9 || result[i].userTypeId==5 || result[i].userTypeId==6){ // MLA Constituency Incharge, MP and District President Incharge 
 		   var lctnName = result[i].locationName;
            lctnName = lctnName.substring(0, lctnName.lastIndexOf(" "));
-		 str+='<h4 class="text-capital">'+result[i].userType+' - '+lctnName+'</h4>';	 
+		 str+='<h4 class="text-capital">'+result[i].userType+' ('+lctnName+')</h4>';	 
 		 }else{
 		 str+='<h4 class="text-capital">'+result[i].userType+'</h4>';	 
 		 }
