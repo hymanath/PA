@@ -4517,6 +4517,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						
 						nominatedPostApplication.setNominatedPostMemberId(nominatedPostMemberId);
 						nominatedPostApplication.setApplicationStatusId(statusId);
+						nominatedPostApplication.setDepartmentId(deptId);
+						nominatedPostApplication.setBoardId(boardId);
+						nominatedPostApplication.setPositionId(positionId);
 						nominatedPostApplication.setUpdatedBy(userId);
 						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						
