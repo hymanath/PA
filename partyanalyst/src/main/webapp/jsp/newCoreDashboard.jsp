@@ -929,7 +929,7 @@
 								<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
 								  <ul class="nav nav-tabs navTabsSettings" role="tablist">
 									<li role="presentation" class="active text-capital"><a href="#Editions" aria-controls="Editions" role="tab" data-toggle="tab">Editions</a></li>
-									<li role="presentation" class="text-capital"><a href="#impactScope" aria-controls="impactScope" role="tab" data-toggle="tab">Impact Scope</a></li>
+									<!-- <li role="presentation" class="text-capital"><a href="#impactScope" aria-controls="impactScope" role="tab" data-toggle="tab">Impact Scope</a></li> -->
 								  </ul>
 								</div>
 								<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
