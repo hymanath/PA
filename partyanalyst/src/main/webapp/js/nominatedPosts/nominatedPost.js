@@ -1,4 +1,12 @@
 function getOpenPositionDistrictsForState(state,id,num){
+	if(num == 0)
+		  num='';
+	   $("#deptBoardId"+num).html('');
+	   $("#deptBoardId"+num).trigger("chosen:updated")
+	   $("#deptBoardPostnId"+num).html('');
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
+       $("#depmtsId"+num).html('');
+	   $("#depmtsId"+num).trigger("chosen:updated")
 	$("#searchDataImgForDistrict"+num).show();
 	state = $("#nominatedStaeId"+num).val();
 	//$("#nominatedDistId  option").remove();
@@ -15,8 +23,12 @@ function getOpenPositionDistrictsForState(state,id,num){
 	$("#nominatdConstId"+num+"").trigger("chosen:updated");
 	$("#nominatedMandlId"+num+"").trigger("chosen:updated");
 	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
-	if(state == 0)
+	if(state == 0){
+		$("#searchDataImgForDistrict"+num).hide();
 		return;
+	}else{
+		$("#searchDataImgForDistrict"+num).show();
+	}
 	
 	var jsObj=
    {				
@@ -43,6 +55,14 @@ function getOpenPositionDistrictsForState(state,id,num){
 }
 
 function getOpenPositionConstituenciesForDistrict(district,id,num){
+	if(num == 0)
+		  num='';
+	   $("#deptBoardId"+num).html('');
+	   $("#deptBoardId"+num).trigger("chosen:updated")
+	   $("#deptBoardPostnId"+num).html('');
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
+       $("#depmtsId"+num).html('');
+	   $("#depmtsId"+num).trigger("chosen:updated")
 	$("#searchImgForDistr"+num).show();
 	$("#nominatdConstId"+num+"").empty();
 	$("#nominatedMandlId"+num+"").empty();
@@ -80,6 +100,14 @@ function getOpenPositionConstituenciesForDistrict(district,id,num){
 }
 
 function getOpenPositionMandalsForConstituency(num,id){
+	if(num == 0)
+		  num='';
+	   $("#deptBoardId"+num).html('');
+	   $("#deptBoardId"+num).trigger("chosen:updated")
+	   $("#deptBoardPostnId"+num).html('');
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
+       $("#depmtsId"+num).html('');
+	   $("#depmtsId"+num).trigger("chosen:updated")
 	var constituencyId  =0;
 	 $("#searchImgForConst"+num).show();
 	constituencyId = $("#nominatdConstId"+num).val();
@@ -1149,6 +1177,29 @@ $('.searchTypeCls').click(function(){
   }
 	
 	function getOpenedPostionsStates(id,num){
+		if(num == 0)
+		  num='';
+	   $("#deptBoardId"+num).html('');
+	   $("#deptBoardId"+num).trigger("chosen:updated")
+	   $("#deptBoardPostnId"+num).html('');
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated")
+       $("#depmtsId"+num).html('');
+	   $("#depmtsId"+num).trigger("chosen:updated")
+	state = $("#nominatedStaeId"+num).val();
+	//$("#nominatedDistId  option").remove();
+	$("#nominatedDistId"+num+"").empty();
+	$("#nominatdConstId"+num+"").empty();
+	$("#nominatedMandlId"+num+"").empty();
+	$("#nominatedPanchayatId"+num+"").empty();			
+	$("#nominatedDistId"+num+"").append('<option value="0">Select District</option>');		
+	$("#nominatdConstId"+num+"").append('<option value="0">Select Constituency</option>');		
+	$("#nominatedMandlId"+num+"").append('<option value="0">Select Mandal/Municipality</option>');		
+	$("#nominatedPanchayatId"+num+"").append('<option value="0">Select Panchayat</option>');
+	
+	$("#nominatedDistId"+num+"").trigger("chosen:updated");
+	$("#nominatdConstId"+num+"").trigger("chosen:updated");
+	$("#nominatedMandlId"+num+"").trigger("chosen:updated");
+	$("#nominatedPanchayatId"+num+"").trigger("chosen:updated");
 		$("#searchDataImgForState"+num).show();
 		var jsObj = {			
 			boardLevelId:$('#boardLvlId'+num+'').val()
@@ -1308,7 +1359,8 @@ $('.searchTypeCls').click(function(){
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
    $("#searchDataImgForDep"+num).hide();
-  $("#deptBoardId"+num).empty();
+     $("#deptBoardId"+num).empty(); 
+     $("#deptBoardPostnId"+num).empty();   
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
 		   
@@ -1323,8 +1375,10 @@ $('.searchTypeCls').click(function(){
    else{
 	   //$("#errdeptBoardId"+num).html('<b style="color:red;"> All Boards are filled out.</b>');
 		$("#deptBoardId"+num).append('<option value=" ">  </option>'); 
+		$("#deptBoardPostnId"+num).val('').trigger('chosen'); 
 	}
 	  $("#deptBoardId"+num).trigger("chosen:updated");
+	   $("#deptBoardPostnId"+num).trigger("chosen:updated");
    });
   }  
   function getDepartments(num){
