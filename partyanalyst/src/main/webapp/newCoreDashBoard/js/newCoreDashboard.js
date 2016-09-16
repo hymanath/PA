@@ -204,11 +204,7 @@
 		}); */
 	}
 	
-	$(".basicCommittessDiv").click(function(event){
-	   // getCheckedBasicCommitteeIds();
-		defaultCommitteeCalls();
-		$(".basicCommitteesBlockDropDown").hide();
-    });
+	
 	
 	/*$(document).on("click",".settingsDropDown",function(){
 		$(this).toggleClass("dropdownOpen")
