@@ -107,17 +107,6 @@
 	});
 	
 	
-	$(document).on("click",".unExpandBlock",function(){
-		$(this).removeClass("unExpandBlock");
-		$(".moreBlocks").hide();
-		$(".moreBlocks1").hide();
-		$(".moreBlocksDetailAndComp").hide();
-		$(".committeeSeetingBlock").hide();
-		$(".comparisionBlock").removeClass("active");
-		$(".detailedBlock").addClass("active");
-	});
-	
-	
 	//committees.
 	$(document).on("click",".comparisionBlock",function(){
 		$("#SelectedUserTypeDetailsDiv").html(''); 
