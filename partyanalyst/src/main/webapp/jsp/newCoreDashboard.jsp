@@ -310,10 +310,9 @@
                             </ul>
 					    </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks">
-                        	<div class="panel panel-default">
+                        	<div class="panel panel-default m_top10">
                             	<div class="panel-body ">
-								<div id="levelWiseBasicCommittees"></div>
-                                
+									<div id="levelWiseBasicCommittees"></div>
                                 </div>
                             </div>
                         </div>
@@ -338,7 +337,7 @@
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-8 col-md-12">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
                                            <div id="childUserTypeDetailsDiv"></div>
                                         </div>
                                        
@@ -354,8 +353,7 @@
                                                 <div id="directChildActivityMemberDiv" class="table-responsive"></div>
                                                 <div class="row m_top20">
                                                     <div class="col-md-8 col-xs-12 col-sm-12 col-md-offset-0" style="border-right:1px solid #ddd;">
-													 <div id="topPoorPerformanceDiv"></div>
-                                                       
+														<div id="topPoorPerformanceDiv"></div>
                                                     </div>
                                                     <div class="col-md-4 col-xs-12 col-sm-12 col-md-offset-0">
                                                         <div id="topPoorLocationsDiv"></div>
@@ -1820,30 +1818,6 @@
 <script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script type="text/javascript">
-	/* //Angular Start
-
-		var obj = angular.module("partyWiseTotalApp",[]);
-		//var dataA = [];
-		obj.controller('partyWiseTotalCont', function($scope,$http) {
-			var jsObj= {
-					startDate: " ",
-					endDate: " ",
-					state: "AP"
-				}
-
-			$http({
-				type : 'GET',
-				url : 'getPartyWiseTotalDebateDetailsAction.action?task={startDate:" ",endDate: " ",state: "AP"}',
-				//url : 'getPartyWiseTotalDebateDetailsAction.action?task='+jsObj+'',
-				dataType : 'application/json',
-				data : { },
-
-			}).success(function(data) {
-				$scope.partyWiseTotal = data
-			});
-		});
-	//Angular ENd */
-	
 	//settings scroll
 	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
 	DatePickerDropdown();
@@ -1980,10 +1954,15 @@
 			
 			if($(".detailedBlock").hasClass("active")){
 				getLevelWiseBasicCommitteesCountReport();
+				var tdpCommitteeLevelIdsClickedArray = [];
+				tdpCommitteeLevelIdsClickedArray.push(6);
+				tdpCommitteeLevelIdsClickedArray.push(8);
+				getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 			}
 			if($(".comparisionBlock").hasClass("active")){
 				getAllItsSubUserTypeIdsByParentUserTypeId();
 			}
+		
 		}
 	}
 	

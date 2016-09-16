@@ -689,7 +689,6 @@
 		}else{
 			$("#levelWiseBasicCommittees").html("No Data Available");
 		}  
-		
 		$(".villageWardUl").slick({
 			 slide: '.customLi',
 			 slidesToShow: 1,
@@ -1188,7 +1187,7 @@
 					}else{
 						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 					}
-					str+='<div id="genSec1'+i+'" class="m_top20" style="width:100%;height:100px;"></div>';
+					str+='<div id="genSec1'+i+'" class="m_top20" style="height:100px;"></div>';
 				str+='</div>';
 			}
 		}
@@ -1500,7 +1499,7 @@
 		if(result != null && result.subList != null && result.subList.length >0){
 			var locationLevelNameArray =[];
 			for(var i in result.subList){
-				str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top20">';
+				str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 				var properName = getProperLocationLevelName(result.subList[i].name);
 					if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 						locationLevelNameArray.push(properName);

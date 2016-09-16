@@ -137,6 +137,17 @@
 		margin-top:5px !important;
 		margin-right:0px !important;
 	}
+	.panelSlick  .panel-title
+	{
+		font-size:12px;
+		font-weight:500;
+	}
+	.panelSlick .panel-heading .count
+	{
+		font-size:13px;
+		padding:2px 3px;
+		width:20px;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) {
 	.committesBlockUl li

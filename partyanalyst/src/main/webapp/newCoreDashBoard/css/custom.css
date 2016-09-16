@@ -1066,6 +1066,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border:1px solid #ddd;
 	margin-left:4px;
 	margin-right:4px;
+	margin-top:2px;
 	padding:6px 12px;
 	width:auto;
 	cursor:pointer;
@@ -1115,8 +1116,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	border:1px solid #4A5762;
 	border-radius:4px;
-	margin-bottom:5px;
-	margin-top:5px;
+	margin:5px;
 }
 .panelSlick .panel-heading
 {
@@ -1125,6 +1125,11 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	position:relative;
 	border-top-left-radius:4px;
 	border-top-right-radius:4px;
+}
+.panelSlick  .panel-title
+{
+	font-size:14px;
+	font-weight:600;
 }
 .panelSlick .panel-heading .count
 {
