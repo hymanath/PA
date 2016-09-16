@@ -654,7 +654,7 @@ function getDepartments(num){
 	<!--$("#departmentAnyId"+num+" option").remove();-->
 	   $("#statusCommentAnyId"+num).html('');
 	   $("#updatedStatusAnyId"+num).val(0);
-	   $("#departmentAnyId"+num).val(0).trigger("chosen:updated");
+	   //$("#departmentAnyId"+num).val(0).trigger("chosen:updated");
 	   $("#boardAnyId"+num).html('');
 	   $("#boardAnyId"+num).trigger("chosen:updated")
 	   $("#boardAnyId"+num).trigger("chosen:updated")
@@ -682,8 +682,10 @@ function getDepartments(num){
 		   <!--$("#departmentAnyId"+num).append('<option value="0">Select Department</option>');-->
 		   for(var i in result){
 			   if(globalDeptId > 0){
-					if(globalDeptId == parseInt(result[i].id))
-						$("#departmentAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					if(globalDeptId == parseInt(result[i].id)){
+						$("#departmentAnyId"+num).append('<option selected value="'+result[i].id+'">'+result[i].name+'</option>');
+						getBoardsForDepartments(num)
+					}
 			   }else
 					$("#departmentAnyId"+num).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		   }
