@@ -870,7 +870,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	        " dept.deptName," +
 	        " board.boardId,board.boardName," +
 	        " position.positionId,position.positionName, " +
-	        " model.locationValue " +
+	        " model.locationValue, model.nominatedPostApplicationId  " +
 	        " from NominatedPostApplication model" +
 	        " left join model.departments dept" +
 	        " left join model.board board" +

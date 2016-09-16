@@ -1791,7 +1791,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	        " dept.deptName," +
 	        " board.boardId,board.boardName," +
 	        " position.positionId,position.positionName, " +
-	        " model.nominatedPostApplication.locationValue " +
+	        " model.nominatedPostApplication.locationValue,model.nominatedPostApplication.nominatedPostApplicationId  " +
 	        " from NominatedPostFinal model" +
 	        " left join model.nominatedPostApplication.departments dept" +
 	        " left join model.nominatedPostApplication.board board" +
@@ -1988,6 +1988,24 @@ public int updateApllicationStatusToReject(Long memberId,final Long userId){
 	query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
 	
 	return query.executeUpdate();
+}
+
+public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
+	StringBuilder queryStr = new StringBuilder();
+	
+	queryStr.append(" select model.nominatedPostApplication.nominatedPostApplicationId , model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
+			" model.nominatedPostMember.nominatedPostPosition.departments.deptName, model.nominatedPostMember.nominatedPostPosition.board.boardId ," +
+			" model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId, " +
+			" model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPostFinal model where " +
+			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' ");
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	if(applicationIds !=null && applicationIds.size()>0){
+		query.setParameterList("applicationIds",applicationIds);
+	}
+	
+	return query.list();
+	
 }
 
 }
