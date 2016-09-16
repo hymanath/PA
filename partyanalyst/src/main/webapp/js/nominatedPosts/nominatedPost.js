@@ -1367,7 +1367,6 @@ $('.searchTypeCls').click(function(){
 		   if(result != null && result.length >1)
 		   $("#deptBoardId"+num).append('<option value="0">Any</option>');
 	   
-		   if(depmtId > 0 )
 				for(var i in result){
 					$("#deptBoardId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	  }
