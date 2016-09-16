@@ -124,8 +124,8 @@
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
 							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
 								<li role="presentation" class="active text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
-								<li role="presentation" class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
-								<li role="presentation" class="text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
+								<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
+								<li role="presentation"  class="text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
 							  </ul>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
@@ -1423,7 +1423,7 @@
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
-									<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span></h4>
+									<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
@@ -1441,7 +1441,7 @@
 									<h4>
 										<span class="headingColor text-capitalize">state level meetings</span>
 										<span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>
+										<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="stateLevelMeetingErrorId"></span>
 									</h4>
 								    <div class="settingsStateLevelMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
@@ -1459,7 +1459,7 @@
 									<h4>
 										<span class="headingColor text-capitalize">special meetings</span>
 										<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span>
+										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>
 								    </h4>
 								 	<div class="specialMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
@@ -1893,10 +1893,15 @@
 		stateLevelCampDetails();
 	});
 	getLoggedInUserStructure();
+	
 	onLoadCalls();
+	
 	function onLoadCalls(){
+		
 		getRescentArticleTime();
-		getCommitteesBasicCountReport();
+		
+		committeeBasicCall();
+		
 		//training program call
 		getTrainingCampBasicDetailsCntOverview();
 		//Meeting
@@ -1946,39 +1951,10 @@
 		
 	});
 	
-	function defaultCommitteeCalls(){
-		onLoadCalls();
-		
-		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".liCls1").each(function(){
-				var topvalue = $(this).attr("attr_value");
-				if(topvalue == "poor"){
-					$(".removeactive").removeClass("active");
-					
-				}else{
-					
-					$(".addactive").addClass("active");
-				}
-			});
-			getUserTypeWiseCommitteesCompletedCounts1();
-		}
-		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
-			
-			if($(".detailedBlock").hasClass("active")){
-				getLevelWiseBasicCommitteesCountReport();
-				
-			}
-			if($(".comparisionBlock").hasClass("active")){
-				getAllItsSubUserTypeIdsByParentUserTypeId();
-			}
-		
-		}
-	}
-	
 	$(document).on("click",".hideDropDownView",function(){
 		$(".profileDropDown").removeClass("dropDownView");
 	});
-	//getTopPoorMeetingLocations();
+	
 	function getLoggedInUserAccessLevelValues(){
 		var loggedInUserAccessLevelValues = [];
 		<c:forEach items="${userDataVO.userAccessLevelValuesList}" var="userAccessLevelValue">
