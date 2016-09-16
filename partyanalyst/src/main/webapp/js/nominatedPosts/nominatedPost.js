@@ -1285,7 +1285,7 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 	  //$("#deptBoardPostnId"+num).append('<option value="" >Select Board Position</option>');
 	  
-	   if(result[0].status != "Applied" && result.length >1){
+	   if(result[0].status != "Applied"){
 		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
 	  } 
 		for(var i in result){
@@ -1364,7 +1364,7 @@ $('.searchTypeCls').click(function(){
    if(result != null && result.length >0){
 	       $("#deptBoardId"+num).append('<option value=" ">Select Department Board</option>');
 		   
-		   if(result != null && result.length >1)
+		  // if(result != null && result.length >1)
 		   $("#deptBoardId"+num).append('<option value="0">Any</option>');
 	   
 				for(var i in result){
@@ -1470,7 +1470,7 @@ $('.searchTypeCls').click(function(){
 	   if(result != null && result.length >0){
 		   $("#depmtsId"+num).append('<option value=" ">Select Department</option>'); 
 		   
-		   if(result != null && result.length >1)
+		   //if(result != null && result.length >1)
 			$("#depmtsId"+num).append('<option value="0">Any</option>'); 
 		
 		 for(var i in result){
