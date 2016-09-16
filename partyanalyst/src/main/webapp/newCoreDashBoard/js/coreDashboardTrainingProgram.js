@@ -367,7 +367,7 @@ var globalUserWiseMemberRslt;
 			   }else{
 				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
 			   }
-			  str+='<div id="genSecTraining'+i+'" style="width:100%;height:100px;"></div>';
+			  str+='<div id="genSecTraining'+i+'" style="height:100px;"></div>';
 			str+='</div>'
 		  }
 		}
@@ -389,9 +389,7 @@ var globalUserWiseMemberRslt;
 					}
 				}
 		//if(result[i][j].totalAttenedCountPer!=0){
-				var getWidth = $("#genSecTraining"+i).parent().width()+'px';
-				$("#genSecTraining"+i).width(getWidth);
-		     $(function () {
+			 $(function () {
 			$('#genSecTraining'+i).highcharts({
 				colors: ['#0066DC'],
 				chart: {
