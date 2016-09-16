@@ -1980,15 +1980,10 @@
 			
 			if($(".detailedBlock").hasClass("active")){
 				getLevelWiseBasicCommitteesCountReport();
-				var tdpCommitteeLevelIdsClickedArray = [];
-				tdpCommitteeLevelIdsClickedArray.push(6);
-				tdpCommitteeLevelIdsClickedArray.push(8);
-				getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
 			}
 			if($(".comparisionBlock").hasClass("active")){
 				getAllItsSubUserTypeIdsByParentUserTypeId();
 			}
-		
 		}
 	}
 	
