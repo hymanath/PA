@@ -6005,19 +6005,27 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnList;
 	}
 	
-	public Long validateVoterIdCardNo(String voterIdCardNo){
-		Long finalVoterId = 0l;
+	public ResultStatus validateVoterIdCardNo(String voterIdCardNo){
+		ResultStatus resultStatus =new ResultStatus();
+		//Long finalVoterId = 0l;
 		try{
-			
+			List<Long> condidateIds=null;
 			if(voterIdCardNo !=null && voterIdCardNo.trim().length()>0 && !voterIdCardNo.trim().isEmpty()){
 				List<Long> list = voterDAO.getVoterIdByIdCardNoNew(voterIdCardNo);
-				finalVoterId = commonMethodsUtilService.isListOrSetValid(list)?list.get(0):null;
+				if(commonMethodsUtilService.isListOrSetValid(list))
+				{
+					resultStatus.setMessage("valid");
+					 condidateIds= nominationPostCandidateDAO.getCandidateByVoterId(list.get(0));
+					 if(commonMethodsUtilService.isListOrSetValid(condidateIds))
+					 resultStatus.setMessage("applied");
+				}
+				//finalVoterId = commonMethodsUtilService.isListOrSetValid(list)?list.get(0):null;
 			}
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return finalVoterId;
+		return resultStatus;
 	}
 	
 	public List<IdNameVO> getOpenedPositionsBoardLevels(){
