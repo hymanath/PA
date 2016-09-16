@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeetingService {
@@ -1668,7 +1669,8 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		 		 int updatedCount8= partyMeetingStatusDAO.updatePartyMeetingStatus8(); 
 		 		 int updatedCount9= partyMeetingStatusDAO.updatePartyMeetingStatus9();
 		 		 
-		 		 int insertedTime = partyMeetingStatusDAO.setInsertedDate();
+		 		 Date currentDateTime = new DateUtilService().getCurrentDateAndTime();
+		 		 int insertedTime = partyMeetingStatusDAO.setInsertedDate(currentDateTime);
 		 		 
 		 	     Log.debug(""+ deletedRecords +" - " +insertedRecordsCount +" - " +updatedCount1 + " - " +updatedCount2 +" - "
 		 				   + updatedCount3 + " - " + updatedCount4 + " - " +updatedCount5 + " - " +updatedCount6 + " - " +updatedCount7
