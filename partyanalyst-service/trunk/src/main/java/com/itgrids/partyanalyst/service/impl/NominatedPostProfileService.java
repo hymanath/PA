@@ -3122,6 +3122,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		try {
 			
 			List<Object[]> depOCorpList = new ArrayList<Object[]>(0);
+			
+			List<Long> apllicationIds = new ArrayList<Long>();
 			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName
 			if(type !=null && type.trim().equalsIgnoreCase("applied")){
 				depOCorpList = nominatedPostApplicationDAO.getBrdWisNominPstAppliedDepOrCorpDetails(candidateId);
@@ -3131,6 +3133,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 			if(depOCorpList != null && depOCorpList.size() > 0){
 				for (Object[] obj : depOCorpList) {
+					apllicationIds.add(commonMethodsUtilService.getLongValueForObject(obj[11]));
 					NominatedPostVO VO = new NominatedPostVO();	
 					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					VO.setLocationVal(commonMethodsUtilService.getLongValueForObject(obj[10]));
@@ -3158,20 +3161,57 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					VO.setStateId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					VO.setPerc(commonMethodsUtilService.getStringValueForObject(obj[1]));
 					VO.setHno(commonMethodsUtilService.getStringValueForObject(obj[3]));
-					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[4]));
-					VO.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[5]));
-					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
-					VO.setPincode(commonMethodsUtilService.getStringValueForObject(obj[7]));
-					VO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
-					VO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(obj[9]));
+					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[4]));//deptId
+					VO.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[5]));//deptName
+					VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));//boardId
+					VO.setPincode(commonMethodsUtilService.getStringValueForObject(obj[7]));//boardName
+					VO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));//positnId
+					VO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(obj[9]));//positnName
+					VO.setAddDistrictName(commonMethodsUtilService.getLongValueForObject(obj[11]));//applicationId
 					returnVoList.add(VO);
 				}
 								
 			}
+			
+			List<Object[]> postnLinkedData = nominatedPostFinalDAO.getApplicationDataByApplctnIds(apllicationIds);
+			if(postnLinkedData != null && postnLinkedData.size() > 0){
+				for (Object[] obj : postnLinkedData) {
+					NominatedPostVO VO = getMatchedVO(returnVoList,(Long)obj[0]);
+					
+					if(VO != null){
+					
+						VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[1]));//deptId
+						VO.setMobileNo(commonMethodsUtilService.getStringValueForObject(obj[2]));//deptName
+						VO.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[3]));//boardId
+						VO.setPincode(commonMethodsUtilService.getStringValueForObject(obj[4]));//boardName
+						VO.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[5]));//positnId
+						VO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(obj[6]));//positnName	
+						
+					}
+					
+					}
+				}
+			
 		} catch (Exception e) {
 			LOG.error("Exceptionr riased at getBrdWisNominPstAppliedDepOrCorpDetails", e);
 		}
 		return returnVoList;
+	}
+	
+	public NominatedPostVO getMatchedVO(List<NominatedPostVO> voList,Long id){
+		NominatedPostVO returnvo = new NominatedPostVO();
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(voList)){
+				for (NominatedPostVO nominatedPostVO : voList) {
+					if(nominatedPostVO.getAddDistrictName().longValue() == id.longValue()){
+						return nominatedPostVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMatchedVO() method of NominatedPostProfileService", e);
+		}
+		return returnvo;
 	}
 	
 	public List<IdNameVO> getAllDeptsAndBoardsByLevel(Long boardLevelId,List<Long> locationValues,String statusType,String task, Long searchlevelId, Long searchLevelValue){
