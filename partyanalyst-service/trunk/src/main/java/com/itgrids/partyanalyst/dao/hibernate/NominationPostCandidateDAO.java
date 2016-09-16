@@ -121,5 +121,13 @@ public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPo
       
         return query.list();
 	}
-	
+	public List<Long> getCandidateByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery(" select model.nominationPostCandidateId from NominationPostCandidate model " +
+				" where " +
+				" model.voter.voterId=:voterId and model.isDeleted='N' ");
+		query.setParameter("voterId", voterId);
+		return query.list();
+		
+	}
 }

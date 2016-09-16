@@ -54,7 +54,7 @@ public interface INominatedPostProfileService {
 	public List<NominatedPostDashboardVO> getCasteGroupWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId);
 	public List<NominatedPostDashboardVO> getCasteWiseCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId);
 	public List<NominatedPostDashboardVO> getCasteWisePositionsCountsByPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long casteId,Long stateId);
-	public Long validateVoterIdCardNo(String voterIdCardNo);
+	public ResultStatus validateVoterIdCardNo(String voterIdCardNo);
 	public List<IdNameVO> getOpenedPositionsBoardLevels();
 	public List<IdNameVO> getStatesForOpenedPositions(Long boardLevelId);
 	public List<IdNameVO> getOpenPositionDistrictsForState(Long stateId,Long boardLevelId);
