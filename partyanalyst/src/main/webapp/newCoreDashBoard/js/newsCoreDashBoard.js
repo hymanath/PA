@@ -1430,10 +1430,20 @@ function getChildUserTypesByItsParentUserType1(){
 								
 							},
 							tooltip: {
-										//headerFormat: '<b>{point.x}</b>',
-										pointFormat: '<span style="color:{series.color}">: <b>{point.percentage:.1f}% ({point.y})</b></span><br>',
-										shared: true
-									},
+								//headerFormat: '<b>{point.x}</b>',
+								//pointFormat: '<span style="color:{series.color}">: <b>'+{point.percentage:.1f}+'% '+({point.y})+'</b></span><br>',
+								formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :' +
+											(this.y)+'%';
+									});
+
+									return s;
+								},
+								shared: true
+							},
 							plotOptions: {
 								column: {
 									 
