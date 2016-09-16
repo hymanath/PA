@@ -59,6 +59,16 @@ public class UserTypeVO implements Serializable{
 	private Double notConductedMeetingPerc=0.0;
 	private Double mayBeMeetingPerc=0.0;
 	
+	//for event
+	private Long inviteeCnt=0l;
+	private Long attendedCnt=0l;
+	private Long inviteeAttendedCnt=0l;
+	private Long nonInviteeAttendedCnt=0l;
+	
+	private Double attendedCntPer=0.0d;
+	private Double inviteeAttendedCntPer=0.0d;
+	private Double nonInviteeAttendedCntPer=0.0d;
+	
 	public Long getId() {
 		return id;
 	}
@@ -306,5 +316,46 @@ public class UserTypeVO implements Serializable{
 	public void setMayBeMeetingPerc(Double mayBeMeetingPerc) {
 		this.mayBeMeetingPerc = mayBeMeetingPerc;
 	}
-	
+	public Long getInviteeCnt() {
+		return inviteeCnt;
+	}
+	public void setInviteeCnt(Long inviteeCnt) {
+		this.inviteeCnt = inviteeCnt;
+	}
+	public Long getAttendedCnt() {
+		return attendedCnt;
+	}
+	public void setAttendedCnt(Long attendedCnt) {
+		this.attendedCnt = attendedCnt;
+	}
+	public Long getInviteeAttendedCnt() {
+		return inviteeAttendedCnt;
+	}
+	public void setInviteeAttendedCnt(Long inviteeAttendedCnt) {
+		this.inviteeAttendedCnt = inviteeAttendedCnt;
+	}
+	public Long getNonInviteeAttendedCnt() {
+		return nonInviteeAttendedCnt;
+	}
+	public void setNonInviteeAttendedCnt(Long nonInviteeAttendedCnt) {
+		this.nonInviteeAttendedCnt = nonInviteeAttendedCnt;
+	}
+	public Double getAttendedCntPer() {
+		return attendedCntPer;
+	}
+	public void setAttendedCntPer(Double attendedCntPer) {
+		this.attendedCntPer = attendedCntPer;
+	}
+	public Double getInviteeAttendedCntPer() {
+		return inviteeAttendedCntPer;
+	}
+	public void setInviteeAttendedCntPer(Double inviteeAttendedCntPer) {
+		this.inviteeAttendedCntPer = inviteeAttendedCntPer;
+	}
+	public Double getNonInviteeAttendedCntPer() {
+		return nonInviteeAttendedCntPer;
+	}
+	public void setNonInviteeAttendedCntPer(Double nonInviteeAttendedCntPer) {
+		this.nonInviteeAttendedCntPer = nonInviteeAttendedCntPer;
+	}
 }
