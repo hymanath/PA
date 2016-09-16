@@ -889,7 +889,7 @@
 							news
 							<small class="text-muted" id="currentViewing"></small>
 						</h4>
-						<h6 id="lastUpdatedId"></h6>
+						
 						</div>
 						<div class="col-md-6 col-sm-4 col-xs-4">
 						<span class="settingsIcon settingsIconNews pull-right">
@@ -997,8 +997,11 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
+							<b><h6 id="lastUpdatedId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
-								<h4 class="text-capital"><span class="headingColor"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>
+								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span>
+									<div class="spinner" style="height:20px;width:20px;display:inline-block;margin:0px"><div class="dot1"></div><div class="dot2"></div></div>
+								</h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
 										<table class="table table-condensed tableNews bg_ED">
