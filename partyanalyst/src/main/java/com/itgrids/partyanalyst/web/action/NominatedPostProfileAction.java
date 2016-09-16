@@ -63,7 +63,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<CastePositionVO> castePositionVOList;
 	private INominatedPostMainDashboardService        nominatedPostMainDashboardService;
 	private NominatedPostDashboardVO nominatedPostDashboardVO;
-	private Long lId;
+	private ResultStatus lId;
 	private Long stId;
 	private String sts;
 	private Long deptId;
@@ -150,10 +150,10 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setSts(String sts) {
 		this.sts = sts;
 	}
-	public Long getlId() {
+	public ResultStatus getlId() {
 		return lId;
 	}
-	public void setlId(Long lId) { 
+	public void setlId(ResultStatus lId) {
 		this.lId = lId;
 	}
 	public Long getStId() {

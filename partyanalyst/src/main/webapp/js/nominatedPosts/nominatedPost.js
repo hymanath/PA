@@ -2822,9 +2822,19 @@ var isSameCheckBoxClicked=0;
 			    $("#addCandidateBtnId").prop('disabled','disabled');
 			    $(".addNewCandidateErrorCls").html(""); 
 		   }else{
-			   $("#voterExtraErrId").html("");
+			   if(result.message == "applied")
+			   {
+				   $("#voterExtraErrId").html("Already applied");  
+				
+			    $("#addCandidateBtnId").prop('disabled','disabled');
+			    $(".addNewCandidateErrorCls").html(""); 
+			   }else{
+				  $("#voterExtraErrId").html(""); 
+				  $("#addCandidateBtnId").removeAttr('disabled');
+			   }
+			   //$("#voterExtraErrId").html("");
 			   //$("#addCandidateBtnId").show();
-			   $("#addCandidateBtnId").removeAttr('disabled');
+			  // $("#addCandidateBtnId").removeAttr('disabled');
 		   }
 	   });
 	 }
