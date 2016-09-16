@@ -1298,8 +1298,20 @@
 													<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
 												</div>
 												<div class="panel-body">
+												<div id="problemsDetailedOverview1"></div>
 												<div id="problemsDetailedOverview"></div>
+												</div>
+												
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">Analysis on Problem</span></h4>
+												</div>
+												<div class="panel-body">
 												<div id="overAllAnalysisDetailsBlock"></div>
+												<div id="problemsDetailedOverviewSubLevel" style="display:none"></div>
 												</div>
 												
 											</div>

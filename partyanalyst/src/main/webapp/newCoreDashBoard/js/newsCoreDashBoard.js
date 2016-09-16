@@ -2154,6 +2154,13 @@ function getChildUserTypesByItsParentUserType1(){
 	});
 	
 	
+	$(document).on("click","#detailedGovernmentLiId",function(){
+		getDetailedGovtDepartmentWiseDistrictsOverview();
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7);
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0);
+		getDetailedGovernamentTrendingTrackedIssues();
+	});
+	
 	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId){
 		if(propertyId == 7){
 			$("#problemsDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -2181,7 +2188,7 @@ function getChildUserTypesByItsParentUserType1(){
 		//var propertyId=0;
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId
+			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+npIdsStr+"/"+propertyId
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId
 		}).then(function(result){
 			if(propertyId == 7){
@@ -2190,16 +2197,12 @@ function getChildUserTypesByItsParentUserType1(){
 				$("#problemsDetailedOverview22").html('');
 			}
 			buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
+			
 		});
 	}
 	
 	
-	$(document).on("click","#detailedGovernmentLiId",function(){
-		getDetailedGovtDepartmentWiseDistrictsOverview();
-		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7);
-		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0);
-		getDetailedGovernamentTrendingTrackedIssues();
-	});
+	
 	
 	function getDetailedGovtDepartmentWiseDistrictsOverview(){
 		$("#districtWiseNewsReportGovtDetailed").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -2401,13 +2404,152 @@ function getChildUserTypesByItsParentUserType1(){
 		});
 	}
 	
+	
+	function getProperName(levelName){
+		var properName = "";
+		if(levelName == "<10L"){
+			properName = "below 10 Lakhs ";
+		}else if(levelName == ">10L"){
+			properName = "Above 10 Lakhs";
+		}else{
+			properName = levelName;
+		}
+		return properName;
+	}
 	function buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId){
-		if(propertyId == 7){
-			if(result != null && result.length > 0){
+		var locationLevelNameArray =[];
+		
+			if(globalUserAccessLevelId == 2){
+				if(result != null && result.length > 0){
 				var str='';
 				str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-						str+='<h4>DEPARTMENTS WISE PROBLEMS</h4>';
+						str+='<h3>STATE WISE</h3>';
+						str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
+							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
+							for(var i in result){
+								str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+							}
+							str+='</ul>';
+						str+='</div>';
+						str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+						str+='<div id="problemsRelatedGraphState" style="width:300px;"></div>';
+						
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			
+			}
+		
+			$("#problemsDetailedOverview1").html(str);
+			
+			var dynamicHeight;
+				$(".dynamicHeightApply").each(function(){
+					dynamicHeight = $(this).find("li").length;
+					dynamicHeight = (dynamicHeight*35)+"px";
+						
+				});
+					
+			$("#problemsRelatedGraphState").css("height",dynamicHeight);
+			
+			if(result != null && result.length > 0){
+				
+				var mainArray = [];
+					for(var i in result){
+					var problemDeptPostivePercAndNameArray = [];
+						problemDeptPostivePercAndNameArray.push(result[i].name)
+						problemDeptPostivePercAndNameArray.push(result[i].positivePerc)
+						mainArray.push(problemDeptPostivePercAndNameArray)
+					}	
+					
+				$(function () {
+					$('#problemsRelatedGraphState').highcharts({
+						chart: {
+							type: 'bar'
+						},
+						title: {
+							text: ''
+						},
+						subtitle: {
+							text: ''
+						},
+						xAxis: {
+						 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+							categories: '',
+							labels: {
+							enabled: false,
+								
+							}
+					},
+					yAxis: {
+						min: 0,
+							   gridLineWidth: 0,
+								minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled: false,
+								
+							},
+						stackLabels: {
+							enabled: false,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							}
+						}
+					},
+						tooltip: {
+							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
+						},
+						plotOptions: {
+							bar: {
+								dataLabels: {
+									enabled: true,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.y,2) + '%';
+										}
+									}
+								}
+							}
+						},
+						legend: {
+							enabled: false,
+							layout: 'vertical',
+							align: 'right',
+							verticalAlign: 'top',
+							x: -40,
+							y: 80,
+							floating: true,
+							borderWidth: 1,
+							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+							shadow: true
+						},
+						
+						series: [{
+							 name: '',
+							 colorByPoint: true,
+							 data: mainArray
+						}]
+					});
+				});
+			
+			}
+			}
+			if(propertyId == 7){
+				if(result != null && result.length > 0){
+				var str='';
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+						str+='<h3>DISTRICT WISE</h3>';
+						str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
 							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
 							for(var i in result){
@@ -2425,20 +2567,24 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		
 			$("#problemsDetailedOverview").html(str);
+			
 			var dynamicHeight;
 				$(".dynamicHeightApply").each(function(){
 					dynamicHeight = $(this).find("li").length;
-					dynamicHeight = (dynamicHeight*38)+"px";
+					dynamicHeight = (dynamicHeight*35)+"px";
 						
 				});
 					
 			$("#problemsRelatedGraph").css("height",dynamicHeight);
 			 
 			if(result != null && result.length > 0){
-					var problemDeptPostivePercArray =[];
+				var mainArray = [];
 					for(var i in result){
-						problemDeptPostivePercArray.push(result[i].positivePerc)
-					}
+					var problemDeptPostivePercAndNameArray = [];
+						problemDeptPostivePercAndNameArray.push(result[i].name)
+						problemDeptPostivePercAndNameArray.push(result[i].positivePerc)
+						mainArray.push(problemDeptPostivePercAndNameArray)
+					}	
 				$(function () {
 					$('#problemsRelatedGraph').highcharts({
 						chart: {
@@ -2455,12 +2601,9 @@ function getChildUserTypesByItsParentUserType1(){
 							 gridLineWidth: 0,
 							 minorGridLineWidth: 0,
 							categories: '',
-						labels: {
-								rotation: -45,
-								style: {
-									fontSize: '13px',
-									fontFamily: 'Verdana, sans-serif'
-								}
+							labels: {
+							enabled: false,
+								
 							}
 					},
 					yAxis: {
@@ -2470,6 +2613,10 @@ function getChildUserTypesByItsParentUserType1(){
 						title: {
 							text: ''
 						},
+						labels: {
+							enabled: false,
+								
+							},
 						stackLabels: {
 							enabled: false,
 							style: {
@@ -2504,12 +2651,14 @@ function getChildUserTypesByItsParentUserType1(){
 						series: [{
 							name: '',
 							 colorByPoint: true,
-							data: problemDeptPostivePercArray
+							data: mainArray
 						}]
 					});
 				});
 			}
+			
 		}else if(propertyId == 0){
+			
 			if(result != null && result.length > 0){
 					var str='';
 					str+='<div class="row">';
@@ -2518,7 +2667,12 @@ function getChildUserTypesByItsParentUserType1(){
 								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 								str+='<ul style="list-style:none;" class="textAlignDepartment">';
 								for(var i in result){
-									str+='<li class="heightDyna">'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+									var properName = getProperName(result[i].name);
+									if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+										locationLevelNameArray.push(properName);
+										str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'">'+result[i].count+'</span></li>';
+									}
+									
 								}
 								
 								
@@ -2545,6 +2699,7 @@ function getChildUserTypesByItsParentUserType1(){
 				$(function () {
 						if(problemDeptPostivePercArray.length !=0){
 							$('#overAllAnalysisPieChart').highcharts({
+								colors: ['#E5D355','#8D4654','#F25C81','#8085E9'],
 								chart: {
 									type: 'pie',
 									options3d: {
@@ -2558,34 +2713,12 @@ function getChildUserTypesByItsParentUserType1(){
 								subtitle: {
 									text: null
 								},
-								tooltip: {
-									formatter: function () {
-										var s = '<b>' + this.x + '</b>';
-
-										$.each(this.points, function () {
-											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
-												(this.y);
-										});
-
-										return s;
-									},
-									shared: true
-								},
+								
 								plotOptions: {
 									pie: {
-										innerSize: 65,
+										innerSize: 90,
 										depth: 10,
-										dataLabels:{
-											enabled: false,
-											  formatter: function() {
-													if (this.y === 0) {
-														return null;
-													} else {
-														return Highcharts.numberFormat(this.percentage,1)+ '%';
-													}
-												} 
-										},
+										
 										showInLegend: false
 									},
 									
@@ -2594,7 +2727,18 @@ function getChildUserTypesByItsParentUserType1(){
 								series: [{
 									name: '',
 									 colorByPoint: true,
-									data: problemDeptPostivePercArray
+									data: problemDeptPostivePercArray,
+									dataLabels:{
+											enabled: true,
+											 distance: -20,
+											  formatter: function() {
+													if (this.y === 0) {
+														return null;
+													} else {
+														return Highcharts.numberFormat(this.y,1)+ '%';
+													}
+												} 
+										},
 								}]
 							});
 						}else{
@@ -2604,9 +2748,131 @@ function getChildUserTypesByItsParentUserType1(){
 						
 					});
 				}
+			}else if(propertyId !=7){
+				
+					if(result != null && result.length > 0){
+					var str='';
+					str+='<div class="row">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<h4 class="m_top20">PROBLEM CAN BE SOLVED</h4>';
+								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply2">';
+								for(var i in result){
+									str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+								}
+								str+='</ul>';
+							str+='</div>';
+							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+							str+='<div id="problemsRelatedGraphSubLevel" style="width:300px;"></div>';
+							
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				
+				}
+			
+				$("#problemsDetailedOverviewSubLevel").html(str);
+				
+				var dynamicHeight;
+					$(".dynamicHeightApply2").each(function(){
+						dynamicHeight = $(this).find("li").length;
+						dynamicHeight = (dynamicHeight*35)+"px";
+							
+					});
+						
+				$("#problemsRelatedGraphSubLevel").css("height",dynamicHeight);
+				 
+				if(result != null && result.length > 0){
+					var mainArray = [];
+						for(var i in result){
+						var problemDeptPostivePercAndNameArray = [];
+							problemDeptPostivePercAndNameArray.push(result[i].name)
+							problemDeptPostivePercAndNameArray.push(result[i].positivePerc)
+							mainArray.push(problemDeptPostivePercAndNameArray)
+						}	
+					$(function () {
+						$('#problemsRelatedGraphSubLevel').highcharts({
+							chart: {
+								type: 'bar'
+							},
+							title: {
+								text: ''
+							},
+							subtitle: {
+								text: ''
+							},
+							xAxis: {
+							 min: 0,
+								 gridLineWidth: 0,
+								 minorGridLineWidth: 0,
+								categories: '',
+								labels: {
+								enabled: false,
+									
+								}
+						},
+						yAxis: {
+							min: 0,
+								   gridLineWidth: 0,
+									minorGridLineWidth: 0,
+							title: {
+								text: ''
+							},
+							labels: {
+								enabled: false,
+									
+								},
+							stackLabels: {
+								enabled: false,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+								}
+							}
+						},
+							tooltip: {
+								valueSuffix: '%'
+							},
+							plotOptions: {
+								bar: {
+									dataLabels: {
+										enabled: true
+									}
+								}
+							},
+							legend: {
+								enabled: false,
+								layout: 'vertical',
+								align: 'right',
+								verticalAlign: 'top',
+								x: -40,
+								y: 80,
+								floating: true,
+								borderWidth: 1,
+								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+								shadow: true
+							},
+							
+							series: [{
+								name: '',
+								 colorByPoint: true,
+								data: mainArray
+							}]
+						});
+					});
+				}
+			
 			}
 		
 	}
+	$(document).on("click",".ovarAllAnalysisSubLevel",function(){
+		$("#problemsDetailedOverviewSubLevel").html('');
+		$("#problemsDetailedOverviewSubLevel").show();
+		var propertyId = $(this).attr("attr_propertyid");
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId);
+		
+	});
+	
 	function getGovtMinisteriesInfo(){
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
