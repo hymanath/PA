@@ -63,7 +63,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<CastePositionVO> castePositionVOList;
 	private INominatedPostMainDashboardService        nominatedPostMainDashboardService;
 	private NominatedPostDashboardVO nominatedPostDashboardVO;
-	private ResultStatus lId;
+	private Long lId;
 	private Long stId;
 	private String sts;
 	private Long deptId;
@@ -150,10 +150,11 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	public void setSts(String sts) {
 		this.sts = sts;
 	}
-	public ResultStatus getlId() {
+	
+	public Long getlId() {
 		return lId;
 	}
-	public void setlId(ResultStatus lId) {
+	public void setlId(Long lId) {
 		this.lId = lId;
 	}
 	public Long getStId() {
@@ -1358,7 +1359,7 @@ public String getPositionAndApplicationDetailsCntLocationWise(){
 public String validateVoterIdCardNo(){
 	try{
 		jObj = new JSONObject(getTask());
-		lId = nominatedPostProfileService.validateVoterIdCardNo(jObj.getString("voterIdCardNo"));
+		resultStatus = nominatedPostProfileService.validateVoterIdCardNo(jObj.getString("voterIdCardNo"));
 		
 	}catch (Exception e) {
 		LOG.error("Entered into validateVoterIdCardNo() method of NominatedPostProfileAction Action",e);
