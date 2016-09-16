@@ -94,7 +94,7 @@
 			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon").hide();
+			$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
 			$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".dateRangePickerCls").toggleClass("hide");
 			$(".moreBlocksIcon").removeClass("unExpandBlock");
