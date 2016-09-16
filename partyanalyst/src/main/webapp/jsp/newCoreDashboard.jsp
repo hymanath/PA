@@ -1818,6 +1818,7 @@
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script type="text/javascript">
 	/* //Angular Start
 
@@ -1916,6 +1917,9 @@
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
 		getSpecialMeetingsByMeetingType();
+		//events
+		//getEventBasicCntDtls();
+		//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();

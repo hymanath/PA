@@ -13680,5 +13680,16 @@
    			<param name="root">IdAndNameVOList</param> 
    		</result>
 	</action> 
+	<action name="getEventBasicCntDtlsAction" class="coreDashboardAction" method="getEventBasicCntDtls">
+		<result type="json" name="success"> 
+   			<param name="root">eventDetailsVOList</param> 
+   		</result>
+	</action> 
+	<action name="getUserTypeWiseTotalInviteeAndInviteeAttendedCntAction" class="coreDashboardAction" method="getUserTypeWiseTotalInviteeAndInviteeAttendedCnt">
+		<result type="json" name="success"> 
+   			<param name="root">userTypeVOList</param> 
+   		</result>
+	</action> 
+	
 </package>
 </struts>

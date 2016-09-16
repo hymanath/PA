@@ -1288,7 +1288,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> locations - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<p class="text-capital"><b>'+result[0].requiredName+'</b></p>';
+					str+='<p class="text-capital"><b>'+result[0].requiredName+'</b><span style="margin-left:270px">Conducted Percentage<span></p>';
 					str+='<table class="table tableCumulative">';
 			var countVar =0;
 			var BGColor = 1;
@@ -1315,7 +1315,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 								  str+='</div>';
 								str+='</div>';
 							str+='</td>';
-							str+='<td class="text-danger">'+result[i].conductedCount+'</td>';
+							str+='<td class="text-danger">'+result[i].conductedCount+'('+(result[i].conductedPerc+"%")+')</td>';
 							}else{
 								str+='<td class="text-danger"> - </td>';
 							}
