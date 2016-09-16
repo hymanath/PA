@@ -1,5 +1,13 @@
 package com.itgrids.partyanalyst.service;
 
-public interface ICoreDashboardEventsActivitiesService {
+import java.util.List;
 
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
+
+public interface ICoreDashboardEventsActivitiesService {
+	
+	
+	public List<EventDetailsVO> getEventBasicCountDetails(List<Long> eventIds,Long activityMemberId,Long stateId);
+	public List<List<UserTypeVO>> getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(List<Long> eventIds,Long activityMemberId,Long userId,Long userTypeId,Long stateId);
 }
