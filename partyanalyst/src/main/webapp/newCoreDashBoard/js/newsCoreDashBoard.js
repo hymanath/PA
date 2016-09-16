@@ -1187,6 +1187,11 @@ $(document).on("click","#comparisonPartyLiId",function(){
 	setcolorsForStatus();
 	getChildUserTypesByItsParentUserType1();
 });
+
+$(document).on("click","#comparisonGovernmentLiId",function(){
+	getComparisonGovtMinistriesInfo();
+});
+
 function getChildUserTypesByItsParentUserType1(){
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
@@ -2380,6 +2385,7 @@ function getChildUserTypesByItsParentUserType1(){
 	}
 	
 	function getDetailedGovernamentTrendingTrackedIssues(){
+		$("#topTrendingTracked").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -2400,7 +2406,7 @@ function getChildUserTypesByItsParentUserType1(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getDetailedGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr
 		}).then(function(result){
-		
+			buildDetailedGovernamentTrendingTrackedIssues(result);
 		});
 	}
 	
@@ -2448,9 +2454,7 @@ function getChildUserTypesByItsParentUserType1(){
 				$(".dynamicHeightApply").each(function(){
 					dynamicHeight = $(this).find("li").length;
 					dynamicHeight = (dynamicHeight*35)+"px";
-						
 				});
-					
 			$("#problemsRelatedGraphState").css("height",dynamicHeight);
 			
 			if(result != null && result.length > 0){
@@ -2670,7 +2674,7 @@ function getChildUserTypesByItsParentUserType1(){
 									var properName = getProperName(result[i].name);
 									if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 										locationLevelNameArray.push(properName);
-										str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'">'+result[i].count+'</span></li>';
+										str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Get Detailed View">'+result[i].count+'</span></li>';
 									}
 									
 								}
@@ -2679,8 +2683,7 @@ function getChildUserTypesByItsParentUserType1(){
 								str+='</ul>';
 							str+='</div>';
 							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-							str+='<div id="overAllAnalysisPieChart" style="width:300px;height:200px;"></div>';
-							
+								str+='<div id="overAllAnalysisPieChart" style="width:300px;height:200px;"></div>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -2688,7 +2691,7 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 			
 			$("#overAllAnalysisDetailsBlock").html(str);
-		
+			$('[data-toggle="tooltip"]').tooltip()
 				 
 			if(result != null && result.length > 0){
 				var problemDeptPostivePercArray =[];
@@ -2866,14 +2869,16 @@ function getChildUserTypesByItsParentUserType1(){
 		
 	}
 	$(document).on("click",".ovarAllAnalysisSubLevel",function(){
-		$("#problemsDetailedOverviewSubLevel").html('');
+		//$("#problemsDetailedOverviewSubLevel").html('');
 		$("#problemsDetailedOverviewSubLevel").show();
+		$("#problemsDetailedOverviewSubLevel").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var propertyId = $(this).attr("attr_propertyid");
 		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId);
 		
 	});
 	
-	function getGovtMinisteriesInfo(){
+	function getComparisonGovtMinistriesInfo(){
+		$("#comparisonGovtMinistriesInfo").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -2889,9 +2894,10 @@ function getChildUserTypesByItsParentUserType1(){
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getGovtMinisteriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getGovtMinisteriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+""
 		}).then(function(result){
+			buildComparisonGovtMinistriesInfo(result)
 		});
 	}
 	
@@ -2919,4 +2925,203 @@ function getChildUserTypesByItsParentUserType1(){
 		
 		});
 	}
+	
+	function buildDetailedGovernamentTrendingTrackedIssues(result)
+	{
+		$("#topTrendingTracked").html(' ');
+		if(result != null && result.length > 0){
+			var str='';
+			var countVar =0;
+			for(var i in result){
+				countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				var totalMainCnt = result[i].positiveCountMain + result[i].negativCountMain
+				var totalDistCnt = result[i].positiveCountDist + result[i].negativCountDist
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+						str+='<div class="row m_top10">';
+							str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+								str+='<table class="table table-condensed tableNews ">';
+									str+='<tbody>';
+									str+='<tr class="bg_ED">';
+										str+='<td>';
+											str+='<p class="text-capital">Main Edition</p>';
+											str+='<p>'+totalMainCnt+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Positive</p>';
+											str+='<p>'+result[i].positiveCountMain+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Negative</p>';
+											str+='<p id="oppNegativeTotal">'+result[i].negativCountMain+'</p>';
+										str+='</td>';
+									str+='</tr>';
+									str+='</tbody>';
+								str+='</table>';
+							str+='</div>';
+							str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+								str+='<table class="table table-condensed tableNews ">';
+									str+='<tbody>';
+									str+='<tr class="bg_ED">';
+										str+='<td>';
+											str+='<p class="text-capital">Main Edition</p>';
+											str+='<p>'+totalDistCnt+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Positive</p>';
+											str+='<p id="oppPositiveTotal">'+result[i].positiveCountDist+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Negative</p>';
+											str+='<p>'+result[i].negativCountDist+'</p>';
+										str+='</td>';
+									str+='</tr>';
+									str+='</tbody>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div id="topTrendingTrackedIssues'+i+'" style="height:200px" class="m_top20" ></div>';
+					str+='</div>';
+				str+='</div>';
+				
+				
+				
+			}
+			$("#topTrendingTracked").html(str);					
+		}else{
+			$("#topTrendingTracked").html('NO DATA AVAILABLE');
+		}
 		
+		var str = ' ';
+		if(result != null && result.length > 0){
+			var countVar =0;
+		for(var i in result){
+			countVar =countVar+1;
+			if (countVar === 5) {
+				break;
+			}
+			var districtNamesArray =[];
+			var districtWisePositiveCountArray = [];
+			var districtWiseNegativeCountArray = [];
+			
+			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
+				str+='';
+				
+				for(var j in result[i].coreDashBoardVOList){
+					
+						districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
+						districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountDist);
+						districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountDist);
+					}
+			}	
+				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
+					$(function () {
+						$('#topTrendingTrackedIssues'+i+'').highcharts({
+							 colors: ['#64C664','#D33E39'],
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: ''
+							},
+							xAxis: {
+								 min: 0,
+									 gridLineWidth: 0,
+									 minorGridLineWidth: 0,
+									categories: districtNamesArray,
+								labels: {
+										rotation: -45,
+										style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+										}
+									}
+							},
+							yAxis: {
+								min: 0,
+									   gridLineWidth: 0,
+										minorGridLineWidth: 0,
+								title: {
+									text: ''
+								},
+								stackLabels: {
+									enabled: false,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+									}
+								}
+							},
+							legend: {
+								enabled: true,
+								/* //align: 'right',
+								x: -40,
+								y: 30,
+								verticalAlign: 'top',
+								//y: -32,
+								floating: true, */
+								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+								borderColor: '#CCC',
+								borderWidth: 1,
+								shadow: false
+							},
+							tooltip: {
+								formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+											Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+											(this.y);
+									});
+
+									return s;
+								},
+								shared: true
+							},
+							
+							plotOptions: {
+								pointPadding: 0.2,
+								borderWidth: 2,
+								groupPadding: 0.2,
+								column: {
+									stacking: 'percent',
+									dataLabels: {
+										enabled: true,
+										 formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
+												return Highcharts.numberFormat(this.percentage,1) +'%';
+											}
+										}
+									  
+									}
+								}
+							},
+							series: [{
+								name: 'Positive',
+								data: districtWisePositiveCountArray
+							}, {
+								name: 'Negative',
+								data: districtWiseNegativeCountArray
+							}]
+						});
+					});
+				}else{
+					$('#topTrendingTrackedIssues'+i+'').html("No Data Available");
+					$('#topTrendingTrackedIssues'+i+'').css("height","10px");
+				}
+			}
+		}
+	}
+	
+	
+	function buildComparisonGovtMinistriesInfo(result)
+	{
+		
+	}
