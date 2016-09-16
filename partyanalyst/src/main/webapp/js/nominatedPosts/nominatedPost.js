@@ -854,7 +854,7 @@ function getNominatedPostApplication(startIndex)
 			}
 			searchName = $('#searchBy').val().trim();
 		  
-		        var numericExpression =  /^[a-z," "]+$/;
+		        var numericExpression =  /^[a-z,A-Z," "]+$/;
 					if(!$('#searchBy').val().match(numericExpression)){
 						$('#searchErrDiv').html('Enter characters Only.');
 						return;
@@ -2601,7 +2601,7 @@ function notCadresearch(){
 		{
 			var AlphaNumericExpression = /^[a-zA-Z0-9]+$/;	
 			var numericExpression = /^[0-9]+$/;
-			if(searchValue.length == 0 || searchValue == null || searchValue.length >10 || searchValue.trim().length != 10)
+			if(searchValue.length == 0 || searchValue == null)
 			{
 				$('#notCadreErrMsg').html('Please Enter Voter Card No.');
 				return;
@@ -2641,8 +2641,7 @@ function notCadresearch(){
 		}
 		else if(searchType == 4)
 		{
-		
-			var numericExpression =  /^[a-z," "]+$/;
+			var numericExpression =  /^[a-z,A-Z," "]+$/;
 					if(!$('#searchById').val().match(numericExpression)){
 						$('#notCadreErrMsg').html('Enter characters Only.');
 						return;
@@ -2906,15 +2905,17 @@ function refreshOnLoadFields(){
 	
 }
 $(document).on("click",".searchTypeCls",function(){
+	$("#searchBy").removeAttr('maxLength');
 	var value = $('input[name=searchBasedOn]:checked').val();
 	if(value == 3){
 		$("#searchBy").attr("maxLength","10");	
 	}	
 	if(value == 1){
-		$("#searchBy").attr("maxLength","8");
+		$("#searchBy").attr("maxLength","9");
 	}		
 });
 $(document).on("click",".searchTypeCls1",function(){
+	$("#searchById").removeAttr('maxLength');
 	var value = $('input[name=radioGroup]:checked').val();
 	if(value == 3)
 		$("#searchById").attr("maxLength","10");
