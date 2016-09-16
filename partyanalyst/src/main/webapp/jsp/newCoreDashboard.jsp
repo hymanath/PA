@@ -1313,6 +1313,17 @@
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 											<div class="panel panel-default panelNew">
 												<div class="panel-heading">
+													<h4 class="panel-title"><span class="headingColor">top trending tracked issues</span></h4>
+												</div>
+												<div class="panel-body">
+													<div id="topTrendingTracked"></div>
+												</div>
+												
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+											<div class="panel panel-default panelNew">
+												<div class="panel-heading">
 													<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
 												</div>
 												<div class="panel-body">
@@ -1383,7 +1394,22 @@
 									
 									
 									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-										4th block
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="panel panel-default panelNew">
+													<div class="panel-heading">
+														<h4 class="panel-title">HEading</h4>
+													</div>
+													<div class="panel-body">
+														<div class="row">
+															<div class="col-md-12 col-xs-12 col-sm-12">
+																<div id="comparisonGovtMinistriesInfo"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
