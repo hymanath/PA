@@ -34,6 +34,7 @@ public class PartyMeetingsVO implements Serializable{
 	
 	private Integer year;
 	private String month;
+	private String updatedTime;
 	
 
 	public Long getId() {
@@ -163,5 +164,10 @@ public class PartyMeetingsVO implements Serializable{
 	public void setTotalNotUpdatedCntPer(Double totalNotUpdatedCntPer) {
 		this.totalNotUpdatedCntPer = totalNotUpdatedCntPer;
 	}
-	
+	public String getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
 }

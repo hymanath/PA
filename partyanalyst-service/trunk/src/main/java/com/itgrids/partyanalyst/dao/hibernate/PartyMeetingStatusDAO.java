@@ -24,7 +24,7 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
    	  queryStr.append("select model.partyMeeting.partyMeetingLevel.partyMeetingLevelId," +
    	  		         " model.partyMeeting.partyMeetingLevel.level," +
    	  		         " model.mettingStatus," +
-   	  		         " count(distinct model.partyMeeting.partyMeetingId)  " +
+   	  		         " count(distinct model.partyMeeting.partyMeetingId),model.insertedTime  " +
    	  		         " from PartyMeetingStatus model " +
    	  		         " where " +
    	  		         " model.partyMeeting.isActive='Y' ");

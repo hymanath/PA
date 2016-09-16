@@ -112,6 +112,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 Map<String,PartyMeetingsVO> villageWardMap = new HashMap<String, PartyMeetingsVO>(0);
 	 Long userAccessLevelId=0l;
      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
 	 Date fromDate=null;
 	 Date toDate=null;
 	 try{
@@ -154,6 +155,9 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 					 PartyMeetingsVO VO = overAllTotalDtlsMap.get("overAllTotalDtls");
 					  if(VO == null){
 						  VO = new PartyMeetingsVO();
+						  if(param[4] != null){
+							  VO.setUpdatedTime(sdf1.format(param[4]));  
+						  }
 						  overAllTotalDtlsMap.put("overAllTotalDtls",VO);
 					  }
 					  String status = param[2] != null ? param[2].toString() :"";
