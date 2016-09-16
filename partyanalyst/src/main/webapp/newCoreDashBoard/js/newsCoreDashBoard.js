@@ -1196,7 +1196,7 @@ function getChildUserTypesByItsParentUserType1(){
 		var jsObj = { parentUserTypeId : globalUserTypeId }
 		$.ajax({
 			type : 'POST',
-			url : 'getChildUserTypesByItsParentUserTypeAction.action',
+			url : 'getAllItsSubUserTypeIdsByParentUserTypeIdAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){	
@@ -1211,7 +1211,7 @@ function getChildUserTypesByItsParentUserType1(){
 			str+='<div class="col-xs-12 col-sm-12 col-md-12">';
 				str+='<ul class="detailedPartySubUl">';
 				for(var i in result){
-					str+='<li attr_usertypeid="'+result[i].userTypeId+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+					str+='<li attr_usertypeid="'+result[i].shortName+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 				}
 				str+='</ul>';
 			str+='</div>';
@@ -1225,9 +1225,16 @@ function getChildUserTypesByItsParentUserType1(){
 	
 	function getPartyComparisonChildUserTypeMembers(childUserTypeId){
 		$("#partyWiseComparisionBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
+		var childUserTypeIdArr = [];
+		var temp = childUserTypeId.split(",");
+		for(var i in temp){
+			childUserTypeIdArr.push(temp[i]);
+		}
+		
 		var jsObj={
 				parentActivityMemberId : globalActivityMemberId ,
-				childUserTypeId : childUserTypeId,
+				childUserTypeIdArr : childUserTypeIdArr,
 				state:globalState,
 				startDate:currentFromDate,
 				endDate:currentToDate,
@@ -2923,6 +2930,29 @@ function getChildUserTypesByItsParentUserType1(){
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+candidateId+"/"+departmentIdsStr
 		}).then(function(result){
 		
+		});
+	}
+	function getAllDepartmentEditionsWiseDetails(){
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		var depatIdsArray=[];
+		depatIdsArray.push(1713);
+		depatIdsArray.push(1699);
+		var state = globalState;
+		var startDate='01-01-2016',endDate='31-09-2016';
+		$.ajax({
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+depatIdsArray+""
+		}).then(function(result){
 		});
 	}
 	
