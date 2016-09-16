@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
@@ -83,6 +84,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<IdNameVO> idNameVoList;
 	private List<IdAndNameVO> IdAndNameVOList;
 	private List<ChildUserTypeVO> childUserTypeVOList;
+	private List<EventDetailsVO>  eventDetailsVOList;
 	
 	//setters And Getters
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
@@ -345,6 +347,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
    public void setCoreDashboardEventsActivitiesService(
 			ICoreDashboardEventsActivitiesService coreDashboardEventsActivitiesService) {
 		this.coreDashboardEventsActivitiesService = coreDashboardEventsActivitiesService;
+	}
+   	public List<EventDetailsVO> getEventDetailsVOList() {
+	return eventDetailsVOList;
+   }
+
+	public void setEventDetailsVOList(List<EventDetailsVO> eventDetailsVOList) {
+		this.eventDetailsVOList = eventDetailsVOList;
 	}
 
 	//business methods
@@ -1628,6 +1637,63 @@ public String getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMee
 		
 }catch(Exception e){
 	LOG.error("Exception raised at getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
+public String getEventBasicCntDtls(){
+try{
+		
+		jObj = new JSONObject(getTask());
+		
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		
+		List<Long> eventIds = new ArrayList<Long>();
+		JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}
+		
+		Long stateId = jObj.getLong("stateId");
+		
+		eventDetailsVOList = coreDashboardEventsActivitiesService.getEventBasicCountDetails(eventIds,activityMemberId,stateId);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getEventBasicCntDtls() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
+public String getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(){
+try{
+		
+		jObj = new JSONObject(getTask());
+		
+		final HttpSession session = request.getSession();
+		
+		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null || user.getRegistrationID() == null){
+			return ERROR;
+		}
+		
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		
+		List<Long> eventIds = new ArrayList<Long>();
+		JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}
+		
+		Long stateId = jObj.getLong("stateId");
+		Long userTypeId = jObj.getLong("userTypeId");
+		Long userId = user.getRegistrationID();
+		
+		userTypeVOList = coreDashboardEventsActivitiesService.getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIds,activityMemberId,userId,userTypeId,stateId);
+		
+}catch(Exception e){
+	LOG.error("Exception raised at getUserTypeWiseTotalInviteeAndInviteeAttendedCnt() method of CoreDashBoard", e);
 }
 return Action.SUCCESS;
 }

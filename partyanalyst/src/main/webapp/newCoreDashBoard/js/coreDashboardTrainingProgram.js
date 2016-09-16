@@ -1312,17 +1312,17 @@ function buildTrainingProgramRslt(result){
 		str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
 	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 	  if(userTypeId!= null && userTypeId==3 || userTypeId==2){
-		str+='<p class="text-capital">districts</p>';  
+		str+='<p class="text-capital">districts<span style="margin-left:200px">Attended Percentage</span></p>';  
 		resultListFirst = result.districtList;
 		resultListSecond = result.constituencyList;
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
-		 str+='<p class="text-capital">Constituencies</p>';  
+		 str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
 		resultListFirst = result.constituencyList;
 		resultListSecond = result.mandalList;  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Mandal/Town/Division</p>';  
+		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
 		resultListFirst = result.mandalList;
 		resultListSecond = result.villageList;  
 	  }
@@ -1356,13 +1356,13 @@ function buildTrainingProgramRslt(result){
 	  
 	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 	   if(userTypeId!= null && userTypeId==3 || userTypeId==2){
-		str+='<p class="text-capital">Constituencies</p>';  
+		str+='<p class="text-capital">Constituencies<span style="margin-left:140px">Attended Percentage</span></p>';  
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
-		 str+='<p class="text-capital">Mandal/Town/Division</p>';  
+		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Village/Ward</p>';  
+		 str+='<p class="text-capital">Village/Ward<span style="margin-left:130px">Attended Percentage</span></p>';  
 	  }
 	  str+='<table class="table tableCumulative">';
       if(resultListSecond != null && resultListSecond.length > 0){
@@ -2034,7 +2034,7 @@ function buildstateLevelCampDetailsRepresentativeWise(result){
 					trainingProgramCountArray.push(parseFloat(present));
 					var abs = 100-present;  
 					trainingProgramCountArray.push(parseFloat(abs.toFixed(2)));            
-					console.log(trainingProgramCountArray);
+					//console.log(trainingProgramCountArray);
 					var getWidth = $("#genCampId"+k).parent().width()+'px';
 					$("#genCampId"+k).width(getWidth);
 					$(function () {
