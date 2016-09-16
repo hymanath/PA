@@ -1658,4 +1658,10 @@
 		
 	});
 	
+	$(".basicCommittessDiv").click(function(event){
+		   // getCheckedBasicCommitteeIds();
+			defaultCommitteeCalls();
+			$(".basicCommitteesBlockDropDown").hide();
+	 });
+	
 	// clicked on '... dots' and 'detailed block' or 'click on slick' END
