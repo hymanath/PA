@@ -41,5 +41,16 @@ public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDe
 		int result = query.executeUpdate();
 		return result;
 	}
+	
+	public Object[] getLatestDebate(){
+		Query query = getSession().createQuery(" SELECT model.debateId,model.startTime FROM Debate model " +
+				" WHERE" +
+				" 	model.isDeleted = 'N' " +
+				" ORDER BY model.debateId desc ");
+		
+		query.setMaxResults(1);
+		return (Object[]) query.uniqueResult();
+		
+	}
 
 }
