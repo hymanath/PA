@@ -1658,10 +1658,66 @@
 		
 	});
 	
-	$(".basicCommittessDiv").click(function(event){
-		   // getCheckedBasicCommitteeIds();
-			defaultCommitteeCalls();
-			$(".basicCommitteesBlockDropDown").hide();
-	 });
-	
 	// clicked on '... dots' and 'detailed block' or 'click on slick' END
+	
+	//filtering in tdp committees start.
+	$(".basicCommittessDiv").click(function(event){
+		
+		var allSelectedCommitteeIdsArray = [];
+		//district level
+		$(".districtCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				allSelectedCommitteeIdsArray.push( $(this).val() );
+			}
+		}); 
+		//mandal/town/division level.
+		$(".mandalCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				allSelectedCommitteeIdsArray.push( $(this).val() );
+			}
+		}); 
+		//village/ward level.
+		$(".villageCommitteecheckBoxClass").each(function(){
+			if($(this).is(':checked')){
+				allSelectedCommitteeIdsArray.push( $(this).val() );
+			}
+		}); 
+		
+		if(allSelectedCommitteeIdsArray!=null && allSelectedCommitteeIdsArray.length>0){
+			 $(".basicCommitteesBlockDropDown").hide();	
+			 defaultCommitteeCalls();
+		}else{
+			//show error msg
+			alert("Please select at least one committee.");
+		}
+    });
+	
+	
+	function defaultCommitteeCalls(){
+		
+		committeeBasicCall();
+		
+		if($(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".liCls1").each(function(){
+				var topvalue = $(this).attr("attr_value");
+				if(topvalue == "poor"){
+					$(".removeactive").removeClass("active");
+				}else{
+					$(".addactive").addClass("active");
+				}
+			});
+			getUserTypeWiseCommitteesCompletedCounts1();
+		}
+		
+		if($(".moreBlocksIcon").hasClass("unExpandBlock")){
+			if($(".detailedBlock").hasClass("active")){
+				getLevelWiseBasicCommitteesCountReport();
+			}
+			if($(".comparisionBlock").hasClass("active")){
+				getAllItsSubUserTypeIdsByParentUserTypeId();
+			}
+		}
+	}
+	function committeeBasicCall(){
+		getCommitteesBasicCountReport();
+	}
