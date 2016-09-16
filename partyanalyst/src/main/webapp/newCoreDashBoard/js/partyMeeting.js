@@ -150,6 +150,7 @@ $(document).on("click",".selectAll",function(){
 		var str='';
 		  str+'<div class="row">';
 		  if(overAllResult != null){
+			  setLastUpdatedTime(overAllResult.updatedTime);
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 		      str+='<table class="table tableTraining">';
 			  str+='<tbody><tr>';
@@ -714,12 +715,18 @@ function getMeetingLevelDetails(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+		 if(result != null){
 		   $("#meetingLevelHIghChartsDivId").html(' ');
 			buildLevelWiseHighCharts(result);
+		 }else{
+		  $("#meetingLevelHIghChartsDivId").html("No Data Available"); 
+		 }
 		});	
 }
 function buildLevelWiseHighCharts(result){
 	var levelWiseResult = result.partyMettingsVOList;
+	var resultVO = result.overAllVO;
+	   setLastUpdatedTime(resultVO.updatedTime);
 		if(levelWiseResult != null && levelWiseResult.length > 0){
 			var str='';
 			var locationLevelNameArray =[];
@@ -873,7 +880,7 @@ function buildLevelWiseHighCharts(result){
 						    
 		}
 	}else{
-		$("#meetingLevelHIghChartsDivId").html("No Data Available")
+		$("#meetingLevelHIghChartsDivId").html("No Data Available");
 	}
 }
  $(document).on("click",".childUserTypeClsForMeeting",function(){
@@ -2302,4 +2309,7 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 			}); 
 	  }
   }      
+}
+function setLastUpdatedTime(lastUpdatedTime){
+ $("#lastUpdatedIdTimeId").html("<b>Last Updated Time - ("+lastUpdatedTime+")</b>");
 }

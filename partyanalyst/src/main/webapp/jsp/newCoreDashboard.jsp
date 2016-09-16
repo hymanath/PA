@@ -1430,6 +1430,7 @@
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings <small class="text-muted"><span id="dateMeetingHeadingId"> - last month</span></small>
 								</h4>
+								<span style="font-size:12px;" id="lastUpdatedIdTimeId"></span>
 							</div>
 							<div class="col-md-6 col-sm-6 col-xs-5">
 							 <span class="settingsIcon pull-right">
