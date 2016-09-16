@@ -30,55 +30,7 @@
 		})
 	}
 	
-	$(document).on("click",".iconExpand",function(){
-		$(".dateRangePickerCls").toggleClass("hide");
-		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".basicCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".userTypeCommitteesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".committeesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(".basicCommitteesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(".userTypeCommitteesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		$(".showDatePicker").toggle();
-		if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".moreBlocks").hide();
-			$(".moreBlocks1").hide();
-			$(".moreBlocksDetailAndComp").hide();
-			
-		}else{
-			getUserTypeWiseCommitteesCompletedCounts1();
-		}
-		if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
-			$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
-			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".debatesMoreHiddenBlock,.debatesHiddenBlock").hide();
-			$(".dateRangePickerClsForDebates").toggleClass("hide");
-			$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
-			$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
-			$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForMeetings").toggleClass("hide");
-			$(".moreMeetingsBlocks1").hide();
-			$(".moreMeetingsBlocksDetailed").hide();
-			$(".moreMeetingsBlocksComparision").hide();
-		}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
-			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForNews").toggleClass("hide");
-		}
-		setTimeout(function(){
-			$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
-			//initialiseGraph();
-		},500);
-	});
+	
 	/* Notes Functionality Complete*/
 	$(document).on("click",".notesIcon",function(){
 		$(this).closest(".panel-heading").find(".notesDropDown").toggle();
@@ -104,20 +56,6 @@
 	});
 	$(document).on("click",".deleteNotes",function(){
 		$(this).closest("li").remove();
-	});
-	
-	
-	//committees.
-	$(document).on("click",".comparisionBlock",function(){
-		$("#SelectedUserTypeDetailsDiv").html(''); 
-		$("#directChildActivityMemberDiv").html('');
-		$("#topPoorPerformanceDiv").html('');
-		$("#topPoorLocationsDiv").html(''); 
-		
-		$(".moreBlocks").hide();
-		$(".moreBlocks1").show();
-		getAllItsSubUserTypeIdsByParentUserTypeId();
-		
 	});
 	
 	$(document).on("click",".activeUlCls li",function(){
@@ -164,15 +102,7 @@
 		});
 	}
 	
-	$(document).on("click",".comparisonSelect li",function(){
-		if($(this).hasClass("active") == true)
-		{
-			$(this).removeClass("active");
-		}else{
-			$(".comparisonSelect li").removeClass("active");
-			$(this).addClass("active");
-		}
-	});
+	
 	
 	$(".stateCls").click(function(event){
 	  $(".stateCls").parent().removeClass("active");
@@ -185,15 +115,6 @@
 	  getPartyWiseTotalDebateDetails();
 	  stateLevelCampDetails(); 
     });
-	
-	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
-		//do something, like clearing an input
-		defaultCommitteeCalls();
-	});
-
-	$(document).on("click",".basicCommitteesBlockDiv",function(){
-		$(this).closest(".committeesBlock").find(".basicCommitteesBlockDropDown").toggle();
-	});
 	
 	function getCheckedBasicCommitteeIds(){
 		/* globalBasicCommitteeIdsArray =[];
