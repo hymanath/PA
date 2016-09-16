@@ -699,7 +699,7 @@
 			 touchMove:false
 		}); 
 		
-		//calling function for performance cohort.
+		 //calling function for performance cohort.
 		var tdpCommitteeLevelIdsClickedArray = [];
 		if(firstLevelForCohort.toLowerCase().indexOf("mandal") >= 0){
 			tdpCommitteeLevelIdsClickedArray.push(5);
@@ -713,7 +713,7 @@
 		}else if(firstLevelForCohort.toLowerCase().indexOf("state") >= 0){
 			tdpCommitteeLevelIdsClickedArray.push(10);
 		}
-		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray);
+		getcommitteesPerformanceCohort(tdpCommitteeLevelIdsClickedArray); 
 		
 	}
 	
@@ -1615,11 +1615,21 @@
 		$(".moreBlocks1").hide();
 		$(".committeeSeetingBlock").show();
 		customBuildGraph();
-
-		getLevelWiseBasicCommitteesCountReport();
+		if($(this).hasClass("unExpandBlock")){
+			getLevelWiseBasicCommitteesCountReport();
+		}
+		
 		
 	});
-	
+	$(document).on("click",".unExpandBlock",function(){
+		$(this).removeClass("unExpandBlock");
+		$(".moreBlocks").hide();
+		$(".moreBlocks1").hide();
+		$(".moreBlocksDetailAndComp").hide();
+		$(".committeeSeetingBlock").hide();
+		$(".comparisionBlock").removeClass("active");
+		$(".detailedBlock").addClass("active");
+	});
 	$(document).on("click",".detailedBlock",function(){
 		$(".moreBlocks1").hide();
 		$(".moreBlocks").show();
