@@ -1351,10 +1351,17 @@
 										
 										<div class="col-md-12 col-xs-12 col-sm-12 childCls" >
 											<div class="panel panel-default panelNew">
-												<div class="panel-heading">
+												<!--<div class="panel-heading">
 													<div class="row">
 														<div id="userTypeStrId"></div>
 													 </div>
+												</div>-->
+												<div class="panel-heading">
+													<div class="row">
+														<div class="col-xs-12 col-sm-8 col-md-12">
+														   <div id="userTypeStrId"></div>
+														</div>   
+													</div>
 												</div>
 												<div class="panel-body">
 													 <div class="row">
@@ -1961,6 +1968,7 @@
 		getNewsBasicCounts();
 		getAllNewsPapers();
 		//getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems();
+		 //getAllDepartmentEditionsWiseDetails();
 		
 		//Debates
 		getPartyWiseTotalDebateDetails();
