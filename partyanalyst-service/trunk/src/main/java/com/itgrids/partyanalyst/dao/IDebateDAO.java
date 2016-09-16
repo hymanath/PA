@@ -13,4 +13,6 @@ public interface IDebateDAO extends GenericDao<Debate, Long>{
 	public int removeDebate(Long debateId);
 	
 	public int deleteFlagDebate(Long debateId);
+	
+	public Object[] getLatestDebate();
 }

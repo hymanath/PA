@@ -19,6 +19,8 @@ public class CoreDebateVO implements Serializable {
 	private String charecterName;
 	private Double overAllPerc=0.00;
 	
+	private String recentTime;
+	
 	private List<CoreDebateVO> coreDebateVOList ;
 	
 	public Long getId() {
@@ -98,6 +100,12 @@ public class CoreDebateVO implements Serializable {
 	}
 	public void setOverAllPerc(Double overAllPerc) {
 		this.overAllPerc = overAllPerc;
+	}
+	public String getRecentTime() {
+		return recentTime;
+	}
+	public void setRecentTime(String recentTime) {
+		this.recentTime = recentTime;
 	}
 	
 	

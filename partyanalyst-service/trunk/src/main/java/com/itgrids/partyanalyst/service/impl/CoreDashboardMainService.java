@@ -17,11 +17,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
 import com.itgrids.partyanalyst.dao.ICharacteristicsDAO;
+import com.itgrids.partyanalyst.dao.IDebateDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 import com.itgrids.partyanalyst.dao.IDebateRolesDAO;
@@ -47,7 +49,6 @@ import com.itgrids.partyanalyst.model.Characteristics;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
-import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
@@ -78,6 +79,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
 	 private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	 private SetterAndGetterUtilService setterAndGetterUtilService;
+	 private IDebateDAO debateDAO;
 	 
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
@@ -168,6 +170,10 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	public void setSetterAndGetterUtilService(
 			SetterAndGetterUtilService setterAndGetterUtilService) {
 		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
+	
+	public void setDebateDAO(IDebateDAO debateDAO) {
+		this.debateDAO = debateDAO;
 	}
 	/**
 	  * @param  Long userAccessLevelId
@@ -2494,6 +2500,11 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 			}
 		}
 		
+		if(returnList !=null && returnList.size()>0){
+			CoreDebateVO VO= returnList.get(0);
+			VO.setRecentTime(getLatestDebate());
+		}
+		
 		//System.out.println(returnList);
 					
 	}catch (Exception e) {
@@ -3761,6 +3772,21 @@ public List<IdNameVO> getLeaderShipCandidateDtlsPerDist(Long userAccessLevelId, 
 	}
 	return null;
 	
+}
+
+public String getLatestDebate(){
+	String time="";
+	try {
+		Object[] isRescntTime = debateDAO.getLatestDebate();
+		if(isRescntTime != null){
+		
+			time = (Long)isRescntTime[0]+"/"+((isRescntTime[1].toString().split(" ")[0])+" "+
+			(isRescntTime[1].toString().split(":")[0] +":"+ (isRescntTime[1].toString().split(":")[1])));
+		}
+	} catch (Exception e) {
+		Log.error("Exception raised at getRescentArticleTime", e);
+	}
+	return time;		
 }
 
 }  
