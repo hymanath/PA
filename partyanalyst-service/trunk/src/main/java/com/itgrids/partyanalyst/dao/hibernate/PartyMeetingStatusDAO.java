@@ -613,8 +613,9 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	"	     ivr_status IS NULL ");
    	return query.executeUpdate();
    }
-   public int setInsertedDate(){
-	   Query query = getSession().createSQLQuery(" UPDATE party_meeting_status SET inserted_time = NOW() WHERE inserted_time IS NULL ");
+   public int setInsertedDate(Date currentDateTime){
+	   Query query = getSession().createSQLQuery(" UPDATE party_meeting_status SET inserted_time =:currentDateTime WHERE inserted_time IS NULL ");
+	   query.setParameter("currentDateTime", currentDateTime);
 	   return query.executeUpdate();
    }
    
