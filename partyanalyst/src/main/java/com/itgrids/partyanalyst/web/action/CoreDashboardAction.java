@@ -1515,7 +1515,7 @@ public String getCandidateDtlsPerDist(){
 				}
 			}
 			
-			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),jObj.getLong("childUserTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList,list);
+			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),list,jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers", e);
 		}
