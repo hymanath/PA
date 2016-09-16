@@ -245,11 +245,12 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		return null;
 	}
 	
-	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,Long childUserTypeId,String state,String startDate,String endDate,List<Long> npIds){
+	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIdArray,String state,String startDate,String endDate,List<Long> npIds){
 		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);//Teja
 		try {
 			
-			ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+			//ActivityMemberVO activityMemberVO = coreDashboardGenericService.getSelectedChildUserTypeMembers(parentActivityMemberId,childUserTypeId);
+			  ActivityMemberVO activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIdArray);
 		    Map<Long,UserTypeVO> childActivityMembersMap = activityMemberVO.getActivityMembersMap();
 		    Map<Long,Set<Long>> locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
 		    activityMemberVO.setState(state);
