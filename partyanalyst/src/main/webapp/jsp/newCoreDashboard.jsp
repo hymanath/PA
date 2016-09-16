@@ -86,6 +86,24 @@
         </div>
     </div>
 </header>
+<!-- Error Msg For Committee  Start--->
+	<div class="modal fade alerttop" id="committeeErrMsg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="z-index:9999">
+		<div class="modal-dialog modal-sm">
+			 <div class="modal-content modal-sm alertstyle">
+				 <div class="modal-body ">
+				  <h5 class="text-center">Please Select Atleast One Committee</h5>
+				  </div>
+				 <div class="modal-footer pad-0 bt">
+						<div class="row">
+							<div class="mtop-5">
+								 <button type="button" class="btn btn-primary btn-xs mleft_190 pull-left" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+	<!-- Error Msg For Committee End --->
 <div class="container m_top20">
 	<div class="row">
     	<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
@@ -317,7 +335,7 @@
                             </div>
                         </div>
                        
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none">
                         	<div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
