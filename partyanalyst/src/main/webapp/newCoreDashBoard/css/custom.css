@@ -1760,3 +1760,26 @@ margin-top: 5px; margin-bottom: 2px;
 .mtop-5{margin-top:-5px;}
 .alertstyle h5{font-weight:bold;}
 .bt{border-top:0px;}
+.ministersUl
+{
+	padding-left:10px;
+	position:relative;
+}
+.ministersUl li:before
+{
+	background-color: #ffffff;
+    border: 2px solid #555555;
+    border-radius: 50%;
+    content: " ";
+    display: block;
+    height: 10px;
+    left: -3px;
+    position: absolute;
+    width: 10px;
+	margin-top:6px;
+}
+.ministersUl li
+{
+	list-style:none;
+	line-height:23px
+}

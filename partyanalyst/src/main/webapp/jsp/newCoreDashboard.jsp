@@ -1414,21 +1414,12 @@
 									
 									
 									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="panel panel-default panelNew">
-													<div class="panel-heading">
-														<h4 class="panel-title">HEading</h4>
-													</div>
-													<div class="panel-body">
-														<div class="row">
-															<div class="col-md-12 col-xs-12 col-sm-12">
-																<div id="comparisonGovtMinistriesInfo"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<div id="comparisonGovtMinistriesInfo"></div>
+												
+										</div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+											<div id="ministerSubLevelDetailsDiv"></div>
 										</div>
 									</div>
 								</div>
