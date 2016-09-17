@@ -137,7 +137,7 @@
 					</div>
 					
 					<!-- committees tabs for tdpcommittee ids -->	
-					<div class="basicCommitteesBlockDropDown" style="z-index:999;margin-top: -3px;" >
+					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
 						<div class="row">
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
 							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
@@ -273,7 +273,7 @@
 						
 						
 					</div>
-					<div class="notesDropDown notesArrow">
+					<div class="notesDropDown notesArrow documentCloseClass">
                     	<h4 class="text-capital">notes
                         	<span class="pull-right">
                             	<i class="glyphicon glyphicon-list-alt"></i>
@@ -370,10 +370,10 @@
                                             <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
                                                 <div id="directChildActivityMemberDiv" class="table-responsive"></div>
                                                 <div class="row m_top20">
-                                                    <div class="col-md-8 col-xs-12 col-sm-12 col-md-offset-0" style="border-right:1px solid #ddd;">
+                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
 														<div id="topPoorPerformanceDiv"></div>
                                                     </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-12 col-md-offset-0">
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2">
                                                         <div id="topPoorLocationsDiv"></div>
                                                     </div>
                                                 </div>
@@ -399,9 +399,9 @@
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
-							<span class="settingsIcon pull-right">
+							<!--<span class="settingsIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
+							</span>-->
 							<span class="notesIconTraining pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
 							</span>
@@ -419,7 +419,7 @@
 					
 						
 					
-					<div class="notesDropDown notesArrow" >
+					<div class="notesDropDown notesArrow documentCloseClass" >
 						<h4 class="text-capital">notes
 							<span class="pull-right">
 								<i class="glyphicon glyphicon-list-alt"></i>
@@ -1327,7 +1327,19 @@
 													<h4 class="panel-title"><span class="headingColor">Problems Detailed Overview</span></h4>
 												</div>
 												<div class="panel-body">
+												<div class="row">
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														<h4>STATE WISE</h4>
+														<div id="stateWiseArticleRelatedToProblem"></div>
+													</div>
+												</div>
 												<div id="problemsDetailedOverview1"></div>
+												<div class="row">
+													<div class="col-md-12 col-xs-12 col-sm-12">
+														<h4>DISTRICT WISE</h4>
+														<div id="districtWiseArticleRelatedToProblem"></div>
+													</div>
+												</div>
 												<div id="problemsDetailedOverview"></div>
 												</div>
 												
@@ -1969,8 +1981,8 @@
 		getAllNewsPapers();
 		//getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems();
 		 //getAllDepartmentEditionsWiseDetails();
-		
-		//Debates
+
+		 //Debates
 		getPartyWiseTotalDebateDetails();
 	}
 	

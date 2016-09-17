@@ -1058,7 +1058,7 @@
 					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 				}
 					
-					str+='<div id="genSec'+i+'" style="width:100%;height:100px;"></div>';
+					str+='<div id="genSec'+i+'" style="height:100px;"></div>';
 				str+='</div>'
 					
 			}
@@ -1089,8 +1089,6 @@
 				
 					
 				if( result[i][j].completedPerc !=0){
-					var getWidth = $("#genSec"+i).parent().width()+'px';
-					$("#genSec"+i).width(getWidth);
 					$(function () {
 						 $("#genSec"+i).highcharts({
 							 colors: ['#0066DC'],
@@ -1460,7 +1458,7 @@
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 			
-			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2">';
 			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
 			str+='<table class="table tableCumulative">';
 			var rankingvar =0;
@@ -1500,7 +1498,7 @@
 		if(result != null && result.subList != null && result.subList.length >0){
 			var locationLevelNameArray =[];
 			for(var i in result.subList){
-				str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
+				str+='<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 m_top10">';
 				var properName = getProperLocationLevelName(result.subList[i].name);
 					if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 						locationLevelNameArray.push(properName);
@@ -1751,8 +1749,15 @@
 			$(this).addClass("active");
 		}
 	});
-	$(document).on("click",".basicCommitteesBlockDiv",function(){
+	$(document).on("click",".basicCommitteesBlockDiv",function(e){
 		$(this).closest(".committeesBlock").find(".basicCommitteesBlockDropDown").toggle();
+		e.stopPropagation();
+	});
+	$(document).on("click",function(){
+		$(".documentCloseClass").hide();
+	});
+	$(document).on("click",".documentCloseClass",function(){
+		e.preventDefault();
 	});
 	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
 			//do something, like clearing an input
