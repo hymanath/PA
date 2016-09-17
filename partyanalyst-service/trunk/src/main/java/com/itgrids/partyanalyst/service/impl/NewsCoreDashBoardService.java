@@ -557,6 +557,14 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 					}
 					//For EditionWise Percentages
 					if(chUsrTypVO.getChildUserTypeVOList1() != null && chUsrTypVO.getChildUserTypeVOList1().size() > 0){
+						
+						Long totalMain=0l;
+						Long totalDist=0l;
+						Long totalPositiveMain=0l;
+						Long totalNegativeMain=0l;
+						Long totalPositiveDist=0l;
+						Long totalNegativeDist=0l;
+						
 						for (ChildUserTypeVO childUsrVO : chUsrTypVO.getChildUserTypeVOList1()) {
 							Long mainTotalCount=0l,distTotalCount=0l;
 							mainTotalCount = childUsrVO.getPositiveCountMain()+childUsrVO.getNegativeCountMain();
@@ -569,7 +577,37 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 								childUsrVO.setPositiveCountDistPerc(caclPercantage(childUsrVO.getPositiveCountDist(), distTotalCount));
 								childUsrVO.setNegativeCountDistPerc(caclPercantage(childUsrVO.getNegativeCountDist(), distTotalCount));
 							}
+							
+							totalMain = totalMain+mainTotalCount;
+							totalDist = totalDist+distTotalCount;
+							totalPositiveMain = totalPositiveMain + childUsrVO.getPositiveCountMain();
+							totalNegativeMain = totalNegativeMain + childUsrVO.getNegativeCountMain();							
+							totalPositiveDist = totalPositiveDist + childUsrVO.getPositiveCountDist();
+							totalNegativeDist = totalNegativeDist + childUsrVO.getNegativeCountDist();
 						}
+						
+						chUsrTypVO.setNeutralCountMain(totalMain);
+						chUsrTypVO.setNeutralCountDist(totalDist);
+						chUsrTypVO.setPositiveCountMain(totalPositiveMain);
+						chUsrTypVO.setNegativeCountMain(totalNegativeMain);
+						chUsrTypVO.setPositiveCountDist(totalPositiveDist);
+						chUsrTypVO.setNegativeCountDist(totalNegativeDist);
+						
+						if(chUsrTypVO.getPositiveCountMain() !=null && chUsrTypVO.getPositiveCountMain().longValue()>0l){
+							chUsrTypVO.setPositiveCountMainPerc(caclPercantage(chUsrTypVO.getPositiveCountMain(),chUsrTypVO.getNeutralCountMain()));
+						}							
+						if(chUsrTypVO.getNegativeCountMain() !=null &&  chUsrTypVO.getNegativeCountMain().longValue()>0l){
+							chUsrTypVO.setNegativeCountMainperc(caclPercantage(chUsrTypVO.getNegativeCountMain(),chUsrTypVO.getNeutralCountMain()));
+						}
+						
+						if(chUsrTypVO.getPositiveCountDist() !=null && chUsrTypVO.getPositiveCountDist().longValue()>0l){
+							chUsrTypVO.setPositiveCountDistPerc(caclPercantage(chUsrTypVO.getPositiveCountDist(),chUsrTypVO.getNeutralCountDist()));
+						}
+						
+						if(chUsrTypVO.getNegativeCountDist() !=null && chUsrTypVO.getNegativeCountDist().longValue()>0l){
+							chUsrTypVO.setNegativeCountDistPerc(caclPercantage(chUsrTypVO.getNegativeCountDist(),chUsrTypVO.getNeutralCountDist()));
+						}
+						
 					}
 				}
 				
