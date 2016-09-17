@@ -110,9 +110,11 @@
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-8">
-							<h4 class="panel-title text-capital">
+						<div class="col-md-1 col-sm-1 col-xs-2">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+						</div>
+						<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+							<h4 class="panel-title text-capital">
 								committees - <small class="text-muted">up to date</small>
 							</h4>
 						</div>
@@ -392,9 +394,11 @@
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
+						<div class="col-md-1 col-sm-1 col-xs-2">
+							<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+						</div>
+						<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
 							<h4 class="panel-title">
-								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
 								training<small class="text-muted"> - up to date</small>
 							</h4>
 						</div>
@@ -613,14 +617,17 @@
                 <div class="panel panel-default panelNewCustom panel2">
                     <div class="panel-heading">
 						<div class="row">
-							<div class="col-md-6 col-sm-8 col-xs-7">
+							<div class="col-md-1 col-sm-1 col-xs-2">
+								<img class="iconClass" src="newCoreDashBoard/img/debates.png">
+							</div>
+							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
 								<h4 class="panel-title text-capital">
-									<img class="iconClass" src="newCoreDashBoard/img/debates.png">
 									debates
 									<small class="text-muted"> - last month</small>
 								</h4>
-						    </div>
-							<div class="col-md-6 col-sm-4 col-xs-5">
+								<h6 id="lastUpdatedDebateId" class="updatedDate"></h6>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-5">
 								<span class="settingsIcon pull-right">
 								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								 </span>
@@ -652,10 +659,10 @@
                         <button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
 						</div> 	
                     
-                </div>
+					</div>
                     <div class="panel-body">
                         <div class="row">
-                        <b><h6 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
+                        
                             <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
                                 <div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
@@ -901,21 +908,23 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-						<div class="col-md-6 col-sm-8 col-xs-8">
-						<h4 class="panel-title text-capital">
-							<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-							news
-							<small class="text-muted" id="currentViewing"></small>
-						</h4>
-						
-						</div>
-						<div class="col-md-6 col-sm-4 col-xs-4">
-						<span class="settingsIcon settingsIconNews pull-right">
-						<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-						   </span>
-						 <span class="notesIconNews pull-right">
-						<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
-							</span>
+							<div class="col-md-1 col-sm-1 col-xs-2">
+								<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+							</div>
+							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+								<h4 class="panel-title text-capital">
+									news
+									<small class="text-muted" id="currentViewing"></small>
+								</h4>
+								<h6 id="lastUpdatedId" class="updatedDate"></h6>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-6">
+								<span class="settingsIcon settingsIconNews pull-right">
+									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								</span>
+								<span class="notesIconNews pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
+								</span>
 								<span class="newsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
@@ -925,7 +934,6 @@
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
 								</span>
-								
 							</div>
 						</div>
 						
@@ -1015,7 +1023,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<b><h6 id="lastUpdatedId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
+							
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span>
 									<!--<div class="spinner" style="height:20px;width:20px;display:inline-block;margin:0px"><div class="dot1"></div><div class="dot2"></div></div>-->
@@ -1335,9 +1343,9 @@
 														<div id="stateWiseArticleRelatedToProblem"></div>
 													</div>
 												</div>
-												<!--<div id="problemsDetailedOverview1"></div>-->
+												<div id="problemsDetailedOverview1"></div>
 												<div class="row">
-													<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+													<div class="col-md-12 col-xs-12 col-sm-12">
 														<h4>DISTRICT WISE</h4>
 														<div id="districtWiseArticleRelatedToProblem"></div>
 													</div>
@@ -1437,13 +1445,16 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-6 col-sm-6 col-xs-7">
+							<div class="col-md-1 col-sm-1 col-xs-2">
+								<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
+							</div>
+							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
 								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings <small class="text-muted"><span id="dateMeetingHeadingId"> - last month</span></small>
 								</h4>
+								<h6 id="lastUpdatedIdTimeId" class="updatedDate"></h6>
 							</div>
-							<div class="col-md-6 col-sm-6 col-xs-5">
+							<div class="col-md-4 col-sm-4 col-xs-5">
 							 <span class="settingsIcon pull-right">
 							<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							   </span>
@@ -1480,7 +1491,7 @@
 						<b><h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
-									<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span></h4>
+									<h4><span class="headingColor text-capital">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
@@ -1566,81 +1577,21 @@
 											<div class="col-md-8 col-xs-12 col-sm-6">
 												<span class="headingColor text-capitalize">meetings performance cohort</span>
 											</div>
-											<!--<div class="col-md-4 col-xs-12 col-sm-6">
-												<ul class="activeUlCls list-inline pull-right">
-													<li class="active">All</li>
-													<li>May be!</li>
-													<li>Yes</li>
-													<li>No</li>
-												</ul>
-											</div>-->
 										</div>
 									</div>
 									<div class="panel-body">
-									 <div id="userAccessLevelLocationDivId"></div>
-									 
-									 <div id="districtWisePartyMeetingTypeDivId"></div>
-										<!--<div>
-											<h4>General Body Meetings</h4>
-										</div>
-										<hr/>
-										<div class="m_top20">
-											<h4>Coordinate Meetings</h4>
-										</div>-->
-										
+										<div id="userAccessLevelLocationDivId"></div>
+										<div id="districtWisePartyMeetingTypeDivId"></div>
 									</div>
 								</div>
 							</div>
 							 <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksComparision" style="display:none;">
-								<!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
-										<div class="col-xs-12 col-sm-12 col-md-12">
-										  <div id="childUserTypeDetailsDivIdForMeeting"></div>
-										</div>
-										   <!--<div class="col-xs-12 col-sm-12 col-md-4">
-												<ul class="list-inline">
-													<li>
-														<div class="dropdown">
-														  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-															This Week <span class="text-muted">Sunday - Today</span>
-															<span class="caret"></span>
-														  </button>
-														  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
-															<li><a href="#">LifeTime</a></li>
-															<li role="separator" class="divider"></li>
-															<li><a href="#">This Week <span class="text-muted">Sunday - Today</span></a></li>
-															<li><a href="#">Last Week <span class="text-muted lastWeekDate"></span></a></li>
-															<li><a href="#">Last 7 Days <span class="text-muted last7Days"></span></a></li>
-															<li><a href="#">First 7 Days <span class="text-muted first7Days"></span></a></li>
-															<li role="separator" class="divider"></li>
-															<li><a href="#">This Month <span class="text-muted thisMonth"></span></a></li>
-															<li><a href="#">Last Month <span class="text-muted lastMonth"></span></a></li>
-															<li><a href="#">Last 28 Days <span class="text-muted last28Days"></span></a></li>
-															<li><a href="#">Last 30 Days <span class="text-muted last30Days"></span></a></li>
-															<li><a href="#">First 28 Days<span class="text-muted first28Days"></span></a></li>
-															<li role="separator" class="divider"></li>
-															<li><a href="#">This Quarter <span class="text-muted thisQuarter"></span></a></li>
-															<li><a href="#">Last Quarter <span class="text-muted lastQuarter"></span></a></li>
-															<li><a href="#">Last 90 Days <span class="text-muted Last90Days"></span></a></li>
-
-															<li><a href="#">First 90 Days <span class="text-muted first90Days"></span></a></li>
-															<li role="separator" class="divider"></li>
-															<li><a href="#">This Year<span class="text-muted thisYear"></span></a></li>
-															<li><a href="#">Last Year <span class="text-muted lastYear"></span></a></li>
-															<li><a href="#">Last 365 Days <span class="text-muted last365Days"></span></a></li>
-															<li><a href="#">First 365 Days <span class="text-muted first365Days"></span></a></li>
-															<li role="separator" class="divider"></li>
-															<li><a href="#">Custom Range <span class="customRange"></span></a></li>
-														  </ul>
-														</div>
-													</li>
-													<li>
-														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
-													</li>
-												</ul>
-											</div>-->
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="childUserTypeDetailsDivIdForMeeting"></div>
+											</div>
 										</div>
 									</div>
 									<div class="panel-body">
@@ -1648,160 +1599,6 @@
 											<div class="col-md-12 col-xs-12 col-sm-12">
 												 <div id="childActivityMemberDivIdForMeeting"> </div>
 											</div>
-											<!--<div class="col-md-12 col-xs-12 col-sm-12">
-												<ul class="list-inline slickPanelSliderMeetings">
-													<li>
-														<div class="panel panel-default panelSlick">
-															<div class="panel-heading">
-																<h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-																<span class="count">01</span>
-															</div>
-															<div class="panel-body">
-																<h4 class="text-capital">General Secretary</h4>
-																<table class="table table-condensed">
-																	<thead>
-																		<th>Total</th>
-																		<th>Started</th>
-																		<th>Completed</th>
-																		<th>%</th>
-																	</thead>
-																	<tr>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100%</td>
-																	</tr>
-																</table>
-															</div>
-														</div>
-													</li>
-													<li>
-														<div class="panel panel-default panelSlick">
-															<div class="panel-heading">
-																<h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-																<span class="count">01</span>
-															</div>
-															<div class="panel-body">
-																<h4 class="text-capital">General Secretary</h4>
-																<table class="table table-condensed">
-																	<thead>
-																		<th>Total</th>
-																		<th>Started</th>
-																		<th>Completed</th>
-																		<th>%</th>
-																	</thead>
-																	<tr>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100%</td>
-																	</tr>
-																</table>
-															</div>
-														</div>
-													</li>
-													<li>
-														<div class="panel panel-default panelSlick">
-															<div class="panel-heading">
-																<h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-																<span class="count">01</span>
-															</div>
-															<div class="panel-body">
-																<h4 class="text-capital">General Secretary</h4>
-																<table class="table table-condensed">
-																	<thead>
-																		<th>Total</th>
-																		<th>Started</th>
-																		<th>Completed</th>
-																		<th>%</th>
-																	</thead>
-																	<tr>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100%</td>
-																	</tr>
-																</table>
-															</div>
-														</div>
-													</li>
-													<li>
-														<div class="panel panel-default panelSlick">
-															<div class="panel-heading">
-																<h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-																<span class="count">01</span>
-															</div>
-															<div class="panel-body">
-																<h4 class="text-capital">General Secretary</h4>
-																<table class="table table-condensed">
-																	<thead>
-																		<th>Total</th>
-																		<th>Started</th>
-																		<th>Completed</th>
-																		<th>%</th>
-																	</thead>
-																	<tr>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100%</td>
-																	</tr>
-																</table>
-															</div>
-														</div>
-													</li>
-													<li>
-														<div class="panel panel-default panelSlick">
-															<div class="panel-heading">
-																<h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-																<span class="count">01</span>
-															</div>
-															<div class="panel-body">
-																<h4 class="text-capital">General Secretary</h4>
-																<table class="table table-condensed">
-																	<thead>
-																		<th>Total</th>
-																		<th>Started</th>
-																		<th>Completed</th>
-																		<th>%</th>
-																	</thead>
-																	<tr>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100%</td>
-																	</tr>
-																</table>
-															</div>
-														</div>
-													</li>
-													<li>
-														<div class="panel panel-default panelSlick">
-															<div class="panel-heading">
-																<h4 class="panel-title">B Jaya Nageshwara Reddy</h4>
-																<span class="count">01</span>
-															</div>
-															<div class="panel-body">
-																<h4 class="text-capital">General Secretary</h4>
-																<table class="table table-condensed">
-																	<thead>
-																		<th>Total</th>
-																		<th>Started</th>
-																		<th>Completed</th>
-																		<th>%</th>
-																	</thead>
-																	<tr>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100</td>
-																		<td>100%</td>
-																	</tr>
-																</table>
-															</div>
-														</div>
-													</li>
-												</ul>
-											</div>-->
 											<div class="col-md-12 col-xs-12 col-sm-12">
 												<div class="bg_ED pad_15 m_top20">
 												   <div id="directChildActivityMeetingMemberDiv"></div>
@@ -1824,6 +1621,53 @@
 					</div>
 				</div>
 			</div>	
+			
+			<!-- Events Block Start-->
+			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-1 col-sm-1 col-xs-2">
+								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
+							</div>
+							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+								<h4 class="panel-title text-capital">
+									events and activities <small class="text-muted"><span id="dateEventsHeadingId"> - last month</span></small>
+								</h4>
+								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-5">
+								<span class="notesIconEvents pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
+								</span>
+								<span class="eventsIconExpand pull-right">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
+								<h4><span class="headingColor text-capital">events</span></h4>
+								<div id="mainEventsList"></div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
+								<h4><span class="headingColor text-capital">events & Activities</span></h4>
+								<div id="UserTypeWiseCommittee" class="m_top20"></div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>	
+			<!-- Events Block End-->
         </div>
      <!--End -->
 	</div>
@@ -1966,7 +1810,7 @@
 		getStateLevelMeetingsByMeetingType();
 		getSpecialMeetingsByMeetingType();
 		//events
-		//getEventBasicCntDtls();
+		getEventBasicCntDtls();
 		//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
 		//getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
 		//news please dont remove

@@ -646,11 +646,16 @@ $(document).on("click",".debatesIconExpand",function(){
 		$(".moreMeetingsBlocksComparision").hide();
 		
 	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
-			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForNews").toggleClass("hide");
-		}
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".eventsHiddenBlock").hide();
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForEvents").toggleClass("hide");
+	}
 });
 $(document).on("click",".moreDebatesBlocksIcon",function(){
 	$(this).addClass("unExpandDebatesBlock")
@@ -906,7 +911,7 @@ function getLatestDebate(){
 	 data: {}
 	}).done(function(result){
 		if(result != null){
-				$("#lastUpdatedDebateId").html("Last updated : "+ result.split("/")[1]);
+				$("#lastUpdatedDebateId").html("Last Updated Time : "+ result.split("/")[1]);
 			}
 	});	
 }
