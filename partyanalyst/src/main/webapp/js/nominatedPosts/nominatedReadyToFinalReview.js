@@ -739,7 +739,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					}
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
-					str+='<div class="updateDropDown">';
+					str+='<div class="updateDropDown" style="width:250px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
@@ -772,7 +772,6 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 	str+='</div>';
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
-	$(".updateDropDown").width($("#resultDivId").width());
 	$(".updateDropDown").css("right","0px");
 	if(result.subList.length > 10)
 	{
@@ -1724,7 +1723,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 					} */
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
-					str+='<div class="updateDropDown">';
+					str+='<div class="updateDropDown" style="width:250px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
@@ -1758,7 +1757,6 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	str+='</div>';
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
-	$(".updateDropDown").width($("#resultDivId").width());
 	$(".updateDropDown").css("right","0px");
 	if(result.subList.length > 10)
 	{
