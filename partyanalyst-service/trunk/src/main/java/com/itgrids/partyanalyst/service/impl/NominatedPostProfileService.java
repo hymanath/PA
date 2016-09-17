@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.mapping.Array;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -1908,11 +1909,16 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
 			List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(levelId,null,null,statusList,stateId);
 			Map<Long,Map<String,Long>> movedPostsStatusDetailsMap = new HashMap<Long, Map<String,Long>>(0);
+			Map<String,List<Long>> statusWiseDeptMap = new HashMap<String, List<Long>>(0);
+			Map<String,List<Long>> statusWisecorporationsMap = new HashMap<String, List<Long>>(0);
+			
 			if(commonMethodsUtilService.isListOrSetValid(levelWiseAvailablePostsList)){
 				for (Object[] param : levelWiseAvailablePostsList) {
 					String statusStr = commonMethodsUtilService.getStringValueForObject(param[1]);
 					Long memberId = commonMethodsUtilService.getLongValueForObject(param[7]);
 					Long count = commonMethodsUtilService.getLongValueForObject(param[3]);
+					Long deptId = commonMethodsUtilService.getLongValueForObject(param[8]);
+					Long boardId = commonMethodsUtilService.getLongValueForObject(param[9]);
 					
 						Map<String,Long> posionwiseMovedMap = new HashMap<String, Long>(0);
 						 if(statusStr.trim().equalsIgnoreCase("2")){// nominatedPostStatusid
@@ -1934,8 +1940,26 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								Long deptCount=commonMethodsUtilService.getLongValueForObject(param[4]);
 								Long corpCount=commonMethodsUtilService.getLongValueForObject(param[6]);
 								
-								vo.setTotalDept(vo.getTotalDept()+deptCount);
-								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								List<Long> deptList =statusWiseDeptMap.get("2");
+								List<Long> corpList = statusWisecorporationsMap.get("2");
+								
+								if(deptList == null)
+									deptList = new ArrayList<Long>(0);
+								if(corpList == null)
+									corpList = new ArrayList<Long>(0);
+								
+								if(!deptList.contains(deptId)){
+									vo.setTotalDept(vo.getTotalDept()+deptCount);
+									deptList.add(deptId);
+								}
+								if(!corpList.contains(boardId)){
+									vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+									corpList.add(boardId);
+								}
+								
+								statusWiseDeptMap.put("2",deptList) ;
+								statusWisecorporationsMap.put("2",corpList);
+								
 								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(6L) != null?applciationCountMap.get(6L):0L); // ApplicationStatusId for ready to final review
 								
 								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
@@ -1970,8 +1994,26 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								Long deptCount=commonMethodsUtilService.getLongValueForObject(param[4]);
 								Long corpCount=commonMethodsUtilService.getLongValueForObject(param[6]);
 								
-								vo.setTotalDept(vo.getTotalDept()+deptCount);
-								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								List<Long> deptList =statusWiseDeptMap.get("3");
+								List<Long> corpList = statusWisecorporationsMap.get("3");
+								
+								if(deptList == null)
+									deptList = new ArrayList<Long>(0);
+								if(corpList == null)
+									corpList = new ArrayList<Long>(0);
+								
+								if(!deptList.contains(deptId)){
+									vo.setTotalDept(vo.getTotalDept()+deptCount);
+									deptList.add(deptId);
+								}
+								if(!corpList.contains(boardId)){
+									vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+									corpList.add(boardId);
+								}
+								
+								statusWiseDeptMap.put("3",deptList) ;
+								statusWisecorporationsMap.put("3",corpList);
+								
 								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(5L) != null?applciationCountMap.get(5L):0L); // ApplicationStatusId for Confirmed/finalyszed
 								
 								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
@@ -2005,8 +2047,25 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								Long deptCount=commonMethodsUtilService.getLongValueForObject(param[4]);
 								Long corpCount=commonMethodsUtilService.getLongValueForObject(param[6]);
 								
-								vo.setTotalDept(vo.getTotalDept()+deptCount);
-								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								List<Long> deptList =statusWiseDeptMap.get("4");
+								List<Long> corpList = statusWisecorporationsMap.get("4");
+								
+								if(deptList == null)
+									deptList = new ArrayList<Long>(0);
+								if(corpList == null)
+									corpList = new ArrayList<Long>(0);
+								
+								if(!deptList.contains(deptId)){
+									vo.setTotalDept(vo.getTotalDept()+deptCount);
+									deptList.add(deptId);
+								}
+								if(!corpList.contains(boardId)){
+									vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+									corpList.add(boardId);
+								}
+								
+								statusWiseDeptMap.put("4",deptList) ;
+								statusWisecorporationsMap.put("4",corpList);
 								vo.setTotalApplicationReceivedCnt(applciationCountMap.get(7L)); // ApplicationStatusId for GO Issue
 								
 								if(totalPositionsCount != null && totalPositionsCount.longValue()>0L){
@@ -3176,7 +3235,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> postnLinkedData = nominatedPostFinalDAO.getApplicationDataByApplctnIds(apllicationIds);
 			if(postnLinkedData != null && postnLinkedData.size() > 0){
 				for (Object[] obj : postnLinkedData) {
-					NominatedPostVO VO = getMatchedVO(returnVoList,(Long)obj[0]);
+					NominatedPostVO VO = getMatchedVOForMember(returnVoList,(Long)obj[0]);
 					
 					if(VO != null){
 					
@@ -3198,7 +3257,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		return returnVoList;
 	}
 	
-	public NominatedPostVO getMatchedVO(List<NominatedPostVO> voList,Long id){
+	public NominatedPostVO getMatchedVOForMember(List<NominatedPostVO> voList,Long id){
 		NominatedPostVO returnvo = new NominatedPostVO();
 		try {
 			if(commonMethodsUtilService.isListOrSetValid(voList)){
