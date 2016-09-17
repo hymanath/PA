@@ -1216,7 +1216,7 @@ function getChildUserTypesByItsParentUserType1(){
 				str+='</ul>';
 			str+='</div>';
 			
-			getPartyComparisonChildUserTypeMembers(result[0].userTypeId);
+			getPartyComparisonChildUserTypeMembers(result[0].shortName);
 		}
 		$("#userTypeStrId").html(str);
 		$(".detailedPartySubUl li:first-child").addClass("active");
