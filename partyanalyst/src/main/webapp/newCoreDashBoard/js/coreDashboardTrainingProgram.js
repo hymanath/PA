@@ -689,13 +689,18 @@ $(document).on("click",".liCls",function(){
 /* Training Funcitons Start*/
 $(document).on("click",".stateLevelTrainingInd",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".stateLevelTraining").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	$(".trainingIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".trainingsHiddenBlock,.trainingDetailedBlock").hide();
 		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}else{
-		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		if($(".trainingIconExpand").hasClass("glyphicon-fullscreen"))
+		{
+			$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
 		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon").show();
 		var programId = [];
 		programId.push($(this).attr("attr_program_id"));
@@ -714,15 +719,68 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 	}
 	
 });
-$(document).on("click",".trainingIconExpand,.programSkillsCls",function(){
+$(document).on("click",".programSkillsCls",function(){
+	$(".dateRangePickerClsForTraining").toggleClass("hide");	
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".programSkillsCls,.trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+	$(".stateLevelTraining,.stateLevelTrainingInd").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	if($(".trainingIconExpand").find("i").hasClass("glyphicon-fullscreen"))
+	{
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}
+	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".moreTrainingBlocks").hide();
+	}else{
+		getUserTypeWiseTotalEligibleAndAttendedCnt();
+	}
+	if( !$(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".moreBlocks").hide();
+		$(".moreBlocks1").hide();
+		$(".moreBlocksDetailAndComp").hide();
+		$(".moreBlocksDistrictlevel").hide();
+	}
+	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForNews").toggleClass("hide");
+		}
 	
+	 setTimeout(function(){
+		$(".trainingsHiddenBlock,.moreTrainingBlocksIcon").toggle();
+	},800); 
+});
+$(document).on("click",".trainingIconExpand",function(){
 	$(".dateRangePickerClsForTraining").toggleClass("hide");	
 	//$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	$(".programSkillsCls,.trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	
-	$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-	$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
-    if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+	$(".programSkillsCls,.trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+	$(".stateLevelTraining,.stateLevelTrainingInd").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	if(!$(".trainingIconExpand").find("i").hasClass("glyphicon-fullscreen"))
+	{
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}
+	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".moreTrainingBlocks").hide();
 	}else{
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
@@ -764,8 +822,9 @@ $(document).on("click",".trainingIconExpand,.programSkillsCls",function(){
 	},800); 
 });
 $(document).on("click",".stateLevelTraining",function(){
+	$(".trainingIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+	$(".stateLevelTrainingInd").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 	$(this).find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
-	$(".trainingIconExpand").find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
 	
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".trainingsHiddenBlock,.moreTrainingCampBlocksIcon,.trainingDetailedBlock ").hide();
@@ -1483,8 +1542,9 @@ function savingDashboardCommentForTraing(dashboardComponentId){
 		}			
 	});
 }
-$(document).on("click",".notesIconTraining",function(){
+$(document).on("click",".notesIconTraining",function(e){
 	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+	e.stopPropagation();
 });
 $(document).on("click",".btnCustomCreate",function(){
 	var getNewNotes = $(".notesArea").val();

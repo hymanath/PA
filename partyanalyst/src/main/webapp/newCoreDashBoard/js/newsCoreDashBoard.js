@@ -2171,6 +2171,7 @@ function getChildUserTypesByItsParentUserType1(){
 		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7);
 		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0);
 		getDetailedGovernamentTrendingTrackedIssues();
+		DistrictWiseArticleRelatedToProblem();
 	});
 	
 	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId){
@@ -2437,7 +2438,6 @@ function getChildUserTypesByItsParentUserType1(){
 				var str='';
 				str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-						str+='<h3>STATE WISE</h3>';
 						str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
 							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
@@ -3180,3 +3180,147 @@ function getChildUserTypesByItsParentUserType1(){
 			
 		});
 	}
+	function DistrictWiseArticleRelatedToProblem()
+	{
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		var state = globalState;
+		var startDate=currentFromDate,endDate=currentToDate;
+		if(globalUserAccessLevelId==2){
+			$("#districtWiseArticleRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$.ajax({
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other"      
+			}).then(function(result){
+				buildDistrictWiseArticleRelatedToProblem(result)
+			});
+			
+			$("#stateWiseArticleRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$.ajax({
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state"      
+			}).then(function(result){
+				buildStateWiseArticleRelatedToProblem(result);
+			});
+			
+		}else{     
+			$("#districtWiseArticleRelatedToProblem").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$.ajax({
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other"    
+			}).then(function(result){
+				buildDistrictWiseArticleRelatedToProblem(result);
+			});
+			
+		}
+		
+		
+	}
+	function buildStateWiseArticleRelatedToProblem(result)
+	{
+		var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-2 col-xs-6 col-sm-3 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
+			str+='<div class="col-md-2 col-xs-6 col-sm-3 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
+		str+='</div>';
+		$("#stateWiseArticleRelatedToProblem").html(str)
+	}
+	function buildDistrictWiseArticleRelatedToProblem(result)
+	{
+		var str='';
+		var distWiseArticlesRelated = [];
+		str+='<div id="districtWiseArticle" style="height:150px;"></div>';
+		for(var i in result){
+			var obj1 = {
+				name: result[i].name,
+				y: result[i].posPercent
+			};
+			distWiseArticlesRelated.push(obj1);
+		}
+		$("#districtWiseArticleRelatedToProblem").html(str)
+		$(function () {
+			 $("#districtWiseArticle").highcharts({
+				colors: ['#AA3732'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					
+					type: 'category',
+					labels: {
+								formatter: function() {
+									return this.value.toString().substring(0, 10)+'...';
+								},
+								
+							}
+					
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					labels: {
+						enabled:false
+					}
+				},
+				legend: {
+					enabled: false
+				},
+				
+						
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1) + '%';
+								}
+							}
+						  
+						}
+					}
+				},
+
+				tooltip: {
+					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+				},
+
+				series: [{
+					name: 'Completed',
+					data: distWiseArticlesRelated
+				}],
+			 
+			});
+		});
+
+			
+			
+		
+		
+	}
+	
+	

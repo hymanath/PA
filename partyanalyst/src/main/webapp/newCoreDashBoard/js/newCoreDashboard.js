@@ -32,8 +32,10 @@
 	
 	
 	/* Notes Functionality Complete*/
-	$(document).on("click",".notesIcon",function(){
+	$(document).on("click",".notesIcon",function(e){
+		$(".documentCloseClass").hide();
 		$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+		e.stopPropagation();
 	});
 	$(document).on("click",".btnCustomCreate",function(){
 		var getNewNotes = $(".notesArea").val();
