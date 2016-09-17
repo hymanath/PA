@@ -13690,6 +13690,10 @@
    			<param name="root">userTypeVOList</param> 
    		</result>
 	</action> 
-	
+	<action name="getParyMeetingTypeDetailsPerDistrictAction" class="coreDashboardAction" method="getParyMeetingTypeDetailsPerDistrict">
+		<result type="json" name="success"> 
+   			<param name="root">idNameVoList</param> 
+   		</result>
+	</action>
 </package>
 </struts>

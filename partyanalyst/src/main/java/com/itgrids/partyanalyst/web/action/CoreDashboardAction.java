@@ -1705,4 +1705,32 @@ try{
 }
 return Action.SUCCESS;
 }
+public String getParyMeetingTypeDetailsPerDistrict(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+		
+		Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+		
+		List<Long> partyMeetingTypeIds = new ArrayList<Long>();
+		JSONArray partyMeetingTypeIdsArray=jObj.getJSONArray("partyMeetingTypeIds");
+		if(partyMeetingTypeIdsArray!=null &&  partyMeetingTypeIdsArray.length()>0){
+			for( int i=0;i<partyMeetingTypeIdsArray.length();i++){
+				partyMeetingTypeIds.add(Long.valueOf(partyMeetingTypeIdsArray.getString(i)));
+			}
+		}
+		
+		String state = jObj.getString("state");
+		String startDateString = jObj.getString("startDateString");
+		String endDateString   = jObj.getString("endDateString");  
+		Long distId = jObj.getLong("distId");  
+		
+		idNameVoList = coreDashboardPartyMeetingService.getParyMeetingTypeDetailsPerDistrict(partyMeetingMainTypeId,partyMeetingTypeIds,state,startDateString,endDateString,distId);
+		
+}catch(Exception e){  
+	LOG.error("Exception raised at getParyMeetingTypeDetailsDistrictWise() method of CoreDashBoard", e);
+}
+return Action.SUCCESS;
+}
 }
