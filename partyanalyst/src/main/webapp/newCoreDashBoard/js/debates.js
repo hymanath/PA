@@ -898,3 +898,15 @@ $(document).on("click",".btnCustomCreateDebates",function(){
 	$(".notesUlDebates").append("<li>"+commentText+"</li>");
 	$(".notesAreaDebates").val('');
 });
+getLatestDebate();
+function getLatestDebate(){	
+	$.ajax({
+	 type: "POST",
+	 url: "getLatestDebateAction.action",
+	 data: {}
+	}).done(function(result){
+		if(result != null){
+				$("#lastUpdatedDebateId").html("Last updated : "+ result.split("/")[1]);
+			}
+	});	
+}

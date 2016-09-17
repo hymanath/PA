@@ -654,6 +654,7 @@
                 </div>
                     <div class="panel-body">
                         <div class="row">
+                        <b><h6 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
                             <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
                                 <div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
