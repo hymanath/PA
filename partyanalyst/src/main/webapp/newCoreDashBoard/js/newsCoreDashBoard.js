@@ -1189,6 +1189,7 @@ $(document).on("click","#comparisonPartyLiId",function(){
 });
 
 $(document).on("click","#comparisonGovernmentLiId",function(){
+	$("#ministerSubLevelDetailsDiv").html('');
 	getComparisonGovtMinistriesInfo();
 });
 
@@ -1534,6 +1535,8 @@ function getChildUserTypesByItsParentUserType1(){
 		if($(this).hasClass("active")){
 			$("#partyWiseComparisionBlock").html('');
 			getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"));
+		}else{
+			$("#partyWiseComparisionBlock").html('');
 		}
 		
 		
@@ -2167,18 +2170,19 @@ function getChildUserTypesByItsParentUserType1(){
 	
 	
 	$(document).on("click","#detailedGovernmentLiId",function(){
+		$("#problemsDetailedOverviewSubLevel").html('');
 		getDetailedGovtDepartmentWiseDistrictsOverview();
-		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7);
-		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0);
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(7,'');
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(0,'');
 		getDetailedGovernamentTrendingTrackedIssues();
 		getDetailedGovernmentDistrictWiseArticleRelatedToProblem();
 	});
 	
-	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId){
+	function getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,propertyName){
 		if(propertyId == 7){
 			$("#problemsDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}else if(propertyId == 0){
-				$("#problemsDetailedOverview22").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+				$("#overAllAnalysisDetailsBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}
 		
 
@@ -2207,9 +2211,9 @@ function getChildUserTypesByItsParentUserType1(){
 			if(propertyId == 7){
 				$("#problemsDetailedOverview").html('');
 			}else if(propertyId == 0){
-				$("#problemsDetailedOverview22").html('');
+				$("#overAllAnalysisDetailsBlock").html('');
 			}
-			buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
+			buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId,propertyName);
 			
 		});
 	}
@@ -2430,7 +2434,7 @@ function getChildUserTypesByItsParentUserType1(){
 		}
 		return properName;
 	}
-	function buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId){
+	function buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId,propertyName){
 		var locationLevelNameArray =[];
 		
 			if(globalUserAccessLevelId == 2){
@@ -2442,7 +2446,12 @@ function getChildUserTypesByItsParentUserType1(){
 							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
 							for(var i in result){
-								str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+								if(result[i].name !=null && result[i].name.length>55){
+									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+								}else{
+									str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+								}
+								
 							}
 							str+='</ul>';
 						str+='</div>';
@@ -2456,11 +2465,12 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		
 			$("#problemsDetailedOverview1").html(str);
+			$('[data-toggle="tooltip"]').tooltip();
 			
 			var dynamicHeight;
 				$(".dynamicHeightApply").each(function(){
 					dynamicHeight = $(this).find("li").length;
-					dynamicHeight = (dynamicHeight*35)+"px";
+					dynamicHeight = (dynamicHeight*36)+"px";
 				});
 			$("#problemsRelatedGraphState").css("height",dynamicHeight);
 			
@@ -2563,7 +2573,11 @@ function getChildUserTypesByItsParentUserType1(){
 							str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 							str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
 							for(var i in result){
-								str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+								if(result[i].name !=null && result[i].name.length>55){
+									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+								}else{
+									str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+								}
 							}
 							str+='</ul>';
 						str+='</div>';
@@ -2577,11 +2591,12 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		
 			$("#problemsDetailedOverview").html(str);
+			$('[data-toggle="tooltip"]').tooltip();
 			
 			var dynamicHeight;
 				$(".dynamicHeightApply").each(function(){
 					dynamicHeight = $(this).find("li").length;
-					dynamicHeight = (dynamicHeight*35)+"px";
+					dynamicHeight = (dynamicHeight*36)+"px";
 						
 				});
 					
@@ -2680,7 +2695,7 @@ function getChildUserTypesByItsParentUserType1(){
 									var properName = getProperName(result[i].name);
 									if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 										locationLevelNameArray.push(properName);
-										str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Get Detailed View">'+result[i].count+'</span></li>';
+										str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'" attr_property_name="'+properName+'" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Get Detailed View">'+result[i].count+'</span></li>';
 									}
 									
 								}
@@ -2697,9 +2712,10 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 			
 			$("#overAllAnalysisDetailsBlock").html(str);
-			$('[data-toggle="tooltip"]').tooltip()
+			$('[data-toggle="tooltip"]').tooltip();
 				 
 			if(result != null && result.length > 0){
+				
 				var problemDeptPostivePercArray =[];
 				for(var i in result){
 					problemDeptPostivePercArray.push(result[i].positivePerc)
@@ -2763,11 +2779,15 @@ function getChildUserTypesByItsParentUserType1(){
 					var str='';
 					str+='<div class="row">';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-							str+='<h4 class="m_top20">PROBLEM CAN BE SOLVED</h4>';
+							str+='<h4 class="m_top20" style="text-transform:uppercase;">PROBLEM CAN BE SOLVED '+propertyName+'</h4>';
 								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply2">';
 								for(var i in result){
-									str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+									if(result[i].name !=null && result[i].name.length>55){
+										str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+									}else{
+										str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+									}
 								}
 								str+='</ul>';
 							str+='</div>';
@@ -2781,11 +2801,12 @@ function getChildUserTypesByItsParentUserType1(){
 				}
 			
 				$("#problemsDetailedOverviewSubLevel").html(str);
+				$('[data-toggle="tooltip"]').tooltip();
 				
 				var dynamicHeight;
 					$(".dynamicHeightApply2").each(function(){
 						dynamicHeight = $(this).find("li").length;
-						dynamicHeight = (dynamicHeight*35)+"px";
+						dynamicHeight = (dynamicHeight*36)+"px";
 							
 					});
 						
@@ -2879,7 +2900,8 @@ function getChildUserTypesByItsParentUserType1(){
 		$("#problemsDetailedOverviewSubLevel").show();
 		$("#problemsDetailedOverviewSubLevel").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var propertyId = $(this).attr("attr_propertyid");
-		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId);
+		var propertyName = $(this).attr("attr_property_name");
+		getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,propertyName);
 		
 	});
 	
@@ -2974,7 +2996,7 @@ function getChildUserTypesByItsParentUserType1(){
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
 						str+='<div class="row m_top10">';
-							str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+							str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 								str+='<table class="table table-condensed tableNews ">';
 									str+='<tbody>';
 									str+='<tr class="bg_ED">';
@@ -2994,12 +3016,12 @@ function getChildUserTypesByItsParentUserType1(){
 									str+='</tbody>';
 								str+='</table>';
 							str+='</div>';
-							str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+							str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 								str+='<table class="table table-condensed tableNews ">';
 									str+='<tbody>';
 									str+='<tr class="bg_ED">';
 										str+='<td>';
-											str+='<p class="text-capital">Main Edition</p>';
+											str+='<p class="text-capital">District Edition</p>';
 											str+='<p>'+totalDistCnt+'</p>';
 										str+='</td>';
 										str+='<td>';
@@ -3160,7 +3182,7 @@ function getChildUserTypesByItsParentUserType1(){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<ul class="list-inline slickPanelSliderGovtCom">';
 				for(var i in result){
-					str+='<li class="comparisonGovtMinistriesInfoSubLevel" id="comparisonGovtMinistriesInfoSubLevel'+i+'">';
+					str+='<li class="comparisonGovtMinistriesInfoSubLevel" id="comparisonGovtMinistriesInfoSubLevel'+i+'" style="cursor:pointer;">';
 						str+='<div class="panel panel-default panelSlick">';
 							str+='<div class="panel-heading">';
 								str+='<h4 class="panel-title">'+result[i].name+'</h4>';
@@ -3214,7 +3236,7 @@ function getChildUserTypesByItsParentUserType1(){
 		if(result !=null && result.length >0){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<div class="bg_ED pad_15">';
-					str+='<h4><span  class="text-capital"'+ministerName+'</span></h4>';
+					str+='<h4><span  class="text-capital">'+ministerName+'</span></h4>';
 					str+='<table class="table table-condensed tableHoverLevels m_top20">';
 						str+='<thead class="bg_D8 text-capital">';
 							str+='<tr>';
@@ -3364,8 +3386,8 @@ function getChildUserTypesByItsParentUserType1(){
 	{
 		var str='';
 		str+='<div class="row">';
-			str+='<div class="col-md-2 col-xs-6 col-sm-3 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
-			str+='<div class="col-md-2 col-xs-6 col-sm-3 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
+			str+='<div class="col-md-3 col-xs-6 col-sm-3 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
+			str+='<div class="col-md-3 col-xs-6 col-sm-3 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
 		str+='</div>';
 		$("#stateWiseArticleRelatedToProblem").html(str)
 	}
