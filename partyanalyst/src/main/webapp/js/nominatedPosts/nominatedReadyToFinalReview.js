@@ -401,7 +401,12 @@ var str = '';
 					}
 					
 					if(status != "Total"){  
-						str+='<div class="positionsCls modalViewBtn referenceCls deptDtlsCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'" attr_status="finalReview">';    str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+						if(result[i].name!=null && result[i].name.length>20){
+							str+='<div class="positionsCls modalViewBtn referenceCls deptDtlsCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'" attr_status="finalReview">';    str+='<span style="font-weight:bold;cursor:pointer;" title="'+result[i].name+'" data-toggle="tooltip">'+result[i].name.substring(0,20)+'..</span>';
+						 }else if(result[i].name!=null && result[i].name.length>0)
+						 {
+							str+='<div class="positionsCls modalViewBtn referenceCls deptDtlsCls" attr_position_name="'+result[i].name+'" data-toggle="modal" data-target="" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'" attr_status="finalReview">';    str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
+						  }
 							str+='<span class="label label-primary labelCustom pull-right" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 							}else{
 								str+='<div class="positionsCls"  attr_position_name="'+result[i].name+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
