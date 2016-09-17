@@ -3780,8 +3780,8 @@ public String getLatestDebate(){
 		Object[] isRescntTime = debateDAO.getLatestDebate();
 		if(isRescntTime != null){
 		
-			time = (Long)isRescntTime[0]+"/"+((isRescntTime[1].toString().split(" ")[0])+" "+
-			(isRescntTime[1].toString().split(":")[0] +":"+ (isRescntTime[1].toString().split(":")[1])));
+			time = isRescntTime[0].toString()+"/"+((isRescntTime[1].toString().split(" ")[0])+" "+
+			((isRescntTime[1].toString().split(" ")[1]).toString().split(":")[0] +":"+ ((isRescntTime[1].toString().split(" ")[1]).toString().split(":")[1])));
 		}
 	} catch (Exception e) {
 		Log.error("Exception raised at getRescentArticleTime", e);
