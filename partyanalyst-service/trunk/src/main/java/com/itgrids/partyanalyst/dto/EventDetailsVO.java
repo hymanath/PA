@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventDetailsVO {
 
 	private Long id;
@@ -14,6 +17,8 @@ public class EventDetailsVO {
 	private Double inviteeNotAttendedCountPer=0.0d;
 	private Double attendedCountPer=0.0d;
 	private Double nonInviteeAttendedCountPer=0.0d;
+	
+	private List<EventDetailsVO> locationList;
 	
 	public Long getId() {
 		return id;
@@ -81,5 +86,11 @@ public class EventDetailsVO {
 	public void setNonInviteeAttendedCountPer(Double nonInviteeAttendedCountPer) {
 		this.nonInviteeAttendedCountPer = nonInviteeAttendedCountPer;
 	}
-
+	public List<EventDetailsVO> getLocationList() {
+		if(locationList == null){
+			locationList = new ArrayList<EventDetailsVO>(0);
+		}
+		return locationList;
+	}
+   
 }

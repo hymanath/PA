@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CoreDashboardEventsActivitiesService implements ICoreDashboardEventsActivitiesService {
 	
@@ -113,7 +114,6 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 							 if(eventVO != null ){
 								  
 								  eventVO.setInviteeAttendedCount(commonMethodsUtilService.getLongValueForObject(param[1]));
-								  eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
 								  eventVO.setInviteeNotAttendedCount(eventVO.getInviteeCount()-eventVO.getInviteeAttendedCount());
 							  }
 						 }
@@ -124,6 +124,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			if(eventDtlsMap != null && eventDtlsMap.size() > 0){
 				for(Entry<Long,EventDetailsVO> entry:eventDtlsMap.entrySet()){
 					  EventDetailsVO eventVO = entry.getValue();
+					  eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
 					  eventVO.setInviteeAttendedCounPer(calculatePercantage(eventVO.getInviteeAttendedCount(), eventVO.getInviteeCount()));
 					  eventVO.setNonInviteeAttendedCountPer(calculatePercantage(eventVO.getNonInviteeAttendedCount(), eventVO.getAttendedCount()));	
 					  eventVO.setInviteeNotAttendedCountPer(calculatePercantage(eventVO.getInviteeNotAttendedCount(), eventVO.getInviteeCount()));
@@ -361,5 +362,163 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		 return perc1.compareTo(perc2);
 		}
 		}; 
-	
+ public List<EventDetailsVO> getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(Long userTypeId,Long stateId,Long activityMemberId,List<Long> eventIds){
+	 
+	 List<EventDetailsVO> resultList = new ArrayList<EventDetailsVO>(0);
+	 Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+	 Map<Long,Map<Long,EventDetailsVO>> eventInviteeMapDtls = new HashMap<Long, Map<Long,EventDetailsVO>>(0);
+	 Map<Long,Map<Long,EventDetailsVO>> eventInviteeTwnDivMapDtls = new HashMap<Long, Map<Long,EventDetailsVO>>(0);
+	 Map<Long,String> eventIdNameMap = new HashMap<Long, String>();
+	 Map<Long,String> twnDivsionidNameMap = new HashMap<Long, String>(0);
+	 
+	 try{
+		  List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+		      for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				 if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				 }
+				 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			}
+		   }
+		 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+			 for(Entry<Long,Set<Long>> entry:locationAccessLevelMap.entrySet()){
+				 if(userTypeId != null && userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+						List<Object[]> rtrnMandalInviteeMmbrsObjLst = eventInviteeDAO.getEventInviteeCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds,entry.getKey(),new ArrayList<Long>(entry.getValue()),"tehsil"); 
+						setInviteeCntDtlsToMap(rtrnMandalInviteeMmbrsObjLst,eventInviteeMapDtls,eventIdNameMap);
+						List<Object[]> rtrnMandalEventAttnddMemObjList = eventAttendeeDAO.getEventAttendedCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds,entry.getKey(),new ArrayList<Long>(entry.getValue()),"tehsil");
+						setAttendedDataToMap(rtrnMandalEventAttnddMemObjList,eventInviteeMapDtls);
+						List<Object[]> rtrnMandalEventInviteeAttendedMmrsObjList = eventAttendeeDAO.getEventInviteeAttendedCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds, entry.getKey(),new ArrayList<Long>(entry.getValue()),"tehsil");
+						setInviteeAttendedCntToMap(rtrnMandalEventInviteeAttendedMmrsObjList,eventInviteeMapDtls);
+						List<Object[]> rtrnTwnDivInviteeMmbrsObjLst = eventInviteeDAO.getEventInviteeCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds,entry.getKey(),new ArrayList<Long>(entry.getValue()),"townDivision"); 
+						setInviteeCntDtlsToMap(rtrnTwnDivInviteeMmbrsObjLst,eventInviteeTwnDivMapDtls,twnDivsionidNameMap);
+						List<Object[]> rtrnTwnDivEventAttnddMemObjList = eventAttendeeDAO.getEventAttendedCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds,entry.getKey(),new ArrayList<Long>(entry.getValue()),"townDivision");
+						setAttendedDataToMap(rtrnTwnDivEventAttnddMemObjList,eventInviteeTwnDivMapDtls);
+						List<Object[]> rtrnTwnDivEventInviteeAttendedMmrsObjList = eventAttendeeDAO.getEventInviteeAttendedCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds, entry.getKey(),new ArrayList<Long>(entry.getValue()),"townDivision");
+						setInviteeAttendedCntToMap(rtrnTwnDivEventInviteeAttendedMmrsObjList,eventInviteeTwnDivMapDtls);
+					}else{
+						List<Object[]> rtrnEventInviteeMmbrsObjLst = eventInviteeDAO.getEventInviteeCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds,entry.getKey(),new ArrayList<Long>(entry.getValue()),null); 
+						setInviteeCntDtlsToMap(rtrnEventInviteeMmbrsObjLst,eventInviteeMapDtls,eventIdNameMap);
+						List<Object[]> rtrnEventAttendedMmbrsObjLst = eventAttendeeDAO.getEventAttendedCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds,entry.getKey(),new ArrayList<Long>(entry.getValue()),null);
+						setAttendedDataToMap(rtrnEventAttendedMmbrsObjLst,eventInviteeMapDtls);
+						List<Object[]> rtrnEventInviteeAttendedMmbrsObjLst = eventAttendeeDAO.getEventInviteeAttendedCntByEventAndLocationBasedOnUserType(userTypeId, stateId, eventIds, entry.getKey(),new ArrayList<Long>(entry.getValue()),null);
+						setInviteeAttendedCntToMap(rtrnEventInviteeAttendedMmbrsObjLst,eventInviteeMapDtls);
+					}
+			 }
+		 }
+		 //calculating percentage
+		 if(eventInviteeMapDtls != null && eventInviteeMapDtls.size() > 0){
+			 for(Entry<Long,Map<Long,EventDetailsVO>> entry:eventInviteeMapDtls.entrySet()){
+				 if(entry.getKey() != null && entry.getValue().size() >0){
+					 for(Entry<Long,EventDetailsVO> locationEntry:entry.getValue().entrySet()){
+						   EventDetailsVO locationVO = locationEntry.getValue();
+						     locationVO.setNonInviteeAttendedCount(locationVO.getAttendedCount()-locationVO.getInviteeAttendedCount());
+						     locationVO.setInviteeAttendedCounPer(calculatePercantage(locationVO.getInviteeAttendedCount(), locationVO.getInviteeCount()));
+						     locationVO.setNonInviteeAttendedCountPer(calculatePercantage(locationVO.getNonInviteeAttendedCount(), locationVO.getAttendedCount()));
+					 }
+				 }
+			 }
+		 }
+		 //calculating percentage in the case of town division 
+		 if(eventInviteeTwnDivMapDtls != null && eventInviteeTwnDivMapDtls.size() > 0){
+			 for(Entry<Long,Map<Long,EventDetailsVO>> entry:eventInviteeTwnDivMapDtls.entrySet()){
+				 if(entry.getKey() != null && entry.getValue().size() >0){
+					 for(Entry<Long,EventDetailsVO> locationEntry:entry.getValue().entrySet()){
+						   EventDetailsVO locationVO = locationEntry.getValue();
+						     locationVO.setNonInviteeAttendedCount(locationVO.getAttendedCount()-locationVO.getInviteeAttendedCount());
+						     locationVO.setInviteeAttendedCounPer(calculatePercantage(locationVO.getInviteeAttendedCount(), locationVO.getInviteeCount()));
+						     locationVO.setNonInviteeAttendedCountPer(calculatePercantage(locationVO.getNonInviteeAttendedCount(), locationVO.getAttendedCount()));
+					 }
+				 }
+			 }
+		 }
+		 if(eventInviteeMapDtls != null && eventInviteeMapDtls.size() > 0){
+			 for(Entry<Long,Map<Long,EventDetailsVO>> entry:eventInviteeMapDtls.entrySet()){
+				   EventDetailsVO eventVO = new EventDetailsVO();
+				     eventVO.setId(entry.getKey());
+				     eventVO.setName(eventIdNameMap.get(entry.getKey()));
+				     eventVO.getLocationList().addAll(entry.getValue().values());
+				     if(eventInviteeTwnDivMapDtls != null && eventInviteeTwnDivMapDtls.size() > 0){ // merging town division data if there.
+				     eventVO.getLocationList().addAll(eventInviteeTwnDivMapDtls.get(entry.getKey()).values());	 
+				     }
+				    resultList.add(eventVO); 
+			 }
+		 }else{
+			if(eventInviteeTwnDivMapDtls != null && eventInviteeTwnDivMapDtls.size() > 0){ //
+               /* for town division scenario .there may be change in mandal level record is not there but
+				in town division record is there*/
+				for(Entry<Long,Map<Long,EventDetailsVO>> entry:eventInviteeTwnDivMapDtls.entrySet()){
+					 EventDetailsVO eventVO = new EventDetailsVO();
+					 eventVO.setId(entry.getKey());
+					 eventVO.setName(twnDivsionidNameMap.get(entry.getKey()));
+					 eventVO.getLocationList().addAll(entry.getValue().values());
+					 if(eventInviteeMapDtls != null && eventInviteeMapDtls.size() > 0){ // merging mandal data if there.
+					 eventVO.getLocationList().addAll(eventInviteeMapDtls.get(entry.getKey()).values());
+					 }
+				}
+			}
+		 }
+	 }catch(Exception e){
+		 LOG.error("Error occured at setDataToMap() in getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType class",e);	
+	 }
+	 return resultList;
+ }
+ public void setInviteeCntDtlsToMap(List<Object[]> inviteeList, Map<Long,Map<Long,EventDetailsVO>> eventInviteeMapDtls,Map<Long,String> eventIdNameMap){
+	try{
+		if(inviteeList != null && inviteeList.size() > 0){
+			for(Object[] param:inviteeList){
+				Map<Long,EventDetailsVO> locationMap = eventInviteeMapDtls.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				  if(locationMap == null){
+					  locationMap = new HashMap<Long, EventDetailsVO>();
+					  eventIdNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					  eventInviteeMapDtls.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationMap);
+				  }
+				  EventDetailsVO locationVO = new EventDetailsVO();
+				  locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				  locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				  locationVO.setInviteeCount(commonMethodsUtilService.getLongValueForObject(param[4]));
+				  locationMap.put(locationVO.getId(), locationVO);
+			}
+		}
+	}catch (Exception e) {
+		LOG.error("Error occured at setDataToMap() in getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType class",e);
+	}
+ }
+ public void setAttendedDataToMap(List<Object[]> attendedList, Map<Long,Map<Long,EventDetailsVO>> eventInviteeMapDtls){
+	 try{
+		 if(attendedList != null && attendedList.size() > 0){
+			 for(Object[] param:attendedList){
+				   Map<Long,EventDetailsVO> locatioMap = eventInviteeMapDtls.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				     EventDetailsVO locationVO = locatioMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+				        if(locationVO == null ){
+				        	EventDetailsVO lcationVO = new EventDetailsVO();
+				        	lcationVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+				        	lcationVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+				        	lcationVO.setAttendedCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+				        	locatioMap.put(lcationVO.getId(), lcationVO);
+				        }else{
+				        	locationVO.setAttendedCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+				        }
+			 }
+		 }
+	 }catch(Exception e) {
+		 LOG.error("Error occured at setDataToMap() in setAttendedDataToMap class",e);	
+	}
+ }
+ public void setInviteeAttendedCntToMap(List<Object[]> inviteeAttendedList, Map<Long,Map<Long,EventDetailsVO>> eventInviteeMapDtls){
+	 try{
+		if(inviteeAttendedList != null && inviteeAttendedList.size() > 0){
+			for(Object[] param:inviteeAttendedList){
+				Map<Long,EventDetailsVO> locationMap = eventInviteeMapDtls.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 if(locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1])) !=null ){
+					 locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1])).setInviteeAttendedCount(commonMethodsUtilService.getLongValueForObject(param[3])); 
+				 }
+			}
+		}
+	 }catch(Exception e) {
+		LOG.error("Error occured at setInviteeAttendedCntToMap() in setAttendedDataToMap class",e);
+	}
+ }
 }

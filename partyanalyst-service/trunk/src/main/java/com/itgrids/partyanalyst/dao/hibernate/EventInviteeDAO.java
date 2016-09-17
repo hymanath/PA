@@ -889,7 +889,7 @@ public List<Object[]> getLocationWiseEventInviteedCount(Long userAccessLevelId,L
 	
 	queryStr.append(" from EventInvitee model where  model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014  ");
 	if(eventIds != null && eventIds.size() >0){
-		queryStr.append(" and event.eventId in (:eventIds) " );	
+		queryStr.append(" and model.event.eventId in (:eventIds) " );	
 	}
 	 if(stateId != null && stateId.longValue() > 0){
 			if(stateId.longValue()==1l){
@@ -944,6 +944,83 @@ public List<Object[]> getLocationWiseEventInviteedCount(Long userAccessLevelId,L
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 	 }*/
 	
+	return query.list();
+}
+public List<Object[]> getEventInviteeCntByEventAndLocationBasedOnUserType(Long userType,Long stateId,List<Long> eventIds,Long userAccessLevelId,List<Long> userAccessLevelValues,String levelType){
+	
+	  StringBuilder queryStr = new StringBuilder();
+	
+	  queryStr.append(" select model.event.eventId," +
+	  		           " model.event.name,");
+	  
+	  if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+	          queryStr.append("model.tdpCadre.userAddress.constituency.district.districtId,");
+	          queryStr.append("model.tdpCadre.userAddress.constituency.district.districtName,"); 
+      }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+	   || userType.longValue()==IConstants.MP_USER_TYPE_ID){
+	 	      queryStr.append("model.tdpCadre.userAddress.constituency.constituencyId,");
+    	      queryStr.append("model.tdpCadre.userAddress.constituency.name,"); 
+     }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+	     if(levelType != null && levelType.equalsIgnoreCase("tehsil")){
+	     queryStr.append(" model.tdpCadre.userAddress.tehsil.tehsilId,");
+	     queryStr.append(" model.tdpCadre.userAddress.tehsil.tehsilName,");
+	     }else if(levelType != null && levelType.equalsIgnoreCase("townDivision")){
+	     queryStr.append(" model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,");
+	     queryStr.append(" model.tdpCadre.userAddress.localElectionBody.name,");
+	     }
+    }
+	queryStr.append(" count(distinct model.tdpCadre.tdpCadreId) ");
+	
+  	queryStr.append(" from EventInvitee model where  model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014  ");
+  	
+	if(eventIds != null && eventIds.size() >0){
+		queryStr.append(" and model.event.eventId in (:eventIds) " );	
+	}
+	 if(stateId != null && stateId.longValue() > 0){
+			if(stateId.longValue()==1l){
+				queryStr.append(" and model.tdpCadre.userAddress.constituency.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
+			}else if(stateId.longValue()==36l){
+				queryStr.append(" and model.tdpCadre.userAddress.constituency.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+			}
+	 }
+	 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	    queryStr.append(" and model.tdpCadre.userAddress.state.stateId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	     queryStr.append(" and model.tdpCadre.userAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	     queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+	        queryStr.append(" and model.tdpCadre.userAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+	        queryStr.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+	        queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+	        queryStr.append(" and model.tdpCadre.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+	 }
+	  queryStr.append(" group by model.event.eventId"); 
+	if(userType != null && userType.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userType.longValue()==IConstants.STATE_TYPE_USER_ID || userType.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
+	          queryStr.append(" ,model.tdpCadre.userAddress.constituency.district.districtId");
+    }else if(userType != null && userType.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userType.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
+	   || userType.longValue()==IConstants.MP_USER_TYPE_ID){
+	 	      queryStr.append(" ,model.tdpCadre.userAddress.constituency.constituencyId");
+   }else if(userType != null && userType.longValue()==IConstants.MLA_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userType.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
+	     if(levelType != null && levelType.equalsIgnoreCase("tehsil")){
+	     queryStr.append(" ,model.tdpCadre.userAddress.tehsil.tehsilId");
+	     }else if(levelType != null && levelType.equalsIgnoreCase("townDivision")){
+	     queryStr.append(" ,model.tdpCadre.userAddress.localElectionBody.localElectionBodyId");
+	     }
+   }
+   queryStr.append(" order by model.event.eventId ");
+   Query query = getSession().createQuery(queryStr.toString());
+   if(eventIds != null && eventIds.size() >0){
+		query.setParameterList("eventIds", eventIds);	
+	}
+	if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+	  query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	 }
 	return query.list();
 }
 }

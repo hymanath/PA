@@ -23,6 +23,8 @@ public class TrainingCampProgramVO {
 	private List<TrainingCampProgramVO> mandalList;
 	private List<TrainingCampProgramVO> villageList;
 	private List<TrainingCampProgramVO> locationList;
+	
+	private String lastUpdatedTime;
  	public Long getId() {
 		return id;
 	}
@@ -132,5 +134,11 @@ public class TrainingCampProgramVO {
 		}
 		return locationList;
 	}
-	
+	public String getLastUpdatedTime() {
+		return lastUpdatedTime;
+	}
+	public void setLastUpdatedTime(String lastUpdatedTime) {
+		this.lastUpdatedTime = lastUpdatedTime;
+	}
+  	
 }
