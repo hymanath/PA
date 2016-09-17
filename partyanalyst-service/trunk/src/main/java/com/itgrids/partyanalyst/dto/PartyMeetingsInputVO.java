@@ -11,6 +11,7 @@ public class PartyMeetingsInputVO implements Serializable{
 	private Long        stateId;
   	private Date        startDate;
 	private Date        endDate;
+	private Long 		distId;
 	
 	
 	public Long getPartyMeetingMainTypeId() {
@@ -43,6 +44,10 @@ public class PartyMeetingsInputVO implements Serializable{
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
 	}
-	
-	
+	public Long getDistId() {
+		return distId;
+	}
+	public void setDistId(Long distId) {
+		this.distId = distId;
+	}
 }
