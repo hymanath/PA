@@ -501,7 +501,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 		str+='</table>';
 	}
 	else{
-			str+='No Membres are available for shortlisting...';
+			str+='No Members are available for shortlisting...';
 	}
 	
 	if(globalPositionId == 0)
@@ -1158,7 +1158,8 @@ function buildDepartmentDetails(result,divId){
 	}
 }
 function checkPositionAvailableOrNot(num){
-	
+	$("#updatedStatusAnyId"+num).val(0);
+	$("#updatedStatusAnyId"+num).trigger("chosen:updated");
 	var positionName = $("#positionAnyId"+num).find(":selected").text();
 		 if($("#positionAnyId"+num).val()==0)
 		 {
