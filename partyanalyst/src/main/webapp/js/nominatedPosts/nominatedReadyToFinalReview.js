@@ -747,6 +747,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					str+='<div class="updateDropDown" style="width:1100px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
+							str+='<div class = "dropDownButnCls" id="dropDownButnId" style="cursor:pointer;float:right;">X</div>';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
 							str+='<label calss="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
@@ -1010,7 +1011,7 @@ function getOverAllCommentDetails(candidateId,divId,aplicationId,postFinalId){
 
 function buildOverAllComments(result,divId){
 	var str='';
-	
+	str+='<div class = "dropDownButnCls" id="commentsPopUpId" style="cursor:pointer;float:right;">X</div>';
 	str+='<p>COMMENTS</p>';
 	str+='<ul class="commentsUl">';
 		str+='<li class="finaLize">';
@@ -1731,6 +1732,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 					str+='<div class="updateDropDown" style="width:250px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
+							str+='<div class = "dropDownButnCls" id="dropDownButnId" style="cursor:pointer;float:right;">X</div>';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
 							str+='<label calss="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
@@ -1851,3 +1853,13 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	$("#postDetails").modal("show");
 	
 	}
+	
+	 $(document).on("click","#dropDownButnId",function(){
+		$(".updateDropDownArrow").hide();
+	}); 
+	 $(document).on("click",".statusUpdateBntCls",function(){
+		$(".updateDropDownArrow").show();
+	}); 
+	 $(document).on("click","#commentsPopUpId",function(){
+		$(".commentsDiv").hide();
+	}) 
