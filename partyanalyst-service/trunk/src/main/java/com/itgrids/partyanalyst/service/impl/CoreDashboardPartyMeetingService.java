@@ -1554,11 +1554,19 @@ public List<PartyMeetingsDataVO> getParyMeetingTypeDetailsDistrictWise(Long part
 					  for (PartyMeetingsDataVO inviteeVO : inviteeList) {
 						  if(inviteeVO.getId().equals(districtId)){
 							  inviteeVO.setInvitteeAttendedCount(inviteeAttendedCnt);
-							  inviteeVO.setNotAttendedCount(inviteeVO.getInvitedCount()-inviteeVO.getInvitteeAttendedCount());
 						  }
 					}
 				  }
 			}
+	     }
+	     if(inviteeCadresMap != null && inviteeCadresMap.size() > 0){
+	    	 for(Entry<Long,List<PartyMeetingsDataVO>> entry:inviteeCadresMap.entrySet()){
+	    		 if(entry.getValue() != null && entry.getValue().size() > 0){
+	    			 for(PartyMeetingsDataVO inviteeVO : entry.getValue()){
+	    				 inviteeVO.setNotAttendedCount(inviteeVO.getInvitedCount()-inviteeVO.getInvitteeAttendedCount()); 
+	    			 }
+	    		 }
+	    	 }
 	     }
 	    /* if(attendedList != null && attendedList.size() > 0){
 	    	  for (Object[] param : attendedList) {

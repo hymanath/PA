@@ -1461,9 +1461,10 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 
 		  return query.list();  
 	}
-	
-	
-	
-	
+	public Date getLastUpdatedTime()
+	{
+		Query query=getSession().createQuery("select max(model.insertionTime) from TrainingCampAttendance model");
+		  return (Date) query.uniqueResult();
+	}
 }
 

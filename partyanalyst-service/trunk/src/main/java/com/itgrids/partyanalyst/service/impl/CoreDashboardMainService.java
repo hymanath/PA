@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
@@ -1547,12 +1548,13 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		 Map<String,Long> totalEligibleMemberCntMap = new HashMap<String, Long>();
 		 Map<String,Long> totalAttenedMemberCntMap = new HashMap<String, Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
 		 Date toDate=null;
 		 try{
 			 if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 				 toDate = sdf.parse(toDateStr);
 			 }
-			 
+			 Date lastUpdatedTime = trainingCampAttendanceDAO.getLastUpdatedTime();
 			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Eligible Member For Training Program
 			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId,toDate);//Attended Member In Training Program
 			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
@@ -1565,6 +1567,9 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 					TrainingCampProgramVO programVO = new TrainingCampProgramVO();
 					Long programId= param[0] != null ? (Long)param[0] :0l;
 					programVO.setId(programId);
+					if(lastUpdatedTime != null ){
+						programVO.setLastUpdatedTime(sdf1.format(lastUpdatedTime));	
+					}
 					programVO.setName(param[1] != null ? param[1].toString():"");
 					programVO.setTotalEligibleCount(param[2] != null ? (Long)param[2]:0l);
 					programVO.setTotalEligibleCountPer(calculatePercantage(programVO.getTotalEligibleCount(), programVO.getTotalEligibleCount()));
@@ -1827,7 +1832,8 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		Map<Long,List<TrainingCampProgramVO>> programDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
 		Map<Long,List<TrainingCampProgramVO>> twnDivDtlsMap = new HashMap<Long, List<TrainingCampProgramVO>>(0);
 		Map<Long,String> programIdNameMap = new HashMap<Long, String>();
-		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Map<Long,String> twnDivisionProgramIdNameMap = new HashMap<Long, String>();
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		 Date toDate=null;
 		 try{
 			if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
@@ -1839,7 +1845,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 				List<Object[]> rtrnMandalAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, "tehsil");
 				setAttendedDataToMap(rtrnMandalAttnddMemObjList,programDtlsMap,userTypeId,"Tehsil");
 				List<Object[]> rtrnTwnDivElgbleMmbrsObjLst = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, status, null, null, userTypeId, "townDivision"); 
-				setEligibleDataToMap(rtrnTwnDivElgbleMmbrsObjLst,twnDivDtlsMap,programIdNameMap,userTypeId,"townDivision");
+				setEligibleDataToMap(rtrnTwnDivElgbleMmbrsObjLst,twnDivDtlsMap,twnDivisionProgramIdNameMap,userTypeId,"townDivision");
 				List<Object[]> rtrnTwnDivAttnddMemObjList = trainingCampAttendanceDAO.getTotalAttenedCadresOfTrainingCampProgramByUserType(userAccessLevelId, userAccessLevelValues, stateId, toDate, status, null, null, userTypeId, "townDivision");
 				setAttendedDataToMap(rtrnTwnDivAttnddMemObjList,twnDivDtlsMap,userTypeId,"townDivision");
 			}else{
@@ -1860,6 +1866,21 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 							 }
 					        resultList.add(programVO);
 				 }
+			 }else{
+				 if(twnDivDtlsMap != null && twnDivDtlsMap.size() > 0){ //
+		               /* for town division scenario .there may be change in mandal level record is not there but
+						in town division record is there*/
+					 for(Entry<Long, List<TrainingCampProgramVO>> entry:twnDivDtlsMap.entrySet()){
+						 TrainingCampProgramVO programVO = new TrainingCampProgramVO();
+						        programVO.setId(entry.getKey());
+						        programVO.setName(twnDivisionProgramIdNameMap.get(entry.getKey()));
+						        programVO.getLocationList().addAll(entry.getValue());
+						         if(programDtlsMap != null && programDtlsMap.size() >0){
+						          programVO.getLocationList().addAll(programDtlsMap.get(entry.getKey()));	 //town division details adding 
+								 }
+						        resultList.add(programVO);
+					 }
+					}
 			 }
 		}catch(Exception e) {
 			  LOG.error("Error occured at getTrainingCampProgramsDetailsCntDistrictWise() in CoreDashboardMainService {}",e);
