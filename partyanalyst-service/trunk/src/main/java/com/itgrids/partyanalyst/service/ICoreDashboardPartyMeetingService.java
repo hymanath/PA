@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -21,4 +22,5 @@ public interface ICoreDashboardPartyMeetingService {
 	public List<PartyMeetingsDataVO> getParyMeetingTypeDetailsDistrictWise(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString);
 
 	public ResultStatus insertDataInToPartyMeetingStatusTable();
+	public List<IdNameVO> getParyMeetingTypeDetailsPerDistrict(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, Long distId);
 }

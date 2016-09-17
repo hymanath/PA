@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,11 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -52,7 +55,7 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private IPartyMeetingInviteeDAO  partyMeetingInviteeDAO;
 	 private IPartyMeetingAttendanceDAO partyMeetingAttendanceDAO;
 	 private TransactionTemplate transactionTemplate;
-	 
+	 private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	 
 	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
 		this.partyMeetingDAO = partyMeetingDAO;
@@ -88,6 +91,11 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+	
+public void setTrainingCampAttendanceDAO(
+			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
+		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
 	}
 /**
  * @param  Long activityMemberId
@@ -1530,8 +1538,9 @@ public List<PartyMeetingsDataVO> getParyMeetingTypeDetailsDistrictWise(Long part
 		 inputVO.setEndDate(datesList.get(1));
 		 Long stateId = coreDashboardGenericService.getStateIdByState(state);
 		 inputVO.setStateId(stateId);
-		 List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingTypeIds(inputVO);
-		 List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds(inputVO);
+		 String status = "count"; 
+		 List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingTypeIds(inputVO,status);
+		 List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds(inputVO,status);
 	     List<Object[]> attendedList = partyMeetingAttendanceDAO.getDistrictWiseAttendedCountForPartyMeetingTypeIds(inputVO);
 	     setInviteeDetails(inviteesList,inviteeCadresMap,partyMeetingTypeMap);
 	     
@@ -1688,6 +1697,157 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
 	}
 	 return resultStatus;
+ }
+ //getParyMeetingTypeDetailsDistrictWise
+ /*
+  * Author : Swadhin
+  * Description: This method will return details of the member who are attended or not attended in the meeting
+  */
+ public List<IdNameVO> getParyMeetingTypeDetailsPerDistrict(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, Long distId){
+	 LOG.info("Control entered into getParyMeetingTypeDetailsPerDistrict  method in CoreDashboardPartyMeetingService");
+	 try{
+		 IdNameVO idNameVO = null;     
+		 Long cadreId = null;
+		 Map<Long,IdNameVO> idAndMemberDtlsMap = new HashMap<Long,IdNameVO>();
+		 List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		//creating inputVO
+		PartyMeetingsInputVO inputVO = new PartyMeetingsInputVO();
+			
+		inputVO.setPartyMeetingMainTypeId(partyMeetingMainTypeId);
+		inputVO.setPartyMeetingTypeIds(partyMeetingTypeIds);
+		List<Date> datesList = coreDashboardGenericService.getDates(startDateString, endDateString, new SimpleDateFormat("dd/MM/yyyy"));
+		inputVO.setStartDate(datesList.get(0));
+		inputVO.setEndDate(datesList.get(1));
+		Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		inputVO.setStateId(stateId);
+		inputVO.setDistId(distId);
+		String status = "details";  
+		
+		Set<Long> absentCadreIds = new HashSet<Long>(0);
+		Set<Long> attendedCadreIds = new HashSet<Long>(0);
+		Map<Long,String> memberAndMeetingNameMap = new HashMap<Long,String>(0);
+		
+		List<Object[]> inviteesList = partyMeetingInviteeDAO.getDistrictWiseInvitedCountForPartyMeetingTypeIds(inputVO,status);
+		if(inviteesList != null && inviteesList.size() > 0){
+			for(Object[] obj : inviteesList){
+				String cadreIdStr = (obj[4].toString()).substring(7).trim();
+				absentCadreIds.add(Long.valueOf(cadreIdStr));        
+			}
+		}  
+		List<Object[]> invitteeAttendedList = partyMeetingInviteeDAO.getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds(inputVO,status);
+		if(invitteeAttendedList != null && invitteeAttendedList.size() > 0){
+			for(Object[] obj : invitteeAttendedList){
+				String caderIdStr = (obj[4].toString()).substring(7).trim();
+				attendedCadreIds.add(Long.valueOf(caderIdStr)); 
+				String meetings = memberAndMeetingNameMap.get(Long.valueOf(caderIdStr));
+				if(meetings != null){
+					meetings = meetings+","+obj[5].toString();
+					memberAndMeetingNameMap.put(Long.valueOf(caderIdStr), meetings);
+				}else{
+					memberAndMeetingNameMap.put(Long.valueOf(caderIdStr), obj[5].toString());
+				}
+			}
+		}
+		absentCadreIds.removeAll(attendedCadreIds);
+		if(attendedCadreIds.size() > 0){
+			List<Object[]> destWiseAttendedMembersDesignation = trainingCampAttendanceDAO.getAttendedMembersForDist(new ArrayList<Long>(attendedCadreIds)); 
+			if(destWiseAttendedMembersDesignation != null && destWiseAttendedMembersDesignation.size() > 0){  
+				for(Object[] obj : destWiseAttendedMembersDesignation){
+					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					if(idNameVO != null){
+						String status1 = idNameVO.getStatus();
+						if(obj[2] != null){
+							status1 = status1+","+obj[2].toString();
+							idNameVO.setStatus(status1);
+							idAndMemberDtlsMap.put(cadreId, idNameVO);
+						}else{
+							if(obj[3] != null){
+								status1 = status1+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+								idNameVO.setStatus(status1);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}
+						}
+						
+					}else{
+						idNameVO = new IdNameVO();
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						if(obj[2] != null){
+							idNameVO.setStatus(obj[2].toString());
+						}else if(obj[3] != null){
+							idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+						}else{
+							idNameVO.setStatus("");
+						}
+						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+						idNameVO.setWish("attended");
+						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+					}
+				}
+			}
+		}
+		if(idAndMemberDtlsMap.size() > 0){
+			for(Entry<Long,IdNameVO> entry : idAndMemberDtlsMap.entrySet()){
+				Long id = entry.getKey();
+				String meeting = memberAndMeetingNameMap.get(id);
+				if(meeting !=null){
+					IdNameVO idNameVO2 = entry.getValue();  
+					idNameVO2.setApplicationStatus(meeting);
+				}
+			}
+		}  
+		if(idAndMemberDtlsMap.size() > 0){
+			idNameVOs = new ArrayList<IdNameVO>(idAndMemberDtlsMap.values());
+			idAndMemberDtlsMap.clear();
+		}
+		if(absentCadreIds.size() > 0){
+			List<Object[]> destWiseAbsaentMembersDesignation = trainingCampAttendanceDAO.getAbsaentMembersForDist(new ArrayList<Long>(absentCadreIds));  
+			if(destWiseAbsaentMembersDesignation != null && destWiseAbsaentMembersDesignation.size() > 0){
+				for(Object[] obj : destWiseAbsaentMembersDesignation){
+					cadreId = obj[0] != null ? (Long)obj[0] : 0l;
+					idNameVO = idAndMemberDtlsMap.get(cadreId);
+					if(idNameVO != null){
+						String status1 = idNameVO.getStatus();
+						if(obj[2] != null){
+							status1 = status1+","+obj[2].toString();  
+							idNameVO.setStatus(status1);
+							idAndMemberDtlsMap.put(cadreId, idNameVO);
+						}else{
+							if(obj[3] != null){
+								status1 = status1+","+(obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+								idNameVO.setStatus(status1);
+								idAndMemberDtlsMap.put(cadreId, idNameVO);
+							}
+						}
+						
+					}else{
+						idNameVO = new IdNameVO();
+						idNameVO.setName(obj[1] != null ? obj[1].toString() : "");
+						if(obj[2] != null){
+							idNameVO.setStatus(obj[2].toString());
+						}
+						else if(obj[3] != null){
+							idNameVO.setStatus((obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : ""));
+						}else{
+							idNameVO.setStatus("");
+						}
+						idNameVO.setMobileNo(obj[5] != null ? obj[5].toString() : "");
+						idNameVO.setWish("absent");
+						idAndMemberDtlsMap.put(cadreId, idNameVO); 
+					}
+				}
+			}
+		}  
+		if(idAndMemberDtlsMap.size() > 0){
+			idNameVOs.addAll(new ArrayList<IdNameVO>(idAndMemberDtlsMap.values()));
+		}
+		return idNameVOs;  
+	 }catch(Exception e){
+		 e.printStackTrace();
+		LOG.error("Exception raised in getParyMeetingTypeDetailsPerDistrict  method in CadreDetailsService.",e);
+
+	 }
+	 return null;
  }
 
 

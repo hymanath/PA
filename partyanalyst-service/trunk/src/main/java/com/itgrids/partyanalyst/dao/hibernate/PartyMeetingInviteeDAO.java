@@ -6,6 +6,8 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
@@ -471,12 +473,21 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
 	   return query.list();
 	}
-public List<Object[]> getDistrictWiseInvitedCountForPartyMeetingTypeIds(PartyMeetingsInputVO inputVO){
+public List<Object[]> getDistrictWiseInvitedCountForPartyMeetingTypeIds(PartyMeetingsInputVO inputVO, String status){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select PMT.party_meeting_type_id as partyMeetingId ,PMT.type as type ,D.district_id as districtId,D.district_name as districtName," +//
-				"          COUNT(DISTINCT CONCAT(PMI.party_meeting_id,'-',PMI.tdp_cadre_id)) as count " +//2
-				  " from   party_meeting_invitee PMI,party_meeting PM,party_meeting_type PMT,party_meeting_main_type PMMT,tdp_cadre TC,user_address UA,district D " +
+		sb.append(" select ");
+		if(status.equalsIgnoreCase("details")){
+			sb.append(" distinct ");
+		}
+		
+		sb.append(" PMT.party_meeting_type_id as partyMeetingId ,PMT.type as type ,D.district_id as districtId,D.district_name as districtName,");
+		if(status.equalsIgnoreCase("count")){
+			sb.append(" COUNT(DISTINCT CONCAT(PMI.party_meeting_id,'-',PMI.tdp_cadre_id)) as count ");
+		}else{
+			sb.append(" CONCAT(PMI.party_meeting_id,'-',PMI.tdp_cadre_id)  as count ");
+		}	 
+		sb.append(" from   party_meeting_invitee PMI,party_meeting PM,party_meeting_type PMT,party_meeting_main_type PMMT,tdp_cadre TC,user_address UA,district D " +
 				  " where  PMI.tdp_cadre_id = TC.tdp_cadre_id and " +
 				  "        PMI.party_meeting_id = PM.party_meeting_id and " +
 				  "        PM.party_meeting_type_id = PMT.party_meeting_type_id and " +
@@ -485,10 +496,13 @@ public List<Object[]> getDistrictWiseInvitedCountForPartyMeetingTypeIds(PartyMee
 				  "        UA.district_id = D.district_id and " +
 				  "        PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
 				  "        TC.is_deleted = 'N' and TC.enrollment_year = 2014 ");
+		if(status.equalsIgnoreCase("details")){
+			sb.append(" and  D.district_id = (:distId) ");
+		}
 		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 			 sb.append(" and date(PM.start_date) between :startDate and :endDate ");	 
 		}
-		if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+		if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l && status.equalsIgnoreCase("count")){
 			if(inputVO.getStateId().longValue()==1l){
 				sb.append(" and D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
 			}else if(inputVO.getStateId().longValue()==36l){
@@ -499,49 +513,73 @@ public List<Object[]> getDistrictWiseInvitedCountForPartyMeetingTypeIds(PartyMee
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 			sb.append(" and PMT.party_meeting_type_id in (:partyMeetingTypeIds) ");	
 		}
-		sb.append(" group by  PMT.party_meeting_type_id,D.district_id order by PMT.party_meeting_type_id,D.district_id asc");
+		if(status.equalsIgnoreCase("count")){
+			sb.append(" group by  PMT.party_meeting_type_id,D.district_id order by PMT.party_meeting_type_id,D.district_id asc");
+		}
+		Session session = getSession();
+		SQLQuery sqlQuery = session.createSQLQuery(sb.toString());
+		//Query query = getSession().createSQLQuery(sb.toString())
+		sqlQuery.addScalar("partyMeetingId",Hibernate.LONG);
+		sqlQuery.addScalar("type",Hibernate.STRING);
+		sqlQuery.addScalar("districtId",Hibernate.LONG);
+		sqlQuery.addScalar("districtName",Hibernate.STRING);
+		if(status.equalsIgnoreCase("details")){
+			sqlQuery.addScalar("count",Hibernate.STRING);           
+		}else{
+			sqlQuery.addScalar("count",Hibernate.LONG);  
+		}
 		
-		Query query = getSession().createSQLQuery(sb.toString())
-		.addScalar("partyMeetingId",Hibernate.LONG)
-		.addScalar("type",Hibernate.STRING)
-		.addScalar("districtId",Hibernate.LONG)
-		.addScalar("districtName",Hibernate.STRING)
-		.addScalar("count",Hibernate.LONG);
 		
 		if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
-			query.setDate("startDate",inputVO.getStartDate());
-			query.setDate("endDate",inputVO.getEndDate());	 
+			sqlQuery.setDate("startDate",inputVO.getStartDate());
+			sqlQuery.setDate("endDate",inputVO.getEndDate());	 
 		}
 		if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
-			query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
+			sqlQuery.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
 		}
-		query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-	   return query.list();
-	}
+		sqlQuery.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+		if(status.equalsIgnoreCase("details")){
+			sqlQuery.setParameter("distId", inputVO.getDistId());
+		}
+	   return sqlQuery.list();  
+	}  
 //Invited attended
-public List<Object[]> getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds(PartyMeetingsInputVO inputVO){
+public List<Object[]> getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds(PartyMeetingsInputVO inputVO, String status){
 	
 	StringBuilder sb = new StringBuilder();
+	sb.append(" select ");
+	if(status.equalsIgnoreCase("details")){
+		sb.append(" distinct ");
+	}
 	
-	sb.append(" select  PMT.party_meeting_type_id as partyMeetingId , PMT.type as type,D.district_id as districtId,D.district_name as districtName," +
-			"           COUNT(DISTINCT CONCAT(PMA.party_meeting_id,'-',A.tdp_cadre_id)) as count" +
-			"   from    party_meeting_attendance PMA,attendance A,party_meeting_invitee PMI,party_meeting PM,party_meeting_type PMT,party_meeting_main_type PMMT,tdp_cadre TC,user_address UA,district D " +
-			"   where   PMA.attendance_id = A.attendance_id and " +
-			"           A.tdp_cadre_id = PMI.tdp_cadre_id and " +
-			"           PMI.tdp_cadre_id = TC.tdp_cadre_id and " +
-			"           PMI.party_meeting_id = PMA.party_meeting_id and " +
-			"           PMA.party_meeting_id = PM.party_meeting_id and " +
-			"           PM.party_meeting_type_id = PMT.party_meeting_type_id and " +
-			"           PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
-			"           TC.address_id = UA.user_address_id and " +///
-			"           UA.district_id = D.district_id and " +
-			"           PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
-			"           TC.is_deleted = 'N' and TC.enrollment_year = 2014 " );
+	sb.append(" PMT.party_meeting_type_id as partyMeetingId ,PMT.type as type ,D.district_id as districtId,D.district_name as districtName,");
+	if(status.equalsIgnoreCase("count")){
+		sb.append(" COUNT(DISTINCT CONCAT(PMI.party_meeting_id,'-',PMI.tdp_cadre_id)) as count ");
+	}else{
+		sb.append(" CONCAT(PMI.party_meeting_id,'-',PMI.tdp_cadre_id)  as count, PM.meeting_name as meetingName ");
+	}	   
 	
+	sb.append(" from " +
+		      " party_meeting_attendance PMA,attendance A,party_meeting_invitee PMI,party_meeting PM,party_meeting_type PMT,party_meeting_main_type PMMT,tdp_cadre TC,user_address UA,district D " +
+	    	  " where " +
+	    	  " PMA.attendance_id = A.attendance_id and " +
+			  " A.tdp_cadre_id = PMI.tdp_cadre_id and " +
+			  " PMI.tdp_cadre_id = TC.tdp_cadre_id and " +  
+			  " PMI.party_meeting_id = PMA.party_meeting_id and " +
+			  " PMA.party_meeting_id = PM.party_meeting_id and " +
+              " PM.party_meeting_type_id = PMT.party_meeting_type_id and " +
+			  " PMT.party_meeting_main_type_id = PMMT.party_meeting_main_type_id and " +
+			  " TC.address_id = UA.user_address_id and " +///
+			  " UA.district_id = D.district_id and " +
+			  " PMMT.party_meeting_main_type_id = :partyMeetingMainTypeId and " +
+			  " TC.is_deleted = 'N' and TC.enrollment_year = 2014 " );
+	if(status.equalsIgnoreCase("details")){
+		sb.append(" and  D.district_id = (:distId) ");  
+	}
 	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
 		 sb.append(" and date(PM.start_date) between :startDate and :endDate ");	 
 	}
-	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l ){
+	if(inputVO.getStateId()!= null && inputVO.getStateId() > 0l && status.equalsIgnoreCase("count")){
 		if(inputVO.getStateId().longValue()==1l){
 			sb.append(" and D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
 		}else if(inputVO.getStateId().longValue()==36l){
@@ -551,22 +589,34 @@ public List<Object[]> getDistrictWiseInvitteeAttendedCountForPartyMeetingTypeIds
 	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
 		sb.append(" and PMT.party_meeting_type_id in (:partyMeetingTypeIds) ");	
 	}
-	sb.append(" group by PMT.party_meeting_type_id,D.district_id order by PMT.party_meeting_type_id,D.district_id asc ");////
-	Query query = getSession().createSQLQuery(sb.toString())
-	.addScalar("partyMeetingId",Hibernate.LONG)
-	.addScalar("type",Hibernate.STRING)
-	.addScalar("districtId",Hibernate.LONG)
-	.addScalar("districtName",Hibernate.STRING)
-	.addScalar("count",Hibernate.LONG);
+	if(status.equalsIgnoreCase("count")){
+		sb.append(" group by PMT.party_meeting_type_id,D.district_id order by PMT.party_meeting_type_id,D.district_id asc ");////
+	}
+	Session session = getSession();
+	SQLQuery sqlQuery = session.createSQLQuery(sb.toString());
+	//Query query = getSession().createSQLQuery(sb.toString())
+	sqlQuery.addScalar("partyMeetingId",Hibernate.LONG);
+	sqlQuery.addScalar("type",Hibernate.STRING);
+	sqlQuery.addScalar("districtId",Hibernate.LONG);
+	sqlQuery.addScalar("districtName",Hibernate.STRING);
+	if(status.equalsIgnoreCase("details")){
+		sqlQuery.addScalar("count",Hibernate.STRING); 
+		sqlQuery.addScalar("meetingName",Hibernate.STRING);
+	}else{
+		sqlQuery.addScalar("count",Hibernate.LONG);    
+	}
 	
 	if(inputVO.getPartyMeetingTypeIds() != null && inputVO.getPartyMeetingTypeIds().size()>0){
-		query.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
+		sqlQuery.setParameterList("partyMeetingTypeIds",inputVO.getPartyMeetingTypeIds());
 	}
 	if(inputVO.getStartDate()!= null && inputVO.getEndDate()!=null){
-		query.setDate("startDate",inputVO.getStartDate());
-		query.setDate("endDate",inputVO.getEndDate());	 
+		sqlQuery.setDate("startDate",inputVO.getStartDate());
+		sqlQuery.setDate("endDate",inputVO.getEndDate());	 
 	}
-	query.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
-   return query.list();
+	sqlQuery.setParameter("partyMeetingMainTypeId",inputVO.getPartyMeetingMainTypeId());
+	if(status.equalsIgnoreCase("details")){
+		sqlQuery.setParameter("distId", inputVO.getDistId());
+	}
+   return sqlQuery.list();
 }
 }
