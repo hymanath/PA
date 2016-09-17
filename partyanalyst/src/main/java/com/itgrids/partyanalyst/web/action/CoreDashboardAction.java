@@ -1733,4 +1733,16 @@ public String getParyMeetingTypeDetailsPerDistrict(){
 }
 return Action.SUCCESS;
 }
+
+public String getLatestDebate(){
+	try{
+		
+		status = coreDashboardMainService.getLatestDebate();
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getLatestDebate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
 }
