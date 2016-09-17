@@ -739,7 +739,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					}
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
-					str+='<div class="updateDropDown" style="width:250px;">';
+					str+='<div class="updateDropDown" style="width:1100px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
