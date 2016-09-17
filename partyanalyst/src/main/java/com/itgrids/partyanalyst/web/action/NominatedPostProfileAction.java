@@ -1213,8 +1213,15 @@ return Action.SUCCESS;
 	public String getBoardList(){
 		try{
 			jObj =new JSONObject(getTask());
-			Long deptId = jObj.getLong("deptId");
-			idAndNameVOList = nominatedPostMainDashboardService.getBoardList(deptId);      
+			//Long deptId = jObj.getLong("deptId");
+			JSONArray deptArr = jObj.getJSONArray("deptId");
+			List<Long> deptIds = new ArrayList<Long>();
+			if(deptArr != null && deptArr.length() > 0){
+				for (int i = 0; i < deptArr.length(); i++) {
+					deptIds.add(Long.parseLong(deptArr.get(i).toString()));
+				}
+			}
+			idAndNameVOList = nominatedPostMainDashboardService.getBoardList(deptIds);      
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getBoardList method of NominatedPostProfileAction Action",e);

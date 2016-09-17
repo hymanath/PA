@@ -1438,10 +1438,10 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		str+='<div class="panel panel-default">';
 		str+='<div class="" style="padding: 12px;">';
-		str+='<p class="text-capital headingColor filterBtnCls font_17" style="cursor:pointer;">';
-		str+='<b><span id="anyDeptHeadingId"></span></b>';
+		str+='<h4 class="text-capital headingColor filterBtnCls font_17" style="cursor:pointer;">';
+		str+='any department any board nominated post details<b><span id="anyDeptHeadingId"></span></b>';
 		str+='<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;top:-5px;"></i>';
-		str+='</p>';
+		str+='</h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
 	 str+='<table class="table table-bordered tableFontSize text-capital">';
@@ -1451,10 +1451,10 @@ function getAnyDeptApplicationOverviewCountLocationWise(){
 		 // str+='<th>Reports Pending</th>';
 		  str+='<th>Position Linked</th>';
 		  str+='<th>Ready To Shortlist</th>';
-		  str+='<th>Position Linked & Rejected</th>';
-		  str+='<th>Position Linked & Shortlisted</th>';
-		  str+='<th>Position Linked & FinalReview</th>';
-		  str+='<th>Position Linked & Finalized</th>';
+		  str+='<th>Rejected</th>';
+		  str+='<th>Shortlisted</th>';
+		  str+='<th>FinalReview</th>';
+		  str+='<th>Finalized</th>';
 	      str+='</thead>';		  
 	  str+='<tbody>';
 	 

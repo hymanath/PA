@@ -55,7 +55,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading" style="background-color:#CCC">
 						<h3 class="text-capital">G.O.issued / completed</h3>
-						<p id="globalLocationId"></p>    
+						<p><span id="globalLocationId" style="font-weight:bold"></span> / <span style="font-style:italic" id="globalHeadId"></span></p>    
 					</div>
 					<div class="panel-body">
 						<div class="row">
@@ -122,15 +122,22 @@
 $('.chosenSelect').chosen({width: "100%"});  
 $(document).ready(function(){
 	getDepartmentList(globalLocationLevelId);
-	getBoardList(0);
+	getBoardList([]);
 	getPositionList(); 
+	
+	//$("#globalHeadId").html(deptName+" - "+boardName+" - "+positionName);
 });
+
+setTimeout(function(){ $("#globalHeadId").html(" "+deptName+" - "+boardName+" - "+positionName); }, 3000);
 var globalLocationLevelId = ${param.LocationLevelId};
 var globalLocationLevelValueArr = [${param.locationLevelValueArr}];      
 var deptId = ${param.deptId};
 var boardId = ${param.boardId};
 var positionId = ${param.positionId};  
 var status = "${param.status}"; 
+var deptName = '';
+var boardName = '';
+var positionName = '';
 $(document).on("click",".selectBox",function(){
 	$(this).toggleClass("active")
 });
@@ -231,7 +238,8 @@ function buildPage(){
 			if(result != null && result.length > 0){
 				for(var i in result){
 					if(result[i].id == deptId){
-						$('#departmentId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');    
+						$('#departmentId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');  
+						deptName = result[i].name;
 					}else{
 						$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					}
@@ -242,6 +250,8 @@ function buildPage(){
 		});
 	}
 	function getBoardList(deptId){  
+	$("#corporationId").empty();
+	$("#corporationId").trigger("chosen:updated");
 		var jsObj={
 			deptId : deptId
 		}
@@ -251,11 +261,14 @@ function buildPage(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#corporationId").empty();
 			$('#corporationId').html('<option value="0">ALL</option>');
-			if(result != null && result.length > 0){  
+			if(result != null && result.length > 0){
 				for(var i in result){
 					if(result[i].id == boardId){ 
 						$('#corporationId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');  
+						boardName = result[i].name;
+						getPositionList();
 					}else{
 						$('#corporationId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');  
 					}
@@ -278,6 +291,7 @@ function buildPage(){
 				for(var i in result){
 					if(result[i].id == positionId){  
 						$('#positionId').append('<option value="'+result[i].id+'" selected="selected">'+result[i].name+'</option>');
+						positionName = result[i].name;
 					}else{
 						$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					}
@@ -286,11 +300,28 @@ function buildPage(){
 				$("#positionId").trigger("chosen:updated");  
 			}
 		});
-	}  
-	/* $(document).on('change','#departmentId',function(){
+	}
+	
+	$(document).on('change','#departmentId',function(){
 		var departmentId = $("#departmentId").val();  
+		$("#corporationId").empty();
+		$("#corporationId").trigger("chosen:updated");
+		$("#positionId").empty();
+		$("#positionId").trigger("chosen:updated");
+		$("#bodyId").html("");
+		if(departmentId != null)
 		getBoardList(departmentId);
-	}); */
+	});
+	
+	$(document).on('change','#corporationId',function(){
+		var boardId = $("#corporationId").val();
+		$("#positionId").empty();
+		$("#positionId").trigger("chosen:updated");
+		$("#bodyId").html("");
+		if(boardId != null)
+		getPositionList();
+	});
+	 
 	$(document).on('click','#statusDetailsId',function(){
 		$("#deptErrVid").html("");
 		$("#boardErrVid").html("");
