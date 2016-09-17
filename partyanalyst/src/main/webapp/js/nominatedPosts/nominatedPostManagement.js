@@ -888,6 +888,7 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 			str+='<div class="pad_15">';
 				str+='<button id="readytoFinalReviewBtnId'+boards+'" class="btn btn-success moveToFinalReviewCls" role="tab" data-toggle="tab" attr_position_id="'+result[i].id+'" attr_body_id="'+bodyId+'" attr_board_id="'+boards+'" attr_dept_id="'+depts+'" disabled>Ready For Final Review</button>';
 				//str+='<span class="pull-right m_top10">Note: Click on count to view Applied candidate profile & Update application status</span>';
+				str+='<span id="statusMsgDivId'+depts+''+boards+'" style="color:green;"></span>';
 				str+='<span id="updateSearchId'+depts+''+boards+'" style="display:none"><img src="images/search.gif"/></span>';
 			str+='</div>';
 			//
@@ -1026,7 +1027,10 @@ var globalReadyDeptId=0;
 var globalReadyBoardId=0;
 var globalReadyBodyId='';
 $(document).on("click",".moveToFinalReviewCls",function(){
-	 var districtId=$("#districtId").val();
+	
+	var retVal = confirm("Are you sure want to move post to final review ?");
+	if( retVal == true ){
+	var districtId=$("#districtId").val();
 	var constituencyId=$("#constituencyId").val();
 	var mandalTownDivId=$("#manTowDivId").val();
 	var stateId=$("#stateId").val();
@@ -1102,14 +1106,22 @@ $(document).on("click",".moveToFinalReviewCls",function(){
    }).done(function(result){
 	  $("#updateSearchId"+deptId+""+boardId).hide();
 	  if(result != null && result.resultCode==0){
-		  alert("Successfully this position Moved to Final Review.");
-		  getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,'','','');
-	  }
+		  //alert("Successfully this position Moved to Final Review.");
+		  $("#statusMsgDivId"+deptId+""+boardId).html("Successfully this position Moved to Final Review.");
+		  setTimeout(function(){ 
+				getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,'','','');
+			  }, 2000);
+		}
 	  else if(result != null && result.resultCode==1){
-		  alert("Error Occured while moving this position to Final Review.");
+		  $("#statusMsgDivId"+deptId+""+boardId).html("Error Occured while moving this position to Final Review.");
 	  }
    });
-	
+			return true;
+       }
+   else{
+          return false;
+       }
+	 
 });
 
 $(document).on("click","#readyToFinalRevewBtn",function(){
