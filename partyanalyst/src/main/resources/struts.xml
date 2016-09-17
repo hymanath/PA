@@ -13690,6 +13690,11 @@
    			<param name="root">userTypeVOList</param> 
    		</result>
 	</action> 
+	<action name="getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserTypeAction" class="coreDashboardAction" method="getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType">
+		<result type="json" name="success"> 
+   			<param name="root">eventDetailsVOList</param> 
+   		</result>
+	</action> 
 	<action name="getParyMeetingTypeDetailsPerDistrictAction" class="coreDashboardAction" method="getParyMeetingTypeDetailsPerDistrict">
 		<result type="json" name="success"> 
    			<param name="root">idNameVoList</param> 

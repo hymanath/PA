@@ -2412,5 +2412,5 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
   }      
 }
 function setLastUpdatedTime(lastUpdatedTime){
- $("#lastUpdatedIdTimeId").html("<b>Last Updated Time - ("+lastUpdatedTime+")</b>");
+ $("#lastMeetingUpdatedIdTimeId").html(" Last Updated :"+lastUpdatedTime+"");
 }

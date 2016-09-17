@@ -49,8 +49,10 @@ var getDocumentWidth = $(document).width();
   function buildTrainingProgramBasicDetails(result){
 	  var str='';
 	  var programList = result.trainingProgramList;
+	  var lastUPdatedTime;
 	if(programList != null && programList.length > 0){
 		  for(var i in programList){
+			 lastUPdatedTime= programList[0].lastUpdatedTime;
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
 			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
@@ -75,9 +77,11 @@ var getDocumentWidth = $(document).width();
 			str+='<hr class="m_0"/>';
 		 str+='</div>';	
 	  }
+	  setLastUpdatedTimeForTrainingCamp(lastUPdatedTime);
 	}else{
 		str+='NO DATA AVAILABLE';
 	}
+	
 	 $("#programsDtlsCntTableId").html(str);
 	 
 	var villageWardRslt = result.villageWardVO;
@@ -185,6 +189,9 @@ var getDocumentWidth = $(document).width();
 	 str4+='NO DATA AVAILABLE';	
 	}
 	$("#stateTblDivId").html(str4);   */
+  }
+  function setLastUpdatedTimeForTrainingCamp(lastUPdatedTime){
+	  $("#lastUpdatedTimeTrainingCampId").html(" Last Updated :"+lastUPdatedTime+"");
   }
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');

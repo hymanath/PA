@@ -435,6 +435,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
+					<b><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
 							<div class="row">
 							 <div id="programsDtlsCntTableId"></div>
@@ -1441,7 +1442,6 @@
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings <small class="text-muted"><span id="dateMeetingHeadingId"> - last month</span></small>
 								</h4>
-								<span style="font-size:12px;" id="lastUpdatedIdTimeId"></span>
 							</div>
 							<div class="col-md-6 col-sm-6 col-xs-5">
 							 <span class="settingsIcon pull-right">
@@ -1477,6 +1477,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
+						<b><h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
 									<h4><span class="headingColor text-capitalize">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span></h4>
@@ -1967,6 +1968,7 @@
 		//events
 		//getEventBasicCntDtls();
 		//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
+		//getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();

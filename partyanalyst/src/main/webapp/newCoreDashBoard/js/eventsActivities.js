@@ -38,3 +38,26 @@ function getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(){
 		}).done(function(result){
 		});
 }
+function getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(){
+	   var eventIds=[];
+		eventIds.push(7);
+		eventIds.push(30);
+		
+		var jsObj ={ 
+		             activityMemberId : globalActivityMemberId,
+					 stateId : 1,
+					 eventIds:eventIds,
+					 userTypeId : globalUserTypeId
+					 
+				  }
+		$.ajax({
+			type : 'POST',
+			url : 'getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserTypeAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+	
+	
+}
