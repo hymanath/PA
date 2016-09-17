@@ -384,7 +384,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
 				else
 					str+='<span> NO </span>';
-					str+='<div class="appliedPostPopup">';
+					str+='<div class="appliedPostPopup" style="margin-left: -71px;">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
 						str+='</div>';
 					str+='</div>';
@@ -397,7 +397,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
 					else
 						str+='<span> NO </span>';
-						str+='<div class="appliedPostPopup">';
+						str+='<div class="appliedPostPopup" style="margin-left: -71px;">';
 							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'">';
 							str+='</div>';
 						str+='</div>';
