@@ -1651,7 +1651,8 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				" WHERE " +
 				//" model1.nominationPostCandidate.nominationPostCandidateId = model.nominationPostCandidate.nominationPostCandidateId " +
 				" model.isDeleted = 'N'" +
-				" AND model.applicationStatus.status = :status  ");
+				" AND model.applicationStatus.applicationStatusId in (3)  and" +
+						" model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  ");
 		if(boardLevelId.longValue() !=5L)
 			str.append(" AND nominatedPostApplication.boardLevel.boardLevelId=:boardLevelId ");
 		else 
