@@ -1733,7 +1733,6 @@ public String getParyMeetingTypeDetailsPerDistrict(){
 }
 return Action.SUCCESS;
 }
-
 public String getLatestDebate(){
 	try{
 		
@@ -1744,5 +1743,27 @@ public String getLatestDebate(){
 	}
 	return Action.SUCCESS;
 }
-
+public String getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(){
+	
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+		
+        Long activityMemberId = jObj.getLong("activityMemberId");
+		
+		List<Long> eventIds = new ArrayList<Long>();
+		JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}
+		Long stateId = jObj.getLong("stateId");
+		Long userTypeId = jObj.getLong("userTypeId");
+		eventDetailsVOList = coreDashboardEventsActivitiesService.getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(userTypeId,stateId,activityMemberId,eventIds);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getUserTypeWiseTotalInviteeAndInviteeAttendedCnt() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }
