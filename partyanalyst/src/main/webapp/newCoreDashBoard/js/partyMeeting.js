@@ -1921,10 +1921,10 @@ function getParyMeetingTypeDetailsDistrictWise(mainMeetingTypeId,partyMeetingTyp
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			 $("#districtWisePartyMeetingTypeDivId").html(' ');
-				buildDistrictWisePartyMeetingTypeDtlsRslt(result);
+				buildDistrictWisePartyMeetingTypeDtlsRslt(result,mainMeetingTypeId,partyMeetingTypeIdsString);
 		});
 }
-function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
+function buildDistrictWisePartyMeetingTypeDtlsRslt(result,mainMeetingTypeId,partyMeetingTypeIdsString){
 		$("#districtWisePartyMeetingTypeDivId").html('');
 		if(result != null && result.length > 0){
 			var str='';
@@ -1939,6 +1939,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 		
 	if(result != null && result.length > 0){
 		for(var i in result){
+			var districtIdArr = [];
 			var districtNamesArray =[];
 			var attendedCntPercArray = [];
 			var notAttendedCntPerArray = [];
@@ -1946,6 +1947,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 			if(result[i].districtList !=null && result[i].districtList.length > 0){
 				for(var j in result[i].districtList){
 						districtNamesArray.push(result[i].districtList[j].name);
+						districtIdArr.push(result[i].districtList[j].id);
 							attendedCntPercArray.push(result[i].districtList[j].inviteeAttendedPerc);
 							notAttendedCntPerArray.push(result[i].districtList[j].notAttendedPerc);
 						//}
@@ -2034,14 +2036,113 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result){
 								}]
 							});
 						});
-				
+						$.each($('#districtWiseMeetingType'+i+'').find(".highcharts-xaxis-labels").find("tspan"),function(index,item){ 
+							$(this).attr("style","cursor:pointer;");
+							$(this).attr("class","distDtlsMeetingCls");    
+							$(this).attr("attr_meeting_type_id",mainMeetingTypeId);
+							$(this).attr("attr_dist_id",districtIdArr[index]);   
+							$(this).attr("attr_meeting_type_ids",partyMeetingTypeIdsString);
+						});    
 			
 		}
 	}else{
 		$("#districtWisePartyMeetingTypeDivId").html("No Data Available")
 	}	
 }
-
+$(document).on("click",".distDtlsMeetingCls",function(){ 
+	$("#myModelId").modal('show');
+	$("#myModalLabel").html('Meeting Member Details');    
+	
+	$("#positionId").html('');  
+	$("#memberId").html(''); 
+	$("#processingImgId").show();	  
+	$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
+	var distId = $(this).attr("attr_dist_id");
+	var mainMeetingTypeId = $(this).attr("attr_meeting_type_id");
+	var partyMeetingTypeIdsString = $(this).attr("attr_meeting_type_ids");
+	var partyMeetingTypeArr = partyMeetingTypeIdsString.split(",");
+	
+	var state = globalState
+	var dates=$("#dateRangeIdForMeetings").val();
+	var fromDateStr;
+	var toDateStr;
+	if(dates != null && dates!=undefined){
+		var datesArr = dates.split("-");
+		fromDateStr = datesArr[0]; 
+		toDateStr = datesArr[1]; 
+	}
+	var jsObj ={ 
+		partyMeetingMainTypeId : mainMeetingTypeId,
+		state : state,
+		startDateString : fromDateStr,
+		endDateString : toDateStr,
+		partyMeetingTypeIds:partyMeetingTypeArr,
+		distId : distId  
+	}
+	$.ajax({
+		type : 'POST',     
+		url : 'getParyMeetingTypeDetailsPerDistrictAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+		$("#processingImgId").hide();    
+		if(result != null && result.length > 0){
+			buildParyMeetingTypeDetailsPerDistrict(result);
+				
+		}else{
+			$("#memberId").html('No Data Available');     
+		}
+	});
+	
+});
+function buildParyMeetingTypeDetailsPerDistrict(result){
+	var str2 = '';
+	var totalMember = result.length;  
+	var attendedMember = 0;
+	var absent = 0;
+	
+	var str = '';
+	str+='<table class="table table-condensed" id="meetingMemberDtlsId">';
+	str+='<thead>';
+		str+='<th>NAME</th>';
+		str+='<th>DESIGNATION</th>';
+		str+='<th>CONTACT NUMBER</th>'; 
+		str+='<th>MEETING NAME</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+		if(result[i].wish=="attended"){
+			attendedMember+=1;
+		}
+		str+='<tr>'; 
+			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			if(result[i].status==""){ 
+				str+='<td>-</td>';
+			}else{    
+				str+='<td>'+result[i].status.toUpperCase()+'</td>';   
+			}  
+			str+='<td>'+result[i].mobileNo+'</td>'; 
+			if(result[i].applicationStatus != null){
+				str+='<td>'+result[i].applicationStatus.toUpperCase()+'</td>';
+			}else{
+				str+='<td>ABSENT</td>';      
+			}
+			
+		
+		str+='</tr>';     
+	}
+	absent = totalMember - attendedMember;  
+	str2+='<span class="label label-primary">All-'+totalMember+'</span>'; 
+	str2+='<span class="label label-default">Attended-'+attendedMember+'</span>';  
+	
+	str2+='<span class="label label-warning">Absent-'+absent+'</span>';  
+	
+	str+='</tbody>';  
+	$("#positionId").html(str2);
+	$("#memberId").html(str);   
+	$("#meetingMemberDtlsId").dataTable();    
+}
 function getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetings(partyMeetingMainTypeId,partyMeetingTypeIdsString){
 	$("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html(' ');
 	$("#stateLevelMeetingBlockId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
