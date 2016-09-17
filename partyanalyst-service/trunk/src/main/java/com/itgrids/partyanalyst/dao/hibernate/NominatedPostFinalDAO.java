@@ -1475,7 +1475,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	 	   }
 	       queryStr.append(" count(model.nominatedPostFinalId)");
 	       
-	       queryStr.append(" from  NominatedPostFinal model where model.isDeleted = 'N' and model.isPrefered = 'Y' and model.applicationStatus.applicationStatusId > 3 ");
+	       queryStr.append(" from  NominatedPostFinal model where model.isDeleted = 'N' and model.isPrefered = 'Y' and model.applicationStatus.applicationStatusId = 5 ");
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 	    	   if(LocationLevelId.longValue() != 5L)
