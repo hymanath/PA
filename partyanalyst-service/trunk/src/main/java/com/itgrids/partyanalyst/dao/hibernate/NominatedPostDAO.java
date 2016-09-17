@@ -25,7 +25,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				" model.nominatedPostMember.boardLevelId, count(distinct model.nominatedPostId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.departmentId), count(distinct model.nominatedPostMember.nominatedPostMemberId), " +
 				" count(distinct model.nominatedPostMember.nominatedPostPosition.boardId)" +
-				"  ,model.nominatedPostMemberId ");
+				"  ,model.nominatedPostMemberId,model.nominatedPostMember.nominatedPostPosition.departmentId,model.nominatedPostMember.nominatedPostPosition.boardId ");
 		queryStr.append(" from NominatedPost model   " );
 		if(boardLevelId != null && boardLevelId.longValue()>1L && stateId != null)
 			queryStr.append(" ,UserAddress model2 where model.nominatedPostMember.addressId = model2.userAddressId and " );
