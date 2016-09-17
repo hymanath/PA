@@ -558,7 +558,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 		return null;
 	}
-	public List<IdAndNameVO> getBoardList(Long deptId){
+	public List<IdAndNameVO> getBoardList(List<Long> deptId){
 		LOG.info("Entered into getboardList() of NominatedPostMainDashboardService.");
 		try{
 			List<IdAndNameVO> brdList = new ArrayList<IdAndNameVO>();

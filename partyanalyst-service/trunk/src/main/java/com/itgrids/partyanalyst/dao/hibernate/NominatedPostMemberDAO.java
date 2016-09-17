@@ -238,19 +238,19 @@ public class NominatedPostMemberDAO extends GenericDaoHibernate<NominatedPostMem
 	/* 
 	 * Swadhin
 	 */
-	public List<Object[]> getBoardList(Long deptId){
+	public List<Object[]> getBoardList(List<Long> deptId){
 		StringBuilder str = new StringBuilder(); 
 		str.append(" select distinct model.nominatedPostPosition.board.boardId, model.nominatedPostPosition.board.boardName " +
 				   " from NominatedPostMember model " +
 				   " where " );
-		if(deptId > 0l){
-			str.append(" model.nominatedPostPosition.departments.departmentId = :deptId and ");
+		if(deptId != null && deptId.size() > 0l){
+			str.append(" model.nominatedPostPosition.departments.departmentId in (:deptId) and ");
 		}
 		str.append(" model.isDeleted = 'N' and " +
 				   " model.nominatedPostPosition.isDeleted = 'N' ");  
 		Query query = getSession().createQuery(str.toString());
-		if(deptId > 0l){
-			query.setParameter("deptId", deptId);   
+		if(deptId != null && deptId.size() > 0l){
+			query.setParameterList("deptId", deptId);   
 		}		  
 		return query.list();  
 	}

@@ -13,6 +13,6 @@ public interface INominatedPostMemberDAO extends GenericDao<NominatedPostMember,
 	public List<Object[]> getPositionList();
 	public List<Object[]> getLocationLevelList();
 	public List<Object[]> getDepartmentList(Long boardLevelId);
-	public List<Object[]> getBoardList(Long deptId); 
+	public List<Object[]> getBoardList(List<Long> deptId); 
 	public List<Object[]> getTotalBoardsAndCorpIdsByMembrIdsList (List<Long> memberIdsList);
 }
