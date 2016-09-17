@@ -796,11 +796,15 @@ function getNominatedPostApplication(startIndex)
 			}		
 			voterCardNo = $('#searchBy').val().trim();
 			
-			if(searchBy.trim().length == 0 || searchBy.trim() == null || searchBy.trim().length != 10 )
+			if(searchBy.trim().length == 0 || searchBy.trim() == null )
 			{
 				$('#searchErrDiv').html('Please enter Voter Card No.');
 				return;
-			}
+			}/*else if(searchBy.trim().length > 12)
+			{
+				$('#searchErrDiv').html('Invalid voter No.');
+				return;
+			}*/
 		}
 		if(searchRadioType == 'mobileNo')
 		{	
@@ -922,6 +926,7 @@ function getNominatedPostApplication(startIndex)
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				$("#textId").hide();
 				 isFree =true;
 				  $("#cadreSearchDtls").html('');
 			$(".paginationDivId").show();
@@ -948,8 +953,6 @@ function getNominatedPostApplication(startIndex)
 	}
 	
    function buildCadreDetails(result){ 
-	   //$("#textId").show();
-	   
 	    $("#cadreSearchDtls").html('');
 		
 		$("#cadreSearchDtls").show();
@@ -958,7 +961,7 @@ function getNominatedPostApplication(startIndex)
 		var str1='';
 		
 
-		$("#textId").show();
+		
 		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS : </h4>';
 		str1+='<p>Search Results: <b><u id="cadreSearchSize">'+result.length+'</u></b> Members</p>';
 		$("#searchData1").html(str1);
@@ -1040,6 +1043,7 @@ function getNominatedPostApplication(startIndex)
 		}else{
 				str+='No Data Available';
 				$("#cadreSearchDtls").html(str);
+				$("#textId").show();
 				//$("#cadreSearchDtls").html(No Data Available);			
 		}
 	    
@@ -2610,11 +2614,11 @@ function notCadresearch(){
 				$('#notCadreErrMsg').html('Enter Alpha Digits Only.');
 				return;
 			}*/
-			else if(searchValue.trim().length > 10)
+			/*else if(searchValue.trim().length > 12)
 			{
 				$('#notCadreErrMsg').html('Invalid voter No.');
 				return;	
-			}else{
+			}*/else{
 				$('#notCadreErrMsg').html(' ');
 			}
 		}
@@ -2660,10 +2664,10 @@ function notCadresearch(){
 				$('#notCadreErrMsg').html(' ');
 			}
 		}
+		$("#textId").hide();
 		$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 	$("#searchData1,#searchData").html('');
-	$("#textId").hide();
-	
+
 	if(isNotCadreFree){
 		isNotCadreFree = false;
 		
@@ -2823,7 +2827,7 @@ var isSameCheckBoxClicked=0;
 		   }else{
 			   if(result.message == "applied")
 			   {
-				   $("#voterExtraErrId").html("Already applied");  
+				   $("#voterExtraErrId").html("This voter Id already Registered");  
 				
 			    $("#addCandidateBtnId").prop('disabled','disabled');
 			    $(".addNewCandidateErrorCls").html(""); 
