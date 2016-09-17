@@ -1253,6 +1253,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					if(nominatedPostVO.getNominatdList() != null && !nominatedPostVO.getNominatdList().isEmpty() ){
 						
 						for(NominatedPostVO Vo : nominatedPostVO.getNominatdList()){
+							if(Vo != null ){
 							String[] positnArr = null ;
 							String positions = Vo.getPositions();
 							if(positions != null && positions.length() > 0){
@@ -1267,7 +1268,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 								}else{
 									nominatedPostApplication = saveNominatedPostApplication(Vo,nominatedCandiPostId,null,loggerUserId,mapfiles);
 								}
-							
+							}
 						
 						}
 				}
@@ -5188,9 +5189,10 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						
 						if(finalIds !=null){
 							finalCount = nominatedPostFinalDAO.updateApplicationStatusToFinalReview(userId,finalIds);	
-							for (Long appliId : finalIds) {
+							for (Long finaliId : finalIds) {
 								try {
-									savingNominatedPostApplicationHistoryDetails(nominatedPostApplicationDAO.get(appliId),6L,userId);
+									NominatedPostFinal finalModel = nominatedPostFinalDAO.get(finaliId);
+									savingNominatedPostApplicationHistoryDetails(finalModel.getNominatedPostApplication(),6L,userId);
 								} catch (Exception e) {
 									LOG.error("Exception raised at updateNominatedPostStatusDetails() method of NominatedPostProfileService when application model status changing.", e);
 								}
