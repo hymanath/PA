@@ -561,6 +561,11 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
 			$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".dateRangePickerClsForNews").toggleClass("hide");
+		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".eventsHiddenBlock").hide();
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForEvents").toggleClass("hide");
 		}
 	});
 	$(document).on("click",".stateLevelMeetingsExpand",function(){
