@@ -1440,6 +1440,11 @@ $(document).on("click",".boardHrfCls",function(){
 
 	var strglob = ' ';
 	strglob+='<div class="updateDropDownArrow ">';
+		 strglob+='<div class="row">';
+			strglob+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				strglob+='<span class="pull-right btn btn-default btn-xs updateDropDownArrCls" id="updateDropDownId" >X</span>';
+			strglob+='</div>';
+		strglob+='</div>';  
 		strglob+='<div class="row ">';
 		strglob+='<form name="goSubmitApplicationForCandi" id="goSubmitApplicationForCandi"  method="post" enctype="multipart/form-data">';
 			strglob+='<div class="col-md-3 col-xs-12 col-sm-6">';
@@ -1862,4 +1867,8 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	}); 
 	 $(document).on("click","#commentsPopUpId",function(){
 		$(".commentsDiv").hide();
-	}) 
+	});
+	
+	$(document).on("click","#updateDropDownId",function(){
+		$(".updateDropDownArrow ").hide();
+	});
