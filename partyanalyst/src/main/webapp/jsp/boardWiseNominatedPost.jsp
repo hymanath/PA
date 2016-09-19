@@ -650,7 +650,8 @@ function getApplicationStatus(divId){
    });
 }
 
-function getDepartments(num){
+function getDepartments(num){  
+	   $("#errorMsg"+num).html('');
 	<!--$("#departmentAnyId"+num+" option").remove();-->
 	   $("#statusCommentAnyId"+num).html('');
 	   $("#updatedStatusAnyId"+num).val(0);
@@ -748,7 +749,11 @@ function getPositionsForBoard(num){
 	var depmtId = $("#departmentAnyId"+num).val();
 	var boardId = $("#boardAnyId"+num).val();
 	
-	 $("#updatedStatusAnyId"+num).trigger("chosen:updated");
+	$("#updatedStatusAnyId"+num).trigger("chosen:updated");
+	 if(boardId==0)
+	{
+		return;
+	}
 	var jsObj={
 		depmtId : depmtId,
 		boardId : boardId,
