@@ -1139,8 +1139,16 @@ public String getRoleBasedPerformanceCohort(){
 				}
 			}
 			
+			List<Long> impactScopeIdsList = new ArrayList<Long>(0);
+			
+			if(jObj.getJSONArray("impactScopeIdsArr") != null && jObj.getJSONArray("impactScopeIdsArr").length()>0){
+				for(int i=0;i<jObj.getJSONArray("impactScopeIdsArr").length();i++){
+					impactScopeIdsList.add(Long.parseLong(jObj.getJSONArray("impactScopeIdsArr").getString(i)));
+				}
+			}
+			
 			userTypeVOList = newsCoreDashBoardService.getUserTypeWiseNewsCounts(userId,jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),
-					jObj.getString("state"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("benefitId"),npIdsList);
+					jObj.getString("state"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("benefitId"),npIdsList,impactScopeIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getUserTypeWiseNewsCounts", e);
 		}
