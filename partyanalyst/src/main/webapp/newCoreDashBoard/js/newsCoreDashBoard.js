@@ -4371,8 +4371,8 @@ function getChildUserTypesByItsParentUserType1(){
 		
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+deptIdsStr+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+deptIdsStr
 		}).then(function(result){
 			$("#districtWiseNewsReport").html();
 			buildComparisionPartyDistrictEditionsOverview(result);
@@ -4555,8 +4555,8 @@ function getChildUserTypesByItsParentUserType1(){
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+deptIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+deptIdsStr
 		}).then(function(result){
 			$("#newsTypeAnalysisDiv").html();
 			if(result != null && result.length > 0){
@@ -4803,7 +4803,7 @@ function getChildUserTypesByItsParentUserType1(){
 				}
 			}
 	}
-	function getComparisionPartyPartyVsPublications(searchType,deptIdsStr){//Teja2
+	function getComparisionPartyPartyVsPublications(searchType,deptIdsStr){
 		$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		/* if(searchType == "party"){
 			$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -4828,8 +4828,8 @@ function getChildUserTypesByItsParentUserType1(){
 		//var searchType = "publication";
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr"/"+deptIdsStr+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+deptIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+deptIdsStr
 		}).then(function(result){
 			
 			
@@ -4983,4 +4983,164 @@ function getChildUserTypesByItsParentUserType1(){
 					 touchMove:false
 				}); 
 		
+	}
+		function buildgetComparisionPartyWiseDetailes(result){
+		$("#partyWiseDetailsDiv").html();
+		var str ='';
+		if(result !=null && result.length >0){
+			for(var i in result){
+				var partyname;
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						str+='<div class="col-md-12 col-xs-12 col-ms-12">';
+							str+='<div class="col-xs-1 col-md-1 col-sm-2 pad_left0">';
+						for(var j in result[i].coreDashBoardVOList){
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								for(var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									partyname = result[i].coreDashBoardVOList[j].coreDashBoardVOList[0].organization
+								}
+							}
+						}
+						str+='<h4  style="height:150px;border-right:1px solid #ddd;padding-top:50px !important;"><img src="newCoreDashBoard/img/'+partyname+'.png" class="debatesPartyIcon" />'+partyname+'</h4>';
+							str+='</div>';
+							str+='<div class="col-xs-11 col-sm-10 col-md-11">';
+								str+='<ul class="partyWiseSlickApply">';
+						for(var j in result[i].coreDashBoardVOList){
+							str+='<li><div id="partywisegraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
+						}
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';	
+					}
+					
+					
+			}
+			
+		}
+		
+		
+		$("#partyWiseDetailsDiv").html(str);
+			if(result !=null && result.length >0){
+				for(var i in result){
+					
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						for(var j in result[i].coreDashBoardVOList){
+							
+							var paperNamesArray =[];
+							var positivePercArray =[];
+							var negativePercArray =[];
+							var districtName;
+							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
+								
+								for(var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
+									districtName = result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].districtName;
+									paperNamesArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].name)
+									positivePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].positiveCountDist)
+									negativePercArray.push(result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountDist)
+									
+									
+								}
+							}
+							if(paperNamesArray.length !=0 && positivePercArray.length !=0 &&  negativePercArray.length !=0 &&  negativePercArray.length !=0 && districtName !=0 && districtName !=null){
+								$(function () {
+									$('#partywisegraph'+i+''+j+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: districtName
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: paperNamesArray,
+											labels: {
+													rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											formatter: function () {
+												var s = '<b>' + this.x + '</b>';
+
+												$.each(this.points, function () {
+													s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+														Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+														(this.y);
+												});
+
+												return s;
+											},
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												stacking: 'percent',
+												dataLabels:{
+													enabled: false,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.percentage,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: positivePercArray
+										}, {
+											name: 'Negative',
+											data: negativePercArray
+										}]
+									});
+								});
+							}else{
+								$('#partywisegraph'+i+''+j+'').html("No Data Available");
+								$('#partywisegraph'+i+''+j+'').css("height","20px");
+							}
+							
+						}
+						
+					}
+					
+					
+					
+				}
+			}
+				
+			else{
+				$("#partyWiseDetailsDiv").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
+			}
+			
+		$(".partyWiseSlickApply").slick({
+			 slide: 'li',
+			 slidesToShow: 4,
+			 slidesToScroll: 3,
+			 infinite: false,
+			 swipeToSlide:false,
+			 swipe:false,
+			 touchMove:false
+		}); 
 	}
