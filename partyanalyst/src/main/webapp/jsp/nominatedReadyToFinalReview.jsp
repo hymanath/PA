@@ -71,6 +71,14 @@
 	border-radius:50%;
 	top:10px;
 } 
+.filterIcon
+{
+	background:#ddd;
+	padding:4px;
+	border-radius:50%;
+	cursor:pointer;
+	top:-3px
+}
 </style>
 </head>
 <body>
@@ -85,6 +93,10 @@
 		<!--<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
         	<h3 class="text-capitalize headingColor" style="font-weight:300"><span id="headStsId"></span> <i class="glyphicon glyphicon-filter filterIcon filterBtn pull-right"></i></h3>
         </div>-->
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+	  <h3 class="text-capital" id="headinggId" style="color:#5C2D25;display:none"></h3>
+		<h3 class="text-capital headingColor" ><i class="pull-right glyphicon glyphicon-filter filterBtn filterIcon" title="Select Locations" ></i></h3>
+		<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 filterSection">
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -93,7 +105,7 @@
 							<label>State</label>
 							<select class="form-control" id="stateId">
 								<option value="0">All</option>
-								<option value="1">Andhara Pradesh</option>
+								<option value="1">Andhra Pradesh</option>
 								<option value="36">Telangana</option>
 							</select>
 						</div>
@@ -119,6 +131,24 @@
 				</div>
 			</div>
 		</div>
+				</div>
+		<div id="anyDeptCorTblId" class=" filterSectionIconCls"></div>
+		<!--<div class="row" id="anyPostDivId" style="display:none;"> 
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
+					<div class="" style="padding: 12px;">
+						<p class="text-capital headingColor filterBtnCls font_17" style="cursor:pointer;">
+							<b><span id="anyDeptHeadingId"></span></b>
+							<i class="pull-right glyphicon glyphicon-chevron-down " style="cursor:pointer;font-size:12px;"></i>
+						</p>
+					</div>
+					<div class="panel-body">
+						<div id="anyDeptCorTblId" class=" filterSectionIconCls"></div>
+					</div>
+				</div>
+			</div>
+		</div>-->
+	  </div>
 	</div>
 	<div class="row m_top20">
     	
