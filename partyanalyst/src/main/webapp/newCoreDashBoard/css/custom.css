@@ -715,7 +715,7 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 .panelNewCustom .panel-heading
 {
 	border-radius:0px;
-	background:#FFC21F
+	background:#FFC21F;	
 }
 .panelNewCustom .panel-heading .panel-title
 {
@@ -849,16 +849,16 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	box-shadow:0px 0px 7px rgba(0,0,0,0.6);
 	margin-top:34px;
 }
-.notesUl , .notesUlTraining , .notesUlDebates , .notesUlMeetings
+.notesUl , .notesUlTraining , .notesUlDebates , .notesUlMeetings , .notesUlEvents
 {
 	padding-left:10px;
 }
-.notesUl li , .notesUlTraining li , .notesUlDebates li , .notesUlMeetings li
+.notesUl li , .notesUlTraining li , .notesUlDebates li , .notesUlMeetings li , .notesUlEvents li
 {
 	list-style:none;
 	position:relative;
 }
-.notesUl li:before , .notesUlTraining li:before , .notesUlDebates li:before , .notesUlMeetings li:before
+.notesUl li:before , .notesUlTraining li:before , .notesUlDebates li:before , .notesUlMeetings li:before , .notesUlEvents li:before
 {
 	background-color:#ddd;
 	content:' ';
@@ -869,29 +869,29 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	border-radius:50%;
 	top:5px;
 }
-.notesUl li:hover , .notesUlTraining li:hover , .notesUlDebates li:hover , .notesUlMeetings li:hover
+.notesUl li:hover , .notesUlTraining li:hover , .notesUlDebates li:hover , .notesUlMeetings li:hover , .notesUlEvents li:hover
 {
 	background-color:#f8f8f8;
 }
-.notesUl li:hover .hoverBlock , .notesUlTraining li:hover .hoverBlock , .notesUlDebates li:hover .hoverBlock , .notesUlMeetings li:hover .hoverBlock
+.notesUl li:hover .hoverBlock , .notesUlTraining li:hover .hoverBlock , .notesUlDebates li:hover .hoverBlock , .notesUlMeetings li:hover .hoverBlock , .notesUlEvents li:hover .hoverBlock
 {
 	display:block
 }
-.notesUl li .glyphicon-edit , .notesUlTraining li .glyphicon-edit, .notesUlDebates li .glyphicon-edit, .notesUlMeetings li .glyphicon-edit
+.notesUl li .glyphicon-edit , .notesUlTraining li .glyphicon-edit, .notesUlDebates li .glyphicon-edit, .notesUlMeetings li .glyphicon-edit, .notesUlEvents li .glyphicon-edit
 {
 	color:#A8D0D1;
 	margin-right:2px;
 	display:none;
 	cursor:pointer;
 }
-.notesUl li .glyphicon-trash , .notesUlTraining li .glyphicon-trash, .notesUlDebates li .glyphicon-trash, .notesUlMeetings li .glyphicon-trash
+.notesUl li .glyphicon-trash , .notesUlTraining li .glyphicon-trash, .notesUlDebates li .glyphicon-trash, .notesUlMeetings li .glyphicon-trash, .notesUlEvents li .glyphicon-trash
 {
 	color:#FE9999;
 	display:none;
 	cursor:pointer;
 }
 .btnCustomCreate , .btnCustomCreate:hover , .btnCustomCreate:focus , .btnCustomCreate:active,
-.btnCustomCreateTraining , .btnCustomCreateTraining:hover , .btnCustomCreateTraining:focus , .btnCustomCreateTraining:active , .btnCustomCreateDebates  , .btnCustomCreateDebates :hover , .btnCustomCreateDebates :focus , .btnCustomCreateDebates :active, .btnCustomCreateNews  , .btnCustomCreateNews :hover , .btnCustomCreateNews :focus , .btnCustomCreateNews :active, .btnCustomCreateMeetings  , .btnCustomCreateMeetings :hover , .btnCustomCreateMeetings :focus , .btnCustomCreateMeetings :active
+.btnCustomCreateTraining , .btnCustomCreateTraining:hover , .btnCustomCreateTraining:focus , .btnCustomCreateTraining:active , .btnCustomCreateDebates  , .btnCustomCreateDebates :hover , .btnCustomCreateDebates :focus , .btnCustomCreateDebates :active, .btnCustomCreateNews  , .btnCustomCreateNews :hover , .btnCustomCreateNews :focus , .btnCustomCreateNews :active, .btnCustomCreateMeetings  , .btnCustomCreateMeetings :hover , .btnCustomCreateMeetings :focus , .btnCustomCreateMeetings :active , .btnCustomCreateEvents  , .btnCustomCreateEvents :hover , .btnCustomCreateEvents :focus , .btnCustomCreateEvents :active 
 {
 	background-color:#9AB3BA;
 	border:1px solid #9AB3BA;

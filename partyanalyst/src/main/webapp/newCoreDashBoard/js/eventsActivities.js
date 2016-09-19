@@ -335,20 +335,14 @@ $.ajax({
 	 var str=''; 
   		 
      str+='<ul class="notesUlEvents m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
-        	     
-				for(var i in result){ 
-                    str+='<li style="margin-top:3px;">'; 
-                    str+='<span class="notesTextEvents" id="editTextEventsId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
-				    str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesEvents" attr_cmt_id="editTextEventsId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
-                    str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesEvents" attr_cmt_id="editTextEventsId'+i+'" attr_comment="'+result[i].comment+'"></i>';
-                    str+='</li>';
-				}
-                    str+='</ul>';
-					/*str+='<hr/>';
-					str+='<div id="meetingsUpId" style="color:red;"></div>';
-                    str+='<label>Create Notes</label>';
-                    str+='<textarea class="form-control notesAreaMeetings"></textarea>';
-                    str+='<button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>';*/
+		for(var i in result){ 
+			str+='<li style="margin-top:3px;">'; 
+			str+='<span class="notesTextEvents" id="editTextEventsId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+			str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesEvents" attr_cmt_id="editTextEventsId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+			str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesEvents" attr_cmt_id="editTextEventsId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+			str+='</li>';
+		}
+	str+='</ul>';
 		
 		$("#notesEventsId").html(str);	 
 	}
@@ -356,83 +350,80 @@ $.ajax({
 }
 function deleteDashBoardcomments(dashboardCommentId)
 {
-var jsObj={
-	dashboardCommentId : dashboardCommentId
-}	
-$.ajax({
- type: "POST",
- url: "deleteDashBoardcommentsAction.action",
- data: {task :JSON.stringify(jsObj)}
-}).done(function(result){
-	if(result != null){	
-		if(result.message == "success"){
-			
-			
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+				
+			}
 		}
-	}
-		
-});
-
+			
+	});
 }
 
 function savingDashboardCommentForEvents(dashboardComponentId){  
-var comment=$(".notesAreaEvents").val();
-if(comment.trim() ==""){
-	  $("#eventsUpId").html("Notes Required.");
-	  return;
-  }
-var editId = $("#cmtEventsId").val();
-//$("#"+editId).parent().html(' ');
-$("#"+editId).html(comment);
- var dashboardCommentId=0;
- if($(".notesAreaEvents").attr("attr_commentid")>0)
- {
-	dashboardCommentId=$(".notesAreaEvents").attr("attr_commentid");		
- }
+	var comment=$(".notesAreaEvents").val();
+	if(comment.trim() ==""){
+		  $("#eventsUpId").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtEventsId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesAreaEvents").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesAreaEvents").attr("attr_commentid");		
+	 }
 
-var jsObj={
-	comment:comment,
-	dashboardComponentId: dashboardComponentId,
-	dashboardCommentId : dashboardCommentId
-}	
-$.ajax({
- type: "POST",
- url: "savingDashboardCommentAction.action",
- data: {task :JSON.stringify(jsObj)}
-}).done(function(result){
-	if(result != null){	
-		if(result.message == "success"){
-			
-			//$("#meetingsUpId").html('update succuss');
-			displayDashboardCommentsForEvents(6);
-		}
-	}			
-});
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				displayDashboardCommentsForEvents(6);
+			}
+		}			
+	});
 }
 $(document).on("click",".notesIconEvents",function(){
-$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
 });
 $(document).on("click",".deleteNotesEvents",function(){
-$(this).closest("li").remove();
+	$(this).closest("li").remove();
 });
 $(document).on("click",".editNotesEvents",function(){ 
-var commentId = $(this).attr("attr_cmt_id");
-var commentId1 = $(this).parent().find(".notesTextEvents").attr("attr_commentid");
-var notesHtml = $("#"+commentId).html();
-$(".notesAreaEvents").val(notesHtml);  
-$(".notesAreaEvents").attr("attr_commentid",commentId1);  
-$("#cmtId").val(commentId);
-//$("#cmtId").val();
-$("#eventsUpId").html('');		
+	var commentId = $(this).attr("attr_cmt_id");
+	var commentId1 = $(this).parent().find(".notesTextEvents").attr("attr_commentid");
+	var notesHtml = $("#"+commentId).html();
+	$(".notesAreaEvents").val(notesHtml);  
+	$(".notesAreaEvents").attr("attr_commentid",commentId1);  
+	$("#cmtId").val(commentId);
+	//$("#cmtId").val();
+	$("#eventsUpId").html('');		
 });
 
 $(document).on("click",".btnCustomCreateEvents",function(){
-var getNewNotes = $(".notesAreaEvents").val();
-var todayDate = moment().format("DD MMMM YYYY");
-var cmtId = $("#cmtId").val();
-var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesEvents"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
-if(cmtId>0)
-$(".notesUlEvents").append("<li>"+commentText+"</li>");
-$(".notesAreaEvents").val('');	
+	var getNewNotes = $(".notesAreaEvents").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesEvents"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUlEvents").append("<li>"+commentText+"</li>");
+	$(".notesAreaEvents").val('');	
 });
 

@@ -1185,7 +1185,6 @@ $(document).on("click",".viewsLiClass",function(){
 
 $(document).on("click","#comparisonPartyLiId",function(){
 	$("#partyWiseComparisionBlock").html('');
-	$("#partyComparisionSubLevelMemberDetailsDiv").html('');
 	setcolorsForStatus();
 	getChildUserTypesByItsParentUserType1();
 });
@@ -1251,7 +1250,7 @@ function getChildUserTypesByItsParentUserType1(){
 				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				$("#partyWiseComparisionBlock").html('');
-				buildgetPartyComparisonChildUserTypeMembers(result);
+				buildgetPartyCompareSubLevelMemberDetails(result);
 			});
 		
 	}
@@ -1497,23 +1496,15 @@ function getChildUserTypesByItsParentUserType1(){
 	}
 	
 	$(document).on("click",".childUserTypesLiClass",function(){
-		
-		$(".NewsSlickPanelSlider").find("li").removeClass("panelActiveSlick");
-		$(this).addClass("panelActiveSlick");
-		var NewsActivityMemberId = $(this).attr("attr_newsactivitymemberid");  
-		var NewsUserTypeId = $(this).attr("attr_newsusertypeid");
-		var NewsSelectedMemberName = $(this).attr("attr_newsselectedmembername");  
-		var NewsSelectedUserType = $(this).attr("attr_newsselectedusertype");
-		var NewsChildActivityMemberId = $(this).attr("attr_id");
-		
-		getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId);
+		var activityMemberId = $(this).attr("attr_activitymemberid");  
+		var userTypeId = $(this).attr("attr_usertypeid");
+		getPartyCompareSubLevelMemberDetails(activityMemberId,userTypeId);//sandeep
 	});
 	
-	function getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId){
-		$("#"+NewsChildActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getPartyCompareSubLevelMemberDetails(activityMemberId,userTypeId){
 		var jsObj={
-				activityMemberId : NewsActivityMemberId,
-				userTypeId : NewsUserTypeId,
+				activityMemberId : activityMemberId ,
+				userTypeId : userTypeId,
 				state:globalState,
 				startDate:currentFromDate,
 				endDate:currentToDate,
@@ -1526,7 +1517,7 @@ function getChildUserTypesByItsParentUserType1(){
 				dataType : 'json',
 				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				buildgetPartyCompareSubLevelMemberDetails(result,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId);
+				
 			});
 	}
 	
@@ -1918,34 +1909,19 @@ function getChildUserTypesByItsParentUserType1(){
 		
 	}
 	
-	function buildgetPartyComparisonChildUserTypeMembers(result){
+	function buildgetPartyCompareSubLevelMemberDetails(result){
 		$("#partyWiseComparisionBlock").html('');
 		var str='';
 		if(result !=null && result.length >0){
-			var firstNewsActivityMemberId;
-			var firstNewsUserTypeId;
-			var firstNewsChildActivityMemberId = "partyComparisionSubLevelMemberDetailsDiv";
-			var firstNewsUserType;
-			var firstNewsUserMemberName;
-			firstNewsActivityMemberId = result[0].activityMemberId;
-			firstNewsUserTypeId = result[0].userTypeId;
-			firstNewsUserType = result[0].usertType;
-			firstNewsUserMemberName = result[0].name;
-			str+='<ul class="list-inline NewsSlickPanelSlider">';
+			
+			str+='<ul class="list-inline slickPanelSlider">';
 			var rankVar =0;
 			for(var i in result){
 				rankVar =rankVar+1;
-				if(i == 0){
-				str+='<li  style="cursor:pointer;" class="childUserTypesLiClass panelActiveSlick" attr_id ="partyComparisionSubLevelMemberDetailsDiv" attr_newsselectedmembername="'+result[i].name+'" attr_newsselectedusertype="'+result[i].usertType+'" attr_newsactivitymemberid='+result[i].activityMemberId+'  attr_newsusertypeid='+result[i].userTypeId+' >';
-			}else{
-				
-				str+='<li  style="cursor:pointer;" class="childUserTypesLiClass" attr_id ="partyComparisionSubLevelMemberDetailsDiv" attr_newsselectedmembername="'+result[i].name+'" attr_newsselectedusertype="'+result[i].usertType+'" attr_newsactivitymemberid='+result[i].activityMemberId+'  attr_newsusertypeid='+result[i].userTypeId+' >';
-				
-			}
-			
-						str+='<div class="panel panel-default panelSlick">';
-						str+='<div class="panel-heading" style="background-color: #c3c3c3 !important;">';
-						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+				str+='<li class="childUserTypesLiClass" attr_activitymemberid="'+result[i].activityMemberId+'" attr_usertypeid="'+result[i].userTypeId+'">';
+					str+='<div class="panel panel-default panelSlick">';
+						str+='<div class="panel-heading" style="background-color: rgb(237, 238, 240);">';
+							str+='<h4 class="panel-title">'+result[i].name+'</h4>';
 							str+='<span class="count">'+rankVar+'</span>';
 						str+='</div>';
 						str+='<div class="panel-body" style="background-color:#fff;">';
@@ -1970,7 +1946,7 @@ function getChildUserTypesByItsParentUserType1(){
 													if(result[i].childUserTypeVOList1[j].negativeCountMainperc !=null && result[i].childUserTypeVOList1[j].negativeCountMainperc >0){
 														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].negativeCountMainperc.toFixed(0)+'% -ve</li>';
 													}else{
-														str+='<li class="newsCompBlockAlign" >- -ve</li>';
+														str+='<li class="newsCompBlockAlign" >- +ve</li>';
 													}
 													str+='</ul>';
 												str+='<hr  class="newshrAlignment" >';
@@ -2017,7 +1993,7 @@ function getChildUserTypesByItsParentUserType1(){
 		}
 			$("#partyWiseComparisionBlock").html(str);
 			
-			$(".NewsSlickPanelSlider").slick({
+			$(".slickPanelSlider").slick({
 				 slide: 'li',
 				 slidesToShow: 2,
 				 slidesToScroll: 2,
@@ -2142,9 +2118,6 @@ function getChildUserTypesByItsParentUserType1(){
 				}
 				
 			}
-			
-		getPartyCompareSubLevelMemberDetails(firstNewsActivityMemberId,firstNewsUserTypeId,firstNewsUserType,firstNewsUserMemberName,firstNewsChildActivityMemberId);
-		
 	}
 	
 	
@@ -2992,7 +2965,7 @@ function getChildUserTypesByItsParentUserType1(){
 	}
 	//2nd block
 	function getComparisonGovernamentTrendingTrackedIssues(departmentIdsStr){
-		
+		$("#comparisonGovtTopTrend").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -3127,11 +3100,12 @@ function getChildUserTypesByItsParentUserType1(){
 				str+='';
 				
 				for(var j in result[i].coreDashBoardVOList){
-					
-						districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
-						districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountDist);
-						districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountDist);
-					}
+					totalPositive = result[i].coreDashBoardVOList[j].positiveCountDist + result[i].coreDashBoardVOList[j].positiveCountMain;  
+					totalNegative = result[i].coreDashBoardVOList[j].negativCountDist + result[i].coreDashBoardVOList[j].negativCountMain;  
+					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
+					districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].totalPositive);
+					districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].totalNegative);
+				}
 			}	
 				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
 					$(function () {
@@ -3245,7 +3219,7 @@ function getChildUserTypesByItsParentUserType1(){
 				str+='<ul class="list-inline slickPanelSliderGovtCom">';
 				for(var i in result){
 					str+='<li class="comparisonGovtMinistriesInfoSubLevel" id="comparisonGovtMinistriesInfoSubLevel'+i+'" style="cursor:pointer;">';
-						str+='<div class="panel panel-default panelSlick">';
+						str+='<div class="panel panel-default panelSlick panelSlickHeightSet">';
 							str+='<div class="panel-heading">';
 								str+='<h4 class="panel-title">'+result[i].name+'</h4>';
 								str+='<span class="count">'+(parseInt(i)+1)+'</span>';
@@ -3284,11 +3258,18 @@ function getChildUserTypesByItsParentUserType1(){
 			 slidesToShow: 3,
 			 slidesToScroll: 3,
 			 infinite: false
-				 
 		});
+		
+		var maxHeight = 0;
+		$(".panelSlickHeightSet").each(function(){
+		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+		});
+		$(".panelSlickHeightSet").height(maxHeight);
+
 	}
 	
 	$(document).on("click",".comparisonGovtMinistriesInfoSubLevel",function(){
+		$(".moreDetailsBlockNews").show();
 		getAllDepartmentEditionsWiseDetails($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
 		getCompareGovtCandidateDepartmentsWiseDistrictOverview($(this).attr("attr_department_idsstr"));
 		getComparisonGovernamentTrendingTrackedIssues($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
@@ -3301,8 +3282,8 @@ function getChildUserTypesByItsParentUserType1(){
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<div class="bg_ED pad_15">';
-					str+='<h4><span  class="text-capital">'+ministerName+'</span></h4>';
+				str+='<h4><span  class="text-capital">'+ministerName+'</span></h4>';
+				str+='<div class="table-responsive">';
 					str+='<table class="table table-condensed tableHoverLevels m_top20">';
 						str+='<thead class="bg_D8 text-capital">';
 							str+='<tr>';
@@ -3355,6 +3336,7 @@ function getChildUserTypesByItsParentUserType1(){
 	}
 	//3rd block 1 st part
 	function getCompareGovernamentDistrictWiseArticleRelatedToProblem(organizationIdStr){
+		$("#compareDistrictWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -3372,26 +3354,28 @@ function getChildUserTypesByItsParentUserType1(){
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
 		if(globalUserAccessLevelId==2){
+			$("#compareDistrictWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			$.ajax({
 				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+""
 				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+""      
 			}).then(function(result){
-				buildDistrictWiseArticleRelatedToProblem(result)
+				buildCompareDistrictWiseArticleRelatedToProblem(result)
 			});
-			
+			$("#compareStateWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 			$.ajax({
 				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+"" 
 				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+""      
 			}).then(function(result){
-				buildStateWiseArticleRelatedToProblem(result);
+				buildCompareStateWiseArticleRelatedToProblem(result)
 			});
 			
-		}else{     
+		}else{   
+			$("#compareDistrictWiseArticleRelatedToProblem").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');		
 			$.ajax({
 				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"" 
 				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+""    
 			}).then(function(result){
-				buildDistrictWiseArticleRelatedToProblem(result);
+				buildCompareDistrictWiseArticleRelatedToProblem(result);
 			});
 			
 		}
@@ -3608,22 +3592,11 @@ function getChildUserTypesByItsParentUserType1(){
 	function buildCompareGovtCandidateDepartmentsWiseDistrictOverview(result)
 	{
 		var str=' ';
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<div class="bg_ED pad_15">';
-				str+='<div class="panel panel-default panelNew">';
-					str+='<div class="panel-heading">';
-						str+='<h4 class="panel-title"><span class="headingColor text-capitalize">Departments Wise Districts Overview</span></h4>';
-					str+='</div>';
-					str+='<div class="panel-body">';
-					for(var i in result)
-					{
-						str+='<h4 class="panel-title">'+result[i].coreDashBoardVOList[0].organization+'</h4>';
-						str+='<div id="departmentWiseCompare'+i+'" style="height:120px"></div>';
-					}
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
+		for(var i in result)
+		{
+			str+='<h4 class="panel-title">'+result[i].coreDashBoardVOList[0].organization+'</h4>';
+			str+='<div id="departmentWiseCompare'+i+'" style="height:120px"></div>';
+		}
 		$("#comparisonGovtDeptDOverview").html(str)
 		if(result != null && result.length > 0){
 				for(var i in result){
@@ -3816,9 +3789,11 @@ function getChildUserTypesByItsParentUserType1(){
 			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
 				
 				for(var j in result[i].coreDashBoardVOList){
+					totalPositive = result[i].coreDashBoardVOList[j].positiveCountDist + result[i].coreDashBoardVOList[j].positiveCountMain;  
+					totalNegative = result[i].coreDashBoardVOList[j].negativCountDist + result[i].coreDashBoardVOList[j].negativCountMain;  
 					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
-					districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountDist);
-					districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountDist);
+					districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].totalPositive);
+					districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].totalNegative);
 				}
 			}	
 				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
@@ -3928,39 +3903,27 @@ function getChildUserTypesByItsParentUserType1(){
 			if(globalUserAccessLevelId == 2){
 				if(result != null && result.length > 0){
 				var str='';
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<div class="bg_ED pad_15">';
-						str+='<div class="panel panel-default panelNew">';
-							str+='<div class="panel-heading">';
-								str+='<h4 class="panel-title">';
-									str+='<span class="headingColor text-capitalize">problems detailed overview</span>';
-								str+='</h4>';
-							str+='</div>';
-							str+='<div class="panel-body">';
-								str+='<div class="row">';
-									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-										str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
-									str+='</div>';
-									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-										str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApply">';
-										for(var i in result){
-											if(result[i].name !=null && result[i].name.length>55){
-												str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
-											}else{
-												str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
-											}
-											
-										}
-										str+='</ul>';
-									str+='</div>';
-									str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-										str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
+			str+='<div class="row">';
+				str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+					str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
 				str+='</div>';
+				str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+					str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApply">';
+					for(var i in result){
+						if(result[i].name !=null && result[i].name.length>55){
+							str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+						}else{
+							str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+						}
+						
+					}
+					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+					str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+				str+='</div>';
+			str+='</div>';
+								
 			}
 		
 			$("#comparisonGovtProblemsDOverview").html(str);
@@ -5206,94 +5169,110 @@ function getChildUserTypesByItsParentUserType1(){
 		}); 
 	}
 	
-	function buildgetPartyCompareSubLevelMemberDetails(result,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId){
-		
-		$("#"+NewsChildActivityMemberId).html('');
-		var str='';
-		if(result !=null && result.length >0){
-				str+='<div class="bg_ED pad_15">';
-					str+='<h4><span  class="text-capital">'+NewsSelectedMemberName+'</span> - <span class="text-capitalize">'+NewsSelectedUserType+'</span></h4>';
-					if(NewsChildActivityMemberId != "partyComparisionSubLevelMemberDetailsDiv"){
-						str+='<span class="removeSelecUserTypeNews pull-right" attr_removeSelecUserType = "'+NewsChildActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
-					}
-						if(NewsChildActivityMemberId != "partyComparisionSubLevelMemberDetailsDiv")
-						{
-							str+='<table class="table table-condensed tableLevels m_top20">';
-						}else{
-							str+='<table class="table table-condensed tableHoverLevels m_top20">';
-						}
-						str+='<thead class="bg_D8 text-capital">';
-							str+='<tr>';
-								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Rank</th>';
-								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Designation</th>';
-								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Name</th>';
-								str+='<th colspan="5" class="text-center" style="border-right: 1px solid #c3c3c3 !important;">Main Edition</th>';
-								str+='<th colspan="5" class="text-center">District Edition</th>';
-							str+='</tr>';
-							str+='<tr>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
-							str+='</tr>';
-							
-						str+='</thead>';
-						str+='<tbody>';
-						for(var i in result){
-							 str+='<tr class="compareLowLevelActivityMemberCls1"  attr_newsactivitymemberid = "'+result[i].activityMemberId+'" attr_newsusertypeid = "'+result[i].userTypeId+'" attr_newsselectedmembername = "'+result[i].name+'" attr_newsselectedusertype = "'+result[i].usertType+'">';
-								str+='<td>'+(parseInt(i)+1)+'</td>';
-								str+='<td>'+result[i].usertType+'</td>';
-								str+='<td>'+result[i].name+'</td>';
-								
-								str+='<td>'+result[i].neutralCountMain+'</td>';
-								str+='<td>'+result[i].positiveCountMain+'</td>';
-								str+='<td>'+result[i].positiveCountMainPerc+'</td>';
-								str+='<td>'+result[i].negativeCountMain+'</td>';
-								str+='<td>'+result[i].negativeCountMainperc+'</td>';
-								
-								str+='<td>'+result[i].neutralCountDist+'</td>';
-								str+='<td>'+result[i].positiveCountDist+'</td>';
-								str+='<td>'+result[i].positiveCountDistPerc+'</td>';
-								str+='<td>'+result[i].negativeCountDist+'</td>';
-								str+='<td>'+result[i].negativeCountDistPerc+'</td>';
-							str+='</tr>'; 
-							str+='<tr class="showHideTr" style="display:none" attr_id = "districtpositionId1'+result[i].userTypeId+''+i+'">';
-							
-							str+='<td colspan="13"  id="districtpositionId1'+result[i].userTypeId+''+i+'">';
-							
-							str+='</td>';
-						str+='</tr>';
-						}
-							
-						str+='</tbody>';
-					str+='</table>';
-				str+='</div>';
-			
-		}
-		alert("#"+NewsChildActivityMemberId);
-		$("#"+NewsChildActivityMemberId).html(str);
-	}
 	
-	 $(document).on("click",".compareLowLevelActivityMemberCls1",function(){
-		  
-		$(this).closest('tr').next('tr.showHideTr').show(); 
-		var NewsActivityMemberId = $(this).attr("attr_newsactivitymemberid");  
-		var NewsUserTypeId = $(this).attr("attr_newsusertypeid"); 
-		var NewsSelectedMemberName = $(this).attr("attr_newsselectedmembername");  
-		var NewsSelectedUserType = $(this).attr("attr_newsselectedusertype");  
-		var NewsChildActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id"); 
+	
+	
+	
+	function buildCompareDistrictWiseArticleRelatedToProblem(result)
+	{
+		var str='';
+		var distWiseArticlesRelated = [];
+		str+='<div id="comaprisonDistrictWiseArticleProblem" style="height:150px;"></div>';
+		for(var i in result){
+			var obj1 = {
+				name: result[i].name,
+				y: result[i].posPercent
+			};
+			distWiseArticlesRelated.push(obj1);
+		}
+		$("#compareDistrictWiseArticleRelatedToProblem").html(str)
+		$(function () {
+			 $("#comaprisonDistrictWiseArticleProblem").highcharts({
+				colors: ['#AA3732'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					
+					type: 'category',
+					labels: {
+								formatter: function() {
+									return this.value.toString().substring(0, 10)+'...';
+								},
+								
+							}
+					
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					labels: {
+						enabled:false
+					}
+				},
+				legend: {
+					enabled: false
+				},
+				
+						
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1) + '%';
+								}
+							}
+						  
+						}
+					}
+				},
+
+				tooltip: {
+					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+				},
+
+				series: [{
+					name: 'Completed',
+					data: distWiseArticlesRelated
+				}],
+			 
+			});
+		});
+	
+	}
+	function buildCompareStateWiseArticleRelatedToProblem(result)
+	{
+		var str='';
 		
-		getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId);
-	});
-	$(document).on("click",".removeSelecUserTypeNews",function(){
-		 
-		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
-		 $("#"+removeSelected).remove();
-		 
-	});
+		if(result.total > 0 || result.percent > 0)
+		{
+			str+='<div class="row">';
+				str+='<div class="col-md-3 col-xs-6 col-sm-3 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
+				str+='<div class="col-md-3 col-xs-6 col-sm-3 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
+			str+='</div>';
+		}else{
+			str+='<div class="row">';
+				str+='<div class="col-md-3 col-xs-6 col-sm-3 text-capital">NO DATA AVAILABLE</div>';
+			str+='</div>';
+		}
+		$("#compareStateWiseArticleRelatedToProblem").html(str)
+	}
