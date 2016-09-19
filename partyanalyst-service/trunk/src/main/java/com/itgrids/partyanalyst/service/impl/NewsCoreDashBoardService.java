@@ -43,7 +43,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 
 
 
-	public List<List<UserTypeVO>> getUserTypeWiseNewsCounts(Long userId,Long activityMemberId,Long userTypeId,String state,String fromDate,String toDate,Long benefitId,List<Long> npIds){
+	public List<List<UserTypeVO>> getUserTypeWiseNewsCounts(Long userId,Long activityMemberId,Long userTypeId,String state,String fromDate,String toDate,Long benefitId,List<Long> npIds,List<Long> impactScopeIdsList){
 		List<List<UserTypeVO>> userTypesList = null;
 		try {
 			
@@ -59,6 +59,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     activityMemberVO.setFromDate(fromDate);
 		     activityMemberVO.setToDate(toDate);
 		     activityMemberVO.setNpIds(npIds);
+		     activityMemberVO.setImpactScopeIds(impactScopeIdsList);
 		     
 		     //Calling Request.
 			 //Client client = Client.create();

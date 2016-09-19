@@ -25,6 +25,7 @@ public class ActivityMemberVO implements Serializable{
 	private String toDate;
 	
 	private List<Long> npIds=new ArrayList<Long>(0);
+	private List<Long> impactScopeIds=new ArrayList<Long>(0);
 	
 	public Long getUserId() {
 		return userId;
@@ -97,6 +98,12 @@ public class ActivityMemberVO implements Serializable{
 	}
 	public void setNpIds(List<Long> npIds) {
 		this.npIds = npIds;
+	}
+	public List<Long> getImpactScopeIds() {
+		return impactScopeIds;
+	}
+	public void setImpactScopeIds(List<Long> impactScopeIds) {
+		this.impactScopeIds = impactScopeIds;
 	}
 	
 }
