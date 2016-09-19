@@ -13706,6 +13706,15 @@
 	  		<param name="root">status</param> 
 	 	</result>
 	</action>
-	
+	<action name="getSelectedChildTypeMembersForEventAction" class="coreDashboardAction" method="getSelectedChildTypeMembersForEvent">
+		<result type="json" name="success">
+   			<param name="root">activityMembersList</param>
+   		</result>
+	</action>
+		<action name="getDirectChildTypeMembersForEventAction" class="coreDashboardAction" method="getDirectChildTypeMembersForEvent">
+		<result type="json" name="success">
+   			<param name="root">activityMembersList</param>
+   		</result>
+	</action>
 </package>
 </struts>
