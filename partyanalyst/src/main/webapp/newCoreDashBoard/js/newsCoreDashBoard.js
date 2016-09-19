@@ -3515,3 +3515,634 @@ function getChildUserTypesByItsParentUserType1(){
 			
 		});
 	}
+	function getComparisionPartyDistrictEditionsOverview(deptIdsStr){//Teja
+			$("#districtWiseNewsReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var temp;
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+		}).then(function(result){
+			$("#districtWiseNewsReport").html();
+			buildComparisionPartyDistrictEditionsOverview(result);
+		});
+	}
+	function buildComparisionPartyDistrictEditionsOverview(result){
+		$("#districtWiseNewsReport").html(' ');
+		if(result != null && result.length > 0){
+			var str='';
+			var countVar =0;
+			for(var i in result){
+				countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+					 
+				str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon" class=" m_top10"/> &nbsp;&nbsp;&nbsp;'+result[i].organization+'';
+				str+='<div id="districtWiseNews'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+									
+		}
+		$("#districtWiseNewsReport").html(str);
+		/* $("#districtWiseNewsReport").each(function(){
+			var scrollengthDiv = $(this).find(".chartLiD").length;
+			if(scrollengthDiv >= 4){
+				$(".verticalScrollBar").mCustomScrollbar({setHeight:'560px'})
+				
+			}else{
+				$(".verticalScrollBar").css("height","auto");
+			
+			}
+		}); */
+		
+		
+	if(result != null && result.length > 0){
+		var countVar =0;
+		for(var i in result){
+			countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+			var districtNamesArray =[];
+			var districtWisePositiveCountArray = [];
+			var districtWiseNegativeCountArray = [];
+			
+			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
+				
+				for(var j in result[i].coreDashBoardVOList){
+					
+						districtNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
+						
+						//if(result[i].subList[j].completedPerc !=null && result[i].subList[j].completedPerc >0){
+							districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountMain);
+						//}
+						//if(result[i].subList[j].startedPerc !=null && result[i].subList[j].startedPerc >0){
+							districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountMain);
+						//}
+						
+					}
+			}	
+					if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
+						$(function () {
+							$('#districtWiseNews'+i+'').highcharts({
+								 colors: ['#64C664','#D33E39'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								xAxis: {
+									 min: 0,
+										 gridLineWidth: 0,
+										 minorGridLineWidth: 0,
+										categories: districtNamesArray,
+									labels: {
+											rotation: -45,
+											style: {
+												fontSize: '13px',
+												fontFamily: 'Verdana, sans-serif'
+											}
+										}
+								},
+								yAxis: {
+									min: 0,
+										   gridLineWidth: 0,
+											minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									stackLabels: {
+										enabled: false,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+										}
+									}
+								},
+								legend: {
+									enabled: true,
+									/* //align: 'right',
+									x: -40,
+									y: 30,
+									verticalAlign: 'top',
+									//y: -32,
+									floating: true, */
+									backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+									borderColor: '#CCC',
+									borderWidth: 1,
+									shadow: false
+								},
+								tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},
+								
+								plotOptions: {
+									pointPadding: 0.2,
+									borderWidth: 2,
+									groupPadding: 0.2,
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.percentage,1) +'%';
+												}
+											}
+										  
+										}
+									}
+								},
+								series: [{
+									name: 'Positive',
+									data: districtWisePositiveCountArray
+								}, {
+									name: 'Negative',
+									data: districtWiseNegativeCountArray
+								}]
+							});
+						});
+					}else{
+						$('#districtWiseNews'+i+'').html("No Data Available");
+						$('#districtWiseNews'+i+'').css("height","10px");
+					}
+			}
+		}else{
+			$("#districtWiseNewsReport").html("No Data Available")
+		}	
+	}
+	function getComparisionPartyNewsTypeAnalysis(deptIdsStr){//Teja1
+		$("#newsTypeAnalysisDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var temp;
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+		
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyNewsTypeAnalysis/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+		}).then(function(result){
+			$("#newsTypeAnalysisDiv").html();
+			if(result != null && result.length > 0){
+				buildComparisionPartyNewsTypeAnalysis(result);
+			}
+		});
+	}
+	function buildComparisionPartyNewsTypeAnalysis(result){
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+				
+			for(var i in result){
+				
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-ms-12"><h5 class="text-capital">'+result[i].name+'</h5></div>';
+					str+='<div class="col-md-2 col-xs-12 col-sm-4" style="border-right:1px solid #ddd">';
+						str+='<div id="newsTypeAnalysisPieChart'+i+'" style="height:165px;width:100%;"></div>';
+						str+='<div class="row">';
+							str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+								str+='<ul class="list-inline">';
+								for(var j in result[i].coreDashBoardVOList){
+									var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
+									  str+='<li style="color:'+color+'">'+result[i].coreDashBoardVOList[j].organization+' :'+result[i].coreDashBoardVOList[j].positivePerc+'%('+result[i].coreDashBoardVOList[j].count+')</li> &nbsp;&nbsp;';
+									
+								}
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-md-10 col-xs-12 col-sm-8">';
+						str+='<div id="newsTypeAnalysisBarChart'+i+'" class="chartLiD" style="height:200px"></div>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-ms-12"><hr/></div>';
+				str+='</div>';
+					
+				
+			}
+			
+		}
+		$("#newsTypeAnalysisDiv").html(str);
+		
+			if(result != null && result.length > 0){
+				for(var i in result){
+					var PartyCountPerc;
+					var partyName;
+					var partyNameAndCountArray =[];
+					var districtNameArray =[];
+					var tdpPercArray = [];
+					var ysrcPercArray =[];
+					var incPercArray = [];
+					var bjpPercArray = [];
+					
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						for (var j in result[i].coreDashBoardVOList){
+							 PartyCountPerc = result[i].coreDashBoardVOList[j].count;
+							 partyName = result[i].coreDashBoardVOList[j].organization;
+							
+							var obj = {
+								name: partyName,
+								y:PartyCountPerc
+								
+							}
+							
+							partyNameAndCountArray.push(obj);
+						}
+					}
+				
+					if(result[i].coreDashBoardVOList1 !=null && result[i].coreDashBoardVOList1.length >0){
+						for (var j in result[i].coreDashBoardVOList1){
+							districtNameArray.push(result[i].coreDashBoardVOList1[j].districtName)
+							tdpPercArray.push(result[i].coreDashBoardVOList1[j].tdpPerc)
+							ysrcPercArray.push(result[i].coreDashBoardVOList1[j].ysrcPerc)
+							incPercArray.push(result[i].coreDashBoardVOList1[j].incPerc)
+							bjpPercArray.push(result[i].coreDashBoardVOList1[j].bjpPerc)
+							
+							
+						}
+					}
+						
+					$(function () {
+						if(partyNameAndCountArray.length !=0){
+							$('#newsTypeAnalysisPieChart'+i).highcharts({
+								colors: ['#FD9832','#3D9834','#FFCB00','#005DB0'],
+								chart: {
+									type: 'pie',
+									options3d: {
+										enabled: true,
+										alpha: 25
+									}
+								},
+								title: {
+									text: null
+								},
+								subtitle: {
+									text: null
+								},
+								tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},
+								plotOptions: {
+									pie: {
+										innerSize: 65,
+										depth: 10,
+										dataLabels:{
+											enabled: false,
+											  formatter: function() {
+													if (this.y === 0) {
+														return null;
+													} else {
+														return Highcharts.numberFormat(this.percentage,1)+ '%';
+													}
+												} 
+										},
+										showInLegend: false
+									},
+									
+									
+								},
+								series: [{
+									data: partyNameAndCountArray
+									
+								}]
+							});
+						}else{
+							$('#newsTypeAnalysisPieChart'+i).html("No Data Available")
+							$('#newsTypeAnalysisPieChart'+i).css("height","10px")
+						}
+						
+					});
+					
+					$(function () {
+						if(districtNameArray.length != 0 && tdpPercArray.length !=0 && ysrcPercArray.length !=0 && incPercArray.length !=0 && bjpPercArray.length !=0){
+						$('#newsTypeAnalysisBarChart'+i).highcharts({
+							colors: ['#FFCB00','#005DB0','#3D9834','#FD9832'],
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: ''
+							},
+							xAxis: {
+								 min: 0,
+									 gridLineWidth: 0,
+									 minorGridLineWidth: 0,
+									categories: districtNameArray,
+								labels: {
+										rotation: -45,
+										style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+										}
+									}
+							},
+							yAxis: {
+								min: 0,
+									   gridLineWidth: 0,
+										minorGridLineWidth: 0,
+								title: {
+									text: ''
+								},
+								stackLabels: {
+									enabled: false,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+									}
+								}
+							},
+							legend: {
+								enabled: true,
+								//align: 'center',
+								//x: -40,
+								//y: 23,
+								//verticalAlign: 'top',
+								//floating: true, 
+								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+								borderColor: '#CCC',
+								borderWidth: 1,
+								shadow: false,
+								
+							},
+							tooltip: {
+								//headerFormat: '<b>{point.x}</b>',
+								//pointFormat: '<span style="color:{series.color}">: <b>'+{point.percentage:.1f}+'% '+({point.y})+'</b></span><br>',
+								formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> :' +
+											(this.y)+'%';
+									});
+
+									return s;
+								},
+								shared: true
+							},
+							plotOptions: {
+								column: {
+									 
+									dataLabels: {
+										enabled: false,
+										 formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
+												return Highcharts.numberFormat(this.y,0)+'%';
+											}
+										}
+									  
+									}
+								}
+							},
+							series: [{
+								name: 'TDP',
+								data: tdpPercArray
+							}, {
+								name: 'YSRC',
+								data: ysrcPercArray
+							},{
+								name: 'INC',
+								data: incPercArray
+							},{
+								name: 'BJP',
+								data: bjpPercArray
+							}]
+						});
+					}else{
+						$('#newsTypeAnalysisBarChart'+i).html("No Data Available");
+						$('#newsTypeAnalysisBarChart'+i).css("height","10px")
+					}
+					});
+				}
+			}
+	}
+	function getComparisionPartyPartyVsPublications(searchType,deptIdsStr){//Teja2
+		$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		/* if(searchType == "party"){
+			$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		}else{
+			$("#publicationWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		} */
+		var temp;
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+		//var searchType = "publication";
+		
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr"/"+deptIdsStr+""
+		}).then(function(result){
+			
+			
+			if(result != null && result.length > 0 && searchType == "party"){
+				//$("#partyWiseDetailsDiv").html();
+				buildgetDetailedPartyWiseDetailes(result);
+			}else{
+				//$("#publicationWiseDetailsDiv").html();
+				buildgetComparisionPublicationsWiseDetails(result);
+			}
+		});
+	}
+	function buildgetComparisionPublicationsWiseDetails(result){
+		$("#partyWiseDetailsDiv").html();
+		var str ='';
+		if(result !=null && result.length >0){
+			for(var i in result){
+				var papername;
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						str+='<div class="col-md-12 col-xs-12 col-ms-12">';
+							str+='<div class="col-xs-1 col-md-1 col-sm-2 pad_left0">';
+						for(var j in result[i].coreDashBoardVOList){
+							papername = result[i].coreDashBoardVOList[0].name;
+						}
+						str+='<h5  style="height:150px;border-right:1px solid #ddd;padding-top:50px !important;"><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+papername+'.png" style="width:60px;" alt="tdp icon"/></h5>';
+							str+='</div>';
+							str+='<div class="col-xs-11 col-sm-10 col-md-11">';
+								str+='<ul class="publicationWiseSlickApply">';
+						for(var j in result[i].coreDashBoardVOList){
+							str+='<li><div id="publicationwisegraph'+i+''+j+'"  style="height:200px;width:220px"></div></li>';
+						}
+							
+						
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';
+					}
+					
+					
+					
+			}
+			
+		}
+		
+		
+		//$("#publicationWiseDetailsDiv").html(str);
+		$("#partyWiseDetailsDiv").html(str);
+		if(result !=null && result.length >0){
+				for(var i in result){
+					
+							
+					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
+						for(var j in result[i].coreDashBoardVOList){
+							var partyName = [];
+							var positivePercArray =[];
+							var negativePercArray =[];
+							
+									partyName.push(result[i].coreDashBoardVOList[j].organization);
+									
+									positivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc)
+									negativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc)
+						
+							if(partyName.length !=0 && positivePercArray.length !=0 && negativePercArray.length !=0){
+								$(function () {
+									$('#publicationwisegraph'+i+''+j+'').highcharts({
+										 colors: ['#64C664','#D33E39'],
+										chart: {
+											type: 'column'
+										},
+										title: {
+											text: ''
+										},
+									   
+										xAxis: {
+											 min: 0,
+												 gridLineWidth: 0,
+												 minorGridLineWidth: 0,
+												 categories: partyName,
+											labels: {
+													//rotation: -45,
+													style: {
+														fontSize: '13px',
+														fontFamily: 'Verdana, sans-serif'
+													},
+												}
+										},
+										yAxis: {
+											min: 0,
+												   gridLineWidth: 0,
+													minorGridLineWidth: 0,
+											title: {
+												text: ''
+											}
+										},
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b> <br/>',
+											shared: true
+										},
+										legend: {
+																
+												enabled: false,				
+																
+											},				
+										plotOptions: {
+											column: {
+												//stacking: 'percent',
+												dataLabels:{
+													enabled: true,
+													formatter: function() {
+														if (this.y === 0) {
+															return null;
+														} else {
+															return Highcharts.numberFormat(this.y,1) + '%';
+														}
+													}
+												},
+												
+											},
+										},
+										series: [{
+											name: 'Positive',
+											data: positivePercArray
+										}, {
+											name: 'Negative',
+											data: negativePercArray
+										}]
+									});
+								});
+							}else{
+								$('#publicationwisegraph'+i+''+j+'').html("No Data Available");
+								$('#publicationwisegraph'+i+''+j+'').css("height","20px");
+							}
+							
+							
+						}
+					}
+						
+				}
+			}
+				
+			else{
+				$("#partyWiseDetailsDiv").html("No Data Available");
+			}
+			$(".publicationWiseSlickApply").slick({
+					 slide: 'li',
+					 slidesToShow: 4,
+					 slidesToScroll: 3,
+					 infinite: false,
+					 swipeToSlide:false,
+					 swipe:false,
+					 touchMove:false
+				}); 
+		
+	}
