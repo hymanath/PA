@@ -6,7 +6,7 @@
 	var currentFromDate = moment().format("DD-MM-YYYY");
 	var currentToDate = moment().format("DD-MM-YYYY");
 	var newsPaperIdsGlob = [1,2,3,8];
-	
+	var impactScopeIdsGlob = [1,2,3,4,5,6,8];
 	$(document).ready(function(){
 		$("#dateRangeIdForNews").daterangepicker({
 			opens: 'left',
@@ -333,7 +333,8 @@
 				fromDate:currentFromDate,
 				toDate:currentToDate,
 				benefitId:benefitId,
-				npIdsArr : newsPaperIdsGlob
+				npIdsArr : newsPaperIdsGlob,
+				impactScopeIdsArr : impactScopeIdsGlob
 			}
 		
 			$.ajax({
@@ -1548,6 +1549,7 @@ function getChildUserTypesByItsParentUserType1(){
 			$(".pubCheckCls").prop('checked', false);
 		}
 	});	
+	
 	$(document).on("click",".pubCheckCls",function(){
 		var checkAll = false;
 		$(".pubCheckCls").each(function(){
@@ -1563,10 +1565,32 @@ function getChildUserTypesByItsParentUserType1(){
 		}
 		
 	});
-	$(document).on("click",".impactCheckCls",function(){
-		$(".impactCheckCls").prop('checked', false);
-		$(this).prop('checked', true);
+	
+	$(document).on("click","#impactSelectAllId",function(){
+		 if ($(this).prop('checked')) {
+			$(".impactCheckCls").prop('checked', true);
+		} else {
+			$(".impactCheckCls").prop('checked', false);
+		}
 	});
+	
+	
+	$(document).on("click",".impactCheckCls",function(){
+		var checkAll = false;
+		$(".impactCheckCls").each(function(){
+			if (!$(this).prop('checked')) {
+				checkAll = true;
+			}
+		});
+		
+		if(checkAll){
+			$("#impactSelectAllId").prop('checked', false);
+		}else{
+			$("#impactSelectAllId").prop('checked', true);
+		}
+		
+	});
+	
     function getRescentArticleTime(){
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getRescentArticleTime/"
@@ -2137,8 +2161,18 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		});
 		
+		impactScopeIdsGlob = [];
+		$(".impactCheckCls").each(function(){
+			if($(this).is(":checked")){
+				impactScopeIdsGlob.push($(this).val());
+			}
+		});
+		
 		if(newsPaperIdsGlob == null || newsPaperIdsGlob.length == 0){
 			alert("Please Select Atleast One NewsPaper");
+			return;
+		}else if(impactScopeIdsGlob == null || impactScopeIdsGlob.length == 0){
+			alert("Please Select Impact Scope");
 			return;
 		}else{
 			getNewsBasicCounts();
