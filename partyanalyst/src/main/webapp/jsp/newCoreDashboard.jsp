@@ -375,7 +375,7 @@
                                                     <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
 														<div id="topPoorPerformanceDiv"></div>
                                                     </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-8 ">
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2">
                                                         <div id="topPoorLocationsDiv"></div>
                                                     </div>
                                                 </div>
@@ -1427,10 +1427,7 @@
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<div id="partyWiseComparisionBlock"></div>
-														</div>
-														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="partyComparisionSubLevelMemberDetailsDiv"></div>
-														</div>
+															</div>
 														</div>
 												</div>
 											</div>
@@ -1443,11 +1440,57 @@
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<div id="comparisonGovtMinistriesInfo"></div>
 										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<div id="ministerSubLevelDetailsDiv"></div>
-											<div id="comparisonGovtDeptDOverview"></div>
-											<div id="comparisonGovtTopTrend"></div>
-											<div id="comparisonGovtProblemsDOverview"></div>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreDetailsBlockNews" style="display:none">
+											<div class="bg_ED pad_15">
+												<div class="row">
+													<div id="ministerSubLevelDetailsDiv"></div>
+													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+														<div class="panel panel-default panelNew">
+															<div class="panel-heading">
+																<h4 class="panel-title"><span class="headingColor text-capitalize">Departments Wise Districts Overview</span></h4>
+															</div>
+															<div class="panel-body">
+																<div id="comparisonGovtDeptDOverview"></div>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+														<div class="panel panel-default panelNew">
+															<div class="panel-heading">
+																<h4 class="panel-title"><span class="headingColor text-capitalize">top trending tracked issues</span></h4>
+															</div>
+															<div class="panel-body">
+																<div id="comparisonGovtTopTrend"></div>
+															</div>
+															
+														</div>
+													</div>
+													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+														<div class="panel panel-default panelNew">
+															<div class="panel-heading">
+																<h4 class="panel-title"><span class="headingColor text-capitalize">Problems Detailed Overview</span></h4>
+															</div>
+															<div class="panel-body">
+															<div class="row">
+																<div class="col-md-12 col-xs-12 col-sm-12">
+																	<h4>STATE WISE</h4>
+																	<div id="compareStateWiseArticleRelatedToProblem"></div>
+																</div>
+															</div>
+															<div id="problemsDetailedOverview1"></div>
+															<div class="row">
+																<div class="col-md-12 col-xs-12 col-sm-12">
+																	<h4>DISTRICT WISE</h4>
+																	<div id="comparisonGovtProblemsDOverview"></div>
+																	<div id="compareDistrictWiseArticleRelatedToProblem"></div>
+																</div>
+															</div>
+															<div id="problemsDetailedOverview"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
