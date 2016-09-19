@@ -7,6 +7,8 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.model.EventAttendee;
@@ -2160,7 +2162,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		return query.list();
 	}
-   public List<Object[]> getEventAttendedCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds){
+  /* public List<Object[]> getEventAttendedCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds){
 		
 		StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select");
@@ -2198,7 +2200,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				}
 		 }
 	
-		/*  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		    queryStr.append(" and model.tdpCadre.userAddress.state.stateId in (:userAccessLevelValues)");  
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		        queryStr.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (:userAccessLevelValues)");  
@@ -2214,7 +2216,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		        queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		        queryStr.append(" and model.tdpCadre.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-		 }*/
+		 }
 		  
 	     if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		    queryStr.append("  group by model.tdpCadre.userAddress.state.stateId ");  
@@ -2240,13 +2242,13 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() >0){
 			query.setParameterList("eventIds", eventIds);	
 		}
-		/*if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-		 }*/
+		 }
 		
 		return query.list();
-	}
-   public List<Object[]> getEventInviteeAttendedCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds){
+	}*/
+  /* public List<Object[]> getEventInviteeAttendedCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds){
 		
 		StringBuilder queryStr = new StringBuilder();
 		 
@@ -2283,7 +2285,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 					queryStr.append(" and model.tdpCadre.userAddress.constituency.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
 				}
 		 }
-		/*  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		    queryStr.append(" and model.tdpCadre.userAddress.state.stateId in (:userAccessLevelValues)");  
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		        queryStr.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (:userAccessLevelValues)");  
@@ -2299,7 +2301,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		        queryStr.append(" and model.tdpCadre.userAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		        queryStr.append(" and model.tdpCadre.userAddress.ward.constituencyId in (:userAccessLevelValues)"); 
-		 }*/
+		 }
 		  
 	   if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		    queryStr.append("  group by model.tdpCadre.userAddress.state.stateId ");  
@@ -2324,12 +2326,12 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() >0){
 			query.setParameterList("eventIds", eventIds);	
 		}
-	/*	if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
-		 }*/
+		 }
 		
 		return query.list();
-	}
+	}*/
    public List<Object[]> getEventAttendedCntByEventAndLocationBasedOnUserType(Long userType,Long stateId,List<Long> eventIds,Long userAccessLevelId,List<Long> userAccessLevelValues,String levelType){
 		
 		  StringBuilder queryStr = new StringBuilder();
@@ -2482,5 +2484,179 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		  query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		 }
 		return query.list();
+	}
+   public List<Object[]> getEventAttendedCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		     queryStr.append("select");
+		     
+		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		       queryStr.append("  UA.state_id as stateId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			     queryStr.append(" UA.district_id as districtId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			     queryStr.append(" UA.parliament_constituency_id as parliamentConstituencyId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			     queryStr.append(" UA.constituency_id as assemblyId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			        queryStr.append(" UA.tehsil_id as tehsilId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			        queryStr.append(" UA.local_election_body_id as localElectionBoydId,"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			        queryStr.append(" UA.panchayat_i as panchayatId,"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			        queryStr.append(" UA.ward as wardId,"); 
+			 }
+		  
+		  queryStr.append(" COUNT(DISTINCT CONCAT(E.parent_event_id,'-',TC.tdp_cadre_id)) as count ");
+		
+		  queryStr.append(" FROM event_attendee EA," +
+		  		          " event E,tdp_cadre TC," +
+		  		          " user_address UA "+
+		                  " WHERE EA.event_id = E.event_id AND "+
+			              " EA.tdp_cadre_id = TC.tdp_cadre_id AND " +
+						  " TC.address_id = UA.user_address_id AND "+
+						  " TC.is_deleted = 'N' AND "+
+						  " TC.enrollment_year = 2014 ");
+			if(eventIds != null && eventIds.size() >0){
+				queryStr.append(" AND E.parent_event_id in(:eventIds)" );	
+			}
+		    if(stateId != null && stateId.longValue() > 0){
+					if(stateId.longValue()==1l){
+						queryStr.append(" and UA.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
+					}else if(stateId.longValue()==36l){
+						queryStr.append(" and UA.district_id in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					}
+			 }
+		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		       queryStr.append("  group by UA.state_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			     queryStr.append(" group by UA.district_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			     queryStr.append(" group by UA.parliament_constituency_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			     queryStr.append("  group by UA.constituency_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			        queryStr.append(" group by UA.tehsil_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			        queryStr.append(" group by UA.local_election_body_id"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			        queryStr.append(" group by UA.panchayat_id"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			        queryStr.append(" group by UA.ward"); 
+			 }
+	        Session session = getSession();
+		     SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 sqlQuery.addScalar("stateId",Hibernate.LONG); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+				 sqlQuery.addScalar("districtId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+				 sqlQuery.addScalar("parliamentConstituencyId",Hibernate.LONG); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+				 sqlQuery.addScalar("assemblyId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+				 sqlQuery.addScalar("tehsilId",Hibernate.LONG);  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+				 sqlQuery.addScalar("localElectionBoydId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+				 sqlQuery.addScalar("panchayatId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+				 sqlQuery.addScalar("wardId",Hibernate.LONG);
+			 }
+			   sqlQuery.addScalar("count",Hibernate.LONG);
+			if(eventIds != null && eventIds.size() >0){
+				sqlQuery.setParameterList("eventIds", eventIds);	
+			}
+		return sqlQuery.list();
+	}
+   public List<Object[]> getEventInviteeAttendedCountLocationWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		     queryStr.append("select");
+		     
+		     if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		        queryStr.append("  UA.state_id as stateId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			     queryStr.append(" UA.district_id as districtId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			     queryStr.append(" UA.parliament_constituency_id as parliamentConstituencyId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			     queryStr.append("  UA.constituency_id as assemblyId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			        queryStr.append(" UA.tehsil_id as tehsilId,");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			        queryStr.append(" UA.local_election_body_id as localElectionBoydId,"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			        queryStr.append(" UA.panchayat_i as panchayatId,"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			        queryStr.append(" UA.ward as wardId,"); 
+			 }
+		  
+		     queryStr.append(" COUNT(DISTINCT CONCAT(E.parent_event_id,'-',TC.tdp_cadre_id)) as count ");
+		
+		     queryStr.append(" FROM event_attendee EA,event_invitee EI ," +
+		  		             " event E,tdp_cadre TC," +
+		  		             " user_address UA "+
+			                 " WHERE EA.event_id = E.event_id AND "+
+				             " EA.tdp_cadre_id = EI.tdp_cadre_id AND " +
+				             " E.parent_event_id=EI.event_id AND " +
+				             " EA.tdp_cadre_id =TC.tdp_cadre_id AND " +
+				             " TC.address_id = UA.user_address_id AND "+
+							 " TC.is_deleted = 'N' AND "+
+							 " TC.enrollment_year = 2014 ");
+			if(eventIds != null && eventIds.size() >0){
+				queryStr.append(" AND E.parent_event_id in(:eventIds)" );	
+			}
+		 	 if(stateId != null && stateId.longValue() > 0){
+					if(stateId.longValue()==1l){
+						queryStr.append(" and UA.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");	
+					}else if(stateId.longValue()==36l){
+						queryStr.append(" and UA.district_id in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+					}
+			 }
+		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		         queryStr.append(" group by UA.state_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			     queryStr.append(" group by UA.district_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			     queryStr.append(" group by UA.parliament_constituency_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			     queryStr.append(" group by UA.constituency_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			     queryStr.append(" group by UA.tehsil_id");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			     queryStr.append(" group by UA.local_election_body_id"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			     queryStr.append(" group by UA.panchayat_id"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			     queryStr.append(" group by UA.ward"); 
+			 }
+	        Session session = getSession();
+		   SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+		    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			     sqlQuery.addScalar("stateId",Hibernate.LONG); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+				 sqlQuery.addScalar("districtId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+				 sqlQuery.addScalar("parliamentConstituencyId",Hibernate.LONG); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+				 sqlQuery.addScalar("assemblyId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+				 sqlQuery.addScalar("tehsilId",Hibernate.LONG);  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+				 sqlQuery.addScalar("localElectionBoydId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+				 sqlQuery.addScalar("panchayatId",Hibernate.LONG);
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+				 sqlQuery.addScalar("wardId",Hibernate.LONG);
+			 }
+			    sqlQuery.addScalar("count",Hibernate.LONG);
+			if(eventIds != null && eventIds.size() >0){
+				sqlQuery.setParameterList("eventIds", eventIds);	
+			}
+		return sqlQuery.list();
 	}
 }

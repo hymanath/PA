@@ -54,7 +54,15 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	public void setEventAttendeeDAO(IEventAttendeeDAO eventAttendeeDAO) {
 		this.eventAttendeeDAO = eventAttendeeDAO;
 	}
-	 
+	/**
+	* @param  Long activityMemberId
+	* @param  Long stateId
+	* @param  List<Long> eventIds
+	* @return List<EventDetailsVO>
+	* @author Santosh 
+	* @Description :This Service Method is used to basic event invitee attended and invitee attended count.. 
+	*  @since 15-SEPTEMBEr-2016
+	*/
 	public List<EventDetailsVO> getEventBasicCountDetails(List<Long> eventIds,Long activityMemberId,Long stateId){
 		  
 		List<EventDetailsVO> resultList = new ArrayList<EventDetailsVO>(0);
@@ -138,7 +146,6 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			LOG.error("Error occured at getEventBasicCountDetails() in CoreDashboardEventsActivitiesService class",e); 
 		}
 		return resultList;
-		
 	}
 	public void setDataToMap(List<Object[]> rtrnEventInviteeObLst,Map<Long,EventDetailsVO> eventDtlsMap){
 		try{
@@ -169,6 +176,17 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		}
 		return d;
 		} 
+	/**
+	* @param  Long activityMemberId
+	* @param  Long stateId
+	* @param  Long userId
+	* @param Long stateId
+	* @List<Long> eventIds
+	* @return List<List<UserTypeVO>>
+	* @author Santosh 
+	* @Description :This Service Method is used to get top 5 strong and poor members by event invitee attended percentage. 
+	* @since 15-SEPTEMBER-2016
+	*/
   public List<List<UserTypeVO>> getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(List<Long> eventIds,Long activityMemberId,Long userId,Long userTypeId,Long stateId) {
 	 
 	  List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
@@ -362,6 +380,16 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		 return perc1.compareTo(perc2);
 		}
 		}; 
+		/**
+		* @param  Long activityMemberId
+		* @param String reportType
+		* @param Long stateId
+		* List<Long> eventIds
+		* @return List<EventDetailsVO>
+		* @author Santosh 
+		* @Description :This Service Method is used to get location wise event invitee and attended details count based on userType.. 
+		*  @since 17-SEPTEMBER-2016
+		*/
  public List<EventDetailsVO> getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(Long userTypeId,Long stateId,Long activityMemberId,List<Long> eventIds){
 	 
 	 List<EventDetailsVO> resultList = new ArrayList<EventDetailsVO>(0);
@@ -457,6 +485,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 					 if(eventInviteeMapDtls != null && eventInviteeMapDtls.size() > 0){ // merging mandal data if there.
 					 eventVO.getLocationList().addAll(eventInviteeMapDtls.get(entry.getKey()).values());
 					 }
+				  resultList.add(eventVO); 
 				}
 			}
 		 }
@@ -513,7 +542,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			for(Object[] param:inviteeAttendedList){
 				Map<Long,EventDetailsVO> locationMap = eventInviteeMapDtls.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 				 if(locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1])) !=null ){
-					 locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1])).setInviteeAttendedCount(commonMethodsUtilService.getLongValueForObject(param[3])); 
+					locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1])).setInviteeAttendedCount(commonMethodsUtilService.getLongValueForObject(param[3])); 
 				 }
 			}
 		}
@@ -521,4 +550,187 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		LOG.error("Error occured at setInviteeAttendedCntToMap() in setAttendedDataToMap class",e);
 	}
  }
+ /**
+	* @param  Long parentActivityMemberId
+	* @param  List<Long> childUserTypeIds
+	* @param String reportType
+	* @List<Long> eventIds
+	* @param Long stateId
+	* @return List<UserTypeVO>
+	* @author Santosh 
+	* @Description :This Service Method is used to get selected child member and for userType.. 
+	*  @since 19-SEPTEMBER-2016
+	*/
+ public List<UserTypeVO> getSelectedChildMembersForEvents(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,List<Long> eventIds){
+	 
+	 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
+	 Map<String,Long> eventIviteeMap = new HashMap<String, Long>(0);
+	 Map<String,Long> eventInviteeAttendedMap = new HashMap<String, Long>(0);
+	 Map<String,Long> eventAttendedMap = new HashMap<String, Long>(0);
+	
+	 
+	 try{
+		  Map<Long,Set<Long>> locationLevelIdsMap=null;
+		  Map<String,String>     nameForLocationMap=null;
+		  ActivityMemberVO activityMemberVO=null;
+		  Map<Long,UserTypeVO> childActivityMembersMap=null;
+		  
+		  //calling generic method to get childActivityMembers and there location level and values
+		  
+		  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
+			  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
+			  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
+			  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+		  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
+			  if(childUserTypeIds != null && childUserTypeIds.size()>0){
+				   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+			  }
+			   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+			   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+		  }
+		   
+		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+			  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+		  }
+		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+		    	 
+		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+		    		 
+		    		 List<Object[]> rtrnEventInviteeObjLst = eventInviteeDAO.getLocationWiseEventInviteedCount(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+		    		 
+		    		 if(rtrnEventInviteeObjLst != null && rtrnEventInviteeObjLst.size() > 0){
+		    			 
+		    			  for (Object[] param : rtrnEventInviteeObjLst) {
+		    				  
+		    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+		    				  eventIviteeMap.put(locationLevelAndId, commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+		    		  }
+		    	 }
+		  }
+		  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+		    	 
+		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+		    		 
+		    		 List<Object[]> rtrnEventAttendedCnt = eventAttendeeDAO.getEventAttendedCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+		    		  
+		    		 if(rtrnEventAttendedCnt != null && rtrnEventAttendedCnt.size() > 0){
+		    			 
+		    			  for (Object[] param : rtrnEventAttendedCnt) {
+		    				  
+		    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+		    				  eventAttendedMap.put(locationLevelAndId, commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+		    		  }
+		    	 }
+		     }
+		     if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+		    	 
+		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+		    		 
+		    		 List<Object[]> rtrnEventInviteeAttendedCnt = eventAttendeeDAO.getEventInviteeAttendedCountLocationWise(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventIds);
+		    		  
+		    		 if(rtrnEventInviteeAttendedCnt != null && rtrnEventInviteeAttendedCnt.size() > 0){
+		    			  
+		    			  for (Object[] param : rtrnEventInviteeAttendedCnt) {
+		    				  
+		    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+		    				  eventInviteeAttendedMap.put(locationLevelAndId, commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+		    		  }
+		    	 }
+		     }
+		     //setting invitees count
+		    if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		    	
+		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+		    		
+		    		  for(Long locationValueId:VO.getLocationValuesSet()){
+		    			  
+			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+			    		  
+			    		  if(eventIviteeMap.get(key) != null){
+					    	
+			    			  VO.setInviteeCnt(VO.getInviteeCnt()+eventIviteeMap.get(key)); 
+					    	 
+			    		  }
+			    	  }
+		    	}
+		    }
+		    //setting attended count
+	   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			    	
+			    	for(UserTypeVO VO:childActivityMembersMap.values()){
+			    		
+			    		  for(Long locationValueId:VO.getLocationValuesSet()){
+			    			  
+				    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+				    		  
+				    		  if(eventAttendedMap.get(key) != null){
+						    	
+				    			  VO.setAttendedCnt(VO.getAttendedCnt()+eventAttendedMap.get(key)); 
+						    	 
+				    		  }
+				    	  }
+			    	}
+			    }
+	   //setting invitee attended count
+	   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	   	
+	   	for(UserTypeVO VO:childActivityMembersMap.values()){
+	   		
+	   		  for(Long locationValueId:VO.getLocationValuesSet()){
+	   			  
+		    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+		    		  
+		    		  if(eventInviteeAttendedMap.get(key) != null){
+				    	
+		    			  VO.setInviteeAttendedCnt(VO.getInviteeAttendedCnt()+eventInviteeAttendedMap.get(key)); 
+				    	 
+		    		  }
+		    	  }
+	   	}
+	   }
+	   // setting location name for direct child 
+	   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		      for(UserTypeVO vo:childActivityMembersMap.values()){
+		    	  for(Long locationValueId:vo.getLocationValuesSet()){
+		    		  String key = vo.getLocationLevelId()+"_"+locationValueId;
+		    		  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
+		    			  vo.setLocationName(nameForLocationMap.get(key));
+					   }else{
+						   vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
+					   }
+		    	  }
+		      }
+	    } 
+	   // calculating non invitees count and percentage
+	   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		   for(UserTypeVO userVO:childActivityMembersMap.values()){
+			    userVO.setNonInviteeAttendedCnt(userVO.getAttendedCnt()-userVO.getInviteeAttendedCnt());
+			    userVO.setNonInviteeAttendedCntPer(calculatePercantage(userVO.getNonInviteeAttendedCnt(), userVO.getAttendedCnt()));
+			    userVO.setInviteeAttendedCntPer(calculatePercantage(userVO.getInviteeAttendedCnt(),userVO.getInviteeCnt()));
+		   }
+	   }
+	   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+			  resultList.addAll(childActivityMembersMap.values());
+		  }
+		  if(resultList != null && resultList.size() > 0)
+		  {
+			  Collections.sort(resultList, eventInviteeAttendedPercDesc);
+		  }
+	 }catch(Exception e) {
+		 LOG.error("Error occured at getSelectedChildMembersForEvents() in setAttendedDataToMap class",e);	
+	 }
+	 return resultList;
+ }
+	public static Comparator<UserTypeVO> eventInviteeAttendedPercDesc = new Comparator<UserTypeVO>() {
+	public int compare(UserTypeVO member2, UserTypeVO member1) {
+
+	Double perc2 = member2.getInviteeAttendedCntPer();
+	Double perc1 = member1.getInviteeAttendedCntPer();
+	//descending order of percantages.
+	 return perc1.compareTo(perc2);
+	}
+	}; 
 }

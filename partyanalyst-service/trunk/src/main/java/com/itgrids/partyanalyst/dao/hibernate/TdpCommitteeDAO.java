@@ -1462,7 +1462,8 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			sbE.append(" ,model.userAddress.panchayat.panchayatId ");
 		}else if(committeeBO.getGroupingLocation().equalsIgnoreCase("Ward")){
 			sbS.append(" ,model.userAddress.ward.constituencyId,model.userAddress.ward.name ");//12
-			sbE.append(" ,model.userAddress.ward.constituencyId ");
+			sbE.append(" ,model.userAddress.ward.const" +
+					"ituencyId ");
 		}
 		
 		sbM.append(" from  TdpCommittee model " +
