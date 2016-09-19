@@ -1172,7 +1172,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
   }
 		  return query.list();    
   }
-	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate){ 
+	public List<Object[]> getTotalAttendedForTrainingCampStateLevel(List<Long> programIdList, Long stateId, Date toDate){   
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select TCA.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 						   " TCA.trainingCampSchedule.trainingCampProgram.programName ," +
@@ -1258,23 +1258,30 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		 query.setDate("toDate", toDate);  
 		 return query.list();
 	 }
-	 public List<Object[]> getDestWiseAttendedMembers(Long stateId, Long campId, Long programId){
+	 public List<Object[]> getDestWiseAttendedMembers(List<Long> programIdList, Long stateId, Date toDate){
 		 StringBuilder queryString = new StringBuilder();
-		 queryString.append(" select D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, attendance A, training_camp_batch_attendee TCBA, " +
+		 queryString.append(" select TCP.training_camp_program_id as programId,TCP.program_name as programName,D.district_id as id,D.district_name as name, count(distinct A.tdp_cadre_id) as total from training_camp_attendance TCA, training_camp_schedule TCS, training_camp_program TCP,  attendance A, training_camp_batch_attendee TCBA, " +
 		 					" tdp_cadre TC, user_address UA, district D "+
 				   			  " where "+
-				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and "+
-				   			  " TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
+				   			  " TCA.training_camp_schedule_id = TCS.training_camp_schedule_id and " +
+				   			  " TCS.training_camp_program_id = TCP.training_camp_program_id and "+
+				   			  //" TCS.training_camp_id = (:campId) and TCS.training_camp_program_id = (:programId) and "+
+				   			  " TCP.training_camp_program_id in (:programIdList) and "+
 				   			  " TCA.attendance_id = A.attendance_id and "+
 				   			  " TC.tdp_cadre_id = A.tdp_cadre_id and TCBA.tdp_cadre_id = TC.tdp_cadre_id and "+
 				   			  " TC.address_id = UA.user_address_id and " +
-				   			  " (D.district_id BETWEEN 11 and 23) and"+
-				   			  " UA.district_id = D.district_id "+
-				   			  " group by D.district_id order by D.district_id ");
-		 SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
-		 query.setParameter("campId", campId);
-		 query.setParameter("programId", programId);  
-		 
+				   			  " UA.district_id = D.district_id and " +
+				   			  " date(A.attended_time) <= (:toDate) and ");
+		 if(stateId == 1l){
+			   queryString.append(" (D.district_id BETWEEN 11 and 23) ");  
+		 }else{
+			   queryString.append(" (D.district_id BETWEEN 1 and 10) ");
+		 }
+		 queryString.append(" group by TCP.training_camp_program_id,D.district_id order by D.district_id ");
+		 SQLQuery query = getSession().createSQLQuery(queryString.toString()).addScalar("programId", Hibernate.LONG).addScalar("programName", Hibernate.STRING).addScalar("id", Hibernate.LONG).addScalar("name", Hibernate.STRING).addScalar("total", Hibernate.LONG);
+		 //query.setParameter("campId", campId);
+		 query.setParameterList("programIdList", programIdList);  
+		 query.setDate("toDate", toDate);  
 		 return query.list();
 	}
 	
