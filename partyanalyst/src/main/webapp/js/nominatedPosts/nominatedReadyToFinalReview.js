@@ -779,17 +779,17 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
 	$(".updateDropDown").css("right","0px");
-	if(result.subList.length > 10)
+	/* if(result.subList.length > 10)
 	{
 		$("#resultDivId").css("height","400px");
 	}else if(result.subList.length > 6)
 	{
 		$("#resultDivId").addClass("table-responsive");
-	}
+	} */
 	$(".chosenSelect").chosen();
-				$(".dateR").daterangepicker({
-					opens:'left'
-				});
+	$(".dateR").daterangepicker({
+		opens:'left'
+	});
 				
 }
 
@@ -1770,13 +1770,13 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	$("#wishListCountId").html(totalWishListCount);
 	$("#resultDivId").html(str);
 	$(".updateDropDown").css("right","0px");
-	if(result.subList.length > 10)
+	/* if(result.subList.length > 10)
 	{
 		$("#resultDivId").css("height","400px");
 	}else if(result.subList.length > 6)
 	{
 		$("#resultDivId").addClass("table-responsive");
-	}
+	} */
 	$(".chosenSelect").chosen();
 				$(".dateR").daterangepicker({
 					opens:'left'
