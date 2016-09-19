@@ -5,7 +5,7 @@ $(document).on("click",".eventsIconExpand",function(){
 	$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
-		$(".eventsHiddenBlock").show();
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
 	}else{
 		$(".eventsHiddenBlock").hide();
 	}
@@ -40,6 +40,11 @@ $(document).on("click",".eventsIconExpand",function(){
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}
+});
+
+$(document).on("click",".moreEventsBlocksIcon",function(){
+	$(".moreEventsBlocks").toggle();
+	getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
 });
 
 $(document).on("click",".eventsListExpandIcon",function(){
@@ -299,54 +304,175 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 	
 }
 function getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(){
-	   var eventIds=[];
-		eventIds.push(7);
-		eventIds.push(30);
-		
-		var jsObj ={ 
-		             activityMemberId : globalActivityMemberId,
-					 stateId : 1,
-					 eventIds:eventIds,
-					 userTypeId : globalUserTypeId
-					 
-				  }
-		$.ajax({
-			type : 'POST',
-			url : 'getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserTypeAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			console.log(result);
-		});
+	$("#eventsDistWiseCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+   var eventIds=[];
+	eventIds.push(7);
+	eventIds.push(30);
 	
-	
+	var jsObj ={ 
+		 activityMemberId : globalActivityMemberId,
+		 stateId : 1,
+		 eventIds:eventIds,
+		 userTypeId : globalUserTypeId
+		 
+	  }
+	$.ajax({
+		type : 'POST',
+		url : 'getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserTypeAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(result);
+	});
 }
+function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(result)
+{
+	var str='';
+	for(var i in result)
+	{
+		str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+		str+='<div id="eventsGraph'+i+'" style="height:120px"></div>';
+	}
+	$("#eventsDistWiseCohort").html(str)
+	if(result != null && result.length > 0){
+		for(var i in result){
+			
+			var inviteesCounts = [];
+			var nonInviteesCounts = [];
+			var candidateNames = [];
+			var countVar =0;
+			
+			
+			for(var j in result[i].locationList){
+				candidateNames.push(result[i].locationList[j].name)
+				inviteesCounts.push(result[i].locationList[j].inviteeAttendedCounPer)
+				nonInviteesCounts.push(result[i].locationList[j].nonInviteeAttendedCountPer)
+			}
+			console.log(nonInviteesCounts)
+			
+			
+			$(function () {
+				 $("#eventsGraph"+i).highcharts({
+					colors: ['#D33E39','#64C664'],
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: ''
+					},
+					subtitle: {
+						text: ''
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: candidateNames,
+						type: 'category',
+						labels: {
+									formatter: function() {
+										return this.value.toString().substring(0, 10)+'...';
+									},
+									
+								}
+						
+					},
+					yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled:false
+						}
+					},
+					legend: {
+						enabled: false
+					},
+					
+							
+					plotOptions: {
+						column: {
+							stacking: 'percent',
+							dataLabels: {
+								enabled: true,
+								 formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.percentage,1) + '%';
+									}
+								}
+							  
+							}
+						}
+					},
+
+					 tooltip: {
+						formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+									(this.y);
+							});
+
+							return s;
+						},
+						shared: true
+					},
+
+					series: [{
+						name: 'Invitees',
+						data: inviteesCounts,
+						
+					},{
+						name: 'Non Invitees',
+						data: nonInviteesCounts,
+						
+					}],
+				 
+				});
+			});
+		
+			
+		}
+		
+	}else{
+		$("#eventsDistWiseCohort").html("No Data Available");
+	}
+}
+
+
 /*Notes Functionality*/
 function displayDashboardCommentsForEvents(dashBoardComponentId){
-var jsObj={
-	dashBoardComponentId:dashBoardComponentId
-}	
-$.ajax({
- type: "POST",
- url: "displayDashboardCommentsAction.action",
- data: {task :JSON.stringify(jsObj)}
-}).done(function(result){
-	if(result != null && result.length >0){
-	 var str=''; 
-  		 
-     str+='<ul class="notesUlEvents m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
-		for(var i in result){ 
-			str+='<li style="margin-top:3px;">'; 
-			str+='<span class="notesTextEvents" id="editTextEventsId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
-			str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesEvents" attr_cmt_id="editTextEventsId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
-			str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesEvents" attr_cmt_id="editTextEventsId'+i+'" attr_comment="'+result[i].comment+'"></i>';
-			str+='</li>';
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+			 
+		 str+='<ul class="notesUlEvents m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+			for(var i in result){ 
+				str+='<li style="margin-top:3px;">'; 
+				str+='<span class="notesTextEvents" id="editTextEventsId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+				str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesEvents" attr_cmt_id="editTextEventsId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+				str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesEvents" attr_cmt_id="editTextEventsId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+				str+='</li>';
+			}
+		str+='</ul>';
+			
+			$("#notesEventsId").html(str);	 
 		}
-	str+='</ul>';
-		
-		$("#notesEventsId").html(str);	 
-	}
-});
+	});
 }
 function deleteDashBoardcomments(dashboardCommentId)
 {
@@ -361,10 +487,8 @@ function deleteDashBoardcomments(dashboardCommentId)
 		if(result != null){	
 			if(result.message == "success"){
 				
-				
 			}
 		}
-			
 	});
 }
 
@@ -427,3 +551,4 @@ $(document).on("click",".btnCustomCreateEvents",function(){
 	$(".notesAreaEvents").val('');	
 });
 
+/*Notes Functionality End*/

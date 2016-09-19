@@ -110,11 +110,9 @@
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-1 col-sm-1 col-xs-2">
-								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
 								committees - <small class="text-muted">up to date</small>
 							</h4>
 						</div>
@@ -394,12 +392,10 @@
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-1 col-sm-1 col-xs-2">
-							<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-						</div>
-						<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
-							<h4 class="panel-title">
-								training<small class="text-muted"> - up to date</small>
+						<div class="col-md-8 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+								training - <small class="text-muted">up to date</small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
@@ -617,15 +613,11 @@
                 <div class="panel panel-default panelNewCustom panel2">
                     <div class="panel-heading">
 						<div class="row">
-							<div class="col-md-1 col-sm-1 col-xs-2">
-								<img class="iconClass" src="newCoreDashBoard/img/debates.png">
-							</div>
-							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+							<div class="col-md-8 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
-									debates
-									<small class="text-muted"> - last month</small>
+									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+									debates - <small class="text-muted">last month</small>
 								</h4>
-								<h6 id="lastUpdatedDebateId" class="updatedDate"></h6>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
 								<span class="settingsIcon pull-right">
@@ -664,6 +656,7 @@
                         <div class="row">
                         
                             <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
                                 <div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
 									<!--<div ng-app="partyWiseTotalApp">
@@ -908,15 +901,11 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-12">
-								<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-								<div style="display:inline-block">
-									<h4 class="panel-title text-capital">
-										news
-										<small class="text-muted" id="currentViewing"></small>
-									</h4>
-									<h6 id="lastUpdatedId" class="updatedDate"></h6>
-								</div>
+							<div class="col-md-8 col-sm-8 col-xs-7">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									news - <small class="text-muted" id="currentViewing"></small>
+								</h4>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-6">
 								<span class="settingsIcon settingsIconNews pull-right">
@@ -1039,6 +1028,7 @@
 						<div class="row">
 							
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
+								<h6 id="lastUpdatedId" class="updatedDate pull-right"></h6>
 								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span>
 									<!--<div class="spinner" style="height:20px;width:20px;display:inline-block;margin:0px"><div class="dot1"></div><div class="dot2"></div></div>-->
 								</h4>
@@ -1507,14 +1497,11 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-1 col-sm-1 col-xs-2">
-								<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-							</div>
-							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+							<div class="col-md-8 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
-									meetings <small class="text-muted"><span id="dateMeetingHeadingId"> - last month</span></small>
+									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
+									meetings - <small class="text-muted" id="dateMeetingHeadingId"> - last month</small>
 								</h4>
-								<h6 id="lastUpdatedIdTimeId" class="updatedDate"></h6>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
 							 <span class="settingsIcon pull-right">
@@ -1689,14 +1676,11 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-1 col-sm-1 col-xs-2">
-								<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-							</div>
-							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
+							<div class="col-md-8 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
 									events and activities <small class="text-muted"><span id="dateEventsHeadingId"> - last month</span></small>
 								</h4>
-								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
 								<span class="notesIconEvents pull-right">
@@ -1720,16 +1704,17 @@
 								</span>
 							</h4>
 							<div id="notesEventsId"></div>
-						<hr/>
-						<div id="eventsUpId" style="color:red;"></div>
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesAreaEvents"></textarea>
-                        <button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
+							<hr/>
+							<div id="eventsUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaEvents"></textarea>
+							<button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
 						</div>
 					</div>
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
+								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span></h4>
 								<div id="mainEventsList"></div>
 							</div>
@@ -1737,7 +1722,22 @@
 								<h4><span class="headingColor text-capital">events & Activities</span></h4>
 								<div id="UserTypeWiseCommittee" class="m_top20"></div>
 							</div>
-							
+							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock " attr_main_type_meeting_id="1" style="display: none;">
+								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<span class="headingColor text-capitalize">Mahanadu - District Wise Cohort</span>
+										</h4>
+									</div>
+									<div class="panel-body">
+										<div id="eventsDistWiseCohort"></div>
+									</div>
+								</div>
+								
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1887,8 +1887,7 @@
 		getSpecialMeetingsByMeetingType();
 		//events
 		getEventBasicCntDtls();
-		//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
-		//getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
+		
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();
