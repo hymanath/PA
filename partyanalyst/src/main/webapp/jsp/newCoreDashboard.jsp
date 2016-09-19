@@ -432,7 +432,7 @@
 						<div id="notesTrainingId"></div>
 						  <hr/>
 						<div id="id2" style="color:red;"></div>
-                        <label>Create Notes</label>';
+                        <label>Create Notes</label>
                         <textarea class="form-control notesAreaTraining"></textarea>
                         <button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>
 					</div>  
@@ -1481,7 +1481,7 @@
 							<div id="notesMeetingId"></div>
 						<hr/>
 						<div id="meetingsUpId" style="color:red;"></div>
-                        <label>Create Notes</label>';
+                        <label>Create Notes</label>
                         <textarea class="form-control notesAreaMeetings"></textarea>
                         <button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>
 						</div>
@@ -1638,7 +1638,7 @@
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
 								<span class="notesIconEvents pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
 								</span>
 								<span class="eventsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
@@ -1650,6 +1650,19 @@
 									</span>
 								</span>
 							</div>
+						</div>
+						<div class="notesDropDown notesArrow" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesEventsId"></div>
+						<hr/>
+						<div id="eventsUpId" style="color:red;"></div>
+                        <label>Create Notes</label>
+                        <textarea class="form-control notesAreaEvents"></textarea>
+                        <button class="btn btn-default btnCustomCreateEvents btn-sm "  onClick="savingDashboardCommentForEvents(6);">create</button>
 						</div>
 					</div>
 					<div class="panel-body">
@@ -1709,6 +1722,7 @@
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
 <input type="hidden" id="cmtNewsId" attr_cmt_id="editTextNewsId'+i+'" value=""></input>
 <input type="hidden" id="cmtMeetingId" attr_cmt_id="editTextmettingId'+i+'" value=""></input>
+<input type="hidden" id="cmtEventsId" attr_cmt_id="editTextEventsId'+i+'" value=""></input>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
