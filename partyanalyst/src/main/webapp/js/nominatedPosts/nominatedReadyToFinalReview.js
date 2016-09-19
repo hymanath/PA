@@ -747,7 +747,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					str+='<div class="updateDropDown" style="width:1100px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
-							str+='<div class = "dropDownButnCls" id="dropDownButnId" style="cursor:pointer;float:right;">X</div>';
+							str+='<div class = "dropDownButnCls" id="dropDownButnId" style="cursor:pointer;float:right;" title="close">X</div>';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
 							str+='<label calss="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
@@ -1737,7 +1737,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 					str+='<div class="updateDropDown" style="width:250px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
-							str+='<div class = "dropDownButnCls" id="dropDownButnId" style="cursor:pointer;float:right;">X</div>';
+							str+='<div class = "dropDownButnCls" id="dropDownButnId" style="cursor:pointer;float:right;" title="close">X</div>';
 							str+='<div class="text-success updtCmmntErrCls'+i+'" id="successDivId'+i+'"></div>';
 							str+='<label calss="m_top10">Select Status</label>';
 							str+='<select class="chosenSelect" id="statusSelectId'+i+'">';
@@ -1864,6 +1864,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	}); 
 	 $(document).on("click",".statusUpdateBntCls",function(){
 		$(".updateDropDownArrow").show();
+		$(".updateDropDown").hide();
 	}); 
 	 $(document).on("click","#commentsPopUpId",function(){
 		$(".commentsDiv").hide();
