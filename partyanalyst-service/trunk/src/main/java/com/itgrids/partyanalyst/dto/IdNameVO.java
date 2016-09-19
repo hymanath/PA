@@ -28,6 +28,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String wish;
 	private Long applicationsCount=0L;
 	private Long memberId;
+	private String districtName;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -215,6 +216,12 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setApplicationsCount(Long applicationsCount) {
 		this.applicationsCount = applicationsCount;
 	}
-	
-	
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
 }
