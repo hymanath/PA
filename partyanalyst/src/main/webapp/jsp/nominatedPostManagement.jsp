@@ -65,7 +65,7 @@
 								<label>State</label>
 								<select class="form-control" id="stateId">
 									<option value="0">All</option>
-									<option value="1">Andhara Pradesh</option>
+									<option value="1">Andhra Pradesh</option>
 									<option value="36">Telangana</option>
 								</select>
 							</div>
