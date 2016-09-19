@@ -908,15 +908,15 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-1 col-sm-1 col-xs-2">
+							<div class="col-md-8 col-sm-8 col-xs-12">
 								<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-							</div>
-							<div class="col-md-7 col-sm-7 col-xs-10 pad_left0">
-								<h4 class="panel-title text-capital">
-									news
-									<small class="text-muted" id="currentViewing"></small>
-								</h4>
-								<h6 id="lastUpdatedId" class="updatedDate"></h6>
+								<div style="display:inline-block">
+									<h4 class="panel-title text-capital">
+										news
+										<small class="text-muted" id="currentViewing"></small>
+									</h4>
+									<h6 id="lastUpdatedId" class="updatedDate"></h6>
+								</div>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-6">
 								<span class="settingsIcon settingsIconNews pull-right">
@@ -1424,11 +1424,13 @@
 									
 									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<div id="comparisonGovtMinistriesInfo"></div>
-												
+											<div id="comparisonGovtMinistriesInfo"></div>
 										</div>
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<div id="ministerSubLevelDetailsDiv"></div>
+											<div id="comparisonGovtDeptDOverview"></div>
+											<div id="comparisonGovtTopTrend"></div>
+											<div id="comparisonGovtProblemsDOverview"></div>
 										</div>
 									</div>
 								</div>
