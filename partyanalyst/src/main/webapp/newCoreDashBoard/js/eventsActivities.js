@@ -191,7 +191,7 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 	if(result != null && result.length > 0){
 		for(var i in result){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h5 class="text-capital">'+result[i][0].locationLevelName+'</h5>';
+				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 				str+='<div id="eventsCountGraph'+i+'" style="height:100px;"></div>';
 			str+='</div>'
 				
@@ -297,7 +297,6 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 			} 
 			
 		}
-		
 	}else{
 		$("#UserTypeWiseCommittee").html("No Data Available");
 	}
@@ -445,6 +444,77 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 		$("#eventsDistWiseCohort").html("No Data Available");
 	}
 }
+function getSelectedEventDetails(){
+var eventIds=[];
+	eventIds.push(7);
+	eventIds.push(30);
+	alert(11);
+	var jsObj ={ 
+				 activityMemberId : globalActivityMemberId,
+				 stateId : 1,
+				 eventIds:eventIds
+				 
+			  }
+	$.ajax({
+		type : 'POST',
+		url : 'getEventBasicCntDtlsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});	
+}
+function getSelectedChildTypeMembersForEvent(){
+	// $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	// $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  var parentActivityMemberId = globalActivityMemberId;
+	 // var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
+	  var childUserTypeIdsArray = [];
+	  childUserTypeIdsArray.push(3);
+       var eventIds=[];
+		eventIds.push(7);
+		eventIds.push(30);	
+	 var jsObj ={ 
+	               parentActivityMemberId : parentActivityMemberId,
+				   childUserTypeIdsArray : childUserTypeIdsArray,
+				   reportType :"selectedUserType",
+				   stateId : 1,
+				   eventIds:eventIds
+				 }
+	  $.ajax({
+			type : 'POST',
+			url : 'getSelectedChildTypeMembersForEventAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		   // console.log(result);
+		});
+ }
+ function getDirectChildTypeMembersForEvent(userTypeId){
+			   var eventIds=[];
+				eventIds.push(7);
+				eventIds.push(30);	
+	             var childUserTypeIdsArray=[];
+	             childUserTypeIdsArray.push(userTypeId);
+	  var jsObj ={   activityMemberId : 1,
+			         childUserTypeIdsArray : childUserTypeIdsArray,
+					 reportType : "directChild",
+					 stateId : 1,
+					 eventIds:eventIds
+				  }
+	   	$.ajax({
+			type : 'POST',
+			url : 'getDirectChildTypeMembersForEventAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		//  console.log(result);
+		});
+ }
+
+
+
+
 
 
 /*Notes Functionality*/

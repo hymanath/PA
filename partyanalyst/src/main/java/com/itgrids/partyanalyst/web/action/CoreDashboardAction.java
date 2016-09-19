@@ -1784,4 +1784,60 @@ public String getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserTy
 	}
 	return Action.SUCCESS;
 }
+public String getSelectedChildTypeMembersForEvent(){
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+	    Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+		
+		List<Long> childUserTypeIds=new ArrayList<Long>();
+		JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+		if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			for( int i=0;i<childUserTypeIdsArray.length();i++){
+				childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+			}
+		}
+		String reportType = jObj.getString("reportType");
+		Long stateId = jObj.getLong("stateId");
+		List<Long> eventsIds = new ArrayList<Long>();
+		JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}
+		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(parentActivityMemberId,childUserTypeIds,reportType,stateId,eventsIds);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getSelectedChildTypeMembersForEvent() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDirectChildTypeMembersForEvent(){
+	try{
+		
+		jObj = new JSONObject(getTask()); 
+	    Long activityMemberId = jObj.getLong("activityMemberId");
+		
+		List<Long> childUserTypeIds=new ArrayList<Long>();
+		JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+		if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+			for( int i=0;i<childUserTypeIdsArray.length();i++){
+				childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+			}
+		}
+		String reportType = jObj.getString("reportType");
+		Long stateId = jObj.getLong("stateId");
+		List<Long> eventsIds = new ArrayList<Long>();
+		JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}
+		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(activityMemberId,childUserTypeIds,reportType,stateId,eventsIds);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getDirectChildTypeMembersForEvent() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 }

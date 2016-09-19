@@ -1887,6 +1887,11 @@
 		getSpecialMeetingsByMeetingType();
 		//events
 		getEventBasicCntDtls();
+		//getSelectedEventDetails();
+		//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
+		//getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
+		//getSelectedChildTypeMembersForEvent();
+		//getDirectChildTypeMembersForEvent(3);
 		
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
