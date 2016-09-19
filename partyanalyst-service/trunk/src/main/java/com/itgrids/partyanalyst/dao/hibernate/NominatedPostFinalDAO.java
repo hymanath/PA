@@ -1764,7 +1764,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		
 		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
 			query.setParameter("locationValue", locationValue);		
-		query.setParameter("status",IConstants.SHORTLISTED_STATUS);
+		//query.setParameter("status",IConstants.SHORTLISTED_STATUS);
 		
 		return query.list();
 	}
