@@ -680,7 +680,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				else
 					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
-						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;>';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -693,7 +693,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					else
 						str+='<span> NO </span>';
 						str+='<div class="appliedPostPopup">';
-							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
 							str+='</div>';
 						str+='</div>';
 					
@@ -1688,7 +1688,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 				else
 					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
-						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'">';
+						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;">';
 						str+='</div>';
 					str+='</div>';
 				str+='</td>';
@@ -1701,7 +1701,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 					else
 						str+='<span> NO </span>';
 						str+='<div class="appliedPostPopup">';
-							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'">';
+							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
 							str+='</div>';
 						str+='</div>';
 					
