@@ -2929,8 +2929,9 @@ function getChildUserTypesByItsParentUserType1(){
 			buildComparisonGovtMinistriesInfo(result);
 		});
 	}
-	
-	function getComparisonGovernamentTrendingTrackedIssues(){
+	//2nd block
+	function getComparisonGovernamentTrendingTrackedIssues(departmentIdsStr){
+		
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -2948,10 +2949,10 @@ function getChildUserTypesByItsParentUserType1(){
 		var startDate=currentFromDate,endDate=currentToDate;
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+candidateId+"/"+departmentIdsStr
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+candidateId+"/"+departmentIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+departmentIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovernamentTrendingTrackedIssues/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+departmentIdsStr
 		}).then(function(result){
-		
+			buildComparisonGovernamentTrendingTrackedIssues(result);
 		});
 	}
 	function getAllDepartmentEditionsWiseDetails(departmentIdsStr,ministerName){
@@ -3228,6 +3229,10 @@ function getChildUserTypesByItsParentUserType1(){
 	
 	$(document).on("click",".comparisonGovtMinistriesInfoSubLevel",function(){
 		getAllDepartmentEditionsWiseDetails($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
+		getCompareGovtCandidateDepartmentsWiseDistrictOverview($(this).attr("attr_department_idsstr"));
+		getComparisonGovernamentTrendingTrackedIssues($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
+		getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(0,$(this).attr("attr_department_idsstr"));
+		getCompareGovernamentDistrictWiseArticleRelatedToProblem($(this).attr("attr_department_idsstr"));
 	});
 		
 	function buildgetAllDepartmentEditionsWiseDetails(result,ministerName){
@@ -3287,8 +3292,8 @@ function getChildUserTypesByItsParentUserType1(){
 		
 		$("#ministerSubLevelDetailsDiv").html(str);
 	}
-	
-	function getCompareGovernamentDistrictWiseArticleRelatedToProblem(){
+	//3rd block 1 st part
+	function getCompareGovernamentDistrictWiseArticleRelatedToProblem(organizationIdStr){
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -3302,17 +3307,39 @@ function getChildUserTypesByItsParentUserType1(){
 			}
 		}
 		
+		
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
-		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+newPaperIdArr+"/"+state+"/"+startDate+"/"+endDate+"/"+status+"/"+organizationIdStr+""
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+userAccessLevelId+"/"+userAccessLevelValuesArray+"/"+newPaperIdArr+"/"+state+"/"+startDate+"/"+endDate+"/"+status+"/"+organizationIdStr+""
-		}).then(function(result){
+		if(globalUserAccessLevelId==2){
+			$.ajax({
+				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+""
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+""      
+			}).then(function(result){
+				buildDistrictWiseArticleRelatedToProblem(result)
+			});
 			
-		});
+			$.ajax({
+				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+"" 
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/state/"+organizationIdStr+""      
+			}).then(function(result){
+				buildStateWiseArticleRelatedToProblem(result);
+			});
+			
+		}else{     
+			$.ajax({
+				//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+"" 
+				url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovernamentDistrictWiseArticleRelatedToProblem/"+globalUserAccessLevelId+"/"+temp+"/"+newsPaperIdsStr+"/"+state+"/"+startDate+"/"+endDate+"/other/"+organizationIdStr+""    
+			}).then(function(result){
+				buildDistrictWiseArticleRelatedToProblem(result);
+			});
+			
+		}
+		
 	}
-	
-	function getCompareGovtCandidateDepartmentsWiseDistrictOverview(){
+	//1st block
+	function getCompareGovtCandidateDepartmentsWiseDistrictOverview(orgIdStr)
+	{
+		$("#comparisonGovtDeptDOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -3333,7 +3360,7 @@ function getChildUserTypesByItsParentUserType1(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getCompareGovtCandidateDepartmentsWiseDistrictOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+orgIdStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getCompareGovtCandidateDepartmentsWiseDistrictOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+orgIdStr
 		}).then(function(result){
-			
+			buildCompareGovtCandidateDepartmentsWiseDistrictOverview(result);
 		});
 	}
 	function getDetailedGovernmentDistrictWiseArticleRelatedToProblem()
@@ -3395,7 +3422,7 @@ function getChildUserTypesByItsParentUserType1(){
 	{
 		var str='';
 		var distWiseArticlesRelated = [];
-		str+='<div id="districtWiseArticle" style="height:150px;"></div>';
+		str+='<div id="comaprisonDistrictWiseArticle" style="height:150px;"></div>';
 		for(var i in result){
 			var obj1 = {
 				name: result[i].name,
@@ -3405,7 +3432,7 @@ function getChildUserTypesByItsParentUserType1(){
 		}
 		$("#districtWiseArticleRelatedToProblem").html(str)
 		$(function () {
-			 $("#districtWiseArticle").highcharts({
+			 $("#comaprisonDistrictWiseArticle").highcharts({
 				colors: ['#AA3732'],
 				chart: {
 					type: 'column'
@@ -3477,11 +3504,12 @@ function getChildUserTypesByItsParentUserType1(){
 		});
 	
 	}
+	//3rd block last part
 	function getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,deptIdsStr){
 		if(propertyId == 7){
-			$("#problemsDetailedOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$("#comparisonGovtProblemsDOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}else if(propertyId == 0){
-				$("#problemsDetailedOverview22").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$("#comparisonGovtProblemsDOverview1").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}
 		
 
@@ -3511,9 +3539,819 @@ function getChildUserTypesByItsParentUserType1(){
 			}else if(propertyId == 0){
 				$("#problemsDetailedOverview22").html('');
 			}
-			buildgetDetailedGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
+			buildComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
 			
 		});
+	}
+	
+	function buildCompareGovtCandidateDepartmentsWiseDistrictOverview(result)
+	{
+		var str=' ';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="bg_ED pad_15">';
+				str+='<div class="panel panel-default panelNew">';
+					str+='<div class="panel-heading">';
+						str+='<h4 class="panel-title"><span class="headingColor text-capitalize">Departments Wise Districts Overview</span></h4>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+					for(var i in result)
+					{
+						str+='<h4 class="panel-title">'+result[i].coreDashBoardVOList[0].organization+'</h4>';
+						str+='<div id="departmentWiseCompare'+i+'" style="height:120px"></div>';
+					}
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#comparisonGovtDeptDOverview").html(str)
+		if(result != null && result.length > 0){
+				for(var i in result){
+					
+					var PositivePercArray = [];
+					var NegativePercArray = [];
+					var candidateNameArray=[];
+					
+						for(var j in result[i].coreDashBoardVOList){
+							candidateNameArray.push(result[i].coreDashBoardVOList[j].districtName)
+							PositivePercArray.push(result[i].coreDashBoardVOList[j].positivePerc)
+							NegativePercArray.push(result[i].coreDashBoardVOList[j].negativePerc)
+								
+						}
+					
+						
+						$(function () {
+							 $("#departmentWiseCompare"+i).highcharts({
+								  colors: ['#D33E39','#64C664'],
+								chart: {
+									type: 'column'
+								},
+								title: {
+									text: ''
+								},
+								subtitle: {
+									text: ''
+								},
+								xAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									categories: candidateNameArray,
+									type: 'category',
+									labels: {
+												formatter: function() {
+													return this.value.toString().substring(0, 10)+'...';
+												},
+												
+											}
+									
+								},
+								yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									title: {
+										text: ''
+									},
+									labels: {
+										enabled:false
+									}
+								},
+								legend: {
+									enabled: false
+								},
+								
+										
+								plotOptions: {
+									column: {
+										stacking: 'percent',
+										dataLabels: {
+											enabled: true,
+											 formatter: function() {
+												if (this.y === 0) {
+													return null;
+												} else {
+													return Highcharts.numberFormat(this.percentage,1) + '%';
+												}
+											}
+										  
+										}
+									}
+								},
+
+								 tooltip: {
+									formatter: function () {
+										var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												(this.y);
+										});
+
+										return s;
+									},
+									shared: true
+								},
+
+								series: [{
+									name: 'Negative',
+									data: NegativePercArray,
+									
+								},{
+									name: 'Positive',
+									data: PositivePercArray,
+									
+								}],
+							 
+							});
+						});
+					
+				}
+			}else{
+				$("#comparisonGovtDeptDOverview").html("No Data Available");
+			}
+	}
+	function buildComparisonGovernamentTrendingTrackedIssues(result)
+	{
+		$("#comparisonGovtTopTrend").html(' ');
+		if(result != null && result.length > 0){
+			var str='';
+			var countVar =0;
+			for(var i in result){
+				countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				var totalMainCnt = result[i].positiveCountMain + result[i].negativCountMain
+				var totalDistCnt = result[i].positiveCountDist + result[i].negativCountDist
+				str+='<div class="row">';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+						str+='<div class="row m_top10">';
+							str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+								str+='<table class="table table-condensed tableNews ">';
+									str+='<tbody>';
+									str+='<tr class="bg_ED">';
+										str+='<td>';
+											str+='<p class="text-capital">Main Edition</p>';
+											str+='<p>'+totalMainCnt+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Positive</p>';
+											str+='<p>'+result[i].positiveCountMain+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Negative</p>';
+											str+='<p id="oppNegativeTotal">'+result[i].negativCountMain+'</p>';
+										str+='</td>';
+									str+='</tr>';
+									str+='</tbody>';
+								str+='</table>';
+							str+='</div>';
+							str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+								str+='<table class="table table-condensed tableNews ">';
+									str+='<tbody>';
+									str+='<tr class="bg_ED">';
+										str+='<td>';
+											str+='<p class="text-capital">District Edition</p>';
+											str+='<p>'+totalDistCnt+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Positive</p>';
+											str+='<p id="oppPositiveTotal">'+result[i].positiveCountDist+'</p>';
+										str+='</td>';
+										str+='<td>';
+											str+='<p class="text-capital text-muted">Negative</p>';
+											str+='<p>'+result[i].negativCountDist+'</p>';
+										str+='</td>';
+									str+='</tr>';
+									str+='</tbody>';
+								str+='</table>';
+							str+='</div>';
+						str+='</div>';
+						str+='<div id="comparisonTrendingTrackedIssues'+i+'" style="height:200px" class="m_top20" ></div>';
+					str+='</div>';
+				str+='</div>';
+				
+				
+				
+			}
+			$("#comparisonGovtTopTrend").html(str);					
+		}else{
+			$("#comparisonGovtTopTrend").html('NO DATA AVAILABLE');
+		}
+		
+		if(result != null && result.length > 0){
+			var countVar =0;
+		for(var i in result){
+			countVar =countVar+1;
+			if (countVar === 5) {
+				break;
+			}
+			var districtNamesArray =[];
+			var districtWisePositiveCountArray = [];
+			var districtWiseNegativeCountArray = [];
+			
+			if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
+				
+				for(var j in result[i].coreDashBoardVOList){
+					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
+					districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].positiveCountDist);
+					districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].negativCountDist);
+				}
+			}	
+				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
+					$(function () {
+						$('#comparisonTrendingTrackedIssues'+i+'').highcharts({
+							 colors: ['#64C664','#D33E39'],
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: ''
+							},
+							xAxis: {
+								 min: 0,
+									 gridLineWidth: 0,
+									 minorGridLineWidth: 0,
+									categories: districtNamesArray,
+								labels: {
+										rotation: -45,
+										style: {
+											fontSize: '13px',
+											fontFamily: 'Verdana, sans-serif'
+										}
+									}
+							},
+							yAxis: {
+								min: 0,
+									   gridLineWidth: 0,
+										minorGridLineWidth: 0,
+								title: {
+									text: ''
+								},
+								stackLabels: {
+									enabled: false,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+									}
+								}
+							},
+							legend: {
+								enabled: true,
+								/* //align: 'right',
+								x: -40,
+								y: 30,
+								verticalAlign: 'top',
+								//y: -32,
+								floating: true, */
+								backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+								borderColor: '#CCC',
+								borderWidth: 1,
+								shadow: false
+							},
+							tooltip: {
+								formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+											Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+											(this.y);
+									});
+
+									return s;
+								},
+								shared: true
+							},
+							
+							plotOptions: {
+								pointPadding: 0.2,
+								borderWidth: 2,
+								groupPadding: 0.2,
+								column: {
+									stacking: 'percent',
+									dataLabels: {
+										enabled: true,
+										 formatter: function() {
+											if (this.y === 0) {
+												return null;
+											} else {
+												return Highcharts.numberFormat(this.percentage,1) +'%';
+											}
+										}
+									  
+									}
+								}
+							},
+							series: [{
+								name: 'Positive',
+								data: districtWisePositiveCountArray
+							}, {
+								name: 'Negative',
+								data: districtWiseNegativeCountArray
+							}]
+						});
+					});
+				}else{
+					$('#comparisonTrendingTrackedIssues'+i+'').html("No Data Available");
+					$('#comparisonTrendingTrackedIssues'+i+'').css("height","10px");
+				}
+			}
+		}
+	}
+	function buildComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId){
+		var locationLevelNameArray =[];
+		
+			if(globalUserAccessLevelId == 2){
+				if(result != null && result.length > 0){
+				var str='';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="bg_ED pad_15">';
+						str+='<div class="panel panel-default panelNew">';
+							str+='<div class="panel-heading">';
+								str+='<h4 class="panel-title">';
+									str+='<span class="headingColor text-capitalize">problems detailed overview</span>';
+								str+='</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								str+='<div class="row">';
+									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+										str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
+									str+='</div>';
+									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+										str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApply">';
+										for(var i in result){
+											if(result[i].name !=null && result[i].name.length>55){
+												str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+											}else{
+												str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+											}
+											
+										}
+										str+='</ul>';
+									str+='</div>';
+									str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+										str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}
+		
+			$("#comparisonGovtProblemsDOverview").html(str);
+			$('[data-toggle="tooltip"]').tooltip();
+			
+			var dynamicHeight;
+				$(".dynamicHeightApply").each(function(){
+					dynamicHeight = $(this).find("li").length;
+					dynamicHeight = (dynamicHeight*36)+"px";
+				});
+			$("#comparisonProblemsRelated").css("height",dynamicHeight);
+			
+			if(result != null && result.length > 0){
+				
+				var mainArray = [];
+					for(var i in result){
+					var problemDeptPostivePercAndNameArray = [];
+						problemDeptPostivePercAndNameArray.push(result[i].name)
+						problemDeptPostivePercAndNameArray.push(result[i].positivePerc)
+						mainArray.push(problemDeptPostivePercAndNameArray)
+					}	
+					
+				$(function () {
+					$('#comparisonProblemsRelated').highcharts({
+						chart: {
+							type: 'bar'
+						},
+						title: {
+							text: ''
+						},
+						subtitle: {
+							text: ''
+						},
+						xAxis: {
+						 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+							categories: '',
+							labels: {
+							enabled: false,
+								
+							}
+					},
+					yAxis: {
+						min: 0,
+							   gridLineWidth: 0,
+								minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled: false,
+								
+							},
+						stackLabels: {
+							enabled: false,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							}
+						}
+					},
+						tooltip: {
+							pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
+						},
+						plotOptions: {
+							bar: {
+								dataLabels: {
+									enabled: true,
+									formatter: function() {
+										if (this.y === 0) {
+											return null;
+										} else {
+											return Highcharts.numberFormat(this.y,2) + '%';
+										}
+									}
+								}
+							}
+						},
+						legend: {
+							enabled: false,
+							layout: 'vertical',
+							align: 'right',
+							verticalAlign: 'top',
+							x: -40,
+							y: 80,
+							floating: true,
+							borderWidth: 1,
+							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+							shadow: true
+						},
+						
+						series: [{
+							 name: '',
+							 colorByPoint: true,
+							 data: mainArray
+						}]
+					});
+				});
+			
+			}
+			}
+			if(propertyId == 7){
+				if(result != null && result.length > 0){
+				var str='';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="bg_ED pad_15">';
+						str+='<div class="panel panel-default panelNew">';
+							str+='<div class="panel-heading">';
+								str+='<h4 class="panel-title">';
+									str+='<span class="headingColor text-capitalize">problems detailed overview</span>';
+								str+='</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								str+='<div class="row">';
+									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+										str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
+									str+='</div>';
+									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+										str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApply">';
+										for(var i in result){
+											if(result[i].name !=null && result[i].name.length>55){
+												str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+											}else{
+												str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+											}
+											
+										}
+										str+='</ul>';
+									str+='</div>';
+									str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+										str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}
+		
+			$("#comparisonGovtProblemsDOverview").html(str);
+			$('[data-toggle="tooltip"]').tooltip();
+			
+			var dynamicHeight;
+				$(".dynamicHeightApply").each(function(){
+					dynamicHeight = $(this).find("li").length;
+					dynamicHeight = (dynamicHeight*36)+"px";
+						
+				});
+					
+			$("#comparisonProblemsRelated").css("height",dynamicHeight);
+			 
+			if(result != null && result.length > 0){
+				var mainArray = [];
+					for(var i in result){
+					var problemDeptPostivePercAndNameArray = [];
+						problemDeptPostivePercAndNameArray.push(result[i].name)
+						problemDeptPostivePercAndNameArray.push(result[i].positivePerc)
+						mainArray.push(problemDeptPostivePercAndNameArray)
+					}	
+				$(function () {
+					$('#comparisonProblemsRelated').highcharts({
+						chart: {
+							type: 'bar'
+						},
+						title: {
+							text: ''
+						},
+						subtitle: {
+							text: ''
+						},
+						xAxis: {
+						 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
+							categories: '',
+							labels: {
+							enabled: false,
+								
+							}
+					},
+					yAxis: {
+						min: 0,
+							   gridLineWidth: 0,
+								minorGridLineWidth: 0,
+						title: {
+							text: ''
+						},
+						labels: {
+							enabled: false,
+								
+							},
+						stackLabels: {
+							enabled: false,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							}
+						}
+					},
+						tooltip: {
+							valueSuffix: '%'
+						},
+						plotOptions: {
+							bar: {
+								dataLabels: {
+									enabled: true
+								}
+							}
+						},
+						legend: {
+							enabled: false,
+							layout: 'vertical',
+							align: 'right',
+							verticalAlign: 'top',
+							x: -40,
+							y: 80,
+							floating: true,
+							borderWidth: 1,
+							backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+							shadow: true
+						},
+						
+						series: [{
+							name: '',
+							 colorByPoint: true,
+							data: mainArray
+						}]
+					});
+				});
+			}
+			
+		}else if(propertyId == 0){
+			
+			if(result != null && result.length > 0){
+					var str='';
+					str+='<div class="panel panel-default panelNew">';
+						str+='<div class="panel-heading">';
+							str+='<h4 class="panel-title">';
+								str+='<span class="headingColor text-capitalize">problems detailed overview</span>';
+							str+='</h4>';
+						str+='</div>';
+						str+='<div class="panel-body">';
+							str+='<div class="row">';
+								str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+									str+='<h4>OVERALL ANALYSIS OF ACTION IMMEDIATELY PROBLEMS</h4>';
+										str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+										str+='<ul style="list-style:none;" class="textAlignDepartment">';
+										for(var i in result){
+											var properName = getProperName(result[i].name);
+											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
+												locationLevelNameArray.push(properName);
+												str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'" attr_property_name="'+properName+'" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Get Detailed View">'+result[i].count+'</span></li>';
+											}
+											
+										}
+										
+										
+										str+='</ul>';
+									str+='</div>';
+									str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+										str+='<div id="comparisonProblemsRelated" style="width:300px;height:200px;"></div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+			}
+			
+			$("#comparisonGovtProblemsDOverview1").html(str);
+			$('[data-toggle="tooltip"]').tooltip();
+				 
+			if(result != null && result.length > 0){
+				
+				var problemDeptPostivePercArray =[];
+				for(var i in result){
+					problemDeptPostivePercArray.push(result[i].positivePerc)
+				}
+				
+				$(function () {
+						if(problemDeptPostivePercArray.length !=0){
+							$('#comparisonProblemsRelated').highcharts({
+								colors: ['#E5D355','#8D4654','#F25C81','#8085E9'],
+								chart: {
+									type: 'pie',
+									options3d: {
+										enabled: true,
+										alpha: 25
+									}
+								},
+								title: {
+									text: null
+								},
+								subtitle: {
+									text: null
+								},
+								
+								plotOptions: {
+									pie: {
+										innerSize: 90,
+										depth: 10,
+										
+										showInLegend: false
+									},
+									
+									
+								},
+								series: [{
+									name: '',
+									 colorByPoint: true,
+									data: problemDeptPostivePercArray,
+									dataLabels:{
+											enabled: true,
+											 distance: -20,
+											  formatter: function() {
+													if (this.y === 0) {
+														return null;
+													} else {
+														return Highcharts.numberFormat(this.y,1)+ '%';
+													}
+												} 
+										},
+								}]
+							});
+						}else{
+							$('#comparisonProblemsRelated').html("No Data Available")
+							$('#comparisonProblemsRelated').css("height","10px")
+						}
+						
+					});
+				}
+			}else if(propertyId !=7){
+				
+					if(result != null && result.length > 0){
+					var str='';
+					str+='<div class="row">';
+						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+							str+='<h4 class="m_top20" style="text-transform:uppercase;">PROBLEM CAN BE SOLVED '+propertyName+'</h4>';
+								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply2">';
+								for(var i in result){
+									if(result[i].name !=null && result[i].name.length>55){
+										str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
+									}else{
+										str+='<li >'+result[i].name+'  <span class="pull-right">'+result[i].count+'</span></li>';
+									}
+								}
+								str+='</ul>';
+							str+='</div>';
+							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+							str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+							
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				
+				}
+			
+				$("#comparisonGovtProblemsDOverview1").html(str);
+				$('[data-toggle="tooltip"]').tooltip();
+				
+				var dynamicHeight;
+					$(".dynamicHeightApply2").each(function(){
+						dynamicHeight = $(this).find("li").length;
+						dynamicHeight = (dynamicHeight*36)+"px";
+							
+					});
+						
+				$("#comparisonProblemsRelated").css("height",dynamicHeight);
+				 
+				if(result != null && result.length > 0){
+					var mainArray = [];
+						for(var i in result){
+						var problemDeptPostivePercAndNameArray = [];
+							problemDeptPostivePercAndNameArray.push(result[i].name)
+							problemDeptPostivePercAndNameArray.push(result[i].positivePerc)
+							mainArray.push(problemDeptPostivePercAndNameArray)
+						}	
+					$(function () {
+						$('#comparisonProblemsRelated').highcharts({
+							chart: {
+								type: 'bar'
+							},
+							title: {
+								text: ''
+							},
+							subtitle: {
+								text: ''
+							},
+							xAxis: {
+							 min: 0,
+								 gridLineWidth: 0,
+								 minorGridLineWidth: 0,
+								categories: '',
+								labels: {
+								enabled: false,
+									
+								}
+						},
+						yAxis: {
+							min: 0,
+								   gridLineWidth: 0,
+									minorGridLineWidth: 0,
+							title: {
+								text: ''
+							},
+							labels: {
+								enabled: false,
+									
+								},
+							stackLabels: {
+								enabled: false,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+								}
+							}
+						},
+							tooltip: {
+								valueSuffix: '%'
+							},
+							plotOptions: {
+								bar: {
+									dataLabels: {
+										enabled: true
+									}
+								}
+							},
+							legend: {
+								enabled: false,
+								layout: 'vertical',
+								align: 'right',
+								verticalAlign: 'top',
+								x: -40,
+								y: 80,
+								floating: true,
+								borderWidth: 1,
+								backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+								shadow: true
+							},
+							
+							series: [{
+								name: '',
+								 colorByPoint: true,
+								data: mainArray
+							}]
+						});
+					});
+				}
+			
+			}
+		
 	}
 	function getComparisionPartyDistrictEditionsOverview(deptIdsStr){//Teja
 			$("#districtWiseNewsReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');

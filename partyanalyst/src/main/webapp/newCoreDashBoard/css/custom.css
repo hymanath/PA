@@ -1331,7 +1331,9 @@ margin-top:20px;
 	background-color:#fff;
 	border-radius:50%;
 	padding:2px;
-	top:2px;
+	top:-8px;
+	position:relative;
+	left:-3px;
 }
 .dateRangePickerCls , .dateRangePickerClsForTraining , .dateRangePickerClsForDebates , .dateRangePickerClsForNews , .dateRangePickerClsForMeetings , .dateRangePickerClsForEvents
 {
