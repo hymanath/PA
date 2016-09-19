@@ -682,6 +682,7 @@ function getNominatedPostApplication(startIndex)
 			//$('#cadreSearchDtls').html(' <img style="margin-left: 400px; margin-top: 20px; width: 200px; height: 150px;" id="" class="offset7" src="images/icons/cadreSearch.gif">');
 	
 	$("#scrollDivId").show();
+	 $("#textId").hide();
 	   
 	if(startIndex == 0)
 	{
@@ -954,7 +955,7 @@ function getNominatedPostApplication(startIndex)
 	
    function buildCadreDetails(result){ 
 	    $("#cadreSearchDtls").html('');
-		
+         $("#textId").hide();
 		$("#cadreSearchDtls").show();
 		$("#scrollDivId").show();
 		var str='';
@@ -1039,11 +1040,11 @@ function getNominatedPostApplication(startIndex)
 			   $(".slick-next").css("margin-right","10px;")
 			   $(".slick-prev").css("margin-left","10px;")
 			}
-			
+			$("#textId").show();
 		}else{
 				str+='No Data Available';
 				$("#cadreSearchDtls").html(str);
-				$("#textId").show();
+				$("#textId").hide();
 				//$("#cadreSearchDtls").html(No Data Available);			
 		}
 	    
