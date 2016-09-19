@@ -1184,7 +1184,17 @@ public String getRoleBasedPerformanceCohort(){
 	}
 	public String getDistrictWiseCampAttendedMembers(){ 
 		try {
-			idNameVoList = coreDashboardMainService.getDistrictWiseCampAttendedMembers();
+			jObj = new JSONObject(getTask());
+			List<Long> programIdList = new ArrayList<Long>();
+			String dateStr = jObj.getString("dateStr");
+			Long stateId = jObj.getLong("stateId");
+			JSONArray programIdArr=jObj.getJSONArray("programIdArr");
+			if(programIdArr!=null &&  programIdArr.length()>0){
+				for( int i=0;i<programIdArr.length();i++){
+					programIdList.add(Long.valueOf(programIdArr.getString(i))); 
+				}
+			}
+			idNameVOsList = coreDashboardMainService.getDistrictWiseCampAttendedMembers(programIdList,stateId,dateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseCampAttendedMembers", e);
 		}

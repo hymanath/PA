@@ -1786,11 +1786,18 @@ function buildStateLevelCampDetails(result){
 }
 function stateLevelCampMembersDistWise(){
 	$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var programIdArr = [6]; 
+	var dateStr = $("#dateRangeIdForTrainingCamp").val();
+	var jsObj={  
+		programIdArr : programIdArr,      
+		stateId : globalStateId,
+		dateStr : dateStr
+	} 
 		$.ajax({
 			type : 'GET',
 			url : 'stateLevelCampDetailsDistWise.action',  
 			dataType : 'json',
-			data : {}
+			data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){ 
 			$("#districtWiseProgramCntDivId").html(" ");
 			if(result != null && result.length > 0){
@@ -1805,37 +1812,37 @@ function buildStateLevelCampDetailsDistWise(result){
 	$("#districtWiseProgramCntDivId").html('');
 		if(result != null && result.length > 0){
 			var str='';
-			//for(var i in result){
+			for(var i in result){
 				//str+=result[i].name
-				str+='<div id="trainingLocationDivId" class="chartLiD" style="height:300px" ></div>';
-			//}
-		}
-		$("#districtWiseProgramCntDivId").html(str);
+				str+='<div id="trainingLocationDivId'+i+'" class="chartLiD" style="height:300px" ></div>';
+			}
+		}   
+		$("#districtWiseProgramCntDivId").html(str);  
 		if(result != null && result.length > 0){
-		//for(var i in result){ 
+		for(var i in result){   
 			var districtIdArr=[];
 			var districtNamesArray =[];
 			var districtWiseAttendedPercArray = [];
-			var districtWiseYetToTrainPercArray = [];
-			//if(result[i].districtList !=null && result[i].districtList.length > 0){
+			var districtWiseYetToTrainPercArray = []; 
+			if(result[i] !=null && result[i].length > 0){
 				//debugger; 
-				for(var j in result){
-					districtNamesArray.push(result[j].name);
-					districtIdArr.push(result[j].districtid);
-					var precent = (result[j].actualCount*(100/result[j].count)).toFixed(2);
+				for(var j in result[i]){
+					districtNamesArray.push(result[i][j].name);
+					districtIdArr.push(result[i][j].districtid);
+					var precent = (result[i][j].actualCount*(100/result[i][j].count)).toFixed(2);
 					districtWiseAttendedPercArray.push(parseFloat(precent));  
 					var abs = 100-precent;
 					districtWiseYetToTrainPercArray.push(parseFloat(abs.toFixed(2)));
 				}  
-			//}
+			}
 						$(function () {
-							$('#trainingLocationDivId').highcharts({  
+							$('#trainingLocationDivId'+i).highcharts({  
 								colors: ['#F56800','#53BF8B'],
 								chart: {
 									type: 'column'  
 								},
-								title: {
-									text: 'Official Spokesperson'
+								title: { 
+									text: result[i][0].applicationStatus   
 								},
 								xAxis: {
 									 min: 0,
@@ -1910,10 +1917,11 @@ function buildStateLevelCampDetailsDistWise(result){
 			$(this).attr("style","cursor:pointer;");    
 			//$(this).addClass("distDtlsCls");
 			$(this).attr("class","distDtlsCls");    
-			$(this).attr("state_Program_Id","6");
-			$(this).attr("attr_dist_id",districtIdArr[index]); 
+			$(this).attr("state_Program_Id",result[i][0].applicationStatusId);         
+			$(this).attr("attr_dist_id",districtIdArr[index]);      
 			$(this).attr("attr_position_id","camp");	  		
-		});    
+		}); 
+	}		
 	}else{
 		$("#districtWiseProgramCntDivId").html("No Data Available");
 	}	
