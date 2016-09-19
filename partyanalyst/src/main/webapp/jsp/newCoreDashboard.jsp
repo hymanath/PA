@@ -375,7 +375,7 @@
                                                     <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
 														<div id="topPoorPerformanceDiv"></div>
                                                     </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2">
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 ">
                                                         <div id="topPoorLocationsDiv"></div>
                                                     </div>
                                                 </div>
@@ -1427,7 +1427,10 @@
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<div id="partyWiseComparisionBlock"></div>
-															</div>
+														</div>
+														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+																<div id="partyComparisionSubLevelMemberDetailsDiv"></div>
+														</div>
 														</div>
 												</div>
 											</div>
