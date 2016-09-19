@@ -5276,3 +5276,26 @@ function getChildUserTypesByItsParentUserType1(){
 		}
 		$("#compareStateWiseArticleRelatedToProblem").html(str)
 	}
+	function getComparisonPartyWisePoorLocations(){
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}		
+		var npIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				npIdsStr=i==0?newsPaperIdsGlob[i]:npIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+	
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
+		}).then(function(result){
+			
+		});
+	}
