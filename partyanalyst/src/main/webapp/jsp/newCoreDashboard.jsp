@@ -1347,7 +1347,7 @@
 														<div id="stateWiseArticleRelatedToProblem"></div>
 													</div>
 												</div>
-												<!-- <div id="problemsDetailedOverview1"></div>-->
+												<!--<div id="problemsDetailedOverview1"></div>-->
 												<div class="row">
 													<div class="col-md-12 col-xs-12 col-sm-12">
 														<h4>DISTRICT WISE</h4>
@@ -1417,7 +1417,11 @@
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<div id="partyWiseComparisionBlock"></div>
+																
 															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+																<div id="partyComparisionSubLevelMemberDetailsDiv"></div>
+														</div>
 														</div>
 												</div>
 											</div>
