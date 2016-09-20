@@ -1765,15 +1765,37 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
-										<h4 class="panel-title">
-											<span class="headingColor text-capitalize">TITLE</span>
-										</h4>
+										<!--<h4 class="panel-title">
+											<span class="headingColor text-capitalize">Event Comparison</span>
+										</h4>-->
+										<div class="panel-heading">
+												<div class="row">
+													<div class="col-xs-12 col-sm-12 col-md-12">
+													  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+													</div>
+												</div>
+										</div>
 									</div>
 									<div class="panel-body">
-										<!--content-->
-									</div>
+										<div class="panel-body">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													 <div id="childEvnetMemberDivId"> </div>
+												</div>
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<div class="bg_ED pad_15 m_top20">
+													   <div id="directChildMemberForEventDivId"></div>
+													   <div class="row">
+															 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+																<div class="row m_top20">
+																 <div id="topPoorLocationsEventDivId"></div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+									   </div>
 								</div>
-								
 							</div>
 						</div>
 					</div>
@@ -2088,12 +2110,6 @@
 		getSpecialMeetingsByMeetingType();
 		//events
 		getEventBasicCntDtls();
-		//getSelectedEventDetails();
-		//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
-		//getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
-		//getSelectedChildTypeMembersForEvent();
-		//getDirectChildTypeMembersForEvent(3);
-		
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		getNewsBasicCounts();

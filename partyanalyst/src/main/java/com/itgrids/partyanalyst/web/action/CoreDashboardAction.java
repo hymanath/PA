@@ -85,6 +85,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<IdAndNameVO> IdAndNameVOList;
 	private List<ChildUserTypeVO> childUserTypeVOList;
 	private List<EventDetailsVO>  eventDetailsVOList;
+	private EventDetailsVO eventDetailsVO;
 	
 	//setters And Getters
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
@@ -354,6 +355,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setEventDetailsVOList(List<EventDetailsVO> eventDetailsVOList) {
 		this.eventDetailsVOList = eventDetailsVOList;
+	}
+  public EventDetailsVO getEventDetailsVO() {
+		return eventDetailsVO;
+	}
+
+	public void setEventDetailsVO(EventDetailsVO eventDetailsVO) {
+		this.eventDetailsVO = eventDetailsVO;
 	}
 
 	//business methods
@@ -1837,6 +1845,25 @@ public String getDirectChildTypeMembersForEvent(){
 		activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForEvents(activityMemberId,childUserTypeIds,reportType,stateId,eventsIds);
 	}catch (Exception e) {
 		LOG.error("Exception raised at getDirectChildTypeMembersForEvent() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getEventPoorPerformanceLocation(){
+	try{
+		jObj = new JSONObject(getTask()); 
+	    Long activityMemberId = jObj.getLong("activityMemberId");
+		Long userTypeId = jObj.getLong("userTypeId");
+		Long stateId = jObj.getLong("stateId");
+		List<Long> eventsIds = new ArrayList<Long>();
+		JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+		if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+			for( int i=0;i<eventIdsArray.length();i++){
+				eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+			}
+		}
+		eventDetailsVO = coreDashboardEventsActivitiesService.getEventPoorPerformanceLocation(userTypeId,stateId,activityMemberId,eventsIds); 
+	 }catch(Exception e) {
+		 LOG.error("Exception raised at getEventPoorPerformanceLocation() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS;
 }

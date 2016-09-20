@@ -13711,10 +13711,17 @@
    			<param name="root">activityMembersList</param>
    		</result>
 	</action>
-		<action name="getDirectChildTypeMembersForEventAction" class="coreDashboardAction" method="getDirectChildTypeMembersForEvent">
+	<action name="getDirectChildTypeMembersForEventAction" class="coreDashboardAction" method="getDirectChildTypeMembersForEvent">
 		<result type="json" name="success">
    			<param name="root">activityMembersList</param>
    		</result>
 	</action>
+	
+		<action name="getEventPoorPerformanceLocationAction" class="coreDashboardAction" method="getEventPoorPerformanceLocation">
+		<result type="json" name="success">
+   			<param name="root">eventDetailsVO</param>
+   		</result>
+	</action>
+	
 </package>
 </struts>
