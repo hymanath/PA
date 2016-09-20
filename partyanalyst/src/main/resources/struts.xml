@@ -13716,8 +13716,22 @@
    			<param name="root">activityMembersList</param>
    		</result>
 	</action>
-	
-		<action name="getEventPoorPerformanceLocationAction" class="coreDashboardAction" method="getEventPoorPerformanceLocation">
+	<action name="getAttendanceOverViewForPartyOfficeAction" class="coreDashboardAction" method="getAttendanceOverViewForPartyOffice">
+		<result type="json" name="success">
+	  		<param name="root">idNameVO</param> 
+	 	</result>
+	</action>
+	<action name="getAttendanceOverViewForPartyOfficeWiseAction" class="coreDashboardAction" method="getAttendanceOverViewForPartyOfficeWise">
+		<result type="json" name="success">
+	  		<param name="root">idNameVoList</param>   
+	 	</result>
+	</action>
+	<action name="getAttendanceOverViewForPartyOfficeDeptWiseAction" class="coreDashboardAction" method="getAttendanceOverViewForPartyOfficeDeptWise">
+		<result type="json" name="success">
+	  		<param name="root">idNameVoList</param>       
+	 	</result>
+	</action>
+	<action name="getEventPoorPerformanceLocationAction" class="coreDashboardAction" method="getEventPoorPerformanceLocation">
 		<result type="json" name="success">
    			<param name="root">eventDetailsVO</param>
    		</result>

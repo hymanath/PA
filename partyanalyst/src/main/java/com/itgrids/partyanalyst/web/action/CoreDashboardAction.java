@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
@@ -68,6 +69,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ICoreDashboardService1 coreDashboardService1;
 	private ICoreDashboardMainService coreDashboardMainService;
 	private ICoreDashboardGenericService coreDashboardGenericService;
+	private IAttendanceCoreDashBoardService attendanceCoreDashBoardService;
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
@@ -355,6 +357,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setEventDetailsVOList(List<EventDetailsVO> eventDetailsVOList) {
 		this.eventDetailsVOList = eventDetailsVOList;
+	}
+	
+	public IAttendanceCoreDashBoardService getAttendanceCoreDashBoardService() {
+		return attendanceCoreDashBoardService;
+	}
+
+	public void setAttendanceCoreDashBoardService(
+			IAttendanceCoreDashBoardService attendanceCoreDashBoardService) {
+		this.attendanceCoreDashBoardService = attendanceCoreDashBoardService;
 	}
   public EventDetailsVO getEventDetailsVO() {
 		return eventDetailsVO;
@@ -1848,6 +1859,40 @@ public String getDirectChildTypeMembersForEvent(){
 	}
 	return Action.SUCCESS;
 }
+public String getAttendanceOverViewForPartyOffice(){
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");  
+		idNameVO = attendanceCoreDashBoardService.getAttendanceOverViewForPartyOffice(fromDate,toDate);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceOverViewForPartyOffice() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getAttendanceOverViewForPartyOfficeWise(){   
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		idNameVoList = attendanceCoreDashBoardService.getAttendanceOverViewForPartyOfficeWise(fromDate,toDate);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceOverViewForPartyOfficeWise() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getAttendanceOverViewForPartyOfficeDeptWise(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		idNameVoList = attendanceCoreDashBoardService.getAttendanceOverViewForPartyOfficeDeptWise(fromDate,toDate);
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceOverViewForPartyOfficeDeptWise() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
+
 public String getEventPoorPerformanceLocation(){
 	try{
 		jObj = new JSONObject(getTask()); 
