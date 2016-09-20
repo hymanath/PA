@@ -77,7 +77,7 @@ var url = window.location.href;
 		$(".newsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			getUserTypeWiseNewsCounts(1);
+			//getUserTypeWiseNewsCounts(1);
 		}else{
 			$(".newsHiddenMoreBlock").hide();
 		}
@@ -113,10 +113,10 @@ var url = window.location.href;
 	$(document).on("click",".morenewsBlocksIcon",function(){
 		$(".newsHiddenMoreBlock").toggle();
 		//getDetailedPartyMainEditionsOverview();
-		getDetailedPartyDistrictEditionsOverview();
-		setcolorsForStatus();
-		getDetailedPartyNewsTypeAnalysis();
-		getDetailedPartyPartyVsPublications("party");
+		//getDetailedPartyDistrictEditionsOverview();
+		//setcolorsForStatus();
+		//getDetailedPartyNewsTypeAnalysis();
+		//getDetailedPartyPartyVsPublications("party");
 	});
 	
 	$(document).on("click",".viewsLiClass",function(){
@@ -132,9 +132,9 @@ var url = window.location.href;
 	//Detailed Block Click Action Party And Govternment Start
 	$(document).on("click","#detailedPartyLiId",function(){
 		//getDetailedPartyMainEditionsOverview();
-		getDetailedPartyDistrictEditionsOverview();
-		getDetailedPartyNewsTypeAnalysis();
-		getDetailedPartyPartyVsPublications("party");
+		//getDetailedPartyDistrictEditionsOverview();
+		//getDetailedPartyNewsTypeAnalysis();
+		//getDetailedPartyPartyVsPublications("party");
 	});
 	
 	$(document).on("click","#detailedGovernmentLiId",function(){
@@ -157,7 +157,8 @@ var url = window.location.href;
 		$("#partyWiseComparisionBlock").html('');
 		setcolorsForStatus();
 		getChildUserTypesByItsParentUserType1();
-		//getComparisionPartyNewsTypeAnalysis();
+		getComparisionPartyNewsTypeAnalysis();
+		getComparisonPartyWisePoorLocations()
 	});
 
 	$(document).on("click","#comparisonGovernmentLiId",function(){
@@ -3323,69 +3324,70 @@ var url = window.location.href;
 		$("#"+NewsChildActivityMemberId).html('');
 		var str='';
 		if(result !=null && result.length >0){
-				str+='<div class="bg_ED pad_15">';
-					str+='<h4><span  class="text-capital">'+NewsSelectedMemberName+'</span> - <span class="text-capitalize">'+NewsSelectedUserType+'</span></h4>';
-					if(NewsChildActivityMemberId != "partyComparisionSubLevelMemberDetailsDiv"){
-						str+='<span class="removeSelecUserTypeNews pull-right" attr_removeSelecUserType = "'+NewsChildActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
-					}
-						if(NewsChildActivityMemberId != "partyComparisionSubLevelMemberDetailsDiv")
-						{
-							str+='<table class="table table-condensed tableLevels m_top20">';
-						}else{
-							str+='<table class="table table-condensed tableHoverLevels m_top20">';
-						}
-						str+='<thead class="bg_D8 text-capital">';
-							str+='<tr>';
-								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Rank</th>';
-								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Designation</th>';
-								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Name</th>';
-								str+='<th colspan="5" class="text-center" style="border-right: 1px solid #c3c3c3 !important;">Main Edition</th>';
-								str+='<th colspan="5" class="text-center">District Edition</th>';
-							str+='</tr>';
-							str+='<tr>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
-								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
-							str+='</tr>';
-							
-						str+='</thead>';
-						str+='<tbody>';
-						for(var i in result){
-							 str+='<tr class="compareLowLevelActivityMemberCls1"  attr_newsactivitymemberid = "'+result[i].activityMemberId+'" attr_newsusertypeid = "'+result[i].userTypeId+'" attr_newsselectedmembername = "'+result[i].name+'" attr_newsselectedusertype = "'+result[i].usertType+'">';
-								str+='<td>'+(parseInt(i)+1)+'</td>';
-								str+='<td>'+result[i].usertType+'</td>';
-								str+='<td>'+result[i].name+'</td>';
-								
-								str+='<td>'+result[i].neutralCountMain+'</td>';
-								str+='<td>'+result[i].positiveCountMain+'</td>';
-								str+='<td>'+result[i].positiveCountMainPerc+'</td>';
-								str+='<td>'+result[i].negativeCountMain+'</td>';
-								str+='<td>'+result[i].negativeCountMainperc+'</td>';
-								
-								str+='<td>'+result[i].neutralCountDist+'</td>';
-								str+='<td>'+result[i].positiveCountDist+'</td>';
-								str+='<td>'+result[i].positiveCountDistPerc+'</td>';
-								str+='<td>'+result[i].negativeCountDist+'</td>';
-								str+='<td>'+result[i].negativeCountDistPerc+'</td>';
-							str+='</tr>'; 
-							str+='<tr class="showHideTr" style="display:none" attr_id = "districtpositionId1'+result[i].userTypeId+''+i+'">';
-							
-							str+='<td colspan="13"  id="districtpositionId1'+result[i].userTypeId+''+i+'">';
-							
-							str+='</td>';
-						str+='</tr>';
-						}
-							
-						str+='</tbody>';
-					str+='</table>';
-				str+='</div>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';	
+			str+='<h4><span  class="text-capital">'+NewsSelectedMemberName+'</span> - <span class="text-capitalize">'+NewsSelectedUserType+'</span></h4>';
+			if(NewsChildActivityMemberId != "partyComparisionSubLevelMemberDetailsDiv"){
+				str+='<span class="removeSelecUserTypeNews pull-right" attr_removeSelecUserType = "'+NewsChildActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+			}
+				if(NewsChildActivityMemberId != "partyComparisionSubLevelMemberDetailsDiv")
+				{
+					str+='<table class="table table-condensed tableLevels m_top20">';
+				}else{
+					str+='<table class="table table-condensed tableHoverLevels m_top20">';
+				}
+				str+='<thead class="bg_D8 text-capital">';
+					str+='<tr>';
+						str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Rank</th>';
+						str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Designation</th>';
+						str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Name</th>';
+						str+='<th colspan="5" class="text-center" style="border-right: 1px solid #c3c3c3 !important;">Main Edition</th>';
+						str+='<th colspan="5" class="text-center">District Edition</th>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
+						str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
+					str+='</tr>';
+					
+				str+='</thead>';
+				str+='<tbody>';
+				for(var i in result){
+					 str+='<tr class="compareLowLevelActivityMemberCls1"  attr_newsactivitymemberid = "'+result[i].activityMemberId+'" attr_newsusertypeid = "'+result[i].userTypeId+'" attr_newsselectedmembername = "'+result[i].name+'" attr_newsselectedusertype = "'+result[i].usertType+'">';
+						str+='<td>'+(parseInt(i)+1)+'</td>';
+						str+='<td>'+result[i].usertType+'</td>';
+						str+='<td>'+result[i].name+'</td>';
+						
+						str+='<td>'+result[i].neutralCountMain+'</td>';
+						str+='<td>'+result[i].positiveCountMain+'</td>';
+						str+='<td>'+result[i].positiveCountMainPerc+'</td>';
+						str+='<td>'+result[i].negativeCountMain+'</td>';
+						str+='<td>'+result[i].negativeCountMainperc+'</td>';
+						
+						str+='<td>'+result[i].neutralCountDist+'</td>';
+						str+='<td>'+result[i].positiveCountDist+'</td>';
+						str+='<td>'+result[i].positiveCountDistPerc+'</td>';
+						str+='<td>'+result[i].negativeCountDist+'</td>';
+						str+='<td>'+result[i].negativeCountDistPerc+'</td>';
+					str+='</tr>'; 
+					str+='<tr class="showHideTr" style="display:none" attr_id = "districtpositionId1'+result[i].userTypeId+''+i+'">';
+					
+					str+='<td colspan="13"  id="districtpositionId1'+result[i].userTypeId+''+i+'">';
+					
+					str+='</td>';
+				str+='</tr>';
+				}
+					
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		
 			
 		}
 		$("#"+NewsChildActivityMemberId).html(str);
@@ -4521,8 +4523,9 @@ function savingDashboardCommentForNews(dashboardComponentId){
 		}			
 	});
 }
-$(document).on("click",".notesIconNews",function(){
+$(document).on("click",".notesIconNews",function(e){
 	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+	e.stopPropagation();
 });
 $(document).on("click",".deleteNotesNews",function(){
 	$(this).closest("li").remove();
@@ -4693,6 +4696,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	});
 	
 	function getComparisonPartyWisePoorLocations(){
+		$("#partyComparisonPartyWisePoorL").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -4712,6 +4716,39 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
 		}).then(function(result){
-			
+			buildComparisonPartyWisePoorLocations(result);
 		});
 	}
+	function buildComparisonPartyWisePoorLocations(result)
+	{
+		var str=' ';
+		str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top20">';
+			str+='<p class="text-capital">districts</p>';
+			str+='<table class="table tableCumulative">';
+				var order=1;
+				var BGColor = 1;
+				for(var i in result)
+				{
+					str+='<tr>';
+						str+='<td><span class="count" style="background-color:rgba(237, 29, 38,'+BGColor+')">'+order+'</span></td>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td>';
+							str+='<div class="progress progressCustom" data-toggle="tooltip" data-placement="top" title="'+result[i].count+'">';
+								str+='<div class="progress-bar" role="progressbar" aria-valuenow="'+result[i].negativePerc+'" aria-valuemin="0" aria-valuemax="100" style="width:'+result[i].negativePerc+'%;">';
+									str+='<span class="sr-only">'+result[i].negativePerc+'</span>';
+							  str+='</div>';
+							str+='</div>';
+						str+='</td>';
+						str+='<td class="text-danger">'+result[i].negativePerc+'%</td>';
+					str+='</tr>';
+					order=order+1;
+					if(order==6)
+						break;
+					BGColor = BGColor - 0.2;
+				}
+			str+='</table>';
+		str+='</div>';
+		$("#partyComparisonPartyWisePoorL").html(str);
+		$('.progressCustom').tooltip();
+	}
+	
