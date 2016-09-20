@@ -438,21 +438,18 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 					},
 
 					series: [{
-						name: 'Invitees',
+						name: 'Invitees Attended',
 						data: inviteesCounts,
 						
 					},{
-						name: 'Non Invitees',
+						name: 'Non Invitees Attended',
 						data: nonInviteesCounts,
 						
 					}],
 				 
 				});
 			});
-		
-			
 		}
-		
 	}else{
 		$("#eventsDistWiseCohort").html("No Data Available");
 	}
@@ -500,9 +497,9 @@ function buildSelectedEventDetails(result)
 
 	for(var i in result)
 	{
-		var eventsInviteeNotAttendedCountPer= [];
+		var eventsInviteeNoNAttendedCountPer= [];
 		var eventsInviteeAttendedCounPer=[];
-		eventsInviteeNotAttendedCountPer.push(result[i].inviteeNotAttendedCountPer);
+		eventsInviteeNoNAttendedCountPer.push(result[i].nonInviteeAttendedCountPer);
 		eventsInviteeAttendedCounPer.push(result[i].inviteeAttendedCounPer);
 		$(function () {
 			$('#events'+i+'').highcharts({
@@ -572,11 +569,11 @@ function buildSelectedEventDetails(result)
 					},
 				},
 				 series: [{
-					name: 'Attended',
+					name: 'Invitees Attended',
 					data: eventsInviteeAttendedCounPer 
 				}, {
-					name: 'Not Attended',
-					data: eventsInviteeNotAttendedCountPer
+					name: 'Non Invitees Attended',
+					data: eventsInviteeNoNAttendedCountPer
 				}]
 			});
 		});	
