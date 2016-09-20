@@ -10,12 +10,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MobileNumbersExtractor {
+public class AVMobileNumbersExtractor {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://10.0.3.56:3306/dakavara_pa";
+	static final String DB_URL = "jdbc:mysql://10.0.3.56:3306/avm";
 	static final String USER = "root";
 	static final String PASS = "Danduk1634";
 	
@@ -40,7 +42,7 @@ public class MobileNumbersExtractor {
     		StringBuilder sb3 = new StringBuilder();
     		StringBuilder sb4 = new StringBuilder();
     		
-    		ResultSet rs = stmt.executeQuery("select constituency_id from constituency where district_id BETWEEN 21 and 23 and " +
+    		ResultSet rs = stmt.executeQuery("select constituency_id from dakavara.constituency where district_id BETWEEN 21 and 23 and " +
     				" election_scope_id = 2 and deform_date is null");
     		
     		 while(rs.next())
@@ -258,30 +260,101 @@ public class MobileNumbersExtractor {
 			Class.forName("com.mysql.jdbc.Driver");
     		conn = DriverManager.getConnection(DB_URL,USER,PASS);
     		stmt = conn.createStatement();
-    		List<Integer> cIdsList = new ArrayList<Integer>(0);
+    		List<String> mandalIdsList = new ArrayList<String>(0);
     		
-    		BufferedWriter outwriter = new BufferedWriter(new FileWriter("H:\\KOTI\\IVR_MANDAL\\"+fileName+".txt"));
+    		BufferedWriter outwriter = new BufferedWriter(new FileWriter("D:\\Kamal\\MobileNos\\"+fileName+".txt"));
     		
     		StringBuilder sb = new StringBuilder();
     		
-    		ResultSet rs = stmt.executeQuery("select DISTINCT tehsil_id from mobile_numbers MN WHERE MN.is_deleted = 'N' AND MN.tehsil_id is NOT null AND MN.district_id BETWEEN 11 AND 13 order by MN.tehsil_id ");
+    		ResultSet rs = stmt.executeQuery("SELECT C.constituency_id,T.tehsil_id FROM voter_aadhar_mobile VA,dakavara_pa.constituency C,dakavara_pa.tehsil T " +
+    				" WHERE VA.constituency_id = C.constituency_id AND VA.tehsil_id = T.tehsil_id AND C.district_id BETWEEN 11 AND 23 " +
+    				" GROUP BY C.constituency_id,T.tehsil_id ORDER BY C.constituency_id,T.tehsil_id ");
     		
     		 while(rs.next())
-    			 cIdsList.add(rs.getInt("tehsil_id"));
+    		 {
+    			 mandalIdsList.add(rs.getInt("constituency_id")+"-"+rs.getInt("tehsil_id"));
+    		 }
     		 
     		 int index = 0;
-    		 for(Integer cid : cIdsList)
+    		 for(String mcId : mandalIdsList)
     		 {
     			 try{
-    			 System.out.println(++index+" tehsil -->"+cid);
+    			 String str[] = mcId.split("-");	 
+    			 String constituencyId = str[0].trim();
+    			 String mandalId = str[1].trim();
     			 
-    			 rs = stmt.executeQuery("SELECT M.mobile_number,D.district_name,C.name,T.tehsil_name FROM mobile_numbers M,constituency C, tehsil T,district D WHERE "+
-    					 				" M.constituency_id = C.constituency_id AND T.tehsil_id = M.tehsil_id AND M.district_id = D.district_id AND "+
-    					 				" M.tehsil_id = "+cid+" ORDER BY M.mobile_numbers_id LIMIT 20300,130000");
+    			 System.out.println(++index+" Constituency Id --> "+constituencyId+"\t Mandal Id -->"+mandalId);
+    			 
+    			 rs = stmt.executeQuery("SELECT VA.CITIZEN_PHONE_NO AS mobile,D.district_id,D.district_name,C.constituency_id,C.name,T.tehsil_id,T.tehsil_name,VA.voter_id " +
+    			 		" FROM voter_aadhar_mobile VA,dakavara_pa.constituency C,dakavara_pa.district D,dakavara_pa.tehsil T WHERE " +
+    			 		" VA.constituency_id = C.constituency_id AND VA.tehsil_id = T.tehsil_id AND C.district_id = D.district_id AND VA.CITIZEN_PHONE_NO IS NOT NULL AND " +
+    			 		" LENGTH(VA.CITIZEN_PHONE_NO) = 10 AND T.tehsil_id = "+mandalId+" AND " +
+    			 		" C.constituency_id = "+constituencyId+" GROUP BY VA.CITIZEN_PHONE_NO ORDER BY RAND() LIMIT 0,"+count);
+    			 
     			 while(rs.next())
     			 {
     				 try{
-    				 sb.append(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3)+"\t"+rs.getString(4)+"\n");
+    				 sb.append(rs.getString(1)+"\t"+rs.getInt(2)+"\t"+rs.getString(3)+"\t"+rs.getInt(4)+"\t"+rs.getString(5)+"\t"+rs.getInt(6)+"\t"+rs.getString(7)+"\t"+rs.getInt(8)+"\n");
+    				 }catch(Exception e)
+    				 {
+    					 e.printStackTrace();
+    				 }
+    			 }
+    			 }
+    			 catch(Exception e)
+    			 {
+    				 e.printStackTrace();
+    			 }
+    		 }
+    		outwriter.write(sb.toString());
+ 			outwriter.close();
+    		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void getTownWiseMobileNumbers(String fileName,int count)
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+    		conn = DriverManager.getConnection(DB_URL,USER,PASS);
+    		stmt = conn.createStatement();
+    		List<String> mandalIdsList = new ArrayList<String>(0);
+    		
+    		BufferedWriter outwriter = new BufferedWriter(new FileWriter("D:\\Kamal\\MobileNos\\"+fileName+".txt"));
+    		
+    		StringBuilder sb = new StringBuilder();
+    		
+    		ResultSet rs = stmt.executeQuery("SELECT C.constituency_id,L.local_election_body_id FROM voter_aadhar_mobile VA,dakavara_pa.constituency C,dakavara_pa.local_election_body L " +
+    				" WHERE VA.constituency_id = C.constituency_id AND VA.local_election_body_id = L.local_election_body_id AND C.district_id BETWEEN 11 AND 23 " +
+    				" GROUP BY C.constituency_id,L.local_election_body_id ORDER BY C.constituency_id,L.local_election_body_id ");
+    		
+    		 while(rs.next())
+    		 {
+    			 mandalIdsList.add(rs.getInt("constituency_id")+"-"+rs.getInt("local_election_body_id"));
+    		 }
+    		 
+    		 int index = 0;
+    		 for(String mcId : mandalIdsList)
+    		 {
+    			 try{
+    			 String str[] = mcId.split("-");	 
+    			 String constituencyId = str[0].trim();
+    			 String mandalId = str[1].trim();
+    			 
+    			 System.out.println(++index+" Constituency Id --> "+constituencyId+"\t Town Id -->"+mandalId);
+    			 
+    			 rs = stmt.executeQuery("SELECT DISTINCT VA.CITIZEN_PHONE_NO AS mobile,D.district_id,D.district_name,C.constituency_id,C.name,L.local_election_body_id,L.name,VA.voter_id " +
+    			 		" FROM voter_aadhar_mobile VA,dakavara_pa.constituency C,dakavara_pa.district D,dakavara_pa.local_election_body L WHERE " +
+    			 		" VA.constituency_id = C.constituency_id AND VA.local_election_body_id = L.local_election_body_id AND C.district_id = D.district_id AND L.local_election_body_id = "+mandalId+" AND " +
+    			 		" C.constituency_id = "+constituencyId+" ORDER BY RAND() LIMIT 0,"+count);
+    			 
+    			 while(rs.next())
+    			 {
+    				 try{
+    				 sb.append(rs.getString(1)+"\t"+rs.getInt(2)+"\t"+rs.getString(3)+"\t"+rs.getInt(4)+"\t"+rs.getString(5)+"\t"+rs.getInt(6)+"\t"+rs.getString(7)+"\t"+rs.getInt(8)+"\n");
     				 }catch(Exception e)
     				 {
     					 e.printStackTrace();
@@ -468,8 +541,76 @@ public class MobileNumbersExtractor {
 	
 	public static void main(String[] args)
 	{
-		MobileNumbersExtractor extractor = new MobileNumbersExtractor();
+		AVMobileNumbersExtractor extractor = new AVMobileNumbersExtractor();
 		//extractor.getconstituencyWiseMobileNumbers("Constituency_1000.txt",0);
-		extractor.getconstituencyWiseCadreMobileNumbers("Cadre_10K_Each_Constituency.txt",0);
+		//extractor.getMandalWiseMobileNumbers("AVM_MANDAL_2000",2000);
+		extractor.getconstituencyWiseMobileNumbersFromAVM("IVR_SEP10");
+	}
+	
+	public void getconstituencyWiseMobileNumbersFromAVM(String path)
+	{
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+    		conn = DriverManager.getConnection(DB_URL,USER,PASS);
+    		stmt = conn.createStatement();
+    		
+    		StringBuilder sb = new StringBuilder();
+    		BufferedWriter outwriter = new BufferedWriter(new FileWriter("E:\\MN\\"+path));
+    		
+			ResultSet rs = stmt.executeQuery("SELECT district_id,COUNT(constituency_id) FROM dakavara_pa.constituency WHERE election_scope_id = 2 AND deform_date IS NULL" +
+					" AND district_id BETWEEN 11 AND 23 GROUP BY district_id ");
+			
+			Map<Integer,Integer> disConsMap = new HashMap<Integer, Integer>(0);
+			
+			while(rs.next())
+				disConsMap.put(rs.getInt(1),rs.getInt(2));
+    		
+			for(Map.Entry<Integer,Integer> entry : disConsMap.entrySet())
+			{
+				try{
+					int count = 1;
+					List<Integer> constituencyIdsList = new ArrayList<Integer>(0); 
+					
+					rs = stmt.executeQuery("SELECT constituency_id FROM dakavara_pa.constituency WHERE election_scope_id = 2 AND deform_date IS NULL AND district_id = "+entry.getKey());
+					while(rs.next())
+						constituencyIdsList.add(rs.getInt(1));
+					
+					count = 100000/entry.getValue();
+					count = count+1;
+					
+					for(int constituencyId : constituencyIdsList)
+					{
+						try{
+						rs = stmt.executeQuery("SELECT DISTINCT VAM.mobile_no,D.district_name,C.name FROM voter_aadhar_mobile VAM,dakavara_pa.constituency C,dakavara_pa.district D " +
+								" WHERE VAM.constituency_id = C.constituency_id AND C.district_id = D.district_id AND VAM.is_dnd = 'N' AND VAM.constituency_id = "+constituencyId+" AND LENGTH(VAM.mobile_no) = 10 " +
+								" ORDER BY RAND() LIMIT 0,"+count);
+						
+						int mobCount = 0;
+						while(rs.next())
+						{
+							sb.append(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3)+"\n");
+							mobCount++;
+						}
+						System.out.println("Constituency - "+constituencyId+" Required - "+count+" Taken - "+mobCount+" Diff - "+(count-mobCount));
+						}catch(Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+					
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			outwriter.write(sb.toString());
+			outwriter.close();
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 }

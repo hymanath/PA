@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
- 
+
 import org.apache.commons.codec.binary.Base64;
  
 public class ImageManipulation {
