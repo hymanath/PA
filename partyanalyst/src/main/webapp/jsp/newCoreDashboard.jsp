@@ -1693,7 +1693,7 @@
 							<div class="col-md-8 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
-									events and activities <small class="text-muted"><span id="dateEventsHeadingId"> - last month</span></small>
+									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  </span></small>
 								</h4>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
@@ -1733,7 +1733,7 @@
 								<div id="mainEventsList"></div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
-								<h4><span class="headingColor text-capital">events & Activities</span></h4>
+								<h4><span class="headingColor text-capital">events </span></h4>
 								<div id="UserTypeWiseCommittee" class="m_top20"></div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock " attr_main_type_meeting_id="1" style="display: none;">
