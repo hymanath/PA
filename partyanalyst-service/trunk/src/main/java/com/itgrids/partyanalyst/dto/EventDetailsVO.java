@@ -6,6 +6,7 @@ import java.util.List;
 public class EventDetailsVO {
 
 	private Long id;
+	
 	private String name;
 	private Long inviteeCount=0l;
 	private Long inviteeAttendedCount=0l;
@@ -20,6 +21,10 @@ public class EventDetailsVO {
 	
 	private List<EventDetailsVO> locationList;
 	
+	private List<EventDetailsVO> districtList;
+	private List<EventDetailsVO> constituencyList;
+	private List<EventDetailsVO> mandalTwnDivisionList;
+	private List<EventDetailsVO> villageWardList;
 	public Long getId() {
 		return id;
 	}
@@ -92,5 +97,32 @@ public class EventDetailsVO {
 		}
 		return locationList;
 	}
+	public List<EventDetailsVO> getDistrictList() {
+		if(districtList == null){
+			districtList = new ArrayList<EventDetailsVO>();
+		}
+		return districtList;
+	}
+	public List<EventDetailsVO> getConstituencyList() {
+		if(constituencyList == null){
+		 constituencyList = new ArrayList<EventDetailsVO>();
+		}
+		return constituencyList;
+	}
+	public List<EventDetailsVO> getMandalTwnDivisionList() {
+		if(mandalTwnDivisionList == null){
+			mandalTwnDivisionList = new ArrayList<EventDetailsVO>();
+		}
+		return mandalTwnDivisionList;
+	}
+	public List<EventDetailsVO> getVillageWardList() {
+		if(villageWardList == null ){
+			villageWardList = new ArrayList<EventDetailsVO>();
+		}
+		return villageWardList;
+	}
+	
+  	
+   	
    
 }
