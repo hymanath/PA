@@ -1421,9 +1421,17 @@
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 															<div class="bg_ED pad_15">
 																<div id="partyComparisionSubLevelMemberDetailsDiv" class="row"></div>
+															</div>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+																<div id="PartyComparisionNewsTypeAnalysisDiv"></div>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+																<div id="ComparisionPartyDistrictWiseNewsReport"></div>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<div id="partyComparisonPartyWisePoorL" class="row"></div>
 															</div>
-														</div>
 													</div>
 												</div>
 											</div>
