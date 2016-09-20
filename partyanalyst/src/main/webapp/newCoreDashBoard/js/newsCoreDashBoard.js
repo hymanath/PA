@@ -77,7 +77,7 @@ var url = window.location.href;
 		$(".newsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".newsHiddenBlock,.morenewsBlocksIcon").toggle();
 		if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			//getUserTypeWiseNewsCounts(1);
+			getUserTypeWiseNewsCounts(1);
 		}else{
 			$(".newsHiddenMoreBlock").hide();
 		}
@@ -113,10 +113,10 @@ var url = window.location.href;
 	$(document).on("click",".morenewsBlocksIcon",function(){
 		$(".newsHiddenMoreBlock").toggle();
 		//getDetailedPartyMainEditionsOverview();
-		//getDetailedPartyDistrictEditionsOverview();
-		//setcolorsForStatus();
-		//getDetailedPartyNewsTypeAnalysis();
-		//getDetailedPartyPartyVsPublications("party");
+		getDetailedPartyDistrictEditionsOverview();
+		setcolorsForStatus();
+		getDetailedPartyNewsTypeAnalysis();
+		getDetailedPartyPartyVsPublications("party");
 	});
 	
 	$(document).on("click",".viewsLiClass",function(){
@@ -132,9 +132,9 @@ var url = window.location.href;
 	//Detailed Block Click Action Party And Govternment Start
 	$(document).on("click","#detailedPartyLiId",function(){
 		//getDetailedPartyMainEditionsOverview();
-		//getDetailedPartyDistrictEditionsOverview();
-		//getDetailedPartyNewsTypeAnalysis();
-		//getDetailedPartyPartyVsPublications("party");
+		getDetailedPartyDistrictEditionsOverview();
+		getDetailedPartyNewsTypeAnalysis();
+		getDetailedPartyPartyVsPublications("party");
 	});
 	
 	$(document).on("click","#detailedGovernmentLiId",function(){
