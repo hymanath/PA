@@ -2141,7 +2141,8 @@ var url = window.location.href;
 						departmentName = result[i].coreDashBoardVOList[j].organization
 					}
 				}
-				str+='<h4>'+departmentName+'</h4>';
+				str+='<span style="font-size:15px;">'+departmentName+' - <small><i>'+result[i].name+'</i></small></span>';
+				str+='<p>Total - <i>'+result[i].count+'</i> : Positive Perc - <span title="'+result[i].positiveCountDist+'" style="color:#7DDF7D"><i>'+result[i].positivePerc+' %</i></span> : Negative Prec - <span title="'+result[i].negativCountDist+'"  style="color:#EC5752"><i>'+result[i].negativePerc+' %</i></span></p>';
 				str+='<div id="districtWiseNewsGovtDetailed'+i+'" class="chartLiD" style="height:300px" ></div>';
 			}
 									
