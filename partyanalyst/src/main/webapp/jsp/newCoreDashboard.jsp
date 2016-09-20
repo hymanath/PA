@@ -1739,8 +1739,19 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock " attr_main_type_meeting_id="1" style="display: none;">
 								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks">
+							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks">
+								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;display:none">
+									<li class="text-capital detailedEvent">Detailed</li>
+									<li class="text-capital comparisonEvent">Comparison</li>
+								</ul>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10">
 								<div class="panel panel-default panelNew">
+									<div class="panel-body">
+										<div id="eventsGraphBlock"></div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew m_top20">
 									<div class="panel-heading">
 										<h4 class="panel-title">
 											<span class="headingColor text-capitalize">Mahanadu - District Wise Cohort</span>
@@ -1750,6 +1761,18 @@
 										<div id="eventsDistWiseCohort"></div>
 									</div>
 								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<span class="headingColor text-capitalize">TITLE</span>
+										</h4>
+									</div>
+									<div class="panel-body">
+										<!--content-->
+									</div>
+								</div>
 								
 							</div>
 						</div>
@@ -1757,9 +1780,9 @@
 				</div>
 			</div>	
 			<!-- Events Block End-->
-        </div>
-     <!--End -->
-	 <div class="row">
+     <!--   </div>-->
+     <!--End-->
+	 <!-- <div class="row">-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock">
             <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">

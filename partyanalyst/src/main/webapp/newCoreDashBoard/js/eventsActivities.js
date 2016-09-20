@@ -7,7 +7,7 @@ $(document).on("click",".eventsIconExpand",function(){
 		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
 		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
 	}else{
-		$(".eventsHiddenBlock").hide();
+		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents").hide();
 	}
 	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".dateRangePickerClsForTraining").addClass("hide");
@@ -45,7 +45,21 @@ $(document).on("click",".eventsIconExpand",function(){
 $(document).on("click",".moreEventsBlocksIcon",function(){
 	$(".moreEventsBlocks").toggle();
 	getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
+	getSelectedEventDetails();
+	$(".detailedBlockEvents,.activeUlCls").show();
+	$(".detailedEvent").addClass("active")
 });
+$(document).on("click",".detailedEvent",function(){
+	$(".detailedBlockEvents").show();
+	$(".comparisonBlockEvents").hide();
+	getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
+	getSelectedEventDetails();	
+});
+$(document).on("click",".comparisonEvent",function(){
+	$(".comparisonBlockEvents").show();
+	$(".detailedBlockEvents").hide();
+});
+
 
 $(document).on("click",".eventsListExpandIcon",function(){
 	
@@ -347,8 +361,6 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 				inviteesCounts.push(result[i].locationList[j].inviteeAttendedCounPer)
 				nonInviteesCounts.push(result[i].locationList[j].nonInviteeAttendedCountPer)
 			}
-			console.log(nonInviteesCounts)
-			
 			
 			$(function () {
 				 $("#eventsGraph"+i).highcharts({
@@ -445,71 +457,179 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 	}
 }
 function getSelectedEventDetails(){
-var eventIds=[];
+	$("#eventsGraphBlock").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	var eventIds=[];
 	eventIds.push(7);
 	eventIds.push(30);
-	alert(11);
 	var jsObj ={ 
-				 activityMemberId : globalActivityMemberId,
-				 stateId : 1,
-				 eventIds:eventIds
-				 
-			  }
+		activityMemberId : globalActivityMemberId,
+		stateId : 1,
+		eventIds:eventIds
+	}
 	$.ajax({
 		type : 'POST',
 		url : 'getEventBasicCntDtlsAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		
+		buildSelectedEventDetails(result);
 	});	
 }
+function buildSelectedEventDetails(result)
+{
+	var str=' ';
+	if(result.length > 3)
+	{
+		str+='<div class="scroll-div">';
+	}
+		str+='<ul class="list-inline best-matched-profile">';
+			for(var i in result)
+			{
+				str+='<li><h4>'+result[i].name+'</h4>';
+				str+='<div id="events'+i+'" class="chartLi"></div></li>';
+			}
+			
+		str+='</ul>';
+	if(result.length > 3)
+	{
+		str+='</div>';
+	}
+	
+	$("#eventsGraphBlock").html(str);
+
+	for(var i in result)
+	{
+		var eventsInviteeNotAttendedCountPer= [];
+		var eventsInviteeAttendedCounPer=[];
+		eventsInviteeNotAttendedCountPer.push(result[i].inviteeNotAttendedCountPer);
+		eventsInviteeAttendedCounPer.push(result[i].inviteeAttendedCounPer);
+		$(function () {
+			$('#events'+i+'').highcharts({
+				colors: ['#F56800','#53BF8B','#66728C'],
+				chart: {
+					type: 'column',
+					
+				},
+				title: {
+					text: ' ',
+					style: {
+						fontSize: '16px',
+						fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+						textTransform: "uppercase"
+					}
+				},
+				subtitle: {
+					text: null
+				},
+				 xAxis: {
+					 min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: null,
+					labels: {
+						enabled: false,
+					}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
+					shared: true
+				},
+				legend: {
+					enabled: true,
+					align: 'left'
+			
+				},
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels:{
+							enabled: true,
+							formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,1) + '%';
+								}
+							}
+						},
+						
+					},
+				},
+				 series: [{
+					name: 'Attended',
+					data: eventsInviteeAttendedCounPer 
+				}, {
+					name: 'Not Attended',
+					data: eventsInviteeNotAttendedCountPer
+				}]
+			});
+		});	
+	}
+	
+}
+
 function getSelectedChildTypeMembersForEvent(){
 	// $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	// $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	  var parentActivityMemberId = globalActivityMemberId;
-	 // var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
-	  var childUserTypeIdsArray = [];
-	  childUserTypeIdsArray.push(3);
-       var eventIds=[];
-		eventIds.push(7);
-		eventIds.push(30);	
-	 var jsObj ={ 
-	               parentActivityMemberId : parentActivityMemberId,
-				   childUserTypeIdsArray : childUserTypeIdsArray,
-				   reportType :"selectedUserType",
-				   stateId : 1,
-				   eventIds:eventIds
-				 }
-	  $.ajax({
-			type : 'POST',
-			url : 'getSelectedChildTypeMembersForEventAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		   // console.log(result);
-		});
+	var parentActivityMemberId = globalActivityMemberId;
+	// var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
+	var childUserTypeIdsArray = [];
+	childUserTypeIdsArray.push(3);
+    var eventIds=[];
+	eventIds.push(7);
+	eventIds.push(30);	
+	var jsObj ={ 
+	   parentActivityMemberId : parentActivityMemberId,
+	   childUserTypeIdsArray : childUserTypeIdsArray,
+	   reportType :"selectedUserType",
+	   stateId : 1,
+	   eventIds:eventIds
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getSelectedChildTypeMembersForEventAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+	   // console.log(result);
+	});
  }
  function getDirectChildTypeMembersForEvent(userTypeId){
-			   var eventIds=[];
-				eventIds.push(7);
-				eventIds.push(30);	
-	             var childUserTypeIdsArray=[];
-	             childUserTypeIdsArray.push(userTypeId);
-	  var jsObj ={   activityMemberId : 1,
-			         childUserTypeIdsArray : childUserTypeIdsArray,
-					 reportType : "directChild",
-					 stateId : 1,
-					 eventIds:eventIds
-				  }
-	   	$.ajax({
-			type : 'POST',
-			url : 'getDirectChildTypeMembersForEventAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		//  console.log(result);
-		});
+	var eventIds=[];
+	eventIds.push(7);
+	eventIds.push(30);	
+	var childUserTypeIdsArray=[];
+	childUserTypeIdsArray.push(userTypeId);
+	var jsObj ={   
+		activityMemberId : 1,
+		childUserTypeIdsArray : childUserTypeIdsArray,
+		reportType : "directChild",
+		stateId : 1,
+		eventIds:eventIds
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getDirectChildTypeMembersForEventAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		//console.log(result);
+	});
  }
 
 
