@@ -162,8 +162,7 @@ var url = window.location.href;
 		$("#partyWiseComparisionBlock").html('');
 		setcolorsForStatus();
 		getChildUserTypesByItsParentUserType1();
-		getComparisionPartyNewsTypeAnalysis();
-		getComparisonPartyWisePoorLocations();
+		
 	});
 
 	$(document).on("click","#comparisonGovernmentLiId",function(){
@@ -1027,12 +1026,6 @@ var url = window.location.href;
 	}
 	function getComparisionPartyDistrictEditionsOverview(firstLocationLevelId,temp22,NewsSelectedMemberName,NewsSelectedUserType){//Teja
 		$("#ComparisionPartyDistrictWiseNewsReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		var temp;
-		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
-			for(var i in globalUserAccessLevelValues){
-				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
-			}
-		}
 		
 		var newsPaperIdsStr="";
 		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
@@ -1051,7 +1044,7 @@ var url = window.location.href;
 		});
 	}
 	
-	function getComparisionPartyPartyVsPublications(searchType){//Teja2
+	function getComparisionPartyPartyVsPublications(searchType,firstLocationLevelId,temp22,NewsSelectedMemberName,NewsSelectedUserType){
 		//$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		/* if(searchType == "party"){
 			$("#partyWiseDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -1079,8 +1072,6 @@ var url = window.location.href;
 			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
 		}).then(function(result){
-			
-			
 			if(result != null && result.length > 0 && searchType == "party"){
 				//$("#partyWiseDetailsDiv").html();
 				//buildgetDetailedPartyWiseDetailes(result);
@@ -3074,6 +3065,7 @@ var url = window.location.href;
 			$("#partyComparisionSubLevelMemberDetailsDiv").html('');
 			$("#PartyComparisionNewsTypeAnalysisDiv").html('');
 			$("#ComparisionPartyDistrictWiseNewsReport").html('');
+			$("#partyComparisonPartyWisePoorL").html('');
 			getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"));
 		}else{
 			$("#partyWiseComparisionBlock").html('');
@@ -3332,6 +3324,8 @@ var url = window.location.href;
 		getPartyCompareSubLevelMemberDetails(firstNewsActivityMemberId,firstNewsUserTypeId,firstNewsUserType,firstNewsUserMemberName,firstNewsChildActivityMemberId);
 		getComparisionPartyNewsTypeAnalysis(firstLocationLevelId,temp22,firstNewsUserType,firstNewsUserMemberName);
 		getComparisionPartyDistrictEditionsOverview(firstLocationLevelId,temp22,firstNewsUserType,firstNewsUserMemberName);
+		getComparisonPartyWisePoorLocations(firstLocationLevelId,temp22,firstNewsUserType,firstNewsUserMemberName);
+		getComparisionPartyPartyVsPublications("party",firstLocationLevelId,temp22,firstNewsUserType,firstNewsUserMemberName);
 		
 	}
 	
@@ -3350,6 +3344,8 @@ var url = window.location.href;
 		getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId);
 		getComparisionPartyNewsTypeAnalysis(NewslocationValueId,NewsLocationValueSetIds,NewsSelectedMemberName,NewsSelectedUserType);
 		getComparisionPartyDistrictEditionsOverview(NewslocationValueId,NewsLocationValueSetIds,NewsSelectedMemberName,NewsSelectedUserType);
+		getComparisonPartyWisePoorLocations(NewslocationValueId,NewsLocationValueSetIds,NewsSelectedMemberName,NewsSelectedUserType);
+		getComparisionPartyPartyVsPublications("party",NewslocationValueId,NewsLocationValueSetIds,NewsSelectedMemberName,NewsSelectedUserType);
 	});
 	
 	function buildgetPartyCompareSubLevelMemberDetails(result,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId){
@@ -3451,6 +3447,8 @@ var url = window.location.href;
 		getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId);
 		getComparisionPartyNewsTypeAnalysis(LowLevelLocationlevelId,LowLevelLocationlevelSetIds,NewsSelectedMemberName,NewsSelectedUserType);
 		getComparisionPartyDistrictEditionsOverview(LowLevelLocationlevelId,LowLevelLocationlevelSetIds,NewsSelectedMemberName,NewsSelectedUserType);
+		getComparisonPartyWisePoorLocations(LowLevelLocationlevelId,LowLevelLocationlevelSetIds,NewsSelectedMemberName,NewsSelectedUserType);
+		getComparisionPartyPartyVsPublications("party",LowLevelLocationlevelId,LowLevelLocationlevelSetIds,NewsSelectedMemberName,NewsSelectedUserType);
 		
 	});
 	$(document).on("click",".removeSelecUserTypeNews",function(){
@@ -4744,14 +4742,9 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		}
 	});
 	
-	function getComparisonPartyWisePoorLocations(){
+	function getComparisonPartyWisePoorLocations(firstLocationLevelId,temp22,NewsSelectedMemberName,NewsSelectedUserType){
 		$("#partyComparisonPartyWisePoorL").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var temp="";
-		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
-			for(var i in globalUserAccessLevelValues){
-				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
-			}
-		}		
+			
 		var npIdsStr="";
 		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
 			for(var i in newsPaperIdsGlob){
@@ -4763,9 +4756,9 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonPartyWisePoorLocations/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr
 		}).then(function(result){
-			buildComparisonPartyWisePoorLocations(result);
+			buildComparisonPartyWisePoorLocations(result,NewsSelectedMemberName,NewsSelectedUserType);
 		});
 	}
 
@@ -5057,10 +5050,11 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		}	
 	}
 	
-	function buildComparisonPartyWisePoorLocations(result)
+	function buildComparisonPartyWisePoorLocations(result,NewsSelectedMemberName,NewsSelectedUserType)
 	{
 		var str=' ';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top20">';
+		str+='<h4 class="text-capital">tdp party top five poor location</h4>';
 			str+='<p class="text-capital">districts</p>';
 			str+='<table class="table tableCumulative">';
 				var order=1;
