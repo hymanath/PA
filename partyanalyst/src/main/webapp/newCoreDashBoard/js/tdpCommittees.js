@@ -1044,27 +1044,8 @@
 	});
 	
 	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFiveStrongResults(result){
-		var str='';
-		if(result != null && result.length > 0){
+		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
 		
-			var str='';
-			
-			for(var i in result){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-
-				if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
-					str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
-				}else{
-					str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-				}
-					
-					str+='<div id="genSec'+i+'" style="height:100px;"></div>';
-				str+='</div>'
-					
-			}
-			
-		}
-		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html(str);
 		if(result != null && result.length > 0){
 			for(var i in result){
 				
@@ -1089,6 +1070,18 @@
 				
 					
 				if( result[i][j].completedPerc !=0){
+					
+					var str='';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
+						str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
+					}else{
+						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+					}	
+					str+='<div id="genSec'+i+'" style="height:100px;"></div>';
+					str+='</div>'
+					$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
+					
 					$(function () {
 						 $("#genSec"+i).highcharts({
 							 colors: ['#0066DC'],
@@ -1175,28 +1168,13 @@
 	}
 	
 	function buildgetUserTypeWiseCommitteesCompletedCountsForTopFivePoorResults(result){
-		var str='';
+		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html('');
+		
 		if(result != null && result.length > 0){
-			var str='';
 			for(var i in result){
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				
-					if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
-					str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
-					}else{
-						str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-					}
-					str+='<div id="genSec1'+i+'" class="m_top20" style="height:100px;"></div>';
-				str+='</div>';
-			}
-		}
-		$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").html(str);
-		if(result != null && result.length > 0){
-			for(var i in result){
 				var candidateNameAndCompletedCountArray =[];
-				//var CommitteeCompleteCountArray;
 				var countVar = 0;
-				
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
 						 var obj1 = {
@@ -1211,9 +1189,21 @@
 						}
 					}
 				}
-				
 					
-				//if( result[i][j].completedPerc !=0){
+				if( result[i][j].completedPerc !=0){
+					var str='';
+					
+					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+						if(result[i][0].userTypeId == 4 || result[i][0].userTypeId == 11){
+						str+='<h5 class="text-capital">ORGANIZING SECRETARY / SECRETARY</h5>';
+						}else{
+							str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
+						}
+					str+='<div id="genSec1'+i+'" class="m_top20" style="height:100px;"></div>';
+					str+='</div>';
+				
+					$("#userTypeWiseCommitteesForTopFiveStrongAndPoorDiv").append(str);
+					
 					var getWidth = $("#genSec1"+i).parent().width()+'px';
 					$("#genSec1"+i).width(getWidth);
 					$(function () {
@@ -1285,11 +1275,11 @@
 						 
 						});
 					});
-				//}else{
-					//$("#genSec1"+i).html("No Data Available");
-					//$("#genSec1"+i).css("height","35px");
+				}else{
+					$("#genSec1"+i).html("No Data Available");
+					$("#genSec1"+i).css("height","35px");
 						
-				//} 
+				} 
 				
 			}
 			
@@ -1756,8 +1746,8 @@
 	$(document).on("click",function(){
 		$(".documentCloseClass").hide();
 	});
-	$(document).on("click",".documentCloseClass",function(){
-		e.preventDefault();
+	$(document).on("click",".documentCloseClass",function(e){
+		e.stopPropagation();
 	});
 	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
 			//do something, like clearing an input
