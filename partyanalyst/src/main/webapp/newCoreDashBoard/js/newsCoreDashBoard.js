@@ -106,6 +106,11 @@ var url = window.location.href;
 			$(".moreMeetingsBlocks1").hide();
 			$(".moreMeetingsBlocksDetailed").hide();
 			$(".moreMeetingsBlocksComparision").hide();
+		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".eventsHiddenBlock,.moreEventsBlocks").hide();
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".dateRangePickerClsForEvents").toggleClass("hide");
 		}
 	});
 	

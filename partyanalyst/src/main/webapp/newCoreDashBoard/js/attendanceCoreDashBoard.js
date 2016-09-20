@@ -4,6 +4,47 @@ $(document).on("click",".attendaceIconExpand",function(){
 	$(".attendanceBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	$(".attendanceBlockMore,.moreAttBlocksIcon").toggle();
 	$(".dateRangePickerClsForAttendance").toggleClass("hide")
+	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		//getUserTypeWiseNewsCounts(1);
+	}else{
+		$(".newsHiddenMoreBlock,moreAttBlocks").hide();
+	}
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".eventsHiddenBlock,.moreEventsBlocks").hide();
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForEvents").toggleClass("hide");
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}
 });
 
 $("#dateRangeIdForAttendance").daterangepicker({
