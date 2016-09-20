@@ -926,7 +926,7 @@
 							</div>
 						</div>
 						
-						<div class="notesDropDown notesArrow" >
+						<div class="notesDropDown notesArrow documentCloseClass" >
 							<h4 class="text-capital">notes
 								<span class="pull-right">
 									<i class="glyphicon glyphicon-list-alt"></i>
@@ -1390,39 +1390,41 @@
 													</div>
 												</div>
 												<div class="panel-body">
-													 <div class="row">
-													 <div class="col-md-5 col-xs-12 col-sm-6 pull-right">
-														<ul class="list-inline listIcon">
-															<li>
-																<span class="tdpColor"></span>
-																<img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/>
-																TDP
-															</li>
-															<li>
-																<span class="ysrcColor"></span>
-																<img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> 
-																YSRC
-															</li>
-															<li>
-																<span class="incColor"></span>
-																<img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> 
-																INC
-															</li>
-															<li>
-																<span class="bjpColor"></span>
-																<img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> 
-																BJP
-															</li>
-														</ul>
+													<div class="row">
+														<div class="col-md-5 col-xs-12 col-sm-6 pull-right">
+															<ul class="list-inline listIcon">
+																<li>
+																	<span class="tdpColor"></span>
+																	<img src="newCoreDashBoard/img/TDP.png" style="width:25px;" alt="tdp icon"/>
+																	TDP
+																</li>
+																<li>
+																	<span class="ysrcColor"></span>
+																	<img src="newCoreDashBoard/img/YSRC.png" style="width:25px;" alt="tdp icon"/> 
+																	YSRC
+																</li>
+																<li>
+																	<span class="incColor"></span>
+																	<img src="newCoreDashBoard/img/INC.png" style="width:25px;" alt="tdp icon"/> 
+																	INC
+																</li>
+																<li>
+																	<span class="bjpColor"></span>
+																	<img src="newCoreDashBoard/img/BJP.png" style="width:25px;" alt="tdp icon"/> 
+																	BJP
+																</li>
+															</ul>
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="partyWiseComparisionBlock"></div>
-																
+															<div id="partyWiseComparisionBlock"></div>
+														</div>
+														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+															<div class="bg_ED pad_15">
+																<div id="partyComparisionSubLevelMemberDetailsDiv" class="row"></div>
+																<div id="partyComparisonPartyWisePoorL" class="row"></div>
 															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="partyComparisionSubLevelMemberDetailsDiv"></div>
 														</div>
-														</div>
+													</div>
 												</div>
 											</div>
 											
@@ -1749,6 +1751,168 @@
 			<!-- Events Block End-->
         </div>
      <!--End -->
+	 <div class="row">
+		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock">
+            <div class="panel panel-default panelNewCustom">
+                <div class="panel-heading">
+					<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
+								employees attendance - <small class="text-muted" id="attendanceId"> last month</small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-5">
+							<span class="attendanceSetIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIconattendance pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
+							</span>
+							<span class="attendaceIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:200px;">
+								<input type="text" id="dateRangeIdForAttendance" style="width:180px" class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock">
+							<h4 class="text-capital">total members - <small>today</small></h4>
+                            <table class="table tableTraining bg_ED">
+								<tr>
+                                	<td>
+                                    	<p class="text-muted text-capital">total members</p>
+                                        <h4>16621</h4>
+                                    </td>
+                                    <td>
+                                    	<p class="text-muted text-capital">prsent</p>
+                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
+                                    </td>
+                                    <td>
+                                    	<p class="text-muted text-capital">absent</p>
+                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <h4 class="text-capital m_top20">hyderabad party office - <small>today</small></h4>
+                            <table class="table tableTraining bg_ED">
+								<tr>
+                                	<td>
+                                    	<p class="text-muted text-capital">total members</p>
+                                        <h4>16621</h4>
+                                    </td>
+                                    <td>
+                                    	<p class="text-muted text-capital">prsent</p>
+                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
+                                    </td>
+                                    <td>
+                                    	<p class="text-muted text-capital">absent</p>
+                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <h4 class="text-capital m_top20">guntur party office - <small>today</small></h4>
+                            <table class="table tableTraining bg_ED">
+								<tr>
+                                	<td>
+                                    	<p class="text-muted text-capital">total members</p>
+                                        <h4>16621</h4>
+                                    </td>
+                                    <td>
+                                    	<p class="text-muted text-capital">prsent</p>
+                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
+                                    </td>
+                                    <td>
+                                    	<p class="text-muted text-capital">absent</p>
+                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
+                            <div id="attendance" style="height:150px;"></div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore">
+                        	<h4><span class="headingColor text-capital">total - departments employee attendance  - <small>Today</small></span></h4>
+                            <table class="table tableAttendance" cellspacing="10">
+                            	<thead>
+                                	<th></th>
+                                    <th>total members</th>
+                                    <th>present</th>
+                                    <th>absent</th>
+                                </thead>
+                                <tr>
+                                	<td>Admin Office</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                	<td>Admin Office</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                	<td>Admin Office</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                	<td>Admin Office</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                </tr>
+                            </table>
+                        </div>
+						<div class="col-xs-12 col-sm-12 col-md-12">
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	<h4><span class="headingColor">Guntur Party Office</span></h4>
+                                </div>
+                                <div class="panel-body">
+                                	<table class="table text-capital tableAtten">
+                                    	<thead>
+                                        	<th>dept name</th>
+                                            <th>employee name</th>
+                                            <th>mobile no</th>
+                                            <th>status</th>
+                                            <th>attended time</th>
+                                        </thead>
+                                        <tr>
+                                        	<td>admin office</td>
+                                            <td>subbarao pollishetty</td>
+                                            <td>9848012345</td>
+                                            <td>present</td>
+                                            <td>02:22:11</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>admin office</td>
+                                            <td>subbarao pollishetty</td>
+                                            <td>9848012345</td>
+                                            <td class="text-danger">absent</td>
+                                            <td>02:22:11</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+	 </div>
 	</div>
 </div> 
 <!--model start -->
@@ -1810,7 +1974,9 @@
 <script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script type="text/javascript">
+	
 	//settings scroll
 	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
 	DatePickerDropdown();
