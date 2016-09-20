@@ -5054,7 +5054,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	{
 		var str=' ';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top20">';
-		str+='<h4 class="text-capital">tdp party top five poor location</h4>';
+		str+='<h4 class="text-capital">tdp party top five poor location (<span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span>)</h4>';
 			str+='<p class="text-capital">districts</p>';
 			str+='<table class="table tableCumulative">';
 				var order=1;
