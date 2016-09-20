@@ -1822,7 +1822,7 @@
 							<span class="notesIconattendance pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
 							</span>
-							<span class="attendaceIconExpand pull-right">
+							<span class="attendaceIconExpand pull-right mainExpandCls">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
 							<span class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:200px;">
@@ -1834,97 +1834,19 @@
 						</div>
 					</div>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body">   
                     <div class="row">
                         <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock">
-							<h4 class="text-capital">total members - <small>today</small></h4>
-                            <table class="table tableTraining bg_ED">
-								<tr>
-                                	<td>
-                                    	<p class="text-muted text-capital">total members</p>
-                                        <h4>16621</h4>
-                                    </td>
-                                    <td>
-                                    	<p class="text-muted text-capital">prsent</p>
-                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
-                                    </td>
-                                    <td>
-                                    	<p class="text-muted text-capital">absent</p>
-                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
-                                    </td>
-                                </tr>
-                            </table>
-                            <h4 class="text-capital m_top20">hyderabad party office - <small>today</small></h4>
-                            <table class="table tableTraining bg_ED">
-								<tr>
-                                	<td>
-                                    	<p class="text-muted text-capital">total members</p>
-                                        <h4>16621</h4>
-                                    </td>
-                                    <td>
-                                    	<p class="text-muted text-capital">prsent</p>
-                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
-                                    </td>
-                                    <td>
-                                    	<p class="text-muted text-capital">absent</p>
-                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
-                                    </td>
-                                </tr>
-                            </table>
-                            <h4 class="text-capital m_top20">guntur party office - <small>today</small></h4>
-                            <table class="table tableTraining bg_ED">
-								<tr>
-                                	<td>
-                                    	<p class="text-muted text-capital">total members</p>
-                                        <h4>16621</h4>
-                                    </td>
-                                    <td>
-                                    	<p class="text-muted text-capital">prsent</p>
-                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
-                                    </td>
-                                    <td>
-                                    	<p class="text-muted text-capital">absent</p>
-                                        <h4>8149<span class="font-10 text-success"> 49.03%</span></h4>
-                                    </td>
-                                </tr>
-                            </table>
+							<div id="officeAttendanceTdlsId">
+							</div>
+							<div id="officeAttendanceTdlsDeptWiseId"> 
+							</div>
                             <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
                             <div id="attendance" style="height:150px;"></div>
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore">
-                        	<h4><span class="headingColor text-capital">total - departments employee attendance  - <small>Today</small></span></h4>
-                            <table class="table tableAttendance" cellspacing="10">
-                            	<thead>
-                                	<th></th>
-                                    <th>total members</th>
-                                    <th>present</th>
-                                    <th>absent</th>
-                                </thead>
-                                <tr>
-                                	<td>Admin Office</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                	<td>Admin Office</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                	<td>Admin Office</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                	<td>Admin Office</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                </tr>
-                            </table>
+							<div id="deptWiseAttendanceDtlsId">
+							</div>
                         </div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>

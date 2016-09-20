@@ -3474,6 +3474,12 @@
 	 <property name="eventInviteeDAO" ref="eventInviteeDAO" />
 	 <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
 	</bean>
+	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
+		<property name="departmentDAO" ref="departmentDAO" />
+		<property name="employeeWorkLocationDAO" ref="employeeWorkLocationDAO" />
+		<property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
+		<property name="employeeDepartmentDAO" ref="employeeDepartmentDAO" />  
+	</bean>
 
 </beans>		
 	
