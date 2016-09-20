@@ -3365,6 +3365,8 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 					idNameVO.setCount(count);
 					idNameVO.setStatus(idAndLocationMapInvite.get(id) != null ? idAndLocationMapInvite.get(id) : "");
 					idNameVO.setActualCount(idAndValueMapAttendee.get(id) != null ? idAndValueMapAttendee.get(id) : 0l);
+					idNameVO.setApplicationStatus("tdpCommitteeLevel");
+					idNameVO.setApplicationStatusId(id);
 					idNameVOs.add(idNameVO);
 				}
 			}
@@ -3407,6 +3409,8 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 			idNameVO.setCount(count);
 			idNameVO.setStatus(idAndLocationMapInvite.get(2l) != null ? idAndLocationMapInvite.get(2l) : "");
 			idNameVO.setActualCount(idAndValueMapAttendee.get(2l) != null ? idAndValueMapAttendee.get(2l) : 0l);
+			idNameVO.setApplicationStatus("publicRepresentative");
+			idNameVO.setApplicationStatusId(2l);
 			campDetailsRepresentative.add(idNameVO);
 		}
 		//for MLC-12
@@ -3417,6 +3421,8 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 			idNameVO.setCount(count);
 			idNameVO.setStatus(idAndLocationMapInvite.get(12l) != null ? idAndLocationMapInvite.get(12l) : "");
 			idNameVO.setActualCount(idAndValueMapAttendee.get(12l) != null ? idAndValueMapAttendee.get(12l) : 0l);
+			idNameVO.setApplicationStatus("publicRepresentative");
+			idNameVO.setApplicationStatusId(12l);
 			campDetailsRepresentative.add(idNameVO);
 		}
 		//for MP-1
@@ -3427,6 +3433,8 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 			idNameVO.setCount(count);
 			idNameVO.setStatus(idAndLocationMapInvite.get(1l) != null ? idAndLocationMapInvite.get(1l) : "");
 			idNameVO.setActualCount(idAndValueMapAttendee.get(1l) != null ? idAndValueMapAttendee.get(1l) : 0l);
+			idNameVO.setApplicationStatus("publicRepresentative");
+			idNameVO.setApplicationStatusId(1l);
 			campDetailsRepresentative.add(idNameVO);
 		}
 		//for Constituency Incharge-21
@@ -3437,6 +3445,8 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 			idNameVO.setCount(count);
 			idNameVO.setStatus(idAndLocationMapInvite.get(21l) != null ? idAndLocationMapInvite.get(21l) : "");
 			idNameVO.setActualCount(idAndValueMapAttendee.get(21l) != null ? idAndValueMapAttendee.get(21l) : 0l);
+			idNameVO.setApplicationStatus("publicRepresentative");
+			idNameVO.setApplicationStatusId(21l);
 			campDetailsRepresentative.add(idNameVO);
 		}
 		//for Other
@@ -3456,7 +3466,9 @@ public List<List<IdNameVO>> getStateLevelCampDetailsRepresentative(List<Long> pr
 				idNameVO.setId(0l);
 				idNameVO.setCount(idNameVO.getCount()+count);
 				idNameVO.setStatus("Other");
-				idNameVO.setActualCount(idNameVO.getActualCount() + actualCount); 
+				idNameVO.setActualCount(idNameVO.getActualCount() + actualCount);
+				idNameVO.setApplicationStatus("Other");
+				idNameVO.setApplicationStatusId(0l);        
 			}
 		}
 		idNameVO.setCount(idNameVO.getCount()+othersCount);
