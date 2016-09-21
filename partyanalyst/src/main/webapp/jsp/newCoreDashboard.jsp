@@ -1234,9 +1234,9 @@
 							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock">
 								<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12">
-										<ul class="activeUlCls list-inline pull-right">
+										<!--<ul class="activeUlCls list-inline pull-right">
 											<li><i class="fa fa-gears"></i></li>
-										</ul>
+										</ul>-->
 										
 										<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
 											<li class="text-capital newsComparisonHeading">Comparison</li>
@@ -1427,6 +1427,10 @@
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<div id="ComparisionPartyDistrictWiseNewsReport"></div>
+															</div>
+															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+																<div id="partyAndPublication"></div>
+																<div id="CompaisionPartyAndPublicationWiseDetailsDiv"></div>
 															</div>
 															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 																<div id="partyComparisonPartyWisePoorL" class="row"></div>
