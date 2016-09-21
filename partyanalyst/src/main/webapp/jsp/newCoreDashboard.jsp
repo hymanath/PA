@@ -1822,8 +1822,9 @@
 						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
-								employees attendance - <small class="text-muted" id="attendanceId"> last month</small>
+								employees attendance
 							</h4>
+							<div style="margin-left: 27px;"><p style="margin-left: 0px; margin-right: 0px;" id="attendanceId" class="text-muted"></p></div>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
 							<span class="attendanceSetIcon pull-right">
