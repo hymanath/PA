@@ -2006,10 +2006,14 @@ var url = window.location.href;
 												 minorGridLineWidth: 0,
 												 categories: paperNamesArray,
 											labels: {
+													useHTML: true,
+													formatter: function() {
+														return this.value+'<img src="https://www.mytdp.com/CommunityNewsPortal/dist/images/'+this.value+'.png" style="width: 45px; vertical-align: middle" />';
+													},
 													rotation: -45,
 													style: {
 														fontSize: '13px',
-														fontFamily: 'Verdana, sans-serif'
+														fontFamily: 'Roboto'
 													},
 												}
 										},
@@ -3188,13 +3192,11 @@ var url = window.location.href;
 		var str ='';
 		
 		if(result != null && result.length > 0){
-			str+='<div class="col-xs-12 col-sm-12 col-md-12">';
-				str+='<ul class="detailedPartySubUl">';
-				for(var i in result){
-					str+='<li attr_usertypeid="'+result[i].shortName+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
-				}
-				str+='</ul>';
-			str+='</div>';
+			str+='<ul class="detailedPartySubUl">';
+			for(var i in result){
+				str+='<li attr_usertypeid="'+result[i].shortName+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+			}
+			str+='</ul>';
 			
 			getPartyComparisonChildUserTypeMembers(result[0].shortName);
 		}
@@ -5298,7 +5300,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 							str+='</ul>';
 						str+='</div>';
 					str+='</div>';	
-					}
+					}	
 					
 					
 			}
@@ -5344,6 +5346,10 @@ $(document).on("click",".btnCustomCreateNews",function(){
 												 minorGridLineWidth: 0,
 												 categories: paperNamesArray,
 											labels: {
+													useHTML: true,
+													formatter: function() {
+														return this.value+'<img src="https://www.mytdp.com/CommunityNewsPortal/dist/images/'+this.value+'.png" style="width: 45px; vertical-align: middle" />';
+													},
 													rotation: -45,
 													style: {
 														fontSize: '13px',
