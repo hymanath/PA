@@ -2006,14 +2006,10 @@ var url = window.location.href;
 												 minorGridLineWidth: 0,
 												 categories: paperNamesArray,
 											labels: {
-													useHTML: true,
-													formatter: function() {
-														return this.value+'<img src="https://www.mytdp.com/CommunityNewsPortal/dist/images/'+this.value+'.png" style="width: 45px; vertical-align: middle" />';
-													},
 													rotation: -45,
 													style: {
 														fontSize: '13px',
-														fontFamily: 'Roboto'
+														fontFamily: 'Verdana, sans-serif'
 													},
 												}
 										},
