@@ -426,7 +426,7 @@
 					 }else{
 						 str+='<li>';
 					 }  
-						str+='<h4 class="text-capital bg_49 pad_custom">affiliated committees</h4>';
+						str+='<h4 class="text-capital bg_49 pad_custom">affiliated <span class="hiddenIpad">committees</span></h4>';
 						str+='<table class="table table-condensed">';
 							str+='<tr>';
 							str+='<td>';
@@ -1448,7 +1448,7 @@
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> performance  committees - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 			
-			str+='<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">';
 			str+='<p class="text-capital"><b>all levels cumulative</b></p>';
 			str+='<table class="table tableCumulative">';
 			var rankingvar =0;
@@ -1488,7 +1488,7 @@
 		if(result != null && result.subList != null && result.subList.length >0){
 			var locationLevelNameArray =[];
 			for(var i in result.subList){
-				str+='<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 m_top10">';
+				str+='<div class="col-md-6 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 m_top10">';
 				var properName = getProperLocationLevelName(result.subList[i].name);
 					if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 						locationLevelNameArray.push(properName);

@@ -1251,6 +1251,10 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 {
 	color:#333;
 }
+.tableCumulative tr td:first-child
+{
+	width:40px !important;
+}
 .tableCumulative tr td:first-child .count
 {
 	border-radius:50%;
