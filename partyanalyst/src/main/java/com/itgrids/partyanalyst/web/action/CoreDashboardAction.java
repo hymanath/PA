@@ -1543,7 +1543,6 @@ public String getCandidateDtlsPerDist(){
 					npIdsList.add(Long.parseLong(arr.getString(i)));
 				}
 			}
-			
 			List<Long> list = new ArrayList<Long>(0);
 			JSONArray arr1 = jObj.getJSONArray("childUserTypeIdArr");
 			if(arr1 != null && arr1.length() > 0){
@@ -1551,8 +1550,14 @@ public String getCandidateDtlsPerDist(){
 					list.add(Long.parseLong(arr1.getString(i)));
 				}
 			}
-			
-			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),list,jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
+			JSONArray arr2 = jObj.getJSONArray("impactScopeIdsArr");
+			List<Long> impactScopeIdsList = new ArrayList<Long>(0);
+			if(arr2 != null && arr2.length() > 0){
+				for(int i=0;i<arr2.length();i++){
+					impactScopeIdsList.add(Long.parseLong(arr2.getString(i)));
+				}
+			}
+			childUserTypeVOList = newsCoreDashBoardService.getPartyComparisonChildUserTypeMembers(jObj.getLong("parentActivityMemberId"),list,jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList,impactScopeIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getPartyComparisonChildUserTypeMembers", e);
 		}
@@ -1648,8 +1653,15 @@ public String getPartyCompareSubLevelMemberDetails(){
 				npIdsList.add(Long.parseLong(jObj.getJSONArray("npIdsArr").getString(i)));
 			}
 		}
+		List<Long> impactScopeIdsList = new ArrayList<Long>(0);
 		
-		childUserTypeVOList = newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList);
+		if(jObj.getJSONArray("impactScopeIdsArr") != null && jObj.getJSONArray("impactScopeIdsArr").length()>0){
+			for(int i=0;i<jObj.getJSONArray("impactScopeIdsArr").length();i++){
+				impactScopeIdsList.add(Long.parseLong(jObj.getJSONArray("impactScopeIdsArr").getString(i)));
+			}
+		}
+		
+		childUserTypeVOList = newsCoreDashBoardService.getPartyCompareSubLevelMemberDetails(jObj.getLong("activityMemberId"),jObj.getLong("userTypeId"),jObj.getString("state"),jObj.getString("startDate"),jObj.getString("endDate"),npIdsList,impactScopeIdsList);
 		 
 	} catch (Exception e) {
 		LOG.error("Exception raised at getPartyCompareSubLevelMemberDetails", e);
