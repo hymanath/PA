@@ -1924,4 +1924,37 @@ public String getEventPoorPerformanceLocation(){
 	}
 	return Action.SUCCESS;
 }
+public String getAttendeeDtlsOfficeWiseForDay(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		String type= jObj.getString("type");
+		String status= jObj.getString("status");
+		List<Long> officeIdList = new ArrayList<Long>();
+		List<Long> deptIdList = new ArrayList<Long>();
+		JSONArray officeIdsArray=jObj.getJSONArray("officeIdArr");
+		JSONArray deptIdsArray=jObj.getJSONArray("deptIdArr");
+		if(officeIdsArray!=null &&  officeIdsArray.length()>0){  
+			for( int i=0;i<officeIdsArray.length();i++){
+				officeIdList.add(Long.valueOf(officeIdsArray.getString(i)));
+			}
+		}
+		if(deptIdsArray!=null &&  deptIdsArray.length()>0){
+			for( int i=0;i<deptIdsArray.length();i++){
+				deptIdList.add(Long.valueOf(deptIdsArray.getString(i)));
+			}
+		}
+		if(type.equalsIgnoreCase("office")){
+			idNameVoList = attendanceCoreDashBoardService.getAttendeeDtlsOfficeWiseForDay(fromDate,toDate,officeIdList,deptIdList);
+		}else{
+			idNameVoList = attendanceCoreDashBoardService.getAttendeeDtlsDeptWiseForDay(fromDate,toDate,officeIdList,deptIdList,status);
+		}
+		
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendeeDtlsOfficeWiseForDay() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
 }

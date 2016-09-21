@@ -1851,8 +1851,8 @@
 							</div>
 							<div id="officeAttendanceTdlsDeptWiseId"> 
 							</div>
-                            <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
-                            <div id="attendance" style="height:150px;"></div>
+                            <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
+                            <div id="attendance" style="height:150px;"></div>-->
                         </div>
                         <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore">
 							<div id="deptWiseAttendanceDtlsId">
