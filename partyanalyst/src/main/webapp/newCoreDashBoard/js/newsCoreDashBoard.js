@@ -3589,7 +3589,7 @@ var url = window.location.href;
 		}
 	
 	 $(document).on("click",".compareLowLevelActivityMemberCls1",function(){
-		  
+		  $("#partyAndPublication").html('');
 		$(this).closest('tr').next('tr.showHideTr').show(); 
 		var NewsActivityMemberId = $(this).attr("attr_newsactivitymemberid");  
 		var NewsUserTypeId = $(this).attr("attr_newsusertypeid"); 
@@ -4961,12 +4961,13 @@ $(document).on("click",".btnCustomCreateNews",function(){
 
 	function buildgetComparisionPartyNewsTypeAnalysis(result,NewsSelectedMemberName,NewsSelectedUserType){
 		$("#PartyComparisionNewsTypeAnalysisDiv").html('');
-		
-		
+		if(result != null && result.length > 0){
+			var str1='';
+			str1+='<h4>NEWS TYPE ANALYSIS</h4>';
+			str1+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			$("#PartyComparisionNewsTypeAnalysisDiv").html(str1);
+		}
 			if(result != null && result.length > 0){
-				var str1='';
-				str1+='<h4>NEWS TYPE ANALYSIS (<span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span>)</h4>';
-				$("#PartyComparisionNewsTypeAnalysisDiv").html(str1);
 				for(var i in result){
 					var PartyCountPerc;
 					var partyName;
@@ -4989,14 +4990,12 @@ $(document).on("click",".btnCustomCreateNews",function(){
 						}
 					}
 						
-					
 					if(districtNameArray.length != 0 && tdpPercArray.length !=0 && ysrcPercArray.length !=0 && incPercArray.length !=0 && bjpPercArray.length !=0){
+					$(function () {
 						var str='';
 						str+='<div class="col-md-4 col-xs-12 col-ms-8 m_top10"><h5 class="text-capital">'+result[i].name+'</h5>';
 						str+='<div id="PartyComparisionNewsTypeAnalysisBarChart'+i+'" class="chartLiD" style="height:200px;width:250px;"></div></div>';
 						$("#PartyComparisionNewsTypeAnalysisDiv").append(str);
-					$(function () {
-						
 						$('#PartyComparisionNewsTypeAnalysisBarChart'+i).highcharts({
 							colors: ['#FFCB00','#005DB0','#3D9834','#FD9832'],
 							chart: {
@@ -5092,32 +5091,35 @@ $(document).on("click",".btnCustomCreateNews",function(){
 							}]
 						});
 					});
-					}else{
-						$('#PartyComparisionNewsTypeAnalysisBarChart'+i).html("No Data Available");
-						$('#PartyComparisionNewsTypeAnalysisBarChart'+i).css("height","10px")
 					}
 					
 				}
-			}else{
-				$('#PartyComparisionNewsTypeAnalysisDiv').html("No Data Available");
-				$('#PartyComparisionNewsTypeAnalysisDiv').css("height","10px");
 			}
 	}
 	
 	function buildgetComparisionPartyDistrictEditionsOverview(result,NewsSelectedMemberName,NewsSelectedUserType){
 		$("#ComparisionPartyDistrictWiseNewsReport").html(' ');
+		if(result != null && result.length > 0){
+			var str1='';
+			str1+='<h4>DISTRICT WISE PARTIES NEWS</h4>';
+			str1+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			
+			$("#ComparisionPartyDistrictWiseNewsReport").html(str1);			
+		}
+		
 		
 	if(result != null && result.length > 0){
-		//var countVar =0;
+		var countVar =0;
 		for(var i in result){
-				/* countVar =countVar+1;
-						if (countVar === 5) {
-							break;
-						} */
+				countVar =countVar+1;
+				if (countVar === 5) {
+					break;
+				}
+					
 					var districtNamesArray =[];
 					var districtWisePositiveCountArray = [];
 					var districtWiseNegativeCountArray = [];
-				
+					
 				if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length > 0){
 					for(var j in result[i].coreDashBoardVOList){
 						districtNamesArray.push(result[i].coreDashBoardVOList[j].districtName);
@@ -5126,19 +5128,13 @@ $(document).on("click",".btnCustomCreateNews",function(){
 							
 					}
 				}	
-				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
-					var str1='';
-					str1+='<h4>DISTRICT WISE PARTIES NEWS (<span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span>)</h4>';
-				$("#ComparisionPartyDistrictWiseNewsReport").html(str1);
-		
+				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0 && districtNamesArray.length !=0){
 					var str='';
-						str+='<div class="col-md-4 col-xs-12 col-ms-8 m_top10">';
-						str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon" class=" m_top10"/> &nbsp;&nbsp;&nbsp;'+result[i].organization+'';
-						str+='<div id="ComparisionpartyDistrictWiseNews'+i+'" class="chartLiD" style="height:230px" ></div>';
-						str+='</div>';
-						
-					$("#ComparisionPartyDistrictWiseNewsReport").append(str);
-					
+					str+='<div class="col-md-4 col-xs-12 col-ms-8 m_top10">';
+					str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" style="width:25px;" alt="tdp icon" class=" m_top10"/> &nbsp;&nbsp;&nbsp;'+result[i].organization+'';
+					str+='<div id="ComparisionpartyDistrictWiseNews'+i+'" class="chartLiD" style="height:230px" ></div>';
+					str+='</div>';
+				$("#ComparisionPartyDistrictWiseNewsReport").append(str);			
 					$(function () {
 						$('#ComparisionpartyDistrictWiseNews'+i+'').highcharts({
 							 colors: ['#64C664','#D33E39'],
@@ -5234,9 +5230,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 					});
 				}
 			}
-		}else{
-			$("#ComparisionPartyDistrictWiseNewsReport").html("No Data Available")
-		}	
+		}
 	}
 	
 	function buildComparisonPartyWisePoorLocations(result,NewsSelectedMemberName,NewsSelectedUserType)
@@ -5274,7 +5268,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	}
 	
 		function buildgetComparisionPartyWiseDetailes(result,NewsSelectedMemberName,NewsSelectedUserType){
-		$("#CompaisionPartyAndPublicationWiseDetailsDiv").html();
+		$("#CompaisionPartyAndPublicationWiseDetailsDiv").html('');
 		var str ='';
 		if(result !=null && result.length >0){
 			str+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
