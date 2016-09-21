@@ -246,7 +246,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		return null;
 	}
 	
-	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIdArray,String state,String startDate,String endDate,List<Long> npIds){
+	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeIdArray,String state,String startDate,String endDate,List<Long> npIds,List<Long> impactScopeIds){
 		List<ChildUserTypeVO> finalList = new ArrayList<ChildUserTypeVO>(0);//Teja
 		try {
 			
@@ -258,7 +258,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     activityMemberVO.setFromDate(startDate);
 		     activityMemberVO.setToDate(endDate);
 		     activityMemberVO.setNpIds(npIds);
-		     
+		     activityMemberVO.setImpactScopeIds(impactScopeIds);
 		    ClientConfig clientConfig = new DefaultClientConfig();
 		     
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -415,7 +415,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		return null;
 	}
 	
-	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate,List<Long> npIds){
+	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate,List<Long> npIds,List<Long> impactScopeIdsList){
 		List<ChildUserTypeVO> finalVoList = new ArrayList<ChildUserTypeVO>(0);//sandeep
 		try {
 			
@@ -426,7 +426,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 		     activityMemberVO.setFromDate(startDate);
 		     activityMemberVO.setToDate(endDate);
 		     activityMemberVO.setNpIds(npIds);
-		     
+		     activityMemberVO.setImpactScopeIds(impactScopeIdsList);
 		    ClientConfig clientConfig = new DefaultClientConfig();
 		     
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
