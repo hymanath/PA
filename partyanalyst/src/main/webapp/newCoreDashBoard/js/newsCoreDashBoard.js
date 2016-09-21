@@ -2826,8 +2826,8 @@ var url = window.location.href;
 					var totalPositive = result[i].coreDashBoardVOList[j].positiveCountDist + result[i].coreDashBoardVOList[j].positiveCountMain;  
 					var totalNegative = result[i].coreDashBoardVOList[j].negativCountDist + result[i].coreDashBoardVOList[j].negativCountMain;  
 					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
-					districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].totalPositive);
-					districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].totalNegative);
+					districtWisePositiveCountArray.push(totalPositive);
+					districtWiseNegativeCountArray.push(totalNegative);
 				}
 			}	
 				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
@@ -3673,8 +3673,8 @@ var url = window.location.href;
 					totalPositive = result[i].coreDashBoardVOList[j].positiveCountDist + result[i].coreDashBoardVOList[j].positiveCountMain;  
 					totalNegative = result[i].coreDashBoardVOList[j].negativCountDist + result[i].coreDashBoardVOList[j].negativCountMain;  
 					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
-					districtWisePositiveCountArray.push(result[i].coreDashBoardVOList[j].totalPositive);
-					districtWiseNegativeCountArray.push(result[i].coreDashBoardVOList[j].totalNegative);
+					districtWisePositiveCountArray.push(totalPositive);
+					districtWiseNegativeCountArray.push(totalNegative);
 				}
 			}	
 				if(districtWisePositiveCountArray.length !=0 && districtWiseNegativeCountArray.length !=0){
@@ -3748,7 +3748,7 @@ var url = window.location.href;
 								borderWidth: 2,
 								groupPadding: 0.2,
 								column: {
-									stacking: 'percent',
+									stacking: 'normal',
 									dataLabels: {
 										enabled: true,
 										 formatter: function() {
@@ -3774,7 +3774,7 @@ var url = window.location.href;
 				}else{
 					$('#comparisonTrendingTrackedIssues'+i+'').html("No Data Available");
 					$('#comparisonTrendingTrackedIssues'+i+'').css("height","10px");
-				}
+				} 
 			}
 		}
 	}
@@ -4020,7 +4020,7 @@ var url = window.location.href;
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-					str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+					str+='<div id="comparisonProblemsRelated" style="width:300px;height:180px"></div>';
 				str+='</div>';
 			str+='</div>';
 								
@@ -4029,12 +4029,18 @@ var url = window.location.href;
 			$("#comparisonGovtProblemsDOverview").html(str);
 			$('[data-toggle="tooltip"]').tooltip();
 			
-			var dynamicHeight;
+			/* var dynamicHeight;
 				$(".dynamicHeightApply").each(function(){
 					dynamicHeight = $(this).find("li").length;
-					dynamicHeight = (dynamicHeight*36)+"px";
+					dynamicHeight = (dynamicHeight*36);
 				});
-			$("#comparisonProblemsRelated").css("height",dynamicHeight);
+			if(dynamicHeight > 150)
+			{
+				$("#comparisonProblemsRelated").css("height","150px");
+			}else{
+				$("#comparisonProblemsRelated").css("height",dynamicHeight+"px");
+			} */
+			
 			
 			if(result != null && result.length > 0){
 				
