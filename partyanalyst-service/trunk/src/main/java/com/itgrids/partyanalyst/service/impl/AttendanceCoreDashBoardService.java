@@ -65,7 +65,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			Map<Long,String> employeeIdLocationMap = new HashMap<Long,String>(); 
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
@@ -135,7 +135,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
@@ -215,7 +215,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
 				fromDate = sdf.parse(fromDateStr); 
 				toDate = sdf.parse(toDateStr);
@@ -329,7 +329,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			Long noOfDays = 0l;
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
 				fromDate = sdf.parse(fromDateStr); 
 				toDate = sdf.parse(toDateStr);
@@ -402,7 +402,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			
 			Date fromDate = null;
 			Date toDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
 				fromDate = sdf.parse(fromDateStr); 
 				toDate = sdf.parse(toDateStr);
