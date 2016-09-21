@@ -1,10 +1,23 @@
-$(document).on("click",".eventsIconExpand",function(){
+ var globalStateId=1; //default AP
+ var globalUserWiseEventMemberRslt;
+ /* EVENT FUNCTIONALITY END*/  
+  $(document).on("click",".eventsIconExpand",function(){
 	$(".dateRangePickerClsForEvents").toggleClass("hide");
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt();
+		
+		var eventIdsString="7,30";
+		
+		$(".moreEventsBlocksIcon").attr("attr_type","event");
+	    $(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
+		$(".detailedEvent").attr("attr_type","event");
+	    $(".detailedEvent").attr("attr_event_idsString",eventIdsString);
+		$(".comparisonEvent").attr("attr_type","event");
+		$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
+		
+		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
 		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
 	}else{
 		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents").hide();
@@ -43,24 +56,52 @@ $(document).on("click",".eventsIconExpand",function(){
 });
 
 $(document).on("click",".moreEventsBlocksIcon",function(){
-	$(".moreEventsBlocks").toggle();
-	getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
-	getSelectedEventDetails();
-	$(".detailedBlockEvents,.activeUlCls").show();
-	$(".detailedEvent").addClass("active")
+	var type=$(this).attr("attr_type");
+	var attrEventIdsString=$(this).attr("attr_event_idsString");
+	if(type != null && type=="event"){
+	 $(".moreEventsBlocks").toggle();
+	 getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(attrEventIdsString);
+	 getSelectedEventDetails(attrEventIdsString);
+	 $(".detailedBlockEvents,.activeUlCls").show();
+	 $(".detailedEvent").addClass("active")	
+	}else{
+		// activity functionality
+	}
 });
 $(document).on("click",".detailedEvent",function(){
 	$(".detailedBlockEvents").show();
 	$(".comparisonBlockEvents").hide();
-	getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType();
-	getSelectedEventDetails();	
+	//var type=$(this).attr("attr_type");
+	var attrEventIdsString=$(this).attr("attr_event_idsString");
+	getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(attrEventIdsString);
+	getSelectedEventDetails(attrEventIdsString);	
 });
 $(document).on("click",".comparisonEvent",function(){
 	$(".comparisonBlockEvents").show();
 	$(".detailedBlockEvents").hide();
-	getAllItsSubUserTypeIdsByParentUserTypeIdForEvent();
+	//var type=$(this).attr("attr_type");
+	var attrEventIdsString=$(this).attr("attr_event_idsString");
+	getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString);
+});
+$(document).on("click",".eventCls",function(){
+	var eventIdsString = $(this).attr("attr_event_idsString");
+	$(".moreEventsBlocksIcon").attr("attr_type","event");
+	$(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
+	$(".detailedEvent").attr("attr_type","event");
+	$(".detailedEvent").attr("attr_event_idsString",eventIdsString);
+	$(".comparisonEvent").attr("attr_type","event");
+	$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
+	getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
 });
 
+$(document).on("click",".eventStrngPrCls",function(){
+	var memberType=$(this).attr("attr_value");
+	 if(memberType != null && memberType == "strong"){ 
+		buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(globalUserWiseEventMemberRslt); 
+	 }else if(memberType == "poor"){
+	  buildUserTypeWisePoorInviteeAttendedEventMemDtlsCnt(globalUserWiseEventMemberRslt);
+	 }
+});
 
 $(document).on("click",".eventsListExpandIcon",function(){
 	
@@ -94,6 +135,7 @@ $('#dateRangeIdForEvents').on('apply.daterangepicker', function(ev, picker) {
   customStartDate = picker.startDate.format('DD/MM/YYYY');
   customEndDate = picker.endDate.format('DD/MM/YYYY');  
 });
+
 function getEventBasicCntDtls(){
 	$("#mainEventsList").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var eventIds=[];
@@ -102,7 +144,7 @@ function getEventBasicCntDtls(){
 	
 	var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
-				 stateId : 1,
+				 stateId : globalStateId,
 				 eventIds:eventIds
 				 
 			  }
@@ -112,15 +154,25 @@ function getEventBasicCntDtls(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildEventBasicCntDtls(result);
+		if(result != null && result.length > 0 ){
+		 buildEventBasicCntDtls(result);	
+		}else{
+		 $("#mainEventsList").html("NO DATA AVAILABLE.");	
+		}
 	});
 }
 function buildEventBasicCntDtls(result)
 {
+	var eventIdsString;
 	var str=' ';
 	str+='<div class="panel-group m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
 		for(var i in result)
 		{
+			if(i== 0){
+			eventIdsString = result[i].id;	
+			}else{
+			 eventIdsString = eventIdsString+','+result[i].id;	
+			}
 			str+='<div class="panel panel-default panelNewEvents">';
 				str+='<div class="panel-heading" role="tab" id="headingEvents'+i+'">';
 					if(i == 0)
@@ -128,13 +180,13 @@ function buildEventBasicCntDtls(result)
 						str+='<h4 class="panel-title">';
 							str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
 							str+='</a>';
-							str+='<span class="eventsListExpandIcon" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+							str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 						str+='</h4>';
 					}else{
 						str+='<h4 class="panel-title">';
 							str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
 							str+='</a>';
-							str+='<span class="eventsListExpandIcon" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+							str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 						str+='</h4>';
 					}
 					
@@ -175,21 +227,18 @@ function buildEventBasicCntDtls(result)
 		}
 	str+='</div>';
 	str+='';
+	$("#eventIds").attr("attr_event_idsString",eventIdsString); 
 	$("#mainEventsList").html(str)
 }
 
-function getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(){
-	$("#UserTypeWiseCommittee").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	var eventIds=[];
-	eventIds.push(7);
-	eventIds.push(30);
-	
+function getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString){
+	$("#UserTypeWiseEventMemberDtslDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var eventIds= eventIdsString.split(",");
 	var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
-				 stateId : 1,
+				 stateId : globalStateId,
 				 eventIds:eventIds,
 				 userTypeId : globalUserTypeId
-				 
 			  }
 	$.ajax({
 		type : 'POST',
@@ -197,7 +246,9 @@ function getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result);
+		 $("#UserTypeWiseEventMemberDtslDivId").html(' ');
+		 globalUserWiseEventMemberRslt = result;
+		 buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result);
 	});
 }
 
@@ -213,10 +264,10 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 		}
 		
 	}
-	$("#UserTypeWiseCommittee").html(str);
+	$("#UserTypeWiseEventMemberDtslDivId").html(str);
 	if(result != null && result.length > 0){
 		for(var i in result){
-			var UserTypeWiseCommittees = [];
+			var eventInviteeAttendedPerArr = [];
 			var countVar =0;
 			if(result[i] !=null && result[i].length>0){
 				for(var j in result[i]){
@@ -224,7 +275,7 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 							name: result[i][j].name,
 							y: result[i][j].inviteeAttendedCntPer
 						};
-					UserTypeWiseCommittees.push(obj1);
+					eventInviteeAttendedPerArr.push(obj1);
 					countVar =countVar+1;
 					if (countVar === 5) {
 						break;
@@ -233,7 +284,7 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 			}
 			
 				
-			if( result[i][j].inviteeAttendedCntPer !=0){
+			//if( result[i][j].inviteeAttendedCntPer !=0){
 				$(function () {
 					 $("#eventsCountGraph"+i).highcharts({
 						 colors: ['#0066DC'],
@@ -299,33 +350,158 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 						},
 
 						series: [{
-							name: 'Invitee Attended',
-							data: UserTypeWiseCommittees
+							name: 'Invitees Attended',
+							data: eventInviteeAttendedPerArr
 						}],
 					 
 					});
 				});
-			} else{
+			/* } else{
 				$("#eventsCountGraph"+i).html("No Data Available");
 				$("#eventsCountGraph"+i).css("height","35px");
 					
-			} 
+			}  */
 			
 		}
 	}else{
-		$("#UserTypeWiseCommittee").html("No Data Available");
+		$("#UserTypeWiseEventMemberDtslDivId").html("No Data Available");
 	}
 	
 }
-function getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(){
-	$("#eventsDistWiseCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-   var eventIds=[];
-	eventIds.push(7);
-	eventIds.push(30);
+function buildUserTypeWisePoorInviteeAttendedEventMemDtlsCnt(result){
+		var str='';
+		if(result != null && result.length > 0){
+			var str='';
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].userTypeId==4 || result[i][0].userTypeId==11){
+				  if(result[i][0].userTypeId==4){
+				   str+='<h5 class="text-capital">'+result[i][0].userType+' / SECRETARY </h5>';      
+				  }
+				  if(result[i][0].userTypeId==11){
+				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].userType+'</h5>';      
+				  }
+			   }else{
+				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
+			   }
+				str+='<div id="eventsCountGraph'+i+'" style="width:100%;height:100px;"></div>';
+				str+='</div>'
+			}
+		}
+		$("#UserTypeWiseEventMemberDtslDivId").html(str);
+	if(result != null && result.length > 0){
+		for(var i in result){
+				var candidateNameArray = [];
+				var eventInviteeAttendedPerArr = [];
+				var countVar = 0;
+				var length = result[i].length - 1;
+				for(var j = length; j >= 0; j--){
+					candidateNameArray.push(result[i][j].name);
+					eventInviteeAttendedPerArr.push(result[i][j].inviteeAttendedCntPer);
+					countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				}
+			//if( result[i][j].totalAttenedCountPer!=0){
+			//var getWidth = $("#eventsCountGraph"+i).parent().width()+'px';
+				//$("#eventsCountGraph"+i).width(getWidth);
+				$(function () {
+			   $('#eventsCountGraph'+i).highcharts({
+				colors: ['#0066DC'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: candidateNameArray,
+					title: {
+						text: null
+					},
+					labels: {
+							formatter: function() {
+								return this.value.toString().substring(0, 10)+'...';
+							},
+							
+						}
+				},
+				yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null,
+						align: 'high'
+					},
+					labels: {
+						overflow: 'justify',
+						enabled: false,
+					}
+				},
+				tooltip: {
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>',
+				valueSuffix: '%'
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.y,2) +"%";
+								}
+							}
+						  
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -40,
+					y: 80,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+				series: [{
+					name: 'Invitees Attended',
+					data: eventInviteeAttendedPerArr
+				}]
+			});
+		});
+		/* }else{
+		$("#genSecTraining"+i).html("No Data Available");
+		$("#genSecTraining"+i).css("height","35px");	
+		} */
+		}
+	}else{
+	 $("#UserTypeWiseEventMemberDtslDivId").html('NO DATA AVAILABLE.');
+	}	
 	
+}
+function getLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(attrEventIdsString){
+	$("#eventsDistWiseCohort").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+    var eventIds = attrEventIdsString.split(",");
 	var jsObj ={ 
 		 activityMemberId : globalActivityMemberId,
-		 stateId : 1,
+		 stateId : globalStateId,
 		 eventIds:eventIds,
 		 userTypeId : globalUserTypeId
 		 
@@ -423,6 +599,7 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 					},
 
 					 tooltip: {
+						 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b><br/>',
 						/* formatter: function () {
 							var s = '<b>' + this.x + '</b>';
 
@@ -454,14 +631,12 @@ function buildLocationWiseByInviteeAttendedAndInviteeAttendedCntBasedOnUserType(
 		$("#eventsDistWiseCohort").html("No Data Available");
 	}
 }
-function getSelectedEventDetails(){
+function getSelectedEventDetails(attrEventIdsString){
 	$("#eventsGraphBlock").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	var eventIds=[];
-	eventIds.push(7);
-	eventIds.push(30);
+	var eventIds=attrEventIdsString.split(",");
 	var jsObj ={ 
 		activityMemberId : globalActivityMemberId,
-		stateId : 1,
+		stateId : globalStateId,
 		eventIds:eventIds
 	}
 	$.ajax({
@@ -470,7 +645,11 @@ function getSelectedEventDetails(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		buildSelectedEventDetails(result);
+		if(result != null && result.length > 0){
+		  buildSelectedEventDetails(result);	
+		}else{
+		  $("#eventsGraphBlock").html("NO DATA AVAILABLE.");	
+		}
 	});	
 }
 function buildSelectedEventDetails(result)
@@ -583,7 +762,8 @@ function buildSelectedEventDetails(result)
 
 $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
-	getSelectedChildTypeMembersForEvent(childUserTypeId);
+    var attrEventIdsString = $(this).attr("attr_event_idsString");
+	getSelectedChildTypeMembersForEvent(childUserTypeId,attrEventIdsString);
 });
  $(document).on("click",".remveSlcUsrTypeForEvent",function(){
 		 var removeSelected = $(this).attr("attr_remove_SelecUserType"); 
@@ -598,8 +778,9 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
     	var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype"); 	
 		var childActivityMemberId = $(this).attr("attr_id");  
-		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
+		var attrEventIdsString = $(this).attr("attr_event_idsString");
+		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
+		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 });
 $(document).on("click",".subLevelEventMemberCls",function(){
 	    $(this).closest('tr').next('tr.showHideTr').show(); 
@@ -608,10 +789,11 @@ $(document).on("click",".subLevelEventMemberCls",function(){
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
-		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
+	    var attrEventIdsString = $(this).attr("attr_event_idsString");
+		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
+		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 });
- function getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(){
+ function getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString){
 		 $("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
@@ -622,14 +804,14 @@ $(document).on("click",".subLevelEventMemberCls",function(){
 		}).done(function(result){
 			$("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html(" ");	
 			if(result != null && result.length > 0){
-			buildgetChildUserTypesByItsParentUserTypeForEvent(result);	
+			buildgetChildUserTypesByItsParentUserTypeForEvent(result,attrEventIdsString);	
 			}else{
 			$("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html("NO DATA AVAILABLE");	
 			}
 		});		 
 	}
 	
-function buildgetChildUserTypesByItsParentUserTypeForEvent(result){
+function buildgetChildUserTypesByItsParentUserTypeForEvent(result,attrEventIdsString){
 		var str='';
 		 str+='<ul class="comparisonSelect">';
 		 
@@ -638,28 +820,26 @@ function buildgetChildUserTypesByItsParentUserTypeForEvent(result){
 		 if(result !=null && result.length >0){
 			  firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_userTypeId="'+result[i].shortName+'" class="allItsSubUserTypeClsForEvent">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_userTypeId="'+result[i].shortName+'" attr_event_idsString='+attrEventIdsString+' class="allItsSubUserTypeClsForEvent">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString);
+		getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString);
 	}
-function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString){
+function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString){
 	 $("#childEvnetMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#directChildMemberForEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
-	   var eventIds=[];
-		eventIds.push(7);
-		eventIds.push(30);	
+	   var eventIds=attrEventIdsString.split(",");
 	 var jsObj ={ 
 	               parentActivityMemberId : parentActivityMemberId,
 				   childUserTypeIdsArray : childUserTypeIdsArray,
 				   reportType :"selectedUserType",
-				   stateId : 1,
+				   stateId : globalStateId,
 				   eventIds:eventIds
 				 }
 	  $.ajax({
@@ -671,13 +851,13 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString){
 		   $("#childEvnetMemberDivId").html(' ');
 		   $("#directChildMemberForEventDivId").html(' ');
 		  if(result != null && result.length > 0){
-			  buildChildTypeMembersForEventReslt(result);
+			  buildChildTypeMembersForEventReslt(result,attrEventIdsString);
 		  }else{
 			  $("#childEvnetMemberDivId").html("NO DATA AVAILABLE");
 		  }
 		});
  }
- function buildChildTypeMembersForEventReslt(result){
+ function buildChildTypeMembersForEventReslt(result,attrEventIdsString){
 	  var userTypeId = result[0].userTypeId;
 	  var activityMemberId = result[0].activityMemberId;
 	  var selectedMemberName = result[0].name;
@@ -686,7 +866,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString){
 	  str+='<ul class="list-inline slickPanelSliderForEvent">';
 	  var rank=1; 
 	   for(var i in result){
-	str+='<li style="cursor:pointer;" class="childEventMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
+	str+='<li style="cursor:pointer;" class="childEventMemberCls"  attr_event_idsString="'+attrEventIdsString+'" attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
 	     if(i==0){
 			str+='<div class="panel panel-default panelSlick panelActiveSlick">';
 		  }else{
@@ -768,20 +948,18 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString){
 				// instead of a settings object
 			  ]
 		});   
-	getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
-	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId");
+	getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString);
  }
-function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
+function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString){
 	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-			   var eventIds=[];
-				eventIds.push(7);
-				eventIds.push(30);	
-	             var childUserTypeIdsArray=[];
+			     var eventIds=attrEventIdsString.split(",");
+		         var childUserTypeIdsArray=[];
 	             childUserTypeIdsArray.push(userTypeId);
 	  var jsObj ={   activityMemberId : activityMemberId,
 			         childUserTypeIdsArray : childUserTypeIdsArray,
 					 reportType : "directChild",
-					 stateId : 1,
+					 stateId : globalStateId,
 					 eventIds:eventIds
 				  }
 	   	$.ajax({
@@ -792,13 +970,13 @@ function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedM
 		}).done(function(result){
 	     $("#"+childActivityMemberId).html('');
 		  if(result != null && result.length > 0){
-			  buildEventDirectChildDetailsRslt(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId)
+			  buildEventDirectChildDetailsRslt(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId,attrEventIdsString)
 		  }else{
 		   $("#"+childActivityMemberId).html('NO DATA AVAILABLE');   
 		  }
 		});
  }
- function buildEventDirectChildDetailsRslt(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId){
+ function buildEventDirectChildDetailsRslt(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId,attrEventIdsString){
 	 var str='';
 		str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
 		 if(childActivityMemberId != "directChildMemberForEventDivId"){
@@ -823,7 +1001,7 @@ function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedM
 		var rank=1;
 		 for(var i in result){
 		var yourValues = result[i].locationName;
-		   str+='<tr  class="subLevelEventMemberCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
+		   str+='<tr  class="subLevelEventMemberCls" attr_event_idsString="'+attrEventIdsString+'" attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
@@ -852,14 +1030,12 @@ function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedM
 	$("#"+childActivityMemberId).html(str);
  }
 
-function getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedUserName,userType){
+function getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedUserName,userType,attrEventIdsString){
 $("#topPoorLocationsEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-var eventIds=[];
-	eventIds.push(7);
-	eventIds.push(30);
+var eventIds=attrEventIdsString.split(",");
 	var jsObj ={ 
 				 activityMemberId : activityMemberId,
-				 stateId : 1,
+				 stateId : globalStateId,
 				 eventIds:eventIds,
 				 userTypeId : userTypeId
 				 
@@ -965,7 +1141,8 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 	 $("#topPoorLocationsEventDivId").html(str);	
 	 $('.progressCustom').tooltip()
 	}
-
+	
+/* EVENT FUNCTIONALITY END*/
 
 
 

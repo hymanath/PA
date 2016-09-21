@@ -1703,12 +1703,12 @@
 								<span class="eventsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
-								<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+								<!--<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
 									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
-								</span>
+								</span>-->
 							</div>
 						</div>
 						<div class="notesDropDown notesArrow" >
@@ -1729,14 +1729,21 @@
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
-								<h4><span class="headingColor text-capital">events</span></h4>
+								<h4><span class="headingColor text-capital">events</span>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
 								<div id="mainEventsList"></div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
 								<h4><span class="headingColor text-capital">events </span></h4>
-								<div id="UserTypeWiseCommittee" class="m_top20"></div>
+								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										</ul>
+							    </div> 
+								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock " attr_main_type_meeting_id="1" style="display: none;">
+							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
 								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 moreEventsBlocks">
