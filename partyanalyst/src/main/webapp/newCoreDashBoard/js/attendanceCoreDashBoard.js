@@ -271,12 +271,97 @@ $('#attendance').highcharts({
 			for(var i in result){
 				str+='<tr>';
 					str+='<td>'+result[i].name+'</td>';
-					str+='<td>'+result[i].actualCount+'</td>';  
-					str+='<td>'+result[i].availableCount+'</td>';
-					str+='<td>'+result[i].count+'</td>';  
-				str+='</tr>';
+					if(result[i].actualCount==0){
+						str+='<td attr_dept_id="'+result[i].id+'" attr_status="all" >'+result[i].actualCount+'</td>';  
+					}else{
+						str+='<td attr_dept_id="'+result[i].id+'" attr_status="all" style="cursor:pointer;" class="showMemCls">'+result[i].actualCount+'</td>';  
+					}
+					if(result[i].availableCount==0){
+						str+='<td attr_dept_id="'+result[i].id+'" attr_status="present" >'+result[i].availableCount+'</td>';
+					}else{
+						str+='<td attr_dept_id="'+result[i].id+'" attr_status="present" style="cursor:pointer;" class="showMemCls">'+result[i].availableCount+'</td>';
+					}
+					if(result[i].count==0){
+						str+='<td attr_dept_id="'+result[i].id+'" attr_status="absent" >'+result[i].count+'</td>';
+					}else{
+						str+='<td attr_dept_id="'+result[i].id+'" attr_status="absent" style="cursor:pointer;" class="showMemCls">'+result[i].count+'</td>'; 
+					}
+					     
+				str+='</tr>';  
 			}
 		str+='</table>';
 		$("#deptWiseAttendanceDtlsId").html(str); 
+	}
+	$(document).on('click','.showMemCls',function(){    
+		var fromDate = "09-21-2016";
+		var toDate = "09-21-2016";
+		var deptIdArr = [];
+		var deptId = $(this).attr("attr_dept_id");
+		if(deptId==0){
+			deptIdArr = [5,6,7,8,9,10,11,12,13,15,16,17]; 
+		}else{
+			deptIdArr.push(deptId);
+		}
+		
+		deptIdArr.push(deptId);
+		var officeIdArr = [1,2,3];
+		var status = $(this).attr("attr_status");
+		var jsObj={ 
+			fromDate : fromDate,
+			toDate : toDate,
+			deptIdArr : deptIdArr,
+			officeIdArr : officeIdArr,
+			status : status,
+			type : "dept"
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getAttendeeDtlsOfficeWiseForDayAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			
+			if(result != null && result.length > 0){
+				showDetailsOfEmployee(result);  
+			}else{
+				
+			}  
+		});  
+	});
+	function showDetailsOfEmployee(result){
+		myModalLabel
+		$("#myModalLabel").html('PARTY OFFICE EMPLOYEE DETAILS'); 
+		$("#myModelId").modal('show'); 
+		$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
+		var str = '';
+		str+='<table class="table table-condensed" id="employeeDtlsId">';
+		str+='<thead>';
+		str+='<th>DEPT NAME</th>';
+		str+='<th>EMPLOYEE NAME</th>';    
+		str+='<th>MOBILE NO</th>'; 
+		str+='<th>STATUS</th>';
+		str+='<th>ATTENDED TIME</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>'; 
+			str+='<td>'+result[i].districtName.toUpperCase()+'</td>';
+			str+='<td>'+result[i].name.toUpperCase()+'</td>';
+			str+='<td>'+result[i].mobileNo+'</td>'; 
+			if(result[i].status=="absent"){
+				str+='<td class="text-danger">'+result[i].status.toUpperCase()+'</td>';    
+			}else{
+				str+='<td class="text-success">'+result[i].status.toUpperCase()+'</td>';   
+			} 
+			if(result[i].wish != null){
+				str+='<td>'+result[i].wish.toUpperCase()+'</td>';
+			}else{  
+				str+='<td>-</td>';  
+			}	
+			str+='</tr>';   
+		} 
+		$("#processingImgId").html(''); 
+		$("#memberId").html(str);
+		$("#employeeDtlsId").dataTable();      
 	}
 	

@@ -13736,6 +13736,10 @@
    			<param name="root">eventDetailsVO</param>
    		</result>
 	</action>
-	
+	<action name="getAttendeeDtlsOfficeWiseForDayAction" class="coreDashboardAction" method="getAttendeeDtlsOfficeWiseForDay">
+		<result type="json" name="success">
+	  		<param name="root">idNameVoList</param>   
+	 	</result>
+	</action>
 </package>
 </struts>
