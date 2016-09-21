@@ -370,13 +370,14 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 							" (date(EA.attended_time) between :fromDate and :toDate) and "+
 							" EWL.is_deleted = 'N' and "+
 							" PO.is_deleted = 'N' and "+
-							" EMP.is_delete = 'N' and "+
+							" EMP.is_delete = 'N' and " +
+							" EMP.is_active = 'Y' and "+
 							" TC.is_deleted = 'N' and "+
 							" EA.event_id in (14,42,25) "+  
 							" group by " +
 							" TC.tdp_cadre_id " +
 							" order by " +
-							" D.department_id ");
+							" D.department_id ");  
 			/*queryStr.append(" select " +
 							" ED.department.departmentId, " +//0
 							" ED.department.departmentName, " +//1
