@@ -288,8 +288,8 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 	public static Comparator<ChildUserTypeVO> positiveSorting1 = new Comparator<ChildUserTypeVO>() {
 	     public int compare(ChildUserTypeVO member2, ChildUserTypeVO member1) {
 
-	        Double perc2 = member2.getPositiveCountMainPerc();
-	        Double perc1 = member1.getPositiveCountMainPerc();
+	        Double perc2 = member2.getNeutralCountMainperd();
+	        Double perc1 = member1.getNeutralCountMainperd();
 	         return perc1.compareTo(perc2);
 	    }
 	}; 
@@ -550,7 +550,7 @@ public class NewsCoreDashBoardService implements INewsCoreDashBoardService{
 						if(partyTotalCount > 0l){
 							for (ChildUserTypeVO childUserTypeVO : chUsrTypVO.getChildUserTypeVOList()) {
 								if(childUserTypeVO.getOrganizationId() == 872l){
-									chUsrTypVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
+									chUsrTypVO.setNeutralCountMainperd(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
 								}
 								childUserTypeVO.setPositiveCountMainPerc(caclPercantage(childUserTypeVO.getCount(),partyTotalCount));
 							}
