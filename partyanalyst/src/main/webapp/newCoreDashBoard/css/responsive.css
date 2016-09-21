@@ -218,6 +218,10 @@
 	{
 		width:380px;
 	}
+	.hiddenIpad
+	{
+		display:none;
+	}
 }
 @media only screen and (device-width: 1024px) {
 	.committesBlockUl li
@@ -263,7 +267,10 @@
 	{
 		width:250px !important;
 	}
-	
+	.hiddenIpad
+	{
+		display:none;
+	}
 }
 
 /* Ipad Only STYLES END */

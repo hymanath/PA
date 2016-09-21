@@ -373,7 +373,7 @@
                                                     <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
 														<div id="topPoorPerformanceDiv"></div>
                                                     </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2">
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
                                                         <div id="topPoorLocationsDiv"></div>
                                                     </div>
                                                 </div>
@@ -901,13 +901,13 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-7">
+							<div class="col-md-7 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									news - <small class="text-muted" id="currentViewing"></small>
 								</h4>
 							</div>
-							<div class="col-md-4 col-sm-4 col-xs-6">
+							<div class="col-md-5 col-sm-4 col-xs-6">
 								<span class="settingsIcon settingsIconNews pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
@@ -1026,12 +1026,11 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 class="updatedDate pull-right" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" id="lastUpdatedId"></h5>
+							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
-								<h6 id="lastUpdatedId" class="updatedDate pull-right"></h6>
-								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span>
-									<!--<div class="spinner" style="height:20px;width:20px;display:inline-block;margin:0px"><div class="dot1"></div><div class="dot2"></div></div>-->
-								</h4>
+								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
 										<table class="table table-condensed tableNews bg_ED">
@@ -1511,13 +1510,13 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-7">
+							<div class="col-md-7 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings - <small class="text-muted" id="dateMeetingHeadingId"> - last month</small>
 								</h4>
 							</div>
-							<div class="col-md-4 col-sm-4 col-xs-5">
+							<div class="col-md-5 col-sm-4 col-xs-5">
 							 <span class="settingsIcon pull-right">
 							<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							   </span>
@@ -1832,8 +1831,8 @@
 							<span class="attendaceIconExpand pull-right mainExpandCls">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:200px;">
-								<input type="text" id="dateRangeIdForAttendance" style="width:180px" class="form-control" />
+							<span class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:110px;">
+								<input type="text" id="dateRangeIdForAttendance" style="width:90px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -1958,6 +1957,15 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script type="text/javascript">
+	//find device ipad & Iphone & Android
+	/* var ua = navigator.userAgent,
+	browser = {
+		iPad: /iPad/.test(ua),
+		iPhone: /iPhone/.test(ua),
+		Android5: /Android 5/.test(ua)
+	};
+	if(browser.iPad) { alert('IPAD') }	
+	if(browser.Android5) { alert('ANDROID') }	 */
 	
 	//settings scroll
 	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
@@ -2105,7 +2113,7 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 		$("#switchButtonId").addClass("showCls");
 	}
 });    
-	
+
   </script> 
 </body>
 </html>
