@@ -159,6 +159,14 @@
 	{
 		margin-right:5px;
 	}
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
 }
 @media (min-width:769px) and  (max-width:991px){
 	.committesBlockUl li
