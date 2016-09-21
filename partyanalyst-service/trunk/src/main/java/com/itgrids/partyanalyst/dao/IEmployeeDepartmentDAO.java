@@ -21,4 +21,5 @@ public interface IEmployeeDepartmentDAO extends GenericDao<EmployeeDepartment, L
 	public List<Object[]> getDepartmentWiseTotalEmployeeListFilterForOffice(List<Long> deptList, Long officeId );
 	public List<Object[]> getDepartmentWiseTotalAttendedEmployeeFilterForOffice(List<Long> deptList, List<Long> presentedCaderIdList, Long officeId);
 	public List<Object[]> getDepartmentWiseThenOfficeWiseTotalAttendedEmployeeFilterForOffice(List<Long> deptList, List<Long> presentedCaderIdList, Long officeId);
+	public List<Object[]> getAbsentCadreDtls(List<Long> cadreIdList);  
 }

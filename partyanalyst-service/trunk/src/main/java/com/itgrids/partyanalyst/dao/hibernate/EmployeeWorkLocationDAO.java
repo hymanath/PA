@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.model.EmployeeWorkLocation;
@@ -134,7 +136,10 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 	//Swadhin Lenka[ItGrids]
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getOfficeWiseTotalAttendedEmployeeDetailsFilter(Date fromDate, Date toDate, List<Long> deptList, List<Long> presentedCaderIdList){
-		Query query = getSession().createQuery(" select distinct EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, min(EA.attendedTime), ED.department.departmentName, EWL.employee.tdpCadre.tdpCadreId " +
+		Query query = getSession().createQuery(" select " +
+											   " EWL.partyOffice.partyOfficeId, EWL.partyOffice.officeName, " +
+											   " EWL.employee.tdpCadre.firstname, EWL.employee.tdpCadre.mobileNo, " +
+											   " min(EA.attendedTime), ED.department.departmentName, EWL.employee.tdpCadre.tdpCadreId " +
 											   " from EmployeeWorkLocation EWL, EventAttendee EA, EmployeeDepartment ED " +
 											   " where " +
 											   //" EWL.partyOffice.event.parentEventId = 44 and " +
@@ -340,4 +345,125 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 			query.setParameter("officeId", officeId);
 			return query.list();
 		}
+		public List<Object[]> getAttendanceCountBetweenDatesOfficeWise(Date fromDate, Date toDate, List<Long> officeIdList, List<Long> deptIdList){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select " +
+							" D.department_id as deptId, " +//0
+							" D.department_name as deptName, " +//1
+							" TC.tdp_cadre_id as cadreId , " +//2
+							" TC.first_name as name , " +//3
+							" TC.mobile_no as mobile , " +//4
+							" count(distinct date(EA.attended_time)) as count , " +//5
+							" min(time(EA.attended_time)) as time " +//6
+							" from "+
+							" employee_work_location EWL, " +
+							" employee_department ED, department D, party_office PO, employee EMP, event_attendee EA, tdp_cadre TC "+
+							" where "+
+							" EWL.party_office_id = PO.party_office_id and "+
+							" PO.party_office_id in (:officeIdList) and "+
+							" EWL.employee_id = EMP.employee_id and "+
+							" EWL.employee_id = ED.employee_id and "+
+							" ED.department_id = D.department_id and "+
+							" D.department_id in (:deptIdList) and "+
+							" EMP.tdp_cadre_id = EA.tdp_cadre_id and "+
+							" EMP.tdp_cadre_id = TC.tdp_cadre_id and "+
+							" (date(EA.attended_time) between :fromDate and :toDate) and "+
+							" EWL.is_deleted = 'N' and "+
+							" PO.is_deleted = 'N' and "+
+							" EMP.is_delete = 'N' and "+
+							" TC.is_deleted = 'N' and "+
+							" EA.event_id in (14,42,25) "+  
+							" group by " +
+							" TC.tdp_cadre_id " +
+							" order by " +
+							" D.department_id ");
+			/*queryStr.append(" select " +
+							" ED.department.departmentId, " +//0
+							" ED.department.departmentName, " +//1
+							" EWL.employee.tdpCadre.tdpCadreId, " +//2
+							" EWL.employee.tdpCadre.firstname, " +//3
+							" EWL.employee.tdpCadre.mobileNo, " +//4
+							" count(distinct date(EA.attendedTime)), " +//5  
+							" min(time(EA.attendedTime)) " +  //6  
+							" from " +
+							" EmployeeWorkLocation EWL, " +
+							" EventAttendee EA, " +
+							" EmployeeDepartment ED " +
+							" where " +
+							" EWL.partyOffice.partyOfficeId in (:officeIdList) and " +
+							" EWL.employee.tdpCadre.tdpCadreId = EA.tdpCadre.tdpCadreId and " +
+							" ED.employee.employeeId = EWL.employee.employeeId and " +
+							" ED.department.departmentId in (:deptIdList) and" +
+							" date(EA.attendedTime) between :fromDate and :toDate and " +
+							" EWL.isDeleted = 'N' and " +
+							" EWL.partyOffice.isDeleted = 'N' and " +
+							" EWL.employee.isDeleted = 'N' and " +
+							" EWL.employee.tdpCadre.isDeleted = 'N' and " +  
+							" ED.isDeleted = 'N' and " +
+							" EA.eventId in (14,25,42) " +  
+							" group by " +
+							" EWL.employee.tdpCadre.tdpCadreId " +
+							" order by " +
+							" ED.department.departmentId ");*/
+			SQLQuery query = getSession().createSQLQuery(queryStr.toString())
+					.addScalar("deptId", Hibernate.LONG)
+					.addScalar("deptName", Hibernate.STRING)
+					.addScalar("cadreId", Hibernate.LONG)
+					.addScalar("name", Hibernate.STRING)
+					.addScalar("mobile", Hibernate.STRING)
+					.addScalar("count", Hibernate.LONG)
+					.addScalar("time", Hibernate.STRING);
+			
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+			query.setParameterList("officeIdList", officeIdList);
+			query.setParameterList("deptIdList",deptIdList);
+			return query.list();      
+			
+		}
+		public List<Long> getEmployeeIdListOfficeWise(List<Long> officeIdList, List<Long> deptIdList){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select EWL.employee.tdpCadre.tdpCadreId " +
+							" from " +
+							" EmployeeWorkLocation EWL, EmployeeDepartment ED " +
+							" where " +
+							" EWL.partyOffice.partyOfficeId in (:officeIdList) and " +
+							" EWL.employee.employeeId = ED.employee.employeeId and " +
+							" ED.department.departmentId in (:deptIdList) and " +
+							" EWL.employee.isDeleted = 'N' and " +  
+							" EWL.employee.isActive = 'Y' and " +
+							" ED.isDeleted = 'N' ");
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameterList("officeIdList",officeIdList);
+			query.setParameterList("deptIdList",deptIdList);       
+			return (List<Long>)query.list();   
+		}  
 }
+
+/*select  TC.tdp_cadre_id from employee_work_location EWL, party_office PO, employee EMP, tdp_cadre TC
+where
+EWL.party_office_id = PO.party_office_id and 
+PO.party_office_id in (1,2,3) and 
+EWL.employee_id = EMP.employee_id and 
+EMP.tdp_cadre_id = TC.tdp_cadre_id and 
+EMP.is_delete = 'N' and
+EMP.is_active = 'Y';*/
+/*
+select TC.tdp_cadre_id,TC.first_name,TC.mobile_no,count(distinct(date(EA.attended_time))) 
+from 
+employee_work_location EWL, party_office PO, employee EMP, event_attendee EA, tdp_cadre TC
+where
+EWL.party_office_id = PO.party_office_id and 
+PO.party_office_id in (1) and
+EWL.employee_id = EMP.employee_id and 
+EMP.tdp_cadre_id = EA.tdp_cadre_id and 
+EMP.tdp_cadre_id = TC.tdp_cadre_id and 
+(date(EA.attended_time) between '2016-09-15' and '2016-09-21') and
+EWL.is_deleted = 'N' and 
+PO.is_deleted = 'N' and
+EMP.is_delete = 'N' and
+TC.is_deleted = 'N' and
+EA.event_id in (14,42,25) 
+group by EA.tdp_cadre_id; 
+
+*/

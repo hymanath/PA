@@ -16,4 +16,6 @@ public interface IAttendanceCoreDashBoardService {
 	public IdNameVO getAttendanceOverViewForPartyOffice(String fromDate, String toDate);
 	public List<IdNameVO> getAttendanceOverViewForPartyOfficeWise(String fromDate, String toDate);
 	public List<IdNameVO> getAttendanceOverViewForPartyOfficeDeptWise(String fromDate, String toDate);
+	public List<IdNameVO> getAttendeeDtlsOfficeWiseForDay (String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList);
+	public List<IdNameVO> getAttendeeDtlsDeptWiseForDay (String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList, String status);
 }
