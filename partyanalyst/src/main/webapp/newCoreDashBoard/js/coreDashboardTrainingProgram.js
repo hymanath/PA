@@ -729,7 +729,7 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 $(document).on("click",".programSkillsCls",function(){
 	$(".dateRangePickerClsForTraining").toggleClass("hide");	
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	$(".programSkillsCls,.trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+	$(".trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
 	$(".stateLevelTraining,.stateLevelTrainingInd").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	if($(".trainingIconExpand").find("i").hasClass("glyphicon-fullscreen"))
 	{
@@ -738,8 +738,13 @@ $(document).on("click",".programSkillsCls",function(){
 	}
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".moreTrainingBlocks").hide();
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".trainingIconExpand").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	}else{
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}
 	if( !$(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".moreBlocks").hide();
@@ -784,8 +789,8 @@ $(document).on("click",".programSkillsCls",function(){
 });
 $(document).on("click",".trainingIconExpand",function(){
 	$(".dateRangePickerClsForTraining").toggleClass("hide");	
-	//$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-	$(".programSkillsCls,.trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".programSkillsCls").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
 	$(".stateLevelTraining,.stateLevelTrainingInd").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	if(!$(".trainingIconExpand").find("i").hasClass("glyphicon-fullscreen"))
 	{
@@ -793,7 +798,10 @@ $(document).on("click",".trainingIconExpand",function(){
 		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".trainingsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".moreTrainingBlocks").hide();
+		$(".programSkillsCls").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 	}else{
 		getUserTypeWiseTotalEligibleAndAttendedCnt();
 	}
