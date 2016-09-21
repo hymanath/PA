@@ -271,4 +271,32 @@ public class EmployeeDepartmentDAO extends GenericDaoHibernate<EmployeeDepartmen
 			query.setParameter("officeId", officeId);
 			return query.list();
 		}
+		public List<Object[]> getAbsentCadreDtls(List<Long> cadreIdList){
+			StringBuilder sqlQuery = new StringBuilder();
+			sqlQuery.append(" select distinct " +
+							" ED.employee.tdpCadre.tdpCadreId, " +//0
+							" ED.department.departmentId, " +//1
+							" ED.department.departmentName, " +//2
+							" ED.employee.tdpCadre.firstname, " +//3
+							" ED.employee.tdpCadre.mobileNo " +//4
+							" from " +
+							" EmployeeDepartment ED " +
+							" where " +
+							" ED.employee.tdpCadre.tdpCadreId in (:cadreIdList) " +
+							" order by " +
+							" ED.department.departmentId");
+			Query query = getSession().createQuery(sqlQuery.toString());
+			query.setParameterList("cadreIdList", cadreIdList);
+			return query.list();
+		}
+		
 }
+/*select 
+distinct TC.tdp_cadre_id, D.department_id, D.department_name,TC.first_name,TC.mobile_no from employee_department ED, employee EMP, department D, tdp_cadre TC
+where
+ED.department_id = D.department_id and 
+ED.employee_id = EMP.employee_id and 
+EMP.tdp_cadre_id = TC.tdp_cadre_id and
+TC.tdp_cadre_id in (5169162,5185976,5190202,5194619,5298953,5305302,5356421,5356475) 
+order by 
+D.department_id;*/
