@@ -413,7 +413,7 @@ var url = window.location.href;
 						}else{
 							str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
 						}
-						str+='<div id="newsBlockGenSecStrong'+i+'" style="width:100%;height:130px;"></div>';
+						str+='<div id="newsBlockGenSecStrong'+i+'" style="height:130px;"></div>';
 					str+='</div>'
 						
 				}
@@ -443,8 +443,6 @@ var url = window.location.href;
 					
 						
 					if( PositiveCountArray.length !=0 && NegativeCountArray.length !=0){
-						var getWidth = $("#newsBlockGenSecStrong"+i).parent().width()+'px';
-						$("#newsBlockGenSecStrong"+i).width(getWidth);
 						$(function () {
 							 $("#newsBlockGenSecStrong"+i).highcharts({
 								  colors: ['#D33E39','#64C664'],
@@ -741,7 +739,6 @@ var url = window.location.href;
 				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
 			}
 		}
-		
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getDetailedPartyDistrictEditionsOverview/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
@@ -1005,6 +1002,7 @@ var url = window.location.href;
 	}
 	function getPartyComparisonChildUserTypeMembers(childUserTypeId){
 		$("#partyWiseComparisionBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		
 		var childUserTypeIdArr = [];
 		var temp = childUserTypeId.split(",");
 		for(var i in temp){
@@ -1034,7 +1032,6 @@ var url = window.location.href;
 	}
 	function getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId){
 		$("#"+NewsChildActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		
 		var jsObj={
 				activityMemberId : NewsActivityMemberId,
 				userTypeId : NewsUserTypeId,
@@ -2093,7 +2090,40 @@ var url = window.location.href;
 			 infinite: false,
 			 swipeToSlide:false,
 			 swipe:false,
-			 touchMove:false
+			 touchMove:false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
 		}); 
 	}
 	
@@ -2648,7 +2678,7 @@ var url = window.location.href;
 					str+='<div class="row">';
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<h4>OVERALL ANALYSIS OF ACTION IMMEDIATELY PROBLEMS</h4>';
-								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+								str+='<div class="col-md-7 col-xs-12 col-sm-6 m_top10">';
 								str+='<ul style="list-style:none;" class="textAlignDepartment">';
 								for(var i in result){
 									var properName = getProperName(result[i].name);
@@ -2662,7 +2692,7 @@ var url = window.location.href;
 								
 								str+='</ul>';
 							str+='</div>';
-							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
+							str+='<div class="col-md-5 col-xs-12 col-sm-6">';
 								str+='<div id="overAllAnalysisPieChart" style="width:300px;height:200px;"></div>';
 							str+='</div>';
 						str+='</div>';
@@ -3059,8 +3089,8 @@ var url = window.location.href;
 	function buildStateWiseArticleRelatedToProblem(result){
 		var str='';
 		str+='<div class="row">';
-			str+='<div class="col-md-3 col-xs-6 col-sm-3 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
-			str+='<div class="col-md-3 col-xs-6 col-sm-3 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
+			str+='<div class="col-md-3 col-xs-6 col-sm-4 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
+			str+='<div class="col-md-3 col-xs-6 col-sm-4 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
 		str+='</div>';
 		$("#stateWiseArticleRelatedToProblem").html(str)
 	}
@@ -3317,15 +3347,15 @@ var url = window.location.href;
 					{
 					  breakpoint: 768,
 					  settings: {
-						slidesToShow: 2,
-						slidesToScroll: 2
+						slidesToShow: 1,
+						slidesToScroll: 1
 					  }
 					},
 					{
 					  breakpoint: 600,
 					  settings: {
-						slidesToShow: 2,
-						slidesToScroll: 2
+						slidesToShow: 1,
+						slidesToScroll: 1
 					  }
 					},
 					{
@@ -3633,7 +3663,37 @@ var url = window.location.href;
 			 slide: 'li',
 			 slidesToShow: 3,
 			 slidesToScroll: 3,
-			 infinite: false
+			 infinite: false,
+			 responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3
+				  }
+				},
+				{
+				  breakpoint: 768,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+			  ]
 		});
 		
 		var maxHeight = 0;
@@ -4110,8 +4170,8 @@ var url = window.location.href;
 		if(result.total > 0 || result.percent > 0)
 		{
 			str+='<div class="row">';
-				str+='<div class="col-md-3 col-xs-6 col-sm-3 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
-				str+='<div class="col-md-3 col-xs-6 col-sm-3 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
+				str+='<div class="col-md-3 col-xs-6 col-sm-4 text-capital"><div class="pad_15 bg_ED">main edition - '+result.total+'</div></div>';
+				str+='<div class="col-md-3 col-xs-6 col-sm-4 bg_ED text-capital"><div class="pad_15 bg_ED">dist edition - '+result.percent+'</div></div>';
 			str+='</div>';
 		}else{
 			str+='<div class="row">';
@@ -4128,10 +4188,10 @@ var url = window.location.href;
 				if(result != null && result.length > 0){
 				var str='';
 			str+='<div class="row">';
-				str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+				str+='<div class="col-md-7 col-xs-12 col-sm-6 m_top10">';
 					str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
 				str+='</div>';
-				str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
+				str+='<div class="col-md-7 col-xs-12 col-sm-12 m_top10">';
 					str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApply">';
 					for(var i in result){
 						if(result[i].name !=null && result[i].name.length>55){
