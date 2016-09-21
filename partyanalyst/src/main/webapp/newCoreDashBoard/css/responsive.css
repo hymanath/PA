@@ -171,7 +171,16 @@
 }
 @media (min-width:1200px){
 }
-
+@media (min-width:767px) and  (max-width:768px){
+	.pad_left0
+	{
+		padding-left:15px;
+	}
+	.pad_right0
+	{
+		padding-right:15px;
+	}
+}
 /* Ipad Only STYLES START*/
 @media only screen and (device-width: 768px) {
 	.committesBlockUl li

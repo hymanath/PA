@@ -901,13 +901,13 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-7 col-sm-8 col-xs-7">
+							<div class="col-md-7 col-sm-6 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									news - <small class="text-muted" id="currentViewing"></small>
 								</h4>
 							</div>
-							<div class="col-md-5 col-sm-4 col-xs-6">
+							<div class="col-md-5 col-sm-6 col-xs-6">
 								<span class="settingsIcon settingsIconNews pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
