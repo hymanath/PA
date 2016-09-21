@@ -51,8 +51,12 @@ $("#dateRangeIdForAttendance").daterangepicker({
 	singleDatePicker : true
 })
 $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
-  customStartDate = picker.startDate.format('DD/MM/YYYY');
-  customEndDate = picker.endDate.format('DD/MM/YYYY');  
+	customStartDate = picker.startDate.format('DD/MM/YYYY');
+	customEndDate = picker.endDate.format('DD/MM/YYYY');
+	$("#attendanceId").html($("#dateRangeIdForAttendance").val())
+	getAttendanceOverViewForPartyOffice();
+	getAttendanceOverViewForPartyOfficeWise();
+	getAttendanceOverViewForPartyOfficeDeptWise(); 
 });
 
 $(document).on("click",".moreAttBlocksIcon",function(){
@@ -140,11 +144,12 @@ $('#attendance').highcharts({
 	$(function () {
 		getAttendanceOverViewForPartyOffice();
 		getAttendanceOverViewForPartyOfficeWise();
+		$("#attendanceId").html('TODAY('+$("#dateRangeIdForAttendance").val()+')')   
 	});
 	function getAttendanceOverViewForPartyOffice(){
 		$("#officeAttendanceTdlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var fromDate = "09-21-2016";
-		var toDate = "09-21-2016";
+		var fromDate = $("#dateRangeIdForAttendance").val();
+		var toDate = $("#dateRangeIdForAttendance").val();
 		var jsObj={ 
 			fromDate : fromDate,
 			toDate : toDate
@@ -165,7 +170,7 @@ $('#attendance').highcharts({
 	}
 	function buildOfficeAttendanceDtls(result){
 		var str = '';
-		str+='<h4 class="text-capital">total members - <small>today</small></h4>';
+		str+='<h4 class="text-capital">total members - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';
 		str+='<table class="table tableTraining bg_ED">';
 		str+='<tr>';
 			str+='<td>';
@@ -188,8 +193,8 @@ $('#attendance').highcharts({
 	}
 	function getAttendanceOverViewForPartyOfficeWise(){
 		$("#officeAttendanceTdlsDeptWiseId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var fromDate = "09-21-2016";
-		var toDate = "09-21-2016";
+		var fromDate = $("#dateRangeIdForAttendance").val();
+		var toDate = $("#dateRangeIdForAttendance").val();
 		var jsObj={ 
 			fromDate : fromDate,   
 			toDate : toDate
@@ -211,7 +216,7 @@ $('#attendance').highcharts({
 	function buildOfficeAttendanceOfficeWiseDtls(result){
 		var str = '';
 		for(var i in result){
-			str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>today</small></h4>';  
+			str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';  
 			str+='<table class="table tableTraining bg_ED">';
 				str+='<tr>';
 					str+='<td>';
@@ -238,8 +243,8 @@ $('#attendance').highcharts({
 	});
 	function getAttendanceOverViewForPartyOfficeDeptWise(){
 		$("#deptWiseAttendanceDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		var fromDate = "09-21-2016";
-		var toDate = "09-21-2016";
+		var fromDate = $("#dateRangeIdForAttendance").val();
+		var toDate = $("#dateRangeIdForAttendance").val();
 		var jsObj={ 
 			fromDate : fromDate,
 			toDate : toDate
@@ -260,7 +265,7 @@ $('#attendance').highcharts({
 	}
 	function buildAttendanceOverViewForPartyOfficeDeptWise(result){
 		var str = '';
-		str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small>Today</small></span></h4>';
+		str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small>'+$("#dateRangeIdForAttendance").val()+'</small></span></h4>';
 		str+='<table class="table tableAttendance" cellspacing="10">';
 			str+='<thead>';
 				str+='<th></th>';
@@ -287,14 +292,19 @@ $('#attendance').highcharts({
 						str+='<td attr_dept_id="'+result[i].id+'" attr_status="absent" style="cursor:pointer;" class="showMemCls">'+result[i].count+'</td>'; 
 					}
 					     
-				str+='</tr>';  
+				str+='</tr>';    
 			}
 		str+='</table>';
 		$("#deptWiseAttendanceDtlsId").html(str); 
 	}
-	$(document).on('click','.showMemCls',function(){    
-		var fromDate = "09-21-2016";
-		var toDate = "09-21-2016";
+	$(document).on('click','.showMemCls',function(){
+		$("#myModalLabel").html('PARTY OFFICE EMPLOYEE DETAILS');
+		$("#memberId").html('');
+		$("#myModelId").modal('show'); 
+		$("#processingImgId").show();
+		$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
+		var fromDate = $("#dateRangeIdForAttendance").val();
+		var toDate = $("#dateRangeIdForAttendance").val();  
 		var deptIdArr = [];
 		var deptId = $(this).attr("attr_dept_id");
 		if(deptId==0){
@@ -320,19 +330,16 @@ $('#attendance').highcharts({
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-			
+			$("#processingImgId").hide();
 			if(result != null && result.length > 0){
 				showDetailsOfEmployee(result);  
 			}else{
-				
+				$("#memberId").html('Data Not Available.');   
 			}  
 		});  
 	});
 	function showDetailsOfEmployee(result){
-		myModalLabel
-		$("#myModalLabel").html('PARTY OFFICE EMPLOYEE DETAILS'); 
-		$("#myModelId").modal('show'); 
-		$("#processingImgId").html('<div><center><img style="height:20px" src="images/icons/loading.gif"></center></div>');
+		
 		var str = '';
 		str+='<table class="table table-condensed" id="employeeDtlsId">';
 		str+='<thead>';
@@ -360,7 +367,7 @@ $('#attendance').highcharts({
 			}	
 			str+='</tr>';   
 		} 
-		$("#processingImgId").html(''); 
+		$("#processingImgId").html('');   
 		$("#memberId").html(str);
 		$("#employeeDtlsId").dataTable();      
 	}
