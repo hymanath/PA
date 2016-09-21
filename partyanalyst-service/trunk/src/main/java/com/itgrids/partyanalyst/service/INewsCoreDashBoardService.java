@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.dto.UserTypeVO;
 
 public interface INewsCoreDashBoardService {
 	public List<List<UserTypeVO>> getUserTypeWiseNewsCounts(Long userId,Long activityMemberId,Long userTypeId,String state,String fromDate,String toDate,Long benefitId,List<Long> npIds,List<Long> impactScopeIdsList);
-	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeId,String state,String startDate,String endDate,List<Long> npIdsList);
-	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate,List<Long> npIds);
+	public List<ChildUserTypeVO> getPartyComparisonChildUserTypeMembers(Long parentActivityMemberId,List<Long> childUserTypeId,String state,String startDate,String endDate,List<Long> npIdsList,List<Long> impactScopeIdsList);
+	public List<ChildUserTypeVO> getPartyCompareSubLevelMemberDetails(Long activityMemberId,Long userTypeId,String state,String startDate,String endDate,List<Long> npIds,List<Long> impactSCopeIds);
 	public List<ChildUserTypeVO> getCommanPartyComparisonChildUserTypeMembers(Map<Long,UserTypeVO> childActivityMembersMap,List<CoreDashBoardVO> wsResultList,String output);
 }
