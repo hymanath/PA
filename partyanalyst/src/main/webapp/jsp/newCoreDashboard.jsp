@@ -75,10 +75,10 @@
                     	<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
-                        <li>
-                        	<!--<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>-->
+                        <!--<li>
+                        	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
 							<a>TS</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
               
