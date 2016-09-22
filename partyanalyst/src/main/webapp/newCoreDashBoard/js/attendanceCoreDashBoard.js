@@ -46,7 +46,75 @@ $(document).on("click",".attendaceIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}
 });
-
+$("#dateRangeIdForAttendance1").daterangepicker({
+  opens: 'left',
+  startDate: moment(),
+  endDate: moment(),
+  locale: {
+    format: 'MM/DD/YYYY'
+  },  
+  ranges: {
+     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	 'Today': [moment(), moment()],
+	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+     'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+     'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+     'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+     'This Month': [moment().startOf('month'), moment()],
+     'This Year': [moment().startOf('Year'), moment()]
+  }
+})
+$('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
+  customFromDate1 = picker.startDate.format('MM/DD/YYYY');
+  customToDate1 = picker.endDate.format('MM/DD/YYYY');
+  if(customFromDate1==customToDate1){
+	var tableId = "hydDtlsId";
+	var officeId = 1;//for Hyd  
+	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	getLocationDtls(tableId,officeId,customFromDate1,customToDate1);  
+  }else{
+	var tableId = "hydDtlsId";
+	var officeId = 1;//for Hyd
+	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	getLocationDtlsForMultiDates(tableId,officeId,customFromDate1,customToDate1);  
+  }
+});
+$("#dateRangeIdForAttendance2").daterangepicker({
+  opens: 'left',
+  startDate: moment(),
+  endDate: moment(),
+  locale: {
+    format: 'MM/DD/YYYY'
+  },  
+  ranges: {  
+     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	 'Today': [moment(), moment()],
+	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+     'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+     'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+     'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+     'This Month': [moment().startOf('month'), moment()],
+     'This Year': [moment().startOf('Year'), moment()]
+  }
+})
+$('#dateRangeIdForAttendance2').on('apply.daterangepicker', function(ev, picker) {
+  customFromDate2 = picker.startDate.format('MM/DD/YYYY');
+  customToDate2 = picker.endDate.format('MM/DD/YYYY');       
+  if(customFromDate2==customToDate2){  
+	var tableId = "gunDtlsId";      
+	var officeId = 2;//for Gun
+	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	getLocationDtls(tableId,officeId,customFromDate2,customToDate2);  
+  }else{
+	var tableId = "gunDtlsId";
+	var officeId = 2;//for Gun
+	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	getLocationDtlsForMultiDates(tableId,officeId,customFromDate2,customToDate2);      
+  }  
+});
+  
 $("#dateRangeIdForAttendance").daterangepicker({
 	singleDatePicker: true,
 	startDate:moment(),
@@ -72,16 +140,22 @@ $("#dateRangeIdForAttendance1").daterangepicker({
 	   'This Month': [moment().startOf('month'), moment()],
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
-})
+});
+var today = $("#dateRangeIdForAttendance").val();
 $('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
 	//customStartDate = picker.startDate.format('DD/MM/YYYY');
 	//customEndDate = picker.endDate.format('DD/MM/YYYY');
 	
 });
 $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
-	customStartDate = picker.startDate.format('DD/MM/YYYY');
-	customEndDate = picker.endDate.format('DD/MM/YYYY');
-	$("#attendanceId").html($("#dateRangeIdForAttendance").val())
+	customStartDate = picker.startDate.format('MM/DD/YYYY');
+	customEndDate = picker.endDate.format('MM/DD/YYYY');
+	if(today==$("#dateRangeIdForAttendance").val()){
+		$("#attendanceId").html('TODAY ('+$("#dateRangeIdForAttendance").val()+')')
+	}else{
+		$("#attendanceId").html($("#dateRangeIdForAttendance").val());      
+	}  
+	
 	getAttendanceOverViewForPartyOffice();
 	getAttendanceOverViewForPartyOfficeWise();
 	getAttendanceOverViewForPartyOfficeDeptWise(); 
@@ -198,7 +272,12 @@ $('#attendance').highcharts({
 	}
 	function buildOfficeAttendanceDtls(result){
 		var str = '';
-		str+='<h4 class="text-capital">total members - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';
+		if(today==$("#dateRangeIdForAttendance").val()){
+			str+='<h4 class="text-capital">total members - <small>TODAY</small></h4>';
+		}else{
+			str+='<h4 class="text-capital">total members - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';			
+		}  
+		
 		str+='<table class="table tableTraining bg_ED">';
 		str+='<tr>';
 			str+='<td>';
@@ -244,7 +323,11 @@ $('#attendance').highcharts({
 	function buildOfficeAttendanceOfficeWiseDtls(result){
 		var str = '';
 		for(var i in result){
-			str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';  
+			if(today==$("#dateRangeIdForAttendance").val()){
+				str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>TODAY</small></h4>';  
+			}else{
+				str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';
+			}
 			str+='<table class="table tableTraining bg_ED">';
 				str+='<tr>';
 					str+='<td>';
@@ -293,7 +376,12 @@ $('#attendance').highcharts({
 	}
 	function buildAttendanceOverViewForPartyOfficeDeptWise(result){
 		var str = '';
-		str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small style="color:#fff">'+$("#dateRangeIdForAttendance").val()+'</small></span></h4>';
+		if(today==$("#dateRangeIdForAttendance").val()){
+			str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small>TODAY</small></span></h4>';
+		}else{
+			str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small style="color:#fff">'+$("#dateRangeIdForAttendance").val()+'</small></span></h4>';
+		}  
+		
 		str+='<table class="table tableAttendance" cellspacing="10">';
 			str+='<thead>';
 				str+='<th></th>';
@@ -399,4 +487,154 @@ $('#attendance').highcharts({
 		$("#memberId").html(str);
 		$("#employeeDtlsId").dataTable();      
 	}
+	$(document).on('click','#expandForMoreId',function(){
+		$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var dateStr = $("#dateRangeIdForAttendance1").val();
+		var dateArr = [];
+		dateArr = dateStr.split("-");
+		var fromDate = dateArr[0];  
+		var toDate = dateArr[1];
+		var tableId = "hydDtlsId";
+		var officeId = 1;//for Hyd
+		getLocationDtls(tableId,officeId,fromDate,toDate);
+		tableId = "gunDtlsId";
+		officeId = 2;//for Gun
+		getLocationDtls(tableId,officeId,fromDate,toDate);
+	});
+	function getLocationDtls(tableId,officeId,fromDate,toDate){ 
+		var officeIdArr = []; 
+		officeIdArr.push(officeId);
+		//"09/16/2016"; 
+		var jsObj={ 
+			fromDate : fromDate,
+			toDate : toDate,
+			deptIdArr : globalDeptIdsArr,
+			officeIdArr : officeIdArr,
+			status : "",
+			type : "office"  
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getAttendeeDtlsOfficeWiseForDayAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			if(officeId==1){
+				$("#hydDtlsId").html('');
+			}
+			if(officeId==2){
+				$("#gunDtlsId").html('');
+			}
+			
+			if(result != null && result.length > 0){
+				buildLocationDtls(result,tableId);
+			}else{
+				if(officeId==1){
+					$("#hydDtlsId").html('Data Not Available');
+				}
+				if(officeId==2){
+					$("#gunDtlsId").html('Data Not Available');
+				}	  
+			}  
+		});  
+	}
 	
+	function buildLocationDtls(result,tableId){
+		var str = '';
+		str+='<table class="table text-capital tableAtten" id="view'+tableId+'">';
+			str+='<thead>';
+				str+='<th>dept name</th>';
+				str+='<th>employee name</th>';
+				str+='<th>mobile no</th>';
+				str+='<th>status</th>';
+				str+='<th>attended time</th>';
+			str+='</thead>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].districtName+'</td>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].mobileNo+'</td>';
+					if(result[i].status=="absent"){
+						str+='<td class="text-danger">'+result[i].status+'</td>';
+					}else{
+						str+='<td class="text-success">'+result[i].status+'</td>';
+					}
+					if(result[i].wish == null){
+						str+='<td>-</td>';
+					}else{
+						str+='<td>'+result[i].wish+'</td>';
+					}
+					
+				str+='</tr>';
+			}
+		str+='</table>';
+		$("#"+tableId).html(str);
+		$("#view"+tableId).dataTable();           
+	}
+	function getLocationDtlsForMultiDates(tableId,officeId,customFromDate1,customToDate1){
+		var officeIdArr = []; 
+		officeIdArr.push(officeId);
+		var jsObj={ 
+			fromDate : customFromDate1,
+			toDate : customToDate1,
+			deptIdArr : globalDeptIdsArr,
+			officeIdArr : officeIdArr,
+			status : "",
+			type : "office"  
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getAttendeeDtlsOfficeWiseForDayAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			if(officeId==1){
+				$("#hydDtlsId").html('');
+			}
+			if(officeId==2){
+				$("#gunDtlsId").html('');
+			}
+			
+			if(result != null && result.length > 0){
+				buildLocationDtlsForMultiDates(result,tableId);
+			}else{
+				if(officeId==1){
+					$("#hydDtlsId").html('Data Not Available');
+				}
+				if(officeId==2){
+					$("#gunDtlsId").html('Data Not Available');
+				}	  
+			}    
+		});  
+	}
+	function buildLocationDtlsForMultiDates(result,tableId){
+		$("#"+tableId).html('');
+		var str = '';
+		str+='<table class="table text-capital tableAtten" id="view'+tableId+'">';
+			str+='<thead>';
+				str+='<th>dept name</th>';
+				str+='<th>employee name</th>';
+				str+='<th>mobile no</th>';
+				str+='<th>total working days</th>';
+				str+='<th>present</th>';  
+				str+='<th class="text-danger">late comings</th>';
+				str+='<th>absent</th>';
+			str+='</thead>';
+			for(var i in result){  
+				str+='<tr>';
+					str+='<td>'+result[i].districtName+'</td>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].mobileNo+'</td>';
+					str+='<td>'+result[i].id+'</td>';
+					str+='<td>'+result[i].availableCount+'</td>';
+					str+='<td class="text-danger">'+result[i].orderId+'</td>';   
+					str+='<td>'+result[i].count+'</td>';  
+					
+					
+				str+='</tr>';
+			}
+		str+='</table>';
+		$("#"+tableId).html(str);
+		$("#view"+tableId).dataTable();       
+	}

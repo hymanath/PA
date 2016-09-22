@@ -1868,49 +1868,55 @@
 							</div>
                         </div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
-									<div class="row">
-										<div class="col-md-6 col-xs-12 col-sm-8">
-											<h4><span class="headingColor">Guntur Party Office</span></h4>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-4">
-											<div class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:210px;">
-												<input type="text" id="dateRangeIdForAttendance1" style="width:182px;font-size:13px;" class="form-control" />
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
+                                	  
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Hyderabad Party Office</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-4">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:210px;">
+													<input type="text" id="dateRangeIdForAttendance1" style="width:180px" class="form-control" />
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>  
+												</div>
 											</div>
 										</div>
 									</div>
                                 </div>
-                                <div class="panel-body">
-                                	<table class="table text-capital tableAtten">
-                                    	<thead>
-                                        	<th>dept name</th>
-                                            <th>employee name</th>
-                                            <th>mobile no</th>
-                                            <th>status</th>
-                                            <th>attended time</th>
-                                        </thead>
-                                        <tr>
-                                        	<td>admin office</td>
-                                            <td>subbarao pollishetty</td>
-                                            <td>9848012345</td>
-                                            <td>present</td>
-                                            <td>02:22:11</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>admin office</td>
-                                            <td>subbarao pollishetty</td>
-                                            <td>9848012345</td>
-                                            <td class="text-danger">absent</td>
-                                            <td>02:22:11</td>
-                                        </tr>
-                                    </table>
+                                <div class="panel-body" id="hydDtlsId">
+                                	
+                                </div>
+                            </div>
+                        </div>  
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
+                        	<div class="panel panel-default panelNew">
+                            	<div class="panel-heading">
+                                	  
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Guntur Party Office</span></h4>
+											</div>
+											<div class="col-md-6 col-xs-12 col-sm-4">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:210px;">
+													<input type="text" id="dateRangeIdForAttendance2" style="width:180px" class="form-control" />
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>  
+												</div>
+											</div>
+										</div>
+									</div>
+                                </div>
+                                <div class="panel-body" id="gunDtlsId">
+                                	
                                 </div>
                             </div>
                         </div>
@@ -2073,6 +2079,7 @@
 	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
 	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
 	  var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
+	  var globalDeptIdsArr = ${requestScope.userDataVO.deptIdList};         
 	  var loggedInUserAccessLevelValues = getLoggedInUserAccessLevelValues();
 	  
 	  var globalActivityMemberId = loggedInUserActivityMemberId;
