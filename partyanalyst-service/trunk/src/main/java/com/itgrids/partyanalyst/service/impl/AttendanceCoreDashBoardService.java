@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IHolidayDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.Department;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
@@ -35,6 +36,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 	private IEmployeeWorkLocationDAO employeeWorkLocationDAO;
 	private IEventAttendeeDAO eventAttendeeDAO;
 	private IEmployeeDepartmentDAO employeeDepartmentDAO;
+	private IHolidayDAO holidayDAO;
 	
 	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
 		this.departmentDAO = departmentDAO;
@@ -48,6 +50,9 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 	}
 	public void setEmployeeDepartmentDAO(IEmployeeDepartmentDAO employeeDepartmentDAO) {
 		this.employeeDepartmentDAO = employeeDepartmentDAO;
+	}
+	public void setHolidayDAO(IHolidayDAO holidayDAO) {
+		this.holidayDAO = holidayDAO;
 	}
 
 	/**
@@ -346,6 +351,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			List<Object[]> emplyeeAttendanceDtlsList = employeeWorkLocationDAO.getAttendanceCountBetweenDatesOfficeWise(fromDate, toDate, officeIdList, deptIdList);
 			List<Object[]> lateComingCountList =  employeeWorkLocationDAO.getEmployeeLateComingsCount( fromDate,  toDate,  officeIdList, deptIdList);
 			List<Long> employeeCadreIdList = employeeWorkLocationDAO.getEmployeeIdListOfficeWise(officeIdList,deptIdList);
+			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
 			//create a map for late attended employees.
 			Map<Long,Long> employeeIdAndLateComingCount = new HashMap<Long,Long>();
 			if(lateComingCountList != null && lateComingCountList.size() > 0){
@@ -367,7 +373,12 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
 					idNameVO.setStatus("present");  
 					idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);
-					idNameVO.setId(noOfDays);
+					if(holidayCount > 0l){
+						idNameVO.setId(noOfDays-holidayCount);
+					}else{
+						idNameVO.setId(noOfDays);
+					}
+					
 					idNameVO.setOrderId(employeeIdAndLateComingCount.get(param[2] != null ? (Long)param[2] : 0l) != null ? employeeIdAndLateComingCount.get((Long)param[2]) : 0l);
 					absent = noOfDays - (param[5] != null ? (Long)param[5] : 0l);
 					idNameVO.setCount(absent);  
