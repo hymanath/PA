@@ -4049,7 +4049,7 @@ var url = window.location.href;
 
 										$.each(this.points, function () {
 											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-												Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+												Highcharts.numberFormat(this.percentage,2)+'%' +' - ' +
 												(this.y);
 										});
 
