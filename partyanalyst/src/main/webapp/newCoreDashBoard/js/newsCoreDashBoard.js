@@ -1124,16 +1124,17 @@ var url = window.location.href;
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
 		}).then(function(result){
 			var str='';
-			str+='<h4>PARTY Vs PUBLICATION</h4>';
-			str+='<div class="col-md-4 col-xs-5 col-sm-5 pull-right" >';
-			//str+='<div class="pull-right">';
+			
+			//str+='<div class="col-md-12 col-xs-12 col-sm-12" >';
+			str+='<div class="pull-right">';
 				str+='<ul class="list-inline  activeUlCls" id="comparePartyUl">';
 					str+='<li class="ComPartyDistrictWiseDiv" attr_search_type="party" attr_location_level_id ="'+firstLocationLevelId+'" attr_locationvalueset_idsStr ="'+temp22+'" attr_newsselectedmembername = "'+NewsSelectedMemberName+'" attr_newsselectedusertype = "'+NewsSelectedUserType+'">Parties district wise</li>';
-					str+='<li class="ComPartyDistrictWiseDiv" attr_search_type="publication" attr_location_level_id ="'+firstLocationLevelId+'" attr_locationvalueset_idsStr ="'+temp22+'" attr_newsselectedmembername = "'+NewsSelectedMemberName+'" attr_newsselectedusertype = "'+NewsSelectedUserType+'">Publication Wise</li>';
+					str+='<li class="ComPartyDistrictWiseDiv" style="margin-left:6px" attr_search_type="publication" attr_location_level_id ="'+firstLocationLevelId+'" attr_locationvalueset_idsStr ="'+temp22+'" attr_newsselectedmembername = "'+NewsSelectedMemberName+'" attr_newsselectedusertype = "'+NewsSelectedUserType+'">Publication Wise</li>';
 				str+='</ul>';
-			//str+='</div>';
 			str+='</div>';
-			$("#partyAndPublication").html(str);
+			//str+='</div>';
+			//$("#partyAndPublication").html(str);
+			$("#partiesWiseSelection").html(str);
 			if(searchType == "party")
 			{
 				$("#comparePartyUl li:nth-child(1)").addClass("active")
@@ -3472,7 +3473,7 @@ var url = window.location.href;
 				$("#newsTypeAnalysisLocationValueSet"+i).attr("attr_locationvalueset_idsStr",locationValueSetIds);
 			
 			}
-			
+		$(".newsOnLoadShow").show();	
 		getPartyCompareSubLevelMemberDetails(firstNewsActivityMemberId,firstNewsUserTypeId,firstNewsUserType,firstNewsUserMemberName,firstNewsChildActivityMemberId);
 		getComparisionPartyNewsTypeAnalysis(firstLocationLevelId,temp22,firstNewsUserType,firstNewsUserMemberName);
 		getComparisionPartyDistrictEditionsOverview(firstLocationLevelId,temp22,firstNewsUserType,firstNewsUserMemberName);
@@ -3492,7 +3493,7 @@ var url = window.location.href;
 		var NewsChildActivityMemberId = $(this).attr("attr_id");
 		var NewslocationValueId = $(this).attr("attr_location_level_id");
 		var NewsLocationValueSetIds = $(this).attr("attr_locationvalueset_idsStr");
-		
+		$(".newsOnLoadShow").show();
 		getPartyCompareSubLevelMemberDetails(NewsActivityMemberId,NewsUserTypeId,NewsSelectedMemberName,NewsSelectedUserType,NewsChildActivityMemberId);
 		getComparisionPartyNewsTypeAnalysis(NewslocationValueId,NewsLocationValueSetIds,NewsSelectedMemberName,NewsSelectedUserType);
 		getComparisionPartyDistrictEditionsOverview(NewslocationValueId,NewsLocationValueSetIds,NewsSelectedMemberName,NewsSelectedUserType);
@@ -4931,7 +4932,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	});
 	
 	function getComparisonPartyWisePoorLocations(firstLocationLevelId,temp22,NewsSelectedMemberName,NewsSelectedUserType){
-		$("#partyComparisonPartyWisePoorL").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#partyComparisonPartyWisePoorL").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			
 		var npIdsStr="";
 		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
@@ -4959,8 +4960,12 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		$("#PartyComparisionNewsTypeAnalysisDiv").html('');
 		if(result != null && result.length > 0){
 			var str1='';
-			str1+='<h4>NEWS TYPE ANALYSIS</h4>';
-			str1+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			/* str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				//str1+='<h4>NEWS TYPE ANALYSIS</h4>';
+				str1+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			str1+='</div>'; */
+			$("#selectedMemberNameNews").html(NewsSelectedMemberName);
+			$("#selectedUserTypeNews").html(NewsSelectedUserType);
 			$("#PartyComparisionNewsTypeAnalysisDiv").html(str1);
 		}
 			if(result != null && result.length > 0){
@@ -5097,8 +5102,10 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		$("#ComparisionPartyDistrictWiseNewsReport").html(' ');
 		if(result != null && result.length > 0){
 			var str1='';
-			str1+='<h4>DISTRICT WISE PARTIES NEWS</h4>';
-			str1+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			str1+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str1+='<h4>DISTRICT WISE PARTIES NEWS</h4>';
+				str1+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			str1+='</div>';
 			
 			$("#ComparisionPartyDistrictWiseNewsReport").html(str1);			
 		}
@@ -5267,7 +5274,9 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		$("#CompaisionPartyAndPublicationWiseDetailsDiv").html('');
 		var str ='';
 		if(result !=null && result.length >0){
-			str+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			//str+='<p><span>'+NewsSelectedMemberName+'</span> - <span>'+NewsSelectedUserType+'</span></p>';
+			$("#selectedMemberNameNewsParty").html(NewsSelectedMemberName)
+			$("#selectedUserTypeNewsParty").html(NewsSelectedUserType)
 			for(var i in result){
 				var partyname;
 					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
@@ -5338,7 +5347,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 											labels: {
 													useHTML: true,
 													formatter: function() {
-														return this.value+'<img src="https://www.mytdp.com/CommunityNewsPortal/dist/images/'+this.value+'.png" style="width: 45px; vertical-align: middle" />';
+														return this.value;
+														//+'<img src="https://www.mytdp.com/CommunityNewsPortal/dist/images/'+this.value+'.png" style="width: 45px; vertical-align: middle" />';
 													},
 													rotation: -45,
 													style: {

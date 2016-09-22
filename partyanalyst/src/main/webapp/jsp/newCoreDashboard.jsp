@@ -1419,23 +1419,38 @@
 															<div id="partyWiseComparisionBlock"></div>
 														</div>
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-															<div class="bg_ED pad_15">
+															<div class="bg_ED pad_15 newsOnLoadShow" style="display:none">
 																<div id="partyComparisionSubLevelMemberDetailsDiv" class="row"></div>
+																<div class="panel panel-default panelNew m_top20">
+																	<div class="panel-heading">
+																		<h4 class="panel-title">NEWS TYPE ANALYSIS</h4>
+																		<p><span id="selectedMemberNameNews"></span> - <span id="selectedUserTypeNews"></span></p>
+																	</div>
+																	<div class="panel-body">
+																		<div id="PartyComparisionNewsTypeAnalysisDiv" class="row"></div>
+																		<div id="ComparisionPartyDistrictWiseNewsReport" class="row"></div>
+																	</div>
+																</div>
+																<div class="panel panel-default panelNew m_top20">
+																	<div class="panel-heading">
+																		<div class="row">
+																			<div class="col-md-6 col-sm-6 col-xs-12">
+																				<h4 class="panel-title">PARTY Vs PUBLICATION</h4>
+																				<p><span id="selectedMemberNameNewsParty"></span> - <span id="selectedUserTypeNewsParty"></span></p>
+																			</div>
+																			<div class="col-md-6 col-sm-6 col-xs-12">
+																				<div id="partiesWiseSelection"></div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="panel-body">
+																		<div id="partyAndPublication" class="row"></div>
+																		<div id="CompaisionPartyAndPublicationWiseDetailsDiv" class="row"></div>
+																		<div id="partyComparisonPartyWisePoorL" class="row"></div>
+																	</div>
+																</div>
 															</div>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="PartyComparisionNewsTypeAnalysisDiv"></div>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="ComparisionPartyDistrictWiseNewsReport"></div>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="partyAndPublication"></div>
-																<div id="CompaisionPartyAndPublicationWiseDetailsDiv"></div>
-															</div>
-															<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-																<div id="partyComparisonPartyWisePoorL" class="row"></div>
-															</div>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -1859,7 +1874,19 @@
                         <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
-                                	<h4><span class="headingColor">Guntur Party Office</span></h4>
+									<div class="row">
+										<div class="col-md-6 col-xs-12 col-sm-8">
+											<h4><span class="headingColor">Guntur Party Office</span></h4>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-4">
+											<div class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:210px;">
+												<input type="text" id="dateRangeIdForAttendance1" style="width:182px;font-size:13px;" class="form-control" />
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</div>
+										</div>
+									</div>
                                 </div>
                                 <div class="panel-body">
                                 	<table class="table text-capital tableAtten">
