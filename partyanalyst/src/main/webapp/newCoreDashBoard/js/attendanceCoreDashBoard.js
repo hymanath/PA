@@ -51,7 +51,7 @@ $("#dateRangeIdForAttendance1").daterangepicker({
   startDate: moment(),
   endDate: moment(),
   locale: {
-    format: 'MM/DD/YYYY'
+    format: 'MM/DD/YYYY'       
   },  
   ranges: {
      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -62,8 +62,8 @@ $("#dateRangeIdForAttendance1").daterangepicker({
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
      'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
      'This Month': [moment().startOf('month'), moment()],
-     'This Year': [moment().startOf('Year'), moment()]
-  }
+     'This Year': [moment().startOf('Year'), moment()]    
+  }   
 })
 $('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
   customFromDate1 = picker.startDate.format('MM/DD/YYYY');
@@ -96,7 +96,7 @@ $("#dateRangeIdForAttendance2").daterangepicker({
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
      'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
      'This Month': [moment().startOf('month'), moment()],
-     'This Year': [moment().startOf('Year'), moment()]
+     'This Year': [moment().startOf('Year'), moment()]  
   }
 })
 $('#dateRangeIdForAttendance2').on('apply.daterangepicker', function(ev, picker) {
@@ -120,16 +120,16 @@ $("#dateRangeIdForAttendance").daterangepicker({
 	startDate:moment(),
 	minDate:'01/01/2014',
 	maxDate:moment(),
-	format: 'DD/MM/YYYY',
+	format: 'MM/DD/YYYY',
 	opens:'left'
 })
 
-$("#dateRangeIdForAttendance1").daterangepicker({
+/* $("#dateRangeIdForAttendance1").daterangepicker({    
 	opens: 'left',
 	startDate: moment().subtract(1, 'month').startOf('month'),
 	endDate: moment().subtract(1, 'month').endOf('month'),
 	locale: {
-	  format: 'DD/MM/YYYY'
+	  format: 'MM/DD/YYYY'
 	},
 	ranges: {
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -140,8 +140,8 @@ $("#dateRangeIdForAttendance1").daterangepicker({
 	   'This Month': [moment().startOf('month'), moment()],
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
-});
-var today = $("#dateRangeIdForAttendance").val();
+}); */
+var today = $("#dateRangeIdForAttendance").val();  
 $('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
 	//customStartDate = picker.startDate.format('DD/MM/YYYY');
 	//customEndDate = picker.endDate.format('DD/MM/YYYY');
@@ -150,15 +150,26 @@ $('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker)
 $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('MM/DD/YYYY');
 	customEndDate = picker.endDate.format('MM/DD/YYYY');
+	var changedDate = $("#dateRangeIdForAttendance").val();
 	if(today==$("#dateRangeIdForAttendance").val()){
 		$("#attendanceId").html('TODAY ('+$("#dateRangeIdForAttendance").val()+')')
 	}else{
 		$("#attendanceId").html($("#dateRangeIdForAttendance").val());      
 	}  
-	
-	getAttendanceOverViewForPartyOffice();
+	  
+	getAttendanceOverViewForPartyOffice();  
 	getAttendanceOverViewForPartyOfficeWise();
 	getAttendanceOverViewForPartyOfficeDeptWise(); 
+	
+	/* var tableId = "hydDtlsId";
+	var officeId = 1;//for Hyd  
+	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	getLocationDtls(tableId,officeId,changedDate,changedDate);
+	tableId = "gunDtlsId";
+	officeId = 2;//for Gun
+	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	getLocationDtls(tableId,officeId,changedDate,changedDate);  */   
+ 
 });
 
 $(document).on("click",".moreAttBlocksIcon",function(){
@@ -538,7 +549,7 @@ $('#attendance').highcharts({
 				}	  
 			}  
 		});  
-	}
+	}  
 	
 	function buildLocationDtls(result,tableId){
 		var str = '';
