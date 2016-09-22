@@ -52,11 +52,32 @@ $("#dateRangeIdForAttendance").daterangepicker({
 	startDate:moment(),
 	minDate:'01/01/2014',
 	maxDate:moment(),
+	format: 'DD/MM/YYYY',
+	opens:'left'
+})
+
+$("#dateRangeIdForAttendance1").daterangepicker({
+	opens: 'left',
+	startDate: moment().subtract(1, 'month').startOf('month'),
+	endDate: moment().subtract(1, 'month').endOf('month'),
 	locale: {
 	  format: 'DD/MM/YYYY'
 	},
-	opens:'left'
+	ranges: {
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+	   'This Month': [moment().startOf('month'), moment()],
+	   'This Year': [moment().startOf('Year'), moment()]
+	}
 })
+$('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker) {
+	//customStartDate = picker.startDate.format('DD/MM/YYYY');
+	//customEndDate = picker.endDate.format('DD/MM/YYYY');
+	
+});
 $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
 	customEndDate = picker.endDate.format('DD/MM/YYYY');
