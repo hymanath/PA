@@ -3479,6 +3479,7 @@
 		<property name="employeeWorkLocationDAO" ref="employeeWorkLocationDAO" />
 		<property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
 		<property name="employeeDepartmentDAO" ref="employeeDepartmentDAO" />  
+		<property name="holidayDAO" ref="holidayDAO" />
 	</bean>
 
 </beans>		
