@@ -1915,6 +1915,44 @@
                                 </div>
                             </div>
                         </div>
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
+							<div class="row">
+								<div class="col-md-6 col-xs-12 col-sm-6">
+									<h4><span class="attenHeading">top absenties</span></h4>	
+									<div class="table-responsive m_top10">
+										<table class="table tableAttenBlock">
+											<thead>
+												<th>Dept name</th>
+												<th>employee name</th>
+												<th>absent</th>
+											</thead>
+											<tr>
+												<td>admin office</td>
+												<td>anand palivala</td>
+												<td>3</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="col-md-6 col-xs-12 col-sm-6 m_XsTop10">
+									<h4><span class="attenHeading">top irregulars</span></h4>
+									<div class="table-responsive m_top10">
+										<table class="table tableAttenBlock">
+											<thead>
+												<th>Dept name</th>
+												<th>employee name</th>
+												<th>absent</th>
+											</thead>
+											<tr>
+												<td>admin office</td>
+												<td>anand palivala</td>
+												<td>3</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>
