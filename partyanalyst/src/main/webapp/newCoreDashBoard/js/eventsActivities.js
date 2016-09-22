@@ -1103,7 +1103,7 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
     var resultListFirst;
 	var resultListSecond;
     var str='';
-		str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> Event completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12"><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> Event performance locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></div>';
 	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 	  if(userTypeId!= null && userTypeId==3 || userTypeId==2 || userTypeId==1){
 		str+='<p class="text-capital">districts</p>';  

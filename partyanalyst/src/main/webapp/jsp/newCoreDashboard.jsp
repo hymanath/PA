@@ -1780,7 +1780,7 @@
 								<div class="panel panel-default panelNew m_top20">
 									<div class="panel-heading">
 										<h4 class="panel-title">
-											<span class="headingColor text-capitalize">Mahanadu - District Wise Cohort</span>
+											<span class="headingColor text-capitalize">Mahanadu - Event Cohort</span>
 										</h4>
 									</div>
 									<div class="panel-body">
@@ -1805,7 +1805,7 @@
 												<div class="bg_ED pad_15 m_top20">
 												   <div id="directChildMemberForEventDivId"></div>
 												   <div class="row">
-														 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+														 <div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
 															<div class="row m_top20">
 															 <div id="topPoorLocationsEventDivId"></div>
 															</div>
@@ -1813,7 +1813,6 @@
 													</div>
 												</div>
 											</div>
-										
 								    </div>
 								</div>
 							</div>
