@@ -200,7 +200,7 @@ function buildScaleBasedPerformanceCohort(result)
 			}
 			str+='</div>';
 		str+='</div>';
-		$("#scaleBasedPerformanceCohort").html(str)
+		$("#scaleBasedPerformanceCohort").html(str);
 		$(".performanceRating").rating({
 			showClear: false,
 			showCaption:false,
@@ -570,8 +570,8 @@ function buildRoleBasedPerformanceCohort(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">overall debates</p>';
-							if(result[i].coreDebateVOList[0].debateCount !=null && result[i].coreDebateVOList[0].debateCount>0){
-							  str+='<h4>'+result[i].coreDebateVOList[0].debateCount+'</h4>';
+							if(result[i].coreDebateVOList[0].overAllDebateCount !=null && result[i].coreDebateVOList[0].overAllDebateCount>0){
+							  str+='<h4>'+result[i].coreDebateVOList[0].overAllDebateCount+'</h4>';
 							}
 							
 						str+='</td>';
@@ -583,7 +583,7 @@ function buildRoleBasedPerformanceCohort(result)
 								result[i].coreDebateVOList[j].scalePerc = result[i].coreDebateVOList[j].scalePerc.toString().concat(".0");								
 							}
 						}
-							str+='<p class="text-capital">'+result[i].coreDebateVOList[j].candidateName+'</p>';
+							str+='<p class="text-capital">'+result[i].coreDebateVOList[j].candidateName+' ( '+result[i].coreDebateVOList[j].debateCount+' ) </p>';
 							str+='<input class="performanceRating" value="'+result[i].coreDebateVOList[j].scalePerc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly><span class="label label-default label-xs labelCustom"  data-readonly>'+result[i].coreDebateVOList[j].scalePerc+'</span>';
 						str+='</td>';
 						}
