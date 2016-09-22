@@ -48,7 +48,14 @@ $(document).on("click",".attendaceIconExpand",function(){
 });
 
 $("#dateRangeIdForAttendance").daterangepicker({
-	singleDatePicker : true
+	singleDatePicker: true,
+	startDate:moment(),
+	minDate:'01/01/2014',
+	maxDate:moment(),
+	locale: {
+	  format: 'DD/MM/YYYY'
+	},
+	opens:'left'
 })
 $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
@@ -265,7 +272,7 @@ $('#attendance').highcharts({
 	}
 	function buildAttendanceOverViewForPartyOfficeDeptWise(result){
 		var str = '';
-		str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small>'+$("#dateRangeIdForAttendance").val()+'</small></span></h4>';
+		str+='<h4><span class="headingColor text-capital">total - departments employee attendance  - <small style="color:#fff">'+$("#dateRangeIdForAttendance").val()+'</small></span></h4>';
 		str+='<table class="table tableAttendance" cellspacing="10">';
 			str+='<thead>';
 				str+='<th></th>';

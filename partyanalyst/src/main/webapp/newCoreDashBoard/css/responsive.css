@@ -1,4 +1,12 @@
 @media (min-width: 100px) and (max-width:500px) {
+	.m_XsTop10
+	{
+		margin-top:10px;
+	}
+	.m_XsTop20
+	{
+		margin-top:20px;
+	}
 	.committesBlockUl li
 	{
 		width:100%;

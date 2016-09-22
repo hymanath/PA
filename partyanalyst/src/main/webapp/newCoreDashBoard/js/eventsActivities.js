@@ -64,6 +64,7 @@ $(document).on("click",".moreEventsBlocksIcon",function(){
 	 getSelectedEventDetails(attrEventIdsString);
 	 $(".detailedBlockEvents,.activeUlCls").show();
 	 $(".detailedEvent").addClass("active")	
+	 $(".comparisonEvent").removeClass("active")	
 	}else{
 		// activity functionality
 	}
@@ -83,16 +84,6 @@ $(document).on("click",".comparisonEvent",function(){
 	var attrEventIdsString=$(this).attr("attr_event_idsString");
 	getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString);
 });
-$(document).on("click",".eventCls",function(){
-	var eventIdsString = $(this).attr("attr_event_idsString");
-	$(".moreEventsBlocksIcon").attr("attr_type","event");
-	$(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
-	$(".detailedEvent").attr("attr_type","event");
-	$(".detailedEvent").attr("attr_event_idsString",eventIdsString);
-	$(".comparisonEvent").attr("attr_type","event");
-	$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
-	getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
-});
 
 $(document).on("click",".eventStrngPrCls",function(){
 	var memberType=$(this).attr("attr_value");
@@ -104,16 +95,72 @@ $(document).on("click",".eventStrngPrCls",function(){
 });
 
 $(document).on("click",".eventsListExpandIcon",function(){
+	var eventIdsString = $(this).attr("attr_event_idsString");
+	$(".moreEventsBlocksIcon").attr("attr_type","event");
+	$(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
+	$(".detailedEvent").attr("attr_type","event");
+	$(".detailedEvent").attr("attr_event_idsString",eventIdsString);
+	$(".comparisonEvent").attr("attr_type","event");
+	$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	
-	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
-	$(this).find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
-	if($(".eventsIconExpand").find("i").hasClass("glyphicon-fullscreen"))
+	$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+	
+	if(!$(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
 	{
+		
 		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	}
-	$(".eventsIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+	$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
+	
+	if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+	{
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	}else{
+		$(".eventsListExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".stateLevelMeetingBlock").show();
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);	
+	}
+	
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}
 });
+
 $("#dateRangeIdForEvents").daterangepicker({
 	opens: 'left',
 	startDate: moment().subtract(1, 'month').startOf('month'),
@@ -165,7 +212,7 @@ function buildEventBasicCntDtls(result)
 {
 	var eventIdsString;
 	var str=' ';
-	str+='<div class="panel-group m_top10" id="accordion" role="tablist" aria-multiselectable="true">';
+	str+='<div class="panel-group m_top10" id="accordionEvents" role="tablist" aria-multiselectable="true">';
 		for(var i in result)
 		{
 			if(i== 0){
@@ -178,13 +225,13 @@ function buildEventBasicCntDtls(result)
 					if(i == 0)
 					{
 						str+='<h4 class="panel-title">';
-							str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
+							str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionEvents" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
 							str+='</a>';
 							str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 						str+='</h4>';
 					}else{
 						str+='<h4 class="panel-title">';
-							str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
+							str+='<a role="button" class="collapseDebatesIcon collapsed" data-toggle="collapse" data-parent="#accordionEvents" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
 							str+='</a>';
 							str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 						str+='</h4>';
@@ -688,7 +735,7 @@ function buildSelectedEventDetails(result)
 					
 				},
 				title: {
-					text: ' ',
+					text: null,
 					style: {
 						fontSize: '16px',
 						fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
@@ -698,8 +745,8 @@ function buildSelectedEventDetails(result)
 				subtitle: {
 					text: null
 				},
-				 xAxis: {
-					 min: 0,
+				xAxis: {
+					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
 					categories: null,
@@ -712,10 +759,10 @@ function buildSelectedEventDetails(result)
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
 					title: {
-						text: ''
+						text: null
 					},
 					stackLabels: {
-						enabled: true,
+						enabled: false,
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'

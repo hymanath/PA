@@ -5,8 +5,8 @@ $(document).ready(function(){
 	
 	$("#dateRangeIdForDebates").daterangepicker({
 		opens: 'left',
-		startDate: moment().subtract(1, 'month').startOf('month'),
-        endDate: moment().subtract(1, 'month').endOf('month'),
+		startDate: moment().startOf('month'),
+        endDate: moment(),
 		locale: {
 		  format: 'DD/MM/YYYY'
 		},
