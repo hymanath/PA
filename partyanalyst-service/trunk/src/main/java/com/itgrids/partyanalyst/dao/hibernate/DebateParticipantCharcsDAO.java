@@ -654,12 +654,13 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select model1.debateParticipant.party.partyId,model1.debateParticipant.party.shortName," +
-				"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale)" +
+				"model1.debateRoles.debateRolesId,model1.debateRoles.aliasName,sum(model.scale),count(distinct model1.debateParticipant.debate.debateId) " +
 				"  from DebateParticipantCharcs model ,DebateParticipantRole model1" +
 				" where model.debateParticipant.debateParticipantId = model1.debateParticipant.debateParticipantId" +
 				" and model.characteristics.isDeleted = 'N' " +
 				" and model1.debateRoles.isDeleted ='N' " +
-				" and model.debateParticipant.party.isNewsPortal = 'Y'" );
+				" and model.debateParticipant.party.isNewsPortal = 'Y' " +
+				" and model1.debateParticipant.debate.isDeleted = 'N' " );
 		
 			if(state !=null && state.trim().equalsIgnoreCase("ap")){
 				str.append(" and model.debateParticipant.party.partyId not in ("+IConstants.CORE_DEBATE_ELIMINATED_PARTIES_AP+") " );

@@ -18,6 +18,7 @@ public class CoreDebateVO implements Serializable {
 	private Long charecterId;
 	private String charecterName;
 	private Double overAllPerc=0.00;
+	private Long overAllDebateCount=0l;
 	
 	private String recentTime;
 	
@@ -106,6 +107,12 @@ public class CoreDebateVO implements Serializable {
 	}
 	public void setRecentTime(String recentTime) {
 		this.recentTime = recentTime;
+	}
+	public Long getOverAllDebateCount() {
+		return overAllDebateCount;
+	}
+	public void setOverAllDebateCount(Long overAllDebateCount) {
+		this.overAllDebateCount = overAllDebateCount;
 	}
 	
 	
