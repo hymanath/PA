@@ -3017,6 +3017,9 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMapNew(List<Object[]> 
 	
 	try{
 		
+		List<Characteristics> charecters = characteristicsDAO.getCharacteristicsDetails();
+		
+		
 		if(commonMethodsUtilService.isListOrSetValid(objList)){
 			
 			for (Object[] obj : objList) {					
@@ -3044,7 +3047,16 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMapNew(List<Object[]> 
 				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 				//VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 				//VO.setCandidateName(StringEscapeUtils.unescapeJava(commonMethodsUtilService.getStringValueForObject(obj[3])));
-				VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));					
+				VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));		
+				VO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[5]));
+				
+				if( VO.getScale() !=null && VO.getScale()>0.00 && obj[5] !=null && (Long)obj[5]>0l){
+					VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[5]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));									
+					if(VO.getScalePerc() !=null && VO.getScalePerc() >0.0 ){
+						VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
+					}									
+				}
+				
 			}
 		}
 		
@@ -3070,7 +3082,7 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 		}
 		
 		Map<Long,Map<Long,CoreDebateVO>> rolesMap = new LinkedHashMap<Long, Map<Long,CoreDebateVO>>();			
-		//0.partyId,1.name,2.rolesId,3.role,4.scale
+		//0.partyId,1.name,2.rolesId,3.role,4.scale,5.debatesCount
 		List<Object[]> roleObjList = debateParticipantCharcsDAO.getRoleBasedPerformanceCohort(startDate, endDate,state);
 		
 		//0.partyId,1.shortName,2.debateCount,3.candidatesCount
@@ -3090,13 +3102,13 @@ public List<CoreDebateVO> getRoleBasedPerformanceCohort(String startDateStr,Stri
 					for (Entry<Long, CoreDebateVO> role : roleMap.entrySet()) {							
 						CoreDebateVO VO = role.getValue();	
 						if(VO !=null){
-							if( VO.getScale() !=null && VO.getScale()>0.00 && obj[2] !=null && (Long)obj[2]>0l){
+							/*if( VO.getScale() !=null && VO.getScale()>0.00 && obj[2] !=null && (Long)obj[2]>0l){
 								VO.setScalePerc(Double.parseDouble(new BigDecimal((VO.getScale())/(Long)obj[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));									
 								if(VO.getScalePerc() !=null && VO.getScalePerc() >0.0 ){
 									VO.setScalePerc(Double.parseDouble(new BigDecimal(VO.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 								}									
-							}
-							VO.setDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
+							}*/
+							VO.setOverAllDebateCount(commonMethodsUtilService.getLongValueForObject(obj[2]));			
 						}				
 					}
 				}					
