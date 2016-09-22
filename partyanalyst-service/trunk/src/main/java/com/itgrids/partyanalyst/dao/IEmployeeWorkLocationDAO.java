@@ -27,4 +27,5 @@ public interface IEmployeeWorkLocationDAO extends GenericDao<EmployeeWorkLocatio
 	public List<Object[]> getSpecificOfficeTotalAttendedEmployeeDetailsFilter(Date fromDate, Date toDate, List<Long> deptList, List<Long> presentedCaderIdList, Long officeId);
 	public List<Object[]> getAttendanceCountBetweenDatesOfficeWise(Date fromDate, Date toDate, List<Long> officeIdList,List<Long> deptIdList);
 	public List<Long> getEmployeeIdListOfficeWise(List<Long> officeIdList, List<Long> deptIdList);
+	public List<Object[]> getEmployeeLateComingsCount(Date fromDate, Date toDate, List<Long> officeIdList,List<Long> deptIdList);
 }

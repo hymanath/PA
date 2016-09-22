@@ -344,7 +344,15 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			List<IdNameVO> absentEmployeeDtls = new ArrayList<IdNameVO>(0);
 			List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
 			List<Object[]> emplyeeAttendanceDtlsList = employeeWorkLocationDAO.getAttendanceCountBetweenDatesOfficeWise(fromDate, toDate, officeIdList, deptIdList);
+			List<Object[]> lateComingCountList =  employeeWorkLocationDAO.getEmployeeLateComingsCount( fromDate,  toDate,  officeIdList, deptIdList);
 			List<Long> employeeCadreIdList = employeeWorkLocationDAO.getEmployeeIdListOfficeWise(officeIdList,deptIdList);
+			//create a map for late attended employees.
+			Map<Long,Long> employeeIdAndLateComingCount = new HashMap<Long,Long>();
+			if(lateComingCountList != null && lateComingCountList.size() > 0){
+				for(Object[] param : lateComingCountList){
+					employeeIdAndLateComingCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+				}
+			}
 			//collect attended cadre id list
 			List<Long> attendedCadreIdList = new ArrayList<Long>(0);
 			Long absent = 0l;
@@ -357,15 +365,18 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO.setDistrictName(param[1] != null ? param[1].toString() : "");
 					idNameVO.setName(param[3] != null ? param[3].toString() : "");
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
-					idNameVO.setStatus("present");
+					idNameVO.setStatus("present");  
 					idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);
+					idNameVO.setId(noOfDays);
+					idNameVO.setOrderId(employeeIdAndLateComingCount.get(param[2] != null ? (Long)param[2] : 0l) != null ? employeeIdAndLateComingCount.get((Long)param[2]) : 0l);
 					absent = noOfDays - (param[5] != null ? (Long)param[5] : 0l);
-					idNameVO.setCount(absent);
-					attendedEmployeeDtls.add(idNameVO);
-				}
+					idNameVO.setCount(absent);  
+					idNameVO.setWish(param[6] != null ? param[6].toString() : "");
+					attendedEmployeeDtls.add(idNameVO);            
+				}  
 			}
-			//for multiple dates return here
-			if(noOfDays==1l){
+			//for multiple dates return here  
+			if(noOfDays > 1l){
 				return attendedEmployeeDtls;  
 			}
 			//collect absentCadreIds cadre id list By removing all attended cadres from total cadre
@@ -373,6 +384,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			
 			if(attendedCadreIdList != null && attendedCadreIdList.size() > 0){
 				employeeCadreIdList.removeAll(attendedCadreIdList);
+				employeeCadreIdList.add(0l);
 				//prepare absent cadre details
 				List<Object[]> absentCadreDtls = employeeDepartmentDAO.getAbsentCadreDtls(employeeCadreIdList);
 				if(absentCadreDtls != null && absentCadreDtls.size() > 0){
