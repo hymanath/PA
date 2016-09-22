@@ -749,7 +749,7 @@ function buildSelectedEventDetails(result)
 					min: 0,
 					gridLineWidth: 0,
 					minorGridLineWidth: 0,
-					categories: null,
+					categories: ['Event'],
 					labels: {
 						enabled: false,
 					}
@@ -1106,17 +1106,17 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 		str+='<div class="col-md-12 col-xs-12 col-sm-12"><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> Event performance locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></div>';
 	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 	  if(userTypeId!= null && userTypeId==3 || userTypeId==2 || userTypeId==1){
-		str+='<p class="text-capital">districts</p>';  
+		str+='<p class="text-capital">districts<span style="margin-left:280px">Invitees Attended(%)</span></p>';  
 		resultListFirst = result.districtList;
 		resultListSecond = result.constituencyList;
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
-		 str+='<p class="text-capital">Constituencies</span></p>';  
+		str+='<p class="text-capital">Constituencies<span style="margin-left:240px">Invitees Attended(%)</span></p>';  
 		resultListFirst = result.constituencyList;
 		resultListSecond = result.mandalTwnDivisionList;  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Mandal/Town/Division</span></p>';  
+		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:180px">Invitees Attended(%)</span></p>';  
 		resultListFirst = result.mandalTwnDivisionList;
 		resultListSecond = result.villageWardList;  
 	  }
@@ -1150,13 +1150,13 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 	  
 	  str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 	   if(userTypeId!= null && userTypeId==3 || userTypeId==2 || userTypeId==1){
-		str+='<p class="text-capital">Constituencies</p>';  
+		str+='<p class="text-capital">Constituencies<span style="margin-left:240px">Invitees Attended(%)</span></p>';  
 	  }
 	  if(userTypeId!= null && userTypeId==5 || userTypeId==11 || userTypeId==4 || userTypeId==6){
-		 str+='<p class="text-capital">Mandal/Town/Division</p>';  
+		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:180px">Invitees Attended(%)</span></p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Village/Ward</p>';  
+		 str+='<p class="text-capital">Village/Ward<span style="margin-left:250px">Invitees Attended(%)</span></p>';  
 	  }
 	  str+='<table class="table tableCumulative">';
       if(resultListSecond != null && resultListSecond.length > 0){

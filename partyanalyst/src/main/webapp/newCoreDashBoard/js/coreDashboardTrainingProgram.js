@@ -1440,7 +1440,7 @@ function buildTrainingProgramRslt(result){
 		 str+='<p class="text-capital">Mandal/Town/Division<span style="margin-left:100px">Attended Percentage</span></p>';  
 	  }
 	   if(userTypeId!= null && userTypeId==7 || userTypeId==8 || userTypeId==9){
-		 str+='<p class="text-capital">Village/Ward<span style="margin-left:130px">Attended Percentage</span></p>';  
+		 str+='<p class="text-capital">Village/Ward<span style="margin-left:170px">Attended Percentage</span></p>';  
 	  }
 	  str+='<table class="table tableCumulative">';
       if(resultListSecond != null && resultListSecond.length > 0){
