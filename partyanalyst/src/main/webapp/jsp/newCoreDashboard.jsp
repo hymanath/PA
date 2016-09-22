@@ -110,7 +110,7 @@
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
+						<div class="col-md-8 col-sm-8 col-xs-8">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
 								committees - <small class="text-muted">up to date</small>
@@ -126,8 +126,7 @@
 							<span class="iconExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
-							
-							<span class="input-group pull-right dateRangePickerCls hide">
+							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -616,7 +615,7 @@
 							<div class="col-md-8 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
-									debates - <small class="text-muted">last month</small>
+									debates - <small class="text-muted">this month</small>
 								</h4>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
@@ -654,9 +653,11 @@
 					</div>
                     <div class="panel-body">
                         <div class="row">
-                        
-                            <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
+							</div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+								
                                 <div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
 									<!--<div ng-app="partyWiseTotalApp">
@@ -1775,36 +1776,30 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
-										<!--<h4 class="panel-title">
-											<span class="headingColor text-capitalize">Event Comparison</span>
-										</h4>-->
-										<div class="panel-heading">
-												<div class="row">
-													<div class="col-xs-12 col-sm-12 col-md-12">
-													  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
-													</div>
-												</div>
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+											  <div id="allItsSubUserTypeIdsByParentUserTypeDivIdForEvent"></div>
+											</div>
 										</div>
 									</div>
 									<div class="panel-body">
-										<div class="panel-body">
-												<div class="col-md-12 col-xs-12 col-sm-12">
-													 <div id="childEvnetMemberDivId"> </div>
-												</div>
-												<div class="col-md-12 col-xs-12 col-sm-12">
-													<div class="bg_ED pad_15 m_top20">
-													   <div id="directChildMemberForEventDivId"></div>
-													   <div class="row">
-															 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-																<div class="row m_top20">
-																 <div id="topPoorLocationsEventDivId"></div>
-																</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												 <div id="childEvnetMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20">
+												   <div id="directChildMemberForEventDivId"></div>
+												   <div class="row">
+														 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
+															<div class="row m_top20">
+															 <div id="topPoorLocationsEventDivId"></div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-									   </div>
+										
+								    </div>
 								</div>
 							</div>
 						</div>
@@ -1819,14 +1814,13 @@
             <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">
 					<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
+						<div class="col-md-9 col-sm-9 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
-								employees attendance
+								employees attendance - <small id="attendanceId" class="text-muted"></small>
 							</h4>
-							<div style="margin-left: 27px;"><p style="margin-left: 0px; margin-right: 0px;" id="attendanceId" class="text-muted"></p></div>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-5">
+						<div class="col-md-3 col-sm-3 col-xs-5">
 							<span class="attendanceSetIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
