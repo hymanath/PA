@@ -466,6 +466,25 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			LOG.error("Error occured in getAttendeeDtlsDeptWiseForDay method of AttendanceCoreDashBoardService class");
 		}
 		return null;
-	}  
+	} 
+	public List<Long> getDeptIds(){
+		LOG.info("Entered into getDeptIds method of AttendanceCoreDashBoardService class");
+		try{
+			List<Long> departmentIdList = new ArrayList<Long>();
+			//collect all the department ids
+			List<Department> departmentList = departmentDAO.getAll();
+			if(departmentList != null && departmentList.size() > 0){
+				for(Department department : departmentList){
+					departmentIdList.add(department.getDepartmentId() != null ?  department.getDepartmentId() : 0l);  
+				}
+			}
+			return departmentIdList;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured in getDeptIds method of AttendanceCoreDashBoardService class");
+		}
+		return null;
+	}
 	
 }
