@@ -401,6 +401,8 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			}
 			
 			userDataVO = coreDashboardService.getUserBasicDetails(user.getRegistrationID());
+			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();
+			userDataVO.setDeptIdList(diptIdList);
 			List<UserDataVO> committeeDataVOList = coreDashboardMainService.getbasicCommitteeDetails();
 			if(committeeDataVOList!=null && committeeDataVOList.size()>0){
 				userDataVO.setSubList(committeeDataVOList);
