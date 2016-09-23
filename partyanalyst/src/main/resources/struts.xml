@@ -13741,5 +13741,10 @@
 	  		<param name="root">idNameVoList</param>   
 	 	</result>
 	</action>
+	<action name="getTopAbsentAndIregularAction" class="coreDashboardAction" method="getTopAbsentAndIregular">
+		<result type="json" name="success">
+	  		<param name="root">idNameVOsList</param>   
+	 	</result>
+	</action>
 </package>
 </struts>
