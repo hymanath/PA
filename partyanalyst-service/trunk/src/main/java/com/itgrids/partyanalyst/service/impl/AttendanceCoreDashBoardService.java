@@ -5,6 +5,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -506,6 +508,97 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Error occured in getDeptIds method of AttendanceCoreDashBoardService class");
+		}
+		return null;
+	}
+	public List<List<IdNameVO>> getTopAbsentAndIregular(String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList){
+		LOG.info("Entered into getTopAbsentAndIregular method of AttendanceCoreDashBoardService class");
+		try{
+			Long diff = 0l;
+			Long noOfDays = 0l;
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
+				fromDate = sdf.parse(fromDateStr); 
+				toDate = sdf.parse(toDateStr);
+				diff = toDate.getTime() - fromDate.getTime();
+				noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+				noOfDays++;
+			}
+			IdNameVO idNameVO = null;
+			List<IdNameVO> attendedEmployeeDtls = new ArrayList<IdNameVO>(0);
+			
+			
+			List<Object[]> emplyeeAttendanceDtlsList = employeeWorkLocationDAO.getAttendanceCountBetweenDatesOfficeWise(fromDate, toDate, officeIdList, deptIdList);
+			List<Object[]> lateComingCountList =  employeeWorkLocationDAO.getEmployeeLateComingsCount( fromDate,  toDate,  officeIdList, deptIdList);
+			
+			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
+			//create a map for late attended employees.
+			Map<Long,Long> employeeIdAndLateComingCount = new HashMap<Long,Long>();
+			if(lateComingCountList != null && lateComingCountList.size() > 0){
+				for(Object[] param : lateComingCountList){
+					employeeIdAndLateComingCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+				}
+			}
+			//collect attended cadre id list
+			List<Long> attendedCadreIdList = new ArrayList<Long>(0);
+			Long absent = 0l;
+			if(emplyeeAttendanceDtlsList != null && emplyeeAttendanceDtlsList.size() > 0){
+				for(Object[] param : emplyeeAttendanceDtlsList){
+					attendedCadreIdList.add(param[2] != null ? (Long)param[2] : 0l);
+					//prepare attended cadre details
+					idNameVO = new IdNameVO();
+					idNameVO.setDistrictid(param[0] != null ? (Long)param[0] : 0l);
+					idNameVO.setDistrictName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setName(param[3] != null ? param[3].toString() : "");
+					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
+					idNameVO.setStatus("present");  
+					idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);
+					if(holidayCount > 0l){
+						idNameVO.setId(noOfDays-holidayCount);
+					}else{
+						idNameVO.setId(noOfDays);
+					}
+					
+					idNameVO.setOrderId(employeeIdAndLateComingCount.get(param[2] != null ? (Long)param[2] : 0l) != null ? employeeIdAndLateComingCount.get((Long)param[2]) : 0l);
+					absent = noOfDays - (param[5] != null ? (Long)param[5] : 0l);
+					idNameVO.setCount(absent);  
+					idNameVO.setWish(param[6] != null ? param[6].toString() : "");
+					attendedEmployeeDtls.add(idNameVO);            
+				}  
+			}
+			List<IdNameVO> sortedAbsentList = new ArrayList<IdNameVO>();
+			sortedAbsentList.addAll(attendedEmployeeDtls);
+			Collections.sort(sortedAbsentList, new Comparator<IdNameVO>(){
+			     public int compare(IdNameVO vo1, IdNameVO vo2){
+			         if(vo1.getCount() == vo2.getCount())
+			             return 0;
+			         return vo1.getCount() > vo2.getCount() ? -1 : 1;
+			     }
+			});
+			if(sortedAbsentList.size() > 0){
+				sortedAbsentList.get(0).setDateStr("absent");
+			}
+			List<IdNameVO> sortedIregularList = new ArrayList<IdNameVO>(0);
+			sortedIregularList.addAll(attendedEmployeeDtls);
+			Collections.sort(sortedIregularList, new Comparator<IdNameVO>(){
+			     public int compare(IdNameVO vo1, IdNameVO vo2){
+			         if(vo1.getOrderId() == vo2.getOrderId())
+			             return 0;
+			         return vo1.getOrderId() > vo2.getOrderId() ? -1 : 1;
+			     }
+			});
+			if(sortedIregularList.size() > 0){
+				sortedIregularList.get(0).setDateStr("iregular");
+			}
+			List<List<IdNameVO>> absentAndIregularList = new ArrayList<List<IdNameVO>>(0);
+			absentAndIregularList.add(sortedAbsentList);
+			absentAndIregularList.add(sortedIregularList);
+			return absentAndIregularList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured in getTopAbsentAndIregular method of AttendanceCoreDashBoardService class");
 		}
 		return null;
 	}
