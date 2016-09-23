@@ -3626,16 +3626,19 @@ var url = window.location.href;
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				/* for(var i in result){
+					str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+				} */
 				str+='<ul class="list-inline slickPanelSliderGovtCom">';
 				for(var i in result){
 					str+='<li class="comparisonGovtMinistriesInfoSubLevel" id="comparisonGovtMinistriesInfoSubLevel'+i+'" style="cursor:pointer;">';
 						str+='<div class="panel panel-default panelSlick panelSlickHeightSet">';
 							str+='<div class="panel-heading">';
 								str+='<h4 class="panel-title">'+result[i].name+'</h4>';
-								str+='<span class="count">'+(parseInt(i)+1)+'</span>';
+								str+='<span class="count" title='+result[i].count+' data-placement="bottom">'+(parseInt(i)+1)+'</span>';
 							str+='</div>';
 							str+='<div class="panel-body" style="background-color:#fff;">';
-								str+='<h4 class="text-capital">MINISTER</h4>';
+								str+='<img  src="https://mytdp.com/images/cadre_images/'+result[i].imageUrl+'" style="height:35px;width:40px;" onerror="setDefaultImage(this);" alt="Image" class="media-object thumbnailSearch thumbnail"/>';
 								if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
 									str+='<ul class="ministersUl m_top10">';
 									for(var j in result[i].coreDashBoardVOList){
@@ -3662,7 +3665,7 @@ var url = window.location.href;
 			$("#comparisonGovtMinistriesInfoSubLevel"+i).attr("attr_department_idsStr",idsStr);
 			$("#comparisonGovtMinistriesInfoSubLevel"+i).attr("attr_ministername",ministerName);
 		}
-		
+		$(".count").tooltip();
 		$(".slickPanelSliderGovtCom").slick({
 			 slide: 'li',
 			 slidesToShow: 3,
@@ -5584,4 +5587,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 					 touchMove:false
 				}); 
 		
+	}
+	function setDefaultImage(img){
+		img.src = "images/User.png";
 	}
