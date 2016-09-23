@@ -3030,6 +3030,8 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMapNew(List<Object[]> 
 					if(commonMethodsUtilService.isListOrSetValid(debateRoles)){
 						for (Object[] param : debateRoles) {
 							CoreDebateVO roleVO = new CoreDebateVO();
+							roleVO.setId((Long)obj[0]);
+							roleVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 							roleVO.setCandidateId(commonMethodsUtilService.getLongValueForObject(param[0]));
 							roleVO.setCandidateName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							innerMap.put(roleVO.getCandidateId(), roleVO);
@@ -3043,8 +3045,7 @@ public Map<Long,Map<Long,CoreDebateVO>> setDebateDetailsToMapNew(List<Object[]> 
 					VO = new CoreDebateVO();
 					innerMap.put((Long)obj[2], VO);						
 				}				
-				VO.setId((Long)obj[0]);
-				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				
 				//VO.setCandidateId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 				//VO.setCandidateName(StringEscapeUtils.unescapeJava(commonMethodsUtilService.getStringValueForObject(obj[3])));
 				VO.setScale(Double.parseDouble(commonMethodsUtilService.getStringValueForObject(obj[4])));		
