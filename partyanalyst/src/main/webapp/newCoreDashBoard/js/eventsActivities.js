@@ -953,9 +953,9 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 				 str+='<tr>';
 					 str+='<td>'+result[i].inviteeCnt+'</td>';
 					 str+='<td>'+result[i].inviteeAttendedCnt+'</td>';
-					 str+='<td>'+result[i].inviteeAttendedCntPer+'%</td>';
+					 str+='<td>'+result[i].inviteeAttendedCntPer+'</td>';
 					 str+='<td>'+result[i].nonInviteeAttendedCnt+'</td>';
-					 str+='<td>'+result[i].nonInviteeAttendedCntPer+'%</td>';
+					 str+='<td>'+result[i].nonInviteeAttendedCntPer+'</td>';
 				 str+='</tr>';
 			 str+='</table>';
 		 str+='</div>';
@@ -1147,7 +1147,7 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 				  str+='</div>';
 				str+='</div>';
 			str+='</td>';
-			str+='<td class="text-danger">'+resultListFirst[i].inviteeAttendedCounPer+'%</td>';
+			str+='<td class="text-danger">'+resultListFirst[i].inviteeAttendedCounPer+'</td>';
 			str+='</tr>';
 			order=order+1;
 			if(order==6)
@@ -1184,7 +1184,7 @@ function buildEventPoorPerformanceLocationRslt(result,userTypeId,selectedUserNam
 			str+='</div>';
 			str+='</div>';
 			str+='</td>';
-			str+='<td class="text-danger">'+resultListSecond[i].inviteeAttendedCounPer+'%</td>';
+			str+='<td class="text-danger">'+resultListSecond[i].inviteeAttendedCounPer+'</td>';
 			str+='</tr>';
 			order=order+1;
 			if(order==6)

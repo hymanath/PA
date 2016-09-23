@@ -150,7 +150,7 @@ $(document).on("click",".selectAll",function(){
 		var str='';
 		  str+'<div class="row">';
 		  if(overAllResult != null){
-			  setLastUpdatedTime(overAllResult.updatedTime);
+			//  setLastUpdatedTime(overAllResult.updatedTime);
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 		      str+='<table class="table tableTraining">';
 			  str+='<tbody><tr>';
@@ -736,7 +736,7 @@ function getMeetingLevelDetails(){
 function buildLevelWiseHighCharts(result){
 	var levelWiseResult = result.partyMettingsVOList;
 	var resultVO = result.overAllVO;
-	   setLastUpdatedTime(resultVO.updatedTime);
+	  // setLastUpdatedTime(resultVO.updatedTime);
 		if(levelWiseResult != null && levelWiseResult.length > 0){
 			var str='';
 			var locationLevelNameArray =[];
@@ -2420,6 +2420,22 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToMeetin
 			}); 
 	  }
   }      
+}
+getMeetingRecentTime();
+window.setInterval(function(){
+  getMeetingRecentTime(); 
+},10*60*1000);/*every 10 minutes .this method will update time  */
+function getMeetingRecentTime(){
+ 	$.ajax({
+		type : 'POST',
+		url : 'getMeetingRecentTimeAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify( )}
+	}).done(function(result){
+		if(result != null){
+		 setLastUpdatedTime(result)	
+		}
+	});
 }
 function setLastUpdatedTime(lastUpdatedTime){
  $("#lastMeetingUpdatedIdTimeId").html(" Last Updated :"+lastUpdatedTime+"");
