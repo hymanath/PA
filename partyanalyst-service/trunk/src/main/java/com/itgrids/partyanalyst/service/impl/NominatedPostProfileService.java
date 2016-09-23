@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.mapping.Array;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -2121,11 +2122,39 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> levelWiseRunningApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsRunningAppliedApplicationsDtals(levelId,null,null,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(levelWiseRunningApplicatinStatusDetailsList)){
 				for (Object[] param : levelWiseRunningApplicatinStatusDetailsList) {
+					
+					Long deptCount = commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long corpCount = commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+					Long deptId = commonMethodsUtilService.getLongValueForObject(param[5]);
+					Long boardId = commonMethodsUtilService.getLongValueForObject(param[6]);
+					
 						NominatedPostVO vo = applicationsStatusDtlsMap.get("RUNNING".trim());//"RUNNING"
 						if(vo != null){
 							vo.setTotalPositions(runningStatusPostsCount);
-							vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
-							vo.setTotalCorp(vo.getTotalCorp() + commonMethodsUtilService.getLongValueForObject(param[3]));
+							
+							List<Long> deptList =statusWiseDeptMap.get("RUNNING");
+							List<Long> corpList = statusWisecorporationsMap.get("RUNNING");
+							
+							if(deptList == null)
+								deptList = new ArrayList<Long>(0);
+							if(corpList == null)
+								corpList = new ArrayList<Long>(0);
+							
+							if(deptId != null && deptId.longValue()>0L && !deptList.contains(deptId)){
+								vo.setTotalDept(vo.getTotalDept()+deptCount);
+								deptList.add(deptId);
+							}
+							if(boardId != null && boardId.longValue()>0L &&  !corpList.contains(boardId)){
+								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								corpList.add(boardId);
+							}
+							
+							statusWiseDeptMap.put("RUNNING",deptList) ;
+							statusWisecorporationsMap.put("RUNNING",corpList);
+							
+							//vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
+							//vo.setTotalCorp(vo.getTotalCorp() + commonMethodsUtilService.getLongValueForObject(param[3]));
 							
 							vo.setTotalApplicationReceivedCnt((applciationCountMap.get(2L) !=null ? applciationCountMap.get(2L).longValue():0l) +  // rejected
 									(applciationCountMap.get(3L) !=null ? applciationCountMap.get(3L).longValue():0l) + // short listed
@@ -2186,11 +2215,35 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> levelWiseApplicatinStatusDetailsList =  nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDtals(levelId,null,null,stateId);
 			if(commonMethodsUtilService.isListOrSetValid(levelWiseApplicatinStatusDetailsList)){
 				for (Object[] param : levelWiseApplicatinStatusDetailsList) {
+					Long deptCount = commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long corpCount = commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+					Long deptId = commonMethodsUtilService.getLongValueForObject(param[5]);
+					Long boardId = commonMethodsUtilService.getLongValueForObject(param[6]);
+					
 						NominatedPostVO vo = applicationsStatusDtlsMap.get("READY TO SHORT LIST".trim());//""
 						if(vo != null){
 							vo.setTotalPositions(appliedStatusPostsCount);
-							vo.setTotalDept(vo.getTotalDept() + commonMethodsUtilService.getLongValueForObject(param[2]));
-							vo.setTotalCorp(vo.getTotalCorp() + commonMethodsUtilService.getLongValueForObject(param[3]));
+							
+							List<Long> deptList =statusWiseDeptMap.get("READY TO SHORT LIST");
+							List<Long> corpList = statusWisecorporationsMap.get("READY TO SHORT LIST");
+							
+							if(deptList == null)
+								deptList = new ArrayList<Long>(0);
+							if(corpList == null)
+								corpList = new ArrayList<Long>(0);
+							
+							if(deptId != null && deptId.longValue()>0L && !deptList.contains(deptId)){
+								vo.setTotalDept(vo.getTotalDept()+deptCount);
+								deptList.add(deptId);
+							}
+							if(boardId != null && boardId.longValue()>0L &&  !corpList.contains(boardId)){
+								vo.setTotalCorp(vo.getTotalCorp()+corpCount);
+								corpList.add(boardId);
+							}
+							
+							statusWiseDeptMap.put("READY TO SHORT LIST",deptList) ;
+							statusWisecorporationsMap.put("READY TO SHORT LIST",corpList);
 							
 							vo.setTotalApplicationReceivedCnt((applciationCountMap.get(1L) !=null ? applciationCountMap.get(1L).longValue():0l));  // applied									(applciationCountMap.get(3L) !=null ? applciationCountMap.get(3L).longValue():0l) + // short listed
 							
@@ -3561,7 +3614,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			
 
 		
-			List<Object[]> levelPostCountList = nominatedPostApplicationDAO.getNominatedPostsAppliedApplciationsDetalsNew(boardLevelId,null,null,null,"running");	
+			List<Object[]> levelPostCountList = nominatedPostApplicationDAO.getNominatedPostsAppliedApplcitionsDetalsNew(boardLevelId,null,null,null,"running");	
 			Long runningStatusPostsCount =0L;
 			Map<Long,Long> runningPostsMap  = new HashMap<Long, Long>(0);
 			
@@ -3705,7 +3758,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							Long appliedPostsCount =0L;
 							
 							if(maxPostsCount>almostFilledPosts){// available posts are there
-								Long runnngPostsCount = runningPostsMap.get(memberId) != null?runningPostsMap.get(memberId):0L;
+								Long runnngPostsCount = 0L;// running posts not consider as filled runningPostsMap.get(memberId) != null?runningPostsMap.get(memberId):0L;
 								Long openPostsCount = maxPostsCount-almostFilledPosts;
 								openPostsCount = openPostsCount-runnngPostsCount;
 								if(openPostsCount>applinCount){// applications count less than open posts
@@ -5524,136 +5577,125 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		return returnvo;
 	}
 	
+	@Transactional
 	public String updateFinalyzationStatusForPost(final Long postFinalId,final Long statusId,final String comment,final Long userId,final Long postApplicationId,final Long candidateId){
 		String status = null;
 		try {
 			
 			Long effectedPostsCount = (Long) transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
-					
 					NominatedPostFinal nominatedPostFinal = nominatedPostFinalDAO.get(postFinalId);
-					
-					if(statusId != null && statusId.longValue() == 5l){// finalyzed status id
+					if(nominatedPostFinal != null)
+					{
 						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
 						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
 						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-							NominatedPost nominatedPost = nominatedPostList.get(0);
-							nominatedPost.setNominationPostCandidateId(candidateId);
-							nominatedPost.setNominatedPostStatusId(3l);
-							nominatedPost.setUpdatedBy(userId);
-							nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPost = nominatedPostDAO.save(nominatedPost);
-							
-							nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
-							nominatedPostFinal.setApplicationStatusId(statusId);
-							nominatedPostFinal.setUpdatedBy(userId);
-							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
-							
-							NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
-							savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
-							
-							nominatedPostApplication.setApplicationStatusId(statusId);
-							nominatedPostApplication.setUpdatedBy(userId);
-							nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
-							
-							changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
-						}
-						else{
-							
-							return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
-							
-							/*nominatedPostFinal.setApplicationStatusId(statusId);
-							nominatedPostFinal.setUpdatedBy(userId);
-							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);*/
-						}
-					}
-					else{
-						nominatedPostFinal.setApplicationStatusId(statusId);
-						nominatedPostFinal.setUpdatedBy(userId);
-						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
-						
-						//Moving into OPEN Status if Applications Are less 
-						if(nominatedPostFinal !=null){							
-							Long memberId = nominatedPostFinal.getNominatedPostMemberId();
-							if(memberId !=null && memberId>0){
-								
-								//FinalReview Applications && Posts
-								List<NominatedPostApplication> applicationList =  nominatedPostFinalDAO.getNominatedPostApplicationsByMemberOfFinalReview(memberId);	
-								List<NominatedPost> postsList   = nominatedPostDAO.getNominatedPostByMemberOfFinalReview(memberId);
-								
-								//if application count is less than final review posts then we will move that remaining posts to open status
-								if(postsList !=null && (postsList.size()>applicationList.size())){
-									int diff = (postsList.size() - (applicationList !=null ? applicationList.size():0));									
-									if(diff>0){		
-										int i=1;
-										for (NominatedPost nominatedPost : postsList) {											
-											if(i<=diff){												
-												nominatedPost.setNominatedPostStatusId(1l);// moving nominated post to open status 
-												nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-												nominatedPost.setUpdatedBy(userId);												
-												nominatedPostDAO.save(nominatedPost);												
-												i++;
-											}
-										}										
-									}								
+							if(statusId != null && statusId.longValue() == 5l && nominatedPostFinal != null){// finalyzed status id
+								//List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
+								if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
+									NominatedPost nominatedPost = nominatedPostList.get(0);
+									nominatedPost.setNominationPostCandidateId(candidateId);
+									nominatedPost.setNominatedPostStatusId(3l);
+									nominatedPost.setUpdatedBy(userId);
+									nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPost = nominatedPostDAO.save(nominatedPost);
+									
+									nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
+									nominatedPostFinal.setApplicationStatusId(statusId);
+									nominatedPostFinal.setUpdatedBy(userId);
+									nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+									
+									NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+									savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
+									
+									nominatedPostApplication.setApplicationStatusId(statusId);
+									nominatedPostApplication.setUpdatedBy(userId);
+									nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
+									
+									changingApplicationsToRejectStatus(nominatedPostFinal,userId,postApplicationId);
+								}
+								else{
+									
+									return 0L; // no open posts are available. so we are unable to assign this candidate to any post.
+									
+									/*nominatedPostFinal.setApplicationStatusId(statusId);
+									nominatedPostFinal.setUpdatedBy(userId);
+									nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);*/
 								}
 							}
-						}
-						
-						
-						NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
-						savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
-						
-						nominatedPostApplication.setApplicationStatusId(statusId);
-						nominatedPostApplication.setUpdatedBy(userId);
-						nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
-					}
-					
-					/*if(statusId != null && statusId.longValue() == 5l){
-						Long nominatedPostMemberId = nominatedPostFinal.getNominatedPostMemberId();
-						List<NominatedPost> nominatedPostList = nominatedPostDAO.getNominatedPostDetailsByNominatedPostMember(nominatedPostMemberId);
-						if(commonMethodsUtilService.isListOrSetValid(nominatedPostList)){
-							NominatedPost nominatedPost = nominatedPostList.get(0);
-							nominatedPost.setNominationPostCandidateId(candidateId);
-							nominatedPost.setNominatedPostStatusId(3l);
-							nominatedPost.setUpdatedBy(userId);
-							nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPost = nominatedPostDAO.save(nominatedPost);
-							
-							nominatedPostFinal.setNominatedPostId(nominatedPost.getNominatedPostId());
-							nominatedPostFinal.setApplicationStatusId(statusId);
-							nominatedPostFinal.setUpdatedBy(userId);
-							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+							else if(nominatedPostFinal != null){
+								
+								
+								NominatedPostApplication nominatedPostApplication = nominatedPostApplicationDAO.get(postApplicationId);
+								savingNominatedPostApplicationHistoryDetails(nominatedPostApplication,null,null);
+								
+								nominatedPostApplication.setApplicationStatusId(statusId);
+								nominatedPostApplication.setUpdatedBy(userId);
+								nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								nominatedPostApplication = nominatedPostApplicationDAO.save(nominatedPostApplication);
+								
+								//Moving into OPEN Status if Applications Are less 
+								if(nominatedPostFinal !=null){							
+									Long memberId = nominatedPostFinal.getNominatedPostMemberId();
+									if(memberId !=null && memberId>0){
+										
+										//FinalReview Applications && Posts
+										List<Long> applicationList =  nominatedPostFinalDAO.getNominatedPostApplicationIdsByMemberOfFinalReview(memberId);	
+										List<NominatedPost> postsList   = nominatedPostDAO.getNominatedPostByMemberOfFinalReview(memberId);
+										
+										nominatedPostFinal.setApplicationStatusId(statusId);
+										nominatedPostFinal.setUpdatedBy(userId);
+										nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+										if(nominatedPostFinal != null){
+											applicationList.remove(0);// one appln changed to rejected here so am removing one applin 
+										}
+										//if application count is less than final review posts then we will move that remaining posts to open status
+										if(postsList != null && (applicationList == null || applicationList.size()==0)){
+											for (NominatedPost nominatedPost : postsList) {											
+													nominatedPost.setNominatedPostStatusId(1l);// moving nominated post to open status 
+													nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+													nominatedPost.setUpdatedBy(userId);												
+													nominatedPostDAO.save(nominatedPost);												
+											}	
+										}
+										else if(postsList !=null && (postsList.size()>applicationList.size())){
+											int diff = (postsList.size() - (applicationList !=null ? applicationList.size():0));									
+											if(diff>0){		
+												int i=1;
+												for (NominatedPost nominatedPost : postsList) {											
+													if(i<=diff){												
+														nominatedPost.setNominatedPostStatusId(1l);// moving nominated post to open status 
+														nominatedPost.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+														nominatedPost.setUpdatedBy(userId);												
+														nominatedPostDAO.save(nominatedPost);												
+														i++;
+													}
+												}										
+											}								
+										}
+									}
+								}
+							}
+												
+							NominatedPostComment nominatedPostComment = new NominatedPostComment();
+							nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
+							nominatedPostComment.setNominatedPostFinalId(postFinalId);
+							nominatedPostComment.setRemarks(comment);
+							nominatedPostComment.setInsertedBy(userId);
+							nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
 						}
 						else{
-							nominatedPostFinal.setApplicationStatusId(statusId);
-							nominatedPostFinal.setUpdatedBy(userId);
-							nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
+							return 0L;
 						}
 					}
 					else{
-						nominatedPostFinal.setApplicationStatusId(statusId);
-						nominatedPostFinal.setUpdatedBy(userId);
-						nominatedPostFinal.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						nominatedPostFinal = nominatedPostFinalDAO.save(nominatedPostFinal);
-					}*/
-					
-					NominatedPostComment nominatedPostComment = new NominatedPostComment();
-					nominatedPostComment.setNominatedPostApplicationId(postApplicationId);
-					nominatedPostComment.setNominatedPostFinalId(postFinalId);
-					nominatedPostComment.setRemarks(comment);
-					nominatedPostComment.setInsertedBy(userId);
-					nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
-					
-				
+						return 0L;
+					}
 					return 1L;
 				}
 			}); 
@@ -6115,10 +6157,13 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 				List<Long> list = voterDAO.getVoterIdByIdCardNoNew(voterIdCardNo);
 				if(commonMethodsUtilService.isListOrSetValid(list))
 				{
+					resultStatus.setResultCode(0);
 					resultStatus.setMessage("valid");
 					 condidateIds= nominationPostCandidateDAO.getCandidateByVoterId(list.get(0));
 					 if(commonMethodsUtilService.isListOrSetValid(condidateIds))
 					 resultStatus.setMessage("applied");
+				}else{
+					resultStatus.setResultCode(1);
 				}
 				//finalVoterId = commonMethodsUtilService.isListOrSetValid(list)?list.get(0):null;
 			}
