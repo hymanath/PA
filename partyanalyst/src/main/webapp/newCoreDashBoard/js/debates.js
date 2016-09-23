@@ -1,5 +1,5 @@
-var customStartDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY')
-var customEndDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
+var customStartDate = moment().startOf('month').format('DD/MM/YYYY')
+var customEndDate = moment().format('DD/MM/YYYY');
 $(document).ready(function(){
 	
 	
