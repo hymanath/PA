@@ -224,7 +224,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		    		  }
 		    	 }
 		     }
-		     if(locationLevelMap != null && locationLevelMap.size() > 0){
+		  /*   if(locationLevelMap != null && locationLevelMap.size() > 0){
 		    	 
 		    	 for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
 		    		 
@@ -239,7 +239,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 						}
 		    		  }
 		    	 }
-		     }
+		     }*/
 		     if(locationLevelMap != null && locationLevelMap.size() > 0){
 		    	 
 		    	 for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
@@ -277,7 +277,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 				      }
 			}  
 			}
-		     //pushing attended cnt
+		  /*   //pushing attended cnt
 		     if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 		    	 
 				  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
@@ -297,7 +297,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 				    	  }
 				      }
 			}  
-			}
+			}*/
 		    //pushing invitee attended cnt 
 		    if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
 		    	
@@ -328,8 +328,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 				      
 				      for(UserTypeVO vo:userTypeMap.values()){
 				    	  
-				    	  vo.setNonInviteeAttendedCnt(vo.getAttendedCnt()-vo.getInviteeAttendedCnt());
-				    	  vo.setNonInviteeAttendedCntPer(calculatePercantage(vo.getNonInviteeAttendedCnt(),vo.getAttendedCnt()));
+				    	//  vo.setNonInviteeAttendedCnt(vo.getAttendedCnt()-vo.getInviteeAttendedCnt());
+				    	//  vo.setNonInviteeAttendedCntPer(calculatePercantage(vo.getNonInviteeAttendedCnt(),vo.getAttendedCnt()));
 				    	  vo.setInviteeAttendedCntPer(calculatePercantage(vo.getInviteeAttendedCnt(),vo.getInviteeCnt()));
 				      }
 			}  
@@ -757,8 +757,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 			    		 List<Object[]> rtrnEventInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
 			    		 setEventInviteeDetailsToMap(rtrnEventInviteeObjList,eventDtlsMap);
-			    		 List<Object[]> rtrnEventAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
-			    		 setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
+			    		// List<Object[]> rtrnEventAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
+			    		// setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
 			    		 List<Object[]> rtrnEventInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "District");
 			    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
 			    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
@@ -773,8 +773,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 			    		 List<Object[]> rtrnEventInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
 			    		 setEventInviteeDetailsToMap(rtrnEventInviteeObjList,eventDtlsMap);
-			    		 List<Object[]> rtrnEventAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
-			    		 setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
+			    		// List<Object[]> rtrnEventAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
+			    		// setEventAttendedCntToMap(rtrnEventAttendedObjList,eventDtlsMap);
 			    		 List<Object[]> rtrnEventInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Constituency");
 			    		 setEventInviteeAttendedCntToMap(rtrnEventInviteeAttendedObjList,eventDtlsMap);
 			    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
@@ -790,8 +790,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 					    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 					    		 List<Object[]> rtrnEventMndlInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
 					    		 setEventInviteeDetailsToMap(rtrnEventMndlInviteeObjList,eventDtlsMap);
-					    		 List<Object[]> rtrnEventMndlAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
-					    		 setEventAttendedCntToMap(rtrnEventMndlAttendedObjList,eventDtlsMap);
+					    		// List<Object[]> rtrnEventMndlAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
+					    		// setEventAttendedCntToMap(rtrnEventMndlAttendedObjList,eventDtlsMap);
 					    		 List<Object[]> rtrnEventMndlInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Mandal");
 					    		 setEventInviteeAttendedCntToMap(rtrnEventMndlInviteeAttendedObjList,eventDtlsMap);
 					    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
@@ -800,8 +800,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 					    		 
 					    		 List<Object[]> rtrnEventTwnDivInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
 					    		 setEventInviteeDetailsToMap(rtrnEventTwnDivInviteeObjList,eventDtlsMap);
-					    		 List<Object[]> rtrnEventTwnDivAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
-					    		 setEventAttendedCntToMap(rtrnEventTwnDivAttendedObjList,eventDtlsMap);
+					    		// List<Object[]> rtrnEventTwnDivAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
+					    		// setEventAttendedCntToMap(rtrnEventTwnDivAttendedObjList,eventDtlsMap);
 					    		 List<Object[]> rtrnEventTwnDivInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "TownDivision");
 					    		 setEventInviteeAttendedCntToMap(rtrnEventTwnDivInviteeAttendedObjList,eventDtlsMap);
 					    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
@@ -816,8 +816,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 							    	 for(Entry<Long,Set<Long>> entry:accessLevelMap.entrySet()){
 							    		 List<Object[]> rtrnEventVllgInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
 							    		 setEventInviteeDetailsToMap(rtrnEventVllgInviteeObjList,eventDtlsMap);
-							    		 List<Object[]> rtrnEventVllgAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
-							    		 setEventAttendedCntToMap(rtrnEventVllgAttendedObjList,eventDtlsMap);
+							    		// List<Object[]> rtrnEventVllgAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
+							    		// setEventAttendedCntToMap(rtrnEventVllgAttendedObjList,eventDtlsMap);
 							    		 List<Object[]> rtrnEventVllgInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Village");
 							    		 setEventInviteeAttendedCntToMap(rtrnEventVllgInviteeAttendedObjList,eventDtlsMap);
 							    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
@@ -826,8 +826,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 							    		
 							    		 List<Object[]> rtrnEventWrdInviteeObjList = eventInviteeDAO.getLocationWiseEventInviteedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
 							    		 setEventInviteeDetailsToMap(rtrnEventWrdInviteeObjList,eventDtlsMap);
-							    		 List<Object[]> rtrnEventWrdAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
-							    		 setEventAttendedCntToMap(rtrnEventWrdAttendedObjList,eventDtlsMap);
+							    		// List<Object[]> rtrnEventWrdAttendedObjList = eventAttendeeDAO.getLocationWiseEventAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
+							    		// setEventAttendedCntToMap(rtrnEventWrdAttendedObjList,eventDtlsMap);
 							    		 List<Object[]> rtrnEventWrdInviteeAttendedObjList = eventAttendeeDAO.getLocationWiseEventInviteeAttendedCntBasedOnUserType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, eventsId, "Ward");
 							    		 setEventInviteeAttendedCntToMap(rtrnEventWrdInviteeAttendedObjList,eventDtlsMap);
 							    		 caculatingNonInviteeAttendedCnt(eventDtlsMap);
@@ -921,8 +921,8 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		if(eventDtlsMap != null && eventDtlsMap.size() > 0){
 			for(Entry<Long,EventDetailsVO> entry:eventDtlsMap.entrySet()){
 				EventDetailsVO eventVO = entry.getValue();
-				eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
-				eventVO.setNonInviteeAttendedCountPer(calculatePercantage(eventVO.getNonInviteeAttendedCount(),eventVO.getAttendedCount()));
+				//eventVO.setNonInviteeAttendedCount(eventVO.getAttendedCount()-eventVO.getInviteeAttendedCount());
+				//eventVO.setNonInviteeAttendedCountPer(calculatePercantage(eventVO.getNonInviteeAttendedCount(),eventVO.getAttendedCount()));
 				eventVO.setInviteeAttendedCounPer(calculatePercantage(eventVO.getInviteeAttendedCount(), eventVO.getInviteeCount()));
 			}
 		}

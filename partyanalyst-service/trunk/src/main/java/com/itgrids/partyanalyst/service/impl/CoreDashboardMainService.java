@@ -1548,13 +1548,11 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 		 Map<String,Long> totalEligibleMemberCntMap = new HashMap<String, Long>();
 		 Map<String,Long> totalAttenedMemberCntMap = new HashMap<String, Long>();
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
 		 Date toDate=null;
 		 try{
 			 if(toDateStr != null && !toDateStr.isEmpty() && toDateStr.length() > 0){
 				 toDate = sdf.parse(toDateStr);
 			 }
-			 Date lastUpdatedTime = trainingCampAttendanceDAO.getLastUpdatedTime();
 			 List<Object[]> rtrnElgbleMemberForProgramObjList = tdpCommitteeMemberDAO.getTotalEligibleMembersForTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId);//Eligible Member For Training Program
 			 List<Object[]> rtrnAttendedMemberForProgramObjList = trainingCampAttendanceDAO.getTotalAttenedCadresByTrainingCampProgram(userAccessLevelId, userAccessLevelValues,stateId,toDate);//Attended Member In Training Program
 			 if(rtrnAttendedMemberForProgramObjList != null && rtrnAttendedMemberForProgramObjList.size() > 0){
@@ -1567,9 +1565,6 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 					TrainingCampProgramVO programVO = new TrainingCampProgramVO();
 					Long programId= param[0] != null ? (Long)param[0] :0l;
 					programVO.setId(programId);
-					if(lastUpdatedTime != null ){
-						programVO.setLastUpdatedTime(sdf1.format(lastUpdatedTime));	
-					}
 					programVO.setName(param[1] != null ? param[1].toString():"");
 					programVO.setTotalEligibleCount(param[2] != null ? (Long)param[2]:0l);
 					programVO.setTotalEligibleCountPer(calculatePercantage(programVO.getTotalEligibleCount(), programVO.getTotalEligibleCount()));
@@ -2474,6 +2469,19 @@ public List<TrainingCampProgramVO> getTrainingCampProgramsBasicCountDetails(Long
 		 return resultList;
 	 }
 
+	public String getTrainingCampRecentTime(){
+			  String lastUpdatedTimeStr="";
+			  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
+			  try{
+				  Date lastUpdatedTime = trainingCampAttendanceDAO.getLastUpdatedTime();
+				  if(lastUpdatedTime != null){
+					  lastUpdatedTimeStr= sdf.format(lastUpdatedTime);
+				  }
+			  }catch(Exception e){
+				  LOG.error("Error occured at getTrainingCampRecentTime() in CoreDashboardMainService {}",e);  
+			  }
+			  return lastUpdatedTimeStr;
+   }
 /*  Debate Service*/
 
 

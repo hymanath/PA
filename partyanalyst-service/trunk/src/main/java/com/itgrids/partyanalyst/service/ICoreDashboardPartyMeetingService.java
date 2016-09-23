@@ -23,4 +23,5 @@ public interface ICoreDashboardPartyMeetingService {
 
 	public ResultStatus insertDataInToPartyMeetingStatusTable();
 	public List<IdNameVO> getParyMeetingTypeDetailsPerDistrict(Long partyMeetingMainTypeId,List<Long> partyMeetingTypeIds,String state,String startDateString, String endDateString, Long distId);
+	public String getMeetingRecentTime();
 }

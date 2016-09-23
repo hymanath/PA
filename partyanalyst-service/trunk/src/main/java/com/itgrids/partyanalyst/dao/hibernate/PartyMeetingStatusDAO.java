@@ -618,6 +618,10 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 	   query.setParameter("currentDateTime", currentDateTime);
 	   return query.executeUpdate();
    }
-   
+   public Date getMeetingLastUpdatedTime()
+	{
+		Query query=getSession().createQuery("select max(model.insertedTime) from PartyMeetingStatus model");
+		  return (Date) query.uniqueResult();
+	} 
    
 }
