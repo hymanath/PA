@@ -2106,12 +2106,10 @@
 		getEventBasicCntDtls();
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
-		getNewsBasicCounts();
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
 		getAllNewsPapers();
-		//getDetailedGovtOverAllAnalysisOfActionImmediatelyProblems();
-		 //getAllDepartmentEditionsWiseDetails();
-
-		 //Debates
+		//Debates
 		getPartyWiseTotalDebateDetails();
 	}
 	
