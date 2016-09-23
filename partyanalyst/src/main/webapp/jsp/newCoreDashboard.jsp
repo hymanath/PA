@@ -2013,6 +2013,10 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script type="text/javascript">
+	$(document).on("click","#demoBtn",function(){
+		$("#attendanceModal").modal('show');
+	});
+	
 	//find device ipad & Iphone & Android
 	/* var ua = navigator.userAgent,
 	browser = {
