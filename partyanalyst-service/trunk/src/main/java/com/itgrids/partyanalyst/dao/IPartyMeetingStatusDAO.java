@@ -30,5 +30,6 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
 	public int updatePartyMeetingStatus8();
 	public int updatePartyMeetingStatus9();
 	public int setInsertedDate(Date currentDateTime);
+	public Date getMeetingLastUpdatedTime();
 	
 }
