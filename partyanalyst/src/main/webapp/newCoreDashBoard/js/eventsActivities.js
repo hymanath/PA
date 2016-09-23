@@ -824,7 +824,8 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 });
  $(document).on("click",".remveSlcUsrTypeForEvent",function(){
 		 var removeSelected = $(this).attr("attr_remove_SelecUserType"); 
-		 $("#"+removeSelected).remove();
+		 $("#"+removeSelected).html(' ');
+		 $("#"+removeSelected).closest('.showHideTr').hide();
  });
  $(document).on("click",".childEventMemberCls",function(){
 	    
@@ -840,15 +841,15 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 });
 $(document).on("click",".subLevelEventMemberCls",function(){
-	    $(this).closest('tr').next('tr.showHideTr').show(); 
-		var activityMemberId = $(this).attr("attr_activitymemberid");  
-		var userTypeId = $(this).attr("attr_usertypeid"); 
-		var selectedMemberName = $(this).attr("attr_selectedmembername");  
-		var selectedUserType = $(this).attr("attr_selectedusertype");  
-		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
-	    var attrEventIdsString = $(this).attr("attr_event_idsString");
-		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
-		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	$(this).next('tr.showHideTr').show(); 
+	var activityMemberId = $(this).attr("attr_activitymemberid");  
+	var userTypeId = $(this).attr("attr_usertypeid"); 
+	var selectedMemberName = $(this).attr("attr_selectedmembername");  
+	var selectedUserType = $(this).attr("attr_selectedusertype");  
+	var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
+	var attrEventIdsString = $(this).attr("attr_event_idsString");
+	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
+	getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 });
  function getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString){
 		 $("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');

@@ -1101,10 +1101,11 @@ $(document).on("click",".activityMemberCls",function(){
 });
 $(document).on("click",".remveSlcUsrType",function(){
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
-		 $("#"+removeSelected).remove();
+		 $("#"+removeSelected).html(' ');
+		 $("#"+removeSelected).closest('.showHideTr').hide();
 	});
 $(document).on("click",".lowLevelActivityMemberClsForTrainingProgram",function(){
-	    $(this).closest('tr').next('tr.showHideTr').show(); 
+	    $(this).next('tr.showHideTr').show(); 
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
 		var userTypeId = $(this).attr("attr_usertypeid"); 
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
