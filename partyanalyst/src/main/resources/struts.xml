@@ -13746,5 +13746,17 @@
 	  		<param name="root">idNameVOsList</param>   
 	 	</result>
 	</action>
+	<action name="getTrainingRecentTimeAction" class="coreDashboardAction" method="getTrainingRecentTime">
+		<result type="json" name="success">
+	  		<param name="root">status</param>   
+	 	</result>
+	</action>
+	<action name="getMeetingRecentTimeAction" class="coreDashboardAction" method="getMeetingRecentTime">
+		<result type="json" name="success">
+	  		<param name="root">status</param>   
+	 	</result>
+	</action>
+	
+	
 </package>
 </struts>

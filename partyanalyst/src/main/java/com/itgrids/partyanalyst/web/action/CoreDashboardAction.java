@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -1986,5 +1987,21 @@ public String getTopAbsentAndIregular(){
 		LOG.error("Exception raised at getAttendeeDtlsOfficeWiseForDay() method of CoreDashBoard", e);
 	}
 	return Action.SUCCESS; 
+}
+public String getTrainingRecentTime(){
+	try{
+		status = coreDashboardMainService.getTrainingCampRecentTime();
+	}catch(Exception e){
+		LOG.error("Exception raised at getTrainingRecentTime() method of CoreDashBoard", e);	
+	}
+	return Action.SUCCESS;
+}
+public String getMeetingRecentTime(){
+	try{
+		status = coreDashboardPartyMeetingService.getMeetingRecentTime();
+	}catch(Exception e){
+		LOG.error("Exception raised at getMeetingRecentTime() method of CoreDashBoard", e);	
+	}
+	return Action.SUCCESS;
 }
 }

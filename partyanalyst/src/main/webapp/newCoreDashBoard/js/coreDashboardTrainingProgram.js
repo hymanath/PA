@@ -77,7 +77,7 @@ var getDocumentWidth = $(document).width();
 			str+='<hr class="m_0"/>';
 		 str+='</div>';	
 	  }
-	  setLastUpdatedTimeForTrainingCamp(lastUPdatedTime);
+	  //setLastUpdatedTimeForTrainingCamp(lastUPdatedTime);
 	}else{
 		str+='NO DATA AVAILABLE';
 	}
@@ -189,9 +189,6 @@ var getDocumentWidth = $(document).width();
 	 str4+='NO DATA AVAILABLE';	
 	}
 	$("#stateTblDivId").html(str4);   */
-  }
-  function setLastUpdatedTimeForTrainingCamp(lastUPdatedTime){
-	  $("#lastUpdatedTimeTrainingCampId").html(" Last Updated :"+lastUPdatedTime+"");
   }
  function getTrainingCampProgramsDetailsCntByUserType(){
 		$("#districtWiseProgramCntDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -2209,3 +2206,22 @@ function buildstateLevelCampDetailsRepresentativeWise(result){
 		$("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
 	}
 }
+getTrainingRecentTime();
+window.setInterval(function(){
+  getTrainingRecentTime(); 
+},10*60*1000);/*every 10 minutes .this method will update time  */
+function getTrainingRecentTime(){
+ 	$.ajax({
+		type : 'POST',
+		url : 'getTrainingRecentTimeAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify( )}
+	}).done(function(result){
+		if(result != null){
+		 setTrainingLastUpdateTime(result)	
+		}
+	});
+}
+  function setTrainingLastUpdateTime(lastUPdatedTime){
+	  $("#lastUpdatedTimeTrainingCampId").html(" Last Updated :"+lastUPdatedTime+"");
+  }
