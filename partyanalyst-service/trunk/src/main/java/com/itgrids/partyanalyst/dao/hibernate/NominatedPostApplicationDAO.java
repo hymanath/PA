@@ -604,9 +604,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.boardLevelId, count(distinct model.nominatedPostApplicationId), " +
-				" count(distinct nominatedPostPosition.departmentId), " +
-				" count(distinct nominatedPostPosition.boardId), " +
-				"  model.nominatedPostMemberId  " +
+				" count(distinct department.departmentId), " +
+				" count(distinct board.boardId), " +
+				"  nominatedPostMember.nominatedPostMemberId,department.departmentId,board.boardId  " +
 				" from NominatedPostApplication model ");
 		
 		/*if(levelId != null && levelId.longValue()>1L && stateId != null){
@@ -621,16 +621,21 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		}*/
 		
 		if(levelId != null && levelId.longValue()>1L && stateId != null){
-			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
-			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
+			queryStr.append("  left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition" +
+							"  left join nominatedPostPosition.departments department" +
+							"  left join nominatedPostPosition.board  board ");
 			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and model.isDeleted='N' " );
 		}
 		else{
 			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
-			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition where model.isDeleted='N' ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+							"  left join nominatedPostPosition.departments department " +
+							"  left join nominatedPostPosition.board  board where model.isDeleted='N' ");
 		}
 		
-		queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
+		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
+		queryStr.append(" and  model.applicationStatusId is not null  "); // any board any department scenario member will not available in overview appln count
 		if(levelId.longValue() != 5L)
 			queryStr.append("   and model.boardLevelId =:levelId ");
 		else
@@ -648,7 +653,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.boardLevelId, model.nominatedPostMemberId  order by model.boardLevelId ");
+		queryStr.append(" group  by model.boardLevelId, nominatedPostMember.nominatedPostMemberId  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(levelId.longValue() != 5L)
@@ -721,7 +726,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.boardLevelId, count( distinct model.nominatedPostApplicationId), " +
 				" count(distinct nominatedPostPosition.departmentId), " +
-				" count(distinct nominatedPostPosition.boardId)  " +
+				" count(distinct nominatedPostPosition.boardId),nominatedPostMember.nominatedPostMemberId , " +
+				"nominatedPostPosition.departmentId,nominatedPostPosition.boardId  " +
 				" from NominatedPostApplication model ");
 		if(levelId != null && levelId.longValue()>1L && stateId != null){
 			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
@@ -751,7 +757,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.boardLevelId order by model.boardLevelId ");
+		queryStr.append(" group  by model.boardLevelId,nominatedPostMember.nominatedPostMemberId order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(levelId != null && levelId.longValue()>0L)
@@ -921,6 +927,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 					str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
 				}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
 					str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+					//str.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
 				}
 				
 				str.append(" GROUP BY  model.nominatedPostMember.nominatedPostPosition.position.positionId,model.applicationStatus.applicationStatusId " +
@@ -964,6 +971,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
 		}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
 			str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+			//str.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
 		}
 		
 		str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +
@@ -1338,6 +1346,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			else
 				queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
 		}
+		queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") ");
 		
 		if(searchlevelId != null && searchlevelId.longValue()>0L){
 			if(searchlevelId.longValue() == 1L)
@@ -1460,6 +1469,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 					//str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
 				}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
 					str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+					//str.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
 				}
 		     
 		    str.append(" GROUP BY position.positionId ");
@@ -1898,11 +1908,74 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    return query.list();  
 	}
 	
+@SuppressWarnings("unchecked")
 public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type){
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId),count(distinct model.nominatedPostApplicationId)," +
-				" model.nominatedPostMemberId " +				
+				" nominatedPostMember.nominatedPostMemberId " +				
+				" from NominatedPostApplication model,NominatedPost model1 ");	
+		
+		if(levelId != null && levelId.longValue()>1L && stateId != null){
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition ");
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and model.isDeleted='N' " );
+			queryStr.append(" and nominatedPostMember.nominatedPostMemberId = model1.nominatedPostMember.nominatedPostMemberId " );
+		}
+		else{
+			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition where model.isDeleted='N' ");
+		}
+		
+		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
+		queryStr.append(" and  model.applicationStatusId is not null  ");
+		if(levelId.longValue() != 5L)
+			queryStr.append("   and model.boardLevelId =:levelId ");
+		else
+			queryStr.append("   and model.boardLevelId in (5,6) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
+		
+		if(type !=null && type.trim().equalsIgnoreCase("applied")){
+			queryStr.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+") " );
+		}else if(type !=null && type.trim().equalsIgnoreCase("running")){
+			queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") " );
+			queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
+		}
+		
+			queryStr.append(" and model1.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_OPEN_POSTS_STATUS_IDS+") ");//not finalyzed and g.o passed
+		
+		if(levelId != null && levelId.longValue()>2L && stateId != null){
+			if(stateId.longValue() ==1L)
+				queryStr.append("  and (model3.district.districtId  in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ) ");
+			else if(stateId.longValue() ==36L)
+				queryStr.append(" and  ( model3.district.districtId  in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") )");
+		}
+		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			queryStr.append(" and  model3.state.stateId=:stateId ");
+		
+		queryStr.append(" group  by model.boardLevelId , nominatedPostMember.nominatedPostMemberId " +
+				"  order by model.boardLevelId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(levelId.longValue() != 5L)
+			query.setParameter("levelId", levelId);
+		if(startDate != null && endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(levelId != null && levelId.longValue() == 2L && stateId != null)
+			query.setParameter("stateId", stateId.longValue() == 1L ? stateId.longValue():36L);
+		
+		return query.list();
+	}
+
+@SuppressWarnings("unchecked")
+public List<Object[]> getNominatedPostsAppliedApplcitionsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type){
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.boardLevelId,count(distinct model1.nominatedPostId),count(distinct model.nominatedPostApplicationId)," +
+				" nominatedPostMember.nominatedPostMemberId " +				
 				" from NominatedPostApplication model,NominatedPost model1 ");	
 		
 		if(levelId != null && levelId.longValue()>1L && stateId != null){
@@ -1928,6 +2001,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 			queryStr.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+") " );
 		}else if(type !=null && type.trim().equalsIgnoreCase("running")){
 			queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") " );
+			queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
 		}
 		
 			queryStr.append(" and model1.nominatedPostStatus.nominatedPostStatusId in ("+IConstants.NOMINATED_OPEN_POSTS_STATUS_IDS+") ");//not finalyzed and g.o passed
@@ -1941,7 +2015,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		else if(levelId != null && levelId.longValue() == 2L && stateId != null)
 			queryStr.append(" and  model3.state.stateId=:stateId ");
 		
-		queryStr.append(" group  by model.boardLevelId , model.nominatedPostMemberId " +
+		queryStr.append(" group  by model.boardLevelId , nominatedPostMember.nominatedPostMemberId " +
 				"  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -1956,6 +2030,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		
 		return query.list();
 	}
+
 public int updateApllicationStatusToReject(Long nominatedPostApplicationId,Long statusId,Long userId){
 	
 	StringBuilder queryStr = new StringBuilder();
@@ -2020,7 +2095,7 @@ public List<Object[]> getPositionWiseTotalApplicationsReceived(Long boardLevelId
 	else{*/
 	str.append(" SELECT position.positionId,position.positionName,model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
 			" count(distinct model.nominatedPostApplicationId) " +
-			" FROM NominatedPostApplication model left join model.position position" +
+			" FROM NominatedPostApplication model left join model.position position left join model.departments department left join model.board board" +
 			" WHERE " +
 			" model.isDeleted = 'N' " );
 	
@@ -2036,10 +2111,10 @@ public List<Object[]> getPositionWiseTotalApplicationsReceived(Long boardLevelId
 // Any Dept && Board && post Scenarios Consideration && non Consideration
 	
 	if(deptsIds !=null && deptsIds.size()>0){
-		str.append(" AND model.departments.departmentId in (:deptsIds) ");
+		str.append(" AND department.departmentId in (:deptsIds) ");
 	}
 	if(boardIds !=null && boardIds.size()>0){
-		str.append(" AND model.board.boardId in (:boardIds) ");
+		str.append(" AND board.boardId in (:boardIds) ");
 	}
 	
 	
@@ -2055,6 +2130,7 @@ if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
 		str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
 	}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
 		str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+		//str.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
 	}
 	
 	str.append(" GROUP BY position.positionId,model.applicationStatus.applicationStatusId " +

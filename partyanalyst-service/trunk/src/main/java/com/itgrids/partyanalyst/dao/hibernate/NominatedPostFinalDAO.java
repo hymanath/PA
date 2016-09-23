@@ -1827,6 +1827,20 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.executeUpdate();
 	}
 	
+	public List<Long> getNominatedPostApplicationIdsByMemberOfFinalReview(Long memberId){
+		
+		 Query query = getSession().createQuery(" select model.nominatedPostApplicationId from NominatedPostFinal model " +
+		 		" where model.nominatedPostMemberId = :memberId " +
+		 		" and model.isDeleted = 'N'" +
+		 		" and model.nominatedPostApplication.isDeleted ='N'  " +
+		 		" and model.applicationStatusId = :finalReview ");
+		
+		 query.setParameter("finalReview", IConstants.NOMINATED_APPLICATION_FINAL_REVIEW);
+		 query.setParameter("memberId", memberId);
+		 
+		return query.list();
+	}
+	
 	public List<NominatedPostApplication> getNominatedPostApplicationsByMemberOfFinalReview(Long memberId){
 		
 		 Query query = getSession().createQuery(" select model.nominatedPostApplication from NominatedPostFinal model " +
@@ -1905,7 +1919,7 @@ public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevel
 		else{*/
 		str.append(" SELECT position.positionId,position.positionName,model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
 				" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
-				" FROM NominatedPostFinal model left join model.nominatedPostApplication.position position" +
+				" FROM NominatedPostFinal model left join model.nominatedPostApplication.position position " +
 				" WHERE " +
 				" model.isDeleted = 'N' " );
 		
@@ -1921,10 +1935,10 @@ public List<Object[]> getPositionDetaislOfEveryApplicationStatus(Long boardLevel
 	// Any Dept && Board && post Scenarios Consideration && non Consideration
 		
 		if(deptsIds !=null && deptsIds.size()>0){
-			str.append(" AND model.nominatedPostApplication.departments.departmentId in (:deptsIds) ");
+			str.append(" AND model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId in (:deptsIds) ");
 		}
 		if(boardIds !=null && boardIds.size()>0){
-			str.append(" AND model.nominatedPostApplication.board.boardId in (:boardIds) ");
+			str.append(" AND model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId in (:boardIds) ");
 		}
 		
 		

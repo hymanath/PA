@@ -209,9 +209,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		}
 			else{
 		
-			str.append("SELECT model.position.positionId," +
-					" model.position.positionName " +
-					"	FROM NominatedPostApplication model" +
+			str.append("SELECT position.positionId," +
+					"  position.positionName " +
+					"	FROM NominatedPostApplication model left join  model.position position " +
+					" left join model.departments department " +
+					" left join model.board board " +
 					"   WHERE " +
 					"  model.isDeleted ='N'" );
 			
@@ -225,13 +227,13 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 				str.append(" and model.locationValue in (:levelValue) ");
 			}
 			if(deptId !=null && deptId.size() >0){
-				str.append(" and model.departments.departmentId in (:deptId) ");
+				str.append(" and department.departmentId in (:deptId) ");
 			}
 			if(boardId !=null && boardId.size()>0){
-				str.append(" and model.board.boardId in (:boardId) ");
+				str.append(" and board.boardId in (:boardId) ");
 			}
 			
-			str.append(" and  model.positionId is not null ");
+			//str.append(" and  model.positionId is not null ");
 			
 			/*if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 				str.append(" and model.applicationStatus.status = :notYet ");
@@ -242,10 +244,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 				str.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
 			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+				str.append(" and  model.positionId is not null ");
 				str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
 			}
 			
-			str.append(" GROUP BY model.position.positionId ORDER BY model.position.positionId ");
+			str.append(" GROUP BY position.positionId ORDER BY position.positionId ");
 		}
 		Query query = getSession().createQuery(str.toString());
 		
