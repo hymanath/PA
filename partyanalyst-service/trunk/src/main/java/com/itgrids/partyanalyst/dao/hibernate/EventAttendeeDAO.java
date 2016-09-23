@@ -2832,11 +2832,11 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		  	       }
 			        
 		       
-		       queryStr.append(" COUNT(DISTINCT CONCAT(E.parent_event_id,'-',TC.tdp_cadre_id)) as count ");
-		
-		       queryStr.append(" FROM event_attendee EA,event_invitee EI," +
-				               " event E,tdp_cadre TC," +
-				               " user_address UA");
+			       queryStr.append(" COUNT(DISTINCT CONCAT(E.parent_event_id,'-',TC.tdp_cadre_id)) as count ");
+			
+			       queryStr.append(" FROM event_attendee EA,event_invitee EI," +
+					               " event E,tdp_cadre TC," +
+					               " user_address UA");
 		
 		          if(locationType != null && locationType.equalsIgnoreCase("District")){
 			         queryStr.append(",district d"); 
@@ -2864,9 +2864,9 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			queryStr.append(" AND E.parent_event_id in(:eventIds)" );	
 		  }
 		  if(locationType != null && locationType.equalsIgnoreCase("District")){
-		      queryStr.append(" and UA.district_id=d.district_id");
+		        queryStr.append(" and UA.district_id=d.district_id");
 		   }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-		      queryStr.append("  and UA.constituency_id=c.constituency_id ");
+		        queryStr.append("  and UA.constituency_id=c.constituency_id ");
 			  }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
 		     	queryStr.append(" and UA.tehsil_id=t.tehsil_id ");  
 		   }else if(locationType != null && locationType.equalsIgnoreCase("Village")){
@@ -2902,13 +2902,13 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				}
 		 }
 		   if(locationType != null && locationType.equalsIgnoreCase("District")){
-		     queryStr.append(" group by d.district_id "); 
+		       queryStr.append(" group by d.district_id "); 
 		    }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
-		     queryStr.append(" group by c.constituency_id "); 
+		       queryStr.append(" group by c.constituency_id "); 
 			}else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
-		     queryStr.append(" group by t.tehsil_id ");
+		       queryStr.append(" group by t.tehsil_id ");
 		    }else if(locationType != null && locationType.equalsIgnoreCase("Village")){
-		    queryStr.append(" group by p.panchayat_id ");
+		       queryStr.append(" group by p.panchayat_id ");
 		    }else if(locationType != null && locationType.equalsIgnoreCase("Ward")){
 		       queryStr.append(" group by c.constituency_id ");
 		    }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
