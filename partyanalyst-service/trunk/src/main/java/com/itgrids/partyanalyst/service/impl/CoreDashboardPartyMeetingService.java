@@ -1858,6 +1858,19 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	 return null;
  }
 
-
+ 
+ public String getMeetingRecentTime(){
+	  String lastUpdatedTimeStr="";
+	  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a ");
+	  try{
+		  Date lastUpdatedTime = partyMeetingStatusDAO.getMeetingLastUpdatedTime();
+		  if(lastUpdatedTime != null){
+			  lastUpdatedTimeStr= sdf.format(lastUpdatedTime);
+		  }
+	  }catch(Exception e){
+		  LOG.error("Error occured at getMeetingRecentTime() in CoreDashboardPartyMeetingService {}",e);  
+	  }
+	  return lastUpdatedTimeStr;
+}
 
 }
