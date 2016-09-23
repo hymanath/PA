@@ -212,7 +212,7 @@ function buildEventBasicCntDtls(result)
 {
 	var eventIdsString;
 	var str=' ';
-	str+='<div class="panel-group m_top10" id="accordionEvents" role="tablist" aria-multiselectable="true">';
+	//str+='<div class="panel-group m_top10" id="accordionEvents" role="tablist" aria-multiselectable="true">';
 		for(var i in result)
 		{
 			if(i== 0){
@@ -222,7 +222,10 @@ function buildEventBasicCntDtls(result)
 			}
 			str+='<div class="panel panel-default panelNewEvents">';
 				str+='<div class="panel-heading" role="tab" id="headingEvents'+i+'">';
-					if(i == 0)
+					str+='<h4 class="panel-title">'+result[i].name+'';
+						str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+					str+='</h4>';
+					/* if(i == 0)
 					{
 						str+='<h4 class="panel-title">';
 							str+='<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionEvents" href="#collapseEvents'+i+'" aria-expanded="true" aria-controls="collapseEvents'+i+'">'+result[i].name+'';
@@ -235,15 +238,15 @@ function buildEventBasicCntDtls(result)
 							str+='</a>';
 							str+='<span attr_event_idsString='+result[i].id+' class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 						str+='</h4>';
-					}
+					} */
 					
 				str+='</div>';
-				if(i == 0)
+				/* if(i == 0)
 				{
 					str+='<div id="collapseEvents'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingEvents'+i+'">';
 				}else{
 					str+='<div id="collapseEvents'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEvents'+i+'">';
-				}
+				} */
 					str+='<div class="panel-body pad_5">';
 						str+='<div class="row">';
 							str+='<div class="col-md-12 col-xs-12 col-sm-12">';
@@ -268,11 +271,11 @@ function buildEventBasicCntDtls(result)
 							str+='</div>';
 						str+='</div>';
 						
-					str+='</div>';
+					//str+='</div>';
 				str+='</div>';
 			str+='</div>';
 		}
-	str+='</div>';
+	//str+='</div>';
 	str+='';
 	$("#eventIds").attr("attr_event_idsString",eventIdsString); 
 	$("#mainEventsList").html(str)
@@ -302,14 +305,21 @@ function getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString){
 function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 	var str='';
 	if(result != null && result.length > 0){
-		for(var i in result){
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>';
-				str+='<div id="eventsCountGraph'+i+'" style="height:100px;"></div>';
-			str+='</div>'
-				
-		}
-		
+			for(var i in result){
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				 if(result[i][0].userTypeId==4 || result[i][0].userTypeId==11){
+				  if(result[i][0].userTypeId==4){
+				   str+='<h5 class="text-capital">'+result[i][0].userType+' / SECRETARY </h5>';      
+				  }
+				  if(result[i][0].userTypeId==11){
+				   str+='<h5 class="text-capital">ORGANIZING SECRETARY /'+result[i][0].userType+'</h5>';      
+				  }
+			   }else{
+				str+='<h5 class="text-capital">'+result[i][0].userType+'</h5>'; 
+			   }
+				str+='<div id="eventsCountGraph'+i+'" style="width:100%;height:100px;"></div>';
+				str+='</div>'
+			}
 	}
 	$("#UserTypeWiseEventMemberDtslDivId").html(str);
 	if(result != null && result.length > 0){
@@ -383,7 +393,7 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 										if (this.y === 0) {
 											return null;
 										} else {
-											return Highcharts.numberFormat(this.y,1) + '%';
+											return Highcharts.numberFormat(this.y,2) + '%';
 										}
 									}
 								  
@@ -393,7 +403,7 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 
 						tooltip: {
 							headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-							pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
+							pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b>'
 						},
 
 						series: [{
