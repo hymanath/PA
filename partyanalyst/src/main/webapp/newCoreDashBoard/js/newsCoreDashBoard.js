@@ -3752,7 +3752,7 @@ var url = window.location.href;
 						str+='<tbody>';
 						for(var i in result){
 							 str+='<tr>';
-								str+='<td>01</td>';
+								str+='<td>'+(parseInt(i)+1)+'</td>';
 								str+='<td>'+result[i].organization+'</td>';
 								
 								str+='<td>'+result[i].neutralCountMain+'</td>';

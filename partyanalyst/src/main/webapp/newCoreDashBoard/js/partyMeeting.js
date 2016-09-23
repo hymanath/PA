@@ -1814,7 +1814,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 		    if(result != null && result.length > 0){
 				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId");
 			}else{
-			  $("#stateLevelMeetingBasicCnt").html("NO DATA AVAILABLE.");	
+			  $("#stateLevelMeetingBasicCnt").html("<div class='col-md-12 col-xs-12 col-sm-12'>NO DATA AVAILABLE.</div>");	
 			}
 		});
 	
