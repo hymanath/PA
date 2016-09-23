@@ -1987,6 +1987,52 @@
 </div>
 
 <!--model end -->
+<!--attended model-->
+<div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:80%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header bg_EE">
+    <div class="row">
+      <div class="col-md-6 col-xs-12 col-sm-6">
+        <h4 class="modal-title text-capitalize" id="diptNameId"></h4>
+        <h6 id="officeNameId"></h6>
+      </div>
+      <div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="input-group">
+          <input type="text" class="form-control" id="attenDatePickerModal"/>
+          <span class="input-group-addon">
+            <i class="glyphicon glyphicon-calendar"></i>  
+          </span>
+        </div>
+      </div>
+    </div>
+      </div>
+      <div class="modal-body">      
+        <div class="row">
+      <div class="col-md-6 col-xs-12 col-sm-6" id="totalCountId">
+        
+      </div>
+      <div class="col-md-6 col-xs-12 col-sm-6">
+        <div id="attedanceModalId" height="200px"></div>
+      </div>
+      <!--<div class="col-md-12 col-xs-12 col-sm-12">
+        <h4><span class="headingColor text-capitalize">department overview</span></h4>
+        <div id="dayWiseOvervwModal" style="height:250px"></div>
+      </div>-->
+	  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+		<div m_top20>
+			<h4><span class="headingColor text-capitalize">employee wise overview</span></h4>
+		</div>
+		<div class="table-responsive" id="employeeOverViewId">
+		</div>
+	  </div>      
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end-->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
