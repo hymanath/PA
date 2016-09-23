@@ -1182,6 +1182,12 @@ var url = window.location.href;
 	
 	function getComparisonGovtMinistriesInfo(){
 		$("#comparisonGovtMinistriesInfo").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var type;
+		$(".radioTypeCls").each(function(){
+			if($(this).is(":checked")){
+				type = $(this).val();
+			}
+		});
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -1203,8 +1209,8 @@ var url = window.location.href;
 		var state = globalState;
 		var startDate=currentFromDate,endDate=currentToDate;
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+type
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisonGovtMinistriesInfo/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr+"/"+type
 		}).then(function(result){
 			//$("#comparisonGovtMinistriesInfo").html('');
 			buildComparisonGovtMinistriesInfo(result);
@@ -5617,3 +5623,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 				});
 			} 
 	}
+	$(document).on("click",".radioTypeCls",function(){
+		getComparisonGovtMinistriesInfo();
+	});
+	
