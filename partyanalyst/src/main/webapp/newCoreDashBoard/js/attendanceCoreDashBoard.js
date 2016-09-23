@@ -742,7 +742,7 @@ $('#attendance').highcharts({
 								str+='<td>'+result[1][i].name+'</td>';
 								str+='<td>'+result[1][i].count+'</td>';
 							str+='</tr>';
-							f(i===5){
+							if(i===5){
 								break;
 							}
 						}
@@ -757,4 +757,109 @@ $('#attendance').highcharts({
 		if(officeId==2){
 			$("#gunTopId").html(str);
 		} 
-	}  
+	} 
+/*Notes Functionality*/
+function displayDashboardCommentsForAttendance(dashBoardComponentId){
+	var jsObj={
+		dashBoardComponentId:dashBoardComponentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "displayDashboardCommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length >0){
+		 var str=''; 
+			 
+		 str+='<ul class="notesUlAttendance m_top20" style="text-transform: none;font-weight: normal;font-size: 14px;">';  	
+			for(var i in result){ 
+				str+='<li style="margin-top:3px;">'; 
+				str+='<span class="notesTextAttendance" id="editTextAttendanceId'+i+'"  attr_commentId="'+result[i].dashBoardCommentId+'">'+result[i].comment+' </span>- <span class="text-muted"><i>'+result[i].insertedTime+'</i></span>';
+				str+='<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesAttendance" attr_cmt_id="editTextAttendanceId'+i+'" id="'+result[i].dashBoardCommentId+'" onClick="deleteDashBoardcomments(this.id);"></i>';
+				str+='<i class="glyphicon glyphicon-edit pull-right hoverBlock editNotesAttendance" attr_cmt_id="editTextAttendanceId'+i+'" attr_comment="'+result[i].comment+'"></i>';
+				str+='</li>';
+			}
+		str+='</ul>';
+			
+			$("#notesAttendanceId").html(str);	 
+		}
+	});
+}
+function deleteDashBoardcomments(dashboardCommentId)
+{
+	var jsObj={
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "deleteDashBoardcommentsAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				
+			}
+		}
+	});
+}
+
+function savingDashboardCommentForAttendance(dashboardComponentId){  
+	var comment=$(".notesAreaAttendance").val();
+	if(comment.trim() ==""){
+		  $("#attendanceId").html("Notes Required.");
+		  return;
+	  }
+	var editId = $("#cmtAttendanceId").val();
+	//$("#"+editId).parent().html(' ');
+	$("#"+editId).html(comment);
+	 var dashboardCommentId=0;
+	 if($(".notesAreaAttendance").attr("attr_commentid")>0)
+	 {
+		dashboardCommentId=$(".notesAreaAttendance").attr("attr_commentid");		
+	 }
+
+	var jsObj={
+		comment:comment,
+		dashboardComponentId: dashboardComponentId,
+		dashboardCommentId : dashboardCommentId
+	}	
+	$.ajax({
+	 type: "POST",
+	 url: "savingDashboardCommentAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){	
+			if(result.message == "success"){
+				displayDashboardCommentsForAttendance(7);
+			}
+		}			
+	});
+}
+$(document).on("click",".notesIconattendance",function(){
+	$(this).closest(".panel-heading").find(".notesDropDown").toggle();
+});
+$(document).on("click",".deleteNotesAttendance",function(){
+	$(this).closest("li").remove();
+});
+$(document).on("click",".editNotesAttendance",function(){ 
+	var commentId = $(this).attr("attr_cmt_id");
+	var commentId1 = $(this).parent().find(".notesTextAttendance").attr("attr_commentid");
+	var notesHtml = $("#"+commentId).html();
+	$(".notesAreaAttendance").val(notesHtml);  
+	$(".notesAreaAttendance").attr("attr_commentid",commentId1);  
+	$("#cmtId").val(commentId);
+	//$("#cmtId").val();
+	$("#attendanceId").html('');		
+});
+
+$(document).on("click",".btnCustomCreateAttendance",function(){
+	var getNewNotes = $(".notesAreaAttendance").val();
+	var todayDate = moment().format("DD MMMM YYYY");
+	var cmtId = $("#cmtId").val();
+	var commentText = '<span class="notesText" id="'+cmtId+'" >'+getNewNotes+'</span> - <span class="text-muted"><i>'+todayDate+'</i></span> <i  class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotesAttendance"></i><i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes" attr_cmt_id="'+cmtId+'"></i>'; 
+	if(cmtId>0)
+	$(".notesUlAttendance").append("<li>"+commentText+"</li>");
+	$(".notesAreaAttendance").val('');	
+});
+
+/*Notes Functionality End*/	
