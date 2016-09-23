@@ -46,6 +46,26 @@ $(document).on("click",".attendaceIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}
 });
+
+$("#attenDatePickerModal").daterangepicker({  
+  opens: 'left',
+  startDate: moment(),
+  endDate: moment(),
+  locale: {
+    format: 'MM/DD/YYYY'       
+  },  
+  ranges: {
+     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	 'Today': [moment(), moment()],
+	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	 'This Month': [moment().startOf('month'), moment()],
+     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+     'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+     'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+     'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+     'This Year': [moment().startOf('Year'), moment()]    
+  }   
+})  
 $("#dateRangeIdForAttendance1").daterangepicker({
   opens: 'left',
   startDate: moment(),
@@ -57,11 +77,11 @@ $("#dateRangeIdForAttendance1").daterangepicker({
      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	 'Today': [moment(), moment()],
 	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	 'This Month': [moment().startOf('month'), moment()],
      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
      'Last 3 Months': [moment().subtract(3, 'month'), moment()],
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
      'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-     'This Month': [moment().startOf('month'), moment()],
      'This Year': [moment().startOf('Year'), moment()]    
   }   
 })
@@ -98,11 +118,11 @@ $("#dateRangeIdForAttendance2").daterangepicker({
      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	 'Today': [moment(), moment()],
 	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	 'This Month': [moment().startOf('month'), moment()],
      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
      'Last 3 Months': [moment().subtract(3, 'month'), moment()],
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
      'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-     'This Month': [moment().startOf('month'), moment()],
      'This Year': [moment().startOf('Year'), moment()]  
   }
 })
@@ -116,7 +136,7 @@ $('#dateRangeIdForAttendance2').on('apply.daterangepicker', function(ev, picker)
 		$("#hydTopId").html('');
 	}
 	if(officeId==2){
-		$("#gunTopId").html('');
+		$("#gunTopId").html('');  
 	}   
 	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	getLocationDtls(tableId,officeId,customFromDate2,customToDate2);  
@@ -651,9 +671,9 @@ $('#attendance').highcharts({
 			str+='</thead>';
 			for(var i in result){    
 				str+='<tr>';
-					str+='<td>'+result[i].districtName+'</td>';
-					str+='<td>'+result[i].name+'</td>';
-					str+='<td>'+result[i].mobileNo+'</td>';
+					str+='<td class="deptDtlsCls" attr_dept_name="'+result[i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[i].districtName+'</u></td>';
+					str+='<td class="empDtlsCls" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[i].name+'</u></td>'; 
+					str+='<td>'+result[i].mobileNo+'</td>';    
 					str+='<td>'+result[i].id+'</td>';
 					str+='<td>'+result[i].availableCount+'</td>';
 					str+='<td class="text-danger">'+result[i].orderId+'</td>';   
@@ -698,7 +718,7 @@ $('#attendance').highcharts({
 			}
 			
 			if(result != null && result.length > 0){
-				buildTopAbsentAndIgegular(result,officeId);
+				buildTopAbsentAndIgegular(result,officeId,customFromDate1,customToDate1);
 			}else{  
 				if(officeId==1){
 					$("#hydTopId").html('Data Not Available');
@@ -709,7 +729,7 @@ $('#attendance').highcharts({
 			}    
 		});  
 	}
-	function buildTopAbsentAndIgegular(result,officeId){
+	function buildTopAbsentAndIgegular(result,officeId,customFromDate1,customToDate1){
 		var str = '';
 		str+='<div class="row">';
 			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
@@ -726,8 +746,8 @@ $('#attendance').highcharts({
 								break;
 							}
 							str+='<tr>';
-								str+='<td>'+result[0][i].districtName+'</td>';
-								str+='<td>'+result[0][i].name+'</td>';
+								str+='<td class="deptDtlsCls" attr_dept_name="'+result[0][i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[0][i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[0][i].districtName+'</u></td>';
+								str+='<td class="empDtlsCls" attr_dept_id="'+result[0][i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[0][i].name+'</u></td>';  
 								str+='<td>'+result[0][i].count+'</td>';
 							str+='</tr>';
 							if(i==5){
@@ -750,11 +770,11 @@ $('#attendance').highcharts({
 						str+='</thead>'; 
 						for(var j in result[1]){
 							if(result[1][j].orderId==0){
-								break;    
+								break;     
 							}
 							str+='<tr>';     
-								str+='<td>'+result[1][j].districtName+'</td>';
-								str+='<td>'+result[1][j].name+'</td>';
+								str+='<td class="deptDtlsCls" attr_dept_name="'+result[1][j].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[1][j].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[1][j].districtName+'</u></td>';
+								str+='<td class="empDtlsCls" attr_dept_id="'+result[1][j].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[1][j].name+'</u></td>';  
 								str+='<td>'+result[1][j].orderId+'</td>';
 							str+='</tr>';
 							if(j==5){
@@ -762,7 +782,7 @@ $('#attendance').highcharts({
 							}
 						}  
 						
-					str+='</table>';
+					str+='</table>';  
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -772,8 +792,280 @@ $('#attendance').highcharts({
 		if(officeId==2){
 			$("#gunTopId").html(str);
 		} 
-	} 
-/*Notes Functionality*/
+	}  
+	$(document).on('click','.deptDtlsCls',function(){  
+		var deptId = $(this).attr("attr_dept_id");
+		var officeId = $(this).attr("attr_office_id");
+		var fromDate = $(this).attr("attr_from_date");
+		var toDate = $(this).attr("attr_to_date");
+		getTotalDtls(deptId,officeId,fromDate,toDate);
+		getTimeWiseDtls(deptId,officeId,fromDate,toDate);
+		getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate);
+		$("#diptNameId").html($(this).attr("attr_dept_name"));
+		if(officeId==1){
+			$("#officeNameId").html('Hyderabad Party Office - Attendance');
+		}
+		if(officeId==2){
+			$("#officeNameId").html('Guntur Party Office - Attendance');  
+		} 
+		$("#totalCountId").html('');  
+		 $('#attedanceModalId').html('');
+		 $("#employeeOverViewId").html('');
+		 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
+		$("#attendanceModal").modal('show');
+		
+		
+		
+	});
+	function getTotalDtls(deptId,officeId,fromDate,toDate){
+		var jsObj={ 
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getAttendanceCountForMulitDateAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			$("#totalCountId").html('');
+			if(result != null){
+				buildTotalDtls(result);
+			}else{  
+				
+			}    
+		});  
+	}
+	function buildTotalDtls(result){
+		var str = '';
+		str+='<h4><span class="headingColor text-capitalize">department overview</span></h4>';
+        str+='<table class="table tableAttendance text-capital">';
+          str+='<tr>';
+            str+='<td>total employees</td>';
+            str+='<td>'+result.count+'</td>';
+          str+='</tr>';  
+          str+='<tr>';
+            str+='<td>total working days</td>';
+            str+='<td>'+result.actualCount+'</td>';
+          str+='</tr>';
+          str+='<tr>';
+            str+='<td>total present</td>';
+            str+='<td>'+result.availableCount+'</td>';
+          str+='</tr>';
+          str+='<tr>';
+            str+='<td>total Absent</td>';
+            str+='<td>'+result.id+'</td>';    
+          str+='</tr>';
+        str+='</table>';
+		$("#totalCountId").html(str);
+	}
+	function getTimeWiseDtls(deptId,officeId,fromDate,toDate){
+		var jsObj={ 
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId     
+		};
+		$.ajax({          
+			type : 'GET',      
+			url : 'getAttendanceCountForMulitDateTimeWiseAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			
+			if(result != null){  
+				buildTimeWiseDtls(result,officeId);
+			}else{  
+				 $("#attedanceModalId").html('');  
+			}    
+		});  
+	}
+	function buildTimeWiseDtls(result,officeId){  
+	if(officeId==1){
+		var title = "HYDERABAD PARTY OFFICE"
+	}
+	if(officeId==2){
+		var title = "GUNTUR PARTY OFFICE"    
+	}
+	/* $('#dayWiseOvervwModal').highcharts({    
+
+    chart: {
+      type: 'column'
+    },
+
+    title: {
+      text: null
+    },
+
+    xAxis: {
+      categories: ['1', '2', '3', '4', '5']
+    },
+
+    yAxis: {
+      allowDecimals: false,
+      min: 0,
+      title: {
+        text: 'Number of fruits'
+      }
+    },
+
+    tooltip: {
+      formatter: function () {
+        return '<b>' + this.x + '</b><br/>' +
+          this.series.name + ': ' + this.y + '<br/>' +
+          'Total: ' + this.point.stackTotal;
+      }
+    },
+
+    plotOptions: {
+      column: {
+        stacking: 'normal'
+      }
+    },
+
+    series: [{
+      name: 'Present',
+      data: [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9],
+      stack: 'attendance',
+      color:'#31AA74'
+    }, {
+      name: 'Absent',
+      data: [9,8,7,6,5,4,0,2,1,0,9,8,7,6,5,4,3,2,1],
+      stack: 'attendance',
+      color:'#F36800'
+    }, {
+      name: 'Holiday',
+      data: [0,0,0,0,0,0,12,0,0,0,0,0,0,15,0,0,0,0,0],
+      stack: 'attendance',
+      color:'#465866'
+    }]
+  }); */
+
+  $('#attedanceModalId').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: title
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+        showInLegend: true,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: [{
+                name: 'Before 9',
+				//value:result.id,       
+                y: result.id,
+        color:'#A4C73C'
+            }, {
+                name: '9 - 10',
+				//value:result.id,
+                y: result.count,
+        color:'#5FB3EA'  
+            }, {
+                name: '10 - 11',
+				//value:result.id,
+                y: result.actualCount,
+        color:'#FFEE66'
+            }, {
+                name: '11 - 13',
+				//value:result.id,
+                y: result.availableCount,
+        color:'#EEB703'  
+            }, {
+                name: 'After 13',
+				//value:result.id, 
+                y: result.orderId,      
+        color:'#FE3902'
+            }]
+        }]
+    });
+	}
+	function getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate){
+		var jsObj={ 
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId       
+		};
+		$.ajax({          
+			type : 'GET',      
+			url : 'getAttendanceReportTimeToTimeAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			$("#employeeOverViewId").html('');
+			if(result != null && result.length > 0){
+				buildAttendanceReportTimeToTime(result,officeId);
+			}else{  
+				 $("#employeeOverViewId").html("Data Not Available");
+			}    
+		});  
+	}
+	function buildAttendanceReportTimeToTime(result,officeId){
+		var str = '';
+		str+='<table class="table text-capital" id="employeeOverVwId">';
+			str+='<thead>';
+				str+='<th>employee name</th>';
+				str+='<th>mobile no</th>';
+				str+='<th>total working days</th>';
+				str+='<th>absent total</th>';
+				str+='<th>present total</th>';
+				str+='<th style="color:#A4C73C;"> <9:00 </th>';
+				str+='<th style="color:#5FB3EA;"> 09:00 TO 10:00 </th>';
+				str+='<th style="color:#FFEE66;"> 10:00 TO 11:00 </th>';
+				str+='<th style="color:#EEB703;"> 11:00 TO 13:00 </th>';
+				str+='<th style="color:#FE3902;"> >13:00 </th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].mobileNo+'</td>';
+					str+='<td>'+result[i].availableCount+'</td>';
+					if(result[i].actualCount < 0){
+						str+='<td>0</td>';
+					}else{      
+						str+='<td>'+result[i].actualCount+'</td>';
+					}
+					str+='<td>'+result[i].count+'</td>';
+					str+='<td>'+result[i].lessThan9+'</td>';
+					str+='<td>'+result[i].between9To10+'</td>';
+					str+='<td>'+result[i].between10To11+'</td>';
+					str+='<td>'+result[i].between11To13+'</td>';
+					str+='<td>'+result[i].greaterThan13+'</td>';
+				str+='</tr>';
+			}	 
+			str+='</tbody>';
+		str+='</table>';
+		$("#employeeOverViewId").html(str);
+		$("#employeeOverVwId").dataTable();
+		
+	}
+	/*Notes Functionality*/
 function displayDashboardCommentsForAttendance(dashBoardComponentId){
 	var jsObj={
 		dashBoardComponentId:dashBoardComponentId
