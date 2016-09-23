@@ -22,6 +22,7 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	public List<Object[]> getAgeGroupWiseTotalCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,Long stateId);
 	public List<Object[]> getCasteCategoryGroupWiseCountsForPosition(Long positionId,Long levelId,Long deptId,Long boardId,Long casteGroupId,Long applStatusId,String type,Long stateId);
 	public List<Object[]> getApplicationStatusList();
+	public List<Long> getNominatedPostApplicationIdsByMemberOfFinalReview(Long memberId);
 	public List<Object[]> getCandidateCasteList(Long locationLevelId,Long stateId);
 	public List<Object[]> getLocationWiseCastePositionCount(Long LocationLevelId,Long positionId,Long stateId);
 	public List<Object[]> getCasteGroup(Long locationLevelId,Long stateId);

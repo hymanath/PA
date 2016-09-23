@@ -30,7 +30,7 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getLocationWiseCasteGroupPositionCount(Long LocationLevelId);
 	public List<Object[]> getApplicationStatusCntByPositionId(Long positionId);
 	public List<Object[]> getCandidateCasteList(Long locationLevelId);
-
+	public List<Object[]> getNominatedPostsAppliedApplcitionsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type);
 	public List<Object[]> getApplicationDetailsCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId);
 	public List<Object[]> getTotalApplicationCountsByBoard(Long boardLevelId,Long searchLevelId,Long searchLevelValue,Long statusId);
 	public List<Object[]> getTotalAppliedCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue);
