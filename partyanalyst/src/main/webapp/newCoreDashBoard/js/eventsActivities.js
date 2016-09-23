@@ -944,10 +944,10 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 			
 			 str+='<table class="table table-condensed">';
 				 str+='<thead>';
-					 str+='<th>Invitee</th>';
-					 str+='<th>Invitee Attended</th>';
+					 str+='<th>Invitees</th>';
+					 str+='<th>Invitees Attended</th>';
 					 str+='<th>%</th>';
-				     str+='<th>Non Invitee Attended</th>';
+				     str+='<th>Non Invitees Attended</th>';
 				     str+='<th>%</th>';
 				 str+='</thead>';
 				 str+='<tr>';
@@ -1048,10 +1048,10 @@ function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedM
 					str+='<th>Rank</th>';
 					str+='<th>Designation</th>';
 					str+='<th>Name</th>';
-				    str+='<th>Invitee</th>';
-					 str+='<th>Invitee Attended</th>';
+				    str+='<th>Invitees</th>';
+					 str+='<th>Invitees Attended</th>';
 					 str+='<th>%</th>';
-				     str+='<th>Non Invitee Attended</th>';
+				     str+='<th>Non Invitees Attended</th>';
 				     str+='<th>%</th>';
 				str+'=</thead>';
 		str+='<tbody>';
