@@ -1460,9 +1460,9 @@
 									
 									
 									<div id="comparisonGovernamentMainDivId" class="mainBuildingDivClass" style="display:none;">
-									<div style="margin-left: 960px;">
-										<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Cumulative" checked="checked" />Cumulative
-										<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Detailed"/>Detailed
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Cumulative" checked="checked" /> Cumulative
+										<input type="radio" class="radioTypeCls" name="comparisonGovtRadioBtn" value="Detailed"/> Detailed
 									</div>
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 											<div id="comparisonGovtMinistriesInfo"></div>
