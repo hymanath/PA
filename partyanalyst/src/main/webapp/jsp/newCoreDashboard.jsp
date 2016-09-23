@@ -1504,8 +1504,8 @@
 															<div class="row">
 																<div class="col-md-12 col-xs-12 col-sm-12">
 																	<h4>DISTRICT WISE</h4>
-																	<div id="comparisonGovtProblemsDOverview"></div>
 																	<div id="compareDistrictWiseArticleRelatedToProblem"></div>
+																	<div id="comparisonGovtProblemsDOverview"></div>
 																</div>
 															</div>
 															<div id="problemsDetailedOverview"></div>
@@ -1855,6 +1855,9 @@
                 </div>
                 <div class="panel-body">   
                     <div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
+						</div>
                         <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock">
 							<div id="officeAttendanceTdlsId">
 							</div>
