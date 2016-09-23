@@ -1115,13 +1115,18 @@ var url = window.location.href;
 				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
 			}
 		}
-		
+			var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
 		var startDate=currentFromDate,endDate=currentToDate;
 		//var searchType = "publication";
 		
 		$.ajax({
-			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
-			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionPartyPartyVsPublications/"+firstLocationLevelId+"/"+temp22+"/"+globalState+"/"+startDate+"/"+endDate+"/"+searchType+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			var str='';
 			
