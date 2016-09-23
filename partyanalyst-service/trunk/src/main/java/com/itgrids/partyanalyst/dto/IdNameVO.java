@@ -29,6 +29,11 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long applicationsCount=0L;
 	private Long memberId;
 	private String districtName;
+	private Long lessThan9 =0l;
+	private Long between9To10 =0l;
+	private Long between10To11=0l;
+	private Long between11To13=0l;
+	private Long greaterThan13=0l;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -224,4 +229,46 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
 	}
+
+	public Long getLessThan9() {
+		return lessThan9;
+	}
+
+	public void setLessThan9(Long lessThan9) {
+		this.lessThan9 = lessThan9;
+	}
+
+	public Long getBetween10To11() {
+		return between10To11;
+	}
+
+	public void setBetween10To11(Long between10To11) {
+		this.between10To11 = between10To11;
+	}
+
+	public Long getBetween9To10() {
+		return between9To10;
+	}
+
+	public void setBetween9To10(Long between9To10) {
+		this.between9To10 = between9To10;
+	}
+
+	public Long getBetween11To13() {
+		return between11To13;
+	}
+
+	public void setBetween11To13(Long between11To13) {
+		this.between11To13 = between11To13;
+	}
+
+	public Long getGreaterThan13() {
+		return greaterThan13;
+	}
+
+	public void setGreaterThan13(Long greaterThan13) {
+		this.greaterThan13 = greaterThan13;
+	}
+	
+	
 }

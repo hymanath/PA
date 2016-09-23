@@ -3,6 +3,7 @@
  */
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -20,4 +21,7 @@ public interface IAttendanceCoreDashBoardService {
 	public List<IdNameVO> getAttendeeDtlsDeptWiseForDay (String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList, String status);
 	public List<Long> getDeptIds();
 	public List<List<IdNameVO>> getTopAbsentAndIregular(String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList);
+	public IdNameVO getAttendanceCountForMulitDate(Long officeId, Long deptId, String fromDateStr, String toDateStr);
+	public IdNameVO getAttendanceCountForMulitDateTimeWise(Long officeId,Long deptId,String fromDate,String toDate);
+	public List<IdNameVO> getAttendanceReportTimeToTime(Long officeId,Long  deptId,String  fromDate,String  toDate);
 }
