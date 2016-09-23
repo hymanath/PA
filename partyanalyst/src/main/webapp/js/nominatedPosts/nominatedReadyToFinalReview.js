@@ -583,7 +583,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 			str+='<th class="text-center">Mobile</th>';
 			str+='<th class="text-center">Gender</th>';
 			str+='<th class="text-center" style="width:24px">Age</th>';
-			str+='<th class="text-center" style="width:90px">Caste</th>';
+			str+='<th class="text-center" style="width:90px">Caste Category</th>';
 			str+='<th class="text-center">Sub Caste</th>';
 			str+='<th class="text-center">Party Designations</th>';
 			str+='<th class="text-center" style="width:80px">Reports</th>';
@@ -1593,7 +1593,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	var str='';
 	totalWishListCount = 0;
 	
-	str+='<table class="table table-bordered table-condensed tableShort">';
+	str+='<table class="table table-bordered table-condensed tableShort">'; 
 		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
 		if(gblStatus=="finaliZed"){
 			str+='<th style="" class="text-center"></th>';
@@ -1602,7 +1602,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 			str+='<th class="text-center">Mobile</th>';
 			str+='<th class="text-center">Gender</th>';
 			str+='<th class="text-center" style="width:24px">Age</th>';
-			str+='<th class="text-center" style="width:90px">Caste</th>';
+			str+='<th class="text-center" style="width:90px">Caste Category</th>';
 			str+='<th class="text-center">Sub Caste</th>';
 			str+='<th class="text-center">Party Designations</th>';
 			str+='<th class="text-center" style="width:80px">Reports</th>';

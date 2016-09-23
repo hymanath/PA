@@ -322,7 +322,7 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 						
 					}
 					else{
-						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'<span class="pull-right text-danger depcount" title="'+titleStr+'" data-toggle="tooltip" data-placement="top"> 0 </span></a></li>';	
+						str+='<li role="presentation" style="margin-left: 3px;"><a class="tabShowCls font_13" href="home'+i+'" aria-controls="home'+i+'" role="tab" data-toggle="tab" id="'+result[i].id+'" style="text-transform: uppercase;">'+result[i].name+'</a></li>';	
 					}
 					  
 				  }
@@ -1107,7 +1107,8 @@ $(document).on("click",".moveToFinalReviewCls",function(){
 	  $("#updateSearchId"+deptId+""+boardId).hide();
 	  if(result != null && result.resultCode==0){
 		  //alert("Successfully this position Moved to Final Review.");
-		  $("#statusMsgDivId"+deptId+""+boardId).html("Successfully this position Moved to Final Review.");
+		  $("#statusMsgDivId"+deptId+""+boardId).html("  Successfully this position Moved to Final Review.");
+		  window.location.reload();
 		  setTimeout(function(){ 
 				getDepartmentWiseBoardAndPositionDetails(globalLevelId,levelValuesArr,deptId,boardId,bodyId,'','','');
 			  }, 2000);
@@ -1221,7 +1222,8 @@ $(document).on("click","#readyToFinalRevewBtn",function(){
 	   $("#updateSearchId").hide();
 	   
 	  if(result != null && result.resultCode==0){
-		  $("#modelSuccessId").html("Successfully this position Moved to Final Review.");
+		  $("#modelSuccessId").html("  Successfully this position Moved to Final Review.");
+		   window.location.reload();
 			  setTimeout(function(){ 
 				//$("#readyToFinalReviewDiv").modal('hide');
 				//globalReadyBodyId
