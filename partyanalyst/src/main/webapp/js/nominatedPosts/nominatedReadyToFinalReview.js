@@ -1620,15 +1620,16 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'"></td>';
 			}
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				str +='<td style="width:150px;">';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td style="width:150px;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+					str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
 					if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
 						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
 					else
 						str+='<i class="glyphicon glyphicon-user"></i> ';
 						str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
 				}else{
-					str +='<td style="width:150px;"><div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
+					str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
 				}
 				
 				str+=' </td>';
