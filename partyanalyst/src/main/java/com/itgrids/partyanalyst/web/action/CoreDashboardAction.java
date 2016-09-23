@@ -1959,4 +1959,32 @@ public String getAttendeeDtlsOfficeWiseForDay(){
 	}
 	return Action.SUCCESS; 
 }
+public String getTopAbsentAndIregular(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		
+		List<Long> officeIdList = new ArrayList<Long>();
+		List<Long> deptIdList = new ArrayList<Long>();
+		JSONArray officeIdsArray=jObj.getJSONArray("officeIdArr");
+		JSONArray deptIdsArray=jObj.getJSONArray("deptIdArr");
+		if(officeIdsArray!=null &&  officeIdsArray.length()>0){  
+			for( int i=0;i<officeIdsArray.length();i++){
+				officeIdList.add(Long.valueOf(officeIdsArray.getString(i)));
+			}
+		}
+		if(deptIdsArray!=null &&  deptIdsArray.length()>0){
+			for( int i=0;i<deptIdsArray.length();i++){
+				deptIdList.add(Long.valueOf(deptIdsArray.getString(i)));
+			}
+		}
+		
+		idNameVOsList = attendanceCoreDashBoardService.getTopAbsentAndIregular(fromDate,toDate,officeIdList,deptIdList);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendeeDtlsOfficeWiseForDay() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
 }

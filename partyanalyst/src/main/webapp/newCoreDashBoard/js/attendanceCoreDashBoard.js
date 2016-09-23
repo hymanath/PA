@@ -399,7 +399,7 @@ $('#attendance').highcharts({
 				str+='<th>total members</th>';    
 				str+='<th>present</th>';
 				str+='<th>absent</th>';
-			str+='</thead>';
+			str+='</thead>';    
 			for(var i in result){
 				str+='<tr>';
 					str+='<td>'+result[i].name+'</td>';
@@ -584,8 +584,9 @@ $('#attendance').highcharts({
 		$("#view"+tableId).dataTable();           
 	}
 	function getLocationDtlsForMultiDates(tableId,officeId,customFromDate1,customToDate1){
+		alert(1)
 		var officeIdArr = []; 
-		officeIdArr.push(officeId);
+		officeIdArr.push(officeId); 
 		var jsObj={ 
 			fromDate : customFromDate1,
 			toDate : customToDate1,
@@ -608,7 +609,7 @@ $('#attendance').highcharts({
 			}
 			
 			if(result != null && result.length > 0){
-				buildLocationDtlsForMultiDates(result,tableId);
+				buildLocationDtlsForMultiDates(result,tableId,officeId,customFromDate1,customToDate1);
 			}else{
 				if(officeId==1){
 					$("#hydDtlsId").html('Data Not Available');
@@ -619,8 +620,9 @@ $('#attendance').highcharts({
 			}    
 		});  
 	}
-	function buildLocationDtlsForMultiDates(result,tableId){
-		$("#"+tableId).html('');
+	function buildLocationDtlsForMultiDates(result,tableId,officeId,customFromDate1,customToDate1){
+		       
+		$("#"+tableId).html('');  
 		var str = '';
 		str+='<table class="table text-capital tableAtten" id="view'+tableId+'">';
 			str+='<thead>';
@@ -632,7 +634,7 @@ $('#attendance').highcharts({
 				str+='<th class="text-danger">late comings</th>';
 				str+='<th>absent</th>';
 			str+='</thead>';
-			for(var i in result){  
+			for(var i in result){    
 				str+='<tr>';
 					str+='<td>'+result[i].districtName+'</td>';
 					str+='<td>'+result[i].name+'</td>';
@@ -647,5 +649,112 @@ $('#attendance').highcharts({
 			}
 		str+='</table>';
 		$("#"+tableId).html(str);
-		$("#view"+tableId).dataTable();       
+		$("#view"+tableId).dataTable();
+		getTopAbsentAndIgegular(tableId,officeId,customFromDate1,customToDate1);   
 	}
+	function getTopAbsentAndIgegular(tableId,officeId,customFromDate1,customToDate1){
+		if(officeId==1){
+			$("#hydTopId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		}
+		if(officeId==2){
+			$("#gunTopId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		}
+		   
+		var officeIdArr = []; 
+		officeIdArr.push(officeId);
+		var jsObj={ 
+			fromDate : customFromDate1,  
+			toDate : customToDate1,
+			deptIdArr : globalDeptIdsArr,
+			officeIdArr : officeIdArr
+			 
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getTopAbsentAndIregularAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			if(officeId==1){
+				$("#hydTopId").html('');
+			}
+			if(officeId==2){
+				$("#gunTopId").html('');
+			}
+			
+			if(result != null && result.length > 0){
+				buildTopAbsentAndIgegular(result,officeId);
+			}else{  
+				if(officeId==1){
+					$("#hydTopId").html('Data Not Available');
+				}
+				if(officeId==2){
+					$("#gunTopId").html('Data Not Available');
+				}	  
+			}    
+		});  
+	}
+	function buildTopAbsentAndIgegular(result,officeId){
+		var str = '';
+		str+='<div class="row">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+				str+='<h4><span class="attenHeading">top absenties</span></h4>';	
+				str+='<div class="table-responsive m_top10">';
+					str+='<table class="table tableAttenBlock">';
+						str+='<thead>';
+							str+='<th>Dept name</th>';
+							str+='<th>employee name</th>';
+							str+='<th>absent</th>';
+						str+='</thead>';
+						for(var i in result[0]){
+							if(result[0][i].count==0){
+								break;
+							}
+							str+='<tr>';
+								str+='<td>'+result[0][i].districtName+'</td>';
+								str+='<td>'+result[0][i].name+'</td>';
+								str+='<td>'+result[0][i].count+'</td>';
+							str+='</tr>';
+							if(i===5){
+								break;
+							}
+						}
+						
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-md-6 col-xs-12 col-sm-6 m_XsTop10">';
+				str+='<h4><span class="attenHeading">top irregulars</span></h4>';
+				str+='<div class="table-responsive m_top10">';
+					str+='<table class="table tableAttenBlock">';
+						str+='<thead>';
+							str+='<th>Dept name</th>';
+							str+='<th>employee name</th>';
+							str+='<th>absent</th>';
+						str+='</thead>';
+						for(var i in result[1]){
+							if(result[1][i].count==0){
+								break;
+							}
+							str+='<tr>';
+								str+='<td>'+result[1][i].districtName+'</td>';
+								str+='<td>'+result[1][i].name+'</td>';
+								str+='<td>'+result[1][i].count+'</td>';
+							str+='</tr>';
+							f(i===5){
+								break;
+							}
+						}
+						
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		if(officeId==1){
+			$("#hydTopId").html(str);
+		}
+		if(officeId==2){
+			$("#gunTopId").html(str);
+		} 
+	}  
