@@ -1287,10 +1287,13 @@ public String savingDashboardComment()
 	try
 	{
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-		if(regVO==null){
-			return "input";
-		}
-		Long userId = regVO.getRegistrationID();
+		
+		Long userId = null;
+		if(regVO != null)
+			userId = regVO.getRegistrationID();
+		else
+			userId = 1L;
+		
 		jObj = new JSONObject(getTask());
 		DashboardCommentVO Vo = new DashboardCommentVO();
 	    Vo.setDashBoardCommentId(jObj.getLong("dashboardCommentId"));
@@ -1309,10 +1312,12 @@ public String savingDashboardComment()
 public String displayDashboardComments(){
 	try{
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-		if(regVO==null){
-			return "input";
-		}
-		Long userId = regVO.getRegistrationID();
+		
+		Long userId = null;
+		if(regVO != null)
+			userId = regVO.getRegistrationID();
+		else
+			userId = 1L;
 		jObj = new JSONObject(getTask());
 		
 		dashboardCommentVo = coreDashboardService1.displayDashboardComments(userId,jObj.getLong("dashBoardComponentId"));
@@ -1326,11 +1331,6 @@ public String displayDashboardComments(){
 public String deleteDashBoardcomments()
 {
 	try{
-		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-		if(regVO==null){
-			return "input";
-		}
-		Long userId = regVO.getRegistrationID();
 		jObj = new JSONObject(getTask());
 		status = coreDashboardService1.deleteDashBoardcomments(jObj.getLong("dashboardCommentId"));
 	}
