@@ -2004,4 +2004,46 @@ public String getMeetingRecentTime(){
 	}
 	return Action.SUCCESS;
 }
+public String getAttendanceCountForMulitDate(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		Long officeId = jObj.getLong("officeId");
+		Long deptId = jObj.getLong("deptId");
+		idNameVO = attendanceCoreDashBoardService.getAttendanceCountForMulitDate( officeId,  deptId,  fromDate,  toDate);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
+public String getAttendanceCountForMulitDateTimeWise(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		Long officeId = jObj.getLong("officeId");
+		Long deptId = jObj.getLong("deptId");   
+		idNameVO = attendanceCoreDashBoardService.getAttendanceCountForMulitDateTimeWise( officeId,  deptId,  fromDate,  toDate);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
+public String getAttendanceReportTimeToTime(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		Long officeId = jObj.getLong("officeId");  
+		Long deptId = jObj.getLong("deptId");   
+		idNameVoList = attendanceCoreDashBoardService.getAttendanceReportTimeToTime( officeId,  deptId,  fromDate,  toDate);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
 }

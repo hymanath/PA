@@ -69,8 +69,15 @@ $('#dateRangeIdForAttendance1').on('apply.daterangepicker', function(ev, picker)
   customFromDate1 = picker.startDate.format('MM/DD/YYYY');
   customToDate1 = picker.endDate.format('MM/DD/YYYY');
   if(customFromDate1==customToDate1){
+	
 	var tableId = "hydDtlsId";
-	var officeId = 1;//for Hyd  
+	var officeId = 1;//for Hyd 
+	if(officeId==1){
+		$("#hydTopId").html('');
+	}
+	if(officeId==2){
+		$("#gunTopId").html('');
+	} 
 	$("#hydDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	getLocationDtls(tableId,officeId,customFromDate1,customToDate1);  
   }else{
@@ -105,6 +112,12 @@ $('#dateRangeIdForAttendance2').on('apply.daterangepicker', function(ev, picker)
   if(customFromDate2==customToDate2){  
 	var tableId = "gunDtlsId";      
 	var officeId = 2;//for Gun
+	if(officeId==1){
+		$("#hydTopId").html('');
+	}
+	if(officeId==2){
+		$("#gunTopId").html('');
+	}   
 	$("#gunDtlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	getLocationDtls(tableId,officeId,customFromDate2,customToDate2);  
   }else{
@@ -509,8 +522,11 @@ $('#attendance').highcharts({
 		var tableId = "hydDtlsId";
 		var officeId = 1;//for Hyd
 		getLocationDtls(tableId,officeId,fromDate,toDate);
+		$("#hydTopId").html('');
+		
 		tableId = "gunDtlsId";
 		officeId = 2;//for Gun
+		$("#gunTopId").html('');      
 		getLocationDtls(tableId,officeId,fromDate,toDate);
 	});
 	function getLocationDtls(tableId,officeId,fromDate,toDate){ 
@@ -584,7 +600,6 @@ $('#attendance').highcharts({
 		$("#view"+tableId).dataTable();           
 	}
 	function getLocationDtlsForMultiDates(tableId,officeId,customFromDate1,customToDate1){
-		alert(1)
 		var officeIdArr = []; 
 		officeIdArr.push(officeId); 
 		var jsObj={ 
@@ -715,7 +730,7 @@ $('#attendance').highcharts({
 								str+='<td>'+result[0][i].name+'</td>';
 								str+='<td>'+result[0][i].count+'</td>';
 							str+='</tr>';
-							if(i===5){
+							if(i==5){
 								break;
 							}
 						}
@@ -732,20 +747,20 @@ $('#attendance').highcharts({
 							str+='<th>Dept name</th>';
 							str+='<th>employee name</th>';
 							str+='<th>absent</th>';
-						str+='</thead>';
-						for(var i in result[1]){
-							if(result[1][i].count==0){
-								break;
+						str+='</thead>'; 
+						for(var j in result[1]){
+							if(result[1][j].orderId==0){
+								break;    
 							}
-							str+='<tr>';
-								str+='<td>'+result[1][i].districtName+'</td>';
-								str+='<td>'+result[1][i].name+'</td>';
-								str+='<td>'+result[1][i].count+'</td>';
+							str+='<tr>';     
+								str+='<td>'+result[1][j].districtName+'</td>';
+								str+='<td>'+result[1][j].name+'</td>';
+								str+='<td>'+result[1][j].orderId+'</td>';
 							str+='</tr>';
-							if(i===5){
+							if(j==5){
 								break;
 							}
-						}
+						}  
 						
 					str+='</table>';
 				str+='</div>';
