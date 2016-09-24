@@ -52,6 +52,15 @@
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
+		$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
+		$(".dateRangePickerClsForAttendance").toggleClass('hide');
+		$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
 });
 
