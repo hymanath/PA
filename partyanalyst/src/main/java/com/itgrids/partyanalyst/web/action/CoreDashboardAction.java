@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +20,7 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
+import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
@@ -89,7 +89,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<ChildUserTypeVO> childUserTypeVOList;
 	private List<EventDetailsVO>  eventDetailsVOList;
 	private EventDetailsVO eventDetailsVO;
-	
+	private List<HolidayListVO> holidayListVOs;
 	//setters And Getters
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
@@ -374,6 +374,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setEventDetailsVO(EventDetailsVO eventDetailsVO) {
 		this.eventDetailsVO = eventDetailsVO;
+	}
+	
+	public List<HolidayListVO> getHolidayListVOs() {
+		return holidayListVOs;
+	}
+
+	public void setHolidayListVOs(List<HolidayListVO> holidayListVOs) {
+		this.holidayListVOs = holidayListVOs;
 	}
 
 	//business methods
@@ -2046,4 +2054,63 @@ public String getAttendanceReportTimeToTime(){
 	}
 	return Action.SUCCESS; 
 }
+public String getDateWisePresentAbsentDtls(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		Long officeId = jObj.getLong("officeId");  
+		Long deptId = jObj.getLong("deptId");   
+		holidayListVOs = attendanceCoreDashBoardService.getDateWisePresentAbsentDtls( officeId,  deptId,  fromDate,  toDate);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
 }
+public String getAttendanceCountForMulitDateForEmp(){  
+	try{  
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");    
+		String toDate = jObj.getString("toDate");  
+		Long officeId = jObj.getLong("officeId");
+		Long deptId = jObj.getLong("deptId");
+		Long cadreId = jObj.getLong("cadreId");
+		idNameVO = attendanceCoreDashBoardService.getAttendanceCountForMulitDateForEmp( officeId,  deptId,  fromDate,  toDate, cadreId);
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
+public String getAttendanceCountForMulitDateTimeWiseForEmp(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");      
+		String toDate = jObj.getString("toDate");
+		Long officeId = jObj.getLong("officeId");
+		Long deptId = jObj.getLong("deptId");   
+		Long cadreId = jObj.getLong("cadreId");  
+		idNameVO = attendanceCoreDashBoardService.getAttendanceCountForMulitDateTimeWiseForEmp( officeId,  deptId,  fromDate,  toDate, cadreId);
+		 
+	}catch (Exception e) { 
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
+public String getDateWisePresentAbsentDtlsForEmployee(){  
+	try{
+		jObj = new JSONObject(getTask()); 
+		String fromDate = jObj.getString("fromDate");  
+		String toDate = jObj.getString("toDate");
+		Long officeId = jObj.getLong("officeId");  
+		Long deptId = jObj.getLong("deptId");
+		Long cadreId = jObj.getLong("cadreId"); 
+		holidayListVOs = attendanceCoreDashBoardService.getDateWisePresentAbsentDtlsForEmployee( officeId,  deptId,  fromDate,  toDate, cadreId);  
+		
+	}catch (Exception e) {
+		LOG.error("Exception raised at getAttendanceCountForMulitDate() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS; 
+}
+}//getDateWisePresentAbsentDtlsForEmployee
