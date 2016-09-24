@@ -1230,9 +1230,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	 
 	 StringBuilder queryStr = new StringBuilder();
 	 
-	   queryStr.append("select model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPostApplicationId) from NominatedPostApplication model " +
+	   queryStr.append("select distinct  model.applicationStatus.applicationStatusId,model.applicationStatus.status,count(distinct model.nominatedPostApplicationId) from NominatedPostApplication model " +
 	 		" where" +
-	 		" model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' ");
+	 		" model.isDeleted='N'  ");
 	   
 		   if(positionId != null && positionId.longValue() > 0){
 			   queryStr.append(" and model.position.positionId = :positionId");
@@ -1244,7 +1244,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				   queryStr.append(" and model.boardLevel.boardLevelId in (5,6) ");
 		   }
 		   if(stateId != null && stateId.longValue() > 0){
- 			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
+ 			   queryStr.append(" and model.address.state.stateId=:stateId");
  		  }
 	       queryStr.append(" group by model.applicationStatus.applicationStatusId ");
 	   
