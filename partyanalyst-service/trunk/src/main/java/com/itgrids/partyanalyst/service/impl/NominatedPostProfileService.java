@@ -5859,9 +5859,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(ageList, ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+						else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 						
 						castevo.setApplicatnStatsList(ageList);
@@ -5871,9 +5871,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(castevo.getApplicatnStatsList(), ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male"))
 							vo.setMaleCount(vo.getMaleCount()+count);
-						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+						else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
 							vo.setFemaleCount(vo.getFemaleCount()+count);
 					}
 				}
@@ -5967,9 +5967,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(ageList, ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+						else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 						
 						castevo.setApplicatnStatsList(ageList);
@@ -5979,9 +5979,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(castevo.getApplicatnStatsList(), ageId);
 						vo.setId(casteId);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male") )
+						if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male") )
 							vo.setMaleCount(vo.getMaleCount()+count);
-						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+						else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
 							vo.setFemaleCount(vo.getFemaleCount()+count);
 					}
 				}
@@ -6099,9 +6099,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(ageList, ageId);
 						vo.setId(id);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male"))
 							vo.setMaleCount(count);
-						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+						else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
 							vo.setFemaleCount(count);
 						vo.setStatusCount(vo.getStatusCount()+count);
 						
@@ -6112,9 +6112,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						NominatedPostDashboardVO vo = getMatchedVOByList(positionvo.getApplicatnStatsList(), ageId);
 						vo.setId(id);
 						vo.setName(obj[1] != null ? obj[1].toString():"");
-						if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male"))
+						if(gender.trim().equalsIgnoreCase("M") || gender.trim().equalsIgnoreCase("Male"))
 							vo.setMaleCount(vo.getMaleCount()+count);
-						else if(gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female"))
+						else if(gender.trim().equalsIgnoreCase("F") || gender.trim().equalsIgnoreCase("Female"))
 							vo.setFemaleCount(vo.getFemaleCount()+count);
 						vo.setStatusCount(vo.getStatusCount()+count);
 					}

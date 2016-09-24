@@ -991,9 +991,9 @@ public CastePositionVO setPositionCntDataToVO(Long totalPositionCnt,List<Object[
 				totalPostsCnt =totalPostsCnt+count;
 				if(status != null && status.equalsIgnoreCase("Open")){
 					resultVO.setOpenPostCnt(resultVO.getOpenPostCnt()+count);
-				}else if(status != null && status.equalsIgnoreCase("Finalized")){
+				}else if(status != null && status.equalsIgnoreCase("Confirmed")){
 					resultVO.setConfirmCntCnt(resultVO.getConfirmCntCnt()+count);
-				}else if(status != null && status.equalsIgnoreCase("G.O Issued")){
+				}else if(status != null && status.equalsIgnoreCase("GO Issued")){
 					resultVO.setGoIssuedCnt(resultVO.getGoIssuedCnt()+count);
 				}
 			}
@@ -1022,9 +1022,9 @@ public CastePositionVO setApplicationCntDataToVO(List<Object[]> rtrnApplicationD
 				String status = commonMethodsUtilService.getStringValueForObject(param[1]);
 				Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
 				ttlApplicationRcvedCnt =ttlApplicationRcvedCnt+count;
-				if(status != null && status.equalsIgnoreCase("Rejected") || status.equalsIgnoreCase("Rejected-Finalized")){
+				if(status != null && status.equalsIgnoreCase("Rejected") || status.equalsIgnoreCase("Rejected in Final Review")){
 					resultVO.setRejectedCnt(resultVO.getRejectedCnt()+count);
-				}else if(status != null && status.equalsIgnoreCase("G.O Issued") || status.equalsIgnoreCase("Finalized")){
+				}else if(status != null && status.equalsIgnoreCase("GO Passed") || status.equalsIgnoreCase("Confirmed")){
 				   resultVO.setConfirmCntCnt(resultVO.getConfirmCntCnt()+count);	
 				}else if(status != null && status.equalsIgnoreCase("Shortlisted")){
 				  resultVO.setShortedListedCndtCnt(resultVO.getShortedListedCndtCnt()+count);
