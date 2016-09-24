@@ -3759,7 +3759,7 @@ var url = window.location.href;
 						for(var i in result){
 							 str+='<tr>';
 								str+='<td>'+(parseInt(i)+1)+'</td>';
-								str+='<td>'+result[i].organization+'</td>';
+								str+='<td class="organizationCls" attr_organization_id="'+result[i].organizationId+'">'+result[i].organization+'</td>';
 								
 								str+='<td>'+result[i].neutralCountMain+'</td>';
 								str+='<td>'+result[i].positiveCountMain+'</td>';
@@ -5626,4 +5626,35 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	$(document).on("click",".radioTypeCls",function(){
 		getComparisonGovtMinistriesInfo();
 	});
-	
+	function getAllSubDepartmentEditionsWiseDetails(departmentIdsStr){
+		$("#ministerSubLevelDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		var state = globalState;
+		var startDate=currentFromDate,endDate=currentToDate;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
+		}).then(function(result){
+			//buildgetAllDepartmentEditionsWiseDetails(result,ministerName);
+		});
+	}
+	$(document).on("click",".organizationCls",function(){
+		getAllSubDepartmentEditionsWiseDetails($(this).attr("attr_organization_id"));	
+	});
