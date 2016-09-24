@@ -30,9 +30,9 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long memberId;
 	private String districtName;
 	private Long lessThan9 =0l;
-	private Long between9To10 =0l;
-	private Long between10To11=0l;
-	private Long between11To13=0l;
+	private Long between9To1030 =0l;
+	private Long between1030To1130=0l;
+	private Long between1130To13=0l;
 	private Long greaterThan13=0l;
 	private Long cadreId;
 	
@@ -239,28 +239,30 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 		this.lessThan9 = lessThan9;
 	}
 
-	public Long getBetween10To11() {
-		return between10To11;
+	
+
+	public Long getBetween9To1030() {
+		return between9To1030;
 	}
 
-	public void setBetween10To11(Long between10To11) {
-		this.between10To11 = between10To11;
+	public void setBetween9To1030(Long between9To1030) {
+		this.between9To1030 = between9To1030;
 	}
 
-	public Long getBetween9To10() {
-		return between9To10;
+	public Long getBetween1030To1130() {
+		return between1030To1130;
 	}
 
-	public void setBetween9To10(Long between9To10) {
-		this.between9To10 = between9To10;
+	public void setBetween1030To1130(Long between1030To1130) {
+		this.between1030To1130 = between1030To1130;
 	}
 
-	public Long getBetween11To13() {
-		return between11To13;
+	public Long getBetween1130To13() {
+		return between1130To13;
 	}
 
-	public void setBetween11To13(Long between11To13) {
-		this.between11To13 = between11To13;
+	public void setBetween1130To13(Long between1130To13) {
+		this.between1130To13 = between1130To13;
 	}
 
 	public Long getGreaterThan13() {
