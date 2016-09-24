@@ -920,7 +920,7 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 		getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
 	});
  $(document).on("click",".compareLowLevelActivityMeetingMemberCls",function(){
-	 $(this).closest('tr').next('tr.showHideTr').show(); 
+	$(this).next('tr.showHideTr').show(); 
 	 
 	var activityMemberId = $(this).attr("attr_activitymemberid");  
 	var userTypeId = $(this).attr("attr_usertypeid"); 
@@ -1194,7 +1194,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			var rankVar =0;
 			str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
 			if(childActivityMemberId != "directChildActivityMeetingMemberDiv"){
-				str+='<span class="removeSelecUserType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+				str+='<span class="removeSelectTr pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 			}
 				if(childActivityMemberId != "directChildActivityMeetingMemberDiv")
 				{
@@ -1285,6 +1285,12 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			}
 		}
 	}
+	
+	$(document).on("click",".removeSelectTr",function(){
+		var removeSelected = $(this).attr("attr_removeSelecUserType"); 
+		$("#"+removeSelected).html(' ');
+		$("#"+removeSelected).hide();
+	});
 	function getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType){
 	 $("#topPoorLocationsMeetingDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   var state = globalState;
