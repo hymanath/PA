@@ -274,7 +274,7 @@ function buildCandidateReviewRslt(result,statusstr){
 
  if(gblStatus == "finaliZed")
 	 titleStr="Ready to Finalize Posts";
- else if(gblStatus == "total")
+ else if(gblStatus == "Total")
 	  titleStr="Total Open Posts";
  else if(gblStatus =="goPassed")
 	  titleStr="Total G.O Issued Posts";
@@ -415,8 +415,8 @@ var str = '';
 							}
 						str+='</div>';  
 					str+='</div>';
-					if(gblStatus=="finaliZed"){
-						if(gblStatus != "Total")
+					//if(gblStatus=="finaliZed"){
+						if(gblStatus != "Total" && gblStatus!="finaliZed")
 						{
 							str+='<div class="col-md-2 col-xs-12 col-sm-3 pad_left0 pad_right0">';
 								str+='<div class="positionsCls text-success">';
@@ -427,7 +427,7 @@ var str = '';
 								str+='</div>';
 							str+='</div>';
 						}
-					}
+					//}
 							//str+='<img src="dist/img/Icon1.png"/> - ';
 			   str+=' </div>';
 			str+='</li>'; 
@@ -600,15 +600,16 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				str+='<td><input type="checkbox" class="candiCheckBoxCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'"></td>';
 			}
 				//str+='<td><i class="glyphicon glyphicon-user"></i>  '+result.subList[i].voterName+'</td>';
+				str+='<td style="width:150px;">';
 				if(result.subList[i].tdpCadreId != null && result.subList[i].tdpCadreId > 0){
-					str+='<td style="width:150px;"><a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
+					str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result.subList[i].tdpCadreId+'" >';
 					if(result.subList[i].imageURL != null && result.subList[i].imageURL.length>0)
 						str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="https://mytdp.com/images/cadre_images/'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/></div>';
 					else
 						str+='<i class="glyphicon glyphicon-user"></i> ';
 						str+=' <div class="media-body">'+result.subList[i].cadreName+'</div></div></a>';
 				}else{
-					str +='<td style="width:150px;"><div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
+					str +='<div  class="media"><div class="media-left"><img style="width: 50px;height:50px;border:1px solid #ddd;" src="images/User.png'+ result.subList[i].imageURL+'" class="img-circle" alt="Profile"/> </div><div class="media-body">'+result.subList[i].voterName+'</div></div>';
 				}
 				
 				str+=' </td>';
@@ -677,26 +678,25 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				str+='<td style="position:relative" class="text-center">';
 				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
-				else
+				else{
 					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;>';
 						str+='</div>';
 					str+='</div>';
+				}
 				str+='</td>';
 				
 				str+='<td style="position:relative" class="text-center">';
 					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0)
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
-					
-						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
-					else
+					else{
 						str+='<span> NO </span>';
 						str+='<div class="appliedPostPopup">';
 							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
 							str+='</div>';
 						str+='</div>';
-					
+					}
 				str+='</td>';
 				
 				
@@ -1686,12 +1686,13 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 				str+='<td style="position:relative" class="text-center">';
 				if(result.subList[i].appliedCount != null && result.subList[i].appliedCount > 0)
 					str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="departmentsTableId'+i+'" attr_type="applied" style="font-weight:bold;color:green;">'+result.subList[i].appliedCount+'</span>';
-				else
+				else{
 					str+='<span> NO </span>';
 					str+='<div class="appliedPostPopup">';
 						str+='<div class="appliedPostPopupArrow" id="departmentsTableId'+i+'" style="margin-left:85px;">';
 						str+='</div>';
 					str+='</div>';
+				}
 				str+='</td>';
 				
 				str+='<td style="position:relative" class="text-center">';
@@ -1699,13 +1700,13 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
 					
 						//str+='<td>'+result.subList[i].shortListedCount+'</td>';
-					else
+					else{
 						str+='<span> NO </span>';
 						str+='<div class="appliedPostPopup">';
 							str+='<div class="appliedPostPopupArrow" id="shortyListedTableId'+i+'" style="margin-right: 0px; left: 86px;">';
 							str+='</div>';
 						str+='</div>';
-					
+					}
 				str+='</td>';
 						
 				if(result.subList[i].referenceCount != null && result.subList[i].referenceCount>0)
