@@ -2038,7 +2038,7 @@ function buildDistrictWisePartyMeetingTypeDtlsRslt(result,mainMeetingTypeId,part
 									}
 								},
 								series: [{
-									name: 'Attended',
+									name: 'Invitees Attended',
 									data: attendedCntPercArray
 								}, {
 									name: 'Absent',
