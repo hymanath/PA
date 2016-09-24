@@ -1854,9 +1854,9 @@
                 </div>
                 <div class="panel-body">   
                     <div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12">
+						<!--<div class="col-md-12 col-xs-12 col-sm-12">
 							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
-						</div>
+						</div>-->  
                         <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock">
 							<div id="officeAttendanceTdlsId">
 							</div>
@@ -2422,15 +2422,15 @@
       <div class="col-md-6 col-xs-12 col-sm-6">
         <div id="attedanceModalId" height="200px"></div>
       </div>
-      <!--<div class="col-md-12 col-xs-12 col-sm-12">
+      <div class="col-md-12 col-xs-12 col-sm-12">
         <h4><span class="headingColor text-capitalize">department overview</span></h4>
         <div id="dayWiseOvervwModal" style="height:250px"></div>
-      </div>-->
+      </div>  
 	  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-		<div m_top20>
-			<h4><span class="headingColor text-capitalize">employee wise overview</span></h4>
+		<div class="m_top20">
+			<h4><span class="headingColor text-capitalize">employee overview</span></h4>
 		</div>
-		<div class="table-responsive" id="employeeOverViewId">
+		<div class="table-responsive m_top20" id="employeeOverViewId">
 		</div>
 	  </div>      
     </div>
@@ -2438,6 +2438,49 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="attendanceModalEmplo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:80%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header bg_EE">
+		<div class="row">
+		  <div class="col-md-6 col-xs-12 col-sm-6">
+			<h4 class="modal-title text-capitalize" id="diptNameForEmpId"></h4>
+			<h6 id="officeNameForEmpId"></h6>      
+		  </div>
+		  <div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<div class="input-group">
+			 <!-- <input type="text" class="form-control" id="attenDatePickerModal"/>
+			  <span class="input-group-addon">
+				<i class="glyphicon glyphicon-calendar"></i>  
+			  </span>-->  
+			</div>
+		  </div>
+		</div>
+      </div>
+      <div class="modal-body">      
+        <div class="row">
+		  <div class="col-md-6 col-xs-12 col-sm-6">
+			<h4><span class="headingColor text-capitalize">overview</span></h4>
+			<div id="tableAttendanceId">
+			</div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="m_top20">
+					<h4><span class="headingColor text-capitalize">employee overview</span></h4>
+				</div>
+				<div class="table-responsive m_top20" id="singleEmployeeOverViewId">  
+				</div>
+			</div> 
+		  </div>
+		  <div class="col-md-6 col-xs-12 col-sm-6">
+			<div id="attedanceModalForEmpId" height="400px"></div>     
+		  </div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--end-->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
@@ -2446,6 +2489,9 @@
 <input type="hidden" id="cmtMeetingId" attr_cmt_id="editTextmettingId'+i+'" value=""></input>
 <input type="hidden" id="cmtEventsId" attr_cmt_id="editTextEventsId'+i+'" value=""></input>
 <input type="hidden" id="cmtAttendanceId" attr_cmt_id="editTextAttendanceId'+i+'" value=""></input>
+<!--attendance-->
+<input type="hidden" id="officeHidId" attr_office_hid_id="" value=""></input>
+<input type="hidden" id="deptHidId" attr_dept_hid_id="" value=""></input>
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>

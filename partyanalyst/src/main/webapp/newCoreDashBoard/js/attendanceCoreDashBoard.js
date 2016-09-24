@@ -7,7 +7,7 @@ $(document).on("click",".attendaceIconExpand",function(){
 	if($(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		//getUserTypeWiseNewsCounts(1);
 	}else{
-		$(".newsHiddenMoreBlock,moreAttBlocks").hide();
+		$(".newsHiddenMoreBlock,.moreAttBlocks").hide();
 	}
 	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".dateRangePickerClsForTraining").addClass("hide");
@@ -53,16 +53,14 @@ $(document).on("click",".attendaceIconExpand",function(){
 
 $("#attenDatePickerModal").daterangepicker({  
   opens: 'left',
-  startDate: moment(),
+  startDate: moment().startOf('month'),
   endDate: moment(),
   locale: {
     format: 'MM/DD/YYYY'       
   },  
-  ranges: {
-     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	 'Today': [moment(), moment()],
-	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+  ranges: {  
 	 'This Month': [moment().startOf('month'), moment()],
+     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
      'Last 3 Months': [moment().subtract(3, 'month'), moment()],
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
@@ -70,6 +68,32 @@ $("#attenDatePickerModal").daterangepicker({
      'This Year': [moment().startOf('Year'), moment()]    
   }   
 })  
+$('#attenDatePickerModal').on('apply.daterangepicker', function(ev, picker) {
+  fromDate = picker.startDate.format('MM/DD/YYYY');
+  toDate = picker.endDate.format('MM/DD/YYYY');
+  var officeId = $("#officeHidId").attr("attr_office_hid_id");
+  var deptId = $("#deptHidId").attr("attr_dept_hid_id");      
+  getTotalDtls(deptId,officeId,fromDate,toDate);
+	getTimeWiseDtls(deptId,officeId,fromDate,toDate);
+	getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate);
+	getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
+	
+	if(officeId==1){
+		$("#officeNameId").html('Hyderabad Party Office - Attendance');
+	}
+	if(officeId==2){
+		$("#officeNameId").html('Guntur Party Office - Attendance');  
+	} 
+	$("#totalCountId").html('');  
+	 $('#attedanceModalId').html('');
+	 $("#employeeOverViewId").html('');
+	 $("#dayWiseOvervwModal").html('');
+	 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+	$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#attendanceModal").modal('show');
+});
 $("#dateRangeIdForAttendance1").daterangepicker({
   opens: 'left',
   startDate: moment(),
@@ -673,10 +697,10 @@ $('#attendance').highcharts({
 				str+='<th class="text-danger">late comings</th>';
 				str+='<th>absent</th>';
 			str+='</thead>';
-			for(var i in result){    
+			for(var i in result){      
 				str+='<tr>';
-					str+='<td class="deptDtlsCls" attr_dept_name="'+result[i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[i].districtName+'</u></td>';
-					str+='<td class="empDtlsCls" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[i].name+'</u></td>'; 
+					str+='<td class="deptDtlsCls" attr_dept_name="'+result[i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'"  style="cursor:pointer;"><u>'+result[i].districtName+'</u></td>';
+					str+='<td class="empDtlsCls" attr_name="'+result[i].name+'" attr_dept_name="'+result[i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_cadre_id="'+result[i].cadreId+'" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[i].name+'</u></td>'; 
 					str+='<td>'+result[i].mobileNo+'</td>';    
 					str+='<td>'+result[i].id+'</td>';
 					str+='<td>'+result[i].availableCount+'</td>';
@@ -751,7 +775,7 @@ $('#attendance').highcharts({
 							}
 							str+='<tr>';
 								str+='<td class="deptDtlsCls" attr_dept_name="'+result[0][i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[0][i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[0][i].districtName+'</u></td>';
-								str+='<td class="empDtlsCls" attr_dept_id="'+result[0][i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[0][i].name+'</u></td>';  
+								str+='<td class="empDtlsCls" attr_name="'+result[0][i].name+'" attr_dept_name="'+result[0][i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_cadre_id="'+result[0][i].cadreId+'" attr_dept_id="'+result[0][i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[0][i].name+'</u></td>';  
 								str+='<td>'+result[0][i].count+'</td>';
 							str+='</tr>';
 							if(i==5){
@@ -778,15 +802,15 @@ $('#attendance').highcharts({
 							}
 							str+='<tr>';     
 								str+='<td class="deptDtlsCls" attr_dept_name="'+result[1][j].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_dept_id="'+result[1][j].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[1][j].districtName+'</u></td>';
-								str+='<td class="empDtlsCls" attr_dept_id="'+result[1][j].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[1][j].name+'</u></td>';  
-								str+='<td>'+result[1][j].orderId+'</td>';
+								str+='<td class="empDtlsCls" attr_name="'+result[1][j].name+'" attr_dept_name="'+result[1][j].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_cadre_id="'+result[1][j].cadreId+'" attr_dept_id="'+result[1][j].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[1][j].name+'</u></td>';       
+								str+='<td>'+result[1][j].orderId+'</td>';    
 							str+='</tr>';
 							if(j==5){
 								break;
 							}
 						}  
 						
-					str+='</table>';  
+					str+='</table>';    
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -797,7 +821,7 @@ $('#attendance').highcharts({
 			$("#gunTopId").html(str);
 		} 
 	}  
-	$(document).on('click','.deptDtlsCls',function(){  
+	$(document).on('click','.deptDtlsCls',function(){
 		var deptId = $(this).attr("attr_dept_id");
 		var officeId = $(this).attr("attr_office_id");
 		var fromDate = $(this).attr("attr_from_date");
@@ -805,19 +829,25 @@ $('#attendance').highcharts({
 		getTotalDtls(deptId,officeId,fromDate,toDate);
 		getTimeWiseDtls(deptId,officeId,fromDate,toDate);
 		getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate);
-		$("#diptNameId").html($(this).attr("attr_dept_name"));
+		getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
+		$("#officeHidId").attr("attr_office_hid_id",officeId);
+		$("#deptHidId").attr("attr_dept_hid_id",deptId);
+		$("#deptHidId").html($(this).attr("attr_dept_name"));
 		if(officeId==1){
 			$("#officeNameId").html('Hyderabad Party Office - Attendance');
 		}
 		if(officeId==2){
 			$("#officeNameId").html('Guntur Party Office - Attendance');  
 		} 
+		$("#diptNameId").html($(this).attr("attr_dept_name"));    
 		$("#totalCountId").html('');  
 		 $('#attedanceModalId').html('');
 		 $("#employeeOverViewId").html('');
 		 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');  
+		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
 		$("#attendanceModal").modal('show');
 		
 		
@@ -862,7 +892,12 @@ $('#attendance').highcharts({
           str+='</tr>';
           str+='<tr>';
             str+='<td>total Absent</td>';
-            str+='<td>'+result.id+'</td>';    
+			if(result.id < 0){
+				str+='<td>0</td>';    
+			}else{
+				str+='<td>'+result.id+'</td>';    
+			}
+            
           str+='</tr>';
         str+='</table>';
 		$("#totalCountId").html(str);
@@ -895,60 +930,7 @@ $('#attendance').highcharts({
 	if(officeId==2){
 		var title = "GUNTUR PARTY OFFICE"    
 	}
-	/* $('#dayWiseOvervwModal').highcharts({    
-
-    chart: {
-      type: 'column'
-    },
-
-    title: {
-      text: null
-    },
-
-    xAxis: {
-      categories: ['1', '2', '3', '4', '5']
-    },
-
-    yAxis: {
-      allowDecimals: false,
-      min: 0,
-      title: {
-        text: 'Number of fruits'
-      }
-    },
-
-    tooltip: {
-      formatter: function () {
-        return '<b>' + this.x + '</b><br/>' +
-          this.series.name + ': ' + this.y + '<br/>' +
-          'Total: ' + this.point.stackTotal;
-      }
-    },
-
-    plotOptions: {
-      column: {
-        stacking: 'normal'
-      }
-    },
-
-    series: [{
-      name: 'Present',
-      data: [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9],
-      stack: 'attendance',
-      color:'#31AA74'
-    }, {
-      name: 'Absent',
-      data: [9,8,7,6,5,4,0,2,1,0,9,8,7,6,5,4,3,2,1],
-      stack: 'attendance',
-      color:'#F36800'
-    }, {
-      name: 'Holiday',
-      data: [0,0,0,0,0,0,12,0,0,0,0,0,0,15,0,0,0,0,0],
-      stack: 'attendance',
-      color:'#465866'
-    }]
-  }); */
-
+	
   $('#attedanceModalId').highcharts({
         chart: {
             plotBackgroundColor: null,
@@ -957,7 +939,7 @@ $('#attendance').highcharts({
             type: 'pie'
         },
         title: {
-            text: title
+            text: title  
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -1007,6 +989,92 @@ $('#attendance').highcharts({
             }]
         }]
     });
+	}
+	function getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate){  
+		var jsObj={ 
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId       
+		};
+		$.ajax({          
+			type : 'GET',      
+			url : 'getDateWisePresentAbsentDtlsAction.action',    
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			$("#dayWiseOvervwModal").html('');
+			if(result != null && result.length > 0){
+				buildEmpDayWisePresentAndAbsent(result);
+			}else{  
+				 $("#dayWiseOvervwModal").html("Data Not Available");
+			}    
+		});    
+	}
+	function buildEmpDayWisePresentAndAbsent(result){
+		var presentCountArr = [];
+		var absentCountArr = [];
+		var holidayAbsentCountArr = [];
+		for(var i in result){
+			presentCountArr.push(result[i].presentCount);
+			absentCountArr.push(result[i].absentCount);
+			holidayAbsentCountArr.push(result[i].holidayAbsentCount);
+		}
+		  
+		$('#dayWiseOvervwModal').highcharts({    
+
+		chart: {
+		  type: 'column'
+		},
+
+		title: {
+		  text: null
+		},
+
+		xAxis: {
+		  categories: ['1', '2', '3', '4', '5']
+		},
+
+		yAxis: {
+		  allowDecimals: false,
+		  min: 0,
+		  title: {
+			text: 'Number of employees'    
+		  }
+		},
+
+		tooltip: {
+		  formatter: function () {
+			return '<b>' + this.x + '</b><br/>' +
+			  this.series.name + ': ' + this.y + '<br/>' +
+			  'Total: ' + this.point.stackTotal;
+		  }
+		},
+
+		plotOptions: {
+		  column: {
+			stacking: 'normal'
+		  }
+		},
+
+		series: [ {
+		  name: 'Holiday',
+		  data: holidayAbsentCountArr,
+		  stack: 'attendance',
+		  color:'#465866'
+		}, {
+		  name: 'Absent',  
+		  data: absentCountArr,        
+		  stack: 'attendance',
+		  color:'#F36800'
+		},{
+		  name: 'Present',
+		  data: presentCountArr,
+		  stack: 'attendance',
+		  color:'#31AA74'
+		}]    
+	  }); 
+
 	}
 	function getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate){
 		var jsObj={ 
@@ -1069,6 +1137,272 @@ $('#attendance').highcharts({
 		$("#employeeOverVwId").dataTable();
 		
 	}
+	$(document).on('click','.empDtlsCls',function(){     
+	
+		var deptId = $(this).attr("attr_dept_id");
+		var officeId = $(this).attr("attr_office_id");
+		var fromDate = $(this).attr("attr_from_date");
+		var toDate = $(this).attr("attr_to_date");
+		var cadreId = $(this).attr("attr_cadre_id");
+			
+		getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+		getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+		getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
+		//getTimeWiseDtls(deptId,officeId,fromDate,toDate);
+		//getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
+		/* $("#totalCountId").html('');  
+		 $('#attedanceModalId').html('');  
+		 $("#employeeOverViewId").html('');
+		 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); */
+		$("#singleEmployeeOverViewId").html('');
+		$("#tableAttendanceId").html('');
+		$("#attedanceModalForEmpId").html('');
+		$("#officeNameForEmpId").html('');      
+		$("#diptNameForEmpId").html('');
+		$("#singleEmployeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#tableAttendanceId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#attedanceModalForEmpId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		if(officeId==1){
+			$("#officeNameForEmpId").html('HYDERABAD PARTY OFFICE');
+		}
+		if(officeId==2){
+			$("#officeNameForEmpId").html('GUNTUR PARTY OFFICE');
+			
+		}
+		$("#diptNameForEmpId").html($(this).attr("attr_dept_name")+'-'+$(this).attr("attr_name"));
+		$("#attendanceModalEmplo").modal('show');  
+		
+	});
+	function getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId){
+		var jsObj={ 
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId,
+			cadreId : cadreId
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getAttendanceCountForMulitDateForEmpAction.action',    
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			
+			$("#tableAttendanceId").html('');
+		
+			if(result != null){
+				buildTotalDtlsEmployee(result);
+			}else{  
+				$("#tableAttendanceId").html('Data Not Available');
+			}    
+		});  
+	}
+	function buildTotalDtlsEmployee(result){
+		var str ='';
+		str+='<table class="table tableAttendance text-capital" >';
+		 
+		  str+='<tr>';
+			str+='<td>total working days</td>';
+			str+='<td>'+result.actualCount+'</td>';
+		  str+='</tr>';
+		 str+=' <tr>';
+			str+='<td>total present</td>';
+			str+='<td>'+result.availableCount+'</td>';
+		  str+='</tr>';
+		  str+='<tr>';
+			str+='<td>total Absent</td>'; 
+			if(result.id < 0){
+				str+='<td>0</td>';
+			}else{
+				str+='<td>'+result.id+'</td>';  
+			}
+			
+		  str+='</tr>';
+		str+='</table>';
+		$("#tableAttendanceId").html(str); 
+		
+		
+	}
+	function getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId){
+		var jsObj={   
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId,
+			cadreId : cadreId
+		};
+		$.ajax({          
+			type : 'GET',      
+			url : 'getAttendanceCountForMulitDateTimeWiseForEmpAction.action',  
+			dataType : 'json',  
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			$('#attedanceModalForEmpId').html('');
+			if(result != null){  
+				buildTimeWiseDtlsForEmp(result,officeId);
+				
+			}else{  
+				 $("#attedanceModalForEmpId").html('Data Not Available');  
+			}    
+		});  
+	}
+	function buildTimeWiseDtlsForEmp(result,officeId){
+		$('#attedanceModalForEmpId').highcharts({
+        chart: {
+            plotBackgroundColor: null,  
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: "EMPLOYEE OVERVIEW"    
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+        showInLegend: true,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: [{
+                name: 'Before 9',
+				//value:result.id,         
+                y: result.id,
+        color:'#A4C73C'
+            }, {
+                name: '9 - 10',
+				//value:result.id,
+                y: result.count,
+        color:'#5FB3EA'  
+            }, {
+                name: '10 - 11',
+				//value:result.id,
+                y: result.actualCount,
+        color:'#FFEE66'
+            }, {
+                name: '11 - 13',
+				//value:result.id,
+                y: result.availableCount,
+        color:'#EEB703'  
+            }, {
+                name: 'After 13',
+				//value:result.id, 
+                y: result.orderId,      
+        color:'#FE3902'
+            }]
+        }]
+    });
+	
+	}
+	function getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId){
+		var jsObj={ 
+			fromDate : fromDate,  
+			toDate : toDate,
+			deptId : deptId,
+			officeId : officeId,
+			cadreId : cadreId     
+		};
+		$.ajax({          
+			type : 'GET',      
+			url : 'getDateWisePresentAbsentDtlsForEmployeeAction.action',        
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){  
+			$("#singleEmployeeOverViewId").html('');
+			if(result != null && result.length > 0){
+				buildEmpDayWisePresentAndAbsentForEmp(result);
+			}else{  
+				 $("#singleEmployeeOverViewId").html("Data Not Available");
+			}    
+		});      
+	}
+	function buildEmpDayWisePresentAndAbsentForEmp(result){
+		var presentCount = [];
+		var absentCount=[];
+		var holidayCount = [];
+		for(var i in result){
+			
+			if(result[i].isHoliday=="yes"){
+				presentCount.push(0);  
+				holidayCount.push(1);   
+				absentCount.push(0);
+			}else{
+				presentCount.push(result[i].presentCount);
+				holidayCount.push(0);
+				absentCount.push(result[i].absentCount);
+			}  
+		}
+		$('#singleEmployeeOverViewId').highcharts({    
+
+		chart: {  
+		  type: 'column'
+		},
+
+		title: {
+		  text: null
+		},
+
+		xAxis: {
+		  categories: ['1', '2', '3', '4', '5']
+		},
+
+		yAxis: {
+		  allowDecimals: false,
+		  min: 0,
+		  title: {
+			text: 'Day Wise Status'    
+		  }
+		},
+
+		tooltip: {
+		  formatter: function () {
+			return '<b>' + this.x + '</b><br/>' +
+			  this.series.name + ': ' + this.y + '<br/>' +
+			  'Total: ' + this.point.stackTotal;
+		  }
+		},
+
+		plotOptions: {
+		  column: {
+			stacking: 'normal'
+		  }
+		},
+
+		series: [ {
+		  name: 'Holiday',
+		  data: holidayCount,
+		  stack: 'attendance',
+		  color:'#465866'
+		}, {
+		  name: 'Absent',  
+		  data: absentCount,          
+		  stack: 'attendance',
+		  color:'#F36800'
+		},{
+		  name: 'Present',
+		  data: presentCount,
+		  stack: 'attendance',
+		  color:'#31AA74'
+		}]    
+	  }); 
+		  
+	}  
 	/*Notes Functionality*/
 function displayDashboardCommentsForAttendance(dashBoardComponentId){
 	var jsObj={

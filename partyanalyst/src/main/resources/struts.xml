@@ -13771,5 +13771,25 @@
 	  		<param name="root">idNameVoList</param>     
 	 	</result>
 	</action>
+	<action name="getDateWisePresentAbsentDtlsAction" class="coreDashboardAction" method="getDateWisePresentAbsentDtls">
+		<result type="json" name="success">
+	  		<param name="root">holidayListVOs</param>     
+	 	</result>
+	</action>
+	<action name="getAttendanceCountForMulitDateForEmpAction" class="coreDashboardAction" method="getAttendanceCountForMulitDateForEmp">
+		<result type="json" name="success">
+	  		<param name="root">idNameVO</param>         
+	 	</result>
+	</action>
+	<action name="getAttendanceCountForMulitDateTimeWiseForEmpAction" class="coreDashboardAction" method="getAttendanceCountForMulitDateTimeWiseForEmp">
+		<result type="json" name="success">
+	  		<param name="root">idNameVO</param>   
+	 	</result>
+	</action>
+	<action name="getDateWisePresentAbsentDtlsForEmployeeAction" class="coreDashboardAction" method="getDateWisePresentAbsentDtlsForEmployee">
+		<result type="json" name="success">
+	  		<param name="root">holidayListVOs</param>     
+	 	</result>
+	</action>
 </package>
 </struts>
