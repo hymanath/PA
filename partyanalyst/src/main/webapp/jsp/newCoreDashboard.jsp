@@ -1474,16 +1474,28 @@
 																	<div id="compareStateWiseArticleRelatedToProblem"></div>
 																</div>
 															</div>
-															<div id="problemsDetailedOverview1"></div>
 															<div class="row">
 																<div class="col-md-12 col-xs-12 col-sm-12">
 																	<h4>DISTRICT WISE</h4>
 																	<div id="compareDistrictWiseArticleRelatedToProblem"></div>
-																	<div id="comparisonGovtProblemsDOverview"></div>
+																	<!--<div id="comparisonGovtProblemsStateLevelOverview"></div>-->
+																	<div id="comparisonGovtProblemsDistrictLevelOverview"></div>
+																	
 																</div>
 															</div>
-															<div id="problemsDetailedOverview"></div>
 															</div>
+														</div>
+													</div>
+													<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+														<div class="panel panel-default panelNew">
+															<div class="panel-heading">
+																<h4 class="panel-title"><span class="headingColor">Analysis on Problem</span></h4>
+															</div>
+															<div class="panel-body">
+															<div id="comparisonGovtProblemsOverAllAnalysis"></div>
+															<div id="comparisonGovtProblemsOverAllSubLevelAnalysis" style="display:none;"></div>
+															</div>
+															
 														</div>
 													</div>
 												</div>

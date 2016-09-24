@@ -1370,11 +1370,11 @@ var url = window.location.href;
 		
 	}
 	
-	function getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,deptIdsStr){
+	function getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,deptIdsStr,propertyName){
 		if(propertyId == 7){
-			$("#comparisonGovtProblemsDOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$("#comparisonGovtProblemsDistrictLevelOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}else if(propertyId == 0){
-			$("#comparisonGovtProblemsDOverview1").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+			$("#comparisonGovtProblemsOverAllAnalysis").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		}
 		
 
@@ -1401,15 +1401,15 @@ var url = window.location.href;
 		
 		//var propertyId=0;
 		$.ajax({
-			//url: wurl++"/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
+			//url: wurl+"/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems/"+globalUserAccessLevelId+"/"+temp+"/"+globalState+"/"+startDate+"/"+endDate+"/"+npIdsStr+"/"+propertyId+"/"+deptIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			if(propertyId == 7){
-				$("#problemsDetailedOverview").html('');
+				$("#comparisonGovtProblemsDistrictLevelOverview").html('');
 			}else if(propertyId == 0){
-				$("#problemsDetailedOverview22").html('');
+				$("#comparisonGovtProblemsOverAllAnalysis").html('');
 			}
-			buildComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId);
+			buildComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId,deptIdsStr,propertyName);
 			
 		});
 	}
@@ -2728,7 +2728,10 @@ var url = window.location.href;
 				
 				var problemDeptPostivePercArray =[];
 				for(var i in result){
-					problemDeptPostivePercArray.push(result[i].positivePerc)
+					var problemRelatedPieChartArray =[];
+					problemRelatedPieChartArray.push(result[i].name);
+					problemRelatedPieChartArray.push(result[i].positivePerc);
+					problemDeptPostivePercArray.push(problemRelatedPieChartArray);
 				}
 				
 				$(function () {
@@ -2757,6 +2760,10 @@ var url = window.location.href;
 										showInLegend: false
 									},
 									
+									
+								},
+								tooltip: {
+									pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
 									
 								},
 								series: [{
@@ -3727,11 +3734,13 @@ var url = window.location.href;
 	}
 	
 	$(document).on("click",".comparisonGovtMinistriesInfoSubLevel",function(){
+		$("#comparisonGovtProblemsOverAllSubLevelAnalysis").html('');
 		$(".moreDetailsBlockNews").show();
 		getAllDepartmentEditionsWiseDetails($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
 		getCompareGovtCandidateDepartmentsWiseDistrictOverview($(this).attr("attr_department_idsstr"));
 		getComparisonGovernamentTrendingTrackedIssues($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
-		getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(0,$(this).attr("attr_department_idsstr"));
+		getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(7,$(this).attr("attr_department_idsstr"),'');
+		getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(0,$(this).attr("attr_department_idsstr"),'');
 		getCompareGovernamentDistrictWiseArticleRelatedToProblem($(this).attr("attr_department_idsstr"));
 	});
 	
@@ -4203,7 +4212,7 @@ var url = window.location.href;
 		$("#compareStateWiseArticleRelatedToProblem").html(str)
 	}
 	
-	function buildComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId){
+	function buildComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(result,propertyId,deptIdsStr,propertyName){
 		var locationLevelNameArray =[];
 		
 			if(globalUserAccessLevelId == 2){
@@ -4226,13 +4235,13 @@ var url = window.location.href;
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-					str+='<div id="comparisonProblemsRelated" style="width:300px;height:180px"></div>';
+					str+='<div id="comparisonProblemsRelatedStateLevel" style="width:300px;height:180px"></div>';
 				str+='</div>';
 			str+='</div>';
 								
 			}
 		
-			$("#comparisonGovtProblemsDOverview").html(str);
+			$("#comparisonGovtProblemsStateLevelOverview").html(str);
 			$('[data-toggle="tooltip"]').tooltip();
 			
 			/* var dynamicHeight;
@@ -4259,7 +4268,7 @@ var url = window.location.href;
 					}	
 					
 				$(function () {
-					$('#comparisonProblemsRelated').highcharts({
+					$('#comparisonProblemsRelatedStateLevel').highcharts({
 						chart: {
 							type: 'bar'
 						},
@@ -4341,21 +4350,13 @@ var url = window.location.href;
 			if(propertyId == 7){
 				if(result != null && result.length > 0){
 				var str='';
-				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<div class="bg_ED pad_15">';
-						str+='<div class="panel panel-default panelNew">';
-							str+='<div class="panel-heading">';
-								str+='<h4 class="panel-title">';
-									str+='<span class="headingColor text-capitalize">problems detailed overview</span>';
-								str+='</h4>';
-							str+='</div>';
-							str+='<div class="panel-body">';
+				
 								str+='<div class="row">';
 									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 										str+='<h4 class="m_top20">DEPARTMENTS WISE</h4>';
 									str+='</div>';
 									str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-										str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApply">';
+										str+='<ul style="list-style:none;padding-left:0px;" class="textAlignDepartment dynamicHeightApplyCom">';
 										for(var i in result){
 											if(result[i].name !=null && result[i].name.length>55){
 												str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
@@ -4367,26 +4368,23 @@ var url = window.location.href;
 										str+='</ul>';
 									str+='</div>';
 									str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-										str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+										str+='<div id="comparisonProblemsRelatedDistrictLevel" style="width:300px;"></div>';
 									str+='</div>';
 								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
+					
 			}
 		
-			$("#comparisonGovtProblemsDOverview").html(str);
+			$("#comparisonGovtProblemsDistrictLevelOverview").html(str);
 			$('[data-toggle="tooltip"]').tooltip();
 			
 			var dynamicHeight;
-				$(".dynamicHeightApply").each(function(){
+				$(".dynamicHeightApplyCom").each(function(){
 					dynamicHeight = $(this).find("li").length;
 					dynamicHeight = (dynamicHeight*36)+"px";
 						
 				});
 					
-			$("#comparisonProblemsRelated").css("height",dynamicHeight);
+			$("#comparisonProblemsRelatedDistrictLevel").css("height",dynamicHeight);
 			 
 			if(result != null && result.length > 0){
 				var mainArray = [];
@@ -4397,7 +4395,7 @@ var url = window.location.href;
 						mainArray.push(problemDeptPostivePercAndNameArray)
 					}	
 				$(function () {
-					$('#comparisonProblemsRelated').highcharts({
+					$('#comparisonProblemsRelatedDistrictLevel').highcharts({
 						chart: {
 							type: 'bar'
 						},
@@ -4472,13 +4470,7 @@ var url = window.location.href;
 			
 			if(result != null && result.length > 0){
 					var str='';
-					str+='<div class="panel panel-default panelNew">';
-						str+='<div class="panel-heading">';
-							str+='<h4 class="panel-title">';
-								str+='<span class="headingColor text-capitalize">problems detailed overview</span>';
-							str+='</h4>';
-						str+='</div>';
-						str+='<div class="panel-body">';
+					
 							str+='<div class="row">';
 								str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 									str+='<h4>OVERALL ANALYSIS OF ACTION IMMEDIATELY PROBLEMS</h4>';
@@ -4488,7 +4480,7 @@ var url = window.location.href;
 											var properName = getProperName(result[i].name);
 											if( $.inArray(''+properName+'', locationLevelNameArray) == -1){
 												locationLevelNameArray.push(properName);
-												str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevel" attr_propertyid ="'+result[i].id+'" attr_property_name="'+properName+'" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Get Detailed View">'+result[i].count+'</span></li>';
+												str+='<li class="heightDyna" style="text-transform: uppercase;">'+properName+'  <span class="pull-right ovarAllAnalysisSubLevelCom" attr_propertyid ="'+result[i].id+'" attr_property_name="'+properName+'" attr_departmentids="'+deptIdsStr+'" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Get Detailed View">'+result[i].count+'</span></li>';
 											}
 											
 										}
@@ -4497,27 +4489,29 @@ var url = window.location.href;
 										str+='</ul>';
 									str+='</div>';
 									str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-										str+='<div id="comparisonProblemsRelated" style="width:300px;height:200px;"></div>';
+										str+='<div id="comparisonProblemsRelatedOverAllAnalysis" style="width:300px;height:200px;"></div>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-					str+='</div>';
+						
 			}
 			
-			$("#comparisonGovtProblemsDOverview1").html(str);
+			$("#comparisonGovtProblemsOverAllAnalysis").html(str);
 			$('[data-toggle="tooltip"]').tooltip();
 				 
 			if(result != null && result.length > 0){
 				
 				var problemDeptPostivePercArray =[];
 				for(var i in result){
-					problemDeptPostivePercArray.push(result[i].positivePerc)
+					var problemRelatedPieChartArray =[];
+					problemRelatedPieChartArray.push(result[i].name);
+					problemRelatedPieChartArray.push(result[i].positivePerc);
+					problemDeptPostivePercArray.push(problemRelatedPieChartArray);
 				}
 				
 				$(function () {
 						if(problemDeptPostivePercArray.length !=0){
-							$('#comparisonProblemsRelated').highcharts({
+							$('#comparisonProblemsRelatedOverAllAnalysis').highcharts({
 								colors: ['#E5D355','#8D4654','#F25C81','#8085E9'],
 								chart: {
 									type: 'pie',
@@ -4543,6 +4537,11 @@ var url = window.location.href;
 									
 									
 								},
+								tooltip: {
+										pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f}%</b><br/>',
+										
+									},
+									
 								series: [{
 									name: '',
 									 colorByPoint: true,
@@ -4561,8 +4560,8 @@ var url = window.location.href;
 								}]
 							});
 						}else{
-							$('#comparisonProblemsRelated').html("No Data Available")
-							$('#comparisonProblemsRelated').css("height","10px")
+							$('#comparisonProblemsRelatedOverAllAnalysis').html("No Data Available")
+							$('#comparisonProblemsRelatedOverAllAnalysis').css("height","10px")
 						}
 						
 					});
@@ -4575,7 +4574,7 @@ var url = window.location.href;
 						str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 							str+='<h4 class="m_top20" style="text-transform:uppercase;">PROBLEM CAN BE SOLVED '+propertyName+'</h4>';
 								str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply2">';
+								str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply2Com">';
 								for(var i in result){
 									if(result[i].name !=null && result[i].name.length>55){
 										str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,55)+'...</span> <span class="pull-right">'+result[i].count+'</span></li>';
@@ -4586,7 +4585,7 @@ var url = window.location.href;
 								str+='</ul>';
 							str+='</div>';
 							str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-							str+='<div id="comparisonProblemsRelated" style="width:300px;"></div>';
+							str+='<div id="comparisonProblemsRelatedSublevel" style="width:300px;"></div>';
 							
 							str+='</div>';
 						str+='</div>';
@@ -4594,17 +4593,17 @@ var url = window.location.href;
 				
 				}
 			
-				$("#comparisonGovtProblemsDOverview1").html(str);
+				$("#comparisonGovtProblemsOverAllSubLevelAnalysis").html(str);
 				$('[data-toggle="tooltip"]').tooltip();
 				
 				var dynamicHeight;
-					$(".dynamicHeightApply2").each(function(){
+					$(".dynamicHeightApply2Com").each(function(){
 						dynamicHeight = $(this).find("li").length;
 						dynamicHeight = (dynamicHeight*36)+"px";
 							
 					});
 						
-				$("#comparisonProblemsRelated").css("height",dynamicHeight);
+				$("#comparisonProblemsRelatedSublevel").css("height",dynamicHeight);
 				 
 				if(result != null && result.length > 0){
 					var mainArray = [];
@@ -4615,7 +4614,7 @@ var url = window.location.href;
 							mainArray.push(problemDeptPostivePercAndNameArray)
 						}	
 					$(function () {
-						$('#comparisonProblemsRelated').highcharts({
+						$('#comparisonProblemsRelatedSublevel').highcharts({
 							chart: {
 								type: 'bar'
 							},
@@ -4689,6 +4688,15 @@ var url = window.location.href;
 			}
 		
 	}
+	$(document).on("click",".ovarAllAnalysisSubLevelCom",function(){
+		$("#comparisonGovtProblemsOverAllSubLevelAnalysis").show();
+		$("#comparisonGovtProblemsOverAllSubLevelAnalysis").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var propertyId = $(this).attr("attr_propertyid");
+		var propertyName = $(this).attr("attr_property_name");
+		var deptIdsStr = $(this).attr("attr_departmentids");
+		getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(propertyId,deptIdsStr,propertyName);
+		
+	});
 	
 	//Governmnt Building End
 	
