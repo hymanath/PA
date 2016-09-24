@@ -2464,17 +2464,17 @@
 			<h4><span class="headingColor text-capitalize">overview</span></h4>
 			<div id="tableAttendanceId">
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+			
+		  </div>
+		  <div class="col-md-6 col-xs-12 col-sm-6">
+			<div id="attedanceModalForEmpId" height="150px"></div>       
+		  </div>
+		  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="m_top20">
 					<h4><span class="headingColor text-capitalize">employee overview</span></h4>
 				</div>
-				<div class="table-responsive m_top20" id="singleEmployeeOverViewId">  
-				</div>
+				<div class="m_top20" id="singleEmployeeOverViewId" style="height:200px"> </div>
 			</div> 
-		  </div>
-		  <div class="col-md-6 col-xs-12 col-sm-6">
-			<div id="attedanceModalForEmpId" height="400px"></div>     
-		  </div>
 		</div>
       </div>
     </div>
