@@ -212,10 +212,13 @@ $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) 
 	customStartDate = picker.startDate.format('MM/DD/YYYY');
 	customEndDate = picker.endDate.format('MM/DD/YYYY');
 	var changedDate = $("#dateRangeIdForAttendance").val();
-	if(today==$("#dateRangeIdForAttendance").val()){
-		$("#attendanceId").html('TODAY ('+$("#dateRangeIdForAttendance").val()+')')
+	
+	var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+
+	if(today == $("#dateRangeIdForAttendance").val()){
+		$("#attendanceId").html('TODAY ('+datStr+')');
 	}else{
-		$("#attendanceId").html($("#dateRangeIdForAttendance").val());      
+		$("#attendanceId").html(datStr);     
 	}  
 	  
 	getAttendanceOverViewForPartyOffice();  
@@ -318,7 +321,8 @@ $('#attendance').highcharts({
 	$(function () {
 		getAttendanceOverViewForPartyOffice();
 		getAttendanceOverViewForPartyOfficeWise();
-		$("#attendanceId").html('TODAY('+$("#dateRangeIdForAttendance").val()+')')   
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
+		$("#attendanceId").html('TODAY ('+datStr+')');
 	});
 	function getAttendanceOverViewForPartyOffice(){
 		$("#officeAttendanceTdlsId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -344,10 +348,11 @@ $('#attendance').highcharts({
 	}
 	function buildOfficeAttendanceDtls(result){
 		var str = '';
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		if(today==$("#dateRangeIdForAttendance").val()){
-			str+='<h4 class="text-capital">total members - <small>TODAY</small></h4>';
+			str+='<h4 class="text-capital">total members - <small>(TODAY - '+datStr+')</small></h4>';
 		}else{
-			str+='<h4 class="text-capital">total members - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';			
+			str+='<h4 class="text-capital">total members - <small>('+datStr+')</small></h4>';			
 		}  
 		
 		str+='<table class="table tableTraining bg_ED">';
@@ -394,11 +399,12 @@ $('#attendance').highcharts({
 	}
 	function buildOfficeAttendanceOfficeWiseDtls(result){
 		var str = '';
+		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		for(var i in result){
 			if(today==$("#dateRangeIdForAttendance").val()){
-				str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>TODAY</small></h4>';  
+				str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>(TODAY - '+datStr+')</small></h4>';  
 			}else{
-				str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>'+$("#dateRangeIdForAttendance").val()+'</small></h4>';
+				str+='<h4 class="text-capital m_top20">'+result[i].name+' - <small>('+datStr+')</small></h4>';
 			}
 			str+='<table class="table tableTraining bg_ED">';
 				str+='<tr>';
@@ -1214,12 +1220,11 @@ $('#attendance').highcharts({
 		  str+='</tr>';
 		  str+='<tr>';
 			str+='<td>total Absent</td>'; 
-			str+='<td>'+result.id+'</td>';            
-			/* if(result.id < 0){
-				str+='<td>0</td>';  
+			if(result.id < 0){
+				str+='<td>0</td>';
 			}else{
 				str+='<td>'+result.id+'</td>';  
-			} */
+			}
 			
 		  str+='</tr>';
 		str+='</table>';
@@ -1509,3 +1514,9 @@ $(document).on("click",".btnCustomCreateAttendance",function(){
 });
 
 /*Notes Functionality End*/	
+
+function changeDateFormat(dateStr)
+{
+	var todayArr = dateStr.split("/");
+	return todayArr[1]+'-'+todayArr[0]+'-'+todayArr[2];
+}
