@@ -1032,7 +1032,9 @@ public void setTrainingCampAttendanceDAO(
 			    		 } 
 				  }
 			  }else{
-				  villageWardMap.putAll(wardMap);  
+				  if(wardMap != null && wardMap.size() > 0){
+					  villageWardMap.putAll(wardMap);  
+				  }
 			  }
 		      //calculate percentage
 			  if(meetingsDtlsMap != null && meetingsDtlsMap.size() > 0){
@@ -1058,68 +1060,88 @@ public void setTrainingCampAttendanceDAO(
 					 calculateTotalCntAndPercentage(entry.getValue());  
 				 }
 			 }
+			 
 			   //Preparing final result based on user access level
 			  
 			  // common for all 
-		       PartyMeetingsVO villageWardVO = new PartyMeetingsVO();
-			   villageWardVO.setName("Village/Ward");
-			   if(villageWardMap != null && villageWardMap.size()  > 0){
-				   villageWardVO.getPartyMettingsVOList().addAll(villageWardMap.values());   
+		      if(villageWardMap != null && villageWardMap.size()  > 0){
+		    	    PartyMeetingsVO villageWardVO = new PartyMeetingsVO();
+				    villageWardVO.setName("Village/Ward");
+				    villageWardVO.getPartyMettingsVOList().addAll(villageWardMap.values());  
+				    resultList.add(villageWardVO);
 			   }
-			   resultList.add(villageWardVO);
-			   PartyMeetingsVO manDalTwnDivVO = new PartyMeetingsVO();
-			   manDalTwnDivVO.setName("Mandal/Town/Division");
 			   if(mandalTwnDivisionMap != null && mandalTwnDivisionMap.size()  > 0){
+				   PartyMeetingsVO manDalTwnDivVO = new PartyMeetingsVO();
+				   manDalTwnDivVO.setName("Mandal/Town/Division");
 				   manDalTwnDivVO.getPartyMettingsVOList().addAll(mandalTwnDivisionMap.values());   
+				   resultList.add(manDalTwnDivVO);
 			   }
-			   resultList.add(manDalTwnDivVO);
-			  
-			  
-			    PartyMeetingsVO stateVO = new PartyMeetingsVO();
-			    stateVO.setName("State");
-			    if(meetingsDtlsMap.get(1l) != null && meetingsDtlsMap.get(1l).size() > 0){
-			    	 stateVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(1l).values()); 	
+			   
+			     PartyMeetingsVO stateVO = new PartyMeetingsVO();
+			   if(meetingsDtlsMap.get(1l) != null && meetingsDtlsMap.get(1l).size() > 0){
+			        stateVO.setName("State");
+			    	stateVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(1l).values()); 	
 			    }
-			    PartyMeetingsVO districtVO = new PartyMeetingsVO();
-			    districtVO.setName("District");
+			   
+		  	    PartyMeetingsVO districtVO = new PartyMeetingsVO();
 			    if(meetingsDtlsMap.get(2l) != null && meetingsDtlsMap.get(2l).size() > 0){
-			    	districtVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(2l).values()); 	
+			  	      districtVO.setName("District");
+					  districtVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(2l).values()); 	
 			    }
+			    
 			    PartyMeetingsVO constituencyVO = new PartyMeetingsVO();
-			    constituencyVO.setName("Constituency");
 			    if(meetingsDtlsMap.get(3l) != null && meetingsDtlsMap.get(3l).size() > 0){
+			    	constituencyVO.setName("Constituency");
 			    	constituencyVO.getPartyMettingsVOList().addAll(meetingsDtlsMap.get(3l).values()); 	
 			    }
 			   
 			   
 		       if(userAccessLevelId.longValue()==IConstants.COUNTRY_LEVEl_ACCESS_ID || userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		    	   if(locationValues != null && locationValues.size()==1){
-		    		   resultList.add(constituencyVO);
-			    	   resultList.add(districtVO);
-			       }else{
-			    	   resultList.add(stateVO);
-			     	   resultList.add(constituencyVO);
-			    	   resultList.add(districtVO);   
-		    	   }
+		    		   if(constituencyVO.getPartyMettingsVOList() != null && constituencyVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(constituencyVO);   
+		    		   }
+		    		   if(districtVO.getPartyMettingsVOList() != null && districtVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(districtVO);
+				       }
+		    	   }else{
+		    		   if(stateVO.getPartyMettingsVOList() != null && stateVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(stateVO);
+					   }
+		    		   if(constituencyVO.getPartyMettingsVOList() != null && constituencyVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(constituencyVO);
+					   }
+		    		   if(districtVO.getPartyMettingsVOList() != null && districtVO.getPartyMettingsVOList().size() > 0){
+		    		 	   resultList.add(districtVO);   
+		   		     }
+			      }
 		       }else if(userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		    	   if(locationValues != null && locationValues.size()==1){
-		    		   resultList.add(constituencyVO);
-			       }else{
-			    	   resultList.add(constituencyVO);
-			    	   resultList.add(districtVO);  
-			       }  
+		    		   if(constituencyVO.getPartyMettingsVOList() != null && constituencyVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(constituencyVO);
+		    		   }
+		           }else{
+		        	   if(constituencyVO.getPartyMettingsVOList() != null && constituencyVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(constituencyVO);   
+		    		   }
+		    		   if(districtVO.getPartyMettingsVOList() != null && districtVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(districtVO);
+				       }
+		           }  
 		    	   }
 		       else if(userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 		    	   if(locationValues != null && locationValues.size()==1 ){
 			        }else{
-			        	  resultList.add(constituencyVO);	
+			        	  if(constituencyVO.getPartyMettingsVOList() != null && constituencyVO.getPartyMettingsVOList().size() > 0){
+			    			   resultList.add(constituencyVO);
+			    		   }
 			        }  
 		       }
 		         if(userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID ){
-		    	     resultList.add(constituencyVO);	
+		         	  if(constituencyVO.getPartyMettingsVOList() != null && constituencyVO.getPartyMettingsVOList().size() > 0){
+		    			   resultList.add(constituencyVO);
+		    		   }
 		         }
-		     
-			  
 	  }catch(Exception e){
 		  LOG.error("exception occurred in getPartyMeetingCntDetailstLevelWiseByUserAccessLevel()", e);  
 	  }
