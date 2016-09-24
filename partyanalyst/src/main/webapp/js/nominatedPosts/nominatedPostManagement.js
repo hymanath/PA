@@ -303,6 +303,9 @@ function buildAllDeptsAndBoardsByLevel(result,levelId,levelValues)
 				  titleStr =" Total Running Posts";
 				  boardTitleStr =" RUNNING ";
 			  }
+			  if(globalStatus == "notRecieved"){
+				  titleStr =" Applications not Received Posts";
+			  }
 			  else  if(globalStatus == "finalReview"){
 				  titleStr ="Ready to final review Posts";
 			  }
@@ -549,13 +552,13 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Total  Available Posts </th>';//Open Status					
 							str+='<th>Total  Received Applications </th>';					
 							str+='<th>Ready to Shortlist Applications </th>';
-							str+='<th>Rejected Applications </th>';
-							str+='<th>Rejected in Final Review </th>';
-							str+='<th>Rejected in Finalized </th>';
 							str+='<th>Shortlisted Applications </th>';					
 							str+='<th>Final Review Applications </th>';
 							str+='<th>Finalized Applications </th>';
 							str+='<th>G.O  Passed Applications</th>';
+							str+='<th style="font-weight:bold">Rejected Applications </th>';
+							str+='<th style="font-weight:bold">Rejected in Final Review </th>';
+							str+='<th style="font-weight:bold">Rejected in Finalized </th>';
 
 							
 					str+='</thead>';
@@ -655,22 +658,6 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								else
 									str+='<td> - </td>';
 								
-								if(rejected >0){
-									str+='<td>'+rejected+'</td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								if(rejectedInFinalRev >0){
-									str+='<td>'+rejectedInFinalRev+'</td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								if(rejectedInFinalized >0){
-									str+='<td>'+rejectedInFinalized+'</td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								
 								if(shortListed >0){
 									str+='<td>'+shortListed+'</td>';
 								}else{
@@ -697,6 +684,22 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								}else{
 									str+='<td> - </td>';
 								}
+								if(rejected >0){
+									str+='<td>'+rejected+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalRev >0){
+									str+='<td>'+rejectedInFinalRev+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalized >0){
+									str+='<td>'+rejectedInFinalized+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
 								
 						str+='</tr>';
 					}
@@ -739,13 +742,13 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 							str+='<th>Total Available Posts</th>';//Open Status					
 							str+='<th>Total Received Applications </th>';					
 							str+='<th>Ready to Shortlist Applications</th>';
-							str+='<th>Rejected Applications </th>';
-							str+='<th>Rejected in Final Review </th>';
-							str+='<th>Rejected in Finalized </th>';							
 							str+='<th>Shortlisted Applications</th>';
 							str+='<th>Final Review Applications </th>';
 							str+='<th>Finalized Applications </th>';
-							str+='<th>G.O  Passed Applications</th>';							
+							str+='<th>G.O  Passed Applications</th>';
+							str+='<th style="font-weight:bold">Rejected Applications </th>';
+							str+='<th style="font-weight:bold">Rejected in Final Review </th>';
+							str+='<th style="font-weight:bold">Rejected in Finalized </th>';							
 					str+='</thead>';
 					
 				str+='<tbody>';
@@ -832,22 +835,6 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								else
 									str+='<td> - </td>';
 								
-								if(rejected >0){
-									str+='<td> <span title="Rejected Applications count ">'+rejected+' </span></td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								if(rejectedInFinalRev >0){
-									str+='<td> <span title="Rejected in Final review count ">'+rejectedInFinalRev+' </span></td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								if(rejectedInFinalized >0){
-									str+='<td> <span title="Rejected in Finalized count ">'+rejectedInFinalized+' </span></td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								
 								if(shortListed >0){
 									str+='<td <span title="Shortlisted Applications count "> >'+shortListed+' </span></td>';
 								}else{
@@ -871,6 +858,21 @@ function buildDepartmentWiseBoardAndPositionDetails(result,bodyId,depts,boards,d
 								
 								if(goPassed >0){
 									str+='<td> <span title="G.O Passed Applications count "> '+goPassed+'</span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejected >0){
+									str+='<td> <span title="Rejected Applications count ">'+rejected+' </span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalRev >0){
+									str+='<td> <span title="Rejected in Final review count ">'+rejectedInFinalRev+' </span></td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(rejectedInFinalized >0){
+									str+='<td> <span title="Rejected in Finalized count ">'+rejectedInFinalized+' </span></td>';
 								}else{
 									str+='<td> - </td>';
 								}
