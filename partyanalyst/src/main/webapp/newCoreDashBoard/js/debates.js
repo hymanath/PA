@@ -1,11 +1,11 @@
-var customStartDate = moment().startOf('month').format('DD/MM/YYYY')
+var customStartDate = moment().format('DD/MM/YYYY')
 var customEndDate = moment().format('DD/MM/YYYY');
 $(document).ready(function(){
 	
 	
 	$("#dateRangeIdForDebates").daterangepicker({
 		opens: 'left',
-		startDate: moment().startOf('month'),
+		startDate: moment(),
         endDate: moment(),
 		locale: {
 		  format: 'DD/MM/YYYY'
