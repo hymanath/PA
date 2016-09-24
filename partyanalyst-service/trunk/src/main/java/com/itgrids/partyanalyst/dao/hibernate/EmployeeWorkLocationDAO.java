@@ -701,6 +701,7 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 			return query.list();      
 			
 		}
+		
 }
 
 /*select tdp_cadre_id,count(time)   from (
