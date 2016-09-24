@@ -1214,11 +1214,12 @@ $('#attendance').highcharts({
 		  str+='</tr>';
 		  str+='<tr>';
 			str+='<td>total Absent</td>'; 
-			if(result.id < 0){
-				str+='<td>0</td>';
+			str+='<td>'+result.id+'</td>';            
+			/* if(result.id < 0){
+				str+='<td>0</td>';  
 			}else{
 				str+='<td>'+result.id+'</td>';  
-			}
+			} */
 			
 		  str+='</tr>';
 		str+='</table>';
