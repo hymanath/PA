@@ -417,5 +417,30 @@ public class DateUtilService {
       }
     return returnDate;
   }
+	public static List<String> getDaysBetweenDatesStringFormat(Date startdate, Date enddate)
+	{
+		Calendar c = Calendar.getInstance();
+		c.setTime(enddate);
+		c.add(Calendar.DATE, 1); 
+		enddate = c.getTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<String> dateStrList = new ArrayList<String>();
+	    List<Date> dates = new ArrayList<Date>();
+	    Calendar calendar = new GregorianCalendar();
+	    calendar.setTime(startdate);
+
+	    while (calendar.getTime().before(enddate))   
+	    {
+	        Date result = calendar.getTime();
+	        dates.add(result);
+	        calendar.add(Calendar.DATE, 1);
+	    }
+	    if(dates != null && dates.size() > 0){
+	    	for(Date dt : dates){
+	    		dateStrList.add(sdf.format(dt));
+			}
+	    }
+	    return dateStrList;
+	}
 
 }

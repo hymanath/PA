@@ -31,4 +31,6 @@ public interface IEmployeeWorkLocationDAO extends GenericDao<EmployeeWorkLocatio
 	public List<Object[]> getDayWisePresentCount(List<Long> officeIdList, List<Long> deptIdList, Date fromDate, Date toDate);
 	public List<Object[]> getTimeWisePresentCount(Long officeId,Long deptId,Date fromDate,Date toDate,Date fromTime,Date toTime);
 	public List<Object[]> getAttendanceReportTimeToTime(Long officeIdList, Long deptIdList, Date fromDate, Date toDate, Date fromTime, Date toTime);
+	public List<Object[]> getDayWisePresentCountForEmp(List<Long> officeIdList,List<Long> deptIdList, Date fromDate, Date toDate,Long cadreId);
+	public List<Object[]> getTimeWisePresentCountForEmp(Long officeIdList, Long deptIdList, Date fromDate, Date toDate, Date fromTime, Date toTime,Long cadreId);
 }
