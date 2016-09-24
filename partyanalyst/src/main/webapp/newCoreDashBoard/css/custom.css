@@ -1811,6 +1811,14 @@ margin-top: 5px; margin-bottom: 2px;
 	background-color:#EDEEF0;
 	border-top:0px !important;
 }
+#totalCountId
+{
+	margin-top:20px;
+}
+#totalCountId .tableAttendance
+{
+	border-spacing:0px 12px;
+}
 .tableAtten tr td
 {
 	border-top:0px !important;
