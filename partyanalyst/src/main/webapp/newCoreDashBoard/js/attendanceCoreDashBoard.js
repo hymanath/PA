@@ -190,7 +190,7 @@ $("#dateRangeIdForAttendance").daterangepicker({
 	startDate: moment().subtract(1, 'month').startOf('month'),
 	endDate: moment().subtract(1, 'month').endOf('month'),
 	locale: {
-	  format: 'MM/DD/YYYY'
+	  format: 'DD/MM/YYYY'
 	},
 	ranges: {
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -973,17 +973,17 @@ $('#attendance').highcharts({
                 y: result.id,
         color:'#A4C73C'
             }, {
-                name: '9 - 10',
+                name: '9 - 10:30',
 				//value:result.id,
                 y: result.count,
         color:'#5FB3EA'  
             }, {
-                name: '10 - 11',
+                name: '10:30 - 11:30',
 				//value:result.id,
                 y: result.actualCount,
         color:'#FFEE66'
             }, {
-                name: '11 - 13',
+                name: '11:30 - 13',
 				//value:result.id,
                 y: result.availableCount,
         color:'#EEB703'  
@@ -1113,9 +1113,9 @@ $('#attendance').highcharts({
 				str+='<th>absent total</th>';
 				str+='<th>present total</th>';
 				str+='<th style="color:#A4C73C;"> <9:00 </th>';
-				str+='<th style="color:#5FB3EA;"> 09:00 TO 10:00 </th>';
-				str+='<th style="color:#FFEE66;"> 10:00 TO 11:00 </th>';
-				str+='<th style="color:#EEB703;"> 11:00 TO 13:00 </th>';
+				str+='<th style="color:#5FB3EA;"> 09:00 TO 10:30 </th>';
+				str+='<th style="color:#FFEE66;"> 10:30 TO 11:30 </th>';
+				str+='<th style="color:#EEB703;"> 11:30 TO 13:00 </th>';
 				str+='<th style="color:#FE3902;"> >13:00 </th>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -1131,9 +1131,9 @@ $('#attendance').highcharts({
 					}
 					str+='<td>'+result[i].count+'</td>';
 					str+='<td>'+result[i].lessThan9+'</td>';
-					str+='<td>'+result[i].between9To10+'</td>';
-					str+='<td>'+result[i].between10To11+'</td>';
-					str+='<td>'+result[i].between11To13+'</td>';
+					str+='<td>'+result[i].between9To1030+'</td>';
+					str+='<td>'+result[i].between1030To1130+'</td>';
+					str+='<td>'+result[i].between1130To13+'</td>';
 					str+='<td>'+result[i].greaterThan13+'</td>';
 				str+='</tr>';
 			}	 
@@ -1220,11 +1220,8 @@ $('#attendance').highcharts({
 		  str+='</tr>';
 		  str+='<tr>';
 			str+='<td>total Absent</td>'; 
-			if(result.id < 0){
-				str+='<td>0</td>';
-			}else{
-				str+='<td>'+result.id+'</td>';  
-			}
+			str+='<td>'+result.id+'</td>';  
+		
 			
 		  str+='</tr>';
 		str+='</table>';
@@ -1292,17 +1289,17 @@ $('#attendance').highcharts({
                 y: result.id,
         color:'#A4C73C'
             }, {
-                name: '9 - 10',
+                name: '9 - 10:30',
 				//value:result.id,
                 y: result.count,
         color:'#5FB3EA'  
             }, {
-                name: '10 - 11',
+                name: '10:30 - 11:30',
 				//value:result.id,
                 y: result.actualCount,
         color:'#FFEE66'
             }, {
-                name: '11 - 13',
+                name: '11:30 - 13',
 				//value:result.id,
                 y: result.availableCount,
         color:'#EEB703'  
@@ -1351,7 +1348,7 @@ $('#attendance').highcharts({
 			}else{
 				presentCount.push(result[i].presentCount);
 				holidayCount.push(0);
-				absentCount.push(result[i].absentCount);
+				absentCount.push(result[i].absentCount);    
 			}  
 		}
 		$('#singleEmployeeOverViewId').highcharts({    
