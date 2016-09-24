@@ -1070,9 +1070,9 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		 
 		   StringBuilder queryStr = new StringBuilder();
 		          
-		    queryStr.append("select model.nominatedPost.nominatedPostStatus.nominatedPostStatusId,model.nominatedPost.nominatedPostStatus.status,count(distinct model.nominatedPost.nominatedPostId) from NominatedPostFinal model " +
+		    queryStr.append("select model.nominatedPostStatus.nominatedPostStatusId,model.nominatedPostStatus.status,count(distinct model.nominatedPostId) from NominatedPost model " +
 		    		       " where " +
-		    		       " model.nominatedPost.isExpired='N' and model.nominatedPost.isDeleted='N' and model.isDeleted='N' and model.nominatedPostMember.isDeleted='N' ");
+		    		       " model.isExpired='N' and model.isDeleted='N' ");
 		    
            if(positionId != null && positionId.longValue() > 0){
         	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
@@ -1084,7 +1084,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
  			   queryStr.append(" and model.nominatedPostMember.address.state.stateId=:stateId");
  		  }
 		   
-		  queryStr.append(" group by model.nominatedPost.nominatedPostStatus.nominatedPostStatusId ");
+		  queryStr.append(" group by model.nominatedPostStatus.nominatedPostStatusId ");
 		  
 		  Query query = getSession().createQuery(queryStr.toString());
 		  

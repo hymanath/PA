@@ -398,7 +398,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and ");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			sb.append(" model.applicationStatus.applicationStatusId not  in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
@@ -449,7 +449,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			sb.append(" model.applicationStatus.applicationStatusId not  in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");  
 		}else{
 			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
@@ -500,7 +500,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			sb.append(" model.applicationStatus.applicationStatusId not  in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and "); 
 		}else{
 			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
@@ -560,7 +560,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			sb.append(" model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS +") and ");
 		}else{
 			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
@@ -627,7 +627,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			sb.append(" model.nominationPostCandidate.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId and");
 		
 		if(applStatusId != null && applStatusId.longValue()==0l){ // for all status
-			sb.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			sb.append(" model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			sb.append(" model.applicationStatus.applicationStatusId=:postStatusId and ");
 		}
@@ -689,7 +689,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		
 		if(positionStatusId.equals(0l)){
-			queryStr.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			queryStr.append(" model.applicationStatus.applicationStatusId  not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			queryStr.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}   
@@ -768,7 +768,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		
 		if(positionStatusId.equals(0l)){
-			queryStr.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			queryStr.append(" model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			queryStr.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}   
@@ -846,7 +846,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		}
 		
 		if(positionStatusId.equals(0l)){
-			queryStr.append(" model.applicationStatus.applicationStatusId  in ("+IConstants.NOMINATED_POST_APPLICATION_STATUS+") and ");
+			queryStr.append(" model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_DASHBOARD_REJECTED_APPLICATION_STATUS+") and ");
 		}else{
 			queryStr.append(" model.applicationStatus.applicationStatusId = :positionStatusId and ");
 		}   
