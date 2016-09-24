@@ -34,6 +34,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long between10To11=0l;
 	private Long between11To13=0l;
 	private Long greaterThan13=0l;
+	private Long cadreId;
 	
 	public int compare(IdNameVO o2, IdNameVO o1) {
 		// TODO Auto-generated method stub
@@ -269,6 +270,15 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setGreaterThan13(Long greaterThan13) {
 		this.greaterThan13 = greaterThan13;
 	}
+
+	public Long getCadreId() {
+		return cadreId;
+	}
+
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+	
 	
 	
 }

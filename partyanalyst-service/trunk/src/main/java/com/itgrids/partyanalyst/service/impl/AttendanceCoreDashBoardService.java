@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IEmployeeDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IEmployeeWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IHolidayDAO;
+import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.Department;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
@@ -216,6 +217,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		}
 		return null;
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/20/2016
+	 *
+	 */
 	public List<IdNameVO> getAttendanceOverViewForPartyOfficeDeptWise(String fromDateStr, String toDateStr){
 		LOG.info("Entered into getAttendanceOverViewForPartyOfficeDeptWise method of AttendanceCoreDashBoardService class");
 		try{
@@ -333,6 +339,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		}
 		return null;
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/20/2016
+	 *
+	 */
 	public List<IdNameVO> getAttendeeDtlsOfficeWiseForDay (String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList){
 		LOG.info("Entered into getAttendeeDtlsOfficeWise method of AttendanceCoreDashBoardService class");
 		try{
@@ -375,6 +386,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO = new IdNameVO();
 					idNameVO.setDistrictid(param[0] != null ? (Long)param[0] : 0l);
 					idNameVO.setDistrictName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setCadreId(param[2] != null ? (Long)param[2] : 0l);
 					idNameVO.setName(param[3] != null ? param[3].toString() : "");
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
 					idNameVO.setStatus("present");  
@@ -426,6 +438,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		}
 		return null;
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/21/2016
+	 *
+	 */
 	public List<IdNameVO> getAttendeeDtlsDeptWiseForDay (String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList, String status){
 		LOG.info("Entered into getAttendeeDtlsDeptWiseForDay method of AttendanceCoreDashBoardService class");
 		try{
@@ -454,6 +471,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO = new IdNameVO();
 					idNameVO.setDistrictid(param[0] != null ? (Long)param[0] : 0l);
 					idNameVO.setDistrictName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setCadreId(param[0] != null ? (Long)param[0] : 0l);
 					idNameVO.setName(param[3] != null ? param[3].toString() : "");
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
 					idNameVO.setWish(param[6] != null ? param[6].toString() : "");
@@ -517,6 +535,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		}
 		return null;
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/22/2016
+	 *
+	 */
 	public List<List<IdNameVO>> getTopAbsentAndIregular(String fromDateStr, String toDateStr, List<Long> officeIdList, List<Long> deptIdList){
 		LOG.info("Entered into getTopAbsentAndIregular method of AttendanceCoreDashBoardService class");
 		try{
@@ -557,6 +580,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO = new IdNameVO();
 					idNameVO.setDistrictid(param[0] != null ? (Long)param[0] : 0l);
 					idNameVO.setDistrictName(param[1] != null ? param[1].toString() : "");
+					idNameVO.setCadreId(param[2] != null ? (Long)param[2] : 0l);
 					idNameVO.setName(param[3] != null ? param[3].toString() : "");
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
 					idNameVO.setStatus("present");  
@@ -609,6 +633,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		}
 		return null;
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/22/2016
+	 *
+	 */
 	public IdNameVO getAttendanceCountForMulitDate(Long officeId, Long deptId, String fromDateStr, String toDateStr){
 		LOG.info("Entered into getTopAbsentAndIregular method of AttendanceCoreDashBoardService class");
 		try{
@@ -659,6 +688,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		return null;
 		
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/23/2016
+	 *
+	 */
 	public IdNameVO getAttendanceCountForMulitDateTimeWise(Long officeId, Long deptId, String fromDateStr, String toDateStr){
 		LOG.info("Entered into getAttendanceCountForMulitDateTimeWise method of AttendanceCoreDashBoardService class");
 		try{
@@ -737,6 +771,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		return null;
 		
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/23/2016
+	 *
+	 */
 	public List<IdNameVO> getAttendanceReportTimeToTime(Long officeId, Long deptId, String fromDateStr, String toDateStr){
 		LOG.info("Entered into getAttendanceReportTimeToTime method of AttendanceCoreDashBoardService class");
 		try{
@@ -894,5 +933,319 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 		return null;
 		
 	}
+	/**
+	 * @author Swadhin Lenka
+	 * @since 09/24/2016
+	 *
+	 */
+	public List<HolidayListVO> getDateWisePresentAbsentDtls(Long officeId, Long deptId, String fromDateStr, String toDateStr){
+		LOG.info("Entered into getDateWisePresentAbsentDtls method of AttendanceCoreDashBoardService class");
+		try{
+			HolidayListVO holidayListVO = null;
+			Date fromDate = null;
+			Date toDate = null;
+			Long diff = 0l;
+			Long noOfWorkingDays = 0l;
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
+				fromDate = sdf1.parse(fromDateStr); 
+				toDate = sdf1.parse(toDateStr);
+				diff = toDate.getTime() - fromDate.getTime();
+				noOfWorkingDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+				noOfWorkingDays++;
+			}
+			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
+			if(holidayCount != null){
+				noOfWorkingDays-=holidayCount;
+			}
+			List<Object[]> holidayList = holidayDAO.getHolidayList(fromDate, toDate);
+			//create a list of holiday
+			List<String> holidays = new ArrayList<String>();
+			if(holidayList != null && holidayList.size() > 0){
+				for(Object[] param : holidayList){
+					holidays.add(param[1] != null ? param[1].toString().substring(0, 10) : "");//
+				}
+			}
+			List<String> dateStrList = dateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+			//create isHolidayMap
+			Map<String,String> isHolidayMap = new HashMap<String,String>();
+			for(String currDate : dateStrList){
+				if(holidays.contains(currDate)){
+					isHolidayMap.put(currDate, "yes");
+				}else{
+					isHolidayMap.put(currDate, "no");
+				}
+			}
+			//get Total employee of the dept.
+			//total employee
+			List<Long> officeIdList = new ArrayList<Long>();
+			officeIdList.add(officeId);
+			List<Long> deptIdList = new ArrayList<Long>();
+			deptIdList.add(deptId);
+			List<Long> employeeCadreIdList = employeeWorkLocationDAO.getEmployeeIdListOfficeWise(officeIdList,deptIdList);
+			int noOfEmp = employeeCadreIdList.size();
+			//no of emp presented per day
+			//total no of presented employee
+			//create a map for daywise present count  
+			Map<String,Long> dayAndNoOfEmpPresentCount = new HashMap<String,Long>();
+			List<Object[]> dayWisePresentCount = employeeWorkLocationDAO.getDayWisePresentCount(officeIdList,deptIdList,fromDate,toDate);
+			if(dayWisePresentCount != null && dayWisePresentCount.size() > 0){
+				for(Object[] param : dayWisePresentCount){
+					dayAndNoOfEmpPresentCount.put(param[0] != null ? param[0].toString().substring(0, 10) : "", param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			//create a List for  details of the day as value
+			List<HolidayListVO> DayDtlsList = new ArrayList<HolidayListVO>();
+			/*if(dayAndNoOfEmpPresentCount.size() > 0){
+				for(Entry<String,Long> entry : dayAndNoOfEmpPresentCount.entrySet()){
+					holidayListVO = new HolidayListVO();
+					if(entry.getKey().length() > 1){
+						holidayListVO.setDate(entry.getKey());
+						holidayListVO.setIsHoliday( isHolidayMap.get(entry.getKey()) );
+						holidayListVO.setPresentCount(entry.getValue());  
+						
+							if(isHolidayMap.get(entry.getKey()).equalsIgnoreCase("yes")){
+								holidayListVO.setHolidayAbsentCount(noOfEmp-entry.getValue());
+							}else{
+								holidayListVO.setAbsentCount(noOfEmp-entry.getValue());
+							}
+						
+						
+					}
+					DayDtlsList.add(holidayListVO);
+				}
+			}*/
+			for(String dt : dateStrList){
+				holidayListVO = new HolidayListVO();
+				holidayListVO.setDate(dt);
+				holidayListVO.setIsHoliday(isHolidayMap.get(dt));
+				holidayListVO.setPresentCount(dayAndNoOfEmpPresentCount.get(dt) != null ? dayAndNoOfEmpPresentCount.get(dt) : 0l);
+				if(isHolidayMap.get(dt).equalsIgnoreCase("yes")){
+					holidayListVO.setHolidayAbsentCount(noOfEmp-(dayAndNoOfEmpPresentCount.get(dt) != null ? dayAndNoOfEmpPresentCount.get(dt) : 0l));
+				}else{
+					holidayListVO.setAbsentCount(noOfEmp-(dayAndNoOfEmpPresentCount.get(dt) != null ? dayAndNoOfEmpPresentCount.get(dt) : 0l));
+				}
+				DayDtlsList.add(holidayListVO);
+			}
+			return DayDtlsList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured in getDateWisePresentAbsentDtls method of AttendanceCoreDashBoardService class");
+		}
+		return null;
+		
+	}
+	public IdNameVO getAttendanceCountForMulitDateForEmp(Long officeId, Long deptId, String fromDateStr, String toDateStr, Long cadreId){
+		LOG.info("Entered into getAttendanceCountForMulitDateForEmp method of AttendanceCoreDashBoardService class");
+		try{
+			Long diff = 0l;
+			Long noOfDays = 0l;
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
+				fromDate = sdf.parse(fromDateStr); 
+				toDate = sdf.parse(toDateStr);
+				diff = toDate.getTime() - fromDate.getTime();
+				noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+				noOfDays++;
+			}
+			//total employee
+			List<Long> officeIdList = new ArrayList<Long>();
+			officeIdList.add(officeId);
+			List<Long> deptIdList = new ArrayList<Long>();
+			deptIdList.add(deptId);
+			
+			//total no of presented employee
+			Long totalPresentedEmp = 0l;
+			List<Object[]> dayWisePresentCount = employeeWorkLocationDAO.getDayWisePresentCountForEmp(officeIdList,deptIdList,fromDate,toDate,cadreId);
+			if(dayWisePresentCount != null && dayWisePresentCount.size() > 0){
+				for(Object[] param : dayWisePresentCount){
+					totalPresentedEmp+=(Long)param[1];
+				}
+			}
+			//no of holidays between these days
+			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
+			if(holidayCount != null){
+				noOfDays-=holidayCount;
+			}
+			//prepare return vo
+			IdNameVO idNameVO = new IdNameVO();
+			
+			idNameVO.setActualCount(noOfDays);//no of working days
+			idNameVO.setAvailableCount(totalPresentedEmp);//total present
+			Long absent = noOfDays - totalPresentedEmp;
+			idNameVO.setId(absent);//absent
+			return idNameVO;    
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured in getAttendanceCountForMulitDateForEmp method of AttendanceCoreDashBoardService class");
+		}
+		return null;
+		
+	}
+	public IdNameVO getAttendanceCountForMulitDateTimeWiseForEmp(Long officeId,Long deptId,String fromDateStr,String toDateStr,Long cadreId){
+		LOG.info("Entered into getAttendanceCountForMulitDateTimeWiseForEmp method of AttendanceCoreDashBoardService class");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			Date fromTime =null;
+			Date toTime = null;
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
+				fromDate = sdf1.parse(fromDateStr); 
+				toDate = sdf1.parse(toDateStr);
+				
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			//take the attended count before 9
+			fromTime = sdf.parse("09:00:00"); 
+			Long less9 = 0l;
+			List<Object[]> totalMemberLess9 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,null,cadreId);
+			if(totalMemberLess9 != null && totalMemberLess9.size() > 0 ){
+				for(Object[] param : totalMemberLess9){
+					less9+=(Long)param[1];
+				}
+			}
+			//take the attended count between 9 to 9:30
+			fromTime = sdf.parse("09:00:00");  
+			toTime = sdf.parse("10:00:00");
+			Long between9To10 = 0l;
+			List<Object[]> totalMemberBetween9To10 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,toTime,cadreId);
+			if(totalMemberBetween9To10 != null && totalMemberBetween9To10.size() > 0 ){
+				for(Object[] param : totalMemberBetween9To10){
+					between9To10+=(Long)param[1];
+				}
+			}
+			//take the attended count between 9:30 to 10
+			fromTime = sdf.parse("10:00:00");  
+			toTime = sdf.parse("11:00:00");
+			Long between10to11 = 0l;
+			List<Object[]> totalMemberBetween10To11 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,toTime,cadreId);
+			if(totalMemberBetween10To11 != null && totalMemberBetween10To11.size() > 0 ){
+				for(Object[] param : totalMemberBetween10To11){
+					between10to11+=(Long)param[1];
+				}
+			}
+			//take the attended count between 10 to 11
+			fromTime = sdf.parse("11:00:00");  
+			toTime = sdf.parse("13:00:00");
+			Long between11T013 = 0l;
+			List<Object[]> totalMemberBetween11To13 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,toTime,cadreId);  
+			if(totalMemberBetween11To13 != null && totalMemberBetween11To13.size() > 0 ){
+				for(Object[] param : totalMemberBetween11To13){  
+					between11T013+=(Long)param[1];
+				}
+			}
+			//take the attended count after 11
+			toTime = sdf.parse("13:00:00");
+			Long after13 = 0l;
+			List<Object[]> totalMemberGreaterThan13 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,null,toTime,cadreId);
+			if(totalMemberGreaterThan13 != null && totalMemberGreaterThan13.size() > 0 ){
+				for(Object[] param : totalMemberGreaterThan13){
+					after13+=(Long)param[1];
+				}
+			}
+			//prepare vo for ui
+			IdNameVO idNameVO = new IdNameVO();
+			idNameVO.setId(less9);//less than 9
+			idNameVO.setCount(between9To10);//between 9 to 10
+			idNameVO.setActualCount(between10to11);//between 10 to 11
+			idNameVO.setAvailableCount(between11T013);//between 11 to 13
+			idNameVO.setOrderId(after13);//after 13
+			
+			return idNameVO;  
+		}catch(Exception e){    
+			e.printStackTrace();
+			LOG.error("Error occured in getAttendanceCountForMulitDateTimeWiseForEmp method of AttendanceCoreDashBoardService class");
+		}
+		return null;
+		
+	}
+	public List<HolidayListVO> getDateWisePresentAbsentDtlsForEmployee(Long officeId,Long  deptId,String  fromDateStr,String  toDateStr,Long cadreId){
+		LOG.info("Entered into getDateWisePresentAbsentDtlsForEmployee method of AttendanceCoreDashBoardService class");
+		try{
+			HolidayListVO holidayListVO = null;
+			Date fromDate = null;
+			Date toDate = null;
+			Long diff = 0l;
+			Long noOfWorkingDays = 0l;
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+			if(fromDateStr != null && !fromDateStr.isEmpty() && toDateStr != null  && !toDateStr.isEmpty()){
+				fromDate = sdf1.parse(fromDateStr); 
+				toDate = sdf1.parse(toDateStr);
+				diff = toDate.getTime() - fromDate.getTime();
+				noOfWorkingDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+				noOfWorkingDays++;
+			}
+			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
+			if(holidayCount != null){
+				noOfWorkingDays-=holidayCount;
+			}
+			List<Object[]> holidayList = holidayDAO.getHolidayList(fromDate, toDate);  
+			//create a list of holiday
+			List<String> holidays = new ArrayList<String>();
+			if(holidayList != null && holidayList.size() > 0){
+				for(Object[] param : holidayList){
+					holidays.add(param[1] != null ? param[1].toString().substring(0, 10) : "");//
+				}
+			}
+			List<String> dateStrList = dateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+			//create isHolidayMap
+			Map<String,String> isHolidayMap = new HashMap<String,String>();
+			for(String currDate : dateStrList){
+				if(holidays.contains(currDate)){
+					isHolidayMap.put(currDate, "yes");
+				}else{
+					isHolidayMap.put(currDate, "no");
+				}
+			}
+			//get Total employee of the dept.
+			//total employee
+			List<Long> officeIdList = new ArrayList<Long>();
+			officeIdList.add(officeId);
+			List<Long> deptIdList = new ArrayList<Long>();
+			deptIdList.add(deptId);
+			
+			//no of emp presented per day
+			//total no of presented employee
+			//create a map for daywise present count  
+			Map<String,Long> dayAndNoOfEmpPresentCount = new HashMap<String,Long>();
+			List<Object[]> dayWisePresentCount = employeeWorkLocationDAO.getDayWisePresentCountForEmp(officeIdList,deptIdList,fromDate,toDate,cadreId);
+			if(dayWisePresentCount != null && dayWisePresentCount.size() > 0){  
+				for(Object[] param : dayWisePresentCount){
+					dayAndNoOfEmpPresentCount.put(param[0] != null ? param[0].toString().substring(0, 10) : "", param[1] != null ? (Long)param[1] : 0l);
+				}
+			}
+			//create a List for  details of the day as value
+			List<HolidayListVO> DayDtlsList = new ArrayList<HolidayListVO>();
+			
+			for(String dt : dateStrList){
+				holidayListVO = new HolidayListVO();
+				holidayListVO.setDate(dt);
+				holidayListVO.setIsHoliday(isHolidayMap.get(dt));
+				if(dayAndNoOfEmpPresentCount.get(dt) != null){
+					holidayListVO.setPresentCount(1l);  
+				}else{
+					holidayListVO.setAbsentCount(1l);
+				}
+				if(dayAndNoOfEmpPresentCount.get(dt) != null && isHolidayMap.get(dt).equalsIgnoreCase("yes")){
+					holidayListVO.setHolidayAbsentCount(0l);
+				}
+				
+				DayDtlsList.add(holidayListVO);    
+			}
+			return DayDtlsList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured in getDateWisePresentAbsentDtlsForEmployee method of AttendanceCoreDashBoardService class");
+		}
+		return null;
+		
+	}
+
 	
 }
+//getDayWisePresentCount
+//getHolidayList
+//getDaysBetweenDatesStringFormat
