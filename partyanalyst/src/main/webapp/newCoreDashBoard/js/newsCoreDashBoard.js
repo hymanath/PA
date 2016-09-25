@@ -67,9 +67,14 @@ var url = window.location.href;
 	  
 	});
 	
-	$(document).on("click",".settingsIconNews",function(){
+	$(document).on("click",".settingsIconNews",function(e){
 		$(this).closest(".newsBlock").find(".newsBlockDropDown").toggle();
+		e.stopPropagation();
 	});
+	$(document).on("click",".newsSetClose",function(){
+		$(this).closest(".newsBlockDropDown").hide();
+	});
+	
 	$(document).on("click",".newsIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");

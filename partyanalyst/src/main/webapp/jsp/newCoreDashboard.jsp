@@ -105,772 +105,8 @@
 	</div>
 	<!-- Error Msg For Committee End --->
 <div class="container m_top20">
-	<div class="row">
-    	<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
-        	<div class="panel panel-default panelNewCustom panel1">
-            	<div class="panel-heading">
-                	<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-8">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								committees - <small class="text-muted">up to date</small>
-							</h4>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4">
-							<span class="basicCommitteesBlockDiv pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="notesIcon pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
-							</span>
-							<span class="iconExpand pull-right">
-								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
-								<input type="text" id="dateRangeId"	 class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>
-					</div>
-					
-					<!-- committees tabs for tdpcommittee ids -->	
-					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
-						<div class="row">
-							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
-							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
-								<li role="presentation" class="active text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
-								<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
-								<li role="presentation"  class="text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
-							  </ul>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
-							  <div class="tab-content navTabsSettingsContent">
-								<div role="tabpanel" class="tab-pane active" id="home">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-									   <c:if test="${basicCommittee.id == 1}">
-										<li>
-											<label class="checkbox-inline">
-												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										</li>	
-									 </c:if>										
-									</c:forEach>
-									   <li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId"  checked>
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li> 
-										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											<li>
-											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											</li>   
-											</c:if>
-									  </c:forEach>
-										
-									</ul>
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane" id="profile">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-									   <c:if test="${basicCommittee.id == 1}">
-										 <li>
-										   <label class="checkbox-inline">
-											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-										   </label>
-										 </li>
-									   </c:if>
-									</c:forEach>
-										<li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedMandallevelId"  >
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li>  
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											 <c:choose>
-											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
-												 <li>
-												  <label class="checkbox-inline">
-													 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
-													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-												  </label>
-												 </li> 
-											   </c:when>
-												<c:otherwise>
-													<li>
-													  <label class="checkbox-inline">
-														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
-														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-													   </label>
-													 </li> 
-												</c:otherwise>
-										   </c:choose>
-										  </c:if>
-									</c:forEach>
-									
-									</ul>
-									</div>
-								</div>
-								<div role="tabpanel" class="tab-pane" id="messages">
-									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
-									<hr style ="margin-bottom:0px;" />
-									<div class="basicCommitteeDetailsDiv">
-									<ul class="settingsUl">
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-										   <c:if test="${basicCommittee.id == 1}">
-											 <li>
-											   <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											 </li>
-										   </c:if>
-									</c:forEach>
-										 <li>
-											<label class="checkbox-inline">
-											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId"  >
-											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
-										   </label>
-										</li>  
-									
-									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
-											<c:if test="${basicCommittee.id != 1}">
-											<li>
-											  <label class="checkbox-inline">
-												 <input type="checkbox"  class="villageCommitteecheckBoxClass villageCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
-												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
-											   </label>
-											</li>   
-											</c:if>
-									</c:forEach>
-									</ul>
-									</div>
-								</div>
-							  </div>
-							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
-							</div>
-						
-						</div>
-						
-						
-					</div>
-					<div class="notesDropDown notesArrow documentCloseClass">
-                    	<h4 class="text-capital">notes
-                        	<span class="pull-right">
-                            	<i class="glyphicon glyphicon-list-alt"></i>
-                            </span>
-                        </h4>
-						<div id="notesId"></div>
-                    	<!--<ul class="notesUl m_top20">
-                        	<li>
-                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
-                            	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
-                                <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
-                            </li>
-                        </ul>-->
-                        <hr/>  
-                          <div id="id1" style="color:red;"></div>						
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesArea"></textarea>
-                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
-                    </div>  
-                </div>
-                <div class="panel-body">  
-				
-              		<div class="row">
-					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
-						
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock">
-						<div id="basicCommitteeCountsDiv"></div>
-					</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
-                        	<div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
-                                	<ul class="activeUlCls list-inline pull-right">
-                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
-										<li class="topFivePoorResults">Top 5 Poor</li>-->
-										<li class="liCls1 active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-										<li class="liCls1 removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-                                    </ul>
-                                </div>
-                                <div id="userTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
-                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
-						    </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
-                        	
-							<ul class="list-inline pull-right activeUlCls">
-                            	<li class="active detailedBlock">Detailed</li>
-                                <li class="comparisionBlock">Comparison</li>
-                            </ul>
-					    </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks">
-                        	<div class="panel panel-default m_top10">
-                            	<div class="panel-body ">
-									<div id="levelWiseBasicCommittees"></div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none">
-                        	<div class="panel panel-default panelNew">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-md-8 col-xs-12 col-sm-12">
-                                            <span class="headingColor text-capitalize">all committees performance cohort</span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="panel-body verticalScrollBar">
-									<div id="districtWiseCommitteesReport" ></div>
-								</div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;" >
-                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
-                            <div class="panel panel-default panelNew">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 col-md-12">
-                                           <div id="childUserTypeDetailsDiv"></div>
-                                        </div>
-                                       
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                           <div id="SelectedUserTypeDetailsDiv"></div>
-                                        </div>
-                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
-                                                <div id="directChildActivityMemberDiv" class="table-responsive"></div>
-                                                <div class="row m_top20">
-                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
-														<div id="topPoorPerformanceDiv"></div>
-                                                    </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
-                                                        <div id="topPoorLocationsDiv"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                       	
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- TRAINING PROGRAM BLOCK -->
-        <div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
-			<div class="panel panel-default panelNewCustom panel1">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-								training - <small class="text-muted">up to date</small>
-							</h4>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-5">
-							<!--<span class="settingsIcon pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>-->
-							<span class="notesIconTraining pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
-							</span>
-							<span class="trainingIconExpand pull-right">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerClsForTraining hide">
-								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</span>
-						</div>
-					</div>
-					
-						
-					
-					<div class="notesDropDown notesArrow documentCloseClass" >
-						<h4 class="text-capital">notes
-							<span class="pull-right">
-								<i class="glyphicon glyphicon-list-alt"></i>
-							</span>
-						</h4>
-						<div id="notesTrainingId"></div>
-						  <hr/>
-						<div id="id2" style="color:red;"></div>
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesAreaTraining"></textarea>
-                        <button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>
-					</div>  
-				</div>
-				<div class="panel-body">
-					<div class="row">
-					<b><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
-						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
-							<div class="row">
-							 <div id="programsDtlsCntTableId"></div>
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									 <div id="villageWardTblId"></div>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									 <div id="mdlTwnDvsnTabId"></div>
-								</div>
-								<div id="stateLevelCampId"></div>
-								<!--<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
-									 <div id="districtTblId"></div>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
-									 <div id="stateTblDivId"></div>
-									<!--<hr class="m_0"/>"/>
-								</div>-->
-							</div>
-						</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
-								<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12">
-										<h4><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </h4>  
-									</div>
-									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline hideCls">
-											<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-											<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-										</ul>
-									</div> 
-								</div>
-								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12">
-									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
-						    </div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls">
-									<ul class="list-inline pull-right activeUlCls">
-										<li id="detailedId" class="trainingDetailed">Detailed</li>
-										<li class="trainingComparison">Comparison</li>
-										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
-									</ul>
-							</div> 
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<h4 class="text-capitalize text-muted">training programs</h4>
-										<br>
-										<div id="programsDivId"></div>
-										<!--<ul class="trainingsUl">
-											<li>
-												<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
-											</li>
-											<li>
-												<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
-											</li>
-										</ul>-->
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-8 col-xs-12 col-sm-6">
-												<span class="headingColor text-capitalize">training program cohort</span>
-											</div>
-											<!--<div class="col-md-4 col-xs-12 col-sm-6">
-												<ul class="activeUlCls list-inline">
-													<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
-													<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
-													<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
-												</ul>
-											</div>-->
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="districtWiseProgramCntDivId"></div>
-											</div>
-											<!--<div class="col-md-12 col-xs-12 col-sm-12">
-												<h4 class="text-capitalize">Leadership SKills</h4>
-												<div id="leadershipSkillsDis" class="chartLi"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<h4 class="text-capitalize">official Spokes Person</h4>
-												<div id="officialSpokesPerDis" class="chartLi"></div>
-											</div>-->
-										</div>
-										
-									</div>
-								</div>
-							</div>
-						
-							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-7 col-md-12">
-											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
-											</div>
-											<div class="col-xs-12 col-sm-5 col-md-4">
-												<!--<ul class="list-inline">
-													<li>
-														<div class="dropdown">
-														  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							                          	  <span class="changeDate">
-															This Week <span class="text-muted">Sunday - Today</span>
-								                           </span>
-															<span class="caret"></span>
-														  </button>
-														  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
-															<li>LifeTime</li>
-															<li role="separator" class="divider"></li>
-															<li class="thisWeek">This Week <span class="text-muted">Sunday - Today</span></li>
-															<li>Last Week <span class="text-muted lastWeekDate"></span></li>
-															<li>Last 7 Days <span class="text-muted last7Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>This Month <span class="text-muted thisMonth"></span></li>
-															<li>Last Month <span class="text-muted lastMonth"></span></li>
-															<li>Last 28 Days <span class="text-muted last28Days"></span></li>
-															<li>Last 30 Days <span class="text-muted last30Days"></span></li>
-															<li>First 28 Days<span class="text-muted first28Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>This Quarter <span class="text-muted thisQuarter"></span></li>
-															<li>Last Quarter <span class="text-muted lastQuarter"></span></li>
-															<li>Last 90 Days <span class="text-muted Last90Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>This Year<span class="text-muted thisYear"></span></li>
-															<li>Last Year <span class="text-muted lastYear"></span></li>
-															<li>Last 365 Days <span class="text-muted last365Days"></span></li>
-															<li role="separator" class="divider"></li>
-															<li>Custom Range <span class="customRange"></span></li>
-														  </ul>
-														</div>
-													</li>
-													<li>
-														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
-													</li>
-												</ul>-->
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-											 <div id="childActivityMemberDivId"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20"> 
-												 <div id="userTypeWiseChildDtlsTabId"></div>
-													<div class="row">
-														<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
-															<!--<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>-->
-															<div class="row m_top20">
-															  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-        </div>
-        <div class="row">
-            <!-- DEBATES PROGRAM BLOCK -->
-            <div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
-                <div class="panel panel-default panelNewCustom panel2">
-                    <div class="panel-heading">
-						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-7">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
-									debates - <small class="text-muted">today</small>
-								</h4>
-							</div>
-							<div class="col-md-4 col-sm-4 col-xs-5">
-								<span class="settingsIcon pull-right">
-								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								 </span>
-								<span class="notesIconDebates pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
-								</span>
-								<span class="debatesIconExpand pull-right">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
-									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>
-                       <div class="notesDropDown notesArrow" >
-							<h4 class="text-capital">notes
-								<span class="pull-right">
-									<i class="glyphicon glyphicon-list-alt"></i>
-								</span>
-							</h4>
-							<div id="notesDebatesId"></div>
-							<hr/>
-							<div id="debateUpId" style="color:red;"></div>
-							<label>Create Notes</label>
-							<textarea class="form-control notesAreaDebates"></textarea>
-							<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
-						</div> 	
-                    
-					</div>
-                    <div class="panel-body">
-                        <div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12">
-								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
-							</div>
-                            <div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
-								
-                                <div class="row">
-									<div id="partyWiseTotalDebateDetails"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
-                                <div class="row">
-                                	<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-                                		<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
-                                	</div>
-                                    <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-                                        <ul class="activeUlCls list-inline debateSpokesCls">
-                                            <li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
-                                            <li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
-                                        </ul>
-                                    </div>
-									<div id="SpokesPersonWiseDebate"></div>
-                                    
-                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
-                                    </div>	
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row debatesMoreHiddenBlock">
-                            <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
-									<div class="panel panel-default panelNew">
-										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
-											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
-												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
-											<!--</a>-->
-										</div>
-										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
-											<div class="panel-body collapse in" id="collapseOneBodyId">
-												<div class="row">
-													<div id="scaleBasedPerformanceCohort"></div>
-												</div>
-											</div>
-										<!--</div>-->
-									</div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingTwo">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-									  <div class="panel-body">
-										<div class="row">
-												<div id="roleBasedPerformanceCohort"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFive">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
-										</a>
-									</div>
-									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-									  <div class="panel-body">
-										<div class="row">
-											<div id="candidateRolesBuildId"></div>
-										</div>
-										<div class="row m_top20">
-											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingThree">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingFour">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
-										</a>
-									</div>
-									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								</div>
-                            </div>
-                            
-                          <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                <div class="panel panel-default panelNew">
-                                    <div class="panel-heading">
-                                        <h4><span class="headingColor">SMS Poll</span></h4>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                                <table class="table tableDebatesVs m_top10">
-                                                  <tbody>
-                                                    <tr>
-                                                        <td class="b_right1">
-                                                            <img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">total questions</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">yes %</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">no % </p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="b_right1">
-                                                            <img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">total questions</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">yes %</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">no % </p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="b_right1">
-                                                            <img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">total questions</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">yes %</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">no % </p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="b_right1">
-                                                            <img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">total questions</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">yes %</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">no % </p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="b_right1">
-                                                            <img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">total questions</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">yes %</p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-capital">no % </p>
-                                                            <h4>100</h4>
-                                                        </td>
-                                                    </tr>
-                                                 </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- DEBATES PROGRAM BLOCK END-->
+		<div class="row">
+			
 			<!--  NEWS BLOCK START-->
 			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -914,7 +150,8 @@
 							<textarea class="form-control notesAreaNews"></textarea>
 							<button class="btn btn-default btnCustomCreateNews btn-sm "  onClick="savingDashboardCommentForNews(5);">create</button>
 						</div>
-						<div class="newsBlockDropDown" style="z-index:999;margin-top: -3px;width:450px;" >
+						<div class="newsBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;width:450px;" >
+							<i class="glyphicon glyphicon-remove newsSetClose pull-right"></i>
 							<div class="row">
 								<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
 								  <ul class="nav nav-tabs navTabsSettings" role="tablist">
@@ -1508,10 +745,274 @@
 					</div>
 				</div>
 			</div>
-		</div>	<!-- NEWS BLOCK END-->
-	
-	<div class="row">
-		<!-- MEETING BLOCK START  -->
+			<!-- NEWS BLOCK END-->
+			<!-- DEBATES PROGRAM BLOCK -->
+			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
+				<div class="panel panel-default panelNewCustom panel2">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-8 col-sm-8 col-xs-7">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
+									debates - <small class="text-muted">today</small>
+								</h4>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-5">
+								<span class="settingsIcon pull-right">
+								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+								 </span>
+								<span class="notesIconDebates pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
+								</span>
+								<span class="debatesIconExpand pull-right">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
+									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+					   <div class="notesDropDown notesArrow" >
+							<h4 class="text-capital">notes
+								<span class="pull-right">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</span>
+							</h4>
+							<div id="notesDebatesId"></div>
+							<hr/>
+							<div id="debateUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaDebates"></textarea>
+							<button class="btn btn-default btnCustomCreateDebates btn-sm "  onClick="savingDashboardCommentFordebates(3);">create</button>
+						</div> 	
+					
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+								
+								<div class="row">
+									<div id="partyWiseTotalDebateDetails"></div>
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
+								<div class="row">
+									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+										<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
+									</div>
+									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+										<ul class="activeUlCls list-inline debateSpokesCls">
+											<li id="debateTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li id="debateLowId"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										</ul>
+									</div>
+									<div id="SpokesPersonWiseDebate"></div>
+									
+									<div class="col-xs-12 col-sm-12 col-md-12">
+										<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreDebatesBlocksIcon" title="Click here for more"></i>
+									</div>	
+								</div>
+							</div>
+						</div>
+						<div class="row debatesMoreHiddenBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="collapseOneId" style="cursor:pointer">
+											<!--<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#debatesCollapse" href="#oneId1" aria-expanded="true" aria-controls="oneId1">-->
+												<h4><span class="headingColor text-capitalize responsiveWidth" style="display:block;width:330px;">Character based performance cohort</span><span class="pull-right arrowChange"><i class="glyphicon glyphicon-minus"></i></span></h4>
+											<!--</a>-->
+										</div>
+										<!--<div id="oneId1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="oneId">-->
+											<div class="panel-body collapse in" id="collapseOneBodyId">
+												<div class="row">
+													<div id="scaleBasedPerformanceCohort"></div>
+												</div>
+											</div>
+										<!--</div>-->
+									</div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">role based performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									  <div class="panel-body">
+										<div class="row">
+												<div id="roleBasedPerformanceCohort"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFive">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
+										</a>
+									</div>
+									<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+									  <div class="panel-body">
+										<div class="row">
+											<div id="candidateRolesBuildId"></div>
+										</div>
+										<div class="row m_top20">
+											<div class="col-md-12 col-xs-12 col-sm-12" id="candidateRolesPerformanceNewId"></div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="candidateOverAllPerformanceCohort" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingFour">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">channel vs parties</span></h4>
+										</a>
+									</div>
+									<div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="channelAndPartyWiseDetails" style="overflow:auto;"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								  </div>
+								</div>
+							</div>
+							
+						  <!--  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<h4><span class="headingColor">SMS Poll</span></h4>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<table class="table tableDebatesVs m_top10">
+												  <tbody>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/studioNLogo.png" class="channelLogo" alt="Ntv Logo"/>Studio - N
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/tv5Logo.png" class="channelLogo" alt="Ntv Logo"/>tv5
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/tv9Logo.png" class="channelLogo" alt="Ntv Logo"/>tv9
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+													<tr>
+														<td class="b_right1">
+															<img src="newCoreDashBoard/img/ntvLogo.png" class="channelLogo" alt="Ntv Logo"/>NTV
+														</td>
+														<td>
+															<p class="text-capital">total questions</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">yes %</p>
+															<h4>100</h4>
+														</td>
+														<td>
+															<p class="text-capital">no % </p>
+															<h4>100</h4>
+														</td>
+													</tr>
+												 </tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- DEBATES PROGRAM BLOCK END-->
+		</div>	
+		<div class="row">
+			<!--Meetings Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
@@ -1689,8 +1190,228 @@
 					</div>
 				</div>
 			</div>	
-			
-			<!-- Events Block Start-->
+			<!--Meetings End-->
+			<!-- Training Start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
+			<div class="panel panel-default panelNewCustom panel1">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-7">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
+								training - <small class="text-muted">up to date</small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-5">
+							<!--<span class="settingsIcon pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>-->
+							<span class="notesIconTraining pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
+							</span>
+							<span class="trainingIconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerClsForTraining hide">
+								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					
+						
+					
+					<div class="notesDropDown notesArrow documentCloseClass" >
+						<h4 class="text-capital">notes
+							<span class="pull-right">
+								<i class="glyphicon glyphicon-list-alt"></i>
+							</span>
+						</h4>
+						<div id="notesTrainingId"></div>
+						  <hr/>
+						<div id="id2" style="color:red;"></div>
+						<label>Create Notes</label>
+						<textarea class="form-control notesAreaTraining"></textarea>
+						<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>
+					</div>  
+				</div>
+				<div class="panel-body">
+					<div class="row">
+					<b><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
+						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
+							<div class="row">
+							 <div id="programsDtlsCntTableId"></div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									 <div id="villageWardTblId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									 <div id="mdlTwnDvsnTabId"></div>
+								</div>
+								<div id="stateLevelCampId"></div>
+								<!--<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
+									 <div id="districtTblId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
+									 <div id="stateTblDivId"></div>
+									<!--<hr class="m_0"/>"/>
+								</div>-->
+							</div>
+						</div>
+							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
+								<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<h4><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </h4>  
+									</div>
+									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
+										<ul class="activeUlCls list-inline hideCls">
+											<li class="liCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+											<li class="liCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+										</ul>
+									</div> 
+								</div>
+								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
+									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls">
+									<ul class="list-inline pull-right activeUlCls">
+										<li id="detailedId" class="trainingDetailed">Detailed</li>
+										<li class="trainingComparison">Comparison</li>
+										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
+									</ul>
+							</div> 
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<h4 class="text-capitalize text-muted">training programs</h4>
+										<br>
+										<div id="programsDivId"></div>
+										<!--<ul class="trainingsUl">
+											<li>
+												<div id="leadershipSkills" class="chartLi trainingGraphWidth"></div>
+											</li>
+											<li>
+												<div id="officialSpokespersons" class="chartLi trainingGraphWidth"></div>
+											</li>
+										</ul>-->
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-8 col-xs-12 col-sm-6">
+												<span class="headingColor text-capitalize">training program cohort</span>
+											</div>
+											<!--<div class="col-md-4 col-xs-12 col-sm-6">
+												<ul class="activeUlCls list-inline">
+													<li class="active trainingProgramCohortLiCls" attr_li_value="all">All</li>
+													<li class="trainingProgramCohortLiCls" attr_li_value="attended">Attended</li>
+													<li class="trainingProgramCohortLiCls" attr_li_value="notAttended">Yet to train</li>
+												</ul>
+											</div>-->
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div id="districtWiseProgramCntDivId"></div>
+											</div>
+											<!--<div class="col-md-12 col-xs-12 col-sm-12">
+												<h4 class="text-capitalize">Leadership SKills</h4>
+												<div id="leadershipSkillsDis" class="chartLi"></div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<h4 class="text-capitalize">official Spokes Person</h4>
+												<div id="officialSpokesPerDis" class="chartLi"></div>
+											</div>-->
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						
+							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-7 col-md-12">
+											 <div id="childUserTypeDetailsDivForTrainingProgram"></div>
+											</div>
+											<div class="col-xs-12 col-sm-5 col-md-4">
+												<!--<ul class="list-inline">
+													<li>
+														<div class="dropdown">
+														  <button class="btn btn-default dropdown-toggle dateFinalDiv" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+														  <span class="changeDate">
+															This Week <span class="text-muted">Sunday - Today</span>
+														   </span>
+															<span class="caret"></span>
+														  </button>
+														  <ul class="dropdown-menu calenarUl" aria-labelledby="dropdownMenu1">
+															<li>LifeTime</li>
+															<li role="separator" class="divider"></li>
+															<li class="thisWeek">This Week <span class="text-muted">Sunday - Today</span></li>
+															<li>Last Week <span class="text-muted lastWeekDate"></span></li>
+															<li>Last 7 Days <span class="text-muted last7Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>This Month <span class="text-muted thisMonth"></span></li>
+															<li>Last Month <span class="text-muted lastMonth"></span></li>
+															<li>Last 28 Days <span class="text-muted last28Days"></span></li>
+															<li>Last 30 Days <span class="text-muted last30Days"></span></li>
+															<li>First 28 Days<span class="text-muted first28Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>This Quarter <span class="text-muted thisQuarter"></span></li>
+															<li>Last Quarter <span class="text-muted lastQuarter"></span></li>
+															<li>Last 90 Days <span class="text-muted Last90Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>This Year<span class="text-muted thisYear"></span></li>
+															<li>Last Year <span class="text-muted lastYear"></span></li>
+															<li>Last 365 Days <span class="text-muted last365Days"></span></li>
+															<li role="separator" class="divider"></li>
+															<li>Custom Range <span class="customRange"></span></li>
+														  </ul>
+														</div>
+													</li>
+													<li>
+														<i class="glyphicon glyphicon-calendar calendarIcon"></i>
+													</li>
+												</ul>-->
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+											 <div id="childActivityMemberDivId"> </div>
+											</div>
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20"> 
+												 <div id="userTypeWiseChildDtlsTabId"></div>
+													<div class="row">
+														<div class="col-md-10 col-xs-12 col-sm-12 col-md-offset-0 m_top10">
+															<!--<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations</span></b>-->
+															<div class="row m_top20">
+															  <div id="poorPerformancTrainingPrograLocationsDivId"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Training End-->
+		<!--Events Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
@@ -1745,7 +1466,7 @@
 											<li class="eventStrngPrCls active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
 											<li class="eventStrngPrCls" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
 										</ul>
-							    </div> 
+								</div> 
 								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
@@ -1799,17 +1520,300 @@
 													</div>
 												</div>
 											</div>
-								    </div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>	
-			<!-- Events Block End-->
-     <!--   </div>-->
-     <!--End-->
-	 <!-- <div class="row">-->
+	
+		<!--Events End -->
+	</div>
+	<div class="row">
+		<!-- Committees Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
+        	<div class="panel panel-default panelNewCustom panel1">
+            	<div class="panel-heading">
+                	<div class="row">
+						<div class="col-md-8 col-sm-8 col-xs-8">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+								committees - <small class="text-muted">up to date</small>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-4">
+							<span class="basicCommitteesBlockDiv pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIcon pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
+							</span>
+							<span class="iconExpand pull-right">
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
+								<input type="text" id="dateRangeId"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+					
+					<!-- committees tabs for tdpcommittee ids -->	
+					<div class="basicCommitteesBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
+						<div class="row">
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
+							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
+								<li role="presentation" class="active text-capital"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">District Level</a></li>
+								<li role="presentation"   class="text-capital"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mandal/town/division level</a></li>
+								<li role="presentation"  class="text-capital"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">village/ward level</a></li>
+							  </ul>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							  <div class="tab-content navTabsSettingsContent">
+								<div role="tabpanel" class="tab-pane active" id="home">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
+										<li>
+											<label class="checkbox-inline">
+												<input type="checkbox"  class="districtCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												<div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										</li>	
+									 </c:if>										
+									</c:forEach>
+									   <li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedDistrictlevelId"  checked>
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li> 
+										<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="districtCommitteecheckBoxClass districtCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									  </c:forEach>
+										
+									</ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="profile">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+									   <c:if test="${basicCommittee.id == 1}">
+										 <li>
+										   <label class="checkbox-inline">
+											 <input type="checkbox"  class="checkedBasicComm mandalCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+											 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+										   </label>
+										 </li>
+									   </c:if>
+									</c:forEach>
+										<li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedMandallevelId"  >
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											 <c:choose>
+											   <c:when test="${basicCommittee.id == 10 || basicCommittee.id == 16}">
+												 <li>
+												  <label class="checkbox-inline">
+													 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+													 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+												  </label>
+												 </li> 
+											   </c:when>
+												<c:otherwise>
+													<li>
+													  <label class="checkbox-inline">
+														 <input type="checkbox"  class="mandalCommitteecheckBoxClass mandalCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}" checked>
+														 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+													   </label>
+													 </li> 
+												</c:otherwise>
+										   </c:choose>
+										  </c:if>
+									</c:forEach>
+									
+									</ul>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="messages">
+									<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Committees</h4>
+									<hr style ="margin-bottom:0px;" />
+									<div class="basicCommitteeDetailsDiv">
+									<ul class="settingsUl">
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+										   <c:if test="${basicCommittee.id == 1}">
+											 <li>
+											   <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageCommitteecheckBoxClass" value="${basicCommittee.id}" checked>
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											 </li>
+										   </c:if>
+									</c:forEach>
+										 <li>
+											<label class="checkbox-inline">
+											  <input type="checkbox"  id="checkAllAffliatedVillagelevelId"  >
+											  <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;font-weight:bold;">Affiliated committees</h5></div>
+										   </label>
+										</li>  
+									
+									<c:forEach items="${userDataVO.subList}" var="basicCommittee">
+											<c:if test="${basicCommittee.id != 1}">
+											<li>
+											  <label class="checkbox-inline">
+												 <input type="checkbox"  class="villageCommitteecheckBoxClass villageCommitteeAffliatedcheckBoxClass" value="${basicCommittee.id}">
+												 <div style="margin-top: 3px;"><h5 class="text-capital" style="color:#54616C;">${basicCommittee.name}</h5></div>
+											   </label>
+											</li>   
+											</c:if>
+									</c:forEach>
+									</ul>
+									</div>
+								</div>
+							  </div>
+							  <button type="button" class="btn btn-success basicCommittessDiv">Get Details</button>
+							</div>
+						
+						</div>
+						
+						
+					</div>
+					<div class="notesDropDown notesArrow documentCloseClass">
+                    	<h4 class="text-capital">notes
+                        	<span class="pull-right">
+                            	<i class="glyphicon glyphicon-list-alt"></i>
+                            </span>
+                        </h4>
+						<div id="notesId"></div>
+                    	<!--<ul class="notesUl m_top20">
+                        	<li>
+                            	<!--<span class="notesText">notes on committees notes on committee notes on committee notes on committee notes on committee </span>- <span class="text-muted"><i>20-July 2016</i></span>
+                            	<i class="glyphicon glyphicon-trash pull-right hoverBlock deleteNotes"></i>
+                                <i class="glyphicon glyphicon-edit pull-right hoverBlock editNotes"></i>
+                            </li>
+                        </ul>-->
+                        <hr/>  
+                          <div id="id1" style="color:red;"></div>						
+                        <label>Create Notes</label>
+                        <textarea class="form-control notesArea"></textarea>
+                        <button class="btn btn-default btnCustomCreate btn-sm" onClick="savingDashboardComment(1);">create</button>
+                    </div>  
+                </div>
+                <div class="panel-body">  
+				
+              		<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
+						
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock">
+						<div id="basicCommitteeCountsDiv"></div>
+					</div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
+                        	<div class="row">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
+                                	<ul class="activeUlCls list-inline pull-right">
+                                    	<!--<li class="active topFiveStrongResults">Top 5 Strong</li>
+										<li class="topFivePoorResults">Top 5 Poor</li>-->
+										<li class="liCls1 active addactive" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5 strong</li>
+										<li class="liCls1 removeactive" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
+                                    </ul>
+                                </div>
+                                <div id="userTypeWiseCommitteesForTopFiveStrongAndPoorDiv"></div>
+                               <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
+						    </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
+                        	
+							<ul class="list-inline pull-right activeUlCls">
+                            	<li class="active detailedBlock">Detailed</li>
+                                <li class="comparisionBlock">Comparison</li>
+                            </ul>
+					    </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks">
+                        	<div class="panel panel-default m_top10">
+                            	<div class="panel-body ">
+									<div id="levelWiseBasicCommittees"></div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none">
+                        	<div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-8 col-xs-12 col-sm-12">
+                                            <span class="headingColor text-capitalize">all committees performance cohort</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="panel-body verticalScrollBar">
+									<div id="districtWiseCommitteesReport" ></div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;" >
+                            <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
+                            <div class="panel panel-default panelNew">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                           <div id="childUserTypeDetailsDiv"></div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                           <div id="SelectedUserTypeDetailsDiv"></div>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                            <div class="bg_ED pad_15 m_top20 showChildBlockAndTopPoorBlock">
+                                                <div id="directChildActivityMemberDiv" class="table-responsive"></div>
+                                                <div class="row m_top20">
+                                                    <div class="col-md-8 col-xs-12 col-sm-12" style="border-right:1px solid #ddd;">
+														<div id="topPoorPerformanceDiv"></div>
+                                                    </div>
+                                                    <div class="col-md-4 col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0">
+                                                        <div id="topPoorLocationsDiv"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                       	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!-- Committees End-->
+		<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock">
             <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">
