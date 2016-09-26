@@ -928,6 +928,7 @@ $(document).on("click",".trainingComparison",function(){
 	$(".trainingDetailed").removeClass("active");
 	$(".trainingDetailedBlock").hide();
 	$(".trainingComparisonBlock").show();
+	$("#detailedId").closest(".trainingDetailedBlock").show();
 	getAllItsSubUserTypeIdsByParentUserTypeIdForTrainingProgram();
 });
 
@@ -1009,7 +1010,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	  var selectedUserType = result[0].userType;
 	  var str='';
         if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
-	     str+='<table style="background-color:#EDEEF0" class="table table-condensed" id="trainingMembersDtlsDataTblId">';
+	     str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed tableHoverLevels" id="trainingMembersDtlsDataTblId">';
 		 str+='<thead>';
 		     str+='<th>Rank</th>';
 			 str+='<th>Name</th>';
@@ -1025,7 +1026,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		 var rank=1;
 		  for(var i in result){
 			str+='<tr style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
-			 str+='<td class="count">'+rank+'</td>';
+			 str+='<td><span class="counts">'+rank+'</span></td>';
 			 str+='<td>'+result[i].name+'</td>';
 			 str+='<td>'+result[i].userType+'</td>';
 			 str+='<td>'+result[i].locationName+'</td>';
@@ -1435,7 +1436,9 @@ function buildTrainingProgramRslt(result){
     var resultListFirst;
 	var resultListSecond;
     var str='';
-		str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+			str+='<b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> training completed locations&nbsp&nbsp('+selectedUserName+" - "+userType+')</span></b>';
+		str+='</div>';
 	   str+='<div class="col-md-6 col-xs-12 col-sm-6 m_top10">';
 	  if(userTypeId!= null && userTypeId==3 || userTypeId==2){
 		str+='<p class="text-capital">districts<span style="margin-left:200px">Attended Percentage</span></p>';  

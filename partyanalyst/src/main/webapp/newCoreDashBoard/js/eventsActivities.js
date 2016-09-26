@@ -932,7 +932,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 	  var selectedUserType = result[0].userType;
 	 var str='';
 	 if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
-	     str+='<table style="background-color:#EDEEF0" class="table table-condensed" id="eventMemberDataTblId">';
+	     str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed tableHoverLevels" id="eventMemberDataTblId">';
 		 str+='<thead>';
 		     str+='<th>Rank</th>';
 			 str+='<th>Name</th>';
@@ -948,7 +948,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 		 var rank=1;
 		  for(var i in result){
 			str+='<tr style="cursor:pointer;" class="childEventMemberCls" attr_event_idsString="'+attrEventIdsString+'"  attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
-			 str+='<td class="count">'+rank+'</td>';
+			 str+='<td><span class="counts">'+rank+'</span></td>';
 			 str+='<td>'+result[i].name+'</td>';
 			 str+='<td>'+result[i].userType+'</td>';
 			 str+='<td>'+result[i].locationName+'</td>';

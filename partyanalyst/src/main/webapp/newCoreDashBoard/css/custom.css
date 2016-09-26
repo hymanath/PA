@@ -1261,6 +1261,20 @@ h1,h2,h3,h4,h5,h6,p,ul,.table
 	padding:2px 6px;
 	font-size:12px
 }
+.counts
+{
+	background-color: #555555;
+    border-radius: 50%;
+    color: #ffffff;
+    display: block;
+    font-size: 12px;
+    height: 25px;
+    margin: auto;
+    padding: 2px 6px;
+    position: relative;
+    text-align: center;
+    width: 25px;
+}
 .tableCumulative tr td:nth-child(2)
 {
 	text-transform:capitalize;
