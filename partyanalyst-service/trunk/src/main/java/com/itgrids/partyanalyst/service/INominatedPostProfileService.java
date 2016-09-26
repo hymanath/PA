@@ -72,4 +72,5 @@ public interface INominatedPostProfileService {
 	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String today, String expireDate, String status); 
 	 public String savingStatusAsReject(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
 				final Long statusId,final String comment);
+	 public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId,Long candId);
 }

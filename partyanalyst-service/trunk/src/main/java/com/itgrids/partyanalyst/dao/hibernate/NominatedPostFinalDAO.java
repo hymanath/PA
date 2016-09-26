@@ -2035,4 +2035,19 @@ public List<Object[]> getUpdatedPositionsForCandidate(List<Long> applicationIds)
 	return query.list();
 }
 
+public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId){
+	StringBuilder queryStr = new StringBuilder();
+	
+	queryStr.append(" select model.nominatedPostFinalId  from NominatedPostFinal model where model.nominatedPostMember.nominatedPostMemberId = :memberId " +
+			" and model.nominationPostCandidate.nominationPostCandidateId = :candId and  model.applicationStatus.applicationStatusId not in (2,4,8) and model.nominatedPostApplication.isDeleted = 'N' and model.isDeleted = 'N' " +
+			" and model.nominationPostCandidate.isDeleted = 'N' " );
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	
+		query.setParameter("memberId",memberId);
+		query.setParameter("candId",candId);
+	
+	return (Long)query.uniqueResult();
+}
+
 }
