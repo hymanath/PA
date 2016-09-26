@@ -2011,7 +2011,7 @@ public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
 	queryStr.append(" select model.nominatedPostApplication.nominatedPostApplicationId , model.nominatedPostMember.nominatedPostPosition.departments.departmentId," +
 			" model.nominatedPostMember.nominatedPostPosition.departments.deptName, model.nominatedPostMember.nominatedPostPosition.board.boardId ," +
 			" model.nominatedPostMember.nominatedPostPosition.board.boardName,model.nominatedPostMember.nominatedPostPosition.position.positionId, " +
-			" model.nominatedPostMember.nominatedPostPosition.position.positionName from NominatedPostFinal model where " +
+			" model.nominatedPostMember.nominatedPostPosition.position.positionName,model.nominatedPostApplication.postType.postTypeId from NominatedPostFinal model where " +
 			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' ");
 	
 	Query query = getSession().createQuery(queryStr.toString());
@@ -2021,6 +2021,18 @@ public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds){
 	
 	return query.list();
 	
+}
+public List<Object[]> getUpdatedPositionsForCandidate(List<Long> applicationIds){
+	StringBuilder queryStr = new StringBuilder();
+	queryStr.append(" select model.nominatedPostMember.nominatedPostPosition.position.positionId,model.nominatedPostApplication.nominatedPostApplicationId from NominatedPostFinal model where " +
+			" model.nominatedPostApplication.nominatedPostApplicationId in  (:applicationIds) and model.isDeleted = 'N' and model.nominatedPostApplication.isDeleted = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8) "); 
+	
+	Query query = getSession().createQuery(queryStr.toString());
+	if(applicationIds !=null && applicationIds.size()>0){
+		query.setParameterList("applicationIds",applicationIds);
+	}
+	
+	return query.list();
 }
 
 }
