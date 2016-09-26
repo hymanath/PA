@@ -2113,4 +2113,17 @@ public String getDateWisePresentAbsentDtlsForEmployee(){
 	}
 	return Action.SUCCESS; 
 }
-}//getDateWisePresentAbsentDtlsForEmployee
+
+public String getCoreDebateBasicDetailsOfParty(){
+	try{
+		jObj = new JSONObject(getTask()); 
+		
+		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"));
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
+}
