@@ -1025,7 +1025,7 @@
 	
 	$(document).on("click",".childUserTypeCls",function(){
 		
-		if($(this).hasClass("active")){
+		if(!$(this).hasClass("active")){
 		
 			$("#directChildActivityMemberDiv").html('');
 			$("#topPoorPerformanceDiv").html('');
@@ -1749,9 +1749,12 @@
 	$(document).on("click",".documentCloseClass",function(e){
 		e.stopPropagation();
 	});
+	//$(".committeesDate").html("up to date( "+customStartDatemMeetings+" )");
 	 $('#dateRangeId').on('apply.daterangepicker', function(ev, picker) {
+		customStartDatemMeetings = picker.startDate.format('DD/MM/YYYY');
 			//do something, like clearing an input
-			defaultCommitteeCalls();
+		defaultCommitteeCalls();
+		$(".committeesDate").html("( "+customStartDatemMeetings+" )");
 	});
 	 
 	 $(document).on("click",".iconExpand",function(){
@@ -1800,7 +1803,7 @@
 				$(".dateRangePickerClsForNews").toggleClass("hide");
 			}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 				$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-				$(".eventsHiddenBlock,.moreEventsBlocks").hide();
+				$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
 				$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 				$(".dateRangePickerClsForEvents").toggleClass("hide");
 			}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){

@@ -39,7 +39,7 @@ $(document).on("click",".cadreExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".eventsHiddenBlock").hide();
+		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
 		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerClsForEvents").toggleClass("hide");
 	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){

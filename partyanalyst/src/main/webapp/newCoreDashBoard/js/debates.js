@@ -620,6 +620,8 @@ function buildRoleBasedPerformanceCohort(result)
 $(document).on("click",".debatesIconExpand",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	$(".debatesHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+	$(".debatesHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
 	$(".dateRangePickerClsForDebates").toggleClass("hide");
 	$(".debatesBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	setTimeout(function(){
@@ -658,7 +660,7 @@ $(document).on("click",".debatesIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".eventsHiddenBlock").hide();
+		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
 		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerClsForEvents").toggleClass("hide");
 	}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){

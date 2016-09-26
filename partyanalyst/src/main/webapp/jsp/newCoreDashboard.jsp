@@ -112,13 +112,13 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-7 col-sm-6 col-xs-7">
+							<div class="col-md-9 col-sm-9 col-xs-7 newsHead">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									news - <small class="text-muted" id="currentViewing"></small>
 								</h4>
 							</div>
-							<div class="col-md-5 col-sm-6 col-xs-6">
+							<div class="col-md-3 col-sm-3 col-xs-6 newsHead1">
 								<span class="settingsIcon settingsIconNews pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
@@ -751,13 +751,13 @@
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-7">
+							<div class="col-md-9 col-sm-9 col-xs-7 debatesHead">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 									debates - <small class="text-muted debatesDate">today</small>
 								</h4>
 							</div>
-							<div class="col-md-4 col-sm-4 col-xs-5">
+							<div class="col-md-3 col-sm-3 col-xs-5 debatesHead1">
 								<span class="settingsIcon pull-right">
 								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								 </span>
@@ -1017,13 +1017,13 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-8 col-xs-7">
+							<div class="col-md-9 col-sm-9 col-xs-7 meetingHead">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings - <small class="text-muted" id="dateMeetingHeadingId"> - this month</small>
 								</h4>
 							</div>
-							<div class="col-md-3 col-sm-4 col-xs-5">
+							<div class="col-md-3 col-sm-3 col-xs-5 meetingHead1">
 								<!--<span class="settingsIcon pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							    </span>-->
@@ -1539,7 +1539,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-8">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								committees - <small class="text-muted">up to date</small>
+								committees - <small class="text-muted committeesDate">up to date</small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4">

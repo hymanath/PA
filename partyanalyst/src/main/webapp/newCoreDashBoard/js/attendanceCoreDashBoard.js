@@ -36,7 +36,7 @@ $(document).on("click",".attendaceIconExpand",function(){
 		$(".moreMeetingsBlocksComparision").hide();
 	}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".eventsHiddenBlock,.moreEventsBlocks").hide();
+		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
 		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".dateRangePickerClsForEvents").toggleClass("hide");
 	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -48,6 +48,14 @@ $(document).on("click",".attendaceIconExpand",function(){
 		$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
 		$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}
+});
+$(window).resize(function(){
+	if($(document).width() < 500)
+	{
+		$("#officeAttendanceTdlsId").parent().addClass("table-responsive");
+	}else{
+		$("#officeAttendanceTdlsId").parent().removeClass("table-responsive");	
 	}
 });
 
@@ -233,7 +241,7 @@ $('#dateRangeIdForAttendance').on('apply.daterangepicker', function(ev, picker) 
 	if(today == $("#dateRangeIdForAttendance").val()){
 		$("#attendanceId").html('TODAY ('+datStr+')');
 	}else{
-		$("#attendanceId").html(datStr);     
+		$("#attendanceId").html('('+datStr+')');     
 	}  
 	  
 	getAttendanceOverViewForPartyOffice();  
