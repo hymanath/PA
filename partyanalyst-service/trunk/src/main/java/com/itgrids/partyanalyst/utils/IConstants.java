@@ -1045,7 +1045,8 @@ public interface IConstants {
 		 "generateOTPForMobileNumberAction.action","validateOTPAction.action","registrationSuccessAction.action",
 		 "saveRegistrationFeedbackQueriesDetailsAction.action" ,"updateNotificationTypeAction.action","updateNotificationAction.action",
 		 "notificationIsActiveStatusAction.action","getNotificationTypeDetailsStatsAction.action","getNotificationTypeDetailsAction.action",
-		 "saveNotificationTypeTextAction.action","saveNotificationAction.action"};
+		 "saveNotificationTypeTextAction.action","saveNotificationAction.action",
+		 "genereateReportAction.action","retriveDebateDetailsAction.action"};
 	
 	public static final Long  APPOINTMENT_ACTION_STATUS_CHANGE = 1L;
 	
