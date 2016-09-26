@@ -20,10 +20,16 @@ $(document).ready(function(){
            'This Year': [moment().startOf('Year'), moment()]
         }
 	})
+	$(".debatesDate").html(" TODAY ( "+customStartDate+" )");
 	$('#dateRangeIdForDebates').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDate = picker.startDate.format('DD/MM/YYYY');
 	  customEndDate = picker.endDate.format('DD/MM/YYYY');
 	  getPartyWiseTotalDebateDetails()
+	  if(picker.chosenLabel == "Today"){
+			$(".debatesDate").html(" TODAY ( "+customStartDate+" )");
+		}else{
+			$(".debatesDate").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
+		}
 	  if($(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		  $(".debateSpokesCls li").hasClass("active")
 		  {

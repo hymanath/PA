@@ -1,10 +1,13 @@
 //Training Program
 var globalStateId=1; //default Ap 
+$(".trainingDate").html(" TODAY ( "+customStartDate+" )");
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
-	 	stateLevelCampDetails();
-		getTrainingCampBasicDetailsCntOverview();
-		getUserTypeWiseTotalEligibleAndAttendedCnt();
-	});
+	customStartDate = picker.startDate.format('DD/MM/YYYY');
+	$(".trainingDate").html("( "+customStartDate+" )");
+	stateLevelCampDetails();
+	getTrainingCampBasicDetailsCntOverview();
+	getUserTypeWiseTotalEligibleAndAttendedCnt();
+});
  function initialiseDatePickerForTrainingProgram(){
 		$("#dateRangeIdForTrainingCamp").daterangepicker({
 			singleDatePicker: true,

@@ -754,7 +754,7 @@
 							<div class="col-md-8 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
-									debates - <small class="text-muted">today</small>
+									debates - <small class="text-muted debatesDate">today</small>
 								</h4>
 							</div>
 							<div class="col-md-4 col-sm-4 col-xs-5">
@@ -1017,18 +1017,18 @@
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-7 col-sm-8 col-xs-7">
+							<div class="col-md-9 col-sm-8 col-xs-7">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings - <small class="text-muted" id="dateMeetingHeadingId"> - this month</small>
 								</h4>
 							</div>
-							<div class="col-md-5 col-sm-4 col-xs-5">
-							 <span class="settingsIcon pull-right">
-							<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							   </span>
-							 <span class="notesIconMeeting pull-right">
-							<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
+							<div class="col-md-3 col-sm-4 col-xs-5">
+								<!--<span class="settingsIcon pull-right">
+									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							    </span>-->
+								<span class="notesIconMeeting pull-right">
+									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
 								</span>
 								<span class="meetingsIconExpand pull-right">
 									<i class="glyphicon glyphicon-fullscreen"></i>
@@ -1199,7 +1199,7 @@
 						<div class="col-md-8 col-sm-8 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
-								training - <small class="text-muted">up to date</small>
+								training - <small class="text-muted trainingDate">up to date</small>
 							</h4>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-5">
