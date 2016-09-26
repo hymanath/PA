@@ -3956,5 +3956,55 @@ public String getLatestDebate(){
 	return time;		
 }
 
+public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr){
+	
+	List<CoreDebateVO> finalList = new ArrayList<CoreDebateVO>();		
+	try{
+		
+	/*	String startDateStr="26/09/2016";
+		String endDateStr="26/09/2016";*/
+		Date startDate = null;
+		Date endDate   =null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+		
+		
+		if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		}
+		
+		List<Long> partyIds = new ArrayList<Long>(0);
+		
+		partyIds.add(partyId);
+		
+		//0.debateId,1.subject,2.startTime,3.endTime,4.debateObserverid,5.observer,6.channelId,7.channelName
+		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null);
+		
+		if(listObj !=null && listObj.size()>0){			
+			for(Object[] obj:listObj){
+				CoreDebateVO VO = new CoreDebateVO();
+				VO.setId(obj[0] !=null ? (Long)obj[0]:0l);
+				VO.setName(obj[1] !=null ? obj[1].toString():"");				
+				VO.setStartTime(obj[2] !=null ? sdf1.format((Date)obj[2]):null);
+				VO.setEndTime(obj[3] !=null ? sdf1.format((Date)obj[3]):null);
+				VO.setCandidateId(obj[4] !=null ? (Long)obj[4]:0l);
+				VO.setCandidateName(obj[5] !=null ? obj[5].toString():"");
+				VO.setCharecterId(obj[6] !=null ? (Long)obj[6]:0l);
+				VO.setCharecterName(obj[7] !=null ? obj[7].toString():"");
+				finalList.add(VO);
+			}	
+		}
+		
+		
+	}catch(Exception e){
+		Log.error("Exception raised at getCoreDebateBasicDetailsOfParty", e);
+	}
+	return finalList;
+
+}
+
 }  
 

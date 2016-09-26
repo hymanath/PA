@@ -22,6 +22,10 @@ public class CoreDebateVO implements Serializable {
 	
 	private String recentTime;
 	
+	private String startTime;
+	private String endTime;
+	
+	
 	private List<CoreDebateVO> coreDebateVOList ;
 	
 	public Long getId() {
@@ -113,6 +117,18 @@ public class CoreDebateVO implements Serializable {
 	}
 	public void setOverAllDebateCount(Long overAllDebateCount) {
 		this.overAllDebateCount = overAllDebateCount;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 	
 	
