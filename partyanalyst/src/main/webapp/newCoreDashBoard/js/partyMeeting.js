@@ -19,9 +19,15 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	})
+	$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
+	  if(picker.chosenLabel == "Today"){
+		$("#dateMeetingHeadingId").html(" TODAY ( "+customStartDate+" )");
+	  }else{
+		$("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
+	  }
 	  //alert(customStartDateMeetings + "-" +customEndDateMeetings);
 	  $(".meetingsHiddenBlock").show();
 	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
@@ -32,7 +38,7 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 	  getPartyMeetingsMainTypeStateLevelOverview();
 	});
 	//Changing date heading based on date selection
-	var dateTextRange;
+	/* var dateTextRange;
 	$(document).on("click",".ranges li",function(){
 	    dateTextRange = $(this).text();
 		if(dateTextRange!="Custom Range"){
@@ -45,7 +51,7 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 	  if(dateTextRange=="Custom Range"){
 	    $("#dateMeetingHeadingId").html(" - "+selectDates);	
 		}
-    });
+    }); */
     $(document).on("click",".meetingGetDtlsBtncls",function(){
 		var isChecked=false;
 		 $("#committeeTypeId li").each(function() {

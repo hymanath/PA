@@ -1853,3 +1853,8 @@ margin-top: 5px; margin-bottom: 2px;
 	font-size:12px;
 	cursor:pointer;
 }
+.thumbnailSearch
+{
+	border:1px solid #CCC;
+	border-radius:3px;
+}
