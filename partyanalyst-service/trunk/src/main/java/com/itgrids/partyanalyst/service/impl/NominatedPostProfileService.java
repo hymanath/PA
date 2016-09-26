@@ -569,14 +569,14 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> appltnIds = null;
 			if(nominatedPostCandId != null && nominatedPostCandId.longValue() > 0l){
 				 appltnIds = nominatedPostApplicationDAO.getApplicationIdsByCAndidateId(nominatedPostCandId);
-				//appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
-				if(commonMethodsUtilService.isListOrSetValid(appltnIds)){
-					for(Object[] appltnId : appltnIds){
+				appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
+				if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
+					for(Object[] appltnId : appliedPositions){
 						IdNameVO vo = new IdNameVO();
-						vo.setId((Long)appltnId[1] != null ? (Long)appltnId[1] : null);//positionId
-						vo.setDistrictid(commonMethodsUtilService.getLongValueForObject(appltnId[0]));//applicationId
-						aplliedAppltnMap.put(commonMethodsUtilService.getLongValueForObject(appltnId[0]), vo);
-						appliedApplctnIds.add(commonMethodsUtilService.getLongValueForObject(appltnId[0]));
+						vo.setId((Long)appltnId[1] != null ? (Long)appltnId[0] : null);//positionId
+						vo.setDistrictid(commonMethodsUtilService.getLongValueForObject(appltnId[1]));//applicationId
+						aplliedAppltnMap.put(commonMethodsUtilService.getLongValueForObject(appltnId[1]), vo);
+						appliedApplctnIds.add(commonMethodsUtilService.getLongValueForObject(appltnId[1]));
 						//appliedPositionIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
 						appliedApplsList.add(vo);
 						}
