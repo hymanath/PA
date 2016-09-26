@@ -493,4 +493,40 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				
 				return query.list();
 	}
+	
+	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select DS.debate.debateId,DS.subject,model.debate.startTime,model.debate.endTime," +
+				" DOB.observer.observerId,DOB.observer.observerName,model.debate.channel.channelId,model.debate.channel.channelName " +
+				"  " +
+				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " +
+				" WHERE model.debateId = DS.debate.debateId  " +
+				" and model.debate.debateId = DOB.debate.debateId" +
+				" and model.debate.isDeleted = 'N' " );
+		
+		if(partyIds !=null && partyIds.size()>0){
+			str.append(" and model.partyId in (:partyIds) ");
+		}
+		if(startDate !=null && endDate !=null){
+			str.append(" and date(model.debate.startTime)  between :startDate and :endDate  ");
+		}
+		
+		str.append(" group by DS.debate.debateId ");
+		str.append(" order by model.debate.startTime desc ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(partyIds !=null && partyIds.size()>0){
+			query.setParameterList("partyIds", partyIds);
+		}
+		if(startDate !=null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		
+		return query.list();
+	}
+	
 }
