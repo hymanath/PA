@@ -19,7 +19,9 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
         }
 	})
-	$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
+	var dates= $("#dateRangeIdForMeetings").val();
+	//$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
+	$("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
 	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
 	var singleBlockDateEnd = moment().format('MMM YY');
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
@@ -27,16 +29,19 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
 	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
 	  singleBlockDateStart = picker.startDate.format('MMM YY');
 	  singleBlockDateEnd = picker.endDate.format('MMM YY');
-	  $("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
+	  //$("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
 	  
 	  //alert(customStartDateMeetings + "-" +customEndDateMeetings);
 	  $(".meetingsHiddenBlock").show();
-	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings").find('i').removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings").find('i').removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 	  $(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
 	  getPartyMeetingBasicCountDetails();
 	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 	  getPartySpecialMeetingsMainTypeOverview();
 	  getPartyMeetingsMainTypeStateLevelOverview();
+	  var dates= $("#dateRangeIdForMeetings").val();
+	 // $("#dateMeetingHeadingId").html(" THIS MONTH ( "+dates+" )");
+	  $("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+dates+" )");
 	});
 	//Changing date heading based on date selection
 	/* var dateTextRange;
@@ -922,8 +927,13 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).attr("attr_id");  
-		getDirectChildActivityMemberMeetingDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
+		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
+		 }else{
+	      getDirectChildActivityMemberMeetingDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
+		}
+		
 	});
  $(document).on("click",".compareLowLevelActivityMeetingMemberCls",function(){
 	$(this).next('tr.showHideTr').show(); 
@@ -933,8 +943,12 @@ $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 	var selectedMemberName = $(this).attr("attr_selectedmembername");  
 	var selectedUserType = $(this).attr("attr_selectedusertype");  
 	var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
-	getDirectChildActivityMemberMeetingDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-	getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
+	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType); 
+		 }else{
+	      getDirectChildActivityMemberMeetingDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		  getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType);
+		}
 
 });
 	
@@ -1005,6 +1019,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 		   $("#childActivityMemberDivIdForMeeting").html(' ');
+		   $("#directChildActivityMeetingMemberDiv").html(' ');
 		  if(result != null && result.length > 0){
 			  buildgetSelectedChildUserTypeMembersForMeeting(result,userType);
 		  }else{
@@ -1087,6 +1102,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 		  $("#meetingMemberDtlsDataTblId").dataTable({
 			"aaSorting": []
 		   });
+	 getTopPoorMeetingLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	  }else{
 	   if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSliderMeeting">';
@@ -1210,12 +1226,12 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 					// instead of a settings object
 				  ]
 			});
+			getDirectChildActivityMemberMeetingDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
+			getTopPoorMeetingLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	}else{
 	 $("#childActivityMemberDivIdForMeeting").html("No Data Available");
 	}
 	}
-	getDirectChildActivityMemberMeetingDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
-	getTopPoorMeetingLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	}
 	function getDirectChildActivityMemberMeetingDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
 	   $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1348,9 +1364,9 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			str+='</table>';
 			$("#"+childActivityMemberId).html(str);
 		}else{
-			if(childActivityMemberId == "directChildActivityMeetingMemberDiv"){
-				$("#"+childActivityMemberId).html("No Data Available");
-			}
+			 if(childActivityMemberId == "directChildActivityMeetingMemberDiv"){
+				$("#"+childActivityMemberId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
+			}		
 		}
 	}
 	
@@ -1401,7 +1417,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			str+='<b><span class="color_333 pad_5 bg_CC text-capital">top five <span class="text-danger">poor</span> locations - (<span style="font-size:11px;"><i> '+selectedMemberName+' - '+selectedUserType+'</i></span>)</span></b>';
 			str+='<div class="row m_top20">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<p class="text-capital"><b>'+result[0].requiredName+'</b><span style="margin-left:270px">Conducted Percentage<span></p>';
+					str+='<p class="text-capital"><b>'+result[0].requiredName+'</b><span style="margin-left:150px">Conducted Percentage<span></p>';
 					str+='<table class="table tableCumulative">';
 			var countVar =0;
 			var BGColor = 1;
