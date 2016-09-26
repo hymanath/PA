@@ -2540,6 +2540,25 @@
   </div>
 </div>
 
+<!-- Model for Debate Start-->
+		<div class="modal" tabindex="-1" role="dialog" id="debateModelDivId">
+		  <div class="modal-dialog modal-lg" style="width:90%">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Debate Details</h4>
+			  </div>
+			  <div class="modal-body">
+				  <div id="debateModelId" class="row"></div>				 
+					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
 <!--end-->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>

@@ -95,7 +95,7 @@ function buildPartyWiseTotalDebateDetails(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total debates</p>';
-							str+='<h4>'+result[i].debateCount+'</h4>';
+							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+'>'+result[i].debateCount+'</a></h4>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total spokes persons</p>';
@@ -927,3 +927,67 @@ function getLatestDebate(){
 			}
 	});	
 }
+
+$(document).on("click",".partyWiseDebateCls",function(){
+	$("#debateModelDivId").modal("show");
+	partyId = $(this).attr("attr_partyId");
+	getCoreDebateBasicDetailsOfParty(partyId);
+});
+function getCoreDebateBasicDetailsOfParty(partyId){
+	var jsObj={
+		partyId:partyId,
+		startDate:customStartDate,
+		endDate:customEndDate
+	}		
+	$.ajax({
+	 type: "POST",
+	 url: "getCoreDebateBasicDetailsOfPartyAction.action",
+	 data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		var str = '';
+		if(result !=null && result.length>0){
+								
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		
+			str+= '<div class="table-responsive">';
+			str+= '<table class="table table-bordered table-condensed">';
+				str+= '<thead style="background:#ccc">';
+					str+='<th>Subject</th>';
+					str+='<th>Debate StartTime</th>';
+					str+='<th>Debate EndTime</th>';
+					str+='<th>Observer</th>';
+					str+='<th>Channel</th>';
+
+				str+= '</thead>';
+				str+= '<tbody>';					
+					for(var i in result){
+						str+='<tr>';
+							var subject='';
+							if(result[i].name !=null && result[i].name.length>0){
+								subject=getTitleContent(result[i].name,30);
+							}						
+							str+='<td class="debateDetailsCls pointer" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
+							str+='<td>'+result[i].startTime+'</td>';
+							str+='<td>'+result[i].endTime+'</td>';
+							str+='<td>'+result[i].candidateName+'</td>';
+							str+='<td>'+result[i].charecterName+'</td>';
+						str+='</tr>';						
+					}
+					
+				str+= '</tbody>';
+			str+= '</table>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			
+			$("#debateModelId").html(str);
+		}
+		
+	});	
+}
+
+$(document).on("click",".debateDetailsCls",function(){
+		var debateId = $(this).attr("attr_debateId");		
+		window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
+	});
