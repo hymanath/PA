@@ -625,6 +625,10 @@ public class CoreDashboardGenericService implements ICoreDashboardGenericService
   			     }
   				
   				finalList = new ArrayList<UserTypeVO>(finalMap.values());
+  				UserTypeVO MLACIVO = new UserTypeVO();
+  				MLACIVO.setUserType("MLA/CI");
+  				MLACIVO.setShortName("9,7");
+  				finalList.add(finalList.size(), MLACIVO);
   			}
   			
   			

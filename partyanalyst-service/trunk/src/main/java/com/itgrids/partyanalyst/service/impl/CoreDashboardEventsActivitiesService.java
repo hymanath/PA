@@ -852,7 +852,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 			   }
 		   }
      }catch(Exception e) {
-    	 LOG.error("Error occured at getSelectedChildMembersForEvents() in setAttendedDataToMap class",e);	
+    	 LOG.error("Error occured at getEventPoorPerformanceLocation() in setAttendedDataToMap class",e);	
 	}
 	return resultVO;  
   }
