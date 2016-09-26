@@ -962,17 +962,17 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		 if(result !=null && result.length >0){
 			  firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_userTypeId="'+result[i].shortName+'" class="childUserTypeClsForTrainingProgram">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+              str+='<li attr_userTypeId="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeClsForTrainingProgram">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDivForTrainingProgram").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString);
+		getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString," ");
 		//getTrainingProgramPoorCompletedLocationDtls();
 	}
-	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString){
+	function getSelectedChildTypeMembersForTrainingProgram(firstChildUserTypeIdString,childUserType){
 	 $("#childActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#userTypeWiseChildDtlsTabId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
@@ -996,18 +996,55 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		   $("#childActivityMemberDivId").html(' ');
 		   $("#userTypeWiseChildDtlsTabId").html(' ');
 		  if(result != null && result.length > 0){
-			  buildChildTypeMembersForTrainingReslt(result);
+			  buildChildTypeMembersForTrainingReslt(result,childUserType);
 		  }else{
 			  $("#childActivityMemberDivId").html("NO DATA AVAILABLE");
 		  }
 		});
  }
- function buildChildTypeMembersForTrainingReslt(result){
+ function buildChildTypeMembersForTrainingReslt(result,childUserType){
 	  var userTypeId = result[0].userTypeId;
 	  var activityMemberId = result[0].activityMemberId;
 	  var selectedMemberName = result[0].name;
 	  var selectedUserType = result[0].userType;
-	 var str='';
+	  var str='';
+        if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
+	     str+='<table style="background-color:#EDEEF0" class="table table-condensed" id="trainingMembersDtlsDataTblId">';
+		 str+='<thead>';
+		     str+='<th>Rank</th>';
+			 str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>Location</th>';
+			 str+='<th>Eligible</th>';
+			 str+='<th>Attended</th>';
+			 str+='<th>%</th>';
+			 str+='<th>Yet to train</th>';
+			 str+='<th>%</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		 var rank=1;
+		  for(var i in result){
+			str+='<tr style="cursor:pointer;" class="activityMemberCls"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
+			 str+='<td class="count">'+rank+'</td>';
+			 str+='<td>'+result[i].name+'</td>';
+			 str+='<td>'+result[i].userType+'</td>';
+			 str+='<td>'+result[i].locationName+'</td>';
+			 str+='<td>'+result[i].totalEligibleCount+'</td>';
+			 str+='<td>'+result[i].totalAttenedCount+'</td>';
+			 str+='<td>'+result[i].totalAttenedCountPer+'%</td>';
+			 str+='<td>'+result[i].totalNotAttenedCount+'</td>';
+			 str+='<td>'+result[i].totalNotAttenedCountPer+'%</td>';
+			 str+='</tr>';
+             rank=rank+1;			 
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+	   $('html,body').animate({scrollTop: $("#childActivityMemberDivId").offset().top}, 'slow');
+		$("#childActivityMemberDivId").html(str);
+		$("#trainingMembersDtlsDataTblId").dataTable({
+			"aaSorting": []
+		});
+	  }else{
 	  str+='<ul class="list-inline slickPanelSliderTraining">';
 	  var rank=1; 
 	   for(var i in result){
@@ -1029,7 +1066,6 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 		 }else{
 		 str+='<h4 class="text-capital">'+result[i].userType+'</h4>';	 
 		 }
-			
 			 str+='<table class="table table-condensed">';
 				 str+='<thead>';
 					 str+='<th>Eligible</th>';
@@ -1048,7 +1084,7 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 	 str+='</div> ';
     str+=' </li> ';  
 	rank=rank+1;
-	   }
+   }
    $("#childActivityMemberDivId").html(str);
 	$(".slickPanelSliderTraining").slick({
 			 slide: 'li',
@@ -1090,13 +1126,15 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 				// settings: "unslick"
 				// instead of a settings object
 			  ]
-		});   
+		});  
+	  }
 	getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
 	getDirectChildActivityTrainingProgramMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"userTypeWiseChildDtlsTabId");
  }
  $(document).on("click",".childUserTypeClsForTrainingProgram",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
-	getSelectedChildTypeMembersForTrainingProgram(childUserTypeId);
+	var childUserType = $(this).attr("attr_userType");
+	getSelectedChildTypeMembersForTrainingProgram(childUserTypeId,childUserType);
 	//getTrainingProgramPoorCompletedLocationDtls();
 });
 $(document).on("click",".activityMemberCls",function(){
