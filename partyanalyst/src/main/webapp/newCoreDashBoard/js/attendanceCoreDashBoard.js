@@ -51,29 +51,18 @@ $(document).on("click",".attendaceIconExpand",function(){
 	}
 });
 
-$("#attenDatePickerModal").daterangepicker({  
-  opens: 'left',
-  startDate: moment().startOf('month'),
-  endDate: moment(),
-  locale: {
-    format: 'MM/DD/YYYY'       
-  },  
-  ranges: {  
-	 'This Month': [moment().startOf('month'), moment()],
-     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-     'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-     'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-     'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-     'This Year': [moment().startOf('Year'), moment()]    
-  }   
-})  
-$('#attenDatePickerModal').on('apply.daterangepicker', function(ev, picker) {
-  fromDate = picker.startDate.format('MM/DD/YYYY');
-  toDate = picker.endDate.format('MM/DD/YYYY');
-  var officeId = $("#officeHidId").attr("attr_office_hid_id");
-  var deptId = $("#deptHidId").attr("attr_dept_hid_id");      
-  getTotalDtls(deptId,officeId,fromDate,toDate);
+
+$(document).on('change','#attenDatePickerModal', function() {
+	var strDate = $(this).val();
+	var dates = [];
+	dates = strDate.split('-');
+	var fromDate = dates[0];
+	var toDate = dates[1];    
+	//fromDate = picker.startDate.format('MM/DD/YYYY');
+	//toDate = picker.endDate.format('MM/DD/YYYY');
+	var officeId = $("#officeHidId").attr("attr_office_hid_id");
+	var deptId = $("#deptHidId").attr("attr_dept_hid_id");      
+	getTotalDtls(deptId,officeId,fromDate,toDate);
 	getTimeWiseDtls(deptId,officeId,fromDate,toDate);
 	getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate);
 	getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
@@ -85,14 +74,40 @@ $('#attenDatePickerModal').on('apply.daterangepicker', function(ev, picker) {
 		$("#officeNameId").html('Guntur Party Office - Attendance');  
 	} 
 	$("#totalCountId").html('');  
-	 $('#attedanceModalId').html('');
-	 $("#employeeOverViewId").html('');
-	 $("#dayWiseOvervwModal").html('');
-	 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+	$('#attedanceModalId').html('');
+	$("#employeeOverViewId").html('');
+	$("#dayWiseOvervwModal").html('');
+	$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 	$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$("#attendanceModal").modal('show');
+});
+$(document).on('change','#attenDatePickerModalForEmpId', function() {    
+	var strDate = $(this).val();
+	var dates = [];
+	dates = strDate.split('-');
+	var fromDate = dates[0];
+	var toDate = dates[1];    
+	//fromDate = picker.startDate.format('MM/DD/YYYY');
+	//toDate = picker.endDate.format('MM/DD/YYYY');    
+	
+	var officeId = $("#officeHidId").attr("attr_office_hid_id");
+	var deptId = $("#deptHidId").attr("attr_dept_hid_id");
+	var cadreId = $("#cadreHidId").attr("attr_cadre_hid_id");
+	
+	getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+	getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+	getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
+	
+	$("#singleEmployeeOverViewId").html('');
+	$("#tableAttendanceId").html('');
+	$("#attedanceModalForEmpId").html('');
+	
+	$("#singleEmployeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#tableAttendanceId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	$("#attedanceModalForEmpId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   
 });
 $("#dateRangeIdForAttendance1").daterangepicker({
   opens: 'left',
@@ -102,11 +117,11 @@ $("#dateRangeIdForAttendance1").daterangepicker({
     format: 'MM/DD/YYYY'       
   },  
   ranges: {
-     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	 'Today': [moment(), moment()],
 	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 	 'This Month': [moment().startOf('month'), moment()],
      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
      'Last 3 Months': [moment().subtract(3, 'month'), moment()],
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
      'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
@@ -143,11 +158,11 @@ $("#dateRangeIdForAttendance2").daterangepicker({
     format: 'MM/DD/YYYY'
   },  
   ranges: {  
-     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	 'Today': [moment(), moment()],
 	 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 	 'This Month': [moment().startOf('month'), moment()],
      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
      'Last 3 Months': [moment().subtract(3, 'month'), moment()],
      'Last 6 Months': [moment().subtract(6, 'month'), moment()],
      'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
@@ -838,7 +853,7 @@ $('#attendance').highcharts({
 		getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
 		$("#officeHidId").attr("attr_office_hid_id",officeId);
 		$("#deptHidId").attr("attr_dept_hid_id",deptId);
-		$("#deptHidId").html($(this).attr("attr_dept_name"));
+		//$("#deptHidId").html($(this).attr("attr_dept_name"));
 		if(officeId==1){
 			$("#officeNameId").html('Hyderabad Party Office - Attendance');
 		}
@@ -853,7 +868,24 @@ $('#attendance').highcharts({
 		 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		
+		//initialize datepicker
+		$("#attenDatePickerModal").daterangepicker({  
+			  opens: 'left',
+			  startDate: fromDate,
+			  endDate: toDate,
+			  locale: {
+				format: 'MM/DD/YYYY'               
+			  },  
+			  ranges: {  
+				 'This Month': [moment().startOf('month'), moment()],
+				 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+				 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				 'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+				 'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+				 'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+				 'This Year': [moment().startOf('Year'), moment()]    
+			  }   
+		})  
 		$("#attendanceModal").modal('show');
 		
 		
@@ -1021,10 +1053,12 @@ $('#attendance').highcharts({
 		var presentCountArr = [];
 		var absentCountArr = [];
 		var holidayAbsentCountArr = [];
+		var dateArr = [];
 		for(var i in result){
 			presentCountArr.push(result[i].presentCount);
 			absentCountArr.push(result[i].absentCount);
 			holidayAbsentCountArr.push(result[i].holidayAbsentCount);
+			dateArr.push(changeFormat(result[i].date));    
 		}
 		  
 		$('#dayWiseOvervwModal').highcharts({    
@@ -1038,8 +1072,19 @@ $('#attendance').highcharts({
 		},
 
 		xAxis: {
-		  categories: ['1', '2', '3', '4', '5']
-		},
+				 min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: dateArr,  
+					
+				labels: {
+						rotation: -45,
+						style: {
+							fontSize: '13px',
+							fontFamily: 'Verdana, sans-serif'
+						}
+					}
+			},
 
 		yAxis: {
 		  allowDecimals: false,
@@ -1150,19 +1195,15 @@ $('#attendance').highcharts({
 		var fromDate = $(this).attr("attr_from_date");
 		var toDate = $(this).attr("attr_to_date");
 		var cadreId = $(this).attr("attr_cadre_id");
-			
+		
+		$("#officeHidId").attr("attr_office_hid_id",officeId);
+		$("#deptHidId").attr("attr_dept_hid_id",deptId);
+		$("#cadreHidId").attr("attr_cadre_hid_id",cadreId);
+		
 		getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
 		getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
 		getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
-		//getTimeWiseDtls(deptId,officeId,fromDate,toDate);
-		//getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
-		/* $("#totalCountId").html('');  
-		 $('#attedanceModalId').html('');  
-		 $("#employeeOverViewId").html('');
-		 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
-		$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); */
+		
 		$("#singleEmployeeOverViewId").html('');
 		$("#tableAttendanceId").html('');
 		$("#attedanceModalForEmpId").html('');
@@ -1179,6 +1220,23 @@ $('#attendance').highcharts({
 			
 		}
 		$("#diptNameForEmpId").html($(this).attr("attr_dept_name")+'-'+$(this).attr("attr_name"));
+		$("#attenDatePickerModalForEmpId").daterangepicker({  
+			  opens: 'left',
+			  startDate: fromDate,
+			  endDate: toDate,
+			  locale: {
+				format: 'MM/DD/YYYY'               
+			  },  
+			  ranges: {  
+				 'This Month': [moment().startOf('month'), moment()],
+				 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+				 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				 'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+				 'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+				 'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+				 'This Year': [moment().startOf('Year'), moment()]    
+			  }   
+		})  
 		$("#attendanceModalEmplo").modal('show');  
 		
 	});
@@ -1339,6 +1397,7 @@ $('#attendance').highcharts({
 		var presentCount = [];
 		var absentCount=[];
 		var holidayCount = [];
+		var dateArr = [];
 		for(var i in result){
 			
 			if(result[i].isHoliday=="yes"){
@@ -1349,7 +1408,8 @@ $('#attendance').highcharts({
 				presentCount.push(result[i].presentCount);
 				holidayCount.push(0);
 				absentCount.push(result[i].absentCount);    
-			}  
+			}
+			dateArr.push(changeFormat(result[i].date));   			
 		}
 		$('#singleEmployeeOverViewId').highcharts({    
 
@@ -1362,11 +1422,22 @@ $('#attendance').highcharts({
 		},
 
 		xAxis: {
-		  categories: ['1', '2', '3', '4', '5']
-		},
+				 min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: dateArr,  
+					
+				labels: {
+						rotation: -45,
+						style: {
+							fontSize: '13px',
+							fontFamily: 'Verdana, sans-serif'
+						}
+					}
+			},
 
 		yAxis: {
-		  allowDecimals: false,
+		  allowDecimals: false,  
 		  min: 0,
 		  title: {
 			text: 'Day Wise Status'    
@@ -1516,4 +1587,8 @@ function changeDateFormat(dateStr)
 {
 	var todayArr = dateStr.split("/");
 	return todayArr[1]+'-'+todayArr[0]+'-'+todayArr[2];
+}
+function changeFormat(dateStr){
+	var date = dateStr.split('-');
+	return date[2]+'-'+date[1]+'-'+date[0];    
 }
