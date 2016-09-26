@@ -1095,7 +1095,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						nominatedPostComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						nominatedPostComment = nominatedPostCommentDAO.save(nominatedPostComment);
 					//}
-					
+						
 				}
 			});
 			status = "success";
@@ -7177,4 +7177,21 @@ try {
 		}
 		return status;
 	}
+public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId,Long candId){
+	String status = "Not Shortlisted";
+	try {
+		Long nominatedPostMemberId = nominatedPostMemberDAO.getNominatedPostMemberId(levelId, levelValue, deptId, boardId, positionId);
+		Long nominatedPostFinalId = nominatedPostFinalDAO.getIsApplicationShortlistedOrNot(nominatedPostMemberId,candId);
+	
+		if(nominatedPostFinalId != null && nominatedPostFinalId.longValue() > 0l){
+			status = "Shortlisted";
+		}
+	} catch (Exception e) {
+		status = "failure";
+		e.printStackTrace();
+		LOG.error("Exception Occured in isApplicationAlreadyShortlisted()", e);
+	}
+	return status;
+	
+}
 }
