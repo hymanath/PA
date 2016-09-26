@@ -1417,7 +1417,12 @@ $('#attendance').highcharts({
 				holidayCount.push(0);
 				absentCount.push(result[i].absentCount);    
 			}
-			dateArr.push(changeFormat(result[i].date));   			
+			if(result[i].isHoliday=="yes" && result[i].presentCount==1){
+				dateArr.push(changeFormat(result[i].date)+"(P)");         
+			}else{
+				dateArr.push(changeFormat(result[i].date)); 
+			}
+			  			
 		}
 		$('#singleEmployeeOverViewId').highcharts({    
 
