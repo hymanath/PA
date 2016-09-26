@@ -412,7 +412,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				str+='<td>'+result.subList[i].status+'</td>';
 				str+='<td style="position:relative;">';
 				if(type == "this"){
-					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'">UPDATE</button>';
+					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'" arrt_num="'+i+'">UPDATE</button>';
 					str+='<div class="updateDropDown" id="updateDropDownId'+i+'">';
 						str+='<div class="updateDropDownArrow">';						
 						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
@@ -608,6 +608,8 @@ $(document).on('click','.showPdfCls',function(){
 
 $(document).on("click",".updateButtonCls",function(){
 	var selectDivId = $(this).attr("attr_selected_status_id");
+	var num = $(this).attr("attr_num");
+	$("#successDivId"+num).html('');
 	 $("#"+selectDivId).chosen();
 	//getApplicationStatus(selectDivId);
 });
@@ -797,6 +799,7 @@ $(document).on("click",".updateStatusCls",function(){
 	var selectDivId = $(this).attr("attr_selected_status_id");
 	var commentDivId = $(this).attr("attr_comment_id");
 	var divId = $(this).attr("attr_success_div");
+	 $("#"+divId).html("");
 	var levelId= $(this).attr("attr_levelId");
 	var levelVal = $(this).attr("attr_level_value");
 	var deptId = $(this).attr("attr_departmentId");
@@ -822,14 +825,19 @@ $(document).on("click",".updateStatusCls",function(){
 		$("#"+divId).html(str).css("color","red");
 		return;
 	}
+	
 	$("#selectStatusIdImg").show();
 	$("#"+divId).html('<img id="searchMemberAjax" src="images/icons/loading.gif" style="width:15px;"/>');
-	$(this).hide();
+	
+	if(status == 2){
+		$(this).hide();
+		updateApplicationStatusDetailsAction(applicationId,status,comment,
+		levelId,levelVal,deptId,boardId,positionId,candidateId,divId);
+		return;
+	}
 	var jsObj=
 	   {				
 		nominatePostApplicationId:applicationId,
-		statusId:status,
-		comment :comment,
 		levelId : levelId,
 		levelVal : levelVal,
 		deptId : deptId,
@@ -839,22 +847,18 @@ $(document).on("click",".updateStatusCls",function(){
 		}
     $.ajax({
           type:'GET',
-          url: 'updateApplicationStatusDetailsAction.action',
+          url: 'isApplicationAlreadyShortlistedAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
-	   $("#selectStatusIdImg").hide();
-	   $(this).show();
-		if(result != null && result == 'success'){
-			$("#"+divId).html("Successfully Updated...").css("color","green");
-			//window.location.reload();
-			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();
-				getNominatedPostPostionDetails();
-			}, 1000);
-			
+	  
+	    if(result == "Shortlisted"){
+			$(this).show();
+			$("#"+divId).html("Already shortlisted for this Candidate").css("color","red");
+		}else{
+			$(this).hide();
+			updateApplicationStatusDetailsAction(applicationId,status,comment,levelId,levelVal,deptId,boardId,positionId,candidateId,divId);
 		}
-		else
-			$("#"+divId).html("Sorry,Exception Occured...Please try again...").css("color","red");
    });
 });
 
@@ -1207,6 +1211,40 @@ function tableResponsive()
 		window.location.replace("nominatedPostManagementAction.action?lId="+globalLevelId+"&stId="+globalStatusId+"&sts="+globalStatusMainName+"&levelTxt="+globalLevelTxt+"");
 	});
 	
+	 function updateApplicationStatusDetailsAction(applicationId,status,comment,levelId,levelVal,deptId,boardId,
+	 positionId,candidateId,divId){
+	var jsObj=
+	   {				
+		nominatePostApplicationId:applicationId,
+		statusId:status,
+		comment :comment,
+		levelId : levelId,
+		levelVal : levelVal,
+		deptId : deptId,
+		boardId : boardId,
+		positionId : positionId,
+		candidateId : candidateId
+		}
+    $.ajax({
+          type:'GET',
+          url: 'updateApplicationStatusDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	    $("#selectStatusIdImg").hide();
+	   $(this).show();
+		if(result != null && result == 'success'){
+			$("#"+divId).html("Successfully Updated...").css("color","green");
+			//window.location.reload();
+			setTimeout(function(){getBoardWiseNominatedPostMemberDetails();
+				getNominatedPostPostionDetails();
+			}, 1000);
+			
+		}
+		else
+			$("#"+divId).html("Sorry,Exception Occured...Please try again...").css("color","red"); 
+   });
+	}
 </script>
 </body>
 </html>
