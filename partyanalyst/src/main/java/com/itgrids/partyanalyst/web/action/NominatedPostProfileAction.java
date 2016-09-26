@@ -1719,6 +1719,18 @@ public String execute()
 		}
 	   return Action.SUCCESS;	
 	 }
-	
+	public String isApplicationAlreadyShortlisted(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			status = nominatedPostProfileService.isApplicationAlreadyShortlisted(jObj.getLong("nominatePostApplicationId"),jObj.getLong("levelId"),jObj.getLong("levelVal"),jObj.getLong("deptId"),jObj.getLong("boardId"),jObj.getLong("positionId"),jObj.getLong("candidateId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into isApplicationAlreadyShortlisted Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	
 }
