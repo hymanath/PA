@@ -829,7 +829,8 @@ function buildSelectedEventDetails(result)
 $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
     var attrEventIdsString = $(this).attr("attr_event_idsString");
-	getSelectedChildTypeMembersForEvent(childUserTypeId,attrEventIdsString);
+	var childUserType = $(this).attr("attr_userType");
+	getSelectedChildTypeMembersForEvent(childUserTypeId,attrEventIdsString,childUserType);
 });
  $(document).on("click",".remveSlcUsrTypeForEvent",function(){
 		 var removeSelected = $(this).attr("attr_remove_SelecUserType"); 
@@ -887,16 +888,16 @@ function buildgetChildUserTypesByItsParentUserTypeForEvent(result,attrEventIdsSt
 		 if(result !=null && result.length >0){
 			  firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_userTypeId="'+result[i].shortName+'" attr_event_idsString='+attrEventIdsString+' class="allItsSubUserTypeClsForEvent">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_userTypeId="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\'  attr_event_idsString='+attrEventIdsString+' class="allItsSubUserTypeClsForEvent">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString);
+		getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString," ");
 	}
-function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString){
+function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEventIdsString,childUserType){
 	 $("#childEvnetMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	 $("#directChildMemberForEventDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
@@ -918,18 +919,54 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 		   $("#childEvnetMemberDivId").html(' ');
 		   $("#directChildMemberForEventDivId").html(' ');
 		  if(result != null && result.length > 0){
-			  buildChildTypeMembersForEventReslt(result,attrEventIdsString);
+			  buildChildTypeMembersForEventReslt(result,attrEventIdsString,childUserType);
 		  }else{
 			  $("#childEvnetMemberDivId").html("NO DATA AVAILABLE");
 		  }
 		});
  }
- function buildChildTypeMembersForEventReslt(result,attrEventIdsString){
+ function buildChildTypeMembersForEventReslt(result,attrEventIdsString,childUserType){
 	  var userTypeId = result[0].userTypeId;
 	  var activityMemberId = result[0].activityMemberId;
 	  var selectedMemberName = result[0].name;
 	  var selectedUserType = result[0].userType;
 	 var str='';
+	 if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
+	     str+='<table style="background-color:#EDEEF0" class="table table-condensed" id="eventMemberDataTblId">';
+		 str+='<thead>';
+		     str+='<th>Rank</th>';
+			 str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>Location</th>';
+			 str+='<th>Invitees</th>';
+			 str+='<th>Invitees Attended</th>';
+			 str+='<th>%</th>';
+			 str+='<th>Non Invitees Attended</th>';
+			 str+='<th>%</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		 var rank=1;
+		  for(var i in result){
+			str+='<tr style="cursor:pointer;" class="childEventMemberCls" attr_event_idsString="'+attrEventIdsString+'"  attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildMemberForEventDivId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
+			 str+='<td class="count">'+rank+'</td>';
+			 str+='<td>'+result[i].name+'</td>';
+			 str+='<td>'+result[i].userType+'</td>';
+			 str+='<td>'+result[i].locationName+'</td>';
+			 str+='<td>'+result[i].inviteeCnt+'</td>';
+			 str+='<td>'+result[i].inviteeAttendedCnt+'</td>';
+			 str+='<td>'+result[i].inviteeAttendedCntPer+'</td>';
+			 str+='<td>'+result[i].nonInviteeAttendedCnt+'</td>';
+			 str+='<td>'+result[i].nonInviteeAttendedCntPer+'</td>';
+			 str+='</tr>';
+             rank=rank+1;			 
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+	    $("#childEvnetMemberDivId").html(str);
+		$("#eventMemberDataTblId").dataTable({
+			"aaSorting": []
+		});
+	  }else{
 	  str+='<ul class="list-inline slickPanelSliderForEvent">';
 	  var rank=1; 
 	   for(var i in result){
@@ -972,7 +1009,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 	 str+='</div> ';
     str+=' </li> ';  
 	rank=rank+1;
-	   }
+	}
    $("#childEvnetMemberDivId").html(str);
    $(".slickPanelSliderForEvent").slick({
 			 slide: 'li',
@@ -1014,7 +1051,8 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 				// settings: "unslick"
 				// instead of a settings object
 			  ]
-		});   
+		});  
+	  }		
 	getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString);
  }

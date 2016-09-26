@@ -910,7 +910,8 @@ function buildLevelWiseHighCharts(result){
 }
  $(document).on("click",".childUserTypeClsForMeeting",function(){
 	var childUserTypeIdString = $(this).attr("attr_userTypeId");
-	getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString);
+	var childUserType = $(this).attr("attr_userType");
+	getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString,childUserType);
 });
 $(document).on("click",".compareActivityMemberClsForMeeting",function(){
 		//$(".slickPanelSlider").find("li").removeClass("active");
@@ -960,17 +961,17 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 		 if(result !=null && result.length >0){
 			 firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_usertypeid="'+result[i].shortName+'" class="childUserTypeClsForMeeting">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_usertypeid="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\'  class="childUserTypeClsForMeeting">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDivIdForMeeting").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeIdString);
+		getSelectedChildUserTypeMembersWithMeetingsCount(firstChildUserTypeIdString," ");
 		
 	}
-	function getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString){
+	function getSelectedChildUserTypeMembersWithMeetingsCount(childUserTypeIdString,userType){
 		 $("#childActivityMemberDivIdForMeeting").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var parentActivityMemberId = globalActivityMemberId;
 	  var childUserTypeIdsArray = childUserTypeIdString.split(",");
@@ -1006,29 +1007,91 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 		}).done(function(result){
 		   $("#childActivityMemberDivIdForMeeting").html(' ');
 		  if(result != null && result.length > 0){
-			  buildgetSelectedChildUserTypeMembersForMeeting(result);
+			  buildgetSelectedChildUserTypeMembersForMeeting(result,userType);
 		  }else{
 			  $("#childActivityMemberDivIdForMeeting").html("NO DATA AVAILABLE");
 		  }
 		});
 		
 	}
-	function buildgetSelectedChildUserTypeMembersForMeeting(result){
+	function buildgetSelectedChildUserTypeMembersForMeeting(result,childUserType){
 	var str='';
-	if(result !=null && result.length >0){
+		     var firstChildActivityMemberId = "directChildActivityMeetingMemberDiv";
+			var firstActivityMemberId = result[0].activityMemberId;
+			var firstUserTypeId = result[0].userTypeId;
+			var firstuserType = result[0].userType;
+			var firstUserMemberName = result[0].name;
+	if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
+	     str+='<table style="background-color:#EDEEF0" class="table table-condensed" id="meetingMemberDtlsDataTblId">';
+		 str+='<thead>';
+		     str+='<th>Rank</th>';
+			 str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>Location</th>';
+			 str+='<th>Total</th>';
+			 str+='<th>Yes</th>';
+			 str+='<th>%</th>';
+			 str+='<th>No</th>';
+			 str+='<th>%</th>';
+			 str+='<th>Maybe</th>';
+			 str+='<th>%</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		 var rank=1;
+		  for(var i in result){
+			str+='<tr style="cursor:pointer;" class="compareActivityMemberClsForMeeting"  attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildActivityMeetingMemberDiv"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
+			 str+='<td class="count">'+rank+'</td>';
+			 str+='<td>'+result[i].name+'</td>';
+			 str+='<td>'+result[i].userType+'</td>';
+			 str+='<td>'+result[i].locationName+'</td>';
+			 if(result[i].totalMeetingCnt !=null && result[i].totalMeetingCnt >0){
+					str+='<td>'+result[i].totalMeetingCnt+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result[i].conductedMeetingCnt !=null && result[i].conductedMeetingCnt >0){
+					str+='<td>'+result[i].conductedMeetingCnt+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result[i].conductedMeetingPerc !=null && result[i].conductedMeetingPerc >0){
+					str+='<td>'+result[i].conductedMeetingPerc+'%</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result[i].notConductedMeetingCnt !=null && result[i].notConductedMeetingCnt >0){
+					str+='<td>'+result[i].notConductedMeetingCnt+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result[i].notConductedMeetingPerc !=null && result[i].notConductedMeetingPerc >0){
+					str+='<td>'+result[i].notConductedMeetingPerc+'%</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result[i].mayBeMeetingCnt !=null && result[i].mayBeMeetingCnt >0){
+					str+='<td>'+result[i].mayBeMeetingCnt+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result[i].mayBeMeetingPerc !=null && result[i].mayBeMeetingPerc >0){
+					str+='<td>'+result[i].mayBeMeetingPerc+'%</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+			 str+='</tr>';
+             rank=rank+1;			 
+			}
+			 str+='</tbody>';
+			 str+='</table>';
+	     $("#childActivityMemberDivIdForMeeting").html(str);
+		  $("#meetingMemberDtlsDataTblId").dataTable({
+			"aaSorting": []
+		   });
+	  }else{
+	   if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSliderMeeting">';
-		var firstActivityMemberId;
-		var firstUserTypeId;
-		var firstChildActivityMemberId = "directChildActivityMeetingMemberDiv";
-		var firstuserType;
-		var firstUserMemberName;
-			firstActivityMemberId = result[0].activityMemberId;
-			firstUserTypeId = result[0].userTypeId;
-			firstuserType = result[0].userType;
-			firstUserMemberName = result[0].name;
 		var rankVar =0;
-		
-		
 		for(var i in result){
 			rankVar =rankVar+1;
 			
@@ -1104,7 +1167,6 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 					str+='</div>';
 				str+='</div>';
 			str+='</li>';
-		
 		}
 		str+='</ul>';
 		$("#childActivityMemberDivIdForMeeting").html(str);
@@ -1150,7 +1212,8 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 				  ]
 			});
 	}else{
-		$("#childActivityMemberDivIdForMeeting").html("No Data Available");
+	 $("#childActivityMemberDivIdForMeeting").html("No Data Available");
+	}
 	}
 	getDirectChildActivityMemberMeetingDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
 	getTopPoorMeetingLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
