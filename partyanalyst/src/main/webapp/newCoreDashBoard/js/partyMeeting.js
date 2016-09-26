@@ -20,17 +20,18 @@ var customEndDateMeetings = moment().format('DD/MM/YYYY');
         }
 	})
 	$("#dateMeetingHeadingId").html(" THIS MONTH ( "+customStartDate+" to "+customEndDate+" )");
+	var singleBlockDateStart = moment().startOf('month').format('MMM YY');
+	var singleBlockDateEnd = moment().format('MMM YY');
 	$('#dateRangeIdForMeetings').on('apply.daterangepicker', function(ev, picker) {
 	  customStartDateMeetings = picker.startDate.format('DD/MM/YYYY');
 	  customEndDateMeetings = picker.endDate.format('DD/MM/YYYY');
-	  if(picker.chosenLabel == "Today"){
-		$("#dateMeetingHeadingId").html(" TODAY ( "+customStartDate+" )");
-	  }else{
-		$("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
-	  }
+	  singleBlockDateStart = picker.startDate.format('MMM YY');
+	  singleBlockDateEnd = picker.endDate.format('MMM YY');
+	  $("#dateMeetingHeadingId").html(picker.chosenLabel+" ( "+customStartDate+" to "+customEndDate+" )");
+	  
 	  //alert(customStartDateMeetings + "-" +customEndDateMeetings);
 	  $(".meetingsHiddenBlock").show();
-	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	  $(".stateGeneralMeeting,.stateLevelMeetingsExpand,.specialMeetings").find('i').removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 	  $(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
 	  getPartyMeetingBasicCountDetails();
 	  getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
@@ -188,7 +189,7 @@ $(document).on("click",".selectAll",function(){
 		 if(levelWiseResult != null && levelWiseResult.length > 0){
 		   for(var i in levelWiseResult){
 			 str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-				 str+='<h4 class="text-capitalize">'+levelWiseResult[i].name+'</h4>';
+				 str+='<h4 class="text-capitalize">'+levelWiseResult[i].name+'<small class="meetingsInnerBlock"></small></h4>';
 				str+='<table class="table tableTraining bg_ED">';
 					 str+='<tbody><tr>';
 						 str+='<td>';
@@ -221,6 +222,7 @@ $(document).on("click",".selectAll",function(){
 		  }
 		str+='</div>';
 	  $("#meetingBasicCountDivId").html(str);
+	  $(".meetingsInnerBlock").html("( "+singleBlockDateStart+" to "+singleBlockDateEnd+" )");
 	}
 	var globalUserWiseMeetingMemberRslt;
 	function getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
@@ -520,6 +522,8 @@ $(document).on("click",".meetingLiCls",function(){
 	$(document).on("click",".meetingsIconExpand",function(){
 		$(".dateRangePickerClsForMeetings").toggleClass("hide");
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+		$(".meetingHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+		$(".meetingHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
 		$(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -569,12 +573,7 @@ $(document).on("click",".meetingLiCls",function(){
 			$(".dateRangePickerClsForNews").toggleClass("hide");
 		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".eventsHiddenBlock").hide();
-			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-			$(".dateRangePickerClsForEvents").toggleClass("hide");
-		}else if( $(".eventsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-			$(".eventsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".eventsHiddenBlock,.moreEventsBlocks").hide();
+			$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents,.detailedBlockEvents").hide();
 			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 			$(".dateRangePickerClsForEvents").toggleClass("hide");
 		}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -1338,9 +1337,9 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 								str+='<td> - </td>';
 							}
 						str+='</tr>';
-						str+='<tr class="showHideTr" style="display:none" attr_id = "subChildLevelPartyMemDtslId'+result[i].userTypeId+''+i+'">';
+						str+='<tr class="showHideTr" style="display:none" attr_id = "districtpositionId'+result[i].userTypeId+''+i+'">';
 							
-							str+='<td colspan="10"  id="subChildLevelPartyMemDtslId'+result[i].userTypeId+''+i+'">';
+							str+='<td colspan="10"  id="districtpositionId'+result[i].userTypeId+''+i+'">';
 							
 							str+='</td>';
 						str+='</tr>';
@@ -1358,7 +1357,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 	$(document).on("click",".removeSelectTr",function(){
 		var removeSelected = $(this).attr("attr_removeSelecUserType"); 
 		$("#"+removeSelected).html(' ');
-		$("#"+removeSelected).closest('.showHideTr').hide();
+		$("#"+removeSelected).hide();
 	});
 	function getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType){
 	 $("#topPoorLocationsMeetingDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
