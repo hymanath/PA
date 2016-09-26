@@ -1269,9 +1269,9 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 								str+='<td> - </td>';
 							}
 						str+='</tr>';
-						str+='<tr class="showHideTr" style="display:none" attr_id = "districtpositionId'+result[i].userTypeId+''+i+'">';
+						str+='<tr class="showHideTr" style="display:none" attr_id = "subChildLevelPartyMemDtslId'+result[i].userTypeId+''+i+'">';
 							
-							str+='<td colspan="10"  id="districtpositionId'+result[i].userTypeId+''+i+'">';
+							str+='<td colspan="10"  id="subChildLevelPartyMemDtslId'+result[i].userTypeId+''+i+'">';
 							
 							str+='</td>';
 						str+='</tr>';
@@ -1289,7 +1289,7 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 	$(document).on("click",".removeSelectTr",function(){
 		var removeSelected = $(this).attr("attr_removeSelecUserType"); 
 		$("#"+removeSelected).html(' ');
-		$("#"+removeSelected).hide();
+		$("#"+removeSelected).closest('.showHideTr').hide();
 	});
 	function getTopPoorMeetingLocations(activityMemberId,selectedMemberName,selectedUserType){
 	 $("#topPoorLocationsMeetingDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
