@@ -1024,8 +1024,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			    	   queryStr.append(" and model.nominatedPostStatusId = 3 ");
 			       else if(status != null && status.equalsIgnoreCase("goPassed"))
 			    	   queryStr.append(" and model.nominatedPostStatusId = 4 ");
-			       else if(status != null && status.equalsIgnoreCase("total"))
-			    	   queryStr.append(" and model.nominationPostCandidateId is null ");
+			      // else if(status != null && status.equalsIgnoreCase("total"))
+			    	  // queryStr.append(" and model.nominationPostCandidateId is null ");
 			       
 			        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 		    	 	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
