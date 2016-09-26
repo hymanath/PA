@@ -556,20 +556,61 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	 */
 	public List<IdNameVO> getDepartmentBoardPositions(Long deptId,Long boardId,Long boardLevlId,Long searchLevelValue,Long seachLevelId,Long nominatedPostCandId){
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		List<IdNameVO> appliedApplsList = new ArrayList<IdNameVO>();
+		 
 		try{
 			Long applicationId =0L;
-			List<Long> appliedPositions =null;
-			List<Long> duplicatePositnIds = null;
+			List<Object[]> appliedPositions =null;
+			List<Long> appliedApplctnIds = new ArrayList<Long>();
+			List<Object[]> upadatedPositions =null;
+			Map<Long,IdNameVO> aplliedAppltnMap = new HashMap<Long, IdNameVO>();
+			List<Long> appliedPositionIds = new ArrayList<Long>();
+			List<Long> updatedPositionIds = new ArrayList<Long>();
+			List<Object[]> appltnIds = null;
 			if(nominatedPostCandId != null && nominatedPostCandId.longValue() > 0l){
-				appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
+				 appltnIds = nominatedPostApplicationDAO.getApplicationIdsByCAndidateId(nominatedPostCandId);
+				//appliedPositions = nominatedPostApplicationDAO.getAppliedPositionsForCandidate(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,nominatedPostCandId);
+				if(commonMethodsUtilService.isListOrSetValid(appltnIds)){
+					for(Object[] appltnId : appltnIds){
+						IdNameVO vo = new IdNameVO();
+						vo.setId((Long)appltnId[1] != null ? (Long)appltnId[1] : null);//positionId
+						vo.setDistrictid(commonMethodsUtilService.getLongValueForObject(appltnId[0]));//applicationId
+						aplliedAppltnMap.put(commonMethodsUtilService.getLongValueForObject(appltnId[0]), vo);
+						appliedApplctnIds.add(commonMethodsUtilService.getLongValueForObject(appltnId[0]));
+						//appliedPositionIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+						appliedApplsList.add(vo);
+						}
+					}
 			}
+			
+			if(nominatedPostCandId != null && nominatedPostCandId.longValue() > 0l){
+				if(commonMethodsUtilService.isListOrSetValid(appliedApplctnIds)){
+				upadatedPositions = nominatedPostFinalDAO.getUpdatedPositionsForCandidate(appliedApplctnIds);
+				if(commonMethodsUtilService.isListOrSetValid(upadatedPositions)){
+					for(Object[] obj : upadatedPositions){
+						if(commonMethodsUtilService.isMapValid(aplliedAppltnMap)){
+						IdNameVO vo = aplliedAppltnMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
+						if(vo != null){
+								vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));//positionId
+							}
+						 }
+						}
+					}
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(appliedApplsList)){
+				for(IdNameVO vo : appliedApplsList){
+					appliedPositionIds.add(vo.getId());
+					}
+				}
+			
 				
 			List<Object[]>  list = nominatedPostDAO.getLevelWiseDepartmentsBoardPosition(deptId, boardId,boardLevlId,searchLevelValue,seachLevelId,applicationId);
 			List<Object[]> nonAppliedPostns = new ArrayList<Object[]>();
 			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for(Object[] obj : list){
-					if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
-						if(!appliedPositions.contains((Long)obj[0])){
+					if(commonMethodsUtilService.isListOrSetValid(appliedPositionIds)){
+						if(!appliedPositionIds.contains((Long)obj[0])){
 							nonAppliedPostns.add(obj);
 						}
 					}else{
@@ -578,8 +619,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 			}
 			String positnAnyAppld = "NotApplied";
-			if(commonMethodsUtilService.isListOrSetValid(appliedPositions)){
-				for(Long position : appliedPositions){
+			if(commonMethodsUtilService.isListOrSetValid(appliedPositionIds)){
+				for(Long position : appliedPositionIds){
 					if(position == null){
 						positnAnyAppld = "Applied";
 					}
@@ -2757,11 +2798,15 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		try {
 			//0-statusId,1-status,2-boardLevelId,3-level,4-deptId,5-deptName,6-boardId,7-boardName,8-positionId,9-positionName,10.postTypeId,11.applicationId
 			List<Object[]> appCandList = nominatedPostApplicationDAO.getCandidateAppliedPostsByCadre(tdpCadreId, searchType,nominateCandId);
+			
+			List<Long> applicationIds = new ArrayList<Long>();
 			if(appCandList!= null && appCandList.size() >0){
 				for (Object[] obj : appCandList) {
 					NomintedPostMemberVO Vo = new NomintedPostMemberVO();
+					applicationIds.add((Long)obj[11]);//applicationIds
 					Vo.setNominatedPostId(commonMethodsUtilService.getLongValueForObject(obj[10]));//postTypeId
 					if(Vo.getNominatedPostId() == 1l){
+						Vo.setNominatePostApplicationId((Long)obj[11]);
 						Vo.setApplStatusId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 						Vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
 						Vo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));//boardLevelId
@@ -2774,28 +2819,29 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 						}
 						if(obj[5] != null){
-							Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));
+							Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[5]));//deptName
 						}else{
 							Vo.setCadreName("Any Department ");
 						}
 						if(obj[7] != null){
-							Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));
+							Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[7]));//boardName
 						}else{
 							Vo.setSubCaste("Any Corporation/Board");
 						}
 						if(obj[9] != null){
-							Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));
+							Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[9]));//positionName
 						}else{
 							Vo.setVoterName("Any Position");
 						}
-						Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[4]));
-						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+						Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[4]));//deptId
+						Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[6]));//boardId
 						
-						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+						Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[8]));//positionId
 						
 						subList.add(Vo);
 					}
 					else if(Vo.getNominatedPostId() == 2l){
+						Vo.setNominatePostApplicationId((Long)obj[11]);
 						Vo.setApplStatusId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 						Vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[1]));
 						Vo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));//boardLevelId
@@ -2836,12 +2882,56 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			returnVo.getSubList().addAll(subList);
 			returnVo.getSubList1().addAll(subList1);
+			
+			if(applicationIds != null && applicationIds.size() >0){
+				if(returnVo.getSubList() != null && returnVo.getSubList().size() >0){
+					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList());
+				}
+				if(returnVo.getSubList1() != null && returnVo.getSubList1().size() >0){
+					anyPositionLinkedApplicationsUpdation(applicationIds,returnVo.getSubList1());
+				}
+			}
+			
+			
 		} catch (Exception e) {
 			LOG.error("Exceptionr riased at getAppliedCandidatePostsByCadre", e);
 		}
 		return returnVo;
 	}
 	
+	public void anyPositionLinkedApplicationsUpdation(List<Long> applicationIds, List<NomintedPostMemberVO> list){
+		List<Object[]> upadatedAppltns = nominatedPostFinalDAO.getApplicationDataByApplctnIds(applicationIds);
+		
+		if(upadatedAppltns != null && upadatedAppltns.size() >0){
+			for(Object[] obj : upadatedAppltns){
+				NomintedPostMemberVO Vo = getMatchedVOForApplication(list,(Long)obj[0]);
+				
+				if(Vo != null){
+					Vo.setDeptId(commonMethodsUtilService.getLongValueForObject(obj[1]));//deptId
+					Vo.setCadreName(commonMethodsUtilService.getStringValueForObject(obj[2]));//deptName
+					Vo.setDeptBoardId(commonMethodsUtilService.getLongValueForObject(obj[3]));//bordId
+					Vo.setSubCaste(commonMethodsUtilService.getStringValueForObject(obj[4]));//boardName
+					Vo.setDeptBoardPostnId(commonMethodsUtilService.getLongValueForObject(obj[5]));//positionId
+					Vo.setVoterName(commonMethodsUtilService.getStringValueForObject(obj[6]));//positionName
+				}
+			}
+		}
+	}
+	public NomintedPostMemberVO getMatchedVOForApplication(List<NomintedPostMemberVO> voList,Long applicationId){
+		NomintedPostMemberVO returnVo = new NomintedPostMemberVO();
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(voList)){
+				for (NomintedPostMemberVO vo : voList) {
+					if(vo.getNominatePostApplicationId().longValue() == applicationId.longValue()){
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMatchedVOForApplication() method of NominatedPostProfileService", e);
+		}
+		return returnVo;
+	}
 	public List<NominatedPostVO> getNominatedPostPostionDetails(Long departmentId,Long boardId,Long positionId,Long boardLevelId,Long locationValue,Long searchLevelId){
 		
 		List<NominatedPostVO> finalList = new ArrayList<NominatedPostVO>(0);

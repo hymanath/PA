@@ -1563,10 +1563,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		return query.list();
 	}
-	public List<Long> getAppliedPositionsForCandidate(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId){
+	public List<Object[]> getAppliedPositionsForCandidate(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId){
 		StringBuilder queryStr = new StringBuilder();
 		   
-	    queryStr.append(" select distinct position.positionId from NominatedPostApplication model left join model.position position " +
+	    queryStr.append(" select distinct position.positionId,model.nominatedPostApplicationId from NominatedPostApplication model left join model.position position " +
 				" where model.boardLevel.boardLevelId=:boardLevelId " +
 				" and model.locationValue =:searchLevelValue and model.applicationStatus.applicationStatusId not in (2,4,8) " );
 	    if(departmentId != null && departmentId.longValue() > 0l){
@@ -2186,6 +2186,16 @@ public List<NominatedPostApplication> getApplicationIdsByMemberId(Long memberId)
 		 		" where  model.isDeleted='N' " +
 		 		" and model.nominatedPostMember.nominatedPostMemberId =:memberId  and model.applicationStatus.applicationStatusId not in (5,7) ");
 		 query.setParameter("memberId", memberId);
+		 
+		return query.list();
+}
+public List<Object[]> getApplicationIdsByCAndidateId(Long candidateId){
+	
+	 Query query = getSession().createQuery(" select model.nominatedPostApplicationId,model.positionId from NominatedPostApplication model " +
+		 		" where  model.isDeleted='N' " +
+		 		" and model.nominationPostCandidate.nominationPostCandidateId =:candidateId  and model.applicationStatus.applicationStatusId not in (2,4,8) " +
+		 		" and model.isDeleted = 'N' and model.nominationPostCandidate.isDeleted = 'N' ");
+		 query.setParameter("candidateId", candidateId);
 		 
 		return query.list();
 }
