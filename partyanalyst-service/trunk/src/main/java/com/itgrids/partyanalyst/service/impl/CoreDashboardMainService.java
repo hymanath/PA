@@ -2522,7 +2522,7 @@ public List<CoreDebateVO> getPartyWiseTotalDebateDetails(String startDateStr,Str
 		
 		if(commonMethodsUtilService.isListOrSetValid(returnList)){
 			for (CoreDebateVO objects : returnList) {
-				objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getDebateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+				objects.setScalePerc(Double.parseDouble(new BigDecimal((objects.getScale())/objects.getCandidateCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 				if(objects.getScalePerc() !=null && objects.getScalePerc() >0.0 ){
 					objects.setScalePerc(Double.parseDouble(new BigDecimal(objects.getScalePerc()/charecters.size()).setScale(1, BigDecimal.ROUND_HALF_UP).toString()));
 				}					
