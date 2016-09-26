@@ -5682,3 +5682,105 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	$(document).on("click",".organizationCls",function(){
 		getAllSubDepartmentEditionsWiseDetails($(this).attr("attr_organization_id"));	
 	});
+	function getPaperWiseNewsBasicCounts(){
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		/* if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		} */
+		newsPaperIdsStr = [1, 2, 3];
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+		var state = globalState;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getPaperWiseNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getPaperWiseNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+		}).then(function(result){
+			buildPaperWiseNewsBasicCounts(result);
+		});
+	}
+	function buildPaperWiseNewsBasicCounts(result){
+		var str='';
+		var str1='';
+		if(result != null && result.length > 0){
+				$("#totalUniqueMainTotal").html(result[0].editionUniqueCountMain);
+				$("#totalUniqueMainPositive").html(result[0].positiveCountMain);
+				$("#totalUniqueMainNegative").html(result[0].negativCountMain);
+				if((result[0].positiveCountMain+result[0].negativCountMain) > 0){
+					$("#totalUniqueMainPositivePercent").html(" "+((result[0].positiveCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
+					$("#totalUniqueMainNegativePercent").html(" "+((result[0].negativCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
+				}
+				else{
+					$("#totalUniqueMainPositivePercent").html(" 0.0 %");
+					$("#totalUniqueMainNegativePercent").html(" 0.0 %");
+				}
+				
+				$("#totalUniqueDistTotal").html(result[0].editionUniqueCountDist);				
+				$("#totalUniqueDistPositive").html(result[0].positiveCountDist);
+				$("#totalUniqueDistNegative").html(result[0].negativCountDist);
+				if((result[0].positiveCountDist+result[0].negativCountDist) > 0){
+					$("#totalUniqueDistPositivePercent").html(" "+((result[0].positiveCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
+					$("#totalUniqueDistNegativePercent").html(" "+((result[0].negativCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
+				}
+				else{
+					$("#totalUniqueDistPositivePercent").html(" 0.0 %");
+					$("#totalUniqueDistNegativePercent").html(" 0.0 %");
+				}
+			}
+			for(var i=1;i<result.length;i++){
+				var total=0,total1=0;
+				total = result[i].positiveCountMain+result[i].negativCountMain;
+				total1 = result[i].positiveCountDist+result[i].negativCountDist;
+				str+='<tr>';
+					str+='<td>';
+							str+='<img src="newCoreDashBoard/img/Nes_Papers_Small_LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+total+'</span>';
+						str+='</td>';
+						str+='<td>';
+							if(total > 0)
+								str+='<span>'+result[i].positiveCountMain+'</span><small class="text-success">'+((result[i].positiveCountMain/total)*100).toFixed(2)+' %</small>';
+							else
+								str+='<span>'+result[i].positiveCountMain+'</span><small class="text-success">0 %</small>';
+						str+='</td>';
+						str+='<td>';
+							if(total > 0)
+								str+='<span>'+result[i].negativCountMain+'</span><small class="text-danger">'+((result[i].negativCountMain/total)*100).toFixed(2)+' %</small>';
+							else
+								str+='<span>'+result[i].negativCountMain+'</span><small class="text-danger">0 %</small>';
+						str+='</td>';
+					str+='</tr>';
+					
+					str1+='<tr>';
+					str1+='<td>';
+							str1+='<img src="newCoreDashBoard/img/Nes_Papers_Small_LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+total1+'</span>';
+						str1+='</td>';
+						str1+='<td>';
+							if(total1 > 0)
+								str1+='<span>'+result[i].positiveCountDist+'</span><small class="text-success">'+((result[i].positiveCountDist/total1)*100).toFixed(2)+' %</small>';
+							else
+								str1+='<span>'+result[i].positiveCountDist+'</span><small class="text-success">0 %</small>';
+						str1+='</td>';
+						str1+='<td>';
+							if(total1 > 0)
+								str1+='<span>'+result[i].negativCountDist+'</span><small class="text-danger">'+((result[i].negativCountDist/total1)*100).toFixed(2)+' %</small>';
+							else
+								str1+='<span>'+result[i].negativCountDist+'</span><small class="text-danger">0 %</small>';
+						str1+='</td>';
+					str1+='</tr>';
+			}
+		$("#mainPaperDivId").html(str);
+		$("#distPaperDivId").html(str1);
+	}
