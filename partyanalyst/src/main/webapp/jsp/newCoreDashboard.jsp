@@ -2454,10 +2454,10 @@
 		  <div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<div class="input-group">
-			 <!-- <input type="text" class="form-control" id="attenDatePickerModal"/>
+			 <input type="text" class="form-control" id="attenDatePickerModalForEmpId"/>
 			  <span class="input-group-addon">
-				<i class="glyphicon glyphicon-calendar"></i>  
-			  </span>-->  
+				<i class="glyphicon glyphicon-calendar"></i>      
+			  </span> 
 			</div>
 		  </div>
 		</div>
@@ -2477,7 +2477,7 @@
 				<div class="m_top20">
 					<h4><span class="headingColor text-capitalize">employee overview</span></h4>
 				</div>
-				<div class="m_top20" id="singleEmployeeOverViewId" style="height:200px"> </div>
+				<div class="m_top20 table-responsive" id="singleEmployeeOverViewId" style="height:200px"> </div>      
 			</div> 
 		</div>
       </div>
@@ -2496,6 +2496,7 @@
 <!--attendance-->
 <input type="hidden" id="officeHidId" attr_office_hid_id="" value=""></input>
 <input type="hidden" id="deptHidId" attr_dept_hid_id="" value=""></input>
+<input type="hidden" id="cadreHidId" attr_cadre_hid_id="" value=""></input>  
 <button  style="display:none" class="userStructureClass" attr_activityMemberId="1" attr_userTypeId="3" attr_userAccessLevelId="3" attr_userAccessLevelValuesString="11,12,15" > ActivityMember </button>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -2680,6 +2681,6 @@ $(document).on("click",".moreTrainingCampBlocksIcon",function(){
 	}
 });    
 
-  </script> 
+</script> 
 </body>
 </html>
