@@ -222,7 +222,7 @@
 	}
 	
 	
-	function getSelectedChildUserTypeMembers(childUserTypeIdString){
+	function getSelectedChildUserTypeMembers(childUserTypeIdString,childUserType){
 		
 	$("#SelectedUserTypeDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
      var parentActivityMemberId = globalActivityMemberId;
@@ -246,7 +246,7 @@
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#SelectedUserTypeDetailsDiv").html('');
-			buildgetSelectedChildUserTypeMembers(result);
+			buildgetSelectedChildUserTypeMembers(result,childUserType);
 		});
 	}
 	function getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId){
@@ -873,26 +873,24 @@
 		 if(result !=null && result.length >0){
 			 firstChildUserTypeIdString = result[0].shortName;
 			 for(var i in result){
-				 str+='<li attr_usertypeid="'+result[i].shortName+'" class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				 str+='<li attr_usertypeid="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeCls">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
 		$("#childUserTypeDetailsDiv").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
 		
-		getSelectedChildUserTypeMembers(firstChildUserTypeIdString);
+		getSelectedChildUserTypeMembers(firstChildUserTypeIdString," ");
 		
 	}
 	
 	
 	
-	function buildgetSelectedChildUserTypeMembers(result){
+	function buildgetSelectedChildUserTypeMembers(result,childUserType){
 		
 		$("#SelectedUserTypeDetailsDiv").html('');
 	var str='';
-	if(result !=null && result.length >0){
-		str+='<ul class="list-inline slickPanelSliderCommittee">';
-		var firstActivityMemberId;
+	    var firstActivityMemberId;
 		var firstUserTypeId;
 		var firstChildActivityMemberId = "directChildActivityMemberDiv";
 		var firstuserType;
@@ -901,9 +899,61 @@
 			firstUserTypeId = result[0].userTypeId;
 			firstuserType = result[0].userType;
 			firstUserMemberName = result[0].name;
+	if(childUserType != null && childUserType.trim()=="MLA/CI" || childUserType.trim()=="MLA" || childUserType.trim()=="CONSTITUENCY INCHARGE"){
+	     str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed tableHoverLevels" id="committeeMemberDataTblId">';
+		 str+='<thead>';
+		     str+='<th>Rank</th>';
+			 str+='<th>Name</th>';
+			 str+='<th>Designation</th>';
+			 str+='<th>Location</th>';
+			 str+='<th>Total</th>';
+			 str+='<th>Started</th>';
+			 str+='<th>Completed</th>';
+			 str+='<th>%</th>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		 var rank=1;
+		  for(var i in result){
+			str+='<tr style="cursor:pointer;" class="compareActivityMemberCls" attr_selectedusertype="'+result[i].userType+'"  attr_id="directChildActivityMemberDiv"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+'>';
+			 str+='<td><span class="counts">'+rank+'</span></td>';
+			 str+='<td>'+result[i].name+'</td>';
+			 str+='<td>'+result[i].userType+'</td>';
+			 str+='<td>'+result[i].locationName+'</td>';
+			if(result[i].totalCount !=null && result[i].totalCount >0){
+				str+='<td>'+result[i].totalCount+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			if(result[i].startedCount !=null && result[i].startedCount >0){
+				str+='<td>'+result[i].startedCount+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			if(result[i].completedCount !=null && result[i].completedCount >0){
+				str+='<td>'+result[i].completedCount+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			if(result[i].completedPerc !=null && result[i].completedPerc >0){
+				str+='<td>'+result[i].completedPerc+'</td>';
+			}else{
+				str+='<td> - </td>';
+			}
+			 str+='</tr>';
+             rank=rank+1;			 
+			}
+			str+='</tbody>';
+			str+='</table>';
+	    $("#SelectedUserTypeDetailsDiv").html(str);
+		$("#committeeMemberDataTblId").dataTable({
+			"aaSorting": []
+		});
+		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
+		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
+	  }else{	
+	   if(result !=null && result.length >0){
+		str+='<ul class="list-inline slickPanelSliderCommittee">';
 		var rankVar =0;
-		
-		
 		for(var i in result){
 			rankVar =rankVar+1;
 			var locationNamevaraiable =result[i].locationName;
@@ -1013,28 +1063,27 @@
 					// instead of a settings object
 				  ]
 			});
-	}/* else{
-		$("#SelectedUserTypeDetailsDiv").html("No Data Available");
-	} */
-		
-		
 		getDirectChildActivityMemberCommitteeDetails(firstActivityMemberId,firstUserTypeId,firstUserMemberName,firstuserType,firstChildActivityMemberId);
 		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
 		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
+	}
+	}
+	/* else{
+		$("#SelectedUserTypeDetailsDiv").html("No Data Available");
+	} */
+	
 	}
 	
 	$(document).on("click",".childUserTypeCls",function(){
 		
 		if(!$(this).hasClass("active")){
-		
 			$("#directChildActivityMemberDiv").html('');
 			$("#topPoorPerformanceDiv").html('');
 			$("#topPoorLocationsDiv").html(''); 
 			var childUserTypeIdString = $(this).attr("attr_usertypeid");
-	
-			getSelectedChildUserTypeMembers(childUserTypeIdString);
+			var childUserType = $(this).attr("attr_userType");
+			 getSelectedChildUserTypeMembers(childUserTypeIdString,childUserType);
 		}else{
-		
 			$("#SelectedUserTypeDetailsDiv").html('');
 			$("#directChildActivityMemberDiv").html('');
 			$("#topPoorPerformanceDiv").html('');
@@ -1320,12 +1369,15 @@
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).attr("attr_id");  
 		//$(".showChildBlockAndTopPoorBlock").show();
-		
-		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		  getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		 }else{ 
+	     getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		 getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		 getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		}
 	})
-	
 	function buildgetDirectChildActivityMemberCommitteeDetails(result,selectedMemberName,selectedUserType,childActivityMemberId){
 		$("#"+childActivityMemberId).html('');
 		var str ='';
@@ -1427,17 +1479,25 @@
 		var selectedMemberName = $(this).attr("attr_selectedmembername");  
 		var selectedUserType = $(this).attr("attr_selectedusertype");  
 		var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
-		getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-		getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
-		getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		  getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		 }else{ 
+	     getDirectChildActivityMemberCommitteeDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		 getTopPoorPerformancecommittees(activityMemberId,selectedMemberName,selectedUserType);
+		 getTopPoorCommitteeLocations(activityMemberId,selectedMemberName,selectedUserType);
+		}
 	})
 	
 	$(document).on("click",".removeSelecUserType",function(){
 		 
-		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
-		 $("#"+removeSelected).remove();
-		 $("#topPoorPerformanceDiv").html('');
-		 $("#topPoorLocationsDiv").html('');
+		// var removeSelected = $(this).attr("attr_removeSelecUserType"); 
+		 //$("#"+removeSelected).remove();
+		 //$("#topPoorPerformanceDiv").html('');
+		// $("#topPoorLocationsDiv").html('');
+		  var removeSelected = $(this).attr("attr_removeSelecUserType"); 
+		 $("#"+removeSelected).html(' ');
+		 $("#"+removeSelected).closest('.showHideTr').hide();
 	});
 	
 	function buildgetTopPoorPerformancecommittees(result,selectedMemberName,selectedUserType){

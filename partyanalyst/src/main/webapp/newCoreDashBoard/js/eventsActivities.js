@@ -847,8 +847,13 @@ $(document).on("click",".allItsSubUserTypeClsForEvent",function(){
 		var selectedUserType = $(this).attr("attr_selectedusertype"); 	
 		var childActivityMemberId = $(this).attr("attr_id");  
 		var attrEventIdsString = $(this).attr("attr_event_idsString");
-		getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
-		getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+		 }else{
+	      getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+		}
+		
 });
 $(document).on("click",".subLevelEventMemberCls",function(){
 	$(this).next('tr.showHideTr').show(); 
@@ -858,8 +863,12 @@ $(document).on("click",".subLevelEventMemberCls",function(){
 	var selectedUserType = $(this).attr("attr_selectedusertype");  
 	var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id");  
 	var attrEventIdsString = $(this).attr("attr_event_idsString");
-	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
-	getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	}else{
+	      getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString);
+		  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	}
 });
  function getAllItsSubUserTypeIdsByParentUserTypeIdForEvent(attrEventIdsString){
 		 $("#allItsSubUserTypeIdsByParentUserTypeDivIdForEvent").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -966,6 +975,7 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 		$("#eventMemberDataTblId").dataTable({
 			"aaSorting": []
 		});
+	  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 	  }else{
 	  str+='<ul class="list-inline slickPanelSliderForEvent">';
 	  var rank=1; 
@@ -1051,10 +1061,10 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 				// settings: "unslick"
 				// instead of a settings object
 			  ]
-		});  
+		}); 
+     getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
+	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString);		
 	  }		
-	getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
-	getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"directChildMemberForEventDivId",attrEventIdsString);
  }
 function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,attrEventIdsString){
 	  $("#"+childActivityMemberId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
@@ -1077,7 +1087,10 @@ function getDirectChildTypeMembersForEvent(activityMemberId,userTypeId,selectedM
 		  if(result != null && result.length > 0){
 			  buildEventDirectChildDetailsRslt(result,selectedMemberName,selectedUserType,childActivityMemberId,userTypeId,attrEventIdsString)
 		  }else{
-		   $("#"+childActivityMemberId).html('NO DATA AVAILABLE');   
+		  // $("#"+childActivityMemberId).html('NO DATA AVAILABLE'); 
+           if(childActivityMemberId == "userTypeWiseChildDtlsTabId"){
+				$("#"+childActivityMemberId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
+			}		  
 		  }
 		});
  }
