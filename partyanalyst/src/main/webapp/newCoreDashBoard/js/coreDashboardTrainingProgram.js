@@ -1477,6 +1477,8 @@ function buildTrainingProgramRslt(result){
 			BGColor = BGColor - 0.2;
 			}
 			str+='</table>';
+	  }else{
+		  str+='No Data Available';
 	  }	  
 	  str+='</div>';
 	  
@@ -1513,9 +1515,11 @@ function buildTrainingProgramRslt(result){
 				break;
 			BGColor = BGColor - 0.2;
 			}
-				str+='</table>';
+			str+='</table>';
+			}else{
+			 str+='No Data Available';	
 			}
-	     str+='</div>';
+	        str+='</div>';
 																				
 	 $("#poorPerformancTrainingPrograLocationsDivId").html(str);	
 	 $('.progressCustom').tooltip()
