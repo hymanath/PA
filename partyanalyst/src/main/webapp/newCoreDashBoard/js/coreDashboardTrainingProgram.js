@@ -395,7 +395,7 @@ var globalUserWiseMemberRslt;
 						}
 					}
 				}
-		//if(result[i][j].totalAttenedCountPer!=0){
+		 if(result[i][0].totalAttenedCountPer!=0){
 			 $(function () {
 			$('#genSecTraining'+i).highcharts({
 				colors: ['#0066DC'],
@@ -478,11 +478,10 @@ var globalUserWiseMemberRslt;
 				}]
 			});
 		});
-		
-		/* }else{
+		}else{
 		$("#genSecTraining"+i).html("No Data Available");
 		$("#genSecTraining"+i).css("height","35px");
-		} */
+		} 
 	}
 	}else{
     $("#userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId").html('NO DATA AVAILABLE.');
@@ -516,19 +515,21 @@ var globalUserWiseMemberRslt;
 				var candidateNameArray = [];
 				var trainingProgramCountArray = [];
 				var countVar = 0;
-				var length = result[i].length - 1;
-				for(var j = length; j >= 0; j--){
-					candidateNameArray.push(result[i][j].name);
-					trainingProgramCountArray.push(result[i][j].totalAttenedCountPer);
-					countVar =countVar+1;
-					if (countVar === 5) {
-						break;
-					}
+				if(result[i] != null && result[i].length > 0){
+					var length = result[i].length - 1;
+					for(var j = length; j >= 0; j--){
+						candidateNameArray.push(result[i][j].name);
+						trainingProgramCountArray.push(result[i][j].totalAttenedCountPer);
+						countVar =countVar+1;
+						if (countVar === 5) {
+							break;
+						}
+					}	
 				}
 			//if( result[i][j].totalAttenedCountPer!=0){
-			var getWidth = $("#genSecTraining"+i).parent().width()+'px';
-				$("#genSecTraining"+i).width(getWidth);
-				$(function () {
+			//var getWidth = $("#genSecTraining"+i).parent().width()+'px';
+				//$("#genSecTraining"+i).width(getWidth);
+			$(function () {
 			   $('#genSecTraining'+i).highcharts({
 				colors: ['#0066DC'],
 				chart: {
@@ -569,7 +570,8 @@ var globalUserWiseMemberRslt;
 					}
 				},
 				tooltip: {
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>',
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+				shared: true,
 				valueSuffix: '%'
 				},
 				plotOptions: {

@@ -348,9 +348,7 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 					}
 				}
 			}
-			
-				
-			//if( result[i][j].inviteeAttendedCntPer !=0){
+		if(result[i][0].inviteeAttendedCntPer !=0){
 				$(function () {
 					 $("#eventsCountGraph"+i).highcharts({
 						 colors: ['#0066DC'],
@@ -422,12 +420,10 @@ function buildUserTypeWiseTotalInviteeAndInviteeAttendedCnt(result){
 					 
 					});
 				});
-			/* } else{
+			 } else{
 				$("#eventsCountGraph"+i).html("No Data Available");
 				$("#eventsCountGraph"+i).css("height","35px");
-					
-			}  */
-			
+			}  
 		}
 	}else{
 		$("#UserTypeWiseEventMemberDtslDivId").html("No Data Available");
@@ -513,7 +509,8 @@ function buildUserTypeWisePoorInviteeAttendedEventMemDtlsCnt(result){
 					}
 				},
 				tooltip: {
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>',
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+				shared: true,
 				valueSuffix: '%'
 				},
 				plotOptions: {
