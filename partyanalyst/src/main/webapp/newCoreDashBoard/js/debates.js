@@ -953,7 +953,7 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
 		
 			str+= '<div class="table-responsive">';
-			str+= '<table class="table table-bordered table-condensed">';
+			str+= '<table class="table table-bordered table-condensed debateFirstBlockCls">';
 				str+= '<thead style="background:#ccc">';
 				if(type =="candidate"){
 					str+='<th>Candidate Name</th>';
@@ -979,10 +979,10 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 									if(result[i].candidateName !=null && result[i].candidateName.length>0)
 										candiName=getTitleContent(result[i].candidateName,30);
 							}		
-					if(type =="candidate"){
-						str+='<td>'+candiName.toUpperCase()+'</td>';
-					}							
-							str+='<td class="debateDetailsCls pointer" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
+						if(type =="candidate"){
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+candiName.toUpperCase()+'</a></td>';
+						}							
+							str+='<td class="debateDetailsCls" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
 							str+='<td>'+result[i].startTime+'</td>';
 							str+='<td>'+result[i].endTime+'</td>';
 							str+='<td>'+result[i].observerName+'</td>';
@@ -998,6 +998,10 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 			str+= '</div>';
 			
 			$("#debateModelId").html(str);
+			$('.debateFirstBlockCls').dataTable({
+				"iDisplayLength": 15,
+				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			 });
 		}
 		
 	});	
