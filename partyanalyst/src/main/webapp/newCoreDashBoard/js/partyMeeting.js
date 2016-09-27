@@ -303,7 +303,7 @@ $(document).on("click",".selectAll",function(){
 						}
 					}
 				}
-		//if(result[i][j].conductedAndMayBeMeetingPer!=0){
+		if(result[i][0].conductedAndMayBeMeetingPer!=0){
 				var getWidth = $("#genSecMeeting"+i).parent().width()+'px';
 				$("#genSecMeeting"+i).width(getWidth);
 		     $(function () {
@@ -387,11 +387,10 @@ $(document).on("click",".selectAll",function(){
 				}]
 			});
 		});
-		
-		/* }else{
+		}else{
 		$("#genSecMeeting"+i).html("No Data Available");
 		$("#genSecMeeting"+i).css("height","35px");
-		} */
+		} 
 	}
 	}else{
     $("#userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId").html('NO DATA AVAILABLE.');
@@ -424,14 +423,16 @@ $(document).on("click",".selectAll",function(){
 				var candidateNameArray = [];
 				var meetingCounductedAndMayBePerArray = [];
 				var countVar = 0;
-				var length = result[i].length - 1;
-				for(var j = length; j >= 0; j--){
-					candidateNameArray.push(result[i][j].name);
-					meetingCounductedAndMayBePerArray.push(result[i][j].conductedAndMayBeMeetingPer);
-					countVar =countVar+1;
-					if (countVar === 5) {
-						break;
-					}
+				if(result[i] != null && result[i].length > 0){
+					var length = result[i].length - 1;
+					for(var j = length; j >= 0; j--){
+						candidateNameArray.push(result[i][j].name);
+						meetingCounductedAndMayBePerArray.push(result[i][j].conductedAndMayBeMeetingPer);
+						countVar =countVar+1;
+						if (countVar === 5) {
+							break;
+						}
+					}	
 				}
 			//if( result[i][j].conductedAndMayBeMeetingPer!=0){
 			var getWidth = $("#genSecMeeting"+i).parent().width()+'px';
