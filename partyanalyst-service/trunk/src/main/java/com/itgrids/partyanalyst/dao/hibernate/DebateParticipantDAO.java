@@ -494,11 +494,20 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 				return query.list();
 	}
 	
-	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state){
+	public List<Object[]> getPartyWiseDebates(List<Long> partyIds,Date startDate,Date endDate,String state,String searchType){
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select DS.debate.debateId,DS.subject,model.debate.startTime,model.debate.endTime," +
+		str.append("select ");
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
+			str.append(" '','',");
+		}else if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
+		}else{
+			str.append(" model.candidate.candidateId,model.candidate.lastname, ");
+		}
+		
+		str.append("  DS.debate.debateId,model.debate.startTime,model.debate.endTime," +
 				" DOB.observer.observerId,DOB.observer.observerName,model.debate.channel.channelId,model.debate.channel.channelName " +
 				"  " +
 				"  FROM DebateParticipant model,DebateSubject DS,DebateObserver DOB " +
@@ -513,7 +522,13 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 			str.append(" and date(model.debate.startTime)  between :startDate and :endDate  ");
 		}
 		
-		str.append(" group by DS.debate.debateId ");
+		
+		if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("debate")){
+			str.append(" group by DS.debate.debateId ");
+		}else{
+			str.append(" group by model.candidate.candidateId ");
+		}
+		//str.append(" group by DS.debate.debateId ");
 		str.append(" order by model.debate.startTime desc ");
 		
 		Query query = getSession().createQuery(str.toString());

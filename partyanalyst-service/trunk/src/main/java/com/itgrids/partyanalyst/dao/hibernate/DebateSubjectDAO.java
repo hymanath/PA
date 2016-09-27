@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -161,6 +162,16 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		return getHibernateTemplate().find("select distinct model.debate.debateId,model.subject,model.debate.startTime from DebateSubject model " +
 				" where model.subject like   '%"+searchString+"%'" );
 			
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDebateSubjectDetailsOfList(Set<Long> debateIds)
+	{
+		
+		Query query = getSession().createQuery("select  model.debate.debateId,model.debateSubjectId,model.subject from DebateSubject model  " +
+				" where model.debate.debateId in (:debateIds) ");
+		
+		query.setParameterList("debateIds", debateIds);
+		return query.list();
 	}
 
 }
