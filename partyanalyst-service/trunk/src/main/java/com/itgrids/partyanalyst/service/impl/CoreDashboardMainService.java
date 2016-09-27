@@ -10,12 +10,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
@@ -27,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IDebateDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 import com.itgrids.partyanalyst.dao.IDebateRolesDAO;
+import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
@@ -81,6 +84,7 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	 private SetterAndGetterUtilService setterAndGetterUtilService;
 	 private IDebateDAO debateDAO;
+	 private IDebateSubjectDAO debateSubjectDAO;
 	 
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
@@ -175,6 +179,11 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	
 	public void setDebateDAO(IDebateDAO debateDAO) {
 		this.debateDAO = debateDAO;
+	}
+	
+	
+	public void setDebateSubjectDAO(IDebateSubjectDAO debateSubjectDAO) {
+		this.debateSubjectDAO = debateSubjectDAO;
 	}
 	/**
 	  * @param  Long userAccessLevelId
@@ -3956,7 +3965,7 @@ public String getLatestDebate(){
 	return time;		
 }
 
-public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr){
+public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String startDateStr,String endDateStr,String searchType){
 	
 	List<CoreDebateVO> finalList = new ArrayList<CoreDebateVO>();		
 	try{
@@ -3980,23 +3989,62 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 		
 		partyIds.add(partyId);
 		
-		//0.debateId,1.subject,2.startTime,3.endTime,4.debateObserverid,5.observer,6.channelId,7.channelName
-		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null);
+		Set<Long> debateIds = new LinkedHashSet<Long>(0);
+		Map<Long,CoreDebateVO> mainMap = new LinkedHashMap<Long, CoreDebateVO>(0);
+		//0.candidateId,1.candidateName,2.debateId,3.startTime,4.endTime,5.debateObserverid,6.observer,7.channelId,8.channelName
+		List<Object[]> listObj = debateParticipantDAO.getPartyWiseDebates(partyIds,startDate,endDate,null,searchType);
 		
 		if(listObj !=null && listObj.size()>0){			
 			for(Object[] obj:listObj){
 				CoreDebateVO VO = new CoreDebateVO();
-				VO.setId(obj[0] !=null ? (Long)obj[0]:0l);
-				VO.setName(obj[1] !=null ? obj[1].toString():"");				
-				VO.setStartTime(obj[2] !=null ? sdf1.format((Date)obj[2]):null);
-				VO.setEndTime(obj[3] !=null ? sdf1.format((Date)obj[3]):null);
-				VO.setCandidateId(obj[4] !=null ? (Long)obj[4]:0l);
-				VO.setCandidateName(obj[5] !=null ? obj[5].toString():"");
-				VO.setCharecterId(obj[6] !=null ? (Long)obj[6]:0l);
-				VO.setCharecterName(obj[7] !=null ? obj[7].toString():"");
+				
+				if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim().equalsIgnoreCase("candidate")){
+					VO.setCandidateId(obj[0] !=null ? (Long)obj[0]:0l);
+					VO.setCandidateName(obj[1] !=null ? obj[1].toString():"");
+				}
+				//VO.setName(obj[1] !=null ? obj[1].toString():"");				
+				VO.setId(obj[2] !=null ? (Long)obj[2]:0l);
+				VO.setStartTime(obj[3] !=null ? sdf1.format((Date)obj[3]):null);
+				VO.setEndTime(obj[4] !=null ? sdf1.format((Date)obj[4]):null);
+				VO.setObserverId(obj[5] !=null ? (Long)obj[5]:0l);
+				VO.setObserverName(obj[6] !=null ? obj[6].toString():"");
+				VO.setCharecterId(obj[7] !=null ? (Long)obj[7]:0l);
+				VO.setCharecterName(obj[8] !=null ? obj[8].toString():"");
+				debateIds.add(VO.getId());
+				//mainMap.put(VO.getId(), VO);
 				finalList.add(VO);
 			}	
 		}
+		
+		// here we are getting the main subjet of the debeate
+		Map<Long,List<String>> subjectsMap = new HashMap<Long, List<String>>();
+		
+		if(debateIds !=null && debateIds.size()>0){
+			List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetailsOfList(debateIds);			
+			//List<String> debateSubject = new ArrayList<String>(0);
+			if(subjectsList != null && subjectsList.size() > 0)
+			{
+				for(Object[] obj:subjectsList){										
+					List<String> subject = subjectsMap.get((Long)obj[0]);					
+					if(subject == null){
+						subject = new ArrayList<String>();
+						subjectsMap.put((Long)obj[0], subject);
+					}
+					subject.add(obj[2] !=null ? obj[2].toString():"");				
+				}
+			}
+			
+			for(CoreDebateVO VO:finalList){				
+				List<String> subjects = subjectsMap.get(VO.getId());
+				if(subjects !=null){
+					VO.setDebateSubject(subjects);
+				}				
+			}
+			
+		}
+		
+		
+		
 		
 		
 	}catch(Exception e){
