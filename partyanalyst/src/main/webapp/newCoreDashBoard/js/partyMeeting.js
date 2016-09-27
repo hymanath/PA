@@ -1101,7 +1101,8 @@ function getAllItsSubUserTypeIdsByParentUserTypeIdForMeeting(){
 			 str+='</table>';
 	     $("#childActivityMemberDivIdForMeeting").html(str);
 		  $("#meetingMemberDtlsDataTblId").dataTable({
-			"aaSorting": []
+			"aaSorting": [],
+			"iDisplayLength" : 5
 		   });
 	 getTopPoorMeetingLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
 	  }else{
