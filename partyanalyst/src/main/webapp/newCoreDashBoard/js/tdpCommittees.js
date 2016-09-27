@@ -946,11 +946,12 @@
 			str+='</table>';
 	    $("#SelectedUserTypeDetailsDiv").html(str);
 		$("#committeeMemberDataTblId").dataTable({
-			"aaSorting": []
+			"aaSorting": [],
+			"iDisplayLength" : 5	
 		});
 		getTopPoorPerformancecommittees(firstActivityMemberId,firstUserMemberName,firstuserType);
 		getTopPoorCommitteeLocations(firstActivityMemberId,firstUserMemberName,firstuserType);
-	  }else{	
+	 }else{	
 	   if(result !=null && result.length >0){
 		str+='<ul class="list-inline slickPanelSliderCommittee">';
 		var rankVar =0;
@@ -1238,7 +1239,7 @@
 						}
 					}
 				}
-					
+			  		
 				if( result[i][j].completedPerc !=0){
 					var str='';
 					
@@ -1496,7 +1497,7 @@
 		 //$("#topPoorPerformanceDiv").html('');
 		// $("#topPoorLocationsDiv").html('');
 		  var removeSelected = $(this).attr("attr_removeSelecUserType"); 
-		 $("#"+removeSelected).html(' ');
+		  $("#"+removeSelected).html(' ');
 		 $("#"+removeSelected).closest('.showHideTr').hide();
 	});
 	
