@@ -95,11 +95,11 @@ function buildPartyWiseTotalDebateDetails(result)
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total debates</p>';
-							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+'>'+result[i].debateCount+'</a></h4>';
+							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="debate">'+result[i].debateCount+'</a></h4>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital">total spokes persons</p>';
-							str+='<h4>'+result[i].candidateCount+'</h4>';
+							str+='<h4><a href="#" class="partyWiseDebateCls" attr_partyId='+result[i].id+' attr_type="candidate">'+result[i].candidateCount+'</a></h4>';
 						str+='</td>';
 						str+='<td>';
 						if(result[i].scalePerc !=null){
@@ -930,14 +930,17 @@ function getLatestDebate(){
 
 $(document).on("click",".partyWiseDebateCls",function(){
 	$("#debateModelDivId").modal("show");
-	partyId = $(this).attr("attr_partyId");
-	getCoreDebateBasicDetailsOfParty(partyId);
+	var partyId = $(this).attr("attr_partyId");
+	var type = $(this).attr("attr_type");
+	getCoreDebateBasicDetailsOfParty(partyId,type);
 });
-function getCoreDebateBasicDetailsOfParty(partyId){
+function getCoreDebateBasicDetailsOfParty(partyId,type){
+	$("#debateModelId").html("");
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
-		endDate:customEndDate
+		endDate:customEndDate,
+		searchType:type
 	}		
 	$.ajax({
 	 type: "POST",
@@ -952,6 +955,9 @@ function getCoreDebateBasicDetailsOfParty(partyId){
 			str+= '<div class="table-responsive">';
 			str+= '<table class="table table-bordered table-condensed">';
 				str+= '<thead style="background:#ccc">';
+				if(type =="candidate"){
+					str+='<th>Candidate Name</th>';
+				}
 					str+='<th>Subject</th>';
 					str+='<th>Debate StartTime</th>';
 					str+='<th>Debate EndTime</th>';
@@ -962,14 +968,24 @@ function getCoreDebateBasicDetailsOfParty(partyId){
 				str+= '<tbody>';					
 					for(var i in result){
 						str+='<tr>';
+							var name='';
 							var subject='';
-							if(result[i].name !=null && result[i].name.length>0){
-								subject=getTitleContent(result[i].name,30);
-							}						
+							var candiName='';
+							if(result[i].debateSubject !=null && result[i].debateSubject.length>0){
+								for(var j in result[i].debateSubject){
+										name=name.concat(result[i].debateSubject);
+								}
+									subject=getTitleContent(name,30);
+									if(result[i].candidateName !=null && result[i].candidateName.length>0)
+										candiName=getTitleContent(result[i].candidateName,30);
+							}		
+					if(type =="candidate"){
+						str+='<td>'+candiName.toUpperCase()+'</td>';
+					}							
 							str+='<td class="debateDetailsCls pointer" attr_debateId='+result[i].id+' style="cursor:pointer;"><a>'+subject+'</a></td>';
 							str+='<td>'+result[i].startTime+'</td>';
 							str+='<td>'+result[i].endTime+'</td>';
-							str+='<td>'+result[i].candidateName+'</td>';
+							str+='<td>'+result[i].observerName+'</td>';
 							str+='<td>'+result[i].charecterName+'</td>';
 						str+='</tr>';						
 					}
