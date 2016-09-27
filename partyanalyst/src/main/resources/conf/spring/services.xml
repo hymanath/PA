@@ -3447,7 +3447,8 @@
 	  <property name="partyDAO"  ref="partyDAO"></property>
 	  <property name="setterAndGetterUtilService"  ref="setterAndGetterUtilService"></property>
 	  <property name="debateDAO"  ref="debateDAO"></property>
-	
+	  <property name="debateSubjectDAO"  ref="debateSubjectDAO"></property>
+	  
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">

@@ -2118,7 +2118,7 @@ public String getCoreDebateBasicDetailsOfParty(){
 	try{
 		jObj = new JSONObject(getTask()); 
 		
-		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"));
+		codeDebateVoList = coreDashboardMainService.getCoreDebateBasicDetailsOfParty(jObj.getLong("partyId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("searchType"));
 		
 	}catch(Exception e){
 		LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
