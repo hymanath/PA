@@ -2049,5 +2049,36 @@ public Long getIsApplicationShortlistedOrNot(Long memberId,Long candId){
 	
 	return (Long)query.uniqueResult();
 }
+ public List<Object[]> getLinkedPositions(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId){
+	 StringBuilder queryStr = new StringBuilder();
+	 
+	 queryStr.append(" select model.nominatedPostMember.nominatedPostPosition.position.positionId , model.nominatedPostApplication.nominatedPostApplicationId  from NominatedPostFinal model " +
+	 		" where " );
+	 if(departmentId != null && departmentId.longValue() > 0l){
+		 queryStr.append(" model.nominatedPostMember.nominatedPostPosition.departments.departmentId = :departmentId " );
+	 }else{
+		 queryStr.append(" model.nominatedPostApplication.departments.departmentId is null ");
+	 }
+	 if(boardId != null && boardId.longValue() > 0l){
+	 		queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.board.boardId = :boardId " );
+	 }else{
+		 queryStr.append(" and model.nominatedPostApplication.board.boardId is null  " ); 
+	 }
+	 		queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId = :boardLevelId and " +
+	 		" model.nominationPostCandidate.nominationPostCandidateId = :nominatedPostCandId " +
+	 		" and model.nominatedPostMember.locationValue = :searchLevelValue and model.isDeleted = 'N' ");
+	 
+	 Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("boardLevelId", boardLevelId);
+		query.setParameter("searchLevelValue", searchLevelValue);
+		 if(departmentId != null && departmentId.longValue() > 0l){
+		query.setParameter("departmentId", departmentId);
+		 }
+		 if(boardId != null && boardId.longValue() > 0l){
+		query.setParameter("boardId", boardId);
+		 }
+		query.setParameter("nominatedPostCandId", nominatedPostCandId);
+	    return query.list();
+ }
 
 }

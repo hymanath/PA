@@ -63,4 +63,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public List<Object[]> getApplicationDataByApplctnIds(List<Long> applicationIds);
 	 public List<Object[]> getUpdatedPositionsForCandidate(List<Long> applicationIds);
 	 public Long getIsApplicationShortlistedOrNot(Long applicationId,Long candId);
+	 public List<Object[]> getLinkedPositions(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);
 }
