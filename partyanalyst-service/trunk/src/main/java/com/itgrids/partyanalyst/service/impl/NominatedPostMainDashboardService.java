@@ -183,7 +183,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	
 		List<CastePositionVO> resultList = new ArrayList<CastePositionVO>();
 		try{
-			List<Object[]> casteList = nominatedPostFinalDAO.getCandidateCasteList(LocationLevelId,stateId);
+			List<Object[]> casteList = nominatedPostFinalDAO.getCandidateCasteList(LocationLevelId,stateId,positionId);
 			List<Object[]> positionList = positionDAO.getAllPositions();
 			if(casteList != null && casteList.size() > 0)
 			{
@@ -193,7 +193,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 					castePositionVO = new CastePositionVO();
 					castePositionVO.setCasteId(commonMethodsUtilService.getLongValueForObject(params[0]));
 					castePositionVO.setCasteName(commonMethodsUtilService.getStringValueForObject(params[1]));
-					castePositionVO.setPositionList(getDefaultPositionList(positionList));
+					castePositionVO.setPositionList(getDefaultPositionList(positionList,positionId));
 					resultList.add(castePositionVO);
 				}
 			}
@@ -246,7 +246,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 		}
 		return null;
 	}
-	public List<CastePositionVO> getDefaultPositionList(List<Object[]> positionList){
+	public List<CastePositionVO> getDefaultPositionList(List<Object[]> positionList,Long positionId){
 		List<CastePositionVO> positionDefaultList = new ArrayList<CastePositionVO>(0);
 		
 		if(positionList != null && positionList.size() > 0)
@@ -257,7 +257,12 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 				postionVO = new CastePositionVO();
 				postionVO.setPositionId(commonMethodsUtilService.getLongValueForObject(params[0]));
 				postionVO.setPositionName(commonMethodsUtilService.getStringValueForObject(params[1]));
-				positionDefaultList.add(postionVO);
+				if(positionId != null && positionId.longValue()>0L){
+					if(positionId.longValue() == postionVO.getPositionId().longValue())
+						positionDefaultList.add(postionVO);
+				}
+				else
+					positionDefaultList.add(postionVO);
 			}
 		}
 		return positionDefaultList;
@@ -273,7 +278,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	public List<CastePositionVO> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId,Long stateId) {
 		List<CastePositionVO> resultList = new ArrayList<CastePositionVO>(0);
 		try{
-			 List<Object[]> rtrnObjCsteGrupList = nominatedPostFinalDAO.getCasteGroup(LocationLevelId,stateId);
+			 List<Object[]> rtrnObjCsteGrupList = nominatedPostFinalDAO.getCasteGroup(LocationLevelId,stateId,positionId);
 			List<Object[]> positionList = positionDAO.getAllPositions();
 			if(positionList != null && positionList.size() > 0)
 			{
@@ -284,7 +289,12 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 					castePositionVO.setPositionId((Long)params[0]);
 					castePositionVO.setPositionName(params[1].toString());
 					castePositionVO.setCasteList(getdefaultCasteGroupList(rtrnObjCsteGrupList));
-					resultList.add(castePositionVO);
+					if(positionId != null && positionId.longValue()>0L){
+						if(positionId.longValue() == castePositionVO.getPositionId().longValue())
+							resultList.add(castePositionVO);
+					}
+					else
+						resultList.add(castePositionVO);
 				}
 			}
 			 if(LocationLevelId.longValue()==5){
