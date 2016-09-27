@@ -4030,7 +4030,7 @@ public List<CoreDebateVO> getCoreDebateBasicDetailsOfParty(Long partyId,String s
 						subject = new ArrayList<String>();
 						subjectsMap.put((Long)obj[0], subject);
 					}
-					subject.add(obj[2] !=null ? obj[2].toString():"");				
+					subject.add(obj[2] !=null ? StringEscapeUtils.unescapeJava(obj[2].toString()):"");				
 				}
 			}
 			
