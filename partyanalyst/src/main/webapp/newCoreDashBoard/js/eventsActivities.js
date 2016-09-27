@@ -970,7 +970,8 @@ function getSelectedChildTypeMembersForEvent(firstChildUserTypeIdString,attrEven
 			 str+='</table>';
 	    $("#childEvnetMemberDivId").html(str);
 		$("#eventMemberDataTblId").dataTable({
-			"aaSorting": []
+			"aaSorting": [],
+			"iDisplayLength" : 5	
 		});
 	  getEventPoorPerformanceLocation(userTypeId,activityMemberId,selectedMemberName,selectedUserType,attrEventIdsString);
 	  }else{

@@ -385,7 +385,7 @@ var globalUserWiseMemberRslt;
 				var candidateNameArray = [];
 				var trainingProgramCountArray = [];
 				var countVar =0;
-			  if(result[i] !=null && result[i].length>0){
+			 if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 						countVar =countVar+1;
 						candidateNameArray.push(result[i][j].name);
@@ -394,7 +394,7 @@ var globalUserWiseMemberRslt;
 							break;
 						}
 					}
-				}
+			}
 		 if(result[i][0].totalAttenedCountPer!=0){
 			 $(function () {
 			$('#genSecTraining'+i).highcharts({
@@ -1045,7 +1045,8 @@ function buildgetChildUserTypesByItsParentUserTypeForTrainingProgram(result){
 			 str+='</table>';
 	    $("#childActivityMemberDivId").html(str);
 		$("#trainingMembersDtlsDataTblId").dataTable({
-			"aaSorting": []
+			"aaSorting": [],
+			"iDisplayLength" : 5	
 		});
 	  getTrainingProgramPoorCompletedLocationDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
 	  }else{
