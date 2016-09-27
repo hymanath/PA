@@ -945,6 +945,9 @@ if(statusId == 3 || statusId == 0){
 			$("#successDivAnyId"+num).html("  <b style='color: red;' > Comment is required.</b>");
 			return;
 	}
+	
+	savingAnyPostCandidatesToPosition(applicationId,candidateId,levelId,levelVal,deptId,boardId,positionId,statusId,comment,num);
+	return;
 }
 	
 	$("#successDivAnyId"+num).html('<img id="" src="images/icons/loading.gif" style="width:15px;"/>');
@@ -952,31 +955,29 @@ if(statusId == 3 || statusId == 0){
 	
 	var jsObj=
 	   {	
-		applicationId : applicationId,
-		candidateId : candidateId,
+		nominatePostApplicationId:applicationId,
 		levelId : levelId,
 		levelVal : levelVal,
 		deptId : deptId,
 		boardId : boardId,
 		positionId : positionId,
-		statusId : statusId,
-		comment : comment
+		candidateId : candidateId
 		}
     $.ajax({
           type:'GET',
-          url: 'savingAnyPostCandidatesToPositionAction.action',
+          url: 'isApplicationAlreadyShortlistedAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
 	   $("#successDivAnyId"+num).html('');
-	  // $('#'+butonId+'').show();
-		if(result != null && result == 'success')
-			$("#successDivAnyId"+num).html(" <b>Successfully Updated... </b>");
-		else
-			$("#successDivAnyId"+num).html(" <b>Sorry,Exception Occured...Please try again...</b>");
-		
-		  // window.location.reload();
-		   setTimeout(function(){getBoardWiseNominatedPostMemberDetails();getNominatedPostPostionDetails();}, 1000);
+	  if(result == "Shortlisted"){
+			$('#'+butonId+'').show();
+			$("#successDivAnyId"+num).html("Already shortlisted for this Candidate").css("color","red");
+		}else{
+			$('#'+butonId+'').hide();
+			savingAnyPostCandidatesToPosition(applicationId,candidateId,levelId,levelVal,deptId,boardId,
+			positionId,statusId,comment,num);
+		}
    });
 });
 
@@ -1245,6 +1246,37 @@ function tableResponsive()
 			$("#"+divId).html("Sorry,Exception Occured...Please try again...").css("color","red"); 
    });
 	}
+	
+	function savingAnyPostCandidatesToPosition(applicationId,candidateId,levelId,levelVal,deptId,boardId,positionId,statusId,comment,num){
+var jsObj=
+	   {	
+		applicationId : applicationId,
+		candidateId : candidateId,
+		levelId : levelId,
+		levelVal : levelVal,
+		deptId : deptId,
+		boardId : boardId,
+		positionId : positionId,
+		statusId : statusId,
+		comment : comment
+		}
+    $.ajax({
+          type:'GET',
+          url: 'savingAnyPostCandidatesToPositionAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   $("#successDivAnyId"+num).html('');
+	  // $('#'+butonId+'').show();
+		if(result != null && result == 'success')
+			$("#successDivAnyId"+num).html(" <b>Successfully Updated... </b>");
+		else
+			$("#successDivAnyId"+num).html(" <b>Sorry,Exception Occured...Please try again...</b>");
+		
+		  // window.location.reload();
+		   setTimeout(function(){getBoardWiseNominatedPostMemberDetails();getNominatedPostPostionDetails();}, 1000);
+   });
+   }
 </script>
 </body>
 </html>
