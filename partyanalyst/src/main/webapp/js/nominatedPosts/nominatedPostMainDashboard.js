@@ -1,31 +1,33 @@
  var globalStateId=1;	 
    $(document).on("click","#myonoffswitch",function(){
+	   $("#chartdiv").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 		if($(this).prop('checked')){
 		globalStateId =1;
-		getLocationWiseCastePositionCount("overall",2,globalStateId);
+		getLocationWiseCastePositionCount("overall",2,globalStateId,postionId);
 		getLocationWiseCasteGroupPositionCount("overallCasteGroup",2,globalStateId);
 		getPositionAndApplicationDetailsCntPositionWise(0,2,"position",globalStateId);
 		getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
-		getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
-        getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
+		//getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
+      //  getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
 	    getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
 	    getCasteWiseCountsByPosition(0,0,0,2,0,0,globalStateId);
 		$( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
 		}else{
 		globalStateId = 36;
-		getLocationWiseCastePositionCount("overall",2,globalStateId);
+		getLocationWiseCastePositionCount("overall",2,globalStateId,postionId);
 		getLocationWiseCasteGroupPositionCount("overallCasteGroup",2,globalStateId);
 		getPositionAndApplicationDetailsCntPositionWise(0,2,"position",globalStateId);
 		getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
-		getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
-        getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
+		//getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
+        //getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
 	    getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
 	    getCasteWiseCountsByPosition(0,0,0,2,0,0,globalStateId);
 		$( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
 		}
 	});
 $(document).ready(function(){
-	getLocationWiseCastePositionCount("overall",2,globalStateId);
+	$("#chartdiv").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	getLocationWiseCastePositionCount("overall",2,globalStateId,postionId);
     getLocationWiseCasteGroupPositionCount("overallCasteGroup",2,globalStateId);
 	getPositionAndApplicationDetailsCntPositionWise(0,2,"position",globalStateId);
 	getPositionAndApplicationDetailsCntLocationWise(0,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
@@ -35,15 +37,15 @@ $(document).ready(function(){
 	getLocationLevelList();
 	getDepartmentList(2);   
 	getBoardList(0);
-	getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
-    getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
+	//getNominatedCandidateGroupByDistrict(0,2,0,0,0,0,"state");
+    //getOverAllTotalCountsByPosition(0,2,0,0,0,0,globalStateId);
 	getCasteGroupWiseCountsByPosition(0,2,0,0,0,0,globalStateId);
 	getCasteWiseCountsByPosition(0,0,0,2,0,0,globalStateId);
 });
 $(document).on("click",".castePositionCls",function(){
 	var hrefId = $(this).attr("attr_href_id");
 	var levelId = $(this).attr("attr_level_value");
-	getLocationWiseCastePositionCount(hrefId,levelId,globalStateId);
+	getLocationWiseCastePositionCount(hrefId,levelId,globalStateId,postionId);
 });
 $(document).on("click",".casteGroupCls",function(){
 	var hrefId = $(this).attr("attr_href_id");
@@ -51,11 +53,12 @@ $(document).on("click",".casteGroupCls",function(){
 	getLocationWiseCasteGroupPositionCount(hrefId,levelId,globalStateId);
 });
  
- function getLocationWiseCastePositionCount(hrefId,levelId,stateId){
-   $("#castePostionDivId").html(' ');
+ function getLocationWiseCastePositionCount(hrefId,levelId,stateId,postionId){
+	
+    $("#castePostionDivId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
   var jsObj={
         LocationLevelId : levelId,
-		positionId      : 0,
+		positionId      : postionId,
 		stateId         : stateId
       }
       $.ajax({
@@ -64,10 +67,11 @@ $(document).on("click",".casteGroupCls",function(){
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
+		  //alert(12345);
 		  if(result != null && result.length > 0){
 			  buildCasteWisePositionRslt(result,hrefId);   
 		  }else{
-			 $("#castePostionDivId").html("NO DATA AVAILABLE"); 
+			 $("#castePostionDivId").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>"); 
 		  }
     });
  }
@@ -113,10 +117,10 @@ $(document).on("click",".casteGroupCls",function(){
 
  function getLocationWiseCasteGroupPositionCount(hrefId,LocationLevelId,stateId){
 	 
-	 $("#casteGroupPostionDivId").html(' ');
+	 $("#casteGroupPostionDivId").html(' <img style="margin-left: 255px;height:20px;widht:20px;" src="images/icons/loading.gif">');
   var jsObj={
         LocationLevelId : LocationLevelId,
-		positionId      : 0,
+		positionId      : postionId,
 		stateId         : stateId
       }
       $.ajax({
@@ -128,14 +132,14 @@ $(document).on("click",".casteGroupCls",function(){
 		  if(result != null && result.length > 0){
 			  buildCasteGroupWisePositionRslt(result,hrefId);
 		  }else{
-		      $("#casteGroupPostionDivId").html("NO DATA AVAILABLE");			  
+		      $("#casteGroupPostionDivId").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>");			  
 		  }
     });	
  }
  function buildCasteGroupWisePositionRslt(result,hrefId){
 	 var str='';
       if(result[0].casteList.length==0){
-		str+='No DATA AVAILABLE'; 
+		str+='<span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span>'; 
 		$("#casteGroupPostionDivId").html(str);
 		return;
 	 }
@@ -332,8 +336,13 @@ $(document).on("click",".casteGroupCls",function(){
 	} 
 	
 	function getOverAllTotalCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId,stateId){
-		$("#totalCasteId").html(" ");
-		$("#totalAgeWiseId").html(" ");
+		$("#totalCasteId").html("  <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+		$("#totalAgeWiseId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'> ");
+		
+		$("#totalFemaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+		$("#totalMaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	    $("#totalMaleFemaleId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+		
 		var jsObj={
 		positionId  : positionId,
 		levelId     : levelId,
@@ -352,8 +361,8 @@ $(document).on("click",".casteGroupCls",function(){
 			if(result !=null){
 				buildOverAllTotalCountsByPosition(result);
 			}else{
-				$("#totalCasteId").html('<p>No Data Available</p>');
-				$("#totalAgeWiseId").html('<p>No Data Available</p>');
+				$("#totalCasteId").html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
+				$("#totalAgeWiseId").html("<p>No Data Available</p>");
 			}
 		});
 	}
@@ -419,9 +428,9 @@ function buildOverAllTotalCountsByPosition(result){
 	
 	
 	function getCasteGroupWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId,stateId){
-		$("#casteAndAgeWiseId").html(" ");
-		$("#casteGroup").html(" ");
-		$("#casteGrpDivId").hide();
+		$("#casteAndAgeWiseId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+		$("#casteGroup").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'> ");
+		//$("#casteGrpDivId").hide();
 		var jsObj={
 		positionId  : positionId,
 		levelId     : levelId,
@@ -442,8 +451,8 @@ function buildOverAllTotalCountsByPosition(result){
 				buildCasteGroupWiseCountsByPosition(result);
 				buildCasteGroupWiseChart(result);
 			}else{
-				$("#casteAndAgeWiseId").html('<p>No Data Available</p>');
-				$('#casteGroup').html('<p>No Data Available</p>');
+				$("#casteAndAgeWiseId").html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
+				$('#casteGroup').html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
 			}
 		});
 	}
@@ -513,8 +522,8 @@ function buildOverAllTotalCountsByPosition(result){
 		}
 		
 	function getCasteWiseCountsByPosition(positionId,levelId,deptId,boardId,casteGroupId,applStatusId,stateId){
-		$("#casteNameWiseTotlaCntsId").html(" ");
-		$("#casteWisePositions").html(" ");
+		$("#casteNameWiseTotlaCntsId").html(" <img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+		$("#casteWisePositions").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'> ");
 		$("#casteGrpDivId").hide();
 		$("#casteNameWiseTotlaCntsId").hide();
 		var jsObj={
@@ -537,8 +546,8 @@ function buildOverAllTotalCountsByPosition(result){
 				buildCasteWiseCountsByPosition(result,positionId,levelId,deptId,boardId,casteGroupId,applStatusId);
 				buildCasteWiseCountsChart(result);
 			}else{
-				$("#casteNameWiseTotlaCntsId").html('<p>No Data Available</p>');
-				$('#casteWisePositions').html('<p>No Data Available</p>');
+				$("#casteNameWiseTotlaCntsId").html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
+				$('#casteWisePositions').html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
 			}
 		});
 	}
@@ -708,9 +717,9 @@ function casteWisePositionsCountsByPosition(innerTableId,positionId,levelId,dept
 function buildPositionTabMenu(result){
 	var str='';
 	 str+='<ul class="nav nav-tabs tabsCustomFinal ulCls" role="tablist">';
-     str+='<li role="presentation" attr_id="0" class="active postionliCls"><a href="#positionoverView" aria-controls="positionoverView" role="tab"  data-toggle="tab">Completed Overview</a></li>';
+     str+='<li role="presentation" attr_id="0" class="active postionliCls positinCls0"><a href="#positionoverView" aria-controls="positionoverView" role="tab"  data-toggle="tab">Completed Overview</a></li>';
 		for(var i in result){
-		  str+='<li attr_id="'+result[i].id+'" class="postionliCls" role="presentation"><a href="#positon'+i+'" aria-controls="positon'+i+'" role="tab" data-toggle="tab">'+result[i].name+'</li>';	
+		  str+='<li attr_id="'+result[i].id+'" class="postionliCls positinCls'+result[i].id+'" role="presentation"><a href="#positon'+i+'" aria-controls="positon'+i+'" role="tab" data-toggle="tab">'+result[i].name+'</li>';	
 		}
 	str+='</ul>';
 	$("#positonDivId").html(str);
@@ -718,7 +727,7 @@ function buildPositionTabMenu(result){
 function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLevelId,reportType,stateId){
   
   var jsObj={
-        locationLevelId : locationLevelId,
+        locationLevelId : globalLocationLevelId,
 		positionId      : positionId,
 		reportType      : reportType,
 		stateId         : stateId
@@ -730,24 +739,48 @@ function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLeve
          data: {task:JSON.stringify(jsObj)}      
       }).done(function(result){
 		     if(result != null){   
-			 if(reportType=="position"){
-			  buildPostionRslt(result); 
-		    }else if(reportType=="application"){
-			   buildApplicationOverviewRslt(result);   
-		    }  
+				 if(reportType=="position"){
+					 if(result.totalPostsCnt > 0)
+						buildPostionRslt(result); 
+					else
+						$("#chartdiv").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>");
+				}else if(reportType=="application"){
+					 if(result.totalAppReceivedCnt > 0)
+						buildApplicationOverviewRslt(result); 
+					else
+						$("#chartdiv").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>");				     
+				}  
 		   }
     });		
 }
 var postionId=0;
 $(document).on("click",".postionliCls",function(){
 	 postionId= $(this).attr("attr_id");
+	 $('.positinCls'+postionId+'').addClass('active');
+	
 	  $( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
-	 getPositionAndApplicationDetailsCntPositionWise(postionId,2,"position",globalStateId);
-     getPositionAndApplicationDetailsCntLocationWise(postionId,2,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
+	  $("#chartdiv").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	
+	$("#positionId").val(postionId);
+	$("#positionId").trigger("chosen:updated");
+	$('#statusDetailsId').trigger('click');
+	
+	 getPositionAndApplicationDetailsCntPositionWise(postionId,globalLocationLevelId,"position",globalStateId);
+     getPositionAndApplicationDetailsCntLocationWise(postionId,globalLocationLevelId,"","stateLevlId","collapseOne","sttLvlPstnHghChrtId","sttLvlApplctnHghChrtId",globalStateId);
+	 getLocationWiseCastePositionCount("overall",globalLocationLevelId,globalStateId,postionId);
+	 getLocationWiseCasteGroupPositionCount("overallCasteGroup",globalLocationLevelId,globalStateId);
+
+	//getCastGroupList();
+	//getApplicationStatusList();
+	
+	//getLocationLevelList();
+	//getDepartmentList(globalLocationLevelId);   
+	//getBoardList(0);
 });
 
 $(document).on("click",".overviewHrfCls",function(){
 	var reportType = $(this).attr("attr_report_type");
+	$("#chartdiv").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 	getPositionAndApplicationDetailsCntPositionWise(postionId,2,reportType,globalStateId);
 });
 function buildPostionRslt(result){
@@ -915,21 +948,57 @@ function buildAppOverviewHighCharts(josnDataArr,jsonLevelArr){
   }
 });
 }
+var globalLocationLevelId = 2;
 $(document).on("click",".locationLevelcollapseCls",function(){
 	     $("#collapseOne").collapse('hide');
 		  $("#collapseTwo").collapse('hide');
 		  $("#collapseThree").collapse('hide');
 		  $("#collapseFour").collapse('hide');
 		  $(this).collapse('show');
+		  
 	var  collapseLevelId = $(this).attr("attr_collapse_level_Id");
 	var collapseHrefId = $(this).attr("attr_collapse_href_id");
 	var locationLevelId = $(this).attr("attr_level_Id");
 	var postionHighChartId = $(this).attr("attr_postion_highChart_id");
 	var appHighChartId = $(this).attr("attr_app_highChart_id");
-	 getPositionAndApplicationDetailsCntLocationWise(postionId,locationLevelId," ",collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,globalStateId);
+	 
+	$('.statusSCls').removeClass('active');
+	$('#postsTabId').addClass('active');
+	$("#chartdiv").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	
+	globalLocationLevelId = locationLevelId;
+	getPositionAndApplicationDetailsCntLocationWise(postionId,locationLevelId," ",collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,globalStateId);
+	
+	getLocationWiseCastePositionCount("overall",locationLevelId,globalStateId,postionId);
+    getLocationWiseCasteGroupPositionCount("overallCasteGroup",locationLevelId,globalStateId);
+	getPositionAndApplicationDetailsCntPositionWise(postionId,locationLevelId,"position",globalStateId);
+	getCastGroupList();
+	//getApplicationStatusList();
+	getPositionList();
+	//getLocationLevelList();
+	getDepartmentList(locationLevelId);   
+	getBoardList(0);
+	//getNominatedCandidateGroupByDistrict(postionId,locationLevelId,0,0,0,0,"state");
+    getOverAllTotalCountsByPosition(postionId,locationLevelId,0,0,0,0,globalStateId);
+	getCasteGroupWiseCountsByPosition(postionId,locationLevelId,0,0,0,0,globalStateId);
+	getCasteWiseCountsByPosition(postionId,0,0,locationLevelId,0,0,globalStateId);
 	
 });
 function getPositionAndApplicationDetailsCntLocationWise(positionId,locationLevelId,reportType,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,stateId){
+	if(locationLevelId==2){
+	   $(".stateBodyDivCls").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	   $('#locationLevelId').val(2);
+	}else if(locationLevelId == 3){
+	 $(".districtBodyDivCls").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	 $('#locationLevelId').val(3);
+	}else if(locationLevelId == 4){
+	  $(".constituencyBodyDivCls").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	  $('#locationLevelId').val(4);
+	}else if(locationLevelId == 5){
+	  $(".manMunCorBodyDivCls").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	  $('#locationLevelId').val(5);
+	}
+	$("#locationLevelId").trigger("chosen:updated");
   var jsObj={
         locationLevelId : locationLevelId,
 		positionId      : positionId,
@@ -942,6 +1011,7 @@ function getPositionAndApplicationDetailsCntLocationWise(positionId,locationLeve
          dataType: 'json',
          data: {task:JSON.stringify(jsObj)}
       }).done(function(result){
+		  $('#statusDetailsId').trigger('click');
 		  if(result!=null){
 			  buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId);
 		  }
@@ -1154,6 +1224,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 	});  
 	
 	function getNominatedCandidateGroupByDistrict(positionId, locationLevelId, deptId, corporationId, castGroupId, positionStatusId, locationLevelName){
+		$("#statePositionId").html("<img style='margin-left: 85px;' src='images/icons/loading.gif'>");
 		var positionId = positionId;
 		var locationLevelId = locationLevelId;
 		var deptId = deptId;
@@ -1172,7 +1243,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			locationLevelName : locationLevelName,
 			stateId : stateId   
 		} 
-		console.log(jsObj);    
+		//console.log(jsObj);    
 		$.ajax({
 			type:'GET',
 			url:'getNominatedCandidateGroupByDistAction.action',  
@@ -1182,7 +1253,7 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 			if(result != null && result.length > 0){  
 				buildStatePositionCluntTable(result,positionId,locationLevelId,deptId,corporationId,castGroupId,positionStatusId,stateId,locationLevelName);
 			}else{
-				$("#statePositionId").html("No Data Available");
+				$("#statePositionId").html("<span style='padding:15px;font-weight:bold;'>NO DATA AVAILABLE</span>");
 			}
 		}); 
 	} 
@@ -1239,6 +1310,11 @@ function buildAppHighChartsLocationWise(colorArr,jsonDataArr,appHighChartId){
 		var castegroupId = $(this).attr("attr_castGroup_id");
 		var positionStatusId = $(this).attr("attr_positionStatus_id");  
 		var locationLevelName = $(this).attr("attr_location_level_name");  
+		
+		$("#"+sectionId+"").show();
+		$("#"+sectionId+"").html("<img style='margin-left: 85px;widht:30px;height:30px;' src='images/icons/loading.gif'>");
+		
+		
 		if($(this).hasClass("glyphicon-minus"))
 		{
 			getPositionsForDistrict(sectionId,positionId,boardLevelId,deptId,boardId,castegroupId,positionStatusId,stateId,districtId,locationLevelName,"expand");    
@@ -1352,7 +1428,7 @@ function buildCasteGroupWiseChart(result){
         }]
     });
 	}else{
-		$('#casteGroup').html('<p>No Data Available</p>')
+		$('#casteGroup').html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>')
 	}	
 }
 function buildCasteWiseCountsChart(result){
@@ -1429,7 +1505,7 @@ function buildCasteWiseCountsChart(result){
         }]
     });
 	}else{
-		$('#casteWisePositions').html('<p>No Data Available</p>');
+		$('#casteWisePositions').html('<p><span style="padding:15px;font-weight:bold;">NO DATA AVAILABLE</span></p>');
 	}
 }
 	
