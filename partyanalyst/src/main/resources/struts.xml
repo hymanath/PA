@@ -13801,5 +13801,10 @@
 	  		<param name="root">codeDebateVoList</param>     
 	 	</result>
 	</action>
+	<action name="getTotalAttendedDebatesOfCadreNewAction" class="debateAction" method="getTotalAttendedDebatesOfCadreNew">
+		<result type="json" name="success">
+	  		<param name="root">debateId</param>     
+	 	</result>
+	</action>
 </package>
 </struts>

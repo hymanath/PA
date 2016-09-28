@@ -1675,15 +1675,14 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS; 
 	}
 	
-	/*public String debateUnicodeConvertion()
-	{
-		try{
-			debateService.convertDebateContentToUnicode();
-		}catch(Exception e)
-		{
-			LOG.error(e);
+	public String getTotalAttendedDebatesOfCadreNew(){
+		try{			
+			jObj = new JSONObject(getTask());			
+			debateId = debateService.getTotalAttendedDebatesOfCadreNew(jObj.getLong("tdpCadreId"));
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getPartyWiseStrongAndWeakTopicByCandidates() in DebateAction class. "+e);
 		}
 		return Action.SUCCESS; 
-	}*/
-
+	}
 }

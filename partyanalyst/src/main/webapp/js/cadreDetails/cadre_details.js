@@ -6881,10 +6881,12 @@ $(document).on("click","#mobileDetailsId",function(){
 });
 
 getDebateDetailsOfCadre();
+getDebateCount();
 function getDebateDetailsOfCadre(){
-	$("#debateCountId").html('');
-	$("#debateModelId").html('');	
-	$("#debateMainDivId").hide();
+//	$("#debateCountId").html('');
+	$("#debateModelId").html('');		
+	
+	$("#dataLoadingsImgForDebateModelId").show();
 	
 	var jsobj={
 		tdpCadreId : globalCadreId
@@ -6895,12 +6897,13 @@ function getDebateDetailsOfCadre(){
 		 data : {task:JSON.stringify(jsobj)} ,
 	}).done(function(result){
 		var str = '';
+		$("#dataLoadingsImgForDebateModelId").hide();
 		if(result !=null && result.length>0){
 			
-			$("#debateMainDivId").show();
+			//$("#debateMainDivId").show();
 			
 			//Count setting
-			$("#debateCountId").html(result.length);
+			//$("#debateCountId").html(result.length);
 			
 			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
 		
@@ -6972,6 +6975,23 @@ function getDebateDetailsOfCadre(){
 	});
 	
 }
+function getDebateCount(){
+	$("#debateCountId").html('');
+	$("#debateMainDivId").hide();
+	var jsobj={
+			tdpCadreId : globalCadreId
+		}
+		$.ajax({
+			 type:'POST',
+			 url: 'getTotalAttendedDebatesOfCadreNewAction.action',
+			 data : {task:JSON.stringify(jsobj)} ,
+		}).done(function(result){
+			if(result !=null && result>0){
+				$("#debateMainDivId").show();
+				$("#debateCountId").html(result);
+			}
+		});
+}
 
 $(document).on("click","#debateCountId",function(){
 	$("#debateModelDivId").modal("show");
@@ -7000,6 +7020,8 @@ $(document).on("click","#debateCountId",function(){
 	function getPartyWisePerformanceOfCadre(){
 		
 		$('#debatePerformanceId').html('');		
+		$("#dataLoadingsImgForDebateperformId").show();
+		
 		var jsobj={
 		tdpCadreId : globalCadreId
 		}
@@ -7008,6 +7030,7 @@ $(document).on("click","#debateCountId",function(){
 			 url: 'getPartyWisePerformanceOfCadreAction.action',
 			 data : {task:JSON.stringify(jsobj)} ,
 		}).done(function(result){
+			$("#dataLoadingsImgForDebateperformId").hide();
 			buildFun1(result);
 		});
 	}
@@ -7070,6 +7093,9 @@ $(document).on("click","#debateCountId",function(){
 	}
 	getPartyWiseStrongAndWeakTopicOfCadre();
 	function getPartyWiseStrongAndWeakTopicOfCadre(){
+		$('#debateStrongWeekId').html('');	
+		$("#dataLoadingsImgForDebateStrId").show();
+		
 		var jsobj={
 			tdpCadreId : globalCadreId
 		}
@@ -7078,6 +7104,7 @@ $(document).on("click","#debateCountId",function(){
 			 url: 'getPartyWiseStrongAndWeakTopicOfCadreAction.action',
 			 data : {task:JSON.stringify(jsobj)} ,
 		}).done(function(result){
+			$("#dataLoadingsImgForDebateStrId").hide();
 			buildFun2(result);
 		});
 	}
