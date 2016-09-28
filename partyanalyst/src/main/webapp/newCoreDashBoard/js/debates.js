@@ -11,6 +11,7 @@ $(document).ready(function(){
 		  format: 'DD/MM/YYYY'
 		},
 		ranges: {
+		   'Today' : [moment(), moment()],
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
@@ -935,7 +936,9 @@ $(document).on("click",".partyWiseDebateCls",function(){
 	getCoreDebateBasicDetailsOfParty(partyId,type);
 });
 function getCoreDebateBasicDetailsOfParty(partyId,type){
-	$("#debateModelId").html("");
+	$("#debateModelId").html("");	
+	$("#debateModelId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	
 	var jsObj={
 		partyId:partyId,
 		startDate:customStartDate,
@@ -959,8 +962,8 @@ function getCoreDebateBasicDetailsOfParty(partyId,type){
 					str+='<th>Candidate Name</th>';
 				}
 					str+='<th>Subject</th>';
-					str+='<th>Debate StartTime</th>';
-					str+='<th>Debate EndTime</th>';
+					str+='<th>Start Time</th>';
+					str+='<th>End Time</th>';
 					str+='<th>Observer</th>';
 					str+='<th>Channel</th>';
 

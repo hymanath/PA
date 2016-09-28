@@ -12576,7 +12576,7 @@
 	<action name="debateEditAction" class="debateAction" method="editDebateDetails">
 	   <result>/jsp/debetEditForm.jsp</result>
 	 </action>
-	<action name="debateReportAction" class="debateAction">
+	<action name="debateReportAction" class="debateAction" method="debateReport">
 			 <result>/jsp/debateReport.jsp</result>
 	</action>
 	<action name="genereateReportAction" class="debateAction" method="generateReport">

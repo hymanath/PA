@@ -24,6 +24,7 @@ getSelectedDebate();
 
 function getSelectedDebate()
 {
+	$("#loadingImgForReport").show();
 	var jsObj = {
 				debateId :debateId,
 				task : "getDebateDetails"	
@@ -208,6 +209,9 @@ function generateDebateReport(result)
 		str += '</div>';
 		str += '</table>';
 	str += '</div>';
+	
+	$("#loadingImgForReport").hide();
+	
 	$('#debateDetails').html(str);
 }
 
@@ -241,6 +245,8 @@ function callAjax(jsObj,url)
 	}
 </script>
 <div class="container">
+<center><img src="images/Loading-data.gif" id="loadingImgForReport" style="width:40px;height:40px;margin-top:100px;display:none;"></center>
 <div id="debateDetails" style="font-size: 17px;font-weight: bold;line-height: 1.5;"></div>
+
 </div>
  </body>
