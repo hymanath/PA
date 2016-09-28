@@ -7064,7 +7064,12 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 						 String expairStr = dateUtilService.getDayMonthAndYearsBetweenTwoDates(today,lastDate);
 						 nominatedPostMemberVO.setExpireDate(expairStr);
 					 }
-					   
+					 nominatedPostMemberVO.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(candidate[26]));
+					 if(nominatedPostMemberVO.getTdpCadreId() != null && nominatedPostMemberVO.getTdpCadreId().longValue() > 0l )  {
+						 nominatedPostMemberVO.setImageURL(commonMethodsUtilService.getStringValueForObject(candidate[24]));
+					 }else{
+						 nominatedPostMemberVO.setImageURL(commonMethodsUtilService.getStringValueForObject(candidate[25]));
+					 }  
 					
 					 nominatedPostMemberVOs.add(nominatedPostMemberVO);
 				 }
