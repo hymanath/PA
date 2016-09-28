@@ -1248,7 +1248,9 @@ function tableResponsive()
 	}
 	
 	function savingAnyPostCandidatesToPosition(applicationId,candidateId,levelId,levelVal,deptId,boardId,positionId,statusId,comment,num){
-var jsObj=
+
+	$("#successDivAnyId"+num).html('<img id="" src="images/icons/loading.gif" style="width:15px;"/>');
+	var jsObj=
 	   {	
 		applicationId : applicationId,
 		candidateId : candidateId,

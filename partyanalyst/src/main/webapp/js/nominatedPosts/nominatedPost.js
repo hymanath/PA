@@ -1294,6 +1294,7 @@ $('.searchTypeCls').click(function(){
 		   $("#deptBoardPostnId"+num).append('<option value="0">Any</option>');
 	  } 
 		for(var i in result){
+			if(result[i].name != null)
 			$("#deptBoardPostnId"+num).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 		$("#deptBoardPostnId"+num).trigger("chosen:updated");
