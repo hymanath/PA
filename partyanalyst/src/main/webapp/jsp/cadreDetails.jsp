@@ -1537,9 +1537,15 @@ var cadreParticipatedParliId = '${basicVo.parliament}';
 				<h4 class="modal-title">Debate Details</h4>
 			  </div>
 			  <div class="modal-body">
-				  <div id="debateModelId" class="row"></div>
-				  <div id="debatePerformanceId" class="row"></div>
-				  <div id="debateStrongWeekId" class="row"></div>
+					<center><img id="dataLoadingsImgForDebateModelId" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+				  <div id="debateModelId" class="row">				 
+				  </div>
+				  <center><img id="dataLoadingsImgForDebateperformId" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+				  <div id="debatePerformanceId" class="row">					
+				  </div>
+					<center><img id="dataLoadingsImgForDebateStrId" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+				  <div id="debateStrongWeekId" class="row">					
+				  </div>
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
