@@ -5916,3 +5916,56 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		$("#mainPaperDivId").html(str);
 		$("#distPaperDivId").html(str1);
 	}
+	function getArticlesOfNewsBasicCounts(){
+		var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		}
+		
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		//
+		var orgType="N";
+		var orgIdStr="872";
+		/* if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				orgIdStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		} */
+		
+		var edTypeIdStr="1";
+		/* if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		} */
+		
+		var bfIdStr=" ";
+		/* if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		} */
+		
+		var startDate=currentFromDate,endDate=currentToDate;
+		var state = globalState;
+		$.ajax({
+			//url: wurl+"/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesOfNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+bfIdStr+"/"+impactScopeIdsStr+"/"+orgIdStr+"/"+orgType+"/"+edTypeIdStr+"/"+newsPaperIdsStr+""
+		}).then(function(result){
+			
+		});
+	}
