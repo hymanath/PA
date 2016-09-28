@@ -1029,7 +1029,7 @@ function getNominatedPostApplication(startIndex)
 			str +='</ul>';	
 			$("#cadreSearchDtls").html(str);
 			var length = $("#cadreSearchDtls").find("li").length;
-			$("#membersCountId").html("<p>Search Results <span class='font_weight'>"+length+"</span> Members</p>")
+			$("#membersCountId").html("<p id='memberCountSpanId'>Search Results <span class='font_weight'>"+length+"</span> Members</p>")
 			if(result.length>3)
 			{
 			$(".best-matched-profile").slick({
@@ -2690,7 +2690,7 @@ $("#searchDivId").show();
 					  type:'GET',
 					  url: 'notCadresearchAction.action',
 					  data: {task :JSON.stringify(jsObj)}
-			   }).done(function(result){
+			   }).done(function(result){	
 					isNotCadreFree =true;
        $("#cadreSearchDtls").html('');					
 					if(result != null){
@@ -2716,8 +2716,8 @@ $("#searchDivId").show();
 		$("#submitBtnId").hide();
 		$("#membersCountId").html(''); 
         $("#searchErrDiv").html(""); 
-		$("#notCadreErrMsg").html("");
-        $("#membersCountId").load();		
+		$("#notCadreErrMsg").html(""); 
+        $("#memberCountSpanId").html("");  		
 	  if(value == "Cadre"){
 			getNominatedPostApplication(0);
 		}
@@ -2864,9 +2864,11 @@ $(document).keypress(function(e) {
 					$("#uploadFlDivId").hide();
 					$("#submitBtnId").hide();
 				  if(value == "Cadre"){
+					  $("#membersCountId").hide();
 						getNominatedPostApplication(0);
 					}
 					else if(value == "Not Cadre"){
+						$("#membersCountId").hide();
 						notCadresearch();
 					}
 				}else{
