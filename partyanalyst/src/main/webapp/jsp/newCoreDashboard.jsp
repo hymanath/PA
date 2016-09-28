@@ -425,9 +425,7 @@
 										</table>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 PaperWiseBlock">
-								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><!--<img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>-->Total Unique Counts</span></h4>
+								<h4 class="text-capital m_top10"><span class="headingColor" style="margin-right:5px">Total Unique Counts</span></h4>
 								<div class="row" id="PaperWiseBlockInDivId">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
 										<table class="table table-condensed tableNews bg_ED">
@@ -469,12 +467,10 @@
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
 										<table class="table table-condensed tableNews " id="mainPaperDivId">
-												
 										</table>
 									</div>
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
 										<table class="table table-condensed tableNews " id="distPaperDivId">
-											
 										</table>
 									</div>
 								</div>
