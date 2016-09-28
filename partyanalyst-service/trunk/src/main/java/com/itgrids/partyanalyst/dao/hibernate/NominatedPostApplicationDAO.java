@@ -1684,7 +1684,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       				   " GO.govtOrderId, " +
 	       				   " GO.orderName, " +
 	       				   " GO.fromDate, " +
-	       				   " GO.toDate ");   
+	       				   " GO.toDate,TC.image,NPC.imageurl,TC.tdpCadreId ");   
 	  
 	       
 	       queryStr.append(" from  " +  
@@ -2095,7 +2095,10 @@ public List<Object[]> getPositionWiseTotalApplicationsReceived(Long boardLevelId
 	else{*/
 	str.append(" SELECT position.positionId,position.positionName,model.applicationStatus.applicationStatusId,model.applicationStatus.status," +
 			" count(distinct model.nominatedPostApplicationId) " +
-			" FROM NominatedPostApplication model left join model.position position left join model.departments department left join model.board board" +
+			" FROM NominatedPostApplication model " +
+			"  left join model.position position " +
+			"  left join model.departments department " +
+			"  left join model.board board" +
 			" WHERE " +
 			" model.isDeleted = 'N' " );
 	
@@ -2128,7 +2131,8 @@ if(positionType !=null && positionType.trim().equalsIgnoreCase("post")){
 	
 	if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet") || statusType.trim().equalsIgnoreCase("running")){
 		str.append(" AND model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
-	}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
+	}
+	if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
 		str.append(" AND model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
 		//str.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") " );
 	}
