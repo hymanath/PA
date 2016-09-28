@@ -5,18 +5,100 @@
 
 <html>
  <head>
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
-<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
-<script type="text/javascript" src="debate/js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
-<script src="debate/js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
+<!--Bootstrap styles file-->
+	<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet">
+	<link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/loginpopup.js"> </script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
+	<script type="text/javascript" src="js/jquery.google.api/jquery.min.js"></script>
+	<!--Script file-->
+	<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+	<script src="newCoreDashBoard/js/bootstrap.min.js"></script>
+	<script src="newCoreDashBoard/Plugins/Rating/bootstrap-rating.js" type="text/javascript"></script>
+
   <title> Debate Report </title>
  </head>
-
- <body>
  <style>
+ 
+ .spinner {
+  margin: 30px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  text-align: center;
+  
+  -webkit-animation: sk-rotate 2.0s infinite linear;
+  animation: sk-rotate 2.0s infinite linear;
+}
+
+.dot1, .dot2 {
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #1ABC9C;
+  border-radius: 100%;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.dot2 {
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+.table tr td
+{
+	min-width:115px !important;
+	font-weight:400 !important;
+}
+/*.rating-symbol-foreground , .rating-symbol-background
+{
+	color:#1ABC9C
+}*/
+.labelCustom
+{
+	margin-left:5px;
+}
 
   </style>
+ <body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="background-color:#CCC">
+						<h4 class="panel-title"><span class="subName"></span> <small>(<span class="debateDate"></span><span class="debateTime"></span>)</small></h4>
+					</div>
+					<div class="panel-body">
+						<div id="debateDetails"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 <script>
 var debateId = '${debateId}';
 
@@ -24,7 +106,7 @@ getSelectedDebate();
 
 function getSelectedDebate()
 {
-	$("#loadingImgForReport").show();
+	$("#debateDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var jsObj = {
 				debateId :debateId,
 				task : "getDebateDetails"	
@@ -38,45 +120,30 @@ function getSelectedDebate()
 function generateDebateReport(result)
 {
 	var str = '';
-	str += '<div>';
-	
-		str += '<div>';
-		str += '<p class="boxHeading">Subject : ';
 		for(var m in result.debateNames)
 		{
-			str += ''+result.debateNames[m]+'<br/>';
+			$(".subName").html(result.debateNames[m]);
 		}
-		str += '</div>';
-		str += '<div class="row">';
-		str += '<div class="span3 ">';
-		str += 'Channel Name : '+result.channelName+'</div>';
-		str += '<div class="span3 ">';
-		str += 'Observer : ';
+		str +='<h5><b>Channel Name</b> : '+result.channelName+'&nbsp;&nbsp;&nbsp;';
 		for(var j in result.observorsList)
 		{
-			str +=''+result.observorsList[j]+'';
+			str +='<b>Observer</b> : '+result.observorsList[j]+'</h5>';
 		}
-		str += '</div>';
-		str += '<div class="span3 ">Date : '+result.date+'</div>';
 		
-	
-		str += '<div class="span3 ">';
+		$(".debateDate").html(result.date);
 		if(result.telecastTime == 'Prime')
 		{
-			str += 'Telecast Time : '+result.startTime+'  to '+result.endTime+'  ';
+			 $(".debateTime").html(' ('+result.startTime+' to '+result.endTime+')');
 		}
 		else
 		{
-			str += 'Telecast Time : '+result.startTime+'  to '+result.endTime+'  ';
+			$(".debateTime").html(' ('+result.startTime+' to '+result.endTime+')');
 		}
-		str += '</div>';	
-		str += '</div>';	
-		
-		str += '<div>';
-		str += '<b>(5 points scale : 0 Poor - 5 Excellent)</b>';
+		str += '<div class="table-responsive">';
+		str += '<span class="pull-right">(5 points scale : 0 Poor - 5 Excellent)</span>';
 		str += '<table class="table table-bordered table-hover">';
 		str += '<tr>';
-		str += '<th style="width: 234px;">Party</th>';
+		str += '<th style="width: 234px;">PARTY</th>';
 		for(var a in result.participantsList)
 		{
 			str += '<th>'+result.participantsList[a].partyName+'</th>';
@@ -99,10 +166,10 @@ function generateDebateReport(result)
 		for(var a = 0 ; a < size ; a++)
 		{
 			str += '<tr>';
-			str += '<th style="width: 234px;">'+result.participantsList[0].scaleList[a].name+'</th>';	
+			str += '<th style="width: 234px;">'+result.participantsList[0].scaleList[a].name.split("(")[0]+'</th>';	
 			for(var i = 0 ; i<noOfParticepents ; i++)
 			{
-				str += '<td>'+result.participantsList[i].scaleList[a].perc+'</td>';	
+				str += '<td><input class="performanceRating" value="'+result.participantsList[i].scaleList[a].perc+'" type="hidden" class="rating" min=0 max=5 step=0.2 data-size="xs"  data-readonly/><span class="label label-default label-xs labelCustom"  data-readonly>'+result.participantsList[i].scaleList[a].perc+'</span></td>';	
 			}
 			str += '</tr>';
 		}
@@ -209,10 +276,14 @@ function generateDebateReport(result)
 		str += '</div>';
 		str += '</table>';
 	str += '</div>';
-	
-	$("#loadingImgForReport").hide();
-	
+		
 	$('#debateDetails').html(str);
+	$(".performanceRating").rating({
+		showClear: false,
+		showCaption:false,
+		hoverOnClear: true,
+		animate:false
+	});
 }
 
 function callAjax(jsObj,url)
@@ -244,9 +315,4 @@ function callAjax(jsObj,url)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 </script>
-<div class="container">
-<center><img src="images/Loading-data.gif" id="loadingImgForReport" style="width:40px;height:40px;margin-top:100px;display:none;"></center>
-<div id="debateDetails" style="font-size: 17px;font-weight: bold;line-height: 1.5;"></div>
-
-</div>
  </body>
