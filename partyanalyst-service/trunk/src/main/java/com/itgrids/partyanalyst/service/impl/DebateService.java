@@ -2182,5 +2182,17 @@ public class DebateService implements IDebateService{
 		 return finalList;
 	 }
 	 
+	 public Long getTotalAttendedDebatesOfCadreNew(Long tdpCadreId){
+		 
+		 try{			 
+			 Long debateCount = debateParticipantDAO.getTotalAttendedDebatesOfCadreNew(tdpCadreId);			 
+			 return debateCount; 
+			 
+		 }catch(Exception e){
+			 LOG.error(" Exception Occured in getTotalAttendedDebatesOfCadreNew method, Exception - ",e);
+		 }
+		 return null;
+	 }
+	 
 	 
 }

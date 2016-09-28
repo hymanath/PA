@@ -543,5 +543,16 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		
 		return query.list();
 	}
-	
+	public Long getTotalAttendedDebatesOfCadreNew(Long tdpCadreId){
+		
+		Query query = getSession().createQuery(" select count(distinct model.debate.debateId)  " +
+				" from DebateParticipant model,TdpCadreCandidate model1 " +
+				" where model.candidate.candidateId = model1.candidate.candidateId " +
+				" and model1.tdpCadre.tdpCadreId = :tdpCadreId " +
+				" and model.debate.isDeleted = 'N' ");
+		
+		query.setParameter("tdpCadreId", tdpCadreId);
+		
+		return  (Long) query.uniqueResult();
+	}
 }
