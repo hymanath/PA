@@ -1034,7 +1034,7 @@
 							<div class="col-md-9 col-sm-9 col-xs-7 meetingHead">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-									meetings - <small class="text-muted" id="dateMeetingHeadingId"> - this month</small>
+									meetings - <small class="text-muted" id="dateMeetingHeadingId"> this month</small>
 								</h4>
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-5 meetingHead1">
@@ -1837,7 +1837,7 @@
 						<div class="col-md-9 col-sm-9 col-xs-7">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
-								employees attendance - <small id="attendanceId" class="text-muted"></small>
+								emp attendance - <small id="attendanceId" class="text-muted"></small>
 							</h4>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-5">
