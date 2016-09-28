@@ -906,6 +906,9 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	{
 		return Action.SUCCESS;
 	}
+	public String debateReport(){
+		return Action.SUCCESS;
+	}
 	
 	public String getCandidatesListForDebate()
 	{
