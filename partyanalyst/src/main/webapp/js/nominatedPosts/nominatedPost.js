@@ -2524,6 +2524,11 @@ function searchByApplicant()
 	$(document).on("click",".cadreCheckCls",function(){ 
 	 $("#searchData").html('');
 	 $("#searchData1").html('');
+	 $('#statesDivId').val(0).trigger('chosen:updated');
+	 $('#districtId').val(0).trigger('chosen:updated');
+	 $('#constituencyId').val(0).trigger('chosen:updated');
+	 $('#mandalList').val(0).trigger('chosen:updated');
+	 $('#panchaytList').val(0).trigger('chosen:updated');
     // $("#cadreSearchDtls").html('');	
 	hideDetails();	
 
