@@ -387,7 +387,7 @@
 									</select>
 									<img id="searchDataImgForState" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId" style="display:none;">
 									<label>State Name</label>
 									<select class="chosenSelect nominatedStaeCls" onchange="getOpenPositionDistrictsForState(this.value,this.id,'');getDepartments(0);" id="nominatedStaeId" name="nominatedPostVO.nominatdList[0].stateId" attr_no="">
 										<option value="0">Select State</option>
@@ -396,26 +396,26 @@
 									</select>
 									<img id="searchDataImgForDistrict" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="districtShowDivId">
+						        <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="districtShowDivId" style="display:none;">
 									<label>District</label>
 									<select class="chosenSelect nominatedDistCls" onchange="getOpenPositionConstituenciesForDistrict(this.value,this.id,'');getDepartments(0);" id=
 									"nominatedDistId" name="nominatedPostVO.nominatdList[0].districtId" attr_no="">
 									</select>
 									<img id="searchImgForDistr" class="cloneImgConCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 									</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="constituencyshowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="constituencyshowDivId" style="display:none;">
 									<label>Constituency</label>
 									<select attr_no="" class="chosenSelect nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);getDepartments(0);" id="nominatdConstId" name="nominatedPostVO.nominatdList[0].constituencyId">
 									</select>
 									<img id="searchImgForConst" class="cloneImgMandlCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="mondalShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="mondalShowDivId" style="display:none;">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select attr_no="" class="chosenSelect nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);getDepartments(0);" id="nominatedMandlId" name="nominatedPostVO.nominatdList[0].mandalId">
 									</select>
 									<img id="searchImgForMandl" class="cloneImgPanchCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="panchayatShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="panchayatShowDivId" style="display:none;">
 									<label>Panchayat/ Ward / Division</label>
 									<select attr_no="" class="chosenSelect nominatedPanchayatCls" id="nominatedPanchayatId" name="nominatedPostVO.nominatdList[0].panchayatId" onchange="getDepartments(0);">
 									</select>
@@ -479,7 +479,7 @@
 									</select>
 									<img id="searchDataImgForState" class="cloneImgStaCls" style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 stateShowsCls" id="statesShowDivId" style="display:none;">
 									<label>State Name</label>
 									<select  class="nominatedStaeCls" onchange="getOpenPositionDistrictsForState(this.value,this.id,'');" id="">
 										<option value="0">Select State</option>
@@ -488,26 +488,26 @@
 									</select>
 									<img id="searchDataImgForDistrict" class="cloneImgDstCls"  style="width: 15px; height: 15px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 districtShowsCls" id="" style="display:none;">
 									<label>District</label>
 									<select  class="nominatedDistCls"  id=
 									"">
 									</select>
 									<img id="searchImgForDistr" class="cloneImgConCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 constituencyShowsCls" id="" style="display:none;">
 									<label>Constituency</label>
 									<select class="nominatdConstCls" onchange="getOpenPositionMandalsForConstituency('',this.id);" id="">
 									</select>
 									<img id="searchImgForConst" class="cloneImgMandlCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 mandalShowsCls" id="" style="display:none;">
 									<label>Mandal/ Muncipality / Corporation</label>
 									<select  class="nominatedMandlCls" onchange="getOpenPositionVillagesForMandal('',this.id);" id="nominatedMandlId">
 									</select>
 									<img id="searchImgForMandl" class="cloneImgPanchCls" style="width:20px;height:20px; margin-left: 346px; margin-top: -26px;display:none;" src="images/icons/loading.gif">
 								</div>
-								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="">
+								<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4 m_top10 panchayatShowsCls" id="" style="display:none;">
 									<label>Panchayat/ Ward / Division</label>
 									<select  class="nominatedPanchayatCls" id="nominatedPanchayatId">
 									</select>
