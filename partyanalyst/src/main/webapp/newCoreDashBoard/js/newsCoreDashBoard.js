@@ -1232,8 +1232,8 @@
 			buildComparisonGovtMinistriesInfo(result);
 		});
 	}
-	function getAllDepartmentEditionsWiseDetails(departmentIdsStr,ministerName){
-		$("#ministerSubLevelDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getAllDepartmentEditionsWiseDetails(departmentIdsStr,ministerName,ministerSubLevelId){
+		$("#"+ministerSubLevelId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -1258,7 +1258,7 @@
 			//url: wurl+"/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
-			buildgetAllDepartmentEditionsWiseDetails(result,ministerName);
+			buildgetAllDepartmentEditionsWiseDetails(result,ministerName,ministerSubLevelId);
 		});
 	}
 	function getComparisonGovernamentTrendingTrackedIssues(departmentIdsStr){
@@ -3743,7 +3743,9 @@
 	$(document).on("click",".comparisonGovtMinistriesInfoSubLevel",function(){
 		$("#comparisonGovtProblemsOverAllSubLevelAnalysis").html('');
 		$(".moreDetailsBlockNews").show();
-		getAllDepartmentEditionsWiseDetails($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
+		var ministerSubLevelId = "ministerSubLevelDetailsDiv";
+		
+		getAllDepartmentEditionsWiseDetails($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"),ministerSubLevelId);
 		getCompareGovtCandidateDepartmentsWiseDistrictOverview($(this).attr("attr_department_idsstr"));
 		getComparisonGovernamentTrendingTrackedIssues($(this).attr("attr_department_idsstr"),$(this).attr("attr_ministername"));
 		getComparisionGovtOverAllAnalysisOfActionImmediatelyProblems(7,$(this).attr("attr_department_idsstr"),'');
@@ -3751,16 +3753,19 @@
 		getCompareGovernamentDistrictWiseArticleRelatedToProblem($(this).attr("attr_department_idsstr"));
 	});
 	
-	function buildgetAllDepartmentEditionsWiseDetails(result,ministerName){
-		$("#ministerSubLevelDetailsDiv").html('');
+	function buildgetAllDepartmentEditionsWiseDetails(result,ministerName,ministerSubLevelId){
+		$("#"+ministerSubLevelId).html('');
 		var str='';
 		if(result !=null && result.length >0){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 				str+='<h4><span  class="text-capital">'+ministerName+'</span></h4>';
+				if(ministerSubLevelId != "ministerSubLevelDetailsDiv"){
+				str+='<span class="removeSelectedMinister pull-right" attr_removeSelectedminister = "'+ministerSubLevelId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+			}
 				str+='<div class="table-responsive">';
 					str+='<table class="table table-condensed tableHoverLevels m_top20">';
 						str+='<thead class="bg_D8 text-capital">';
-							str+='<tr>';
+							str+='<tr >';
 								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Rank</th>';
 								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Department</th>';
 								str+='<th colspan="5" class="text-center" style="border-right: 1px solid #c3c3c3 !important;">Main Edition</th>';
@@ -3782,9 +3787,9 @@
 						str+='</thead>';
 						str+='<tbody>';
 						for(var i in result){
-							 str+='<tr>';
+							 str+='<tr class="organizationCls" attr_organization_id="'+result[i].organizationId+'" attr_ministernamelowlevel="'+ministerName+'">';
 								str+='<td>'+(parseInt(i)+1)+'</td>';
-								str+='<td class="organizationCls" attr_organization_id="'+result[i].organizationId+'">'+result[i].organization+'</td>';
+								str+='<td>'+result[i].organization+'</td>';
 								
 								str+='<td>'+result[i].neutralCountMain+'</td>';
 								str+='<td>'+result[i].positiveCountMain+'</td>';
@@ -3798,6 +3803,13 @@
 								str+='<td>'+result[i].negativCountDist+'</td>';
 								str+='<td>'+result[i].negativeDistPerc+'</td>';
 							str+='</tr>'; 
+							str+='<tr class="ministerShowHideTr" style="display:none" attr_id = "ministerLowLevelpositionId'+result[i].organizationId+''+i+'">';
+							
+							str+='<td colspan="12"  id="ministerLowLevelpositionId'+result[i].organizationId+''+i+'">';
+							
+							str+='</td>';
+						str+='</tr>';
+						
 						}
 							
 						str+='</tbody>';
@@ -3806,7 +3818,7 @@
 			str+='</div>';
 		}
 		
-		$("#ministerSubLevelDetailsDiv").html(str);
+		$("#"+ministerSubLevelId).html(str);
 	}
 	
 	function buildComparisonGovernamentTrendingTrackedIssues(result){
@@ -5650,8 +5662,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 	$(document).on("click",".radioTypeCls",function(){
 		getComparisonGovtMinistriesInfo();
 	});
-	function getAllSubDepartmentEditionsWiseDetails(departmentIdsStr){
-		$("#ministerSubLevelDetailsDiv").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	function getAllSubDepartmentEditionsWiseDetails(departmentIdsStr,ministerName,ministerSubLevelId){
+		$("#"+ministerSubLevelId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -5676,11 +5688,20 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			//url: wurl+"/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getAllSubDepartmentEditionsWiseDetails/"+startDate+"/"+endDate+"/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+newsPaperIdsStr+"/"+departmentIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
-			//buildgetAllDepartmentEditionsWiseDetails(result,ministerName);
+			buildgetAllDepartmentEditionsWiseDetails(result,ministerName,ministerSubLevelId);
 		});
 	}
 	$(document).on("click",".organizationCls",function(){
-		getAllSubDepartmentEditionsWiseDetails($(this).attr("attr_organization_id"));	
+		 $(this).closest('tr').next('tr.ministerShowHideTr').show(); 
+		 var ministerSubLevelId = $(this).closest('tr').next('tr.ministerShowHideTr').attr("attr_id");  
+		 
+		
+		getAllSubDepartmentEditionsWiseDetails($(this).attr("attr_organization_id"),$(this).attr("attr_ministernamelowlevel"),ministerSubLevelId)		
+	});
+	$(document).on("click",".removeSelectedMinister",function(){
+		  var removeSelected = $(this).attr("attr_removeSelectedminister"); 
+		  $("#"+removeSelected).html(' ');
+		 $("#"+removeSelected).closest('.ministerShowHideTr').hide();
 	});
 	function getPaperWiseNewsBasicCounts(){
 		var temp="";
