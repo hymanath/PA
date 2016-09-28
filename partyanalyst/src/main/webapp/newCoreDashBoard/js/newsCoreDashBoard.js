@@ -1016,7 +1016,7 @@
 			buildChildUserTypesByItsParentUserType(result);
 		});			 
 	}
-	function getPartyComparisonChildUserTypeMembers(childUserTypeId){
+	function getPartyComparisonChildUserTypeMembers(childUserTypeId,childUserType){
 		$("#partyWiseComparisionBlock").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
 		var childUserTypeIdArr = [];
@@ -1042,7 +1042,7 @@
 				data : {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				$("#partyWiseComparisionBlock").html('');
-				buildgetPartyComparisonChildUserTypeMembers(result);
+				buildgetPartyComparisonChildUserTypeMembers(result,childUserTypeId,childUserType);
 			});
 		
 	}
@@ -3225,11 +3225,11 @@
 		if(result != null && result.length > 0){
 			str+='<ul class="detailedPartySubUl">';
 			for(var i in result){
-				str+='<li attr_usertypeid="'+result[i].shortName+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+				str+='<li attr_usertypeid="'+result[i].shortName+'" attr_usertype="'+result[i].userType+'" class="detailedPartySubLi">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			}
 			str+='</ul>';
 			
-			getPartyComparisonChildUserTypeMembers(result[0].shortName);
+			getPartyComparisonChildUserTypeMembers(result[0].shortName,result[0].userType);
 		}
 		$("#userTypeStrId").html(str);
 		$(".detailedPartySubUl li:first-child").addClass("active");
@@ -3253,14 +3253,14 @@
 			$("#PartyComparisionNewsTypeAnalysisDiv").html('');
 			$("#ComparisionPartyDistrictWiseNewsReport").html('');
 			$("#partyComparisonPartyWisePoorL").html('');
-			getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"));
+			getPartyComparisonChildUserTypeMembers($(this).attr("attr_usertypeid"),$(this).attr("attr_usertype"));
 		}else{
 			$("#partyWiseComparisionBlock").html('');
 		}
 		
 	});	
 	
-	function buildgetPartyComparisonChildUserTypeMembers(result){
+	function buildgetPartyComparisonChildUserTypeMembers(result,childUserTypeId,childUserType){
 		$("#partyWiseComparisionBlock").html('');
 		var str='';
 		if(result !=null && result.length >0){
@@ -3283,87 +3283,170 @@
 				}
 			}
 			
-			
-			str+='<ul class="list-inline NewsSlickPanelSlider">';
-			var rankVar =0;
-			for(var i in result){
-				rankVar =rankVar+1;
-				str+='<li  style="cursor:pointer;" class="childUserTypesLiClass" attr_id ="partyComparisionSubLevelMemberDetailsDiv" attr_newsselectedmembername="'+result[i].name+'" attr_newsselectedusertype="'+result[i].usertType+'" attr_newsactivitymemberid='+result[i].activityMemberId+'  attr_newsusertypeid='+result[i].userTypeId+' attr_location_level_id = "'+result[i].locationLevelId+'" id="newsTypeAnalysisLocationValueSet'+i+'">';
-			
-						str+='<div class="panel panel-default panelSlick">';
-						str+='<div class="panel-heading" style="background-color: #c3c3c3 !important;">';
-						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
-							str+='<span class="count">'+rankVar+'</span>';
-						str+='</div>';
-						str+='<div class="panel-body" style="background-color:#fff;">';
-							str+='<h4 class="text-capital">'+result[i].usertType+'</h4>';
-							str+='<div class="row">';
-								str+='<div class="col-xs-12 col-md-12 col-xs-12">';
-								str+='<div class="row">';
-									str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder" >';
-										str+='<div id="partiesComparisionGraph'+i+'" style="height:150px;width:100%;margin-left: -9px; margin-top: 30px;"></div>';
-									str+='</div>';
-									str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder scrollableDiv" >';
-										str+='<p>Main Edition</p>';
-										if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
-											for(var j in result[i].childUserTypeVOList1){
-												str+='<p><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].childUserTypeVOList1[j].organization+'.png" style="width:50px;" alt="tdp icon"/></p>';
-												str+='<ul class="list-inline">';
-													if(result[i].childUserTypeVOList1[j].positiveCountMainPerc !=null && result[i].childUserTypeVOList1[j].positiveCountMainPerc >0){
-														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].positiveCountMainPerc.toFixed(0)+'% +ve</li>';
-													}else{
-														str+='<li class="newsCompBlockAlign" >- +ve</li>';
+			if(childUserType !=null && childUserType.trim() == "MLA" || childUserType.trim() == "CONSTITUENCY INCHARGE" || childUserType.trim() == "MLA/CI"){
+				str+='<table class="table table-condensed tableHoverLevels m_top20" id="partyWiseMemberDataTblId">';
+						str+='<thead class="bg_D8 text-capital">';
+							str+='<tr>';
+								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Rank</th>';
+								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Designation</th>';
+								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Name</th>';
+								str+='<th colspan="5" class="text-center" style="border-right: 1px solid #c3c3c3 !important;">Main Edition</th>';
+								str+='<th colspan="5" class="text-center">District Edition</th>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">Total</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">+ve %</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve</div></th>';
+								str+='<th><div class="bg_ED text-center" style="padding:2px 3px">-ve %</div></th>';
+							str+='</tr>';
+							
+						str+='</thead>';
+						str+='<tbody>';
+						
+						for(var i in result){
+							var totalPositiveCountMainAdd=0;
+							var totalNegativeCountMainAdd=0;
+							var totalMainCount = 0;
+							var totalPositivepercMainAdd = 0;
+							var totalNegativepercMainAdd=0;
+							
+							
+							var totalPositiveCountDistAdd=0;
+							var totalNegativeCountDistAdd=0;
+							var totalDistCount = 0;
+							var totalPositivepercDistAdd = 0;
+							var totalNegativepercDistAdd=0;
+							
+							if(result[i].childUserTypeVOList1 !=null  && result[i].childUserTypeVOList1.length >0){
+								for(var j in result[i].childUserTypeVOList1){
+									totalPositiveCountMainAdd = totalPositiveCountMainAdd + result[i].childUserTypeVOList1[j].positiveCountMain;
+									totalNegativeCountMainAdd = totalNegativeCountMainAdd + result[i].childUserTypeVOList1[j].negativeCountMain;
+									totalMainCount = totalPositiveCountMainAdd+totalNegativeCountMainAdd;
+									totalPositivepercMainAdd  = ((totalPositiveCountMainAdd*100)/(totalPositiveCountMainAdd+totalNegativeCountMainAdd)).toFixed(2);
+									totalNegativepercMainAdd  = ((totalNegativepercMainAdd*100)/(totalPositiveCountMainAdd+totalNegativeCountMainAdd)).toFixed(2);
+									
+									
+									totalPositiveCountDistAdd = totalPositiveCountDistAdd + result[i].childUserTypeVOList1[j].positiveCountDist;
+									totalNegativeCountDistAdd = totalNegativeCountDistAdd + result[i].childUserTypeVOList1[j].negativeCountDist;
+									totalDistCount = totalPositiveCountDistAdd+totalNegativeCountDistAdd;
+									totalPositivepercMainAdd  = ((totalPositiveCountDistAdd*100)/(totalPositiveCountDistAdd+totalNegativeCountDistAdd)).toFixed(2);
+									totalNegativepercMainAdd  = ((totalNegativeCountDistAdd*100)/(totalPositiveCountDistAdd+totalNegativeCountDistAdd)).toFixed(2);
+									
+								}
+							}
+							str+='<tr>';
+							str+='<td>1</td>';
+							str+='<td>'+result[i].usertType+'</td>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+totalMainCount+'</td>';
+							str+='<td>'+totalPositiveCountMainAdd+'</td>';
+							str+='<td>'+totalPositivepercMainAdd+'%</td>';
+							str+='<td>'+totalNegativeCountMainAdd+'</td>';
+							str+='<td>'+totalNegativepercMainAdd+'%</td>';
+							str+='<td>'+totalDistCount+'</td>';
+							str+='<td>'+totalPositiveCountDistAdd+'</td>';
+							str+='<td>'+totalPositivepercDistAdd+'%</td>';
+							str+='<td>'+totalNegativeCountDistAdd+'</td>';
+							str+='<td>'+totalNegativepercDistAdd+'%</td>';
+							str+='</tr>';
+							
+						}
+						
+						str+='</tbody>';
+					str+='</table>';
+			}else{
+				str+='<ul class="list-inline NewsSlickPanelSlider">';
+					var rankVar =0;
+					for(var i in result){
+						rankVar =rankVar+1;
+						str+='<li  style="cursor:pointer;" class="childUserTypesLiClass" attr_id ="partyComparisionSubLevelMemberDetailsDiv" attr_newsselectedmembername="'+result[i].name+'" attr_newsselectedusertype="'+result[i].usertType+'" attr_newsactivitymemberid='+result[i].activityMemberId+'  attr_newsusertypeid='+result[i].userTypeId+' attr_location_level_id = "'+result[i].locationLevelId+'" id="newsTypeAnalysisLocationValueSet'+i+'">';
+					
+								str+='<div class="panel panel-default panelSlick">';
+								str+='<div class="panel-heading" style="background-color: #c3c3c3 !important;">';
+								str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+									str+='<span class="count">'+rankVar+'</span>';
+								str+='</div>';
+								str+='<div class="panel-body" style="background-color:#fff;">';
+									str+='<h4 class="text-capital">'+result[i].usertType+'</h4>';
+									str+='<div class="row">';
+										str+='<div class="col-xs-12 col-md-12 col-xs-12">';
+										str+='<div class="row">';
+											str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder" >';
+												str+='<div id="partiesComparisionGraph'+i+'" style="height:150px;width:100%;margin-left: -9px; margin-top: 30px;"></div>';
+											str+='</div>';
+											str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder scrollableDiv" >';
+												str+='<p>Main Edition</p>';
+												if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
+													for(var j in result[i].childUserTypeVOList1){
+														str+='<p><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].childUserTypeVOList1[j].organization+'.png" style="width:50px;" alt="tdp icon"/></p>';
+														str+='<ul class="list-inline">';
+															if(result[i].childUserTypeVOList1[j].positiveCountMainPerc !=null && result[i].childUserTypeVOList1[j].positiveCountMainPerc >0){
+																str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].positiveCountMainPerc.toFixed(0)+'% +ve</li>';
+															}else{
+																str+='<li class="newsCompBlockAlign" >- +ve</li>';
+															}
+															if(result[i].childUserTypeVOList1[j].negativeCountMainperc !=null && result[i].childUserTypeVOList1[j].negativeCountMainperc >0){
+																str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].negativeCountMainperc.toFixed(0)+'% -ve</li>';
+															}else{
+																str+='<li class="newsCompBlockAlign" >- -ve</li>';
+															}
+															str+='</ul>';
+														str+='<hr  class="newshrAlignment" >';
 													}
-													if(result[i].childUserTypeVOList1[j].negativeCountMainperc !=null && result[i].childUserTypeVOList1[j].negativeCountMainperc >0){
-														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[j].negativeCountMainperc.toFixed(0)+'% -ve</li>';
-													}else{
-														str+='<li class="newsCompBlockAlign" >- -ve</li>';
-													}
-													str+='</ul>';
-												str+='<hr  class="newshrAlignment" >';
-											}
-										}else{
-											str+='<p>No Data Available</p>';
-										}
-										str+='</div>';
-										
-										str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder scrollableDiv">';
-											str+='<p>District Edition</p>';
-										if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
-											for(var k in result[i].childUserTypeVOList1){
-												str+='<p><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].childUserTypeVOList1[k].organization+'.png" style="width:50px;" alt="tdp icon"/></p>';
-													str+='<ul class="list-inline">';
-													if(result[i].childUserTypeVOList1[k].positiveCountDistPerc !=null && result[i].childUserTypeVOList1[k].positiveCountDistPerc >0){
-														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[k].positiveCountDistPerc.toFixed(0)+'% +ve</li>';
-													}else{
-														str+='<li class="newsCompBlockAlign" >- +ve</li>';
-													}
-													if(result[i].childUserTypeVOList1[k].negativeCountDistPerc !=null && result[i].childUserTypeVOList1[k].negativeCountDistPerc >0){
-														str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[k].negativeCountDistPerc.toFixed(0)+'% -ve</li>';
-													}else{
-														str+='<li class="newsCompBlockAlign" >- -ve</li>';
-													}
-													str+='</ul>';
-													str+='<hr class="newshrAlignment">';
-											}
-										}else{
-											str+='<p>No Data Available</p>';
-										}
+												}else{
+													str+='<p>No Data Available</p>';
+												}
+												str+='</div>';
 												
+												str+='<div class="col-md-4 col-xs-12 col-sm-6 newsComparisionBorder scrollableDiv">';
+													str+='<p>District Edition</p>';
+												if(result[i].childUserTypeVOList1 !=null && result[i].childUserTypeVOList1.length >0){
+													for(var k in result[i].childUserTypeVOList1){
+														str+='<p><img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].childUserTypeVOList1[k].organization+'.png" style="width:50px;" alt="tdp icon"/></p>';
+															str+='<ul class="list-inline">';
+															if(result[i].childUserTypeVOList1[k].positiveCountDistPerc !=null && result[i].childUserTypeVOList1[k].positiveCountDistPerc >0){
+																str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[k].positiveCountDistPerc.toFixed(0)+'% +ve</li>';
+															}else{
+																str+='<li class="newsCompBlockAlign" >- +ve</li>';
+															}
+															if(result[i].childUserTypeVOList1[k].negativeCountDistPerc !=null && result[i].childUserTypeVOList1[k].negativeCountDistPerc >0){
+																str+='<li class="newsCompBlockAlign" >'+result[i].childUserTypeVOList1[k].negativeCountDistPerc.toFixed(0)+'% -ve</li>';
+															}else{
+																str+='<li class="newsCompBlockAlign" >- -ve</li>';
+															}
+															str+='</ul>';
+															str+='<hr class="newshrAlignment">';
+													}
+												}else{
+													str+='<p>No Data Available</p>';
+												}
+														
+												str+='</div>';
+											str+='</div>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</li>';
+						str+='</li>';
+					}
+					str+='</ul>';
 			}
-			str+='</ul>';
+			
 		}else{
 			$("#partyWiseComparisionBlock").html("No Data Available");
 		}
 			$("#partyWiseComparisionBlock").html(str);
-			
+			$("#partyWiseMemberDataTblId").dataTable({
+				"aaSorting": [],
+				"iDisplayLength" : 5	
+			});
+		
 			$(".NewsSlickPanelSlider").slick({
 				 slide: 'li',
 				 slidesToShow: 2,
