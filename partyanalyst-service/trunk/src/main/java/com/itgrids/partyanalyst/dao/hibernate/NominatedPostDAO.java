@@ -201,7 +201,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 			if(statusType !=null && statusType.trim().equalsIgnoreCase("notYet")){
 				str.append(" and model.applicationStatus.status in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
 			}else if(statusType !=null && statusType.trim().equalsIgnoreCase("running")){
-				str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
+				str.append(" and model.applicationStatus.status not in ("+IConstants.NOMINATED_APPLIED_STATUS+")");
+				//str.append(" and model.applicationStatus.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+") ");
 			}
 			
 			str.append(" GROUP BY model.nominatedPostMember.nominatedPostPosition.position.positionId ORDER BY model.nominatedPostMember.nominatedPostPosition.position.positionId ");
