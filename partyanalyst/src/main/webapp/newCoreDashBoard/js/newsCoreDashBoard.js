@@ -4016,7 +4016,12 @@
 				str+='<span class="removeSelectedMinister pull-right" attr_removeSelectedminister = "'+ministerSubLevelId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 			}
 				str+='<div class="table-responsive">';
-					str+='<table class="table table-condensed tableHoverLevels m_top20">';
+					if(ministerSubLevelId != "ministerSubLevelDetailsDiv")
+					{
+						str+='<table class="table table-condensed tableLevels m_top20">';
+					}else{
+						str+='<table class="table table-condensed tableHoverLevels m_top20">';
+					}
 						str+='<thead class="bg_D8 text-capital">';
 							str+='<tr >';
 								str+='<th rowspan="2" style="border-right: 1px solid #c3c3c3 !important;">Rank</th>';
@@ -4040,7 +4045,12 @@
 						str+='</thead>';
 						str+='<tbody>';
 						for(var i in result){
-							 str+='<tr class="organizationCls" attr_organization_id="'+result[i].organizationId+'" attr_ministernamelowlevel="'+ministerName+'">';
+							if(ministerSubLevelId != "ministerSubLevelDetailsDiv"){
+								str+='<tr style="cursor:auto;">';
+							}else{
+								str+='<tr class="organizationCls" attr_organization_id="'+result[i].organizationId+'" attr_ministernamelowlevel="'+ministerName+'">';
+							}
+							 
 								str+='<td>'+(parseInt(i)+1)+'</td>';
 								str+='<td>'+result[i].organization+'</td>';
 								
@@ -4056,12 +4066,15 @@
 								str+='<td>'+result[i].negativCountDist+'</td>';
 								str+='<td>'+result[i].negativeDistPerc+'</td>';
 							str+='</tr>'; 
-							str+='<tr class="ministerShowHideTr" style="display:none" attr_id = "ministerLowLevelpositionId'+result[i].organizationId+''+i+'">';
+							if(ministerSubLevelId == "ministerSubLevelDetailsDiv"){
+								str+='<tr class="ministerShowHideTr" style="display:none" attr_id = "ministerLowLevelpositionId'+result[i].organizationId+''+i+'">';
 							
-							str+='<td colspan="12"  id="ministerLowLevelpositionId'+result[i].organizationId+''+i+'">';
+								str+='<td colspan="12"  id="ministerLowLevelpositionId'+result[i].organizationId+''+i+'" style="border: medium none ! important;">';
+								
+								str+='</td>';
+							str+='</tr>';
+							}
 							
-							str+='</td>';
-						str+='</tr>';
 						
 						}
 							
@@ -5181,6 +5194,14 @@ $(document).on("click",".btnCustomCreateNews",function(){
 					str+='</li>';
 				}
 				$("#newsPapersUlId").html(str);
+				var newspaperlenght = $("#newsPapersUlId").find("li").length;
+				if(newspaperlenght >= 7){
+				$(".settingsUl").mCustomScrollbar({setHeight:'245'})
+				
+				}else{
+					$(".settingsUl").css("height","auto");
+				
+				}
 			}
 		});
 	}	
