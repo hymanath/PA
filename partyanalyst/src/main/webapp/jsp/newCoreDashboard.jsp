@@ -242,7 +242,8 @@
 								<h5 class="updatedDate pull-right" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" id="lastUpdatedId"></h5>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
-								<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span><div class="spinner" id="spinnerStatic" style="margin-top: 0px; margin-bottom: 0px;width:20px;height:20px;display:none"><div class="dot1"></div><div class="dot2"></div></div></h4>
+								<div id="newsBlockMainId"></div>
+								<!--<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span><div class="spinner" id="spinnerStatic" style="margin-top: 0px; margin-bottom: 0px;width:20px;height:20px;display:none"><div class="dot1"></div><div class="dot2"></div></div></h4>
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
 										<table class="table table-condensed tableNews bg_ED">
@@ -438,7 +439,7 @@
 										</table>
 									</div>
 								</div>
-							</div>
+							</div>-->
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
 								<div class="row">
