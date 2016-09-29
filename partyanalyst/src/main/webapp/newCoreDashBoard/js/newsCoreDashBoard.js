@@ -197,7 +197,7 @@
 	//Comparision Block Click Action For Party And Government End
 	
 	//Main Block Ajax Calls And Build Start
-	function getNewsBasicCounts(){
+	function getNewsBasicPartyCounts(){
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -222,35 +222,35 @@
 		var startDate=currentFromDate,endDate=currentToDate;
 		var state = globalState;
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 		}).then(function(result){
 			if(result != null && result.length > 0){
-				$("#tdpMainTotal").html(result[0].positiveCountMain+result[0].negativCountMain);
+				$("#tdpMainTotal").html(result[0].totalCount);
 				$("#tdpMainPositive").html(result[0].positiveCountMain);
 				$("#tdpMainNegative").html(result[0].negativCountMain);
-				if((result[0].positiveCountMain+result[0].negativCountMain) > 0){
-					$("#tdpMainPositivePercent").html(" "+((result[0].positiveCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
-					$("#tdpMainNegativePercent").html(" "+((result[0].negativCountMain*100)/(result[0].positiveCountMain+result[0].negativCountMain)).toFixed(2)+" %");
+				if((result[0].totalCount) > 0){
+					$("#tdpMainPositivePercent").html(" "+((result[0].positiveCountMain*100)/(totalCount)).toFixed(2)+" %");
+					$("#tdpMainNegativePercent").html(" "+((result[0].negativCountMain*100)/(totalCount)).toFixed(2)+" %");
 				}
 				else{
 					$("#tdpMainPositivePercent").html(" 0.0 %");
 					$("#tdpMainNegativePercent").html(" 0.0 %");
 				}
 				
-				$("#tdpDistTotal").html(result[0].positiveCountDist+result[0].negativCountDist);				
+				$("#tdpDistTotal").html(result[0].count);				
 				$("#tdpDistPositive").html(result[0].positiveCountDist);
 				$("#tdpDistNegative").html(result[0].negativCountDist);
-				if((result[0].positiveCountDist+result[0].negativCountDist) > 0){
-					$("#tdpDistPositivePercent").html(" "+((result[0].positiveCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
-					$("#tdpDistNegativePercent").html(" "+((result[0].negativCountDist*100)/(result[0].positiveCountDist+result[0].negativCountDist)).toFixed(2)+" %");
+				if(result[0].count > 0){
+					$("#tdpDistPositivePercent").html(" "+((result[0].positiveCountDist*100)/(count)).toFixed(2)+" %");
+					$("#tdpDistNegativePercent").html(" "+((result[0].negativCountDist*100)/(count)).toFixed(2)+" %");
 				}
 				else{
 					$("#tdpDistPositivePercent").html(" 0.0 %");
 					$("#tdpDistNegativePercent").html(" 0.0 %");
 				}
 				
-				var oppTotal=(result[1].positiveCountMain+result[1].negativCountMain)+(result[2].positiveCountMain+result[2].negativCountMain)+(result[3].positiveCountMain+result[3].negativCountMain);
+				var oppTotal=(result[1].totalCount);
 				$("#oppMainTotal").html(oppTotal);
 				$("#oppPositiveTotal").html(result[1].positiveCountMain+result[2].positiveCountMain+result[3].positiveCountMain);
 				$("#oppNegativeTotal").html(result[1].negativCountMain+result[2].negativCountMain+result[3].negativCountMain);
@@ -263,7 +263,7 @@
 					$("#oppNegativeTotalPercent").html(" 0.0 %");
 				}
 				
-				var ysrcMainTotal = result[1].positiveCountMain+result[1].negativCountMain;
+				var ysrcMainTotal = result[1].totalCount;
 				$("#ysrcMainTotal").html(ysrcMainTotal);
 				$("#ysrcMainPositive").html(result[1].positiveCountMain);
 				$("#ysrcMainNegative").html(result[1].negativCountMain);
@@ -277,7 +277,7 @@
 					$("#ysrcMainNegativePercent").html(" 0.0 %");
 				}
 				
-				var incMainTotal = result[2].positiveCountMain+result[2].negativCountMain;
+				var incMainTotal = result[2].totalCount;
 				$("#incMainTotal").html(incMainTotal);
 				$("#incMainPositive").html(result[2].positiveCountMain);
 				$("#incMainNegative").html(result[2].negativCountMain);
@@ -289,7 +289,7 @@
 					$("#incMainPositivePercent").html(" 0.0 %");
 					$("#incMainNegativePercent").html(" 0.0 %");
 				}
-				 var bjpMainTotal = result[3].positiveCountMain+result[3].negativCountMain;
+				 var bjpMainTotal = result[3].totalCount;
 				 $("#bjpMainTotal").html(bjpMainTotal);
 				 $("#bjpMainPositive").html(result[3].positiveCountMain);
 				 $("#bjpMainNegative").html(result[3].negativCountMain);
@@ -303,7 +303,7 @@
 					$("#bjpMainNegativePercent").html(" 0.0 %"); 
 				 }
 				 
-				 var oppDistTotal=(result[1].positiveCountDist+result[1].negativCountDist)+(result[2].positiveCountDist+result[2].negativCountDist)+(result[3].positiveCountDist+result[3].negativCountDist);
+				 var oppDistTotal=(result[1].count);
 				 $("#oppDistTotal").html(oppDistTotal);
 				 
 				 $("#oppDistPositive").html(result[1].positiveCountDist+result[2].positiveCountDist+result[3].positiveCountDist);
@@ -318,7 +318,7 @@
 					$("#oppDistNegativePercent").html(" 0.0 %"); 
 				 }
 				 
-				 var ysrcDistTotal = result[1].positiveCountDist+result[1].negativCountDist;
+				 var ysrcDistTotal = result[1].count;
 				$("#ysrcDistTotal").html(ysrcDistTotal);
 				$("#ysrcDistPositive").html(result[1].positiveCountDist);
 				$("#ysrcDistNegative").html(result[1].negativCountDist);
@@ -332,7 +332,7 @@
 					$("#ysrcDistNegativePercent").html(" 0.0 %");
 				}
 				
-				var incDistTotal = result[2].positiveCountDist+result[2].negativCountDist;
+				var incDistTotal = result[2].count;
 				$("#incDistTotal").html(incDistTotal);
 				$("#incDistPositive").html(result[2].positiveCountDist);
 				$("#incDistNegative").html(result[2].negativCountDist);
@@ -345,7 +345,7 @@
 					$("#incDistNegativePercent").html(" 0.0 %");
 				}
 				
-				var bjpDistTotal = result[3].positiveCountDist+result[3].negativCountDist;
+				var bjpDistTotal = result[3].count;
 				 $("#bjpDistTotal").html(bjpDistTotal);
 				 $("#bjpDistPositive").html(result[3].positiveCountDist);
 				 $("#bjpDistNegative").html(result[3].negativCountDist);
@@ -359,7 +359,7 @@
 					$("#bjpDistNegativePercent").html(" 0.0 %"); 
 				 }
 				 
-				 var govtMainTotal = result[4].positiveCountMain+result[4].negativCountMain;
+				 var govtMainTotal = result[4].totalCount;
 				 $("#govtMainTotal").html(govtMainTotal);
 				 $("#govtMainPositive").html(result[4].positiveCountMain);
 				 $("#govtMainNegative").html(result[4].negativCountMain);
@@ -372,7 +372,7 @@
 					$("#govtMainNegativePercent").html(" 0.0 %"); 
 				 }
 				 
-				var govtDistTotal = result[4].positiveCountDist+result[4].negativCountDist;
+				var govtDistTotal = result[4].count;
 				 $("#govtDistTotal").html(govtDistTotal);
 				 $("#govtDistPositive").html(result[4].positiveCountDist);
 				 $("#govtDistNegative").html(result[4].negativCountDist);
@@ -5720,7 +5720,8 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		img.src = "images/User.png";
 	}
 	function commonNewsBasicCalls(){
-		getNewsBasicCounts();
+		//getNewsBasicCounts();
+		getNewsBasicPartyCounts();
 		getPaperWiseNewsBasicCounts();
 		 if($(".newsIconExpand i").attr("class").split(" ")[1]=="glyphicon-resize-small"){
 			$(".newsliCls").each(function(){
