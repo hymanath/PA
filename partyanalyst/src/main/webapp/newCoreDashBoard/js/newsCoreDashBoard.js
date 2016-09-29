@@ -222,6 +222,7 @@
 		
 		var startDate=currentFromDate,endDate=currentToDate;
 		var state = globalState;
+		$("#newsBlockMainId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$.ajax({
 			//url: wurl+"/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
 			url: "http://localhost:8080/CommunityNewsPortal/webservice/getNewsBasicPartyCounts/"+globalUserAccessLevelId+"/"+temp+"/"+state+"/"+startDate+"/"+endDate+"/"+newsPaperIdsStr+"/"+impactScopeIdsStr
@@ -402,15 +403,26 @@
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-capital responsiveFont">Main Edition</p>';
-							str+='<p>'+((result[0].positiveCountMain)+(result[0].negativCountMain))+'</p>';
+							str+='<p>'+result[0].totalCount+'</p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-							str+='<span>'+result[0].positiveCountMain+'</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>';
+							str+='<span>'+result[0].positiveCountMain+'</span>';
+							if(result[0].totalCount > 0){
+								str+='<small id="" class="text-success"> '+((result[0].positiveCountMain*100)/(result[0].totalCount)).toFixed(2)+' %</small>';
+							}else{
+								str+='<small id="" class="text-success"> 0.0 %</small>';
+							}
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-							str+='<span>'+result[0].negativCountMain+'</span><small id="tdpMainNegativePercent" class="text-danger"> 0%</small>';
+							str+='<span>'+result[0].negativCountMain+'</span>';
+							if(result[0].totalCount > 0){
+								str+='<small id="" class="text-danger"> '+((result[0].negativCountMain*100)/(result[0].totalCount)).toFixed(2)+' %</small>';
+							}else{
+								str+='<small id="" class="text-danger"> 0.0 %</small>';
+							}
+								
 						str+='</td>';
 					str+='</tr>';
 				str+='</table>';
@@ -420,15 +432,25 @@
 					str+='<tr>';
 						str+='<td>';
 							str+='<p class="text-capital">Dist edition</p>';
-							str+='<p>'+((result[0].positiveCountDist)+(result[0].negativCountDist))+'</p>';
+							str+='<p>'+result[0].count+'</p>';
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted">Positive</p>';
-							str+='<span>'+result[0].positiveCountDist+'</span><small class="text-success" id="tdpDistPositivePercent"> 0%</small>';
+							str+='<span>'+result[0].positiveCountDist+'</span>';
+							if(result[0].count > 0){
+								str+='<small class="text-success" id=""> '+((result[0].positiveCountDist*100)/(result[0].count)).toFixed(2)+' %</small>';
+							}else{
+								str+='<small class="text-success" id=""> 0.0 %</small>';
+							}
 						str+='</td>';
 						str+='<td>';
 							str+='<p class="text-capital text-muted">Negative</p>';
-							str+='<span>'+result[0].negativCountDist+'</span><small class="text-danger" id="tdpDistNegativePercent"> 0%</small>';
+							str+='<span>'+result[0].negativCountDist+'</span>';
+							if(result[0].count > 0){
+								str+='<small class="text-danger" id=""> '+((result[0].negativCountDist*100)/(result[0].count)).toFixed(2)+' %</small>';
+							}else{
+								str+='<small class="text-danger" id=""> 0.0 %</small>';
+							}
 						str+='</td>';
 					str+='</tr>';
 				str+='</table>';
@@ -443,29 +465,57 @@
 					str+='<table class="table table-condensed tableNews ">';
 						str+='<tr class="bg_ED">';
 							str+='<td>';
+							var mTot=0,mPos=0,mNeg=0,dTot=0,dPos=0,dNeg=0;
+							for(var i=1;i<(result.length-1);i++){
+								mTot = mTot+result[i].totalCount;
+								dTot = dTot+result[i].count;
+								mPos = mPos+result[i].positiveCountMain;
+								dPos = dPos+result[i].positiveCountDist;
+								mNeg = mNeg+result[i].negativCountMain;
+								dNeg = dNeg+result[i].negativCountDist;
+							}
+						
 								str+='<p class="text-capital">Main Edition</p>';
-								str+='<p id="oppMainTotal">0</p>';
+								str+='<p id="">'+mTot+'</p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span>0</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>';
+								str+='<span>'+mPos+'</span>';
+								if(mTot>0)
+									str+='<small id="" class="text-success"> '+((mPos*100)/mTot).toFixed(2)+' %</small>';
+								else
+									str+='<small id="" class="text-success"> 0.0 %</small>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span id="oppNegativeTotal">0</span><small class="text-danger" id="oppNegativeTotalPercent"> 0%</small>';
+								str+='<span id="">'+mNeg+'</span>';
+								if(mTot > 0)
+									str+='<small class="text-danger" id=""> '+((mNeg*100)/mTot).toFixed(2)+' %</small>';
+								else
+									str+='<small class="text-danger" id=""> 0.0 %</small>';
 							str+='</td>';
 						str+='</tr>';
 					for(var i=1;i<(result.length-1);i++)
 					{
 						str+='<tr>';
 							str+='<td>';
-								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+((result[i].positiveCountMain)+(result[i].negativCountMain))+'</span>';
+								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+result[i].totalCount+'</span>';
 							str+='</td>';
 							str+='<td>';
-								str+='<span>'+result[i].positiveCountMain+'</span><small class="text-success"> 0%</small>';
+								str+='<span>'+result[i].positiveCountMain+'</span>';
+								if(result[i].totalCount > 0){
+									str+='<small class="text-success"> '+((result[i].positiveCountMain*100)/(result[i].totalCount)).toFixed(2)+' %</small>';
+								}else{
+									str+='<small class="text-success"> 0.0 %</small>';
+								}
 							str+='</td>';
 							str+='<td>';
-								str+='<span>'+result[i].negativCountMain+'</span><small class="text-danger"> 0%</small>';
+								str+='<span>'+result[i].negativCountMain+'</span>';
+								if(result[i].totalCount > 0){
+									str+='<small class="text-danger"> '+((result[i].negativCountMain*100)/(result[i].totalCount)).toFixed(2)+' %</small>';
+								}else{
+									str+='<small class="text-danger"> 0.0 %</small>';
+								}
 							str+='</td>';
 						str+='</tr>';
 					}
@@ -476,15 +526,23 @@
 						str+='<tr class="bg_ED">';
 							str+='<td>';
 								str+='<p class="text-capital">Dist Edition</p>';
-								str+='<p id="oppDistTotal">0</p>';
+								str+='<p id="">'+dTot+'</p>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Positive</p>';
-								str+='<span id="oppDistPositive">0</span><small class="text-success" id="oppDistPositivePercent"> 0%</small>';
+								str+='<span id="">'+dPos+'</span>';
+								if(dTot > 0)
+									str+='<small class="text-success" id=""> '+((dPos*100)/dTot).toFixed(2)+' %</small>';
+								else
+									str+='<small class="text-success" id=""> 0.0 %</small>';
 							str+='</td>';
 							str+='<td>';
 								str+='<p class="text-capital text-muted">Negative</p>';
-								str+='<span id="oppDistNegative">0</span><small class="text-danger" id="oppDistNegativePercent"> 0%</small>';
+								str+='<span id="">'+dNeg+'</span>';
+								if(dTot > 0)
+									str+='<small class="text-danger" id=""> '+((dNeg*100)/dTot).toFixed(2)+' %</small>';
+								else
+									str+='<small class="text-danger" id=""> 0.0 %</small>';
 							str+='</td>';
 						str+='</tr>';
 						
@@ -492,13 +550,23 @@
 					{
 						str+='<tr>';
 							str+='<td>';
-								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+((result[i].positiveCountDist)+(result[i].negativCountDist))+'</span>';
+								str+='<img src="newCoreDashBoard/img/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+result[i].count+'</span>';
 							str+='</td>';
 							str+='<td>';
-								str+='<span>'+result[i].positiveCountDist+'</span><small class="text-success" id="ysrcMainPositivePercent"> 0%</small>';
+								str+='<span>'+result[i].positiveCountDist+'</span>';
+								if(result[i].count > 0){
+									str+='<small class="text-success" id=""> '+((result[i].positiveCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
+								}else{
+									str+='<small class="text-success" id=""> 0.0 %</small>';
+								}
 							str+='</td>';
 							str+='<td>';
-								str+='<span>'+result[i].negativCountDist+'</span><small class="text-danger" id="ysrcMainNegativePercent"> 0%</small>';
+								str+='<span>'+result[i].negativCountDist+'</span>';
+								if(result[i].count > 0){
+									str+='<small class="text-danger" id=""> '+((result[i].negativCountDist*100)/(result[i].count)).toFixed(2)+' %</small>';
+								}else{
+									str+='<small class="text-danger" id=""> 0.0 %</small>';
+								}
 							str+='</td>';
 						str+='</tr>';
 					}
@@ -508,24 +576,33 @@
 			str+='</div>';
 			
 			//Govt block building
+			var t = result.length-1;
 			str+='<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>';
-					str+='			<div class="row">';
-							str+='		<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
-									str+='	<table class="table table-condensed tableNews bg_ED">';
-											str+='<tr>';
-												str+='<td>';
-													str+='<p class="text-capital">Main Edition</p>';
-													str+='<p id="govtMainTotal">'+result[4].totalCount+'</p>';
+					str+='<div class="row">';
+							str+='<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
+									str+='<table class="table table-condensed tableNews bg_ED">';
+										str+='<tr>';
+											str+='<td>';
+												str+='<p class="text-capital">Main Edition</p>';
+												str+='<p id="">'+result[t].totalCount+'</p>';
 												str+='</td>';
 												str+='<td>';
-													str+='<p class="text-capital text-muted">Positive</p>';
-													str+='<span id="govtMainPositive">'+result[4].positiveCountMain+'</span>';
-													//<small class="text-success" id="govtMainPositivePercent"> '+(result[4].positiveCountMain*100)/result[4].totalCount).toFixed(2)+' %</small>';
+												str+='<p class="text-capital text-muted">Positive</p>';
+												str+='<span id="">'+result[t].positiveCountMain+'</span>';
+													if(result[t].totalCount>0){
+														str+='<small class="text-success" id=""> '+((result[t].positiveCountMain*100)/(result[t].totalCount)).toFixed(2)+' %</small>';
+													}else{
+														str+='<small class="text-success" id=""> 0.0  %</small>';
+													}
 												str+='</td>';
 												str+='<td>';
 													str+='<p class="text-capital text-muted">Negative</p>';
-													str+='<span id="govtMainNegative">'+result[4].negativCountMain+'</span>';
-													//<small class="text-danger" id="govtMainNegativePercent"> '+(result[4].negativCountMain*100)/result[4].totalCount).toFixed(2)+' %</small>';
+													str+='<span id="">'+result[t].negativCountMain+'</span>';
+													if(result[t].totalCount>0){
+														str+='<small class="text-danger" id=""> '+((result[t].negativCountMain*100)/(result[t].totalCount)).toFixed(2)+'  %</small>';
+													}else{
+														str+='<small class="text-danger" id=""> 0.0 %</small>';
+													}
 												str+='</td>';
 											str+='</tr>';
 										str+='</table>';
@@ -535,17 +612,25 @@
 											str+='<tr>';
 												str+='<td>';
 													str+='<p class="text-capital">Dist Edition</p>';
-													str+='<p id="govtDistTotal">'+result[4].count+'</p>';
+													str+='<p id="">'+result[t].count+'</p>';
 												str+='</td>';
 												str+='<td>';
 													str+='<p class="text-capital text-muted">positive</p>';
-													str+='<span id="govtDistPositive">'+result[4].positiveCountDist+'</span>';
-													//<small class="text-success" id="govtDistPositivePercent"> '+(result[4].positiveCountDist*100)/result[4].count).toFixed(2)+' %</small>';
+													str+='<span id="">'+result[t].positiveCountDist+'</span>';
+													if(result[t].count > 0){
+														str+='<small class="text-success" id=""> '+((result[t].positiveCountDist*100)/(result[t].count)).toFixed(2)+' %</small>';
+													}else{
+														str+='<small class="text-success" id=""> 0.0 %</small>';
+													}
 												str+='</td>';
 												str+='<td>';
 													str+='<p class="text-capital text-muted">negative</p>';
-													str+='<span id="govtDistNegative">'+result[4].negativCountDist+'</span>';
-													//<small class="text-danger" id="govtDistNegativePercent"> '+(result[4].negativCountDist*100)/result[4].count).toFixed(2)+'%</small>';
+													str+='<span id="">'+result[t].negativCountDist+'</span>';
+													if(result[t].count > 0){
+														str+='<small class="text-danger" id=""> '+((result[t].negativCountDist*100)/(result[t].count)).toFixed(2)+' %</small>';
+													}else{
+														str+='<small class="text-danger" id=""> 0.0 %</small>';
+													}
 												str+='</td>';
 											str+='</tr>';
 										str+='</table>';
