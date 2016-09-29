@@ -198,6 +198,7 @@
 	
 	//Main Block Ajax Calls And Build Start
 	function getNewsBasicPartyCounts(){
+		$("#spinnerStatic").css("display","inline-block");
 		var temp="";
 		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
 			for(var i in globalUserAccessLevelValues){
@@ -385,6 +386,7 @@
 					$("#govtDistNegativePercent").html(" 0.0 %");	
 				 }
 			}
+		$("#spinnerStatic").hide();
 		});
 	}
 	//Main Block Ajax Calls And Build End
