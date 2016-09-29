@@ -747,8 +747,8 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
 
-  // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-  //  public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
+   //public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+  //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst";
     
     
@@ -1140,7 +1140,7 @@ public interface IConstants {
 	public static final Long COUNTRY_USER_TYPE_ID    = 1l;
 	public static final Long STATE_USER_TYPE_ID    = 2l;
 	
-	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5,6,7,8"; 
+	public static final String NOMINATED_POST_NOT_RUNNING_STATUS="1,5,6,7"; 
 	public static final String NOMINATED_POST_REJECTED_STATUS_IDS="2,4";
 	public static final String AP_NEW_DISTRICTS_IDS_LIST = "11,12,13,14,15,16,17,18,19,20,21,22,23,517";
 	public static final String TS_NEW_DISTRICTS_IDS_LIST = "1,2,3,4,5,6,7,8,9,10,518";
