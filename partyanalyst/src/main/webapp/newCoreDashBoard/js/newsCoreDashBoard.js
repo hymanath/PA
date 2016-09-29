@@ -4139,13 +4139,13 @@
 								str+='<td>'+(parseInt(i)+1)+'</td>';
 								str+='<td>'+result[i].organization+'</td>';
 								
-								str+='<td>'+result[i].neutralCountMain+'</td>';
+								str+='<td>'+result[i].totalCount+'</td>';
 								str+='<td>'+result[i].positiveCountMain+'</td>';
 								str+='<td>'+result[i].positivePerc+'</td>';
 								str+='<td>'+result[i].negativCountMain+'</td>';
 								str+='<td>'+result[i].negativePerc+'</td>';
 								
-								str+='<td>'+result[i].neutralCountDist+'</td>';
+								str+='<td>'+result[i].count+'</td>';
 								str+='<td>'+result[i].positiveCountDist+'</td>';
 								str+='<td>'+result[i].positiveDistPerc+'</td>';
 								str+='<td>'+result[i].negativCountDist+'</td>';
