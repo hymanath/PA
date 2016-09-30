@@ -425,7 +425,7 @@
 											</tr>
 										</table>
 									</div>
-								</div>
+								</div>-->
 								<div class="editionWiseBlock" style="display:none;">
 								<h4 class="text-capital m_top10"><span class="headingColor" style="margin-right:5px">Edition Wise Unique Counts</span></h4>
 								<div class="row" id="PaperWiseBlockInDivId"></div>
@@ -439,7 +439,7 @@
 										</table>
 									</div>
 								</div>
-							</div>-->
+							</div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
 								<div class="row">
