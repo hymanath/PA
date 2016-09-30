@@ -6099,21 +6099,28 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		var str='';
 		var str1='';
 		var str2='';
+		var newsPaperIdsStr="";
+		if(newsPaperIdsGlob != null && newsPaperIdsGlob.length){
+			for(var i in newsPaperIdsGlob){
+				newsPaperIdsStr=i==0?newsPaperIdsGlob[i]:newsPaperIdsStr+","+newsPaperIdsGlob[i];
+			}
+		} 
+		
 		if(result != null && result.length > 0){
 			str2+='<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">';
 			str2+='<table class="table table-condensed tableNews bg_ED">';
 			str2+='<tr>';
 			str2+='<td>';
 			str2+='<p class="text-capital responsiveFont">Main Count</p>';
-			str2+='<p id="totalUniqueMainTotal">'+result[0].editionUniqueCountMain+'</p>';
+			str2+='<p id="totalUniqueMainTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " " attr_partyids="'+newsPaperIdsStr+'">'+result[0].editionUniqueCountMain+'</p>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-			str2+='<span id="totalUniqueMainPositive">'+result[0].positiveCountMain+'</span><small id="totalUniqueMainPositivePercent" class="text-success"> 0.0 %</small>';
+			str2+='<span id="totalUniqueMainPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_partyids="'+newsPaperIdsStr+'">'+result[0].positiveCountMain+'</span><small id="totalUniqueMainPositivePercent" class="text-success"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted responsiveFont">Negative</p>';
-			str2+='<span id="totalUniqueMainNegative">'+result[0].negativCountMain+'</span><small id="totalUniqueMainNegativePercent" class="text-danger"> 0.0 %</small>';
+			str2+='<span id="totalUniqueMainNegative" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].negativCountMain+'</span><small id="totalUniqueMainNegativePercent" class="text-danger"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='</tr>';
 			str2+='</table>';
@@ -6124,15 +6131,15 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			str2+='<tr>';
 			str2+='<td>';
 			str2+='<p class="text-capital">Dist Count</p>';
-			str2+='	<p id="totalUniqueDistTotal">'+result[0].editionUniqueCountDist+'</p>';
+			str2+='	<p id="totalUniqueDistTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].editionUniqueCountDist+'</p>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted">Positive</p>';
-			str2+='<span id="totalUniqueDistPositive">'+result[0].positiveCountDist+'</span><small class="text-success" id="totalUniqueDistPositivePercent"> 0.0 %</small>';
+			str2+='<span id="totalUniqueDistPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].positiveCountDist+'</span><small class="text-success" id="totalUniqueDistPositivePercent"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted">Negative</p>';
-			str2+='<span id="totalUniqueDistNegative">'+result[0].negativCountDist+'</span><small class="text-danger" id="totalUniqueDistNegativePercent"> 0.0 %</small>';
+			str2+='<span id="totalUniqueDistNegative" class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+newsPaperIdsStr+'">'+result[0].negativCountDist+'</span><small class="text-danger" id="totalUniqueDistNegativePercent"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='</tr>';
 			str2+='</table>';
@@ -6151,19 +6158,20 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			}
 			
 			for(var i=1;i<result.length;i++){
+				
 				str+='<tr>';
 					str+='<td>';
-							str+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+result[i].totalCount+'</span>';
+							str+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " "attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].totalCount+'</span>';
 						str+='</td>';
 						str+='<td>';
 							if(result[i].totalCount > 0)
-								str+='<span>'+result[i].positiveCountMain+'</span><small class="text-success"> '+((result[i].positiveCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
+								str+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].positiveCountMain+'</span><small class="text-success"> '+((result[i].positiveCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
 							else
 								str+='<span>'+result[i].positiveCountMain+'</span><small class="text-success"> 0 %</small>';
 						str+='</td>';
 						str+='<td>';
 							if(result[i].totalCount > 0)
-								str+='<span>'+result[i].negativCountMain+'</span><small class="text-danger"> '+((result[i].negativCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
+								str+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].negativCountMain+'</span><small class="text-danger"> '+((result[i].negativCountMain/result[i].totalCount)*100).toFixed(2)+' %</small>';
 							else
 								str+='<span>'+result[i].negativCountMain+'</span><small class="text-danger"> 0 %</small>';
 						str+='</td>';
@@ -6171,17 +6179,17 @@ $(document).on("click",".btnCustomCreateNews",function(){
 					
 					str1+='<tr>';
 					str1+='<td>';
-							str1+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span>'+result[i].count+'</span>';
+							str1+='<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+result[i].organization+'.png" alt="cong logo" class="debatesPartyIcon"/><span class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid =" " attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].count+'</span>';
 						str1+='</td>';
 						str1+='<td>';
 							if(result[i].count > 0)
-								str1+='<span>'+result[i].positiveCountDist+'</span><small class="text-success"> '+((result[i].positiveCountDist/result[i].count)*100).toFixed(2)+' %</small>';
+								str1+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="1" attr_isdepartment = " " attr_partyids="'+result[i].organizationId+'">'+result[i].positiveCountDist+'</span><small class="text-success"> '+((result[i].positiveCountDist/result[i].count)*100).toFixed(2)+' %</small>';
 							else
 								str1+='<span>'+result[i].positiveCountDist+'</span><small class="text-success"> 0 %</small>';
 						str1+='</td>';
 						str1+='<td>';
 							if(result[i].count > 0)
-								str1+='<span>'+result[i].negativCountDist+'</span><small class="text-danger"> '+((result[i].negativCountDist/result[i].count)*100).toFixed(2)+' %</small>';
+								str1+='<span class="newsBasicCountDetailsDivEd" attr_editiontype="2,3" attr_benefitid ="2" attr_isdepartment = " " attr_partyids=" " attr_npids="'+result[i].organizationId+'">'+result[i].negativCountDist+'</span><small class="text-danger"> '+((result[i].negativCountDist/result[i].count)*100).toFixed(2)+' %</small>';
 							else
 								str1+='<span>'+result[i].negativCountDist+'</span><small class="text-danger"> 0 %</small>';
 						str1+='</td>';
@@ -6227,5 +6235,31 @@ $(document).on("click",".btnCustomCreateNews",function(){
 		
 	});
 	
+	$(document).on("click",".newsBasicCountDetailsDivEd",function(e){
+		//var edTypeIdStr = $(this).attr("attr_editiontype");
+		//var bfIdStr   = $(this).attr("attr_benefitid");
+		//var orgType = $(this).attr("attr_isdepartment");
+		//var orgIdStr = $(this).attr("attr_partyids");
 		
+		 var temp="";
+		if(globalUserAccessLevelValues != null && globalUserAccessLevelValues.length > 0){
+			for(var i in globalUserAccessLevelValues){
+				temp=i==0?globalUserAccessLevelValues[i]:temp+","+globalUserAccessLevelValues[i];
+			}
+		}
+		
+		var impactScopeIdsStr="";
+		if(impactScopeIdsGlob != null && impactScopeIdsGlob.length){
+			for(var i in impactScopeIdsGlob){
+				impactScopeIdsStr=i==0?impactScopeIdsGlob[i]:impactScopeIdsStr+","+impactScopeIdsGlob[i];
+			}
+		}
+		
+		
+		window.open('showArticlesAction.action?edTypeIdStr='+$(this).attr("attr_editiontype")+'&bfIdStr='+$(this).attr("attr_benefitid")+'&orgType='+$(this).attr("attr_isdepartment")+'&orgIdStr='+$(this).attr("attr_partyids")+'&callFrom=fblk&stIdx=0&edIdx=6&levelId='+globalUserAccessLevelId+'&temp='+temp+'&state='+globalState+'&sdat='+currentFromDate+'&edat='+currentToDate+'&scops='+impactScopeIdsStr+'&npsStr='+$(this).attr("attr_npids")+'','_blank');
+		
+		//getArticlesOfNewsBasicCounts(edTypeIdStr,bfIdStr,orgType,orgIdStr);
+		//
+		
+	});	
 		

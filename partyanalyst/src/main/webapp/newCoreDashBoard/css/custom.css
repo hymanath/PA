@@ -1916,6 +1916,9 @@ margin-top: 5px; margin-bottom: 2px;
 	font-size:10px !important;
 	padding:2px !important;
 }
-.newsBasicCountDetailsDiv{
+.newsBasicCountDetailsDivEd{
+	cursor:pointer;
+}
+.newsBasicCountDetailsDivEd{
 	cursor:pointer;
 }
