@@ -1872,3 +1872,50 @@ margin-top: 5px; margin-bottom: 2px;
 	border:1px solid #CCC;
 	border-radius:3px;
 }
+
+.thumb{
+	background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: block;
+    line-height: 1.42857;
+    margin-bottom: 20px;
+    transition: border 0.2s ease-in-out 0s;
+}
+.bg_change{
+	 background-color: #fff;
+    padding: 0;
+}
+
+	.light-theme a, .light-theme span{float:none;}
+	#prevNxtId li:first-child{float:left;}
+	#prevNxtId li:last-child{float:right;}
+	.light-theme a, .light-theme span{font-weight:bold !important;padding:2px 18px !important;}
+ .backgroundclrappy{
+	 background-color:#fff !important;
+	  color:#000 !important;
+ }
+ .crossmarkalignSt {
+    height: 10px;
+    margin-left: 7px;
+    margin-top: -4px;
+    width: 10px;
+}
+.subBlock
+{
+  background: #DAE7F0; 
+  padding-right: 0px; 
+  padding-left: 0px;
+}
+.table , p
+{
+  margin-bottom:0px !important;
+}
+.tableGr tr td
+{
+	font-size:10px !important;
+	padding:2px !important;
+}
+.newsBasicCountDetailsDiv{
+	cursor:pointer;
+}
