@@ -13806,5 +13806,11 @@
 	  		<param name="root">debateId</param>     
 	 	</result>
 	</action>
+	
+	<action name="showArticlesAction" class="coreDashboardAction" method="showArticles">
+		<result name="success">/jsp/showCnpArticles.jsp</result>
+	</action>
+	
+	
 </package>
 </struts>

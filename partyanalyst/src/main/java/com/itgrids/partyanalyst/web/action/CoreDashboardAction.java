@@ -90,6 +90,22 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<EventDetailsVO>  eventDetailsVOList;
 	private EventDetailsVO eventDetailsVO;
 	private List<HolidayListVO> holidayListVOs;
+	private String edTypeIdStr;
+	private String bfIdStr;
+	private String orgIdStr;
+	private String orgType;
+	private String callFrom;
+	private String stIdx;
+	private String edIdx;
+	private String levelId;
+	private String temp;
+	private String state;
+	private String sdat;
+	private String edat;
+	private String scops;
+	private String npsStr;
+	
+	
 	//setters And Getters
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
 		return partyMeetingsVOList;
@@ -281,6 +297,121 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
     
 	public PartyMeetingsDataVO getPartyMeetingDataVO() {
 		return partyMeetingDataVO;
+	}
+	
+	
+	public String getEdTypeIdStr() {
+		return edTypeIdStr;
+	}
+
+	public void setEdTypeIdStr(String edTypeIdStr) {
+		this.edTypeIdStr = edTypeIdStr;
+	}
+
+	public String getBfIdStr() {
+		return bfIdStr;
+	}
+
+	public void setBfIdStr(String bfIdStr) {
+		this.bfIdStr = bfIdStr;
+	}
+
+	public String getOrgIdStr() {
+		return orgIdStr;
+	}
+
+	public void setOrgIdStr(String orgIdStr) {
+		this.orgIdStr = orgIdStr;
+	}
+
+	public String getOrgType() {
+		return orgType;
+	}
+
+	public void setOrgType(String orgType) {
+		this.orgType = orgType;
+	}
+
+	
+	public String getCallFrom() {
+		return callFrom;
+	}
+
+	public void setCallFrom(String callFrom) {
+		this.callFrom = callFrom;
+	}
+
+	public String getStIdx() {
+		return stIdx;
+	}
+
+	public void setStIdx(String stIdx) {
+		this.stIdx = stIdx;
+	}
+
+	public String getEdIdx() {
+		return edIdx;
+	}
+
+	public void setEdIdx(String edIdx) {
+		this.edIdx = edIdx;
+	}
+	
+	
+	public String getLevelId() {
+		return levelId;
+	}
+
+	public void setLevelId(String levelId) {
+		this.levelId = levelId;
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getSdat() {
+		return sdat;
+	}
+
+	public void setSdat(String sdat) {
+		this.sdat = sdat;
+	}
+
+	public String getEdat() {
+		return edat;
+	}
+
+	public void setEdat(String edat) {
+		this.edat = edat;
+	}
+
+	public String getScops() {
+		return scops;
+	}
+
+	public void setScops(String scops) {
+		this.scops = scops;
+	}
+
+	public String getNpsStr() {
+		return npsStr;
+	}
+
+	public void setNpsStr(String npsStr) {
+		this.npsStr = npsStr;
 	}
 
 	//Implementation method
@@ -2125,5 +2256,8 @@ public String getCoreDebateBasicDetailsOfParty(){
 	}
 	return Action.SUCCESS;
 }
-
+	
+	public String showArticles(){
+		return "success";
+	}
 }

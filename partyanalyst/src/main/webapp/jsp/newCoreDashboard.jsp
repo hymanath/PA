@@ -439,6 +439,7 @@
 										</table>
 									</div>
 								</div>
+							
 							</div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
@@ -2520,7 +2521,6 @@
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-
 <!--end-->
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
