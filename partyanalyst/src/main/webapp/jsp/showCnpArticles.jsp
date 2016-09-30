@@ -101,9 +101,9 @@ function getArticlesOfNewsBasicCounts(stIndex){
 						str+='<div class="col-md-4 col-sm-3 widgets widget-hide autoWidthBlock" id="articlediv'+results[i].articleId+'">';
 							str+='<div class="thumbnail thumbnail-widget" style="height:auto;">';
 							if(results[i].imageURL !='images/NoImageUpd.png'){
-								str+='<a class="viewArticleDetailsByAllArticlesPage" attr_articleNo="'+artclNmbr+'" attr_articleId='+results[i].articleId+' attr_paginCnt="'+countByDate+'" style="cursor:pointer;"><img src="../NewsReaderImages/'+results[i].imageURL+'" class="groupingimage" alt="image Not Available." style="width:311px;height:140px;"/></a>';
+								str+='<a class="viewArticleDetailsByAllArticlesPage" attr_articleNo="'+artclNmbr+'" attr_articleId='+results[i].articleId+' attr_paginCnt="'+countByDate+'" style="cursor:pointer;"><img src="http://mytdp.com/NewsReaderImages/'+results[i].imageURL+'" class="groupingimage" alt="image Not Available." style="width:311px;height:140px;"/></a>';
 							}else{
-								str+='<a class="viewArticleDetailsByAllArticlesPage" attr_articleNo="'+artclNmbr+'" attr_articleId='+results[i].articleId+' attr_paginCnt="'+countByDate+'" style="cursor:pointer;"><img src="../NewsReaderImages/'+results[i].imageURL+'" class="groupingimage" alt="image Not Available." style="width:311px;height:140px;"/></a>';
+								str+='<a class="viewArticleDetailsByAllArticlesPage" attr_articleNo="'+artclNmbr+'" attr_articleId='+results[i].articleId+' attr_paginCnt="'+countByDate+'" style="cursor:pointer;"><img src="http://mytdp.com/NewsReaderImages/'+results[i].imageURL+'" class="groupingimage" alt="image Not Available." style="width:311px;height:140px;"/></a>';
 							}
 							str+='<div class="caption">';
 							 if(results[i].articleTitle == null || results[i].articleTitle.length>50){
@@ -147,7 +147,7 @@ function getArticlesOfNewsBasicCounts(stIndex){
 											  str+='<td style="width:50%;">';
 												  str+='<ul class="list-inline m_0">';
 													
-													 str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px; " src="Party_logos_small/'+results[i].subList[j].fromList[l].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
+													 str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px; " src="newCoreDashBoard/img/'+results[i].subList[j].fromList[l].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
 													 
 													 if(results[i].subList[j].fromList[l].organizationName == null || results[i].subList[j].fromList[l].organizationName == 0){
 														  str+='<li class="text-muted" style="font-size: 12px;text-align:center;"> - </li>';
@@ -283,7 +283,7 @@ function getArticlesOfNewsBasicCounts(stIndex){
 												str+='<tr>';
 												  str+='<td style="width:50%;">';
 													  str+='<ul class="list-inline m_0">';
-														   str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px;" src="Party_logos_small/'+results[i].subList[j].toList[k].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
+														   str+='<li><img class="img-circle" style="display: inline-block; width: 20px; height: 20px;" src="newCoreDashBoard/img/'+results[i].subList[j].toList[k].organizationName+'.png" onerror="setDefaultImage(this);"></li>';
 														  if(results[i].subList[j].toList[k].organizationName != null && results[i].subList[j].toList[k].organizationName.length>7){
 															  str+='<li   data-toggle="tooltip" data-placement="top" title="'+results[i].subList[j].toList[k].organizationName+'" class="text-muted " style="font-size: 12px;cursor:pointer;">'+results[i].subList[j].toList[k].organizationName.substring(0,7)+'...</li>';
 														 }else{
