@@ -728,7 +728,7 @@ $('#attendance').highcharts({
 				str+='<th>employee name</th>';
 				str+='<th>mobile no</th>';
 				str+='<th>working days</th>';
-				str+='<th>holidays days</th>';
+				str+='<th>holidays</th>';  
 				str+='<th>working days present</th>';  
 				str+='<th>holidays present</th>';  
 				str+='<th class="text-danger">late comings(>10:30)</th>';
