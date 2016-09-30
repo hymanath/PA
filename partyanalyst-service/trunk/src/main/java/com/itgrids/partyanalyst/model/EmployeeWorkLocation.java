@@ -21,7 +21,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name="employee_work_location")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EmployeeWorkLocation extends BaseModel {
-	private static final long serialVersionUID = -4534799780105723169L;
+	//private static final long serialVersionUID = -4534799780105723169L;
 	
 	private Long employeeWorkLocationId;
 	private Long partyOfficeId;

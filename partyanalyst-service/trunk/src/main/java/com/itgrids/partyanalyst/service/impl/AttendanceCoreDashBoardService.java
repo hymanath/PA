@@ -365,7 +365,26 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			List<IdNameVO> attendedEmployeeDtls = new ArrayList<IdNameVO>(0);
 			List<IdNameVO> absentEmployeeDtls = new ArrayList<IdNameVO>(0);
 			List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+			//create a map for empId holiday present count;
+			Map<Long,Long> empIdAndHolidayPresentCount = new HashMap<Long,Long>();
 			List<Object[]> emplyeeAttendanceDtlsList = employeeWorkLocationDAO.getAttendanceCountBetweenDatesOfficeWise(fromDate, toDate, officeIdList, deptIdList);
+			List<Object[]> holidayList = holidayDAO.getHolidayList(fromDate, toDate);  
+			//create a list of holiday
+			List<String> holidays = new ArrayList<String>();
+			if(holidayList != null && holidayList.size() > 0){
+				for(Object[] param : holidayList){
+					holidays.add(param[1] != null ? param[1].toString().substring(0, 10) : "");//
+				}
+			}   
+			if(holidays.size() > 0){
+				List<Object[]> emplyeeAttendanceDtlsListInHoliday = employeeWorkLocationDAO.getAttendanceCountInDatesOfficeWise(holidays, officeIdList, deptIdList);
+				if(emplyeeAttendanceDtlsListInHoliday != null && emplyeeAttendanceDtlsListInHoliday.size() > 0){
+					for(Object[] param : emplyeeAttendanceDtlsListInHoliday){
+						empIdAndHolidayPresentCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+					}
+				}  
+			}  
+			
 			List<Object[]> lateComingCountList =  employeeWorkLocationDAO.getEmployeeLateComingsCount( fromDate,  toDate,  officeIdList, deptIdList);
 			List<Long> employeeCadreIdList = employeeWorkLocationDAO.getEmployeeIdListOfficeWise(officeIdList,deptIdList);
 			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
@@ -373,12 +392,16 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			Map<Long,Long> employeeIdAndLateComingCount = new HashMap<Long,Long>();
 			if(lateComingCountList != null && lateComingCountList.size() > 0){
 				for(Object[] param : lateComingCountList){
-					employeeIdAndLateComingCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+					employeeIdAndLateComingCount.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);      
 				}
 			}
 			//collect attended cadre id list
 			List<Long> attendedCadreIdList = new ArrayList<Long>(0);
 			Long absent = 0l;
+			Long holidayDayPresent = null;
+			if(holidayCount > 0l){
+				noOfDays-=holidayCount;
+			}
 			if(emplyeeAttendanceDtlsList != null && emplyeeAttendanceDtlsList.size() > 0){
 				for(Object[] param : emplyeeAttendanceDtlsList){
 					attendedCadreIdList.add(param[2] != null ? (Long)param[2] : 0l);
@@ -391,15 +414,17 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
 					idNameVO.setStatus("present");  
 					idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);
-					if(holidayCount > 0l){
-						idNameVO.setId(noOfDays-holidayCount);
-					}else{
-						idNameVO.setId(noOfDays);
-					}
 					
+					idNameVO.setId(noOfDays);
+					holidayDayPresent = empIdAndHolidayPresentCount.get(param[2] != null ? (Long)param[2] : 0l);
+					if(holidayDayPresent != null){
+						absent = noOfDays  - ((param[5] != null ? (Long)param[5] : 0l) - holidayDayPresent);
+					}else{
+						absent = noOfDays  - (param[5] != null ? (Long)param[5] : 0l);  
+					}
 					idNameVO.setOrderId(employeeIdAndLateComingCount.get(param[2] != null ? (Long)param[2] : 0l) != null ? employeeIdAndLateComingCount.get((Long)param[2]) : 0l);
-					absent = noOfDays - (param[5] != null ? (Long)param[5] : 0l);
-					idNameVO.setCount(absent);  
+					
+					idNameVO.setCount(absent);
 					idNameVO.setWish(param[6] != null ? param[6].toString() : "");
 					attendedEmployeeDtls.add(idNameVO);            
 				}  
@@ -555,11 +580,30 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				noOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 				noOfDays++;
 			}
+			
+			
 			IdNameVO idNameVO = null;
 			List<IdNameVO> attendedEmployeeDtls = new ArrayList<IdNameVO>(0);
-			
-			
+			//create a map for empId holiday present count;
+			Map<Long,Long> empIdAndHolidayPresentCount = new HashMap<Long,Long>();
 			List<Object[]> emplyeeAttendanceDtlsList = employeeWorkLocationDAO.getAttendanceCountBetweenDatesOfficeWise(fromDate, toDate, officeIdList, deptIdList);
+			List<Object[]> holidayList = holidayDAO.getHolidayList(fromDate, toDate);  
+			//create a list of holiday
+			List<String> holidays = new ArrayList<String>();
+			if(holidayList != null && holidayList.size() > 0){
+				for(Object[] param : holidayList){
+					holidays.add(param[1] != null ? param[1].toString().substring(0, 10) : "");//
+				}
+			}   
+			if(holidays.size() > 0){
+				List<Object[]> emplyeeAttendanceDtlsListInHoliday = employeeWorkLocationDAO.getAttendanceCountInDatesOfficeWise(holidays, officeIdList, deptIdList);
+				if(emplyeeAttendanceDtlsListInHoliday != null && emplyeeAttendanceDtlsListInHoliday.size() > 0){
+					for(Object[] param : emplyeeAttendanceDtlsListInHoliday){
+						empIdAndHolidayPresentCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+					}
+				}  
+			}  
+			
 			List<Object[]> lateComingCountList =  employeeWorkLocationDAO.getEmployeeLateComingsCount( fromDate,  toDate,  officeIdList, deptIdList);
 			
 			Long holidayCount = holidayDAO.getHolidayCount(fromDate,toDate);
@@ -567,12 +611,16 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			Map<Long,Long> employeeIdAndLateComingCount = new HashMap<Long,Long>();
 			if(lateComingCountList != null && lateComingCountList.size() > 0){
 				for(Object[] param : lateComingCountList){
-					employeeIdAndLateComingCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+					employeeIdAndLateComingCount.put(param[0] != null ? (Long)param[0] : 0l, param[1] != null ? (Long)param[1] : 0l);
 				}
 			}
 			//collect attended cadre id list
 			List<Long> attendedCadreIdList = new ArrayList<Long>(0);
 			Long absent = 0l;
+			Long holidayDayPresent = null;
+			if(holidayCount > 0l){
+				noOfDays-=holidayCount;
+			}
 			if(emplyeeAttendanceDtlsList != null && emplyeeAttendanceDtlsList.size() > 0){
 				for(Object[] param : emplyeeAttendanceDtlsList){
 					attendedCadreIdList.add(param[2] != null ? (Long)param[2] : 0l);
@@ -585,20 +633,21 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
 					idNameVO.setStatus("present");  
 					idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);
-					if(holidayCount > 0l){
-						idNameVO.setId(noOfDays-holidayCount);
-					}else{
-						idNameVO.setId(noOfDays);
-					}
 					
+					idNameVO.setId(noOfDays);
+					holidayDayPresent = empIdAndHolidayPresentCount.get(param[2] != null ? (Long)param[2] : 0l);
+					if(holidayDayPresent != null){
+						absent = noOfDays  - ((param[5] != null ? (Long)param[5] : 0l) - holidayDayPresent);
+					}else{
+						absent = noOfDays  - (param[5] != null ? (Long)param[5] : 0l);  
+					}
 					idNameVO.setOrderId(employeeIdAndLateComingCount.get(param[2] != null ? (Long)param[2] : 0l) != null ? employeeIdAndLateComingCount.get((Long)param[2]) : 0l);
 					
-					absent = noOfDays - (param[5] != null ? (Long)param[5] : 0l);
-					idNameVO.setCount(absent);  
+					idNameVO.setCount(absent);
 					idNameVO.setWish(param[6] != null ? param[6].toString() : "");
 					attendedEmployeeDtls.add(idNameVO);            
 				}  
-			}
+			}    
 			List<IdNameVO> sortedAbsentList = new ArrayList<IdNameVO>();
 			sortedAbsentList.addAll(attendedEmployeeDtls);
 			Collections.sort(sortedAbsentList, new Comparator<IdNameVO>(){
@@ -619,13 +668,13 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			             return 0;
 			         return vo1.getOrderId() > vo2.getOrderId() ? -1 : 1;
 			     }
-			});
+			});  
 			if(sortedIregularList.size() > 0){
 				sortedIregularList.get(0).setDateStr("iregular");
 			}
 			List<List<IdNameVO>> absentAndIregularList = new ArrayList<List<IdNameVO>>(0);
 			absentAndIregularList.add(sortedAbsentList);
-			absentAndIregularList.add(sortedIregularList);
+			absentAndIregularList.add(sortedIregularList);  
 			return absentAndIregularList;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -729,7 +778,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count between 9 to 10:30
-			fromTime = sdf.parse("09:00:00");  
+			fromTime = sdf.parse("09:00:01");  
 			toTime = sdf.parse("10:30:00");
 			Long between9To1030 = 0l;
 			List<Object[]> totalMemberBetween9To1030 = employeeWorkLocationDAO.getTimeWisePresentCount(officeId,deptId,fromDate,toDate,fromTime,toTime);
@@ -739,7 +788,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count between 10:30 to 11:30
-			fromTime = sdf.parse("10:30:00");  
+			fromTime = sdf.parse("10:30:01");  
 			toTime = sdf.parse("11:30:00");
 			Long between1030to1130 = 0l;
 			List<Object[]> totalMemberBetween1030To1130 = employeeWorkLocationDAO.getTimeWisePresentCount(officeId,deptId,fromDate,toDate,fromTime,toTime);
@@ -749,7 +798,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count between 11:30 to 13
-			fromTime = sdf.parse("11:30:00");  
+			fromTime = sdf.parse("11:30:01");  
 			toTime = sdf.parse("13:00:00");
 			Long between1130To13 = 0l;
 			List<Object[]> totalMemberBetween1130To13 = employeeWorkLocationDAO.getTimeWisePresentCount(officeId,deptId,fromDate,toDate,fromTime,toTime);
@@ -759,7 +808,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count after 13:00
-			toTime = sdf.parse("13:00:00");
+			toTime = sdf.parse("13:00:01");
 			Long after13 = 0l;
 			List<Object[]> totalMemberGreaterThan13 = employeeWorkLocationDAO.getTimeWisePresentCount(officeId,deptId,fromDate,toDate,null,toTime);
 			if(totalMemberGreaterThan13 != null && totalMemberGreaterThan13.size() > 0 ){
@@ -816,6 +865,23 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			if(holidayCount != null){ 
 				noOfDays-=holidayCount;
 			}
+			List<Object[]> holidayList = holidayDAO.getHolidayList(fromDate, toDate);  
+			//create a list of holiday
+			List<String> holidays = new ArrayList<String>();
+			if(holidayList != null && holidayList.size() > 0){
+				for(Object[] param : holidayList){
+					holidays.add(param[1] != null ? param[1].toString().substring(0, 10) : "");//
+				}
+			}  
+			Map<Long,Long> empIdAndHolidayPresentCount = new HashMap<Long,Long>();
+			if(holidays.size() > 0){
+				List<Object[]> emplyeeAttendanceDtlsListInHoliday = employeeWorkLocationDAO.getAttendanceCountInDatesOfficeWise(holidays, officeIdList, deptIdList);
+				if(emplyeeAttendanceDtlsListInHoliday != null && emplyeeAttendanceDtlsListInHoliday.size() > 0){
+					for(Object[] param : emplyeeAttendanceDtlsListInHoliday){  
+						empIdAndHolidayPresentCount.put(param[2] != null ? (Long)param[2] : 0l, param[5] != null ? (Long)param[5] : 0l);
+					}
+				}  
+			}  
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 			//no of attendance per employee irrespective of time
 			List<Object[]> emplyeeAttendanceDtlsList = employeeWorkLocationDAO.getAttendanceCountBetweenDatesOfficeWise(fromDate, toDate, officeIdList, deptIdList);
@@ -828,8 +894,13 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO.setCount(param[5] != null ? (Long)param[5] : 0l);
 					
 					idNameVO.setAvailableCount(noOfDays);
+					Long holidayPresent = empIdAndHolidayPresentCount.get(param[2] != null ? (Long)param[2] : 0l);
+					if(holidayPresent != null){
+						idNameVO.setActualCount(noOfDays-((param[5] != null ? (Long)param[5] : 0l)-holidayPresent));
+					}else{
+						idNameVO.setActualCount(noOfDays-(param[5] != null ? (Long)param[5] : 0l));
+					}      
 					
-					idNameVO.setActualCount(noOfDays-(param[5] != null ? (Long)param[5] : 0l));
 					empIdAndDtlsMap.put(param[2] != null ? (Long)param[2] : 0l,idNameVO);
 				}
 			}
@@ -855,7 +926,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			}
 			//take the attended count between 9 to 10:30
 			Map<Long,Long> empIdAndbetween9To1030= new HashMap<Long,Long>();
-			fromTime = sdf.parse("09:00:00");  
+			fromTime = sdf.parse("09:00:01");  
 			toTime = sdf.parse("10:30:00");
 			
 			List<Object[]> totalMemberBetween9To1030 = employeeWorkLocationDAO.getAttendanceReportTimeToTime(officeId,deptId,fromDate,toDate,fromTime,toTime);
@@ -876,7 +947,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			}
 			//take the attended count between 10:30 to 11:30
 			Map<Long,Long> empIdAndbetween1030to1130= new HashMap<Long,Long>();
-			fromTime = sdf.parse("10:30:00");  
+			fromTime = sdf.parse("10:30:01");  
 			toTime = sdf.parse("11:30:00");
 			
 			List<Object[]> totalMemberBetween1030To1130 = employeeWorkLocationDAO.getAttendanceReportTimeToTime(officeId,deptId,fromDate,toDate,fromTime,toTime);
@@ -897,8 +968,8 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			}
 			//take the attended count between 11:30 to 13
 			Map<Long,Long> empIdAndbetween1130To13= new HashMap<Long,Long>();
-			fromTime = sdf.parse("11:30:00");  
-			toTime = sdf.parse("13:00:00");
+			fromTime = sdf.parse("11:30:01");  
+			toTime = sdf.parse("13:00:00");  
 			
 			List<Object[]> totalMemberBetween1130To13 = employeeWorkLocationDAO.getAttendanceReportTimeToTime(officeId,deptId,fromDate,toDate,fromTime,toTime);
 			if(totalMemberBetween1130To13 != null && totalMemberBetween1130To13.size() > 0 ){
@@ -918,7 +989,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			}
 			//take the attended count after 13
 			Map<Long,Long> empIdAndafter13= new HashMap<Long,Long>();
-			toTime = sdf.parse("13:00:00");
+			toTime = sdf.parse("13:00:01");
 			
 			List<Object[]> totalMemberGreaterThan13 = employeeWorkLocationDAO.getAttendanceReportTimeToTime(officeId,deptId,fromDate,toDate,null,toTime);
 			if(totalMemberGreaterThan13 != null && totalMemberGreaterThan13.size() > 0 ){
@@ -1124,7 +1195,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count between 9 to 9:30
-			fromTime = sdf.parse("09:00:00");  
+			fromTime = sdf.parse("09:00:01");  
 			toTime = sdf.parse("10:30:00");
 			Long between9To1030 = 0l;
 			List<Object[]> totalMemberBetween9To1030 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,toTime,cadreId);
@@ -1134,7 +1205,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count between 9:30 to 10
-			fromTime = sdf.parse("10:30:00");  
+			fromTime = sdf.parse("10:30:01");  
 			toTime = sdf.parse("11:30:00");
 			Long between1030to1130 = 0l;
 			List<Object[]> totalMemberBetween1030To1130 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,toTime,cadreId);
@@ -1144,7 +1215,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count between 10 to 11
-			fromTime = sdf.parse("11:30:00");  
+			fromTime = sdf.parse("11:30:01");  
 			toTime = sdf.parse("13:00:00");
 			Long between1130To13 = 0l;
 			List<Object[]> totalMemberBetween1130To13 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,fromTime,toTime,cadreId);  
@@ -1154,7 +1225,7 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 				}
 			}
 			//take the attended count after 11
-			toTime = sdf.parse("13:00:00");
+			toTime = sdf.parse("13:00:01");
 			Long after13 = 0l;
 			List<Object[]> totalMemberGreaterThan13 = employeeWorkLocationDAO.getTimeWisePresentCountForEmp(officeId,deptId,fromDate,toDate,null,toTime,cadreId);
 			if(totalMemberGreaterThan13 != null && totalMemberGreaterThan13.size() > 0 ){
