@@ -441,54 +441,37 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 		}
 		public List<Object[]> getEmployeeLateComingsCount(Date fromDate, Date toDate, List<Long> officeIdList, List<Long> deptIdList){
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select " +
-							" D.department_id as deptId, " +//0
-							" D.department_name as deptName, " +//1
-							" TC.tdp_cadre_id as cadreId , " +//2
-							" TC.first_name as name , " +//3
-							" TC.mobile_no as mobile , " +//4
-							" count(distinct date(EA.attended_time)) as count , " +//5
-							" min(time(EA.attended_time)) as time " +//6
-							" from "+
-							" employee_work_location EWL, " +
-							" employee_department ED, department D, party_office PO, employee EMP, event_attendee EA, tdp_cadre TC "+
-							" where "+
-							" EWL.party_office_id = PO.party_office_id and "+
-							" PO.party_office_id in (:officeIdList) and "+
-							" EWL.employee_id = EMP.employee_id and "+
-							" EWL.employee_id = ED.employee_id and "+
-							" ED.department_id = D.department_id and "+
-							" D.department_id in (:deptIdList) and "+
-							" EMP.tdp_cadre_id = EA.tdp_cadre_id and "+
-							" EMP.tdp_cadre_id = TC.tdp_cadre_id and "+
-							" (date(EA.attended_time) between :fromDate and :toDate) and " +
-							" time(EA.attended_time) > '10:30:00' and "+
-							" EWL.is_deleted = 'N' and "+
-							" PO.is_deleted = 'N' and "+
-							" EMP.is_delete = 'N' and " +
-							" EMP.is_active = 'Y' and "+
-							" TC.is_deleted = 'N' and "+
-							" EA.event_id in (14,42,25) "+    
-							" group by " +
-							" TC.tdp_cadre_id " +
-							" order by " +
-							" D.department_id ");  
-			
+			queryStr.append(" select tdp_cadre_id as id ,count(time)  as count from ( " +
+							" select min(EA.attended_time) time,TC.tdp_cadre_id from " +
+							" employee_work_location EWL, employee_department ED, department D, party_office PO, employee EMP, event_attendee EA, tdp_cadre TC  " +
+							" where  " +
+							" EWL.party_office_id = PO.party_office_id and   " +
+							" PO.party_office_id in (:officeIdList) and  " +
+							" EWL.employee_id = EMP.employee_id and  " +
+							" EWL.employee_id = ED.employee_id and  " +
+							" ED.department_id = D.department_id and  " +
+							" D.department_id in (:deptIdList) and  " +
+							" EMP.tdp_cadre_id = EA.tdp_cadre_id and  " +
+							" EMP.tdp_cadre_id = TC.tdp_cadre_id and  " +
+							" (date(EA.attended_time) between :fromDate and :toDate ) and  " +
+							" EWL.is_deleted = 'N' and  " +
+							" PO.is_deleted = 'N' and  " +  
+							" EMP.is_delete = 'N' and  " +
+							" TC.is_deleted = 'N' and  " +
+							" EA.event_id in (14,42,25)   " +
+							" group by date(EA.attended_time),TC.tdp_cadre_id order by date(EA.attended_time)) sa where  " +
+							" time(time) > '10:30:00' " +
+							" group by tdp_cadre_id; " );
+							
 			SQLQuery query = getSession().createSQLQuery(queryStr.toString())
-					.addScalar("deptId", Hibernate.LONG)
-					.addScalar("deptName", Hibernate.STRING)
-					.addScalar("cadreId", Hibernate.LONG)
-					.addScalar("name", Hibernate.STRING)
-					.addScalar("mobile", Hibernate.STRING)
-					.addScalar("count", Hibernate.LONG)
-					.addScalar("time", Hibernate.STRING);
-			
+					.addScalar("id", Hibernate.LONG)
+					.addScalar("count", Hibernate.LONG);
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
+			
 			query.setParameterList("officeIdList", officeIdList);
 			query.setParameterList("deptIdList",deptIdList);
 			return query.list();      
-			
 		}
 		public List<Object[]> getDayWisePresentCount(List<Long> officeIdList, List<Long> deptIdList, Date fromDate, Date toDate){
 			StringBuilder queryStr = new StringBuilder();
@@ -593,9 +576,9 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 							if(fromTime != null && toTime != null){
 								queryStr.append(" time(time) between :fromTime and :toTime ");
 							}else if(fromTime != null && toTime == null){
-								queryStr.append(" time(time) < :fromTime ");
+								queryStr.append(" time(time) <= :fromTime ");
 							}else if(fromTime == null && toTime != null){
-								queryStr.append(" time(time) > :toTime ");  
+								queryStr.append(" time(time) >= :toTime ");  
 							} 
 			queryStr.append(" group by tdp_cadre_id;");
 			SQLQuery query = getSession().createSQLQuery(queryStr.toString())
@@ -676,9 +659,9 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 							if(fromTime != null && toTime != null){
 								queryStr.append(" time(time) between :fromTime and :toTime ");
 							}else if(fromTime != null && toTime == null){
-								queryStr.append(" time(time) < :fromTime ");
+								queryStr.append(" time(time) <= :fromTime ");
 							}else if(fromTime == null && toTime != null){
-								queryStr.append(" time(time) > :toTime ");  
+								queryStr.append(" time(time) >= :toTime ");  
 							} 
 			queryStr.append(" group by date(time); ");
 			SQLQuery query = getSession().createSQLQuery(queryStr.toString())
@@ -701,27 +684,56 @@ public class EmployeeWorkLocationDAO extends GenericDaoHibernate<EmployeeWorkLoc
 			return query.list();      
 			
 		}
+		public List<Object[]> getAttendanceCountInDatesOfficeWise(List<String> datesList, List<Long> officeIdList, List<Long> deptIdList){
+			StringBuilder queryStr = new StringBuilder();  
+			queryStr.append(" select " +
+							" D.department_id as deptId, " +//0
+							" D.department_name as deptName, " +//1
+							" TC.tdp_cadre_id as cadreId , " +//2
+							" TC.first_name as name , " +//3
+							" TC.mobile_no as mobile , " +//4
+							" count(distinct date(EA.attended_time)) as count , " +//5
+							" min(time(EA.attended_time)) as time " +//6
+							" from "+
+							" employee_work_location EWL, " +
+							" employee_department ED, department D, party_office PO, employee EMP, event_attendee EA, tdp_cadre TC "+
+							" where "+
+							" EWL.party_office_id = PO.party_office_id and "+
+							" PO.party_office_id in (:officeIdList) and "+
+							" EWL.employee_id = EMP.employee_id and "+
+							" EWL.employee_id = ED.employee_id and "+
+							" ED.department_id = D.department_id and "+
+							" D.department_id in (:deptIdList) and "+
+							" EMP.tdp_cadre_id = EA.tdp_cadre_id and "+
+							" EMP.tdp_cadre_id = TC.tdp_cadre_id and "+
+							" (date(EA.attended_time) in (:datesList)) and "+
+							" EWL.is_deleted = 'N' and "+
+							" PO.is_deleted = 'N' and "+
+							" EMP.is_delete = 'N' and " +
+							" EMP.is_active = 'Y' and "+
+							" TC.is_deleted = 'N' and "+
+							" EA.event_id in (14,42,25) "+  
+							" group by " +
+							" TC.tdp_cadre_id " +
+							" order by " +
+							" D.department_id ");    
+			
+			SQLQuery query = getSession().createSQLQuery(queryStr.toString())
+					.addScalar("deptId", Hibernate.LONG)
+					.addScalar("deptName", Hibernate.STRING)
+					.addScalar("cadreId", Hibernate.LONG)
+					.addScalar("name", Hibernate.STRING)
+					.addScalar("mobile", Hibernate.STRING)
+					.addScalar("count", Hibernate.LONG)
+					.addScalar("time", Hibernate.STRING);  
+			
+			query.setParameterList("datesList", datesList);
+			
+			query.setParameterList("officeIdList", officeIdList);
+			query.setParameterList("deptIdList",deptIdList);
+			return query.list();      
+			
+		}
 		
 }
 
-/*select tdp_cadre_id,count(time)   from (
-select min(EA.attended_time) time,TC.tdp_cadre_id from 
-employee_work_location EWL, employee_department ED, department D, party_office PO, employee EMP, event_attendee EA, tdp_cadre TC
-where
-EWL.party_office_id = PO.party_office_id and 
-PO.party_office_id in (2) and
-EWL.employee_id = EMP.employee_id and
-EWL.employee_id = ED.employee_id and
-ED.department_id = D.department_id and
-D.department_id in (2) and 
-EMP.tdp_cadre_id = EA.tdp_cadre_id and 
-EMP.tdp_cadre_id = TC.tdp_cadre_id and 
-(date(EA.attended_time) between '2016-09-14' and '2016-09-21') and 
-EWL.is_deleted = 'N' and 
-PO.is_deleted = 'N' and
-EMP.is_delete = 'N' and
-TC.is_deleted = 'N' and
-EA.event_id in (14,42,25) 
-group by date(EA.attended_time),TC.tdp_cadre_id order by date(EA.attended_time)) sa where  time(time) > '11:00:00'
-group by tdp_cadre_id;
-*/
