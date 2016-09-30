@@ -727,10 +727,12 @@ $('#attendance').highcharts({
 				str+='<th>dept name</th>';
 				str+='<th>employee name</th>';
 				str+='<th>mobile no</th>';
-				str+='<th>total working days</th>';
-				str+='<th>present</th>';  
-				str+='<th class="text-danger">late comings</th>';
-				str+='<th>absent</th>';
+				str+='<th>working days</th>';
+				str+='<th>holidays days</th>';
+				str+='<th>working days present</th>';  
+				str+='<th>holidays present</th>';  
+				str+='<th class="text-danger">late comings(>10:30)</th>';
+				str+='<th>absent</th>';       
 			str+='</thead>';
 			for(var i in result){      
 				str+='<tr>';
@@ -738,7 +740,9 @@ $('#attendance').highcharts({
 					str+='<td class="empDtlsCls" attr_name="'+result[i].name+'" attr_dept_name="'+result[i].districtName+'" attr_from_date="'+customFromDate1+'" attr_to_date="'+customToDate1+'" attr_cadre_id="'+result[i].cadreId+'" attr_dept_id="'+result[i].districtid+'" attr_office_id="'+officeId+'" style="cursor:pointer;"><u>'+result[i].name+'</u></td>'; 
 					str+='<td>'+result[i].mobileNo+'</td>';    
 					str+='<td>'+result[i].id+'</td>';
+					str+='<td>'+result[i].lessThan9+'</td>';
 					str+='<td>'+result[i].availableCount+'</td>';
+					str+='<td>'+result[i].greaterThan13+'</td>';  
 					str+='<td class="text-danger">'+result[i].orderId+'</td>';   
 					str+='<td>'+result[i].count+'</td>';  
 					
