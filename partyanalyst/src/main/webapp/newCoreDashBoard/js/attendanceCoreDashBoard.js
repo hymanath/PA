@@ -65,22 +65,28 @@ $(document).on('change','#attenDatePickerModal', function() {
 	var dates = [];
 	dates = strDate.split('-');
 	var fromDate = dates[0];
-	var toDate = dates[1];    
+	var toDate = dates[1]; 
+	var deptName = '';
+	var officeName = '';
+	if(officeId==1){
+		$("#officeNameId").html('Hyderabad Party Office');
+		officeName='Hyderabad Party Office';
+	}
+	if(officeId==2){
+		$("#officeNameId").html('Guntur Party Office');
+		officeName='Guntur Party Office';
+	} 
+	deptName = $("#diptNameId").html();
 	//fromDate = picker.startDate.format('MM/DD/YYYY');
 	//toDate = picker.endDate.format('MM/DD/YYYY');
 	var officeId = $("#officeHidId").attr("attr_office_hid_id");
 	var deptId = $("#deptHidId").attr("attr_dept_hid_id");      
 	getTotalDtls(deptId,officeId,fromDate,toDate);
 	getTimeWiseDtls(deptId,officeId,fromDate,toDate);
-	getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate);
+	getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate,deptName,officeName);
 	getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
 	
-	if(officeId==1){
-		$("#officeNameId").html('Hyderabad Party Office - Attendance');
-	}
-	if(officeId==2){
-		$("#officeNameId").html('Guntur Party Office - Attendance');  
-	} 
+	
 	$("#totalCountId").html('');  
 	$('#attedanceModalId').html('');
 	$("#employeeOverViewId").html('');
@@ -855,26 +861,33 @@ $('#attendance').highcharts({
 		var officeId = $(this).attr("attr_office_id");
 		var fromDate = $(this).attr("attr_from_date");
 		var toDate = $(this).attr("attr_to_date");
+		var deptName = '';
+		var officeName = '';
+		if(officeId==1){
+			$("#officeNameId").html('Hyderabad Party Office');
+			officeName = 'Hyderabad Party Office';
+		}
+		if(officeId==2){
+			$("#officeNameId").html('Guntur Party Office');
+			officeName = 'Guntur Party Office';
+		} 
+		$("#diptNameId").html($(this).attr("attr_dept_name"));
+		deptName = $(this).attr("attr_dept_name");
 		getTotalDtls(deptId,officeId,fromDate,toDate);
 		getTimeWiseDtls(deptId,officeId,fromDate,toDate);
-		getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate);
+		getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate,deptName,officeName);
 		getDateWisePresentAbsentDtls(deptId,officeId,fromDate,toDate); 
 		$("#officeHidId").attr("attr_office_hid_id",officeId);
 		$("#deptHidId").attr("attr_dept_hid_id",deptId);
 		//$("#deptHidId").html($(this).attr("attr_dept_name"));
-		if(officeId==1){
-			$("#officeNameId").html('Hyderabad Party Office - Attendance');
-		}
-		if(officeId==2){
-			$("#officeNameId").html('Guntur Party Office - Attendance');  
-		} 
-		$("#diptNameId").html($(this).attr("attr_dept_name"));    
+		
+		
 		$("#totalCountId").html('');  
-		 $('#attedanceModalId').html('');
-		 $("#employeeOverViewId").html('');
-		 $("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
+		$('#attedanceModalId').html('');
+		$("#employeeOverViewId").html('');
+		$("#totalCountId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#attedanceModalId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#employeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>'); 
 		$("#dayWiseOvervwModal").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		//initialize datepicker
 		$("#attenDatePickerModal").daterangepicker({  
@@ -1135,7 +1148,7 @@ $('#attendance').highcharts({
 	  }); 
 
 	}
-	function getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate){
+	function getAttendanceReportTimeToTime(deptId,officeId,fromDate,toDate,deptName,officeName){
 		var jsObj={ 
 			fromDate : fromDate,  
 			toDate : toDate,
@@ -1150,13 +1163,18 @@ $('#attendance').highcharts({
 		}).done(function(result){  
 			$("#employeeOverViewId").html('');
 			if(result != null && result.length > 0){
-				buildAttendanceReportTimeToTime(result,officeId);
+				buildAttendanceReportTimeToTime(result,officeId,deptId,deptName,officeName);
 			}else{  
 				 $("#employeeOverViewId").html("Data Not Available");
 			}    
 		});  
 	}
-	function buildAttendanceReportTimeToTime(result,officeId){
+	function buildAttendanceReportTimeToTime(result,officeId,deptId,deptName,officeName){
+		var dateArrStr = $("#attenDatePickerModal").val();
+		var dateArr = dateArrStr.split("-");
+		var fromDate = dateArr[0].trim();    
+		var toDate = dateArr[1].trim();
+		
 		var str = '';
 		str+='<table class="table text-capital" id="employeeOverVwId">';
 			str+='<thead>';
@@ -1174,8 +1192,8 @@ $('#attendance').highcharts({
 			str+='<tbody>';
 			for(var i in result){
 				str+='<tr>';
-					str+='<td>'+result[i].name+'</td>';
-					str+='<td>'+result[i].mobileNo+'</td>';
+					str+='<td class="empDtlsCls" attr_name="'+result[i].name+'" attr_office_id="'+officeId+'" attr_dept_name="'+deptName+'" attr_from_date="'+fromDate+'" attr_to_date="'+toDate+'" attr_cadre_id="'+result[i].id+'" attr_dept_id="'+deptId+'" style="cursor:pointer;"><u>'+result[i].name+'</u></td>';      
+					str+='<td>'+result[i].mobileNo+'</td>';       
 					str+='<td>'+result[i].availableCount+'</td>';
 					if(result[i].actualCount < 0){
 						str+='<td>0</td>';
@@ -1197,7 +1215,7 @@ $('#attendance').highcharts({
 		
 	}
 	$(document).on('click','.empDtlsCls',function(){     
-	
+		//debugger; 
 		var deptId = $(this).attr("attr_dept_id");
 		var officeId = $(this).attr("attr_office_id");
 		var fromDate = $(this).attr("attr_from_date");
@@ -1208,18 +1226,20 @@ $('#attendance').highcharts({
 		$("#deptHidId").attr("attr_dept_hid_id",deptId);
 		$("#cadreHidId").attr("attr_cadre_hid_id",cadreId);
 		
-		getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
-		getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
-		getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
 		
 		$("#singleEmployeeOverViewId").html('');
 		$("#tableAttendanceId").html('');
 		$("#attedanceModalForEmpId").html('');
 		$("#officeNameForEmpId").html('');      
 		$("#diptNameForEmpId").html('');
+		$("#attendanceModalEmplo").modal('show');  
 		$("#singleEmployeeOverViewId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#tableAttendanceId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		$("#attedanceModalForEmpId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+		getTimeWiseDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);
+		getDateWisePresentAbsentDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId);  
+		
 		if(officeId==1){
 			$("#officeNameForEmpId").html('HYDERABAD PARTY OFFICE');
 		}
@@ -1245,7 +1265,7 @@ $('#attendance').highcharts({
 				 'This Year': [moment().startOf('Year'), moment()]    
 			  }   
 		})  
-		$("#attendanceModalEmplo").modal('show');  
+		 
 		
 	});
 	function getTotalDtlsEmployee(deptId,officeId,fromDate,toDate,cadreId){
@@ -1398,7 +1418,7 @@ $('#attendance').highcharts({
 				buildEmpDayWisePresentAndAbsentForEmp(result);
 			}else{  
 				 $("#singleEmployeeOverViewId").html("Data Not Available");
-			}    
+			}      
 		});      
 	}
 	function buildEmpDayWisePresentAndAbsentForEmp(result){
@@ -1490,6 +1510,11 @@ $('#attendance').highcharts({
 	  }); 
 		  
 	}  
+	$(document).on('click','.closeButtonCls',function(){
+		setTimeout(function(){
+		$('body').addClass("modal-open");
+		}, 500);    
+	});
 	/*Notes Functionality*/
 function displayDashboardCommentsForAttendance(dashBoardComponentId){
 	var jsObj={
@@ -1579,7 +1604,7 @@ $(document).on("click",".editNotesAttendance",function(){
 	var notesHtml = $("#"+commentId).html();
 	$(".notesAreaAttendance").val(notesHtml);  
 	$(".notesAreaAttendance").attr("attr_commentid",commentId1);  
-	$("#cmtId").val(commentId);
+	$("#cmtId").val(commentId); 
 	//$("#cmtId").val();
 	$("#attendanceId").html('');		
 });
