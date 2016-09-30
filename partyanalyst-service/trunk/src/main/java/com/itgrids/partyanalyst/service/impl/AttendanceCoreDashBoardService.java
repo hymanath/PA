@@ -399,8 +399,11 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 			List<Long> attendedCadreIdList = new ArrayList<Long>(0);
 			Long absent = 0l;
 			Long holidayDayPresent = null;
+			Long noOfHolidays = 0l;
+			
 			if(holidayCount > 0l){
 				noOfDays-=holidayCount;
+				noOfHolidays = holidayCount;
 			}
 			if(emplyeeAttendanceDtlsList != null && emplyeeAttendanceDtlsList.size() > 0){
 				for(Object[] param : emplyeeAttendanceDtlsList){
@@ -412,19 +415,24 @@ public class AttendanceCoreDashBoardService implements IAttendanceCoreDashBoardS
 					idNameVO.setCadreId(param[2] != null ? (Long)param[2] : 0l);
 					idNameVO.setName(param[3] != null ? param[3].toString() : "");
 					idNameVO.setMobileNo(param[4] != null ? param[4].toString() : "");
-					idNameVO.setStatus("present");  
-					idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);
+					idNameVO.setStatus("present");    
+					
 					
 					idNameVO.setId(noOfDays);
 					holidayDayPresent = empIdAndHolidayPresentCount.get(param[2] != null ? (Long)param[2] : 0l);
 					if(holidayDayPresent != null){
 						absent = noOfDays  - ((param[5] != null ? (Long)param[5] : 0l) - holidayDayPresent);
+						idNameVO.setGreaterThan13(holidayDayPresent);//no of day present on holidays
+						idNameVO.setAvailableCount((param[5] != null ? (Long)param[5] : 0l)-holidayDayPresent);//working day present
 					}else{
 						absent = noOfDays  - (param[5] != null ? (Long)param[5] : 0l);  
-					}
+						idNameVO.setGreaterThan13(0l);//no of day present on holidays
+						idNameVO.setAvailableCount(param[5] != null ? (Long)param[5] : 0l);//working day present
+					} 
 					idNameVO.setOrderId(employeeIdAndLateComingCount.get(param[2] != null ? (Long)param[2] : 0l) != null ? employeeIdAndLateComingCount.get((Long)param[2]) : 0l);
+					idNameVO.setLessThan9(noOfHolidays);//no of holidays  
 					
-					idNameVO.setCount(absent);
+					idNameVO.setCount(absent);  
 					idNameVO.setWish(param[6] != null ? param[6].toString() : "");
 					attendedEmployeeDtls.add(idNameVO);            
 				}  
