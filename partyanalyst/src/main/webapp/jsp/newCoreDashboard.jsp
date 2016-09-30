@@ -2469,7 +2469,7 @@
 			<h6 id="officeNameForEmpId"></h6>      
 		  </div>
 		  <div class="col-md-3 col-md-offset-3 col-xs-12 col-sm-6">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<button type="button" class="close closeButtonCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<div class="input-group">
 			 <input type="text" class="form-control" id="attenDatePickerModalForEmpId"/>
 			  <span class="input-group-addon">
