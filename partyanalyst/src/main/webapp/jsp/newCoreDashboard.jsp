@@ -1997,76 +1997,39 @@
                 	<div class="row">
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
 						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
-                            <div class="row m_top10">
-							    <div class="col-md-6 col-xs-12 col-sm-12">
-                                	<div class="bg_ED pad_15">
-                                    	<div class="row">
-                                        	<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">
-                                            	<h5 class="text-capital">total</h5>
-                                                <h3>7000</h3>
-                                            </div>
-                                            <div class="col-md-7 col-xs-12 col-sm-12 pad_left0">
-                                            	<h4 class="f_16 text-success">Renewal - <span class="pull-right">35000</span></h4>
-                                                <h4 class="f_16" style="color:#F7A423">New - <span class="pull-right">20000</span></h4>
-                                            </div>
-											<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xs-12 col-sm-12">
-                                	<div class="bg_ED pad_15">
-                                    	<div class="row">
-                                        	<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">
-                                            	<h5 class="text-capital">today</h5>
-                                                <h3>7000</h3>
-                                            </div>
-                                            <div class="col-md-7 col-xs-12 col-sm-12 pad_left0">
-                                            	<h4 class="f_16 text-success">Renewal - <span class="pull-right">35000</span></h4>
-                                                <h4 class="f_16" style="color:#F7A423">New - <span class="pull-right">20000</span></h4>
-                                            </div>
-											<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+						
+						    <div id="totalTodayCadreRegistrationBlockDivId"></div>
+							
                             <div class="row">
-                            	<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-                                	<div class="bg_ED pad_15">
-                                    	<table class="table text-capital">
-                                        	<tr>
-                                            	<td>
-                                                	<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/>
-                                                </td>
-                                                <td>
-                                                	<h5>Total - <span class="text-muted">55%</span></h5>
-                                                    <h3>130000</h3>
-                                                </td>
-                                                <td>
-                                                	<h5>Today - <span class="text-muted">55%</span></h5>
-                                                    <h3>130000</h3>
-                                                </td>
-                                                <td>
-                                                	<h5>119 - <small class="text-muted">100%</small></h5>
-                                                    <h5>Started<br> Contituencies</h5>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <hr style="border-color:#B0B4B7;"/>
-                                        <span style="position: relative; text-align: center; top: -30px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>
-                                        <div class="row">
-                                        	<div class="col-md-6 col-xs-12 col-sm-6 text-center">
-                                            	<h3>1200</h3>
-                                                <h5 class="text-capital">in field now</h5>
-                                            </div>
-                                            <div class="col-md-6 col-xs-12 col-sm-6 text-center">
-                                            	<h3>1200</h3>
-                                                <h5 class="text-capital">today submitted data</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+							
+							   <div id="enumeratorsInfoDivId"></div>
 								
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreCadreBlock">
+								<h4 class="text-center text-capital">Kuppam Constitency Tab User Detailed Report</h4>
+									<div class="row m_top10">
+										<div class="col-md-6 col-xs-12 col-sm-3">
+											<select class="form-control">
+											  <option>Select Constituency</option>
+											  <option>Kuppam</option>
+											  <option>Nellore</option>
+											  <select>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-3">
+											<span class="input-group pull-right">
+												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</span>
+										</div>
+										<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+									</div>
+									<div class="row showTabUserWiseDetails" style="display:none">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<div id="tabUserWiseReportDiv"></div>
+										</div>
+									</div>
+								</div>
                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 	<div class="bg_ED pad_15">
                                     	<table class="table text-capital">
@@ -2113,32 +2076,6 @@
                                 
                             </div>
                         </div>
-						<div class="col-md-6 col-xs-12 col-sm-6 m_top20 moreCadreBlock">
-								<h4 class="text-center text-capital">Kuppam Constitency Tab User Detailed Report</h4>
-									<div class="row m_top10">
-										<div class="col-md-6 col-xs-12 col-sm-3">
-											<select class="form-control">
-											  <option>Select Constituency</option>
-											  <option>Kuppam</option>
-											  <option>Nellore</option>
-											  <select>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-3">
-											<span class="input-group pull-right">
-												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</span>
-										</div>
-										<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
-									</div>
-									<div class="row showTabUserWiseDetails" style="display:none">
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<div id="tabUserWiseReportDiv"></div>
-										</div>
-									</div>
-						</div>
                         <!--<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -2691,8 +2628,7 @@
 	  var globalState = 'AP';
 	  
 	   var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
-	  getCheckedBasicCommitteeIds(); 
-	  
+	  getCheckedBasicCommitteeIds();
 	  
 	$(document).ready(function(){
 		//Main header remove
@@ -2726,6 +2662,9 @@
 		//getPaperWiseNewsBasicCounts();
 		//Debates
 		getPartyWiseTotalDebateDetails();
+		
+		//cadreRegistration
+		cadreRegistrationBasicCall();
 	}
 	
 	
