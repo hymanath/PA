@@ -13,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserDataVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.service.IAttendanceCoreDashBoardService;
+import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
@@ -65,6 +67,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private List<PartyMeetingsVO> partyMeetingsVOList;
 	private List<PartyMeetingsDataVO> partyMeetingDataVOList;
 	private PartyMeetingsDataVO partyMeetingDataVO;
+	private CadreRegistratedCountVO cadreRegistratedCountVO;
 	//Attributes
 	private ICoreDashboardService coreDashboardService;
 	private ICoreDashboardService1 coreDashboardService1;
@@ -105,6 +108,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String scops;
 	private String npsStr;
 	
+	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
 	//setters And Getters
 	public List<PartyMeetingsVO> getPartyMeetingsVOList() {
@@ -413,6 +417,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setNpsStr(String npsStr) {
 		this.npsStr = npsStr;
 	}
+	
+	public ICoreDashboardCadreRegistrationService getCoreDashboardCadreRegistrationService() {
+		return coreDashboardCadreRegistrationService;
+	}
+
+	public void setCoreDashboardCadreRegistrationService(
+			ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService) {
+		this.coreDashboardCadreRegistrationService = coreDashboardCadreRegistrationService;
+	}
 
 	//Implementation method
 	public void setServletRequest(HttpServletRequest request) {
@@ -513,6 +526,15 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setHolidayListVOs(List<HolidayListVO> holidayListVOs) {
 		this.holidayListVOs = holidayListVOs;
+	}
+	
+	public CadreRegistratedCountVO getCadreRegistratedCountVO() {
+		return cadreRegistratedCountVO;
+	}
+
+	public void setCadreRegistratedCountVO(
+			CadreRegistratedCountVO cadreRegistratedCountVO) {
+		this.cadreRegistratedCountVO = cadreRegistratedCountVO;
 	}
 
 	//business methods
@@ -2280,4 +2302,15 @@ public String getCoreDebateBasicDetailsOfParty(){
 	public String showArticles(){
 		return "success";
 	}
+	
+	public String showCadreRegistreredCount(){
+	    try{
+	      
+	      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.showCadreRegistreredCount();
+	      
+	    }catch(Exception e){
+	      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
+	    }
+	    return Action.SUCCESS;
+	  }
 }
