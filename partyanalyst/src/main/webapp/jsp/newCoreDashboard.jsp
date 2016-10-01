@@ -2066,32 +2066,7 @@
                                         </div>
                                     </div>
                                 </div>
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreCadreBlock">
-								<h4 class="text-center text-capital">Kuppam Constitency Tab User Detailed Report</h4>
-									<div class="row m_top10">
-										<div class="col-md-6 col-xs-12 col-sm-3">
-											<select class="form-control">
-											  <option>Select Constituency</option>
-											  <option>Kuppam</option>
-											  <option>Nellore</option>
-											  <select>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-3">
-											<span class="input-group pull-right">
-												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-											</span>
-										</div>
-										<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
-									</div>
-									<div class="row showTabUserWiseDetails" style="display:none">
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<div id="tabUserWiseReportDiv"></div>
-										</div>
-									</div>
-								</div>
+								
                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 	<div class="bg_ED pad_15">
                                     	<table class="table text-capital">
@@ -2138,6 +2113,32 @@
                                 
                             </div>
                         </div>
+						<div class="col-md-6 col-xs-12 col-sm-6 m_top20 moreCadreBlock">
+								<h4 class="text-center text-capital">Kuppam Constitency Tab User Detailed Report</h4>
+									<div class="row m_top10">
+										<div class="col-md-6 col-xs-12 col-sm-3">
+											<select class="form-control">
+											  <option>Select Constituency</option>
+											  <option>Kuppam</option>
+											  <option>Nellore</option>
+											  <select>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-3">
+											<span class="input-group pull-right">
+												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</span>
+										</div>
+										<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+									</div>
+									<div class="row showTabUserWiseDetails" style="display:none">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<div id="tabUserWiseReportDiv"></div>
+										</div>
+									</div>
+						</div>
                         <!--<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
