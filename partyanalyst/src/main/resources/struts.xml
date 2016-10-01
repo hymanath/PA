@@ -13810,7 +13810,11 @@
 	<action name="showArticlesAction" class="coreDashboardAction" method="showArticles">
 		<result name="success">/jsp/showCnpArticles.jsp</result>
 	</action>
-	
+	<action name="showCadreRegistreredCountAction" class="coreDashboardAction" method="showCadreRegistreredCount">
+		<result type="json" name="success">
+				<param name="root">cadreRegistratedCountVO</param>
+		</result>
+	</action>
 	
 </package>
 </struts>
