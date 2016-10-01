@@ -6112,11 +6112,11 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			str2+='<tr>';
 			str2+='<td>';
 			str2+='<p class="text-capital responsiveFont">Main Count</p>';
-			str2+='<p id="totalUniqueMainTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " " attr_partyids="'+newsPaperIdsStr+'">'+result[0].editionUniqueCountMain+'</p>';
+			str2+='<p id="totalUniqueMainTotal" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid =" " attr_isdepartment = " " attr_npids="'+newsPaperIdsStr+'" attr_partyids=" ">'+result[0].editionUniqueCountMain+'</p>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted responsiveFont">Positive</p>';
-			str2+='<span id="totalUniqueMainPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_partyids="'+newsPaperIdsStr+'">'+result[0].positiveCountMain+'</span><small id="totalUniqueMainPositivePercent" class="text-success"> 0.0 %</small>';
+			str2+='<span id="totalUniqueMainPositive" class="newsBasicCountDetailsDivEd" attr_editiontype="1" attr_benefitid ="1" attr_isdepartment = " " attr_npids="'+newsPaperIdsStr+'" attr_partyids=" ">'+result[0].positiveCountMain+'</span><small id="totalUniqueMainPositivePercent" class="text-success"> 0.0 %</small>';
 			str2+='</td>';
 			str2+='<td>';
 			str2+='<p class="text-capital text-muted responsiveFont">Negative</p>';
