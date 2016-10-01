@@ -1916,7 +1916,7 @@ margin-top: 5px; margin-bottom: 2px;
 	font-size:10px !important;
 	padding:2px !important;
 }
-.newsBasicCountDetailsDivEd{
+.newsBasicCountDetailsDiv{
 	cursor:pointer;
 }
 .newsBasicCountDetailsDivEd{
@@ -1929,4 +1929,7 @@ margin-top: 5px; margin-bottom: 2px;
 .pagination li span.prev , .pagination li span.next , .pagination li a.prev , .pagination li a.next
 {
 	min-width:60px;
+}
+.f_16{
+font-size:16px;
 }
