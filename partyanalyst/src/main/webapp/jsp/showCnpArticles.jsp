@@ -587,16 +587,20 @@ var newsPaperIdsStr = "${param.npsStr}";
 		{
 			
 				img.onerror = "";
-				img.src = "images/NoImageUpd.png";
+				img.src = "newCoreDashBoard/img/NoImageUpd.png";
 				return true;
 		}
 			
 	$(document).on("click",".viewArticleDetailsByAllArticlesPage",function(){
+		getOverAllDetailsOfAnArticle($(this).attr("attr_articleid"));
+	});
+
+	function getOverAllDetailsOfAnArticle(articleId){
 		$("#myModalShowNew").modal('show');
 			$("#myModalShowNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+$(this).attr("attr_articleid")+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+$(this).attr("attr_articleid")+""
+			$.ajax({
+			url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 			
 		}).then(function(results){
 			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
@@ -1003,7 +1007,7 @@ var newsPaperIdsStr = "${param.npsStr}";
 					
 		        
 		});
-	});	
+	}	
 	
 	$(document).on("click",".linkedArticlesClickId",function(){	 
 		var temp=$(this).attr('src');
