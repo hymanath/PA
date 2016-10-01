@@ -61,5 +61,46 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    return null;    
 	  }
 	
+	public Object getCadreRegistrationCountByConstituency(Long constituencyId,String fromDate,String toDate){  
+	    Object regCountVO = null;
+	    try {
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getCadreRegistrationCountByConstituency/"+constituencyId+"/"+fromDate+"/"+toDate;
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         regCountVO = webResource.accept("application/json").get(Object.class);
+	         return regCountVO;
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at getCadreRegistrationCountByConstituency", e);
+	    }
+	    return null;    
+	  }
+	public Object getDaysByCadreRegistrationCount(Long constituencyId,Long cadreSurveyUserId,Long tabUserInfoId,String fromDate,String toDate){  
+	    Object regCountVO = null;
+	    try {
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getDaysByCadreRegistrationCount/"+constituencyId+"/"+cadreSurveyUserId+"/"+tabUserInfoId+"/"+fromDate+"/"+toDate;
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         regCountVO = webResource.accept("application/json").get(Object.class);
+	         return regCountVO;
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at getDaysByCadreRegistrationCount", e);
+	    }
+	    return null;    
+	  }
+	
 	
 }

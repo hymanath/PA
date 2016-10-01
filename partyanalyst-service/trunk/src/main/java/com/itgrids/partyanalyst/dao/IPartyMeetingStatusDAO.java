@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.PartyMeetingStatus;
 
 public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Long> {
 
-	public List<Object[]> getPartyMeetingCountLevelWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingsTypeValues);
+	public List<Object[]> getPartyMeetingCountLevelWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingsTypeValues,String countType);
 	public List<Object[]> getPartyMeetingCountLocationWiseByUserAccess(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingsTypeValues);
 	
 	public List<Object[]> getLocationWiseMeetingsStatusCountByLocIds(CommitteeInputVO inputBO);
@@ -31,5 +31,6 @@ public interface IPartyMeetingStatusDAO extends GenericDao<PartyMeetingStatus,Lo
 	public int updatePartyMeetingStatus9();
 	public int setInsertedDate(Date currentDateTime);
 	public Date getMeetingLastUpdatedTime();
-	
+   public List<Long> getPartyMeetingCount(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType);
+   public List<Object[]> getPartyMeetingComulativeCommentDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType,String reportType,String type);
 }

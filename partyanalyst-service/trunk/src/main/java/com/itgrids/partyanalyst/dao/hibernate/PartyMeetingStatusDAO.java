@@ -17,18 +17,20 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		super(PartyMeetingStatus.class);
 	}
 	 
-	public List<Object[]> getPartyMeetingCountLevelWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues){
+	public List<Object[]> getPartyMeetingCountLevelWise(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String countType){
 		 
 		 StringBuilder queryStr = new StringBuilder();
 	    	
    	  queryStr.append("select model.partyMeeting.partyMeetingLevel.partyMeetingLevelId," +
    	  		         " model.partyMeeting.partyMeetingLevel.level," +
    	  		         " model.mettingStatus," +
-   	  		         " count(distinct model.partyMeeting.partyMeetingId),model.insertedTime  " +
+   	  		         " count(distinct model.partyMeeting.partyMeetingId)  " +
    	  		         " from PartyMeetingStatus model " +
    	  		         " where " +
    	  		         " model.partyMeeting.isActive='Y' ");
-   	
+   	      if(countType.equalsIgnoreCase("commentCount")){
+   	    	  queryStr.append(" and model.partyMeeting.remarks is not null ");
+   	      }
    	      if(stateId != null && stateId.longValue() > 0){
 				 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
 		  }
@@ -623,5 +625,180 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
 		Query query=getSession().createQuery("select max(model.insertedTime) from PartyMeetingStatus model");
 		  return (Date) query.uniqueResult();
 	} 
+   public List<Long> getPartyMeetingCount(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType){
+		 
+		 StringBuilder queryStr = new StringBuilder();
+	    	
+ 	  queryStr.append("select distinct model.partyMeeting.partyMeetingId" +
+ 	  		         " from PartyMeetingStatus model " +
+ 	  		         " where " +
+ 	  		         " model.partyMeeting.isActive='Y' ");
+ 	   
+ 	     if(meetingStatus != null && meetingStatus.trim().length() > 0){
+ 	    	queryStr.append(" and model.mettingStatus=:mettingStatus"); 
+ 	     }
+ 	     if(isComment != null && isComment.equalsIgnoreCase("Yes")){
+ 	    	 queryStr.append(" and model.partyMeeting.remarks is not null ");
+ 	     }
+ 	     if(locationType != null && locationType.equalsIgnoreCase("District")){
+ 	    	queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationId"); 
+ 	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+ 	    	queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationId"); 
+ 	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+ 	    	queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId=:locationId"); 
+ 	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+ 	    	queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId=:locationId"); 
+ 	     }
+ 	     if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
+ 	    	 queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (:partyMeetingLevelIds)");
+ 	     }
+ 	      if(stateId != null && stateId.longValue() > 0){
+				 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
+		  }
+		  if(fromDate!= null && toDate!=null){
+			  queryStr.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");	 
+		 }
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+		 }
+		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		   queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		   queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		    queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+		    queryStr.append(" and model.partyMeeting.meetingAddress.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+		    queryStr.append(" and model.partyMeeting.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+		    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+		 }
+		
+	     Query query = getSession().createQuery(queryStr.toString());
+	
+		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 }
+		 if(fromDate!= null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+		 }
+		 if(stateId != null && stateId.longValue() > 0){
+			 query.setParameter("stateId", stateId);
+		 }
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+			 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
+		 }
+		 if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
+			 query.setParameterList("partyMeetingLevelIds", PartyMeetingLevelIds); 
+		 }
+		 if(meetingStatus != null && meetingStatus.trim().length() > 0){
+			 query.setParameter("mettingStatus", meetingStatus); 
+		 }
+		 if(locationId != null && locationId > 0){
+			 query.setParameter("locationId", locationId);
+		 }
+    return query.list(); 
+	 } 
+   
+   
+   public List<Object[]> getPartyMeetingComulativeCommentDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String meetingStatus,List<Long> PartyMeetingLevelIds,String isComment,Long locationId,String locationType,String reportType,String type){
+		 
+		 StringBuilder queryStr = new StringBuilder();
+	    	
+		 queryStr.append("select " );
+	  	if(reportType != null && reportType.equalsIgnoreCase("District")){
+	  		queryStr.append(" model1.meetingAddress.district.districtId, model1.meetingAddress.district.districtName,");
+		}else if(reportType.equalsIgnoreCase("Constituency")){
+			queryStr.append(" model1.meetingAddress.constituency.constituencyId, model1.meetingAddress.constituency.name,");	
+		}
+	  	queryStr.append(" count(distinct model1.partyMeetingId) from PartyMeetingStatus model,PartyMeeting model1 " +
+	  		         " where " +
+	  		         " model1.isActive='Y' and model.partyMeetingId=model1.partyMeetingId ");
+	  	if(type != null && type.equalsIgnoreCase("commentCount")){
+	    	queryStr.append(" and model1.remarks is not null "); 
+	     }
+	     if(meetingStatus != null && meetingStatus.trim().length() > 0){
+	    	queryStr.append(" and model.mettingStatus=:mettingStatus"); 
+	     }
+	     if(isComment != null && isComment.equalsIgnoreCase("Yes")){
+	    	 queryStr.append(" and model.partyMeeting.remarks is not null ");
+	     }
+	     if(locationType != null && locationType.equalsIgnoreCase("District")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId=:locationId"); 
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Constituency")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId=:locationId"); 
+	     }else if(locationType != null && locationType.equalsIgnoreCase("Mandal")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId=:locationId"); 
+	     }else if(locationType != null && locationType.equalsIgnoreCase("TownDivision")){
+	    	queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId=:locationId"); 
+	     }
+	     if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
+	    	 queryStr.append(" and model.partyMeeting.partyMeetingLevel.partyMeetingLevelId in (:partyMeetingLevelIds)");
+	     }
+	      if(stateId != null && stateId.longValue() > 0){
+				 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId");
+		  }
+		  if(fromDate!= null && toDate!=null){
+			  queryStr.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");	 
+		 }
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+		 }
+		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		   queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		   queryStr.append(" and model.partyMeeting.meetingAddress.district.districtId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+	        queryStr.append(" and model.partyMeeting.meetingAddress.constituency.constituencyId in (:userAccessLevelValues) ");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+		    queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+		    queryStr.append(" and model.partyMeeting.meetingAddress.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+		    queryStr.append(" and model.partyMeeting.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
+		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+		    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
+		 }
+		
+		 if(reportType != null && reportType.equalsIgnoreCase("District")){
+			queryStr.append(" group by model1.meetingAddress.district.districtId order by model1.meetingAddress.district.districtId ");
+		}else if(reportType.equalsIgnoreCase("Constituency")){
+			queryStr.append(" group by model1.meetingAddress.constituency.constituencyId order by model1.meetingAddress.constituency.constituencyId ");
+		}
+		 
+	     Query query = getSession().createQuery(queryStr.toString());
+	
+		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 }
+		 if(fromDate!= null && toDate!=null){
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+		 }
+		 if(stateId != null && stateId.longValue() > 0){
+			 query.setParameter("stateId", stateId);
+		 }
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+			 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
+		 }
+		 if(PartyMeetingLevelIds != null && PartyMeetingLevelIds.size() > 0){
+			 query.setParameterList("partyMeetingLevelIds", PartyMeetingLevelIds); 
+		 }
+		 if(meetingStatus != null && meetingStatus.trim().length() > 0){
+			 query.setParameter("mettingStatus", meetingStatus); 
+		 }
+		 if(locationId != null && locationId > 0){
+			 query.setParameter("locationId", locationId);
+		 }
+		 return query.list(); 
+	 }
    
 }
