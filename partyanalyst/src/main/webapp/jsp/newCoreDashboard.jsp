@@ -1964,7 +1964,7 @@
 	 </div>
 	 <div class="row">
 		<!--Cadre Registration -->
-		<!--<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">
+		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
                 	<div class="row">
@@ -1996,8 +1996,9 @@
                 <div class="panel-body">
                 	<div class="row">
                         <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
-                            <div class="row">
-                                <div class="col-md-6 col-xs-12 col-sm-12">
+						<h4 class="text-capital m_top10"><span class="headingColor">Total Registrations</span></h4>
+                            <div class="row m_top10">
+							    <div class="col-md-6 col-xs-12 col-sm-12">
                                 	<div class="bg_ED pad_15">
                                     	<div class="row">
                                         	<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">
@@ -2005,9 +2006,10 @@
                                                 <h3>7000</h3>
                                             </div>
                                             <div class="col-md-7 col-xs-12 col-sm-12 pad_left0">
-                                            	<h4 class="panel-title text-success">Renewal - <span class="pull-right">35000</span></h4>
-                                                <h4 class="panel-title text-warning">New - <span class="pull-right">20000</span></h4>
+                                            	<h4 class="f_16 text-success">Renewal - <span class="pull-right">35000</span></h4>
+                                                <h4 class="f_16" style="color:#F7A423">New - <span class="pull-right">20000</span></h4>
                                             </div>
+											<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2019,9 +2021,10 @@
                                                 <h3>7000</h3>
                                             </div>
                                             <div class="col-md-7 col-xs-12 col-sm-12 pad_left0">
-                                            	<h4 class="panel-title text-success">Renewal - <span class="pull-right">35000</span></h4>
-                                                <h4 class="panel-title text-warning">New - <span class="pull-right">20000</span></h4>
+                                            	<h4 class="f_16 text-success">Renewal - <span class="pull-right">35000</span></h4>
+                                                <h4 class="f_16" style="color:#F7A423">New - <span class="pull-right">20000</span></h4>
                                             </div>
+											<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2044,7 +2047,7 @@
                                                 </td>
                                                 <td>
                                                 	<h5>119 - <small class="text-muted">100%</small></h5>
-                                                    <h5>Started Contituencies</h5>
+                                                    <h5>Started<br> Contituencies</h5>
                                                 </td>
                                             </tr>
                                         </table>
@@ -2063,7 +2066,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+                               <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 	<div class="bg_ED pad_15">
                                     	<table class="table text-capital">
                                         	<tr>
@@ -2098,10 +2101,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
+                        	<div class="row">
+                            	<div class="col-md-12 col-xs-12 col-sm-12">
+                                <div id="constituenctDetailedReport"></div>	
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!--<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
@@ -2109,12 +2120,12 @@
 										<li><i class="fa fa-arrow-down"></i>&nbsp;last 5 poor</li>
                                     </ul>
                                 </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                <!--<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<div id="genSec"></div>
                                 </div>
                             </div>
                         </div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
+						<!--<div class="col-xs-12 col-sm-12 col-md-12">
                         	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksCadreIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">
@@ -2379,11 +2390,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>   -->                     
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
 		<!--Cadre Registration ENd -->
 	 </div>
 	</div>
