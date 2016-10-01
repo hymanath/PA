@@ -81,6 +81,20 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		try{
 		request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
+		String url = request.getRequestURL().toString();
+		
+		if(url.contains("partyAndLeaderActivitiesAndPerformanceTracking") || url.contains("leadertoleader.in") || url.contains("localhost:8080/PartyAnalyst"))
+			return invocation.invoke();
+		
+		url = url.substring(url.lastIndexOf("/")+1,url.indexOf(".action"));
+		List<String> exList = Arrays.asList(IConstants.EXCLUDE_URL_LIST);
+		
+		if(exList.contains(url))
+				return invocation.invoke();
+		
+		if(url.contains("leadertoleader.in") || url.contains("localhost:8080/PartyAnalyst"))
+			return invocation.invoke();
+		
 		RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
 		if( request.getRequestURL().indexOf("loginPopUpsAction") == -1 && checkRequestNeedAuthentication(request.getRequestURL())  && IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 		{
