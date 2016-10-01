@@ -2071,6 +2071,22 @@
 						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="row">';
+									<div class="col-md-12 col-xs-12 col-sm-12">
+										<h4 class="text-center text-capital">Kuppam Constitency Detailed Report</h4>
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<label class="radio-inline">
+										 <input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio1" value="booth" style="margin-top: 0px;" checked><h5>Booth Wise</h5>
+										</label>
+										<label class="radio-inline">
+										 <input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio2" value="panchayat" style="margin-top: 0px;"><h5>Panchayat Wise</h5>
+										</label>
+										<label class="radio-inline">
+										 <input type="radio" class="locationRadioCls" name="selectionType" id="inlineRadio3" value="mandal" style="margin-top: 0px;"><h5>Mandal Wise</h5>
+										</label>
+									</div>
+								 </div>
+								  </div>
                                 <div id="constituenctDetailedReport"></div>	
                                 </div>
                                 
