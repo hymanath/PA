@@ -227,7 +227,7 @@ $(document).on("click",".selectAll",function(){
 		  }
 		str+='</div>';
 	  $("#meetingBasicCountDivId").html(str);
-	  $(".meetingsInnerBlock").html("( "+customStartDateMeetings+" to "+customEndDateMeetings+" )");
+	 // $(".meetingsInnerBlock").html("( "+customStartDateMeetings+" to "+customEndDateMeetings+" )");
 	}
 	var globalUserWiseMeetingMemberRslt;
 	function getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
