@@ -536,11 +536,18 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			final HttpSession session = request.getSession();
 			
 			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			if(user == null || user.getRegistrationID() == null){
+			Long registrationId = null;
+			/*if(user == null || user.getRegistrationID() == null){
 				return ERROR;
-			}
+			}*/
 			
-			userDataVO = coreDashboardService.getUserBasicDetails(user.getRegistrationID());
+			if(user != null && user.getRegistrationID() != null){
+				registrationId = user.getRegistrationID();
+			}
+			else
+				registrationId = 1L;
+			
+			userDataVO = coreDashboardService.getUserBasicDetails(registrationId);
 			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();
 			userDataVO.setDeptIdList(diptIdList);
 			List<UserDataVO> committeeDataVOList = coreDashboardMainService.getbasicCommitteeDetails();
@@ -829,15 +836,17 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		LOG.info("Entered into getUserTypeWiseCommitteesCompletedCounts1()  of CoreDashboardAction");
 		try{
 			
+			 Long userId = null; 
 			 HttpSession session = request.getSession();
 			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			 if(user == null || user.getRegistrationID() == null){
-				return ERROR;
+				//return ERROR;
+				 userId = 1L;
 			 }
+			 else
+				 userId = user.getRegistrationID();
 			
 			jObj = new JSONObject(getTask());
-			
-			Long userId = user.getRegistrationID();
 			
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
@@ -1087,11 +1096,15 @@ public String getTopPoorPerformancecommittees(){
 		 
 		   final HttpSession session = request.getSession();
 			
+		   Long userId = null;
 			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user == null || user.getRegistrationID() == null){
-				return ERROR;
+				userId = 1L;
 			}
-		  //  Long userId = jObj.getLong("userId");
+			else
+				userId = user.getRegistrationID();
+		    //Long userId = jObj.getLong("userId");
+			
 			Long activityMemberId = jObj.getLong("activityMemberId");
 			Long userTypeId = jObj.getLong("userTypeId");
 		    Long userAccessLevelId = jObj.getLong("userAccessLevelId");
@@ -1104,7 +1117,7 @@ public String getTopPoorPerformancecommittees(){
 			}
 			Long stateId = jObj.getLong("stateId");
 			String dateStr = jObj.getString("dateStr");
-			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(user.getRegistrationID(),userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr);
+			userTypeVOList = coreDashboardMainService.getUserTypeWiseTotalEligibleAndAttendedCnt(userId,userTypeId,activityMemberId,userAccessLevelId,userAccessLevelValues,stateId,dateStr);
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getUserTypeWiseTotalEligibleAndAttendedCnt() method of CoreDashBoardAction", e); 
 	 }
@@ -1281,16 +1294,16 @@ public String getRoleBasedPerformanceCohort(){
 	
 	public String getUserTypeWiseNewsCounts(){
 		try {
-			
+			Long userId = null;
 			HttpSession session = request.getSession();
 			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			 if(user == null || user.getRegistrationID() == null){
-				return ERROR;
-			 }
+				//return ERROR;
+				 userId = 1L;
+			 }else
+				 userId = user.getRegistrationID();
 			
 			jObj = new JSONObject(getTask());
-			
-			Long userId = user.getRegistrationID();
 			
 			List<Long> npIdsList = new ArrayList<Long>(0);
 			
@@ -1394,12 +1407,17 @@ public String getRoleBasedPerformanceCohort(){
 		  try{
 				LOG.info("Entered into getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt()  of CoreDashboardAction");
 				
+				Long userId = null;
+				
 				HttpSession session = request.getSession();
 				 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 				 if(user == null || user.getRegistrationID() == null){
-					return ERROR;
+					//return ERROR;
+					 userId = 1L;
 				 }
-				
+				 else
+					 userId = user.getRegistrationID();
+				 
 				jObj = new JSONObject(getTask());
 				Long userTypeId = jObj.getLong("userTypeId");
 				Long activityMemberId = jObj.getLong("activityMemberId");
@@ -1414,7 +1432,7 @@ public String getRoleBasedPerformanceCohort(){
 							partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
 						}
 				}
-				 userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(user.getRegistrationID(),userTypeId,activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues);
+				 userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(userId,userTypeId,activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues);
 			}catch(Exception e){
 				LOG.error("Exception raised at getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt() method of CoreDashBoardAction", e);
 			}
@@ -1869,11 +1887,14 @@ try{
 		jObj = new JSONObject(getTask());
 		
 		final HttpSession session = request.getSession();
-		
+		Long userId = null;
 		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null || user.getRegistrationID() == null){
-			return ERROR;
+			//return ERROR;
+			userId = 1L;
 		}
+		else
+			userId = user.getRegistrationID();
 		
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		
@@ -1887,7 +1908,6 @@ try{
 		
 		Long stateId = jObj.getLong("stateId");
 		Long userTypeId = jObj.getLong("userTypeId");
-		Long userId = user.getRegistrationID();
 		
 		userTypeVOList = coreDashboardEventsActivitiesService.getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIds,activityMemberId,userId,userTypeId,stateId);
 		
