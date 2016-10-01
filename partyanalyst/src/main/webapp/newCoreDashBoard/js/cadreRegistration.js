@@ -22,6 +22,7 @@ $(document).on("click",".cadreExpand",function(){
 		$(".moreCadreBlock,.moreBlocksCadreIcon").toggle();
 		//getSpokesPersonWiseDebate("top");
 	},800);
+	getRegistrationCountDtls("booth"); 
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		setTimeout(function(){
 			$(".moreCadreBlock,.moreBlocksCadreIcon,.showTabUserWiseDetails").hide();
@@ -696,5 +697,72 @@ function getConstituencyDetailedReport(){
 		return returnVal;
 	}
 	
+	function getRegistrationCountDtls(location){
+		$("#constituenctDetailedReport").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		//var location = "booth";
+		var jsObj={  
+			location : location,      
+			constId : 282
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getRegistrationCountDtlsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#constituenctDetailedReport").html('');
+			buildRegistrationCountDtls(result,location);    
+		});
+	}
 	
+	function buildRegistrationCountDtls(result,location){  
+	//console.log(result);  
+	var str='';
+		str+='<div class="row">';
+		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+		str+='<table class="table table-bordered table-condensed" id="regCadreCountTableId"> ';
+			str+='<thead> ';
+			str+='<tr>';
+			str+='<th>Mandal</th>';
+			if(location == "panchayat"){
+				str+='<th>Panchayat</th>';
+			}
+			if(location == "booth"){
+				str+='<th>Panchayat</th>';
+				str+='<th>Booth Name</th>';
+			}
+					str+='<th>Total Voters</th>';
+					str+='<th>2014 Cadre Count</th>';
+					str+='<th>2016 Cadre Count</th>';  
+				str+='</tr>'; 
+			str+='</thead>'; 
+			str+='<tbody>';
+			for(var i in result.responseData){  
+				str+='<tr> ';
+					str+='<td>'+result.responseData[i].mandalName+'</td> ';
+					if(location == "panchayat"){
+						str+='<td>'+result.responseData[i].panchayatName+'</td>';
+					}
+					if(location == "booth"){
+						str+='<td>'+result.responseData[i].panchayatName+'</td>';
+						str+='<td>'+result.responseData[i].boothName+'</td>'; 
+					}
+					str+='<td>'+result.responseData[i].totalVoter+'</td>';  
+					str+='<td>'+result.responseData[i].cadreCount2014+'</td>';
+					str+='<td>'+result.responseData[i].cadreCount2016+'</td>';    
+				str+='</tr>';
+			}  
+		str+='</tbody>'; 
+	str+='</table>';
+		str+='</div>';
+		str+='</div>';
+	
+								
+	$("#constituenctDetailedReport").html(str);
+	$("#regCadreCountTableId").dataTable();   
+}
+$(document).on('click','.locationRadioCls',function(){
+	var selectionType=$("input:radio[name=selectionType]:checked").val();
+	getRegistrationCountDtls(selectionType);  
+});
 	
