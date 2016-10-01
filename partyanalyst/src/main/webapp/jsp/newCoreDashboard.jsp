@@ -2066,6 +2066,32 @@
                                         </div>
                                     </div>
                                 </div>
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreCadreBlock">
+								<h4 class="text-center text-capital">Kuppam Constitency Tab User Detailed Report</h4>
+									<div class="row m_top10">
+										<div class="col-md-6 col-xs-12 col-sm-3">
+											<select class="form-control">
+											  <option>Select Constituency</option>
+											  <option>Kuppam</option>
+											  <option>Nellore</option>
+											  <select>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-3">
+											<span class="input-group pull-right">
+												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+												</span>
+											</span>
+										</div>
+										<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+									</div>
+									<div class="row showTabUserWiseDetails" style="display:none">
+										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<div id="tabUserWiseReportDiv"></div>
+										</div>
+									</div>
+								</div>
                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
                                 	<div class="bg_ED pad_15">
                                     	<table class="table text-capital">
@@ -2530,6 +2556,28 @@
 			  <div class="modal-body">
 				  <div id="debateModelId" class="row"></div>				 
 					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+<!--end-->
+<!-- Model for Cadre  Start-->
+		<div class="modal" tabindex="-1" role="dialog" id="noOfSamplesModal">
+		  <div class="modal-dialog modal-lg" style="width:65%">
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">No.Of Samples Tab User Details</h4>
+			  </div>
+			  <div class="modal-body">
+				<div class="row">
+				  <div class="col-md-12 col-xs-12 col-sm-12">
+					<div id="noOfSamplesDetailsDiv" ></div>	
+				  </div>
+				</div>
 			  </div>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

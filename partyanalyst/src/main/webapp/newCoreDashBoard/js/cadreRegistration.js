@@ -1,4 +1,18 @@
 
+$(document).ready(function() {
+    initialiseDatePickerForCadreRegistration();
+});
+
+function initialiseDatePickerForCadreRegistration(){
+		$("#dateRangeIdForCadre").daterangepicker({
+			opens: 'right',
+			startDate: moment(),
+			endDate: moment(),
+			locale: {
+			  format: 'DD-MM-YYYY'
+			},
+		})
+}
 
 $(document).on("click",".cadreExpand",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -9,8 +23,11 @@ $(document).on("click",".cadreExpand",function(){
 		//getSpokesPersonWiseDebate("top");
 	},800);
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
-		$(".moreCadreBlock,.moreBlocksCadreIcon").hide();	
+		setTimeout(function(){
+			$(".moreCadreBlock,.moreBlocksCadreIcon,.showTabUserWiseDetails").hide();
+		},1000);		
 	}else{
+		
 		//getSpokesPersonWiseDebate("top");
 	}
 	if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
@@ -443,3 +460,101 @@ function getConstituencyDetailedReport(){
 								
 	$("#constituenctDetailedReport").html(str);
 }
+	
+	function getTabUserWiseReport(){
+		
+		var str='';
+		str+='<table class="table table-bordered table-condensed"> ';
+			str+='<thead> ';
+				str+='<tr>';
+					str+='<th>Tab UserId</th>';
+					str+='<th>Tab UserInfoId</th>';
+					str+='<th>Name</th>';
+					str+='<th>Image</th>';
+					str+='<th>MobileNo</th>';
+					str+='<th>No.Of Samples</th>';
+					str+='<th>First Record Time</th>';
+					str+='<th>Second Record Time</th>';
+				str+='</tr>'; 
+			str+='</thead>'; 
+			str+='<tbody>';
+			str+='<tr> ';
+				str+='<td>1000</td> ';
+				str+='<td>2560</td>';
+				str+='<td>Registration</td>';
+				str+='<td>9999999999</td>';
+				str+='<td>2000</td>';
+				str+='<td class="noOfSamplesDetailsPopUpView" style="cursor:pointer;">2000</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+			str+='</tr>';
+			str+='<tr> ';
+				str+='<td>1000</td> ';
+				str+='<td>2560</td>';
+				str+='<td>Registration</td>';
+				str+='<td>9999999999</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+			str+='</tr>';
+			str+='<tr> ';
+				str+='<td>1000</td> ';
+				str+='<td>2560</td>';
+				str+='<td>Registration</td>';
+				str+='<td>9999999999</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+			str+='</tr>';
+		str+='</tbody>'; 
+	str+='</table>';
+	
+	
+		$("#tabUserWiseReportDiv").html(str);
+	}
+	
+	$(document).on("click",".tabUserWiseDetails",function(){
+		$(".showTabUserWiseDetails").show();
+		getTabUserWiseReport();
+	});
+	$(document).on("click",".noOfSamplesDetailsPopUpView",function(){
+		$("#noOfSamplesModal").modal("show");
+		
+		var str='';
+		str+='<table class="table table-bordered table-condensed"> ';
+			str+='<thead> ';
+				str+='<tr>';
+					str+='<th>Day</th>';
+					str+='<th>No.Of Samples</th>';
+					str+='<th>First Record Time</th>';
+					str+='<th>Last Record Time</th>';
+				str+='</tr>'; 
+			str+='</thead>'; 
+			str+='<tbody>';
+			str+='<tr> ';
+				str+='<td>day1</td> ';
+				str+='<td>2560</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+			str+='</tr>';
+			str+='<tr> ';
+				str+='<td>day1</td> ';
+				str+='<td>2560</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+			str+='</tr>';
+			str+='<tr> ';
+				str+='<td>day1</td> ';
+				str+='<td>2560</td>';
+				str+='<td>2000</td>';
+				str+='<td>2000</td>';
+			str+='</tr>';
+		str+='</tbody>'; 
+	str+='</table>';
+	
+	
+		$("#noOfSamplesDetailsDiv").html(str);
+		
+	});
