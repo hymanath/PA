@@ -680,7 +680,8 @@
 	   <pattern>/alertDetailsAction*</pattern>
 	    <pattern>/nominatedPostManagementAction*</pattern>
 	   <pattern>/nominatedReadyToFinalReviewAction*</pattern>
-	    <pattern>/coreDashboardAction*</pattern>
+	   <pattern>/coreDashboardAction*</pattern>
+	   <pattern>/partyAndLeaderActivitiesAndPerformanceTracking*</pattern>
 	   <pattern>/nominatedPostMainDashboardAction*</pattern>
 		<pattern>/birthDayAction*</pattern>
 		<pattern>/govtOrderIssuedAction*</pattern>  
