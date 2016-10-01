@@ -1922,3 +1922,11 @@ margin-top: 5px; margin-bottom: 2px;
 .newsBasicCountDetailsDivEd{
 	cursor:pointer;
 }
+.cursorPo
+{
+	cursor:pointer;
+}
+.pagination li span.prev , .pagination li span.next , .pagination li a.prev , .pagination li a.next
+{
+	min-width:60px;
+}

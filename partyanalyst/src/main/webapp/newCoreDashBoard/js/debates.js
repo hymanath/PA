@@ -924,8 +924,8 @@ function getLatestDebate(){
 	 data: {}
 	}).done(function(result){
 		if(result != null){
-				$("#lastUpdatedDebateId").html("Last Updated Time : "+ result.split("/")[1]);
-			}
+			$("#lastUpdatedDebateId").html("Last Updated : "+ result.split("/")[1]);
+		}
 	});	
 }
 

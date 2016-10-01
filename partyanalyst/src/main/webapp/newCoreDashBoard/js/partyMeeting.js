@@ -227,7 +227,7 @@ $(document).on("click",".selectAll",function(){
 		  }
 		str+='</div>';
 	  $("#meetingBasicCountDivId").html(str);
-	  $(".meetingsInnerBlock").html("( "+singleBlockDateStart+" to "+singleBlockDateEnd+" )");
+	  $(".meetingsInnerBlock").html("( "+customStartDateMeetings+" to "+customEndDateMeetings+" )");
 	}
 	var globalUserWiseMeetingMemberRslt;
 	function getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt(){
@@ -1916,6 +1916,7 @@ function getPartyMeetingsMainTypeStateLevelOverview(){
 				buildPartyMeetingOverviewRslt(result,"stateLevelMeetingBasicCnt",2,"stateLevelMeetingsExpandId");
 			}else{
 			  $("#stateLevelMeetingBasicCnt").html("<div class='col-md-12 col-xs-12 col-sm-12'>NO DATA AVAILABLE.</div>");	
+			  $("#stateLevelMeetingBasicCnt").closest(".panelBlock").hide();
 			}
 		});
 	
@@ -1938,13 +1939,13 @@ function getPartySpecialMeetingsMainTypeOverview(){
 			toDateStr = datesArr[1]; 
 		}
 		var jsObj ={ 
-		             partyMeetingMainTypeId : 3,
-					 state : state,
-					 startDateString : fromDateStr,
-					 endDateString : toDateStr,
-					 partyMeetingTypeIds:partyMeetingTypeArr
-					 
-				  }
+			 partyMeetingMainTypeId : 3,
+			 state : state,
+			 startDateString : fromDateStr,
+			 endDateString : toDateStr,
+			 partyMeetingTypeIds:partyMeetingTypeArr
+			 
+		  }
 		$.ajax({
 			type : 'POST',
 			url : 'getPartyMeetingsMainTypeOverViewDataAction.action',
@@ -1956,6 +1957,7 @@ function getPartySpecialMeetingsMainTypeOverview(){
 			   buildPartyMeetingOverviewRslt(result,"specialMeetingBasicCnt",3,"specialMeetingsExpandId");
 		   }else{
 			$("#specialMeetingBasicCnt").html("NO DATA AVAILABLE.");	   
+			$("#specialMeetingBasicCnt").closest(".panelBlock").hide();
 		   }
 		});
 	
@@ -2539,5 +2541,5 @@ function getMeetingRecentTime(){
 	});
 }
 function setLastUpdatedTime(lastUpdatedTime){
- $("#lastMeetingUpdatedIdTimeId").html(" Last Updated :"+lastUpdatedTime+"");
+ $("#lastMeetingUpdatedIdTimeId").html(" Last Updated : "+lastUpdatedTime+"");
 }

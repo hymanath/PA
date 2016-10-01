@@ -16,6 +16,7 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+
 </head>
 <body>
 <header>
@@ -1073,7 +1074,9 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-						<b><h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
+							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
 								<div class="panelBlock">
 									<h4><span class="headingColor text-capital">committee meetings</span><span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span><span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span></h4>
@@ -1255,7 +1258,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-					<b><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></b>
+						<div class="col-md-12 col-xs-12 col-sm-12"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
 						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
 							<div class="row">
 							 <div id="programsDtlsCntTableId"></div>
@@ -1427,6 +1430,8 @@
 				</div>
 			</div>
 			<!-- Training End-->
+		</div>
+		<div class="row">
 		<!--Events Start -->
 			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
 				<div class="panel panel-default panelNewCustom">
@@ -1473,7 +1478,7 @@
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
 								<span id="eventIds" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>
-								<div id="mainEventsList"></div>
+								<div id="mainEventsList" class="m_top20"></div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
 								<h4><span class="headingColor text-capital">events </span></h4>
@@ -1547,8 +1552,6 @@
 			</div>	
 	
 		<!--Events End -->
-	</div>
-	<div class="row">
 		<!-- Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -1831,6 +1834,8 @@
             </div>
         </div>
 		<!-- Committees End-->
+	</div>
+	<div class="row">
 		<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock">
             <div class="panel panel-default panelNewCustom">
@@ -2556,6 +2561,7 @@
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 	$(document).on("click","#demoBtn",function(){
 		$("#attendanceModal").modal('show');
