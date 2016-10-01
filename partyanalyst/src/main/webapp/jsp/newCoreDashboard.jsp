@@ -448,7 +448,7 @@
 									<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline pull-right">
 												<li class="active newsliCls" attr_value="1"><i class="fa fa-arrow-up"></i>&nbsp;top 5 Positive</li>
-												<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-up"></i>&nbsp;Top 5 Negative</li>
+												<li class="newsliCls" attr_value="2"> <i class="fa fa-arrow-down"></i>&nbsp;Top 5 Negative</li>
 											</ul>
 									</div>
 									 <div id="userTypeWiseNewsForTopFiveStrongAndPoorDiv"></div>
