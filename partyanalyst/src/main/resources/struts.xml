@@ -13796,6 +13796,32 @@
 	  		<param name="root">status</param>     
 	 	</result>
 	</action>
+	<action name="getPartyMeetingCommentsDetailsAction" class="coreDashboardAction" method="getPartyMeetingCommentsDetails">
+		<result type="json" name="success">
+	  		<param name="root">partyMeetingsVOList</param>     
+	 	</result>
+	</action>
+	<action name="getPartyMeetingComulativeCommentDetailsAction" class="coreDashboardAction" method="getPartyMeetingComulativeCommentDetails">
+		<result type="json" name="success">
+	  		<param name="root">partyMeetingsVOList</param>     
+	 	</result>
+	</action>
+	
+	<action name="getDistrictByStateAction" class="coreDashboardAction" method="getDistrictByState">
+		<result type="json" name="success">
+	  		<param name="root">partyMeetingsVOList</param>     
+	 	</result>
+	</action>
+	<action name="getConstituencyByDistrictAction" class="coreDashboardAction" method="getConstituencyByDistrict">
+		<result type="json" name="success">
+	  		<param name="root">partyMeetingsVOList</param>     
+	 	</result>
+	</action>
+	<action name="getMandalByConstituencyAction" class="coreDashboardAction" method="getMandalByConstituency">
+		<result type="json" name="success">
+	  		<param name="root">partyMeetingsVOList</param>     
+	 	</result>
+	</action>
 	<action name="getCoreDebateBasicDetailsOfPartyAction" class="coreDashboardAction" method="getCoreDebateBasicDetailsOfParty">
 		<result type="json" name="success">
 	  		<param name="root">codeDebateVoList</param>     
@@ -13816,6 +13842,16 @@
 		</result>
 	</action>
 	<action name="getRegistrationCountDtlsAction" class="coreDashboardAction" method="getRegistrationCountDtls">
+		<result type="json" name="success">
+				<param name="root">object</param>   
+		</result>
+	</action>
+	<action name="getCadreRegistrationCountByConstituencyAction" class="coreDashboardAction" method="getCadreRegistrationCountByConstituency">
+		<result type="json" name="success">
+				<param name="root">object</param>   
+		</result>
+	</action>
+	<action name="getDaysByCadreRegistrationCountAction" class="coreDashboardAction" method="getDaysByCadreRegistrationCount">
 		<result type="json" name="success">
 				<param name="root">object</param>   
 		</result>

@@ -2306,31 +2306,183 @@ public String getCoreDebateBasicDetailsOfParty(){
 	}
 	return Action.SUCCESS;
 }
-	
-	public String showArticles(){
-		return "success";
+public String showArticles(){
+	return "success";
+}
+public String showCadreRegistreredCount(){
+    try{
+      
+      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.showCadreRegistreredCount();
+      
+    }catch(Exception e){
+      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getRegistrationCountDtls(){  
+    try{
+    	jObj = new JSONObject(getTask()); 
+    	String location = jObj.getString("location");
+    	Long constId = jObj.getLong("constId");
+      object = coreDashboardCadreRegistrationService.getRegistrationCountDtls(location,constId);
+      
+    }catch(Exception e){  
+      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getPartyMeetingCommentsDetails(){
+	try {
+		LOG.info("Entered into getPartyMeetingCommentsDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String meetingStatus = jObj.getString("meetingStatus");
+		String meetingLevel = jObj.getString("meetingLevel");
+		String isComment = jObj.getString("isComment");
+		List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+		JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+		if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+			for( int i=0;i<partyMeetingTypeArray.length();i++){
+				partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+			}
+		}
+		Long locationId = jObj.getLong("locationId");
+		String locationType = jObj.getString("locationType");
+		partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingCommentsDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,locationId,locationType);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getPartyMeetingCommentsDetails() method of CoreDashBoard", e);
 	}
-	
-	public String showCadreRegistreredCount(){
-	    try{
-	      
-	      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.showCadreRegistreredCount();
-	      
-	    }catch(Exception e){
-	      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
-	    }
-	    return Action.SUCCESS;
-	  }
-	public String getRegistrationCountDtls(){  
-	    try{
-	    	jObj = new JSONObject(getTask()); 
-	    	String location = jObj.getString("location");
-	    	Long constId = jObj.getLong("constId");
-	      object = coreDashboardCadreRegistrationService.getRegistrationCountDtls(location,constId);
-	      
-	    }catch(Exception e){  
-	      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
-	    }
-	    return Action.SUCCESS;
-	  }
+	return Action.SUCCESS;
+}
+public String getPartyMeetingComulativeCommentDetails(){
+	try {
+		LOG.info("Entered into getPartyMeetingCommentsDetails()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String meetingStatus = jObj.getString("meetingStatus");
+		String meetingLevel = jObj.getString("meetingLevel");
+		String isComment = jObj.getString("isComment");
+		List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+		JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+		if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+			for( int i=0;i<partyMeetingTypeArray.length();i++){
+				partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+			}
+		}
+		String reportType = jObj.getString("reportType");
+		Long locationId = jObj.getLong("locationId");
+		String locationType = jObj.getString("locationType");
+		partyMeetingsVOList = coreDashboardPartyMeetingService.getPartyMeetingComulativeCommentDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment,reportType,locationId,locationType);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getPartyMeetingComulativeCommentDetails() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getDistrictByState(){
+	try {
+		LOG.info("Entered into getDistrictByState()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String meetingStatus = jObj.getString("meetingStatus");
+		String meetingLevel = jObj.getString("meetingLevel");
+		String isComment = jObj.getString("isComment");
+		List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+		JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+		if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+			for( int i=0;i<partyMeetingTypeArray.length();i++){
+				partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+			}
+		}
+		partyMeetingsVOList = coreDashboardPartyMeetingService.getDistrictByState(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getDistrictByState() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getConstituencyByDistrict(){
+	try {
+		LOG.info("Entered into getConstituencyByDistrict()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long districtId = jObj.getLong("districtId");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String meetingStatus = jObj.getString("meetingStatus");
+		String meetingLevel = jObj.getString("meetingLevel");
+		String isComment = jObj.getString("isComment");
+		List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+		JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+		if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+			for( int i=0;i<partyMeetingTypeArray.length();i++){
+				partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+			}
+		}
+		partyMeetingsVOList = coreDashboardPartyMeetingService.getConstituencyByDistrictId(districtId,activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,meetingStatus,meetingLevel,isComment);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getConstituencyByDistrict() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getMandalByConstituency(){
+	try {
+		LOG.info("Entered into getMandalByConstituency()  of CoreDashboardAction");
+		jObj = new JSONObject(getTask());
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		String meetingStatus = jObj.getString("meetingStatus");
+		String meetingLevel = jObj.getString("meetingLevel");
+		String isComment = jObj.getString("isComment");
+		List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+		JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+		if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+			for( int i=0;i<partyMeetingTypeArray.length();i++){
+				partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+			}
+		}
+		partyMeetingsVOList = coreDashboardPartyMeetingService.getMandalByConstituyId(constituencyId,activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues, meetingStatus,meetingLevel,isComment);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getMandalByConstituency() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+public String getCadreRegistrationCountByConstituency(){  
+    try{
+    	jObj = new JSONObject(getTask()); 
+    	String fromDate = jObj.getString("fromDate");
+    	String toDate = jObj.getString("toDate");
+    	Long constituencyId = jObj.getLong("constituencyId");
+      object = coreDashboardCadreRegistrationService.getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate);
+      
+    }catch(Exception e){  
+      LOG.error("Exception raised at getCadreRegistrationCountByConstituency() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
+public String getDaysByCadreRegistrationCount(){  
+    try{
+    	jObj = new JSONObject(getTask()); 
+    	String fromDate = jObj.getString("fromDate");
+    	String toDate = jObj.getString("toDate");
+    	Long constituencyId = jObj.getLong("constituencyId");
+    	Long tabUserInfoId = jObj.getLong("tabUserInfoId");
+    	Long cadreSurveyUserId = jObj.getLong("cadreSurveyUserId");
+      object = coreDashboardCadreRegistrationService.getDaysByCadreRegistrationCount(constituencyId,cadreSurveyUserId,tabUserInfoId,fromDate,toDate);
+    }catch(Exception e){  
+      LOG.error("Exception raised at getCadreRegistrationCountByConstituecny() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
 }

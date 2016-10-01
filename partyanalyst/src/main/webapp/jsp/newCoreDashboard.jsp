@@ -2043,6 +2043,7 @@
                                 </div>-->
                             </div>
                         </div>
+						
 						<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -2066,17 +2067,21 @@
                                 </div>
                                 
                             </div>
-							<div class="row m_top10">
-                            	<div class="col-md-12 col-xs-12 col-sm-12">
-								<h4 class="text-center text-capital">Kuppam Constitency Tab User Detailed Report</h4>
+								
+                        </div>
+						
+						<div class="col-md-12 col-xs-12 col-sm-12 moreCadreBlock m_top20">
+								<h4 class="text-capital">Kuppam Constitency Tab User Detailed Report</h4>
 									<div class="row m_top10">
-										<div class="col-md-6 col-xs-12 col-sm-3">
-											<select class="form-control">
-											  <option>Select Constituency</option>
+										<div class="col-md-3 col-xs-12 col-sm-3">
+											<select class="form-control" id="constituencySeletBoxId">
+											  <option value="0">Select Constituency</option>
 											  <option value="282">Kuppam</option>
 											  <select>
+											  <span id="constituencyErrorId" style="color:red"></span>
 										</div>
-										<div class="col-md-6 col-xs-12 col-sm-3">
+										
+										<div class="col-md-3 col-xs-12 col-sm-3">
 											<span class="input-group pull-right">
 												<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
 												<span class="input-group-addon">
@@ -2084,7 +2089,10 @@
 												</span>
 											</span>
 										</div>
-										<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+										<div class="col-md-1 col-xs-12 col-sm-3" style="margin-top: -8px;">
+											<button class="btn btn-success pull-right m_top10 tabUserWiseDetails" type="submit" style="margin-right: 16px;">Submit</button>
+										</div>
+										
 									</div>
 									<div class="row showTabUserWiseDetails" style="display:none">
 										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
@@ -2092,9 +2100,7 @@
 										</div>
 									</div>
 							 </div>
-							</div>	
-                        </div>
-						
+							 
                         <!--<div class="col-md-6 col-xs-12 col-sm-6 moreCadreBlock">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -2527,7 +2533,7 @@
 			<div class="modal-content" style="border-radius:0px">
 			  <div class="modal-header" style="background-color:#CCC">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">No.Of Samples Tab User Details</h4>
+				<h4 class="modal-title">No.Of Samples Day Wise Tab User Details</h4>
 			  </div>
 			  <div class="modal-body">
 				<div class="row">
@@ -2543,6 +2549,101 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 <!--end-->
+
+<!-- meeting comment modal start -->
+<div class="modal fade" id="meetingCommentModalId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:80%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4  class="modal-title" id="meetingHeadingId"></h4>
+		<!--<input type="button" value="view not comment meeting"/>-->
+		<div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-12 consolidatedCls">
+			<div class="col-md-4 col-xs-12 col-sm-4"  style="text-align: center; margin-top: 25px;>
+			<label class="radio-inline">
+			  <input type="radio" id="ConsolidatedradioId" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Consolidated 
+			</label>
+			<label  class="radio-inline individualRadioBtnCls">
+			  <input type="radio" id="individualradioId" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Individual
+			</label>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-6">
+			<label>Consolidated Type</label>
+			<select  id="commentFilterSelectBoxId" class="form-control col-xs-3">
+			  <option value="0">District</option>
+			  <option value="1">Constituency</option>
+			</select>
+			</div>
+		</div>
+		</div>
+		<div class="row m_top10">
+			<div class="col-md-12 col-xs-12 col-sm-12 filterCls">
+				<div class="col-md-3 col-xs-12 col-sm-6 districtSlctBxCls">
+				<label>District</label>
+				<select  id="districtSlctBxId" class="form-control col-xs-3">
+				 <option value="0">Select District</option>
+				</select>
+				</div>
+				<div class="col-md-3 col-xs-12 col-sm-6 constituencySlctBxCls">
+				<label>Constituency</label>
+				<select  id="constituencySlctBxId" class="form-control col-xs-3">
+				<option value="0">Select Constituency</option>
+				</select>
+				</div>
+				<div class="col-md-3 col-xs-12 col-sm-6 mandalSlctBxCls">
+				<label>Mandal/Town/Division</label>
+				<select  id="mandalSlctBxId" class="form-control col-xs-3">
+				<option value="0">select Mandal/Town/Division</option>
+				</select>
+				</div>
+				<div class="col-md-3 col-xs-12 col-sm-6" style="margin-top: 25px;">
+			     <input type="button" id="getDetailsBtnId" class="btn btn-success" value="GetDetails"/>
+				</div>
+			</div>
+	    </div>
+		<!--<div class="row m_top10">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			 <input type="checkbox" id="getMeetingDetails" class="btn btn-success"/>If u will check this. you will get all (comment / not comment ) meeting details
+			</div>
+		</div>-->
+	  </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="meetingCommentProcessingImgId"></center></div>
+			<div id="meetingCommentDtlsTblId"></div> 
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end -->
+<div class="modal fade" id="meetingCommentDtlsModalId" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:60%;margin:auto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title" id="meetingHeadingId">Meeting Description</h4> 
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="meetingSubLevelRsltProcessingImgId"></center></div>
+			<div id="meetingDetailsTblId"></div> 
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modalCloseCls" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
