@@ -3466,7 +3466,7 @@
 	    <property name="partyMeetingAttendanceDAO" ref="partyMeetingAttendanceDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	    <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" />  
-	</bean>
+	   </bean>
 	
 	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
 	 <property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>

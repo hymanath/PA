@@ -23,6 +23,7 @@ $(document).on("click",".cadreExpand",function(){
 		//getSpokesPersonWiseDebate("top");
 	},800);
 	getRegistrationCountDtls("booth"); 
+	$("#constituencySeletBoxId").val(0);
 	if( !$(this).find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 		setTimeout(function(){
 			$(".moreCadreBlock,.moreBlocksCadreIcon,.showTabUserWiseDetails").hide();
@@ -239,105 +240,7 @@ $('#genSec').highcharts({
 		data: [107, 31, 635, 203, 2]
 	}]
 });
-	
-	function getTabUserWiseReport(){
-		
-		var str='';
-		str+='<table class="table table-bordered table-condensed"> ';
-			str+='<thead> ';
-				str+='<tr>';
-					str+='<th>Tab UserId</th>';
-					str+='<th>Tab UserInfoId</th>';
-					str+='<th>Name</th>';
-					str+='<th>Image</th>';
-					str+='<th>MobileNo</th>';
-					str+='<th>No.Of Samples</th>';
-					str+='<th>First Record Time</th>';
-					str+='<th>Second Record Time</th>';
-				str+='</tr>'; 
-			str+='</thead>'; 
-			str+='<tbody>';
-			str+='<tr> ';
-				str+='<td>1000</td> ';
-				str+='<td>2560</td>';
-				str+='<td>Registration</td>';
-				str+='<td>9999999999</td>';
-				str+='<td>2000</td>';
-				str+='<td class="noOfSamplesDetailsPopUpView" style="cursor:pointer;">2000</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-			str+='</tr>';
-			str+='<tr> ';
-				str+='<td>1000</td> ';
-				str+='<td>2560</td>';
-				str+='<td>Registration</td>';
-				str+='<td>9999999999</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-			str+='</tr>';
-			str+='<tr> ';
-				str+='<td>1000</td> ';
-				str+='<td>2560</td>';
-				str+='<td>Registration</td>';
-				str+='<td>9999999999</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-			str+='</tr>';
-		str+='</tbody>'; 
-	str+='</table>';
-	
-	
-		$("#tabUserWiseReportDiv").html(str);
-	}
-	
-	$(document).on("click",".tabUserWiseDetails",function(){
-		$(".showTabUserWiseDetails").show();
-		getTabUserWiseReport();
-	});
-	$(document).on("click",".noOfSamplesDetailsPopUpView",function(){
-		$("#noOfSamplesModal").modal("show");
-		
-		var str='';
-		str+='<table class="table table-bordered table-condensed"> ';
-			str+='<thead> ';
-				str+='<tr>';
-					str+='<th>Day</th>';
-					str+='<th>No.Of Samples</th>';
-					str+='<th>First Record Time</th>';
-					str+='<th>Last Record Time</th>';
-				str+='</tr>'; 
-			str+='</thead>'; 
-			str+='<tbody>';
-			str+='<tr> ';
-				str+='<td>day1</td> ';
-				str+='<td>2560</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-			str+='</tr>';
-			str+='<tr> ';
-				str+='<td>day1</td> ';
-				str+='<td>2560</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-			str+='</tr>';
-			str+='<tr> ';
-				str+='<td>day1</td> ';
-				str+='<td>2560</td>';
-				str+='<td>2000</td>';
-				str+='<td>2000</td>';
-			str+='</tr>';
-		str+='</tbody>'; 
-	str+='</table>';
-	
-	
-		$("#noOfSamplesDetailsDiv").html(str);
-		
-	});
-	
+
 	function cadreRegistrationBasicCall(){
 		showCadreRegistreredCount();
 	}
@@ -700,4 +603,212 @@ $(document).on('click','.locationRadioCls',function(){
 	var selectionType=$("input:radio[name=selectionType]:checked").val();
 	getRegistrationCountDtls(selectionType);  
 });
+$(document).on("click",".applyBtn",function(){
+		
+		var constituencyId = $("#constituencySeletBoxId").val();
+		var dates = $("#dateRangeIdForCadre").val();
+		if(constituencyId == 0){
+			$("#constituencyErrorId").html("Please Select Constituency.");
+			return;
+		}
+		$("#constituencyErrorId").html(' ');
+		 var fromDate;
+		 var toDate;
+		 if(dates != null ){
+			 var datesArr = dates.split("-");
+			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
+			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
+		 }
+		$(".showTabUserWiseDetails").show();
+		getCadreRegistrationCountByConstituency(constituencyId,fromDate.trim(),toDate.trim());
+	});
 	
+$(document).on("click",".tabUserWiseDetails",function(){
+		
+		var constituencyId = $("#constituencySeletBoxId").val();
+		var dates = $("#dateRangeIdForCadre").val();
+		if(constituencyId == 0){
+			$("#constituencyErrorId").html("Please Select Constituency.");
+			return;
+		}
+		$("#constituencyErrorId").html(' ');
+		 var fromDate;
+		 var toDate;
+		 if(dates != null ){
+			 var datesArr = dates.split("-");
+			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
+			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
+		 }
+		$(".showTabUserWiseDetails").show();
+		getCadreRegistrationCountByConstituency(constituencyId,fromDate.trim(),toDate.trim());
+	});
+function getCadreRegistrationCountByConstituency(constituencyId,fromDate,toDate){
+		 $("#tabUserWiseReportDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj={  
+			constituencyId : constituencyId,      
+			fromDate : fromDate,
+			toDate : toDate
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getCadreRegistrationCountByConstituencyAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#tabUserWiseReportDiv").html('');
+		  if(result != null && result.length > 0){
+			  buildCadreRegistrationOverViewResult(result);
+		  }else{
+			  $("#tabUserWiseReportDiv").html("NO DATA AVAILABLE.");
+		  }
+		});
+	}
+	function buildCadreRegistrationOverViewResult(result){
+		
+			var str='';
+			str+='<table class="table table-bordered table-condensed"> ';
+				str+='<thead> ';
+					str+='<tr>';
+						str+='<th>Survey UserName</th>';
+						str+='<th>Tab UserInfo Name</th>';
+						str+='<th>Image</th>';
+						str+='<th>MobileNo</th>';
+						str+='<th>No.Of Samples</th>';
+						str+='<th>First Record Time</th>';
+						str+='<th>Second Record Time</th>';
+					str+='</tr>'; 
+				str+='</thead>'; 
+				str+='<tbody>';
+				for(var i in result){
+					var tabUserInfoList = result[i].subList;
+					  if(tabUserInfoList != null && tabUserInfoList.length > 0){
+						  for(var j in tabUserInfoList){
+						str+='<tr> ';
+						    if(result[i].name != null && result[i].name.length > 0){
+							str+='<td>'+result[i].name+'</td> ';	
+							}else{
+							str+='<td> - </td> ';	
+							}
+							if(tabUserInfoList[j].name != null){
+							str+='<td>'+tabUserInfoList[j].name+'</td>';
+							}else{
+								str+='<td> - </td>';	
+							}
+							str+='<td><img src="http://mytdp.in/tab_user_images/'+tabUserInfoList[j].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+							 if(tabUserInfoList[j].mobileNo != null && tabUserInfoList[j].mobileNo.length > 0){
+							 str+='<td>'+tabUserInfoList[j].mobileNo+'</td> ';	 	 
+							 }else{
+							 str+='<td> - </td> ';	 
+							  }
+							 if(tabUserInfoList[j].sampleCount != null && tabUserInfoList[j].sampleCount> 0){
+							 str+='<td><a style="cursor:pointer;" class="noOfSamplesDetailsPopUpView" attr_tab_user_info_id='+tabUserInfoList[j].id+' attr_survey_user_info_id='+result[i].id+'>'+tabUserInfoList[j].sampleCount+'</a></td> ';	 	 
+							 }else{
+							 str+='<td> - </td> ';	 
+							  }
+							 if(tabUserInfoList[j].firstRecordInsertedTime != null && tabUserInfoList[j].firstRecordInsertedTime.length> 0){
+							 str+='<td>'+tabUserInfoList[j].firstRecordInsertedTime.substring(0,19)+'</td> ';	 	 
+							 }else{
+							 str+='<td> - </td> ';	 
+							  }
+							  if(tabUserInfoList[j].lastRecordInsertedTime != null && tabUserInfoList[j].lastRecordInsertedTime.length> 0){
+							 str+='<td>'+tabUserInfoList[j].lastRecordInsertedTime.substring(0,19)+'</td> ';	 	 
+							 }else{
+							 str+='<td> - </td> ';	 
+							  }
+						str+='</tr>';
+						  }
+					  }
+				}
+			str+='</tbody>'; 
+		str+='</table>';
+		
+		$("#tabUserWiseReportDiv").html(str);
+	}
+	
+	function setDefaultImage(img){
+		img.onerror = "";
+		img.src = "images/cadre_images/human.jpg";
+		return true;
+	}
+	
+	$(document).on("click",".noOfSamplesDetailsPopUpView",function(){
+	   var constituencyId = $("#constituencySeletBoxId").val();
+	    var dates = $("#dateRangeIdForCadre").val();
+		 var fromDate;
+		 var toDate;
+		 if(dates != null ){
+			 var datesArr = dates.split("-");
+			 fromDate=datesArr[0]+"-"+datesArr[1]+"-"+datesArr[2];
+			 toDate=datesArr[3]+"-"+datesArr[4]+"-"+datesArr[5];
+		 }
+		var tabUserInfoId = $(this).attr("attr_tab_user_info_id");
+		var surveyUserId = $(this).attr("attr_survey_user_info_id");
+		$("#noOfSamplesModal").modal("show");
+		getDaysByCadreRegistrationCount(constituencyId,fromDate.trim(),toDate.trim(),tabUserInfoId,surveyUserId);
+	});	
+
+function getDaysByCadreRegistrationCount(constituencyId,fromDate,toDate,tabUserInfoId,surveyUserId){
+		$("#noOfSamplesDetailsDiv").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		var jsObj={  
+			constituencyId : constituencyId,      
+			fromDate : fromDate,
+			toDate : toDate,
+			tabUserInfoId : tabUserInfoId,
+			cadreSurveyUserId : surveyUserId
+		};
+		$.ajax({          
+			type : 'GET',    
+			url : 'getDaysByCadreRegistrationCountAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			$("#noOfSamplesDetailsDiv").html(' ');
+			 if(result != null && result.length > 0){
+				 buildDaysByCadreRegistrationResult(result);
+			 }else{
+				$("#noOfSamplesDetailsDiv").html("NO DATA AVAILABLE"); 
+			 }
+		});
+	}
+
+	function buildDaysByCadreRegistrationResult(result){
+			var str='';
+			str+='<table class="table table-bordered table-condensed"> ';
+				str+='<thead> ';
+					str+='<tr>';
+						str+='<th>Day</th>';
+						str+='<th>No.Of Samples</th>';
+						str+='<th>First Record Time</th>';
+						str+='<th>Last Record Time</th>';
+					str+='</tr>'; 
+				str+='</thead>'; 
+				str+='<tbody>';
+				for(var i in result){
+					str+='<tr> ';
+						 if(result[i].days != null && result[i].days.length > 0){
+								str+='<td>'+result[i].days+'</td> '; 
+						 }else{
+								str+='<td> - </td> ';
+						 }
+						if(result[i].sampleCount != null && result[i].sampleCount> 0){
+						 str+='<td>'+result[i].sampleCount+'</td> ';	 	 
+						 }else{
+						 str+='<td> - </td> ';	 
+						  }
+						 if(result[i].firstRecordInsertedTime != null && result[i].firstRecordInsertedTime.length> 0){
+						 str+='<td>'+result[i].firstRecordInsertedTime.substring(0,19)+'</td> ';	 	 
+						 }else{
+						 str+='<td> - </td> ';	 
+						  }
+						  if(result[i].lastRecordInsertedTime != null && result[i].lastRecordInsertedTime.length> 0){
+						 str+='<td>'+result[i].lastRecordInsertedTime.substring(0,19)+'</td> ';	 	 
+						 }else{
+						 str+='<td> - </td> ';	 
+						  }
+				   str+='</tr>';
+				
+				}
+			str+='</tbody>'; 
+		str+='</table>';
+		$("#noOfSamplesDetailsDiv").html(str);
+	}
