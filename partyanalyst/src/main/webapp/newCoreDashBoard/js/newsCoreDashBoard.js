@@ -3195,11 +3195,11 @@
 					if (countVar === 5) {
 						break;
 					}
-				var totalMainCnt = result[i].positiveCountMain + result[i].negativCountMain
-				var totalDistCnt = result[i].positiveCountDist + result[i].negativCountDist
+				//var totalMainCnt = result[i].positiveCountMain + result[i].negativCountMain
+				//var totalDistCnt = result[i].positiveCountDist + result[i].negativCountDist
 				str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+						str+='<h4 class="panel-title">'+result[i].organization+'</h4>';
 						str+='<div class="row m_top10">';
 							str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 								str+='<table class="table table-condensed tableNews ">';
@@ -3207,7 +3207,7 @@
 									str+='<tr class="bg_ED">';
 										str+='<td>';
 											str+='<p class="text-capital">Main Edition</p>';
-											str+='<p>'+totalMainCnt+'</p>';
+											str+='<p>'+result[i].count+'</p>';
 										str+='</td>';
 										str+='<td>';
 											str+='<p class="text-capital text-muted">Positive</p>';
@@ -3227,7 +3227,7 @@
 									str+='<tr class="bg_ED">';
 										str+='<td>';
 											str+='<p class="text-capital">District Edition</p>';
-											str+='<p>'+totalDistCnt+'</p>';
+											str+='<p>'+result[i].totalCount+'</p>';
 										str+='</td>';
 										str+='<td>';
 											str+='<p class="text-capital text-muted">Positive</p>';
@@ -3269,7 +3269,7 @@
 				for(var j in result[i].coreDashBoardVOList){
 					var totalPositive = result[i].coreDashBoardVOList[j].positiveCountDist + result[i].coreDashBoardVOList[j].positiveCountMain;  
 					var totalNegative = result[i].coreDashBoardVOList[j].negativCountDist + result[i].coreDashBoardVOList[j].negativCountMain;  
-					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
+					districtNamesArray.push(result[i].coreDashBoardVOList[j].organization);
 					districtWisePositiveCountArray.push(totalPositive);
 					districtWiseNegativeCountArray.push(totalNegative);
 				}
@@ -4182,11 +4182,11 @@
 					if (countVar === 5) {
 						break;
 					}
-				var totalMainCnt = result[i].positiveCountMain + result[i].negativCountMain
-				var totalDistCnt = result[i].positiveCountDist + result[i].negativCountDist
+				//var totalMainCnt = result[i].positiveCountMain + result[i].negativCountMain
+				//var totalDistCnt = result[i].positiveCountDist + result[i].negativCountDist
 				str+='<div class="row">';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-						str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+						str+='<h4 class="panel-title">'+result[i].organization+'</h4>';
 						str+='<div class="row m_top10">';
 							str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 								str+='<table class="table table-condensed tableNews ">';
@@ -4194,7 +4194,7 @@
 									str+='<tr class="bg_ED">';
 										str+='<td>';
 											str+='<p class="text-capital">Main Edition</p>';
-											str+='<p>'+totalMainCnt+'</p>';
+											str+='<p>'+result[i].count+'</p>';
 										str+='</td>';
 										str+='<td>';
 											str+='<p class="text-capital text-muted">Positive</p>';
@@ -4214,7 +4214,7 @@
 									str+='<tr class="bg_ED">';
 										str+='<td>';
 											str+='<p class="text-capital">District Edition</p>';
-											str+='<p>'+totalDistCnt+'</p>';
+											str+='<p>'+result[i].totalCount+'</p>';
 										str+='</td>';
 										str+='<td>';
 											str+='<p class="text-capital text-muted">Positive</p>';
@@ -4257,7 +4257,7 @@
 				for(var j in result[i].coreDashBoardVOList){
 					totalPositive = result[i].coreDashBoardVOList[j].positiveCountDist + result[i].coreDashBoardVOList[j].positiveCountMain;  
 					totalNegative = result[i].coreDashBoardVOList[j].negativCountDist + result[i].coreDashBoardVOList[j].negativCountMain;  
-					districtNamesArray.push(result[i].coreDashBoardVOList[j].name);
+					districtNamesArray.push(result[i].coreDashBoardVOList[j].organization);
 					districtWisePositiveCountArray.push(totalPositive);
 					districtWiseNegativeCountArray.push(totalNegative);
 				}
