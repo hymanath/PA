@@ -5243,7 +5243,7 @@ $(document).on("click",".btnCustomCreateNews",function(){
 			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getRescentArticleTime/"
 		}).then(function(result){
 			if(result != null){
-				$("#lastUpdatedId").html("Last Updated : "+ result[0].organization);
+				$("#lastUpdatedId").html("Last Updated : "+ result[0].benefit);
 			}
 		});
 	}    
