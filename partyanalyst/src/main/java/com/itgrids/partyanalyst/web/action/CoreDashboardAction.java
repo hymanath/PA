@@ -86,6 +86,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ResultStatus 						resultStatus;
 	private List<DashboardCommentVO> 						dashboardCommentVo;
 	private String status;
+	private Object object;
 	
 	private List<IdNameVO> idNameVoList;
 	private List<IdAndNameVO> IdAndNameVOList;
@@ -535,6 +536,13 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setCadreRegistratedCountVO(
 			CadreRegistratedCountVO cadreRegistratedCountVO) {
 		this.cadreRegistratedCountVO = cadreRegistratedCountVO;
+	}
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
 	}
 
 	//business methods
@@ -2309,6 +2317,18 @@ public String getCoreDebateBasicDetailsOfParty(){
 	      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.showCadreRegistreredCount();
 	      
 	    }catch(Exception e){
+	      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
+	    }
+	    return Action.SUCCESS;
+	  }
+	public String getRegistrationCountDtls(){  
+	    try{
+	    	jObj = new JSONObject(getTask()); 
+	    	String location = jObj.getString("location");
+	    	Long constId = jObj.getLong("constId");
+	      object = coreDashboardCadreRegistrationService.getRegistrationCountDtls(location,constId);
+	      
+	    }catch(Exception e){  
 	      LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
 	    }
 	    return Action.SUCCESS;
