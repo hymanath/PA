@@ -7,4 +7,5 @@ import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 public interface ICoreDashboardCadreRegistrationService {
 	
 	public CadreRegistratedCountVO showCadreRegistreredCount();
+	public Object getRegistrationCountDtls(String location,Long constId);
 }

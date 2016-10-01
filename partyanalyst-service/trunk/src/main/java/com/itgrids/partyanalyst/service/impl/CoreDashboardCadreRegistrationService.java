@@ -38,6 +38,28 @@ public class CoreDashboardCadreRegistrationService implements ICoreDashboardCadr
 	    }
 	    return regCountVO;
 	  }
+	public Object getRegistrationCountDtls(String location, Long constId){  
+	    Object regCountVO = null;
+	    try {
+	      
+	      
+	         ClientConfig clientConfig = new DefaultClientConfig();
+	         
+	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+	       
+	         String webServiceUrl  = IConstants.CADRE_REGISTRATION_URL + "WebService/getRegistrationCountDtls/"+location+"/"+constId;
+	           
+	         WebResource webResource = client.resource( webServiceUrl );
+	           
+	         regCountVO = webResource.accept("application/json").get(Object.class);
+	         return regCountVO;
+	        
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at showCadreRegistreredCount", e);
+	    }
+	    return null;    
+	  }
 	
 	
 }
