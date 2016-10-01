@@ -239,163 +239,6 @@ $('#genSec').highcharts({
 	}]
 });
 
-getOverAllRegistrationgraph();
-function getOverAllRegistrationgraph(){
-	
-	$(function () {
-		$('#totalOverAllRegistrationGraph').highcharts({
-			colors: ['#53BF8B','#f7a423'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: ''
-			},
-			xAxis: {
-				min: 0,
-				 gridLineWidth: 0,
-				 minorGridLineWidth: 0,
-				categories: ['Andhra Pradesh']
-			},
-			yAxis: {
-				min: 0,
-			   gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: ''
-				},
-				stackLabels: {
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-					}
-				}
-			},
-			legend: {
-				enabled: false,
-				align: 'right',
-				x: -30,
-				verticalAlign: 'top',
-				y: 25,
-				floating: true,
-				backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-				borderColor: '#CCC',
-				borderWidth: 1,
-				shadow: false
-			},
-			tooltip: {
-					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%</b>'
-				},
-			plotOptions: {
-				column: {
-					stacking: 'percent',
-					dataLabels: {
-						enabled: true,
-						 formatter: function() {
-							if (this.y === 0) {
-								return null;
-							} else {
-								return Highcharts.numberFormat(this.y,1) + '%';
-							}
-						}
-					  
-					}
-				}
-			},
-			series: [{
-				name: 'Renewal',
-				data: [50]
-			}, {
-				name: 'New',
-				data: [20]
-			}]
-		});
-	});
-	
-	$(function () {
-		$('#todayOverAllRegistrationGraph').highcharts({
-			colors: ['#53BF8B','#f7a423'],
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: ''
-			},
-			xAxis: {
-				min: 0,
-				 gridLineWidth: 0,
-				 minorGridLineWidth: 0,
-				categories: ['Andhra Pradesh']
-			},
-			yAxis: {
-				min: 0,
-			   gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: ''
-				},
-				stackLabels: {
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-					}
-				}
-			},
-			legend: {
-				enabled: false,
-				align: 'right',
-				x: -30,
-				verticalAlign: 'top',
-				y: 25,
-				floating: true,
-				backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-				borderColor: '#CCC',
-				borderWidth: 1,
-				shadow: false
-			},
-			tooltip: {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
-
-					$.each(this.points, function () {
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
-							(this.y);
-					});
-
-					return s;
-				},
-				shared: true
-			},
-			plotOptions: {
-				column: {
-					stacking: 'percent',
-					dataLabels: {
-						enabled: true,
-						 formatter: function() {
-							if (this.y === 0) {
-								return null;
-							} else {
-								return Highcharts.numberFormat(this.y,1) + '%';
-							}
-						}
-					  
-					}
-				}
-			},
-			series: [{
-				name: 'John',
-				data: [50]
-			}, {
-				name: 'Jane',
-				data: [20]
-			}]
-		});
-	});
-}
 getConstituencyDetailedReport();
 function getConstituencyDetailedReport(){
 	
@@ -558,3 +401,300 @@ function getConstituencyDetailedReport(){
 		$("#noOfSamplesDetailsDiv").html(str);
 		
 	});
+	
+	function cadreRegistrationBasicCall(){
+		showCadreRegistreredCount();
+	}
+	
+	function showCadreRegistreredCount(){
+		
+		$("#totalTodayCadreRegistrationBlockDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		$("#enumeratorsInfoDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
+		$.ajax({
+			type : 'GET',
+			url : 'showCadreRegistreredCountAction.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){
+            if(result != null){
+				buildTotalTodayRegistrations(result);
+			}else{
+				$("#totalTodayCadreRegistrationBlockDivId").html('NO DATA AVAILABLE');
+				$("#enumeratorsInfoDivId").html('NO DATA AVAILABLE');
+			}	
+		});	
+           
+	}
+	function buildTotalTodayRegistrations(result){
+		
+	 var str= '';
+	 // Total today Registrations block
+	  str+='<div class="row m_top10">';
+			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+				str+='<div class="bg_ED pad_15">';
+					str+='<div class="row">';
+						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+							str+='<h5 class="text-capital">total</h5>';
+							str+='<h3>'+emptyCheck(result.totalCount)+'</h3>';
+						str+='</div>';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right">'+emptyCheck(result.renewalCount)+'</span></h4>';
+							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right">'+emptyCheck(result.newCount)+'</span></h4>';
+						str+='</div>';
+						str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			
+			str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+				str+='<div class="bg_ED pad_15">';
+					str+='<div class="row">';
+						str+='<div class="col-md-5 col-xs-12 col-sm-12 pad_right0">';
+							str+='<h5 class="text-capital">today</h5>';
+							str+='<h3>'+emptyCheck(result.todayTotalCount)+'</h3>';
+						str+='</div>';
+						str+='<div class="col-md-7 col-xs-12 col-sm-12 pad_left0">';
+							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right">'+emptyCheck(result.todayRenewalCount)+'</span></h4>';
+							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right">'+emptyCheck(result.todayNewCount)+'</span></h4>';
+						str+='</div>';
+						str+='<div id="todayOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		$("#totalTodayCadreRegistrationBlockDivId").html(str);
+		
+		//total block graph.
+			var totalRenewalCountArray = [];
+			var totalNewCountArray =[];
+			totalRenewalCountArray.push(emptyCheck(result.renewalCount));
+			totalNewCountArray.push(emptyCheck(result.newCount));
+			
+			$('#totalOverAllRegistrationGraph').highcharts({
+				colors: ['#53BF8B','#f7a423'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: ['Andhra Pradesh']
+				},
+				yAxis: {
+					min: 0,
+				   gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+								(this.y);
+						});
+
+						return s;
+					},
+					shared: true
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1) + '%';
+								}
+							} 
+						  
+						}
+					}
+				},
+				series: [{
+					name: 'Renewal',
+					data: totalRenewalCountArray
+				}, {
+					name: 'New',
+					data: totalNewCountArray
+				}]
+			});
+		
+		   //today block graph.
+			var todayRenewalCountArray = [];
+			var todayNewCountArray =[];
+			todayRenewalCountArray.push(emptyCheck(result.todayRenewalCount));
+			todayNewCountArray.push(emptyCheck(result.todayNewCount));
+			$('#todayOverAllRegistrationGraph').highcharts({
+				colors: ['#53BF8B','#f7a423'],
+				chart: {
+					type: 'column'
+				},
+				title: {
+					text: ''
+				},
+				xAxis: {
+					min: 0,
+					 gridLineWidth: 0,
+					 minorGridLineWidth: 0,
+					categories: ['Andhra Pradesh']
+				},
+				yAxis: {
+					min: 0,
+				   gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: ''
+					},
+					stackLabels: {
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+						}
+					}
+				},
+				legend: {
+					enabled: false,
+					align: 'right',
+					x: -30,
+					verticalAlign: 'top',
+					y: 25,
+					floating: true,
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+					borderColor: '#CCC',
+					borderWidth: 1,
+					shadow: false
+				},
+				tooltip: {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								Highcharts.numberFormat(this.percentage,1)+'%' +' - ' +
+								(this.y);
+						});
+
+						return s;
+					},
+					shared: true
+				},
+				plotOptions: {
+					column: {
+						stacking: 'percent',
+						dataLabels: {
+							enabled: true,
+							  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1) + '%';
+								}
+							} 
+						  
+						}
+					}
+				},
+				series: [{
+					name: 'Renewal',
+					data: todayRenewalCountArray
+				}, {
+					name: 'New',
+					data: todayNewCountArray
+				}]
+			});
+		
+	         //Enumerators block
+			var str1='';
+			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
+				str1+='<div class="bg_ED pad_15">';
+					str1+='<table class="table text-capital">';
+						str1+='<tr>';
+							str1+='<td>';
+								str1+='<img src="newCoreDashBoard/img/AP.png" class="img-responsive" alt="Andhra Prasdesh" style="width:65px"/>';
+							str1+='</td>';
+							str1+='<td>';
+								str1+='<h5>Total ';
+								/* if(result.totalCount != null && result.totalCount > 0){
+									str1+='- <span class="text-muted">'+result.+'%</span></h5>';
+								} */
+								str1+='<h3>'+emptyCheck(result.totalCount)+'</h3>';
+							str1+='</td>';
+							str1+='<td>';
+								str1+='<h5>Today'; 
+								if(result.todayPercenCount != null && result.todayPercenCount > 0){
+									str1+='- <span class="text-muted">'+result.todayPercenCount+'%</span></h5>';
+								}
+								str1+='<h3>'+emptyCheck(result.todayTotalCount)+'</h3>';
+							str1+='</td>';
+							str1+='<td>';
+								str1+='<h5>'+emptyCheck(result.totalStartConstituCount)+' ';
+								if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
+									str1+='- <small class="text-muted">'+result.totalStartConstituPer+'%</small></h5>';
+								}
+								str1+='<h5>Started<br> Contituencies</h5>';
+							str1+='</td>';
+						str1+='</tr>';
+					str1+='</table>';
+					
+					str1+='<hr style="border-color:#B0B4B7;"/>';
+					str1+='<span style="position: relative; text-align: center; top: -30px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
+					str1+='<div class="row">';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-6 text-center">';
+							str1+='<h3>'+emptyCheck(result.inFieldCount)+'</h3>';
+							str1+='<h5 class="text-capital">in field now</h5>';
+						str1+='</div>';
+						str1+='<div class="col-md-6 col-xs-12 col-sm-6 text-center">';
+							str1+='<h3>'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+							str1+='<h5 class="text-capital">today submitted data</h5>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>';
+			$("#enumeratorsInfoDivId").html(str1);
+	}
+	
+	
+	function emptyCheck(filedValue){
+		var returnVal = ' - ';
+		if( filedValue !=null && filedValue > 0){
+			returnVal = filedValue;
+		}
+		return returnVal;
+	}
+	
+	
+	
