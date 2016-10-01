@@ -1,6 +1,6 @@
 //Training Program
 var globalStateId=1; //default Ap 
-$(".trainingDate").html(" TODAY ( "+customStartDate+" )");
+$(".trainingDate").html(" UPTO DATE ( "+customStartDate+" )");
  $('#dateRangeIdForTrainingCamp').on('apply.daterangepicker', function(ev, picker) {
 	customStartDate = picker.startDate.format('DD/MM/YYYY');
 	$(".trainingDate").html("( "+customStartDate+" )");
@@ -2296,5 +2296,5 @@ function getTrainingRecentTime(){
 	});
 }
   function setTrainingLastUpdateTime(lastUPdatedTime){
-	  $("#lastUpdatedTimeTrainingCampId").html(" Last Updated :"+lastUPdatedTime+"");
+	  $("#lastUpdatedTimeTrainingCampId").html("Last Updated : "+lastUPdatedTime+"");
   }
