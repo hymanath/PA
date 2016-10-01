@@ -65,8 +65,12 @@ var newsPaperIdsStr = "${param.npsStr}";
 		getArticlesOfNewsBasicCounts(0);
 	});
 	
-
-function getArticlesOfNewsBasicCounts(stIndex){
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	if(wurl.length == 3)
+		wurl = url.substr(0,(url.indexOf(".in")+3));
+	
+	function getArticlesOfNewsBasicCounts(stIndex){
 	
 		$("#articlesDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		
