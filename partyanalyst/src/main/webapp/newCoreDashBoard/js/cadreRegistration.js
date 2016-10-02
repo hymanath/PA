@@ -243,12 +243,13 @@ $('#genSec').highcharts({
 
 	function cadreRegistrationBasicCall(){
 		showCadreRegistreredCount();
+		getEnumeratorsInfo();
 	}
 	
 	function showCadreRegistreredCount(){
 		
 		$("#totalTodayCadreRegistrationBlockDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		$("#enumeratorsInfoDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
 		
 		$.ajax({
 			type : 'GET',
@@ -260,11 +261,11 @@ $('#genSec').highcharts({
 				buildTotalTodayRegistrations(result);
 			}else{
 				$("#totalTodayCadreRegistrationBlockDivId").html('NO DATA AVAILABLE');
-				$("#enumeratorsInfoDivId").html('NO DATA AVAILABLE');
 			}	
 		});	
            
 	}
+	
 	function buildTotalTodayRegistrations(result){
 		
 	 var str= '';
@@ -475,8 +476,38 @@ $('#genSec').highcharts({
 					data: todayNewCountArray
 				}]
 			});
+	         
+	}
+	
+	
+	function emptyCheck(filedValue){
+		var returnVal = ' - ';
+		if( filedValue !=null && filedValue > 0){
+			returnVal = filedValue;
+		}
+		return returnVal;
+	}
+	
+	function getEnumeratorsInfo(){
 		
-	         //Enumerators block
+		$("#enumeratorsInfoDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		
+		$.ajax({
+			type : 'GET',
+			url : 'getEnumeratorsInfoAction.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){
+            if(result != null){
+				buildEnumeratorsInfo(result);
+			}else{
+				$("#enumeratorsInfoDivId").html('NO DATA AVAILABLE');
+			}	
+		});	
+           
+	}
+	function buildEnumeratorsInfo(result){
+		//Enumerators block
 			var str1='';
 			str1+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20">';
 				str1+='<div class="bg_ED pad_15">';
@@ -524,15 +555,6 @@ $('#genSec').highcharts({
 				str1+='</div>';
 			str1+='</div>';
 			$("#enumeratorsInfoDivId").html(str1);
-	}
-	
-	
-	function emptyCheck(filedValue){
-		var returnVal = ' - ';
-		if( filedValue !=null && filedValue > 0){
-			returnVal = filedValue;
-		}
-		return returnVal;
 	}
 	
 	function getRegistrationCountDtls(location){

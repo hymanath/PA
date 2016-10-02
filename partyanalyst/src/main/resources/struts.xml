@@ -13856,5 +13856,11 @@
 				<param name="root">object</param>   
 		</result>
 	</action>
+	
+	<action name="getEnumeratorsInfoAction" class="coreDashboardAction" method="getEnumeratorsInfo">
+		<result type="json" name="success">
+				<param name="root">cadreRegistratedCountVO</param>
+		</result>
+	</action>
 </package>
 </struts>
