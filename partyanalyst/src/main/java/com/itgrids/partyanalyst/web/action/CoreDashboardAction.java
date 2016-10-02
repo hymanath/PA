@@ -2485,4 +2485,15 @@ public String getDaysByCadreRegistrationCount(){
     }
     return Action.SUCCESS;
   }
+
+	public String getEnumeratorsInfo(){
+    try{
+      
+      cadreRegistratedCountVO = coreDashboardCadreRegistrationService.getEnumeratorsInfo();
+      
+    }catch(Exception e){
+      LOG.error("Exception raised at getEnumeratorsInfo() method of CoreDashBoard", e);
+    }
+    return Action.SUCCESS;
+  }
 }
