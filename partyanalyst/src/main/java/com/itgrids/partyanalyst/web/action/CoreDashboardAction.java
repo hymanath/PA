@@ -108,6 +108,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private String edat;
 	private String scops;
 	private String npsStr;
+	private String ediDistIdsStr;
 	
 	private ICoreDashboardCadreRegistrationService coreDashboardCadreRegistrationService;
 	
@@ -543,6 +544,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setObject(Object object) {
 		this.object = object;
+	}
+	
+	public String getEdiDistIdsStr() {
+		return ediDistIdsStr;
+	}
+
+	public void setEdiDistIdsStr(String ediDistIdsStr) {
+		this.ediDistIdsStr = ediDistIdsStr;
 	}
 
 	//business methods
