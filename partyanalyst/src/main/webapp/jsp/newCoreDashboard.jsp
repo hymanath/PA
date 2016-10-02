@@ -1961,9 +1961,7 @@
                 </div>
             </div>
        </div>
-	 </div>
-	 <div class="row">
-		<!--Cadre Registration -->
+	 	<!--Cadre Registration -->
 		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
@@ -1981,9 +1979,9 @@
 							<span class="cadreNotes pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
 							</span>
-							<!-- <span class="cadreExpand pull-right">
+							 <span class="cadreExpand pull-right">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span> -->
+							</span> 
 							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
 								<input type="text" id="dateRangeId"	 class="form-control" />
 								<span class="input-group-addon">
