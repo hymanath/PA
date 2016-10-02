@@ -2333,7 +2333,9 @@ public String getRegistrationCountDtls(){
     	jObj = new JSONObject(getTask()); 
     	String location = jObj.getString("location");
     	Long constId = jObj.getLong("constId");
-      object = coreDashboardCadreRegistrationService.getRegistrationCountDtls(location,constId);
+    	String scope = jObj.getString("scope");
+    	String option = jObj.getString("option");
+    	object = coreDashboardCadreRegistrationService.getRegistrationCountDtls(location,constId,scope,option);
       
     }catch(Exception e){  
       LOG.error("Exception raised at getCoreDebateBasicDetailsOfParty() method of CoreDashBoard", e);
