@@ -1931,5 +1931,22 @@ margin-top: 5px; margin-bottom: 2px;
 	min-width:60px;
 }
 .f_16{
-font-size:16px;
+	font-size:16px;
+}
+.f_14
+{
+	font-size:14px !important;
+}
+
+
+@font-face
+{
+	font-family:'Digital Dream';
+	src:url(../fonts/DIGITALDREAM.ttf);
+	src:url(../fonts/DIGITALDREAMFATNARROW.ttf);
+}
+.cadreCount
+{
+	font-family:'Digital Dream';
+	font-weight:bolder;
 }
