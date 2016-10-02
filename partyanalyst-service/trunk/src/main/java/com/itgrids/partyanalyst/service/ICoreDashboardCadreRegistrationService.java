@@ -10,4 +10,5 @@ public interface ICoreDashboardCadreRegistrationService {
 	public Object getRegistrationCountDtls(String location,Long constId);
 	public Object getCadreRegistrationCountByConstituency(Long constituencyId,String fromDate,String toDate);
 	public Object getDaysByCadreRegistrationCount(Long constituencyId,Long cadreSurveyUserId,Long tabUserInfoId,String fromDate,String toDate);
+	public CadreRegistratedCountVO getEnumeratorsInfo();
 }
