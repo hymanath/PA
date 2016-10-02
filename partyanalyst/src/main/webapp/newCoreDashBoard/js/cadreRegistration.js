@@ -245,6 +245,7 @@ $('#genSec').highcharts({
 		showCadreRegistreredCount();
 		getEnumeratorsInfo();
 	}
+
 	
 	function showCadreRegistreredCount(){
 		
@@ -282,7 +283,7 @@ $('#genSec').highcharts({
 							str+='<h4 class="f_16 text-success">Renewal  <span class="pull-right cadreCount f_14">'+emptyCheck(result.renewalCount)+'</span></h4>';
 							str+='<h4 class="f_16" style="color:#F7A423">New  <span class="pull-right cadreCount f_14">'+emptyCheck(result.newCount)+'</span></h4>';
 						str+='</div>';
-						str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:150px" ></div>';
+						str+='<div id="totalOverAllRegistrationGraph" class="chartLiD" style="height:120px" ></div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -531,17 +532,17 @@ $('#genSec').highcharts({
 								/* if(result.totalCount != null && result.totalCount > 0){
 									str1+='- <span class="text-muted">'+result.+'%</span></h5>';
 								} */
-								str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.totalCount)+'</h3>';
+								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalCount)+'</h3>';
 							str1+='</td>';
 							str1+='<td>';
 								str1+='<h5>Today'; 
 								if(result.todayPercenCount != null && result.todayPercenCount > 0){
 									str1+='- <span class="text-muted">'+result.todayPercenCount+'%</span></h5>';
 								}
-								str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
+								str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayTotalCount)+'</h3>';
 							str1+='</td>';
 							str1+='<td>';
-								str1+='<h5 class="EnumCadreCount">'+emptyCheck(result.totalStartConstituCount)+' ';
+								str1+='<h5 class="EnumCadreCount cadreCount">'+emptyCheck(result.totalStartConstituCount)+' ';
 								if(result.totalStartConstituPer != null && result.totalStartConstituPer > 0){
 									str1+='- <small class="text-muted">'+result.totalStartConstituPer+'%</small></h5>';
 								}
@@ -550,15 +551,19 @@ $('#genSec').highcharts({
 						str1+='</tr>';
 					str1+='</table>';
 					
-					str1+='<hr style="border-color:#B0B4B7;"/>';
-					str1+='<span style="position: relative; text-align: center; top: -30px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
-					str1+='<div class="row">';
-						str1+='<div class="col-md-6 col-xs-12 col-sm-6 text-center">';
-							str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.inFieldCount)+'</h3>';
+					str1+='<hr style="border-color:#B0B4B7;margin-top:10px;margin-bottom:10px;"/>';
+					str1+='<span style="position: relative; text-align: center; top: -20px; padding: 3px 8px; background-color: #edeef0; left: 35%;">Today Eumerators Info</span>';
+					str1+='<div class="row" style="margin-top:-10px">';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todayFieldMembersCount)+'</h3>';
+							str1+='<h5 class="text-capital">today field members</h5>';
+						str1+='</div>';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.inFieldCount)+'</h3>';
 							str1+='<h5 class="text-capital">in field now</h5>';
 						str1+='</div>';
-						str1+='<div class="col-md-6 col-xs-12 col-sm-6 text-center">';
-							str1+='<h3 class="EnumCadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
+						str1+='<div class="col-md-4 col-xs-12 col-sm-4 text-center">';
+							str1+='<h3 class="EnumCadreCount cadreCount">'+emptyCheck(result.todaySubmittedCount)+'</h3>';
 							str1+='<h5 class="text-capital">today submitted data</h5>';
 						str1+='</div>';
 					str1+='</div>';
